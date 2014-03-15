@@ -1,0 +1,11 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+#VS13
+*.vcxproj.user
+*.suo
+*.opensdf
+*.sdf
