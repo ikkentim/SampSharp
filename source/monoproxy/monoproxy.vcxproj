@@ -86,10 +86,12 @@
     <None Include="monoproxy.def" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConfigReader.cpp" />
     <ClCompile Include="MonoProxy.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConfigReader.h" />
     <ClInclude Include="MonoProxy.h" />
     <ClInclude Include="Natives.h" />
     <ClInclude Include="PathUtil.h" />
