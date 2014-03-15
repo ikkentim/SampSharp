@@ -9,6 +9,8 @@
 *.suo
 *.opensdf
 *.sdf
+*.DotSettings
+
 Debug/
 bin/
 obj/
