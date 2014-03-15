@@ -9,3 +9,6 @@
 *.suo
 *.opensdf
 *.sdf
+Debug/
+bin/
+obj/
