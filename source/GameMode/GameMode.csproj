@@ -39,6 +39,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Definitions\BulletHitType.cs" />
+    <Compile Include="Definitions\CameraCut.cs" />
+    <Compile Include="Definitions\CarModType.cs" />
+    <Compile Include="Definitions\DialogStyle.cs" />
+    <Compile Include="Definitions\EditObjectResponse.cs" />
+    <Compile Include="Definitions\FightStyle.cs" />
+    <Compile Include="Definitions\Key.cs" />
+    <Compile Include="Definitions\Limits.cs" />
+    <Compile Include="Definitions\MapIconType.cs" />
+    <Compile Include="Definitions\Misc.cs" />
+    <Compile Include="Definitions\ObjectMaterialSize.cs" />
+    <Compile Include="Definitions\ObjectMaterialTextAlign.cs" />
+    <Compile Include="Definitions\PlayerClickSource.cs" />
+    <Compile Include="Definitions\PlayerMarkersMode.cs" />
+    <Compile Include="Definitions\PlayerRecordingType.cs" />
+    <Compile Include="Definitions\PlayerState.cs" />
+    <Compile Include="Definitions\PlayerVarType.cs" />
+    <Compile Include="Definitions\SelectedObjectType.cs" />
+    <Compile Include="Definitions\SpecialAction.cs" />
+    <Compile Include="Definitions\SpectateMode.cs" />
+    <Compile Include="Definitions\TextDrawFont.cs" />
+    <Compile Include="Definitions\VehicleModelInfo.cs" />
+    <Compile Include="Definitions\VehicleParams.cs" />
+    <Compile Include="Definitions\Weapon.cs" />
+    <Compile Include="Definitions\WeaponSkill.cs" />
+    <Compile Include="Definitions\WeaponState.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
