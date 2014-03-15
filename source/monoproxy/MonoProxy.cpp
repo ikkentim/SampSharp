@@ -3,27 +3,27 @@
 #include "PathUtil.h"
 #include "Natives.h"
 
-CMonoProxy::CMonoProxy() {
+CMonoProxy::CMonoProxy(char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version) {
 	
-	//Mono setup
+	//Initialize the Mono runtime
 	mono_set_dirs(PathUtil::GetLibDirectory().c_str(), PathUtil::GetConfigDirectory().c_str());
 	mono_debug_init(MONO_DEBUG_FORMAT_MONO);
-	m_pRootDomain = mono_jit_init_version("SAMP.Mono.Proxy", "v4.0.30319");
+	m_pRootDomain = mono_jit_init_version("SAMP.Mono.Proxy", runtime_version);
 
-	//Load assembly
-	MonoAssembly *pMonoAssembly = mono_domain_assembly_open(mono_domain_get(), PathUtil::GetBinDirectory().append("plugins/GameMode.dll").c_str());
+	//Load the gamemode's assembly
+	MonoAssembly *pMonoAssembly = mono_domain_assembly_open(mono_domain_get(), PathUtil::GetBinDirectory().append(gamemode_path).c_str());
 	m_pClassLibraryImage = mono_assembly_get_image(pMonoAssembly);
 
-	//Load natives
+	//Load all SA:MP natives
 	LoadNatives(); 
 
-	//Create instance of main class
-	m_pClassServerClass = mono_class_from_name(m_pClassLibraryImage, "GameMode", "Server");
+	//Create instance of the gamemode's class
+	m_pClassServerClass = mono_class_from_name(m_pClassLibraryImage, gamemode_namespace, gamemode_class);
 
 	m_pClassServer = mono_object_new(mono_domain_get(), m_pClassServerClass);
 	mono_runtime_object_init(m_pClassServer);
 
-	//Load callbacks
+	//Load all SA:MP callbacks
 	m_cOnGameModeInit = LoadCallback("GameMode.Server:OnGameModeInit()");
 	m_cOnGameModeExit = LoadCallback("GameMode.Server:OnGameModeExit()");
 	m_cOnPlayerConnect = LoadCallback("GameMode.Server:OnPlayerConnect(int)");
@@ -78,16 +78,22 @@ CMonoProxy::CMonoProxy() {
 }
 
 MonoMethod* CMonoProxy::LoadCallback(const char *name) {
+	//Create method description and find method in image
 	MonoMethodDesc* m_methodDescription = mono_method_desc_new(name, true);
 	MonoMethod* m_method = mono_method_desc_search_in_image(m_methodDescription, m_pClassLibraryImage);
+
+	//Free memory and return method
 	mono_method_desc_free(m_methodDescription);
 
 	return m_method;
 }
 
 bool CMonoProxy::CallCallback(MonoMethod* method, void **params) {
+	//Invoke method and cast the response to a boolean
 	return *(bool*)mono_object_unbox(mono_runtime_invoke(method, m_pClassServer, params, NULL));
 }
 
 CMonoProxy::~CMonoProxy() {
+	//Cleanup Mono runtime
+	mono_jit_cleanup(mono_domain_get());
 }
