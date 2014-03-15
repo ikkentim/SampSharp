@@ -1,0 +1,11 @@
+prefix=C:/PROGRA~2/MONO-3~1.4
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: Pango Win32
+Description: Win32 GDI font support for Pango
+Version: 1.28.3
+Requires: pango
+Libs: -L${libdir} -lpangowin32-1.0 -lgdi32
+Cflags: -I${includedir}/pango-1.0

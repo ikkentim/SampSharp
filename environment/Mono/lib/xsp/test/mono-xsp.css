@@ -1,0 +1,66 @@
+body {
+	font-family: "Trebuchet MS", lucida, verdana, helvetica, sans-serif; 
+	font-size: 14px;
+	color: #000;
+	background-color: #f8f8f4;
+	padding: 0;
+	margin:  0;
+}
+
+.header {
+	font-family: "Trebuchet MS", sans-serif;
+	color: #fff;
+	font-size: 22px;
+	background: #555;
+	border: 0;
+	margin: 0px;
+	padding: 10px;
+}
+
+h1.header {
+	color: #fff;
+	background: #555;
+	font-weight: bolder;
+}
+
+h2.header {
+	font-size: 14px;
+	font-weight: bold;
+	color: #dcdedc;
+	background: #555;
+	vertical-align: top;
+	margin-left: 70px;
+	margin-top: 0;
+	border-top: 2px solid;
+	padding: 0;
+}
+
+ul.dirlist {
+	list-style: url(small-icon.png);
+}
+
+a.indexDirectory { font-weight: bold; }
+a.aspx { background: #f1f1ed; }
+a.ashx { background: #0cc; }
+a.asmx { background: #ee0; }
+
+pre { font-size: 12px; }
+
+p { margin: 10px; }
+
+a { color: #72716a; }
+
+.shell { 
+	border-style: solid; background: #000; color: #bbb;
+	border-width: 1px;
+	padding: 2pt; 
+	margin:15px;
+}
+
+table {
+	font-family: "Trebuchet MS", lucida, verdana, helvetica, sans-serif; 
+	font-size: 14px;
+	color: #000;
+	background-color: #f8f8f4;
+}
+

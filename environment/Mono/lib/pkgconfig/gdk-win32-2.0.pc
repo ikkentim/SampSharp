@@ -1,0 +1,12 @@
+prefix=C:/PROGRA~2/MONO-3~1.4
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+target=win32
+
+Name: GDK
+Description: GTK+ Drawing Kit (${target} target)
+Version: 2.24.0
+Requires: pangowin32 pangocairo gdk-pixbuf-2.0
+Libs: -L${libdir} -lgdk-${target}-2.0 
+Cflags: -I${includedir}/gtk-2.0 -I${libdir}/gtk-2.0/include 

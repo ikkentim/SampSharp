@@ -1,0 +1,10 @@
+prefix=C:/PROGRA~2/MONO-3~1.4
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+
+
+Name: Gtk.DotNet
+Description: .NET Extensions for Gtk
+Version: 2.12.11
+Requires:gtk-sharp-2.0
+Libs: -r:${libdir}/mono/gtk-sharp-2.0/gtk-dotnet.dll

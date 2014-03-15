@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<monodoc>
+  <node label="Mono Web Server Library (XSP)" name="monowebserver" parent="libraries" />
+  <source provider="ecma" basefile="Mono.WebServer" path="monowebserver"/>
+</monodoc>

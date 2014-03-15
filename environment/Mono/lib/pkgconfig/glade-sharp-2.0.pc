@@ -1,0 +1,12 @@
+prefix=C:/PROGRA~2/MONO-3~1.4
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+gapidir=${prefix}/share/gapi-2.0
+
+
+Name: Glade#
+Description: Glade# - Glade .NET Binding
+Version: 2.12.11
+Requires: gtk-sharp-2.0
+Cflags: -I:${gapidir}/glade-api.xml
+Libs: -r:${libdir}/mono/gtk-sharp-2.0/glade-sharp.dll
