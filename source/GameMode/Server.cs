@@ -785,312 +785,256 @@ namespace GameMode
         #endregion
 
         #region Callbacks
-        public bool OnGameModeInit()
+        public virtual bool OnGameModeInit()
         {
-            SetGameModeText("Test gamemode name");
-
-            Console.WriteLine("OnGameModeInit");
             return true;
         }
 
-        public bool OnGameModeExit()
+        public virtual bool OnGameModeExit()
         {
-            Console.WriteLine("OnGameModeExit");
             return true;
         }
 
-        public bool OnPlayerConnect(int playerid)
+        public virtual bool OnPlayerConnect(int playerid)
         {
-            string ip;
-            GetPlayerIp(playerid, out ip, 64);
-            Console.WriteLine("OnPlayerConnect {0} : {1}", playerid, ip);
-            
             return true;
         }
 
-        public bool OnPlayerDisconnect(int playerid, int reason)
+        public virtual bool OnPlayerDisconnect(int playerid, int reason)
         {
-            Console.WriteLine("OnPlayerDisconnect {0}, {1}", playerid, reason);
             return true;
         }
 
-        public bool OnPlayerSpawn(int playerid)
+        public virtual bool OnPlayerSpawn(int playerid)
         {
-            Console.WriteLine("OnPlayerSpawn {0}", playerid);
             return true;
         }
 
-        public bool OnPlayerDeath(int playerid, int killerid, int reason)
+        public virtual bool OnPlayerDeath(int playerid, int killerid, int reason)
         {
-            Console.WriteLine("OnPlayerDeath {0} {1} {2}", playerid, killerid, reason);
             return true;
         }
 
-        public bool OnVehicleSpawn(int vehicleid)
+        public virtual bool OnVehicleSpawn(int vehicleid)
         {
-            Console.WriteLine("OnVehicleSpawn {0}", vehicleid);
             return true;
         }
 
-        public bool OnVehicleDeath(int vehicleid, int killerid)
+        public virtual bool OnVehicleDeath(int vehicleid, int killerid)
         {
-            Console.WriteLine("OnVehicleDeath {0} {1}", vehicleid, killerid);
             return true;
         }
 
-        public bool OnPlayerText(int playerid, string text)
+        public virtual bool OnPlayerText(int playerid, string text)
         {
-            Console.WriteLine("OnPlayerText {0}, {1}", playerid, text);
             return true;
         }
 
-        public bool OnPlayerCommandText(int playerid, string cmdtext)
+        public virtual bool OnPlayerCommandText(int playerid, string cmdtext)
         {
-            Console.WriteLine("OnPlayerCommandText {0}, {1}", playerid, cmdtext);
             return true;
         }
 
-        public bool OnPlayerRequestClass(int playerid, int classid)
+        public virtual bool OnPlayerRequestClass(int playerid, int classid)
         {
-            Console.WriteLine("OnPlayerRequestClass {0}, {1}", playerid, classid);
             return true;
         }
 
-        public bool OnPlayerEnterVehicle(int playerid, int vehicleid, bool ispassenger)
+        public virtual bool OnPlayerEnterVehicle(int playerid, int vehicleid, bool ispassenger)
         {
-            Console.WriteLine("OnPlayerEnterVehicle {0}, {1}, {2}", playerid, vehicleid, ispassenger);
             return true;
         }
 
-        public bool OnPlayerExitVehicle(int playerid, int vehicleid)
+        public virtual bool OnPlayerExitVehicle(int playerid, int vehicleid)
         {
-            Console.WriteLine("OnPlayerExitVehicle {0}, {1}", playerid, vehicleid);
             return true;
         }
 
-        public bool OnPlayerStateChange(int playerid, int newstate, int oldstate)
+        public virtual bool OnPlayerStateChange(int playerid, int newstate, int oldstate)
         {
-            Console.WriteLine("OnPlayerStateChange {0}, {1}, {2}", playerid, newstate, oldstate);
             return true;
         }
 
-        public bool OnPlayerEnterCheckpoint(int playerid)
+        public virtual bool OnPlayerEnterCheckpoint(int playerid)
         {
-            Console.WriteLine("OnPlayerEnterCheckpoint {0}", playerid);
             return true;
         }
 
-        public bool OnPlayerLeaveCheckpoint(int playerid)
+        public virtual bool OnPlayerLeaveCheckpoint(int playerid)
         {
-            Console.WriteLine("OnPlayerLeaveCheckpoint {0}", playerid);
             return true;
         }
 
-        public bool OnPlayerEnterRaceCheckpoint(int playerid)
+        public virtual bool OnPlayerEnterRaceCheckpoint(int playerid)
         {
-            Console.WriteLine("OnPlayerEnterRaceCheckpoint {0}", playerid);
             return true;
         }
 
-        public bool OnPlayerLeaveRaceCheckpoint(int playerid)
+        public virtual bool OnPlayerLeaveRaceCheckpoint(int playerid)
         {
-            Console.WriteLine("OnPlayerLeaveRaceCheckpoint {0}", playerid);
             return true;
         }
 
-        public bool OnRconCommand(string cmd)
+        public virtual bool OnRconCommand(string cmd)
         {
-            Console.WriteLine("OnRconCommand {0}", cmd);
             return true;
         }
 
-        public bool OnPlayerRequestSpawn(int playerid)
+        public virtual bool OnPlayerRequestSpawn(int playerid)
         {
-            Console.WriteLine("OnPlayerRequestSpawn {0}", playerid);
             return true;
         }
 
-        public bool OnObjectMoved(int objectid)
+        public virtual bool OnObjectMoved(int objectid)
         {
-            Console.WriteLine("OnObjectMoved {0}", objectid);
             return true;
         }
 
-        public bool OnPlayerObjectMoved(int playerid, int objectid)
+        public virtual bool OnPlayerObjectMoved(int playerid, int objectid)
         {
-            Console.WriteLine("OnPlayerObjectMoved {0} {1}", playerid, objectid);
             return true;
         }
 
-        public bool OnPlayerPickUpPickup(int playerid, int pickupid)
+        public virtual bool OnPlayerPickUpPickup(int playerid, int pickupid)
         {
-            Console.WriteLine("OnPlayerPickUpPickup {0} {1}", playerid, pickupid);
             return true;
         }
 
-        public bool OnVehicleMod(int playerid, int vehicleid, int componentid)
+        public virtual bool OnVehicleMod(int playerid, int vehicleid, int componentid)
         {
-            Console.WriteLine("OnVehicleMod {0} {1} {2}", playerid, vehicleid, componentid);
             return true;
         }
 
-        public bool OnEnterExitModShop(int playerid, int enterexit, int interiorid)
+        public virtual bool OnEnterExitModShop(int playerid, int enterexit, int interiorid)
         {
-            Console.WriteLine("OnEnterExitModShop {0} {1} {2}", playerid, enterexit, interiorid);
             return true;
         }
 
-        public bool OnVehiclePaintjob(int playerid, int vehicleid, int paintjobid)
+        public virtual bool OnVehiclePaintjob(int playerid, int vehicleid, int paintjobid)
         {
-            Console.WriteLine("OnVehiclePaintjob {0} {1} {2}", playerid, vehicleid, paintjobid);
             return true;
         }
 
-        public bool OnVehicleRespray(int playerid, int vehicleid, int color1, int color2)
+        public virtual bool OnVehicleRespray(int playerid, int vehicleid, int color1, int color2)
         {
-            Console.WriteLine("OnVehicleRespray {0} {1} {2} {3}", playerid, vehicleid, color1, color2);
             return true;
         }
 
-        public bool OnVehicleDamageStatusUpdate(int vehicleid, int playerid)
+        public virtual bool OnVehicleDamageStatusUpdate(int vehicleid, int playerid)
         {
-            Console.WriteLine("OnVehicleDamageStatusUpdate {0} {1}", vehicleid, playerid);
             return true;
         }
 
-        public bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat)
+        public virtual bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat)
         {
-            Console.WriteLine("OnUnoccupiedVehicleUpdate {0} {1} {2}", vehicleid, playerid, passengerSeat);
             return true;
         }
 
-        public bool OnPlayerSelectedMenuRow(int playerid, int row)
+        public virtual bool OnPlayerSelectedMenuRow(int playerid, int row)
         {
-            Console.WriteLine("OnPlayerSelectedMenuRow {0} {1}", playerid, row);
             return true;
         }
 
-        public bool OnPlayerExitedMenu(int playerid)
+        public virtual bool OnPlayerExitedMenu(int playerid)
         {
-            Console.WriteLine("OnPlayerExitedMenu {0}", playerid);
             return true;
         }
 
-        public bool OnPlayerInteriorChange(int playerid, int newinteriorid, int oldinteriorid)
+        public virtual bool OnPlayerInteriorChange(int playerid, int newinteriorid, int oldinteriorid)
         {
-            Console.WriteLine("OnPlayerInteriorChange {0} {1} {2}", playerid, newinteriorid, oldinteriorid);
             return true;
         }
 
-        public bool OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys)
+        public virtual bool OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys)
         {
-            Console.WriteLine("OnPlayerKeyStateChange {0} {1} {2}", playerid, newkeys, oldkeys);
             return true;
         }
 
-        public bool OnRconLoginAttempt(string ip, string password, bool success)
+        public virtual bool OnRconLoginAttempt(string ip, string password, bool success)
         {
-            Console.WriteLine("OnRconLoginAttempt {0} {1} {2}", ip, password, success);
             return true;
         }
 
-        public bool OnPlayerUpdate(int playerid)
+        public virtual bool OnPlayerUpdate(int playerid)
         {
-            Console.WriteLine("OnPlayerUpdate {0}", playerid);
             return true;
         }
 
-        public bool OnPlayerStreamIn(int playerid, int forplayerid)
+        public virtual bool OnPlayerStreamIn(int playerid, int forplayerid)
         {
-            Console.WriteLine("OnPlayerStreamIn {0} {1}", playerid, forplayerid);
             return true;
         }
 
-        public bool OnPlayerStreamOut(int playerid, int forplayerid)
+        public virtual bool OnPlayerStreamOut(int playerid, int forplayerid)
         {
-            Console.WriteLine("OnPlayerStreamOut {0} {1}", playerid, forplayerid);
             return true;
         }
 
-        public bool OnVehicleStreamIn(int vehicleid, int forplayerid)
+        public virtual bool OnVehicleStreamIn(int vehicleid, int forplayerid)
         {
-            Console.WriteLine("OnVehicleStreamIn {0} {1}", vehicleid, forplayerid);
             return true;
         }
 
-        public bool OnVehicleStreamOut(int vehicleid, int forplayerid)
+        public virtual bool OnVehicleStreamOut(int vehicleid, int forplayerid)
         {
-            Console.WriteLine("OnVehicleStreamOut {0} {1}", vehicleid, forplayerid);
             return true;
         }
 
-        public bool OnDialogResponse(int playerid, int dialogid, int response, int listitem, string inputtext)
+        public virtual bool OnDialogResponse(int playerid, int dialogid, int response, int listitem, string inputtext)
         {
-            Console.WriteLine("OnDialogResponse {0} {1} {2} {3} {4}", playerid, dialogid, response, listitem, inputtext);
             return true;
         }
 
-        public bool OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid, int bodypart)
+        public virtual bool OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid, int bodypart)
         {
-            Console.WriteLine("OnPlayerTakeDamage {0} {1} {2} {3} {4}", playerid, issuerid, amount, weaponid, bodypart);
             return true;
         }
 
-        public bool OnPlayerGiveDamage(int playerid, int damagedid, float amount, int weaponid, int bodypart)
+        public virtual bool OnPlayerGiveDamage(int playerid, int damagedid, float amount, int weaponid, int bodypart)
         {
-            Console.WriteLine("OnPlayerGiveDamage {0} {1} {2} {3} {4}", playerid, damagedid, amount, weaponid, bodypart);
             return true;
         }
 
-        public bool OnPlayerClickMap(int playerid, float fX, float fY, float fZ)
+        public virtual bool OnPlayerClickMap(int playerid, float fX, float fY, float fZ)
         {
-            Console.WriteLine("OnPlayerClickMap {0} {1} {2} {3}", playerid, fX, fY, fZ);
             return true;
         }
 
-        public bool OnPlayerClickTextDraw(int playerid, int clickedid)
+        public virtual bool OnPlayerClickTextDraw(int playerid, int clickedid)
         {
-            Console.WriteLine("OnPlayerClickTextDraw {0} {1}", playerid, clickedid);
             return true;
         }
 
-        public bool OnPlayerClickPlayerTextDraw(int playerid, int playertextid)
+        public virtual bool OnPlayerClickPlayerTextDraw(int playerid, int playertextid)
         {
-            Console.WriteLine("OnPlayerClickPlayerTextDraw {0} {1}", playerid, playertextid);
             return true;
         }
 
-        public bool OnPlayerClickPlayer(int playerid, int clickedplayerid, int source)
+        public virtual bool OnPlayerClickPlayer(int playerid, int clickedplayerid, int source)
         {
-            Console.WriteLine("OnPlayerClickPlayer {0} {1} {2}", playerid, clickedplayerid, source);
             return true;
         }
 
-        public bool OnPlayerEditObject(int playerid, bool playerobject, int objectid, int response, float fX, float fY,
+        public virtual bool OnPlayerEditObject(int playerid, bool playerobject, int objectid, int response, float fX, float fY,
             float fZ, float fRotX, float fRotY, float fRotZ)
         {
-            Console.WriteLine("OnPlayerEditObject {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}", playerid, playerobject,
-                objectid, response, fX, fY, fZ, fRotX, fRotY, fRotZ);
             return true;
         }
 
-        public bool OnPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid,
+        public virtual bool OnPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid,
             float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX,
             float fScaleY, float fScaleZ)
         {
-            Console.WriteLine("OnPlayerEditAttachedObject {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13}", playerid, response, index, modelid, boneid, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ);
             return true;
         }
 
-        public bool OnPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ)
+        public virtual bool OnPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ)
         {
-            Console.WriteLine("OnPlayerSelectObject {0} {1} {2} {3} {4} {5} {6}", playerid, type, objectid, modelid, fX, fY, fZ);
             return true;
         }
 
-        public bool OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY, float fZ)
+        public virtual bool OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY, float fZ)
         {
-            Console.WriteLine("OnPlayerWeaponShot {0} {1} {2} {3} {4} {5} {6}", playerid, weaponid, hittype, hitid, fX, fY, fZ);
             return true;
         }
         #endregion
