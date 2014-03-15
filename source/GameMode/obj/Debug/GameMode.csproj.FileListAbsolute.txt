@@ -1,0 +1,10 @@
+C:\Users\Tim\Desktop\samp03z_srv_R1_win32_\plugins\monoproxy\GameMode\bin\Debug\GameMode.dll
+C:\Users\Tim\Desktop\samp03z_srv_R1_win32_\plugins\monoproxy\GameMode\bin\Debug\GameMode.pdb
+C:\Users\Tim\Desktop\samp03z_srv_R1_win32_\plugins\monoproxy\GameMode\obj\Debug\GameMode.csprojResolveAssemblyReference.cache
+C:\Users\Tim\Desktop\samp03z_srv_R1_win32_\plugins\monoproxy\GameMode\obj\Debug\GameMode.dll
+C:\Users\Tim\Desktop\samp03z_srv_R1_win32_\plugins\monoproxy\GameMode\obj\Debug\GameMode.pdb
+C:\Users\Tim\Desktop\samp03z_srv_R1_win32\plugins\monoproxy\GameMode\bin\Debug\GameMode.dll
+C:\Users\Tim\Desktop\samp03z_srv_R1_win32\plugins\monoproxy\GameMode\bin\Debug\GameMode.pdb
+C:\Users\Tim\Desktop\samp03z_srv_R1_win32\plugins\monoproxy\GameMode\obj\Debug\GameMode.csprojResolveAssemblyReference.cache
+C:\Users\Tim\Desktop\samp03z_srv_R1_win32\plugins\monoproxy\GameMode\obj\Debug\GameMode.dll
+C:\Users\Tim\Desktop\samp03z_srv_R1_win32\plugins\monoproxy\GameMode\obj\Debug\GameMode.pdb

@@ -2,12 +2,10 @@
 *.slo
 *.lo
 *.o
+*.obj
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
+#VS13
+*.vcxproj.user
+*.suo
+*.opensdf
+*.sdf
