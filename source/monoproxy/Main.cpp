@@ -1,11 +1,8 @@
-#include <cstdio>
-#include <cstring>
-#include <sampgdk/a_players.h>
-#include <sampgdk/a_samp.h>
+#include <iostream>
 #include <sampgdk/core.h>
-#include <sampgdk/plugin.h>
 
 #include "MonoProxy.h"
+#include "ConfigReader.h"
 
 static ThisPlugin proxyPlugin;
 static CMonoProxy* pMonoProxy;
@@ -25,15 +22,26 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 	if (proxyPlugin.Load(ppData) < 0)
 		return false;
 
-	//TODO: Load proxy information from config
+	//Load proxy information from config
+	ConfigReader server_cfg("server.cfg");
+	std::string gamemode_path = "plugins/GameMode.dll";
+	std::string gamemode_namespace = "GameMode";
+	std::string gamemode_class = "Server";
+
+	server_cfg.GetOption("gamemode_path", gamemode_path);
+	server_cfg.GetOption("gamemode_namespace", gamemode_namespace);
+	server_cfg.GetOption("gamemode_class", gamemode_class);
 
 	//Load Mono
-	pMonoProxy = new CMonoProxy();
+	ServerLog::Printf("[monoproxy] Loading gamemode: %s::%s at \"%s\"", (char*)gamemode_namespace.c_str(), (char*)gamemode_class.c_str(), (char*)gamemode_path.c_str());
+	pMonoProxy = new CMonoProxy((char*)gamemode_path.c_str(), (char*)gamemode_namespace.c_str(), (char*)gamemode_class.c_str(), "v4.0.30319");
 
 	return true;
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
+	delete pMonoProxy;
+	
 	proxyPlugin.Unload();
 }
 

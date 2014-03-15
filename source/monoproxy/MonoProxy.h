@@ -4,16 +4,11 @@
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/mono-debug.h>
 #include <mono/metadata/debug-helpers.h>
-#include <mono/metadata/appdomain.h>
-#include <mono/metadata/object.h>
-#include <mono/metadata/threads.h>
-#include <mono/metadata/environment.h>
-#include <mono/metadata/mono-gc.h>
 
 class CMonoProxy
 {
 public:
-	CMonoProxy();
+	CMonoProxy(char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version);
 	~CMonoProxy();
 
 	bool CallCallback(MonoMethod* method, void **params);
