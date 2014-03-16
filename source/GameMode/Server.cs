@@ -1,12 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Threading;
 using GameMode.Definitions;
 
 namespace GameMode
 {
     public class Server
-    {
+    { 
+        private static readonly Dictionary<int, TimerTickHandler> TimerHandlers = new Dictionary<int, TimerTickHandler>();
+
+        public delegate bool TimerTickHandler(int timerid, object args);
+
+
         #region SA:MP Natives
+
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetSpawnInfo(int playerid, int team, int skin, float x, float y, float z,
             float rotation, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
@@ -774,20 +783,23 @@ namespace GameMode
         public static extern bool ShowPlayerDialog(int playerid, int dialogid, int style, string caption, string info,
             string button1, string button2);
 
-        //[MethodImpl(MethodImplOptions.InternalCall)]
-        //public static extern int SetTimer(int interval, bool repeat, TimerCallback callback, void * param);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        private static extern int SetTimer(int interval, bool repeat, object args);
 
-        //[MethodImpl(MethodImplOptions.InternalCall)]
-        //public static extern bool KillTimer(int timerid);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool KillTimer(int timerid);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         // ReSharper disable once InconsistentNaming
         public static extern bool gpci(int playerid, out string buffer, int size);
+
         #endregion
 
         #region Wrapping methods
+
         public static bool SetSpawnInfo(int playerid, int team, int skin, float x, float y, float z,
-            float rotation, Weapon weapon1, int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
+            float rotation, Weapon weapon1, int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3,
+            int weapon3Ammo)
         {
             return SetSpawnInfo(playerid, team, skin, x, y, z, rotation, (int) weapon1, weapon1Ammo, (int) weapon2,
                 weapon2Ammo, (int) weapon3, weapon3Ammo);
@@ -859,7 +871,7 @@ namespace GameMode
         public static string GetPlayerNetworkStats(int playerid)
         {
             string retstr;
-            GetPlayerNetworkStats (playerid, out retstr, 256);
+            GetPlayerNetworkStats(playerid, out retstr, 256);
             return retstr;
         }
 
@@ -884,13 +896,31 @@ namespace GameMode
             gpci(playerid, out buffer, 64);
             return buffer;
         }
+
+        public static int SetTimer(int interval, bool repeat, TimerTickHandler handler, object args)
+        {
+            int timerid = SetTimer(interval, repeat, args);
+
+            TimerHandlers[timerid] = handler;
+            return timerid;
+        }
         #endregion
 
         #region Callbacks
-        public virtual bool OnGameModeInit()
+
+        public bool OnTimerTick(int timerid, object args)
         {
+            if (TimerHandlers.ContainsKey(timerid) && !TimerHandlers[timerid](timerid, args))
+                KillTimer(timerid);
             return true;
         }
+
+        public virtual bool OnGameModeInit()
+        {
+
+            return true;
+        }
+
 
         public virtual bool OnGameModeExit()
         {
@@ -1117,7 +1147,8 @@ namespace GameMode
             return true;
         }
 
-        public virtual bool OnPlayerEditObject(int playerid, bool playerobject, int objectid, int response, float fX, float fY,
+        public virtual bool OnPlayerEditObject(int playerid, bool playerobject, int objectid, int response, float fX,
+            float fY,
             float fZ, float fRotX, float fRotY, float fRotZ)
         {
             return true;
@@ -1130,15 +1161,18 @@ namespace GameMode
             return true;
         }
 
-        public virtual bool OnPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ)
+        public virtual bool OnPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY,
+            float fZ)
         {
             return true;
         }
 
-        public virtual bool OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY, float fZ)
+        public virtual bool OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY,
+            float fZ)
         {
             return true;
         }
+
         #endregion
     }
 }

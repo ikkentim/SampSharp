@@ -1,6 +1,6 @@
 announce.exe
-server-npc.exe
-server-samp.exe
+samp-npc.exe
+samp-server.exe
 
 crashinfo.txt
 server_log.txt
