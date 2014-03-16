@@ -3,6 +3,8 @@
 #include "PathUtil.h"
 #include "Natives.h"
 
+CMonoProxy * CMonoProxy::p_instance;
+
 CMonoProxy::CMonoProxy(char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version) {
 	
 	//Initialize the Mono runtime
@@ -74,13 +76,13 @@ CMonoProxy::CMonoProxy(char * gamemode_path, char * gamemode_namespace, char * g
 	m_cOnPlayerEditAttachedObject = LoadCallback("GameMode.Server:OnPlayerEditAttachedObject(int,int,int,int,int,float,float,float,float,float,float,float,float,float)");
 	m_cOnPlayerSelectObject = LoadCallback("GameMode.Server:OnPlayerSelectObject(int,int,int,int,float,float,float)");
 	m_cOnPlayerWeaponShot = LoadCallback("GameMode.Server:OnPlayerWeaponShot(int,int,int,int,float,float,float)");
-
+	m_cOnTimerTick = LoadCallback("GameMode.Server:OnTimerTick(int,object)");
 }
 
 MonoMethod* CMonoProxy::LoadCallback(const char *name) {
 	//Create method description and find method in image
-	MonoMethodDesc* m_methodDescription = mono_method_desc_new(name, true);
-	MonoMethod* m_method = mono_method_desc_search_in_image(m_methodDescription, m_pClassLibraryImage);
+	MonoMethodDesc * m_methodDescription = mono_method_desc_new(name, true);
+	MonoMethod * m_method = mono_method_desc_search_in_image(m_methodDescription, m_pClassLibraryImage);
 
 	//Free memory and return method
 	mono_method_desc_free(m_methodDescription);
