@@ -3,7 +3,7 @@
 namespace GameMode.Definitions
 {
     [Flags]
-    public enum Key
+    public enum Keys
     {
         Action = 1,
         Crouch = 2,
