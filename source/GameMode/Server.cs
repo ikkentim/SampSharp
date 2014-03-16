@@ -16,83 +16,279 @@ namespace GameMode
         #endregion
 
         #region SA:MP Natives
-
+        /// <summary>
+        /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using SetPlayerSkin in OnPlayerSpawn and/or OnPlayerRequestClass, even though this has been fixed in 0.2.
+        /// </summary>
+        /// <param name="playerid">The PlayerID of who you want to set the spawn information.</param>
+        /// <param name="team">The Team-ID of the chosen player.</param>
+        /// <param name="skin">The skin which the player will spawn with.</param>
+        /// <param name="x">The X-coordinate of the player's spawn position.</param>
+        /// <param name="y">The Y-coordinate of the player's spawn position.</param>
+        /// <param name="z">The Z-coordinate of the player's spawn position.</param>
+        /// <param name="rotation">The direction in which the player needs to be facing after spawning.</param>
+        /// <param name="weapon1">The first spawn-weapon for the player.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the primary spawnweapon.</param>
+        /// <param name="weapon2">The second spawn-weapon for the player.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <param name="weapon3">The third spawn-weapon for the player.</param>
+        /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetSpawnInfo(int playerid, int team, int skin, float x, float y, float z,
             float rotation, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
 
+        /// <summary>
+        /// (Re)Spawns a player.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to spawn.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SpawnPlayer(int playerid);
 
+        /// <summary>
+        /// Set a player's position.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to set the position of.</param>
+        /// <param name="x">The X coordinate to position the player at.</param>
+        /// <param name="y">The Y coordinate to position the player at.</param>
+        /// <param name="z">The Z coordinate to position the player at.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerPos(int playerid, float x, float y, float z);
 
+        /// <summary>
+        /// This sets the players position then adjusts the players z-coordinate to the nearest solid ground under the position.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to set the position of.</param>
+        /// <param name="x">The X coordinate to position the player at.</param>
+        /// <param name="y">The Y coordinate to position the player at.</param>
+        /// <param name="z">The Z coordinate to position the player at.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerPosFindZ(int playerid, float x, float y, float z);
 
+        /// <summary>
+        /// Get the X Y Z coordinates of a player.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to get the position of</param>
+        /// <param name="x">A float to store the X coordinate in, passed by reference.</param>
+        /// <param name="y">A float to store the Y coordinate in, passed by reference.</param>
+        /// <param name="z">A float to store the Z coordinate in, passed by reference.</param>
+        /// <returns>This function doesn't return a specific value</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetPlayerPos(int playerid, out float x, out float y, out float z);
 
+        /// <summary>
+        /// Set a player's facing angle.
+        /// </summary>
+        /// <remarks>
+        /// Angles are reversed in GTA:SA - 90 degrees would be East in the real world, but in GTA:SA 90 is in fact West. North and South are still 0/360 and 180. To convert this, simply do 360 - angle.
+        /// </remarks>
+        /// <param name="playerid">The ID of the player to set the facing angle of.</param>
+        /// <param name="angle">The angle the player should face.</param>
+        /// <returns>This function doesn't return a specific value</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerFacingAngle(int playerid, float angle);
 
+        /// <summary>
+        /// Return angle of the direction the player is facing.
+        /// </summary>
+        /// <param name="playerid">The player you want to get the angle of.</param>
+        /// <param name="angle">The Float to store the angle in, passed by reference.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetPlayerFacingAngle(int playerid, out float angle);
 
+        /// <summary>
+        /// Check if a player is in range of a point.
+        /// </summary>
+        /// <param name="playerid">The ID of the player.</param>
+        /// <param name="range">The furthest distance the player can be from the point to be in range.</param>
+        /// <param name="x">The X coordinate of the point to check the range to.</param>
+        /// <param name="y">The Y coordinate of the point to check the range to.</param>
+        /// <param name="z">The Z coordinate of the point to check the range to.</param>
+        /// <returns>True if the player is in range of the point, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsPlayerInRangeOfPoint(int playerid, float range, float x, float y, float z);
 
+        /// <summary>
+        /// Calculate the distance between a player and a map coordinate.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to calculate the distance from.</param>
+        /// <param name="x">The X map coordinate.</param>
+        /// <param name="y">The Y map coordinate.</param>
+        /// <param name="z">The Z map coordinate.</param>
+        /// <returns>The distance between the player and the point as a float.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern float GetPlayerDistanceFromPoint(int playerid, float x, float y, float z);
 
+        /// <summary>
+        /// Checks if a player is streamed in another player's client.
+        /// </summary>
+        /// <remarks>
+        /// Players aren't streamed in on their own client, so if playerid is the same as forplayerid it will return false!
+        /// </remarks>
+        /// <remarks>
+        /// Players stream out if they are more than 150 meters away (see server.cfg - stream_distance)
+        /// </remarks>
+        /// <param name="playerid">The ID of the player to check is streamed in.</param>
+        /// <param name="forplayerid">The ID of the player to check if playerid is streamed in for.</param>
+        /// <returns>True if forplayerid is streamed in for playerid, False if not.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsPlayerStreamedIn(int playerid, int forplayerid);
 
+        /// <summary>
+        /// Set the player's interior.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to setthe interior of.</param>
+        /// <param name="interiorid">The interior ID to set the player in.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerInterior(int playerid, int interiorid);
 
+        /// <summary>
+        /// Retrieves the player's current interior.
+        /// </summary>
+        /// <param name="playerid">The player to get the interior ID of.</param>
+        /// <returns>The interior ID the player is currently in.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetPlayerInterior(int playerid);
 
+        /// <summary>
+        /// Set the health level of a player.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to set the health of.</param>
+        /// <param name="health">The value to set the player's health to.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerHealth(int playerid, float health);
 
+        /// <summary>
+        /// The function GetPlayerHealth allows you to retrieve the health of a player. Useful for cheat detection, among other things.
+        /// </summary>
+        /// <param name="playerid">The ID of the player.</param>
+        /// <param name="health">Float to store health, passed by reference.</param>
+        /// <returns>True if succeeded, False if not.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetPlayerHealth(int playerid, out float health);
 
+        /// <summary>
+        /// Set a player's armour level.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to set the armour of.</param>
+        /// <param name="armour">The amount of armour to set, as a percentage (float).</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerArmour(int playerid, float armour);
 
+        /// <summary>
+        /// This function stores the armour of a player into a variable.
+        /// </summary>
+        /// <param name="playerid">The ID of the player that you want to get the armour of.</param>
+        /// <param name="armour">The float to to store the armour in, passed by reference.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetPlayerArmour(int playerid, out float armour);
 
+        /// <summary>
+        /// Set the ammo of a player's weapon.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to set the weapon ammo of.</param>
+        /// <param name="weaponid">The ID of the weapon to set the ammo of.</param>
+        /// <param name="ammo">The amount of ammo to set.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerAmmo(int playerid, int weaponid, int ammo);
 
+        /// <summary>
+        /// Returns the amount of ammunition the player has in his active weapon slot.
+        /// </summary>
+        /// <remarks>
+        /// The ammo can hold 16-bit values, therefore values over 32767 will return erroneous values.
+        /// </remarks>
+        /// <param name="playerid">ID of the player.</param>
+        /// <returns>The amount of ammunition the player has in his active weapon slot.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetPlayerAmmo(int playerid);
 
+        /// <summary>
+        /// Checks the state of a player's weapon.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to obtain the state of.</param>
+        /// <returns>The state of the player's weapon.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetPlayerWeaponState(int playerid);
 
+        /// <summary>
+        /// Check who a player is aiming at.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to get the target of.</param>
+        /// <returns>The ID of the target player, or <see cref="GameMode.Definitions.Misc.PlayerId"/> if none.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetPlayerTargetPlayer(int playerid);
 
+        /// <summary>
+        /// Set the team of a player.
+        /// </summary>
+        /// <remarks>
+        /// Players can not damage/kill players on the same team unless they use a knife to slit their throat. As of SA-MP 0.3x, players are also unable to damage vehicles driven by a player from the same team. This can be enabled with <see cref="GameMode.Server.EnableVehicleFriendlyFire"/>.
+        /// 255 (or <see cref="GameMode.Definitions.Misc.NoTeam"/>) is the default team to be able to shoot other players, not 0.
+        /// </remarks>
+        /// <param name="playerid">The ID of the player you want to set the team of.</param>
+        /// <param name="teamid">The team to put the player in. Use <see cref="GameMode.Definitions.Misc.NoTeam"/> to remove the player from any team.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerTeam(int playerid, int teamid);
 
+        /// <summary>
+        /// Get the ID of the team the player is on.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to return the team of.</param>
+        /// <returns>The ID of the team the player is on, or 255 (defined as <see cref="GameMode.Definitions.Misc.NoTeam"/>) if they aren't on a team (default).</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetPlayerTeam(int playerid);
 
+        /// <summary>
+        /// Set a player's score. Players' scores are shown in the scoreboard (hold TAB).
+        /// </summary>
+        /// <param name="playerid">The ID of the player to set the score of.</param>
+        /// <param name="score">The value to set the player's score to.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerScore(int playerid, int score);
 
+        /// <summary>
+        /// This function returns a player's score as it was set using <see cref="GameMode.Server.SetPlayerScore"/>
+        /// </summary>
+        /// <param name="playerid">The player to get the score of.</param>
+        /// <returns>The player's score.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetPlayerScore(int playerid);
 
+        /// <summary>
+        /// Checks the player's level of drunkenness.
+        /// </summary>
+        /// <remarks>
+        /// If the level is less than 2000, the player is sober. The player's level of drunkness goes down slowly automatically (26 levels per second) but will always reach 2000 at the end (in 0.3b it will stop at zero). The higher drunkenness levels affect the player's camera, and the car driving handling. The level of drunkenness increases when the player drinks from a bottle (You can use <see cref="GameMode.Server.SetPlayerSpecialAction"/> to give them bottles).
+        /// </remarks>
+        /// <param name="playerid">The player you want to check the drunkenness level of.</param>
+        /// <returns>An integer with the level of drunkenness of the player.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetPlayerDrunkLevel(int playerid);
 
+        /// <summary>
+        /// Sets the drunk level of a player which makes the player's camera sway and vehicles hard to control.
+        /// </summary>
+        /// <remarks>
+        /// Players' drunk level will automatically decrease over time, based on their FPS (players with 50 FPS will lose 50 'levels' per second. This is useful for determining a player's FPS!).
+        /// In 0.3a the drunk level will decrement and stop at 2000. In 0.3b+ the drunk level decrements to zero.)
+        /// Levels over 2000 make the player drunk (camera swaying and vehicles difficult to control).
+        /// Max drunk level is 50000.
+        /// While the drunk level is above 5000, the player's HUD (radar etc.) will be hidden.
+        /// </remarks>
+        /// <param name="playerid">The ID of the player to set the drunkenness of.</param>
+        /// <param name="level">The level of drunkenness to set.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerDrunkLevel(int playerid, int level);
 
