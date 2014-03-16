@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Threading;
 using GameMode.Definitions;
+using GameMode.Events;
+using GameMode.World;
 
 namespace GameMode
 {
     public class Server
-    { 
+    {
+        #region Fields
+
         private static readonly Dictionary<int, TimerTickHandler> TimerHandlers = new Dictionary<int, TimerTickHandler>();
 
-        public delegate bool TimerTickHandler(int timerid, object args);
-
+        #endregion
 
         #region SA:MP Natives
 
@@ -904,6 +905,181 @@ namespace GameMode
             TimerHandlers[timerid] = handler;
             return timerid;
         }
+
+        #endregion
+
+        #region Events
+
+        public delegate bool TimerTickHandler(int timerid, object args);
+
+        public delegate void GameModeHandler(object sender, GameModeEventArgs e);
+
+        public delegate void PlayerHandler(object sender, PlayerEventArgs e);
+
+        public delegate void PlayerDisconnectedHandler(object sender, PlayerDisconnectedEventArgs e);
+
+        public delegate void PlayerDeathHandler(object sender, PlayerDeathEventArgs e);
+
+        public delegate void VehicleSpawnedHandler(object sender, VehicleEventArgs e);
+
+        public delegate void VehicleDeathHandler(object sender, PlayerVehicleEventArgs e);
+
+        public delegate void PlayerTextHandler(object sender, PlayerTextEventArgs e);
+
+        public delegate void PlayerRequestClassHandler(object sender, PlayerRequestClassEventArgs e);
+
+        public delegate void PlayerEnterVehicleHandler(object sender, PlayerEnterVehicleEventArgs e);
+
+        public delegate void PlayerAndVehicleHandler(object sender, PlayerVehicleEventArgs r);
+
+        public delegate void PlayerStateHandler(object sender, PlayerStateEventArgs e);
+
+        public delegate void RconHandler(object sender, RconEventArgs e);
+
+        public delegate void ObjectHandler(object sender, ObjectEventArgs e);
+
+        public delegate void PlayerObjectHandler(object sender, PlayerObjectEventArgs e);
+
+        public delegate void PlayerPickupHandler(object sender, PlayerPickupEventArgs e);
+
+        public delegate void VehicleModHandler(object sender, VehicleModEventArgs e);
+
+        public delegate void PlayerEnterModShopHandler(object sender, PlayerEnterModShopEventArgs e);
+
+        public delegate void VehiclePaintjobHandler(object sender, VehiclePaintjobEventArgs e);
+
+        public delegate void VehicleResprayedHandler(object sender, VehicleResprayedEventArgs e);
+
+        public delegate void UnoccupiedVehicleUpdatedHandler(object sender, UnoccupiedVehicleEventArgs e);
+
+        public delegate void PlayerSelectedMenuRowHandler(object sender, PlayerSelectedMenuRowEventArgs e);
+
+        public delegate void PlayerInteriorChangedHandler(object sender, PlayerInteriorChangedEventArgs e);
+
+        public delegate void PlayerKeyStateChangedHandler(object sender, PlayerKeyStateChangedEventArgs e);
+
+        public delegate void RconLoginAttemptHandler(object sender, RconLoginAttemptEventArgs e);
+
+        public delegate void StreamPlayerHandler(object sender, StreamPlayerEventArgs e);
+
+        public delegate void DialogResponseHandler(object sender, DialogResponseEventArgs e);
+
+        public delegate void PlayerDamageHandler(object sender, PlayerDamageEventArgs e);
+
+        public delegate void PlayerClickMapHandler(object sender, PlayerClickMapEventArgs e);
+
+        public delegate void PlayerClickTextDrawHandler(object sender, PlayerClickTextDrawEventArgs e);
+
+        public delegate void PlayerClickPlayerHandler(object sender, PlayerClickPlayerEventArgs e);
+
+        public delegate void PlayerEditObjectHandler(object sender, PlayerEditObjectEventArgs e);
+
+        public delegate void PlayerEditAttachedObjectHandler(object sender, PlayerEditAttachedObjectEventArgs e);
+
+        public delegate void PlayerSelectObjectHandler(object sender, PlayerSelectObjectEventArgs e);
+
+        public delegate void WeaponShotHandler(object sender, WeaponShotEventArgs e);
+
+        public event GameModeHandler GameModeInitialized;
+
+        public event GameModeHandler GameModeExited;
+
+        public event PlayerHandler PlayerConnected;
+
+        public event PlayerDisconnectedHandler PlayerDisconnected;
+
+        public event PlayerHandler PlayerSpawned;
+
+        public event PlayerDeathHandler PlayerDied;
+
+        public event VehicleSpawnedHandler VehicleSpawned;
+
+        public event VehicleDeathHandler VehicleDied;
+
+        public event PlayerTextHandler PlayerText;
+
+        public event PlayerTextHandler PlayerCommandText;
+
+        public event PlayerRequestClassHandler PlayerRequestClass;
+
+        public event PlayerEnterVehicleHandler PlayerEnterVehicle;
+
+        public event PlayerAndVehicleHandler PlayerExitVehicle;
+
+        public event PlayerStateHandler PlayerStateChanged;
+
+        public event PlayerHandler PlayerEnterCheckpoint;
+
+        public event PlayerHandler PlayerLeaveCheckpoint;
+
+        public event PlayerHandler PlayerEnterRaceCheckpoint;
+
+        public event PlayerHandler PlayerLeaveRaceCheckpoint;
+
+        public event RconHandler RconCommand;
+
+        public event PlayerHandler PlayerRequestSpawn;
+
+        public event ObjectHandler ObjectMoved;
+
+        public event PlayerObjectHandler PlayerObjectMoved;
+
+        public event PlayerPickupHandler PlayerPickUpPickup;
+
+        public event VehicleModHandler VehicleMod;
+
+        public event PlayerEnterModShopHandler PlayerEnterExitModShop;
+
+        public event VehiclePaintjobHandler VehiclePaintjobApplied;
+
+        public event VehicleResprayedHandler VehicleResprayed;
+
+        public event PlayerHandler VehicleDamageStatusUpdated;
+
+        public event UnoccupiedVehicleUpdatedHandler UnoccupiedVehicleUpdated;
+
+        public event PlayerSelectedMenuRowHandler PlayerSelectedMenuRow;
+
+        public event PlayerHandler PlayerExitedMenu;
+
+        public event PlayerInteriorChangedHandler PlayerInteriorChanged;
+
+        public event PlayerKeyStateChangedHandler PlayerKeyStateChanged;
+
+        public event RconLoginAttemptHandler RconLoginAttempt;
+
+        public event PlayerHandler PlayerUpdate;
+
+        public event StreamPlayerHandler StreamPlayerIn;
+
+        public event StreamPlayerHandler StreamPlayerOut;
+
+        public event PlayerAndVehicleHandler StreamVehicleIn;
+
+        public event PlayerAndVehicleHandler StreamVehicleOut;
+
+        public event DialogResponseHandler DialogResponse;
+
+        public event PlayerDamageHandler PlayerTakeDamage;
+
+        public event PlayerDamageHandler PlayerGiveDamage;
+
+        public event PlayerClickMapHandler PlayerClickMap;
+
+        public event PlayerClickTextDrawHandler PlayerClickTextDraw;
+
+        public event PlayerClickTextDrawHandler PlayerClickPlayerTextDraw;
+
+        public event PlayerClickPlayerHandler PlayerClickPlayer;
+
+        public event PlayerEditObjectHandler PlayerEditObject;
+
+        public event PlayerEditAttachedObjectHandler PlayerEditAttachedObject;
+
+        public event PlayerSelectObjectHandler PlayerSelectObject;
+
+        public event WeaponShotHandler PlayerWeaponShot;
+
         #endregion
 
         #region Callbacks
@@ -917,260 +1093,513 @@ namespace GameMode
 
         public virtual bool OnGameModeInit()
         {
+            var args = new GameModeEventArgs();
 
-            return true;
+            if (GameModeInitialized != null)
+                GameModeInitialized(this, args);
+
+            return args.Success;
         }
 
 
         public virtual bool OnGameModeExit()
         {
-            return true;
+            var args = new GameModeEventArgs();
+
+            if (GameModeExited != null)
+                GameModeExited(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerConnect(int playerid)
         {
-            return true;
+            var args = new PlayerEventArgs(playerid);
+
+            if (PlayerConnected != null)
+                PlayerConnected(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerDisconnect(int playerid, int reason)
         {
-            return true;
+            var args = new PlayerDisconnectedEventArgs(playerid, (PlayerDisconnectReason)reason);
+
+            if (PlayerDisconnected != null)
+                PlayerDisconnected(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerSpawn(int playerid)
         {
-            return true;
+            var args = new PlayerEventArgs(playerid);
+
+            if (PlayerSpawned != null)
+                PlayerSpawned(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerDeath(int playerid, int killerid, int reason)
         {
-            return true;
+            var args = new PlayerDeathEventArgs(playerid, killerid, (Weapon)reason);
+
+            if (PlayerDied != null)
+                PlayerDied(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnVehicleSpawn(int vehicleid)
         {
-            return true;
+            var args = new VehicleEventArgs(vehicleid);
+
+            if (VehicleSpawned != null)
+                VehicleSpawned(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnVehicleDeath(int vehicleid, int killerid)
         {
-            return true;
+            var args = new PlayerVehicleEventArgs(killerid, vehicleid);
+
+            if (VehicleDied != null)
+                VehicleDied(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerText(int playerid, string text)
         {
-            return true;
+            var args = new PlayerTextEventArgs(playerid, text);
+
+            if (PlayerText != null)
+                PlayerText(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerCommandText(int playerid, string cmdtext)
         {
-            return true;
+            var args = new PlayerTextEventArgs(playerid, cmdtext) {Success = false};
+
+            if (PlayerCommandText != null)
+                PlayerCommandText(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerRequestClass(int playerid, int classid)
         {
-            return true;
+            var args = new PlayerRequestClassEventArgs(playerid, classid);
+
+            if (PlayerRequestClass != null)
+                PlayerRequestClass(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerEnterVehicle(int playerid, int vehicleid, bool ispassenger)
         {
-            return true;
+            var args = new PlayerEnterVehicleEventArgs(playerid, vehicleid, ispassenger);
+
+            if (PlayerEnterVehicle != null)
+                PlayerEnterVehicle(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerExitVehicle(int playerid, int vehicleid)
         {
-            return true;
+            var args = new PlayerVehicleEventArgs(playerid, vehicleid);
+
+            if (PlayerExitVehicle != null)
+                PlayerExitVehicle(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerStateChange(int playerid, int newstate, int oldstate)
         {
-            return true;
+            var args = new PlayerStateEventArgs(playerid, (PlayerState)newstate, (PlayerState)oldstate);
+
+            if (PlayerStateChanged != null)
+                PlayerStateChanged(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerEnterCheckpoint(int playerid)
         {
-            return true;
+            var args = new PlayerEventArgs(playerid);
+
+            if (PlayerEnterCheckpoint != null)
+                PlayerEnterCheckpoint(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerLeaveCheckpoint(int playerid)
         {
-            return true;
+            var args = new PlayerEventArgs(playerid);
+
+            if (PlayerLeaveCheckpoint != null)
+                PlayerLeaveCheckpoint(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerEnterRaceCheckpoint(int playerid)
         {
-            return true;
+            var args = new PlayerEventArgs(playerid);
+
+            if (PlayerEnterRaceCheckpoint != null)
+                PlayerEnterRaceCheckpoint(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerLeaveRaceCheckpoint(int playerid)
         {
-            return true;
+            var args = new PlayerEventArgs(playerid);
+
+            if (PlayerLeaveRaceCheckpoint != null)
+                PlayerLeaveRaceCheckpoint(this, args);
+
+            return args.Success;
         }
 
-        public virtual bool OnRconCommand(string cmd)
+        public virtual bool OnRconCommand(string command)
         {
-            return true;
+            var args = new RconEventArgs(command);
+
+            if (RconCommand != null)
+                RconCommand(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerRequestSpawn(int playerid)
         {
-            return true;
+            var args = new PlayerEventArgs(playerid);
+
+            if (PlayerRequestSpawn != null)
+                PlayerRequestSpawn(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnObjectMoved(int objectid)
         {
-            return true;
+            var args = new ObjectEventArgs(objectid);
+
+            if (ObjectMoved != null)
+                ObjectMoved(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerObjectMoved(int playerid, int objectid)
         {
-            return true;
+            var args = new PlayerObjectEventArgs(playerid, objectid);
+
+            if (PlayerObjectMoved != null)
+                PlayerObjectMoved(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerPickUpPickup(int playerid, int pickupid)
         {
-            return true;
+            var args = new PlayerPickupEventArgs(playerid, pickupid);
+
+            if (PlayerPickUpPickup != null)
+                PlayerPickUpPickup(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnVehicleMod(int playerid, int vehicleid, int componentid)
         {
-            return true;
+            var args = new VehicleModEventArgs(playerid, vehicleid, componentid);
+
+            if (VehicleMod != null)
+                VehicleMod(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnEnterExitModShop(int playerid, int enterexit, int interiorid)
         {
-            return true;
+            var args = new PlayerEnterModShopEventArgs(playerid, (EnterExit)enterexit, interiorid);
+
+            if (PlayerEnterExitModShop != null)
+                PlayerEnterExitModShop(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnVehiclePaintjob(int playerid, int vehicleid, int paintjobid)
         {
-            return true;
+            var args = new VehiclePaintjobEventArgs(playerid, vehicleid, paintjobid);
+
+            if (VehiclePaintjobApplied != null)
+                VehiclePaintjobApplied(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnVehicleRespray(int playerid, int vehicleid, int color1, int color2)
         {
-            return true;
+            var args = new VehicleResprayedEventArgs(playerid, vehicleid, color1, color2);
+
+            if (VehicleResprayed != null)
+                VehicleResprayed(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnVehicleDamageStatusUpdate(int vehicleid, int playerid)
         {
-            return true;
+            var args = new PlayerVehicleEventArgs(playerid, vehicleid);
+
+            if (VehicleDamageStatusUpdated != null)
+                VehicleDamageStatusUpdated(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat)
         {
-            return true;
+            var args = new UnoccupiedVehicleEventArgs(playerid, vehicleid, passengerSeat);
+
+            if (UnoccupiedVehicleUpdated != null)
+                UnoccupiedVehicleUpdated(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerSelectedMenuRow(int playerid, int row)
         {
-            return true;
+            var args = new PlayerSelectedMenuRowEventArgs(playerid, row);
+
+            if (PlayerSelectedMenuRow != null)
+                PlayerSelectedMenuRow(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerExitedMenu(int playerid)
         {
-            return true;
+            var args = new PlayerEventArgs(playerid);
+
+            if (PlayerExitedMenu != null)
+                PlayerExitedMenu(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerInteriorChange(int playerid, int newinteriorid, int oldinteriorid)
         {
-            return true;
+            var args = new PlayerInteriorChangedEventArgs(playerid, newinteriorid, oldinteriorid);
+
+            if (PlayerInteriorChanged != null)
+                PlayerInteriorChanged(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys)
         {
-            return true;
+            var args = new PlayerKeyStateChangedEventArgs(playerid, (Keys)newkeys, (Keys)oldkeys);
+
+            if (PlayerKeyStateChanged != null)
+                PlayerKeyStateChanged(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnRconLoginAttempt(string ip, string password, bool success)
         {
-            return true;
+            var args = new RconLoginAttemptEventArgs(ip, password, success);
+
+            if (RconLoginAttempt != null)
+                RconLoginAttempt(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerUpdate(int playerid)
         {
-            return true;
+            var args = new PlayerEventArgs(playerid);
+
+            if (PlayerUpdate != null)
+                PlayerUpdate(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerStreamIn(int playerid, int forplayerid)
         {
-            return true;
+            var args = new StreamPlayerEventArgs(playerid, forplayerid);
+
+            if (StreamPlayerIn != null)
+                StreamPlayerIn(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerStreamOut(int playerid, int forplayerid)
         {
-            return true;
+            var args = new StreamPlayerEventArgs(playerid, forplayerid);
+
+            if (StreamPlayerOut != null)
+                StreamPlayerOut(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnVehicleStreamIn(int vehicleid, int forplayerid)
         {
-            return true;
+            var args = new PlayerVehicleEventArgs(forplayerid, vehicleid);
+
+            if (StreamVehicleIn != null)
+                StreamVehicleIn(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnVehicleStreamOut(int vehicleid, int forplayerid)
         {
-            return true;
+            var args = new PlayerVehicleEventArgs(forplayerid, vehicleid);
+
+            if (StreamVehicleOut != null)
+                StreamVehicleOut(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnDialogResponse(int playerid, int dialogid, int response, int listitem, string inputtext)
         {
-            return true;
+            var args = new DialogResponseEventArgs(playerid, dialogid, response, listitem, inputtext);
+
+            if (DialogResponse != null)
+                DialogResponse(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid, int bodypart)
         {
-            return true;
+            var args = new PlayerDamageEventArgs(playerid, issuerid, amount, (Weapon)weaponid, (BodyPart)bodypart);
+
+            if (PlayerTakeDamage != null)
+                PlayerTakeDamage(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerGiveDamage(int playerid, int damagedid, float amount, int weaponid, int bodypart)
         {
-            return true;
+            var args = new PlayerDamageEventArgs(playerid, damagedid, amount, (Weapon)weaponid, (BodyPart)bodypart);
+
+            if (PlayerGiveDamage != null)
+                PlayerGiveDamage(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerClickMap(int playerid, float fX, float fY, float fZ)
         {
-            return true;
+            var args = new PlayerClickMapEventArgs(playerid, new Position(fX, fY, fZ));
+
+            if (PlayerClickMap != null)
+                PlayerClickMap(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerClickTextDraw(int playerid, int clickedid)
         {
-            return true;
+            var args = new PlayerClickTextDrawEventArgs(playerid, clickedid);
+
+            if (PlayerClickTextDraw != null)
+                PlayerClickTextDraw(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerClickPlayerTextDraw(int playerid, int playertextid)
         {
-            return true;
+            var args = new PlayerClickTextDrawEventArgs(playerid, playertextid);
+
+            if (PlayerClickPlayerTextDraw != null)
+                PlayerClickPlayerTextDraw(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerClickPlayer(int playerid, int clickedplayerid, int source)
         {
-            return true;
+            var args = new PlayerClickPlayerEventArgs(playerid, clickedplayerid, (PlayerClickSource)source);
+
+            if (PlayerClickPlayer != null)
+                PlayerClickPlayer(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerEditObject(int playerid, bool playerobject, int objectid, int response, float fX,
             float fY,
             float fZ, float fRotX, float fRotY, float fRotZ)
         {
-            return true;
+            var args = new PlayerEditObjectEventArgs(playerid, playerobject, objectid, (EditObjectResponse) response,
+                new Position(fX, fY, fZ), new Rotation(fRotX, fRotY, fRotZ));
+
+            if (PlayerEditObject != null)
+                PlayerEditObject(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid,
             float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX,
             float fScaleY, float fScaleZ)
         {
-            return true;
+            var args = new PlayerEditAttachedObjectEventArgs(playerid, (EditObjectResponse) response, index, modelid,
+                boneid, new Position(fOffsetX, fOffsetY, fOffsetZ), new Rotation(fRotX, fRotY, fRotZ),
+                new Position(fScaleX, fScaleY, fScaleZ));
+
+            if (PlayerEditAttachedObject != null)
+                PlayerEditAttachedObject(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY,
             float fZ)
         {
-            return true;
+            var args = new PlayerSelectObjectEventArgs(playerid, (ObjectType) type, objectid, modelid,
+                new Position(fX, fY, fZ));
+
+            if (PlayerSelectObject != null)
+                PlayerSelectObject(this, args);
+
+            return args.Success;
         }
 
         public virtual bool OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY,
             float fZ)
         {
-            return true;
+            var args = new WeaponShotEventArgs(playerid, (Weapon)weaponid, (BulletHitType)hittype, hitid, new Position(fX, fY, fZ));
+
+            if (PlayerWeaponShot != null)
+                PlayerWeaponShot(this, args);
+
+            return args.Success;
         }
 
         #endregion
