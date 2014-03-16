@@ -2,6 +2,8 @@
 {
     public enum Weapon
     {
+        None = 0,
+        Unarmed = 0,
         Brassknuckle = 1,
         Golfclub = 2,
         Nitestick = 3,

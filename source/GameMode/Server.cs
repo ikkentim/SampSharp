@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using GameMode.Definitions;
 
 namespace GameMode
 {
@@ -782,6 +783,100 @@ namespace GameMode
         [MethodImpl(MethodImplOptions.InternalCall)]
         // ReSharper disable once InconsistentNaming
         public static extern bool gpci(int playerid, out string buffer, int size);
+        #endregion
+
+        #region Wrapping methods
+        public static bool SetSpawnInfo(int playerid, int team, int skin, float x, float y, float z,
+            float rotation, Weapon weapon1, int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
+        {
+            return SetSpawnInfo(playerid, team, skin, x, y, z, rotation, (int) weapon1, weapon1Ammo, (int) weapon2,
+                weapon2Ammo, (int) weapon3, weapon3Ammo);
+        }
+
+        public static float GetPlayerFacingAngle(int playerid)
+        {
+            float angle;
+            GetPlayerFacingAngle(playerid, out angle);
+            return angle;
+        }
+
+        public static float GetPlayerHealth(int playerid)
+        {
+            float health;
+            GetPlayerHealth(playerid, out health);
+            return health;
+        }
+
+        public static float GetPlayerArmour(int playerid)
+        {
+            float armour;
+            GetPlayerArmour(playerid, out armour);
+            return armour;
+        }
+
+        public static string GetPlayerIp(int playerid)
+        {
+            string ip;
+            GetPlayerIp(playerid, out ip, 16);
+            return ip;
+        }
+
+        public static string GetPlayerName(int playerid)
+        {
+            string name;
+            GetPlayerName(playerid, out name, Limits.MaxPlayerName);
+            return name;
+        }
+
+        public static string GetPVarString(int playerid, string varname)
+        {
+            string value;
+            GetPVarString(playerid, varname, out value, 64);
+            return value;
+        }
+
+        public static string GetPVarNameAtIndex(int playerid, int index)
+        {
+            string varname;
+            GetPVarNameAtIndex(playerid, index, out varname, 64);
+            return varname;
+        }
+
+        public static string GetWeaponName(int weaponid)
+        {
+            string name;
+            GetWeaponName(weaponid, out name, 32);
+            return name;
+        }
+
+        public static string GetServerVarAsString(string varname)
+        {
+            string value;
+            GetServerVarAsString(varname, out value, 64);
+            return value;
+        }
+
+        public static string GetPlayerNetworkStats(int playerid)
+        {
+            string retstr;
+            GetPlayerNetworkStats (playerid, out retstr, 256);
+            return retstr;
+        }
+
+        public static string GetNetworkStats()
+        {
+            string retstr;
+            GetNetworkStats(out retstr, 256);
+            return retstr;
+        }
+
+        public static string GetPlayerVersion(int playerid)
+        {
+            string version;
+            GetPlayerVersion(playerid, out version, 64);
+            return version;
+        }
+
         #endregion
 
         #region Callbacks
