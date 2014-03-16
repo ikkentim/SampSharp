@@ -3,6 +3,8 @@
 #include <sampgdk/a_players.h>
 #include <sampgdk/a_samp.h>
 
+#include "Callbacks.h"
+
 //String converters
 static int p_SetPlayerName(int playerid, MonoString * name) {
 	return sampgdk_SetPlayerName(playerid, mono_string_to_utf8(name));
@@ -185,8 +187,14 @@ static bool p_GetNetworkStats(MonoString ** retstr, int size) {
 	return retbool;
 }
 
+static int p_SetTimer(int interval, bool repeat, MonoObject * params)
+{ 
+	return SetTimer(interval, repeat, p_TimerCallback, params);
+}
+
 static void LoadNatives()
 {
+
 	mono_add_internal_call("GameMode.Server::SetSpawnInfo", sampgdk_SetSpawnInfo);
 	mono_add_internal_call("GameMode.Server::SpawnPlayer", sampgdk_SpawnPlayer);
 	mono_add_internal_call("GameMode.Server::SetPlayerPos", sampgdk_SetPlayerPos);
@@ -435,8 +443,8 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Server::DeletePlayer3DTextLabel", sampgdk_DeletePlayer3DTextLabel);
 	mono_add_internal_call("GameMode.Server::UpdatePlayer3DTextLabelText", p_UpdatePlayer3DTextLabelText);
 	mono_add_internal_call("GameMode.Server::ShowPlayerDialog", p_ShowPlayerDialog);
-	//mono_add_internal_call("GameMode.Server::SetTimer", sampgdk_SetTimer);
-	//mono_add_internal_call("GameMode.Server::KillTimer", sampgdk_KillTimer);
+	mono_add_internal_call("GameMode.Server::SetTimer", p_SetTimer);
+	mono_add_internal_call("GameMode.Server::KillTimer", sampgdk_KillTimer);
 	mono_add_internal_call("GameMode.Server::gpci", sampgdk_gpci);
 
 }

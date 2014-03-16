@@ -43,5 +43,8 @@
     <ClInclude Include="ConfigReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Callbacks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
