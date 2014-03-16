@@ -877,6 +877,13 @@ namespace GameMode
             return version;
         }
 
+        // ReSharper disable once InconsistentNaming
+        public static string gpci(int playerid)
+        {
+            string buffer;
+            gpci(playerid, out buffer, 64);
+            return buffer;
+        }
         #endregion
 
         #region Callbacks
