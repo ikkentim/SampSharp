@@ -40,10 +40,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Definitions\BodyPart.cs" />
+    <Compile Include="Definitions\CheckpointType.cs" />
     <Compile Include="Definitions\DialogButton.cs" />
     <Compile Include="Definitions\EnterExit.cs" />
     <Compile Include="Definitions\ObjectType.cs" />
     <Compile Include="Definitions\PlayerDisconnectReason.cs" />
+    <Compile Include="Definitions\ShopName.cs" />
     <Compile Include="Events\DialogResponseEventArgs.cs" />
     <Compile Include="Events\GameModeEventArgs.cs" />
     <Compile Include="Definitions\BulletHitType.cs" />
