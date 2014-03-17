@@ -6,7 +6,7 @@ namespace GameMode.Events
     public class PlayerEditAttachedObjectEventArgs : PlayerClickMapEventArgs
     {
         public PlayerEditAttachedObjectEventArgs(int playerid, EditObjectResponse response, int index, int modelid,
-            int boneid, Position position, Rotation rotation, Position offset) : base(playerid, position)
+            int boneid, Vector position, Rotation rotation, Vector offset) : base(playerid, position)
         {
             EidEditObjectResponse = response;
             Index = index;
@@ -26,7 +26,7 @@ namespace GameMode.Events
 
         public Rotation Rotation { get; private set; }
 
-        public Position Offset { get; private set; }
+        public Vector Offset { get; private set; }
 
     }
 }

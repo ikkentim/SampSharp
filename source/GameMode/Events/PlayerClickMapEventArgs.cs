@@ -4,11 +4,11 @@ namespace GameMode.Events
 {
     public class PlayerClickMapEventArgs : PlayerEventArgs
     {
-        public PlayerClickMapEventArgs(int playerid, Position position) : base(playerid)
+        public PlayerClickMapEventArgs(int playerid, Vector position) : base(playerid)
         {
             Position = position;
         }
 
-        public Position Position { get; private set; }
+        public Vector Position { get; private set; }
     }
 }

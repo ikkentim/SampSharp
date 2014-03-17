@@ -107,7 +107,7 @@
     <Compile Include="Events\WeaponShotEventArgs.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="World\Position.cs" />
+    <Compile Include="World\Vector.cs" />
     <Compile Include="World\Rotation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
