@@ -9,76 +9,76 @@
 
 //
 //a_players string converters
-static int p_SetPlayerName(int playerid, MonoString * name) {
+static inline int p_SetPlayerName(int playerid, MonoString * name) {
 	return sampgdk_SetPlayerName(playerid, mono_string_to_utf8(name));
 }
-static bool p_PlayAudioStreamForPlayer(int playerid, MonoString * url, float posX, float posY, float posZ, float distance, bool usepos) {
+static inline bool p_PlayAudioStreamForPlayer(int playerid, MonoString * url, float posX, float posY, float posZ, float distance, bool usepos) {
 	return sampgdk_PlayAudioStreamForPlayer(playerid, mono_string_to_utf8(url), posX, posY, posZ, distance, usepos);
 }
-static bool p_SetPlayerShopName(int playerid, MonoString * shopname) {
+static inline bool p_SetPlayerShopName(int playerid, MonoString * shopname) {
 	return sampgdk_SetPlayerShopName(playerid, mono_string_to_utf8(shopname));
 }
-static int p_CreatePlayerTextDraw(int playerid, float x, float y, MonoString * text) {
+static inline int p_CreatePlayerTextDraw(int playerid, float x, float y, MonoString * text) {
 	return sampgdk_CreatePlayerTextDraw(playerid, x, y, mono_string_to_utf8(text));
 }
-static bool p_PlayerTextDrawSetString(int playerid, int text, MonoString * string) {
+static inline bool p_PlayerTextDrawSetString(int playerid, int text, MonoString * string) {
 	return sampgdk_PlayerTextDrawSetString(playerid, text, mono_string_to_utf8(string));
 }
-static bool p_SetPVarInt(int playerid, MonoString * varname, int value) {
+static inline bool p_SetPVarInt(int playerid, MonoString * varname, int value) {
 	return sampgdk_SetPVarInt(playerid, mono_string_to_utf8(varname), value);
 }
-static int p_GetPVarInt(int playerid, MonoString * varname) {
+static inline int p_GetPVarInt(int playerid, MonoString * varname) {
 	return sampgdk_GetPVarInt(playerid, mono_string_to_utf8(varname));
 }
-static bool p_SetPVarString(int playerid, MonoString * varname, MonoString * value) {
+static inline bool p_SetPVarString(int playerid, MonoString * varname, MonoString * value) {
 	return sampgdk_SetPVarString(playerid, mono_string_to_utf8(varname), mono_string_to_utf8(value));
 }
-static bool p_GetPVarString(int playerid, MonoString * varname, MonoString ** value, int size) {
+static inline bool p_GetPVarString(int playerid, MonoString * varname, MonoString ** value, int size) {
 	char * buffer = new char[size];
 	bool retbool = sampgdk_GetPVarString(playerid, mono_string_to_utf8(varname), buffer, size);
 	*value = mono_string_new(mono_domain_get(), buffer);
 	return retbool;
 }
-static bool p_SetPVarFloat(int playerid, MonoString * varname, float value) {
+static inline bool p_SetPVarFloat(int playerid, MonoString * varname, float value) {
 	return sampgdk_SetPVarFloat(playerid, mono_string_to_utf8(varname), value);
 }
-static float p_GetPVarFloat(int playerid, MonoString * varname) {
+static inline float p_GetPVarFloat(int playerid, MonoString * varname) {
 	return sampgdk_GetPVarFloat(playerid, mono_string_to_utf8(varname));
 }
-static bool p_DeletePVar(int playerid, MonoString * varname) {
+static inline bool p_DeletePVar(int playerid, MonoString * varname) {
 	return sampgdk_DeletePVar(playerid, mono_string_to_utf8(varname));
 }
-static int p_GetPVarType(int playerid, MonoString * varname) {
+static inline int p_GetPVarType(int playerid, MonoString * varname) {
 	return sampgdk_GetPVarType(playerid, mono_string_to_utf8(varname));
 }
-static bool p_SetPlayerChatBubble(int playerid, MonoString * text, int color, float drawdistance, int expiretime) {
+static inline bool p_SetPlayerChatBubble(int playerid, MonoString * text, int color, float drawdistance, int expiretime) {
 	return sampgdk_SetPlayerChatBubble(playerid, mono_string_to_utf8(text), color, drawdistance, expiretime);
 }
-static bool p_ApplyAnimation(int playerid, MonoString * animlib, MonoString * animname, float fDelta, bool loop, bool lockx, bool locky, bool freeze, int time, bool forcesync) {
+static inline bool p_ApplyAnimation(int playerid, MonoString * animlib, MonoString * animname, float fDelta, bool loop, bool lockx, bool locky, bool freeze, int time, bool forcesync) {
 	return sampgdk_ApplyAnimation(playerid, mono_string_to_utf8(animlib), mono_string_to_utf8(animname), fDelta, loop, lockx, locky, freeze, time, forcesync);
 }
-static bool p_StartRecordingPlayerData(int playerid, int recordtype, MonoString * recordname) {
+static inline bool p_StartRecordingPlayerData(int playerid, int recordtype, MonoString * recordname) {
 	return sampgdk_StartRecordingPlayerData(playerid, recordtype, mono_string_to_utf8(recordname));
 }
-static bool p_GetPlayerIp(int playerid, MonoString ** ip, int size) {
+static inline bool p_GetPlayerIp(int playerid, MonoString ** ip, int size) {
 	char * buffer = new char[size];
 	bool retbool = sampgdk_GetPlayerIp(playerid, buffer, size);
 	*ip = mono_string_new(mono_domain_get(), buffer);
 	return retbool;
 }
-static int p_GetPlayerName(int playerid, MonoString ** name, int size) {
+static inline int p_GetPlayerName(int playerid, MonoString ** name, int size) {
 	char * buffer = new char[size];
 	int retint = sampgdk_GetPlayerName(playerid, buffer, size);
 	*name = mono_string_new(mono_domain_get(), buffer);
 	return retint;
 }
-static bool p_GetPVarNameAtIndex(int playerid, int index, MonoString ** varname, int size) {
+static inline bool p_GetPVarNameAtIndex(int playerid, int index, MonoString ** varname, int size) {
 	char * buffer = new char[size];
 	bool retbool = sampgdk_GetPVarNameAtIndex(playerid, index, buffer, size);
 	*varname = mono_string_new(mono_domain_get(), buffer);
 	return retbool;
 }
-static bool p_GetAnimationName(int index, MonoString ** animlib, int animlib_size, MonoString ** animname, int animname_size) {
+static inline bool p_GetAnimationName(int index, MonoString ** animlib, int animlib_size, MonoString ** animname, int animname_size) {
 	char * libbuffer = new char[animlib_size];
 	char * namebuffer = new char[animname_size];
 
@@ -90,132 +90,133 @@ static bool p_GetAnimationName(int index, MonoString ** animlib, int animlib_siz
 
 //
 //a_samp string converters
-static bool p_SendClientMessage(int playerid, int color, MonoString * message) {
+static inline bool p_SendClientMessage(int playerid, int color, MonoString * message) {
 	return sampgdk_SendClientMessage(playerid, color, mono_string_to_utf8(message));
 }
-static bool p_SendClientMessageToAll(int color, MonoString * message) {
+static inline bool p_SendClientMessageToAll(int color, MonoString * message) {
 	return sampgdk_SendClientMessageToAll(color, mono_string_to_utf8(message));
 }
-static bool p_SendPlayerMessageToPlayer(int playerid, int senderid, MonoString * message) {
+static inline bool p_SendPlayerMessageToPlayer(int playerid, int senderid, MonoString * message) {
 	return sampgdk_SendPlayerMessageToPlayer(playerid, senderid, mono_string_to_utf8(message));
 }
-static bool p_SendPlayerMessageToAll(int senderid, MonoString * message) {
+static inline bool p_SendPlayerMessageToAll(int senderid, MonoString * message) {
 	return sampgdk_SendPlayerMessageToAll(senderid, mono_string_to_utf8(message));
 }
-static bool p_GameTextForAll(MonoString * text, int time, int style) {
+static inline bool p_GameTextForAll(MonoString * text, int time, int style) {
 	return sampgdk_GameTextForAll(mono_string_to_utf8(text), time, style);
 }
-static bool p_GameTextForPlayer(int playerid, MonoString * text, int time, int style) {
+static inline bool p_GameTextForPlayer(int playerid, MonoString * text, int time, int style) {
 	return sampgdk_GameTextForPlayer(playerid, mono_string_to_utf8(text), time, style);
 }
-static bool p_SetGameModeText(MonoString * text) {
+static inline bool p_SetGameModeText(MonoString * text) {
 	return sampgdk_SetGameModeText(mono_string_to_utf8(text));
 }
-static bool p_ConnectNPC(MonoString * name, MonoString * script) {
+static inline bool p_ConnectNPC(MonoString * name, MonoString * script) {
 	return sampgdk_ConnectNPC(mono_string_to_utf8(name), mono_string_to_utf8(script));
 }
-static bool p_BanEx(int playerid, MonoString * reason) {
+static inline bool p_BanEx(int playerid, MonoString * reason) {
 	return sampgdk_BanEx(playerid, mono_string_to_utf8(reason));
 }
-static bool p_SendRconCommand(MonoString * command) {
+static inline bool p_SendRconCommand(MonoString * command) {
 	return sampgdk_SendRconCommand(mono_string_to_utf8(command));
 }
-static bool p_GetServerVarAsString(MonoString * varname, MonoString ** value, int size) {
+static inline bool p_GetServerVarAsString(MonoString * varname, MonoString ** value, int size) {
 	char * buffer = new char[size];
 	bool retbool = sampgdk_GetServerVarAsString(mono_string_to_utf8(varname), buffer, size);
 	*value = mono_string_new(mono_domain_get(), buffer);
 	return retbool;
 }
-static int p_GetServerVarAsInt(MonoString * varname) {
+static inline int p_GetServerVarAsInt(MonoString * varname) {
 	return sampgdk_GetServerVarAsInt(mono_string_to_utf8(varname));
 }
-static bool p_GetServerVarAsBool(MonoString * varname) {
+static inline bool p_GetServerVarAsBool(MonoString * varname) {
 	return sampgdk_GetServerVarAsBool(mono_string_to_utf8(varname));
 }
-static int p_CreateMenu(MonoString * title, int columns, float x, float y, float col1width, float col2width) {
+static inline int p_CreateMenu(MonoString * title, int columns, float x, float y, float col1width, float col2width) {
 	return sampgdk_CreateMenu(mono_string_to_utf8(title), columns, x, y, col1width, col2width);
 }
-static int p_AddMenuItem(int menuid, int column, MonoString * menutext) {
+static inline int p_AddMenuItem(int menuid, int column, MonoString * menutext) {
 	return sampgdk_AddMenuItem(menuid, column, mono_string_to_utf8(menutext));
 }
-static bool p_SetMenuColumnHeader(int menuid, int column, MonoString * columnheader) {
+static inline bool p_SetMenuColumnHeader(int menuid, int column, MonoString * columnheader) {
 	return sampgdk_SetMenuColumnHeader(menuid, column, mono_string_to_utf8(columnheader));
 }
-static int p_TextDrawCreate(float x, float y, MonoString * text) {
+static inline int p_TextDrawCreate(float x, float y, MonoString * text) {
 	return sampgdk_TextDrawCreate(x, y, mono_string_to_utf8(text));
 }
-static bool p_TextDrawSetString(int text, MonoString * string) {
+static inline bool p_TextDrawSetString(int text, MonoString * string) {
 	return sampgdk_TextDrawSetString(text, mono_string_to_utf8(string));
 }
-static int p_Create3DTextLabel(MonoString * text, int color, float x, float y, float z, float DrawDistance, int virtualworld, bool testLOS) {
+static inline int p_Create3DTextLabel(MonoString * text, int color, float x, float y, float z, float DrawDistance, int virtualworld, bool testLOS) {
 	return sampgdk_Create3DTextLabel(mono_string_to_utf8(text), color, x, y, z, DrawDistance, virtualworld, testLOS);
 }
-static bool p_Update3DTextLabelText(int id, int color, MonoString * text) {
+static inline bool p_Update3DTextLabelText(int id, int color, MonoString * text) {
 	return sampgdk_Update3DTextLabelText(id, color, mono_string_to_utf8(text));
 }
-static int p_CreatePlayer3DTextLabel(int playerid, MonoString * text, int color, float x, float y, float z, float DrawDistance, int attachedplayer, int attachedvehicle, bool testLOS) {
+static inline int p_CreatePlayer3DTextLabel(int playerid, MonoString * text, int color, float x, float y, float z, float DrawDistance, int attachedplayer, int attachedvehicle, bool testLOS) {
 	return sampgdk_CreatePlayer3DTextLabel(playerid, mono_string_to_utf8(text), color, x, y, z, DrawDistance, attachedplayer, attachedvehicle, testLOS);
 }
-static bool p_UpdatePlayer3DTextLabelText(int playerid, int id, int color, MonoString * text) {
+static inline bool p_UpdatePlayer3DTextLabelText(int playerid, int id, int color, MonoString * text) {
 	return sampgdk_UpdatePlayer3DTextLabelText(playerid, id, color, mono_string_to_utf8(text));
 }
-static bool p_ShowPlayerDialog(int playerid, int dialogid, int style, MonoString * caption, MonoString * info, MonoString * button1, MonoString * button2) {
+static inline bool p_ShowPlayerDialog(int playerid, int dialogid, int style, MonoString * caption, MonoString * info, MonoString * button1, MonoString * button2) {
 	return sampgdk_ShowPlayerDialog(playerid, dialogid, style, mono_string_to_utf8(caption), mono_string_to_utf8(info), mono_string_to_utf8(button1), mono_string_to_utf8(button2));
 }
-static bool p_GetWeaponName(int weaponid, MonoString ** name, int size) {
+static inline bool p_GetWeaponName(int weaponid, MonoString ** name, int size) {
 	char * buffer = new char[size];
 	bool retbool = sampgdk_GetWeaponName(weaponid, buffer, size);
 	*name = mono_string_new(mono_domain_get(), buffer);
 	return retbool;
 }
-static bool p_GetPlayerNetworkStats(int playerid, MonoString ** retstr, int size) {
+static inline bool p_GetPlayerNetworkStats(int playerid, MonoString ** retstr, int size) {
 	char * buffer = new char[size];
 	bool retbool = sampgdk_GetPlayerNetworkStats(playerid, buffer, size);
 	*retstr = mono_string_new(mono_domain_get(), buffer);
 	return retbool;
 }
-static bool p_GetPlayerVersion(int playerid, MonoString ** version, int len) {
+static inline bool p_GetPlayerVersion(int playerid, MonoString ** version, int len) {
 	char * buffer = new char[len];
 	bool retbool = sampgdk_GetPlayerVersion(playerid, buffer, len);
 	*version = mono_string_new(mono_domain_get(), buffer);
 	return retbool;
 }
-static bool p_gpci(int playerid, MonoString ** buffer, int size) {
+static inline bool p_gpci(int playerid, MonoString ** buffer, int size) {
 	char * b_buffer = new char[size];
 	bool retbool = sampgdk_gpci(playerid, b_buffer, size);
 	*buffer = mono_string_new(mono_domain_get(), b_buffer);
 	return retbool;
 }
-static bool p_GetNetworkStats(MonoString ** retstr, int size) {
+static inline bool p_GetNetworkStats(MonoString ** retstr, int size) {
 	char * buffer = new char[size];
 	bool retbool = sampgdk_GetNetworkStats(buffer, size);
 	*retstr = mono_string_new(mono_domain_get(), buffer);
 	return retbool;
 }
-static int p_SetTimer(int interval, bool repeat, MonoObject * params) {
+static inline int p_SetTimer(int interval, bool repeat, MonoObject * params) {
 	return SetTimer(interval, repeat, p_TimerCallback, params);
 }
 
 //
 // a_objects string converters
-static bool p_SetObjectMaterial(int objectid, int materialindex, int modelid, MonoString * txdname, MonoString * texturename, int materialcolor) {
+static inline bool p_SetObjectMaterial(int objectid, int materialindex, int modelid, MonoString * txdname, MonoString * texturename, int materialcolor) {
 	return sampgdk_SetObjectMaterial(objectid, materialindex, modelid, mono_string_to_utf8(txdname), mono_string_to_utf8(texturename), materialcolor);
 }
-static bool p_SetPlayerObjectMaterial(int playerid, int objectid, int materialindex, int modelid, MonoString * txdname, MonoString * texturename, int materialcolor) {
+static inline bool p_SetPlayerObjectMaterial(int playerid, int objectid, int materialindex, int modelid, MonoString * txdname, MonoString * texturename, int materialcolor) {
 	return sampgdk_SetPlayerObjectMaterial(playerid, objectid, materialindex, modelid, mono_string_to_utf8(txdname), mono_string_to_utf8(texturename), materialcolor);
 }
-static bool p_SetObjectMaterialText(int objectid, MonoString * text, int materialindex, int materialsize, MonoString * fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment) {
+static inline bool p_SetObjectMaterialText(int objectid, MonoString * text, int materialindex, int materialsize, MonoString * fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment) {
 	return sampgdk_SetObjectMaterialText(objectid, mono_string_to_utf8(text), materialindex, materialsize, mono_string_to_utf8(fontface), fontsize, bold, fontcolor, backcolor, textalignment);
 }
-static bool p_SetPlayerObjectMaterialText(int playerid, int objectid, MonoString * text, int materialindex, int materialsize, MonoString * fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment) {
+static inline bool p_SetPlayerObjectMaterialText(int playerid, int objectid, MonoString * text, int materialindex, int materialsize, MonoString * fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment) {
 	return sampgdk_SetPlayerObjectMaterialText(playerid, objectid, mono_string_to_utf8(text), materialindex, materialsize, mono_string_to_utf8(fontface), fontsize, bold, fontcolor, backcolor, textalignment);
 }
 
 //
 // a_vehicles string converters
-static bool p_SetVehicleNumberPlate(int vehicleid, MonoString * numberplate) {
+static inline bool p_SetVehicleNumberPlate(int vehicleid, MonoString * numberplate) {
 	return sampgdk_SetVehicleNumberPlate(vehicleid, mono_string_to_utf8(numberplate));
 }
+
 static void LoadNatives()
 {
 	//
