@@ -234,7 +234,7 @@ namespace GameMode
         /// Set the team of a player.
         /// </summary>
         /// <remarks>
-        /// Players can not damage/kill players on the same team unless they use a knife to slit their throat. As of SA-MP 0.3x, players are also unable to damage vehicles driven by a player from the same team. This can be enabled with <see cref="EnableVehicleFriendlyFire"/>.
+        /// Players can not damage/kill players on the same team unless they use a knife to slit their throat. Players are also unable to damage vehicles driven by a player from the same team. This can be enabled with <see cref="EnableVehicleFriendlyFire"/>.
         /// 255 (or <see cref="Misc.NoTeam"/>) is the default team to be able to shoot other players, not 0.
         /// </remarks>
         /// <param name="playerid">The ID of the player you want to set the team of.</param>
@@ -272,7 +272,7 @@ namespace GameMode
         /// Checks the player's level of drunkenness.
         /// </summary>
         /// <remarks>
-        /// If the level is less than 2000, the player is sober. The player's level of drunkness goes down slowly automatically (26 levels per second) but will always reach 2000 at the end (in 0.3b it will stop at zero). The higher drunkenness levels affect the player's camera, and the car driving handling. The level of drunkenness increases when the player drinks from a bottle (You can use <see cref="SetPlayerSpecialAction"/> to give them bottles).
+        /// If the level is less than 2000, the player is sober. The player's level of drunkness goes down slowly automatically (26 levels per second) but will always reach zero at the end. The higher drunkenness levels affect the player's camera, and the car driving handling. The level of drunkenness increases when the player drinks from a bottle (You can use <see cref="SetPlayerSpecialAction"/> to give them bottles).
         /// </remarks>
         /// <param name="playerid">The player you want to check the drunkenness level of.</param>
         /// <returns>An integer with the level of drunkenness of the player.</returns>
@@ -284,7 +284,7 @@ namespace GameMode
         /// </summary>
         /// <remarks>
         /// Players' drunk level will automatically decrease over time, based on their FPS (players with 50 FPS will lose 50 'levels' per second. This is useful for determining a player's FPS!).
-        /// In 0.3a the drunk level will decrement and stop at 2000. In 0.3b+ the drunk level decrements to zero.)
+        /// In the drunk level will decrement and stop at zero.
         /// Levels over 2000 make the player drunk (camera swaying and vehicles difficult to control).
         /// Max drunk level is 50000.
         /// While the drunk level is above 5000, the player's HUD (radar etc.) will be hidden.
@@ -422,7 +422,7 @@ namespace GameMode
         /// Get the specified player's IP and store it in a string.
         /// </summary>
         /// <remarks>
-        /// This function does not work when used in <see cref="OnPlayerConnect"/> because the player is already disconnected. It will return an invalid IP (255.255.255.255). Save players' IPs under <see cref="OnPlayerConnect"/> if they need to be used under <see cref="OnPlayerConnect"/>.
+        /// This function does not work when used in <see cref="OnPlayerDisconnect"/> because the player is already disconnected. It will return an invalid IP (255.255.255.255). Save players' IPs under <see cref="OnPlayerConnect"/> if they need to be used under <see cref="OnPlayerConnect"/>.
         /// </remarks>
         /// <param name="playerid">The ID of the player to get the IP of.</param>
         /// <param name="ip">The string to store the player's IP in, passed by reference</param>
@@ -465,7 +465,7 @@ namespace GameMode
         /// Get a player's name.
         /// </summary>
         /// <remarks>
-        /// A player's name can be up to 24 characters long (as of 0.3d R2).
+        /// A player's name can be up to 24 characters long.
         /// This is defined as <see cref="Limits.MaxPlayerName"/>.
         /// Strings to store names in should be made this size, plus one extra cell for the null terminating character.
         /// </remarks>
@@ -676,7 +676,7 @@ namespace GameMode
         /// Attach an object to a specific bone on a player.
         /// </summary>
         /// <param name="playerid">The ID of the player to attach the object to.</param>
-        /// <param name="index">The index (slot) to assign the object to (0-9 since 0.3d).</param>
+        /// <param name="index">The index (slot) to assign the object to (0-9).</param>
         /// <param name="modelid">The model to attach.</param>
         /// <param name="bone">The bone to attach the object to.</param>
         /// <param name="fOffsetX">X axis offset for the object position.</param>
@@ -1032,7 +1032,7 @@ namespace GameMode
         public static extern int GetPVarsUpperIndex(int playerid);
 
         /// <summary>
-        /// Retrieve the name of a player's pVar via the index.
+        /// Retrieve the name of a player's variable via the index.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player variable to get the name of.</param>
         /// <param name="index">The index of the player's pVar.</param>
@@ -1576,6 +1576,130 @@ namespace GameMode
         public static extern bool StopRecordingPlayerData(int playerid);
 
         #endregion
+
+        #region a_players wrappers
+
+        /// <summary>
+        /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using <see cref="SetPlayerSkin"/> in <see cref="OnPlayerSpawn"/> and/or <see cref="OnPlayerRequestClass"/>.
+        /// </summary>
+        /// <param name="playerid">The PlayerID of who you want to set the spawn information.</param>
+        /// <param name="team">The Team-ID of the chosen player.</param>
+        /// <param name="skin">The skin which the player will spawn with.</param>
+        /// <param name="x">The X-coordinate of the player's spawn position.</param>
+        /// <param name="y">The Y-coordinate of the player's spawn position.</param>
+        /// <param name="z">The Z-coordinate of the player's spawn position.</param>
+        /// <param name="rotation">The direction in which the player needs to be facing after spawning.</param>
+        /// <param name="weapon1">The first spawn-weapon for the player.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the primary spawnweapon.</param>
+        /// <param name="weapon2">The second spawn-weapon for the player.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <param name="weapon3">The third spawn-weapon for the player.</param>
+        /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetSpawnInfo(int playerid, int team, int skin, float x, float y, float z,
+            float rotation, Weapon weapon1, int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3,
+            int weapon3Ammo)
+        {
+            return SetSpawnInfo(playerid, team, skin, x, y, z, rotation, (int) weapon1, weapon1Ammo, (int) weapon2,
+                weapon2Ammo, (int) weapon3, weapon3Ammo);
+        }
+
+        /// <summary>
+        /// Return angle of the direction the player is facing.
+        /// </summary>
+        /// <param name="playerid">The player you want to get the angle of.</param>
+        /// <returns>The angle of the player.</returns>
+        public static float GetPlayerFacingAngle(int playerid)
+        {
+            float angle;
+            GetPlayerFacingAngle(playerid, out angle);
+            return angle;
+        }
+
+        /// <summary>
+        /// The function GetPlayerHealth allows you to retrieve the health of a player. Useful for cheat detection, among other things.
+        /// </summary>
+        /// <param name="playerid">The ID of the player.</param>
+        /// <returns>The health of the player.</returns>
+        public static float GetPlayerHealth(int playerid)
+        {
+            float health;
+            GetPlayerHealth(playerid, out health);
+            return health;
+        }
+
+        /// <summary>
+        /// This function stores the armour of a player into a variable.
+        /// </summary>
+        /// <param name="playerid">The ID of the player that you want to get the armour of.</param>
+        /// <returns>The amount of armour the player has.</returns>
+        public static float GetPlayerArmour(int playerid)
+        {
+            float armour;
+            GetPlayerArmour(playerid, out armour);
+            return armour;
+        }
+
+        /// <summary>
+        /// Get the specified player's IP and store it in a string.
+        /// </summary>
+        /// <remarks>
+        /// This function does not work when used in <see cref="OnPlayerDisconnect"/> because the player is already disconnected. It will return an invalid IP (255.255.255.255). Save players' IPs under <see cref="OnPlayerConnect"/> if they need to be used under <see cref="OnPlayerConnect"/>.
+        /// </remarks>
+        /// <param name="playerid">The ID of the player to get the IP of.</param>
+        /// <returns>The player's IP.</returns>
+        public static string GetPlayerIp(int playerid)
+        {
+            string ip;
+            GetPlayerIp(playerid, out ip, 16);
+            return ip;
+        }
+
+        /// <summary>
+        /// Get a player's name.
+        /// </summary>
+        /// <remarks>
+        /// A player's name can be up to 24 characters long.
+        /// This is defined as <see cref="Limits.MaxPlayerName"/>.
+        /// Strings to store names in should be made this size, plus one extra cell for the null terminating character.
+        /// </remarks>
+        /// <param name="playerid">The ID of the player to get the name of.</param>
+        /// <returns>The name of the player.</returns>
+        public static string GetPlayerName(int playerid)
+        {
+            string name;
+            GetPlayerName(playerid, out name, Limits.MaxPlayerName);
+            return name;
+        }
+
+        /// <summary>
+        /// Gets a player variable as a string.
+        /// </summary>
+        /// <param name="playerid">The ID of the player whose player variable to get.</param>
+        /// <param name="varname">The name of the player variable, set by <see cref="SetPVarString"/>.</param>
+        /// <returns>The string from the player variable.</returns>
+        public static string GetPVarString(int playerid, string varname)
+        {
+            string value;
+            GetPVarString(playerid, varname, out value, 64);
+            return value;
+        }
+
+        /// <summary>
+        /// Retrieve the name of a player's variable via the index.
+        /// </summary>
+        /// <param name="playerid">The ID of the player whose player variable to get the name of.</param>
+        /// <param name="index">The index of the player's pVar.</param>
+        /// <returns>This name of the player's variable.</returns>
+        public static string GetPVarNameAtIndex(int playerid, int index)
+        {
+            string varname;
+            GetPVarNameAtIndex(playerid, index, out varname, 64);
+            return varname;
+        }
+
+        #endregion
+
 
         #region a_samp natives
 
@@ -2622,7 +2746,63 @@ namespace GameMode
         // ReSharper disable once InconsistentNaming
         public static extern bool gpci(int playerid, out string buffer, int size);
 
+        // ReSharper disable once InconsistentNaming
+        public static string gpci(int playerid)
+        {
+            string buffer;
+            gpci(playerid, out buffer, 64);
+            return buffer;
+        }
+
+        public static int SetTimer(int interval, bool repeat, TimerTickHandler handler, object args)
+        {
+            int timerid = SetTimer(interval, repeat, args);
+
+            TimerHandlers[timerid] = handler;
+            return timerid;
+        }
+
         #endregion
+
+        #region a_samp wrappers
+
+        public static string GetWeaponName(int weaponid)
+        {
+            string name;
+            GetWeaponName(weaponid, out name, 32);
+            return name;
+        }
+
+        public static string GetServerVarAsString(string varname)
+        {
+            string value;
+            GetServerVarAsString(varname, out value, 64);
+            return value;
+        }
+
+        public static string GetPlayerNetworkStats(int playerid)
+        {
+            string retstr;
+            GetPlayerNetworkStats(playerid, out retstr, 256);
+            return retstr;
+        }
+
+        public static string GetNetworkStats()
+        {
+            string retstr;
+            GetNetworkStats(out retstr, 256);
+            return retstr;
+        }
+
+        public static string GetPlayerVersion(int playerid)
+        {
+            string version;
+            GetPlayerVersion(playerid, out version, 64);
+            return version;
+        }
+
+        #endregion
+
 
         #region a_objects natives
 
@@ -2828,7 +3008,7 @@ namespace GameMode
         /// <param name="rX">The X rotation of the object.</param>
         /// <param name="rY">The Y rotation of the object.</param>
         /// <param name="rZ">The Z rotation of the object.</param>
-        /// <param name="drawDistance">The distance from which objects will appear to players. 0.0 will cause an object to render at its default distance. Leaving this parameter out will cause objects to be rendered at their default distance. The maximum usable distance is 300 in versions prior to 0.3x, in which drawdistance can be unlimited.</param>
+        /// <param name="drawDistance">The distance from which objects will appear to players. 0.0 will cause an object to render at its default distance. Leaving this parameter out will cause objects to be rendered at their default distance.</param>
         /// <returns>The ID of the object that was created, or INVALID_OBJECT_ID if the object limit (MAX_OBJECTS) was reached.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int CreatePlayerObject(int playerid, int modelid, float x, float y, float z, float rX,
@@ -3037,6 +3217,12 @@ namespace GameMode
             int materialsize, string fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment);
 
         #endregion
+
+        #region a_objects wrappers
+
+
+        #endregion
+
 
         #region a_vehicles natives
 
@@ -3425,117 +3611,11 @@ namespace GameMode
 
         #endregion
 
-        #region Wrapping methods
+        #region a_vehicles wrappers
 
-        public static bool SetSpawnInfo(int playerid, int team, int skin, float x, float y, float z,
-            float rotation, Weapon weapon1, int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3,
-            int weapon3Ammo)
-        {
-            return SetSpawnInfo(playerid, team, skin, x, y, z, rotation, (int) weapon1, weapon1Ammo, (int) weapon2,
-                weapon2Ammo, (int) weapon3, weapon3Ammo);
-        }
-
-        public static float GetPlayerFacingAngle(int playerid)
-        {
-            float angle;
-            GetPlayerFacingAngle(playerid, out angle);
-            return angle;
-        }
-
-        public static float GetPlayerHealth(int playerid)
-        {
-            float health;
-            GetPlayerHealth(playerid, out health);
-            return health;
-        }
-
-        public static float GetPlayerArmour(int playerid)
-        {
-            float armour;
-            GetPlayerArmour(playerid, out armour);
-            return armour;
-        }
-
-        public static string GetPlayerIp(int playerid)
-        {
-            string ip;
-            GetPlayerIp(playerid, out ip, 16);
-            return ip;
-        }
-
-        public static string GetPlayerName(int playerid)
-        {
-            string name;
-            GetPlayerName(playerid, out name, Limits.MaxPlayerName);
-            return name;
-        }
-
-        public static string GetPVarString(int playerid, string varname)
-        {
-            string value;
-            GetPVarString(playerid, varname, out value, 64);
-            return value;
-        }
-
-        public static string GetPVarNameAtIndex(int playerid, int index)
-        {
-            string varname;
-            GetPVarNameAtIndex(playerid, index, out varname, 64);
-            return varname;
-        }
-
-        public static string GetWeaponName(int weaponid)
-        {
-            string name;
-            GetWeaponName(weaponid, out name, 32);
-            return name;
-        }
-
-        public static string GetServerVarAsString(string varname)
-        {
-            string value;
-            GetServerVarAsString(varname, out value, 64);
-            return value;
-        }
-
-        public static string GetPlayerNetworkStats(int playerid)
-        {
-            string retstr;
-            GetPlayerNetworkStats(playerid, out retstr, 256);
-            return retstr;
-        }
-
-        public static string GetNetworkStats()
-        {
-            string retstr;
-            GetNetworkStats(out retstr, 256);
-            return retstr;
-        }
-
-        public static string GetPlayerVersion(int playerid)
-        {
-            string version;
-            GetPlayerVersion(playerid, out version, 64);
-            return version;
-        }
-
-        // ReSharper disable once InconsistentNaming
-        public static string gpci(int playerid)
-        {
-            string buffer;
-            gpci(playerid, out buffer, 64);
-            return buffer;
-        }
-
-        public static int SetTimer(int interval, bool repeat, TimerTickHandler handler, object args)
-        {
-            int timerid = SetTimer(interval, repeat, args);
-
-            TimerHandlers[timerid] = handler;
-            return timerid;
-        }
 
         #endregion
+
 
         #region Event handlers
 
