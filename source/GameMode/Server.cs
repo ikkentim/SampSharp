@@ -1872,9 +1872,13 @@ namespace GameMode
         /// <summary>
         /// This function will determine whether RCON admins will be teleported to their waypoint when they set one.
         /// </summary>
+        /// <remarks>
+        /// DEPRICATED!
+        /// </remarks>
         /// <param name="allow">False to disable and True to enable.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
+        [Obsolete("This function is deprecated. Use the OnPlayerClickMap callback instead.")]
         public static extern bool AllowAdminTeleport(bool allow);
 
         /// <summary>
@@ -3784,7 +3788,6 @@ namespace GameMode
 
         #region Events
 
- 
         /// <summary>
         /// Occurs when the <see cref="OnGameModeInit"/> is being called.
         /// This callback is triggered when the gamemode starts.
@@ -4160,6 +4163,10 @@ namespace GameMode
         /// <returns>This callback does not handle returns.</returns>
         public virtual bool OnGameModeInit()
         {
+            Console.WriteLine("Game mode initialized");
+
+            Server.AllowAdminTeleport()
+
             var args = new GameModeEventArgs();
 
             if (Initialized != null)
