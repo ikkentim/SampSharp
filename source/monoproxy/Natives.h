@@ -197,10 +197,29 @@ static int p_SetTimer(int interval, bool repeat, MonoObject * params) {
 	return SetTimer(interval, repeat, p_TimerCallback, params);
 }
 
+//
+// a_objects string converters
+static bool p_SetObjectMaterial(int objectid, int materialindex, int modelid, MonoString * txdname, MonoString * texturename, int materialcolor) {
+	sampgdk_SetObjectMaterial(objectid, materialindex, modelid, mono_string_to_utf8(txdname), mono_string_to_utf8(texturename), materialcolor);
+}
+static bool p_SetPlayerObjectMaterial(int playerid, int objectid, int materialindex, int modelid, MonoString * txdname, MonoString * texturename, int materialcolor) {
+	sampgdk_SetPlayerObjectMaterial(playerid, objectid, materialindex, modelid, mono_string_to_utf8(txdname), mono_string_to_utf8(texturename), materialcolor);
+}
+static bool p_SetObjectMaterialText(int objectid, MonoString * text, int materialindex, int materialsize, MonoString * fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment) {
+	sampgdk_SetObjectMaterialText(objectid, mono_string_to_utf8(text), materialindex, materialsize, mono_string_to_utf8(fontface), fontsize, bold, fontcolor, backcolor, textalignment);
+}
+static bool p_SetPlayerObjectMaterialText(int playerid, int objectid, MonoString * text, int materialindex, int materialsize, MonoString * fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment) {
+	sampgdk_SetPlayerObjectMaterialText(playerid, objectid, mono_string_to_utf8(text), materialindex, materialsize, mono_string_to_utf8(fontface), fontsize, bold, fontcolor, backcolor, textalignment);
+}
 
-
+//
+// a_vehicles string converters
+static bool p_SetVehicleNumberPlate(int vehicleid, MonoString * numberplate) {
+	sampgdk_SetVehicleNumberPlate(vehicleid, mono_string_to_utf8(numberplate));
+}
 static void LoadNatives()
 {
+	//
 	//a_players natives
 	mono_add_internal_call("GameMode.Server::SetSpawnInfo", sampgdk_SetSpawnInfo);
 	mono_add_internal_call("GameMode.Server::SpawnPlayer", sampgdk_SpawnPlayer);
@@ -347,6 +366,7 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Server::StartRecordingPlayerData", p_StartRecordingPlayerData);
 	mono_add_internal_call("GameMode.Server::StopRecordingPlayerData", sampgdk_StopRecordingPlayerData);
 
+	//
 	//a_samp natives
 	mono_add_internal_call("GameMode.Server::SendClientMessage", p_SendClientMessage);
 	mono_add_internal_call("GameMode.Server::SendClientMessageToAll", p_SendClientMessageToAll);
@@ -456,13 +476,85 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Server::KillTimer", sampgdk_KillTimer);
 	mono_add_internal_call("GameMode.Server::gpci", p_gpci);
 
-	//a_http
+	//
+	//a_http ... Not implemented as it is useless
+	//mono_add_internal_call("GameMode.Server::HTTP", samp_HTTP);
 
+	//
+	//a_objects natives
+	mono_add_internal_call("GameMode.Server::CreateObject", sampgdk_CreateObject);
+	mono_add_internal_call("GameMode.Server::AttachObjectToVehicle", sampgdk_AttachObjectToVehicle);
+	mono_add_internal_call("GameMode.Server::AttachObjectToObject", sampgdk_AttachObjectToObject);
+	mono_add_internal_call("GameMode.Server::AttachObjectToPlayer", sampgdk_AttachObjectToPlayer);
+	mono_add_internal_call("GameMode.Server::SetObjectPos", sampgdk_SetObjectPos);
+	mono_add_internal_call("GameMode.Server::GetObjectPos", sampgdk_GetObjectPos);
+	mono_add_internal_call("GameMode.Server::SetObjectRot", sampgdk_SetObjectRot);
+	mono_add_internal_call("GameMode.Server::GetObjectRot", sampgdk_GetObjectRot);
+	mono_add_internal_call("GameMode.Server::IsValidObject", sampgdk_IsValidObject);
+	mono_add_internal_call("GameMode.Server::DestroyObject", sampgdk_DestroyObject);
+	mono_add_internal_call("GameMode.Server::MoveObject", sampgdk_MoveObject);
+	mono_add_internal_call("GameMode.Server::StopObject", sampgdk_StopObject);
+	mono_add_internal_call("GameMode.Server::IsObjectMoving", sampgdk_IsObjectMoving);
+	mono_add_internal_call("GameMode.Server::EditObject", sampgdk_EditObject);
+	mono_add_internal_call("GameMode.Server::EditPlayerObject", sampgdk_EditPlayerObject);
+	mono_add_internal_call("GameMode.Server::SelectObject", sampgdk_SelectObject);
+	mono_add_internal_call("GameMode.Server::CancelEdit", sampgdk_CancelEdit);
+	mono_add_internal_call("GameMode.Server::CreatePlayerObject", sampgdk_CreatePlayerObject);
+	mono_add_internal_call("GameMode.Server::AttachPlayerObjectToPlayer", sampgdk_AttachPlayerObjectToPlayer);
+	mono_add_internal_call("GameMode.Server::AttachPlayerObjectToVehicle", sampgdk_AttachPlayerObjectToVehicle);
+	mono_add_internal_call("GameMode.Server::SetPlayerObjectPos", sampgdk_SetPlayerObjectPos);
+	mono_add_internal_call("GameMode.Server::GetPlayerObjectPos", sampgdk_GetPlayerObjectPos);
+	mono_add_internal_call("GameMode.Server::SetPlayerObjectRot", sampgdk_SetPlayerObjectRot);
+	mono_add_internal_call("GameMode.Server::GetPlayerObjectRot", sampgdk_GetPlayerObjectRot);
+	mono_add_internal_call("GameMode.Server::IsValidPlayerObject", sampgdk_IsValidPlayerObject);
+	mono_add_internal_call("GameMode.Server::DestroyPlayerObject", sampgdk_DestroyPlayerObject);
+	mono_add_internal_call("GameMode.Server::MovePlayerObject", sampgdk_MovePlayerObject);
+	mono_add_internal_call("GameMode.Server::StopPlayerObject", sampgdk_StopPlayerObject);
+	mono_add_internal_call("GameMode.Server::IsPlayerObjectMoving", sampgdk_IsPlayerObjectMoving);
+	mono_add_internal_call("GameMode.Server::SetObjectMaterial", p_SetObjectMaterial);
+	mono_add_internal_call("GameMode.Server::SetPlayerObjectMaterial", p_SetPlayerObjectMaterial);
+	mono_add_internal_call("GameMode.Server::SetObjectMaterialText", p_SetObjectMaterialText);
+	mono_add_internal_call("GameMode.Server::SetPlayerObjectMaterialText", p_SetPlayerObjectMaterialText);
 
-	//a_objects
-
-
-	//a_vehicles
-
-
+	//
+	//a_vehicles natives
+	mono_add_internal_call("GameMode.Server::IsValidVehicle", sampgdk_IsValidVehicle);
+	mono_add_internal_call("GameMode.Server::GetVehicleDistanceFromPoint", sampgdk_GetVehicleDistanceFromPoint);
+	mono_add_internal_call("GameMode.Server::CreateVehicle", sampgdk_CreateVehicle);
+	mono_add_internal_call("GameMode.Server::DestroyVehicle", sampgdk_DestroyVehicle);
+	mono_add_internal_call("GameMode.Server::IsVehicleStreamedIn", sampgdk_IsVehicleStreamedIn);
+	mono_add_internal_call("GameMode.Server::GetVehiclePos", sampgdk_GetVehiclePos);
+	mono_add_internal_call("GameMode.Server::SetVehiclePos", sampgdk_SetVehiclePos);
+	mono_add_internal_call("GameMode.Server::GetVehicleZAngle", sampgdk_GetVehicleZAngle);
+	mono_add_internal_call("GameMode.Server::GetVehicleRotationQuat", sampgdk_GetVehicleRotationQuat);
+	mono_add_internal_call("GameMode.Server::SetVehicleZAngle", sampgdk_SetVehicleZAngle);
+	mono_add_internal_call("GameMode.Server::SetVehicleParamsForPlayer", sampgdk_SetVehicleParamsForPlayer);
+	mono_add_internal_call("GameMode.Server::ManualVehicleEngineAndLights", sampgdk_ManualVehicleEngineAndLights);
+	mono_add_internal_call("GameMode.Server::SetVehicleParamsEx", sampgdk_SetVehicleParamsEx);
+	mono_add_internal_call("GameMode.Server::GetVehicleParamsEx", sampgdk_GetVehicleParamsEx);
+	mono_add_internal_call("GameMode.Server::SetVehicleToRespawn", sampgdk_SetVehicleToRespawn);
+	mono_add_internal_call("GameMode.Server::LinkVehicleToInterior", sampgdk_LinkVehicleToInterior);
+	mono_add_internal_call("GameMode.Server::AddVehicleComponent", sampgdk_AddVehicleComponent);
+	mono_add_internal_call("GameMode.Server::RemoveVehicleComponent", sampgdk_RemoveVehicleComponent);
+	mono_add_internal_call("GameMode.Server::ChangeVehicleColor", sampgdk_ChangeVehicleColor);
+	mono_add_internal_call("GameMode.Server::ChangeVehiclePaintjob", sampgdk_ChangeVehiclePaintjob);
+	mono_add_internal_call("GameMode.Server::SetVehicleHealth", sampgdk_SetVehicleHealth);
+	mono_add_internal_call("GameMode.Server::GetVehicleHealth", sampgdk_GetVehicleHealth);
+	mono_add_internal_call("GameMode.Server::AttachTrailerToVehicle", sampgdk_AttachTrailerToVehicle);
+	mono_add_internal_call("GameMode.Server::DetachTrailerFromVehicle", sampgdk_DetachTrailerFromVehicle);
+	mono_add_internal_call("GameMode.Server::IsTrailerAttachedToVehicle", sampgdk_IsTrailerAttachedToVehicle);
+	mono_add_internal_call("GameMode.Server::GetVehicleTrailer", sampgdk_GetVehicleTrailer);
+	mono_add_internal_call("GameMode.Server::SetVehicleNumberPlate", p_SetVehicleNumberPlate);
+	mono_add_internal_call("GameMode.Server::GetVehicleModel", sampgdk_GetVehicleModel);
+	mono_add_internal_call("GameMode.Server::GetVehicleComponentInSlot", sampgdk_GetVehicleComponentInSlot);
+	mono_add_internal_call("GameMode.Server::GetVehicleComponentType", sampgdk_GetVehicleComponentType);
+	mono_add_internal_call("GameMode.Server::RepairVehicle", sampgdk_RepairVehicle);
+	mono_add_internal_call("GameMode.Server::GetVehicleVelocity", sampgdk_GetVehicleVelocity);
+	mono_add_internal_call("GameMode.Server::SetVehicleVelocity", sampgdk_SetVehicleVelocity);
+	mono_add_internal_call("GameMode.Server::SetVehicleAngularVelocity", sampgdk_SetVehicleAngularVelocity);
+	mono_add_internal_call("GameMode.Server::GetVehicleDamageStatus", sampgdk_GetVehicleDamageStatus);
+	mono_add_internal_call("GameMode.Server::UpdateVehicleDamageStatus", sampgdk_UpdateVehicleDamageStatus);
+	mono_add_internal_call("GameMode.Server::SetVehicleVirtualWorld", sampgdk_SetVehicleVirtualWorld);
+	mono_add_internal_call("GameMode.Server::GetVehicleVirtualWorld", sampgdk_GetVehicleVirtualWorld);
+	mono_add_internal_call("GameMode.Server::GetVehicleModelInfo", sampgdk_GetVehicleModelInfo);
 }
