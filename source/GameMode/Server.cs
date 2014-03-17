@@ -11,11 +11,13 @@ namespace GameMode
     {
         #region Fields
 
-        private static readonly Dictionary<int, TimerTickHandler> TimerHandlers = new Dictionary<int, TimerTickHandler>();
+        private static readonly Dictionary<int, TimerTickHandler> TimerHandlers =
+            new Dictionary<int, TimerTickHandler>();
 
         #endregion
 
         #region a_players natives
+
         /// <summary>
         /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using SetPlayerSkin in OnPlayerSpawn and/or OnPlayerRequestClass, even though this has been fixed in 0.2.
         /// </summary>
@@ -2622,6 +2624,250 @@ namespace GameMode
 
         #endregion
 
+        #region a_objects natives
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int CreateObject(int modelid, float x, float y, float z, float rX, float rY, float rZ,
+            float drawDistance);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool AttachObjectToVehicle(int objectid, int vehicleid, float fOffsetX, float fOffsetY,
+            float fOffsetZ, float fRotX, float fRotY, float fRotZ);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool AttachObjectToObject(int objectid, int attachtoid, float fOffsetX, float fOffsetY,
+            float fOffsetZ, float fRotX, float fRotY, float fRotZ, bool syncRotation);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool AttachObjectToPlayer(int objectid, int playerid, float fOffsetX, float fOffsetY,
+            float fOffsetZ, float fRotX, float fRotY, float fRotZ);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetObjectPos(int objectid, float x, float y, float z);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetObjectPos(int objectid, out float x, out float y, out float z);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetObjectRot(int objectid, float rotX, float rotY, float rotZ);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetObjectRot(int objectid, out float rotX, out float rotY, out float rotZ);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool IsValidObject(int objectid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool DestroyObject(int objectid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int MoveObject(int objectid, float x, float y, float z, float speed, float rotX, float rotY,
+            float rotZ);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool StopObject(int objectid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool IsObjectMoving(int objectid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool EditObject(int playerid, int objectid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool EditPlayerObject(int playerid, int objectid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SelectObject(int playerid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool CancelEdit(int playerid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int CreatePlayerObject(int playerid, int modelid, float x, float y, float z, float rX,
+            float rY, float rZ, float drawDistance);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool AttachPlayerObjectToPlayer(int objectplayer, int objectid, int attachplayer,
+            float offsetX, float offsetY, float offsetZ, float rX, float rY, float rZ);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool AttachPlayerObjectToVehicle(int playerid, int objectid, int vehicleid, float fOffsetX,
+            float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetPlayerObjectPos(int playerid, int objectid, float x, float y, float z);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetPlayerObjectPos(int playerid, int objectid, out float x, out float y, out float z);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetPlayerObjectRot(int playerid, int objectid, float rotX, float rotY, float rotZ);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetPlayerObjectRot(int playerid, int objectid, out float rotX, out float rotY,
+            out float rotZ);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool IsValidPlayerObject(int playerid, int objectid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool DestroyPlayerObject(int playerid, int objectid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int MovePlayerObject(int playerid, int objectid, float x, float y, float z, float speed,
+            float rotX, float rotY, float rotZ);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool StopPlayerObject(int playerid, int objectid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool IsPlayerObjectMoving(int playerid, int objectid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetObjectMaterial(int objectid, int materialindex, int modelid, string txdname,
+            string texturename, int materialcolor);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetPlayerObjectMaterial(int playerid, int objectid, int materialindex, int modelid,
+            string txdname, string texturename, int materialcolor);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetObjectMaterialText(int objectid, string text, int materialindex, int materialsize,
+            string fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetPlayerObjectMaterialText(int playerid, int objectid, string text, int materialindex,
+            int materialsize, string fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment);
+
+        #endregion
+
+        #region a_vehicles natives
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool IsValidVehicle(int vehicleid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern float GetVehicleDistanceFromPoint(int vehicleid, float x, float y, float z);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int CreateVehicle(int vehicletype, float x, float y, float z, float rotation, int color1,
+            int color2, int respawnDelay);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool DestroyVehicle(int vehicleid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool IsVehicleStreamedIn(int vehicleid, int forplayerid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetVehiclePos(int vehicleid, out float x, out float y, out float z);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetVehiclePos(int vehicleid, float x, float y, float z);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetVehicleZAngle(int vehicleid, out float zAngle);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetVehicleRotationQuat(int vehicleid, out float w, out float x, out float y,
+            out float z);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetVehicleZAngle(int vehicleid, float zAngle);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetVehicleParamsForPlayer(int vehicleid, int playerid, bool objective,
+            bool doorslocked);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool ManualVehicleEngineAndLights();
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetVehicleParamsEx(int vehicleid, bool engine, bool lights, bool alarm, bool doors,
+            bool bonnet, bool boot, bool objective);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetVehicleParamsEx(int vehicleid, out bool engine, out bool lights, out bool alarm,
+            out bool doors, out bool bonnet, out bool boot, out bool objective);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetVehicleToRespawn(int vehicleid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool LinkVehicleToInterior(int vehicleid, int interiorid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool AddVehicleComponent(int vehicleid, int componentid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool RemoveVehicleComponent(int vehicleid, int componentid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool ChangeVehicleColor(int vehicleid, int color1, int color2);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool ChangeVehiclePaintjob(int vehicleid, int paintjobid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetVehicleHealth(int vehicleid, float health);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetVehicleHealth(int vehicleid, out float health);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool AttachTrailerToVehicle(int trailerid, int vehicleid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool DetachTrailerFromVehicle(int vehicleid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool IsTrailerAttachedToVehicle(int vehicleid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetVehicleTrailer(int vehicleid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetVehicleNumberPlate(int vehicleid, string numberplate);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetVehicleModel(int vehicleid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetVehicleComponentInSlot(int vehicleid, int slot);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetVehicleComponentType(int component);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool RepairVehicle(int vehicleid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetVehicleVelocity(int vehicleid, out float x, out float y, out float z);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetVehicleVelocity(int vehicleid, float x, float y, float z);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetVehicleAngularVelocity(int vehicleid, float x, float y, float z);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetVehicleDamageStatus(int vehicleid, out int panels, out int doors, out int lights,
+            out int tires);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool UpdateVehicleDamageStatus(int vehicleid, int panels, int doors, int lights, int tires);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetVehicleVirtualWorld(int vehicleid, int worldid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetVehicleVirtualWorld(int vehicleid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetVehicleModelInfo(int model, int infotype, out float x, out float y, out float z);
+
+        #endregion
+
         #region Wrapping methods
 
         public static bool SetSpawnInfo(int playerid, int team, int skin, float x, float y, float z,
@@ -2950,7 +3196,7 @@ namespace GameMode
 
         public virtual bool OnPlayerDisconnect(int playerid, int reason)
         {
-            var args = new PlayerDisconnectedEventArgs(playerid, (PlayerDisconnectReason)reason);
+            var args = new PlayerDisconnectedEventArgs(playerid, (PlayerDisconnectReason) reason);
 
             if (PlayerDisconnected != null)
                 PlayerDisconnected(this, args);
@@ -2970,7 +3216,7 @@ namespace GameMode
 
         public virtual bool OnPlayerDeath(int playerid, int killerid, int reason)
         {
-            var args = new PlayerDeathEventArgs(playerid, killerid, (Weapon)reason);
+            var args = new PlayerDeathEventArgs(playerid, killerid, (Weapon) reason);
 
             if (PlayerDied != null)
                 PlayerDied(this, args);
@@ -3050,7 +3296,7 @@ namespace GameMode
 
         public virtual bool OnPlayerStateChange(int playerid, int newstate, int oldstate)
         {
-            var args = new PlayerStateEventArgs(playerid, (PlayerState)newstate, (PlayerState)oldstate);
+            var args = new PlayerStateEventArgs(playerid, (PlayerState) newstate, (PlayerState) oldstate);
 
             if (PlayerStateChanged != null)
                 PlayerStateChanged(this, args);
@@ -3160,7 +3406,7 @@ namespace GameMode
 
         public virtual bool OnEnterExitModShop(int playerid, int enterexit, int interiorid)
         {
-            var args = new PlayerEnterModShopEventArgs(playerid, (EnterExit)enterexit, interiorid);
+            var args = new PlayerEnterModShopEventArgs(playerid, (EnterExit) enterexit, interiorid);
 
             if (PlayerEnterExitModShop != null)
                 PlayerEnterExitModShop(this, args);
@@ -3240,7 +3486,7 @@ namespace GameMode
 
         public virtual bool OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys)
         {
-            var args = new PlayerKeyStateChangedEventArgs(playerid, (Keys)newkeys, (Keys)oldkeys);
+            var args = new PlayerKeyStateChangedEventArgs(playerid, (Keys) newkeys, (Keys) oldkeys);
 
             if (PlayerKeyStateChanged != null)
                 PlayerKeyStateChanged(this, args);
@@ -3320,7 +3566,7 @@ namespace GameMode
 
         public virtual bool OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid, int bodypart)
         {
-            var args = new PlayerDamageEventArgs(playerid, issuerid, amount, (Weapon)weaponid, (BodyPart)bodypart);
+            var args = new PlayerDamageEventArgs(playerid, issuerid, amount, (Weapon) weaponid, (BodyPart) bodypart);
 
             if (PlayerTakeDamage != null)
                 PlayerTakeDamage(this, args);
@@ -3330,7 +3576,7 @@ namespace GameMode
 
         public virtual bool OnPlayerGiveDamage(int playerid, int damagedid, float amount, int weaponid, int bodypart)
         {
-            var args = new PlayerDamageEventArgs(playerid, damagedid, amount, (Weapon)weaponid, (BodyPart)bodypart);
+            var args = new PlayerDamageEventArgs(playerid, damagedid, amount, (Weapon) weaponid, (BodyPart) bodypart);
 
             if (PlayerGiveDamage != null)
                 PlayerGiveDamage(this, args);
@@ -3370,7 +3616,7 @@ namespace GameMode
 
         public virtual bool OnPlayerClickPlayer(int playerid, int clickedplayerid, int source)
         {
-            var args = new PlayerClickPlayerEventArgs(playerid, clickedplayerid, (PlayerClickSource)source);
+            var args = new PlayerClickPlayerEventArgs(playerid, clickedplayerid, (PlayerClickSource) source);
 
             if (PlayerClickPlayer != null)
                 PlayerClickPlayer(this, args);
@@ -3420,7 +3666,8 @@ namespace GameMode
         public virtual bool OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY,
             float fZ)
         {
-            var args = new WeaponShotEventArgs(playerid, (Weapon)weaponid, (BulletHitType)hittype, hitid, new Position(fX, fY, fZ));
+            var args = new WeaponShotEventArgs(playerid, (Weapon) weaponid, (BulletHitType) hittype, hitid,
+                new Position(fX, fY, fZ));
 
             if (PlayerWeaponShot != null)
                 PlayerWeaponShot(this, args);
