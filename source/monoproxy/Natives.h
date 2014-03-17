@@ -199,22 +199,22 @@ static int p_SetTimer(int interval, bool repeat, MonoObject * params) {
 //
 // a_objects string converters
 static bool p_SetObjectMaterial(int objectid, int materialindex, int modelid, MonoString * txdname, MonoString * texturename, int materialcolor) {
-	sampgdk_SetObjectMaterial(objectid, materialindex, modelid, mono_string_to_utf8(txdname), mono_string_to_utf8(texturename), materialcolor);
+	return sampgdk_SetObjectMaterial(objectid, materialindex, modelid, mono_string_to_utf8(txdname), mono_string_to_utf8(texturename), materialcolor);
 }
 static bool p_SetPlayerObjectMaterial(int playerid, int objectid, int materialindex, int modelid, MonoString * txdname, MonoString * texturename, int materialcolor) {
-	sampgdk_SetPlayerObjectMaterial(playerid, objectid, materialindex, modelid, mono_string_to_utf8(txdname), mono_string_to_utf8(texturename), materialcolor);
+	return sampgdk_SetPlayerObjectMaterial(playerid, objectid, materialindex, modelid, mono_string_to_utf8(txdname), mono_string_to_utf8(texturename), materialcolor);
 }
 static bool p_SetObjectMaterialText(int objectid, MonoString * text, int materialindex, int materialsize, MonoString * fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment) {
-	sampgdk_SetObjectMaterialText(objectid, mono_string_to_utf8(text), materialindex, materialsize, mono_string_to_utf8(fontface), fontsize, bold, fontcolor, backcolor, textalignment);
+	return sampgdk_SetObjectMaterialText(objectid, mono_string_to_utf8(text), materialindex, materialsize, mono_string_to_utf8(fontface), fontsize, bold, fontcolor, backcolor, textalignment);
 }
 static bool p_SetPlayerObjectMaterialText(int playerid, int objectid, MonoString * text, int materialindex, int materialsize, MonoString * fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment) {
-	sampgdk_SetPlayerObjectMaterialText(playerid, objectid, mono_string_to_utf8(text), materialindex, materialsize, mono_string_to_utf8(fontface), fontsize, bold, fontcolor, backcolor, textalignment);
+	return sampgdk_SetPlayerObjectMaterialText(playerid, objectid, mono_string_to_utf8(text), materialindex, materialsize, mono_string_to_utf8(fontface), fontsize, bold, fontcolor, backcolor, textalignment);
 }
 
 //
 // a_vehicles string converters
 static bool p_SetVehicleNumberPlate(int vehicleid, MonoString * numberplate) {
-	sampgdk_SetVehicleNumberPlate(vehicleid, mono_string_to_utf8(numberplate));
+	return sampgdk_SetVehicleNumberPlate(vehicleid, mono_string_to_utf8(numberplate));
 }
 static void LoadNatives()
 {
