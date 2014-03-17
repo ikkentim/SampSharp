@@ -1605,6 +1605,75 @@ namespace GameMode
         }
 
         /// <summary>
+        /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using <see cref="SetPlayerSkin"/> in <see cref="OnPlayerSpawn"/> and/or <see cref="OnPlayerRequestClass"/>.
+        /// </summary>
+        /// <param name="playerid">The PlayerID of who you want to set the spawn information.</param>
+        /// <param name="team">The Team-ID of the chosen player.</param>
+        /// <param name="skin">The skin which the player will spawn with.</param>
+        /// <param name="position">The player's spawn position.</param>
+        /// <param name="rotation">The direction in which the player needs to be facing after spawning.</param>
+        /// <param name="weapon1">The first spawn-weapon for the player.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the primary spawnweapon.</param>
+        /// <param name="weapon2">The second spawn-weapon for the player.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <param name="weapon3">The third spawn-weapon for the player.</param>
+        /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetSpawnInfo(int playerid, int team, int skin, Vector position,
+            float rotation, Weapon weapon1, int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3,
+            int weapon3Ammo)
+        {
+            return SetSpawnInfo(playerid, team, skin, position.X, position.Y, position.Z, rotation, (int)weapon1, weapon1Ammo, (int)weapon2,
+                weapon2Ammo, (int)weapon3, weapon3Ammo);
+        }
+
+        /// <summary>
+        /// Set a player's position.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to set the position of.</param>
+        /// <param name="position">The position to move the player to.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetPlayerPos(int playerid, Vector position)
+        {
+            return SetPlayerPos(playerid, position.X, position.Y, position.Z);
+        }
+
+        /// <summary>
+        /// This sets the players position then adjusts the players z-coordinate to the nearest solid ground under the position.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to set the position of.</param>
+        /// <param name="position">The position to move the player to.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetPlayerPosFindZ(int playerid, Vector position)
+        {
+            return SetPlayerPosFindZ(playerid, position.X, position.Y, position.Z);
+        }
+
+        /// <summary>
+        /// Get the coordinates of a player.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to get the position of.</param>
+        /// <returns>The position of the player.</returns>
+        public static Vector GetPlayerPos(int playerid)
+        {
+            float x, y, z;
+            GetPlayerPos(playerid, out x, out y, out z);
+            return new Vector(x, y, z);
+        }
+
+        /// <summary>
+        /// Check if a player is in range of a point.
+        /// </summary>
+        /// <param name="playerid">The ID of the player.</param>
+        /// <param name="range">The furthest distance the player can be from the point to be in range.</param>
+        /// <param name="point">The point to check the range to.</param>
+        /// <returns>True if the player is in range of the point, otherwise False.</returns>
+        public static bool IsPlayerInRangeOfPoint(int playerid, float range, Vector point)
+        {
+            return IsPlayerInRangeOfPoint(playerid, range, point.X, point.Y, point.Z);
+        }
+
+        /// <summary>
         /// Return angle of the direction the player is facing.
         /// </summary>
         /// <param name="playerid">The player you want to get the angle of.</param>
@@ -1614,6 +1683,17 @@ namespace GameMode
             float angle;
             GetPlayerFacingAngle(playerid, out angle);
             return angle;
+        }
+
+        /// <summary>
+        /// Calculate the distance between a player and a map coordinate.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to calculate the distance from.</param>
+        /// <param name="point">The point to check the distance from.</param>
+        /// <returns>The distance between the player and the point as a float.</returns>
+        public static float GetPlayerDistanceFromPoint(int playerid, Vector point)
+        {
+            return GetPlayerDistanceFromPoint(playerid, point.X, point.Y, point.Z);
         }
 
         /// <summary>
