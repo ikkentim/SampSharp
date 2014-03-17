@@ -13,7 +13,6 @@ http://forum.sa-mp.com/member.php?u=76946
 
 ToDo's
 ======
-    -Change Position to Vector class.
     -Add wrapper methods for natives using definitions.
     -Add classes for Player, Vehicle, Object, PlayerObject, etc.
     -Add docs to EventsArgs.
