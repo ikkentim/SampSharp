@@ -7,7 +7,8 @@ This project is still under construction and has not yet been tested on Linux.
 
 Some functions/parts may give problems, crash or not may not even compile.
 
-I'm a total C++ newb and all feedback is welcome, file an Issue or contact me on the SA-MP forums.
+I'm a total C++ newb (but awesome with c# (-: ) and all feedback is welcome, file an Issue or contact me on the SA-MP forums.
+
 http://forum.sa-mp.com/member.php?u=76946
 
 ToDo's
