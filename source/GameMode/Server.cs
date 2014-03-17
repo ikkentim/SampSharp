@@ -16,6 +16,7 @@ namespace GameMode
 
         #endregion
 
+
         #region a_players natives
 
         /// <summary>
@@ -1633,7 +1634,7 @@ namespace GameMode
         /// <param name="text">The text to be displayed.</param>
         /// <param name="time">The duration of the text being shown in milliseconds.</param>
         /// <param name="style">The style of text to be displayed.</param>
-        /// <returns>This function always returns 1.</returns>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GameTextForAll(string text, int time, int style);
 
@@ -1778,9 +1779,9 @@ namespace GameMode
         public static extern int CreatePickup(int model, int type, float x, float y, float z, int virtualworld);
 
         /// <summary>
-        /// Destroys a pickup created with <see cref="CreatePickup"/>.
+        /// Destroys a pickup.
         /// </summary>
-        /// <param name="pickupid">The ID of the pickup to destroy (returned by <see cref="CreatePickup"/>).</param>
+        /// <param name="pickupid">The ID of the pickup to destroy.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool DestroyPickup(int pickupid);
@@ -1969,7 +1970,7 @@ namespace GameMode
         /// Check if a player is an actual player or an NPC.
         /// </summary>
         /// <param name="playerid">The ID of the player to check.</param>
-        /// <returns>1 if the player is an NPC or 0 if it's an actual player.</returns>
+        /// <returns>True if the player is an NPC, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsPlayerNPC(int playerid);
 
@@ -1977,7 +1978,7 @@ namespace GameMode
         /// Check if a player is logged into RCON.
         /// </summary>
         /// <param name="playerid">The ID of the player to check.</param>
-        /// <returns>1 if the player is logged into RCON, otherwise 0.</returns>
+        /// <returns>True if the player is logged into RCON, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsPlayerAdmin(int playerid);
 
@@ -2065,7 +2066,7 @@ namespace GameMode
         /// <param name="playerid">The ID of the player to get the version of.</param>
         /// <param name="version">The string to store the player's version in, passed by reference.</param>
         /// <param name="len">The maximum size of the version.</param>
-        /// <returns>1 on success and 0 on failure.</returns>
+        /// <returns>True on success, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetPlayerVersion(int playerid, out string version, int len);
 
@@ -2116,7 +2117,7 @@ namespace GameMode
         /// </summary>
         /// <param name="menuid">The ID of the menu to show.</param>
         /// <param name="playerid">The ID of the player to whom the menu will be shown.</param>
-        /// <returns>1 if succeeded, 0 if failed.</returns>
+        /// <returns>True on succeeded, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool ShowMenuForPlayer(int menuid, int playerid);
 
@@ -2125,14 +2126,15 @@ namespace GameMode
         /// </summary>
         /// <param name="menuid">The ID of the menu to hide.</param>
         /// <param name="playerid">The ID of the player that the menu will be hidden for.</param>
-        /// <returns>1 if succeeeded, 0 if failed.</returns>
+        /// <returns>True on succeeeded, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool HideMenuForPlayer(int menuid, int playerid);
 
         /// <summary>
-        /// 
+        /// Check whether the given menu has been created.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="menuid">The ID of the menu to check.</param>
+        /// <returns>True if valid, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsValidMenu(int menuid);
 
@@ -2149,7 +2151,7 @@ namespace GameMode
         /// </summary>
         /// <param name="menuid">The menu to disable a row of.</param>
         /// <param name="row">The row to disable.</param>
-        /// <returns>1 if succeeded, 0 if failed.</returns>
+        /// <returns>True on succeeded, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool DisableMenuRow(int menuid, int row);
 
@@ -2221,13 +2223,13 @@ namespace GameMode
         /// Toggle whether a textdraw uses a box.
         /// </summary>
         /// <param name="text">The textdraw to toggle the box on.</param>
-        /// <param name="use">1 to show a box or 0 to not show a box.</param>
+        /// <param name="use">True to show a box or False to not show a box.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool TextDrawUseBox(int text, bool use);
 
         /// <summary>
-        /// Adjusts the text box colour (only used if TextDrawUseBox 'use' parameter is 1).
+        /// Adjusts the text box colour (only used if <see cref="TextDrawUseBox"/> is set to True).
         /// </summary>
         /// <remarks>
         /// Opacity is set by the alpha intensity of colour (eg. color 0x000000FF has a solid black box opacity, whereas 0x000000AA has a semi-transparent black box opacity)
@@ -2417,7 +2419,7 @@ namespace GameMode
         /// </summary>
         /// <param name="zone">The ID of the gangzone to show.</param>
         /// <param name="color">The color of the gangzone.</param>
-        /// <returns>1 if the gangzone was shown, otherwise 0 (non-existant).</returns>
+        /// <returns>True if the gangzone was shown, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GangZoneShowForAll(int zone, int color);
 
@@ -2491,10 +2493,10 @@ namespace GameMode
             int virtualWorld, bool testLOS);
 
         /// <summary>
-        /// Delete a 3D text label (created with <a href="/wiki/Create3DTextLabel" title="Create3DTextLabel">Create3DTextLabel</a>).
+        /// Delete a 3D text label.
         /// </summary>
         /// <param name="id">The ID of the 3D text label to delete.</param>
-        /// <returns>1 if the 3D text label was deleted, otherwise 0.</returns>
+        /// <returns>True if the 3D text label was deleted, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool Delete3DTextLabel(int id);
 
@@ -2557,7 +2559,7 @@ namespace GameMode
         /// </summary>
         /// <param name="playerid">The player whose 3D text label to destroy.</param>
         /// <param name="id">The ID of the 3D Text Label to destroy.</param>
-        /// <returns>1 if destroyed, 0 if not.</returns>
+        /// <returns>True if destroyed, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool DeletePlayer3DTextLabel(int playerid, int id);
 
@@ -2626,115 +2628,412 @@ namespace GameMode
 
         #region a_objects natives
 
+        /// <summary>
+        /// Creates an object.
+        /// </summary>
+        /// <param name="modelid">The model you want to use.</param>
+        /// <param name="x">The X coordinate to create the object at.</param>
+        /// <param name="y">The Y coordinate to create the object at.</param>
+        /// <param name="z">The Z coordinate to create the object at.</param>
+        /// <param name="rX">The X rotation of the object.</param>
+        /// <param name="rY">The Y rotation of the object.</param>
+        /// <param name="rZ">The Z rotation of the object.</param>
+        /// <param name="drawDistance">The distance that San Andreas renders objects at. 0.0 will cause objects to render at their default distances.</param>
+        /// <returns>The ID of the object that was created.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int CreateObject(int modelid, float x, float y, float z, float rX, float rY, float rZ,
             float drawDistance);
 
+        /// <summary>
+        /// Attach an object to a vehicle.
+        /// </summary>
+        /// <param name="objectid">The ID of the object to attach to the vehicle.</param>
+        /// <param name="vehicleid">The ID of the vehicle to attach the object to.</param>
+        /// <param name="fOffsetX">The X axis offset.</param>
+        /// <param name="fOffsetY">The Y axis offset.</param>
+        /// <param name="fOffsetZ">The Z axis offset.</param>
+        /// <param name="fRotX">The X rotation offset.</param>
+        /// <param name="fRotY">The Y rotation offset.</param>
+        /// <param name="fRotZ">The Z rotation offset.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool AttachObjectToVehicle(int objectid, int vehicleid, float fOffsetX, float fOffsetY,
             float fOffsetZ, float fRotX, float fRotY, float fRotZ);
 
+        /// <summary>
+        /// You can use this function to attach objects to other objects. The objects will folow the main object.
+        /// </summary>
+        /// <param name="objectid">The object to attach to another object.</param>
+        /// <param name="attachtoid">The object to attach the object to.</param>
+        /// <param name="fOffsetX">The distance between the main object and the object in the X direction.</param>
+        /// <param name="fOffsetY">The distance between the main object and the object in the Y direction.</param>
+        /// <param name="fOffsetZ">The distance between the main object and the object in the Z direction.</param>
+        /// <param name="fRotX">The X rotation between the object and the main object.</param>
+        /// <param name="fRotY">The Y rotation between the object and the main object.</param>
+        /// <param name="fRotZ">The Z rotation between the object and the main object.</param>
+        /// <param name="syncRotation">If set to 0, objects' rotation will not be changed. See ferriswheel filterscript for example.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool AttachObjectToObject(int objectid, int attachtoid, float fOffsetX, float fOffsetY,
             float fOffsetZ, float fRotX, float fRotY, float fRotZ, bool syncRotation);
 
+        /// <summary>
+        /// Attach an object to a player.
+        /// </summary>
+        /// <param name="objectid">The ID of the object to attach to the player.</param>
+        /// <param name="playerid">The ID of the player to attach the object to.</param>
+        /// <param name="fOffsetX">The distance between the player and the object in the X direction.</param>
+        /// <param name="fOffsetY">The distance between the player and the object in the Y direction.</param>
+        /// <param name="fOffsetZ">The distance between the player and the object in the Z direction.</param>
+        /// <param name="fRotX">The X rotation between the object and the player.</param>
+        /// <param name="fRotY">The Y rotation between the object and the player.</param>
+        /// <param name="fRotZ">The Z rotation between the object and the player.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool AttachObjectToPlayer(int objectid, int playerid, float fOffsetX, float fOffsetY,
             float fOffsetZ, float fRotX, float fRotY, float fRotZ);
 
+        /// <summary>
+        /// Change the position of an object.
+        /// </summary>
+        /// <param name="objectid">The ID of the object to set the position of.</param>
+        /// <param name="x">The X coordinate to position the object at.</param>
+        /// <param name="y">The Y coordinate to position the object at.</param>
+        /// <param name="z">The Z coordinate to position the object at.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetObjectPos(int objectid, float x, float y, float z);
 
+        /// <summary>
+        /// Returns the coordinates of the current position of the given object. The position is saved by reference in three x/y/z variables.
+        /// </summary>
+        /// <param name="objectid">The object's id of which you want the current location.</param>
+        /// <param name="x">The variable to store the X coordinate, passed by reference.</param>
+        /// <param name="y">The variable to store the Y coordinate, passed by reference.</param>
+        /// <param name="z">The variable to store the Z coordinate, passed by reference.</param>
+        /// <returns>The objects position.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetObjectPos(int objectid, out float x, out float y, out float z);
 
+        /// <summary>
+        /// Rotates an object in all directions.
+        /// </summary>
+        /// <param name="objectid">The objectid of the object you want to rotate.</param>
+        /// <param name="rotX">The X rotation.</param>
+        /// <param name="rotY">The Y rotation.</param>
+        /// <param name="rotZ">The Z rotation.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetObjectRot(int objectid, float rotX, float rotY, float rotZ);
 
+        /// <summary>
+        /// Use this function to get the objects current rotation. The rotation is saved by reference in three RotX/RotY/RotZ variables.
+        /// </summary>
+        /// <param name="objectid">The objectid of the object you want to get the rotation from.</param>
+        /// <param name="rotX">The variable to store the X rotation, passed by reference.</param>
+        /// <param name="rotY">The variable to store the Y rotation, passed by reference.</param>
+        /// <param name="rotZ">The variable to store the Z rotation, passed by reference.</param>
+        /// <returns>The objects rotation.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetObjectRot(int objectid, out float rotX, out float rotY, out float rotZ);
 
+        /// <summary>
+        /// Check if the given objectid is valid.
+        /// </summary>
+        /// <param name="objectid">The objectid to check the validity of.</param>
+        /// <returns>True if the object exists, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsValidObject(int objectid);
 
+        /// <summary>
+        /// Destroys (removes) the given object.
+        /// </summary>
+        /// <param name="objectid">The objectid from the object you want to delete.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool DestroyObject(int objectid);
 
+        /// <summary>
+        /// Move an object to a new position with a set speed. Players/vehicles will 'surf' the object as it moves.
+        /// </summary>
+        /// <param name="objectid">The ID of the object to move.</param>
+        /// <param name="x">The X coordinate to move the object to.</param>
+        /// <param name="y">The Y coordinate to move the object to.</param>
+        /// <param name="z">The Z coordinate to move the object to.</param>
+        /// <param name="speed">The speed at which to move the object (units per second).</param>
+        /// <param name="rotX">The FINAL X rotation (optional).</param>
+        /// <param name="rotY">The FINAL Y rotation (optional).</param>
+        /// <param name="rotZ">The FINAL Z rotation (optional).</param>
+        /// <returns>The time it will take for the object to move in milliseconds.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int MoveObject(int objectid, float x, float y, float z, float speed, float rotX, float rotY,
             float rotZ);
 
+        /// <summary>
+        /// Stop a moving object after <see cref="MoveObject"/> has been used.
+        /// </summary>
+        /// <param name="objectid">The ID of the object to stop moving.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool StopObject(int objectid);
 
+        /// <summary>
+        /// Checks if the given objectid is moving.
+        /// </summary>
+        /// <param name="objectid">The objectid you want to check if is moving.</param>
+        /// <returns>True if the object is moving, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsObjectMoving(int objectid);
 
+        /// <summary>
+        /// Allows a player to edit an object (position and rotation) using a GUI (Graphical User Interface).
+        /// </summary>
+        /// <param name="playerid">The ID of the player that should edit the object.</param>
+        /// <param name="objectid">The ID of the object to be edited by the player.</param>
+        /// <returns>True on success, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool EditObject(int playerid, int objectid);
 
+        /// <summary>
+        /// Let the player edit (move, rotate) the given player object.
+        /// </summary>
+        /// <param name="playerid">The ID of the player that should edit the object.</param>
+        /// <param name="objectid">The object to be edited by the player.</param>
+        /// <returns>True on success and 0, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool EditPlayerObject(int playerid, int objectid);
 
+        /// <summary>
+        /// Display the cursor and allow the player to select an object. <see cref="OnPlayerSelectObject"/> is called when the player selects an object.
+        /// </summary>
+        /// <param name="playerid">The ID of the player that should be able to select the object.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SelectObject(int playerid);
 
+        /// <summary>
+        /// Cancel object edition mode for a player.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to cancel edition for.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool CancelEdit(int playerid);
 
+        /// <summary>
+        /// Creates an object which will be visible to only one player.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to create the object for.</param>
+        /// <param name="modelid">The model to create.</param>
+        /// <param name="x">The X coordinate to create the object at.</param>
+        /// <param name="y">The Y coordinate to create the object at.</param>
+        /// <param name="z">The Z coordinate to create the object at.</param>
+        /// <param name="rX">The X rotation of the object.</param>
+        /// <param name="rY">The Y rotation of the object.</param>
+        /// <param name="rZ">The Z rotation of the object.</param>
+        /// <param name="drawDistance">The distance from which objects will appear to players. 0.0 will cause an object to render at its default distance. Leaving this parameter out will cause objects to be rendered at their default distance. The maximum usable distance is 300 in versions prior to 0.3x, in which drawdistance can be unlimited.</param>
+        /// <returns>The ID of the object that was created, or INVALID_OBJECT_ID if the object limit (MAX_OBJECTS) was reached.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int CreatePlayerObject(int playerid, int modelid, float x, float y, float z, float rX,
             float rY, float rZ, float drawDistance);
 
+        /// <summary>
+        /// The same as <see cref="AttachObjectToPlayer"/> but for objects which were created for player.
+        /// </summary>
+        /// <param name="objectplayer">The id of the player which is linked with the object.</param>
+        /// <param name="objectid">The objectid you want to attach to the player.</param>
+        /// <param name="attachplayerid">The id of the player you want to attach to the object.</param>
+        /// <param name="offsetX">The distance between the player and the object in the X direction.</param>
+        /// <param name="offsetY">The distance between the player and the object in the Y direction.</param>
+        /// <param name="offsetZ">The distance between the player and the object in the Z direction.</param>
+        /// <param name="rX">The X rotation.</param>
+        /// <param name="rY">The Y rotation.</param>
+        /// <param name="rZ">The Z rotation.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool AttachPlayerObjectToPlayer(int objectplayer, int objectid, int attachplayer,
+        public static extern bool AttachPlayerObjectToPlayer(int objectplayer, int objectid, int attachplayerid,
             float offsetX, float offsetY, float offsetZ, float rX, float rY, float rZ);
 
+        /// <summary>
+        /// Attach a player object to a vehicle.
+        /// </summary>
+        /// <param name="playerid">The ID of the player the object was created for.</param>
+        /// <param name="objectid">The ID of the object to attach to the vehicle.</param>
+        /// <param name="vehicleid">The ID of the vehicle to attach the object to.</param>
+        /// <param name="fOffsetX">The X position offset for attachment.</param>
+        /// <param name="fOffsetY">The Y position offset for attachment.</param>
+        /// <param name="fOffsetZ">The Z position offset for attachment.</param>
+        /// <param name="fRotX">The X rotation offset for attachment.</param>
+        /// <param name="fRotY">The Y rotation offset for attachment.</param>
+        /// <param name="fRotZ">The Z rotation offset for attachment.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool AttachPlayerObjectToVehicle(int playerid, int objectid, int vehicleid, float fOffsetX,
             float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ);
 
+        /// <summary>
+        /// Sets the position of a player-object to the specified coordinates.
+        /// </summary>
+        /// <param name="playerid">The ID of the player whose player-object to set the position of.</param>
+        /// <param name="objectid">The ID of the player-object to set the position of. Returned by <see cref="CreatePlayerObject"/>.</param>
+        /// <param name="x">The X coordinate to put the object at.</param>
+        /// <param name="y">The Y coordinate to put the object at.</param>
+        /// <param name="z">The Z coordinate to put the object at.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerObjectPos(int playerid, int objectid, float x, float y, float z);
 
+        /// <summary>
+        /// Returns the coordinates of the current position of the given object. The position is saved by reference in three x/y/z variables.
+        /// </summary>
+        /// <param name="playerid">The player you associated this object to.</param>
+        /// <param name="objectid">The object's id of which you want the current location.</param>
+        /// <param name="x">The variable to store the X coordinate, passed by reference.</param>
+        /// <param name="y">The variable to store the Y coordinate, passed by reference.</param>
+        /// <param name="z">The variable to store the Z coordinate, passed by reference.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetPlayerObjectPos(int playerid, int objectid, out float x, out float y, out float z);
 
+        /// <summary>
+        /// Rotates an object in all directions.
+        /// </summary>
+        /// <param name="playerid">The player you associated this object to.</param>
+        /// <param name="objectid">The objectid of the object you want to rotate.</param>
+        /// <param name="rotX">The X rotation.</param>
+        /// <param name="rotY">The Y rotation.</param>
+        /// <param name="rotZ">The Z rotation.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerObjectRot(int playerid, int objectid, float rotX, float rotY, float rotZ);
 
+        /// <summary>
+        /// Use this function to get the object' s current rotation. The rotation is saved by reference in three RotX/RotY/RotZ variables.
+        /// </summary>
+        /// <param name="playerid">The player you associated this object to.</param>
+        /// <param name="objectid">The objectid of the object you want to get the rotation from.</param>
+        /// <param name="rotX">The variable to store the X rotation, passed by reference.</param>
+        /// <param name="rotY">The variable to store the Y rotation, passed by reference.</param>
+        /// <param name="rotZ">The variable to store the Z rotation, passed by reference.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetPlayerObjectRot(int playerid, int objectid, out float rotX, out float rotY,
             out float rotZ);
 
+        /// <summary>
+        /// Checks if the given objectid is valid for the given player.
+        /// </summary>
+        /// <param name="playerid">The player you associated this object to.</param>
+        /// <param name="objectid">The objectid you want to validate.</param>
+        /// <returns>True if the object exists, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsValidPlayerObject(int playerid, int objectid);
 
+        /// <summary>
+        /// Destroy a player-object.
+        /// </summary>
+        /// <param name="playerid">The ID of the player the object is associated to.</param>
+        /// <param name="objectid">The ID of the player-object to delete (returned by <see cref="CreatePlayerObject"/>).</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool DestroyPlayerObject(int playerid, int objectid);
 
+        /// <summary>
+        /// Move an object with a set speed. Also supports rotation. Players/vehicles will surf moving objects.
+        /// </summary>
+        /// <param name="playerid">The ID of the player whose player-object to move.</param>
+        /// <param name="objectid">The ID of the object to move.</param>
+        /// <param name="x">The X coordinate to move the object to.</param>
+        /// <param name="y">The Y coordinate to move the object to.</param>
+        /// <param name="z">The Z coordinate to move the object to.</param>
+        /// <param name="speed">The speed at which to move the object.</param>
+        /// <param name="rotX">The final X rotation (optional).</param>
+        /// <param name="rotY">The final Y rotation (optional).</param>
+        /// <param name="rotZ">The final Z rotation (optional).</param>
+        /// <returns>The time it will take for the object to move in milliseconds.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int MovePlayerObject(int playerid, int objectid, float x, float y, float z, float speed,
             float rotX, float rotY, float rotZ);
 
+        /// <summary>
+        /// Stop a moving player-object after <see cref="MovePlayerObject"/> has been used.
+        /// </summary>
+        /// <param name="playerid">The ID of the player whose player-object to stop.</param>
+        /// <param name="objectid">The ID of the player-object to stop.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool StopPlayerObject(int playerid, int objectid);
 
+        /// <summary>
+        /// Checks if the given player objectid is moving.
+        /// </summary>
+        /// <param name="playerid">The ID of the player whose player-object you want to theck if is moving.</param>
+        /// <param name="objectid">The player objectid you want to check if is moving.</param>
+        /// <returns>True if the player object is moving, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsPlayerObjectMoving(int playerid, int objectid);
 
+        /// <summary>
+        /// Replace the texture of an object with the texture from another model in the game.
+        /// </summary>
+        /// <param name="objectid">The ID of the object to change the texture of.</param>
+        /// <param name="materialindex">The material index on the object to change.</param>
+        /// <param name="modelid">The modelid on which the replacement texture is located. Use 0 for alpha. Use -1 to change the material color without altering the texture.</param>
+        /// <param name="txdname">The name of the txd file which contains the replacement texture (use "none" if not required).</param>
+        /// <param name="texturename">The name of the texture to use as the replacement (use "none" if not required).</param>
+        /// <param name="materialcolor">The object color to set, as an integer or hex in ARGB color format. Using 0 keeps the existing material color.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetObjectMaterial(int objectid, int materialindex, int modelid, string txdname,
             string texturename, int materialcolor);
 
+        /// <summary>
+        /// Replace the texture of a player-object with the texture from another model in the game.
+        /// </summary>
+        /// <param name="playerid">The ID of the player the object is associated to.</param>
+        /// <param name="objectid">The ID of the object to replace the texture of.</param>
+        /// <param name="materialindex">The material index on the object to change.</param>
+        /// <param name="modelid">The modelid on which replacement texture is located. Use 0 for alpha. Use -1 to change the material color without altering the existing texture.</param>
+        /// <param name="txdname">The name of the txd file which contains the replacement texture (use "none" if not required).</param>
+        /// <param name="texturename">The name of the texture to use as the replacement (use "none" if not required).</param>
+        /// <param name="materialcolor">The object color to set, as an integer or hex in ARGB format. Using 0 keeps the existing material color.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerObjectMaterial(int playerid, int objectid, int materialindex, int modelid,
             string txdname, string texturename, int materialcolor);
 
+        /// <summary>
+        /// Replace the texture of an object with text.
+        /// </summary>
+        /// <param name="objectid">The ID of the object to replace the texture of with text.</param>
+        /// <param name="text">The text to show on the object.</param>
+        /// <param name="materialindex">The object's material index to replace with text.</param>
+        /// <param name="materialsize">The size of the material.</param>
+        /// <param name="fontface">The font to use.</param>
+        /// <param name="fontsize">The size of the text (MAX 255).</param>
+        /// <param name="bold">Bold text. Set to True for bold, False for not.</param>
+        /// <param name="fontcolor">The color of the text, in ARGB format.</param>
+        /// <param name="backcolor">The background color, in ARGB format.</param>
+        /// <param name="textalignment">The alignment of the text (default: left).</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetObjectMaterialText(int objectid, string text, int materialindex, int materialsize,
             string fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment);
 
+        /// <summary>
+        /// Replace the texture of a player object with text.
+        /// </summary>
+        /// <param name="playerid">The ID of the player whose player object to set the text of.</param>
+        /// <param name="objectid">The ID of the object on which to place the text.</param>
+        /// <param name="text">The text to set.</param>
+        /// <param name="materialindex">The material index to replace with text (DEFAULT: 0).</param>
+        /// <param name="materialsize">The size of the material (DEFAULT: 256x128).</param>
+        /// <param name="fontface">The font to use (DEFAULT: Arial).</param>
+        /// <param name="fontsize">The size of the text (DEFAULT: 24) (MAX 255).</param>
+        /// <param name="bold">Bold text. Set to True for bold, False for not (DEFAULT: True).</param>
+        /// <param name="fontcolor">The color of the text (DEFAULT: White).</param>
+        /// <param name="backcolor">The background color (DEFAULT: None (transparent)).</param>
+        /// <param name="textalignment">The alignment of the text (DEFAULT: Left).</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerObjectMaterialText(int playerid, int objectid, string text, int materialindex,
             int materialsize, string fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment);
@@ -2743,126 +3042,386 @@ namespace GameMode
 
         #region a_vehicles natives
 
+        /// <summary>
+        /// Check if a vehicle is created.
+        /// </summary>
+        /// <param name="vehicleid">The vehicle to check for existance.</param>
+        /// <returns>true if the vehicle exists, otherwise false.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsValidVehicle(int vehicleid);
 
+        /// <summary>
+        /// This function can be used to calculate the distance (as a float) between a vehicle and another map coordinate. This can be useful to detect how far a vehicle away is from a location.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to calculate the distance for.</param>
+        /// <param name="x">The X map coordinate.</param>
+        /// <param name="y">The Y map coordinate.</param>
+        /// <param name="z">The Z map coordinate.</param>
+        /// <returns>A float containing the distance from the point specified in the coordinates.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern float GetVehicleDistanceFromPoint(int vehicleid, float x, float y, float z);
 
+        /// <summary>
+        /// Creates a vehicle in the world. Can be used in place of <see cref="AddStaticVehicleEx"/> at any time in the script.
+        /// </summary>
+        /// <param name="vehicletype">The model for the vehicle.</param>
+        /// <param name="x">The X coordinate for the vehicle.</param>
+        /// <param name="y">The Y coordinate for the vehicle.</param>
+        /// <param name="z">The Z coordinate for the vehicle.</param>
+        /// <param name="rotation">The facing angle for the vehicle.</param>
+        /// <param name="color1">The primary color ID.</param>
+        /// <param name="color2">The secondary color ID.</param>
+        /// <param name="respawnDelay">The delay until the car is respawned without a driver in seconds. Using -1 will prevent the vehicle from respawning.</param>
+        /// <returns> The vehicle ID of the vehicle created (1 - <see cref="Limits.MaxVehicles"/>). <see cref="Misc.InvalidVehicleId"/> (65535) if vehicle was not created (vehicle limit reached or invalid vehicle model ID passed).</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int CreateVehicle(int vehicletype, float x, float y, float z, float rotation, int color1,
             int color2, int respawnDelay);
 
+        /// <summary>
+        /// Destroys a vehicle which was previously created.
+        /// </summary>
+        /// <param name="vehicleid">The vehicleid of the vehicle which shall be destroyed.</param>
+        /// <returns> False: Vehicle does not exist. True: Vehicle was successfully destroyed.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool DestroyVehicle(int vehicleid);
 
+        /// <summary>
+        /// Checks if a vehicle is streamed in for a player.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to check.</param>
+        /// <param name="forplayerid">The ID of the player to check.</param>
+        /// <returns>False: Vehicle is not streamed in for the player. False: Vehicle is streamed in for the player.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsVehicleStreamedIn(int vehicleid, int forplayerid);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehiclePos(int vehicleid, out float x, out float y, out float z);
 
+        /// <summary>
+        /// Saves the x, y and z position of a vehicle in variables.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle.</param>
+        /// <param name="x">The variable to store the X coordinate, passed by reference.</param>
+        /// <param name="y">The variable to store the Y coordinate, passed by reference.</param>
+        /// <param name="z">The variable to store the Z coordinate, passed by reference.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetVehiclePos(int vehicleid, float x, float y, float z);
 
+        /// <summary>
+        /// Store the z rotation of a vehicle in a float variable.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to get the angle of.</param>
+        /// <param name="zAngle">The variable (FLOAT) in which to store the rotation, passed by reference.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleZAngle(int vehicleid, out float zAngle);
 
+        /// <summary>
+        /// Returns a vehicle's rotation on all axis as a quaternion.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to get the rotation of.</param>
+        /// <param name="w">A float variable in which to store the first quaternion angle, passed by reference.</param>
+        /// <param name="x">A float variable in which to store the second quaternion angle, passed by reference.</param>
+        /// <param name="y">A float variable in which to store the third quaternion angle, passed by reference.</param>
+        /// <param name="z">A float variable in which to store the fourth quaternion angle, passed by reference.</param>
+        /// <returns>True on succes, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleRotationQuat(int vehicleid, out float w, out float x, out float y,
             out float z);
 
+        /// <summary>
+        /// Set the Z rotation of a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to set the rotation of.</param>
+        /// <param name="zAngle">The angle to set.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetVehicleZAngle(int vehicleid, float zAngle);
 
+        /// <summary>
+        /// Set the parameters of a vehicle for a player.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to set the parameters of.</param>
+        /// <param name="playerid">The ID of the player to set the vehicle's parameters for.</param>
+        /// <param name="objective">False to disable the objective or True to show it.</param>
+        /// <param name="doorslocked">False to unlock the doors or True to lock them.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetVehicleParamsForPlayer(int vehicleid, int playerid, bool objective,
             bool doorslocked);
 
+        /// <summary>
+        /// Use this function before any player connects (<see cref="OnGameModeInit"/>) to tell all clients that the script will control vehicle engines and lights. This prevents the game automatically turning the engine on/off when players enter/exit vehicles and headlights automatically coming on when it is dark.
+        /// </summary>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool ManualVehicleEngineAndLights();
 
+        /// <summary>
+        /// Sets a vehicle's parameters for all players.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to set the parameters of.</param>
+        /// <param name="engine">Toggle the engine status on or off.</param>
+        /// <param name="lights">Toggle the lights on or off.</param>
+        /// <param name="alarm">Toggle the vehicle alarm on or off.</param>
+        /// <param name="doors">Toggle the lock status of the doors.</param>
+        /// <param name="bonnet">Toggle the bonnet to be open or closed.</param>
+        /// <param name="boot">Toggle the boot to be open or closed.</param>
+        /// <param name="objective">Toggle the objective status for the vehicle on or off.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetVehicleParamsEx(int vehicleid, bool engine, bool lights, bool alarm, bool doors,
             bool bonnet, bool boot, bool objective);
 
+
+        /// <summary>
+        /// Gets a vehicle's parameters.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to get the parameters from.</param>
+        /// <param name="engine">Get the engine status. If True, the engine is running..</param>
+        /// <param name="lights">Get the vehicle's lights' state. If True the lights are on.</param>
+        /// <param name="alarm">Get the vehicle's alarm state. If True the alarm is (or was) sounding.</param>
+        /// <param name="doors">Get the lock status of the doors. If True the doors are locked.</param>
+        /// <param name="bonnet">Get the bonnet/hood status. If True, it's open.</param>
+        /// <param name="boot">Get the boot/trunk status. True means it is open.</param>
+        /// <param name="objective">Get the objective status. True means the objective is on.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleParamsEx(int vehicleid, out bool engine, out bool lights, out bool alarm,
             out bool doors, out bool bonnet, out bool boot, out bool objective);
 
+        /// <summary>
+        /// Sets a vehicle back to the position at where it was created.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to respawn.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetVehicleToRespawn(int vehicleid);
 
+        /// <summary>
+        /// Links the vehicle to the interior. This can be used for example for an arena/stadium.
+        /// </summary>
+        /// <param name="vehicleid">Vehicle ID (Not model).</param>
+        /// <param name="interiorid">Interior ID.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool LinkVehicleToInterior(int vehicleid, int interiorid);
 
+        /// <summary>
+        /// Adds a 'component' (often referred to as a 'mod' (modification)) to a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to add the component to. Not to be confused with modelid.</param>
+        /// <param name="componentid">The ID of the component to add to the vehicle.</param>
+        /// <returns> False: The component was not added because the vehicle does not exist. True: The component was successfully added to the vehicle.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool AddVehicleComponent(int vehicleid, int componentid);
 
+        /// <summary>
+        /// Remove a component from a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">ID of the vehicle.</param>
+        /// <param name="componentid">ID of the component to remove.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool RemoveVehicleComponent(int vehicleid, int componentid);
 
+        /// <summary>
+        /// Change a vehicle's primary and secondary colors.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to change the colors of.</param>
+        /// <param name="color1">The new vehicle's primary Color ID.</param>
+        /// <param name="color2">The new vehicle's secondary Color ID.</param>
+        /// <returns> False: The vehicle does not exist. True: The vehicle's color was successfully changed.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool ChangeVehicleColor(int vehicleid, int color1, int color2);
 
+        /// <summary>
+        /// Change a vehicle's paintjob (for plain colors see <see cref="ChangeVehicleColor"/>).
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to change the paintjob of.</param>
+        /// <param name="paintjobid">The ID of the Paintjob to apply. Use 3 to remove a paintjob.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool ChangeVehiclePaintjob(int vehicleid, int paintjobid);
 
+        /// <summary>
+        /// Sets a vehicle's health to a specific value.
+        /// </summary>
+        /// <param name="vehicleid">ID of the vehicle to set the health of.</param>
+        /// <param name="health">Vehicle heath given as a float value.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetVehicleHealth(int vehicleid, float health);
 
+        /// <summary>
+        /// Get the health of a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to get the health of.</param>
+        /// <param name="health">A float varaible in which to store the vehicle's health, passed by reference.</param>
+        /// <returns> True: success False: failure (invalid vehicle ID).</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleHealth(int vehicleid, out float health);
 
+        /// <summary>
+        /// Attach a vehicle to another vehicle as a trailer.
+        /// </summary>
+        /// <param name="trailerid">The ID of the vehicle that will be pulled.</param>
+        /// <param name="vehicleid">The ID of the vehicle that will pull the trailer.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool AttachTrailerToVehicle(int trailerid, int vehicleid);
 
+        /// <summary>
+        /// Detach the connection between a vehicle and its trailer, if any.
+        /// </summary>
+        /// <param name="vehicleid">ID of the pulling vehicle.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool DetachTrailerFromVehicle(int vehicleid);
 
+        /// <summary>
+        /// Checks if a vehicle has a trailer attached to it.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to check for trailers.</param>
+        /// <returns>True if the vehicle has a trailer attached, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsTrailerAttachedToVehicle(int vehicleid);
 
+        /// <summary>
+        /// Get the ID of the trailer attached to a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to get the trailer of.</param>
+        /// <returns>The vehicle ID of the trailer or 0 if no trailer is attached.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetVehicleTrailer(int vehicleid);
 
+        /// <summary>
+        /// Set a vehicle's numberplate, which supports olor embedding.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to set the numberplate of.</param>
+        /// <param name="numberplate">The text that should be displayed on the numberplate. Color Embedding> is supported.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetVehicleNumberPlate(int vehicleid, string numberplate);
 
+        /// <summary>
+        /// Gets the model ID of a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to get the model of.</param>
+        /// <returns>The vehicle model ID, or 0 if the vehicle doesn't exist.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetVehicleModel(int vehicleid);
 
+        /// <summary>
+        /// Retreives the installed component ID from a vehicle in a specific slot.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to check for the component.</param>
+        /// <param name="slot">The component slot to check for components.</param>
+        /// <returns>The ID of the component installed in the specified slot.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetVehicleComponentInSlot(int vehicleid, int slot);
 
+        /// <summary>
+        /// Find out what type of component a certain ID is.
+        /// </summary>
+        /// <param name="component">The component ID to check.</param>
+        /// <returns>The component slot ID of the specified component.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetVehicleComponentType(int component);
 
+        /// <summary>
+        /// Fully repairs a vehicle, including visual damage (bumps, dents, scratches, popped tires etc.).
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to repair.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool RepairVehicle(int vehicleid);
 
+        /// <summary>
+        /// Gets the velocity at which the vehicle is moving in the three directions, X, Y and Z.
+        /// </summary>
+        /// <param name="vehicleid">The vehicle to get the velocity of.</param>
+        /// <param name="x">The Float variable to save the velocity in the X direction to.</param>
+        /// <param name="y">The Float variable to save the velocity in the Y direction to.</param>
+        /// <param name="z">The Float variable to save the velocity in the Z direction to.</param>
+        /// <returns>The function itself doesn't return a specific value. The X, Y and Z velocities are stored in the referenced variables.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleVelocity(int vehicleid, out float x, out float y, out float z);
 
+        /// <summary>
+        /// Sets the X, Y and Z velocity of a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to set the velocity of.</param>
+        /// <param name="x">The velocity in the X direction.</param>
+        /// <param name="y">The velocity in the Y direction .</param>
+        /// <param name="z">The velocity in the Z direction.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetVehicleVelocity(int vehicleid, float x, float y, float z);
 
+        /// <summary>
+        /// Sets the angular X, Y and Z velocity of a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to set the velocity of.</param>
+        /// <param name="x">The amount of velocity in the angular X direction.</param>
+        /// <param name="y">The amount of velocity in the angular Y direction .</param>
+        /// <param name="z">The amount of velocity in the angular Z direction.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetVehicleAngularVelocity(int vehicleid, float x, float y, float z);
 
+        /// <summary>
+        /// Retrieve the damage statuses of a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to get the damage statuses of.</param>
+        /// <param name="panels">A variable to store the panel damage data in, passed by reference.</param>
+        /// <param name="doors">A variable to store the door damage data in, passed by reference.</param>
+        /// <param name="lights">A variable to store the light damage data in, passed by reference.</param>
+        /// <param name="tires">A variable to store the tire damage data in, passed by reference.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleDamageStatus(int vehicleid, out int panels, out int doors, out int lights,
             out int tires);
 
+        /// <summary>
+        /// Sets the various visual damage statuses of a vehicle, such as popped tires, broken lights and damaged panels.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to set the damage of.</param>
+        /// <param name="panels">A set of bits containing the panel damage status.</param>
+        /// <param name="doors">A set of bits containing the door damage status.</param>
+        /// <param name="lights">A set of bits containing the light damage status.</param>
+        /// <param name="tires">A set of bits containing the tire damage status.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool UpdateVehicleDamageStatus(int vehicleid, int panels, int doors, int lights, int tires);
 
+        /// <summary>
+        /// Sets the 'virtual world' of a vehicle. Players will only be able to see vehicles in their own virtual world.
+        /// </summary>
+        /// <param name="vehicleid">The ID of vehicle to set the virtual world of.</param>
+        /// <param name="worldid">The ID of the virtual world to put the vehicle in.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetVehicleVirtualWorld(int vehicleid, int worldid);
 
+        /// <summary>
+        /// Get the virtual world of a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to get the virtual world of.</param>
+        /// <returns>The virtual world that the vehicle is in.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetVehicleVirtualWorld(int vehicleid);
 
+        /// <summary>
+        /// Retrieve information about a specific vehicle model such as the size or position of seats.
+        /// </summary>
+        /// <param name="model">The vehicle model to get info of.</param>
+        /// <param name="infotype">The type of information to retrieve.</param>
+        /// <param name="x">A float to store the X value.</param>
+        /// <param name="y">A float to store the Y value.</param>
+        /// <param name="z">A float to store the Z value.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleModelInfo(int model, int infotype, out float x, out float y, out float z);
 
