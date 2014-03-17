@@ -2,10 +2,14 @@
 
 #include <sampgdk/a_players.h>
 #include <sampgdk/a_samp.h>
+#include <sampgdk/a_http.h>
+#include <sampgdk/a_objects.h>
+#include <sampgdk/a_vehicles.h>
 
 #include "Callbacks.h"
 
-//String converters
+//
+//a_players string converters
 static int p_SetPlayerName(int playerid, MonoString * name) {
 	return sampgdk_SetPlayerName(playerid, mono_string_to_utf8(name));
 }
@@ -57,6 +61,36 @@ static bool p_ApplyAnimation(int playerid, MonoString * animlib, MonoString * an
 static bool p_StartRecordingPlayerData(int playerid, int recordtype, MonoString * recordname) {
 	return sampgdk_StartRecordingPlayerData(playerid, recordtype, mono_string_to_utf8(recordname));
 }
+static bool p_GetPlayerIp(int playerid, MonoString ** ip, int size) {
+	char * buffer = new char[size];
+	bool retbool = sampgdk_GetPlayerIp(playerid, buffer, size);
+	*ip = mono_string_new(mono_domain_get(), buffer);
+	return retbool;
+}
+static int p_GetPlayerName(int playerid, MonoString ** name, int size) {
+	char * buffer = new char[size];
+	int retint = sampgdk_GetPlayerName(playerid, buffer, size);
+	*name = mono_string_new(mono_domain_get(), buffer);
+	return retint;
+}
+static bool p_GetPVarNameAtIndex(int playerid, int index, MonoString ** varname, int size) {
+	char * buffer = new char[size];
+	bool retbool = sampgdk_GetPVarNameAtIndex(playerid, index, buffer, size);
+	*varname = mono_string_new(mono_domain_get(), buffer);
+	return retbool;
+}
+static bool p_GetAnimationName(int index, MonoString ** animlib, int animlib_size, MonoString ** animname, int animname_size) {
+	char * libbuffer = new char[animlib_size];
+	char * namebuffer = new char[animname_size];
+
+	bool retbool = sampgdk_GetAnimationName(index, libbuffer, animlib_size, namebuffer, animname_size);
+	*animlib = mono_string_new(mono_domain_get(), libbuffer);
+	*animname = mono_string_new(mono_domain_get(), namebuffer);
+	return retbool;
+}
+
+//
+//a_samp string converters
 static bool p_SendClientMessage(int playerid, int color, MonoString * message) {
 	return sampgdk_SendClientMessage(playerid, color, mono_string_to_utf8(message));
 }
@@ -129,33 +163,6 @@ static bool p_UpdatePlayer3DTextLabelText(int playerid, int id, int color, MonoS
 static bool p_ShowPlayerDialog(int playerid, int dialogid, int style, MonoString * caption, MonoString * info, MonoString * button1, MonoString * button2) {
 	return sampgdk_ShowPlayerDialog(playerid, dialogid, style, mono_string_to_utf8(caption), mono_string_to_utf8(info), mono_string_to_utf8(button1), mono_string_to_utf8(button2));
 }
-static bool p_GetPlayerIp(int playerid, MonoString ** ip, int size) {
-	char * buffer = new char[size];
-	bool retbool = sampgdk_GetPlayerIp(playerid, buffer, size);
-	*ip = mono_string_new(mono_domain_get(), buffer);
-	return retbool;
-}
-static int p_GetPlayerName(int playerid, MonoString ** name, int size) {
-	char * buffer = new char[size];
-	int retint = sampgdk_GetPlayerName(playerid, buffer, size);
-	*name = mono_string_new(mono_domain_get(), buffer);
-	return retint;
-}
-static bool p_GetPVarNameAtIndex(int playerid, int index, MonoString ** varname, int size) {
-	char * buffer = new char[size];
-	bool retbool = sampgdk_GetPVarNameAtIndex(playerid, index, buffer, size);
-	*varname = mono_string_new(mono_domain_get(), buffer);
-	return retbool;
-}
-static bool p_GetAnimationName(int index, MonoString ** animlib, int animlib_size, MonoString ** animname, int animname_size) {
-	char * libbuffer = new char[animlib_size];
-	char * namebuffer = new char[animname_size];
-
-	bool retbool = sampgdk_GetAnimationName(index, libbuffer, animlib_size, namebuffer, animname_size);
-	*animlib = mono_string_new(mono_domain_get(), libbuffer);
-	*animname = mono_string_new(mono_domain_get(), namebuffer);
-	return retbool;
-}
 static bool p_GetWeaponName(int weaponid, MonoString ** name, int size) {
 	char * buffer = new char[size];
 	bool retbool = sampgdk_GetWeaponName(weaponid, buffer, size);
@@ -186,15 +193,15 @@ static bool p_GetNetworkStats(MonoString ** retstr, int size) {
 	*retstr = mono_string_new(mono_domain_get(), buffer);
 	return retbool;
 }
-
-static int p_SetTimer(int interval, bool repeat, MonoObject * params)
-{ 
+static int p_SetTimer(int interval, bool repeat, MonoObject * params) {
 	return SetTimer(interval, repeat, p_TimerCallback, params);
 }
 
+
+
 static void LoadNatives()
 {
-
+	//a_players natives
 	mono_add_internal_call("GameMode.Server::SetSpawnInfo", sampgdk_SetSpawnInfo);
 	mono_add_internal_call("GameMode.Server::SpawnPlayer", sampgdk_SpawnPlayer);
 	mono_add_internal_call("GameMode.Server::SetPlayerPos", sampgdk_SetPlayerPos);
@@ -238,7 +245,7 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Server::GetPlayerPing", sampgdk_GetPlayerPing);
 	mono_add_internal_call("GameMode.Server::GetPlayerWeapon", sampgdk_GetPlayerWeapon);
 	mono_add_internal_call("GameMode.Server::GetPlayerKeys", sampgdk_GetPlayerKeys);
-	mono_add_internal_call("GameMode.Server::GetPlayerName", sampgdk_GetPlayerName);
+	mono_add_internal_call("GameMode.Server::GetPlayerName", p_GetPlayerName);
 	mono_add_internal_call("GameMode.Server::SetPlayerTime", sampgdk_SetPlayerTime);
 	mono_add_internal_call("GameMode.Server::GetPlayerTime", sampgdk_GetPlayerTime);
 	mono_add_internal_call("GameMode.Server::TogglePlayerClock", sampgdk_TogglePlayerClock);
@@ -290,7 +297,7 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Server::GetPVarFloat", p_GetPVarFloat);
 	mono_add_internal_call("GameMode.Server::DeletePVar", p_DeletePVar);
 	mono_add_internal_call("GameMode.Server::GetPVarsUpperIndex", sampgdk_GetPVarsUpperIndex);
-	mono_add_internal_call("GameMode.Server::GetPVarNameAtIndex", sampgdk_GetPVarNameAtIndex);
+	mono_add_internal_call("GameMode.Server::GetPVarNameAtIndex", p_GetPVarNameAtIndex);
 	mono_add_internal_call("GameMode.Server::GetPVarType", p_GetPVarType);
 	mono_add_internal_call("GameMode.Server::SetPlayerChatBubble", p_SetPlayerChatBubble);
 	mono_add_internal_call("GameMode.Server::PutPlayerInVehicle", sampgdk_PutPlayerInVehicle);
@@ -302,7 +309,7 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Server::ApplyAnimation", p_ApplyAnimation);
 	mono_add_internal_call("GameMode.Server::ClearAnimations", sampgdk_ClearAnimations);
 	mono_add_internal_call("GameMode.Server::GetPlayerAnimationIndex", sampgdk_GetPlayerAnimationIndex);
-	mono_add_internal_call("GameMode.Server::GetAnimationName", sampgdk_GetAnimationName);
+	mono_add_internal_call("GameMode.Server::GetAnimationName", p_GetAnimationName);
 	mono_add_internal_call("GameMode.Server::GetPlayerSpecialAction", sampgdk_GetPlayerSpecialAction);
 	mono_add_internal_call("GameMode.Server::SetPlayerSpecialAction", sampgdk_SetPlayerSpecialAction);
 	mono_add_internal_call("GameMode.Server::SetPlayerCheckpoint", sampgdk_SetPlayerCheckpoint);
@@ -339,6 +346,8 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Server::PlayerSpectateVehicle", sampgdk_PlayerSpectateVehicle);
 	mono_add_internal_call("GameMode.Server::StartRecordingPlayerData", p_StartRecordingPlayerData);
 	mono_add_internal_call("GameMode.Server::StopRecordingPlayerData", sampgdk_StopRecordingPlayerData);
+
+	//a_samp natives
 	mono_add_internal_call("GameMode.Server::SendClientMessage", p_SendClientMessage);
 	mono_add_internal_call("GameMode.Server::SendClientMessageToAll", p_SendClientMessageToAll);
 	mono_add_internal_call("GameMode.Server::SendPlayerMessageToPlayer", p_SendPlayerMessageToPlayer);
@@ -361,7 +370,7 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Server::ShowPlayerMarkers", sampgdk_ShowPlayerMarkers);
 	mono_add_internal_call("GameMode.Server::GameModeExit", sampgdk_GameModeExit);
 	mono_add_internal_call("GameMode.Server::SetWorldTime", sampgdk_SetWorldTime);
-	mono_add_internal_call("GameMode.Server::GetWeaponName", sampgdk_GetWeaponName);
+	mono_add_internal_call("GameMode.Server::GetWeaponName", p_GetWeaponName);
 	mono_add_internal_call("GameMode.Server::EnableTirePopping", sampgdk_EnableTirePopping);
 	mono_add_internal_call("GameMode.Server::EnableVehicleFriendlyFire", sampgdk_EnableVehicleFriendlyFire);
 	mono_add_internal_call("GameMode.Server::AllowInteriorWeapons", sampgdk_AllowInteriorWeapons);
@@ -387,9 +396,9 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Server::GetServerVarAsString", p_GetServerVarAsString);
 	mono_add_internal_call("GameMode.Server::GetServerVarAsInt", p_GetServerVarAsInt);
 	mono_add_internal_call("GameMode.Server::GetServerVarAsBool", p_GetServerVarAsBool);
-	mono_add_internal_call("GameMode.Server::GetPlayerNetworkStats", sampgdk_GetPlayerNetworkStats);
-	mono_add_internal_call("GameMode.Server::GetNetworkStats", sampgdk_GetNetworkStats);
-	mono_add_internal_call("GameMode.Server::GetPlayerVersion", sampgdk_GetPlayerVersion);
+	mono_add_internal_call("GameMode.Server::GetPlayerNetworkStats", p_GetPlayerNetworkStats);
+	mono_add_internal_call("GameMode.Server::GetNetworkStats", p_GetNetworkStats);
+	mono_add_internal_call("GameMode.Server::GetPlayerVersion", p_GetPlayerVersion);
 	mono_add_internal_call("GameMode.Server::CreateMenu", p_CreateMenu);
 	mono_add_internal_call("GameMode.Server::DestroyMenu", sampgdk_DestroyMenu);
 	mono_add_internal_call("GameMode.Server::AddMenuItem", p_AddMenuItem);
@@ -445,6 +454,15 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Server::ShowPlayerDialog", p_ShowPlayerDialog);
 	mono_add_internal_call("GameMode.Server::SetTimer", p_SetTimer);
 	mono_add_internal_call("GameMode.Server::KillTimer", sampgdk_KillTimer);
-	mono_add_internal_call("GameMode.Server::gpci", sampgdk_gpci);
+	mono_add_internal_call("GameMode.Server::gpci", p_gpci);
+
+	//a_http
+
+
+	//a_objects
+
+
+	//a_vehicles
+
 
 }
