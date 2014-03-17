@@ -16,7 +16,7 @@ ToDo's
     -Change Position to Vector class.
     -Add wrapper methods for natives using definitions.
     -Add classes for Player, Vehicle, Object, PlayerObject, etc.
-    -Add docs to callbacks and events.
+    -Add docs to EventsArgs.
     -Add docs to definitions.
     -Add more remarks to native docs, remove links/HTML.
     -Improve and test.
