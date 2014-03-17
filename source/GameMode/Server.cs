@@ -935,7 +935,7 @@ namespace GameMode
         /// <param name="fRotX">The X rotation value.</param>
         /// <param name="fRotY">The Y rotation value.</param>
         /// <param name="fRotZ">The Z rotation value.</param>
-        /// <param name="fZoom">The zoom value, default value 1.0, smaller values make the camera closer and larger values make the camera further away</param>
+        /// <param name="fZoom">The zoom value, default value 1.0, smaller values make the camera closer and larger values make the camera further away.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool PlayerTextDrawSetPreviewRot(int playerid, int text, float fRotX, float fRotY,
@@ -3539,182 +3539,614 @@ namespace GameMode
 
         #endregion
 
-        #region Events
+        #region Event handlers
 
+       /// <summary>
+        /// Represents the method that will handle timer ticks, passed to <see cref="SetTimer"/>.
+        /// </summary>
+        /// <param name="timerid">The ID of the Timer that ticked.</param>
+        /// <param name="args">An object that is passed to <see cref="SetTimer"/>.</param>
+        /// <returns>False to kill the timer, True otherwise.</returns>
         public delegate bool TimerTickHandler(int timerid, object args);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="Initialized"/> or <see cref="Exited"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="GameModeEventArgs"/> that contains the event data.</param>
         public delegate void GameModeHandler(object sender, GameModeEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerConnected"/>, <see cref="PlayerSpawned"/>, <see cref="PlayerEnterCheckpoint"/>, <see cref="PlayerLeaveCheckpoint"/>, <see cref="PlayerEnterRaceCheckpoint"/>, <see cref="PlayerLeaveRaceCheckpoint"/>, <see cref="PlayerRequestSpawn"/>, <see cref="VehicleDamageStatusUpdated"/>, <see cref="PlayerExitedMenu"/> or <see cref="PlayerUpdate"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerEventArgs"/> that contains the event data.</param>
         public delegate void PlayerHandler(object sender, PlayerEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerDisconnected"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerDisconnectedEventArgs"/> that contains the event data.</param>
         public delegate void PlayerDisconnectedHandler(object sender, PlayerDisconnectedEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerDied"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerDeathEventArgs"/> that contains the event data.</param>
         public delegate void PlayerDeathHandler(object sender, PlayerDeathEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="VehicleSpawned"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="VehicleEventArgs"/> that contains the event data.</param>
         public delegate void VehicleSpawnedHandler(object sender, VehicleEventArgs e);
 
-        public delegate void VehicleDeathHandler(object sender, PlayerVehicleEventArgs e);
-
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerText"/> or <see cref="PlayerCommandText"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerTextEventArgs"/> that contains the event data.</param>
         public delegate void PlayerTextHandler(object sender, PlayerTextEventArgs e);
-
+ 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerRequestClass"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerRequestClassEventArgs"/> that contains the event data.</param>
         public delegate void PlayerRequestClassHandler(object sender, PlayerRequestClassEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerEnterVehicle"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerEnterVehicleEventArgs"/> that contains the event data.</param>
         public delegate void PlayerEnterVehicleHandler(object sender, PlayerEnterVehicleEventArgs e);
 
-        public delegate void PlayerAndVehicleHandler(object sender, PlayerVehicleEventArgs r);
+        /// <summary>
+        /// Represents the method that will handle the <see cref="VehicleDied"/>, <see cref="PlayerExitVehicle"/>, <see cref="Server.VehicleStreamIn"/> or <see cref="Server.VehicleStreamOut"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerVehicleEventArgs"/> that contains the event data.</param>
+        public delegate void PlayerVehicleHandler(object sender, PlayerVehicleEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerStateChanged"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerStateEventArgs"/> that contains the event data.</param>
         public delegate void PlayerStateHandler(object sender, PlayerStateEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="RconCommand"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="RconEventArgs"/> that contains the event data.</param>
         public delegate void RconHandler(object sender, RconEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="ObjectMoved"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="ObjectEventArgs"/> that contains the event data.</param>
         public delegate void ObjectHandler(object sender, ObjectEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerObjectMoved"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerObjectEventArgs"/> that contains the event data.</param>
         public delegate void PlayerObjectHandler(object sender, PlayerObjectEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerPickUpPickup"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerPickupEventArgs"/> that contains the event data.</param>
         public delegate void PlayerPickupHandler(object sender, PlayerPickupEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="VehicleMod"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="VehicleModEventArgs"/> that contains the event data.</param>
         public delegate void VehicleModHandler(object sender, VehicleModEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerEnterExitModShop"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerEnterModShopEventArgs"/> that contains the event data.</param>
         public delegate void PlayerEnterModShopHandler(object sender, PlayerEnterModShopEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="VehiclePaintjobApplied"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="VehiclePaintjobEventArgs"/> that contains the event data.</param>
         public delegate void VehiclePaintjobHandler(object sender, VehiclePaintjobEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="VehicleResprayed"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="VehicleResprayedEventArgs"/> that contains the event data.</param>
         public delegate void VehicleResprayedHandler(object sender, VehicleResprayedEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="UnoccupiedVehicleUpdated"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="UnoccupiedVehicleEventArgs"/> that contains the event data.</param>
         public delegate void UnoccupiedVehicleUpdatedHandler(object sender, UnoccupiedVehicleEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerSelectedMenuRow"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerSelectedMenuRowEventArgs"/> that contains the event data.</param>
         public delegate void PlayerSelectedMenuRowHandler(object sender, PlayerSelectedMenuRowEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerInteriorChanged"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerInteriorChangedEventArgs"/> that contains the event data.</param>
         public delegate void PlayerInteriorChangedHandler(object sender, PlayerInteriorChangedEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerKeyStateChanged"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerKeyStateChangedEventArgs"/> that contains the event data.</param>
         public delegate void PlayerKeyStateChangedHandler(object sender, PlayerKeyStateChangedEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="RconLoginAttempt"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="RconLoginAttemptEventArgs"/> that contains the event data.</param>
         public delegate void RconLoginAttemptHandler(object sender, RconLoginAttemptEventArgs e);
 
-        public delegate void StreamPlayerHandler(object sender, StreamPlayerEventArgs e);
+        /// <summary>
+        /// Represents the method that will handle the <see cref="Server.PlayerStreamIn"/> or <see cref="Server.PlayerStreamOut"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="StreamPlayerEventArgs"/> that contains the event data.</param>
+        public delegate void PlayerStreamHandler(object sender, StreamPlayerEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="DialogResponse"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="DialogResponseEventArgs"/> that contains the event data.</param>
         public delegate void DialogResponseHandler(object sender, DialogResponseEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerTakeDamage"/> or <see cref="PlayerGiveDamage"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerDamageEventArgs"/> that contains the event data.</param>
         public delegate void PlayerDamageHandler(object sender, PlayerDamageEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerClickMap"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerClickMapEventArgs"/> that contains the event data.</param>
         public delegate void PlayerClickMapHandler(object sender, PlayerClickMapEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerClickTextDraw"/> or <see cref="PlayerClickPlayerTextDraw"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerClickTextDrawEventArgs"/> that contains the event data.</param>
         public delegate void PlayerClickTextDrawHandler(object sender, PlayerClickTextDrawEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerClickPlayer"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerClickPlayerEventArgs"/> that contains the event data.</param>
         public delegate void PlayerClickPlayerHandler(object sender, PlayerClickPlayerEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerEditObject"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerEditObjectEventArgs"/> that contains the event data.</param>
         public delegate void PlayerEditObjectHandler(object sender, PlayerEditObjectEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerEditAttachedObject"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerEditAttachedObjectEventArgs"/> that contains the event data.</param>
         public delegate void PlayerEditAttachedObjectHandler(object sender, PlayerEditAttachedObjectEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerSelectObject"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="PlayerSelectObjectEventArgs"/> that contains the event data.</param>
         public delegate void PlayerSelectObjectHandler(object sender, PlayerSelectObjectEventArgs e);
 
+        /// <summary>
+        /// Represents the method that will handle the <see cref="PlayerWeaponShot"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="WeaponShotEventArgs"/> that contains the event data.</param>
         public delegate void WeaponShotHandler(object sender, WeaponShotEventArgs e);
 
-        public event GameModeHandler GameModeInitialized;
+        #endregion
 
-        public event GameModeHandler GameModeExited;
+        #region Events
 
+ 
+        /// <summary>
+        /// Occurs when the <see cref="OnGameModeInit"/> is being called.
+        /// This callback is triggered when the gamemode starts.
+        /// </summary>
+        public event GameModeHandler Initialized;
+
+        /// <summary>
+        /// Occurs when the <see cref="OnGameModeExit"/> is being called.
+        /// This callback is called when a gamemode ends.
+        /// </summary>
+        public event GameModeHandler Exited;
+
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerConnect"/> is being called.
+        /// This callback is called when a player connects to the server.
+        /// </summary>
         public event PlayerHandler PlayerConnected;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerDisconnect"/> is being called.
+        /// This callback is called when a player disconnects from the server.
+        /// </summary>
         public event PlayerDisconnectedHandler PlayerDisconnected;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerSpawn"/> is being called.
+        /// This callback is called when a player spawns.
+        /// </summary>
         public event PlayerHandler PlayerSpawned;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnGameModeInit"/> is being called.
+        /// This callback is triggered when the gamemode starts.
+        /// </summary>
         public event PlayerDeathHandler PlayerDied;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnVehicleSpawn"/> is being called.
+        /// This callback is called when a vehicle respawns.
+        /// </summary>
         public event VehicleSpawnedHandler VehicleSpawned;
 
-        public event VehicleDeathHandler VehicleDied;
+        /// <summary>
+        /// Occurs when the <see cref="OnVehicleDeath"/> is being called.
+        /// This callback is called when a vehicle is destroyed - either by exploding or becoming submerged in water.
+        /// </summary>
+        /// <remarks>
+        /// This callback will also be called when a vehicle enters water, but the vehicle can be saved from destruction by teleportation or driving out (if only partially submerged). The callback won't be called a second time, and the vehicle may disappear when the driver exits, or after a short time.
+        /// </remarks>
+        public event PlayerVehicleHandler VehicleDied;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerText"/> is being called.
+        /// Called when a player sends a chat message.
+        /// </summary>
         public event PlayerTextHandler PlayerText;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerCommandText"/> is being called.
+        /// This callback is called when a player enters a command into the client chat window, e.g. /help.
+        /// </summary>
         public event PlayerTextHandler PlayerCommandText;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerRequestClass"/> is being called.
+        /// Called when a player changes class at class selection (and when class selection first appears).
+        /// </summary>
         public event PlayerRequestClassHandler PlayerRequestClass;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerEnterVehicle"/> is being called.
+        /// This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the time this callback is called.
+        /// </summary>
         public event PlayerEnterVehicleHandler PlayerEnterVehicle;
 
-        public event PlayerAndVehicleHandler PlayerExitVehicle;
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerExitVehicle"/> is being called.
+        /// This callback is called when a player exits a vehicle.
+        /// </summary>
+        /// <remarks>
+        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="SetPlayerPos"/>.
+        /// </remarks>
+        public event PlayerVehicleHandler PlayerExitVehicle;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerStateChange"/> is being called.
+        /// This callback is called when a player exits a vehicle.
+        /// </summary>
+        /// <remarks>
+        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="SetPlayerPos"/>.
+        /// </remarks>
         public event PlayerStateHandler PlayerStateChanged;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerEnterCheckpoint"/> is being called.
+        /// This callback is called when a player enters the checkpoint set for that player.
+        /// </summary>
         public event PlayerHandler PlayerEnterCheckpoint;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerLeaveCheckpoint"/> is being called.
+        /// This callback is called when a player leaves the checkpoint set for that player.
+        /// </summary>
         public event PlayerHandler PlayerLeaveCheckpoint;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerEnterRaceCheckpoint"/> is being called.
+        /// This callback is called when a player enters a race checkpoint.
+        /// </summary>
         public event PlayerHandler PlayerEnterRaceCheckpoint;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerLeaveRaceCheckpoint"/> is being called.
+        /// This callback is called when a player leaves the race checkpoint.
+        /// </summary>
         public event PlayerHandler PlayerLeaveRaceCheckpoint;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnRconCommand"/> is being called.
+        /// This callback is called when a command is sent through the server console, remote RCON, or via the in-game /rcon command.
+        /// </summary>
         public event RconHandler RconCommand;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerRequestSpawn"/> is being called.
+        /// Called when a player attempts to spawn via class selection.
+        /// </summary>
         public event PlayerHandler PlayerRequestSpawn;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnObjectMoved"/> is being called.
+        /// This callback is called when an object is moved after <see cref="MoveObject"/> (when it stops moving).
+        /// </summary>
         public event ObjectHandler ObjectMoved;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerObjectMoved"/> is being called.
+        /// This callback is called when a player object is moved after <see cref="MovePlayerObject"/> (when it stops moving).
+        /// </summary>
         public event PlayerObjectHandler PlayerObjectMoved;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerPickUpPickup"/> is being called.
+        /// Called when a player picks up a pickup created with <see cref="CreatePickup"/>.
+        /// </summary>
         public event PlayerPickupHandler PlayerPickUpPickup;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnVehicleMod"/> is being called.
+        /// This callback is called when a vehicle is modded.
+        /// </summary>
+        /// <remarks>
+        /// This callback is not called by <see cref="AddVehicleComponent"/>.
+        /// </remarks>
         public event VehicleModHandler VehicleMod;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnEnterExitModShop"/> is being called.
+        /// This callback is called when a player enters or exits a mod shop.
+        /// </summary>
         public event PlayerEnterModShopHandler PlayerEnterExitModShop;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnVehiclePaintjob"/> is being called.
+        /// Called when a player changes the paintjob of their vehicle (in a modshop).
+        /// </summary>
         public event VehiclePaintjobHandler VehiclePaintjobApplied;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnVehicleRespray"/> is being called.
+        /// The callback name is deceptive, this callback is called when a player exits a mod shop, regardless of whether the vehicle's colors were changed, and is NEVER called for pay 'n' spray garages.
+        /// </summary>
+        /// <remarks>
+        /// Misleadingly, this callback is not called for pay 'n' spray (only modshops).
+        /// </remarks>
         public event VehicleResprayedHandler VehicleResprayed;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnVehicleDamageStatusUpdate"/> is being called.
+        /// This callback is called when a vehicle element such as doors, tires, panels, or lights get damaged.
+        /// </summary>
+        /// <remarks>
+        /// This does not include vehicle health changes.
+        /// </remarks>
         public event PlayerHandler VehicleDamageStatusUpdated;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnUnoccupiedVehicleUpdate"/> is being called.
+        /// This callback is called everytime an unoccupied vehicle updates the server with their status.
+        /// </summary>
+        /// <remarks>
+        /// This callback is called very frequently per second per unoccupied vehicle. You should refrain from implementing intensive calculations or intensive file writing/reading operations in this callback.
+        /// </remarks>
         public event UnoccupiedVehicleUpdatedHandler UnoccupiedVehicleUpdated;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerSelectedMenuRow"/> is being called.
+        /// This callback is called when a player selects an item from a menu.
+        /// </summary>
         public event PlayerSelectedMenuRowHandler PlayerSelectedMenuRow;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerExitedMenu"/> is being called.
+        /// Called when a player exits a menu.
+        /// </summary>
         public event PlayerHandler PlayerExitedMenu;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerInteriorChange"/> is being called.
+        /// Called when a player changes interior.
+        /// </summary>
+        /// <remarks>
+        /// This is also called when <see cref="SetPlayerInterior"/> is used.
+        /// </remarks>
         public event PlayerInteriorChangedHandler PlayerInteriorChanged;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerKeyStateChange"/> is being called.
+        /// This callback is called when the state of any supported key is changed (pressed/released). Directional keys do not trigger this callback.
+        /// </summary>
         public event PlayerKeyStateChangedHandler PlayerKeyStateChanged;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnRconLoginAttempt"/> is being called.
+        /// This callback is called when someone tries to login to RCON, succesful or not.
+        /// </summary>
+        /// <remarks>
+        /// This callback is only called when /rcon login is used.
+        /// </remarks>
         public event RconLoginAttemptHandler RconLoginAttempt;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerUpdate"/> is being called.
+        /// This callback is called everytime a client/player updates the server with their status.
+        /// </summary>
+        /// <remarks>
+        /// This callback is called very frequently per second per player, only use it when you know what it's meant for.
+        /// </remarks>
         public event PlayerHandler PlayerUpdate;
 
-        public event StreamPlayerHandler StreamPlayerIn;
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerStreamIn"/> is being called.
+        /// This callback is called when a player is streamed by some other player's client.
+        /// </summary>
+        public event PlayerStreamHandler PlayerStreamIn;
 
-        public event StreamPlayerHandler StreamPlayerOut;
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerStreamOut"/> is being called.
+        /// This callback is called when a player is streamed out from some other player's client.
+        /// </summary>
+        public event PlayerStreamHandler PlayerStreamOut;
 
-        public event PlayerAndVehicleHandler StreamVehicleIn;
+        /// <summary>
+        /// Occurs when the <see cref="OnVehicleStreamIn"/> is being called.
+        /// Called when a vehicle is streamed to a player's client.
+        /// </summary>
+        public event PlayerVehicleHandler VehicleStreamIn;
 
-        public event PlayerAndVehicleHandler StreamVehicleOut;
+        /// <summary>
+        /// Occurs when the <see cref="OnVehicleStreamOut"/> is being called.
+        /// This callback is called when a vehicle is streamed out from some player's client.
+        /// </summary>
+        public event PlayerVehicleHandler VehicleStreamOut;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnDialogResponse"/> is being called.
+        /// This callback is called when a player responds to a dialog shown using <see cref="ShowPlayerDialog"/> by either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
+        /// </summary>
         public event DialogResponseHandler DialogResponse;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerTakeDamage"/> is being called.
+        /// This callback is called when a player takes damage.
+        /// </summary>
         public event PlayerDamageHandler PlayerTakeDamage;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerGiveDamage"/> is being called.
+        /// This callback is called when a player gives damage to another player.
+        /// </summary>
+        /// <remarks>
+        /// One thing you can do with GiveDamage is detect when other players report that they have damaged a certain player, and that player hasn't taken any health loss. You can flag those players as suspicious.
+        /// You can also set all players to the same team (so they don't take damage from other players) and process all health loss from other players manually.
+        /// You might have a server where players get a wanted level if they attack Cop players (or some specific class). In that case you might trust GiveDamage over TakeDamage.
+        /// There should be a lot you can do with it. You just have to keep in mind the levels of trust between clients. In most cases it's better to trust the client who is being damaged to report their health/armour (TakeDamage). SA-MP normally does this. GiveDamage provides some extra information which may be useful when you require a different level of trust.
+        /// </remarks>
         public event PlayerDamageHandler PlayerGiveDamage;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerClickMap"/> is being called.
+        /// This callback is called when a player places a target/waypoint on the pause menu map (by right-clicking).
+        /// </summary>
+        /// <remarks>
+        /// The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get a more accurate Z coordinate (or for teleportation; use <see cref="SetPlayerPosFindZ"/>).
+        /// </remarks>
         public event PlayerClickMapHandler PlayerClickMap;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerClickTextDraw"/> is being called.
+        /// This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
+        /// </summary>
+        /// <remarks>
+        /// The clickable area is defined by <see cref="TextDrawTextSize"/>. The x and y parameters passed to that function must not be zero or negative.
+        /// </remarks>
         public event PlayerClickTextDrawHandler PlayerClickTextDraw;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerClickPlayerTextDraw"/> is being called.
+        /// This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select mode (ESC) - however, <see cref="OnPlayerClickTextDraw"/> is.
+        /// </summary>
         public event PlayerClickTextDrawHandler PlayerClickPlayerTextDraw;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerClickPlayer"/> is being called.
+        /// Called when a player double-clicks on a player on the scoreboard.
+        /// </summary>
+        /// <remarks>
+        /// There is currently only one 'source' (<see cref="PlayerClickSource.Scoreboard"/>). The existence of this argument suggests that more sources may be supported in the future.
+        /// </remarks>
         public event PlayerClickPlayerHandler PlayerClickPlayer;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerEditObject"/> is being called.
+        /// This callback is called when a player ends object edition mode.
+        /// </summary>
         public event PlayerEditObjectHandler PlayerEditObject;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerEditAttachedObject"/> is being called.
+        /// This callback is called when a player ends attached object edition mode.
+        /// </summary>
+        /// <remarks>
+        /// Editions should be discarded if response was '0' (cancelled). This must be done by storing the offsets etc. in an array BEFORE using EditAttachedObject.
+        /// </remarks>
         public event PlayerEditAttachedObjectHandler PlayerEditAttachedObject;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerSelectObject"/> is being called.
+        /// This callback is called when a player selects an object after <see cref="SelectObject"/> has been used.
+        /// </summary>
         public event PlayerSelectObjectHandler PlayerSelectObject;
 
+        /// <summary>
+        /// Occurs when the <see cref="OnPlayerWeaponShot"/> is being called.
+        /// This callback is called when a player fires a shot from a weapon.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="BulletHitType.None"/>: the fX, fY and fZ parameters are normal coordinates;
+        /// Others: the fX, fY and fZ are offsets from the center of hitid.
+        /// </remarks>
         public event WeaponShotHandler PlayerWeaponShot;
 
         #endregion
 
         #region Callbacks
 
+        /// <summary>
+        /// This callback is triggered when a timer ticks.
+        /// </summary>
+        /// <param name="timerid">The ID of the ticking timer.</param>
+        /// <param name="args">The args object as parsed with <see cref="SetTimer"/>.</param>
+        /// <returns>This callback does not handle returns.</returns>
         public bool OnTimerTick(int timerid, object args)
         {
             if (TimerHandlers.ContainsKey(timerid) && !TimerHandlers[timerid](timerid, args))
@@ -3730,22 +4162,22 @@ namespace GameMode
         {
             var args = new GameModeEventArgs();
 
-            if (GameModeInitialized != null)
-                GameModeInitialized(this, args);
+            if (Initialized != null)
+                Initialized(this, args);
 
             return args.Success;
         }
 
         /// <summary>
-        /// This callback is called when a gamemode ends
+        /// This callback is called when a gamemode ends.
         /// </summary>
         /// <returns>This callback does not handle returns.</returns>
         public virtual bool OnGameModeExit()
         {
             var args = new GameModeEventArgs();
 
-            if (GameModeExited != null)
-                GameModeExited(this, args);
+            if (Exited != null)
+                Exited(this, args);
 
             return args.Success;
         }
@@ -3829,7 +4261,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// This callback is called when a vehicle is destroyed - either by exploding or becoming submerged in water
+        /// This callback is called when a vehicle is destroyed - either by exploding or becoming submerged in water.
         /// </summary>
         /// <remarks>
         /// This callback will also be called when a vehicle enters water, but the vehicle can be saved from destruction by teleportation or driving out (if only partially submerged). The callback won't be called a second time, and the vehicle may disappear when the driver exits, or after a short time.
@@ -3884,7 +4316,7 @@ namespace GameMode
         /// </summary>
         /// <param name="playerid">The ID of the player that changed class.</param>
         /// <param name="classid">The ID of the current class being viewed.</param>
-        /// <returns>Returning False in this callback will prevent the player from spawning. The player can be forced to spawn when SpawnPlayer is used, however the player will re-enter class selection the next time they die.</returns>
+        /// <returns>Returning False in this callback will prevent the player from spawning. The player can be forced to spawn when <see cref="SpawnPlayer"/> is used, however the player will re-enter class selection the next time they die.</returns>
         public virtual bool OnPlayerRequestClass(int playerid, int classid)
         {
             var args = new PlayerRequestClassEventArgs(playerid, classid);
@@ -3932,8 +4364,11 @@ namespace GameMode
         }
 
         /// <summary>
-        /// This callback is called when a player changes state.
+        /// This callback is called when a player exits a vehicle.
         /// </summary>
+        /// <remarks>
+        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="SetPlayerPos"/>.
+        /// </remarks>
         /// <param name="playerid">The ID of the player that changed state.</param>
         /// <param name="newstate">The player's new state.</param>
         /// <param name="oldstate">The player's previous state.</param>
@@ -4254,7 +4689,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// This callback is called when the state of any supported key is changed (pressed/released). Directional keys do not trigger OnPlayerKeyStateChange (up/down/left/right).
+        /// This callback is called when the state of any supported key is changed (pressed/released). Directional keys do not trigger this callback.
         /// </summary>
         /// <param name="playerid">ID of the player who pressed/released a key.</param>
         /// <param name="newkeys">A map of the keys currently held.</param>
@@ -4318,8 +4753,8 @@ namespace GameMode
         {
             var args = new StreamPlayerEventArgs(playerid, forplayerid);
 
-            if (StreamPlayerIn != null)
-                StreamPlayerIn(this, args);
+            if (PlayerStreamIn != null)
+                PlayerStreamIn(this, args);
 
             return args.Success;
         }
@@ -4334,8 +4769,8 @@ namespace GameMode
         {
             var args = new StreamPlayerEventArgs(playerid, forplayerid);
 
-            if (StreamPlayerOut != null)
-                StreamPlayerOut(this, args);
+            if (PlayerStreamOut != null)
+                PlayerStreamOut(this, args);
 
             return args.Success;
         }
@@ -4350,8 +4785,8 @@ namespace GameMode
         {
             var args = new PlayerVehicleEventArgs(forplayerid, vehicleid);
 
-            if (StreamVehicleIn != null)
-                StreamVehicleIn(this, args);
+            if (VehicleStreamIn != null)
+                VehicleStreamIn(this, args);
 
             return args.Success;
         }
@@ -4366,8 +4801,8 @@ namespace GameMode
         {
             var args = new PlayerVehicleEventArgs(forplayerid, vehicleid);
 
-            if (StreamVehicleOut != null)
-                StreamVehicleOut(this, args);
+            if (VehicleStreamOut != null)
+                VehicleStreamOut(this, args);
 
             return args.Success;
         }
@@ -4423,7 +4858,7 @@ namespace GameMode
         /// <param name="damagedid">The ID of the player that received damage.</param>
         /// <param name="amount">The amount of health/armour damagedid has lost (combined).</param>
         /// <param name="weaponid">The reason that caused the damage.</param>
-        /// <param name="bodypart">The body part that was hit. (NOTE: This parameter was added in 0.3z. Leave it out if using an older version!).</param>
+        /// <param name="bodypart">The body part that was hit.</param>
         /// <returns>This callback does not handle returns.</returns>
         public virtual bool OnPlayerGiveDamage(int playerid, int damagedid, float amount, int weaponid, int bodypart)
         {
@@ -4436,10 +4871,10 @@ namespace GameMode
         }
 
         /// <summary>
-        /// OnPlayerClickMap is called when a player places a target/waypoint on the pause menu map (by right-clicking).
+        /// This callback is called when a player places a target/waypoint on the pause menu map (by right-clicking).
         /// </summary>
         /// <remarks>
-        /// The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get a more accurate Z coordinate (or for teleportation; use SetPlayerPosFindZ).
+        /// The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get a more accurate Z coordinate (or for teleportation; use <see cref="SetPlayerPosFindZ"/>).
         /// </remarks>
         /// <param name="playerid">The ID of the player that placed a target/waypoint.</param>
         /// <param name="fX">The X float coordinate where the player clicked.</param>
@@ -4460,7 +4895,7 @@ namespace GameMode
         /// This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
         /// </summary>
         /// <remarks>
-        /// The clickable area is defined by TextDrawTextSize. The x and y parameters passed to that function must not be zero or negative.
+        /// The clickable area is defined by <see cref="TextDrawTextSize"/>. The x and y parameters passed to that function must not be zero or negative.
         /// </remarks>
         /// <param name="playerid">The ID of the player that clicked on the textdraw.</param>
         /// <param name="clickedid">The ID of the clicked textdraw. INVALID_TEXT_DRAW if selection was cancelled.</param>
@@ -4476,7 +4911,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select mode (ESC) - however, OnPlayerClickTextDraw is.
+        /// This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select mode (ESC) - however, <see cref="OnPlayerClickTextDraw"/> is.
         /// </summary>
         /// <param name="playerid">The ID of the player that selected a textdraw.</param>
         /// <param name="playertextid">The ID of the player-textdraw that the player selected.</param>
@@ -4574,7 +5009,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// This callback is called when a player selects an object after SelectObject() has been used.
+        /// This callback is called when a player selects an object after <see cref="SelectObject"/> has been used.
         /// </summary>
         /// <param name="playerid">The ID of the player that selected an object.</param>
         /// <param name="type">The type of selection.</param>
