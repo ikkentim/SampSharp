@@ -4157,10 +4157,6 @@ namespace GameMode
         /// <returns>This callback does not handle returns.</returns>
         public virtual bool OnGameModeInit()
         {
-            Console.WriteLine("Game mode initialized");
-
-            Server.AllowAdminTeleport()
-
             var args = new GameModeEventArgs();
 
             if (Initialized != null)
