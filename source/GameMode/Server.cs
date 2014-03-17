@@ -1312,7 +1312,6 @@ namespace GameMode
         /// Enable/Disable the teleporting ability for a player by right-clicking on the map.
         /// </summary>
         /// <remarks>
-        /// DEPRICATED!
         /// This function will work only if <see cref="AllowAdminTeleport"/> is working, and you have to be an admin.
         /// </remarks>
         /// <param name="playerid">playerid</param>
@@ -1872,9 +1871,6 @@ namespace GameMode
         /// <summary>
         /// This function will determine whether RCON admins will be teleported to their waypoint when they set one.
         /// </summary>
-        /// <remarks>
-        /// DEPRICATED!
-        /// </remarks>
         /// <param name="allow">False to disable and True to enable.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
@@ -1882,14 +1878,15 @@ namespace GameMode
         public static extern bool AllowAdminTeleport(bool allow);
 
         /// <summary>
-        /// 
+        /// Set the amount of money dropped when a player dies.
         /// </summary>
         /// <remarks>
         /// This function does not work in the current SA:MP version.
         /// </remarks>
-        /// <param name="amount">.</param>
+        /// <param name="amount">Tthe amount of money dropped when a player dies.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
+        [Obsolete("This function is deprecated. Use the OnPlayerDeath callback and CreatePickup method instead.")]
         public static extern bool SetDeathDropAmount(int amount);
 
         /// <summary>
@@ -1907,9 +1904,6 @@ namespace GameMode
         /// <summary>
         /// This function allows to turn on zone / area names such as the "Vinewood" or "Doherty" text at the bottom-right of the screen as they enter the area. This is a gamemode option and should be set in the callback <see cref="OnGameModeInit"/>.
         /// </summary>
-        /// <remarks>
-        /// DEPRICATED!
-        /// </remarks>
         /// <param name="enable">A toggle option for whether or not you'd like zone names on or off. False is off and True is on.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
