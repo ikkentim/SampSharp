@@ -4960,7 +4960,7 @@ namespace GameMode
         /// <returns>This callback does not handle returns.</returns>
         public virtual bool OnPlayerClickMap(int playerid, float fX, float fY, float fZ)
         {
-            var args = new PlayerClickMapEventArgs(playerid, new Position(fX, fY, fZ));
+            var args = new PlayerClickMapEventArgs(playerid, new Vector(fX, fY, fZ));
 
             if (PlayerClickMap != null)
                 PlayerClickMap(this, args);
@@ -5042,7 +5042,7 @@ namespace GameMode
             float fZ, float fRotX, float fRotY, float fRotZ)
         {
             var args = new PlayerEditObjectEventArgs(playerid, playerobject, objectid, (EditObjectResponse) response,
-                new Position(fX, fY, fZ), new Rotation(fRotX, fRotY, fRotZ));
+                new Vector(fX, fY, fZ), new Rotation(fRotX, fRotY, fRotZ));
 
             if (PlayerEditObject != null)
                 PlayerEditObject(this, args);
@@ -5076,8 +5076,8 @@ namespace GameMode
             float fScaleY, float fScaleZ)
         {
             var args = new PlayerEditAttachedObjectEventArgs(playerid, (EditObjectResponse) response, index, modelid,
-                boneid, new Position(fOffsetX, fOffsetY, fOffsetZ), new Rotation(fRotX, fRotY, fRotZ),
-                new Position(fScaleX, fScaleY, fScaleZ));
+                boneid, new Vector(fOffsetX, fOffsetY, fOffsetZ), new Rotation(fRotX, fRotY, fRotZ),
+                new Vector(fScaleX, fScaleY, fScaleZ));
 
             if (PlayerEditAttachedObject != null)
                 PlayerEditAttachedObject(this, args);
@@ -5100,7 +5100,7 @@ namespace GameMode
             float fZ)
         {
             var args = new PlayerSelectObjectEventArgs(playerid, (ObjectType) type, objectid, modelid,
-                new Position(fX, fY, fZ));
+                new Vector(fX, fY, fZ));
 
             if (PlayerSelectObject != null)
                 PlayerSelectObject(this, args);
@@ -5127,7 +5127,7 @@ namespace GameMode
             float fZ)
         {
             var args = new WeaponShotEventArgs(playerid, (Weapon) weaponid, (BulletHitType) hittype, hitid,
-                new Position(fX, fY, fZ));
+                new Vector(fX, fY, fZ));
 
             if (PlayerWeaponShot != null)
                 PlayerWeaponShot(this, args);

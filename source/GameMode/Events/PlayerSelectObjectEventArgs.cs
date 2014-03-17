@@ -5,7 +5,7 @@ namespace GameMode.Events
 {
     public class PlayerSelectObjectEventArgs : PlayerClickMapEventArgs
     {
-        public PlayerSelectObjectEventArgs(int playerid, ObjectType type, int objectid, int modelid, Position position)
+        public PlayerSelectObjectEventArgs(int playerid, ObjectType type, int objectid, int modelid, Vector position)
             : base(playerid, position)
         {
             ObjectType = type;

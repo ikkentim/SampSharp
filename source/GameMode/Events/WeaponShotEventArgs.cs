@@ -5,7 +5,7 @@ namespace GameMode.Events
 {
     public class WeaponShotEventArgs : PlayerClickMapEventArgs
     {
-        public WeaponShotEventArgs(int playerid, Weapon weapon, BulletHitType hittype, int hitid, Position position) : base(playerid, position)
+        public WeaponShotEventArgs(int playerid, Weapon weapon, BulletHitType hittype, int hitid, Vector position) : base(playerid, position)
         {
             Weapon = weapon;
             BulletHitType = hittype;
