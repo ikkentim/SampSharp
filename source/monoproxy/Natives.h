@@ -2,7 +2,6 @@
 
 #include <sampgdk/a_players.h>
 #include <sampgdk/a_samp.h>
-#include <sampgdk/a_http.h>
 #include <sampgdk/a_objects.h>
 #include <sampgdk/a_vehicles.h>
 
@@ -475,10 +474,6 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Server::SetTimer", p_SetTimer);
 	mono_add_internal_call("GameMode.Server::KillTimer", sampgdk_KillTimer);
 	mono_add_internal_call("GameMode.Server::gpci", p_gpci);
-
-	//
-	//a_http ... Not implemented as it is useless
-	//mono_add_internal_call("GameMode.Server::HTTP", samp_HTTP);
 
 	//
 	//a_objects natives
