@@ -6,7 +6,7 @@ namespace GameMode.Events
     public class PlayerEditObjectEventArgs : PlayerClickMapEventArgs
     {
         public PlayerEditObjectEventArgs(int playerid, bool playerobject, int objectid, EditObjectResponse response,
-            Position position, Rotation rotation) : base(playerid, position)
+            Vector position, Rotation rotation) : base(playerid, position)
         {
             PlayerObject = playerobject;
             ObjectId = objectid;
