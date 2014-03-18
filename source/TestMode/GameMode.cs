@@ -16,7 +16,7 @@ namespace TestMode
         {
             return base.OnTimerTick(x, obj);
         }
-        /*
+        
         public override bool OnGameModeInit()
         {
             Console.WriteLine("OnGameModeInit");
@@ -25,7 +25,7 @@ namespace TestMode
             var timer = new Timer(1000, true);
             timer.Tick += (sender, args) => Console.WriteLine("Tick");
             return true;
-        }*/
+        }
 
         public override bool OnRconCommand(string command)
         {
