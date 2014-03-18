@@ -79,9 +79,10 @@ CMonoProxy::CMonoProxy(char * gamemode_path, char * gamemode_namespace, char * g
 	m_cOnTimerTick = LoadCallback("TestMode.GameMode:OnTimerTick(int,object)");
 }
 
-MonoMethod * CMonoProxy::LoadCallback(const char *name) {
+MonoMethod * CMonoProxy::LoadCallback(const char * name) {
 	//Create method description and find method in image
 	MonoMethodDesc * m_methodDescription = mono_method_desc_new(name, true);
+	//MonoMethod * m_method = mono_class_get_method_from_name(m_pGameModeClass, name, param_count/*param_count*/);
 	MonoMethod * m_method = mono_method_desc_search_in_image(m_methodDescription, m_pGameModeImage);
 
 	//Free memory and return method
