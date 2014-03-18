@@ -5,30 +5,8 @@
     /// </summary>
     public struct Color
     {
-        /// <summary>
-        /// Gets or sets the red value of this Color.
-        /// </summary>
-        public byte R { get; set; }
 
-        /// <summary>
-        /// Gets or sets the green value of this Color.
-        /// </summary>
-        public byte G { get; set; }
-
-        /// <summary>
-        /// Gets or sets the blue value of this Color.
-        /// </summary>
-        public byte B { get; set; }
-
-        /// <summary>
-        /// Gets or sets the alpha value of this Color.
-        /// </summary>
-        public byte A { get; set; }
-
-        /// <summary>
-        /// Gets or sets the ColorFormat to use when converting this number to an Integer.
-        /// </summary>
-        public ColorFormat ColorFormat { get; set; }
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the Color struct.
@@ -159,6 +137,39 @@
             ColorFormat = c.ColorFormat;
         }
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the red value of this Color.
+        /// </summary>
+        public byte R { get; set; }
+
+        /// <summary>
+        /// Gets or sets the green value of this Color.
+        /// </summary>
+        public byte G { get; set; }
+
+        /// <summary>
+        /// Gets or sets the blue value of this Color.
+        /// </summary>
+        public byte B { get; set; }
+
+        /// <summary>
+        /// Gets or sets the alpha value of this Color.
+        /// </summary>
+        public byte A { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ColorFormat to use when converting this number to an Integer.
+        /// </summary>
+        public ColorFormat ColorFormat { get; set; }
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Returns an Integer representation of this Color.
         /// </summary>
@@ -171,37 +182,13 @@
                 switch (colorFormat)
                 {
                     case ColorFormat.ARGB:
-                        return ((((A*0xFF) + R)*0xFF) + G)*0xFF + B;
+                        return (((((A << 8) + R) << 8) + G) << 8) + B;
                     case ColorFormat.RGBA:
-                        return ((((R*0xFF) + G)*0xFF) + B)*0xFF + A;
+                        return (((((R << 8) + G) << 8) + B) << 8) + A;
                     case ColorFormat.RGB:
-                        return (((R*0xFF) + G)*0xFF) + B;
+                        return (((R << 8) + G) << 8) + B;
                     default:
                         return 0;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Returns an Color representation of this Integer.
-        /// </summary>
-        /// <param name="color">The color to con</param>
-        /// <param name="colorFormat">The ColorFormat to use in the conversion.</param>
-        /// <returns>An Color representation of this Integer.</returns>
-        public static Color GetColorFromValue(int color, ColorFormat colorFormat)
-        {
-            unchecked
-            {
-                switch (colorFormat)
-                {
-                    case ColorFormat.ARGB:
-                        return new Color((byte)((color & 0xFF000000) >> 6), (byte)((color & 0xFF0000) >> 4), (byte)((color & 0xFF00) >> 2), (byte)(color & 0xFF), colorFormat);
-                    case ColorFormat.RGBA:
-                        return new Color((byte)((color & 0xFF0000) >> 4), (byte)((color & 0xFF00) >> 2), (byte)((color & 0xFF)), (byte)((color & 0xFF000000) >> 6), colorFormat);
-                    case ColorFormat.RGB:
-                        return new Color((byte)((color & 0xFF0000) >> 4), (byte)((color & 0xFF00) >> 2), (byte)((color & 0xFF)), colorFormat);
-                    default:
-                        return new Color(colorFormat);
                 }
             }
         }
@@ -213,6 +200,42 @@
         public int GetColorValue()
         {
             return GetColorValue(ColorFormat);
+        }
+
+        /// <summary>
+        /// Returns an Color representation of this Integer.
+        /// </summary>
+        /// <param name="color">The color to con</param>
+        /// <param name="colorFormat">The ColorFormat to use in the conversion.</param>
+        /// <returns>An Color representation of this Integer.</returns>
+        public static Color GetColorFromValue(int color, ColorFormat colorFormat)
+        {
+            byte r = 0, 
+                g = 0, 
+                b = 0, 
+                a = 0;
+
+            switch (colorFormat)
+            {
+                case ColorFormat.ARGB:
+                    b = (byte) (color & 0xFF);
+                    g = (byte)((color >>= 8) & 0xFF);
+                    r = (byte)((color >>= 8) & 0xFF);
+                    a = (byte)((color >> 8) & 0xFF);
+                    break;
+                case ColorFormat.RGBA:
+                    a = (byte) (color & 0xFF);
+                    b = (byte)((color >>= 8) & 0xFF);
+                    g = (byte)((color >>= 8) & 0xFF);
+                    r = (byte)((color >> 8) & 0xFF);
+                    break;
+                case ColorFormat.RGB:
+                    b = (byte) (color & 0xFF);
+                    g = (byte)((color >>= 8) & 0xFF);
+                    r = (byte)((color >> 8) & 0xFF);
+                    break;
+            }
+            return new Color(r, g, b, a, colorFormat);
         }
 
         public static implicit operator int(Color color)
@@ -233,5 +256,8 @@
         {
             return "{" + GetColorValue().ToString("X") + "}";
         }
+
+        #endregion
+
     }
 }
