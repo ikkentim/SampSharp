@@ -658,6 +658,27 @@ namespace GameMode.World
             baseMode.PlayerWeaponShot += (sender, args) => cast(args.PlayerId).OnWeaponShot(args);
         }
 
+        /// <summary>
+        /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using <see cref="SetPlayerSkin"/> in <see cref="OnPlayerSpawn"/> and/or <see cref="OnPlayerRequestClass"/>.
+        /// </summary>
+        /// <param name="team">The Team-ID of the chosen player.</param>
+        /// <param name="skin">The skin which the player will spawn with.</param>
+        /// <param name="position">The player's spawn position.</param>
+        /// <param name="rotation">The direction in which the player needs to be facing after spawning.</param>
+        /// <param name="weapon1">The first spawn-weapon for the player.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the primary spawnweapon.</param>
+        /// <param name="weapon2">The second spawn-weapon for the player.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <param name="weapon3">The third spawn-weapon for the player.</param>
+        /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public virtual void SetSpawnInfo(int team, int skin, Vector position, float rotation, Weapon weapon1,
+            int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
+        {
+            BaseMode.SetSpawnInfo(PlayerId, team, skin, position, rotation, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
+                weapon3, weapon3Ammo);
+        }
+
         public virtual void OnConnected(PlayerEventArgs e)
         {
             if(Connected != null)
