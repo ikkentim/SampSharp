@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GameMode.Controllers;
 using GameMode.Definitions;
 using GameMode.Events;
 using GameMode.World;
@@ -9,7 +8,7 @@ namespace GameMode
     /// <summary>
     /// Represents a SA:MP gamemode.
     /// </summary>
-    public partial class Server
+    public abstract partial class Server
     {
         private static readonly Dictionary<int, TimerTickHandler> TimerHandlers =
             new Dictionary<int, TimerTickHandler>();
@@ -19,7 +18,7 @@ namespace GameMode
         /// </summary>
         public Server()
         {
-            RegisterControllers();
+            Player.RegisterEvents(this, Player.Find);
         }
 
         #region Events
@@ -377,14 +376,6 @@ namespace GameMode
         public event WeaponShotHandler PlayerWeaponShot;
 
         #endregion
-
-        /// <summary>
-        /// Registers and initializes all controllers.
-        /// </summary>
-        public virtual void RegisterControllers()
-        {
-            new PlayerController().RegisterEvents(this);
-        }
 
         #region Callbacks
 
