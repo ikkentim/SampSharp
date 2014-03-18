@@ -1,14 +1,6 @@
 ﻿namespace GameMode.Events
 {
     /// <summary>
-    /// Represents the method that will handle timer ticks, passed to <see cref="BaseMode.SetTimer"/>.
-    /// </summary>
-    /// <param name="timerid">The ID of the Timer that ticked.</param>
-    /// <param name="args">An object that is passed to <see cref="BaseMode.SetTimer"/>.</param>
-    /// <returns>False to kill the timer, True otherwise.</returns>
-    public delegate bool TimerTickHandler(int timerid, object args);
-
-    /// <summary>
     /// Represents the method that will handle the <see cref="BaseMode.Initialized"/> or <see cref="BaseMode.Exited"/> event.
     /// </summary>
     /// <param name="sender">The source of the event.</param>

@@ -8,9 +8,6 @@ namespace GameMode
 {
     public static partial class Native
     {
-        private static readonly Dictionary<int, TimerTickHandler> TimerHandlers =
-            new Dictionary<int, TimerTickHandler>();
-
         /// <summary>
         /// This function sends a message to a specific player with a chosen color in the chat. The whole line in the chatbox will be in the set color unless colour embedding is used.<br />
         /// </summary>
@@ -1027,7 +1024,7 @@ namespace GameMode
         /// <param name="args">An object containing information about the timer.</param>
         /// <returns>The ID of the timer that was started.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
-        private static extern int SetTimer(int interval, bool repeat, object args);
+        public static extern int SetTimer(int interval, bool repeat, object args);
 
         /// <summary>
         /// Kills (stops) a running timer.
@@ -1060,14 +1057,6 @@ namespace GameMode
             string buffer;
             gpci(playerid, out buffer, 64);
             return buffer;
-        }
-
-        public static int SetTimer(int interval, bool repeat, TimerTickHandler handler, object args)
-        {
-            int timerid = SetTimer(interval, repeat, args);
-
-            TimerHandlers[timerid] = handler;
-            return timerid;
         }
 
         public static string GetWeaponName(int weaponid)
