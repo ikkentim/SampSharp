@@ -272,7 +272,7 @@ namespace GameMode
         /// Checks the player's level of drunkenness.
         /// </summary>
         /// <remarks>
-        /// If the level is less than 2000, the player is sober. The player's level of drunkness goes down slowly automatically (26 levels per second) but will always reach zero at the end. The higher drunkenness levels affect the player's camera, and the car driving handling. The level of drunkenness increases when the player drinks from a bottle (You can use <see cref="SetPlayerSpecialAction"/> to give them bottles).
+        /// If the level is less than 2000, the player is sober. The player's level of drunkness goes down slowly automatically (26 levels per second) but will always reach zero at the end. The higher drunkenness levels affect the player's camera, and the car driving handling. The level of drunkenness increases when the player drinks from a bottle (You can use <see cref="SetPlayerSpecialAction(int,SpecialAction)"/> to give them bottles).
         /// </remarks>
         /// <param name="playerid">The player you want to check the drunkenness level of.</param>
         /// <returns>An integer with the level of drunkenness of the player.</returns>
@@ -700,7 +700,7 @@ namespace GameMode
         /// Remove an attached object from a player.
         /// </summary>
         /// <param name="playerid">The ID of the player to remove the object from.</param>
-        /// <param name="index">The index of the object to remove (set with <see cref="SetPlayerAttachedObject"/>).</param>
+        /// <param name="index">The index of the object to remove (set with <see cref="SetPlayerAttachedObject(int,int,int,int,Vector,Rotation,Vector,int,int)"/>).</param>
         /// <returns>True on success, False otherwise.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool RemovePlayerAttachedObject(int playerid, int index);
@@ -758,7 +758,7 @@ namespace GameMode
         /// Change the size of a player-textdraw (box if <see cref="PlayerTextDrawUseBox"/> is enabled and/or clickable area for use with <see cref="PlayerTextDrawSetSelectable"/>).
         /// </summary>
         /// <remarks>
-        /// When used with <see cref="PlayerTextDrawAlignment"/> of alignment 3 (right), the x and y are the coordinates of the left most corner of the box. For alignment 2 (center) the x and y values need to inverted (switch the two) and the x value is the overall width of the box. For all other alignments the x and y coordinates are for the right most corner of the box.
+        /// When used with <see cref="PlayerTextDrawAlignment(int,int,TextDrawAlignment)"/> of alignment 3 (right), the x and y are the coordinates of the left most corner of the box. For alignment 2 (center) the x and y values need to inverted (switch the two) and the x value is the overall width of the box. For all other alignments the x and y coordinates are for the right most corner of the box.
         /// The TextDraw box starts 10.0 units up and 5.0 to the left as the origin (<see cref="TextDrawCreate"/> coordinate)
         /// This function defines the clickable area for use with <see cref="PlayerTextDrawSetSelectable"/>, whether a box is shown or not.
         /// </remarks>
@@ -1303,7 +1303,7 @@ namespace GameMode
         /// Removes a map icon that was set earlier for a player.
         /// </summary>
         /// <param name="playerid">The ID of the player whose icon to remove.</param>
-        /// <param name="iconid">The ID of the icon to remove. This is the second parameter of <see cref="SetPlayerMapIcon"/>.</param>
+        /// <param name="iconid">The ID of the icon to remove. This is the second parameter of <see cref="SetPlayerMapIcon(int,int,Vector,PlayerMarkersMode)"/>.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool RemovePlayerMapIcon(int playerid, int iconid);
@@ -1367,7 +1367,7 @@ namespace GameMode
         public static extern bool GetPlayerCameraPos(int playerid, out float x, out float y, out float z);
 
         /// <summary>
-        /// This function will return the current direction of player's aiming in 3-D space, the coords are relative to the camera position, see <see cref="GetPlayerCameraPos"/>.
+        /// This function will return the current direction of player's aiming in 3-D space, the coords are relative to the camera position, see <see cref="GetPlayerCameraPos(int)"/>.
         /// </summary>
         /// <param name="playerid">The ID of the player you want to obtain the camera front vector of.</param>
         /// <param name="x">A float to store the X coordinate, passed by reference.</param>
@@ -1424,7 +1424,7 @@ namespace GameMode
             float toY, float toZ, int time, int cut);
 
         /// <summary>
-        /// Interpolate a player's camera's 'look at' point between two coordinates with a set speed. Can be be used with <see cref="InterpolateCameraPos"/>.
+        /// Interpolate a player's camera's 'look at' point between two coordinates with a set speed. Can be be used with <see cref="InterpolateCameraPos(int,Vector,Vector,int,CameraCut)"/>.
         /// </summary>
         /// <param name="playerid">The ID of the player the camera should be moved for.</param>
         /// <param name="fromX">The X position the camera should start to move from.</param>
@@ -1475,7 +1475,7 @@ namespace GameMode
         public static extern bool IsPlayerInCheckpoint(int playerid);
 
         /// <summary>
-        /// Check if the player is inside their current set race checkpoint (<see cref="SetPlayerRaceCheckpoint"/>).
+        /// Check if the player is inside their current set race checkpoint (<see cref="SetPlayerRaceCheckpoint(int,CheckpointType,Vector,Vector,float)"/>).
         /// </summary>
         /// <param name="playerid">The ID of the player to check.</param>
         /// <returns>True if player is in his checkpoint, otherwise False.</returns>
@@ -2007,7 +2007,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// This function will return the current direction of player's aiming in 3-D space, the coords are relative to the camera position, see <see cref="GetPlayerCameraPos"/>.
+        /// This function will return the current direction of player's aiming in 3-D space, the coords are relative to the camera position, see <see cref="GetPlayerCameraPos(int)"/>.
         /// </summary>
         /// <param name="playerid">The ID of the player you want to obtain the camera front vector of.</param>
         /// <returns>This camera front vector of the player.</returns>
@@ -2033,7 +2033,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Interpolate a player's camera's 'look at' point between two coordinates with a set speed. Can be be used with <see cref="InterpolateCameraPos"/>.
+        /// Interpolate a player's camera's 'look at' point between two coordinates with a set speed. Can be be used with <see cref="InterpolateCameraPos(int,Vector,Vector,int,CameraCut)"/>.
         /// </summary>
         /// <param name="playerid">The ID of the player the camera should be moved for.</param>
         /// <param name="from">The position the camera should start to move from.</param>
@@ -3967,244 +3967,6 @@ namespace GameMode
 
         #region Event handlers
 
-       /// <summary>
-        /// Represents the method that will handle timer ticks, passed to <see cref="SetTimer"/>.
-        /// </summary>
-        /// <param name="timerid">The ID of the Timer that ticked.</param>
-        /// <param name="args">An object that is passed to <see cref="SetTimer"/>.</param>
-        /// <returns>False to kill the timer, True otherwise.</returns>
-        public delegate bool TimerTickHandler(int timerid, object args);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="Initialized"/> or <see cref="Exited"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="GameModeEventArgs"/> that contains the event data.</param>
-        public delegate void GameModeHandler(object sender, GameModeEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerConnected"/>, <see cref="PlayerSpawned"/>, <see cref="PlayerEnterCheckpoint"/>, <see cref="PlayerLeaveCheckpoint"/>, <see cref="PlayerEnterRaceCheckpoint"/>, <see cref="PlayerLeaveRaceCheckpoint"/>, <see cref="PlayerRequestSpawn"/>, <see cref="VehicleDamageStatusUpdated"/>, <see cref="PlayerExitedMenu"/> or <see cref="PlayerUpdate"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerHandler(object sender, PlayerEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerDisconnected"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerDisconnectedEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerDisconnectedHandler(object sender, PlayerDisconnectedEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerDied"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerDeathEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerDeathHandler(object sender, PlayerDeathEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="VehicleSpawned"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="VehicleEventArgs"/> that contains the event data.</param>
-        public delegate void VehicleSpawnedHandler(object sender, VehicleEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerText"/> or <see cref="PlayerCommandText"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerTextEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerTextHandler(object sender, PlayerTextEventArgs e);
- 
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerRequestClass"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerRequestClassEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerRequestClassHandler(object sender, PlayerRequestClassEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerEnterVehicle"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerEnterVehicleEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerEnterVehicleHandler(object sender, PlayerEnterVehicleEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="VehicleDied"/>, <see cref="PlayerExitVehicle"/>, <see cref="Server.VehicleStreamIn"/> or <see cref="Server.VehicleStreamOut"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerVehicleEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerVehicleHandler(object sender, PlayerVehicleEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerStateChanged"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerStateEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerStateHandler(object sender, PlayerStateEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="RconCommand"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="RconEventArgs"/> that contains the event data.</param>
-        public delegate void RconHandler(object sender, RconEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="ObjectMoved"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="ObjectEventArgs"/> that contains the event data.</param>
-        public delegate void ObjectHandler(object sender, ObjectEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerObjectMoved"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerObjectEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerObjectHandler(object sender, PlayerObjectEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerPickUpPickup"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerPickupEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerPickupHandler(object sender, PlayerPickupEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="VehicleMod"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="VehicleModEventArgs"/> that contains the event data.</param>
-        public delegate void VehicleModHandler(object sender, VehicleModEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerEnterExitModShop"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerEnterModShopEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerEnterModShopHandler(object sender, PlayerEnterModShopEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="VehiclePaintjobApplied"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="VehiclePaintjobEventArgs"/> that contains the event data.</param>
-        public delegate void VehiclePaintjobHandler(object sender, VehiclePaintjobEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="VehicleResprayed"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="VehicleResprayedEventArgs"/> that contains the event data.</param>
-        public delegate void VehicleResprayedHandler(object sender, VehicleResprayedEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="UnoccupiedVehicleUpdated"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="UnoccupiedVehicleEventArgs"/> that contains the event data.</param>
-        public delegate void UnoccupiedVehicleUpdatedHandler(object sender, UnoccupiedVehicleEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerSelectedMenuRow"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerSelectedMenuRowEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerSelectedMenuRowHandler(object sender, PlayerSelectedMenuRowEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerInteriorChanged"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerInteriorChangedEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerInteriorChangedHandler(object sender, PlayerInteriorChangedEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerKeyStateChanged"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerKeyStateChangedEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerKeyStateChangedHandler(object sender, PlayerKeyStateChangedEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="RconLoginAttempt"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="RconLoginAttemptEventArgs"/> that contains the event data.</param>
-        public delegate void RconLoginAttemptHandler(object sender, RconLoginAttemptEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="Server.PlayerStreamIn"/> or <see cref="Server.PlayerStreamOut"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="StreamPlayerEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerStreamHandler(object sender, StreamPlayerEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="DialogResponse"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="DialogResponseEventArgs"/> that contains the event data.</param>
-        public delegate void DialogResponseHandler(object sender, DialogResponseEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerTakeDamage"/> or <see cref="PlayerGiveDamage"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerDamageEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerDamageHandler(object sender, PlayerDamageEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerClickMap"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerClickMapEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerClickMapHandler(object sender, PlayerClickMapEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerClickTextDraw"/> or <see cref="PlayerClickPlayerTextDraw"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerClickTextDrawEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerClickTextDrawHandler(object sender, PlayerClickTextDrawEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerClickPlayer"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerClickPlayerEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerClickPlayerHandler(object sender, PlayerClickPlayerEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerEditObject"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerEditObjectEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerEditObjectHandler(object sender, PlayerEditObjectEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerEditAttachedObject"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerEditAttachedObjectEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerEditAttachedObjectHandler(object sender, PlayerEditAttachedObjectEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerSelectObject"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="PlayerSelectObjectEventArgs"/> that contains the event data.</param>
-        public delegate void PlayerSelectObjectHandler(object sender, PlayerSelectObjectEventArgs e);
-
-        /// <summary>
-        /// Represents the method that will handle the <see cref="PlayerWeaponShot"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="WeaponShotEventArgs"/> that contains the event data.</param>
-        public delegate void WeaponShotHandler(object sender, WeaponShotEventArgs e);
 
         #endregion
 
@@ -4290,7 +4052,7 @@ namespace GameMode
         /// This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
-        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="SetPlayerPos"/>.
+        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="SetPlayerPos(int,Vector)"/>.
         /// </remarks>
         public event PlayerVehicleHandler PlayerExitVehicle;
 
@@ -4299,7 +4061,7 @@ namespace GameMode
         /// This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
-        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="SetPlayerPos"/>.
+        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="SetPlayerPos(int,Vector)"/>.
         /// </remarks>
         public event PlayerStateHandler PlayerStateChanged;
 
@@ -4503,7 +4265,7 @@ namespace GameMode
         /// This callback is called when a player places a target/waypoint on the pause menu map (by right-clicking).
         /// </summary>
         /// <remarks>
-        /// The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get a more accurate Z coordinate (or for teleportation; use <see cref="SetPlayerPosFindZ"/>).
+        /// The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get a more accurate Z coordinate (or for teleportation; use <see cref="SetPlayerPosFindZ(int,Vector)"/>).
         /// </remarks>
         public event PlayerClickMapHandler PlayerClickMap;
 
@@ -4630,7 +4392,7 @@ namespace GameMode
         /// <returns>This callback does not handle returns.</returns>
         public virtual bool OnPlayerDisconnect(int playerid, int reason)
         {
-            var args = new PlayerDisconnectedEventArgs(playerid, (PlayerDisconnectReason) reason);
+            var args = new PlayerDisconnectedEventArgs(playerid, (DisconnectReason) reason);
 
             if (PlayerDisconnected != null)
                 PlayerDisconnected(this, args);
@@ -4773,7 +4535,7 @@ namespace GameMode
         /// This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
-        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="SetPlayerPos"/>.
+        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="SetPlayerPos(int,Vector)"/>.
         /// </remarks>
         /// <param name="playerid">The ID of the player who exited the vehicle.</param>
         /// <param name="vehicleid">The ID of the vehicle the player is exiting.</param>
@@ -4792,7 +4554,7 @@ namespace GameMode
         /// This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
-        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="SetPlayerPos"/>.
+        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="SetPlayerPos(int,Vector)"/>.
         /// </remarks>
         /// <param name="playerid">The ID of the player that changed state.</param>
         /// <param name="newstate">The player's new state.</param>
@@ -5299,7 +5061,7 @@ namespace GameMode
         /// This callback is called when a player places a target/waypoint on the pause menu map (by right-clicking).
         /// </summary>
         /// <remarks>
-        /// The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get a more accurate Z coordinate (or for teleportation; use <see cref="SetPlayerPosFindZ"/>).
+        /// The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get a more accurate Z coordinate (or for teleportation; use <see cref="SetPlayerPosFindZ(int,Vector)"/>).
         /// </remarks>
         /// <param name="playerid">The ID of the player that placed a target/waypoint.</param>
         /// <param name="fX">The X float coordinate where the player clicked.</param>
