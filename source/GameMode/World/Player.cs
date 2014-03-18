@@ -31,12 +31,7 @@ namespace GameMode.World
         public static Player Find(int playerId)
         {
             //Find player in memory or initialize new player
-            var player = PlayerInstances.FirstOrDefault(p => p.PlayerId == playerId);
-
-            if (player == null)
-                PlayerInstances.Add(player = new Player(playerId));
-
-            return player;
+            return PlayerInstances.FirstOrDefault(p => p.PlayerId == playerId) ?? new Player(playerId);
         }
 
         #endregion
@@ -47,10 +42,12 @@ namespace GameMode.World
         /// Initalizes a new instance of the Player class.
         /// </summary>
         /// <param name="playerId">The ID of the player to initialize.</param>
-        private Player(int playerId)
+        protected Player(int playerId)
         {
             //Fill properties
             PlayerId = playerId;
+
+            PlayerInstances.Add(this);
         }
 
         #endregion
@@ -617,6 +614,50 @@ namespace GameMode.World
 
         #region Methods
 
+        /// <summary>
+        /// Registers all events the Player class listens to.
+        /// </summary>
+        /// <param name="server">An instance of the server to which to listen.</param>
+        /// <param name="cast">A function to get a <see cref="Player"/> object from a playerid.</param>
+        public static void RegisterEvents(Server server, Func<int, Player> cast)
+        {
+            server.PlayerConnected += (sender, args) => cast(args.PlayerId).OnConnected(args);
+            server.PlayerDisconnected += (sender, args) => cast(args.PlayerId).OnDisconnected(args);
+            server.PlayerSpawned += (sender, args) => cast(args.PlayerId).OnSpawned(args);
+            server.PlayerDied += (sender, args) => cast(args.PlayerId).OnDeath(args);
+            server.PlayerText += (sender, args) => cast(args.PlayerId).OnText(args);
+            server.PlayerCommandText += (sender, args) => cast(args.PlayerId).OnCommandText(args);
+            server.PlayerRequestClass += (sender, args) => cast(args.PlayerId).OnRequestClass(args);
+            server.PlayerEnterVehicle += (sender, args) => cast(args.PlayerId).OnEnterVehicle(args);
+            server.PlayerExitVehicle += (sender, args) => cast(args.PlayerId).OnExitVehicle(args);
+            server.PlayerStateChanged += (sender, args) => cast(args.PlayerId).OnStateChanged(args);
+            server.PlayerEnterCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterCheckpoint(args);
+            server.PlayerLeaveCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveCheckpoint(args);
+            server.PlayerEnterRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterRaceCheckpoint(args);
+            server.PlayerLeaveRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveRaceCheckpoint(args);
+            server.PlayerRequestSpawn += (sender, args) => cast(args.PlayerId).OnRequestSpawn(args);
+            server.PlayerPickUpPickup += (sender, args) => cast(args.PickupId).OnPickUpPickup(args);
+            server.PlayerEnterExitModShop += (sender, args) => cast(args.PlayerId).OnEnterExitModShop(args);
+            server.PlayerSelectedMenuRow += (sender, args) => cast(args.PlayerId).OnSelectedMenuRow(args);
+            server.PlayerExitedMenu += (sender, args) => cast(args.PlayerId).OnExitedMenu(args);
+            server.PlayerInteriorChanged += (sender, args) => cast(args.PlayerId).OnInteriorChanged(args);
+            server.PlayerKeyStateChanged += (sender, args) => cast(args.PlayerId).OnKeyStateChanged(args);
+            server.PlayerUpdate += (sender, args) => cast(args.PlayerId).OnUpdate(args);
+            server.PlayerStreamIn += (sender, args) => cast(args.PlayerId).OnStreamIn(args);
+            server.PlayerStreamOut += (sender, args) => cast(args.PlayerId).OnStreamOut(args);
+            server.DialogResponse += (sender, args) => cast(args.PlayerId).OnDialogResponse(args);
+            server.PlayerTakeDamage += (sender, args) => cast(args.PlayerId).OnTakeDamage(args);
+            server.PlayerGiveDamage += (sender, args) => cast(args.PlayerId).OnGiveDamage(args);
+            server.PlayerClickMap += (sender, args) => cast(args.PlayerId).OnClickMap(args);
+            server.PlayerClickTextDraw += (sender, args) => cast(args.PlayerId).OnClickTextDraw(args);
+            server.PlayerClickPlayerTextDraw += (sender, args) => cast(args.PlayerId).OnClickPlayerTextDraw(args);
+            server.PlayerClickPlayer += (sender, args) => cast(args.PlayerId).OnClickPlayer(args);
+            server.PlayerEditObject += (sender, args) => cast(args.PlayerId).OnEditObject(args);
+            server.PlayerEditAttachedObject += (sender, args) => cast(args.PlayerId).OnEditAttachedObject(args);
+            server.PlayerSelectObject += (sender, args) => cast(args.PlayerId).OnSelectObject(args);
+            server.PlayerWeaponShot += (sender, args) => cast(args.PlayerId).OnWeaponShot(args);
+        }
+
         public virtual void OnConnected(PlayerEventArgs e)
         {
             if(Connected != null)
@@ -829,14 +870,14 @@ namespace GameMode.World
                 WeaponShot(this, e);
         }
 
-        public override string ToString()
-        {
-            return string.Format("Player(Id:{0}, Name:{1}, Position:{2})",PlayerId, Name, Position);
-        }
-
         public override int GetHashCode()
         {
             return PlayerId;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Player(Id:{0}, Name:{1})", PlayerId, Name);
         }
 
         /// <summary>

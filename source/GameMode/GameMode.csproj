@@ -39,8 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\IController.cs" />
-    <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Definitions\BodyPart.cs" />
     <Compile Include="Definitions\CameraMode.cs" />
     <Compile Include="Definitions\CheckpointType.cs" />
