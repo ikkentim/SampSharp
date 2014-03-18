@@ -1,5 +1,9 @@
 #pragma once
 
+#include <iostream>
+
+#include <mono/metadata/threads.h>
+
 #include "MonoProxy.h"
 
 static void SAMPGDK_TIMER_CALL p_TimerCallback(int timerid, void * data) {
@@ -7,11 +11,11 @@ static void SAMPGDK_TIMER_CALL p_TimerCallback(int timerid, void * data) {
 	void *args[2];
 	args[0] = &timerid;
 	args[1] = data;
+	std::cout << "TIMERCALLBACK" << std::endl;
 	bool response = CMonoProxy::p_instance->CallCallback(CMonoProxy::p_instance->m_cOnTimerTick, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnGameModeInit() {
-
 	return CMonoProxy::p_instance->CallCallback(CMonoProxy::p_instance->m_cOnGameModeInit, NULL);
 }
 
@@ -144,7 +148,10 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerLeaveRaceCheckpoint(int playerid) {
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnRconCommand(const char * cmd) {
+	mono_thread_attach(CMonoProxy::p_instance->m_pRootDomain);
+
 	void *args[1];
+
 	args[0] = mono_string_new(mono_domain_get(), cmd);
 
 	return CMonoProxy::p_instance->CallCallback(CMonoProxy::p_instance->m_cOnRconCommand, args);
