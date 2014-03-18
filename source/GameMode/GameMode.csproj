@@ -46,6 +46,7 @@
     <Compile Include="Definitions\ObjectType.cs" />
     <Compile Include="Definitions\PlayerDisconnectReason.cs" />
     <Compile Include="Definitions\ShopName.cs" />
+    <Compile Include="Definitions\TextDrawAlignment.cs" />
     <Compile Include="Events\DialogResponseEventArgs.cs" />
     <Compile Include="Events\GameModeEventArgs.cs" />
     <Compile Include="Definitions\BulletHitType.cs" />

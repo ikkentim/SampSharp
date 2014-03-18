@@ -1721,6 +1721,17 @@ namespace GameMode
         }
 
         /// <summary>
+        /// Give a player a weapon with a specified amount of ammo.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to give a weapon to.</param>
+        /// <param name="weapon">The weapon to give to the player.</param>
+        /// <param name="ammo">The amount of ammo to give to the player.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool GivePlayerWeapon(int playerid, Weapon weapon, int ammo)
+        {
+            return GivePlayerWeapon(playerid, (int)weapon, ammo);
+        }
+        /// <summary>
         /// Get the specified player's IP and store it in a string.
         /// </summary>
         /// <remarks>
@@ -1776,6 +1787,263 @@ namespace GameMode
             string varname;
             GetPVarNameAtIndex(playerid, index, out varname, 64);
             return varname;
+        }
+
+        /// <summary>
+        /// Sets the armed weapon of the player.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to arm with a weapon.</param>
+        /// <param name="weapon">The weapon that the player should be armed with.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetPlayerArmedWeapon(int playerid, Weapon weapon)
+        {
+            return SetPlayerArmedWeapon(playerid, (int) weapon);
+        }
+
+        /// <summary>
+        /// Get the weapon and ammo in a specific player's weapon slot.
+        /// </summary>
+        /// <param name="playerid">The ID of the player whose weapon data to retrieve.</param>
+        /// <param name="slot">The weapon slot to get data for (0-12).</param>
+        /// <param name="weapon">The variable in which to store the weapon, passed by reference.</param>
+        /// <param name="ammo">The variable in which to store the ammo, passed by reference.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool GetPlayerWeaponData(int playerid, int slot, out Weapon weapon, out int ammo)
+        {
+            int weaponid;
+            bool result = GetPlayerWeaponData(playerid, slot, out weaponid, out ammo);
+            weapon = (Weapon) weaponid;
+            return result;
+        }
+
+        /// <summary>
+        /// Check which keys a player is pressing.
+        /// </summary>
+        /// <remarks>
+        /// Only the FUNCTION of keys can be detected; not actual keys. You can not detect if a player presses space, but you can detect if they press sprint (which can be mapped (assigned) to ANY key, but is space by default)).
+        /// </remarks>
+        /// <param name="playerid">The ID of the player to detect the keys of.</param>
+        /// <param name="keys">A set containing the player's key states</param>
+        /// <param name="updown">Up or Down value, passed by reference.</param>
+        /// <param name="leftright">Left or Right value, passed by reference.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool GetPlayerKeys(int playerid, out Keys keys, out int updown, out int leftright)
+        {
+            int outkeys;
+            bool response = GetPlayerKeys(playerid, out outkeys, out updown, out leftright);
+            keys = (Keys) outkeys;
+            return response;
+        }
+
+        /// <summary>
+        /// Set a player's special fighting style. To use in-game, aim and press the 'secondary attack' key (ENTER by default).
+        /// </summary>
+        /// <remarks>
+        /// This does not affect normal fist attacks - only special/secondary attacks (aim + press 'secondary attack' key).
+        /// </remarks>
+        /// <param name="playerid">The ID of player to set the fighting style of.</param>
+        /// <param name="style">The fighting style that should be set.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetPlayerFightingStyle(int playerid, FightStyle style)
+        {
+            return SetPlayerFightingStyle(playerid, (int) style);
+        }
+
+        /// <summary>
+        /// Attach an object to a specific bone on a player.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to attach the object to.</param>
+        /// <param name="index">The index (slot) to assign the object to (0-9).</param>
+        /// <param name="modelid">The model to attach.</param>
+        /// <param name="bone">The bone to attach the object to.</param>
+        /// <param name="offset">offset for the object position.</param>
+        /// <param name="rotation">rotation of the object.</param>
+        /// <param name="scale"> scale of the object.</param>
+        /// <param name="materialcolor1">The first object color to set, as an integer or hex in ARGB color format.</param>
+        /// <param name="materialcolor2">The second object color to set, as an integer or hex in ARGB color format.</param>
+        /// <returns>True on success, False otherwise.</returns>
+        public static bool SetPlayerAttachedObject(int playerid, int index, int modelid, int bone, Vector offset,
+            Rotation rotation, Vector scale, int materialcolor1, int materialcolor2)
+        {
+            return SetPlayerAttachedObject(playerid, index, modelid, bone, offset.X, offset.Y, offset.Z, rotation.X,
+                rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z, materialcolor1, materialcolor2);
+        }
+
+
+        /// <summary>
+        /// Set the text alignment of a player-textdraw.
+        /// </summary>
+        /// <param name="playerid">The ID of the player whose player-textdraw to set the alignment of.</param>
+        /// <param name="text">The ID of the player-textdraw to set the alignment of.</param>
+        /// <param name="alignment">Alignment of the player-textdraw.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool PlayerTextDrawAlignment(int playerid, int text, TextDrawAlignment alignment)
+        {
+            return PlayerTextDrawAlignment(playerid, text, (int)alignment);
+        }
+
+        /// <summary>
+        /// Change the font of a player-textdraw.
+        /// </summary>
+        /// <param name="playerid">The ID of the player whose player-textdraw to change the font of.</param>
+        /// <param name="text">The ID of the player-textdraw to change the font of</param>
+        /// <param name="font">The font to use in this player-textdraw.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool PlayerTextDrawFont(int playerid, int text, TextDrawFont font)
+        {
+            return PlayerTextDrawFont(playerid, text, (int) font);
+        }
+
+        /// <summary>
+        /// Sets the rotation and zoom of a 3D model preview player-textdraw.
+        /// </summary>
+        /// <param name="playerid">The ID of the player whose player-textdraw to change.</param>
+        /// <param name="text">The ID of the player-textdraw to change.</param>
+        /// <param name="rotation">The rotation value.</param>
+        /// <param name="fZoom">The zoom value, default value 1.0, smaller values make the camera closer and larger values make the camera further away.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool PlayerTextDrawSetPreviewRot(int playerid, int text, Rotation rotation, float fZoom)
+        {
+            return PlayerTextDrawSetPreviewRot(playerid, text, rotation.X, rotation.Y, rotation.Z, fZoom);
+        }
+
+        /// <summary>
+        /// Plays the specified sound for a player.
+        /// </summary>
+        /// <remarks>
+        /// Only use the coordinates if you want the sound to be played at a certain position. Set coordinates all to 0 to just play the sound.
+        /// </remarks>
+        /// <param name="playerid">The ID of the player for whom to play the sound.</param>
+        /// <param name="soundid">The sound to play.</param>
+        /// <param name="position">coordinates for the sound to play at. (0,0,0 for no position)</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool PlayerPlaySound(int playerid, int soundid, Vector position)
+        {
+            return PlayerPlaySound(playerid, soundid, position.X, position.Y, position.Z);
+        }
+
+        /// <summary>
+        /// This Function allows to set players special action.
+        /// </summary>
+        /// <param name="playerid">The player that should perform the action.</param>
+        /// <param name="action">The action that should be performed.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetPlayerSpecialAction(int playerid, SpecialAction action)
+        {
+            return SetPlayerSpecialAction(playerid, (int) action);
+        }
+
+        /// <summary>
+        /// Sets a checkpoint (red circle) for a player. Also shows a red blip on the radar.
+        /// </summary>
+        /// <remarks>
+        /// Checkpoints created on server-created objects (<see cref="CreateObject"/>/<see cref="CreatePlayerObject"/>) will appear down on the 'real' ground, but will still function correctly. There is no fix available for this issue. A pickup can be used instead.
+        /// </remarks>
+        /// <param name="playerid">The ID of the player to set the checkpoint of.</param>
+        /// <param name="position">The coordinate to set the checkpoint at.</param>
+        /// <param name="size">The size of the checkpoint.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetPlayerCheckpoint(int playerid, Vector position, float size)
+        {
+            return SetPlayerCheckpoint(playerid, position.X, position.Y, position.Z, size);
+        }
+
+        /// <summary>
+        /// Creates a race checkpoint. When the player enters it, the OnPlayerEnterRaceCheckpoint callback is called.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to set the checkpoint for.</param>
+        /// <param name="type">Type of checkpoint.</param>
+        /// <param name="position">Position of the checkpoint.</param>
+        /// <param name="nextPosition">Position of the next point, for the arrow facing direction.</param>
+        /// <param name="size">Size (diameter) of the checkpoint</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetPlayerRaceCheckpoint(int playerid, CheckpointType type, Vector position, Vector nextPosition, float size)
+        {
+            return SetPlayerRaceCheckpoint(playerid, (int) type, position.X, position.Y, position.Z, nextPosition.X,
+                nextPosition.Y, nextPosition.Z, size);
+        }
+
+
+        /// <summary>
+        /// This function allows you to place your own icons on the map, enabling you to emphasise the locations of banks, airports or whatever else you want. A total of 63 icons are available in GTA: San Andreas, all of which can be used using this function. You can also specify the color of the icon, which allows you to change the square icon (ID: 0).
+        /// </summary>
+        /// <param name="playerid">The ID of the player to set the map icon for.</param>
+        /// <param name="iconid">The player's icon ID, ranging from 0 to 99, to be used in RemovePlayerMapIcon.</param>
+        /// <param name="position">The coordinates of the place where you want the icon to be.</param>
+        /// <param name="markertype">The icon to set.</param>
+        /// <param name="color">The color of the icon, this should only be used with the square icon (ID: 0).</param>
+        /// <param name="style">The style of icon.</param>
+        /// <returns>True if it was successful, False otherwise (e.g. the player isn't connected).</returns>
+        public static bool SetPlayerMapIcon(int playerid, int iconid, Vector position, PlayerMarkersMode markertype,
+            int color, int style)
+        {
+            return SetPlayerMapIcon(playerid, iconid, position.X, position.Y, position.Z, (int) markertype, color, style);
+        }
+
+        /// <summary>
+        /// Sets the camera to a specific position for a player.
+        /// </summary>
+        /// <param name="playerid">ID of the player.</param>
+        /// <param name="position">New position of the camera.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetPlayerCameraPos(int playerid, Vector position)
+        {
+            return SetPlayerCameraPos(playerid, position.X, position.Y, position.Z);
+        }
+
+        /// <summary>
+        /// Get the position of the player's camera.
+        /// </summary>
+        /// <remarks> 
+        /// Player's camera positions are only updated once a second, unless aiming.
+        /// </remarks>
+        /// <param name="playerid">The ID of the player to get the camera position of.</param>
+        /// <returns>The position of the camera.</returns>
+        public static Vector GetPlayerCameraPos(int playerid)
+        {
+            float x, y, z;
+            GetPlayerCameraPos(playerid, out x, out y, out z);
+            return new Vector(x, y, z);
+        }
+
+        /// <summary>
+        /// This function will return the current direction of player's aiming in 3-D space, the coords are relative to the camera position, see <see cref="GetPlayerCameraPos"/>.
+        /// </summary>
+        /// <param name="playerid">The ID of the player you want to obtain the camera front vector of.</param>
+        /// <returns>This camera front vector of the player.</returns>
+        public static Vector GetPlayerCameraFrontVector(int playerid)
+        {
+            float x, y, z;
+            GetPlayerCameraFrontVector(playerid, out x, out y, out z);
+            return new Vector(x, y, z);
+        }
+
+        /// <summary>
+        /// Move a player's camera from one position to another, within the set time.
+        /// </summary>
+        /// <param name="playerid">The ID of the player the camera should be moved for.</param>
+        /// <param name="from">The position the camera should start to move from.</param>
+        /// <param name="to">The position the camera should move to.</param>
+        /// <param name="time">Time in milliseconds.</param>
+        /// <param name="cut">The jumpcut to use.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool InterpolateCameraPos(int playerid, Vector from,  Vector to, int time, CameraCut cut)
+        {
+            return InterpolateCameraPos(playerid, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
+        }
+
+        /// <summary>
+        /// Interpolate a player's camera's 'look at' point between two coordinates with a set speed. Can be be used with <see cref="InterpolateCameraPos"/>.
+        /// </summary>
+        /// <param name="playerid">The ID of the player the camera should be moved for.</param>
+        /// <param name="from">The position the camera should start to move from.</param>
+        /// <param name="to">The position the camera should move to.</param>
+        /// <param name="time">Time in milliseconds to complete interpolation.</param>
+        /// <param name="cut">The 'jumpcut' to use.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool InterpolateCameraLookAt(int playerid, Vector from, Vector to, int time, CameraCut cut)
+        {
+            return InterpolateCameraLookAt(playerid, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
         }
 
         #endregion
