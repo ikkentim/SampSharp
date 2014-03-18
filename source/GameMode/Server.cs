@@ -1,25 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using GameMode.Controllers;
 using GameMode.Definitions;
 using GameMode.Events;
 using GameMode.World;
 
 namespace GameMode
 {
+    /// <summary>
+    /// Represents a SA:MP gamemode.
+    /// </summary>
     public partial class Server
     {
-        #region Fields
-
         private static readonly Dictionary<int, TimerTickHandler> TimerHandlers =
             new Dictionary<int, TimerTickHandler>();
 
-        #endregion
-
-        #region Event handlers
-
-
-        #endregion
+        /// <summary>
+        /// Initalizes a new instance of the Server class.
+        /// </summary>
+        public Server()
+        {
+            RegisterControllers();
+        }
 
         #region Events
 
@@ -267,13 +268,13 @@ namespace GameMode
         /// Occurs when the <see cref="OnPlayerStreamIn"/> is being called.
         /// This callback is called when a player is streamed by some other player's client.
         /// </summary>
-        public event PlayerStreamHandler PlayerStreamIn;
+        public event StreamPlayerHandler PlayerStreamIn;
 
         /// <summary>
         /// Occurs when the <see cref="OnPlayerStreamOut"/> is being called.
         /// This callback is called when a player is streamed out from some other player's client.
         /// </summary>
-        public event PlayerStreamHandler PlayerStreamOut;
+        public event StreamPlayerHandler PlayerStreamOut;
 
         /// <summary>
         /// Occurs when the <see cref="OnVehicleStreamIn"/> is being called.
@@ -376,6 +377,14 @@ namespace GameMode
         public event WeaponShotHandler PlayerWeaponShot;
 
         #endregion
+
+        /// <summary>
+        /// Registers and initializes all controllers.
+        /// </summary>
+        public virtual void RegisterControllers()
+        {
+            new PlayerController().RegisterEvents(this);
+        }
 
         #region Callbacks
 

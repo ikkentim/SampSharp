@@ -174,7 +174,7 @@
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">A <see cref="StreamPlayerEventArgs"/> that contains the event data.</param>
-    public delegate void PlayerStreamHandler(object sender, StreamPlayerEventArgs e);
+    public delegate void StreamPlayerHandler(object sender, StreamPlayerEventArgs e);
 
     /// <summary>
     /// Represents the method that will handle the <see cref="Server.DialogResponse"/> event.

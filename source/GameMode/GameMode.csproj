@@ -39,7 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\IController.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Definitions\BodyPart.cs" />
+    <Compile Include="Definitions\CameraMode.cs" />
     <Compile Include="Definitions\CheckpointType.cs" />
     <Compile Include="Definitions\DialogButton.cs" />
     <Compile Include="Definitions\EnterExit.cs" />
@@ -113,6 +116,8 @@
     <Compile Include="Server.vehicles.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="World\Color.cs" />
+    <Compile Include="World\ColorFormat.cs" />
     <Compile Include="World\Player.cs" />
     <Compile Include="World\Vector.cs" />
     <Compile Include="World\Rotation.cs" />
