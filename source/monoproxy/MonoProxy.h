@@ -71,7 +71,6 @@ public:
  
 private:
 	MonoMethod * LoadCallback(const char *name);
-
 	MonoImage * m_pGameModeImage;
 
 	MonoObject * m_pGameMode;
