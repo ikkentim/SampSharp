@@ -2,7 +2,7 @@
 
 namespace GameMode
 {
-    public partial class BaseMode
+    public static partial class Native
     {
         /// <summary>
         /// Creates an object.
@@ -180,7 +180,7 @@ namespace GameMode
         public static extern bool EditPlayerObject(int playerid, int objectid);
 
         /// <summary>
-        /// Display the cursor and allow the player to select an object. <see cref="OnPlayerSelectObject"/> is called when the player selects an object.
+        /// Display the cursor and allow the player to select an object. <see cref="BaseMode.OnPlayerSelectObject"/> is called when the player selects an object.
         /// </summary>
         /// <param name="playerid">The ID of the player that should be able to select the object.</param>
         /// <returns>This function doesn't return a specific value.</returns>

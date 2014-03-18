@@ -64,8 +64,8 @@ namespace GameMode.World
         /// </summary>
         public virtual string Name
         {
-            get { return BaseMode.GetPlayerName(PlayerId); }
-            set { BaseMode.SetPlayerName(PlayerId, value); }
+            get { return Native.GetPlayerName(PlayerId); }
+            set { Native.SetPlayerName(PlayerId, value); }
         }
 
         /// <summary>
@@ -73,8 +73,8 @@ namespace GameMode.World
         /// </summary>
         public virtual Vector Position
         {
-            get { return BaseMode.GetPlayerPos(PlayerId); }
-            set { BaseMode.SetPlayerPos(PlayerId, value); }
+            get { return Native.GetPlayerPos(PlayerId); }
+            set { Native.SetPlayerPos(PlayerId, value); }
         }
 
         /// <summary>
@@ -82,8 +82,8 @@ namespace GameMode.World
         /// </summary>
         public virtual float FacingAngle
         {
-            get { return BaseMode.GetPlayerFacingAngle(PlayerId); }
-            set { BaseMode.SetPlayerFacingAngle(PlayerId, value); }
+            get { return Native.GetPlayerFacingAngle(PlayerId); }
+            set { Native.SetPlayerFacingAngle(PlayerId, value); }
         }
 
         /// <summary>
@@ -91,8 +91,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Interior
         {
-            get { return BaseMode.GetPlayerInterior(PlayerId); }
-            set { BaseMode.SetPlayerInterior(PlayerId, value); }
+            get { return Native.GetPlayerInterior(PlayerId); }
+            set { Native.SetPlayerInterior(PlayerId, value); }
         }
 
         /// <summary>
@@ -100,8 +100,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int VirtualWorld
         {
-            get { return BaseMode.GetPlayerVirtualWorld(PlayerId); }
-            set { BaseMode.SetPlayerVirtualWorld(PlayerId, value); }
+            get { return Native.GetPlayerVirtualWorld(PlayerId); }
+            set { Native.SetPlayerVirtualWorld(PlayerId, value); }
         }
 
         /// <summary>
@@ -109,8 +109,8 @@ namespace GameMode.World
         /// </summary>
         public virtual float Heath
         {
-            get { return BaseMode.GetPlayerHealth(PlayerId); }
-            set { BaseMode.SetPlayerHealth(PlayerId, value); }
+            get { return Native.GetPlayerHealth(PlayerId); }
+            set { Native.SetPlayerHealth(PlayerId, value); }
         }
 
         /// <summary>
@@ -118,8 +118,8 @@ namespace GameMode.World
         /// </summary>
         public virtual float Armour
         {
-            get { return BaseMode.GetPlayerArmour(PlayerId); }
-            set { BaseMode.SetPlayerArmour(PlayerId, value); }
+            get { return Native.GetPlayerArmour(PlayerId); }
+            set { Native.SetPlayerArmour(PlayerId, value); }
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace GameMode.World
         /// </summary>
         public virtual int WeaponAmmo
         {
-            get { return BaseMode.GetPlayerAmmo(PlayerId); }
+            get { return Native.GetPlayerAmmo(PlayerId); }
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace GameMode.World
         /// </summary>
         public virtual WeaponState WeaponState
         {
-            get { return (WeaponState) BaseMode.GetPlayerWeaponState(PlayerId); }
+            get { return (WeaponState)Native.GetPlayerWeaponState(PlayerId); }
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace GameMode.World
         /// </summary>
         public virtual Weapon Weapon
         {
-            get { return (Weapon) BaseMode.GetPlayerWeapon(PlayerId); }
+            get { return (Weapon)Native.GetPlayerWeapon(PlayerId); }
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace GameMode.World
         {
             get
             {
-                var target = BaseMode.GetPlayerTargetPlayer(PlayerId);
+                var target = Native.GetPlayerTargetPlayer(PlayerId);
                 return target == InvalidId ? null : Find(target);
             }
         }
@@ -163,8 +163,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Team
         {
-            get { return BaseMode.GetPlayerTeam(PlayerId); }
-            set { BaseMode.SetPlayerTeam(PlayerId, value); }
+            get { return Native.GetPlayerTeam(PlayerId); }
+            set { Native.SetPlayerTeam(PlayerId, value); }
         }
 
         /// <summary>
@@ -172,8 +172,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Score
         {
-            get { return BaseMode.GetPlayerScore(PlayerId); }
-            set { BaseMode.SetPlayerScore(PlayerId, value); }
+            get { return Native.GetPlayerScore(PlayerId); }
+            set { Native.SetPlayerScore(PlayerId, value); }
         }
 
         /// <summary>
@@ -181,8 +181,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int DrunkLevel
         {
-            get { return BaseMode.GetPlayerDrunkLevel(PlayerId); }
-            set { BaseMode.SetPlayerDrunkLevel(PlayerId, value); }
+            get { return Native.GetPlayerDrunkLevel(PlayerId); }
+            set { Native.SetPlayerDrunkLevel(PlayerId, value); }
         }
 
         /// <summary>
@@ -190,8 +190,8 @@ namespace GameMode.World
         /// </summary>
         public virtual Color Color
         {
-            get { return new Color(BaseMode.GetPlayerColor(PlayerId)); }
-            set { BaseMode.SetPlayerColor(PlayerId, value); }
+            get { return new Color(Native.GetPlayerColor(PlayerId)); }
+            set { Native.SetPlayerColor(PlayerId, value); }
         }
 
         /// <summary>
@@ -199,8 +199,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Skin
         {
-            get { return BaseMode.GetPlayerSkin(PlayerId); }
-            set { BaseMode.SetPlayerSkin(PlayerId, value); }
+            get { return Native.GetPlayerSkin(PlayerId); }
+            set { Native.SetPlayerSkin(PlayerId, value); }
         }
 
         /// <summary>
@@ -208,8 +208,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Money
         {
-            get { return BaseMode.GetPlayerMoney(PlayerId); }
-            set { BaseMode.GivePlayerMoney(PlayerId, Money + value); }
+            get { return Native.GetPlayerMoney(PlayerId); }
+            set { Native.GivePlayerMoney(PlayerId, Money + value); }
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace GameMode.World
         /// </summary>
         public virtual PlayerState PlayerState
         {
-            get { return (PlayerState) BaseMode.GetPlayerState(PlayerId); }
+            get { return (PlayerState)Native.GetPlayerState(PlayerId); }
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace GameMode.World
         /// </summary>
         public virtual string IP
         {
-            get { return BaseMode.GetPlayerIp(PlayerId); }
+            get { return Native.GetPlayerIp(PlayerId); }
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace GameMode.World
         /// </summary>
         public virtual int Ping
         {
-            get { return BaseMode.GetPlayerPing(PlayerId); }
+            get { return Native.GetPlayerPing(PlayerId); }
         }
 
         /// <summary>
@@ -241,8 +241,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int WantedLevel
         {
-            get { return BaseMode.GetPlayerWantedLevel(PlayerId); }
-            set { BaseMode.SetPlayerWantedLevel(PlayerId, value); }
+            get { return Native.GetPlayerWantedLevel(PlayerId); }
+            set { Native.SetPlayerWantedLevel(PlayerId, value); }
         }
 
         /// <summary>
@@ -250,8 +250,8 @@ namespace GameMode.World
         /// </summary>
         public virtual FightStyle FightStyle
         {
-            get { return (FightStyle) BaseMode.GetPlayerFightingStyle(PlayerId); }
-            set { BaseMode.SetPlayerFightingStyle(PlayerId, (int) value); }
+            get { return (FightStyle)Native.GetPlayerFightingStyle(PlayerId); }
+            set { Native.SetPlayerFightingStyle(PlayerId, (int)value); }
         }
 
         /// <summary>
@@ -262,10 +262,10 @@ namespace GameMode.World
             get
             {
                 float x, y, z;
-                BaseMode.GetPlayerVelocity(PlayerId, out x, out y, out z);
+                Native.GetPlayerVelocity(PlayerId, out x, out y, out z);
                 return new Vector(x, y, z);
             }
-            set { BaseMode.SetPlayerVelocity(PlayerId, value.X, value.Y, value.Z); }
+            set { Native.SetPlayerVelocity(PlayerId, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace GameMode.World
         /// </summary>
         public virtual int VehicleSeat
         {
-            get { return BaseMode.GetPlayerVehicleSeat(PlayerId); }
+            get { return Native.GetPlayerVehicleSeat(PlayerId); }
         }
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace GameMode.World
         /// </summary>
         public virtual int AnimationIndex
         {
-            get { return BaseMode.GetPlayerAnimationIndex(PlayerId); }
+            get { return Native.GetPlayerAnimationIndex(PlayerId); }
         }
 
         /// <summary>
@@ -289,8 +289,8 @@ namespace GameMode.World
         /// </summary>
         public virtual SpecialAction SpecialAction
         {
-            get { return (SpecialAction) BaseMode.GetPlayerSpecialAction(PlayerId); }
-            set { BaseMode.SetPlayerSpecialAction(PlayerId, value); }
+            get { return (SpecialAction)Native.GetPlayerSpecialAction(PlayerId); }
+            set { Native.SetPlayerSpecialAction(PlayerId, value); }
         }
 
         /// <summary>
@@ -298,7 +298,7 @@ namespace GameMode.World
         /// </summary>
         public virtual Vector CameraPosition
         {
-            get { return BaseMode.GetPlayerCameraPos(PlayerId); }
+            get { return Native.GetPlayerCameraPos(PlayerId); }
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace GameMode.World
         /// </summary>
         public virtual Vector CameraFrontVector
         {
-            get { return BaseMode.GetPlayerCameraFrontVector(PlayerId); }
+            get { return Native.GetPlayerCameraFrontVector(PlayerId); }
         }
 
         /// <summary>
@@ -314,7 +314,7 @@ namespace GameMode.World
         /// </summary>
         public virtual CameraMode CameraMode
         {
-            get { return (CameraMode) BaseMode.GetPlayerCameraMode(PlayerId); }
+            get { return (CameraMode)Native.GetPlayerCameraMode(PlayerId); }
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace GameMode.World
         /// </summary>
         public virtual bool InAnyVehicle
         {
-            get { return BaseMode.IsPlayerInAnyVehicle(PlayerId); }
+            get { return Native.IsPlayerInAnyVehicle(PlayerId); }
         }
 
         /// <summary>
@@ -330,7 +330,7 @@ namespace GameMode.World
         /// </summary>
         public virtual bool InCheckpoint
         {
-            get { return BaseMode.IsPlayerInCheckpoint(PlayerId); }
+            get { return Native.IsPlayerInCheckpoint(PlayerId); }
         }
 
         /// <summary>
@@ -338,7 +338,7 @@ namespace GameMode.World
         /// </summary>
         public virtual bool InRaceCheckpoint
         {
-            get { return BaseMode.IsPlayerInRaceCheckpoint(PlayerId); }
+            get { return Native.IsPlayerInRaceCheckpoint(PlayerId); }
         }
 
         //TODO: Add when vehicle objects exist
@@ -351,7 +351,7 @@ namespace GameMode.World
         /// </summary>
         public static int MaxPlayers
         {
-            get { return BaseMode.GetMaxPlayers(); }
+            get { return Native.GetMaxPlayers(); }
         }
 
         /// <summary>
@@ -419,7 +419,7 @@ namespace GameMode.World
         /// This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
-        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="BaseMode.SetPlayerPos(int,Vector)"/>.
+        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="Native.SetPlayerPos(int,Vector)"/>.
         /// </remarks>
         public event PlayerVehicleHandler ExitVehicle;
 
@@ -428,7 +428,7 @@ namespace GameMode.World
         /// This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
-        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="BaseMode.SetPlayerPos(int,Vector)"/>.
+        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="Native.SetPlayerPos(int,Vector)"/>.
         /// </remarks>
         public event PlayerStateHandler StateChanged;
 
@@ -464,7 +464,7 @@ namespace GameMode.World
 
         /// <summary>
         /// Occurs when the <see cref="BaseMode.OnPlayerPickUpPickup"/> is being called.
-        /// Called when a player picks up a pickup created with <see cref="BaseMode.CreatePickup"/>.
+        /// Called when a player picks up a pickup created with <see cref="Native.CreatePickup"/>.
         /// </summary>
         public event PlayerPickupHandler PickUpPickup;
 
@@ -491,7 +491,7 @@ namespace GameMode.World
         /// Called when a player changes interior.
         /// </summary>
         /// <remarks>
-        /// This is also called when <see cref="BaseMode.SetPlayerInterior"/> is used.
+        /// This is also called when <see cref="Native.SetPlayerInterior"/> is used.
         /// </remarks>
         public event PlayerInteriorChangedHandler InteriorChanged;
 
@@ -524,7 +524,7 @@ namespace GameMode.World
 
         /// <summary>
         /// Occurs when the <see cref="BaseMode.OnDialogResponse"/> is being called.
-        /// This callback is called when a player responds to a dialog shown using <see cref="BaseMode.ShowPlayerDialog"/> by either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
+        /// This callback is called when a player responds to a dialog shown using <see cref="Native.ShowPlayerDialog"/> by either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
         /// </summary>
         public event DialogResponseHandler DialogResponse;
 
@@ -551,7 +551,7 @@ namespace GameMode.World
         /// This callback is called when a player places a target/waypoint on the pause menu map (by right-clicking).
         /// </summary>
         /// <remarks>
-        /// The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get a more accurate Z coordinate (or for teleportation; use <see cref="BaseMode.SetPlayerPosFindZ(int,Vector)"/>).
+        /// The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get a more accurate Z coordinate (or for teleportation; use <see cref="Native.SetPlayerPosFindZ(int,Vector)"/>).
         /// </remarks>
         public event PlayerClickMapHandler ClickMap;
 
@@ -560,7 +560,7 @@ namespace GameMode.World
         /// This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
         /// </summary>
         /// <remarks>
-        /// The clickable area is defined by <see cref="BaseMode.TextDrawTextSize"/>. The x and y parameters passed to that function must not be zero or negative.
+        /// The clickable area is defined by <see cref="Native.TextDrawTextSize"/>. The x and y parameters passed to that function must not be zero or negative.
         /// </remarks>
         public event PlayerClickTextDrawHandler ClickTextDraw;
 
@@ -596,7 +596,7 @@ namespace GameMode.World
 
         /// <summary>
         /// Occurs when the <see cref="BaseMode.OnPlayerSelectObject"/> is being called.
-        /// This callback is called when a player selects an object after <see cref="BaseMode.SelectObject"/> has been used.
+        /// This callback is called when a player selects an object after <see cref="Native.SelectObject"/> has been used.
         /// </summary>
         public event PlayerSelectObjectHandler SelectObject;
 
@@ -675,7 +675,7 @@ namespace GameMode.World
         public virtual void SetSpawnInfo(int team, int skin, Vector position, float rotation, Weapon weapon1,
             int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
-            BaseMode.SetSpawnInfo(PlayerId, team, skin, position, rotation, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
+            Native.SetSpawnInfo(PlayerId, team, skin, position, rotation, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
                 weapon3, weapon3Ammo);
         }
 
