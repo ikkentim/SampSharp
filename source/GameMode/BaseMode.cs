@@ -8,15 +8,15 @@ namespace GameMode
     /// <summary>
     /// Represents a SA:MP gamemode.
     /// </summary>
-    public abstract partial class Server
+    public abstract partial class BaseMode
     {
         private static readonly Dictionary<int, TimerTickHandler> TimerHandlers =
             new Dictionary<int, TimerTickHandler>();
 
         /// <summary>
-        /// Initalizes a new instance of the Server class.
+        /// Initalizes a new instance of the BaseMode class.
         /// </summary>
-        public Server()
+        protected BaseMode()
         {
             Player.RegisterEvents(this, Player.Find);
         }

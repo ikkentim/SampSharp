@@ -5,7 +5,7 @@ using GameMode.Events;
 
 namespace GameMode
 {
-    public partial class Server
+    public partial class BaseMode
     {
         /// <summary>
         /// This function sends a message to a specific player with a chosen color in the chat. The whole line in the chatbox will be in the set color unless colour embedding is used.<br />

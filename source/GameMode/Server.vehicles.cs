@@ -3,7 +3,7 @@ using GameMode.Definitions;
 
 namespace GameMode
 {
-    public partial class Server
+    public partial class BaseMode
     {
         /// <summary>
         /// Check if a vehicle is created.
