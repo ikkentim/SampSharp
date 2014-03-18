@@ -4,12 +4,12 @@ namespace GameMode.Events
 {
     public class PlayerDisconnectedEventArgs : PlayerEventArgs
     {
-        public PlayerDisconnectedEventArgs(int playerid, PlayerDisconnectReason reason)
+        public PlayerDisconnectedEventArgs(int playerid, DisconnectReason reason)
             : base(playerid)
         {
             Reason = reason;
         }
 
-        public PlayerDisconnectReason Reason { get; private set; }
+        public DisconnectReason Reason { get; private set; }
     }
 }

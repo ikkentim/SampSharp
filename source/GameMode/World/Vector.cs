@@ -2,7 +2,7 @@
 
 namespace GameMode.World
 {
-    public class Vector
+    public struct Vector
     {
         public static Vector Zero = NewZero();
         public static Vector One = NewOne();
@@ -11,28 +11,21 @@ namespace GameMode.World
         public float Y { get; set; }
         public float Z { get; set; }
 
-        public Vector()
-        {
-            X = 0.0f;
-            Y = 0.0f;
-            Z = 0.0f;
-        }
-
-        public Vector(float x, float y, float z)
+        public Vector(float x, float y, float z) : this()
         {
             X = x;
             Y = y;
             Z = z;
         }
 
-        public Vector(float xyz)
+        public Vector(float xyz) : this()
         {
             X = xyz;
             Y = xyz;
             Z = xyz;
         }
 
-        public Vector(Vector vector)
+        public Vector(Vector vector) : this()
         {
             X = vector.X;
             Y = vector.Y;
@@ -143,7 +136,7 @@ namespace GameMode.World
             return new Vector(this);
         }
 
-        protected bool Equals(Vector other)
+        public bool Equals(Vector other)
         {
             return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
         }
@@ -151,8 +144,7 @@ namespace GameMode.World
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Vector)obj);
+            return obj is Vector && Equals((Vector)obj);
         }
 
         public override int GetHashCode()

@@ -2,34 +2,28 @@
 
 namespace GameMode.World
 {
-    public class Rotation
+    public struct Rotation
     {
+
         public float X { get; set; }
         public float Y { get; set; }
         public float Z { get; set; }
 
-        public Rotation()
-        {
-            X = 0.0f;
-            Y = 0.0f;
-            Z = 0.0f;
-        }
-
-        public Rotation(float x, float y, float z)
+        public Rotation(float x, float y, float z) : this()
         {
             X = x;
             Y = y;
             Z = z;
         }
 
-        public Rotation(float xyz)
+        public Rotation(float xyz) : this()
         {
             X = xyz;
             Y = xyz;
             Z = xyz;
         }
 
-        public Rotation(Rotation vector)
+        public Rotation(Rotation vector) : this()
         {
             X = vector.X;
             Y = vector.Y;
@@ -41,9 +35,15 @@ namespace GameMode.World
             return new Rotation(this);
         }
 
-        protected bool Equals(Rotation other)
+        public bool Equals(Rotation other)
         {
             return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is Rotation && Equals((Rotation)obj);
         }
 
         public static bool operator ==(Rotation left, Rotation right)
@@ -70,20 +70,13 @@ namespace GameMode.World
             }
         }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Rotation)obj);
-        }
-
         public override int GetHashCode()
         {
             unchecked
             {
                 int hashCode = X.GetHashCode();
-                hashCode = (hashCode * 397) ^ Y.GetHashCode();
-                hashCode = (hashCode * 397) ^ Z.GetHashCode();
+                hashCode = (hashCode*397) ^ Y.GetHashCode();
+                hashCode = (hashCode*397) ^ Z.GetHashCode();
                 return hashCode;
             }
         }
