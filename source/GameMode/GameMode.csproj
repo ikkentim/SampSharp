@@ -108,10 +108,10 @@
     <Compile Include="Events\VehiclePaintjobEventArgs.cs" />
     <Compile Include="Events\VehicleResprayedEventArgs.cs" />
     <Compile Include="Events\WeaponShotEventArgs.cs" />
-    <Compile Include="BaseMode.objects.cs" />
-    <Compile Include="BaseMode.samp.cs" />
-    <Compile Include="BaseMode.players.cs" />
-    <Compile Include="BaseMode.vehicles.cs" />
+    <Compile Include="Native.objects.cs" />
+    <Compile Include="Native.samp.cs" />
+    <Compile Include="Native.players.cs" />
+    <Compile Include="Native.vehicles.cs" />
     <Compile Include="BaseMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="World\Color.cs" />

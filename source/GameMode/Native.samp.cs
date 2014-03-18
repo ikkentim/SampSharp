@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using GameMode.Definitions;
 using GameMode.Events;
 
 namespace GameMode
 {
-    public partial class BaseMode
+    public static partial class Native
     {
+        private static readonly Dictionary<int, TimerTickHandler> TimerHandlers =
+            new Dictionary<int, TimerTickHandler>();
+
         /// <summary>
         /// This function sends a message to a specific player with a chosen color in the chat. The whole line in the chatbox will be in the set color unless colour embedding is used.<br />
         /// </summary>
@@ -99,7 +103,7 @@ namespace GameMode
         public static extern bool SetGameModeText(string text);
 
         /// <summary>
-        /// This function is used to change the amount of teams used in the gamemode. It has no obvious way of being used, but can help to indicate the number of teams used for better (more effective) internal handling. This function should only be used in the <see cref="OnGameModeInit"/> callback.
+        /// This function is used to change the amount of teams used in the gamemode. It has no obvious way of being used, but can help to indicate the number of teams used for better (more effective) internal handling. This function should only be used in the <see cref="BaseMode.OnGameModeInit"/> callback.
         /// </summary>
         /// <remarks>
         /// You can pass 2 billion here if you like, this function has no effect at all.
@@ -149,7 +153,7 @@ namespace GameMode
             float zAngle, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
 
         /// <summary>
-        /// Adds a 'static' vehicle (models are pre-loaded for players)to the gamemode. Can only be used when the server first starts (in <see cref="OnGameModeInit"/>).
+        /// Adds a 'static' vehicle (models are pre-loaded for players)to the gamemode. Can only be used when the server first starts (in <see cref="BaseMode.OnGameModeInit"/>).
         /// </summary>
         /// <param name="modelid">The Model ID for the vehicle.</param>
         /// <param name="spawnX">The X-coordinate for the vehicle.</param>
@@ -164,7 +168,7 @@ namespace GameMode
             float zAngle, int color1, int color2);
 
         /// <summary>
-        /// Adds a 'static' vehicle (models are pre-loaded for players)to the gamemode. Can only be used when the server first starts (under <see cref="OnGameModeInit"/>). Differs from <see cref="AddStaticVehicle"/> in only one way: allows a respawn time to be set for when the vehicle is left unoccupied by the driver.
+        /// Adds a 'static' vehicle (models are pre-loaded for players)to the gamemode. Can only be used when the server first starts (under <see cref="BaseMode.OnGameModeInit"/>). Differs from <see cref="AddStaticVehicle"/> in only one way: allows a respawn time to be set for when the vehicle is left unoccupied by the driver.
         /// </summary>
         /// <param name="modelid">The Model ID for the vehicle.</param>
         /// <param name="spawnX">The X-coordinate for the vehicle.</param>
@@ -193,7 +197,7 @@ namespace GameMode
         public static extern int AddStaticPickup(int model, int type, float x, float y, float z, int virtualworld);
 
         /// <summary>
-        /// This function does exactly the same as <see cref="AddStaticPickup"/>, except it returns a pickup ID which can be used to destroy it afterwards and be tracked using <see cref="OnPlayerPickUpPickup"/>.
+        /// This function does exactly the same as <see cref="AddStaticPickup"/>, except it returns a pickup ID which can be used to destroy it afterwards and be tracked using <see cref="BaseMode.OnPlayerPickUpPickup"/>.
         /// </summary>
         /// <param name="model">The model of the pickup.</param>
         /// <param name="type">The pickup spawn type.</param>
@@ -222,7 +226,7 @@ namespace GameMode
         public static extern bool ShowNameTags(bool show);
 
         /// <summary>
-        /// A function that can be used in <see cref="OnGameModeInit"/> to enable or disable the players markers, which would normally be shown on the radar. If you want to change the marker settings at some other point in the gamemode, have a look at <see cref="SetPlayerMarkerForPlayer"/> which does exactly that.
+        /// A function that can be used in <see cref="BaseMode.OnGameModeInit"/> to enable or disable the players markers, which would normally be shown on the radar. If you want to change the marker settings at some other point in the gamemode, have a look at <see cref="SetPlayerMarkerForPlayer"/> which does exactly that.
         /// </summary>
         /// <param name="mode">The mode you want to use.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -330,7 +334,7 @@ namespace GameMode
         public static extern bool CreateExplosion(float x, float y, float z, int type, float radius);
 
         /// <summary>
-        /// This function allows to turn on zone / area names such as the "Vinewood" or "Doherty" text at the bottom-right of the screen as they enter the area. This is a gamemode option and should be set in the callback <see cref="OnGameModeInit"/>.
+        /// This function allows to turn on zone / area names such as the "Vinewood" or "Doherty" text at the bottom-right of the screen as they enter the area. This is a gamemode option and should be set in the callback <see cref="BaseMode.OnGameModeInit"/>.
         /// </summary>
         /// <param name="enable">A toggle option for whether or not you'd like zone names on or off. False is off and True is on.</param>
         /// <returns>This function doesn't return a specific value.</returns>

@@ -5,7 +5,7 @@ using GameMode.World;
 
 namespace GameMode
 {
-    public partial class BaseMode
+    public static partial class Native
     {
         /// <summary>
         /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using SetPlayerSkin in OnPlayerSpawn and/or OnPlayerRequestClass, even though this has been fixed in 0.2.
@@ -382,7 +382,7 @@ namespace GameMode
         /// Sets the name of a player.
         /// </summary>
         /// <remarks>
-        /// If you set the player's name to the same name except different cased letters (i.e. "heLLO" to "hello"), it will not work. If used in <see cref="OnPlayerConnect"/>, the new name will not be shown for the connecting player.
+        /// If you set the player's name to the same name except different cased letters (i.e. "heLLO" to "hello"), it will not work. If used in <see cref="BaseMode.OnPlayerConnect"/>, the new name will not be shown for the connecting player.
         /// </remarks>
         /// <param name="playerid">The ID of the player to set the name of.</param>
         /// <param name="name">The name to set.</param>
@@ -410,7 +410,7 @@ namespace GameMode
         /// Get the specified player's IP and store it in a string.
         /// </summary>
         /// <remarks>
-        /// This function does not work when used in <see cref="OnPlayerDisconnect"/> because the player is already disconnected. It will return an invalid IP (255.255.255.255). Save players' IPs under <see cref="OnPlayerConnect"/> if they need to be used under <see cref="OnPlayerConnect"/>.
+        /// This function does not work when used in <see cref="BaseMode.OnPlayerDisconnect"/> because the player is already disconnected. It will return an invalid IP (255.255.255.255). Save players' IPs under <see cref="BaseMode.OnPlayerConnect"/> if they need to be used under <see cref="BaseMode.OnPlayerConnect"/>.
         /// </remarks>
         /// <param name="playerid">The ID of the player to get the IP of.</param>
         /// <param name="ip">The string to store the player's IP in, passed by reference</param>
@@ -944,7 +944,7 @@ namespace GameMode
         /// Sets an integer to a player variable.
         /// </summary>
         /// <remarks>
-        /// Variables aren't reset until after <see cref="OnPlayerDisconnect"/> is called, so the values are still accessible in <see cref="OnPlayerDisconnect"/>.
+        /// Variables aren't reset until after <see cref="BaseMode.OnPlayerDisconnect"/> is called, so the values are still accessible in <see cref="BaseMode.OnPlayerDisconnect"/>.
         /// </remarks>
         /// <param name="playerid">The ID of the player whose player variable will be set.</param>
         /// <param name="varname">The name of the player variable.</param>
@@ -1086,7 +1086,7 @@ namespace GameMode
         /// </summary>
         /// <remarks>
         /// The exiting animation is not synced for other players.
-        /// This function will not work when used in <see cref="OnPlayerEnterVehicle"/>, because the player isn't in the vehicle when the callback is called. Use <see cref="OnPlayerStateChange"/> instead.
+        /// This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle"/>, because the player isn't in the vehicle when the callback is called. Use <see cref="BaseMode.OnPlayerStateChange"/> instead.
         /// </remarks>
         /// <param name="playerid">The ID of the player to remove from their vehicle.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -1564,7 +1564,7 @@ namespace GameMode
         public static extern bool StopRecordingPlayerData(int playerid);
 
         /// <summary>
-        /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using <see cref="SetPlayerSkin"/> in <see cref="OnPlayerSpawn"/> and/or <see cref="OnPlayerRequestClass"/>.
+        /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using <see cref="SetPlayerSkin"/> in <see cref="BaseMode.OnPlayerSpawn"/> and/or <see cref="BaseMode.OnPlayerRequestClass"/>.
         /// </summary>
         /// <param name="playerid">The PlayerID of who you want to set the spawn information.</param>
         /// <param name="team">The Team-ID of the chosen player.</param>
@@ -1589,7 +1589,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using <see cref="SetPlayerSkin"/> in <see cref="OnPlayerSpawn"/> and/or <see cref="OnPlayerRequestClass"/>.
+        /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using <see cref="SetPlayerSkin"/> in <see cref="BaseMode.OnPlayerSpawn"/> and/or <see cref="BaseMode.OnPlayerRequestClass"/>.
         /// </summary>
         /// <param name="playerid">The PlayerID of who you want to set the spawn information.</param>
         /// <param name="team">The Team-ID of the chosen player.</param>
@@ -1719,7 +1719,7 @@ namespace GameMode
         /// Get the specified player's IP and store it in a string.
         /// </summary>
         /// <remarks>
-        /// This function does not work when used in <see cref="OnPlayerDisconnect"/> because the player is already disconnected. It will return an invalid IP (255.255.255.255). Save players' IPs under <see cref="OnPlayerConnect"/> if they need to be used under <see cref="OnPlayerConnect"/>.
+        /// This function does not work when used in <see cref="BaseMode.OnPlayerDisconnect"/> because the player is already disconnected. It will return an invalid IP (255.255.255.255). Save players' IPs under <see cref="BaseMode.OnPlayerConnect"/> if they need to be used under <see cref="BaseMode.OnPlayerConnect"/>.
         /// </remarks>
         /// <param name="playerid">The ID of the player to get the IP of.</param>
         /// <returns>The player's IP.</returns>
