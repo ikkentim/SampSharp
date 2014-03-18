@@ -1,4 +1,5 @@
-﻿using GameMode.Definitions;
+﻿using System;
+using GameMode.Definitions;
 using GameMode.Events;
 using GameMode.World;
 
@@ -381,10 +382,14 @@ namespace GameMode
         /// <param name="timerid">The ID of the ticking timer.</param>
         /// <param name="args">The args object as parsed with <see cref="Native.SetTimer"/>.</param>
         /// <returns>This callback does not handle returns.</returns>
-        public bool OnTimerTick(int timerid, object args)
+        public virtual bool OnTimerTick(int timerid, object args)
         {
-            if (TimerHandlers.ContainsKey(timerid) && !TimerHandlers[timerid](timerid, args))
-                Native.KillTimer(timerid);
+            Console.WriteLine("TimerTick");
+            var timer = args as Timer;
+
+            if (timer != null)
+                timer.OnTick(EventArgs.Empty);
+
             return true;
         }
 

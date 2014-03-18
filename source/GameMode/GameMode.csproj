@@ -117,6 +117,7 @@
     <Compile Include="World\Color.cs" />
     <Compile Include="World\ColorFormat.cs" />
     <Compile Include="World\Player.cs" />
+    <Compile Include="World\Timer.cs" />
     <Compile Include="World\Vector.cs" />
     <Compile Include="World\Rotation.cs" />
   </ItemGroup>

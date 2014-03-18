@@ -15,6 +15,8 @@ public:
 
 	static CMonoProxy * p_instance;
 
+	MonoDomain * m_pRootDomain;
+
 	MonoMethod * m_cOnGameModeInit;
 	MonoMethod * m_cOnGameModeExit;
 	MonoMethod * m_cOnPlayerConnect;
@@ -70,7 +72,6 @@ public:
 private:
 	MonoMethod * LoadCallback(const char *name);
 
-	MonoDomain * m_pRootDomain;
 	MonoImage * m_pGameModeImage;
 
 	MonoObject * m_pGameMode;
