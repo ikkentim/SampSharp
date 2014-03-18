@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using GameMode.Definitions;
 using GameMode.Events;
@@ -16,6 +15,10 @@ namespace GameMode.World
 
         protected static List<Player> PlayerInstances = new List<Player>();
 
+        /// <summary>
+        /// Gets an ID commonly returned by methods to point out that no player matched the requirements.
+        /// </summary>
+        public const int InvalidId = Misc.InvalidPlayerId;
         #endregion
 
         #region Factories
@@ -28,7 +31,12 @@ namespace GameMode.World
         public static Player Find(int playerId)
         {
             //Find player in memory or initialize new player
-            return PlayerInstances.FirstOrDefault(p => p.PlayerId == playerId) ?? new Player(playerId);
+            var player = PlayerInstances.FirstOrDefault(p => p.PlayerId == playerId);
+
+            if (player == null)
+                PlayerInstances.Add(player = new Player(playerId));
+
+            return player;
         }
 
         #endregion
@@ -55,6 +63,15 @@ namespace GameMode.World
         public int PlayerId { get; private set; }
 
         /// <summary>
+        /// Gets or sets the name of this Player.
+        /// </summary>
+        public virtual string Name
+        {
+            get { return Server.GetPlayerName(PlayerId); }
+            set { Server.SetPlayerName(PlayerId, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the position of this Player.
         /// </summary>
         public virtual Vector Position
@@ -64,13 +81,273 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets or sets the name of this Player.
+        /// Gets or sets the facing angle of this Player.
         /// </summary>
-        public virtual string Name
+        public virtual float FacingAngle
         {
-            get { return Server.GetPlayerName(PlayerId); }
-            set { Server.SetPlayerName(PlayerId, value); }
+            get { return Server.GetPlayerFacingAngle(PlayerId); }
+            set { Server.SetPlayerFacingAngle(PlayerId, value); }
         }
+
+        /// <summary>
+        /// Gets or sets the interior of this Player.
+        /// </summary>
+        public virtual int Interior
+        {
+            get { return Server.GetPlayerInterior(PlayerId); }
+            set { Server.SetPlayerInterior(PlayerId, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the virtual world of this Player.
+        /// </summary>
+        public virtual int VirtualWorld
+        {
+            get { return Server.GetPlayerVirtualWorld(PlayerId); }
+            set { Server.SetPlayerVirtualWorld(PlayerId, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the health of this Player.
+        /// </summary>
+        public virtual float Heath
+        {
+            get { return Server.GetPlayerHealth(PlayerId); }
+            set { Server.SetPlayerHealth(PlayerId, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the armour of this Player.
+        /// </summary>
+        public virtual float Armour
+        {
+            get { return Server.GetPlayerArmour(PlayerId); }
+            set { Server.SetPlayerArmour(PlayerId, value); }
+        }
+
+        /// <summary>
+        /// Gets the ammo of the Weapon this Player is currently holding.
+        /// </summary>
+        public virtual int WeaponAmmo
+        {
+            get { return Server.GetPlayerAmmo(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets the WeaponState of the Weapon this Player is currently holding.
+        /// </summary>
+        public virtual WeaponState WeaponState
+        {
+            get { return (WeaponState) Server.GetPlayerWeaponState(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets the Weapon this Player is currently holding.
+        /// </summary>
+        public virtual Weapon Weapon
+        {
+            get { return (Weapon) Server.GetPlayerWeapon(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets the Player this Player is aiming at.
+        /// </summary>
+        public virtual Player TargetPlayer
+        {
+            get
+            {
+                var target = Server.GetPlayerTargetPlayer(PlayerId);
+                return target == InvalidId ? null : Find(target);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the team this Player is in.
+        /// </summary>
+        public virtual int Team
+        {
+            get { return Server.GetPlayerTeam(PlayerId); }
+            set { Server.SetPlayerTeam(PlayerId, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the score of this Player.
+        /// </summary>
+        public virtual int Score
+        {
+            get { return Server.GetPlayerScore(PlayerId); }
+            set { Server.SetPlayerScore(PlayerId, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the drunkness level of this Player.
+        /// </summary>
+        public virtual int DrunkLevel
+        {
+            get { return Server.GetPlayerDrunkLevel(PlayerId); }
+            set { Server.SetPlayerDrunkLevel(PlayerId, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the Color of this Player.
+        /// </summary>
+        public virtual Color Color
+        {
+            get { return new Color(Server.GetPlayerColor(PlayerId)); }
+            set { Server.SetPlayerColor(PlayerId, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the skin of this Player.
+        /// </summary>
+        public virtual int Skin
+        {
+            get { return Server.GetPlayerSkin(PlayerId); }
+            set { Server.SetPlayerSkin(PlayerId, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the money of this Player.
+        /// </summary>
+        public virtual int Money
+        {
+            get { return Server.GetPlayerMoney(PlayerId); }
+            set { Server.GivePlayerMoney(PlayerId, Money + value); }
+        }
+
+        /// <summary>
+        /// Gets the state of this Player.
+        /// </summary>
+        public virtual PlayerState PlayerState
+        {
+            get { return (PlayerState) Server.GetPlayerState(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets the IP of this Player.
+        /// </summary>
+        public virtual string IP
+        {
+            get { return Server.GetPlayerIp(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets the ping of this Player.
+        /// </summary>
+        public virtual int Ping
+        {
+            get { return Server.GetPlayerPing(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets or sets the wanted level of this Player.
+        /// </summary>
+        public virtual int WantedLevel
+        {
+            get { return Server.GetPlayerWantedLevel(PlayerId); }
+            set { Server.SetPlayerWantedLevel(PlayerId, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the FightStyle of this Player.
+        /// </summary>
+        public virtual FightStyle FightStyle
+        {
+            get { return (FightStyle) Server.GetPlayerFightingStyle(PlayerId); }
+            set { Server.SetPlayerFightingStyle(PlayerId, (int) value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the velocity of this Player.
+        /// </summary>
+        public virtual Vector Velocity
+        {
+            get
+            {
+                float x, y, z;
+                Server.GetPlayerVelocity(PlayerId, out x, out y, out z);
+                return new Vector(x, y, z);
+            }
+            set { Server.SetPlayerVelocity(PlayerId, value.X, value.Y, value.Z); }
+        }
+
+        /// <summary>
+        /// Gets the vehicle seat this Player sits on.
+        /// </summary>
+        public virtual int VehicleSeat
+        {
+            get { return Server.GetPlayerVehicleSeat(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets the index of the animation this Player is playing.
+        /// </summary>
+        public virtual int AnimationIndex
+        {
+            get { return Server.GetPlayerAnimationIndex(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets or sets the SpecialAction of this Player.
+        /// </summary>
+        public virtual SpecialAction SpecialAction
+        {
+            get { return (SpecialAction) Server.GetPlayerSpecialAction(PlayerId); }
+            set { Server.SetPlayerSpecialAction(PlayerId, value); }
+        }
+
+        /// <summary>
+        /// Gets the position of this Players's camera.
+        /// </summary>
+        public virtual Vector CameraPosition
+        {
+            get { return Server.GetPlayerCameraPos(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets the front vector of this Player's camera.
+        /// </summary>
+        public virtual Vector CameraFrontVector
+        {
+            get { return Server.GetPlayerCameraFrontVector(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets the mode of this Player's camera.
+        /// </summary>
+        public virtual CameraMode CameraMode
+        {
+            get { return (CameraMode) Server.GetPlayerCameraMode(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets whether this Player is currently in any vehicle.
+        /// </summary>
+        public virtual bool InAnyVehicle
+        {
+            get { return Server.IsPlayerInAnyVehicle(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets whether this Player is in his checkpoint.
+        /// </summary>
+        public virtual bool InCheckpoint
+        {
+            get { return Server.IsPlayerInCheckpoint(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets whether this Player is in his race-checkpoint.
+        /// </summary>
+        public virtual bool InRaceCheckpoint
+        {
+            get { return Server.IsPlayerInRaceCheckpoint(PlayerId); }
+        }
+
+        //TODO: Add when vehicle objects exist
+        //GetPlayerSurfingVehicleID
+        //GetPlayerSurfingObjectID
+        //GetPlayerVehicleID
 
         /// <summary>
         /// Gets the maximum number of players that can join the server, as set by the server var 'maxplayers' in server.cfg. 
@@ -87,6 +364,7 @@ namespace GameMode.World
         {
             get { return PlayerInstances.AsReadOnly(); }
         }
+
         #endregion
 
         #region Events
@@ -239,13 +517,13 @@ namespace GameMode.World
         /// Occurs when the <see cref="Server.OnPlayerStreamIn"/> is being called.
         /// This callback is called when a player is streamed by some other player's client.
         /// </summary>
-        public event PlayerStreamHandler StreamIn;
+        public event StreamPlayerHandler StreamIn;
 
         /// <summary>
         /// Occurs when the <see cref="Server.OnPlayerStreamOut"/> is being called.
         /// This callback is called when a player is streamed out from some other player's client.
         /// </summary>
-        public event PlayerStreamHandler StreamOut;
+        public event StreamPlayerHandler StreamOut;
 
         /// <summary>
         /// Occurs when the <see cref="Server.OnDialogResponse"/> is being called.
@@ -323,7 +601,7 @@ namespace GameMode.World
         /// Occurs when the <see cref="Server.OnPlayerSelectObject"/> is being called.
         /// This callback is called when a player selects an object after <see cref="Server.SelectObject"/> has been used.
         /// </summary>
-        public event PlayerSelectObjectHandler PlayerSelectObject;
+        public event PlayerSelectObjectHandler SelectObject;
 
         /// <summary>
         /// Occurs when the <see cref="Server.OnPlayerWeaponShot"/> is being called.
@@ -425,30 +703,132 @@ namespace GameMode.World
                 LeaveRaceCheckpoint(this, e);
         }
 
-        /*
-         'On'-methods yet to add:
-            RequestSpawn;
-            PickUpPickup;
-            EnterExitModShop;
-            SelectedMenuRow;
-            ExitedMenu;
-            InteriorChanged;
-            KeyStateChanged;
-            Update;
-            StreamIn;
-            StreamOut;
-            DialogResponse;
-            TakeDamage;
-            GiveDamage;
-            ClickMap;
-            ClickTextDraw;
-            ClickPlayerTextDraw;
-            ClickPlayer;
-            EditObject;
-            EditAttachedObject;
-            PlayerSelectObject;
-            WeaponShot;
-         */
+        public virtual void OnRequestSpawn(PlayerEventArgs e)
+        {
+            if (RequestSpawn != null)
+                RequestSpawn(this, e);
+        }
+
+        public virtual void OnPickUpPickup(PlayerPickupEventArgs e)
+        {
+            if (PickUpPickup != null)
+                PickUpPickup(this, e);
+        }
+
+        public virtual void OnEnterExitModShop(PlayerEnterModShopEventArgs e)
+        {
+            if (EnterExitModShop != null)
+                EnterExitModShop(this, e);
+        }
+
+        public virtual void OnSelectedMenuRow(PlayerSelectedMenuRowEventArgs e)
+        {
+            if (SelectedMenuRow != null)
+                SelectedMenuRow(this, e);
+        }
+
+        public virtual void OnExitedMenu(PlayerEventArgs e)
+        {
+            if (ExitedMenu != null)
+                ExitedMenu(this, e);
+        }
+
+        public virtual void OnInteriorChanged(PlayerInteriorChangedEventArgs e)
+        {
+            if (InteriorChanged != null)
+                InteriorChanged(this, e);
+        }
+
+        public virtual void OnKeyStateChanged(PlayerKeyStateChangedEventArgs e)
+        {
+            if (KeyStateChanged != null)
+                KeyStateChanged(this, e);
+        }
+
+        public virtual void OnUpdate(PlayerEventArgs e)
+        {
+            if (Update != null)
+                Update(this, e);
+        }
+
+        public virtual void OnStreamIn(StreamPlayerEventArgs e)
+        {
+            if (StreamIn != null)
+                StreamIn(this, e);
+        }
+
+        public virtual void OnStreamOut(StreamPlayerEventArgs e)
+        {
+            if (StreamOut != null)
+                StreamOut(this, e);
+        }
+
+        public virtual void OnDialogResponse(DialogResponseEventArgs e)
+        {
+            if (DialogResponse != null)
+                DialogResponse(this, e);
+        }
+
+        public virtual void OnTakeDamage(PlayerDamageEventArgs e)
+        {
+            if (TakeDamage != null)
+                TakeDamage(this, e);
+        }
+
+        public virtual void OnGiveDamage(PlayerDamageEventArgs e)
+        {
+            if (GiveDamage != null)
+                GiveDamage(this, e);
+        }
+
+        public virtual void OnClickMap(PlayerClickMapEventArgs e)
+        {
+            if (ClickMap != null)
+                ClickMap(this, e);
+        }
+
+        public virtual void OnClickTextDraw(PlayerClickTextDrawEventArgs e)
+        {
+            if (ClickTextDraw != null)
+                ClickTextDraw(this, e);
+        }
+
+        public virtual void OnClickPlayerTextDraw(PlayerClickTextDrawEventArgs e)
+        {
+            if (ClickPlayerTextDraw != null)
+                ClickPlayerTextDraw(this, e);
+        }
+
+        public virtual void OnClickPlayer(PlayerClickPlayerEventArgs e)
+        {
+            if (ClickPlayer != null)
+                ClickPlayer(this, e);
+        }
+
+        public virtual void OnEditObject(PlayerEditObjectEventArgs e)
+        {
+            if (EditObject != null)
+                EditObject(this, e);
+        }
+
+        public virtual void OnEditAttachedObject(PlayerEditAttachedObjectEventArgs e)
+        {
+            if (EditAttachedObject != null)
+                EditAttachedObject(this, e);
+        }
+
+        public virtual void OnSelectObject(PlayerSelectObjectEventArgs e)
+        {
+            if (SelectObject != null)
+                SelectObject(this, e);
+        }
+
+        public virtual void OnWeaponShot(WeaponShotEventArgs e)
+        {
+            if (WeaponShot != null)
+                WeaponShot(this, e);
+        }
+
         public override string ToString()
         {
             return string.Format("Player(Id:{0}, Name:{1}, Position:{2})",PlayerId, Name, Position);
