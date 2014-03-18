@@ -2,7 +2,7 @@
 
 namespace GameMode
 {
-    public partial class Server
+    public partial class BaseMode
     {
         /// <summary>
         /// Creates an object.

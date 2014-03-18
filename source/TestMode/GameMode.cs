@@ -5,7 +5,7 @@ using TestMode.World;
 
 namespace TestMode
 {
-    public class GameMode : Server
+    public class GameMode : BaseMode
     {
         public GameMode()
         {

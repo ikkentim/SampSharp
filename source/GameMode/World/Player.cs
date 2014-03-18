@@ -64,8 +64,8 @@ namespace GameMode.World
         /// </summary>
         public virtual string Name
         {
-            get { return Server.GetPlayerName(PlayerId); }
-            set { Server.SetPlayerName(PlayerId, value); }
+            get { return BaseMode.GetPlayerName(PlayerId); }
+            set { BaseMode.SetPlayerName(PlayerId, value); }
         }
 
         /// <summary>
@@ -73,8 +73,8 @@ namespace GameMode.World
         /// </summary>
         public virtual Vector Position
         {
-            get { return Server.GetPlayerPos(PlayerId); }
-            set { Server.SetPlayerPos(PlayerId, value); }
+            get { return BaseMode.GetPlayerPos(PlayerId); }
+            set { BaseMode.SetPlayerPos(PlayerId, value); }
         }
 
         /// <summary>
@@ -82,8 +82,8 @@ namespace GameMode.World
         /// </summary>
         public virtual float FacingAngle
         {
-            get { return Server.GetPlayerFacingAngle(PlayerId); }
-            set { Server.SetPlayerFacingAngle(PlayerId, value); }
+            get { return BaseMode.GetPlayerFacingAngle(PlayerId); }
+            set { BaseMode.SetPlayerFacingAngle(PlayerId, value); }
         }
 
         /// <summary>
@@ -91,8 +91,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Interior
         {
-            get { return Server.GetPlayerInterior(PlayerId); }
-            set { Server.SetPlayerInterior(PlayerId, value); }
+            get { return BaseMode.GetPlayerInterior(PlayerId); }
+            set { BaseMode.SetPlayerInterior(PlayerId, value); }
         }
 
         /// <summary>
@@ -100,8 +100,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int VirtualWorld
         {
-            get { return Server.GetPlayerVirtualWorld(PlayerId); }
-            set { Server.SetPlayerVirtualWorld(PlayerId, value); }
+            get { return BaseMode.GetPlayerVirtualWorld(PlayerId); }
+            set { BaseMode.SetPlayerVirtualWorld(PlayerId, value); }
         }
 
         /// <summary>
@@ -109,8 +109,8 @@ namespace GameMode.World
         /// </summary>
         public virtual float Heath
         {
-            get { return Server.GetPlayerHealth(PlayerId); }
-            set { Server.SetPlayerHealth(PlayerId, value); }
+            get { return BaseMode.GetPlayerHealth(PlayerId); }
+            set { BaseMode.SetPlayerHealth(PlayerId, value); }
         }
 
         /// <summary>
@@ -118,8 +118,8 @@ namespace GameMode.World
         /// </summary>
         public virtual float Armour
         {
-            get { return Server.GetPlayerArmour(PlayerId); }
-            set { Server.SetPlayerArmour(PlayerId, value); }
+            get { return BaseMode.GetPlayerArmour(PlayerId); }
+            set { BaseMode.SetPlayerArmour(PlayerId, value); }
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace GameMode.World
         /// </summary>
         public virtual int WeaponAmmo
         {
-            get { return Server.GetPlayerAmmo(PlayerId); }
+            get { return BaseMode.GetPlayerAmmo(PlayerId); }
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace GameMode.World
         /// </summary>
         public virtual WeaponState WeaponState
         {
-            get { return (WeaponState) Server.GetPlayerWeaponState(PlayerId); }
+            get { return (WeaponState) BaseMode.GetPlayerWeaponState(PlayerId); }
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace GameMode.World
         /// </summary>
         public virtual Weapon Weapon
         {
-            get { return (Weapon) Server.GetPlayerWeapon(PlayerId); }
+            get { return (Weapon) BaseMode.GetPlayerWeapon(PlayerId); }
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace GameMode.World
         {
             get
             {
-                var target = Server.GetPlayerTargetPlayer(PlayerId);
+                var target = BaseMode.GetPlayerTargetPlayer(PlayerId);
                 return target == InvalidId ? null : Find(target);
             }
         }
@@ -163,8 +163,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Team
         {
-            get { return Server.GetPlayerTeam(PlayerId); }
-            set { Server.SetPlayerTeam(PlayerId, value); }
+            get { return BaseMode.GetPlayerTeam(PlayerId); }
+            set { BaseMode.SetPlayerTeam(PlayerId, value); }
         }
 
         /// <summary>
@@ -172,8 +172,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Score
         {
-            get { return Server.GetPlayerScore(PlayerId); }
-            set { Server.SetPlayerScore(PlayerId, value); }
+            get { return BaseMode.GetPlayerScore(PlayerId); }
+            set { BaseMode.SetPlayerScore(PlayerId, value); }
         }
 
         /// <summary>
@@ -181,8 +181,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int DrunkLevel
         {
-            get { return Server.GetPlayerDrunkLevel(PlayerId); }
-            set { Server.SetPlayerDrunkLevel(PlayerId, value); }
+            get { return BaseMode.GetPlayerDrunkLevel(PlayerId); }
+            set { BaseMode.SetPlayerDrunkLevel(PlayerId, value); }
         }
 
         /// <summary>
@@ -190,8 +190,8 @@ namespace GameMode.World
         /// </summary>
         public virtual Color Color
         {
-            get { return new Color(Server.GetPlayerColor(PlayerId)); }
-            set { Server.SetPlayerColor(PlayerId, value); }
+            get { return new Color(BaseMode.GetPlayerColor(PlayerId)); }
+            set { BaseMode.SetPlayerColor(PlayerId, value); }
         }
 
         /// <summary>
@@ -199,8 +199,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Skin
         {
-            get { return Server.GetPlayerSkin(PlayerId); }
-            set { Server.SetPlayerSkin(PlayerId, value); }
+            get { return BaseMode.GetPlayerSkin(PlayerId); }
+            set { BaseMode.SetPlayerSkin(PlayerId, value); }
         }
 
         /// <summary>
@@ -208,8 +208,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Money
         {
-            get { return Server.GetPlayerMoney(PlayerId); }
-            set { Server.GivePlayerMoney(PlayerId, Money + value); }
+            get { return BaseMode.GetPlayerMoney(PlayerId); }
+            set { BaseMode.GivePlayerMoney(PlayerId, Money + value); }
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace GameMode.World
         /// </summary>
         public virtual PlayerState PlayerState
         {
-            get { return (PlayerState) Server.GetPlayerState(PlayerId); }
+            get { return (PlayerState) BaseMode.GetPlayerState(PlayerId); }
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace GameMode.World
         /// </summary>
         public virtual string IP
         {
-            get { return Server.GetPlayerIp(PlayerId); }
+            get { return BaseMode.GetPlayerIp(PlayerId); }
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace GameMode.World
         /// </summary>
         public virtual int Ping
         {
-            get { return Server.GetPlayerPing(PlayerId); }
+            get { return BaseMode.GetPlayerPing(PlayerId); }
         }
 
         /// <summary>
@@ -241,8 +241,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int WantedLevel
         {
-            get { return Server.GetPlayerWantedLevel(PlayerId); }
-            set { Server.SetPlayerWantedLevel(PlayerId, value); }
+            get { return BaseMode.GetPlayerWantedLevel(PlayerId); }
+            set { BaseMode.SetPlayerWantedLevel(PlayerId, value); }
         }
 
         /// <summary>
@@ -250,8 +250,8 @@ namespace GameMode.World
         /// </summary>
         public virtual FightStyle FightStyle
         {
-            get { return (FightStyle) Server.GetPlayerFightingStyle(PlayerId); }
-            set { Server.SetPlayerFightingStyle(PlayerId, (int) value); }
+            get { return (FightStyle) BaseMode.GetPlayerFightingStyle(PlayerId); }
+            set { BaseMode.SetPlayerFightingStyle(PlayerId, (int) value); }
         }
 
         /// <summary>
@@ -262,10 +262,10 @@ namespace GameMode.World
             get
             {
                 float x, y, z;
-                Server.GetPlayerVelocity(PlayerId, out x, out y, out z);
+                BaseMode.GetPlayerVelocity(PlayerId, out x, out y, out z);
                 return new Vector(x, y, z);
             }
-            set { Server.SetPlayerVelocity(PlayerId, value.X, value.Y, value.Z); }
+            set { BaseMode.SetPlayerVelocity(PlayerId, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace GameMode.World
         /// </summary>
         public virtual int VehicleSeat
         {
-            get { return Server.GetPlayerVehicleSeat(PlayerId); }
+            get { return BaseMode.GetPlayerVehicleSeat(PlayerId); }
         }
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace GameMode.World
         /// </summary>
         public virtual int AnimationIndex
         {
-            get { return Server.GetPlayerAnimationIndex(PlayerId); }
+            get { return BaseMode.GetPlayerAnimationIndex(PlayerId); }
         }
 
         /// <summary>
@@ -289,8 +289,8 @@ namespace GameMode.World
         /// </summary>
         public virtual SpecialAction SpecialAction
         {
-            get { return (SpecialAction) Server.GetPlayerSpecialAction(PlayerId); }
-            set { Server.SetPlayerSpecialAction(PlayerId, value); }
+            get { return (SpecialAction) BaseMode.GetPlayerSpecialAction(PlayerId); }
+            set { BaseMode.SetPlayerSpecialAction(PlayerId, value); }
         }
 
         /// <summary>
@@ -298,7 +298,7 @@ namespace GameMode.World
         /// </summary>
         public virtual Vector CameraPosition
         {
-            get { return Server.GetPlayerCameraPos(PlayerId); }
+            get { return BaseMode.GetPlayerCameraPos(PlayerId); }
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace GameMode.World
         /// </summary>
         public virtual Vector CameraFrontVector
         {
-            get { return Server.GetPlayerCameraFrontVector(PlayerId); }
+            get { return BaseMode.GetPlayerCameraFrontVector(PlayerId); }
         }
 
         /// <summary>
@@ -314,7 +314,7 @@ namespace GameMode.World
         /// </summary>
         public virtual CameraMode CameraMode
         {
-            get { return (CameraMode) Server.GetPlayerCameraMode(PlayerId); }
+            get { return (CameraMode) BaseMode.GetPlayerCameraMode(PlayerId); }
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace GameMode.World
         /// </summary>
         public virtual bool InAnyVehicle
         {
-            get { return Server.IsPlayerInAnyVehicle(PlayerId); }
+            get { return BaseMode.IsPlayerInAnyVehicle(PlayerId); }
         }
 
         /// <summary>
@@ -330,7 +330,7 @@ namespace GameMode.World
         /// </summary>
         public virtual bool InCheckpoint
         {
-            get { return Server.IsPlayerInCheckpoint(PlayerId); }
+            get { return BaseMode.IsPlayerInCheckpoint(PlayerId); }
         }
 
         /// <summary>
@@ -338,7 +338,7 @@ namespace GameMode.World
         /// </summary>
         public virtual bool InRaceCheckpoint
         {
-            get { return Server.IsPlayerInRaceCheckpoint(PlayerId); }
+            get { return BaseMode.IsPlayerInRaceCheckpoint(PlayerId); }
         }
 
         //TODO: Add when vehicle objects exist
@@ -351,7 +351,7 @@ namespace GameMode.World
         /// </summary>
         public static int MaxPlayers
         {
-            get { return Server.GetMaxPlayers(); }
+            get { return BaseMode.GetMaxPlayers(); }
         }
 
         /// <summary>
@@ -367,142 +367,142 @@ namespace GameMode.World
         #region Events
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerConnect"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerConnect"/> is being called.
         /// This callback is called when a player connects to the server.
         /// </summary>
         public event PlayerHandler Connected;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerDisconnect"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerDisconnect"/> is being called.
         /// This callback is called when a player disconnects from the server.
         /// </summary>
         public event PlayerDisconnectedHandler Disconnected;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerSpawn"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerSpawn"/> is being called.
         /// This callback is called when a player spawns.
         /// </summary>
         public event PlayerHandler Spawned;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnGameModeInit"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnGameModeInit"/> is being called.
         /// This callback is triggered when the gamemode starts.
         /// </summary>
         public event PlayerDeathHandler Died;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerText"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerText"/> is being called.
         /// Called when a player sends a chat message.
         /// </summary>
         public event PlayerTextHandler Text;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerCommandText"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerCommandText"/> is being called.
         /// This callback is called when a player enters a command into the client chat window, e.g. /help.
         /// </summary>
         public event PlayerTextHandler CommandText;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerRequestClass"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerRequestClass"/> is being called.
         /// Called when a player changes class at class selection (and when class selection first appears).
         /// </summary>
         public event PlayerRequestClassHandler RequestClass;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerEnterVehicle"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerEnterVehicle"/> is being called.
         /// This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the time this callback is called.
         /// </summary>
         public event PlayerEnterVehicleHandler EnterVehicle;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerExitVehicle"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerExitVehicle"/> is being called.
         /// This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
-        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="Server.SetPlayerPos(int,Vector)"/>.
+        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="BaseMode.SetPlayerPos(int,Vector)"/>.
         /// </remarks>
         public event PlayerVehicleHandler ExitVehicle;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerStateChange"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerStateChange"/> is being called.
         /// This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
-        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="Server.SetPlayerPos(int,Vector)"/>.
+        /// Not called if the player falls off a bike or is removed from a vehicle by other means such as using <see cref="BaseMode.SetPlayerPos(int,Vector)"/>.
         /// </remarks>
         public event PlayerStateHandler StateChanged;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerEnterCheckpoint"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerEnterCheckpoint"/> is being called.
         /// This callback is called when a player enters the checkpoint set for that player.
         /// </summary>
         public event PlayerHandler EnterCheckpoint;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerLeaveCheckpoint"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerLeaveCheckpoint"/> is being called.
         /// This callback is called when a player leaves the checkpoint set for that player.
         /// </summary>
         public event PlayerHandler LeaveCheckpoint;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerEnterRaceCheckpoint"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerEnterRaceCheckpoint"/> is being called.
         /// This callback is called when a player enters a race checkpoint.
         /// </summary>
         public event PlayerHandler EnterRaceCheckpoint;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerLeaveRaceCheckpoint"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerLeaveRaceCheckpoint"/> is being called.
         /// This callback is called when a player leaves the race checkpoint.
         /// </summary>
         public event PlayerHandler LeaveRaceCheckpoint;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerRequestSpawn"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerRequestSpawn"/> is being called.
         /// Called when a player attempts to spawn via class selection.
         /// </summary>
         public event PlayerHandler RequestSpawn;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerPickUpPickup"/> is being called.
-        /// Called when a player picks up a pickup created with <see cref="Server.CreatePickup"/>.
+        /// Occurs when the <see cref="BaseMode.OnPlayerPickUpPickup"/> is being called.
+        /// Called when a player picks up a pickup created with <see cref="BaseMode.CreatePickup"/>.
         /// </summary>
         public event PlayerPickupHandler PickUpPickup;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnEnterExitModShop"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnEnterExitModShop"/> is being called.
         /// This callback is called when a player enters or exits a mod shop.
         /// </summary>
         public event PlayerEnterModShopHandler EnterExitModShop;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerSelectedMenuRow"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerSelectedMenuRow"/> is being called.
         /// This callback is called when a player selects an item from a menu.
         /// </summary>
         public event PlayerSelectedMenuRowHandler SelectedMenuRow;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerExitedMenu"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerExitedMenu"/> is being called.
         /// Called when a player exits a menu.
         /// </summary>
         public event PlayerHandler ExitedMenu;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerInteriorChange"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerInteriorChange"/> is being called.
         /// Called when a player changes interior.
         /// </summary>
         /// <remarks>
-        /// This is also called when <see cref="Server.SetPlayerInterior"/> is used.
+        /// This is also called when <see cref="BaseMode.SetPlayerInterior"/> is used.
         /// </remarks>
         public event PlayerInteriorChangedHandler InteriorChanged;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerKeyStateChange"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerKeyStateChange"/> is being called.
         /// This callback is called when the state of any supported key is changed (pressed/released). Directional keys do not trigger this callback.
         /// </summary>
         public event PlayerKeyStateChangedHandler KeyStateChanged;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerUpdate"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerUpdate"/> is being called.
         /// This callback is called everytime a client/player updates the server with their status.
         /// </summary>
         /// <remarks>
@@ -511,31 +511,31 @@ namespace GameMode.World
         public event PlayerHandler Update;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerStreamIn"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerStreamIn"/> is being called.
         /// This callback is called when a player is streamed by some other player's client.
         /// </summary>
         public event StreamPlayerHandler StreamIn;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerStreamOut"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerStreamOut"/> is being called.
         /// This callback is called when a player is streamed out from some other player's client.
         /// </summary>
         public event StreamPlayerHandler StreamOut;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnDialogResponse"/> is being called.
-        /// This callback is called when a player responds to a dialog shown using <see cref="Server.ShowPlayerDialog"/> by either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
+        /// Occurs when the <see cref="BaseMode.OnDialogResponse"/> is being called.
+        /// This callback is called when a player responds to a dialog shown using <see cref="BaseMode.ShowPlayerDialog"/> by either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
         /// </summary>
         public event DialogResponseHandler DialogResponse;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerTakeDamage"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerTakeDamage"/> is being called.
         /// This callback is called when a player takes damage.
         /// </summary>
         public event PlayerDamageHandler TakeDamage;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerGiveDamage"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerGiveDamage"/> is being called.
         /// This callback is called when a player gives damage to another player.
         /// </summary>
         /// <remarks>
@@ -547,31 +547,31 @@ namespace GameMode.World
         public event PlayerDamageHandler GiveDamage;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerClickMap"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerClickMap"/> is being called.
         /// This callback is called when a player places a target/waypoint on the pause menu map (by right-clicking).
         /// </summary>
         /// <remarks>
-        /// The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get a more accurate Z coordinate (or for teleportation; use <see cref="Server.SetPlayerPosFindZ(int,Vector)"/>).
+        /// The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get a more accurate Z coordinate (or for teleportation; use <see cref="BaseMode.SetPlayerPosFindZ(int,Vector)"/>).
         /// </remarks>
         public event PlayerClickMapHandler ClickMap;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerClickTextDraw"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw"/> is being called.
         /// This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
         /// </summary>
         /// <remarks>
-        /// The clickable area is defined by <see cref="Server.TextDrawTextSize"/>. The x and y parameters passed to that function must not be zero or negative.
+        /// The clickable area is defined by <see cref="BaseMode.TextDrawTextSize"/>. The x and y parameters passed to that function must not be zero or negative.
         /// </remarks>
         public event PlayerClickTextDrawHandler ClickTextDraw;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerClickPlayerTextDraw"/> is being called.
-        /// This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select mode (ESC) - however, <see cref="Server.OnPlayerClickTextDraw"/> is.
+        /// Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw"/> is being called.
+        /// This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select mode (ESC) - however, <see cref="BaseMode.OnPlayerClickTextDraw"/> is.
         /// </summary>
         public event PlayerClickTextDrawHandler ClickPlayerTextDraw;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerClickPlayer"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerClickPlayer"/> is being called.
         /// Called when a player double-clicks on a player on the scoreboard.
         /// </summary>
         /// <remarks>
@@ -580,13 +580,13 @@ namespace GameMode.World
         public event PlayerClickPlayerHandler ClickPlayer;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerEditObject"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerEditObject"/> is being called.
         /// This callback is called when a player ends object edition mode.
         /// </summary>
         public event PlayerEditObjectHandler EditObject;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerEditAttachedObject"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerEditAttachedObject"/> is being called.
         /// This callback is called when a player ends attached object edition mode.
         /// </summary>
         /// <remarks>
@@ -595,13 +595,13 @@ namespace GameMode.World
         public event PlayerEditAttachedObjectHandler EditAttachedObject;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerSelectObject"/> is being called.
-        /// This callback is called when a player selects an object after <see cref="Server.SelectObject"/> has been used.
+        /// Occurs when the <see cref="BaseMode.OnPlayerSelectObject"/> is being called.
+        /// This callback is called when a player selects an object after <see cref="BaseMode.SelectObject"/> has been used.
         /// </summary>
         public event PlayerSelectObjectHandler SelectObject;
 
         /// <summary>
-        /// Occurs when the <see cref="Server.OnPlayerWeaponShot"/> is being called.
+        /// Occurs when the <see cref="BaseMode.OnPlayerWeaponShot"/> is being called.
         /// This callback is called when a player fires a shot from a weapon.
         /// </summary>
         /// <remarks>
@@ -617,45 +617,45 @@ namespace GameMode.World
         /// <summary>
         /// Registers all events the Player class listens to.
         /// </summary>
-        /// <param name="server">An instance of the server to which to listen.</param>
+        /// <param name="baseMode">An instance of the BaseMode to which to listen.</param>
         /// <param name="cast">A function to get a <see cref="Player"/> object from a playerid.</param>
-        public static void RegisterEvents(Server server, Func<int, Player> cast)
+        public static void RegisterEvents(BaseMode baseMode, Func<int, Player> cast)
         {
-            server.PlayerConnected += (sender, args) => cast(args.PlayerId).OnConnected(args);
-            server.PlayerDisconnected += (sender, args) => cast(args.PlayerId).OnDisconnected(args);
-            server.PlayerSpawned += (sender, args) => cast(args.PlayerId).OnSpawned(args);
-            server.PlayerDied += (sender, args) => cast(args.PlayerId).OnDeath(args);
-            server.PlayerText += (sender, args) => cast(args.PlayerId).OnText(args);
-            server.PlayerCommandText += (sender, args) => cast(args.PlayerId).OnCommandText(args);
-            server.PlayerRequestClass += (sender, args) => cast(args.PlayerId).OnRequestClass(args);
-            server.PlayerEnterVehicle += (sender, args) => cast(args.PlayerId).OnEnterVehicle(args);
-            server.PlayerExitVehicle += (sender, args) => cast(args.PlayerId).OnExitVehicle(args);
-            server.PlayerStateChanged += (sender, args) => cast(args.PlayerId).OnStateChanged(args);
-            server.PlayerEnterCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterCheckpoint(args);
-            server.PlayerLeaveCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveCheckpoint(args);
-            server.PlayerEnterRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterRaceCheckpoint(args);
-            server.PlayerLeaveRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveRaceCheckpoint(args);
-            server.PlayerRequestSpawn += (sender, args) => cast(args.PlayerId).OnRequestSpawn(args);
-            server.PlayerPickUpPickup += (sender, args) => cast(args.PickupId).OnPickUpPickup(args);
-            server.PlayerEnterExitModShop += (sender, args) => cast(args.PlayerId).OnEnterExitModShop(args);
-            server.PlayerSelectedMenuRow += (sender, args) => cast(args.PlayerId).OnSelectedMenuRow(args);
-            server.PlayerExitedMenu += (sender, args) => cast(args.PlayerId).OnExitedMenu(args);
-            server.PlayerInteriorChanged += (sender, args) => cast(args.PlayerId).OnInteriorChanged(args);
-            server.PlayerKeyStateChanged += (sender, args) => cast(args.PlayerId).OnKeyStateChanged(args);
-            server.PlayerUpdate += (sender, args) => cast(args.PlayerId).OnUpdate(args);
-            server.PlayerStreamIn += (sender, args) => cast(args.PlayerId).OnStreamIn(args);
-            server.PlayerStreamOut += (sender, args) => cast(args.PlayerId).OnStreamOut(args);
-            server.DialogResponse += (sender, args) => cast(args.PlayerId).OnDialogResponse(args);
-            server.PlayerTakeDamage += (sender, args) => cast(args.PlayerId).OnTakeDamage(args);
-            server.PlayerGiveDamage += (sender, args) => cast(args.PlayerId).OnGiveDamage(args);
-            server.PlayerClickMap += (sender, args) => cast(args.PlayerId).OnClickMap(args);
-            server.PlayerClickTextDraw += (sender, args) => cast(args.PlayerId).OnClickTextDraw(args);
-            server.PlayerClickPlayerTextDraw += (sender, args) => cast(args.PlayerId).OnClickPlayerTextDraw(args);
-            server.PlayerClickPlayer += (sender, args) => cast(args.PlayerId).OnClickPlayer(args);
-            server.PlayerEditObject += (sender, args) => cast(args.PlayerId).OnEditObject(args);
-            server.PlayerEditAttachedObject += (sender, args) => cast(args.PlayerId).OnEditAttachedObject(args);
-            server.PlayerSelectObject += (sender, args) => cast(args.PlayerId).OnSelectObject(args);
-            server.PlayerWeaponShot += (sender, args) => cast(args.PlayerId).OnWeaponShot(args);
+            baseMode.PlayerConnected += (sender, args) => cast(args.PlayerId).OnConnected(args);
+            baseMode.PlayerDisconnected += (sender, args) => cast(args.PlayerId).OnDisconnected(args);
+            baseMode.PlayerSpawned += (sender, args) => cast(args.PlayerId).OnSpawned(args);
+            baseMode.PlayerDied += (sender, args) => cast(args.PlayerId).OnDeath(args);
+            baseMode.PlayerText += (sender, args) => cast(args.PlayerId).OnText(args);
+            baseMode.PlayerCommandText += (sender, args) => cast(args.PlayerId).OnCommandText(args);
+            baseMode.PlayerRequestClass += (sender, args) => cast(args.PlayerId).OnRequestClass(args);
+            baseMode.PlayerEnterVehicle += (sender, args) => cast(args.PlayerId).OnEnterVehicle(args);
+            baseMode.PlayerExitVehicle += (sender, args) => cast(args.PlayerId).OnExitVehicle(args);
+            baseMode.PlayerStateChanged += (sender, args) => cast(args.PlayerId).OnStateChanged(args);
+            baseMode.PlayerEnterCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterCheckpoint(args);
+            baseMode.PlayerLeaveCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveCheckpoint(args);
+            baseMode.PlayerEnterRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterRaceCheckpoint(args);
+            baseMode.PlayerLeaveRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveRaceCheckpoint(args);
+            baseMode.PlayerRequestSpawn += (sender, args) => cast(args.PlayerId).OnRequestSpawn(args);
+            baseMode.PlayerPickUpPickup += (sender, args) => cast(args.PickupId).OnPickUpPickup(args);
+            baseMode.PlayerEnterExitModShop += (sender, args) => cast(args.PlayerId).OnEnterExitModShop(args);
+            baseMode.PlayerSelectedMenuRow += (sender, args) => cast(args.PlayerId).OnSelectedMenuRow(args);
+            baseMode.PlayerExitedMenu += (sender, args) => cast(args.PlayerId).OnExitedMenu(args);
+            baseMode.PlayerInteriorChanged += (sender, args) => cast(args.PlayerId).OnInteriorChanged(args);
+            baseMode.PlayerKeyStateChanged += (sender, args) => cast(args.PlayerId).OnKeyStateChanged(args);
+            baseMode.PlayerUpdate += (sender, args) => cast(args.PlayerId).OnUpdate(args);
+            baseMode.PlayerStreamIn += (sender, args) => cast(args.PlayerId).OnStreamIn(args);
+            baseMode.PlayerStreamOut += (sender, args) => cast(args.PlayerId).OnStreamOut(args);
+            baseMode.DialogResponse += (sender, args) => cast(args.PlayerId).OnDialogResponse(args);
+            baseMode.PlayerTakeDamage += (sender, args) => cast(args.PlayerId).OnTakeDamage(args);
+            baseMode.PlayerGiveDamage += (sender, args) => cast(args.PlayerId).OnGiveDamage(args);
+            baseMode.PlayerClickMap += (sender, args) => cast(args.PlayerId).OnClickMap(args);
+            baseMode.PlayerClickTextDraw += (sender, args) => cast(args.PlayerId).OnClickTextDraw(args);
+            baseMode.PlayerClickPlayerTextDraw += (sender, args) => cast(args.PlayerId).OnClickPlayerTextDraw(args);
+            baseMode.PlayerClickPlayer += (sender, args) => cast(args.PlayerId).OnClickPlayer(args);
+            baseMode.PlayerEditObject += (sender, args) => cast(args.PlayerId).OnEditObject(args);
+            baseMode.PlayerEditAttachedObject += (sender, args) => cast(args.PlayerId).OnEditAttachedObject(args);
+            baseMode.PlayerSelectObject += (sender, args) => cast(args.PlayerId).OnSelectObject(args);
+            baseMode.PlayerWeaponShot += (sender, args) => cast(args.PlayerId).OnWeaponShot(args);
         }
 
         public virtual void OnConnected(PlayerEventArgs e)
