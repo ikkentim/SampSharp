@@ -20,3 +20,7 @@ ToDo's
     -Add more remarks to native docs, remove links/HTML.
     -Improve and test.
     -Test on linux.
+
+Bugs
+======
+	-Calling gmx twice will result in all callbacks being called twice.

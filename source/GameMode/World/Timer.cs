@@ -5,7 +5,7 @@ namespace GameMode.World
     /// <summary>
     /// Represents a SA:MP timer.
     /// </summary>
-    public class Timer
+    public class Timer : IDisposable
     {
         private bool _hit;
 
@@ -16,7 +16,8 @@ namespace GameMode.World
         /// <param name="repeat">Whether to repeat the timer (True); or stop after the first Tick(False).</param>
         public Timer(int interval, bool repeat)
         {
-            Console.WriteLine("Timer intialized");
+            BaseMode.Instance.Exited += BaseMode_Exited;
+
             Id = Native.SetTimer(interval, repeat, this);
             Interval = interval;
             Repeat = repeat;
@@ -54,22 +55,18 @@ namespace GameMode.World
             }
             set
             {
-                if (value)
+                if (value && Running)
                 {
-                    //Single-run and not hit yet and repeating timers run already
-                    if (Repeat || !_hit) return;
-
-                    //Reset hit value and restart timer.
                     _hit = false;
-                    Console.WriteLine("Start a Running timer");
                     Id = Native.SetTimer(Interval, Repeat, this);
-                }
-                else
-                {
-                    if (!Repeat && _hit) return;
 
-                    //Kill the timer. If killed already, no worried; Ids are unique.
+                    BaseMode.Instance.Exited += BaseMode_Exited;
+                }
+                else if(!value && Running)
+                {
                     Native.KillTimer(Id);
+
+                    BaseMode.Instance.Exited -= BaseMode_Exited;
                 }
             }
         }
@@ -88,6 +85,19 @@ namespace GameMode.World
                 Tick(this, e);
 
             _hit = true;
+
+            if(!Running)
+                BaseMode.Instance.Exited -= BaseMode_Exited;
+        }
+
+        public void Dispose()
+        {
+            Running = false;
+        }
+
+        private void BaseMode_Exited(object sender, Events.GameModeEventArgs e)
+        {
+            Dispose();
         }
     }
 }

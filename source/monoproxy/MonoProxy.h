@@ -8,7 +8,7 @@
 class CMonoProxy
 {
 public:
-	CMonoProxy(char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version);
+	CMonoProxy(char * basemode_path, char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version);
 	~CMonoProxy();
 
 	bool CallCallback(MonoMethod * method, void ** params);
@@ -70,8 +70,9 @@ public:
 	MonoMethod * m_cOnTimerTick;
  
 private:
-	MonoMethod * LoadCallback(const char *name);
+	MonoMethod * LoadCallback(const char * cname, const char * name);
 	MonoImage * m_pGameModeImage;
+	MonoImage * m_pBaseModeImage;
 
 	MonoObject * m_pGameMode;
 	MonoClass * m_pGameModeClass;
