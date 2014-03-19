@@ -10,6 +10,11 @@ namespace TestMode.World
         }
 
         /// <summary>
+        /// Database ID (Test purpose, not connected to a DB)
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Returns an instance of <see cref="MyPlayer"/> that deals with <paramref name="playerId"/>.
         /// </summary>
         /// <param name="playerId">The ID of the player we are dealing with.</param>

@@ -1933,17 +1933,17 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Creates a race checkpoint. When the player enters it, the OnPlayerEnterRaceCheckpoint callback is called.
+        /// Creates a race checkpoint. When the player enters it, the <see cref="BaseMode.OnPlayerEnterRaceCheckpoint"/> callback is called.
         /// </summary>
         /// <param name="playerid">The ID of the player to set the checkpoint for.</param>
         /// <param name="type">Type of checkpoint.</param>
-        /// <param name="position">Position of the checkpoint.</param>
+        /// <param name="point">Position of the checkpoint.</param>
         /// <param name="nextPosition">Position of the next point, for the arrow facing direction.</param>
         /// <param name="size">Size (diameter) of the checkpoint</param>
         /// <returns>This function doesn't return a specific value.</returns>
-        public static bool SetPlayerRaceCheckpoint(int playerid, CheckpointType type, Vector position, Vector nextPosition, float size)
+        public static bool SetPlayerRaceCheckpoint(int playerid, CheckpointType type, Vector point, Vector nextPosition, float size)
         {
-            return SetPlayerRaceCheckpoint(playerid, (int)type, position.X, position.Y, position.Z, nextPosition.X,
+            return SetPlayerRaceCheckpoint(playerid, (int)type, point.X, point.Y, point.Z, nextPosition.X,
                 nextPosition.Y, nextPosition.Z, size);
         }
 
