@@ -5,7 +5,7 @@
 
 CMonoProxy * CMonoProxy::p_instance;
 
-CMonoProxy::CMonoProxy(char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version) {
+CMonoProxy::CMonoProxy(char * basemode_path, char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version) {
 	
 	//Initialize the Mono runtime
 	mono_set_dirs(PathUtil::GetLibDirectory().c_str(), PathUtil::GetConfigDirectory().c_str());
@@ -14,7 +14,10 @@ CMonoProxy::CMonoProxy(char * gamemode_path, char * gamemode_namespace, char * g
 
 	//Load the gamemode's assembly
 	MonoAssembly * pMonoAssembly = mono_domain_assembly_open(mono_domain_get(), PathUtil::GetBinDirectory().append(gamemode_path).c_str());
+	MonoAssembly * bMonoAssembly = mono_domain_assembly_open(mono_domain_get(), PathUtil::GetBinDirectory().append(basemode_path).c_str());
+
 	m_pGameModeImage = mono_assembly_get_image(pMonoAssembly);
+	m_pBaseModeImage = mono_assembly_get_image(bMonoAssembly);
 
 	//Load all SA:MP natives
 	LoadNatives(); 
@@ -26,67 +29,77 @@ CMonoProxy::CMonoProxy(char * gamemode_path, char * gamemode_namespace, char * g
 	mono_runtime_object_init(m_pGameMode);
 
 	//Load all SA:MP callbacks
-	m_cOnGameModeInit = LoadCallback("TestMode.GameMode:OnGameModeInit()");
-	m_cOnGameModeExit = LoadCallback("TestMode.GameMode:OnGameModeExit()");
-	m_cOnPlayerConnect = LoadCallback("TestMode.GameMode:OnPlayerConnect(int)");
-	m_cOnPlayerDisconnect = LoadCallback("TestMode.GameMode:OnPlayerDisconnect(int,int)");
-	m_cOnPlayerSpawn = LoadCallback("TestMode.GameMode:OnPlayerSpawn(int)");
-	m_cOnPlayerDeath = LoadCallback("TestMode.GameMode:OnPlayerDeath(int,int,int)");
-	m_cOnVehicleSpawn = LoadCallback("TestMode.GameMode:OnVehicleSpawn(int)");
-	m_cOnVehicleDeath = LoadCallback("TestMode.GameMode:OnVehicleDeath(int,int)");
-	m_cOnPlayerText = LoadCallback("TestMode.GameMode:OnPlayerText(int,string)");
-	m_cOnPlayerCommandText = LoadCallback("TestMode.GameMode:OnPlayerCommandText(int,string)");
-	m_cOnPlayerRequestClass = LoadCallback("TestMode.GameMode:OnPlayerRequestClass(int,int)");
-	m_cOnPlayerEnterVehicle = LoadCallback("TestMode.GameMode:OnPlayerEnterVehicle(int,int,bool)");
-	m_cOnPlayerExitVehicle = LoadCallback("TestMode.GameMode:OnPlayerExitVehicle(int,int)");
-	m_cOnPlayerStateChange = LoadCallback("TestMode.GameMode:OnPlayerStateChange(int,int,int)");
-	m_cOnPlayerEnterCheckpoint = LoadCallback("TestMode.GameMode:OnPlayerEnterCheckpoint(int)");
-	m_cOnPlayerLeaveCheckpoint = LoadCallback("TestMode.GameMode:OnPlayerLeaveCheckpoint(int)");
-	m_cOnPlayerEnterRaceCheckpoint = LoadCallback("TestMode.GameMode:OnPlayerEnterRaceCheckpoint(int)");
-	m_cOnPlayerLeaveRaceCheckpoint = LoadCallback("TestMode.GameMode:OnPlayerLeaveRaceCheckpoint(int)");
-	m_cOnRconCommand = LoadCallback("TestMode.GameMode:OnRconCommand(string)");
-	m_cOnPlayerRequestSpawn = LoadCallback("TestMode.GameMode:OnPlayerRequestSpawn(int)");
-	m_cOnObjectMoved = LoadCallback("TestMode.GameMode:OnObjectMoved(int)");
-	m_cOnPlayerObjectMoved = LoadCallback("TestMode.GameMode:OnPlayerObjectMoved(int,int)");
-	m_cOnPlayerPickUpPickup = LoadCallback("TestMode.GameMode:OnPlayerPickUpPickup(int,int)");
-	m_cOnVehicleMod = LoadCallback("TestMode.GameMode:OnVehicleMod(int,int,int)");
-	m_cOnEnterExitModShop = LoadCallback("TestMode.GameMode:OnEnterExitModShop(int,int,int)");
-	m_cOnVehiclePaintjob = LoadCallback("TestMode.GameMode:OnVehiclePaintjob(int,int,int)");
-	m_cOnVehicleRespray = LoadCallback("TestMode.GameMode:OnVehicleRespray(int,int,int,int)");
-	m_cOnVehicleDamageStatusUpdate = LoadCallback("TestMode.GameMode:OnVehicleDamageStatusUpdate(int,int)");
-	m_cOnUnoccupiedVehicleUpdate = LoadCallback("TestMode.GameMode:OnUnoccupiedVehicleUpdate(int,int,int)");
-	m_cOnPlayerSelectedMenuRow = LoadCallback("TestMode.GameMode:OnPlayerSelectedMenuRow(int,int)");
-	m_cOnPlayerExitedMenu = LoadCallback("TestMode.GameMode:OnPlayerExitedMenu(int)");
-	m_cOnPlayerInteriorChange = LoadCallback("TestMode.GameMode:OnPlayerInteriorChange(int,int,int)");
-	m_cOnPlayerKeyStateChange = LoadCallback("TestMode.GameMode:OnPlayerKeyStateChange(int,int,int)");
-	m_cOnRconLoginAttempt = LoadCallback("TestMode.GameMode:OnRconLoginAttempt(string,string,bool)");
-	m_cOnPlayerUpdate = LoadCallback("TestMode.GameMode:OnPlayerUpdate(int)");
-	m_cOnPlayerStreamIn = LoadCallback("TestMode.GameMode:OnPlayerStreamIn(int,int)");
-	m_cOnPlayerStreamOut = LoadCallback("TestMode.GameMode:OnPlayerStreamOut(int,int)");
-	m_cOnVehicleStreamIn = LoadCallback("TestMode.GameMode:OnVehicleStreamIn(int,int)");
-	m_cOnVehicleStreamOut = LoadCallback("TestMode.GameMode:OnVehicleStreamOut(int,int)");
-	m_cOnDialogResponse = LoadCallback("TestMode.GameMode:OnDialogResponse(int,int,int,int,string)");
-	m_cOnPlayerTakeDamage = LoadCallback("TestMode.GameMode:OnPlayerTakeDamage(int,int,float,int,int)");
-	m_cOnPlayerGiveDamage = LoadCallback("TestMode.GameMode:OnPlayerGiveDamage(int,int,float,int,int)");
-	m_cOnPlayerClickMap = LoadCallback("TestMode.GameMode:OnPlayerClickMap(int,float,float,float)");
-	m_cOnPlayerClickTextDraw = LoadCallback("TestMode.GameMode:OnPlayerClickTextDraw(int,int)");
-	m_cOnPlayerClickPlayerTextDraw = LoadCallback("TestMode.GameMode:OnPlayerClickPlayerTextDraw(int,int)");
-	m_cOnPlayerClickPlayer = LoadCallback("TestMode.GameMode:OnPlayerClickPlayer(int,int,int)");
-	m_cOnPlayerEditObject = LoadCallback("TestMode.GameMode:OnPlayerEditObject(int,bool,int,int,float,float,float,float,float,float)");
-	m_cOnPlayerEditAttachedObject = LoadCallback("TestMode.GameMode:OnPlayerEditAttachedObject(int,int,int,int,int,float,float,float,float,float,float,float,float,float)");
-	m_cOnPlayerSelectObject = LoadCallback("TestMode.GameMode:OnPlayerSelectObject(int,int,int,int,float,float,float)");
-	m_cOnPlayerWeaponShot = LoadCallback("TestMode.GameMode:OnPlayerWeaponShot(int,int,int,int,float,float,float)");
-	m_cOnTimerTick = LoadCallback("TestMode.GameMode:OnTimerTick(int,object)");
+	m_cOnGameModeInit = LoadCallback(gamemode_class, "OnGameModeInit()");
+	m_cOnGameModeExit = LoadCallback(gamemode_class, "OnGameModeExit()");
+	m_cOnPlayerConnect = LoadCallback(gamemode_class, "OnPlayerConnect(int)");
+	m_cOnPlayerDisconnect = LoadCallback(gamemode_class, "OnPlayerDisconnect(int,int)");
+	m_cOnPlayerSpawn = LoadCallback(gamemode_class, "OnPlayerSpawn(int)");
+	m_cOnPlayerDeath = LoadCallback(gamemode_class, "OnPlayerDeath(int,int,int)");
+	m_cOnVehicleSpawn = LoadCallback(gamemode_class, "OnVehicleSpawn(int)");
+	m_cOnVehicleDeath = LoadCallback(gamemode_class, "OnVehicleDeath(int,int)");
+	m_cOnPlayerText = LoadCallback(gamemode_class, "OnPlayerText(int,string)");
+	m_cOnPlayerCommandText = LoadCallback(gamemode_class, "OnPlayerCommandText(int,string)");
+	m_cOnPlayerRequestClass = LoadCallback(gamemode_class, "OnPlayerRequestClass(int,int)");
+	m_cOnPlayerEnterVehicle = LoadCallback(gamemode_class, "OnPlayerEnterVehicle(int,int,bool)");
+	m_cOnPlayerExitVehicle = LoadCallback(gamemode_class, "OnPlayerExitVehicle(int,int)");
+	m_cOnPlayerStateChange = LoadCallback(gamemode_class, "OnPlayerStateChange(int,int,int)");
+	m_cOnPlayerEnterCheckpoint = LoadCallback(gamemode_class, "OnPlayerEnterCheckpoint(int)");
+	m_cOnPlayerLeaveCheckpoint = LoadCallback(gamemode_class, "OnPlayerLeaveCheckpoint(int)");
+	m_cOnPlayerEnterRaceCheckpoint = LoadCallback(gamemode_class, "OnPlayerEnterRaceCheckpoint(int)");
+	m_cOnPlayerLeaveRaceCheckpoint = LoadCallback(gamemode_class, "OnPlayerLeaveRaceCheckpoint(int)");
+	m_cOnRconCommand = LoadCallback(gamemode_class, "OnRconCommand(string)");
+	m_cOnPlayerRequestSpawn = LoadCallback(gamemode_class, "OnPlayerRequestSpawn(int)");
+	m_cOnObjectMoved = LoadCallback(gamemode_class, "OnObjectMoved(int)");
+	m_cOnPlayerObjectMoved = LoadCallback(gamemode_class, "OnPlayerObjectMoved(int,int)");
+	m_cOnPlayerPickUpPickup = LoadCallback(gamemode_class, "OnPlayerPickUpPickup(int,int)");
+	m_cOnVehicleMod = LoadCallback(gamemode_class, "OnVehicleMod(int,int,int)");
+	m_cOnEnterExitModShop = LoadCallback(gamemode_class, "OnEnterExitModShop(int,int,int)");
+	m_cOnVehiclePaintjob = LoadCallback(gamemode_class, "OnVehiclePaintjob(int,int,int)");
+	m_cOnVehicleRespray = LoadCallback(gamemode_class, "OnVehicleRespray(int,int,int,int)");
+	m_cOnVehicleDamageStatusUpdate = LoadCallback(gamemode_class, "OnVehicleDamageStatusUpdate(int,int)");
+	m_cOnUnoccupiedVehicleUpdate = LoadCallback(gamemode_class, "OnUnoccupiedVehicleUpdate(int,int,int)");
+	m_cOnPlayerSelectedMenuRow = LoadCallback(gamemode_class, "OnPlayerSelectedMenuRow(int,int)");
+	m_cOnPlayerExitedMenu = LoadCallback(gamemode_class, "OnPlayerExitedMenu(int)");
+	m_cOnPlayerInteriorChange = LoadCallback(gamemode_class, "OnPlayerInteriorChange(int,int,int)");
+	m_cOnPlayerKeyStateChange = LoadCallback(gamemode_class, "OnPlayerKeyStateChange(int,int,int)");
+	m_cOnRconLoginAttempt = LoadCallback(gamemode_class, "OnRconLoginAttempt(string,string,bool)");
+	m_cOnPlayerUpdate = LoadCallback(gamemode_class, "OnPlayerUpdate(int)");
+	m_cOnPlayerStreamIn = LoadCallback(gamemode_class, "OnPlayerStreamIn(int,int)");
+	m_cOnPlayerStreamOut = LoadCallback(gamemode_class, "OnPlayerStreamOut(int,int)");
+	m_cOnVehicleStreamIn = LoadCallback(gamemode_class, "OnVehicleStreamIn(int,int)");
+	m_cOnVehicleStreamOut = LoadCallback(gamemode_class, "OnVehicleStreamOut(int,int)");
+	m_cOnDialogResponse = LoadCallback(gamemode_class, "OnDialogResponse(int,int,int,int,string)");
+	m_cOnPlayerTakeDamage = LoadCallback(gamemode_class, "OnPlayerTakeDamage(int,int,float,int,int)");
+	m_cOnPlayerGiveDamage = LoadCallback(gamemode_class, "OnPlayerGiveDamage(int,int,float,int,int)");
+	m_cOnPlayerClickMap = LoadCallback(gamemode_class, "OnPlayerClickMap(int,float,float,float)");
+	m_cOnPlayerClickTextDraw = LoadCallback(gamemode_class, "OnPlayerClickTextDraw(int,int)");
+	m_cOnPlayerClickPlayerTextDraw = LoadCallback(gamemode_class, "OnPlayerClickPlayerTextDraw(int,int)");
+	m_cOnPlayerClickPlayer = LoadCallback(gamemode_class, "OnPlayerClickPlayer(int,int,int)");
+	m_cOnPlayerEditObject = LoadCallback(gamemode_class, "OnPlayerEditObject(int,bool,int,int,float,float,float,float,float,float)");
+	m_cOnPlayerEditAttachedObject = LoadCallback(gamemode_class, "OnPlayerEditAttachedObject(int,int,int,int,int,float,float,float,float,float,float,float,float,float)");
+	m_cOnPlayerSelectObject = LoadCallback(gamemode_class, "OnPlayerSelectObject(int,int,int,int,float,float,float)");
+	m_cOnPlayerWeaponShot = LoadCallback(gamemode_class, "OnPlayerWeaponShot(int,int,int,int,float,float,float)");
+	m_cOnTimerTick = LoadCallback(gamemode_class, "OnTimerTick(int,object)");
 }
 
-MonoMethod * CMonoProxy::LoadCallback(const char * name) {
-	//Create method description and find method in image
-	MonoMethodDesc * m_methodDescription = mono_method_desc_new(name, true);
-	//MonoMethod * m_method = mono_class_get_method_from_name(m_pGameModeClass, name, param_count/*param_count*/);
-	MonoMethod * m_method = mono_method_desc_search_in_image(m_methodDescription, m_pGameModeImage);
+MonoMethod * CMonoProxy::LoadCallback(const char * cname, const char * name) {
+	//Construct method name
+	char * cl_buffer = new char[256];
+	char * bl_buffer = new char[256];
 
-	//Free memory and return method
+	sprintf(cl_buffer, "%s:%s", cname, name);
+	sprintf(bl_buffer, "BaseMode:%s", name);
+
+	//Create method description and find method in image
+	MonoMethodDesc * m_methodDescription = mono_method_desc_new(cl_buffer, false);
+	MonoMethod * m_method = mono_method_desc_search_in_image(m_methodDescription, m_pGameModeImage);
 	mono_method_desc_free(m_methodDescription);
+	if (!m_method)
+	{
+		m_methodDescription = mono_method_desc_new(bl_buffer, false);
+		m_method = mono_method_desc_search_in_image(m_methodDescription, m_pBaseModeImage);
+		mono_method_desc_free(m_methodDescription);
+	}
 
 	return m_method;
 }

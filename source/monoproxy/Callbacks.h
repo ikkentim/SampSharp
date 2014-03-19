@@ -7,11 +7,9 @@
 #include "MonoProxy.h"
 
 static void SAMPGDK_TIMER_CALL p_TimerCallback(int timerid, void * data) {
-	//TODO: Use c# delegates instead. Couldnt get it to work > Using this method instead (for now)
 	void *args[2];
 	args[0] = &timerid;
 	args[1] = data;
-	std::cout << "TIMERCALLBACK" << std::endl;
 	bool response = CMonoProxy::p_instance->CallCallback(CMonoProxy::p_instance->m_cOnTimerTick, args);
 }
 

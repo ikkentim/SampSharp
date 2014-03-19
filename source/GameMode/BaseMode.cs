@@ -8,14 +8,16 @@ namespace GameMode
     /// <summary>
     /// Represents a SA:MP gamemode.
     /// </summary>
-    public abstract class BaseMode
+    public abstract class BaseMode : IDisposable
     {
+        public static BaseMode Instance;
+
         /// <summary>
         /// Initalizes a new instance of the BaseMode class.
         /// </summary>
         protected BaseMode()
         {
-            Player.RegisterEvents(this, Player.Find);
+            Instance = this;
         }
 
         #region Events
@@ -384,7 +386,6 @@ namespace GameMode
         /// <returns>This callback does not handle returns.</returns>
         public virtual bool OnTimerTick(int timerid, object args)
         {
-            Console.WriteLine("TimerTick");
             var timer = args as Timer;
 
             if (timer != null)
@@ -1297,6 +1298,11 @@ namespace GameMode
             return args.Success;
         }
 
+        public void Dispose()
+        {
+        }
+
         #endregion
+
     }
 }
