@@ -775,13 +775,13 @@ namespace GameMode
         /// Sets the rotation and zoom of a 3D model preview textdraw.
         /// </summary>
         /// <param name="text">The textdraw id that displays the 3D preview.</param>
-        /// <param name="fRotX">The X rotation value.</param>
-        /// <param name="fRotY">The Y rotation value.</param>
-        /// <param name="fRotZ">The Z rotation value.</param>
-        /// <param name="fZoom">The zoom value, default value 1.0, smaller values make the camera closer and larger values make the camera further away.</param>
+        /// <param name="rotX">The X rotation value.</param>
+        /// <param name="rotY">The Y rotation value.</param>
+        /// <param name="rotZ">The Z rotation value.</param>
+        /// <param name="zoom">The zoom value, default value 1.0, smaller values make the camera closer and larger values make the camera further away.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawSetPreviewRot(int text, float fRotX, float fRotY, float fRotZ, float fZoom);
+        public static extern bool TextDrawSetPreviewRot(int text, float rotX, float rotY, float rotZ, float zoom);
 
         /// <summary>
         /// If a vehicle model is used in a 3D preview textdraw, this sets the two colour values for that vehicle.

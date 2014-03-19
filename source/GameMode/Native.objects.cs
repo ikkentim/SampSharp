@@ -25,49 +25,49 @@ namespace GameMode
         /// </summary>
         /// <param name="objectid">The ID of the object to attach to the vehicle.</param>
         /// <param name="vehicleid">The ID of the vehicle to attach the object to.</param>
-        /// <param name="fOffsetX">The X axis offset.</param>
-        /// <param name="fOffsetY">The Y axis offset.</param>
-        /// <param name="fOffsetZ">The Z axis offset.</param>
-        /// <param name="fRotX">The X rotation offset.</param>
-        /// <param name="fRotY">The Y rotation offset.</param>
-        /// <param name="fRotZ">The Z rotation offset.</param>
+        /// <param name="offsetX">The X axis offset.</param>
+        /// <param name="offsetY">The Y axis offset.</param>
+        /// <param name="offsetZ">The Z axis offset.</param>
+        /// <param name="rotX">The X rotation offset.</param>
+        /// <param name="rotY">The Y rotation offset.</param>
+        /// <param name="rotZ">The Z rotation offset.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool AttachObjectToVehicle(int objectid, int vehicleid, float fOffsetX, float fOffsetY,
-            float fOffsetZ, float fRotX, float fRotY, float fRotZ);
+        public static extern bool AttachObjectToVehicle(int objectid, int vehicleid, float offsetX, float offsetY,
+            float offsetZ, float rotX, float rotY, float rotZ);
 
         /// <summary>
         /// You can use this function to attach objects to other objects. The objects will folow the main object.
         /// </summary>
         /// <param name="objectid">The object to attach to another object.</param>
         /// <param name="attachtoid">The object to attach the object to.</param>
-        /// <param name="fOffsetX">The distance between the main object and the object in the X direction.</param>
-        /// <param name="fOffsetY">The distance between the main object and the object in the Y direction.</param>
-        /// <param name="fOffsetZ">The distance between the main object and the object in the Z direction.</param>
-        /// <param name="fRotX">The X rotation between the object and the main object.</param>
-        /// <param name="fRotY">The Y rotation between the object and the main object.</param>
-        /// <param name="fRotZ">The Z rotation between the object and the main object.</param>
+        /// <param name="offsetX">The distance between the main object and the object in the X direction.</param>
+        /// <param name="offsetY">The distance between the main object and the object in the Y direction.</param>
+        /// <param name="offsetZ">The distance between the main object and the object in the Z direction.</param>
+        /// <param name="rotX">The X rotation between the object and the main object.</param>
+        /// <param name="rotY">The Y rotation between the object and the main object.</param>
+        /// <param name="rotZ">The Z rotation between the object and the main object.</param>
         /// <param name="syncRotation">If set to 0, objects' rotation will not be changed. See ferriswheel filterscript for example.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool AttachObjectToObject(int objectid, int attachtoid, float fOffsetX, float fOffsetY,
-            float fOffsetZ, float fRotX, float fRotY, float fRotZ, bool syncRotation);
+        public static extern bool AttachObjectToObject(int objectid, int attachtoid, float offsetX, float offsetY,
+            float offsetZ, float rotX, float rotY, float rotZ, bool syncRotation);
 
         /// <summary>
         /// Attach an object to a player.
         /// </summary>
         /// <param name="objectid">The ID of the object to attach to the player.</param>
         /// <param name="playerid">The ID of the player to attach the object to.</param>
-        /// <param name="fOffsetX">The distance between the player and the object in the X direction.</param>
-        /// <param name="fOffsetY">The distance between the player and the object in the Y direction.</param>
-        /// <param name="fOffsetZ">The distance between the player and the object in the Z direction.</param>
-        /// <param name="fRotX">The X rotation between the object and the player.</param>
-        /// <param name="fRotY">The Y rotation between the object and the player.</param>
-        /// <param name="fRotZ">The Z rotation between the object and the player.</param>
+        /// <param name="offsetX">The distance between the player and the object in the X direction.</param>
+        /// <param name="offsetY">The distance between the player and the object in the Y direction.</param>
+        /// <param name="offsetZ">The distance between the player and the object in the Z direction.</param>
+        /// <param name="rotX">The X rotation between the object and the player.</param>
+        /// <param name="rotY">The Y rotation between the object and the player.</param>
+        /// <param name="rotZ">The Z rotation between the object and the player.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool AttachObjectToPlayer(int objectid, int playerid, float fOffsetX, float fOffsetY,
-            float fOffsetZ, float fRotX, float fRotY, float fRotZ);
+        public static extern bool AttachObjectToPlayer(int objectid, int playerid, float offsetX, float offsetY,
+            float offsetZ, float rotX, float rotY, float rotZ);
 
         /// <summary>
         /// Change the position of an object.
@@ -235,16 +235,16 @@ namespace GameMode
         /// <param name="playerid">The ID of the player the object was created for.</param>
         /// <param name="objectid">The ID of the object to attach to the vehicle.</param>
         /// <param name="vehicleid">The ID of the vehicle to attach the object to.</param>
-        /// <param name="fOffsetX">The X position offset for attachment.</param>
-        /// <param name="fOffsetY">The Y position offset for attachment.</param>
-        /// <param name="fOffsetZ">The Z position offset for attachment.</param>
-        /// <param name="fRotX">The X rotation offset for attachment.</param>
-        /// <param name="fRotY">The Y rotation offset for attachment.</param>
-        /// <param name="fRotZ">The Z rotation offset for attachment.</param>
+        /// <param name="offsetX">The X position offset for attachment.</param>
+        /// <param name="offsetY">The Y position offset for attachment.</param>
+        /// <param name="offsetZ">The Z position offset for attachment.</param>
+        /// <param name="rotX">The X rotation offset for attachment.</param>
+        /// <param name="rotY">The Y rotation offset for attachment.</param>
+        /// <param name="rotZ">The Z rotation offset for attachment.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool AttachPlayerObjectToVehicle(int playerid, int objectid, int vehicleid, float fOffsetX,
-            float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ);
+        public static extern bool AttachPlayerObjectToVehicle(int playerid, int objectid, int vehicleid, float offsetX,
+            float offsetY, float offsetZ, float rotX, float rotY, float rotZ);
 
         /// <summary>
         /// Sets the position of a player-object to the specified coordinates.
