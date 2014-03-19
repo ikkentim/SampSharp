@@ -18,10 +18,12 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 
 	//Load proxy information from config
 	ConfigReader server_cfg("server.cfg");
+	std::string basemode_path = "plugins/GameMode.dll";
 	std::string gamemode_path = "plugins/GameMode.dll";
 	std::string gamemode_namespace = "GameMode";
 	std::string gamemode_class = "Server";
 
+	server_cfg.GetOption("basemode_path", basemode_path);
 	server_cfg.GetOption("gamemode_path", gamemode_path);
 	server_cfg.GetOption("gamemode_namespace", gamemode_namespace);
 	server_cfg.GetOption("gamemode_class", gamemode_class);
@@ -32,17 +34,19 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 		(char*)gamemode_namespace.c_str(), 
 		(char*)gamemode_class.c_str(), 
 		(char*)gamemode_path.c_str());
-	CMonoProxy::p_instance = new CMonoProxy((char*)gamemode_path.c_str(),  
-		(char*)gamemode_namespace.c_str(), 
-		(char*)gamemode_class.c_str(), 
+
+	CMonoProxy::p_instance = new CMonoProxy((char *)basemode_path.c_str(), 
+		(char *)gamemode_path.c_str(),
+		(char *)gamemode_namespace.c_str(), 
+		(char *)gamemode_class.c_str(), 
 		runtime_ver);
+
 	ServerLog::Printf("[monoproxy] Running Mono runtime version %s.", runtime_ver);
 	return true;
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
 	delete CMonoProxy::p_instance;
-	
 	proxyPlugin.Unload();
 }
 

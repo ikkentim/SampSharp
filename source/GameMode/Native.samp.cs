@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using GameMode.Definitions;
-using GameMode.Events;
 
 namespace GameMode
 {
