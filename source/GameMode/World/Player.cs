@@ -19,6 +19,7 @@ namespace GameMode.World
         /// Gets an ID commonly returned by methods to point out that no player matched the requirements.
         /// </summary>
         public const int InvalidId = Misc.InvalidPlayerId;
+
         #endregion
 
         #region Factories
@@ -659,7 +660,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using <see cref="SetPlayerSkin"/> in <see cref="OnPlayerSpawn"/> and/or <see cref="OnPlayerRequestClass"/>.
+        /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using <see cref="Native.SetPlayerSkin"/> in <see cref="BaseMode.OnPlayerSpawn"/> and/or <see cref="BaseMode.OnPlayerRequestClass"/>.
         /// </summary>
         /// <param name="team">The Team-ID of the chosen player.</param>
         /// <param name="skin">The skin which the player will spawn with.</param>
@@ -671,7 +672,6 @@ namespace GameMode.World
         /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
         /// <param name="weapon3">The third spawn-weapon for the player.</param>
         /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
-        /// <returns>This function doesn't return a specific value.</returns>
         public virtual void SetSpawnInfo(int team, int skin, Vector position, float rotation, Weapon weapon1,
             int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
@@ -679,6 +679,718 @@ namespace GameMode.World
                 weapon3, weapon3Ammo);
         }
 
+        /// <summary>
+        /// (Re)Spawns a player.
+        /// </summary>
+        public virtual void Spawn()
+        {
+            Native.SpawnPlayer(PlayerId);
+        }
+
+        /// <summary>
+        /// This sets this Player's position then adjusts the Player's z-coordinate to the nearest solid ground under the position.
+        /// </summary>
+        /// <param name="position">The position to move this Player to.</param>
+        public virtual void SetPositionFindZ(Vector position)
+        {
+            Native.SetPlayerPosFindZ(PlayerId, position);
+        }
+
+        /// <summary>
+        /// Check if this Player is in range of a point.
+        /// </summary>
+        /// <param name="range">The furthest distance the player can be from the point to be in range.</param>
+        /// <param name="point">The point to check the range to.</param>
+        /// <returns>True if this Player is in range of the point, otherwise False.</returns>
+        public virtual bool IsInRangeOfPoint(float range, Vector point)
+        {
+            return Native.IsPlayerInRangeOfPoint(PlayerId, range, point);
+        }
+
+        /// <summary>
+        /// Calculate the distance between this Player and a map coordinate.
+        /// </summary>
+        /// <param name="point">The point to calculate the distance from.</param>
+        /// <returns>The distance between the player and the point as a float.</returns>
+        public virtual float GetDistanceFromPoint(Vector point)
+        {
+            return Native.GetPlayerDistanceFromPoint(PlayerId, point);
+        }
+
+        /// <summary>
+        /// Checks if a Player is streamed in this Player's client.
+        /// </summary>
+        /// <remarks>
+        /// Players aren't streamed in on their own client, so if this Player is the same as the other Player, it will return false!
+        /// </remarks>
+        /// <remarks>
+        /// Players stream out if they are more than 150 meters away (see server.cfg - stream_distance)
+        /// </remarks>
+        /// <param name="other">The Player to check is streamed in.</param>
+        /// <returns>True if the other Player is streamed in for this Player, False if not.</returns>
+        public virtual bool IsPlayerStreamedIn(Player other)
+        {
+            return Native.IsPlayerStreamedIn(other.PlayerId, PlayerId);
+        }
+
+        /// <summary>
+        /// Set the ammo of this Player's weapon.
+        /// </summary>
+        /// <param name="weapon">The weapon to set the ammo of.</param>
+        /// <param name="ammo">The amount of ammo to set.</param>
+        public virtual void SetAmmo(Weapon weapon, int ammo)
+        {
+            Native.SetPlayerAmmo(PlayerId, (int) weapon, ammo);
+        }
+
+        /// <summary>
+        /// Give this Player a Weapon with a specified amount of ammo.
+        /// </summary>
+        /// <param name="weapon">The Weapon to give to this Player.</param>
+        /// <param name="ammo">The amount of ammo to give to this Player.</param>
+        public virtual void GiveWeapon(Weapon weapon, int ammo)
+        {
+            Native.GivePlayerWeapon(PlayerId, (int) weapon, ammo);
+        }
+
+
+        /// <summary>
+        /// Removes all weapons from this Player.
+        /// </summary>
+        public virtual void ResetWeapons()
+        {
+            Native.ResetPlayerWeapons(PlayerId);
+        }
+
+        /// <summary>
+        /// Sets the armed weapon of this Player.
+        /// </summary>
+        /// <param name="weapon">The weapon that the player should be armed with.</param>
+        public virtual void SetArmedWeapon(Weapon weapon)
+        {
+            Native.SetPlayerArmedWeapon(PlayerId, (int) weapon);
+        }
+
+        /// <summary>
+        /// Get the Weapon and ammo in this Player's weapon slot.
+        /// </summary>
+        /// <param name="slot">The weapon slot to get data for (0-12).</param>
+        /// <param name="weapon">The variable in which to store the weapon, passed by reference.</param>
+        /// <param name="ammo">The variable in which to store the ammo, passed by reference.</param>
+        public virtual void GetWeaponData(int slot, out Weapon weapon, out int ammo)
+        {
+            int weaponid;
+            Native.GetPlayerWeaponData(PlayerId, slot, out weaponid, out ammo);
+            weapon = (Weapon) weaponid;
+        }
+
+        /// <summary>
+        /// Give money to this Player.
+        /// </summary>
+        /// <param name="money">The amount of money to give this Player. Use a minus value to take money.</param>
+        public virtual void GiveMoney(int money)
+        {
+            Native.GivePlayerMoney(PlayerId, money);
+        }
+
+        /// <summary>
+        /// Reset this Player's money to $0.
+        /// </summary>
+        public virtual void ResetMoney()
+        {
+            Native.ResetPlayerMoney(PlayerId);
+        }
+
+        /// <summary>
+        /// Check which keys this Player is pressing.
+        /// </summary>
+        /// <remarks>
+        /// Only the FUNCTION of keys can be detected; not actual keys. You can not detect if the player presses space, but you can detect if they press sprint (which can be mapped (assigned) to ANY key, but is space by default)).
+        /// </remarks>
+        /// <param name="keys">A set of bits containing this Player's key states</param>
+        /// <param name="updown">Up or Down value, passed by reference.</param>
+        /// <param name="leftright">Left or Right value, passed by reference.</param>
+        public virtual void GetKeys(out Keys keys, out int updown, out int leftright)
+        {
+            int keysDown;
+            Native.GetPlayerKeys(PlayerId, out keysDown, out updown, out leftright);
+            keys = (Keys) keysDown;
+        }
+
+        /// <summary>
+        /// Sets the clock of this Player to a specific value. This also changes the daytime. (night/day etc.)
+        /// </summary>
+        /// <param name="hour">Hour to set (0-23).</param>
+        /// <param name="minutes">Minutes to set (0-59).</param>
+        public virtual void SetTime(int hour, int minutes)
+        {
+            Native.SetPlayerTime(PlayerId, hour, minutes);
+        }
+
+        /// <summary>
+        /// Get this Player's current game time. Set by <see cref="Native.SetWorldTime"/>, <see cref="Native.SetWorldTime"/>, or by <see cref="ToggleClock"/>.
+        /// </summary>
+        /// <param name="hour">The variable to store the hour in, passed by reference.</param>
+        /// <param name="minutes">The variable to store the minutes in, passed by reference.</param>
+        public virtual void GetTime(out int hour, out int minutes)
+        {
+            Native.GetPlayerTime(PlayerId, out hour, out minutes);
+        }
+
+        /// <summary>
+        /// Show/Hide the in-game clock (top right corner) for this Player.
+        /// </summary>
+        /// <remarks>
+        /// Time is not synced with other players!
+        /// </remarks>
+        /// <param name="toggle">True to show, False to hide.</param>
+        public virtual void ToggleClock(bool toggle)
+        {
+            Native.TogglePlayerClock(PlayerId, toggle);
+        }
+
+        /// <summary>
+        /// Set this Player's weather. If <see cref="ToggleClock"/> has been used to enable the clock, weather changes will interpolate (gradually change), otherwise will change instantly.
+        /// </summary>
+        /// <param name="weather">The weather to set.</param>
+        public virtual void SetWeather(int weather)
+        {
+            Native.SetPlayerWeather(PlayerId, weather);
+        }
+
+        /// <summary>
+        /// Forces this Player to go back to class selection.
+        /// </summary>
+        /// <remarks>
+        /// The player will not return to class selection until they re-spawn. This can be achieved with <see cref="ToggleSpectating"/>
+        /// </remarks>
+        public virtual void ForceClassSelection()
+        {
+            Native.ForceClassSelection(PlayerId);
+        }
+
+        /// <summary>
+        /// This function plays a crime report for this Player - just like in single-player when CJ commits a crime.
+        /// </summary>
+        /// <param name="suspectid">The ID of the suspect player which will be described in the crime report.</param>
+        /// <param name="crime">The crime ID, which will be reported as a 10-code (i.e. 10-16 if 16 was passed as the crimeid).</param>
+        public virtual void PlayCrimeReport(int suspectid, int crime)
+        {
+            Native.PlayCrimeReportForPlayer(PlayerId, suspectid, crime);
+        }
+
+        /// <summary>
+        /// Play an 'audio stream' for this Player. Normal audio files also work (e.g. MP3).
+        /// </summary>
+        /// <param name="url">The url to play. Valid formats are mp3 and ogg/vorbis. A link to a .pls (playlist) file will play that playlist.</param>
+        /// <param name="position">The position at which to play the audio. Has no effect unless usepos is set to True.</param>
+        /// <param name="distance">The distance over which the audio will be heard. Has no effect unless usepos is set to True.</param>
+        public virtual void PlayAudioStream(string url, Vector position, float distance)
+        {
+            Native.PlayAudioStreamForPlayer(PlayerId, url, position.X, position.Y, position.Z, distance, true);
+        }
+
+        /// <summary>
+        /// Play an 'audio stream' for this Player. Normal audio files also work (e.g. MP3).
+        /// </summary>
+        /// <param name="url">The url to play. Valid formats are mp3 and ogg/vorbis. A link to a .pls (playlist) file will play that playlist.</param>
+        public virtual void PlayAudioStream(string url)
+        {
+            Native.PlayAudioStreamForPlayer(PlayerId, url, 0, 0, 0, 0, false);
+        }
+
+        /// <summary>
+        /// Stops the current audio stream for this Player.
+        /// </summary>
+        public virtual void StopAudioStream()
+        {
+            Native.StopAudioStreamForPlayer(PlayerId);
+        }
+
+        /// <summary>
+        /// Loads or unloads an interior script for this Player. (for example the ammunation menu)
+        /// </summary>
+        /// <param name="shopname"></param>
+        public virtual void SetShopName(string shopname)
+        {
+            Native.SetPlayerShopName(PlayerId, shopname);
+        }
+
+        /// <summary>
+        /// Set the skill level of a certain weapon type for this Player.
+        /// </summary>
+        /// <remarks>
+        /// The skill parameter is NOT the weapon ID, it is the skill type.
+        /// </remarks>
+        /// <param name="skill">The weapon type you want to set the skill of.</param>
+        /// <param name="level">The skill level to set for that weapon, ranging from 0 to 999. (A level out of range will max it out)</param>
+        public virtual void SetSkillLevel(WeaponSkill skill, int level)
+        {
+            Native.SetPlayerSkillLevel(PlayerId, (int) skill, level);
+        }
+
+        /// <summary>
+        /// Removes a standard San Andreas model for this Player within a specified range.
+        /// </summary>
+        /// <param name="modelid">The model to remove.</param>
+        /// <param name="point">The point around which the objects will be removed.</param>
+        /// <param name="radius">The radius. Objects within this radius from the coordinates above will be removed.</param>
+        public virtual void RemoveBuilding(int modelid, Vector point, float radius)
+        {
+            Native.RemoveBuildingForPlayer(PlayerId, modelid, point.X, point.Y, point.Z, radius);
+        }
+
+        /// <summary>
+        /// Attach an object to a specific bone on this Player.
+        /// </summary>
+        /// <param name="index">The index (slot) to assign the object to (0-9).</param>
+        /// <param name="modelid">The model to attach.</param>
+        /// <param name="bone">The bone to attach the object to.</param>
+        /// <param name="offset">offset for the object position.</param>
+        /// <param name="rotation">rotation of the object.</param>
+        /// <param name="scale">scale of the object.</param>
+        /// <param name="materialcolor1">The first object color to set, as an integer or hex in ARGB color format.</param>
+        /// <param name="materialcolor2">The second object color to set, as an integer or hex in ARGB color format.</param>
+        /// <returns>True on success, False otherwise.</returns>
+        public virtual bool SetAttachedObject(int index, int modelid, int bone,  Vector offset, Rotation rotation,  Vector scale, Color materialcolor1, Color materialcolor2)
+        {
+            materialcolor1.ColorFormat = ColorFormat.ARGB;
+            materialcolor2.ColorFormat = ColorFormat.ARGB;
+
+            return Native.SetPlayerAttachedObject(PlayerId, index, modelid, bone, offset.X, offset.Y, offset.Z,
+                rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z, materialcolor1, materialcolor2);
+        }
+
+        /// <summary>
+        /// Remove an attached object from this Player.
+        /// </summary>
+        /// <param name="index">The index of the object to remove (set with <see cref="SetAttachedObject"/>).</param>
+        /// <returns>True on success, False otherwise.</returns>
+        public virtual bool RemoveAttachedObject(int index)
+        {
+            return Native.RemovePlayerAttachedObject(PlayerId, index);
+        }
+
+        /// <summary>
+        /// Check if this Player has an object attached in the specified index (slot).
+        /// </summary>
+        /// <param name="index">The index (slot) to check.</param>
+        /// <returns>True if the slot is used, False otherwise.</returns>
+        public virtual bool IsAttachedObjectSlotUsed(int index)
+        {
+            return Native.IsPlayerAttachedObjectSlotUsed(PlayerId, index);
+        }
+
+        /// <summary>
+        /// Enter edition mode for an attached object.
+        /// </summary>
+        /// <param name="index">The index (slot) of the attached object to edit.</param>
+        /// <returns>True on success, False otherwise.</returns>
+        public virtual bool DoEditAttachedObject(int index)
+        {
+            return Native.EditAttachedObject(PlayerId, index);
+        }
+
+        /// <summary>
+        /// Creates a chat bubble above this Player's name tag.
+        /// </summary>
+        /// <param name="text">The text to display.</param>
+        /// <param name="color">The text color.</param>
+        /// <param name="drawdistance">The distance from where players are able to see the chat bubble.</param>
+        /// <param name="expiretime">The time in miliseconds the bubble should be displayed for.</param>
+        public virtual void SetChatBubble(string text, Color color, float drawdistance,
+            int expiretime)
+        {
+            color.ColorFormat = ColorFormat.RGBA;
+            Native.SetPlayerChatBubble(PlayerId, text, color, drawdistance, expiretime);
+        }
+
+        /// <summary>
+        /// Puts this Player in a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle for the player to be put in.</param>
+        /// <param name="seatid">The ID of the seat to put the player in.</param>
+        public virtual void PutInVehicle(int vehicleid, int seatid)
+        {
+            Native.PutPlayerInVehicle(PlayerId, vehicleid, seatid);
+        }
+
+        /// <summary>
+        /// Removes/ejects this Player from his vehicle.
+        /// </summary>
+        /// <remarks>
+        /// The exiting animation is not synced for other players.
+        /// This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle"/>, because the player isn't in the vehicle when the callback is called. Use <see cref="BaseMode.OnPlayerStateChange"/> instead.
+        /// </remarks>
+        public virtual void RemoveFromVehicle()
+        {
+            Native.RemovePlayerFromVehicle(PlayerId);
+        }
+
+        /// <summary>
+        /// Toggles whether this Player can control themselves, basically freezes them.
+        /// </summary>
+        /// <param name="toggle">False to freeze the player or True to unfreeze them.</param>
+        public virtual void ToggleControllable(bool toggle)
+        {
+            Native.TogglePlayerControllable(PlayerId, toggle);
+        }
+
+        /// <summary>
+        /// Plays the specified sound for this Player at a specific point.
+        /// </summary>
+        /// <param name="soundid">The sound to play.</param>
+        /// <param name="point">Point for the sound to play at.</param>
+        public virtual void PlaySound(int soundid, Vector point)
+        {
+            Native.PlayerPlaySound(PlayerId, soundid, point.X, point.Y, point.Z);
+        }
+
+        /// <summary>
+        /// Plays the specified sound for this Player.
+        /// </summary>
+        /// <param name="soundid">The sound to play.</param>
+        public virtual void PlaySound(int soundid)
+        {
+            Native.PlayerPlaySound(PlayerId, soundid, 0, 0, 0);
+        }
+
+        /// <summary>
+        /// Apply an animation to this Player.
+        /// </summary>
+        /// <remarks>
+        /// The <paramref name="forcesync"/> parameter, in most cases is not needed since players sync animations themselves. The <paramref name="forcesync"/> parameter can force all players who can see this Player to play the animation regardless of whether the player is performing that animation. This is useful in circumstances where the player can't sync the animation themselves. For example, they may be paused.
+        /// </remarks>
+        /// <param name="animlib">The name of the animation library in which the animation to apply is in.</param>
+        /// <param name="animname">The name of the animation, within the library specified.</param>
+        /// <param name="fDelta">The speed to play the animation (use 4.1).</param>
+        /// <param name="loop">Set to True for looping otherwise set to False for playing animation sequence only once.</param>
+        /// <param name="lockx">Set to False to return player to original x position after animation is complete for moving animations. The opposite effect occurs if set to True.</param>
+        /// <param name="locky">Set to False to return player to original y position after animation is complete for moving animations. The opposite effect occurs if set to True.</param>
+        /// <param name="freeze">Will freeze the player in position after the animation finishes.</param>
+        /// <param name="time">Timer in milliseconds. For a never ending loop it should be 0.</param>
+        /// <param name="forcesync">Set to True to force playerid to sync animation with other players in all instances</param>
+        public virtual void ApplyAnimation(string animlib, string animname, float fDelta, bool loop, bool lockx,
+            bool locky, bool freeze, int time, bool forcesync)
+        {
+            Native.ApplyAnimation(PlayerId, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync);
+        }
+
+        /// <summary>
+        /// Apply an animation to this Player.
+        /// </summary>
+        /// <param name="animlib">The name of the animation library in which the animation to apply is in.</param>
+        /// <param name="animname">The name of the animation, within the library specified.</param>
+        /// <param name="fDelta">The speed to play the animation (use 4.1).</param>
+        /// <param name="loop">Set to True for looping otherwise set to False for playing animation sequence only once.</param>
+        /// <param name="lockx">Set to False to return player to original x position after animation is complete for moving animations. The opposite effect occurs if set to True.</param>
+        /// <param name="locky">Set to False to return player to original y position after animation is complete for moving animations. The opposite effect occurs if set to True.</param>
+        /// <param name="freeze">Will freeze the player in position after the animation finishes.</param>
+        /// <param name="time">Timer in milliseconds. For a never ending loop it should be 0.</param>
+        public virtual void ApplyAnimation(string animlib, string animname, float fDelta, bool loop, bool lockx,
+            bool locky, bool freeze, int time)
+        {
+            Native.ApplyAnimation(PlayerId, animlib, animname, fDelta, loop, lockx, locky, freeze, time, false);
+        }
+
+        /// <summary>
+        /// Clears all animations for this Player.
+        /// </summary>
+        /// <param name="forcesync">Specifies whether the animation should be shown to streamed in players.</param>
+        public virtual void ClearAnimations(bool forcesync)
+        {
+            Native.ClearAnimations(PlayerId, forcesync);
+        }
+
+        /// <summary>
+        /// Clears all animations for this Player.
+        /// </summary>
+        public virtual void ClearAnimations()
+        {
+            Native.ClearAnimations(PlayerId, false);
+        }
+
+        /// <summary>
+        /// Get the animation library/name this Player is playing.
+        /// </summary>
+        /// <param name="animlib">String variable that stores the animation library.</param>
+        /// <param name="animname">String variable that stores the animation name.</param>
+        /// <returns>True on success, False otherwise.</returns>
+        public virtual bool GetAnimationName(out string animlib, out string animname)
+        {
+            return Native.GetAnimationName(AnimationIndex, out animlib, 64, out animname, 64);
+        }
+
+        /// <summary>
+        /// Sets a checkpoint (red circle) for this Player. Also shows a red blip on the radar.
+        /// </summary>
+        /// <remarks>
+        /// Checkpoints created on server-created objects (<see cref="Native.CreateObject"/>/<see cref="Native.CreatePlayerObject"/>) will appear down on the 'real' ground, but will still function correctly. There is no fix available for this issue. A pickup can be used instead.
+        /// </remarks>
+        /// <param name="point">The point to set the checkpoint at.</param>
+        /// <param name="size">The size of the checkpoint.</param>
+        public virtual void SetCheckpoint(Vector point, float size)
+        {
+            Native.SetPlayerCheckpoint(PlayerId, point, size);
+        }
+
+        /// <summary>
+        /// Disable any initialized checkpoints for this Player.
+        /// </summary>
+        public virtual void DisableCheckpoint()
+        {
+            Native.DisablePlayerCheckpoint(PlayerId);
+        }
+
+        /// <summary>
+        /// Creates a race checkpoint. When this Player enters it, the <see cref="EnterRaceCheckpoint"/> callback is called.
+        /// </summary>
+        /// <param name="type">Type of checkpoint.</param>
+        /// <param name="point">The point to set the checkpoint at.</param>
+        /// <param name="nextPosition">Coordinates of the next point, for the arrow facing direction.</param>
+        /// <param name="size">Size (diameter) of the checkpoint</param>
+        public virtual void SetRaceCheckpoint(CheckpointType type, Vector point, Vector nextPosition, float size)
+        {
+            Native.SetPlayerRaceCheckpoint(PlayerId, type, point, nextPosition, size);
+        }
+
+        /// <summary>
+        /// Disable any initialized race checkpoints for this Player.
+        /// </summary>
+        public virtual void DisableRaceCheckpoint()
+        {
+            Native.DisablePlayerRaceCheckpoint(PlayerId);
+        }
+
+        /// <summary>
+        /// Set the world boundaries for this Player - players can not go out of the boundaries.
+        /// </summary>
+        /// <remarks>
+        /// You can reset the player world bounds by setting the parameters to 20000.0000, -20000.0000, 20000.0000, -20000.0000.
+        /// </remarks>
+        /// <param name="xMax">The maximum X coordinate the player can go to.</param>
+        /// <param name="xMin">The minimum X coordinate the player can go to.</param>
+        /// <param name="yMax">The maximum Y coordinate the player can go to.</param>
+        /// <param name="yMin">The minimum Y coordinate the player can go to.</param>
+        public virtual void SetWorldBounds(float xMax, float xMin, float yMax, float yMin)
+        {
+            Native.SetPlayerWorldBounds(PlayerId, xMax, xMin, yMax, yMin);
+        }
+
+        /// <summary>
+        /// Change the colour of this Player's nametag and radar blip for another Player.
+        /// </summary>
+        /// <param name="player">The player whose color will be changed.</param>
+        /// <param name="color">New color.</param>
+        public virtual void SetMarkerForPlayer(Player player, Color color)
+        {
+            color.ColorFormat= ColorFormat.RGBA;
+            Native.SetPlayerMarkerForPlayer(PlayerId, player.PlayerId, color);
+        }
+
+        /// <summary>
+        /// This functions allows you to toggle the drawing of player nametags, healthbars and armor bars which display above their head. For use of a similar function like this on a global level, <see cref="Native.ShowNameTags"/> function.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Native.ShowNameTags"/> must be set to True to be able to show name tags with <see cref="ShowNameTagForPlayer"/>.
+        /// </remarks>
+        /// <param name="player">Player whose name tag will be shown or hidden.</param>
+        /// <param name="show">True to show name tag, False to hide name tag.</param>
+        public virtual void ShowNameTagForPlayer(Player player, bool show)
+        {
+            Native.ShowPlayerNameTagForPlayer(PlayerId, player.PlayerId, show);
+        }
+        /*
+         * To be converted to player methods;; bored now.
+         * 
+        /// <summary>
+        /// This function allows you to place your own icons on the map, enabling you to emphasise the locations of banks, airports or whatever else you want. A total of 63 icons are available in GTA: San Andreas, all of which can be used using this function. You can also specify the color of the icon, which allows you to change the square icon (ID: 0).
+        /// </summary>
+        /// <param name="playerid">The ID of the player to set the map icon for.</param>
+        /// <param name="iconid">The player's icon ID, ranging from 0 to 99, to be used in RemovePlayerMapIcon.</param>
+        /// <param name="x">The X coordinate of the place where you want the icon to be.</param>
+        /// <param name="y">The Y coordinate of the place where you want the icon to be.</param>
+        /// <param name="z">The Z coordinate of the place where you want the icon to be.</param>
+        /// <param name="markertype">The icon to set.</param>
+        /// <param name="color">The color of the icon, this should only be used with the square icon (ID: 0).</param>
+        /// <param name="style">The style of icon.</param>
+        /// <returns>True if it was successful, False otherwise (e.g. the player isn't connected).</returns>
+        public virtual bool SetPlayerMapIcon(int playerid, int iconid, float x, float y, float z, int markertype,
+            int color, int style)
+        {
+            
+        }
+
+        /// <summary>
+        /// Removes a map icon that was set earlier for a player.
+        /// </summary>
+        /// <param name="playerid">The ID of the player whose icon to remove.</param>
+        /// <param name="iconid">The ID of the icon to remove. This is the second parameter of <see cref="SetPlayerMapIcon(int,int,Vector,PlayerMarkersMode)"/>.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public virtual void RemovePlayerMapIcon(int playerid, int iconid)
+        {
+            
+        }
+
+        /// <summary>
+        /// Set the direction a player's camera looks at. To be used in combination with SetPlayerCameraPos.
+        /// </summary>
+        /// <param name="playerid">The player to change the camera of.</param>
+        /// <param name="x">The X coordinate for the player's camera to look at.</param>
+        /// <param name="y">The Y coordinate for the player's camera to look at.</param>
+        /// <param name="z">The Z coordinate for the player's camera to look at.</param>
+        /// <param name="cut">The style the camera-position changes.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public virtual void SetPlayerCameraLookAt(int playerid, float x, float y, float z, int cut)
+        {
+            
+        }
+
+        /// <summary>
+        /// You can use this function to attach the player camera to objects.
+        /// </summary>
+        /// <remarks>
+        /// You need to create the object first, before attempting to attach a player camera for that.
+        /// </remarks>
+        /// <param name="playerid">The ID of the player which will have your camera attached on object.</param>
+        /// <param name="objectid">The object id which you want to attach the player camera.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public virtual void AttachCameraToObject(int playerid, int objectid)
+        {
+            
+        }
+
+        /// <summary>
+        /// Attaches a player's camera to a player-object. They are able to move their camera while it is attached to an object. Can be used with <see cref="MovePlayerObject"/> and <see cref="AttachPlayerObjectToVehicle"/>.
+        /// </summary>
+        /// <param name="playerid">The ID of the player which will have their camera attached to a player-object.</param>
+        /// <param name="playerobjectid">	The ID of the player-object to which the player's camera will be attached.</param>
+        public virtual void AttachCameraToPlayerObject(int playerid, int playerobjectid)
+        {
+            
+        }
+
+        /// <summary>
+        /// Move a player's camera from one position to another, within the set time.
+        /// </summary>
+        /// <param name="playerid">The ID of the player the camera should be moved for.</param>
+        /// <param name="fromX">The X position the camera should start to move from.</param>
+        /// <param name="fromY">The Y position the camera should start to move from.</param>
+        /// <param name="fromZ">The Z position the camera should start to move from.</param>
+        /// <param name="toX">The X position the camera should move to.</param>
+        /// <param name="toY">The Y position the camera should move to.</param>
+        /// <param name="toZ">The Z position the camera should move to.</param>
+        /// <param name="time">Time in milliseconds.</param>
+        /// <param name="cut">The jumpcut to use. Defaults to CameraCut.Cut. Set to CameraCut.Move for a smooth movement.</param>
+        public virtual void InterpolateCameraPos(int playerid, float fromX, float fromY, float fromZ, float toX,
+            float toY, float toZ, int time, int cut)
+        {
+            
+        }
+
+        /// <summary>
+        /// Interpolate a player's camera's 'look at' point between two coordinates with a set speed. Can be be used with <see cref="InterpolateCameraPos(int,Vector,Vector,int,CameraCut)"/>.
+        /// </summary>
+        /// <param name="playerid">The ID of the player the camera should be moved for.</param>
+        /// <param name="fromX">The X position the camera should start to move from.</param>
+        /// <param name="fromY">The Y position the camera should start to move from.</param>
+        /// <param name="fromZ">The Z position the camera should start to move from.</param>
+        /// <param name="toX">The X position the camera should move to.</param>
+        /// <param name="toY">The Y position the camera should move to.</param>
+        /// <param name="toZ">The Z position the camera should move to.</param>
+        /// <param name="time">Time in milliseconds to complete interpolation.</param>
+        /// <param name="cut">The 'jumpcut' to use. Defaults to CameraCut.Cut (pointless). Set to CameraCut.Move for interpolation.</param>
+        public virtual void InterpolateCameraLookAt(int playerid, float fromX, float fromY, float fromZ, float toX,
+            float toY, float toZ, int time, int cut)
+        {
+            
+        }
+
+        /// <summary>
+        /// Checks if a player is in a specific vehicle.
+        /// </summary>
+        /// <param name="playerid">ID of the player.</param>
+        /// <param name="vehicleid">ID of the vehicle.</param>
+        /// <returns>True if player is in the vehicle, otherwise False.</returns>
+        public virtual bool IsPlayerInVehicle(int playerid, int vehicleid)
+        {
+            
+        }
+
+        /// <summary>
+        /// Toggle stunt bonuses for a player.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to toggle stunt bonuses for.</param>
+        /// <param name="enable">True to enable stunt bonuses, False to disable them.</param>
+        public virtual void EnableStuntBonusForPlayer(int playerid, bool enable)
+        {
+            
+        }
+
+        /// <summary>
+        /// Toggle a player's spectate mode.
+        /// </summary>
+        /// <remarks>
+        /// When the spectating is turned off, OnPlayerSpawn will automatically be called.
+        /// </remarks>
+        /// <param name="playerid">The ID of the player who should spectate.</param>
+        /// <param name="toggle">True to enable spectating and False to disable.</param>
+        public virtual void ToggleSpectating(int playerid, bool toggle)
+        {
+            
+        }
+
+        /// <summary>
+        /// Makes a player spectate (watch) another player.
+        /// </summary>
+        /// <remarks>
+        /// Order is CRITICAL! Ensure that you use <see cref="TogglePlayerSpectating"/> before <see cref="PlayerSpectatePlayer"/>.
+        /// </remarks>
+        /// <param name="playerid">The ID of the player that will spectate.</param>
+        /// <param name="targetplayerid">The ID of the player that should be spectated.</param>
+        /// <param name="mode">The mode to spectate with.</param>
+        public virtual void PlayerSpectatePlayer(int playerid, int targetplayerid, int mode)
+        {
+            
+        }
+
+        /// <summary>
+        /// Sets a player to spectate another vehicle, i.e. see what its driver sees.
+        /// </summary>
+        /// <remarks>
+        /// Order is CRITICAL! Ensure that you use <see cref="TogglePlayerSpectating"/> before <see cref="PlayerSpectatePlayer"/>.
+        /// </remarks>
+        /// <param name="playerid">Player ID.</param>
+        /// <param name="targetvehicleid">ID of the vehicle to spectate.</param>
+        /// <param name="mode">Spectate mode.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public virtual void PlayerSpectateVehicle(int playerid, int targetvehicleid, int mode)
+        {
+            
+        }
+
+        /// <summary>
+        /// Starts recording the player's movements to a file, which can then be reproduced by an NPC.
+        /// </summary>
+        /// <param name="playerid">The ID of the player you want to record.</param>
+        /// <param name="recordtype">The type of recording.</param>
+        /// <param name="recordname">Name of the file which will hold the recorded data. It will be saved in scriptfiles, with an automatically added .rec extension.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public virtual void StartRecordingPlayerData(int playerid, int recordtype, string recordname)
+        {
+            
+        }
+
+        /// <summary>
+        /// Stops all the recordings that had been started with <see cref="StartRecordingPlayerData"/> for a specific player.
+        /// </summary>
+        /// <param name="playerid">The player you want to stop the recordings of.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public virtual void StopRecordingPlayerData(int playerid)
+        {
+            
+        }
+        */
         public virtual void OnConnected(PlayerEventArgs e)
         {
             if(Connected != null)

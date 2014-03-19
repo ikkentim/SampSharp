@@ -6,6 +6,8 @@
 
 #VS13
 *.vcxproj.user
+*.csproj.user
+
 *.suo
 *.opensdf
 *.sdf
