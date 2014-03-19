@@ -651,14 +651,14 @@ namespace GameMode
         /// </summary>
         /// <param name="playerid">The ID of the player to remove the objects for.</param>
         /// <param name="modelid">The model to remove.</param>
-        /// <param name="fX">The X coordinate around which the objects will be removed.</param>
-        /// <param name="fY">The Y coordinate around which the objects will be removed.</param>
-        /// <param name="fZ">The Z coordinate around which the objects will be removed.</param>
-        /// <param name="fRadius">The radius. Objects within this radius from the coordinates above will be removed.</param>
+        /// <param name="x">The X coordinate around which the objects will be removed.</param>
+        /// <param name="y">The Y coordinate around which the objects will be removed.</param>
+        /// <param name="z">The Z coordinate around which the objects will be removed.</param>
+        /// <param name="radius">The radius. Objects within this radius from the coordinates above will be removed.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool RemoveBuildingForPlayer(int playerid, int modelid, float fX, float fY, float fZ,
-            float fRadius);
+        public static extern bool RemoveBuildingForPlayer(int playerid, int modelid, float x, float y, float z,
+            float radius);
 
         /// <summary>
         /// Attach an object to a specific bone on a player.
@@ -667,22 +667,22 @@ namespace GameMode
         /// <param name="index">The index (slot) to assign the object to (0-9).</param>
         /// <param name="modelid">The model to attach.</param>
         /// <param name="bone">The bone to attach the object to.</param>
-        /// <param name="fOffsetX">X axis offset for the object position.</param>
-        /// <param name="fOffsetY">Y axis offset for the object position.</param>
-        /// <param name="fOffsetZ">Z axis offset for the object position.</param>
-        /// <param name="fRotX">X axis rotation of the object.</param>
-        /// <param name="fRotY">Y axis rotation of the object.</param>
-        /// <param name="fRotZ">Z axis rotation of the object.</param>
-        /// <param name="fScaleX">X axis scale of the object.</param>
-        /// <param name="fScaleY">Y axis scale of the object.</param>
-        /// <param name="fScaleZ">Z axis scale of the object.</param>
+        /// <param name="offsetX">X axis offset for the object position.</param>
+        /// <param name="offsetY">Y axis offset for the object position.</param>
+        /// <param name="offsetZ">Z axis offset for the object position.</param>
+        /// <param name="rotX">X axis rotation of the object.</param>
+        /// <param name="rotY">Y axis rotation of the object.</param>
+        /// <param name="rotZ">Z axis rotation of the object.</param>
+        /// <param name="scaleX">X axis scale of the object.</param>
+        /// <param name="scaleY">Y axis scale of the object.</param>
+        /// <param name="scaleZ">Z axis scale of the object.</param>
         /// <param name="materialcolor1">The first object color to set, as an integer or hex in ARGB color format.</param>
         /// <param name="materialcolor2">The second object color to set, as an integer or hex in ARGB color format.</param>
         /// <returns>True on success, False otherwise.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerAttachedObject(int playerid, int index, int modelid, int bone, float fOffsetX,
-            float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY,
-            float fScaleZ, int materialcolor1, int materialcolor2);
+        public static extern bool SetPlayerAttachedObject(int playerid, int index, int modelid, int bone, float offsetX,
+            float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY,
+            float scaleZ, int materialcolor1, int materialcolor2);
 
         /// <summary>
         /// Remove an attached object from a player.
@@ -920,14 +920,14 @@ namespace GameMode
         /// </summary>
         /// <param name="playerid">The ID of the player whose player-textdraw to change.</param>
         /// <param name="text">The ID of the player-textdraw to change.</param>
-        /// <param name="fRotX">The X rotation value.</param>
-        /// <param name="fRotY">The Y rotation value.</param>
-        /// <param name="fRotZ">The Z rotation value.</param>
-        /// <param name="fZoom">The zoom value, default value 1.0, smaller values make the camera closer and larger values make the camera further away.</param>
+        /// <param name="rotX">The X rotation value.</param>
+        /// <param name="rotY">The Y rotation value.</param>
+        /// <param name="rotZ">The Z rotation value.</param>
+        /// <param name="zoom">The zoom value, default value 1.0, smaller values make the camera closer and larger values make the camera further away.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawSetPreviewRot(int playerid, int text, float fRotX, float fRotY,
-            float fRotZ, float fZoom);
+        public static extern bool PlayerTextDrawSetPreviewRot(int playerid, int text, float rotX, float rotY,
+            float rotZ, float zoom);
 
         /// <summary>
         /// Set the color of a vehicle in a player-textdraw model preview (if a vehicle is shown).
