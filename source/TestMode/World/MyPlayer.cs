@@ -22,7 +22,7 @@ namespace TestMode.World
         public static new MyPlayer Find(int playerId)
         {
             //Find player in memory or initialize new player
-            return PlayerInstances.Cast<MyPlayer>().FirstOrDefault(p => p.PlayerId == playerId) ?? new MyPlayer(playerId);
+            return Instances.Cast<MyPlayer>().FirstOrDefault(p => p.PlayerId == playerId) ?? new MyPlayer(playerId);
         }
     }
 }

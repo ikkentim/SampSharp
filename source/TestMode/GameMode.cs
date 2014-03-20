@@ -10,13 +10,12 @@ namespace TestMode
         public GameMode()
         {
             Player.RegisterEvents(this, MyPlayer.Find);
+            Vehicle.RegisterEvents(this, Vehicle.Find);
         }
 
         public override bool OnGameModeInit()
         {
             Console.WriteLine("OnGameModeInit");
-            var timer = new Timer(2500, true);
-            timer.Tick += (sender, args) => Console.WriteLine("Tick");
             return true;
         }
     }

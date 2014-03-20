@@ -18,6 +18,8 @@ namespace GameMode
         protected BaseMode()
         {
             Instance = this;
+
+            Console.SetOut(new LogWriter());
         }
 
         #region Events

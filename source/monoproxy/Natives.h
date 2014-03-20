@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sampgdk/core.h>
 #include <sampgdk/a_players.h>
 #include <sampgdk/a_samp.h>
 #include <sampgdk/a_objects.h>
@@ -217,10 +218,15 @@ static inline bool p_SetVehicleNumberPlate(int vehicleid, MonoString * numberpla
 	return sampgdk_SetVehicleNumberPlate(vehicleid, mono_string_to_utf8(numberplate));
 }
 
+//
+// serverlog string converters 
+static inline void p_Print(MonoString * str) {
+	ServerLog::Printf(mono_string_to_utf8(str));
+}
 static void LoadNatives()
 {
 	//
-	//a_players natives
+	// a_players natives
 	mono_add_internal_call("GameMode.Native::SetSpawnInfo", sampgdk_SetSpawnInfo);
 	mono_add_internal_call("GameMode.Native::SpawnPlayer", sampgdk_SpawnPlayer);
 	mono_add_internal_call("GameMode.Native::SetPlayerPos", sampgdk_SetPlayerPos);
@@ -367,7 +373,7 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Native::StopRecordingPlayerData", sampgdk_StopRecordingPlayerData);
 
 	//
-	//a_samp natives
+	// a_samp natives
 	mono_add_internal_call("GameMode.Native::SendClientMessage", p_SendClientMessage);
 	mono_add_internal_call("GameMode.Native::SendClientMessageToAll", p_SendClientMessageToAll);
 	mono_add_internal_call("GameMode.Native::SendPlayerMessageToPlayer", p_SendPlayerMessageToPlayer);
@@ -477,7 +483,7 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Native::gpci", p_gpci);
 
 	//
-	//a_objects natives
+	// a_objects natives
 	mono_add_internal_call("GameMode.Native::CreateObject", sampgdk_CreateObject);
 	mono_add_internal_call("GameMode.Native::AttachObjectToVehicle", sampgdk_AttachObjectToVehicle);
 	mono_add_internal_call("GameMode.Native::AttachObjectToObject", sampgdk_AttachObjectToObject);
@@ -513,7 +519,7 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Native::SetPlayerObjectMaterialText", p_SetPlayerObjectMaterialText);
 
 	//
-	//a_vehicles natives
+	// a_vehicles natives
 	mono_add_internal_call("GameMode.Native::IsValidVehicle", sampgdk_IsValidVehicle);
 	mono_add_internal_call("GameMode.Native::GetVehicleDistanceFromPoint", sampgdk_GetVehicleDistanceFromPoint);
 	mono_add_internal_call("GameMode.Native::CreateVehicle", sampgdk_CreateVehicle);
@@ -553,4 +559,8 @@ static void LoadNatives()
 	mono_add_internal_call("GameMode.Native::SetVehicleVirtualWorld", sampgdk_SetVehicleVirtualWorld);
 	mono_add_internal_call("GameMode.Native::GetVehicleVirtualWorld", sampgdk_GetVehicleVirtualWorld);
 	mono_add_internal_call("GameMode.Native::GetVehicleModelInfo", sampgdk_GetVehicleModelInfo);
+
+	//
+	// logging
+	mono_add_internal_call("GameMode.Native::Print", p_Print);
 }
