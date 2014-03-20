@@ -13,7 +13,10 @@ namespace GameMode.World
     {
         #region Fields
 
-        protected static List<Player> PlayerInstances = new List<Player>();
+        /// <summary>
+        /// Contains all instances of Players.
+        /// </summary>
+        protected static List<Player> Instances = new List<Player>();
 
         /// <summary>
         /// Gets an ID commonly returned by methods to point out that no player matched the requirements.
@@ -32,7 +35,7 @@ namespace GameMode.World
         public static Player Find(int playerId)
         {
             //Find player in memory or initialize new player
-            return PlayerInstances.FirstOrDefault(p => p.PlayerId == playerId) ?? new Player(playerId);
+            return Instances.FirstOrDefault(p => p.PlayerId == playerId) ?? new Player(playerId);
         }
 
         #endregion
@@ -48,7 +51,7 @@ namespace GameMode.World
             //Fill properties
             PlayerId = playerId;
 
-            PlayerInstances.Add(this);
+            Instances.Add(this);
         }
 
         #endregion
@@ -342,10 +345,29 @@ namespace GameMode.World
             get { return Native.IsPlayerInRaceCheckpoint(PlayerId); }
         }
 
-        //TODO: Add when vehicle objects exist
-        //GetPlayerSurfingVehicleID
-        //GetPlayerSurfingObjectID
-        //GetPlayerVehicleID
+        /// <summary>
+        /// Gets the Vehicle that this Player is surfing.
+        /// </summary>
+        public virtual Vehicle SurfingVehicle
+        {
+            get
+            {
+                var vehicleid = Native.GetPlayerSurfingVehicleID(PlayerId);
+                return vehicleid == Vehicle.InvalidId ? null : Vehicle.Find(vehicleid);
+            }
+        }
+
+        /// <summary>
+        /// Gets the Vehicle this Player is currently in.
+        /// </summary>
+        public virtual Vehicle Vehicle
+        {
+            get
+            {
+                var vehicleid = Native.GetPlayerVehicleID(PlayerId);//Returns 0, not Vehicle.InvalidId!
+                return vehicleid == 0 ? null : Vehicle.Find(vehicleid);
+            }
+        }
 
         /// <summary>
         /// Gets the maximum number of players that can join the server, as set by the server var 'maxplayers' in server.cfg. 
@@ -360,7 +382,7 @@ namespace GameMode.World
         /// </summary>
         public static IReadOnlyCollection<Player> Players
         {
-            get { return PlayerInstances.AsReadOnly(); }
+            get { return Instances.AsReadOnly(); }
         }
 
         #endregion
@@ -618,45 +640,54 @@ namespace GameMode.World
         /// <summary>
         /// Registers all events the Player class listens to.
         /// </summary>
-        /// <param name="baseMode">An instance of the BaseMode to which to listen.</param>
+        /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
         /// <param name="cast">A function to get a <see cref="Player"/> object from a playerid.</param>
-        public static void RegisterEvents(BaseMode baseMode, Func<int, Player> cast)
+        public static void RegisterEvents(BaseMode gameMode, Func<int, Player> cast)
         {
-            baseMode.PlayerConnected += (sender, args) => cast(args.PlayerId).OnConnected(args);
-            baseMode.PlayerDisconnected += (sender, args) => cast(args.PlayerId).OnDisconnected(args);
-            baseMode.PlayerSpawned += (sender, args) => cast(args.PlayerId).OnSpawned(args);
-            baseMode.PlayerDied += (sender, args) => cast(args.PlayerId).OnDeath(args);
-            baseMode.PlayerText += (sender, args) => cast(args.PlayerId).OnText(args);
-            baseMode.PlayerCommandText += (sender, args) => cast(args.PlayerId).OnCommandText(args);
-            baseMode.PlayerRequestClass += (sender, args) => cast(args.PlayerId).OnRequestClass(args);
-            baseMode.PlayerEnterVehicle += (sender, args) => cast(args.PlayerId).OnEnterVehicle(args);
-            baseMode.PlayerExitVehicle += (sender, args) => cast(args.PlayerId).OnExitVehicle(args);
-            baseMode.PlayerStateChanged += (sender, args) => cast(args.PlayerId).OnStateChanged(args);
-            baseMode.PlayerEnterCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterCheckpoint(args);
-            baseMode.PlayerLeaveCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveCheckpoint(args);
-            baseMode.PlayerEnterRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterRaceCheckpoint(args);
-            baseMode.PlayerLeaveRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveRaceCheckpoint(args);
-            baseMode.PlayerRequestSpawn += (sender, args) => cast(args.PlayerId).OnRequestSpawn(args);
-            baseMode.PlayerPickUpPickup += (sender, args) => cast(args.PickupId).OnPickUpPickup(args);
-            baseMode.PlayerEnterExitModShop += (sender, args) => cast(args.PlayerId).OnEnterExitModShop(args);
-            baseMode.PlayerSelectedMenuRow += (sender, args) => cast(args.PlayerId).OnSelectedMenuRow(args);
-            baseMode.PlayerExitedMenu += (sender, args) => cast(args.PlayerId).OnExitedMenu(args);
-            baseMode.PlayerInteriorChanged += (sender, args) => cast(args.PlayerId).OnInteriorChanged(args);
-            baseMode.PlayerKeyStateChanged += (sender, args) => cast(args.PlayerId).OnKeyStateChanged(args);
-            baseMode.PlayerUpdate += (sender, args) => cast(args.PlayerId).OnUpdate(args);
-            baseMode.PlayerStreamIn += (sender, args) => cast(args.PlayerId).OnStreamIn(args);
-            baseMode.PlayerStreamOut += (sender, args) => cast(args.PlayerId).OnStreamOut(args);
-            baseMode.DialogResponse += (sender, args) => cast(args.PlayerId).OnDialogResponse(args);
-            baseMode.PlayerTakeDamage += (sender, args) => cast(args.PlayerId).OnTakeDamage(args);
-            baseMode.PlayerGiveDamage += (sender, args) => cast(args.PlayerId).OnGiveDamage(args);
-            baseMode.PlayerClickMap += (sender, args) => cast(args.PlayerId).OnClickMap(args);
-            baseMode.PlayerClickTextDraw += (sender, args) => cast(args.PlayerId).OnClickTextDraw(args);
-            baseMode.PlayerClickPlayerTextDraw += (sender, args) => cast(args.PlayerId).OnClickPlayerTextDraw(args);
-            baseMode.PlayerClickPlayer += (sender, args) => cast(args.PlayerId).OnClickPlayer(args);
-            baseMode.PlayerEditObject += (sender, args) => cast(args.PlayerId).OnEditObject(args);
-            baseMode.PlayerEditAttachedObject += (sender, args) => cast(args.PlayerId).OnEditAttachedObject(args);
-            baseMode.PlayerSelectObject += (sender, args) => cast(args.PlayerId).OnSelectObject(args);
-            baseMode.PlayerWeaponShot += (sender, args) => cast(args.PlayerId).OnWeaponShot(args);
+            gameMode.PlayerConnected += (sender, args) => cast(args.PlayerId).OnConnected(args);
+            gameMode.PlayerDisconnected += (sender, args) => cast(args.PlayerId).OnDisconnected(args);
+            gameMode.PlayerSpawned += (sender, args) => cast(args.PlayerId).OnSpawned(args);
+            gameMode.PlayerDied += (sender, args) => cast(args.PlayerId).OnDeath(args);
+            gameMode.PlayerText += (sender, args) => cast(args.PlayerId).OnText(args);
+            gameMode.PlayerCommandText += (sender, args) => cast(args.PlayerId).OnCommandText(args);
+            gameMode.PlayerRequestClass += (sender, args) => cast(args.PlayerId).OnRequestClass(args);
+            gameMode.PlayerEnterVehicle += (sender, args) => cast(args.PlayerId).OnEnterVehicle(args);
+            gameMode.PlayerExitVehicle += (sender, args) => cast(args.PlayerId).OnExitVehicle(args);
+            gameMode.PlayerStateChanged += (sender, args) => cast(args.PlayerId).OnStateChanged(args);
+            gameMode.PlayerEnterCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterCheckpoint(args);
+            gameMode.PlayerLeaveCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveCheckpoint(args);
+            gameMode.PlayerEnterRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterRaceCheckpoint(args);
+            gameMode.PlayerLeaveRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveRaceCheckpoint(args);
+            gameMode.PlayerRequestSpawn += (sender, args) => cast(args.PlayerId).OnRequestSpawn(args);
+            gameMode.PlayerPickUpPickup += (sender, args) => cast(args.PickupId).OnPickUpPickup(args);
+            gameMode.PlayerEnterExitModShop += (sender, args) => cast(args.PlayerId).OnEnterExitModShop(args);
+            gameMode.PlayerSelectedMenuRow += (sender, args) => cast(args.PlayerId).OnSelectedMenuRow(args);
+            gameMode.PlayerExitedMenu += (sender, args) => cast(args.PlayerId).OnExitedMenu(args);
+            gameMode.PlayerInteriorChanged += (sender, args) => cast(args.PlayerId).OnInteriorChanged(args);
+            gameMode.PlayerKeyStateChanged += (sender, args) => cast(args.PlayerId).OnKeyStateChanged(args);
+            gameMode.PlayerUpdate += (sender, args) => cast(args.PlayerId).OnUpdate(args);
+            gameMode.PlayerStreamIn += (sender, args) => cast(args.PlayerId).OnStreamIn(args);
+            gameMode.PlayerStreamOut += (sender, args) => cast(args.PlayerId).OnStreamOut(args);
+            gameMode.DialogResponse += (sender, args) => cast(args.PlayerId).OnDialogResponse(args);
+            gameMode.PlayerTakeDamage += (sender, args) => cast(args.PlayerId).OnTakeDamage(args);
+            gameMode.PlayerGiveDamage += (sender, args) => cast(args.PlayerId).OnGiveDamage(args);
+            gameMode.PlayerClickMap += (sender, args) => cast(args.PlayerId).OnClickMap(args);
+            gameMode.PlayerClickTextDraw += (sender, args) => cast(args.PlayerId).OnClickTextDraw(args);
+            gameMode.PlayerClickPlayerTextDraw += (sender, args) => cast(args.PlayerId).OnClickPlayerTextDraw(args);
+            gameMode.PlayerClickPlayer += (sender, args) => cast(args.PlayerId).OnClickPlayer(args);
+            gameMode.PlayerEditObject += (sender, args) => cast(args.PlayerId).OnEditObject(args);
+            gameMode.PlayerEditAttachedObject += (sender, args) => cast(args.PlayerId).OnEditAttachedObject(args);
+            gameMode.PlayerSelectObject += (sender, args) => cast(args.PlayerId).OnSelectObject(args);
+            gameMode.PlayerWeaponShot += (sender, args) => cast(args.PlayerId).OnWeaponShot(args);
+        }
+
+        /// <summary>
+        /// Registers all events the Player class listens to.
+        /// </summary>
+        /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
+        public static void RegisterEvents(BaseMode gameMode)
+        {
+            RegisterEvents(gameMode, Find);
         }
 
         /// <summary>
@@ -1008,11 +1039,11 @@ namespace GameMode.World
         /// <summary>
         /// Puts this Player in a vehicle.
         /// </summary>
-        /// <param name="vehicleid">The ID of the vehicle for the player to be put in.</param>
+        /// <param name="vehicle">The vehicle for the player to be put in.</param>
         /// <param name="seatid">The ID of the seat to put the player in.</param>
-        public virtual void PutInVehicle(int vehicleid, int seatid)
+        public virtual void PutInVehicle(Vehicle vehicle, int seatid)
         {
-            Native.PutPlayerInVehicle(PlayerId, vehicleid, seatid);
+            Native.PutPlayerInVehicle(PlayerId, vehicle.VehicleId, seatid);
         }
 
         /// <summary>
@@ -1200,203 +1231,185 @@ namespace GameMode.World
         {
             Native.ShowPlayerNameTagForPlayer(PlayerId, player.PlayerId, show);
         }
-        /*
-         * To be converted to player methods;; bored now.
-         * 
+
         /// <summary>
         /// This function allows you to place your own icons on the map, enabling you to emphasise the locations of banks, airports or whatever else you want. A total of 63 icons are available in GTA: San Andreas, all of which can be used using this function. You can also specify the color of the icon, which allows you to change the square icon (ID: 0).
         /// </summary>
-        /// <param name="playerid">The ID of the player to set the map icon for.</param>
         /// <param name="iconid">The player's icon ID, ranging from 0 to 99, to be used in RemovePlayerMapIcon.</param>
-        /// <param name="x">The X coordinate of the place where you want the icon to be.</param>
-        /// <param name="y">The Y coordinate of the place where you want the icon to be.</param>
-        /// <param name="z">The Z coordinate of the place where you want the icon to be.</param>
+        /// <param name="position">The coordinates of the place where you want the icon to be.</param>
         /// <param name="markertype">The icon to set.</param>
         /// <param name="color">The color of the icon, this should only be used with the square icon (ID: 0).</param>
         /// <param name="style">The style of icon.</param>
         /// <returns>True if it was successful, False otherwise (e.g. the player isn't connected).</returns>
-        public virtual bool SetPlayerMapIcon(int playerid, int iconid, float x, float y, float z, int markertype,
-            int color, int style)
+        public virtual bool SetMapIcon(int iconid, Vector position, PlayerMarkersMode markertype, Color color, MapIconType style)
         {
-            
+            return Native.SetPlayerMapIcon(PlayerId, iconid, position, markertype, color, (int) style);
         }
 
         /// <summary>
-        /// Removes a map icon that was set earlier for a player.
+        /// Removes a map icon that was set earlier for this Player.
         /// </summary>
-        /// <param name="playerid">The ID of the player whose icon to remove.</param>
-        /// <param name="iconid">The ID of the icon to remove. This is the second parameter of <see cref="SetPlayerMapIcon(int,int,Vector,PlayerMarkersMode)"/>.</param>
-        /// <returns>This function doesn't return a specific value.</returns>
-        public virtual void RemovePlayerMapIcon(int playerid, int iconid)
+        /// <param name="iconid">The ID of the icon to remove. This is the second parameter of <see cref="SetMapIcon"/>.</param>
+        public virtual void RemovePlayerMapIcon(int iconid)
         {
-            
+            Native.RemovePlayerMapIcon(PlayerId, iconid);
         }
 
         /// <summary>
-        /// Set the direction a player's camera looks at. To be used in combination with SetPlayerCameraPos.
+        /// Set the direction this Player's camera looks at. To be used in combination with SetPlayerCameraPos.
         /// </summary>
-        /// <param name="playerid">The player to change the camera of.</param>
-        /// <param name="x">The X coordinate for the player's camera to look at.</param>
-        /// <param name="y">The Y coordinate for the player's camera to look at.</param>
-        /// <param name="z">The Z coordinate for the player's camera to look at.</param>
+        /// <param name="point">The coordinates for this Player's camera to look at.</param>
         /// <param name="cut">The style the camera-position changes.</param>
-        /// <returns>This function doesn't return a specific value.</returns>
-        public virtual void SetPlayerCameraLookAt(int playerid, float x, float y, float z, int cut)
+        public virtual void SetCameraLookAt(Vector point, CameraCut cut)
         {
-            
+            Native.SetPlayerCameraLookAt(PlayerId, point, cut);
         }
 
         /// <summary>
-        /// You can use this function to attach the player camera to objects.
+        /// You can use this function to attach this Player camera to objects.
         /// </summary>
         /// <remarks>
         /// You need to create the object first, before attempting to attach a player camera for that.
         /// </remarks>
-        /// <param name="playerid">The ID of the player which will have your camera attached on object.</param>
         /// <param name="objectid">The object id which you want to attach the player camera.</param>
         /// <returns>This function doesn't return a specific value.</returns>
-        public virtual void AttachCameraToObject(int playerid, int objectid)
+        public virtual void AttachCameraToObject(int objectid)
         {
-            
+            Native.AttachCameraToObject(PlayerId, objectid);
         }
 
         /// <summary>
-        /// Attaches a player's camera to a player-object. They are able to move their camera while it is attached to an object. Can be used with <see cref="MovePlayerObject"/> and <see cref="AttachPlayerObjectToVehicle"/>.
+        /// Attaches this Player's camera to a player-object. They are able to move their camera while it is attached to an object.
         /// </summary>
-        /// <param name="playerid">The ID of the player which will have their camera attached to a player-object.</param>
-        /// <param name="playerobjectid">	The ID of the player-object to which the player's camera will be attached.</param>
-        public virtual void AttachCameraToPlayerObject(int playerid, int playerobjectid)
+        /// <param name="playerobjectid">The ID of the player-object to which the player's camera will be attached.</param>
+        public virtual void AttachCameraToPlayerObject(int playerobjectid)
         {
-            
+            Native.AttachCameraToPlayerObject(PlayerId, playerobjectid);
         }
 
         /// <summary>
-        /// Move a player's camera from one position to another, within the set time.
+        /// Move this Player's camera from one position to another, within the set time.
         /// </summary>
-        /// <param name="playerid">The ID of the player the camera should be moved for.</param>
-        /// <param name="fromX">The X position the camera should start to move from.</param>
-        /// <param name="fromY">The Y position the camera should start to move from.</param>
-        /// <param name="fromZ">The Z position the camera should start to move from.</param>
-        /// <param name="toX">The X position the camera should move to.</param>
-        /// <param name="toY">The Y position the camera should move to.</param>
-        /// <param name="toZ">The Z position the camera should move to.</param>
+        /// <param name="from">The position the camera should start to move from.</param>
+        /// <param name="to">The position the camera should move to.</param>
         /// <param name="time">Time in milliseconds.</param>
-        /// <param name="cut">The jumpcut to use. Defaults to CameraCut.Cut. Set to CameraCut.Move for a smooth movement.</param>
-        public virtual void InterpolateCameraPos(int playerid, float fromX, float fromY, float fromZ, float toX,
-            float toY, float toZ, int time, int cut)
+        /// <param name="cut">The jumpcut to use. Defaults to CameraCut.Cut. Set to CameraCut. Move for a smooth movement.</param>
+        public virtual void InterpolateCameraPos(Vector from, Vector to, int time, CameraCut cut)
         {
-            
+            Native.InterpolateCameraPos(PlayerId, from, to, time, cut);
         }
 
         /// <summary>
-        /// Interpolate a player's camera's 'look at' point between two coordinates with a set speed. Can be be used with <see cref="InterpolateCameraPos(int,Vector,Vector,int,CameraCut)"/>.
+        /// Interpolate this Player's camera's 'look at' point between two coordinates with a set speed.
         /// </summary>
-        /// <param name="playerid">The ID of the player the camera should be moved for.</param>
-        /// <param name="fromX">The X position the camera should start to move from.</param>
-        /// <param name="fromY">The Y position the camera should start to move from.</param>
-        /// <param name="fromZ">The Z position the camera should start to move from.</param>
-        /// <param name="toX">The X position the camera should move to.</param>
-        /// <param name="toY">The Y position the camera should move to.</param>
-        /// <param name="toZ">The Z position the camera should move to.</param>
+        /// <param name="from">The position the camera should start to move from.</param>
+        /// <param name="to">The position the camera should move to.</param>
         /// <param name="time">Time in milliseconds to complete interpolation.</param>
         /// <param name="cut">The 'jumpcut' to use. Defaults to CameraCut.Cut (pointless). Set to CameraCut.Move for interpolation.</param>
-        public virtual void InterpolateCameraLookAt(int playerid, float fromX, float fromY, float fromZ, float toX,
-            float toY, float toZ, int time, int cut)
+        public virtual void InterpolateCameraLookAt(Vector from, Vector to, int time, CameraCut cut)
         {
-            
+            Native.InterpolateCameraLookAt(PlayerId, from, to, time, cut);
         }
 
         /// <summary>
-        /// Checks if a player is in a specific vehicle.
+        /// Checks if this Player is in a specific vehicle.
         /// </summary>
-        /// <param name="playerid">ID of the player.</param>
-        /// <param name="vehicleid">ID of the vehicle.</param>
+        /// <param name="vehicle">The vehicle.</param>
         /// <returns>True if player is in the vehicle, otherwise False.</returns>
-        public virtual bool IsPlayerInVehicle(int playerid, int vehicleid)
+        public virtual bool IsInVehicle(Vehicle vehicle)
         {
-            
+            return Native.IsPlayerInVehicle(PlayerId, vehicle.VehicleId);
         }
 
         /// <summary>
-        /// Toggle stunt bonuses for a player.
+        /// Toggle stunt bonuses for this Player.
         /// </summary>
-        /// <param name="playerid">The ID of the player to toggle stunt bonuses for.</param>
         /// <param name="enable">True to enable stunt bonuses, False to disable them.</param>
-        public virtual void EnableStuntBonusForPlayer(int playerid, bool enable)
+        public virtual void EnableStuntBonus(bool enable)
         {
-            
+            Native.EnableStuntBonusForPlayer(PlayerId, enable);
         }
 
         /// <summary>
-        /// Toggle a player's spectate mode.
+        /// Toggle this Player's spectate mode.
         /// </summary>
         /// <remarks>
         /// When the spectating is turned off, OnPlayerSpawn will automatically be called.
         /// </remarks>
-        /// <param name="playerid">The ID of the player who should spectate.</param>
         /// <param name="toggle">True to enable spectating and False to disable.</param>
-        public virtual void ToggleSpectating(int playerid, bool toggle)
+        public virtual void ToggleSpectating(bool toggle)
         {
-            
+            Native.TogglePlayerSpectating(PlayerId, toggle);
         }
 
         /// <summary>
-        /// Makes a player spectate (watch) another player.
+        /// Makes this Player spectate (watch) another player.
         /// </summary>
         /// <remarks>
-        /// Order is CRITICAL! Ensure that you use <see cref="TogglePlayerSpectating"/> before <see cref="PlayerSpectatePlayer"/>.
+        /// Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating"/> before <see cref="SpectatePlayer"/>.
         /// </remarks>
-        /// <param name="playerid">The ID of the player that will spectate.</param>
         /// <param name="targetplayerid">The ID of the player that should be spectated.</param>
         /// <param name="mode">The mode to spectate with.</param>
-        public virtual void PlayerSpectatePlayer(int playerid, int targetplayerid, int mode)
+        public virtual void SpectatePlayer(int targetplayerid, SpectateMode mode)
         {
-            
+            Native.PlayerSpectatePlayer(PlayerId, targetplayerid, (int) mode);
         }
 
         /// <summary>
-        /// Sets a player to spectate another vehicle, i.e. see what its driver sees.
+        /// Sets this Player to spectate another vehicle, i.e. see what its driver sees.
         /// </summary>
         /// <remarks>
-        /// Order is CRITICAL! Ensure that you use <see cref="TogglePlayerSpectating"/> before <see cref="PlayerSpectatePlayer"/>.
+        /// Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating"/> before <see cref="SpectateVehicle"/>.
         /// </remarks>
-        /// <param name="playerid">Player ID.</param>
-        /// <param name="targetvehicleid">ID of the vehicle to spectate.</param>
+        /// <param name="targetvehicle">The vehicle to spectate.</param>
         /// <param name="mode">Spectate mode.</param>
         /// <returns>This function doesn't return a specific value.</returns>
-        public virtual void PlayerSpectateVehicle(int playerid, int targetvehicleid, int mode)
+        public virtual void SpectateVehicle(Vehicle targetvehicle, SpectateMode mode)
         {
-            
+            Native.PlayerSpectateVehicle(PlayerId, targetvehicle.VehicleId, (int) mode);
         }
 
         /// <summary>
-        /// Starts recording the player's movements to a file, which can then be reproduced by an NPC.
+        /// Returns the ID of the object this Player is surfing on.
         /// </summary>
-        /// <param name="playerid">The ID of the player you want to record.</param>
+        /// <returns>The ID of the moving object the player is surfing. If the player isn't surfing a moving object, it will return <see cref="Misc.InvalidObjectId"/></returns>
+        public virtual int GetSurfingObjectID()
+        {
+            return Native.GetPlayerSurfingObjectID(PlayerId);
+        }
+
+        /// <summary>
+        /// Starts recording this Player's movements to a file, which can then be reproduced by an NPC.
+        /// </summary>
         /// <param name="recordtype">The type of recording.</param>
         /// <param name="recordname">Name of the file which will hold the recorded data. It will be saved in scriptfiles, with an automatically added .rec extension.</param>
-        /// <returns>This function doesn't return a specific value.</returns>
-        public virtual void StartRecordingPlayerData(int playerid, int recordtype, string recordname)
+        public virtual void StartRecordingPlayerData(PlayerRecordingType recordtype, string recordname)
         {
-            
+            Native.StartRecordingPlayerData(PlayerId, (int) recordtype, recordname);
         }
 
         /// <summary>
-        /// Stops all the recordings that had been started with <see cref="StartRecordingPlayerData"/> for a specific player.
+        /// Stops all the recordings that had been started with <see cref="StartRecordingPlayerData"/> for this Player.
         /// </summary>
-        /// <param name="playerid">The player you want to stop the recordings of.</param>
-        /// <returns>This function doesn't return a specific value.</returns>
-        public virtual void StopRecordingPlayerData(int playerid)
+        public virtual void StopRecordingPlayerData()
         {
-            
+            Native.StopRecordingPlayerData(PlayerId);
         }
-        */
+
+        /// <summary>
+        /// Raises the <see cref="Connected"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEventArgs"/> that contains the event data. </param>
         public virtual void OnConnected(PlayerEventArgs e)
         {
             if(Connected != null)
             Connected(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="Disconnected"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerDisconnectedEventArgs"/> that contains the event data. </param>
         public virtual void OnDisconnected(PlayerDisconnectedEventArgs e)
         {
             if (Disconnected != null)
@@ -1405,198 +1418,330 @@ namespace GameMode.World
             Dispose();
         }
 
+        /// <summary>
+        /// Raises the <see cref="Spawned"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEventArgs"/> that contains the event data. </param>
         public virtual void OnSpawned(PlayerEventArgs e)
         {
             if (Spawned != null)
                 Spawned(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="Died"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerDeathEventArgs"/> that contains the event data. </param>
         public virtual void OnDeath(PlayerDeathEventArgs e)
         {
             if (Died != null)
                 Died(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="Text"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerTextEventArgs"/> that contains the event data. </param>
         public virtual void OnText(PlayerTextEventArgs e)
         {
             if (Text != null)
                 Text(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="CommandText"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerTextEventArgs"/> that contains the event data. </param>
         public virtual void OnCommandText(PlayerTextEventArgs e)
         {
             if (CommandText != null)
                 CommandText(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="RequestClass"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerRequestClassEventArgs"/> that contains the event data. </param>
         public virtual void OnRequestClass(PlayerRequestClassEventArgs e)
         {
             if (RequestClass != null)
                 RequestClass(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="EnterVehicle"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEnterVehicleEventArgs"/> that contains the event data. </param>
         public virtual void OnEnterVehicle(PlayerEnterVehicleEventArgs e)
         {
             if (EnterVehicle != null)
                 EnterVehicle(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="ExitVehicle"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerVehicleEventArgs"/> that contains the event data. </param>
         public virtual void OnExitVehicle(PlayerVehicleEventArgs e)
         {
             if (ExitVehicle != null)
                 ExitVehicle(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="StateChanged"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerStateEventArgs"/> that contains the event data. </param>
         public virtual void OnStateChanged(PlayerStateEventArgs e)
         {
             if (StateChanged != null)
                 StateChanged(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="EnterCheckpoint"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEventArgs"/> that contains the event data. </param>
         public virtual void OnEnterCheckpoint(PlayerEventArgs e)
         {
             if (EnterCheckpoint != null)
                 EnterCheckpoint(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="LeaveCheckpoint"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEventArgs"/> that contains the event data. </param>
         public virtual void OnLeaveCheckpoint(PlayerEventArgs e)
         {
             if (LeaveCheckpoint != null)
                 LeaveCheckpoint(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="EnterRaceCheckpoint"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEventArgs"/> that contains the event data. </param>
         public virtual void OnEnterRaceCheckpoint(PlayerEventArgs e)
         {
             if (EnterRaceCheckpoint != null)
                 EnterRaceCheckpoint(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="LeaveRaceCheckpoint"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEventArgs"/> that contains the event data. </param>
         public virtual void OnLeaveRaceCheckpoint(PlayerEventArgs e)
         {
             if (LeaveRaceCheckpoint != null)
                 LeaveRaceCheckpoint(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="RequestSpawn"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEventArgs"/> that contains the event data. </param>
         public virtual void OnRequestSpawn(PlayerEventArgs e)
         {
             if (RequestSpawn != null)
                 RequestSpawn(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="PickUpPickup"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerPickupEventArgs"/> that contains the event data. </param>
         public virtual void OnPickUpPickup(PlayerPickupEventArgs e)
         {
             if (PickUpPickup != null)
                 PickUpPickup(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="EnterExitModShop"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEnterModShopEventArgs"/> that contains the event data. </param>
         public virtual void OnEnterExitModShop(PlayerEnterModShopEventArgs e)
         {
             if (EnterExitModShop != null)
                 EnterExitModShop(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="SelectedMenuRow"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerSelectedMenuRowEventArgs"/> that contains the event data. </param>
         public virtual void OnSelectedMenuRow(PlayerSelectedMenuRowEventArgs e)
         {
             if (SelectedMenuRow != null)
                 SelectedMenuRow(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="ExitedMenu"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEventArgs"/> that contains the event data. </param>
         public virtual void OnExitedMenu(PlayerEventArgs e)
         {
             if (ExitedMenu != null)
                 ExitedMenu(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="InteriorChanged"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerInteriorChangedEventArgs"/> that contains the event data. </param>
         public virtual void OnInteriorChanged(PlayerInteriorChangedEventArgs e)
         {
             if (InteriorChanged != null)
                 InteriorChanged(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="KeyStateChanged"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerKeyStateChangedEventArgs"/> that contains the event data. </param>
         public virtual void OnKeyStateChanged(PlayerKeyStateChangedEventArgs e)
         {
             if (KeyStateChanged != null)
                 KeyStateChanged(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="Update"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEventArgs"/> that contains the event data. </param>
         public virtual void OnUpdate(PlayerEventArgs e)
         {
             if (Update != null)
                 Update(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="StreamIn"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="StreamPlayerEventArgs"/> that contains the event data. </param>
         public virtual void OnStreamIn(StreamPlayerEventArgs e)
         {
             if (StreamIn != null)
                 StreamIn(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="StreamOut"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="StreamPlayerEventArgs"/> that contains the event data. </param>
         public virtual void OnStreamOut(StreamPlayerEventArgs e)
         {
             if (StreamOut != null)
                 StreamOut(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="DialogResponse"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="DialogResponseEventArgs"/> that contains the event data. </param>
         public virtual void OnDialogResponse(DialogResponseEventArgs e)
         {
             if (DialogResponse != null)
                 DialogResponse(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="TakeDamage"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerDamageEventArgs"/> that contains the event data. </param>
         public virtual void OnTakeDamage(PlayerDamageEventArgs e)
         {
             if (TakeDamage != null)
                 TakeDamage(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="GiveDamage"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerDamageEventArgs"/> that contains the event data. </param>
         public virtual void OnGiveDamage(PlayerDamageEventArgs e)
         {
             if (GiveDamage != null)
                 GiveDamage(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="ClickMap"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerClickMapEventArgs"/> that contains the event data. </param>
         public virtual void OnClickMap(PlayerClickMapEventArgs e)
         {
             if (ClickMap != null)
                 ClickMap(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="ClickTextDraw"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerClickTextDrawEventArgs"/> that contains the event data. </param>
         public virtual void OnClickTextDraw(PlayerClickTextDrawEventArgs e)
         {
             if (ClickTextDraw != null)
                 ClickTextDraw(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="ClickPlayerTextDraw"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerClickTextDrawEventArgs"/> that contains the event data. </param>
         public virtual void OnClickPlayerTextDraw(PlayerClickTextDrawEventArgs e)
         {
             if (ClickPlayerTextDraw != null)
                 ClickPlayerTextDraw(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="ClickPlayer"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerClickPlayerEventArgs"/> that contains the event data. </param>
         public virtual void OnClickPlayer(PlayerClickPlayerEventArgs e)
         {
             if (ClickPlayer != null)
                 ClickPlayer(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="EditObject"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEditObjectEventArgs"/> that contains the event data. </param>
         public virtual void OnEditObject(PlayerEditObjectEventArgs e)
         {
             if (EditObject != null)
                 EditObject(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="EditAttachedObject"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEditAttachedObjectEventArgs"/> that contains the event data. </param>
         public virtual void OnEditAttachedObject(PlayerEditAttachedObjectEventArgs e)
         {
             if (EditAttachedObject != null)
                 EditAttachedObject(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="SelectObject"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerSelectObjectEventArgs"/> that contains the event data. </param>
         public virtual void OnSelectObject(PlayerSelectObjectEventArgs e)
         {
             if (SelectObject != null)
                 SelectObject(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="WeaponShot"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="WeaponShotEventArgs"/> that contains the event data. </param>
         public virtual void OnWeaponShot(WeaponShotEventArgs e)
         {
             if (WeaponShot != null)
@@ -1618,7 +1763,7 @@ namespace GameMode.World
         /// </summary>
         public virtual void Dispose()
         {
-            PlayerInstances.Remove(this);
+            Instances.Remove(this);
         }
 
         #endregion
