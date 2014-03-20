@@ -1976,6 +1976,18 @@ namespace GameMode
         }
 
         /// <summary>
+        /// Set the direction a player's camera looks at. To be used in combination with SetPlayerCameraPos.
+        /// </summary>
+        /// <param name="playerid">The player to change the camera of.</param>
+        /// <param name="point">The coordinates for the player's camera to look at.</param>
+        /// <param name="cut">The style the camera-position changes.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetPlayerCameraLookAt(int playerid, Vector point, CameraCut cut)
+        {
+            return SetPlayerCameraLookAt(playerid, point.X,point.Y,point.Z, (int) cut);
+        }
+
+        /// <summary>
         /// Get the position of the player's camera.
         /// </summary>
         /// <remarks> 
