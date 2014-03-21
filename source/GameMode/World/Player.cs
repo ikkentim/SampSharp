@@ -64,6 +64,18 @@ namespace GameMode.World
         public int PlayerId { get; private set; }
 
         /// <summary>
+        /// Gets a readonly set of all <see cref="Player"/> instances.
+        /// </summary>
+        public static IReadOnlyCollection<Player> Players
+        {
+            get { return Instances.AsReadOnly(); }
+        }
+
+        #endregion
+
+        #region Players properties
+
+        /// <summary>
         /// Gets or sets the name of this Player.
         /// </summary>
         public virtual string Name
@@ -369,20 +381,56 @@ namespace GameMode.World
             }
         }
 
+        #endregion
+
+        #region SAMP properties
+
+        /// <summary>
+        /// Gets whether this Player is an actual player or an NPC. 
+        /// </summary>
+        public virtual bool IsNPC
+        {
+            get { return Native.IsPlayerNPC(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets whether this Player is logged into RCON.
+        /// </summary>
+        public virtual bool IsAdmin
+        {
+            get { return Native.IsPlayerAdmin(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets this Player's network stats and saves them into a string.
+        /// </summary>
+        public virtual string NetworkStats
+        {
+            get { return Native.GetPlayerNetworkStats(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets this Player's game version.
+        /// </summary>
+        public virtual string Version
+        {
+            get { return Native.GetPlayerVersion(PlayerId); }
+        }
+
+        /// <summary>
+        /// Gets this Player's GPCI string.
+        /// </summary>
+        public virtual string GPCI
+        {
+            get { return Native.gpci(PlayerId); }
+        }
+
         /// <summary>
         /// Gets the maximum number of players that can join the server, as set by the server var 'maxplayers' in server.cfg. 
         /// </summary>
         public static int MaxPlayers
         {
             get { return Native.GetMaxPlayers(); }
-        }
-
-        /// <summary>
-        /// Gets a readonly set of all <see cref="Player"/> instances.
-        /// </summary>
-        public static IReadOnlyCollection<Player> Players
-        {
-            get { return Instances.AsReadOnly(); }
         }
 
         #endregion
@@ -635,60 +683,7 @@ namespace GameMode.World
 
         #endregion
 
-        #region Methods
-
-        /// <summary>
-        /// Registers all events the Player class listens to.
-        /// </summary>
-        /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
-        /// <param name="cast">A function to get a <see cref="Player"/> object from a playerid.</param>
-        protected static void RegisterEvents(BaseMode gameMode, Func<int, Player> cast)
-        {
-            gameMode.PlayerConnected += (sender, args) => cast(args.PlayerId).OnConnected(args);
-            gameMode.PlayerDisconnected += (sender, args) => cast(args.PlayerId).OnDisconnected(args);
-            gameMode.PlayerSpawned += (sender, args) => cast(args.PlayerId).OnSpawned(args);
-            gameMode.PlayerDied += (sender, args) => cast(args.PlayerId).OnDeath(args);
-            gameMode.PlayerText += (sender, args) => cast(args.PlayerId).OnText(args);
-            gameMode.PlayerCommandText += (sender, args) => cast(args.PlayerId).OnCommandText(args);
-            gameMode.PlayerRequestClass += (sender, args) => cast(args.PlayerId).OnRequestClass(args);
-            gameMode.PlayerEnterVehicle += (sender, args) => cast(args.PlayerId).OnEnterVehicle(args);
-            gameMode.PlayerExitVehicle += (sender, args) => cast(args.PlayerId).OnExitVehicle(args);
-            gameMode.PlayerStateChanged += (sender, args) => cast(args.PlayerId).OnStateChanged(args);
-            gameMode.PlayerEnterCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterCheckpoint(args);
-            gameMode.PlayerLeaveCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveCheckpoint(args);
-            gameMode.PlayerEnterRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterRaceCheckpoint(args);
-            gameMode.PlayerLeaveRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveRaceCheckpoint(args);
-            gameMode.PlayerRequestSpawn += (sender, args) => cast(args.PlayerId).OnRequestSpawn(args);
-            gameMode.PlayerPickUpPickup += (sender, args) => cast(args.PickupId).OnPickUpPickup(args);
-            gameMode.PlayerEnterExitModShop += (sender, args) => cast(args.PlayerId).OnEnterExitModShop(args);
-            gameMode.PlayerSelectedMenuRow += (sender, args) => cast(args.PlayerId).OnSelectedMenuRow(args);
-            gameMode.PlayerExitedMenu += (sender, args) => cast(args.PlayerId).OnExitedMenu(args);
-            gameMode.PlayerInteriorChanged += (sender, args) => cast(args.PlayerId).OnInteriorChanged(args);
-            gameMode.PlayerKeyStateChanged += (sender, args) => cast(args.PlayerId).OnKeyStateChanged(args);
-            gameMode.PlayerUpdate += (sender, args) => cast(args.PlayerId).OnUpdate(args);
-            gameMode.PlayerStreamIn += (sender, args) => cast(args.PlayerId).OnStreamIn(args);
-            gameMode.PlayerStreamOut += (sender, args) => cast(args.PlayerId).OnStreamOut(args);
-            gameMode.DialogResponse += (sender, args) => cast(args.PlayerId).OnDialogResponse(args);
-            gameMode.PlayerTakeDamage += (sender, args) => cast(args.PlayerId).OnTakeDamage(args);
-            gameMode.PlayerGiveDamage += (sender, args) => cast(args.PlayerId).OnGiveDamage(args);
-            gameMode.PlayerClickMap += (sender, args) => cast(args.PlayerId).OnClickMap(args);
-            gameMode.PlayerClickTextDraw += (sender, args) => cast(args.PlayerId).OnClickTextDraw(args);
-            gameMode.PlayerClickPlayerTextDraw += (sender, args) => cast(args.PlayerId).OnClickPlayerTextDraw(args);
-            gameMode.PlayerClickPlayer += (sender, args) => cast(args.PlayerId).OnClickPlayer(args);
-            gameMode.PlayerEditObject += (sender, args) => cast(args.PlayerId).OnEditObject(args);
-            gameMode.PlayerEditAttachedObject += (sender, args) => cast(args.PlayerId).OnEditAttachedObject(args);
-            gameMode.PlayerSelectObject += (sender, args) => cast(args.PlayerId).OnSelectObject(args);
-            gameMode.PlayerWeaponShot += (sender, args) => cast(args.PlayerId).OnWeaponShot(args);
-        }
-
-        /// <summary>
-        /// Registers all events the Player class listens to.
-        /// </summary>
-        /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
-        public static void RegisterEvents(BaseMode gameMode)
-        {
-            RegisterEvents(gameMode, Find);
-        }
+        #region Players natives
 
         /// <summary>
         /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using <see cref="Native.SetPlayerSkin"/> in <see cref="BaseMode.OnPlayerSpawn"/> and/or <see cref="BaseMode.OnPlayerRequestClass"/>.
@@ -1391,6 +1386,85 @@ namespace GameMode.World
             Native.StopRecordingPlayerData(PlayerId);
         }
 
+        #endregion
+
+        #region SAMP natives
+
+        /// <summary>
+        /// This function sends a message to this Player with a chosen color in the chat. The whole line in the chatbox will be in the set color unless colour embedding is used.<br />
+        /// </summary>
+        /// <param name="color">The color of the message.</param>
+        /// <param name="message">The text that will be displayed (max 144 characters).</param>
+        public void SendClientMessage(Color color, string message)
+        {
+            Native.SendClientMessage(PlayerId, color.GetColorValue(ColorFormat.RGBA), message);
+        }
+
+        /// <summary>
+        /// Displays a message in chat to all players. This is a multi-player equivalent of <see cref="SendClientMessage"/>.<br />
+        /// </summary>
+        /// <param name="color">The color of the message (RGBA Hex format).</param>
+        /// <param name="message">The message to show (max 144 characters).</param>
+        public static void SendClientMessageToAll(Color color, string message)
+        {
+            Native.SendClientMessageToAll(color.GetColorValue(ColorFormat.RGBA), message);
+        }
+
+        /// <summary>
+        /// Sends a message in the name this Player to another player on the server. The message will appear in the chat box but can only be seen by <paramref name="receiver"/>. The line will start with the this Player's name in his color, followed by the <paramref name="message"/> in white.
+        /// </summary>
+        /// <param name="receiver">The Player who will recieve the message</param>
+        /// <param name="message">The message that will be sent.</param>
+        public void SendPlayerMessageToPlayer(Player receiver, string message)
+        {
+            Native.SendPlayerMessageToPlayer(receiver.PlayerId, PlayerId, message);
+        }
+
+        /// <summary>
+        /// Sends a message in the name of this Player to all other players on the server. The line will start with the this Player's name in their color, followed by the <paramref name="message"/> in white.
+        /// </summary>
+        /// <param name="message">The message that will be sent.</param>
+        public void SendPlayerMessageToAll(string message)
+        {
+            Native.SendPlayerMessageToAll(PlayerId, message);
+        }
+
+        /// <summary>
+        /// Adds a death to the 'killfeed' on the right-hand side of the screen.
+        /// </summary>
+        /// <param name="killer">The Player that killer this Player.</param>
+        /// <param name="weapon">The reason (not always a weapon) for this Player's death. Special icons can also be used (ICON_CONNECT and ICON_DISCONNECT).</param>
+        public void SendDeathMessage(Player killer, Weapon weapon)
+        {
+            Native.SendDeathMessage(killer == null ? InvalidId : killer.PlayerId, PlayerId, (int) weapon);
+        }
+
+        /// <summary>
+        /// Shows 'game text' (on-screen text) for a certain length of time for all players.
+        /// </summary>
+        /// <param name="text">The text to be displayed.</param>
+        /// <param name="time">The duration of the text being shown in milliseconds.</param>
+        /// <param name="style">The style of text to be displayed.</param>
+        public static void GameTextForAll(string text, int time, int style)
+        {
+            Native.GameTextForAll(text, time, style);
+        }
+
+        /// <summary>
+        /// Shows 'game text' (on-screen text) for a certain length of time for this Player.
+        /// </summary>
+        /// <param name="text">The text to be displayed.</param>
+        /// <param name="time">The duration of the text being shown in milliseconds.</param>
+        /// <param name="style">The style of text to be displayed.</param>
+        public void GameText(string text, int time, int style)
+        {
+            Native.GameTextForPlayer(PlayerId, text, time, style);
+        }
+
+        #endregion
+
+        #region Event raisers
+
         /// <summary>
         /// Raises the <see cref="Connected"/> event.
         /// </summary>
@@ -1741,6 +1815,63 @@ namespace GameMode.World
         {
             if (WeaponShot != null)
                 WeaponShot(this, e);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Registers all events the Player class listens to.
+        /// </summary>
+        /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
+        /// <param name="cast">A function to get a <see cref="Player"/> object from a playerid.</param>
+        protected static void RegisterEvents(BaseMode gameMode, Func<int, Player> cast)
+        {
+            gameMode.PlayerConnected += (sender, args) => cast(args.PlayerId).OnConnected(args);
+            gameMode.PlayerDisconnected += (sender, args) => cast(args.PlayerId).OnDisconnected(args);
+            gameMode.PlayerSpawned += (sender, args) => cast(args.PlayerId).OnSpawned(args);
+            gameMode.PlayerDied += (sender, args) => cast(args.PlayerId).OnDeath(args);
+            gameMode.PlayerText += (sender, args) => cast(args.PlayerId).OnText(args);
+            gameMode.PlayerCommandText += (sender, args) => cast(args.PlayerId).OnCommandText(args);
+            gameMode.PlayerRequestClass += (sender, args) => cast(args.PlayerId).OnRequestClass(args);
+            gameMode.PlayerEnterVehicle += (sender, args) => cast(args.PlayerId).OnEnterVehicle(args);
+            gameMode.PlayerExitVehicle += (sender, args) => cast(args.PlayerId).OnExitVehicle(args);
+            gameMode.PlayerStateChanged += (sender, args) => cast(args.PlayerId).OnStateChanged(args);
+            gameMode.PlayerEnterCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterCheckpoint(args);
+            gameMode.PlayerLeaveCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveCheckpoint(args);
+            gameMode.PlayerEnterRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterRaceCheckpoint(args);
+            gameMode.PlayerLeaveRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveRaceCheckpoint(args);
+            gameMode.PlayerRequestSpawn += (sender, args) => cast(args.PlayerId).OnRequestSpawn(args);
+            gameMode.PlayerPickUpPickup += (sender, args) => cast(args.PickupId).OnPickUpPickup(args);
+            gameMode.PlayerEnterExitModShop += (sender, args) => cast(args.PlayerId).OnEnterExitModShop(args);
+            gameMode.PlayerSelectedMenuRow += (sender, args) => cast(args.PlayerId).OnSelectedMenuRow(args);
+            gameMode.PlayerExitedMenu += (sender, args) => cast(args.PlayerId).OnExitedMenu(args);
+            gameMode.PlayerInteriorChanged += (sender, args) => cast(args.PlayerId).OnInteriorChanged(args);
+            gameMode.PlayerKeyStateChanged += (sender, args) => cast(args.PlayerId).OnKeyStateChanged(args);
+            gameMode.PlayerUpdate += (sender, args) => cast(args.PlayerId).OnUpdate(args);
+            gameMode.PlayerStreamIn += (sender, args) => cast(args.PlayerId).OnStreamIn(args);
+            gameMode.PlayerStreamOut += (sender, args) => cast(args.PlayerId).OnStreamOut(args);
+            gameMode.DialogResponse += (sender, args) => cast(args.PlayerId).OnDialogResponse(args);
+            gameMode.PlayerTakeDamage += (sender, args) => cast(args.PlayerId).OnTakeDamage(args);
+            gameMode.PlayerGiveDamage += (sender, args) => cast(args.PlayerId).OnGiveDamage(args);
+            gameMode.PlayerClickMap += (sender, args) => cast(args.PlayerId).OnClickMap(args);
+            gameMode.PlayerClickTextDraw += (sender, args) => cast(args.PlayerId).OnClickTextDraw(args);
+            gameMode.PlayerClickPlayerTextDraw += (sender, args) => cast(args.PlayerId).OnClickPlayerTextDraw(args);
+            gameMode.PlayerClickPlayer += (sender, args) => cast(args.PlayerId).OnClickPlayer(args);
+            gameMode.PlayerEditObject += (sender, args) => cast(args.PlayerId).OnEditObject(args);
+            gameMode.PlayerEditAttachedObject += (sender, args) => cast(args.PlayerId).OnEditAttachedObject(args);
+            gameMode.PlayerSelectObject += (sender, args) => cast(args.PlayerId).OnSelectObject(args);
+            gameMode.PlayerWeaponShot += (sender, args) => cast(args.PlayerId).OnWeaponShot(args);
+        }
+
+        /// <summary>
+        /// Registers all events the Player class listens to.
+        /// </summary>
+        /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
+        public static void RegisterEvents(BaseMode gameMode)
+        {
+            RegisterEvents(gameMode, Find);
         }
 
         public override int GetHashCode()
