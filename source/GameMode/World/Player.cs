@@ -381,6 +381,14 @@ namespace GameMode.World
             }
         }
 
+        /// <summary>
+        /// Gets whether this Player is connected to the server.
+        /// </summary>
+        public virtual bool IsConnected
+        {
+            get { return Native.IsPlayerConnected(PlayerId); }
+        }
+
         #endregion
 
         #region SAMP properties
