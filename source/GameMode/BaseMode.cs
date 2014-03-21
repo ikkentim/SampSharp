@@ -10,7 +10,14 @@ namespace GameMode
     /// </summary>
     public abstract class BaseMode : IDisposable
     {
+
+        #region Fields
+
         public static BaseMode Instance;
+
+        #endregion
+
+        #region Constructor
 
         /// <summary>
         /// Initalizes a new instance of the BaseMode class.
@@ -19,8 +26,23 @@ namespace GameMode
         {
             Instance = this;
 
+            RegisterEvents();
+
             Console.SetOut(new LogWriter());
         }
+
+        #endregion
+
+        #region Methods
+
+        public virtual void RegisterEvents()
+        {
+            Player.RegisterEvents(this);
+            Vehicle.RegisterEvents(this);
+            Dialog.RegisterEvents(this);
+        }
+
+        #endregion
 
         #region Events
 
@@ -1305,6 +1327,5 @@ namespace GameMode
         }
 
         #endregion
-
     }
 }

@@ -7,10 +7,11 @@ namespace TestMode
 {
     public class GameMode : BaseMode
     {
-        public GameMode()
+        public override void RegisterEvents()
         {
-            Player.RegisterEvents(this, MyPlayer.Find);
-            Vehicle.RegisterEvents(this, Vehicle.Find);
+            MyPlayer.RegisterEvents(this);
+            Vehicle.RegisterEvents(this);
+            Dialog.RegisterEvents(this);
         }
 
         public override bool OnGameModeInit()

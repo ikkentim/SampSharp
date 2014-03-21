@@ -642,7 +642,7 @@ namespace GameMode.World
         /// </summary>
         /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
         /// <param name="cast">A function to get a <see cref="Player"/> object from a playerid.</param>
-        public static void RegisterEvents(BaseMode gameMode, Func<int, Player> cast)
+        protected static void RegisterEvents(BaseMode gameMode, Func<int, Player> cast)
         {
             gameMode.PlayerConnected += (sender, args) => cast(args.PlayerId).OnConnected(args);
             gameMode.PlayerDisconnected += (sender, args) => cast(args.PlayerId).OnDisconnected(args);
@@ -985,11 +985,8 @@ namespace GameMode.World
         /// <returns>True on success, False otherwise.</returns>
         public virtual bool SetAttachedObject(int index, int modelid, int bone,  Vector offset, Rotation rotation,  Vector scale, Color materialcolor1, Color materialcolor2)
         {
-            materialcolor1.ColorFormat = ColorFormat.ARGB;
-            materialcolor2.ColorFormat = ColorFormat.ARGB;
-
             return Native.SetPlayerAttachedObject(PlayerId, index, modelid, bone, offset.X, offset.Y, offset.Z,
-                rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z, materialcolor1, materialcolor2);
+                rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z, materialcolor1.GetColorValue(ColorFormat.ARGB), materialcolor2.GetColorValue(ColorFormat.ARGB));
         }
 
         /// <summary>
@@ -1032,8 +1029,7 @@ namespace GameMode.World
         public virtual void SetChatBubble(string text, Color color, float drawdistance,
             int expiretime)
         {
-            color.ColorFormat = ColorFormat.RGBA;
-            Native.SetPlayerChatBubble(PlayerId, text, color, drawdistance, expiretime);
+            Native.SetPlayerChatBubble(PlayerId, text, color.GetColorValue(ColorFormat.RGBA), drawdistance, expiretime);
         }
 
         /// <summary>
@@ -1215,8 +1211,7 @@ namespace GameMode.World
         /// <param name="color">New color.</param>
         public virtual void SetMarkerForPlayer(Player player, Color color)
         {
-            color.ColorFormat= ColorFormat.RGBA;
-            Native.SetPlayerMarkerForPlayer(PlayerId, player.PlayerId, color);
+            Native.SetPlayerMarkerForPlayer(PlayerId, player.PlayerId, color.GetColorValue(ColorFormat.RGBA));
         }
 
         /// <summary>
