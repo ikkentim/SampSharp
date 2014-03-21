@@ -78,7 +78,7 @@ namespace GameMode.World
         /// </summary>
         /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
         /// <param name="cast">A function to get a <see cref="Vehicle"/> object from a vehicleid.</param>
-        public static void RegisterEvents(BaseMode gameMode, Func<int, Vehicle> cast)
+        protected static void RegisterEvents(BaseMode gameMode, Func<int, Vehicle> cast)
         {
             //baseMode.VehicleDied += (sender, args) => cast(args.VehicleId).OnDeath(args);
         }
