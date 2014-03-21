@@ -1440,7 +1440,13 @@
         /// <returns>A String representation of this Color.</returns>
         public string ToString(ColorFormat colorFormat)
         {
-            return "{" + GetColorValue(colorFormat).ToString("X") + "}";
+            switch (colorFormat)
+            {
+                case ColorFormat.RGB:
+                    return "{" + GetColorValue(colorFormat).ToString("X6") + "}";
+                default:
+                    return "{" + GetColorValue(colorFormat).ToString("X8") + "}";
+            }
         }
 
         /// <summary>
@@ -1449,7 +1455,7 @@
         /// <returns>A String representation of this Color.</returns>
         public override string ToString()
         {
-            return "{" + GetColorValue(ColorFormat.RGB).ToString("X") + "}";
+            return "{" + GetColorValue(ColorFormat.RGB).ToString("X6") + "}";
         }
 
         #endregion
