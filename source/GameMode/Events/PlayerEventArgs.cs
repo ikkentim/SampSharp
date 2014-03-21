@@ -1,4 +1,6 @@
-﻿namespace GameMode.Events
+﻿using GameMode.World;
+
+namespace GameMode.Events
 {
     public class PlayerEventArgs : GameModeEventArgs
     {
@@ -8,5 +10,10 @@
         }
 
         public int PlayerId { get; private set; }
+
+        public Player Player
+        {
+            get { return Player.Find(PlayerId); }
+        }
     }
 }
