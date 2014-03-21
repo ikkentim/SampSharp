@@ -131,7 +131,7 @@ namespace GameMode.World
         /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
         public static void RegisterEvents(BaseMode gameMode)
         {
-            RegisterEvents(gameMode, (playerId) => OpenDialogs.FirstOrDefault(d => d.Key == playerId).Value);
+            RegisterEvents(gameMode, playerId => OpenDialogs.FirstOrDefault(d => d.Key == playerId).Value);
         }
 
         /// <summary>

@@ -472,7 +472,7 @@ namespace GameMode
         /// <param name="playerid">The ID of the player you want to get the networkstats of.</param>
         /// <param name="retstr">The string to store the networkstats in, passed by reference.</param>
         /// <param name="size">The length of the string that should be stored.</param>
-        /// <returns></returns>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetPlayerNetworkStats(int playerid, out string retstr, int size);
 
@@ -481,7 +481,7 @@ namespace GameMode
         /// </summary>
         /// <param name="retstr">The string to store the network stats in, passed by reference.</param>
         /// <param name="size">The length of the string to be stored.</param>
-        /// <returns></returns>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetNetworkStats(out string retstr, int size);
 
@@ -523,7 +523,7 @@ namespace GameMode
         /// <param name="menuid">The menu id to add an item to.</param>
         /// <param name="column">The column to add the item to.</param>
         /// <param name="menutext">The title for the new menu item.</param>
-        /// <returns>This function always returns 0.</returns>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int AddMenuItem(int menuid, int column, string menutext);
 
@@ -533,7 +533,7 @@ namespace GameMode
         /// <param name="menuid">ID of the menu which shall be manipulated.</param>
         /// <param name="column">Which column in the menu shall be manipulated.</param>
         /// <param name="columnheader">The caption-text for the column.</param>
-        /// <returns>Nothing specific. Ignore it.</returns>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetMenuColumnHeader(int menuid, int column, string columnheader);
 
@@ -1049,6 +1049,17 @@ namespace GameMode
         // ReSharper disable once InconsistentNaming
         public static extern bool gpci(int playerid, out string buffer, int size);
 
+        /// <summary>
+        /// Returns a hash build from information of the player's PC.
+        /// </summary>
+        /// <remarks>
+        /// It is a non-reversible (lossy) hash derived from information about your San Andreas installation path.
+        /// It is not a unique ID.
+        /// It was added to assist owners of large servers who deal with constant attacks from cheaters and botters.
+        /// It has been in SA-MP for 2 years.
+        /// /// </remarks>
+        /// <param name="playerid">The ID of the player whose gpci you'd like</param>
+        /// <returns>The gpci value.</returns>
         // ReSharper disable once InconsistentNaming
         public static string gpci(int playerid)
         {
@@ -1057,6 +1068,11 @@ namespace GameMode
             return buffer;
         }
 
+        /// <summary>
+        /// Get the name of a weapon.
+        /// </summary>
+        /// <param name="weaponid">The ID of the weapon to get the name of.</param>
+        /// <returns>The weapon's name.</returns>
         public static string GetWeaponName(int weaponid)
         {
             string name;
@@ -1064,6 +1080,11 @@ namespace GameMode
             return name;
         }
 
+        /// <summary>
+        /// Retrieve a string server variable, for example 'hostname'. Typing 'varlist' in the console will display a list of available server variables.
+        /// </summary>
+        /// <param name="varname">The name of the string variable to retrieve.</param>
+        /// <returns>The servervar as string.</returns>
         public static string GetServerVarAsString(string varname)
         {
             string value;
@@ -1071,6 +1092,11 @@ namespace GameMode
             return value;
         }
 
+        /// <summary>
+        /// Gets a player's network stats and saves them into a string.
+        /// </summary>
+        /// <param name="playerid">The ID of the player you want to get the networkstats of.</param>
+        /// <returns>A string containing the networkstats.</returns>
         public static string GetPlayerNetworkStats(int playerid)
         {
             string retstr;
@@ -1078,6 +1104,10 @@ namespace GameMode
             return retstr;
         }
 
+        /// <summary>
+        /// Gets the server's network stats and stores them in a string.
+        /// </summary>
+        /// <returns>A string containing the network stats.</returns>
         public static string GetNetworkStats()
         {
             string retstr;
