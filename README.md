@@ -13,14 +13,13 @@ http://forum.sa-mp.com/member.php?u=76946
 
 ToDo's
 ======
-    -Add wrapper methods for natives using definitions.
-    -Add classes for Player, Vehicle, Object, PlayerObject, etc.
+    -Add classes for Vehicle, Object, PlayerObject, etc.
     -Add docs to EventsArgs.
     -Add docs to definitions.
-    -Add more remarks to native docs, remove links/HTML.
+    -Add more remarks to native docs.
     -Improve and test.
     -Test on linux.
 
-Bugs
+Known Bugs
 ======
 	-Calling gmx twice will result in all callbacks being called twice.

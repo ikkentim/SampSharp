@@ -57,10 +57,21 @@ namespace GameMode.World
         /// </summary>
         public int VehicleId { get; private set; }
 
+        #endregion
+
+        #region Vehicles natives
+
+        /// <summary>
+        /// Gets whether this Vehicle has been created and still is alive.
+        /// </summary>
+        public virtual bool IsValid
+        {
+            get { return Native.IsValidVehicle(VehicleId); }
+        }
         /// <summary>
         /// Gets the model ID of this Vehicle.
         /// </summary>
-        public int Model
+        public virtual int Model
         {
             get { return Native.GetVehicleModel(VehicleId); }
         }
@@ -73,6 +84,98 @@ namespace GameMode.World
 
         #endregion
 
+        #region Vehicles natives
+
+        /// <summary>
+        /// This function can be used to calculate the distance (as a float) between this Vehicle and another map coordinate. This can be useful to detect how far a vehicle away is from a location.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <returns>A float containing the distance from the point specified in the coordinates.</returns>
+        public virtual float GetDistanceFromPoint(Vector point)
+        {
+            return Native.GetVehicleDistanceFromPoint(VehicleId, point.X, point.Y, point.Z);
+        }
+
+        /// <summary>
+        /// Creates a vehicle in the world.
+        /// </summary>
+        /// <param name="vehicletype">The model for the vehicle.</param>
+        /// <param name="position">The coordinates for the vehicle.</param>
+        /// <param name="rotation">The facing angle for the vehicle.</param>
+        /// <param name="color1">The primary color ID.</param>
+        /// <param name="color2">The secondary color ID.</param>
+        /// <param name="respawnDelay">The delay until the car is respawned without a driver in seconds. Using -1 will prevent the vehicle from respawning.</param>
+        /// <returns> The vehicle created.</returns>
+
+        public static Vehicle Create(int vehicletype, Vector position, float rotation, int color1, int color2, int respawnDelay)
+        {
+            var id = new[] {449, 537, 538, 569, 570, 590}.Contains(vehicletype)
+                ? Native.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
+                    respawnDelay)
+                : Native.CreateVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
+                    respawnDelay);
+
+            return id == InvalidId ? null : Find(id);
+        }
+
+        /// <summary>
+        /// Creates a static vehicle in the world.
+        /// </summary>
+        /// <param name="vehicletype">The model for the vehicle.</param>
+        /// <param name="position">The coordinates for the vehicle.</param>
+        /// <param name="rotation">The facing angle for the vehicle.</param>
+        /// <param name="color1">The primary color ID.</param>
+        /// <param name="color2">The secondary color ID.</param>
+        /// <param name="respawnDelay">The delay until the car is respawned without a driver in seconds. Using -1 will prevent the vehicle from respawning.</param>
+        /// <returns> The vehicle created.</returns>
+
+        public static Vehicle CreateStatic(int vehicletype, Vector position, float rotation, int color1, int color2, int respawnDelay)
+        {
+            var id = Native.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
+                    respawnDelay);
+
+            return id == InvalidId ? null : Find(id);
+        }
+
+        /// <summary>
+        /// Creates a static vehicle in the world.
+        /// </summary>
+        /// <param name="vehicletype">The model for the vehicle.</param>
+        /// <param name="position">The coordinates for the vehicle.</param>
+        /// <param name="rotation">The facing angle for the vehicle.</param>
+        /// <param name="color1">The primary color ID.</param>
+        /// <param name="color2">The secondary color ID.</param>
+        /// <returns> The vehicle created.</returns>
+
+        public static Vehicle CreateStatic(int vehicletype, Vector position, float rotation, int color1, int color2)
+        {
+            var id = Native.AddStaticVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2);
+
+            return id == InvalidId ? null : Find(id);
+        }
+
+        /// <summary>
+        /// Destroys this Vehicle.
+        /// </summary>
+        public virtual void Destroy()
+        {
+            Native.DestroyVehicle(VehicleId);
+            Dispose();
+        }
+
+        #endregion
+
+        #region Event raisers
+
+        public void OnDeath(PlayerVehicleEventArgs e)
+        {
+
+        }
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Registers all events the Vehicle class listens to.
         /// </summary>
@@ -80,6 +183,18 @@ namespace GameMode.World
         /// <param name="cast">A function to get a <see cref="Vehicle"/> object from a vehicleid.</param>
         protected static void RegisterEvents(BaseMode gameMode, Func<int, Vehicle> cast)
         {
+            gameMode.VehicleSpawned += (sender, args) => { };
+            gameMode.VehicleDied += (sender, args) => { };
+            gameMode.PlayerEnterVehicle += (sender, args) => { };
+            gameMode.PlayerExitVehicle += (sender, args) => { };
+            gameMode.VehicleMod += (sender, args) => { };
+            gameMode.VehiclePaintjobApplied += (sender, args) => { };
+            gameMode.VehicleResprayed += (sender, args) => { };
+            gameMode.VehicleDamageStatusUpdated += (sender, args) => { };
+            gameMode.UnoccupiedVehicleUpdated += (sender, args) => { };
+            gameMode.VehicleStreamIn += (sender, args) => { };
+            gameMode.VehicleStreamOut += (sender, args) => { };
+
             //baseMode.VehicleDied += (sender, args) => cast(args.VehicleId).OnDeath(args);
         }
 
@@ -91,20 +206,6 @@ namespace GameMode.World
         {
             RegisterEvents(gameMode, Find);
         }
-
-        /// <summary>
-        /// Destroys this Vehicle.
-        /// </summary>
-        public void Destroy()
-        {
-            Native.DestroyVehicle(VehicleId);
-            Dispose();
-        }
-
-        //public void OnDeath(PlayerVehicleEventArgs e)
-        //{
-            
-        //}
 
         public override int GetHashCode()
         {
@@ -123,5 +224,7 @@ namespace GameMode.World
         {
             Instances.Remove(this);
         }
+
+        #endregion
     }
 }
