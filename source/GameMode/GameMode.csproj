@@ -122,6 +122,8 @@
     <Compile Include="World\ColorFormat.cs" />
     <Compile Include="World\Dialog.cs" />
     <Compile Include="World\Player.cs" />
+    <Compile Include="World\PlayerTextDraw.cs" />
+    <Compile Include="World\TextDraw.cs" />
     <Compile Include="World\Timer.cs" />
     <Compile Include="World\Vector.cs" />
     <Compile Include="World\Rotation.cs" />
