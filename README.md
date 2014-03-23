@@ -13,7 +13,7 @@ http://forum.sa-mp.com/member.php?u=76946
 
 ToDo's
 ======
-    -Add classes for Vehicle, Object, PlayerObject, etc.
+    -Add classes for GlobalObject, PlayerObject, Textdraw, PlayerTextDraw, Gangzone, TextLabel, etc.
     -Add docs to EventsArgs.
     -Add docs to definitions.
     -Add more remarks to native docs.
