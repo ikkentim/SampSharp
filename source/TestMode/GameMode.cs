@@ -18,8 +18,9 @@ namespace TestMode
         public override bool OnGameModeInit()
         {
             Console.WriteLine("OnGameModeInit");
-            MapAndreas.Load(MapAndreasMode.Full);
+            MapAndreas.Load(MapAndreasMode.Minimal);
             Console.WriteLine("[MapAndreas] Test: " + MapAndreas.Find(new Vector()));
+
             return true;
         }
     }
