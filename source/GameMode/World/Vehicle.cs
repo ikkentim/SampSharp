@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameMode.Definitions;
 using GameMode.Events;
@@ -58,6 +57,13 @@ namespace GameMode.World
         /// </summary>
         public int VehicleId { get; private set; }
 
+        /// <summary>
+        /// Gets a readonly set of all <see cref="Vehicle"/> instances.
+        /// </summary>
+        public static IReadOnlyCollection<Vehicle> Vehicles
+        {
+            get { return Instances.AsReadOnly(); }
+        }
         #endregion
 
         #region Vehicles natives
@@ -760,7 +766,7 @@ namespace GameMode.World
 
         public override string ToString()
         {
-            return string.Format("Vehicle(Id:{0}, Model: )", VehicleId);
+            return string.Format("Vehicle(Id:{0}, Model: {1})", VehicleId, Model);
         }
 
         /// <summary>

@@ -1836,7 +1836,11 @@ namespace GameMode.World
         /// <param name="cast">A function to get a <see cref="Player"/> object from a playerid.</param>
         protected static void RegisterEvents(BaseMode gameMode, Func<int, Player> cast)
         {
-            gameMode.PlayerConnected += (sender, args) => cast(args.PlayerId).OnConnected(args);
+            gameMode.PlayerConnected += (sender, args) =>
+            {
+                Find(args.PlayerId);
+                cast(args.PlayerId).OnConnected(args);
+            };
             gameMode.PlayerDisconnected += (sender, args) => cast(args.PlayerId).OnDisconnected(args);
             gameMode.PlayerSpawned += (sender, args) => cast(args.PlayerId).OnSpawned(args);
             gameMode.PlayerDied += (sender, args) => cast(args.PlayerId).OnDeath(args);
