@@ -11,6 +11,7 @@ namespace GameMode.World
     /// </summary>
     public class Player : IDisposable
     {
+
         #region Fields
 
         /// <summary>
@@ -66,7 +67,7 @@ namespace GameMode.World
         /// <summary>
         /// Gets a readonly set of all <see cref="Player"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<Player> Players
+        public static IReadOnlyCollection<Player> All
         {
             get { return Instances.AsReadOnly(); }
         }
