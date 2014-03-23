@@ -86,7 +86,7 @@ namespace GameMode
         /// Occurs when the <see cref="OnVehicleSpawn"/> is being called.
         /// This callback is called when a vehicle respawns.
         /// </summary>
-        public event VehicleSpawnedHandler VehicleSpawned;
+        public event VehicleHandler VehicleSpawned;
 
         /// <summary>
         /// Occurs when the <see cref="OnVehicleDeath"/> is being called.
@@ -230,7 +230,7 @@ namespace GameMode
         /// <remarks>
         /// This does not include vehicle health changes.
         /// </remarks>
-        public event PlayerHandler VehicleDamageStatusUpdated;
+        public event PlayerVehicleHandler VehicleDamageStatusUpdated;
 
         /// <summary>
         /// Occurs when the <see cref="OnUnoccupiedVehicleUpdate"/> is being called.
