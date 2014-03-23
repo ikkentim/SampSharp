@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using GameMode.Definitions;
+using GameMode.World;
 
 namespace GameMode
 {
@@ -57,16 +58,27 @@ namespace GameMode
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsVehicleStreamedIn(int vehicleid, int forplayerid);
 
+        /// <summary>
+        /// Get the X Y Z coordinates of a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to get the position of.</param>
+        /// <param name="x">A float to store the X coordinate in, passed by reference.</param>
+        /// <param name="y">A float to store the Y coordinate in, passed by reference.</param>
+        /// <param name="z">A float to store the Z coordinate in, passed by reference.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehiclePos(int vehicleid, out float x, out float y, out float z);
 
         /// <summary>
-        /// Saves the x, y and z position of a vehicle in variables.
+        /// Set a vehicle's position.
         /// </summary>
-        /// <param name="vehicleid">The ID of the vehicle.</param>
-        /// <param name="x">The variable to store the X coordinate, passed by reference.</param>
-        /// <param name="y">The variable to store the Y coordinate, passed by reference.</param>
-        /// <param name="z">The variable to store the Z coordinate, passed by reference.</param>
+        /// <remarks>
+        /// An empty vehicle will not fall after being teleported into the air.
+        /// </remarks>
+        /// <param name="vehicleid">Vehicle ID that you want set new position.</param>
+        /// <param name="x">The X coordinate to position the vehicle at.</param>
+        /// <param name="y">The Y coordinate to position the vehicle at.</param>
+        /// <param name="z">The Z coordinate to position the vehicle at.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetVehiclePos(int vehicleid, float x, float y, float z);
@@ -387,5 +399,103 @@ namespace GameMode
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleModelInfo(int model, int infotype, out float x, out float y, out float z);
+
+        /// <summary>
+        /// Get the X Y Z coordinates of a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to get the position of.</param>
+        /// <returns>The position.</returns>
+        public static Vector GetVehiclePos(int vehicleid)
+        {
+            float x, y, z;
+            GetVehiclePos(vehicleid, out x, out y, out z);
+            return new Vector(x, y, z);
+        }
+
+        /// <summary>
+        /// Set a vehicle's position.
+        /// </summary>
+        /// An empty vehicle will not fall after being teleported into the air.
+        /// <remarks>
+        /// </remarks>
+        /// <param name="vehicleid">The ID of the vehicle.</param>
+        /// <param name="position">The coordinates to position the vehicle at.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetVehiclePos(int vehicleid, Vector position)
+        {
+            return SetVehiclePos(vehicleid, position.X, position.Y, position.Z);
+        }
+
+        /// <summary>
+        /// Get the z rotation of a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to get the angle of.</param>
+        /// <returns>The rotation of the vehicle.</returns>
+        public static float GetVehicleZAngle(int vehicleid)
+        {
+            float angle;
+            GetVehicleZAngle(vehicleid, out angle);
+            return angle;
+        }
+
+        /// <summary>
+        /// Get the health of a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to get the health of.</param>
+        /// <returns>The vehicle's health.</returns>
+        public static float GetVehicleHealth(int vehicleid)
+        {
+            float health;
+            GetVehicleHealth(vehicleid, out health);
+            return health;
+        }
+
+        /// <summary>
+        /// Gets the velocity at which the vehicle is moving in the three directions.
+        /// </summary>
+        /// <param name="vehicleid">The vehicle to get the velocity of.</param>
+        /// <returns>The velocity of the vehicle.</returns>
+        public static Vector GetVehicleVelocity(int vehicleid)
+        {
+            float x,y,z;
+            GetVehicleVelocity(vehicleid, out x, out y, out z);
+            return new Vector(x, y, z);
+        }
+
+        /// <summary>
+        /// Sets the velocity of a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to set the velocity of.</param>
+        /// <param name="velocity">The velocity.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetVehicleVelocity(int vehicleid, Vector velocity)
+        {
+            return SetVehicleVelocity(vehicleid, velocity.X, velocity.Y, velocity.Z);
+        }
+
+        /// <summary>
+        /// Sets the angular X, Y and Z velocity of a vehicle.
+        /// </summary>
+        /// <param name="vehicleid">The ID of the vehicle to set the velocity of.</param>
+        /// <param name="velocity">The angular velocity.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetVehicleAngularVelocity(int vehicleid, Vector velocity)
+        {
+            return SetVehicleAngularVelocity(vehicleid, velocity.X, velocity.Y, velocity.Z);
+        }
+
+        /// <summary>
+        /// Retrieve information about a specific vehicle model such as the size or position of seats.
+        /// </summary>
+        /// <param name="model">The vehicle model to get info of.</param>
+        /// <param name="infotype">The type of information to retrieve.</param>
+        /// <returns>The model information.</returns>
+        public static Vector GetVehicleModelInfo(int model, VehicleModelInfo infotype)
+        {
+            float x, y, z;
+            GetVehicleModelInfo(model, (int) infotype, out x, out y, out z);
+            return new Vector(x, y, z);
+        }
+
     }
 }
