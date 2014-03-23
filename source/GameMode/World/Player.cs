@@ -96,7 +96,7 @@ namespace GameMode.World
         /// <summary>
         /// Gets or sets the facing angle of this Player.
         /// </summary>
-        public virtual float FacingAngle
+        public virtual float Angle
         {
             get { return Native.GetPlayerFacingAngle(PlayerId); }
             set { Native.SetPlayerFacingAngle(PlayerId, value); }

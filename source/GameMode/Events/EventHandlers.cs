@@ -33,7 +33,7 @@
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">A <see cref="VehicleEventArgs"/> that contains the event data.</param>
-    public delegate void VehicleSpawnedHandler(object sender, VehicleEventArgs e);
+    public delegate void VehicleHandler(object sender, VehicleEventArgs e);
 
     /// <summary>
     /// Represents the method that will handle the <see cref="BaseMode.PlayerText"/> or <see cref="BaseMode.PlayerCommandText"/> event.
