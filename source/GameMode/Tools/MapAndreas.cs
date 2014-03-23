@@ -27,9 +27,14 @@ namespace GameMode.Tools
                 case MapAndreasMode.Full:
                     try
                     {
-                        var fullfile = File.ReadAllBytes(FullFile);
-                        _data = fullfile.Where((b, i) => i < fullfile.Length - 1 && i%2 == 0)
-                            .Select((b, i) => (ushort) (b | (fullfile[i + 1] << 8))).ToArray();
+                        using (var memstream = new FileStream(FullFile, FileMode.Open))
+                        {
+                            _data = new ushort[memstream.Length/2];
+                            var buffer = new byte[2];
+                            var loc = 0;
+                            while ((memstream.Read(buffer, 0, 2)) == 2)
+                                _data[loc++] = BitConverter.ToUInt16(buffer, 0);
+                        }
                     }
                     catch (Exception e)
                     {
@@ -39,9 +44,14 @@ namespace GameMode.Tools
                 case MapAndreasMode.Minimal:
                     try
                     {
-                        var minimalfile = File.ReadAllBytes(MinimalFile);
-                        _data = minimalfile.Where((b, i) => i < minimalfile.Length - 1 && i%2 == 0)
-                            .Select((b, i) => (ushort) (b | (minimalfile[i + 1] << 8))).ToArray();
+                        using (var memstream = new FileStream(MinimalFile, FileMode.Open))
+                        {
+                            _data = new ushort[memstream.Length/2];
+                            var buffer = new byte[2];
+                            var loc = 0;
+                            while ((memstream.Read(buffer, 0, 2)) == 2)
+                                _data[loc++] = BitConverter.ToUInt16(buffer, 0);
+                        }
                     }
                     catch (Exception e)
                     {
