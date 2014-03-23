@@ -1,9 +1,0 @@
-prefix=C:/PROGRA~2/MONO-3~1.4
-exec_prefix=${pcfiledir}/../..
-libdir=${prefix}/lib
-includedir=${prefix}/include/mono-2.0
-sysconfdir=${prefix}/etc
-
-Name: Mono
-Description: Mono Runtime
-Version: 3.0.5
