@@ -1,5 +1,6 @@
 ﻿using System;
 using GameMode;
+using GameMode.Tools;
 using GameMode.World;
 using TestMode.World;
 
@@ -17,6 +18,8 @@ namespace TestMode
         public override bool OnGameModeInit()
         {
             Console.WriteLine("OnGameModeInit");
+            MapAndreas.Load(MapAndreasMode.Full);
+            Console.WriteLine("[MapAndreas] Test: " + MapAndreas.Find(new Vector()));
             return true;
         }
     }
