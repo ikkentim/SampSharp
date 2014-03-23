@@ -105,8 +105,20 @@ MonoMethod * CMonoProxy::LoadCallback(const char * cname, const char * name) {
 }
 
 bool CMonoProxy::CallCallback(MonoMethod* method, void **params) {
-	//Invoke method and cast the response to a boolean
-	return *(bool *)mono_object_unbox(mono_runtime_invoke(method, m_pGameMode, params, NULL));
+	//Call callback
+	MonoObject * exception = NULL;
+	MonoObject * response = mono_runtime_invoke(method, m_pGameMode, params, &exception);
+
+	//Catch exceptions
+	if (exception) {
+		char * stacktrace = mono_string_to_utf8(mono_object_to_string(exception, NULL));
+		ServerLog::Printf("Exception thrown:\r\n %s", stacktrace);
+
+		return false; //Default return value
+	}
+
+	//cast response to bool and return it.
+	return *(bool *)mono_object_unbox(response);
 }
 
 CMonoProxy::~CMonoProxy() {
