@@ -63,6 +63,12 @@ namespace GameMode.Tools
             Console.WriteLine("[MapAndreas] Successfully unloaded");
         }
 
+        /// <summary>
+        /// Finds highest Z point (ground level) for the provided point.
+        /// </summary>
+        /// <param name="x">X-coordinate of the point.</param>
+        /// <param name="y">Y-coordinate of the point.</param>
+        /// <returns>Ground level at the given point.</returns>
         public static float Find(float x, float y)
         {
 
@@ -89,11 +95,22 @@ namespace GameMode.Tools
             return 0.0f;
         }
 
-        public static Vector Find(Vector position)
+        /// <summary>
+        /// Finds highest Z point (ground level) for the provided point.
+        /// </summary>
+        /// <param name="point">The point to look at.</param>
+        /// <returns>Ground level at the given point.</returns>
+        public static Vector Find(Vector point)
         {
-            return new Vector(position.X, position.Y, Find(position.X, position.Y));
+            return new Vector(point.X, point.Y, Find(point.X, point.Y));
         }
 
+        /// <summary>
+        /// Calculates a linear approximation of the ground level at the provided point.
+        /// </summary>
+        /// <param name="x">X-coordinate of the point.</param>
+        /// <param name="y">Y-coordinate of the point.</param>
+        /// <returns>A approximation of the ground level at the given point.</returns>
         public static float FindAverage(float x, float y)
         {
             if (_mode == MapAndreasMode.None) return 0;
@@ -115,9 +132,14 @@ namespace GameMode.Tools
             return p1 + xx * (p1 - p2) + yy * (p1 - p3);
         }
 
-        public static Vector FindAverage(Vector position)
+        /// <summary>
+        /// Calculates a linear approximation of the ground level at the provided point.
+        /// </summary>
+        /// <param name="point">The point to look at.</param>
+        /// <returns>A approximation of the ground level at the given point.</returns>
+        public static Vector FindAverage(Vector point)
         {
-            return new Vector(position.X, position.Y, FindAverage(position.X, position.Y));
+            return new Vector(point.X, point.Y, FindAverage(point.X, point.Y));
         }
 
     }
