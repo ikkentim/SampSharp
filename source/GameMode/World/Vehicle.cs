@@ -8,6 +8,7 @@ namespace GameMode.World
 {
     public class Vehicle : IDisposable
     {
+
         #region Fields
 
         /// <summary>
@@ -60,7 +61,7 @@ namespace GameMode.World
         /// <summary>
         /// Gets a readonly set of all <see cref="Vehicle"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<Vehicle> Vehicles
+        public static IReadOnlyCollection<Vehicle> All
         {
             get { return Instances.AsReadOnly(); }
         }
