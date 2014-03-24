@@ -18,13 +18,14 @@ namespace TestMode
         public override bool OnGameModeInit()
         {
             Console.WriteLine("OnGameModeInit");
-            MapAndreas.Load(MapAndreasMode.Full);
+            MapAndreas.Load(MapAndreasMode.Minimal);
 
             Console.WriteLine("[MapAndreas] Test: " + MapAndreas.Find(new Vector()));
             Console.WriteLine("[MapAndreas] Test: " + MapAndreas.Find(new Vector(1700, -1700, 0)));
             Console.WriteLine("[MapAndreas] Test: " + MapAndreas.FindAverage(new Vector()));
             Console.WriteLine("[MapAndreas] Test: " + MapAndreas.FindAverage(new Vector(1700, -1700, 0)));
 
+            throw new Exception("Bouyaa");
             return true;
         }
     }
