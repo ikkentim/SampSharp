@@ -1,7 +1,12 @@
-#include "SampSharp.h"
+#include <iostream>
+#include <fstream>
+#include <time.h>
 
+#include "SampSharp.h"
 #include "PathUtil.h"
 #include "Natives.h"
+
+using namespace std;
 
 CSampSharp * CSampSharp::p_instance;
 
@@ -112,8 +117,18 @@ bool CSampSharp::CallCallback(MonoMethod* method, void **params) {
 	//Catch exceptions
 	if (exception) {
 		char * stacktrace = mono_string_to_utf8(mono_object_to_string(exception, NULL));
-		ServerLog::Printf("Exception thrown:\r\n %s", stacktrace);
+		cout << "Exception thrown:\r\n " << stacktrace << endl;
+		ofstream logfile;
+		logfile.open("SampSharp_errors.log", ios::app);
 
+		time_t     now = time(0);
+		struct tm  tstruct;
+		char       timestamp[80];
+		tstruct = *localtime(&now);
+		strftime(timestamp, sizeof(timestamp), "[%d/%m/%Y %H:%M:%S]", &tstruct);
+
+		logfile << timestamp << " Exception thrown:" << endl << stacktrace << endl;
+		logfile.close();
 		return false; //Default return value
 	}
 

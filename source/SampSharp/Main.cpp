@@ -18,7 +18,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 
 	//Load proxy information from config
 	ConfigReader server_cfg("server.cfg");
-	std::string basemode_path = "plugins/GameMode.dll";
+	std::string basemode_path = "plugins/GameMode.dll"; 
 	std::string gamemode_path = "plugins/GameMode.dll";
 	std::string gamemode_namespace = "GameMode";
 	std::string gamemode_class = "Server";

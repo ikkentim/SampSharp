@@ -41,6 +41,7 @@ namespace TestMode.World
 
         public override void OnConnected(PlayerEventArgs e)
         {
+            //Test dialog
             var dialog = new Dialog(DialogStyle.Password, Color.Red + "Gimme yo password",
                 Color.White + "For this test, it will be 'mono'", "Login");
             dialog.Response += (sender, args) =>
@@ -62,6 +63,11 @@ namespace TestMode.World
                 }
             };
             dialog.Show(e.Player);
+
+            //Test textdraw
+            var td = new TextDraw(459.375000f, 78.166671f, "San Andreas", TextDrawFont.Diploma, Color.Red, 0.449999f,
+                1.600000f, 6.250000f, 86.333374f, TextDrawAlignment.Left, 0, 1, Color.Black, true);
+            td.Show(this);
 
             base.OnConnected(e);
 
