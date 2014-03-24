@@ -1,11 +1,11 @@
-#include "MonoProxy.h"
+#include "SampSharp.h"
 
 #include "PathUtil.h"
 #include "Natives.h"
 
-CMonoProxy * CMonoProxy::p_instance;
+CSampSharp * CSampSharp::p_instance;
 
-CMonoProxy::CMonoProxy(char * basemode_path, char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version) {
+CSampSharp::CSampSharp(char * basemode_path, char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version) {
 	
 	//Initialize the Mono runtime
 	mono_set_dirs(PathUtil::GetLibDirectory().c_str(), PathUtil::GetConfigDirectory().c_str());
@@ -82,7 +82,7 @@ CMonoProxy::CMonoProxy(char * basemode_path, char * gamemode_path, char * gamemo
 	m_cOnTimerTick = LoadCallback(gamemode_class, "OnTimerTick(int,object)");
 }
 
-MonoMethod * CMonoProxy::LoadCallback(const char * cname, const char * name) {
+MonoMethod * CSampSharp::LoadCallback(const char * cname, const char * name) {
 	//Construct method name
 	char * cl_buffer = new char[256];
 	char * bl_buffer = new char[256];
@@ -104,7 +104,7 @@ MonoMethod * CMonoProxy::LoadCallback(const char * cname, const char * name) {
 	return m_method;
 }
 
-bool CMonoProxy::CallCallback(MonoMethod* method, void **params) {
+bool CSampSharp::CallCallback(MonoMethod* method, void **params) {
 	//Call callback
 	MonoObject * exception = NULL;
 	MonoObject * response = mono_runtime_invoke(method, m_pGameMode, params, &exception);
@@ -121,7 +121,7 @@ bool CMonoProxy::CallCallback(MonoMethod* method, void **params) {
 	return *(bool *)mono_object_unbox(response);
 }
 
-CMonoProxy::~CMonoProxy() {
+CSampSharp::~CSampSharp() {
 	//Cleanup Mono runtime
 	mono_jit_cleanup(mono_domain_get());
 }

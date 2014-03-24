@@ -15,18 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="monoproxy.def">
-      <Filter>Source Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MonoProxy.cpp">
+    <ClCompile Include="ConfigReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConfigReader.cpp">
+    <ClCompile Include="SampSharp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -37,14 +32,19 @@
     <ClInclude Include="Natives.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MonoProxy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ConfigReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Callbacks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SampSharp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SampSharp.def">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
