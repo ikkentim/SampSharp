@@ -1,7 +1,7 @@
-samp-monoproxy
+SampSharp
 ==============
 
-MonoProxy for SA:MP allows SA:MP GameModes to be written in C# and to be executed using Mono on Winows/Linux.
+SampSharp for SA:MP allows SA:MP GameModes to be written in C# and to be executed using Mono on Winows/Linux.
 
 This project is still under construction and has not yet been tested on Linux.
 
