@@ -3,6 +3,7 @@ samp-npc.exe
 samp-server.exe
 
 crashinfo.txt
+SampSharp_errors.log
 server_log.txt
 
 plugins/
