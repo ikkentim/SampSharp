@@ -5,15 +5,15 @@
 #include <mono/metadata/mono-debug.h>
 #include <mono/metadata/debug-helpers.h>
 
-class CMonoProxy
+class CSampSharp
 {
 public:
-	CMonoProxy(char * basemode_path, char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version);
-	~CMonoProxy();
+	CSampSharp(char * basemode_path, char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version);
+	~CSampSharp();
 
 	bool CallCallback(MonoMethod * method, void ** params);
 
-	static CMonoProxy * p_instance;
+	static CSampSharp * p_instance;
 
 	MonoDomain * m_pRootDomain;
 

@@ -2,7 +2,7 @@
 #include <sampgdk/core.h>
 #include <sampgdk/a_samp.h>
 
-#include "MonoProxy.h"
+#include "SampSharp.h"
 #include "ConfigReader.h"
 
 static ThisPlugin proxyPlugin;
@@ -30,23 +30,23 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 
 	//Load Mono
 	char * runtime_ver = "v4.0.30319";
-	ServerLog::Printf("[monoproxy] Loading gamemode: %s::%s at \"%s\".", 
+	ServerLog::Printf("[SampSharp] Loading gamemode: %s::%s at \"%s\".", 
 		(char*)gamemode_namespace.c_str(), 
 		(char*)gamemode_class.c_str(), 
 		(char*)gamemode_path.c_str());
 
-	CMonoProxy::p_instance = new CMonoProxy((char *)basemode_path.c_str(), 
+	CSampSharp::p_instance = new CSampSharp((char *)basemode_path.c_str(),
 		(char *)gamemode_path.c_str(),
 		(char *)gamemode_namespace.c_str(), 
 		(char *)gamemode_class.c_str(), 
 		runtime_ver);
 
-	ServerLog::Printf("[monoproxy] Running Mono runtime version %s.", runtime_ver);
+	ServerLog::Printf("[SampSharp] Running Mono runtime version %s.", runtime_ver);
 	return true;
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
-	delete CMonoProxy::p_instance;
+	delete CSampSharp::p_instance;
 	proxyPlugin.Unload();
 }
 
