@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using GameMode;
 using GameMode.Tools;
 using GameMode.World;
@@ -25,8 +26,7 @@ namespace TestMode
             Console.WriteLine("[MapAndreas] Test: " + MapAndreas.FindAverage(new Vector()));
             Console.WriteLine("[MapAndreas] Test: " + MapAndreas.FindAverage(new Vector(1700, -1700, 0)));
 
-            throw new Exception("Bouyaa");
-            return true;
+            return base.OnGameModeInit();
         }
     }
 }
