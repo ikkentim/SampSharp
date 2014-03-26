@@ -46,6 +46,17 @@ namespace SampDebug
             ConvertDirectory("gamemodes");
 
             Console.WriteLine("Done!");
+            Console.WriteLine();
+            Console.WriteLine("=================================");
+            Console.WriteLine();
+            Console.WriteLine("Starting SA:MP server...");
+
+            if (!File.Exists("samp-server.exe"))
+            {
+                Console.WriteLine("[ERROR] samp-server.exe not found!");
+                return;
+            }
+            Process.Start(@"samp-server.exe");
         }
     }
 }
