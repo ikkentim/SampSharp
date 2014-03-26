@@ -376,12 +376,12 @@ namespace GameMode.World
 
         public virtual void Dispose()
         {
+            if (TextDrawId < 0) return;
             Native.TextDrawDestroy(TextDrawId);
         }
 
         protected virtual void Create()
         {
-            
             TextDrawId = Native.TextDrawCreate(X, Y, Text);
         }
 
@@ -389,36 +389,36 @@ namespace GameMode.World
         {
             Create();
 
-            if (_alignment != default(TextDrawAlignment))
-                SetAlignment(_alignment);
-            if (_backColor != 0)
-                SetBackColor(_backColor);
-            if (_foreColor != 0)
-                SetForeColor(_foreColor);
-            if (_boxColor != 0)
-                SetBoxColor(_boxColor);
-            if (_font != default(TextDrawFont))
-                SetFont(_font);
-            if (_letterWidth != 0 || _letterHeight != 0)
-                SetLetterSize(_letterWidth, _letterHeight);
-            if (_outline > 0)
-                SetOutline(_outline);
-            if (_proportional)
-                SetProportional(_proportional);
-            if (_shadow > 0)
-                SetShadow(_shadow);
-            if (_width != 0 || _height != 0)
-                SetSize(_width, _height);
-            if (_useBox)
-                SetUseBox(_useBox);
-            if (_selectable)
-                SetSelectable(_selectable);
-            if (_previewModel != 0)
-                SetPreviewModel(_previewModel);
-            if (_previewRotation.X != 0 || _previewRotation.Y != 0 || _previewRotation.Z != 0 || _previewZoom != 1)
-                SetPreviewRotation(_previewRotation, _previewZoom);
-            if (_previewPrimaryColor == -1 && _previewSecondaryColor == -1)
-                SetPreviewVehicleColors(_previewPrimaryColor, _previewSecondaryColor);
+            if (Alignment != default(TextDrawAlignment))
+                SetAlignment(Alignment);
+            if (BackColor != 0)
+                SetBackColor(BackColor);
+            if (ForeColor != 0)
+                SetForeColor(ForeColor);
+            if (BoxColor != 0)
+                SetBoxColor(BoxColor);
+            if (Font != default(TextDrawFont))
+                SetFont(Font);
+            if (LetterWidth != 0 || LetterHeight != 0)
+                SetLetterSize(LetterWidth, LetterHeight);
+            if (Outline > 0)
+                SetOutline(Outline);
+            if (Proportional)
+                SetProportional(Proportional);
+            if (Shadow > 0)
+                SetShadow(Shadow);
+            if (Width != 0 || Height != 0)
+                SetSize(Width, Height);
+            if (UseBox)
+                SetUseBox(UseBox);
+            if (Selectable)
+                SetSelectable(Selectable);
+            if (PreviewModel != 0)
+                SetPreviewModel(PreviewModel);
+            if (PreviewRotation.X != 0 || PreviewRotation.Y != 0 || PreviewRotation.Z != 0 || PreviewZoom != 1)
+                SetPreviewRotation(PreviewRotation, PreviewZoom);
+            if (PreviewPrimaryColor == -1 && PreviewSecondaryColor == -1)
+                SetPreviewVehicleColors(PreviewPrimaryColor, PreviewSecondaryColor);
         }
 
         protected virtual void UpdatePlayers()
@@ -504,7 +504,7 @@ namespace GameMode.World
             UpdatePlayers();
         }
 
-        public virtual void SetUseBox(bool useBox)
+        protected virtual void SetUseBox(bool useBox)
         {
             if (TextDrawId < 0) return;
             Native.TextDrawUseBox(TextDrawId, useBox);
