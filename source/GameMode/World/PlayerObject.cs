@@ -1,4 +1,5 @@
 ﻿using GameMode.Definitions;
+using GameMode.Events;
 
 namespace GameMode.World
 {
@@ -41,7 +42,31 @@ namespace GameMode.World
         public virtual int ObjectId { get; private set; }
 
         public virtual Player Player { get; private set; }
+
         #endregion
+
+        #region Events
+
+        /// <summary>
+        ///     Occurs when the <see cref="BaseMode.OnObjectMoved" /> callback is being called.
+        ///     This callback is called when an object is moved after <see cref="Move" /> (when it stops moving).
+        /// </summary>
+        public event ObjectHandler Moved;
+
+        /// <summary>
+        ///     Occurs when the <see cref="BaseMode.OnPlayerSelectObject" /> callback is being called.
+        ///     This callback is called when a player selects an object after <see cref="Native.SelectObject" /> has been used.
+        /// </summary>
+        public event PlayerSelectObjectHandler Selected;
+
+        /// <summary>
+        ///     Occurs when the <see cref="BaseMode.OnPlayerEditObject" /> callback is being called.
+        ///     This callback is called when a player ends object edition mode.
+        /// </summary>
+        public event PlayerEditObjectHandler Edited;
+
+        #endregion
+
 
         #region Constructor
 
@@ -117,6 +142,40 @@ namespace GameMode.World
         public virtual void Dispose()
         {
             Native.DestroyObject(ObjectId);
+        }
+
+        #endregion
+
+        #region Event raisers
+
+        /// <summary>
+        ///     Raises the <see cref="Moved" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="ObjectEventArgs" /> that contains the event data. </param>
+        public virtual void OnMoved(ObjectEventArgs e)
+        {
+            if (Moved != null)
+                Moved(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="Selected" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerSelectObjectEventArgs" /> that contains the event data. </param>
+        public virtual void OnSelected(PlayerSelectObjectEventArgs e)
+        {
+            if (Selected != null)
+                Selected(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="Edited" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEditObjectEventArgs" /> that contains the event data. </param>
+        public virtual void OnEdited(PlayerEditObjectEventArgs e)
+        {
+            if (Edited != null)
+                Edited(this, e);
         }
 
         #endregion
