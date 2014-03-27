@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using GameMode.Definitions;
 
 namespace GameMode.World
@@ -32,6 +30,11 @@ namespace GameMode.World
         private float _previewZoom = 1;
         private int _previewPrimaryColor = -1;
         private int _previewSecondaryColor = -1;
+
+        /// <summary>
+        /// Gets an ID commonly returned by methods to point out that no textdraw matched the requirements.
+        /// </summary>
+        public const int InvalidId = Misc.InvalidTextDraw;
 
         #endregion
 
