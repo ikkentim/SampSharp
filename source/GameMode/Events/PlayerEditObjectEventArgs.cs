@@ -19,7 +19,7 @@ namespace GameMode.Events
     public class PlayerEditObjectEventArgs : PlayerClickMapEventArgs
     {
         public PlayerEditObjectEventArgs(int playerid, bool playerobject, int objectid, EditObjectResponse response,
-            Vector position, Rotation rotation) : base(playerid, position)
+            Vector position, Vector rotation) : base(playerid, position)
         {
             PlayerObject = playerobject;
             ObjectId = objectid;
@@ -33,6 +33,6 @@ namespace GameMode.Events
 
         public EditObjectResponse EditObjectResponse { get; private set; }
 
-        public Rotation Rotation { get; private set; }
+        public Vector Rotation { get; private set; }
     }
 }

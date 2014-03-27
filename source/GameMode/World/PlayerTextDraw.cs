@@ -251,7 +251,7 @@ namespace GameMode.World
             UpdatePlayers();
         }
 
-        protected override void SetPreviewRotation(Rotation rotation, float zoom)
+        protected override void SetPreviewRotation(Vector rotation, float zoom)
         {
             if (TextDrawId < 0 || Player == null) return;
             Native.PlayerTextDrawSetPreviewRot(Player.PlayerId, TextDrawId, rotation.X, rotation.Y, rotation.Z, zoom);
