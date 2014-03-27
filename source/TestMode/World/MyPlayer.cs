@@ -69,6 +69,11 @@ namespace TestMode.World
                 1.600000f, 6.250000f, 86.333374f, TextDrawAlignment.Left, 0, 1, Color.Black, true);
             td.Show(this);
 
+            //Test playertextdraw
+            var ptd = new PlayerTextDraw(this, 359.375000f, 78.166671f, "San Player", TextDrawFont.Diploma, Color.Red, 0.449999f,
+                1.600000f, 6.250000f, 86.333374f, TextDrawAlignment.Left, 0, 1, Color.Black, true);
+            ptd.Show();
+
             base.OnConnected(e);
 
         }
