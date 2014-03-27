@@ -1,4 +1,5 @@
 ﻿using System;
+using GameMode.Definitions;
 using GameMode.Exceptions;
 
 namespace GameMode.World
@@ -16,6 +17,10 @@ namespace GameMode.World
         private Player _attachedPlayer;
         private Vehicle _attachedVehicle;
 
+        /// <summary>
+        /// Gets an ID commonly returned by methods to point out that no PlayerTextLabel matched the requirements.
+        /// </summary>
+        public const int InvalidId = Misc.Invalid_3DTextId;
         #endregion
 
         #region Properties

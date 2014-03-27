@@ -1,4 +1,6 @@
 ﻿using System;
+using GameMode.Definitions;
+
 namespace GameMode.World
 {
     public class TextLabel : IDisposable
@@ -12,6 +14,11 @@ namespace GameMode.World
         private float _drawDistance;
         private int _virtualWorld;
         private bool _testLOS;
+
+        /// <summary>
+        /// Gets an ID commonly returned by methods to point out that no TextLabel matched the requirements.
+        /// </summary>
+        public const int InvalidId = Misc.Invalid_3DTextId;
 
         #endregion
 
@@ -81,7 +88,7 @@ namespace GameMode.World
             }
         }
 
-        public virtual int LabelId { get; protected set; }
+        public virtual int LabelId { get; private set; }
 
         #endregion
 
