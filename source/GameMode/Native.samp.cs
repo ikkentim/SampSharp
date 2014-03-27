@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using GameMode.Definitions;
+using GameMode.World;
 
 namespace GameMode
 {
@@ -971,7 +972,7 @@ namespace GameMode
         /// <param name="y">Y Coordinate (or offset if attached).</param>
         /// <param name="z">Z Coordinate (or offset if attached).</param>
         /// <param name="drawDistance">The distance where you are able to see the 3D Text Label.</param>
-        /// <param name="attachedplayer">The player you want to attach the 3D Text Label to. (None: <see cref="Misc.InvalidVehicleId"/>).</param>
+        /// <param name="attachedplayer">The player you want to attach the 3D Text Label to. (None: <see cref="Misc.InvalidPlayerId"/>).</param>
         /// <param name="attachedvehicle">The vehicle you want to attach the 3D Text Label to. (None: <see cref="Misc.InvalidVehicleId"/>).</param>
         /// <param name="testLOS">Whether to test the line-of-sight so this text can't be seen through walls.</param>
         /// <returns>The ID of the newly created Player 3D Text Label.</returns>
@@ -1115,11 +1116,52 @@ namespace GameMode
             return retstr;
         }
 
+        /// <summary>
+        /// Gets the version of a player's client.
+        /// </summary>
+        /// <param name="playerid">The player whose version to check.</param>
+        /// <returns>The version of the client.</returns>
         public static string GetPlayerVersion(int playerid)
         {
             string version;
             GetPlayerVersion(playerid, out version, 64);
             return version;
+        }
+
+        /// <summary>
+        /// Creates a 3D Text Label at a specific location in the world.
+        /// </summary>
+        /// <param name="text">The initial text string.</param>
+        /// <param name="color">The text Color.</param>
+        /// <param name="position">The coordinates.</param>
+        /// <param name="drawDistance">The distance from where you are able to see the 3D Text Label.</param>
+        /// <param name="virtualWorld">The virtual world in which you are able to see the 3D Text.</param>
+        /// <param name="testLOS">Whether to test the line-of-sight so this text can't be seen through objects.</param>
+        /// <returns>The ID of the newly created 3D Text Label.</returns>
+        public static int Create3DTextLabel(string text, Color color, Vector position, float drawDistance,
+            int virtualWorld, bool testLOS)
+        {
+            return Create3DTextLabel(text, color, position.X, position.Y, position.Z, drawDistance, virtualWorld,
+                testLOS);
+        }
+
+        /// <summary>
+        /// Creates a 3D Text Label only for a specific player.
+        /// </summary>
+        /// <param name="playerid">The player which should see the newly created 3DText Label.</param>
+        /// <param name="text">The text to display.</param>
+        /// <param name="color">The text color.</param>
+        /// <param name="position">The coordinates (or offset if attached).</param>
+        /// <param name="drawDistance">The distance where you are able to see the 3D Text Label.</param>
+        /// <param name="attachedplayer">The player you want to attach the 3D Text Label to. (None: <see cref="Misc.InvalidPlayerId"/>).</param>
+        /// <param name="attachedvehicle">The vehicle you want to attach the 3D Text Label to. (None: <see cref="Misc.InvalidVehicleId"/>).</param>
+        /// <param name="testLOS">Whether to test the line-of-sight so this text can't be seen through walls.</param>
+        /// <returns>The ID of the newly created Player 3D Text Label.</returns>
+        public static int CreatePlayer3DTextLabel(int playerid, string text, int color, Vector position,
+            float drawDistance, int attachedplayer, int attachedvehicle, bool testLOS)
+        {
+            return CreatePlayer3DTextLabel(0, text, color, position.X, position.Y, position.Z, drawDistance,
+                attachedplayer, attachedvehicle, testLOS);
         }
     }
 }
