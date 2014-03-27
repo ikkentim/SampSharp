@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System.Runtime.CompilerServices;
+using GameMode.World;
 
 namespace GameMode
 {
@@ -64,7 +65,7 @@ namespace GameMode
         /// <param name="rotY">The Y rotation between the object and the main object.</param>
         /// <param name="rotZ">The Z rotation between the object and the main object.</param>
         /// <param name="syncRotation">
-        ///     If set to 0, objects' rotation will not be changed. See ferriswheel filterscript for
+        ///     If set to false, objects' rotation will not be changed. See ferriswheel filterscript for
         ///     example.
         /// </param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -100,8 +101,7 @@ namespace GameMode
         public static extern bool SetObjectPos(int objectid, float x, float y, float z);
 
         /// <summary>
-        ///     Returns the coordinates of the current position of the given object. The position is saved by reference in three
-        ///     x/y/z variables.
+        ///     Returns the coordinates of the current position of the given object.
         /// </summary>
         /// <param name="objectid">The object's id of which you want the current location.</param>
         /// <param name="x">The variable to store the X coordinate, passed by reference.</param>
@@ -167,7 +167,7 @@ namespace GameMode
             float rotZ);
 
         /// <summary>
-        ///     Stop a moving object after <see cref="MoveObject" /> has been used.
+        ///     Stop a moving object after <see cref="MoveObject(int,Vector,float,Vector)" /> has been used.
         /// </summary>
         /// <param name="objectid">The ID of the object to stop moving.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -238,7 +238,7 @@ namespace GameMode
             float rY, float rZ, float drawDistance);
 
         /// <summary>
-        ///     The same as <see cref="AttachObjectToPlayer" /> but for objects which were created for player.
+        ///     The same as <see cref="AttachObjectToPlayer(int,int,Vector,Vector)" /> but for objects which were created for player.
         /// </summary>
         /// <param name="objectplayer">The id of the player which is linked with the object.</param>
         /// <param name="objectid">The objectid you want to attach to the player.</param>
@@ -277,7 +277,7 @@ namespace GameMode
         /// <param name="playerid">The ID of the player whose player-object to set the position of.</param>
         /// <param name="objectid">
         ///     The ID of the player-object to set the position of. Returned by
-        ///     <see cref="CreatePlayerObject" />.
+        ///     <see cref="CreatePlayerObject(int,int,Vector,Vector,float)" />.
         /// </param>
         /// <param name="x">The X coordinate to put the object at.</param>
         /// <param name="y">The Y coordinate to put the object at.</param>
@@ -338,7 +338,7 @@ namespace GameMode
         ///     Destroy a player-object.
         /// </summary>
         /// <param name="playerid">The ID of the player the object is associated to.</param>
-        /// <param name="objectid">The ID of the player-object to delete (returned by <see cref="CreatePlayerObject" />).</param>
+        /// <param name="objectid">The ID of the player-object to delete (returned by <see cref="CreatePlayerObject(int,int,Vector,Vector,float)" />).</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool DestroyPlayerObject(int playerid, int objectid);
@@ -361,7 +361,7 @@ namespace GameMode
             float rotX, float rotY, float rotZ);
 
         /// <summary>
-        ///     Stop a moving player-object after <see cref="MovePlayerObject" /> has been used.
+        ///     Stop a moving player-object after <see cref="MovePlayerObject(int,int,Vector,float,Vector)" /> has been used.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player-object to stop.</param>
         /// <param name="objectid">The ID of the player-object to stop.</param>
@@ -455,5 +455,320 @@ namespace GameMode
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerObjectMaterialText(int playerid, int objectid, string text, int materialindex,
             int materialsize, string fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        ///     Creates an object.
+        /// </summary>
+        /// <param name="modelid">The model you want to use.</param>
+        /// <param name="position">The coordinate to create the object at.</param>
+        /// <param name="rotation">The rotation of the object.</param>
+        /// <param name="drawDistance">
+        ///     The distance that San Andreas renders objects at. 0.0 will cause objects to render at their
+        ///     default distances.
+        /// </param>
+        /// <returns>The ID of the object that was created.</returns>
+        public static int CreateObject(int modelid, Vector position, Vector rotation, float drawDistance)
+        {
+            return CreateObject(modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z,
+                drawDistance);
+        }
+
+        /// <summary>
+        ///     Attach an object to a vehicle.
+        /// </summary>
+        /// <param name="objectid">The ID of the object to attach to the vehicle.</param>
+        /// <param name="vehicleid">The ID of the vehicle to attach the object to.</param>
+        /// <param name="offset">The offset.</param>
+        /// <param name="rotation">The rotation offset.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool AttachObjectToVehicle(int objectid, int vehicleid, Vector offset, Vector rotation)
+        {
+            return AttachObjectToVehicle(objectid, vehicleid, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
+                rotation.Z);
+        }
+
+        /// <summary>
+        ///     You can use this function to attach objects to other objects. The objects will folow the main object.
+        /// </summary>
+        /// <param name="objectid">The object to attach to another object.</param>
+        /// <param name="attachtoid">The object to attach the object to.</param>
+        /// <param name="offset">The distance between the main object and the object.</param>
+        /// <param name="rotation">The rotation between the object and the main object.</param>
+        /// <param name="syncRotation">
+        ///     If set to false, objects' rotation will not be changed. See ferriswheel filterscript for
+        ///     example.
+        /// </param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool AttachObjectToObject(int objectid, int attachtoid, Vector offset, Vector rotation, bool syncRotation)
+        {
+            return AttachObjectToObject(objectid, attachtoid, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
+                rotation.Z, syncRotation);
+        }
+
+        /// <summary>
+        ///     Attach an object to a player.
+        /// </summary>
+        /// <param name="objectid">The ID of the object to attach to the player.</param>
+        /// <param name="playerid">The ID of the player to attach the object to.</param>
+        /// <param name="offset">The distance between the player and the object.</param>
+        /// <param name="rotation">The rotation between the object and the player.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool AttachObjectToPlayer(int objectid, int playerid, Vector offset, Vector rotation)
+        {
+            return AttachObjectToPlayer(objectid, playerid, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
+                rotation.Z);
+        }
+
+        /// <summary>
+        ///     Change the position of an object.
+        /// </summary>
+        /// <param name="objectid">The ID of the object to set the position of.</param>
+        /// <param name="position">The coordinate to position the object at.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetObjectPos(int objectid, Vector position)
+        {
+            return SetObjectPos(objectid, position.X, position.Y, position.Z);
+        }
+
+        /// <summary>
+        ///     Returns the coordinates of the current position of the given object.
+        /// </summary>
+        /// <param name="objectid">The object's id of which you want the current location.</param>
+        /// <returns>The objects position.</returns>
+        public static Vector GetObjectPos(int objectid)
+        {
+            float x, y, z;
+            GetObjectPos(objectid, out x, out y, out z);
+            return new Vector(x, y, z);
+        }
+
+        /// <summary>
+        ///     Rotates an object in all directions.
+        /// </summary>
+        /// <param name="objectid">The objectid of the object you want to rotate.</param>
+        /// <param name="rotation">The rotation.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetObjectRot(int objectid, Vector rotation)
+        {
+            return SetObjectRot(objectid, rotation.X, rotation.Y, rotation.Z);
+        }
+
+        /// <summary>
+        ///     Use this function to get the objects current rotation.
+        /// </summary>
+        /// <param name="objectid">The objectid of the object you want to get the rotation from.</param>
+        /// <returns>The objects rotation.</returns>
+        public static Vector GetObjectRot(int objectid)
+        {
+            float x, y, z;
+            GetObjectRot(objectid, out x, out y, out z);
+            return new Vector(x, y, z);
+        }
+
+        /// <summary>
+        ///     Move an object to a new position with a set speed. Players/vehicles will 'surf' the object as it moves.
+        /// </summary>
+        /// <param name="objectid">The ID of the object to move.</param>
+        /// <param name="position">The coordinate to move the object to.</param>
+        /// <param name="speed">The speed at which to move the object (units per second).</param>
+        /// <param name="rotation">The final rotation.</param>
+        /// <returns>The time it will take for the object to move in milliseconds.</returns>
+        public static int MoveObject(int objectid, Vector position, float speed, Vector rotation)
+        {
+            return MoveObject(objectid, position.X, position.Y, position.Z, speed, rotation.X, rotation.Y, rotation.Z);
+        }
+
+        /// <summary>
+        ///     Creates an object which will be visible to only one player.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to create the object for.</param>
+        /// <param name="modelid">The model to create.</param>
+        /// <param name="position">The coordinate to create the object at.</param>
+        /// <param name="rotation">The rotation of the object.</param>
+        /// <param name="drawDistance">
+        ///     The distance from which objects will appear to players. 0.0 will cause an object to render
+        ///     at its default distance. Leaving this parameter out will cause objects to be rendered at their default distance.
+        /// </param>
+        /// <returns>The ID of the object that was created, or INVALID_OBJECT_ID if the object limit (MAX_OBJECTS) was reached.</returns>
+        public static int CreatePlayerObject(int playerid, int modelid, Vector position, Vector rotation,
+            float drawDistance)
+        {
+            return CreatePlayerObject(playerid, modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y,
+                rotation.Z, drawDistance);
+        }
+
+        /// <summary>
+        ///     The same as <see cref="AttachObjectToPlayer(int,int,Vector,Vector)" /> but for objects which were created for player.
+        /// </summary>
+        /// <param name="objectplayer">The id of the player which is linked with the object.</param>
+        /// <param name="objectid">The objectid you want to attach to the player.</param>
+        /// <param name="attachplayerid">The id of the player you want to attach to the object.</param>
+        /// <param name="offset">The distance between the player and the object.</param>
+        /// <param name="rotation">The rotation.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool AttachPlayerObjectToPlayer(int objectplayer, int objectid, int attachplayerid, Vector offset,
+            Vector rotation)
+        {
+            return AttachPlayerObjectToPlayer(objectplayer, objectid, attachplayerid, offset.X, offset.Y, offset.Z,
+                rotation.X, rotation.Y, rotation.Z);
+        }
+
+        /// <summary>
+        ///     Attach a player object to a vehicle.
+        /// </summary>
+        /// <param name="playerid">The ID of the player the object was created for.</param>
+        /// <param name="objectid">The ID of the object to attach to the vehicle.</param>
+        /// <param name="vehicleid">The ID of the vehicle to attach the object to.</param>
+        /// <param name="offset">The position offset for attachment.</param>
+        /// <param name="rotation">The rotation offset for attachment.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool AttachPlayerObjectToVehicle(int playerid, int objectid, int vehicleid, Vector offset, Vector rotation)
+        {
+            return AttachPlayerObjectToVehicle(playerid, objectid, vehicleid, offset.X, offset.Y, offset.Z, rotation.X,
+                rotation.Y, rotation.Z);
+        }
+
+        /// <summary>
+        ///     Sets the position of a player-object to the specified coordinates.
+        /// </summary>
+        /// <param name="playerid">The ID of the player whose player-object to set the position of.</param>
+        /// <param name="objectid">
+        ///     The ID of the player-object to set the position of. Returned by
+        ///     <see cref="CreatePlayerObject(int,int,Vector,Vector,float)" />.
+        /// </param>
+        /// <param name="position">The coordinate to put the object at.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetPlayerObjectPos(int playerid, int objectid, Vector position)
+        {
+            return SetPlayerObjectPos(playerid, objectid, position.X, position.Y, position.Z);
+        }
+
+        /// <summary>
+        ///     Returns the coordinates of the current position of the given object.
+        /// </summary>
+        /// <param name="playerid">The player you associated this object to.</param>
+        /// <param name="objectid">The object's id of which you want the current location.</param>
+        /// <returns>The position of the object.</returns>
+        public static Vector GetPlayerObjectPos(int playerid, int objectid)
+        {
+            float x, y, z;
+            GetPlayerObjectPos(playerid, objectid, out x, out y, out z);
+            return new Vector(x, y, z);
+        }
+
+        /// <summary>
+        ///     Rotates an object in all directions.
+        /// </summary>
+        /// <param name="playerid">The player you associated this object to.</param>
+        /// <param name="objectid">The objectid of the object you want to rotate.</param>
+        /// <param name="rotation">The rotation.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static bool SetPlayerObjectRot(int playerid, int objectid, Vector rotation)
+        {
+            return SetPlayerObjectPos(playerid, objectid, rotation.X, rotation.Y, rotation.Z);
+        }
+
+        /// <summary>
+        ///     Use this function to get the object' s current rotation. The rotation is saved by reference in three RotX/RotY/RotZ
+        ///     variables.
+        /// </summary>
+        /// <param name="playerid">The player you associated this object to.</param>
+        /// <param name="objectid">The objectid of the object you want to get the rotation from.</param>
+        /// <returns>The rotation of the object.</returns>
+        public static Vector GetPlayerObjectRot(int playerid, int objectid)
+        {
+            float x, y, z;
+            GetPlayerObjectRot(playerid, objectid, out x, out y, out z);
+            return new Vector(x, y, z);
+        }
+
+        /// <summary>
+        ///     Move an object with a set speed. Also supports rotation. Players/vehicles will surf moving objects.
+        /// </summary>
+        /// <param name="playerid">The ID of the player whose player-object to move.</param>
+        /// <param name="objectid">The ID of the object to move.</param>
+        /// <param name="position">The coordinate to move the object to.</param>
+        /// <param name="speed">The speed at which to move the object.</param>
+        /// <param name="rotation">The final rotation.</param>
+        /// <returns>The time it will take for the object to move in milliseconds.</returns>
+        public static int MovePlayerObject(int playerid, int objectid, Vector position, float speed, Vector rotation)
+        {
+            return MovePlayerObject(playerid, objectid, position.X, position.Y, position.Z, speed, rotation.X,
+                rotation.Y, rotation.Z);
+        }
     }
 }
