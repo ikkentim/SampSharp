@@ -126,6 +126,7 @@
     <Compile Include="World\GangZone.cs" />
     <Compile Include="World\GlobalObject.cs" />
     <Compile Include="World\Player.cs" />
+    <Compile Include="World\PlayerObject.cs" />
     <Compile Include="World\PlayerTextDraw.cs" />
     <Compile Include="World\PlayerTextLabel.cs" />
     <Compile Include="World\TextDraw.cs" />
