@@ -108,6 +108,8 @@
     <Compile Include="Events\VehiclePaintjobEventArgs.cs" />
     <Compile Include="Events\VehicleResprayedEventArgs.cs" />
     <Compile Include="Events\WeaponShotEventArgs.cs" />
+    <Compile Include="Exceptions\PlayerNotConnectedException.cs" />
+    <Compile Include="Exceptions\VehicleDoesNotExistException.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="Native.logging.cs" />
     <Compile Include="Native.objects.cs" />
@@ -123,7 +125,9 @@
     <Compile Include="World\Dialog.cs" />
     <Compile Include="World\Player.cs" />
     <Compile Include="World\PlayerTextDraw.cs" />
+    <Compile Include="World\PlayerTextLabel.cs" />
     <Compile Include="World\TextDraw.cs" />
+    <Compile Include="World\TextLabel.cs" />
     <Compile Include="World\Timer.cs" />
     <Compile Include="World\Vector.cs" />
     <Compile Include="World\Rotation.cs" />
