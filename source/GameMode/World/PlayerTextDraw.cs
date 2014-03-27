@@ -4,6 +4,7 @@ namespace GameMode.World
 {
     public class PlayerTextDraw : TextDraw
     {
+
         public PlayerTextDraw(Player player)
         {
             Player = player;

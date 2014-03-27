@@ -123,6 +123,7 @@
     <Compile Include="World\Color.cs" />
     <Compile Include="World\ColorFormat.cs" />
     <Compile Include="World\Dialog.cs" />
+    <Compile Include="World\GangZone.cs" />
     <Compile Include="World\Player.cs" />
     <Compile Include="World\PlayerTextDraw.cs" />
     <Compile Include="World\PlayerTextLabel.cs" />
