@@ -1220,8 +1220,7 @@ namespace GameMode.World
         ///     Sets a checkpoint (red circle) for this Player. Also shows a red blip on the radar.
         /// </summary>
         /// <remarks>
-        ///     Checkpoints created on server-created objects (<see cref="Native.CreateObject" />/
-        ///     <see cref="Native.CreatePlayerObject" />) will appear down on the 'real' ground, but will still function correctly.
+        ///     Checkpoints created on server-created objects will appear down on the 'real' ground, but will still function correctly.
         ///     There is no fix available for this issue. A pickup can be used instead.
         /// </remarks>
         /// <param name="point">The point to set the checkpoint at.</param>
