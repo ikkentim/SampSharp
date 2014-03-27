@@ -108,6 +108,7 @@ CSampSharp::CSampSharp(char * basemode_path, char * gamemode_path, char * gamemo
 	onPlayerSelectObject = LoadCallback(gamemode_class, "OnPlayerSelectObject(int,int,int,int,float,float,float)");
 	onPlayerWeaponShot = LoadCallback(gamemode_class, "OnPlayerWeaponShot(int,int,int,int,float,float,float)");
 	onTimerTick = LoadCallback(gamemode_class, "OnTimerTick(int,object)");
+	onTick = LoadCallback(gamemode_class, "OnTick()");
 }
 
 MonoMethod * CSampSharp::LoadCallback(const char * cname, const char * name) {

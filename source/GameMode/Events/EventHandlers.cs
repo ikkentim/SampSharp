@@ -11,6 +11,8 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
+
 namespace GameMode.Events
 {
     /// <summary>
@@ -255,4 +257,11 @@ namespace GameMode.Events
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">A <see cref="WeaponShotEventArgs" /> that contains the event data.</param>
     public delegate void WeaponShotHandler(object sender, WeaponShotEventArgs e);
+
+    /// <summary>
+    ///     Represents the method that will handle the <see cref="BaseMode.TimerTick" /> event.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">A <see cref="EventArgs" /> that contains the event data.</param>
+    public delegate void TimerTickHandler(object sender, EventArgs e);
 }

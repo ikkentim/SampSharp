@@ -23,6 +23,7 @@ namespace TestMode
     {
         public override void RegisterEvents()
         {
+            Timer.RegisterEvents(this);
             MyPlayer.RegisterEvents(this);
             Vehicle.RegisterEvents(this);
             Dialog.RegisterEvents(this);

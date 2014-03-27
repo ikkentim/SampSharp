@@ -68,6 +68,7 @@ public:
 	MonoMethod * onPlayerSelectObject;
 	MonoMethod * onPlayerWeaponShot;
 	MonoMethod * onTimerTick;
+	MonoMethod * onTick;
  
 private:
 	MonoMethod * LoadCallback(const char * cname, const char * name);
