@@ -1,4 +1,17 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 
 namespace GameMode.World
 {
@@ -6,10 +19,6 @@ namespace GameMode.World
     {
         public static Vector Zero = NewZero();
         public static Vector One = NewOne();
-
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Z { get; set; }
 
         public Vector(float x, float y, float z) : this()
         {
@@ -31,6 +40,10 @@ namespace GameMode.World
             Y = vector.Y;
             Z = vector.Z;
         }
+
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Z { get; set; }
 
         public static Vector NewZero()
         {
@@ -144,7 +157,7 @@ namespace GameMode.World
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Vector && Equals((Vector)obj);
+            return obj is Vector && Equals((Vector) obj);
         }
 
         public override int GetHashCode()
@@ -152,8 +165,8 @@ namespace GameMode.World
             unchecked
             {
                 int hashCode = X.GetHashCode();
-                hashCode = (hashCode * 397) ^ Y.GetHashCode();
-                hashCode = (hashCode * 397) ^ Z.GetHashCode();
+                hashCode = (hashCode*397) ^ Y.GetHashCode();
+                hashCode = (hashCode*397) ^ Z.GetHashCode();
                 return hashCode;
             }
         }

@@ -1,16 +1,30 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
+using GameMode.Events;
 
 namespace GameMode.World
 {
     /// <summary>
-    /// Represents a SA:MP timer.
+    ///     Represents a SA:MP timer.
     /// </summary>
     public class Timer : IDisposable
     {
         private bool _hit;
 
         /// <summary>
-        /// Initializes a new instance of the Timer class.
+        ///     Initializes a new instance of the Timer class.
         /// </summary>
         /// <param name="interval">The interval in miliseconds.</param>
         /// <param name="repeat">Whether to repeat the timer (True); or stop after the first Tick(False).</param>
@@ -24,27 +38,22 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Occurs when the interval has elapsed.
-        /// </summary>
-        public event EventHandler Tick;
-
-        /// <summary>
-        /// Gets the ID of this Timer.
+        ///     Gets the ID of this Timer.
         /// </summary>
         public int Id { get; private set; }
 
         /// <summary>
-        /// Gets the interval of this Timer.
+        ///     Gets the interval of this Timer.
         /// </summary>
         public int Interval { get; private set; }
 
         /// <summary>
-        /// Gets whether this Timer is a repeating timer.
+        ///     Gets whether this Timer is a repeating timer.
         /// </summary>
         public bool Repeat { get; private set; }
 
         /// <summary>
-        /// Gets or sets whether this Timer is running.
+        ///     Gets or sets whether this Timer is running.
         /// </summary>
         public bool Running
         {
@@ -62,7 +71,7 @@ namespace GameMode.World
 
                     BaseMode.Instance.Exited += BaseMode_Exited;
                 }
-                else if(!value && Running)
+                else if (!value && Running)
                 {
                     Native.KillTimer(Id);
 
@@ -70,15 +79,26 @@ namespace GameMode.World
                 }
             }
         }
+
         /// <summary>
-        /// Gets or sets a tag containing about this Timer.
+        ///     Gets or sets a tag containing about this Timer.
         /// </summary>
         public object Tag { get; set; }
 
+        public void Dispose()
+        {
+            Running = false;
+        }
+
         /// <summary>
-        /// Raises the <see cref="Tick"/> event.
+        ///     Occurs when the interval has elapsed.
         /// </summary>
-        /// <param name="e">A <see cref="System.EventArgs"/> that contains the event data.</param>
+        public event EventHandler Tick;
+
+        /// <summary>
+        ///     Raises the <see cref="Tick" /> event.
+        /// </summary>
+        /// <param name="e">A <see cref="System.EventArgs" /> that contains the event data.</param>
         public virtual void OnTick(EventArgs e)
         {
             if (Tick != null)
@@ -86,16 +106,11 @@ namespace GameMode.World
 
             _hit = true;
 
-            if(!Running)
+            if (!Running)
                 BaseMode.Instance.Exited -= BaseMode_Exited;
         }
 
-        public void Dispose()
-        {
-            Running = false;
-        }
-
-        private void BaseMode_Exited(object sender, Events.GameModeEventArgs e)
+        private void BaseMode_Exited(object sender, GameModeEventArgs e)
         {
             Dispose();
         }

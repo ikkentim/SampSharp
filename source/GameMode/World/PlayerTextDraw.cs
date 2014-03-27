@@ -1,10 +1,22 @@
-﻿using GameMode.Definitions;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using GameMode.Definitions;
 
 namespace GameMode.World
 {
     public class PlayerTextDraw : TextDraw
     {
-
         public PlayerTextDraw(Player player)
         {
             Player = player;
@@ -30,7 +42,8 @@ namespace GameMode.World
             ForeColor = foreColor;
         }
 
-        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
+        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor,
+            float letterWidth,
             float letterHeight)
             : this(player, x, y, text, font, foreColor)
         {
@@ -38,7 +51,8 @@ namespace GameMode.World
             LetterHeight = letterHeight;
         }
 
-        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
+        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor,
+            float letterWidth,
             float letterHeight, float width, float height)
             : this(player, x, y, text, font, foreColor, letterWidth, letterHeight)
         {
@@ -46,42 +60,53 @@ namespace GameMode.World
             Height = height;
         }
 
-        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
+        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor,
+            float letterWidth,
             float letterHeight, float width, float height, TextDrawAlignment alignment)
             : this(player, x, y, text, font, foreColor, letterWidth, letterHeight, width, height)
         {
             Alignment = alignment;
         }
 
-        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
+        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor,
+            float letterWidth,
             float letterHeight, float width, float height, TextDrawAlignment alignment, int shadow)
             : this(player, x, y, text, font, foreColor, letterWidth, letterHeight, width, height, alignment)
         {
             Shadow = shadow;
         }
 
-        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
+        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor,
+            float letterWidth,
             float letterHeight, float width, float height, TextDrawAlignment alignment, int shadow, int outline)
             : this(player, x, y, text, font, foreColor, letterWidth, letterHeight, width, height, alignment, shadow)
         {
             Outline = outline;
         }
 
-        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
+        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor,
+            float letterWidth,
             float letterHeight, float width, float height, TextDrawAlignment alignment, int shadow, int outline,
             Color backColor)
-            : this(player, x, y, text, font, foreColor, letterWidth, letterHeight, width, height, alignment, shadow, outline)
+            : this(
+                player, x, y, text, font, foreColor, letterWidth, letterHeight, width, height, alignment, shadow,
+                outline)
         {
             BackColor = backColor;
         }
 
-        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
+        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor,
+            float letterWidth,
             float letterHeight, float width, float height, TextDrawAlignment alignment, int shadow, int outline,
             Color backColor, bool proportional)
-            : this(player, x, y, text, font, foreColor, letterWidth, letterHeight, width, height, alignment, shadow, outline, backColor)
+            : this(
+                player, x, y, text, font, foreColor, letterWidth, letterHeight, width, height, alignment, shadow,
+                outline, backColor)
         {
             Proportional = proportional;
         }
+
+        public virtual Player Player { get; private set; }
 
 
         public override void Show()
@@ -106,7 +131,7 @@ namespace GameMode.World
 
         public override void Hide(Player player)
         {
-            if(player == Player)
+            if (player == Player)
                 Hide();
         }
 
@@ -131,7 +156,7 @@ namespace GameMode.World
         protected override void SetAlignment(TextDrawAlignment alignment)
         {
             if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawAlignment(Player.PlayerId, TextDrawId, (int)alignment);
+            Native.PlayerTextDrawAlignment(Player.PlayerId, TextDrawId, (int) alignment);
             UpdatePlayers();
         }
 
@@ -166,7 +191,7 @@ namespace GameMode.World
         protected override void SetFont(TextDrawFont font)
         {
             if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawFont(Player.PlayerId, TextDrawId, (int)font);
+            Native.PlayerTextDrawFont(Player.PlayerId, TextDrawId, (int) font);
             UpdatePlayers();
         }
 
@@ -239,7 +264,5 @@ namespace GameMode.World
             Native.PlayerTextDrawSetPreviewVehCol(Player.PlayerId, TextDrawId, primaryColor, secondaryColor);
             UpdatePlayers();
         }
-
-        public virtual Player Player { get; private set; }
     }
 }

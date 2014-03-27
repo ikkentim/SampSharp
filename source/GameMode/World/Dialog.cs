@@ -1,4 +1,17 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameMode.Definitions;
@@ -7,37 +20,39 @@ using GameMode.Events;
 namespace GameMode.World
 {
     /// <summary>
-    /// Represents a SA:MP dialog.
+    ///     Represents a SA:MP dialog.
     /// </summary>
     public class Dialog
     {
-
         #region Fields
 
         /// <summary>
-        /// Contains all instances of Dialogs that are being shown to Players.
-        /// </summary>
-        protected static Dictionary<int, Dialog> OpenDialogs = new Dictionary<int,Dialog>();
-
-        /// <summary>
-        /// Gets an ID this system will use.
+        ///     Gets an ID this system will use.
         /// </summary>
         protected const int DialogId = 10000;
 
         /// <summary>
-        /// Gets an ID this system will use to hide Dialogs.
+        ///     Gets an ID this system will use to hide Dialogs.
         /// </summary>
         protected const int DialogHideId = -1;
+
+        /// <summary>
+        ///     Contains all instances of Dialogs that are being shown to Players.
+        /// </summary>
+        protected static Dictionary<int, Dialog> OpenDialogs = new Dictionary<int, Dialog>();
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the Dialog class.
+        ///     Initializes a new instance of the Dialog class.
         /// </summary>
         /// <param name="style">The style of the dialog.</param>
-        /// <param name="caption">The title at the top of the dialog. The length of the caption can not exceed more than 64 characters before it starts to cut off.</param>
+        /// <param name="caption">
+        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
+        ///     characters before it starts to cut off.
+        /// </param>
         /// <param name="message">The text to display in the main dialog. Use \n to start a new line and \t to tabulate.</param>
         /// <param name="button">The text on the left button.</param>
         public Dialog(DialogStyle style, string caption, string message, string button)
@@ -49,10 +64,13 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Initializes a new instance of the Dialog class.
+        ///     Initializes a new instance of the Dialog class.
         /// </summary>
         /// <param name="style">The style of the dialog.</param>
-        /// <param name="caption">The title at the top of the dialog. The length of the caption can not exceed more than 64 characters before it starts to cut off.</param>
+        /// <param name="caption">
+        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
+        ///     characters before it starts to cut off.
+        /// </param>
         /// <param name="message">The text to display in the main dialog. Use \n to start a new line and \t to tabulate.</param>
         /// <param name="button1">The text on the left button.</param>
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
@@ -70,27 +88,28 @@ namespace GameMode.World
         #region Properties
 
         /// <summary>
-        /// The style of the dialog.
+        ///     The style of the dialog.
         /// </summary>
         public DialogStyle Style { get; set; }
 
         /// <summary>
-        /// The title at the top of the dialog. The length of the caption can not exceed more than 64 characters before it starts to cut off.
+        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64 characters before it
+        ///     starts to cut off.
         /// </summary>
         public string Caption { get; set; }
 
         /// <summary>
-        /// The text to display in the main dialog. Use \n to start a new line and \t to tabulate.
+        ///     The text to display in the main dialog. Use \n to start a new line and \t to tabulate.
         /// </summary>
         public string Message { get; set; }
 
         /// <summary>
-        /// The text on the left button.
+        ///     The text on the left button.
         /// </summary>
         public string Button1 { get; set; }
 
         /// <summary>
-        /// The text on the right button. Leave it blank to hide it.
+        ///     The text on the right button. Leave it blank to hide it.
         /// </summary>
         public string Button2 { get; set; }
 
@@ -99,9 +118,10 @@ namespace GameMode.World
         #region Events
 
         /// <summary>
-        /// Occurs when the <see cref="BaseMode.OnDialogResponse"/> is being called.
-        /// This callback is called when a player responds to a dialog by either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a <see cref="DialogStyle.List"/>).
-        /// This callback is called when a player connects to the server.
+        ///     Occurs when the <see cref="BaseMode.OnDialogResponse" /> is being called.
+        ///     This callback is called when a player responds to a dialog by either clicking a button, pressing ENTER/ESC or
+        ///     double-clicking a list item (if using a <see cref="DialogStyle.List" />).
+        ///     This callback is called when a player connects to the server.
         /// </summary>
         public event DialogResponseHandler Response;
 
@@ -110,15 +130,15 @@ namespace GameMode.World
         #region Methods
 
         /// <summary>
-        /// Registers all events the Dialog class listens to.
+        ///     Registers all events the Dialog class listens to.
         /// </summary>
         /// <param name="gameMode">An instance of the BaseMode to which to listen.</param>
-        /// <param name="cast">A function to get a <see cref="Dialog"/> object from a dialogid.</param>
+        /// <param name="cast">A function to get a <see cref="Dialog" /> object from a dialogid.</param>
         protected static void RegisterEvents(BaseMode gameMode, Func<int, Dialog> cast)
         {
             gameMode.DialogResponse += (sender, args) =>
             {
-                var dialog = cast(args.PlayerId);
+                Dialog dialog = cast(args.PlayerId);
                 if (dialog != null) dialog.OnResponse(args);
             };
 
@@ -126,7 +146,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Registers all events the Dialog class listens to.
+        ///     Registers all events the Dialog class listens to.
         /// </summary>
         /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
         public static void RegisterEvents(BaseMode gameMode)
@@ -135,7 +155,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Shows the dialog box to a Player.
+        ///     Shows the dialog box to a Player.
         /// </summary>
         /// <param name="player">The Player to show the dialog to.</param>
         public virtual void Show(Player player)
@@ -147,7 +167,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Hides all dialogs for a Player. 
+        ///     Hides all dialogs for a Player.
         /// </summary>
         /// <param name="player">The Player to hide all dialogs from.</param>
         public static void Hide(Player player)
@@ -159,9 +179,9 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Raises the <see cref="Response"/> event.
+        ///     Raises the <see cref="Response" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="DialogResponseEventArgs"/> that contains the event data. </param>
+        /// <param name="e">An <see cref="DialogResponseEventArgs" /> that contains the event data. </param>
         public virtual void OnResponse(DialogResponseEventArgs e)
         {
             OpenDialogs.Remove(e.PlayerId);
@@ -171,6 +191,5 @@ namespace GameMode.World
         }
 
         #endregion
-
     }
 }
