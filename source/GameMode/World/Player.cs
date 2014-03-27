@@ -1033,7 +1033,7 @@ namespace GameMode.World
         /// <param name="materialcolor1">The first object color to set, as an integer or hex in ARGB color format.</param>
         /// <param name="materialcolor2">The second object color to set, as an integer or hex in ARGB color format.</param>
         /// <returns>True on success, False otherwise.</returns>
-        public virtual bool SetAttachedObject(int index, int modelid, int bone, Vector offset, Rotation rotation,
+        public virtual bool SetAttachedObject(int index, int modelid, int bone, Vector offset, Vector rotation,
             Vector scale, Color materialcolor1, Color materialcolor2)
         {
             return Native.SetPlayerAttachedObject(PlayerId, index, modelid, bone, offset.X, offset.Y, offset.Z,

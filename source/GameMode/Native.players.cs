@@ -1980,7 +1980,7 @@ namespace GameMode
         /// <param name="materialcolor2">The second object color to set, as an integer or hex in ARGB color format.</param>
         /// <returns>True on success, False otherwise.</returns>
         public static bool SetPlayerAttachedObject(int playerid, int index, int modelid, int bone, Vector offset,
-            Rotation rotation, Vector scale, int materialcolor1, int materialcolor2)
+            Vector rotation, Vector scale, int materialcolor1, int materialcolor2)
         {
             return SetPlayerAttachedObject(playerid, index, modelid, bone, offset.X, offset.Y, offset.Z, rotation.X,
                 rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z, materialcolor1, materialcolor2);
@@ -2022,7 +2022,7 @@ namespace GameMode
         ///     camera further away.
         /// </param>
         /// <returns>This function doesn't return a specific value.</returns>
-        public static bool PlayerTextDrawSetPreviewRot(int playerid, int text, Rotation rotation, float fZoom)
+        public static bool PlayerTextDrawSetPreviewRot(int playerid, int text, Vector rotation, float fZoom)
         {
             return PlayerTextDrawSetPreviewRot(playerid, text, rotation.X, rotation.Y, rotation.Z, fZoom);
         }

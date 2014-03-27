@@ -124,6 +124,7 @@
     <Compile Include="World\ColorFormat.cs" />
     <Compile Include="World\Dialog.cs" />
     <Compile Include="World\GangZone.cs" />
+    <Compile Include="World\GlobalObject.cs" />
     <Compile Include="World\Player.cs" />
     <Compile Include="World\PlayerTextDraw.cs" />
     <Compile Include="World\PlayerTextLabel.cs" />
@@ -131,7 +132,6 @@
     <Compile Include="World\TextLabel.cs" />
     <Compile Include="World\Timer.cs" />
     <Compile Include="World\Vector.cs" />
-    <Compile Include="World\Rotation.cs" />
     <Compile Include="World\Vehicle.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
