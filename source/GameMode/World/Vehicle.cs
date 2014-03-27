@@ -1,4 +1,17 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameMode.Definitions;
@@ -8,28 +21,27 @@ namespace GameMode.World
 {
     public class Vehicle : IDisposable
     {
-
         #region Fields
 
         /// <summary>
-        /// Contains all instances of Vehicles.
-        /// </summary>
-        protected static List<Vehicle> Instances = new List<Vehicle>();
-
-        /// <summary>
-        /// Gets an ID commonly returned by methods to point out that no vehicle matched the requirements.
+        ///     Gets an ID commonly returned by methods to point out that no vehicle matched the requirements.
         /// </summary>
         public const int InvalidId = Misc.InvalidVehicleId;
+
+        /// <summary>
+        ///     Contains all instances of Vehicles.
+        /// </summary>
+        protected static List<Vehicle> Instances = new List<Vehicle>();
 
         #endregion
 
         #region Factories
 
         /// <summary>
-        /// Returns an instance of <see cref="Vehicle"/> that deals with <paramref name="vehicleId"/>.
+        ///     Returns an instance of <see cref="Vehicle" /> that deals with <paramref name="vehicleId" />.
         /// </summary>
         /// <param name="vehicleId">The ID of the vehicle we are dealing with.</param>
-        /// <returns>An instance of <see cref="Vehicle"/>.</returns>
+        /// <returns>An instance of <see cref="Vehicle" />.</returns>
         public static Vehicle Find(int vehicleId)
         {
             //Find player in memory or initialize new player
@@ -41,7 +53,7 @@ namespace GameMode.World
         #region Constructors
 
         /// <summary>
-        /// Initalizes a new instance of the Vehicle class.
+        ///     Initalizes a new instance of the Vehicle class.
         /// </summary>
         /// <param name="vehicleId">The ID of the vehicle to initialize.</param>
         protected Vehicle(int vehicleId)
@@ -54,23 +66,24 @@ namespace GameMode.World
         #region Properties
 
         /// <summary>
-        /// Gets the ID of this Vehicle.
+        ///     Gets the ID of this Vehicle.
         /// </summary>
         public int VehicleId { get; private set; }
 
         /// <summary>
-        /// Gets a readonly set of all <see cref="Vehicle"/> instances.
+        ///     Gets a readonly set of all <see cref="Vehicle" /> instances.
         /// </summary>
         public static IReadOnlyCollection<Vehicle> All
         {
             get { return Instances.AsReadOnly(); }
         }
+
         #endregion
 
         #region Vehicles natives
 
         /// <summary>
-        /// Gets whether this Vehicle has been created and still is alive.
+        ///     Gets whether this Vehicle has been created and still is alive.
         /// </summary>
         public virtual bool IsValid
         {
@@ -78,7 +91,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets or sets the position of this Vehicle.
+        ///     Gets or sets the position of this Vehicle.
         /// </summary>
         public virtual Vector Position
         {
@@ -87,7 +100,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets or sets the z rotation of this Vehicle.
+        ///     Gets or sets the z rotation of this Vehicle.
         /// </summary>
         public virtual float Angle
         {
@@ -96,7 +109,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets the model ID of this Vehicle.
+        ///     Gets the model ID of this Vehicle.
         /// </summary>
         public virtual int Model
         {
@@ -104,7 +117,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets whether this Vehicle has a trailer attached to it.
+        ///     Gets whether this Vehicle has a trailer attached to it.
         /// </summary>
         public virtual bool HasTrailer
         {
@@ -112,7 +125,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets or sets the the trailer attached to this Vehicle.
+        ///     Gets or sets the the trailer attached to this Vehicle.
         /// </summary>
         /// <returns>The trailer attached.</returns>
         public virtual Vehicle Trailer
@@ -132,7 +145,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        ///  Gets or sets the velocity at which this Vehicle is moving.
+        ///     Gets or sets the velocity at which this Vehicle is moving.
         /// </summary>
         public virtual Vector Velocity
         {
@@ -141,7 +154,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets or sets the virtual world of this Vehicle.
+        ///     Gets or sets the virtual world of this Vehicle.
         /// </summary>
         public virtual int VirtualWorld
         {
@@ -150,7 +163,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets this Vehicle's engine status. If True, the engine is running.
+        ///     Gets this Vehicle's engine status. If True, the engine is running.
         /// </summary>
         public virtual bool Engine
         {
@@ -163,7 +176,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets this Vehicle's lights' state. If True the lights are on.
+        ///     Gets this Vehicle's lights' state. If True the lights are on.
         /// </summary>
         public virtual bool Lights
         {
@@ -176,7 +189,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets this Vehicle's alarm state. If True the alarm is (or was) sounding.
+        ///     Gets this Vehicle's alarm state. If True the alarm is (or was) sounding.
         /// </summary>
         public virtual bool Alarm
         {
@@ -189,7 +202,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets the lock status of the doors of this Vehicle. If True the doors are locked.
+        ///     Gets the lock status of the doors of this Vehicle. If True the doors are locked.
         /// </summary>
         public virtual bool Doors
         {
@@ -202,7 +215,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets the bonnet/hood status of this Vehicle. If True, it's open.
+        ///     Gets the bonnet/hood status of this Vehicle. If True, it's open.
         /// </summary>
         public virtual bool Bonnet
         {
@@ -215,7 +228,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets the boot/trunk status of this Vehicle. True means it is open.
+        ///     Gets the boot/trunk status of this Vehicle. True means it is open.
         /// </summary>
         public virtual bool Boot
         {
@@ -228,7 +241,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets the objective status of this Vehicle. True means the objective is on.
+        ///     Gets the objective status of this Vehicle. True means the objective is on.
         /// </summary>
         public virtual bool Objective
         {
@@ -245,77 +258,80 @@ namespace GameMode.World
         #region Events
 
         /// <summary>
-        /// Occurs when the <see cref="BaseMode.OnVehicleSpawn"/> is being called.
-        /// This callback is called when a vehicle spawns.
+        ///     Occurs when the <see cref="BaseMode.OnVehicleSpawn" /> is being called.
+        ///     This callback is called when a vehicle spawns.
         /// </summary>
         public event VehicleHandler Spawn;
 
         /// <summary>
-        /// Occurs when the <see cref="BaseMode.OnVehicleDeath"/> is being called.
-        /// This callback is called when a vehicle is destroyed - either by exploding or becoming submerged in water.
+        ///     Occurs when the <see cref="BaseMode.OnVehicleDeath" /> is being called.
+        ///     This callback is called when a vehicle is destroyed - either by exploding or becoming submerged in water.
         /// </summary>
         public event PlayerVehicleHandler Died;
 
         /// <summary>
-        /// Occurs when the <see cref="BaseMode.OnPlayerEnterVehicle"/> is being called.
-        /// This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the time this callback is called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerEnterVehicle" /> is being called.
+        ///     This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the
+        ///     time this callback is called.
         /// </summary>
         public event PlayerEnterVehicleHandler PlayerEnter;
 
         /// <summary>
-        /// Occurs when the <see cref="BaseMode.OnPlayerExitVehicle"/> is being called.
-        /// This callback is called when a player exits a vehicle.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerExitVehicle" /> is being called.
+        ///     This callback is called when a player exits a vehicle.
         /// </summary>
         public event PlayerVehicleHandler PlayerExit;
 
         /// <summary>
-        /// Occurs when the <see cref="BaseMode.OnVehicleMod"/> is being called.
-        /// This callback is called when a vehicle is modded.
+        ///     Occurs when the <see cref="BaseMode.OnVehicleMod" /> is being called.
+        ///     This callback is called when a vehicle is modded.
         /// </summary>
         public event VehicleModHandler Mod;
 
         /// <summary>
-        /// Occurs when the <see cref="BaseMode.OnVehiclePaintjob"/> is being called.
-        /// Called when a player changes the paintjob of their vehicle (in a modshop).
+        ///     Occurs when the <see cref="BaseMode.OnVehiclePaintjob" /> is being called.
+        ///     Called when a player changes the paintjob of their vehicle (in a modshop).
         /// </summary>
         public event VehiclePaintjobHandler PaintjobApplied;
 
         /// <summary>
-        /// Occurs when the <see cref="BaseMode.OnVehicleRespray"/> is being called.
-        ///  The callback name is deceptive, this callback is called when a player exits a mod shop, regardless of whether the vehicle's colors were changed, and is NEVER called for pay 'n' spray garages.
+        ///     Occurs when the <see cref="BaseMode.OnVehicleRespray" /> is being called.
+        ///     The callback name is deceptive, this callback is called when a player exits a mod shop, regardless of whether the
+        ///     vehicle's colors were changed, and is NEVER called for pay 'n' spray garages.
         /// </summary>
         public event VehicleResprayedHandler Resprayed;
 
         /// <summary>
-        /// Occurs when the <see cref="BaseMode.OnVehicleDamageStatusUpdate"/> is being called.
-        /// This callback is called when a vehicle element such as doors, tires, panels, or lights get damaged.
+        ///     Occurs when the <see cref="BaseMode.OnVehicleDamageStatusUpdate" /> is being called.
+        ///     This callback is called when a vehicle element such as doors, tires, panels, or lights get damaged.
         /// </summary>
         public event PlayerVehicleHandler DamageStatusUpdated;
 
         /// <summary>
-        /// Occurs when the <see cref="BaseMode.OnUnoccupiedVehicleUpdate"/> is being called.
-        /// This callback is called everytime an unoccupied vehicle updates the server with their status.
+        ///     Occurs when the <see cref="BaseMode.OnUnoccupiedVehicleUpdate" /> is being called.
+        ///     This callback is called everytime an unoccupied vehicle updates the server with their status.
         /// </summary>
         public event UnoccupiedVehicleUpdatedHandler UnoccupiedUpdate;
 
         /// <summary>
-        /// Occurs when the <see cref="BaseMode.OnVehicleStreamIn"/> is being called.
-        /// Called when a vehicle is streamed to a player's client.
+        ///     Occurs when the <see cref="BaseMode.OnVehicleStreamIn" /> is being called.
+        ///     Called when a vehicle is streamed to a player's client.
         /// </summary>
         public event PlayerVehicleHandler StreamIn;
 
         /// <summary>
-        /// Occurs when the <see cref="BaseMode.OnVehicleStreamOut"/> is being called.
-        /// This callback is called when a vehicle is streamed out from some player's client.
+        ///     Occurs when the <see cref="BaseMode.OnVehicleStreamOut" /> is being called.
+        ///     This callback is called when a vehicle is streamed out from some player's client.
         /// </summary>
         public event PlayerVehicleHandler StreamOut;
-       
+
         #endregion
 
         #region Vehicles natives
 
         /// <summary>
-        /// This function can be used to calculate the distance (as a float) between this Vehicle and another map coordinate. This can be useful to detect how far a vehicle away is from a location.
+        ///     This function can be used to calculate the distance (as a float) between this Vehicle and another map coordinate.
+        ///     This can be useful to detect how far a vehicle away is from a location.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns>A float containing the distance from the point specified in the coordinates.</returns>
@@ -325,19 +341,22 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Creates a vehicle in the world.
+        ///     Creates a vehicle in the world.
         /// </summary>
         /// <param name="vehicletype">The model for the vehicle.</param>
         /// <param name="position">The coordinates for the vehicle.</param>
         /// <param name="rotation">The facing angle for the vehicle.</param>
         /// <param name="color1">The primary color ID.</param>
         /// <param name="color2">The secondary color ID.</param>
-        /// <param name="respawnDelay">The delay until the car is respawned without a driver in seconds. Using -1 will prevent the vehicle from respawning.</param>
+        /// <param name="respawnDelay">
+        ///     The delay until the car is respawned without a driver in seconds. Using -1 will prevent the
+        ///     vehicle from respawning.
+        /// </param>
         /// <returns> The vehicle created.</returns>
-
-        public static Vehicle Create(int vehicletype, Vector position, float rotation, int color1, int color2, int respawnDelay)
+        public static Vehicle Create(int vehicletype, Vector position, float rotation, int color1, int color2,
+            int respawnDelay)
         {
-            var id = new[] {449, 537, 538, 569, 570, 590}.Contains(vehicletype)
+            int id = new[] {449, 537, 538, 569, 570, 590}.Contains(vehicletype)
                 ? Native.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
                     respawnDelay)
                 : Native.CreateVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
@@ -347,26 +366,29 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Creates a static vehicle in the world.
+        ///     Creates a static vehicle in the world.
         /// </summary>
         /// <param name="vehicletype">The model for the vehicle.</param>
         /// <param name="position">The coordinates for the vehicle.</param>
         /// <param name="rotation">The facing angle for the vehicle.</param>
         /// <param name="color1">The primary color ID.</param>
         /// <param name="color2">The secondary color ID.</param>
-        /// <param name="respawnDelay">The delay until the car is respawned without a driver in seconds. Using -1 will prevent the vehicle from respawning.</param>
+        /// <param name="respawnDelay">
+        ///     The delay until the car is respawned without a driver in seconds. Using -1 will prevent the
+        ///     vehicle from respawning.
+        /// </param>
         /// <returns> The vehicle created.</returns>
-
-        public static Vehicle CreateStatic(int vehicletype, Vector position, float rotation, int color1, int color2, int respawnDelay)
+        public static Vehicle CreateStatic(int vehicletype, Vector position, float rotation, int color1, int color2,
+            int respawnDelay)
         {
-            var id = Native.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
-                    respawnDelay);
+            int id = Native.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
+                respawnDelay);
 
             return id == InvalidId ? null : Find(id);
         }
 
         /// <summary>
-        /// Creates a static vehicle in the world.
+        ///     Creates a static vehicle in the world.
         /// </summary>
         /// <param name="vehicletype">The model for the vehicle.</param>
         /// <param name="position">The coordinates for the vehicle.</param>
@@ -374,16 +396,15 @@ namespace GameMode.World
         /// <param name="color1">The primary color ID.</param>
         /// <param name="color2">The secondary color ID.</param>
         /// <returns> The vehicle created.</returns>
-
         public static Vehicle CreateStatic(int vehicletype, Vector position, float rotation, int color1, int color2)
         {
-            var id = Native.AddStaticVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2);
+            int id = Native.AddStaticVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2);
 
             return id == InvalidId ? null : Find(id);
         }
 
         /// <summary>
-        /// Checks if this Vehicle is streamed in for a Player.
+        ///     Checks if this Vehicle is streamed in for a Player.
         /// </summary>
         /// <param name="forplayer">The Player to check.</param>
         /// <returns>False: Vehicle is not streamed in for the Player. False: Vehicle is streamed in for the Player.</returns>
@@ -393,7 +414,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Returns this Vehicle's rotation on all axis as a quaternion.
+        ///     Returns this Vehicle's rotation on all axis as a quaternion.
         /// </summary>
         /// <param name="w">A float variable in which to store the first quaternion angle, passed by reference.</param>
         /// <param name="x">A float variable in which to store the second quaternion angle, passed by reference.</param>
@@ -406,7 +427,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Set the parameters of this Vehicle for a Player.
+        ///     Set the parameters of this Vehicle for a Player.
         /// </summary>
         /// <param name="player">The Player to set this Vehicle's parameters for.</param>
         /// <param name="objective">False to disable the objective or True to show it.</param>
@@ -418,7 +439,9 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Use this function before any player connects (<see cref="BaseMode.OnGameModeInit"/>) to tell all clients that the script will control vehicle engines and lights. This prevents the game automatically turning the engine on/off when players enter/exit vehicles and headlights automatically coming on when it is dark.
+        ///     Use this function before any player connects (<see cref="BaseMode.OnGameModeInit" />) to tell all clients that the
+        ///     script will control vehicle engines and lights. This prevents the game automatically turning the engine on/off when
+        ///     players enter/exit vehicles and headlights automatically coming on when it is dark.
         /// </summary>
         public static void ManualEngineAndLights()
         {
@@ -426,7 +449,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Sets this Vehicle's parameters for all players.
+        ///     Sets this Vehicle's parameters for all players.
         /// </summary>
         /// <param name="engine">Toggle the engine status on or off.</param>
         /// <param name="lights">Toggle the lights on or off.</param>
@@ -443,7 +466,7 @@ namespace GameMode.World
 
 
         /// <summary>
-        /// Gets this Vehicle's parameters.
+        ///     Gets this Vehicle's parameters.
         /// </summary>
         /// <param name="engine">Get the engine status. If True, the engine is running.</param>
         /// <param name="lights">Get the vehicle's lights' state. If True the lights are on.</param>
@@ -460,7 +483,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Sets this Vehicle back to the position at where it was created.
+        ///     Sets this Vehicle back to the position at where it was created.
         /// </summary>
         public virtual void Respawn()
         {
@@ -468,7 +491,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Links this Vehicle to the interior. This can be used for example for an arena/stadium.
+        ///     Links this Vehicle to the interior. This can be used for example for an arena/stadium.
         /// </summary>
         /// <param name="interiorid">Interior ID.</param>
         public virtual void LinkToInterior(int interiorid)
@@ -477,7 +500,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Adds a 'component' (often referred to as a 'mod' (modification)) to this Vehicle.
+        ///     Adds a 'component' (often referred to as a 'mod' (modification)) to this Vehicle.
         /// </summary>
         /// <param name="componentid">The ID of the component to add to the vehicle.</param>
         public virtual void AddComponent(int componentid)
@@ -486,7 +509,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Remove a component from the Vehicle.
+        ///     Remove a component from the Vehicle.
         /// </summary>
         /// <param name="componentid">ID of the component to remove.</param>
         public virtual void RemoveComponent(int componentid)
@@ -495,7 +518,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Change this Vehicle's primary and secondary colors.
+        ///     Change this Vehicle's primary and secondary colors.
         /// </summary>
         /// <param name="color1">The new vehicle's primary Color ID.</param>
         /// <param name="color2">The new vehicle's secondary Color ID.</param>
@@ -505,7 +528,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Change this Vehicle's paintjob (for plain colors see <see cref="ChangeColor"/>).
+        ///     Change this Vehicle's paintjob (for plain colors see <see cref="ChangeColor" />).
         /// </summary>
         /// <param name="paintjobid">The ID of the Paintjob to apply. Use 3 to remove a paintjob.</param>
         public virtual void ChangePaintjob(int paintjobid)
@@ -514,7 +537,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Set this Vehicle's numberplate, which supports olor embedding.
+        ///     Set this Vehicle's numberplate, which supports olor embedding.
         /// </summary>
         /// <param name="numberplate">The text that should be displayed on the numberplate. Color Embedding> is supported.</param>
         public virtual void SetNumberPlate(string numberplate)
@@ -523,7 +546,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Retreives the installed component ID from this Vehicle in a specific slot.
+        ///     Retreives the installed component ID from this Vehicle in a specific slot.
         /// </summary>
         /// <param name="slot">The component slot to check for components.</param>
         /// <returns>The ID of the component installed in the specified slot.</returns>
@@ -533,7 +556,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Find out what type of component a certain ID is.
+        ///     Find out what type of component a certain ID is.
         /// </summary>
         /// <param name="componentid">The component ID to check.</param>
         /// <returns>The component slot ID of the specified component.</returns>
@@ -543,7 +566,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Fully repairs this Vehicle, including visual damage (bumps, dents, scratches, popped tires etc.).
+        ///     Fully repairs this Vehicle, including visual damage (bumps, dents, scratches, popped tires etc.).
         /// </summary>
         public virtual void Repair()
         {
@@ -551,7 +574,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Sets the angular velocity of this Vehicle.
+        ///     Sets the angular velocity of this Vehicle.
         /// </summary>
         /// <param name="velocity">The amount of velocity in the angular directions.</param>
         public virtual void SetVehicleAngularVelocity(Vector velocity)
@@ -560,7 +583,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Retrieve the damage statuses of this Vehicle.
+        ///     Retrieve the damage statuses of this Vehicle.
         /// </summary>
         /// <param name="panels">A variable to store the panel damage data in, passed by reference.</param>
         /// <param name="doors">A variable to store the door damage data in, passed by reference.</param>
@@ -572,7 +595,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Sets the various visual damage statuses of this Vehicle, such as popped tires, broken lights and damaged panels.
+        ///     Sets the various visual damage statuses of this Vehicle, such as popped tires, broken lights and damaged panels.
         /// </summary>
         /// <param name="panels">A set of bits containing the panel damage status.</param>
         /// <param name="doors">A set of bits containing the door damage status.</param>
@@ -584,7 +607,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Retrieve information about a specific vehicle model such as the size or position of seats.
+        ///     Retrieve information about a specific vehicle model such as the size or position of seats.
         /// </summary>
         /// <param name="model">The vehicle model to get info of.</param>
         /// <param name="infotype">The type of information to retrieve.</param>
@@ -595,7 +618,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Retrieve information about this Vehicle's model such as the size or position of seats.
+        ///     Retrieve information about this Vehicle's model such as the size or position of seats.
         /// </summary>
         /// <param name="infotype">The type of information to retrieve.</param>
         /// <returns>The offset vector.</returns>
@@ -605,7 +628,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Destroys this Vehicle.
+        ///     Destroys this Vehicle.
         /// </summary>
         public virtual void Destroy()
         {
@@ -618,9 +641,9 @@ namespace GameMode.World
         #region Event raisers
 
         /// <summary>
-        /// Raises the <see cref="Spawn"/> event.
+        ///     Raises the <see cref="Spawn" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="VehicleEventArgs"/> that contains the event data. </param>
+        /// <param name="e">An <see cref="VehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnSpawn(VehicleEventArgs e)
         {
             if (Spawn != null)
@@ -628,9 +651,9 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Raises the <see cref="Died"/> event.
+        ///     Raises the <see cref="Died" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerVehicleEventArgs"/> that contains the event data. </param>
+        /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnDeath(PlayerVehicleEventArgs e)
         {
             if (Died != null)
@@ -638,9 +661,9 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Raises the <see cref="PlayerEnter"/> event.
+        ///     Raises the <see cref="PlayerEnter" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEnterVehicleEventArgs"/> that contains the event data. </param>
+        /// <param name="e">An <see cref="PlayerEnterVehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnPlayerEnter(PlayerEnterVehicleEventArgs e)
         {
             if (PlayerEnter != null)
@@ -648,9 +671,9 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Raises the <see cref="PlayerExit"/> event.
+        ///     Raises the <see cref="PlayerExit" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerVehicleEventArgs"/> that contains the event data. </param>
+        /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnPlayerExit(PlayerVehicleEventArgs e)
         {
             if (PlayerExit != null)
@@ -658,9 +681,9 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Raises the <see cref="Mod"/> event.
+        ///     Raises the <see cref="Mod" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="VehicleModEventArgs"/> that contains the event data. </param>
+        /// <param name="e">An <see cref="VehicleModEventArgs" /> that contains the event data. </param>
         public virtual void OnMod(VehicleModEventArgs e)
         {
             if (Mod != null)
@@ -668,9 +691,9 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Raises the <see cref="PaintjobApplied"/> event.
+        ///     Raises the <see cref="PaintjobApplied" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="VehiclePaintjobEventArgs"/> that contains the event data. </param>
+        /// <param name="e">An <see cref="VehiclePaintjobEventArgs" /> that contains the event data. </param>
         public virtual void OnPaintjobApplied(VehiclePaintjobEventArgs e)
         {
             if (PaintjobApplied != null)
@@ -678,9 +701,9 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Raises the <see cref="Resprayed"/> event.
+        ///     Raises the <see cref="Resprayed" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="VehicleEventArgs"/> that contains the event data. </param>
+        /// <param name="e">An <see cref="VehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnResprayed(VehicleResprayedEventArgs e)
         {
             if (Resprayed != null)
@@ -688,9 +711,9 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Raises the <see cref="DamageStatusUpdated"/> event.
+        ///     Raises the <see cref="DamageStatusUpdated" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="VehicleEventArgs"/> that contains the event data. </param>
+        /// <param name="e">An <see cref="VehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnDamageStatusUpdated(PlayerVehicleEventArgs e)
         {
             if (DamageStatusUpdated != null)
@@ -698,9 +721,9 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Raises the <see cref="UnoccupiedUpdate"/> event.
+        ///     Raises the <see cref="UnoccupiedUpdate" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="VehicleEventArgs"/> that contains the event data. </param>
+        /// <param name="e">An <see cref="VehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnUnoccupiedUpdate(UnoccupiedVehicleEventArgs e)
         {
             if (UnoccupiedUpdate != null)
@@ -708,9 +731,9 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Raises the <see cref="StreamIn"/> event.
+        ///     Raises the <see cref="StreamIn" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerVehicleEventArgs"/> that contains the event data. </param>
+        /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnStreamIn(PlayerVehicleEventArgs e)
         {
             if (StreamIn != null)
@@ -718,9 +741,9 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Raises the <see cref="StreamOut"/> event.
+        ///     Raises the <see cref="StreamOut" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerVehicleEventArgs"/> that contains the event data. </param>
+        /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnStreamOut(PlayerVehicleEventArgs e)
         {
             if (StreamOut != null)
@@ -732,10 +755,18 @@ namespace GameMode.World
         #region Methods
 
         /// <summary>
-        /// Registers all events the Vehicle class listens to.
+        ///     Removes this Vehicle from memory. It is best to dispose the object when the vehicle is destroyed.
+        /// </summary>
+        public virtual void Dispose()
+        {
+            Instances.Remove(this);
+        }
+
+        /// <summary>
+        ///     Registers all events the Vehicle class listens to.
         /// </summary>
         /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
-        /// <param name="cast">A function to get a <see cref="Vehicle"/> object from a vehicleid.</param>
+        /// <param name="cast">A function to get a <see cref="Vehicle" /> object from a vehicleid.</param>
         protected static void RegisterEvents(BaseMode gameMode, Func<int, Vehicle> cast)
         {
             gameMode.VehicleSpawned += (sender, args) => cast(args.VehicleId).OnSpawn(args);
@@ -752,7 +783,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Registers all events the Vehicle class listens to.
+        ///     Registers all events the Vehicle class listens to.
         /// </summary>
         /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
         public static void RegisterEvents(BaseMode gameMode)
@@ -768,14 +799,6 @@ namespace GameMode.World
         public override string ToString()
         {
             return string.Format("Vehicle(Id:{0}, Model: {1})", VehicleId, Model);
-        }
-
-        /// <summary>
-        /// Removes this Vehicle from memory. It is best to dispose the object when the vehicle is destroyed.
-        /// </summary>
-        public virtual void Dispose()
-        {
-            Instances.Remove(this);
         }
 
         #endregion

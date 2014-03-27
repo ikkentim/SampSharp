@@ -1,4 +1,17 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using GameMode.Definitions;
 
 namespace GameMode.World
@@ -6,9 +19,14 @@ namespace GameMode.World
     public class GangZone : IDisposable
     {
         /// <summary>
-        /// Gets an ID commonly returned by methods to point out that no GangZone matched the requirements.
+        ///     Gets an ID commonly returned by methods to point out that no GangZone matched the requirements.
         /// </summary>
         public const int InvalidId = Misc.InvalidGangZone;
+
+        public GangZone(float minX, float minY, float maxX, float maxY)
+        {
+            GangZoneId = Native.GangZoneCreate(minX, minY, maxX, maxY);
+        }
 
         public virtual float MinX { get; private set; }
 
@@ -22,9 +40,9 @@ namespace GameMode.World
 
         public virtual int GangZoneId { get; private set; }
 
-        public GangZone(float minX, float minY, float maxX, float maxY)
+        public virtual void Dispose()
         {
-            GangZoneId = Native.GangZoneCreate(minX, minY, maxX, maxY);
+            Native.GangZoneDestroy(GangZoneId);
         }
 
         public virtual void Show()
@@ -85,11 +103,6 @@ namespace GameMode.World
         public virtual void StopFlash(Player player)
         {
             Native.GangZoneStopFlashForPlayer(player.PlayerId, GangZoneId);
-        }
-
-        public virtual void Dispose()
-        {
-            Native.GangZoneDestroy(GangZoneId);
         }
     }
 }
