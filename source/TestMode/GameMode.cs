@@ -39,7 +39,19 @@ namespace TestMode
             Console.WriteLine("[MapAndreas] Test: " + MapAndreas.FindAverage(new Vector(1700, -1700, 0)));
 
             var label = new TextLabel("Test123", Color.Blue, new Vector(0, 0, 5), 100);
+
+            var obj = new GlobalObject(18764, new Vector(111.44f, -77.37f, 13.18f), new Vector(0.00f, 0.00f, 0.00f));
+
+            var m = new Vector(0, 0, 0.01f);
+            var t = new Timer(100, true);
+            t.Tick += (sender, args) =>
+            {
+                m = -m;
+                obj.Move(obj.Position.Add(m), 0.45f, obj.Rotation.Add(new Vector(1)));
+            };
+
             return base.OnGameModeInit();
+
         }
     }
 }
