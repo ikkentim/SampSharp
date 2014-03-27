@@ -129,6 +129,12 @@ namespace GameMode.World
                 Player.InvalidId, Vehicle.InvalidId, testLOS);
         }
 
+        public PlayerTextLabel(Player player, string text, Color color, Vector position, float drawDistance)
+            : this(player, text, color, position, drawDistance, true)
+        {
+
+        }
+
         public PlayerTextLabel(Player player, string text, Color color, Vector position, float drawDistance,
             bool testLOS, Player attachedPlayer)
         {
@@ -149,6 +155,12 @@ namespace GameMode.World
         }
 
         public PlayerTextLabel(Player player, string text, Color color, Vector position, float drawDistance,
+            Player attachedPlayer) : this(player, text, color, position, drawDistance, true, attachedPlayer)
+        {
+
+        }
+
+        public PlayerTextLabel(Player player, string text, Color color, Vector position, float drawDistance,
             bool testLOS, Vehicle attachedVehicle)
         {
             if (player == null)
@@ -165,6 +177,13 @@ namespace GameMode.World
 
             LabelId = Native.CreatePlayer3DTextLabel(player.PlayerId, text, color, position, drawDistance,
                 Player.InvalidId, attachedVehicle.VehicleId, testLOS);
+        }
+
+        public PlayerTextLabel(Player player, string text, Color color, Vector position, float drawDistance,
+            Vehicle attachedVehicle)
+            : this(player, text, color, position, drawDistance, true, attachedVehicle)
+        {
+
         }
 
         #endregion
