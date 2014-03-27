@@ -1,15 +1,27 @@
-﻿namespace GameMode.World
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+namespace GameMode.World
 {
     /// <summary>
-    /// Represents a hexidecimal color.
+    ///     Represents a hexidecimal color.
     /// </summary>
     public struct Color
     {
-
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the Color struct.
+        ///     Initializes a new instance of the Color struct.
         /// </summary>
         /// <param name="r">The red value of this Color.</param>
         /// <param name="g">The green value of this Color.</param>
@@ -25,7 +37,7 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the Color struct.
+        ///     Initializes a new instance of the Color struct.
         /// </summary>
         /// <param name="r">The red value of this Color.</param>
         /// <param name="g">The red value of this Color.</param>
@@ -40,7 +52,7 @@
 
 
         /// <summary>
-        /// Initializes a new instance of the Color struct.
+        ///     Initializes a new instance of the Color struct.
         /// </summary>
         /// <param name="color">The Color values to use for this Color.</param>
         public Color(Color color)
@@ -52,13 +64,13 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the Color struct.
+        ///     Initializes a new instance of the Color struct.
         /// </summary>
         /// <param name="color">The Color values to use for this Color.</param>
         public Color(int color)
             : this()
         {
-            var c = GetColorFromValue(color, ColorFormat.RGBA);//Default format
+            Color c = GetColorFromValue(color, ColorFormat.RGBA); //Default format
             R = c.R;
             G = c.G;
             B = c.B;
@@ -69,7 +81,7 @@
         #region Defaults
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFF0F8FF.
+        ///     Gets a system-defined color that has an ARGB value of #FFF0F8FF.
         /// </summary>
         public static Color AliceBlue
         {
@@ -78,7 +90,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFAEBD7.
+        ///     Gets a system-defined color that has an ARGB value of #FFFAEBD7.
         /// </summary>
         public static Color AntiqueWhite
         {
@@ -87,7 +99,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF00FFFF.
+        ///     Gets a system-defined color that has an ARGB value of #FF00FFFF.
         /// </summary>
         public static Color Aqua
         {
@@ -96,7 +108,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF7FFFD4.
+        ///     Gets a system-defined color that has an ARGB value of #FF7FFFD4.
         /// </summary>
         public static Color Aquamarine
         {
@@ -105,7 +117,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFF0FFFF.
+        ///     Gets a system-defined color that has an ARGB value of #FFF0FFFF.
         /// </summary>
         public static Color Azure
         {
@@ -114,7 +126,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFF5F5DC.
+        ///     Gets a system-defined color that has an ARGB value of #FFF5F5DC.
         /// </summary>
         public static Color Beige
         {
@@ -123,7 +135,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFE4C4.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFE4C4.
         /// </summary>
         public static Color Bisque
         {
@@ -132,7 +144,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF000000.
+        ///     Gets a system-defined color that has an ARGB value of #FF000000.
         /// </summary>
         public static Color Black
         {
@@ -141,7 +153,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFEBCD.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFEBCD.
         /// </summary>
         public static Color BlanchedAlmond
         {
@@ -150,7 +162,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF0000FF.
+        ///     Gets a system-defined color that has an ARGB value of #FF0000FF.
         /// </summary>
         public static Color Blue
         {
@@ -159,7 +171,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF8A2BE2.
+        ///     Gets a system-defined color that has an ARGB value of #FF8A2BE2.
         /// </summary>
         public static Color BlueViolet
         {
@@ -168,7 +180,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFA52A2A.
+        ///     Gets a system-defined color that has an ARGB value of #FFA52A2A.
         /// </summary>
         public static Color Brown
         {
@@ -177,7 +189,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFDEB887.
+        ///     Gets a system-defined color that has an ARGB value of #FFDEB887.
         /// </summary>
         public static Color BurlyWood
         {
@@ -186,7 +198,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF5F9EA0.
+        ///     Gets a system-defined color that has an ARGB value of #FF5F9EA0.
         /// </summary>
         public static Color CadetBlue
         {
@@ -195,7 +207,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF7FFF00.
+        ///     Gets a system-defined color that has an ARGB value of #FF7FFF00.
         /// </summary>
         public static Color Chartreuse
         {
@@ -204,7 +216,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFD2691E.
+        ///     Gets a system-defined color that has an ARGB value of #FFD2691E.
         /// </summary>
         public static Color Chocolate
         {
@@ -213,7 +225,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFF7F50.
+        ///     Gets a system-defined color that has an ARGB value of #FFFF7F50.
         /// </summary>
         public static Color Coral
         {
@@ -222,7 +234,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF6495ED.
+        ///     Gets a system-defined color that has an ARGB value of #FF6495ED.
         /// </summary>
         public static Color CornflowerBlue
         {
@@ -231,7 +243,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFF8DC.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFF8DC.
         /// </summary>
         public static Color Cornsilk
         {
@@ -240,7 +252,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFDC143C.
+        ///     Gets a system-defined color that has an ARGB value of #FFDC143C.
         /// </summary>
         public static Color Crimson
         {
@@ -249,7 +261,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF00FFFF.
+        ///     Gets a system-defined color that has an ARGB value of #FF00FFFF.
         /// </summary>
         public static Color Cyan
         {
@@ -258,7 +270,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF00008B.
+        ///     Gets a system-defined color that has an ARGB value of #FF00008B.
         /// </summary>
         public static Color DarkBlue
         {
@@ -267,7 +279,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF008B8B.
+        ///     Gets a system-defined color that has an ARGB value of #FF008B8B.
         /// </summary>
         public static Color DarkCyan
         {
@@ -276,7 +288,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFB8860B.
+        ///     Gets a system-defined color that has an ARGB value of #FFB8860B.
         /// </summary>
         public static Color DarkGoldenrod
         {
@@ -285,7 +297,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFA9A9A9.
+        ///     Gets a system-defined color that has an ARGB value of #FFA9A9A9.
         /// </summary>
         public static Color DarkGray
         {
@@ -294,7 +306,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF006400.
+        ///     Gets a system-defined color that has an ARGB value of #FF006400.
         /// </summary>
         public static Color DarkGreen
         {
@@ -303,7 +315,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFBDB76B.
+        ///     Gets a system-defined color that has an ARGB value of #FFBDB76B.
         /// </summary>
         public static Color DarkKhaki
         {
@@ -312,7 +324,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF8B008B.
+        ///     Gets a system-defined color that has an ARGB value of #FF8B008B.
         /// </summary>
         public static Color DarkMagenta
         {
@@ -321,7 +333,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF556B2F.
+        ///     Gets a system-defined color that has an ARGB value of #FF556B2F.
         /// </summary>
         public static Color DarkOliveGreen
         {
@@ -330,7 +342,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFF8C00.
+        ///     Gets a system-defined color that has an ARGB value of #FFFF8C00.
         /// </summary>
         public static Color DarkOrange
         {
@@ -339,7 +351,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF9932CC.
+        ///     Gets a system-defined color that has an ARGB value of #FF9932CC.
         /// </summary>
         public static Color DarkOrchid
         {
@@ -348,7 +360,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF8B0000.
+        ///     Gets a system-defined color that has an ARGB value of #FF8B0000.
         /// </summary>
         public static Color DarkRed
         {
@@ -357,7 +369,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFE9967A.
+        ///     Gets a system-defined color that has an ARGB value of #FFE9967A.
         /// </summary>
         public static Color DarkSalmon
         {
@@ -366,7 +378,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF8FBC8F.
+        ///     Gets a system-defined color that has an ARGB value of #FF8FBC8F.
         /// </summary>
         public static Color DarkSeaGreen
         {
@@ -375,7 +387,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF483D8B.
+        ///     Gets a system-defined color that has an ARGB value of #FF483D8B.
         /// </summary>
         public static Color DarkSlateBlue
         {
@@ -384,7 +396,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF2F4F4F.
+        ///     Gets a system-defined color that has an ARGB value of #FF2F4F4F.
         /// </summary>
         public static Color DarkSlateGray
         {
@@ -393,7 +405,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF00CED1.
+        ///     Gets a system-defined color that has an ARGB value of #FF00CED1.
         /// </summary>
         public static Color DarkTurquoise
         {
@@ -402,7 +414,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF9400D3.
+        ///     Gets a system-defined color that has an ARGB value of #FF9400D3.
         /// </summary>
         public static Color DarkViolet
         {
@@ -411,7 +423,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFF1493.
+        ///     Gets a system-defined color that has an ARGB value of #FFFF1493.
         /// </summary>
         public static Color DeepPink
         {
@@ -420,7 +432,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF00BFFF.
+        ///     Gets a system-defined color that has an ARGB value of #FF00BFFF.
         /// </summary>
         public static Color DeepSkyBlue
         {
@@ -429,7 +441,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF696969.
+        ///     Gets a system-defined color that has an ARGB value of #FF696969.
         /// </summary>
         public static Color DimGray
         {
@@ -438,7 +450,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF1E90FF.
+        ///     Gets a system-defined color that has an ARGB value of #FF1E90FF.
         /// </summary>
         public static Color DodgerBlue
         {
@@ -447,7 +459,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFB22222.
+        ///     Gets a system-defined color that has an ARGB value of #FFB22222.
         /// </summary>
         public static Color Firebrick
         {
@@ -456,7 +468,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFFAF0.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFFAF0.
         /// </summary>
         public static Color FloralWhite
         {
@@ -465,7 +477,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF228B22.
+        ///     Gets a system-defined color that has an ARGB value of #FF228B22.
         /// </summary>
         public static Color ForestGreen
         {
@@ -474,7 +486,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFF00FF.
+        ///     Gets a system-defined color that has an ARGB value of #FFFF00FF.
         /// </summary>
         public static Color Fuchsia
         {
@@ -483,7 +495,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFDCDCDC.
+        ///     Gets a system-defined color that has an ARGB value of #FFDCDCDC.
         /// </summary>
         public static Color Gainsboro
         {
@@ -492,7 +504,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFF8F8FF.
+        ///     Gets a system-defined color that has an ARGB value of #FFF8F8FF.
         /// </summary>
         public static Color GhostWhite
         {
@@ -501,7 +513,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFD700.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFD700.
         /// </summary>
         public static Color Gold
         {
@@ -510,7 +522,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFDAA520.
+        ///     Gets a system-defined color that has an ARGB value of #FFDAA520.
         /// </summary>
         public static Color Goldenrod
         {
@@ -519,7 +531,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF808080.
+        ///     Gets a system-defined color that has an ARGB value of #FF808080.
         /// </summary>
         public static Color Gray
         {
@@ -528,7 +540,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF008000.
+        ///     Gets a system-defined color that has an ARGB value of #FF008000.
         /// </summary>
         public static Color Green
         {
@@ -537,7 +549,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFADFF2F.
+        ///     Gets a system-defined color that has an ARGB value of #FFADFF2F.
         /// </summary>
         public static Color GreenYellow
         {
@@ -546,7 +558,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFF0FFF0.
+        ///     Gets a system-defined color that has an ARGB value of #FFF0FFF0.
         /// </summary>
         public static Color Honeydew
         {
@@ -555,7 +567,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFF69B4.
+        ///     Gets a system-defined color that has an ARGB value of #FFFF69B4.
         /// </summary>
         public static Color HotPink
         {
@@ -564,7 +576,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFCD5C5C.
+        ///     Gets a system-defined color that has an ARGB value of #FFCD5C5C.
         /// </summary>
         public static Color IndianRed
         {
@@ -573,7 +585,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF4B0082.
+        ///     Gets a system-defined color that has an ARGB value of #FF4B0082.
         /// </summary>
         public static Color Indigo
         {
@@ -582,7 +594,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFFFF0.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFFFF0.
         /// </summary>
         public static Color Ivory
         {
@@ -591,7 +603,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFF0E68C.
+        ///     Gets a system-defined color that has an ARGB value of #FFF0E68C.
         /// </summary>
         public static Color Khaki
         {
@@ -600,7 +612,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFE6E6FA.
+        ///     Gets a system-defined color that has an ARGB value of #FFE6E6FA.
         /// </summary>
         public static Color Lavender
         {
@@ -609,7 +621,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFF0F5.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFF0F5.
         /// </summary>
         public static Color LavenderBlush
         {
@@ -618,7 +630,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF7CFC00.
+        ///     Gets a system-defined color that has an ARGB value of #FF7CFC00.
         /// </summary>
         public static Color LawnGreen
         {
@@ -627,7 +639,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFFACD.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFFACD.
         /// </summary>
         public static Color LemonChiffon
         {
@@ -636,7 +648,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFADD8E6.
+        ///     Gets a system-defined color that has an ARGB value of #FFADD8E6.
         /// </summary>
         public static Color LightBlue
         {
@@ -645,7 +657,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFF08080.
+        ///     Gets a system-defined color that has an ARGB value of #FFF08080.
         /// </summary>
         public static Color LightCoral
         {
@@ -654,7 +666,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFE0FFFF.
+        ///     Gets a system-defined color that has an ARGB value of #FFE0FFFF.
         /// </summary>
         public static Color LightCyan
         {
@@ -663,7 +675,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFAFAD2.
+        ///     Gets a system-defined color that has an ARGB value of #FFFAFAD2.
         /// </summary>
         public static Color LightGoldenrodYellow
         {
@@ -672,7 +684,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFD3D3D3.
+        ///     Gets a system-defined color that has an ARGB value of #FFD3D3D3.
         /// </summary>
         public static Color LightGray
         {
@@ -681,7 +693,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF90EE90.
+        ///     Gets a system-defined color that has an ARGB value of #FF90EE90.
         /// </summary>
         public static Color LightGreen
         {
@@ -690,7 +702,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFB6C1.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFB6C1.
         /// </summary>
         public static Color LightPink
         {
@@ -699,7 +711,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFA07A.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFA07A.
         /// </summary>
         public static Color LightSalmon
         {
@@ -708,7 +720,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF20B2AA.
+        ///     Gets a system-defined color that has an ARGB value of #FF20B2AA.
         /// </summary>
         public static Color LightSeaGreen
         {
@@ -717,7 +729,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF87CEFA.
+        ///     Gets a system-defined color that has an ARGB value of #FF87CEFA.
         /// </summary>
         public static Color LightSkyBlue
         {
@@ -726,7 +738,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF778899.
+        ///     Gets a system-defined color that has an ARGB value of #FF778899.
         /// </summary>
         public static Color LightSlateGray
         {
@@ -735,7 +747,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFB0C4DE.
+        ///     Gets a system-defined color that has an ARGB value of #FFB0C4DE.
         /// </summary>
         public static Color LightSteelBlue
         {
@@ -744,7 +756,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFFFE0.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFFFE0.
         /// </summary>
         public static Color LightYellow
         {
@@ -753,7 +765,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF00FF00.
+        ///     Gets a system-defined color that has an ARGB value of #FF00FF00.
         /// </summary>
         public static Color Lime
         {
@@ -762,7 +774,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF32CD32.
+        ///     Gets a system-defined color that has an ARGB value of #FF32CD32.
         /// </summary>
         public static Color LimeGreen
         {
@@ -771,7 +783,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFAF0E6.
+        ///     Gets a system-defined color that has an ARGB value of #FFFAF0E6.
         /// </summary>
         public static Color Linen
         {
@@ -780,7 +792,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFF00FF.
+        ///     Gets a system-defined color that has an ARGB value of #FFFF00FF.
         /// </summary>
         public static Color Magenta
         {
@@ -789,7 +801,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF800000.
+        ///     Gets a system-defined color that has an ARGB value of #FF800000.
         /// </summary>
         public static Color Maroon
         {
@@ -798,7 +810,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF66CDAA.
+        ///     Gets a system-defined color that has an ARGB value of #FF66CDAA.
         /// </summary>
         public static Color MediumAquamarine
         {
@@ -807,7 +819,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF0000CD.
+        ///     Gets a system-defined color that has an ARGB value of #FF0000CD.
         /// </summary>
         public static Color MediumBlue
         {
@@ -816,7 +828,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFBA55D3.
+        ///     Gets a system-defined color that has an ARGB value of #FFBA55D3.
         /// </summary>
         public static Color MediumOrchid
         {
@@ -825,7 +837,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF9370DB.
+        ///     Gets a system-defined color that has an ARGB value of #FF9370DB.
         /// </summary>
         public static Color MediumPurple
         {
@@ -834,7 +846,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF3CB371.
+        ///     Gets a system-defined color that has an ARGB value of #FF3CB371.
         /// </summary>
         public static Color MediumSeaGreen
         {
@@ -843,7 +855,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF7B68EE.
+        ///     Gets a system-defined color that has an ARGB value of #FF7B68EE.
         /// </summary>
         public static Color MediumSlateBlue
         {
@@ -852,7 +864,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF00FA9A.
+        ///     Gets a system-defined color that has an ARGB value of #FF00FA9A.
         /// </summary>
         public static Color MediumSpringGreen
         {
@@ -861,7 +873,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF48D1CC.
+        ///     Gets a system-defined color that has an ARGB value of #FF48D1CC.
         /// </summary>
         public static Color MediumTurquoise
         {
@@ -870,7 +882,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFC71585.
+        ///     Gets a system-defined color that has an ARGB value of #FFC71585.
         /// </summary>
         public static Color MediumVioletRed
         {
@@ -879,7 +891,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF191970.
+        ///     Gets a system-defined color that has an ARGB value of #FF191970.
         /// </summary>
         public static Color MidnightBlue
         {
@@ -888,7 +900,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFF5FFFA.
+        ///     Gets a system-defined color that has an ARGB value of #FFF5FFFA.
         /// </summary>
         public static Color MintCream
         {
@@ -897,7 +909,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFE4E1.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFE4E1.
         /// </summary>
         public static Color MistyRose
         {
@@ -906,7 +918,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFE4B5.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFE4B5.
         /// </summary>
         public static Color Moccasin
         {
@@ -915,7 +927,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFDEAD.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFDEAD.
         /// </summary>
         public static Color NavajoWhite
         {
@@ -924,7 +936,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF000080.
+        ///     Gets a system-defined color that has an ARGB value of #FF000080.
         /// </summary>
         public static Color Navy
         {
@@ -933,7 +945,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFDF5E6.
+        ///     Gets a system-defined color that has an ARGB value of #FFFDF5E6.
         /// </summary>
         public static Color OldLace
         {
@@ -942,7 +954,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF808000.
+        ///     Gets a system-defined color that has an ARGB value of #FF808000.
         /// </summary>
         public static Color Olive
         {
@@ -951,7 +963,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF6B8E23.
+        ///     Gets a system-defined color that has an ARGB value of #FF6B8E23.
         /// </summary>
         public static Color OliveDrab
         {
@@ -960,7 +972,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFA500.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFA500.
         /// </summary>
         public static Color Orange
         {
@@ -969,7 +981,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFF4500.
+        ///     Gets a system-defined color that has an ARGB value of #FFFF4500.
         /// </summary>
         public static Color OrangeRed
         {
@@ -978,7 +990,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFDA70D6.
+        ///     Gets a system-defined color that has an ARGB value of #FFDA70D6.
         /// </summary>
         public static Color Orchid
         {
@@ -987,7 +999,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFEEE8AA.
+        ///     Gets a system-defined color that has an ARGB value of #FFEEE8AA.
         /// </summary>
         public static Color PaleGoldenrod
         {
@@ -996,7 +1008,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF98FB98.
+        ///     Gets a system-defined color that has an ARGB value of #FF98FB98.
         /// </summary>
         public static Color PaleGreen
         {
@@ -1005,7 +1017,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFAFEEEE.
+        ///     Gets a system-defined color that has an ARGB value of #FFAFEEEE.
         /// </summary>
         public static Color PaleTurquoise
         {
@@ -1014,7 +1026,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFDB7093.
+        ///     Gets a system-defined color that has an ARGB value of #FFDB7093.
         /// </summary>
         public static Color PaleVioletRed
         {
@@ -1023,7 +1035,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFEFD5.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFEFD5.
         /// </summary>
         public static Color PapayaWhip
         {
@@ -1032,7 +1044,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFDAB9.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFDAB9.
         /// </summary>
         public static Color PeachPuff
         {
@@ -1041,7 +1053,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFCD853F.
+        ///     Gets a system-defined color that has an ARGB value of #FFCD853F.
         /// </summary>
         public static Color Peru
         {
@@ -1050,7 +1062,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFC0CB.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFC0CB.
         /// </summary>
         public static Color Pink
         {
@@ -1059,7 +1071,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFDDA0DD.
+        ///     Gets a system-defined color that has an ARGB value of #FFDDA0DD.
         /// </summary>
         public static Color Plum
         {
@@ -1068,7 +1080,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFB0E0E6.
+        ///     Gets a system-defined color that has an ARGB value of #FFB0E0E6.
         /// </summary>
         public static Color PowderBlue
         {
@@ -1077,7 +1089,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF800080.
+        ///     Gets a system-defined color that has an ARGB value of #FF800080.
         /// </summary>
         public static Color Purple
         {
@@ -1086,7 +1098,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFF0000.
+        ///     Gets a system-defined color that has an ARGB value of #FFFF0000.
         /// </summary>
         public static Color Red
         {
@@ -1095,7 +1107,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFBC8F8F.
+        ///     Gets a system-defined color that has an ARGB value of #FFBC8F8F.
         /// </summary>
         public static Color RosyBrown
         {
@@ -1104,7 +1116,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF4169E1.
+        ///     Gets a system-defined color that has an ARGB value of #FF4169E1.
         /// </summary>
         public static Color RoyalBlue
         {
@@ -1113,7 +1125,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF8B4513.
+        ///     Gets a system-defined color that has an ARGB value of #FF8B4513.
         /// </summary>
         public static Color SaddleBrown
         {
@@ -1122,7 +1134,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFA8072.
+        ///     Gets a system-defined color that has an ARGB value of #FFFA8072.
         /// </summary>
         public static Color Salmon
         {
@@ -1131,7 +1143,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFF4A460.
+        ///     Gets a system-defined color that has an ARGB value of #FFF4A460.
         /// </summary>
         public static Color SandyBrown
         {
@@ -1140,7 +1152,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF2E8B57.
+        ///     Gets a system-defined color that has an ARGB value of #FF2E8B57.
         /// </summary>
         public static Color SeaGreen
         {
@@ -1149,7 +1161,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFF5EE.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFF5EE.
         /// </summary>
         public static Color SeaShell
         {
@@ -1158,7 +1170,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFA0522D.
+        ///     Gets a system-defined color that has an ARGB value of #FFA0522D.
         /// </summary>
         public static Color Sienna
         {
@@ -1167,7 +1179,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFC0C0C0.
+        ///     Gets a system-defined color that has an ARGB value of #FFC0C0C0.
         /// </summary>
         public static Color Silver
         {
@@ -1176,7 +1188,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF87CEEB.
+        ///     Gets a system-defined color that has an ARGB value of #FF87CEEB.
         /// </summary>
         public static Color SkyBlue
         {
@@ -1185,7 +1197,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF6A5ACD.
+        ///     Gets a system-defined color that has an ARGB value of #FF6A5ACD.
         /// </summary>
         public static Color SlateBlue
         {
@@ -1194,7 +1206,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF708090.
+        ///     Gets a system-defined color that has an ARGB value of #FF708090.
         /// </summary>
         public static Color SlateGray
         {
@@ -1203,7 +1215,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFFAFA.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFFAFA.
         /// </summary>
         public static Color Snow
         {
@@ -1212,7 +1224,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF00FF7F.
+        ///     Gets a system-defined color that has an ARGB value of #FF00FF7F.
         /// </summary>
         public static Color SpringGreen
         {
@@ -1221,7 +1233,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF4682B4.
+        ///     Gets a system-defined color that has an ARGB value of #FF4682B4.
         /// </summary>
         public static Color SteelBlue
         {
@@ -1230,7 +1242,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFD2B48C.
+        ///     Gets a system-defined color that has an ARGB value of #FFD2B48C.
         /// </summary>
         public static Color Tan
         {
@@ -1239,7 +1251,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF008080.
+        ///     Gets a system-defined color that has an ARGB value of #FF008080.
         /// </summary>
         public static Color Teal
         {
@@ -1248,7 +1260,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFD8BFD8.
+        ///     Gets a system-defined color that has an ARGB value of #FFD8BFD8.
         /// </summary>
         public static Color Thistle
         {
@@ -1257,7 +1269,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFF6347.
+        ///     Gets a system-defined color that has an ARGB value of #FFFF6347.
         /// </summary>
         public static Color Tomato
         {
@@ -1265,7 +1277,7 @@
         }
 
         /// <summary>
-        /// Gets a system-defined color.
+        ///     Gets a system-defined color.
         /// </summary>
         public static Color Transparent
         {
@@ -1273,7 +1285,7 @@
         }
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF40E0D0.
+        ///     Gets a system-defined color that has an ARGB value of #FF40E0D0.
         /// </summary>
         public static Color Turquoise
         {
@@ -1282,7 +1294,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFEE82EE.
+        ///     Gets a system-defined color that has an ARGB value of #FFEE82EE.
         /// </summary>
         public static Color Violet
         {
@@ -1291,7 +1303,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFF5DEB3.
+        ///     Gets a system-defined color that has an ARGB value of #FFF5DEB3.
         /// </summary>
         public static Color Wheat
         {
@@ -1300,7 +1312,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFFFFF.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFFFFF.
         /// </summary>
         public static Color White
         {
@@ -1309,7 +1321,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFF5F5F5.
+        ///     Gets a system-defined color that has an ARGB value of #FFF5F5F5.
         /// </summary>
         public static Color WhiteSmoke
         {
@@ -1318,7 +1330,7 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FFFFFF00.
+        ///     Gets a system-defined color that has an ARGB value of #FFFFFF00.
         /// </summary>
         public static Color Yellow
         {
@@ -1327,36 +1339,34 @@
 
 
         /// <summary>
-        /// Gets a system-defined color that has an ARGB value of #FF9ACD32.
+        ///     Gets a system-defined color that has an ARGB value of #FF9ACD32.
         /// </summary>
         public static Color YellowGreen
         {
             get { return new Color(0x9A, 0xCD, 0x32, 0xFF); }
         }
 
-
-
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets or sets the red value of this Color.
+        ///     Gets or sets the red value of this Color.
         /// </summary>
         public byte R { get; set; }
 
         /// <summary>
-        /// Gets or sets the green value of this Color.
+        ///     Gets or sets the green value of this Color.
         /// </summary>
         public byte G { get; set; }
 
         /// <summary>
-        /// Gets or sets the blue value of this Color.
+        ///     Gets or sets the blue value of this Color.
         /// </summary>
         public byte B { get; set; }
 
         /// <summary>
-        /// Gets or sets the alpha value of this Color.
+        ///     Gets or sets the alpha value of this Color.
         /// </summary>
         public byte A { get; set; }
 
@@ -1365,7 +1375,7 @@
         #region Methods
 
         /// <summary>
-        /// Returns an Integer representation of this Color.
+        ///     Returns an Integer representation of this Color.
         /// </summary>
         /// <param name="colorFormat">The ColorFormat to use in the conversion.</param>
         /// <returns>An Integer representation of this Color.</returns>
@@ -1388,36 +1398,36 @@
         }
 
         /// <summary>
-        /// Returns an Color representation of this Integer.
+        ///     Returns an Color representation of this Integer.
         /// </summary>
         /// <param name="color">The color to convert.</param>
         /// <param name="colorFormat">The ColorFormat to use in the conversion.</param>
         /// <returns>An Color representation of this Integer.</returns>
         public static Color GetColorFromValue(int color, ColorFormat colorFormat)
         {
-            byte r = 0, 
-                g = 0, 
-                b = 0, 
+            byte r = 0,
+                g = 0,
+                b = 0,
                 a = 0;
 
             switch (colorFormat)
             {
                 case ColorFormat.ARGB:
                     b = (byte) (color & 0xFF);
-                    g = (byte)((color >>= 8) & 0xFF);
-                    r = (byte)((color >>= 8) & 0xFF);
-                    a = (byte)((color >> 8) & 0xFF);
+                    g = (byte) ((color >>= 8) & 0xFF);
+                    r = (byte) ((color >>= 8) & 0xFF);
+                    a = (byte) ((color >> 8) & 0xFF);
                     break;
                 case ColorFormat.RGBA:
                     a = (byte) (color & 0xFF);
-                    b = (byte)((color >>= 8) & 0xFF);
-                    g = (byte)((color >>= 8) & 0xFF);
-                    r = (byte)((color >> 8) & 0xFF);
+                    b = (byte) ((color >>= 8) & 0xFF);
+                    g = (byte) ((color >>= 8) & 0xFF);
+                    r = (byte) ((color >> 8) & 0xFF);
                     break;
                 case ColorFormat.RGB:
                     b = (byte) (color & 0xFF);
-                    g = (byte)((color >>= 8) & 0xFF);
-                    r = (byte)((color >> 8) & 0xFF);
+                    g = (byte) ((color >>= 8) & 0xFF);
+                    r = (byte) ((color >> 8) & 0xFF);
                     break;
             }
             return new Color(r, g, b, a);
@@ -1425,7 +1435,7 @@
 
         public static implicit operator int(Color color)
         {
-            return color.GetColorValue(ColorFormat.RGBA);//Default format
+            return color.GetColorValue(ColorFormat.RGBA); //Default format
         }
 
         public static implicit operator Color(int color)
@@ -1434,7 +1444,7 @@
         }
 
         /// <summary>
-        /// Returns a String representation of this Color.
+        ///     Returns a String representation of this Color.
         /// </summary>
         /// <param name="colorFormat">The format to use to convert the color to a string.</param>
         /// <returns>A String representation of this Color.</returns>
@@ -1450,7 +1460,7 @@
         }
 
         /// <summary>
-        /// Returns a String representation of this Color.
+        ///     Returns a String representation of this Color.
         /// </summary>
         /// <returns>A String representation of this Color.</returns>
         public override string ToString()
@@ -1459,6 +1469,5 @@
         }
 
         #endregion
-
     }
 }

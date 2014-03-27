@@ -1,40 +1,52 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using GameMode.Definitions;
 
 namespace GameMode.World
 {
     public class TextDraw : IDisposable
     {
-
         #region Fields
+
+        /// <summary>
+        ///     Gets an ID commonly returned by methods to point out that no textdraw matched the requirements.
+        /// </summary>
+        public const int InvalidId = Misc.InvalidTextDraw;
 
         private TextDrawAlignment _alignment;
         private Color _backColor;
-        private Color _foreColor;
         private Color _boxColor;
         private TextDrawFont _font;
-        private float _letterWidth;
+        private Color _foreColor;
+        private float _height;
         private float _letterHeight;
+        private float _letterWidth;
         private int _outline;
+        private int _previewModel;
+        private int _previewPrimaryColor = -1;
+        private Rotation _previewRotation;
+        private int _previewSecondaryColor = -1;
+        private float _previewZoom = 1;
         private bool _proportional;
+        private bool _selectable;
         private int _shadow;
         private string _text;
+        private bool _useBox;
+        private float _width;
         private float _x;
         private float _y;
-        private float _width;
-        private float _height;
-        private bool _useBox;
-        private bool _selectable;
-        private int _previewModel;
-        private Rotation _previewRotation;
-        private float _previewZoom = 1;
-        private int _previewPrimaryColor = -1;
-        private int _previewSecondaryColor = -1;
-
-        /// <summary>
-        /// Gets an ID commonly returned by methods to point out that no textdraw matched the requirements.
-        /// </summary>
-        public const int InvalidId = Misc.InvalidTextDraw;
 
         #endregion
 
@@ -262,10 +274,7 @@ namespace GameMode.World
             }
         }
 
-        public virtual int TextDrawId
-        {
-            get; protected set;
-        }
+        public virtual int TextDrawId { get; protected set; }
 
         #endregion
 
@@ -340,7 +349,9 @@ namespace GameMode.World
         public TextDraw(float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
             float letterHeight, float width, float height, TextDrawAlignment alignment, int shadow, int outline,
             Color backColor, bool proportional)
-            : this(x, y, text, font, foreColor, letterWidth, letterHeight, width, height, alignment, shadow, outline, backColor)
+            : this(
+                x, y, text, font, foreColor, letterWidth, letterHeight, width, height, alignment, shadow, outline,
+                backColor)
         {
             Proportional = proportional;
         }
@@ -348,6 +359,12 @@ namespace GameMode.World
         #endregion
 
         #region Methods
+
+        public virtual void Dispose()
+        {
+            if (TextDrawId < 0) return;
+            Native.TextDrawDestroy(TextDrawId);
+        }
 
         public virtual void Show()
         {
@@ -375,12 +392,6 @@ namespace GameMode.World
         {
             if (TextDrawId == -1 || player == null) return;
             Native.TextDrawHideForPlayer(player.PlayerId, TextDrawId);
-        }
-
-        public virtual void Dispose()
-        {
-            if (TextDrawId < 0) return;
-            Native.TextDrawDestroy(TextDrawId);
         }
 
         protected virtual void Create()
@@ -433,7 +444,7 @@ namespace GameMode.World
         protected virtual void SetAlignment(TextDrawAlignment alignment)
         {
             if (TextDrawId < 0) return;
-            Native.TextDrawAlignment(TextDrawId, (int)alignment);
+            Native.TextDrawAlignment(TextDrawId, (int) alignment);
             UpdatePlayers();
         }
 
@@ -468,7 +479,7 @@ namespace GameMode.World
         protected virtual void SetFont(TextDrawFont font)
         {
             if (TextDrawId < 0) return;
-            Native.TextDrawFont(TextDrawId, (int)font);
+            Native.TextDrawFont(TextDrawId, (int) font);
             UpdatePlayers();
         }
 
@@ -490,7 +501,7 @@ namespace GameMode.World
         {
             if (TextDrawId < 0) return;
             Native.TextDrawSetProportional(TextDrawId, proportional);
-            UpdatePlayers(); 
+            UpdatePlayers();
         }
 
         protected virtual void SetShadow(int shadow)
@@ -518,14 +529,14 @@ namespace GameMode.World
         {
             if (TextDrawId < 0) return;
             Native.TextDrawSetSelectable(TextDrawId, selectable);
-            UpdatePlayers(); 
+            UpdatePlayers();
         }
 
         protected virtual void SetPreviewModel(int model)
         {
             if (TextDrawId < 0) return;
             Native.TextDrawSetPreviewModel(TextDrawId, model);
-            UpdatePlayers(); 
+            UpdatePlayers();
         }
 
         protected virtual void SetPreviewRotation(Rotation rotation, float zoom)
@@ -539,10 +550,9 @@ namespace GameMode.World
         {
             if (TextDrawId < 0) return;
             Native.TextDrawSetPreviewVehCol(TextDrawId, primaryColor, secondaryColor);
-            UpdatePlayers(); 
+            UpdatePlayers();
         }
-        #endregion
 
-        
+        #endregion
     }
 }

@@ -1,4 +1,17 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using System.Runtime.CompilerServices;
 using GameMode.Definitions;
 using GameMode.World;
@@ -8,7 +21,10 @@ namespace GameMode
     public static partial class Native
     {
         /// <summary>
-        /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using SetPlayerSkin in OnPlayerSpawn and/or OnPlayerRequestClass, even though this has been fixed in 0.2.
+        ///     This function can be used to change the spawn information of a specific player. It allows you to automatically set
+        ///     someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn
+        ///     systems. This function is more crash-safe then using SetPlayerSkin in OnPlayerSpawn and/or OnPlayerRequestClass,
+        ///     even though this has been fixed in 0.2.
         /// </summary>
         /// <param name="playerid">The PlayerID of who you want to set the spawn information.</param>
         /// <param name="team">The Team-ID of the chosen player.</param>
@@ -29,7 +45,7 @@ namespace GameMode
             float rotation, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
 
         /// <summary>
-        /// (Re)Spawns a player.
+        ///     (Re)Spawns a player.
         /// </summary>
         /// <param name="playerid">The ID of the player to spawn.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -37,7 +53,7 @@ namespace GameMode
         public static extern bool SpawnPlayer(int playerid);
 
         /// <summary>
-        /// Set a player's position.
+        ///     Set a player's position.
         /// </summary>
         /// <param name="playerid">The ID of the player to set the position of.</param>
         /// <param name="x">The X coordinate to position the player at.</param>
@@ -48,7 +64,8 @@ namespace GameMode
         public static extern bool SetPlayerPos(int playerid, float x, float y, float z);
 
         /// <summary>
-        /// This sets the players position then adjusts the players z-coordinate to the nearest solid ground under the position.
+        ///     This sets the players position then adjusts the players z-coordinate to the nearest solid ground under the
+        ///     position.
         /// </summary>
         /// <param name="playerid">The ID of the player to set the position of.</param>
         /// <param name="x">The X coordinate to position the player at.</param>
@@ -59,7 +76,7 @@ namespace GameMode
         public static extern bool SetPlayerPosFindZ(int playerid, float x, float y, float z);
 
         /// <summary>
-        /// Get the X Y Z coordinates of a player.
+        ///     Get the X Y Z coordinates of a player.
         /// </summary>
         /// <param name="playerid">The ID of the player to get the position of</param>
         /// <param name="x">A float to store the X coordinate in, passed by reference.</param>
@@ -70,10 +87,11 @@ namespace GameMode
         public static extern bool GetPlayerPos(int playerid, out float x, out float y, out float z);
 
         /// <summary>
-        /// Set a player's facing angle.
+        ///     Set a player's facing angle.
         /// </summary>
         /// <remarks>
-        /// Angles are reversed in GTA:SA - 90 degrees would be East in the real world, but in GTA:SA 90 is in fact West. North and South are still 0/360 and 180. To convert this, simply do 360 - angle.
+        ///     Angles are reversed in GTA:SA - 90 degrees would be East in the real world, but in GTA:SA 90 is in fact West. North
+        ///     and South are still 0/360 and 180. To convert this, simply do 360 - angle.
         /// </remarks>
         /// <param name="playerid">The ID of the player to set the facing angle of.</param>
         /// <param name="angle">The angle the player should face.</param>
@@ -82,7 +100,7 @@ namespace GameMode
         public static extern bool SetPlayerFacingAngle(int playerid, float angle);
 
         /// <summary>
-        /// Return angle of the direction the player is facing.
+        ///     Return angle of the direction the player is facing.
         /// </summary>
         /// <param name="playerid">The player you want to get the angle of.</param>
         /// <param name="angle">The Float to store the angle in, passed by reference.</param>
@@ -91,7 +109,7 @@ namespace GameMode
         public static extern bool GetPlayerFacingAngle(int playerid, out float angle);
 
         /// <summary>
-        /// Check if a player is in range of a point.
+        ///     Check if a player is in range of a point.
         /// </summary>
         /// <param name="playerid">The ID of the player.</param>
         /// <param name="range">The furthest distance the player can be from the point to be in range.</param>
@@ -103,7 +121,7 @@ namespace GameMode
         public static extern bool IsPlayerInRangeOfPoint(int playerid, float range, float x, float y, float z);
 
         /// <summary>
-        /// Calculate the distance between a player and a map coordinate.
+        ///     Calculate the distance between a player and a map coordinate.
         /// </summary>
         /// <param name="playerid">The ID of the player to calculate the distance from.</param>
         /// <param name="x">The X map coordinate.</param>
@@ -114,13 +132,13 @@ namespace GameMode
         public static extern float GetPlayerDistanceFromPoint(int playerid, float x, float y, float z);
 
         /// <summary>
-        /// Checks if a player is streamed in another player's client.
+        ///     Checks if a player is streamed in another player's client.
         /// </summary>
         /// <remarks>
-        /// Players aren't streamed in on their own client, so if playerid is the same as forplayerid it will return false!
+        ///     Players aren't streamed in on their own client, so if playerid is the same as forplayerid it will return false!
         /// </remarks>
         /// <remarks>
-        /// Players stream out if they are more than 150 meters away (see server.cfg - stream_distance)
+        ///     Players stream out if they are more than 150 meters away (see server.cfg - stream_distance)
         /// </remarks>
         /// <param name="playerid">The ID of the player to check is streamed in.</param>
         /// <param name="forplayerid">The ID of the player to check if playerid is streamed in for.</param>
@@ -129,7 +147,7 @@ namespace GameMode
         public static extern bool IsPlayerStreamedIn(int playerid, int forplayerid);
 
         /// <summary>
-        /// Set the player's interior.
+        ///     Set the player's interior.
         /// </summary>
         /// <param name="playerid">The ID of the player to setthe interior of.</param>
         /// <param name="interiorid">The interior ID to set the player in.</param>
@@ -138,7 +156,7 @@ namespace GameMode
         public static extern bool SetPlayerInterior(int playerid, int interiorid);
 
         /// <summary>
-        /// Retrieves the player's current interior.
+        ///     Retrieves the player's current interior.
         /// </summary>
         /// <param name="playerid">The player to get the interior ID of.</param>
         /// <returns>The interior ID the player is currently in.</returns>
@@ -146,7 +164,7 @@ namespace GameMode
         public static extern int GetPlayerInterior(int playerid);
 
         /// <summary>
-        /// Set the health level of a player.
+        ///     Set the health level of a player.
         /// </summary>
         /// <param name="playerid">The ID of the player to set the health of.</param>
         /// <param name="health">The value to set the player's health to.</param>
@@ -155,7 +173,8 @@ namespace GameMode
         public static extern bool SetPlayerHealth(int playerid, float health);
 
         /// <summary>
-        /// The function GetPlayerHealth allows you to retrieve the health of a player. Useful for cheat detection, among other things.
+        ///     The function GetPlayerHealth allows you to retrieve the health of a player. Useful for cheat detection, among other
+        ///     things.
         /// </summary>
         /// <param name="playerid">The ID of the player.</param>
         /// <param name="health">Float to store health, passed by reference.</param>
@@ -164,7 +183,7 @@ namespace GameMode
         public static extern bool GetPlayerHealth(int playerid, out float health);
 
         /// <summary>
-        /// Set a player's armour level.
+        ///     Set a player's armour level.
         /// </summary>
         /// <param name="playerid">The ID of the player to set the armour of.</param>
         /// <param name="armour">The amount of armour to set, as a percentage (float).</param>
@@ -173,7 +192,7 @@ namespace GameMode
         public static extern bool SetPlayerArmour(int playerid, float armour);
 
         /// <summary>
-        /// This function stores the armour of a player into a variable.
+        ///     This function stores the armour of a player into a variable.
         /// </summary>
         /// <param name="playerid">The ID of the player that you want to get the armour of.</param>
         /// <param name="armour">The float to to store the armour in, passed by reference.</param>
@@ -182,7 +201,7 @@ namespace GameMode
         public static extern bool GetPlayerArmour(int playerid, out float armour);
 
         /// <summary>
-        /// Set the ammo of a player's weapon.
+        ///     Set the ammo of a player's weapon.
         /// </summary>
         /// <param name="playerid">The ID of the player to set the weapon ammo of.</param>
         /// <param name="weaponid">The ID of the weapon to set the ammo of.</param>
@@ -192,10 +211,10 @@ namespace GameMode
         public static extern bool SetPlayerAmmo(int playerid, int weaponid, int ammo);
 
         /// <summary>
-        /// Returns the amount of ammunition the player has in his active weapon slot.
+        ///     Returns the amount of ammunition the player has in his active weapon slot.
         /// </summary>
         /// <remarks>
-        /// The ammo can hold 16-bit values, therefore values over 32767 will return erroneous values.
+        ///     The ammo can hold 16-bit values, therefore values over 32767 will return erroneous values.
         /// </remarks>
         /// <param name="playerid">ID of the player.</param>
         /// <returns>The amount of ammunition the player has in his active weapon slot.</returns>
@@ -203,7 +222,7 @@ namespace GameMode
         public static extern int GetPlayerAmmo(int playerid);
 
         /// <summary>
-        /// Checks the state of a player's weapon.
+        ///     Checks the state of a player's weapon.
         /// </summary>
         /// <param name="playerid">The ID of the player to obtain the state of.</param>
         /// <returns>The state of the player's weapon.</returns>
@@ -211,36 +230,41 @@ namespace GameMode
         public static extern int GetPlayerWeaponState(int playerid);
 
         /// <summary>
-        /// Check who a player is aiming at.
+        ///     Check who a player is aiming at.
         /// </summary>
         /// <param name="playerid">The ID of the player to get the target of.</param>
-        /// <returns>The ID of the target player, or <see cref="Misc.InvalidPlayerId"/> if none.</returns>
+        /// <returns>The ID of the target player, or <see cref="Misc.InvalidPlayerId" /> if none.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetPlayerTargetPlayer(int playerid);
 
         /// <summary>
-        /// Set the team of a player.
+        ///     Set the team of a player.
         /// </summary>
         /// <remarks>
-        /// Players can not damage/kill players on the same team unless they use a knife to slit their throat. Players are also unable to damage vehicles driven by a player from the same team. This can be enabled with <see cref="EnableVehicleFriendlyFire"/>.
-        /// 255 (or <see cref="Misc.NoTeam"/>) is the default team to be able to shoot other players, not 0.
+        ///     Players can not damage/kill players on the same team unless they use a knife to slit their throat. Players are also
+        ///     unable to damage vehicles driven by a player from the same team. This can be enabled with
+        ///     <see cref="EnableVehicleFriendlyFire" />.
+        ///     255 (or <see cref="Misc.NoTeam" />) is the default team to be able to shoot other players, not 0.
         /// </remarks>
         /// <param name="playerid">The ID of the player you want to set the team of.</param>
-        /// <param name="teamid">The team to put the player in. Use <see cref="Misc.NoTeam"/> to remove the player from any team.</param>
+        /// <param name="teamid">The team to put the player in. Use <see cref="Misc.NoTeam" /> to remove the player from any team.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerTeam(int playerid, int teamid);
 
         /// <summary>
-        /// Get the ID of the team the player is on.
+        ///     Get the ID of the team the player is on.
         /// </summary>
         /// <param name="playerid">The ID of the player to return the team of.</param>
-        /// <returns>The ID of the team the player is on, or 255 (defined as <see cref="Misc.NoTeam"/>) if they aren't on a team (default).</returns>
+        /// <returns>
+        ///     The ID of the team the player is on, or 255 (defined as <see cref="Misc.NoTeam" />) if they aren't on a team
+        ///     (default).
+        /// </returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetPlayerTeam(int playerid);
 
         /// <summary>
-        /// Set a player's score. Players' scores are shown in the scoreboard (hold TAB).
+        ///     Set a player's score. Players' scores are shown in the scoreboard (hold TAB).
         /// </summary>
         /// <param name="playerid">The ID of the player to set the score of.</param>
         /// <param name="score">The value to set the player's score to.</param>
@@ -249,7 +273,7 @@ namespace GameMode
         public static extern bool SetPlayerScore(int playerid, int score);
 
         /// <summary>
-        /// This function returns a player's score as it was set using <see cref="SetPlayerScore"/>
+        ///     This function returns a player's score as it was set using <see cref="SetPlayerScore" />
         /// </summary>
         /// <param name="playerid">The player to get the score of.</param>
         /// <returns>The player's score.</returns>
@@ -257,10 +281,13 @@ namespace GameMode
         public static extern int GetPlayerScore(int playerid);
 
         /// <summary>
-        /// Checks the player's level of drunkenness.
+        ///     Checks the player's level of drunkenness.
         /// </summary>
         /// <remarks>
-        /// If the level is less than 2000, the player is sober. The player's level of drunkness goes down slowly automatically (26 levels per second) but will always reach zero at the end. The higher drunkenness levels affect the player's camera, and the car driving handling. The level of drunkenness increases when the player drinks from a bottle (You can use <see cref="SetPlayerSpecialAction(int,SpecialAction)"/> to give them bottles).
+        ///     If the level is less than 2000, the player is sober. The player's level of drunkness goes down slowly automatically
+        ///     (26 levels per second) but will always reach zero at the end. The higher drunkenness levels affect the player's
+        ///     camera, and the car driving handling. The level of drunkenness increases when the player drinks from a bottle (You
+        ///     can use <see cref="SetPlayerSpecialAction(int,SpecialAction)" /> to give them bottles).
         /// </remarks>
         /// <param name="playerid">The player you want to check the drunkenness level of.</param>
         /// <returns>An integer with the level of drunkenness of the player.</returns>
@@ -268,14 +295,15 @@ namespace GameMode
         public static extern int GetPlayerDrunkLevel(int playerid);
 
         /// <summary>
-        /// Sets the drunk level of a player which makes the player's camera sway and vehicles hard to control.
+        ///     Sets the drunk level of a player which makes the player's camera sway and vehicles hard to control.
         /// </summary>
         /// <remarks>
-        /// Players' drunk level will automatically decrease over time, based on their FPS (players with 50 FPS will lose 50 'levels' per second. This is useful for determining a player's FPS!).
-        /// In the drunk level will decrement and stop at zero.
-        /// Levels over 2000 make the player drunk (camera swaying and vehicles difficult to control).
-        /// Max drunk level is 50000.
-        /// While the drunk level is above 5000, the player's HUD (radar etc.) will be hidden.
+        ///     Players' drunk level will automatically decrease over time, based on their FPS (players with 50 FPS will lose 50
+        ///     'levels' per second. This is useful for determining a player's FPS!).
+        ///     In the drunk level will decrement and stop at zero.
+        ///     Levels over 2000 make the player drunk (camera swaying and vehicles difficult to control).
+        ///     Max drunk level is 50000.
+        ///     While the drunk level is above 5000, the player's HUD (radar etc.) will be hidden.
         /// </remarks>
         /// <param name="playerid">The ID of the player to set the drunkenness of.</param>
         /// <param name="level">The level of drunkenness to set.</param>
@@ -284,7 +312,7 @@ namespace GameMode
         public static extern bool SetPlayerDrunkLevel(int playerid, int level);
 
         /// <summary>
-        /// This function allows you to change the color of a player currently in-game.
+        ///     This function allows you to change the color of a player currently in-game.
         /// </summary>
         /// <param name="playerid">The player to change the color of.</param>
         /// <param name="color">The color to set, as an integer</param>
@@ -293,10 +321,10 @@ namespace GameMode
         public static extern bool SetPlayerColor(int playerid, int color);
 
         /// <summary>
-        /// This function returns the color the player is currently using.
+        ///     This function returns the color the player is currently using.
         /// </summary>
         /// <remarks>
-        /// GetPlayerColor will return nothing unless SetPlayerColor has been used!
+        ///     GetPlayerColor will return nothing unless SetPlayerColor has been used!
         /// </remarks>
         /// <param name="playerid">The player you want to know the color of.</param>
         /// <returns>The players color.</returns>
@@ -304,10 +332,12 @@ namespace GameMode
         public static extern int GetPlayerColor(int playerid);
 
         /// <summary>
-        /// Set the skin of a player.
+        ///     Set the skin of a player.
         /// </summary>
         /// <remarks>
-        /// If a player's skin is set when they are crouching, in a vehicle, or performing certain animations, they will become frozen or otherwise glitched. This can be fixed by using <see cref="TogglePlayerControllable"/>. Players can be detected as being crouched through <see cref="GetPlayerSpecialAction"/>.
+        ///     If a player's skin is set when they are crouching, in a vehicle, or performing certain animations, they will become
+        ///     frozen or otherwise glitched. This can be fixed by using <see cref="TogglePlayerControllable" />. Players can be
+        ///     detected as being crouched through <see cref="GetPlayerSpecialAction" />.
         /// </remarks>
         /// <param name="playerid">The ID of the player to set the skin of.</param>
         /// <param name="skinid">The skin the player should use.</param>
@@ -316,7 +346,7 @@ namespace GameMode
         public static extern bool SetPlayerSkin(int playerid, int skinid);
 
         /// <summary>
-        /// Returns the class of the players skin.
+        ///     Returns the class of the players skin.
         /// </summary>
         /// <param name="playerid">The player you want to get the skin from.</param>
         /// <returns>The skin id (0 if invalid).</returns>
@@ -324,7 +354,7 @@ namespace GameMode
         public static extern int GetPlayerSkin(int playerid);
 
         /// <summary>
-        /// Give a player a weapon with a specified amount of ammo.
+        ///     Give a player a weapon with a specified amount of ammo.
         /// </summary>
         /// <param name="playerid">The ID of the player to give a weapon to.</param>
         /// <param name="weaponid">The ID of the weapon to give to the player.</param>
@@ -334,7 +364,7 @@ namespace GameMode
         public static extern bool GivePlayerWeapon(int playerid, int weaponid, int ammo);
 
         /// <summary>
-        /// Removes all weapons from a player.
+        ///     Removes all weapons from a player.
         /// </summary>
         /// <param name="playerid">The ID of the player to remove the weapons of.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -342,7 +372,7 @@ namespace GameMode
         public static extern bool ResetPlayerWeapons(int playerid);
 
         /// <summary>
-        /// Sets the armed weapon of the player.
+        ///     Sets the armed weapon of the player.
         /// </summary>
         /// <param name="playerid">The ID of the player to arm with a weapon.</param>
         /// <param name="weaponid">The ID of the weapon that the player should be armed with.</param>
@@ -351,7 +381,7 @@ namespace GameMode
         public static extern bool SetPlayerArmedWeapon(int playerid, int weaponid);
 
         /// <summary>
-        /// Get the weapon and ammo in a specific player's weapon slot.
+        ///     Get the weapon and ammo in a specific player's weapon slot.
         /// </summary>
         /// <param name="playerid">The ID of the player whose weapon data to retrieve.</param>
         /// <param name="slot">The weapon slot to get data for (0-12).</param>
@@ -362,7 +392,7 @@ namespace GameMode
         public static extern bool GetPlayerWeaponData(int playerid, int slot, out int weapon, out int ammo);
 
         /// <summary>
-        /// Give (or take) money to/from a player.
+        ///     Give (or take) money to/from a player.
         /// </summary>
         /// <param name="playerid">The ID of the player to give money to.</param>
         /// <param name="money">The amount of money to give the player. Use a minus value to take money.</param>
@@ -371,7 +401,7 @@ namespace GameMode
         public static extern bool GivePlayerMoney(int playerid, int money);
 
         /// <summary>
-        /// Reset a player's money to $0.
+        ///     Reset a player's money to $0.
         /// </summary>
         /// <param name="playerid">The ID of the player to reset the money of.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -379,19 +409,23 @@ namespace GameMode
         public static extern bool ResetPlayerMoney(int playerid);
 
         /// <summary>
-        /// Sets the name of a player.
+        ///     Sets the name of a player.
         /// </summary>
         /// <remarks>
-        /// If you set the player's name to the same name except different cased letters (i.e. "heLLO" to "hello"), it will not work. If used in <see cref="BaseMode.OnPlayerConnect"/>, the new name will not be shown for the connecting player.
+        ///     If you set the player's name to the same name except different cased letters (i.e. "heLLO" to "hello"), it will not
+        ///     work. If used in <see cref="BaseMode.OnPlayerConnect" />, the new name will not be shown for the connecting player.
         /// </remarks>
         /// <param name="playerid">The ID of the player to set the name of.</param>
         /// <param name="name">The name to set.</param>
-        /// <returns>1 if the name was changed, 0 if the player is already using that name or -1 when the name cannot be changed. (it's in use, too long or has invalid characters)</returns>
+        /// <returns>
+        ///     1 if the name was changed, 0 if the player is already using that name or -1 when the name cannot be changed.
+        ///     (it's in use, too long or has invalid characters)
+        /// </returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int SetPlayerName(int playerid, string name);
 
         /// <summary>
-        /// Retrieves the amount of money a player has.
+        ///     Retrieves the amount of money a player has.
         /// </summary>
         /// <param name="playerid">The ID of the player to get the money of.</param>
         /// <returns>The amount of money the player has.</returns>
@@ -399,7 +433,7 @@ namespace GameMode
         public static extern int GetPlayerMoney(int playerid);
 
         /// <summary>
-        /// Get a player's current state.
+        ///     Get a player's current state.
         /// </summary>
         /// <param name="playerid">The ID of the player to get the current state of.</param>
         /// <returns>The player's current state as an integer.</returns>
@@ -407,10 +441,12 @@ namespace GameMode
         public static extern int GetPlayerState(int playerid);
 
         /// <summary>
-        /// Get the specified player's IP and store it in a string.
+        ///     Get the specified player's IP and store it in a string.
         /// </summary>
         /// <remarks>
-        /// This function does not work when used in <see cref="BaseMode.OnPlayerDisconnect"/> because the player is already disconnected. It will return an invalid IP (255.255.255.255). Save players' IPs under <see cref="BaseMode.OnPlayerConnect"/> if they need to be used under <see cref="BaseMode.OnPlayerConnect"/>.
+        ///     This function does not work when used in <see cref="BaseMode.OnPlayerDisconnect" /> because the player is already
+        ///     disconnected. It will return an invalid IP (255.255.255.255). Save players' IPs under
+        ///     <see cref="BaseMode.OnPlayerConnect" /> if they need to be used under <see cref="BaseMode.OnPlayerConnect" />.
         /// </remarks>
         /// <param name="playerid">The ID of the player to get the IP of.</param>
         /// <param name="ip">The string to store the player's IP in, passed by reference</param>
@@ -420,7 +456,7 @@ namespace GameMode
         public static extern bool GetPlayerIp(int playerid, out string ip, int size);
 
         /// <summary>
-        /// Get the ping of a player.
+        ///     Get the ping of a player.
         /// </summary>
         /// <param name="playerid">The ID of the player to get the ping of.</param>
         /// <returns>The current ping of the player (expressed in milliseconds).</returns>
@@ -428,7 +464,7 @@ namespace GameMode
         public static extern int GetPlayerPing(int playerid);
 
         /// <summary>
-        /// Returns the ID of the player's current weapon.
+        ///     Returns the ID of the player's current weapon.
         /// </summary>
         /// <param name="playerid">The ID of the player to get the weapon of.</param>
         /// <returns>The ID of the player's current weapon.</returns>
@@ -436,10 +472,11 @@ namespace GameMode
         public static extern int GetPlayerWeapon(int playerid);
 
         /// <summary>
-        /// Check which keys a player is pressing.
+        ///     Check which keys a player is pressing.
         /// </summary>
         /// <remarks>
-        /// Only the FUNCTION of keys can be detected; not actual keys. You can not detect if a player presses space, but you can detect if they press sprint (which can be mapped (assigned) to ANY key, but is space by default)).
+        ///     Only the FUNCTION of keys can be detected; not actual keys. You can not detect if a player presses space, but you
+        ///     can detect if they press sprint (which can be mapped (assigned) to ANY key, but is space by default)).
         /// </remarks>
         /// <param name="playerid">The ID of the player to detect the keys of.</param>
         /// <param name="keys">A set of bits containing the player's key states</param>
@@ -450,12 +487,12 @@ namespace GameMode
         public static extern bool GetPlayerKeys(int playerid, out int keys, out int updown, out int leftright);
 
         /// <summary>
-        /// Get a player's name.
+        ///     Get a player's name.
         /// </summary>
         /// <remarks>
-        /// A player's name can be up to 24 characters long.
-        /// This is defined as <see cref="Limits.MaxPlayerName"/>.
-        /// Strings to store names in should be made this size, plus one extra cell for the null terminating character.
+        ///     A player's name can be up to 24 characters long.
+        ///     This is defined as <see cref="Limits.MaxPlayerName" />.
+        ///     Strings to store names in should be made this size, plus one extra cell for the null terminating character.
         /// </remarks>
         /// <param name="playerid">The ID of the player to get the name of.</param>
         /// <param name="name">The string to store the name in, passed by reference.</param>
@@ -465,7 +502,7 @@ namespace GameMode
         public static extern int GetPlayerName(int playerid, out string name, int size);
 
         /// <summary>
-        /// Sets the clock of the player to a specific value. This also changes the daytime. (night/day etc.)
+        ///     Sets the clock of the player to a specific value. This also changes the daytime. (night/day etc.)
         /// </summary>
         /// <param name="playerid">The ID of the player.</param>
         /// <param name="hour">Hour to set (0-23).</param>
@@ -475,7 +512,8 @@ namespace GameMode
         public static extern bool SetPlayerTime(int playerid, int hour, int minute);
 
         /// <summary>
-        /// Get the player's current game time. Set by <see cref="SetWorldTime"/>, <see cref="SetWorldTime"/>, or by <see cref="TogglePlayerClock"/>.
+        ///     Get the player's current game time. Set by <see cref="SetWorldTime" />, <see cref="SetWorldTime" />, or by
+        ///     <see cref="TogglePlayerClock" />.
         /// </summary>
         /// <param name="playerid">The ID of the player that you want to get the time of.</param>
         /// <param name="hour">The variable to store the hour in, passed by reference.</param>
@@ -485,10 +523,10 @@ namespace GameMode
         public static extern bool GetPlayerTime(int playerid, out int hour, out int minute);
 
         /// <summary>
-        /// Show/Hide the in-game clock (top right corner) for a specific player.
+        ///     Show/Hide the in-game clock (top right corner) for a specific player.
         /// </summary>
         /// <remarks>
-        /// Time is not synced with other players!
+        ///     Time is not synced with other players!
         /// </remarks>
         /// <param name="playerid">The player whose clock you want to enable/disable.</param>
         /// <param name="toggle">True to show, False to hide.</param>
@@ -497,7 +535,8 @@ namespace GameMode
         public static extern bool TogglePlayerClock(int playerid, bool toggle);
 
         /// <summary>
-        /// Set a player's weather. If <see cref="TogglePlayerClock"/> has been used to enable a player's clock, weather changes will interpolate (gradually change), otherwise will change instantly.
+        ///     Set a player's weather. If <see cref="TogglePlayerClock" /> has been used to enable a player's clock, weather
+        ///     changes will interpolate (gradually change), otherwise will change instantly.
         /// </summary>
         /// <param name="playerid">The ID of the player whose weather to set.</param>
         /// <param name="weather">The weather to set.</param>
@@ -506,10 +545,11 @@ namespace GameMode
         public static extern bool SetPlayerWeather(int playerid, int weather);
 
         /// <summary>
-        /// Forces a player to go back to class selection.
+        ///     Forces a player to go back to class selection.
         /// </summary>
         /// <remarks>
-        /// The player will not return to class selection until they re-spawn. This can be achieved with <see cref="TogglePlayerSpectating"/>
+        ///     The player will not return to class selection until they re-spawn. This can be achieved with
+        ///     <see cref="TogglePlayerSpectating" />
         /// </remarks>
         /// <param name="playerid">The player to send back to class selection.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -517,7 +557,7 @@ namespace GameMode
         public static extern bool ForceClassSelection(int playerid);
 
         /// <summary>
-        /// Set a player's wanted level (6 brown stars under HUD).
+        ///     Set a player's wanted level (6 brown stars under HUD).
         /// </summary>
         /// <param name="playerid">The ID of the player to set the wanted level of.</param>
         /// <param name="level">The wanted level to set for the player (0-6).</param>
@@ -526,7 +566,7 @@ namespace GameMode
         public static extern bool SetPlayerWantedLevel(int playerid, int level);
 
         /// <summary>
-        /// Gets the wanted level of a player.
+        ///     Gets the wanted level of a player.
         /// </summary>
         /// <param name="playerid">The ID of the player that you want to get the wanted level of.</param>
         /// <returns>The player's wanted level.</returns>
@@ -534,10 +574,10 @@ namespace GameMode
         public static extern int GetPlayerWantedLevel(int playerid);
 
         /// <summary>
-        /// Set a player's special fighting style. To use in-game, aim and press the 'secondary attack' key (ENTER by default).
+        ///     Set a player's special fighting style. To use in-game, aim and press the 'secondary attack' key (ENTER by default).
         /// </summary>
         /// <remarks>
-        /// This does not affect normal fist attacks - only special/secondary attacks (aim + press 'secondary attack' key).
+        ///     This does not affect normal fist attacks - only special/secondary attacks (aim + press 'secondary attack' key).
         /// </remarks>
         /// <param name="playerid">The ID of player to set the fighting style of.</param>
         /// <param name="style">The fighting style that should be set.</param>
@@ -546,7 +586,7 @@ namespace GameMode
         public static extern bool SetPlayerFightingStyle(int playerid, int style);
 
         /// <summary>
-        /// Returns what fighting style the player currently using.
+        ///     Returns what fighting style the player currently using.
         /// </summary>
         /// <param name="playerid">The player you want to know the fighting style of.</param>
         /// <returns>Returns the fighting style of the player.</returns>
@@ -554,7 +594,7 @@ namespace GameMode
         public static extern int GetPlayerFightingStyle(int playerid);
 
         /// <summary>
-        /// Makes the player move in that direction at the given speed.
+        ///     Makes the player move in that direction at the given speed.
         /// </summary>
         /// <param name="playerid">The player to apply the speed to.</param>
         /// <param name="x">How much speed in the X direction will be applied.</param>
@@ -565,7 +605,8 @@ namespace GameMode
         public static extern bool SetPlayerVelocity(int playerid, float x, float y, float z);
 
         /// <summary>
-        /// Gets the velocity at which the player is moving in the three directions, X, Y and Z. This can be useful for speedometers.
+        ///     Gets the velocity at which the player is moving in the three directions, X, Y and Z. This can be useful for
+        ///     speedometers.
         /// </summary>
         /// <param name="playerid">The player to get the speed from.</param>
         /// <param name="x">The float to store the X velocity in, passed by reference.</param>
@@ -576,7 +617,7 @@ namespace GameMode
         public static extern bool GetPlayerVelocity(int playerid, out float x, out float y, out float z);
 
         /// <summary>
-        /// This function plays a crime report for a player - just like in single-player when CJ commits a crime.
+        ///     This function plays a crime report for a player - just like in single-player when CJ commits a crime.
         /// </summary>
         /// <param name="playerid">The ID of the player that will hear the crime report.</param>
         /// <param name="suspectid">The ID of the suspect player which will be described in the crime report.</param>
@@ -586,10 +627,13 @@ namespace GameMode
         public static extern bool PlayCrimeReportForPlayer(int playerid, int suspectid, int crime);
 
         /// <summary>
-        /// Play an 'audio stream' for a player. Normal audio files also work (e.g. MP3).
+        ///     Play an 'audio stream' for a player. Normal audio files also work (e.g. MP3).
         /// </summary>
         /// <param name="playerid">The ID of the player to play the audio for.</param>
-        /// <param name="url">The url to play. Valid formats are mp3 and ogg/vorbis. A link to a .pls (playlist) file will play that playlist.</param>
+        /// <param name="url">
+        ///     The url to play. Valid formats are mp3 and ogg/vorbis. A link to a .pls (playlist) file will play
+        ///     that playlist.
+        /// </param>
         /// <param name="posX">The X position at which to play the audio. Default 0.0. Has no effect unless usepos is set to True.</param>
         /// <param name="posY">The Y position at which to play the audio. Default 0.0. Has no effect unless usepos is set to True.</param>
         /// <param name="posZ">The Z position at which to play the audio. Default 0.0. Has no effect unless usepos is set to True.</param>
@@ -601,7 +645,7 @@ namespace GameMode
             float distance, bool usepos);
 
         /// <summary>
-        /// Stops the current audio stream for a player.
+        ///     Stops the current audio stream for a player.
         /// </summary>
         /// <param name="playerid">The player you want to stop the audio stream for.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -609,7 +653,7 @@ namespace GameMode
         public static extern bool StopAudioStreamForPlayer(int playerid);
 
         /// <summary>
-        /// Loads or unloads an interior script for a player. (for example the ammunation menu)
+        ///     Loads or unloads an interior script for a player. (for example the ammunation menu)
         /// </summary>
         /// <param name="playerid">The ID of the player to load the interior script for.</param>
         /// <param name="shopname"></param>
@@ -618,36 +662,45 @@ namespace GameMode
         public static extern bool SetPlayerShopName(int playerid, string shopname);
 
         /// <summary>
-        /// Set the skill level of a certain weapon type for a player.
+        ///     Set the skill level of a certain weapon type for a player.
         /// </summary>
         /// <remarks>
-        /// The skill parameter is NOT the weapon ID, it is the skill type.
+        ///     The skill parameter is NOT the weapon ID, it is the skill type.
         /// </remarks>
         /// <param name="playerid">The ID of the player to set the weapon skill of.</param>
         /// <param name="skill">The weapon type you want to set the skill of.</param>
-        /// <param name="level">The skill level to set for that weapon, ranging from 0 to 999. (A level out of range will max it out)</param>
+        /// <param name="level">
+        ///     The skill level to set for that weapon, ranging from 0 to 999. (A level out of range will max it
+        ///     out)
+        /// </param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerSkillLevel(int playerid, int skill, int level);
 
         /// <summary>
-        /// Get the ID of the vehicle that the player is surfing.
+        ///     Get the ID of the vehicle that the player is surfing.
         /// </summary>
         /// <param name="playerid">The ID of the player you want to know the surfing vehicle ID of.</param>
-        /// <returns>The ID of the vehicle that the player is surfing, or <see cref="Misc.InvalidVehicleId"/> if they are not surfing or the vehicle has no driver.</returns>
+        /// <returns>
+        ///     The ID of the vehicle that the player is surfing, or <see cref="Misc.InvalidVehicleId" /> if they are not
+        ///     surfing or the vehicle has no driver.
+        /// </returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetPlayerSurfingVehicleID(int playerid);
 
         /// <summary>
-        /// Returns the ID of the object the player is surfing on.
+        ///     Returns the ID of the object the player is surfing on.
         /// </summary>
         /// <param name="playerid">The ID of the player surfing the object.</param>
-        /// <returns>The ID of the moving object the player is surfing. If the player isn't surfing a moving object, it will return <see cref="Misc.InvalidObjectId"/></returns>
+        /// <returns>
+        ///     The ID of the moving object the player is surfing. If the player isn't surfing a moving object, it will return
+        ///     <see cref="Misc.InvalidObjectId" />
+        /// </returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetPlayerSurfingObjectID(int playerid);
 
         /// <summary>
-        /// Removes a standard San Andreas model for a single player within a specified range.
+        ///     Removes a standard San Andreas model for a single player within a specified range.
         /// </summary>
         /// <param name="playerid">The ID of the player to remove the objects for.</param>
         /// <param name="modelid">The model to remove.</param>
@@ -661,7 +714,7 @@ namespace GameMode
             float radius);
 
         /// <summary>
-        /// Attach an object to a specific bone on a player.
+        ///     Attach an object to a specific bone on a player.
         /// </summary>
         /// <param name="playerid">The ID of the player to attach the object to.</param>
         /// <param name="index">The index (slot) to assign the object to (0-9).</param>
@@ -685,16 +738,19 @@ namespace GameMode
             float scaleZ, int materialcolor1, int materialcolor2);
 
         /// <summary>
-        /// Remove an attached object from a player.
+        ///     Remove an attached object from a player.
         /// </summary>
         /// <param name="playerid">The ID of the player to remove the object from.</param>
-        /// <param name="index">The index of the object to remove (set with <see cref="SetPlayerAttachedObject(int,int,int,int,Vector,Rotation,Vector,int,int)"/>).</param>
+        /// <param name="index">
+        ///     The index of the object to remove (set with
+        ///     <see cref="SetPlayerAttachedObject(int,int,int,int,Vector,Rotation,Vector,int,int)" />).
+        /// </param>
         /// <returns>True on success, False otherwise.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool RemovePlayerAttachedObject(int playerid, int index);
 
         /// <summary>
-        /// Check if a player has an object attached in the specified index (slot).
+        ///     Check if a player has an object attached in the specified index (slot).
         /// </summary>
         /// <param name="playerid">The ID of the player to check.</param>
         /// <param name="index">The index (slot) to check.</param>
@@ -703,7 +759,7 @@ namespace GameMode
         public static extern bool IsPlayerAttachedObjectSlotUsed(int playerid, int index);
 
         /// <summary>
-        /// Enter edition mode for an attached object.
+        ///     Enter edition mode for an attached object.
         /// </summary>
         /// <param name="playerid">The ID of the player to enter in to edition mode.</param>
         /// <param name="index">The index (slot) of the attached object to edit.</param>
@@ -712,7 +768,7 @@ namespace GameMode
         public static extern bool EditAttachedObject(int playerid, int index);
 
         /// <summary>
-        /// Creates a textdraw for a single player. This can be used as a way around the global text-draw limit.
+        ///     Creates a textdraw for a single player. This can be used as a way around the global text-draw limit.
         /// </summary>
         /// <param name="playerid">The ID of the player to create the textdraw for.</param>
         /// <param name="x">X-Coordinate.</param>
@@ -723,7 +779,7 @@ namespace GameMode
         public static extern int CreatePlayerTextDraw(int playerid, float x, float y, string text);
 
         /// <summary>
-        /// Destroy a player-textdraw.
+        ///     Destroy a player-textdraw.
         /// </summary>
         /// <param name="playerid">The ID of the player who's player-textdraw to destroy.</param>
         /// <param name="text">The ID of the textdraw to destroy.</param>
@@ -732,7 +788,7 @@ namespace GameMode
         public static extern bool PlayerTextDrawDestroy(int playerid, int text);
 
         /// <summary>
-        /// Sets the width and height of the letters in a player-textdraw.
+        ///     Sets the width and height of the letters in a player-textdraw.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player-textdraw to set the letter size of.</param>
         /// <param name="text">The ID of the player-textdraw to change the letter size of.</param>
@@ -743,23 +799,28 @@ namespace GameMode
         public static extern bool PlayerTextDrawLetterSize(int playerid, int text, float x, float y);
 
         /// <summary>
-        /// Change the size of a player-textdraw (box if <see cref="PlayerTextDrawUseBox"/> is enabled and/or clickable area for use with <see cref="PlayerTextDrawSetSelectable"/>).
+        ///     Change the size of a player-textdraw (box if <see cref="PlayerTextDrawUseBox" /> is enabled and/or clickable area
+        ///     for use with <see cref="PlayerTextDrawSetSelectable" />).
         /// </summary>
         /// <remarks>
-        /// When used with <see cref="PlayerTextDrawAlignment(int,int,TextDrawAlignment)"/> of alignment 3 (right), the x and y are the coordinates of the left most corner of the box. For alignment 2 (center) the x and y values need to inverted (switch the two) and the x value is the overall width of the box. For all other alignments the x and y coordinates are for the right most corner of the box.
-        /// The TextDraw box starts 10.0 units up and 5.0 to the left as the origin (<see cref="TextDrawCreate"/> coordinate)
-        /// This function defines the clickable area for use with <see cref="PlayerTextDrawSetSelectable"/>, whether a box is shown or not.
+        ///     When used with <see cref="PlayerTextDrawAlignment(int,int,TextDrawAlignment)" /> of alignment 3 (right), the x and
+        ///     y are the coordinates of the left most corner of the box. For alignment 2 (center) the x and y values need to
+        ///     inverted (switch the two) and the x value is the overall width of the box. For all other alignments the x and y
+        ///     coordinates are for the right most corner of the box.
+        ///     The TextDraw box starts 10.0 units up and 5.0 to the left as the origin (<see cref="TextDrawCreate" /> coordinate)
+        ///     This function defines the clickable area for use with <see cref="PlayerTextDrawSetSelectable" />, whether a box is
+        ///     shown or not.
         /// </remarks>
         /// <param name="playerid">The ID of the player whose player-textdraw to set the size of.</param>
         /// <param name="text">The ID of the player-textdraw to set the size of.</param>
-        /// <param name="x">he size on the X axis (left/right) following the same 640x480 grid as <see cref="TextDrawCreate"/>.</param>
-        /// <param name="y">The size on the Y axis (up/down) following the same 640x480 grid as <see cref="TextDrawCreate"/>.</param>
+        /// <param name="x">he size on the X axis (left/right) following the same 640x480 grid as <see cref="TextDrawCreate" />.</param>
+        /// <param name="y">The size on the Y axis (up/down) following the same 640x480 grid as <see cref="TextDrawCreate" />.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool PlayerTextDrawTextSize(int playerid, int text, float x, float y);
 
         /// <summary>
-        /// Set the text alignment of a player-textdraw.
+        ///     Set the text alignment of a player-textdraw.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player-textdraw to set the alignment of.</param>
         /// <param name="text">The ID of the player-textdraw to set the alignment of.</param>
@@ -769,10 +830,10 @@ namespace GameMode
         public static extern bool PlayerTextDrawAlignment(int playerid, int text, int alignment);
 
         /// <summary>
-        /// Sets the text color of a player-textdraw.
+        ///     Sets the text color of a player-textdraw.
         /// </summary>
         /// <remarks>
-        /// You can also use Gametext colors in textdraws.
+        ///     You can also use Gametext colors in textdraws.
         /// </remarks>
         /// <param name="playerid">The ID of the player who's textdraw to set the color of.</param>
         /// <param name="text">The TextDraw to change.</param>
@@ -782,7 +843,7 @@ namespace GameMode
         public static extern bool PlayerTextDrawColor(int playerid, int text, int color);
 
         /// <summary>
-        /// Toggle the box on a player-textdraw.
+        ///     Toggle the box on a player-textdraw.
         /// </summary>
         /// <param name="playerid">The ID of the player whose textdraw to toggle the box of.</param>
         /// <param name="text">The ID of the player-textdraw to toggle the box of.</param>
@@ -792,10 +853,10 @@ namespace GameMode
         public static extern bool PlayerTextDrawUseBox(int playerid, int text, bool use);
 
         /// <summary>
-        /// Adjusts the text box colour (only used if <see cref="TextDrawUseBox"/> 'use' parameter is True).
+        ///     Adjusts the text box colour (only used if <see cref="TextDrawUseBox" /> 'use' parameter is True).
         /// </summary>
         /// <remarks>
-        /// <see cref="PlayerTextDrawUseBox"/> must be used in conjunction with this (duh).
+        ///     <see cref="PlayerTextDrawUseBox" /> must be used in conjunction with this (duh).
         /// </remarks>
         /// <param name="playerid">The ID of the player who's textdraw to set the color of.</param>
         /// <param name="text">The TextDraw to change the box color of.</param>
@@ -805,10 +866,11 @@ namespace GameMode
         public static extern bool PlayerTextDrawBoxColor(int playerid, int text, int color);
 
         /// <summary>
-        /// Adds a shadow to the lower right side of the text in a player-textdraw. The shadow font matches the text font. The shadow can be cut by the box area if the size is set too big for the area.
+        ///     Adds a shadow to the lower right side of the text in a player-textdraw. The shadow font matches the text font. The
+        ///     shadow can be cut by the box area if the size is set too big for the area.
         /// </summary>
         /// <remarks>
-        /// <see cref="PlayerTextDrawUseBox"/> must be used in conjunction with this (duh).
+        ///     <see cref="PlayerTextDrawUseBox" /> must be used in conjunction with this (duh).
         /// </remarks>
         /// <param name="playerid">The ID of the player whose player-textdraw to set the shadow of.</param>
         /// <param name="text">The ID of the player-textdraw to change the shadow of.</param>
@@ -818,7 +880,8 @@ namespace GameMode
         public static extern bool PlayerTextDrawSetShadow(int playerid, int text, int size);
 
         /// <summary>
-        /// Set the outline of a player-textdraw. The outline colour cannot be changed unless <see cref="PlayerTextDrawBackgroundColor"/> is used.
+        ///     Set the outline of a player-textdraw. The outline colour cannot be changed unless
+        ///     <see cref="PlayerTextDrawBackgroundColor" /> is used.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player-textdraw to set the outline of.</param>
         /// <param name="text">The ID of the player-textdraw to set the outline of.</param>
@@ -828,11 +891,12 @@ namespace GameMode
         public static extern bool PlayerTextDrawSetOutline(int playerid, int text, int size);
 
         /// <summary>
-        /// Adjust the background color of a player-textdraw.
+        ///     Adjust the background color of a player-textdraw.
         /// </summary>
         /// <remarks>
-        /// If <see cref="PlayerTextDrawSetOutline"/> is used with size > 0, the outline color will match the color used in <see cref="PlayerTextDrawBackgroundColor"/>. 
-        /// Changing the value of color seems to alter the color used in <see cref="PlayerTextDrawColor"/>.
+        ///     If <see cref="PlayerTextDrawSetOutline" /> is used with size > 0, the outline color will match the color used in
+        ///     <see cref="PlayerTextDrawBackgroundColor" />.
+        ///     Changing the value of color seems to alter the color used in <see cref="PlayerTextDrawColor" />.
         /// </remarks>
         /// <param name="playerid">The ID of the player whose player-textdraw to set the background color of.</param>
         /// <param name="text">The ID of the player-textdraw to set the background color of.</param>
@@ -842,17 +906,21 @@ namespace GameMode
         public static extern bool PlayerTextDrawBackgroundColor(int playerid, int text, int color);
 
         /// <summary>
-        /// Change the font of a player-textdraw.
+        ///     Change the font of a player-textdraw.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player-textdraw to change the font of.</param>
         /// <param name="text">The ID of the player-textdraw to change the font of</param>
-        /// <param name="font">There are four font styles as shown below. A font value greater than 3 does not display, and anything greater than 16 crashes.</param>
+        /// <param name="font">
+        ///     There are four font styles as shown below. A font value greater than 3 does not display, and
+        ///     anything greater than 16 crashes.
+        /// </param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool PlayerTextDrawFont(int playerid, int text, int font);
 
         /// <summary>
-        /// Appears to scale text spacing to a proportional ratio. Useful when using PlayerTextDrawLetterSize to ensure the text has even character spacing.
+        ///     Appears to scale text spacing to a proportional ratio. Useful when using PlayerTextDrawLetterSize to ensure the
+        ///     text has even character spacing.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player-textdraw to set the proportionality of.</param>
         /// <param name="text">The ID of the player-textdraw to set the proportionality of.</param>
@@ -862,10 +930,10 @@ namespace GameMode
         public static extern bool PlayerTextDrawSetProportional(int playerid, int text, bool set);
 
         /// <summary>
-        /// Toggles whether a player-textdraw can be selected or not.
+        ///     Toggles whether a player-textdraw can be selected or not.
         /// </summary>
         /// <remarks>
-        /// <see cref="PlayerTextDrawSetSelectable"/> MUST be used BEFORE the textdraw is shown to the player.
+        ///     <see cref="PlayerTextDrawSetSelectable" /> MUST be used BEFORE the textdraw is shown to the player.
         /// </remarks>
         /// <param name="playerid">The ID of the player whose player-textdraw to make selectable.</param>
         /// <param name="text">The ID of the player-textdraw to set the selectability of.</param>
@@ -875,7 +943,7 @@ namespace GameMode
         public static extern bool PlayerTextDrawSetSelectable(int playerid, int text, bool set);
 
         /// <summary>
-        /// Show a player-textdraw to the player it was created for.
+        ///     Show a player-textdraw to the player it was created for.
         /// </summary>
         /// <param name="playerid">The ID of the player to show the textdraw for.</param>
         /// <param name="text">The ID of the textdraw to show.</param>
@@ -884,7 +952,7 @@ namespace GameMode
         public static extern bool PlayerTextDrawShow(int playerid, int text);
 
         /// <summary>
-        /// Hide a player-textdraw from the player it was created for.
+        ///     Hide a player-textdraw from the player it was created for.
         /// </summary>
         /// <param name="playerid">The ID of the player to hide the textdraw for.</param>
         /// <param name="text">The ID of the textdraw to hide.</param>
@@ -893,10 +961,11 @@ namespace GameMode
         public static extern bool PlayerTextDrawHide(int playerid, int text);
 
         /// <summary>
-        /// Change the text of a player-textdraw.
+        ///     Change the text of a player-textdraw.
         /// </summary>
         /// <remarks>
-        /// Although the textdraw string limit is 1024 characters, if colour codes (e.g. ~r~) are used beyond the 255th character it may crash the client.
+        ///     Although the textdraw string limit is 1024 characters, if colour codes (e.g. ~r~) are used beyond the 255th
+        ///     character it may crash the client.
         /// </remarks>
         /// <param name="playerid">The ID of the player who's textdraw string to set.</param>
         /// <param name="text">The ID of the textdraw to change.</param>
@@ -906,7 +975,7 @@ namespace GameMode
         public static extern bool PlayerTextDrawSetString(int playerid, int text, string str);
 
         /// <summary>
-        /// Sets a player textdraw 2D preview sprite of a specified model ID.
+        ///     Sets a player textdraw 2D preview sprite of a specified model ID.
         /// </summary>
         /// <param name="playerid">The PlayerTextDraw player ID.</param>
         /// <param name="text">The textdraw id that will display the 3D preview.</param>
@@ -916,21 +985,24 @@ namespace GameMode
         public static extern bool PlayerTextDrawSetPreviewModel(int playerid, int text, int modelindex);
 
         /// <summary>
-        /// Sets the rotation and zoom of a 3D model preview player-textdraw.
+        ///     Sets the rotation and zoom of a 3D model preview player-textdraw.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player-textdraw to change.</param>
         /// <param name="text">The ID of the player-textdraw to change.</param>
         /// <param name="rotX">The X rotation value.</param>
         /// <param name="rotY">The Y rotation value.</param>
         /// <param name="rotZ">The Z rotation value.</param>
-        /// <param name="zoom">The zoom value, default value 1.0, smaller values make the camera closer and larger values make the camera further away.</param>
+        /// <param name="zoom">
+        ///     The zoom value, default value 1.0, smaller values make the camera closer and larger values make the
+        ///     camera further away.
+        /// </param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool PlayerTextDrawSetPreviewRot(int playerid, int text, float rotX, float rotY,
             float rotZ, float zoom);
 
         /// <summary>
-        /// Set the color of a vehicle in a player-textdraw model preview (if a vehicle is shown).
+        ///     Set the color of a vehicle in a player-textdraw model preview (if a vehicle is shown).
         /// </summary>
         /// <param name="playerid">The ID of the player whose player-textdraw to change.</param>
         /// <param name="text">The ID of the player's player-textdraw to change.</param>
@@ -941,10 +1013,11 @@ namespace GameMode
         public static extern bool PlayerTextDrawSetPreviewVehCol(int playerid, int text, int color1, int color2);
 
         /// <summary>
-        /// Sets an integer to a player variable.
+        ///     Sets an integer to a player variable.
         /// </summary>
         /// <remarks>
-        /// Variables aren't reset until after <see cref="BaseMode.OnPlayerDisconnect"/> is called, so the values are still accessible in <see cref="BaseMode.OnPlayerDisconnect"/>.
+        ///     Variables aren't reset until after <see cref="BaseMode.OnPlayerDisconnect" /> is called, so the values are still
+        ///     accessible in <see cref="BaseMode.OnPlayerDisconnect" />.
         /// </remarks>
         /// <param name="playerid">The ID of the player whose player variable will be set.</param>
         /// <param name="varname">The name of the player variable.</param>
@@ -954,7 +1027,7 @@ namespace GameMode
         public static extern bool SetPVarInt(int playerid, string varname, int value);
 
         /// <summary>
-        /// Gets a player variable as an integer.
+        ///     Gets a player variable as an integer.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player variable to get.</param>
         /// <param name="varname">The name of the player variable. (case-insensitive)</param>
@@ -963,7 +1036,7 @@ namespace GameMode
         public static extern int GetPVarInt(int playerid, string varname);
 
         /// <summary>
-        /// Saves a string into a player variable.
+        ///     Saves a string into a player variable.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player variable will be set.</param>
         /// <param name="varname">The name of the player variable.</param>
@@ -973,10 +1046,10 @@ namespace GameMode
         public static extern bool SetPVarString(int playerid, string varname, string value);
 
         /// <summary>
-        /// Gets a player variable as a string.
+        ///     Gets a player variable as a string.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player variable to get.</param>
-        /// <param name="varname">The name of the player variable, set by <see cref="SetPVarString"/>.</param>
+        /// <param name="varname">The name of the player variable, set by <see cref="SetPVarString" />.</param>
         /// <param name="value">The array in which to store the string value in, passed by reference.</param>
         /// <param name="size">The maximum length of the returned string.</param>
         /// <returns>The length of the string.</returns>
@@ -984,7 +1057,7 @@ namespace GameMode
         public static extern bool GetPVarString(int playerid, string varname, out string value, int size);
 
         /// <summary>
-        /// Saves a float variable into a player variable.
+        ///     Saves a float variable into a player variable.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player variable will be set.</param>
         /// <param name="varname">The name of the player variable.</param>
@@ -994,7 +1067,7 @@ namespace GameMode
         public static extern bool SetPVarFloat(int playerid, string varname, float value);
 
         /// <summary>
-        /// Gets a player variable as a float.
+        ///     Gets a player variable as a float.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player variable you want to get.</param>
         /// <param name="varname">The name of the player variable.</param>
@@ -1003,7 +1076,7 @@ namespace GameMode
         public static extern float GetPVarFloat(int playerid, string varname);
 
         /// <summary>
-        /// Deletes a previously set player variable.
+        ///     Deletes a previously set player variable.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player variable to delete.</param>
         /// <param name="varname">The name of the player variable to delete.</param>
@@ -1012,7 +1085,8 @@ namespace GameMode
         public static extern bool DeletePVar(int playerid, string varname);
 
         /// <summary>
-        /// Each PVar (player-variable) has its own unique identification number for lookup, this function returns the highest ID set for a player.
+        ///     Each PVar (player-variable) has its own unique identification number for lookup, this function returns the highest
+        ///     ID set for a player.
         /// </summary>
         /// <param name="playerid">The ID of the player to get the upper PVar index of..</param>
         /// <returns>The highest set PVar ID.</returns>
@@ -1020,7 +1094,7 @@ namespace GameMode
         public static extern int GetPVarsUpperIndex(int playerid);
 
         /// <summary>
-        /// Retrieve the name of a player's variable via the index.
+        ///     Retrieve the name of a player's variable via the index.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player variable to get the name of.</param>
         /// <param name="index">The index of the player's pVar.</param>
@@ -1031,7 +1105,7 @@ namespace GameMode
         public static extern bool GetPVarNameAtIndex(int playerid, int index, out string varname, int size);
 
         /// <summary>
-        /// Gets the type (integer, float or string) of a player variable.
+        ///     Gets the type (integer, float or string) of a player variable.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player variable to get the type of.</param>
         /// <param name="varname">The name of the player variable to get the type of.</param>
@@ -1040,7 +1114,7 @@ namespace GameMode
         public static extern int GetPVarType(int playerid, string varname);
 
         /// <summary>
-        /// Creates a chat bubble above a player's name tag.
+        ///     Creates a chat bubble above a player's name tag.
         /// </summary>
         /// <param name="playerid">The player which should have the chat bubble.</param>
         /// <param name="text">The text to display.</param>
@@ -1053,7 +1127,7 @@ namespace GameMode
             int expiretime);
 
         /// <summary>
-        /// Puts a player in a vehicle
+        ///     Puts a player in a vehicle
         /// </summary>
         /// <param name="playerid">The ID of the player to put in a vehicle.</param>
         /// <param name="vehicleid">The ID of the vehicle for the player to be put in.</param>
@@ -1063,7 +1137,8 @@ namespace GameMode
         public static extern bool PutPlayerInVehicle(int playerid, int vehicleid, int seatid);
 
         /// <summary>
-        /// This function gets the ID of the vehicle the player is currently in. Note: NOT the model id of the vehicle. See <see cref="GetVehicleModel"/> for that.
+        ///     This function gets the ID of the vehicle the player is currently in. Note: NOT the model id of the vehicle. See
+        ///     <see cref="GetVehicleModel" /> for that.
         /// </summary>
         /// <param name="playerid">The ID of the player in the vehicle that you want to get the ID of.</param>
         /// <returns>ID of the vehicle or 0 if not in a vehicle.</returns>
@@ -1071,22 +1146,27 @@ namespace GameMode
         public static extern int GetPlayerVehicleID(int playerid);
 
         /// <summary>
-        /// Find out what seat a player is in.
+        ///     Find out what seat a player is in.
         /// </summary>
         /// <remarks>
-        /// Sometimes the result can be 128 which is an invalid seat ID. Circumstances of this are not yet known, but it is best to discard information when returned seat number is 128.
+        ///     Sometimes the result can be 128 which is an invalid seat ID. Circumstances of this are not yet known, but it is
+        ///     best to discard information when returned seat number is 128.
         /// </remarks>
         /// <param name="playerid">The ID of the player you want to get the seat of.</param>
-        /// <returns>Seat ID (-1 if the player is not in a vehicle, 0 driver, 1 co-driver, 2&3 back seat passengers, 4+ if the vehicle has enough seats (i.e coach)).</returns>
+        /// <returns>
+        ///     Seat ID (-1 if the player is not in a vehicle, 0 driver, 1 co-driver, 2&3 back seat passengers, 4+ if the
+        ///     vehicle has enough seats (i.e coach)).
+        /// </returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetPlayerVehicleSeat(int playerid);
 
         /// <summary>
-        /// Removes/ejects a player from their vehicle.
+        ///     Removes/ejects a player from their vehicle.
         /// </summary>
         /// <remarks>
-        /// The exiting animation is not synced for other players.
-        /// This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle"/>, because the player isn't in the vehicle when the callback is called. Use <see cref="BaseMode.OnPlayerStateChange"/> instead.
+        ///     The exiting animation is not synced for other players.
+        ///     This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle" />, because the player isn't in
+        ///     the vehicle when the callback is called. Use <see cref="BaseMode.OnPlayerStateChange" /> instead.
         /// </remarks>
         /// <param name="playerid">The ID of the player to remove from their vehicle.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -1094,7 +1174,7 @@ namespace GameMode
         public static extern bool RemovePlayerFromVehicle(int playerid);
 
         /// <summary>
-        /// Toggles whether a player can control themselves, basically freezes them.
+        ///     Toggles whether a player can control themselves, basically freezes them.
         /// </summary>
         /// <param name="playerid">The ID of the player to toggle the controllability of.</param>
         /// <param name="toggle">False to freeze the player or True to unfreeze them.</param>
@@ -1103,10 +1183,11 @@ namespace GameMode
         public static extern bool TogglePlayerControllable(int playerid, bool toggle);
 
         /// <summary>
-        /// Plays the specified sound for a player.
+        ///     Plays the specified sound for a player.
         /// </summary>
         /// <remarks>
-        /// Only use the coordinates if you want the sound to be played at a certain position. Set coordinates all to 0 to just play the sound.
+        ///     Only use the coordinates if you want the sound to be played at a certain position. Set coordinates all to 0 to just
+        ///     play the sound.
         /// </remarks>
         /// <param name="playerid">The ID of the player for whom to play the sound.</param>
         /// <param name="soundid">The sound to play.</param>
@@ -1118,18 +1199,28 @@ namespace GameMode
         public static extern bool PlayerPlaySound(int playerid, int soundid, float x, float y, float z);
 
         /// <summary>
-        /// Apply an animation to a player.
+        ///     Apply an animation to a player.
         /// </summary>
         /// <remarks>
-        /// The <paramref name="forcesync"/> parameter, which defaults to False, in most cases is not needed since players sync animations themselves. The <paramref name="forcesync"/> parameter can force all players who can see <paramref name="playerid"/> to play the animation regardless of whether the player is performing that animation. This is useful in circumstances where the player can't sync the animation themselves. For example, they may be paused.
+        ///     The <paramref name="forcesync" /> parameter, which defaults to False, in most cases is not needed since players
+        ///     sync animations themselves. The <paramref name="forcesync" /> parameter can force all players who can see
+        ///     <paramref name="playerid" /> to play the animation regardless of whether the player is performing that animation.
+        ///     This is useful in circumstances where the player can't sync the animation themselves. For example, they may be
+        ///     paused.
         /// </remarks>
         /// <param name="playerid">The ID of the player to apply the animation to.</param>
         /// <param name="animlib">The name of the animation library in which the animation to apply is in.</param>
         /// <param name="animname">The name of the animation, within the library specified.</param>
         /// <param name="fDelta">The speed to play the animation (use 4.1).</param>
         /// <param name="loop">Set to True for looping otherwise set to False for playing animation sequence only once.</param>
-        /// <param name="lockx">Set to False to return player to original x position after animation is complete for moving animations. The opposite effect occurs if set to True.</param>
-        /// <param name="locky">Set to False to return player to original y position after animation is complete for moving animations. The opposite effect occurs if set to True.</param>
+        /// <param name="lockx">
+        ///     Set to False to return player to original x position after animation is complete for moving
+        ///     animations. The opposite effect occurs if set to True.
+        /// </param>
+        /// <param name="locky">
+        ///     Set to False to return player to original y position after animation is complete for moving
+        ///     animations. The opposite effect occurs if set to True.
+        /// </param>
         /// <param name="freeze">Will freeze the player in position after the animation finishes.</param>
         /// <param name="time">Timer in milliseconds. For a never ending loop it should be 0.</param>
         /// <param name="forcesync">Set to True to force playerid to sync animation with other players in all instances</param>
@@ -1139,7 +1230,7 @@ namespace GameMode
             bool lockx, bool locky, bool freeze, int time, bool forcesync);
 
         /// <summary>
-        /// Clears all animations for the given player.
+        ///     Clears all animations for the given player.
         /// </summary>
         /// <param name="playerid">The ID of the player to clear the animations of.</param>
         /// <param name="forcesync">Specifies whether the animation should be shown to streamed in players.</param>
@@ -1148,7 +1239,7 @@ namespace GameMode
         public static extern bool ClearAnimations(int playerid, bool forcesync);
 
         /// <summary>
-        /// Returns the index of any running applied animations.
+        ///     Returns the index of any running applied animations.
         /// </summary>
         /// <param name="playerid">ID of the player of whom you want to get the animation index of.</param>
         /// <returns>0 if there is no animation applied, otherwise the index of the playing animation.</returns>
@@ -1156,9 +1247,9 @@ namespace GameMode
         public static extern int GetPlayerAnimationIndex(int playerid);
 
         /// <summary>
-        /// Get the animation library/name for the index.
+        ///     Get the animation library/name for the index.
         /// </summary>
-        /// <param name="index">The animation index, returned by <see cref="GetPlayerAnimationIndex"/>.</param>
+        /// <param name="index">The animation index, returned by <see cref="GetPlayerAnimationIndex" />.</param>
         /// <param name="animlib">String variable that stores the animation library.</param>
         /// <param name="animlibSize">Size of the string that stores the animation library.</param>
         /// <param name="animname">String variable that stores the animation name.</param>
@@ -1169,7 +1260,7 @@ namespace GameMode
             int animnameSize);
 
         /// <summary>
-        /// Retrieves a player's current special action.
+        ///     Retrieves a player's current special action.
         /// </summary>
         /// <param name="playerid">The ID of the player to get the special action of.</param>
         /// <returns>The special action of the player.</returns>
@@ -1177,19 +1268,22 @@ namespace GameMode
         public static extern int GetPlayerSpecialAction(int playerid);
 
         /// <summary>
-        /// This Function allows to set players special action.
+        ///     This Function allows to set players special action.
         /// </summary>
         /// <param name="playerid">The player that should perform the action.</param>
-        /// <param name="actionid">The action that should be performed.</param>ob
+        /// <param name="actionid">The action that should be performed.</param>
+        /// ob
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerSpecialAction(int playerid, int actionid);
 
         /// <summary>
-        /// Sets a checkpoint (red circle) for a player. Also shows a red blip on the radar.
+        ///     Sets a checkpoint (red circle) for a player. Also shows a red blip on the radar.
         /// </summary>
         /// <remarks>
-        /// Checkpoints created on server-created objects (<see cref="CreateObject"/>/<see cref="CreatePlayerObject"/>) will appear down on the 'real' ground, but will still function correctly. There is no fix available for this issue. A pickup can be used instead.
+        ///     Checkpoints created on server-created objects (<see cref="CreateObject" />/<see cref="CreatePlayerObject" />) will
+        ///     appear down on the 'real' ground, but will still function correctly. There is no fix available for this issue. A
+        ///     pickup can be used instead.
         /// </remarks>
         /// <param name="playerid">The ID of the player to set the checkpoint of.</param>
         /// <param name="x">The X coordinate to set the checkpoint at.</param>
@@ -1201,7 +1295,7 @@ namespace GameMode
         public static extern bool SetPlayerCheckpoint(int playerid, float x, float y, float z, float size);
 
         /// <summary>
-        /// Disable any initialized checkpoints for a specific player, since you can only have one at any given time.
+        ///     Disable any initialized checkpoints for a specific player, since you can only have one at any given time.
         /// </summary>
         /// <param name="playerid">The player to disable the current checkpoint for.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -1209,10 +1303,13 @@ namespace GameMode
         public static extern bool DisablePlayerCheckpoint(int playerid);
 
         /// <summary>
-        /// Creates a race checkpoint. When the player enters it, the OnPlayerEnterRaceCheckpoint callback is called.
+        ///     Creates a race checkpoint. When the player enters it, the OnPlayerEnterRaceCheckpoint callback is called.
         /// </summary>
         /// <param name="playerid">The ID of the player to set the checkpoint for.</param>
-        /// <param name="type">Type of checkpoint.0-Normal, 1-Finish, 2-Nothing(Only the checkpoint without anything on it), 3-Air normal, 4-Air finish.</param>
+        /// <param name="type">
+        ///     Type of checkpoint.0-Normal, 1-Finish, 2-Nothing(Only the checkpoint without anything on it), 3-Air
+        ///     normal, 4-Air finish.
+        /// </param>
         /// <param name="x">X-Coordinate.</param>
         /// <param name="y">X-Coordinate.</param>
         /// <param name="z">X-Coordinate.</param>
@@ -1226,7 +1323,7 @@ namespace GameMode
             float nexty, float nextz, float size);
 
         /// <summary>
-        /// Disable any initialized race checkpoints for a specific player, since you can only have one at any given time.
+        ///     Disable any initialized race checkpoints for a specific player, since you can only have one at any given time.
         /// </summary>
         /// <param name="playerid">The player to disable the current checkpoint for.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -1234,10 +1331,11 @@ namespace GameMode
         public static extern bool DisablePlayerRaceCheckpoint(int playerid);
 
         /// <summary>
-        /// Set the world boundaries for a player - players can not go out of the boundaries.
+        ///     Set the world boundaries for a player - players can not go out of the boundaries.
         /// </summary>
         /// <remarks>
-        /// You can reset the player world bounds by setting the parameters to 20000.0000, -20000.0000, 20000.0000, -20000.0000.
+        ///     You can reset the player world bounds by setting the parameters to 20000.0000, -20000.0000, 20000.0000,
+        ///     -20000.0000.
         /// </remarks>
         /// <param name="playerid">The ID of the player to set the boundaries of.</param>
         /// <param name="xMax">The maximum X coordinate the player can go to.</param>
@@ -1249,7 +1347,7 @@ namespace GameMode
         public static extern bool SetPlayerWorldBounds(int playerid, float xMax, float xMin, float yMax, float yMin);
 
         /// <summary>
-        /// Change the colour of a player's nametag and radar blip for another player.
+        ///     Change the colour of a player's nametag and radar blip for another player.
         /// </summary>
         /// <param name="playerid">The player that will see the player's changed blip/nametag color.</param>
         /// <param name="showplayerid">The player whose color will be changed.</param>
@@ -1259,10 +1357,12 @@ namespace GameMode
         public static extern bool SetPlayerMarkerForPlayer(int playerid, int showplayerid, int color);
 
         /// <summary>
-        /// This functions allows you to toggle the drawing of player nametags, healthbars and armor bars which display above their head. For use of a similar function like this on a global level, <see cref="ShowNameTags"/> function.
+        ///     This functions allows you to toggle the drawing of player nametags, healthbars and armor bars which display above
+        ///     their head. For use of a similar function like this on a global level, <see cref="ShowNameTags" /> function.
         /// </summary>
         /// <remarks>
-        /// <see cref="ShowNameTags"/> must be set to True to be able to show name tags with <see cref="ShowPlayerNameTagForPlayer"/>.
+        ///     <see cref="ShowNameTags" /> must be set to True to be able to show name tags with
+        ///     <see cref="ShowPlayerNameTagForPlayer" />.
         /// </remarks>
         /// <param name="playerid">Player who will see the results of this function.</param>
         /// <param name="showplayerid">Player whose name tag will be shown or hidden.</param>
@@ -1272,7 +1372,10 @@ namespace GameMode
         public static extern bool ShowPlayerNameTagForPlayer(int playerid, int showplayerid, bool show);
 
         /// <summary>
-        /// This function allows you to place your own icons on the map, enabling you to emphasise the locations of banks, airports or whatever else you want. A total of 63 icons are available in GTA: San Andreas, all of which can be used using this function. You can also specify the color of the icon, which allows you to change the square icon (ID: 0).
+        ///     This function allows you to place your own icons on the map, enabling you to emphasise the locations of banks,
+        ///     airports or whatever else you want. A total of 63 icons are available in GTA: San Andreas, all of which can be used
+        ///     using this function. You can also specify the color of the icon, which allows you to change the square icon (ID:
+        ///     0).
         /// </summary>
         /// <param name="playerid">The ID of the player to set the map icon for.</param>
         /// <param name="iconid">The player's icon ID, ranging from 0 to 99, to be used in RemovePlayerMapIcon.</param>
@@ -1288,19 +1391,22 @@ namespace GameMode
             int color, int style);
 
         /// <summary>
-        /// Removes a map icon that was set earlier for a player.
+        ///     Removes a map icon that was set earlier for a player.
         /// </summary>
         /// <param name="playerid">The ID of the player whose icon to remove.</param>
-        /// <param name="iconid">The ID of the icon to remove. This is the second parameter of <see cref="SetPlayerMapIcon(int,int,Vector,PlayerMarkersMode)"/>.</param>
+        /// <param name="iconid">
+        ///     The ID of the icon to remove. This is the second parameter of
+        ///     <see cref="SetPlayerMapIcon(int,int,Vector,PlayerMarkersMode)" />.
+        /// </param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool RemovePlayerMapIcon(int playerid, int iconid);
 
         /// <summary>
-        /// Enable/Disable the teleporting ability for a player by right-clicking on the map.
+        ///     Enable/Disable the teleporting ability for a player by right-clicking on the map.
         /// </summary>
         /// <remarks>
-        /// This function will work only if <see cref="AllowAdminTeleport"/> is working, and you have to be an admin.
+        ///     This function will work only if <see cref="AllowAdminTeleport" /> is working, and you have to be an admin.
         /// </remarks>
         /// <param name="playerid">playerid</param>
         /// <param name="allow">True-allow, False-disallow</param>
@@ -1310,7 +1416,7 @@ namespace GameMode
         public static extern bool AllowPlayerTeleport(int playerid, bool allow);
 
         /// <summary>
-        /// Sets the camera to a specific position for a player.
+        ///     Sets the camera to a specific position for a player.
         /// </summary>
         /// <param name="playerid">ID of the player.</param>
         /// <param name="x">New x-position of the camera.</param>
@@ -1321,7 +1427,7 @@ namespace GameMode
         public static extern bool SetPlayerCameraPos(int playerid, float x, float y, float z);
 
         /// <summary>
-        /// Set the direction a player's camera looks at. To be used in combination with SetPlayerCameraPos.
+        ///     Set the direction a player's camera looks at. To be used in combination with SetPlayerCameraPos.
         /// </summary>
         /// <param name="playerid">The player to change the camera of.</param>
         /// <param name="x">The X coordinate for the player's camera to look at.</param>
@@ -1333,7 +1439,7 @@ namespace GameMode
         public static extern bool SetPlayerCameraLookAt(int playerid, float x, float y, float z, int cut);
 
         /// <summary>
-        /// Restore the camera to a place behind the player, after using a function like SetPlayerCameraPos.
+        ///     Restore the camera to a place behind the player, after using a function like SetPlayerCameraPos.
         /// </summary>
         /// <param name="playerid">The player you want to restore the camera for.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -1341,10 +1447,10 @@ namespace GameMode
         public static extern bool SetCameraBehindPlayer(int playerid);
 
         /// <summary>
-        /// Get the position of the player's camera.
+        ///     Get the position of the player's camera.
         /// </summary>
-        /// <remarks> 
-        /// Player's camera positions are only updated once a second, unless aiming.
+        /// <remarks>
+        ///     Player's camera positions are only updated once a second, unless aiming.
         /// </remarks>
         /// <param name="playerid">The ID of the player to get the camera position of.</param>
         /// <param name="x">A float variable to store the X coordinate in, passed by reference.</param>
@@ -1355,7 +1461,8 @@ namespace GameMode
         public static extern bool GetPlayerCameraPos(int playerid, out float x, out float y, out float z);
 
         /// <summary>
-        /// This function will return the current direction of player's aiming in 3-D space, the coords are relative to the camera position, see <see cref="GetPlayerCameraPos(int)"/>.
+        ///     This function will return the current direction of player's aiming in 3-D space, the coords are relative to the
+        ///     camera position, see <see cref="GetPlayerCameraPos(int)" />.
         /// </summary>
         /// <param name="playerid">The ID of the player you want to obtain the camera front vector of.</param>
         /// <param name="x">A float to store the X coordinate, passed by reference.</param>
@@ -1366,7 +1473,8 @@ namespace GameMode
         public static extern bool GetPlayerCameraFrontVector(int playerid, out float x, out float y, out float z);
 
         /// <summary>
-        /// Returns the current GTA camera mode for the requested player. The camera modes are useful in determining whether a player is aiming, doing a passenger driveby etc
+        ///     Returns the current GTA camera mode for the requested player. The camera modes are useful in determining whether a
+        ///     player is aiming, doing a passenger driveby etc
         /// </summary>
         /// <param name="playerid">The ID of the player whose camera mode to retrieve</param>
         /// <returns>The camera mode as an integer (or -1 if player is not connected)</returns>
@@ -1374,10 +1482,10 @@ namespace GameMode
         public static extern int GetPlayerCameraMode(int playerid);
 
         /// <summary>
-        /// You can use this function to attach the player camera to objects.
+        ///     You can use this function to attach the player camera to objects.
         /// </summary>
         /// <remarks>
-        /// You need to create the object first, before attempting to attach a player camera for that.
+        ///     You need to create the object first, before attempting to attach a player camera for that.
         /// </remarks>
         /// <param name="playerid">The ID of the player which will have your camera attached on object.</param>
         /// <param name="objectid">The object id which you want to attach the player camera.</param>
@@ -1386,7 +1494,8 @@ namespace GameMode
         public static extern bool AttachCameraToObject(int playerid, int objectid);
 
         /// <summary>
-        /// Attaches a player's camera to a player-object. They are able to move their camera while it is attached to an object. Can be used with <see cref="MovePlayerObject"/> and <see cref="AttachPlayerObjectToVehicle"/>.
+        ///     Attaches a player's camera to a player-object. They are able to move their camera while it is attached to an
+        ///     object. Can be used with <see cref="MovePlayerObject" /> and <see cref="AttachPlayerObjectToVehicle" />.
         /// </summary>
         /// <param name="playerid">The ID of the player which will have their camera attached to a player-object.</param>
         /// <param name="playerobjectid">	The ID of the player-object to which the player's camera will be attached.</param>
@@ -1395,7 +1504,7 @@ namespace GameMode
         public static extern bool AttachCameraToPlayerObject(int playerid, int playerobjectid);
 
         /// <summary>
-        /// Move a player's camera from one position to another, within the set time.
+        ///     Move a player's camera from one position to another, within the set time.
         /// </summary>
         /// <param name="playerid">The ID of the player the camera should be moved for.</param>
         /// <param name="fromX">The X position the camera should start to move from.</param>
@@ -1412,7 +1521,8 @@ namespace GameMode
             float toY, float toZ, int time, int cut);
 
         /// <summary>
-        /// Interpolate a player's camera's 'look at' point between two coordinates with a set speed. Can be be used with <see cref="InterpolateCameraPos(int,Vector,Vector,int,CameraCut)"/>.
+        ///     Interpolate a player's camera's 'look at' point between two coordinates with a set speed. Can be be used with
+        ///     <see cref="InterpolateCameraPos(int,Vector,Vector,int,CameraCut)" />.
         /// </summary>
         /// <param name="playerid">The ID of the player the camera should be moved for.</param>
         /// <param name="fromX">The X position the camera should start to move from.</param>
@@ -1429,16 +1539,19 @@ namespace GameMode
             float toY, float toZ, int time, int cut);
 
         /// <summary>
-        /// This function can be used to check if a player is connected to the server via SA:MP.
+        ///     This function can be used to check if a player is connected to the server via SA:MP.
         /// </summary>
-        /// <remarks>This function can be omitted in a lot of cases. Many other natives already have some sort of connection check built in.</remarks>
+        /// <remarks>
+        ///     This function can be omitted in a lot of cases. Many other natives already have some sort of connection check
+        ///     built in.
+        /// </remarks>
         /// <param name="playerid">The playerid you would like to check.</param>
         /// <returns>Returns true if the player is connected and false if the player is not.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsPlayerConnected(int playerid);
 
         /// <summary>
-        /// Checks if a player is in a specific vehicle.
+        ///     Checks if a player is in a specific vehicle.
         /// </summary>
         /// <param name="playerid">ID of the player.</param>
         /// <param name="vehicleid">ID of the vehicle.</param>
@@ -1447,7 +1560,7 @@ namespace GameMode
         public static extern bool IsPlayerInVehicle(int playerid, int vehicleid);
 
         /// <summary>
-        /// Check if a player is inside any vehicle.
+        ///     Check if a player is inside any vehicle.
         /// </summary>
         /// <param name="playerid">The ID of the player to check.</param>
         /// <returns>True if player is in a vehicle, otherwise False.</returns>
@@ -1455,7 +1568,8 @@ namespace GameMode
         public static extern bool IsPlayerInAnyVehicle(int playerid);
 
         /// <summary>
-        /// Check if the player is currently inside a checkpoint, this could be used for properties or teleport points for example.
+        ///     Check if the player is currently inside a checkpoint, this could be used for properties or teleport points for
+        ///     example.
         /// </summary>
         /// <param name="playerid">The player you want to know the status of.</param>
         /// <returns>True if player is in his checkpoint, otherwise False.</returns>
@@ -1463,7 +1577,8 @@ namespace GameMode
         public static extern bool IsPlayerInCheckpoint(int playerid);
 
         /// <summary>
-        /// Check if the player is inside their current set race checkpoint (<see cref="SetPlayerRaceCheckpoint(int,CheckpointType,Vector,Vector,float)"/>).
+        ///     Check if the player is inside their current set race checkpoint (
+        ///     <see cref="SetPlayerRaceCheckpoint(int,CheckpointType,Vector,Vector,float)" />).
         /// </summary>
         /// <param name="playerid">The ID of the player to check.</param>
         /// <returns>True if player is in his checkpoint, otherwise False.</returns>
@@ -1471,10 +1586,10 @@ namespace GameMode
         public static extern bool IsPlayerInRaceCheckpoint(int playerid);
 
         /// <summary>
-        /// Set the virtual world of a player. They can only see other players or vehicles if they are in that same world.
+        ///     Set the virtual world of a player. They can only see other players or vehicles if they are in that same world.
         /// </summary>
         /// <remarks>
-        /// The default virtual world is 0.
+        ///     The default virtual world is 0.
         /// </remarks>
         /// <param name="playerid">The ID of the player you want to set the virtual world of.</param>
         /// <param name="worldid">The virtual world ID to put the player in.</param>
@@ -1483,7 +1598,7 @@ namespace GameMode
         public static extern bool SetPlayerVirtualWorld(int playerid, int worldid);
 
         /// <summary>
-        /// Retrieves the current virtual world the player is in. Note this is not the same as the interior.
+        ///     Retrieves the current virtual world the player is in. Note this is not the same as the interior.
         /// </summary>
         /// <param name="playerid">The ID of the player to get the virtual world of.</param>
         /// <returns>The ID of the world the player is currently in.</returns>
@@ -1491,7 +1606,7 @@ namespace GameMode
         public static extern int GetPlayerVirtualWorld(int playerid);
 
         /// <summary>
-        /// Toggle stunt bonuses for a player.
+        ///     Toggle stunt bonuses for a player.
         /// </summary>
         /// <param name="playerid">The ID of the player to toggle stunt bonuses for.</param>
         /// <param name="enable">True to enable stunt bonuses, False to disable them.</param>
@@ -1500,7 +1615,7 @@ namespace GameMode
         public static extern bool EnableStuntBonusForPlayer(int playerid, bool enable);
 
         /// <summary>
-        /// Enables or disables stunt bonuses for all players.
+        ///     Enables or disables stunt bonuses for all players.
         /// </summary>
         /// <param name="enable">True to enable stunt bonuses, False to disable.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -1508,10 +1623,10 @@ namespace GameMode
         public static extern bool EnableStuntBonusForAll(bool enable);
 
         /// <summary>
-        /// Toggle a player's spectate mode.
+        ///     Toggle a player's spectate mode.
         /// </summary>
         /// <remarks>
-        /// When the spectating is turned off, OnPlayerSpawn will automatically be called.
+        ///     When the spectating is turned off, OnPlayerSpawn will automatically be called.
         /// </remarks>
         /// <param name="playerid">The ID of the player who should spectate.</param>
         /// <param name="toggle">True to enable spectating and False to disable.</param>
@@ -1520,10 +1635,11 @@ namespace GameMode
         public static extern bool TogglePlayerSpectating(int playerid, bool toggle);
 
         /// <summary>
-        /// Makes a player spectate (watch) another player.
+        ///     Makes a player spectate (watch) another player.
         /// </summary>
         /// <remarks>
-        /// Order is CRITICAL! Ensure that you use <see cref="TogglePlayerSpectating"/> before <see cref="PlayerSpectatePlayer"/>.
+        ///     Order is CRITICAL! Ensure that you use <see cref="TogglePlayerSpectating" /> before
+        ///     <see cref="PlayerSpectatePlayer" />.
         /// </remarks>
         /// <param name="playerid">The ID of the player that will spectate.</param>
         /// <param name="targetplayerid">The ID of the player that should be spectated.</param>
@@ -1533,10 +1649,11 @@ namespace GameMode
         public static extern bool PlayerSpectatePlayer(int playerid, int targetplayerid, int mode);
 
         /// <summary>
-        /// Sets a player to spectate another vehicle, i.e. see what its driver sees.
+        ///     Sets a player to spectate another vehicle, i.e. see what its driver sees.
         /// </summary>
         /// <remarks>
-        /// Order is CRITICAL! Ensure that you use <see cref="TogglePlayerSpectating"/> before <see cref="PlayerSpectatePlayer"/>.
+        ///     Order is CRITICAL! Ensure that you use <see cref="TogglePlayerSpectating" /> before
+        ///     <see cref="PlayerSpectatePlayer" />.
         /// </remarks>
         /// <param name="playerid">Player ID.</param>
         /// <param name="targetvehicleid">ID of the vehicle to spectate.</param>
@@ -1546,17 +1663,20 @@ namespace GameMode
         public static extern bool PlayerSpectateVehicle(int playerid, int targetvehicleid, int mode);
 
         /// <summary>
-        /// Starts recording the player's movements to a file, which can then be reproduced by an NPC.
+        ///     Starts recording the player's movements to a file, which can then be reproduced by an NPC.
         /// </summary>
         /// <param name="playerid">The ID of the player you want to record.</param>
         /// <param name="recordtype">The type of recording.</param>
-        /// <param name="recordname">Name of the file which will hold the recorded data. It will be saved in scriptfiles, with an automatically added .rec extension.</param>
+        /// <param name="recordname">
+        ///     Name of the file which will hold the recorded data. It will be saved in scriptfiles, with an
+        ///     automatically added .rec extension.
+        /// </param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool StartRecordingPlayerData(int playerid, int recordtype, string recordname);
 
         /// <summary>
-        /// Stops all the recordings that had been started with <see cref="StartRecordingPlayerData"/> for a specific player.
+        ///     Stops all the recordings that had been started with <see cref="StartRecordingPlayerData" /> for a specific player.
         /// </summary>
         /// <param name="playerid">The player you want to stop the recordings of.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -1564,7 +1684,10 @@ namespace GameMode
         public static extern bool StopRecordingPlayerData(int playerid);
 
         /// <summary>
-        /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using <see cref="SetPlayerSkin"/> in <see cref="BaseMode.OnPlayerSpawn"/> and/or <see cref="BaseMode.OnPlayerRequestClass"/>.
+        ///     This function can be used to change the spawn information of a specific player. It allows you to automatically set
+        ///     someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn
+        ///     systems. This function is more crash-safe then using <see cref="SetPlayerSkin" /> in
+        ///     <see cref="BaseMode.OnPlayerSpawn" /> and/or <see cref="BaseMode.OnPlayerRequestClass" />.
         /// </summary>
         /// <param name="playerid">The PlayerID of who you want to set the spawn information.</param>
         /// <param name="team">The Team-ID of the chosen player.</param>
@@ -1584,12 +1707,15 @@ namespace GameMode
             float rotation, Weapon weapon1, int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3,
             int weapon3Ammo)
         {
-            return SetSpawnInfo(playerid, team, skin, x, y, z, rotation, (int)weapon1, weapon1Ammo, (int)weapon2,
-                weapon2Ammo, (int)weapon3, weapon3Ammo);
+            return SetSpawnInfo(playerid, team, skin, x, y, z, rotation, (int) weapon1, weapon1Ammo, (int) weapon2,
+                weapon2Ammo, (int) weapon3, weapon3Ammo);
         }
 
         /// <summary>
-        /// This function can be used to change the spawn information of a specific player. It allows you to automatically set someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn systems. This function is more crash-safe then using <see cref="SetPlayerSkin"/> in <see cref="BaseMode.OnPlayerSpawn"/> and/or <see cref="BaseMode.OnPlayerRequestClass"/>.
+        ///     This function can be used to change the spawn information of a specific player. It allows you to automatically set
+        ///     someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn
+        ///     systems. This function is more crash-safe then using <see cref="SetPlayerSkin" /> in
+        ///     <see cref="BaseMode.OnPlayerSpawn" /> and/or <see cref="BaseMode.OnPlayerRequestClass" />.
         /// </summary>
         /// <param name="playerid">The PlayerID of who you want to set the spawn information.</param>
         /// <param name="team">The Team-ID of the chosen player.</param>
@@ -1607,12 +1733,13 @@ namespace GameMode
             float rotation, Weapon weapon1, int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3,
             int weapon3Ammo)
         {
-            return SetSpawnInfo(playerid, team, skin, position.X, position.Y, position.Z, rotation, (int)weapon1, weapon1Ammo, (int)weapon2,
-                weapon2Ammo, (int)weapon3, weapon3Ammo);
+            return SetSpawnInfo(playerid, team, skin, position.X, position.Y, position.Z, rotation, (int) weapon1,
+                weapon1Ammo, (int) weapon2,
+                weapon2Ammo, (int) weapon3, weapon3Ammo);
         }
 
         /// <summary>
-        /// Set a player's position.
+        ///     Set a player's position.
         /// </summary>
         /// <param name="playerid">The ID of the player to set the position of.</param>
         /// <param name="position">The position to move the player to.</param>
@@ -1623,7 +1750,8 @@ namespace GameMode
         }
 
         /// <summary>
-        /// This sets the players position then adjusts the players z-coordinate to the nearest solid ground under the position.
+        ///     This sets the players position then adjusts the players z-coordinate to the nearest solid ground under the
+        ///     position.
         /// </summary>
         /// <param name="playerid">The ID of the player to set the position of.</param>
         /// <param name="position">The position to move the player to.</param>
@@ -1634,7 +1762,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Get the coordinates of a player.
+        ///     Get the coordinates of a player.
         /// </summary>
         /// <param name="playerid">The ID of the player to get the position of.</param>
         /// <returns>The position of the player.</returns>
@@ -1646,7 +1774,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Check if a player is in range of a point.
+        ///     Check if a player is in range of a point.
         /// </summary>
         /// <param name="playerid">The ID of the player.</param>
         /// <param name="range">The furthest distance the player can be from the point to be in range.</param>
@@ -1658,7 +1786,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Return angle of the direction the player is facing.
+        ///     Return angle of the direction the player is facing.
         /// </summary>
         /// <param name="playerid">The player you want to get the angle of.</param>
         /// <returns>The angle of the player.</returns>
@@ -1670,7 +1798,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Calculate the distance between a player and a map coordinate.
+        ///     Calculate the distance between a player and a map coordinate.
         /// </summary>
         /// <param name="playerid">The ID of the player to calculate the distance from.</param>
         /// <param name="point">The point to check the distance from.</param>
@@ -1681,7 +1809,8 @@ namespace GameMode
         }
 
         /// <summary>
-        /// The function GetPlayerHealth allows you to retrieve the health of a player. Useful for cheat detection, among other things.
+        ///     The function GetPlayerHealth allows you to retrieve the health of a player. Useful for cheat detection, among other
+        ///     things.
         /// </summary>
         /// <param name="playerid">The ID of the player.</param>
         /// <returns>The health of the player.</returns>
@@ -1693,7 +1822,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// This function stores the armour of a player into a variable.
+        ///     This function stores the armour of a player into a variable.
         /// </summary>
         /// <param name="playerid">The ID of the player that you want to get the armour of.</param>
         /// <returns>The amount of armour the player has.</returns>
@@ -1705,7 +1834,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Give a player a weapon with a specified amount of ammo.
+        ///     Give a player a weapon with a specified amount of ammo.
         /// </summary>
         /// <param name="playerid">The ID of the player to give a weapon to.</param>
         /// <param name="weapon">The weapon to give to the player.</param>
@@ -1713,13 +1842,16 @@ namespace GameMode
         /// <returns>This function doesn't return a specific value.</returns>
         public static bool GivePlayerWeapon(int playerid, Weapon weapon, int ammo)
         {
-            return GivePlayerWeapon(playerid, (int)weapon, ammo);
+            return GivePlayerWeapon(playerid, (int) weapon, ammo);
         }
+
         /// <summary>
-        /// Get the specified player's IP and store it in a string.
+        ///     Get the specified player's IP and store it in a string.
         /// </summary>
         /// <remarks>
-        /// This function does not work when used in <see cref="BaseMode.OnPlayerDisconnect"/> because the player is already disconnected. It will return an invalid IP (255.255.255.255). Save players' IPs under <see cref="BaseMode.OnPlayerConnect"/> if they need to be used under <see cref="BaseMode.OnPlayerConnect"/>.
+        ///     This function does not work when used in <see cref="BaseMode.OnPlayerDisconnect" /> because the player is already
+        ///     disconnected. It will return an invalid IP (255.255.255.255). Save players' IPs under
+        ///     <see cref="BaseMode.OnPlayerConnect" /> if they need to be used under <see cref="BaseMode.OnPlayerConnect" />.
         /// </remarks>
         /// <param name="playerid">The ID of the player to get the IP of.</param>
         /// <returns>The player's IP.</returns>
@@ -1731,12 +1863,12 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Get a player's name.
+        ///     Get a player's name.
         /// </summary>
         /// <remarks>
-        /// A player's name can be up to 24 characters long.
-        /// This is defined as <see cref="Limits.MaxPlayerName"/>.
-        /// Strings to store names in should be made this size, plus one extra cell for the null terminating character.
+        ///     A player's name can be up to 24 characters long.
+        ///     This is defined as <see cref="Limits.MaxPlayerName" />.
+        ///     Strings to store names in should be made this size, plus one extra cell for the null terminating character.
         /// </remarks>
         /// <param name="playerid">The ID of the player to get the name of.</param>
         /// <returns>The name of the player.</returns>
@@ -1748,10 +1880,10 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Gets a player variable as a string.
+        ///     Gets a player variable as a string.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player variable to get.</param>
-        /// <param name="varname">The name of the player variable, set by <see cref="SetPVarString"/>.</param>
+        /// <param name="varname">The name of the player variable, set by <see cref="SetPVarString" />.</param>
         /// <returns>The string from the player variable.</returns>
         public static string GetPVarString(int playerid, string varname)
         {
@@ -1761,7 +1893,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Retrieve the name of a player's variable via the index.
+        ///     Retrieve the name of a player's variable via the index.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player variable to get the name of.</param>
         /// <param name="index">The index of the player's pVar.</param>
@@ -1774,18 +1906,18 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Sets the armed weapon of the player.
+        ///     Sets the armed weapon of the player.
         /// </summary>
         /// <param name="playerid">The ID of the player to arm with a weapon.</param>
         /// <param name="weapon">The weapon that the player should be armed with.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         public static bool SetPlayerArmedWeapon(int playerid, Weapon weapon)
         {
-            return SetPlayerArmedWeapon(playerid, (int)weapon);
+            return SetPlayerArmedWeapon(playerid, (int) weapon);
         }
 
         /// <summary>
-        /// Get the weapon and ammo in a specific player's weapon slot.
+        ///     Get the weapon and ammo in a specific player's weapon slot.
         /// </summary>
         /// <param name="playerid">The ID of the player whose weapon data to retrieve.</param>
         /// <param name="slot">The weapon slot to get data for (0-12).</param>
@@ -1796,15 +1928,16 @@ namespace GameMode
         {
             int weaponid;
             bool result = GetPlayerWeaponData(playerid, slot, out weaponid, out ammo);
-            weapon = (Weapon)weaponid;
+            weapon = (Weapon) weaponid;
             return result;
         }
 
         /// <summary>
-        /// Check which keys a player is pressing.
+        ///     Check which keys a player is pressing.
         /// </summary>
         /// <remarks>
-        /// Only the FUNCTION of keys can be detected; not actual keys. You can not detect if a player presses space, but you can detect if they press sprint (which can be mapped (assigned) to ANY key, but is space by default)).
+        ///     Only the FUNCTION of keys can be detected; not actual keys. You can not detect if a player presses space, but you
+        ///     can detect if they press sprint (which can be mapped (assigned) to ANY key, but is space by default)).
         /// </remarks>
         /// <param name="playerid">The ID of the player to detect the keys of.</param>
         /// <param name="keys">A set containing the player's key states</param>
@@ -1815,26 +1948,26 @@ namespace GameMode
         {
             int outkeys;
             bool response = GetPlayerKeys(playerid, out outkeys, out updown, out leftright);
-            keys = (Keys)outkeys;
+            keys = (Keys) outkeys;
             return response;
         }
 
         /// <summary>
-        /// Set a player's special fighting style. To use in-game, aim and press the 'secondary attack' key (ENTER by default).
+        ///     Set a player's special fighting style. To use in-game, aim and press the 'secondary attack' key (ENTER by default).
         /// </summary>
         /// <remarks>
-        /// This does not affect normal fist attacks - only special/secondary attacks (aim + press 'secondary attack' key).
+        ///     This does not affect normal fist attacks - only special/secondary attacks (aim + press 'secondary attack' key).
         /// </remarks>
         /// <param name="playerid">The ID of player to set the fighting style of.</param>
         /// <param name="style">The fighting style that should be set.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         public static bool SetPlayerFightingStyle(int playerid, FightStyle style)
         {
-            return SetPlayerFightingStyle(playerid, (int)style);
+            return SetPlayerFightingStyle(playerid, (int) style);
         }
 
         /// <summary>
-        /// Attach an object to a specific bone on a player.
+        ///     Attach an object to a specific bone on a player.
         /// </summary>
         /// <param name="playerid">The ID of the player to attach the object to.</param>
         /// <param name="index">The index (slot) to assign the object to (0-9).</param>
@@ -1855,7 +1988,7 @@ namespace GameMode
 
 
         /// <summary>
-        /// Set the text alignment of a player-textdraw.
+        ///     Set the text alignment of a player-textdraw.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player-textdraw to set the alignment of.</param>
         /// <param name="text">The ID of the player-textdraw to set the alignment of.</param>
@@ -1863,11 +1996,11 @@ namespace GameMode
         /// <returns>This function doesn't return a specific value.</returns>
         public static bool PlayerTextDrawAlignment(int playerid, int text, TextDrawAlignment alignment)
         {
-            return PlayerTextDrawAlignment(playerid, text, (int)alignment);
+            return PlayerTextDrawAlignment(playerid, text, (int) alignment);
         }
 
         /// <summary>
-        /// Change the font of a player-textdraw.
+        ///     Change the font of a player-textdraw.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player-textdraw to change the font of.</param>
         /// <param name="text">The ID of the player-textdraw to change the font of</param>
@@ -1875,16 +2008,19 @@ namespace GameMode
         /// <returns>This function doesn't return a specific value.</returns>
         public static bool PlayerTextDrawFont(int playerid, int text, TextDrawFont font)
         {
-            return PlayerTextDrawFont(playerid, text, (int)font);
+            return PlayerTextDrawFont(playerid, text, (int) font);
         }
 
         /// <summary>
-        /// Sets the rotation and zoom of a 3D model preview player-textdraw.
+        ///     Sets the rotation and zoom of a 3D model preview player-textdraw.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player-textdraw to change.</param>
         /// <param name="text">The ID of the player-textdraw to change.</param>
         /// <param name="rotation">The rotation value.</param>
-        /// <param name="fZoom">The zoom value, default value 1.0, smaller values make the camera closer and larger values make the camera further away.</param>
+        /// <param name="fZoom">
+        ///     The zoom value, default value 1.0, smaller values make the camera closer and larger values make the
+        ///     camera further away.
+        /// </param>
         /// <returns>This function doesn't return a specific value.</returns>
         public static bool PlayerTextDrawSetPreviewRot(int playerid, int text, Rotation rotation, float fZoom)
         {
@@ -1892,10 +2028,11 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Plays the specified sound for a player.
+        ///     Plays the specified sound for a player.
         /// </summary>
         /// <remarks>
-        /// Only use the coordinates if you want the sound to be played at a certain position. Set coordinates all to 0 to just play the sound.
+        ///     Only use the coordinates if you want the sound to be played at a certain position. Set coordinates all to 0 to just
+        ///     play the sound.
         /// </remarks>
         /// <param name="playerid">The ID of the player for whom to play the sound.</param>
         /// <param name="soundid">The sound to play.</param>
@@ -1907,21 +2044,23 @@ namespace GameMode
         }
 
         /// <summary>
-        /// This Function allows to set players special action.
+        ///     This Function allows to set players special action.
         /// </summary>
         /// <param name="playerid">The player that should perform the action.</param>
         /// <param name="action">The action that should be performed.</param>
         /// <returns>This function doesn't return a specific value.</returns>
         public static bool SetPlayerSpecialAction(int playerid, SpecialAction action)
         {
-            return SetPlayerSpecialAction(playerid, (int)action);
+            return SetPlayerSpecialAction(playerid, (int) action);
         }
 
         /// <summary>
-        /// Sets a checkpoint (red circle) for a player. Also shows a red blip on the radar.
+        ///     Sets a checkpoint (red circle) for a player. Also shows a red blip on the radar.
         /// </summary>
         /// <remarks>
-        /// Checkpoints created on server-created objects (<see cref="CreateObject"/>/<see cref="CreatePlayerObject"/>) will appear down on the 'real' ground, but will still function correctly. There is no fix available for this issue. A pickup can be used instead.
+        ///     Checkpoints created on server-created objects (<see cref="CreateObject" />/<see cref="CreatePlayerObject" />) will
+        ///     appear down on the 'real' ground, but will still function correctly. There is no fix available for this issue. A
+        ///     pickup can be used instead.
         /// </remarks>
         /// <param name="playerid">The ID of the player to set the checkpoint of.</param>
         /// <param name="position">The coordinate to set the checkpoint at.</param>
@@ -1933,7 +2072,8 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Creates a race checkpoint. When the player enters it, the <see cref="BaseMode.OnPlayerEnterRaceCheckpoint"/> callback is called.
+        ///     Creates a race checkpoint. When the player enters it, the <see cref="BaseMode.OnPlayerEnterRaceCheckpoint" />
+        ///     callback is called.
         /// </summary>
         /// <param name="playerid">The ID of the player to set the checkpoint for.</param>
         /// <param name="type">Type of checkpoint.</param>
@@ -1941,15 +2081,19 @@ namespace GameMode
         /// <param name="nextPosition">Position of the next point, for the arrow facing direction.</param>
         /// <param name="size">Size (diameter) of the checkpoint</param>
         /// <returns>This function doesn't return a specific value.</returns>
-        public static bool SetPlayerRaceCheckpoint(int playerid, CheckpointType type, Vector point, Vector nextPosition, float size)
+        public static bool SetPlayerRaceCheckpoint(int playerid, CheckpointType type, Vector point, Vector nextPosition,
+            float size)
         {
-            return SetPlayerRaceCheckpoint(playerid, (int)type, point.X, point.Y, point.Z, nextPosition.X,
+            return SetPlayerRaceCheckpoint(playerid, (int) type, point.X, point.Y, point.Z, nextPosition.X,
                 nextPosition.Y, nextPosition.Z, size);
         }
 
 
         /// <summary>
-        /// This function allows you to place your own icons on the map, enabling you to emphasise the locations of banks, airports or whatever else you want. A total of 63 icons are available in GTA: San Andreas, all of which can be used using this function. You can also specify the color of the icon, which allows you to change the square icon (ID: 0).
+        ///     This function allows you to place your own icons on the map, enabling you to emphasise the locations of banks,
+        ///     airports or whatever else you want. A total of 63 icons are available in GTA: San Andreas, all of which can be used
+        ///     using this function. You can also specify the color of the icon, which allows you to change the square icon (ID:
+        ///     0).
         /// </summary>
         /// <param name="playerid">The ID of the player to set the map icon for.</param>
         /// <param name="iconid">The player's icon ID, ranging from 0 to 99, to be used in RemovePlayerMapIcon.</param>
@@ -1961,11 +2105,11 @@ namespace GameMode
         public static bool SetPlayerMapIcon(int playerid, int iconid, Vector position, PlayerMarkersMode markertype,
             int color, int style)
         {
-            return SetPlayerMapIcon(playerid, iconid, position.X, position.Y, position.Z, (int)markertype, color, style);
+            return SetPlayerMapIcon(playerid, iconid, position.X, position.Y, position.Z, (int) markertype, color, style);
         }
 
         /// <summary>
-        /// Sets the camera to a specific position for a player.
+        ///     Sets the camera to a specific position for a player.
         /// </summary>
         /// <param name="playerid">ID of the player.</param>
         /// <param name="position">New position of the camera.</param>
@@ -1976,7 +2120,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Set the direction a player's camera looks at. To be used in combination with SetPlayerCameraPos.
+        ///     Set the direction a player's camera looks at. To be used in combination with SetPlayerCameraPos.
         /// </summary>
         /// <param name="playerid">The player to change the camera of.</param>
         /// <param name="point">The coordinates for the player's camera to look at.</param>
@@ -1984,14 +2128,14 @@ namespace GameMode
         /// <returns>This function doesn't return a specific value.</returns>
         public static bool SetPlayerCameraLookAt(int playerid, Vector point, CameraCut cut)
         {
-            return SetPlayerCameraLookAt(playerid, point.X,point.Y,point.Z, (int) cut);
+            return SetPlayerCameraLookAt(playerid, point.X, point.Y, point.Z, (int) cut);
         }
 
         /// <summary>
-        /// Get the position of the player's camera.
+        ///     Get the position of the player's camera.
         /// </summary>
-        /// <remarks> 
-        /// Player's camera positions are only updated once a second, unless aiming.
+        /// <remarks>
+        ///     Player's camera positions are only updated once a second, unless aiming.
         /// </remarks>
         /// <param name="playerid">The ID of the player to get the camera position of.</param>
         /// <returns>The position of the camera.</returns>
@@ -2003,7 +2147,8 @@ namespace GameMode
         }
 
         /// <summary>
-        /// This function will return the current direction of player's aiming in 3-D space, the coords are relative to the camera position, see <see cref="GetPlayerCameraPos(int)"/>.
+        ///     This function will return the current direction of player's aiming in 3-D space, the coords are relative to the
+        ///     camera position, see <see cref="GetPlayerCameraPos(int)" />.
         /// </summary>
         /// <param name="playerid">The ID of the player you want to obtain the camera front vector of.</param>
         /// <returns>This camera front vector of the player.</returns>
@@ -2015,7 +2160,7 @@ namespace GameMode
         }
 
         /// <summary>
-        /// Move a player's camera from one position to another, within the set time.
+        ///     Move a player's camera from one position to another, within the set time.
         /// </summary>
         /// <param name="playerid">The ID of the player the camera should be moved for.</param>
         /// <param name="from">The position the camera should start to move from.</param>
@@ -2025,11 +2170,12 @@ namespace GameMode
         /// <returns>This function doesn't return a specific value.</returns>
         public static bool InterpolateCameraPos(int playerid, Vector from, Vector to, int time, CameraCut cut)
         {
-            return InterpolateCameraPos(playerid, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int)cut);
+            return InterpolateCameraPos(playerid, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
         }
 
         /// <summary>
-        /// Interpolate a player's camera's 'look at' point between two coordinates with a set speed. Can be be used with <see cref="InterpolateCameraPos(int,Vector,Vector,int,CameraCut)"/>.
+        ///     Interpolate a player's camera's 'look at' point between two coordinates with a set speed. Can be be used with
+        ///     <see cref="InterpolateCameraPos(int,Vector,Vector,int,CameraCut)" />.
         /// </summary>
         /// <param name="playerid">The ID of the player the camera should be moved for.</param>
         /// <param name="from">The position the camera should start to move from.</param>
@@ -2039,7 +2185,7 @@ namespace GameMode
         /// <returns>This function doesn't return a specific value.</returns>
         public static bool InterpolateCameraLookAt(int playerid, Vector from, Vector to, int time, CameraCut cut)
         {
-            return InterpolateCameraLookAt(playerid, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int)cut);
+            return InterpolateCameraLookAt(playerid, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
         }
     }
 }

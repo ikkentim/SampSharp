@@ -1,14 +1,22 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 
 namespace GameMode.World
 {
     public struct Rotation
     {
-
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Z { get; set; }
-
         public Rotation(float x, float y, float z) : this()
         {
             X = x;
@@ -30,6 +38,10 @@ namespace GameMode.World
             Z = vector.Z;
         }
 
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Z { get; set; }
+
         public Rotation Clone()
         {
             return new Rotation(this);
@@ -43,7 +55,7 @@ namespace GameMode.World
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Rotation && Equals((Rotation)obj);
+            return obj is Rotation && Equals((Rotation) obj);
         }
 
         public static bool operator ==(Rotation left, Rotation right)
