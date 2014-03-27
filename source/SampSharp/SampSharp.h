@@ -8,7 +8,7 @@
 class CSampSharp
 {
 public:
-	CSampSharp(char * basemode_path, char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version);
+	CSampSharp(char * basemode_path, char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version, bool generate_symbols);
 	~CSampSharp();
 
 	bool CallCallback(MonoMethod * method, void ** params);
