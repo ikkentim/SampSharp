@@ -98,6 +98,17 @@ namespace GameMode.World
             LabelId = Native.Create3DTextLabel(text, color, position, drawDistance, virtualWorld, testLOS);
         }
 
+        public TextLabel(string text, Color color, Vector position, float drawDistance, int virtualWorld) : this(text,color,position,drawDistance,virtualWorld,true)
+        {
+            
+        }
+
+        public TextLabel(string text, Color color, Vector position, float drawDistance)
+            : this(text, color, position, drawDistance, -1, true)
+        {
+
+        }
+
         #endregion
 
         #region Methods
