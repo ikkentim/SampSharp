@@ -14,8 +14,7 @@ http://forum.sa-mp.com/member.php?u=76946
 
 ToDo's
 ======
-    -Add classes for GlobalObject, PlayerObject, etc.
-	-Add docs to Textdraw, PlayerTextDraw, TextLabel, PlayerTextLabel, Gangzone
+	-Add docs to Textdraw, PlayerTextDraw, TextLabel, PlayerTextLabel, Gangzone, GlobalObject, PlayerObject.
     -Add docs to EventsArgs.
     -Add docs to definitions.
     -Add more remarks to native docs.
