@@ -1,8 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
 using GameMode.Definitions;
 using GameMode.Events;
+using GameMode.Tools;
 using GameMode.World;
 
 namespace GameMode
@@ -27,12 +26,9 @@ namespace GameMode
         protected BaseMode()
         {
             Instance = this;
-
             RegisterEvents();
-
             Console.SetOut(new LogWriter());
         }
-
         #endregion
 
         #region Methods

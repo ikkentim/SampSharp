@@ -10,13 +10,36 @@ using namespace std;
 
 CSampSharp * CSampSharp::p_instance;
 
-CSampSharp::CSampSharp(char * basemode_path, char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version) {
+CSampSharp::CSampSharp(char * basemode_path, char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version, bool generate_symbols) {
 	
 	//Initialize the Mono runtime
 	mono_set_dirs(PathUtil::GetLibDirectory().c_str(), PathUtil::GetConfigDirectory().c_str());
 	mono_debug_init(MONO_DEBUG_FORMAT_MONO);
-	m_pRootDomain = mono_jit_init_version("SAMP.Mono.Proxy", runtime_version);
+	m_pRootDomain = mono_jit_init_version("SampSharp", runtime_version);
 
+	if (generate_symbols == true) {
+		string mdbpath = PathUtil::GetBinDirectory().append("Mono/lib/mono/4.5/pdb2mdb.exe");
+		char *cmdbpath = new char[mdbpath.size() + 1];
+		std::strcpy(cmdbpath, mdbpath.c_str());
+
+		MonoAssembly * mdbconverter = mono_domain_assembly_open(m_pRootDomain, cmdbpath);
+
+		if (mdbconverter) {
+			int argc = 2;
+			char * argv[2];
+			argv[0] = cmdbpath;
+			
+			cout << "[SampSharp] Generating symbol file for " << gamemode_path << "." << endl;
+			argv[1] = gamemode_path;
+			mono_jit_exec(m_pRootDomain, mdbconverter, argc, argv);
+
+			cout << "[SampSharp] Generating symbol file for " << basemode_path << "." << endl;
+			argv[1] = basemode_path;
+			mono_jit_exec(m_pRootDomain, mdbconverter, argc, argv);
+		}
+
+		delete cmdbpath;
+	}
 	//Load the gamemode's assembly
 	MonoAssembly * pMonoAssembly = mono_domain_assembly_open(mono_domain_get(), PathUtil::GetBinDirectory().append(gamemode_path).c_str());
 	MonoAssembly * bMonoAssembly = mono_domain_assembly_open(mono_domain_get(), PathUtil::GetBinDirectory().append(basemode_path).c_str());
