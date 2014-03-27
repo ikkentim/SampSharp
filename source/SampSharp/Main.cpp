@@ -57,4 +57,5 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload() {
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
 	sampSharpPlugin.ProcessTimers();
+	CSampSharp::instance->CallCallback(CSampSharp::instance->onTick, NULL);
 }

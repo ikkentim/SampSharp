@@ -25,7 +25,7 @@ namespace GameMode
     {
         #region Fields
 
-        public static BaseMode Instance;
+        //public static BaseMode Instance;
 
         #endregion
 
@@ -57,49 +57,49 @@ namespace GameMode
         #region Events
 
         /// <summary>
-        ///     Occurs when the <see cref="OnGameModeInit" /> is being called.
+        ///     Occurs when the <see cref="OnGameModeInit" /> callback is being called.
         ///     This callback is triggered when the gamemode starts.
         /// </summary>
         public event GameModeHandler Initialized;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnGameModeExit" /> is being called.
+        ///     Occurs when the <see cref="OnGameModeExit" /> callback is being called.
         ///     This callback is called when a gamemode ends.
         /// </summary>
         public event GameModeHandler Exited;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerConnect" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerConnect" /> callback is being called.
         ///     This callback is called when a player connects to the server.
         /// </summary>
         public event PlayerHandler PlayerConnected;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerDisconnect" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerDisconnect" /> callback is being called.
         ///     This callback is called when a player disconnects from the server.
         /// </summary>
         public event PlayerDisconnectedHandler PlayerDisconnected;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerSpawn" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerSpawn" /> callback is being called.
         ///     This callback is called when a player spawns.
         /// </summary>
         public event PlayerHandler PlayerSpawned;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnGameModeInit" /> is being called.
+        ///     Occurs when the <see cref="OnGameModeInit" /> callback is being called.
         ///     This callback is triggered when the gamemode starts.
         /// </summary>
         public event PlayerDeathHandler PlayerDied;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleSpawn" /> is being called.
+        ///     Occurs when the <see cref="OnVehicleSpawn" /> callback is being called.
         ///     This callback is called when a vehicle respawns.
         /// </summary>
         public event VehicleHandler VehicleSpawned;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleDeath" /> is being called.
+        ///     Occurs when the <see cref="OnVehicleDeath" /> callback is being called.
         ///     This callback is called when a vehicle is destroyed - either by exploding or becoming submerged in water.
         /// </summary>
         /// <remarks>
@@ -110,32 +110,32 @@ namespace GameMode
         public event PlayerVehicleHandler VehicleDied;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerText" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerText" /> callback is being called.
         ///     Called when a player sends a chat message.
         /// </summary>
         public event PlayerTextHandler PlayerText;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerCommandText" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerCommandText" /> callback is being called.
         ///     This callback is called when a player enters a command into the client chat window, e.g. /help.
         /// </summary>
         public event PlayerTextHandler PlayerCommandText;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerRequestClass" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerRequestClass" /> callback is being called.
         ///     Called when a player changes class at class selection (and when class selection first appears).
         /// </summary>
         public event PlayerRequestClassHandler PlayerRequestClass;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEnterVehicle" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerEnterVehicle" /> callback is being called.
         ///     This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the
         ///     time this callback is called.
         /// </summary>
         public event PlayerEnterVehicleHandler PlayerEnterVehicle;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerExitVehicle" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerExitVehicle" /> callback is being called.
         ///     This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
@@ -145,7 +145,7 @@ namespace GameMode
         public event PlayerVehicleHandler PlayerExitVehicle;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerStateChange" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerStateChange" /> callback is being called.
         ///     This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
@@ -155,63 +155,63 @@ namespace GameMode
         public event PlayerStateHandler PlayerStateChanged;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEnterCheckpoint" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerEnterCheckpoint" /> callback is being called.
         ///     This callback is called when a player enters the checkpoint set for that player.
         /// </summary>
         public event PlayerHandler PlayerEnterCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerLeaveCheckpoint" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerLeaveCheckpoint" /> callback is being called.
         ///     This callback is called when a player leaves the checkpoint set for that player.
         /// </summary>
         public event PlayerHandler PlayerLeaveCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEnterRaceCheckpoint" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerEnterRaceCheckpoint" /> callback is being called.
         ///     This callback is called when a player enters a race checkpoint.
         /// </summary>
         public event PlayerHandler PlayerEnterRaceCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerLeaveRaceCheckpoint" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerLeaveRaceCheckpoint" /> callback is being called.
         ///     This callback is called when a player leaves the race checkpoint.
         /// </summary>
         public event PlayerHandler PlayerLeaveRaceCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnRconCommand" /> is being called.
+        ///     Occurs when the <see cref="OnRconCommand" /> callback is being called.
         ///     This callback is called when a command is sent through the server console, remote RCON, or via the in-game /rcon
         ///     command.
         /// </summary>
         public event RconHandler RconCommand;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerRequestSpawn" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerRequestSpawn" /> callback is being called.
         ///     Called when a player attempts to spawn via class selection.
         /// </summary>
         public event PlayerHandler PlayerRequestSpawn;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnObjectMoved" /> is being called.
+        ///     Occurs when the <see cref="OnObjectMoved" /> callback is being called.
         ///     This callback is called when an object is moved after <see cref="Native.MoveObject" /> (when it stops moving).
         /// </summary>
         public event ObjectHandler ObjectMoved;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerObjectMoved" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerObjectMoved" /> callback is being called.
         ///     This callback is called when a player object is moved after <see cref="Native.MovePlayerObject" /> (when it stops
         ///     moving).
         /// </summary>
         public event PlayerObjectHandler PlayerObjectMoved;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerPickUpPickup" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerPickUpPickup" /> callback is being called.
         ///     Called when a player picks up a pickup created with <see cref="Native.CreatePickup" />.
         /// </summary>
         public event PlayerPickupHandler PlayerPickUpPickup;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleMod" /> is being called.
+        ///     Occurs when the <see cref="OnVehicleMod" /> callback is being called.
         ///     This callback is called when a vehicle is modded.
         /// </summary>
         /// <remarks>
@@ -220,19 +220,19 @@ namespace GameMode
         public event VehicleModHandler VehicleMod;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnEnterExitModShop" /> is being called.
+        ///     Occurs when the <see cref="OnEnterExitModShop" /> callback is being called.
         ///     This callback is called when a player enters or exits a mod shop.
         /// </summary>
         public event PlayerEnterModShopHandler PlayerEnterExitModShop;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehiclePaintjob" /> is being called.
+        ///     Occurs when the <see cref="OnVehiclePaintjob" /> callback is being called.
         ///     Called when a player changes the paintjob of their vehicle (in a modshop).
         /// </summary>
         public event VehiclePaintjobHandler VehiclePaintjobApplied;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleRespray" /> is being called.
+        ///     Occurs when the <see cref="OnVehicleRespray" /> callback is being called.
         ///     The callback name is deceptive, this callback is called when a player exits a mod shop, regardless of whether the
         ///     vehicle's colors were changed, and is NEVER called for pay 'n' spray garages.
         /// </summary>
@@ -242,7 +242,7 @@ namespace GameMode
         public event VehicleResprayedHandler VehicleResprayed;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleDamageStatusUpdate" /> is being called.
+        ///     Occurs when the <see cref="OnVehicleDamageStatusUpdate" /> callback is being called.
         ///     This callback is called when a vehicle element such as doors, tires, panels, or lights get damaged.
         /// </summary>
         /// <remarks>
@@ -251,7 +251,7 @@ namespace GameMode
         public event PlayerVehicleHandler VehicleDamageStatusUpdated;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnUnoccupiedVehicleUpdate" /> is being called.
+        ///     Occurs when the <see cref="OnUnoccupiedVehicleUpdate" /> callback is being called.
         ///     This callback is called everytime an unoccupied vehicle updates the server with their status.
         /// </summary>
         /// <remarks>
@@ -261,19 +261,19 @@ namespace GameMode
         public event UnoccupiedVehicleUpdatedHandler UnoccupiedVehicleUpdated;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerSelectedMenuRow" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerSelectedMenuRow" /> callback is being called.
         ///     This callback is called when a player selects an item from a menu.
         /// </summary>
         public event PlayerSelectedMenuRowHandler PlayerSelectedMenuRow;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerExitedMenu" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerExitedMenu" /> callback is being called.
         ///     Called when a player exits a menu.
         /// </summary>
         public event PlayerHandler PlayerExitedMenu;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerInteriorChange" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerInteriorChange" /> callback is being called.
         ///     Called when a player changes interior.
         /// </summary>
         /// <remarks>
@@ -282,14 +282,14 @@ namespace GameMode
         public event PlayerInteriorChangedHandler PlayerInteriorChanged;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerKeyStateChange" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerKeyStateChange" /> callback is being called.
         ///     This callback is called when the state of any supported key is changed (pressed/released). Directional keys do not
         ///     trigger this callback.
         /// </summary>
         public event PlayerKeyStateChangedHandler PlayerKeyStateChanged;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnRconLoginAttempt" /> is being called.
+        ///     Occurs when the <see cref="OnRconLoginAttempt" /> callback is being called.
         ///     This callback is called when someone tries to login to RCON, succesful or not.
         /// </summary>
         /// <remarks>
@@ -298,7 +298,7 @@ namespace GameMode
         public event RconLoginAttemptHandler RconLoginAttempt;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerUpdate" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerUpdate" /> callback is being called.
         ///     This callback is called everytime a client/player updates the server with their status.
         /// </summary>
         /// <remarks>
@@ -307,44 +307,44 @@ namespace GameMode
         public event PlayerHandler PlayerUpdate;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerStreamIn" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerStreamIn" /> callback is being called.
         ///     This callback is called when a player is streamed by some other player's client.
         /// </summary>
         public event StreamPlayerHandler PlayerStreamIn;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerStreamOut" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerStreamOut" /> callback is being called.
         ///     This callback is called when a player is streamed out from some other player's client.
         /// </summary>
         public event StreamPlayerHandler PlayerStreamOut;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleStreamIn" /> is being called.
+        ///     Occurs when the <see cref="OnVehicleStreamIn" /> callback is being called.
         ///     Called when a vehicle is streamed to a player's client.
         /// </summary>
         public event PlayerVehicleHandler VehicleStreamIn;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleStreamOut" /> is being called.
+        ///     Occurs when the <see cref="OnVehicleStreamOut" /> callback is being called.
         ///     This callback is called when a vehicle is streamed out from some player's client.
         /// </summary>
         public event PlayerVehicleHandler VehicleStreamOut;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnDialogResponse" /> is being called.
+        ///     Occurs when the <see cref="OnDialogResponse" /> callback is being called.
         ///     This callback is called when a player responds to a dialog shown using <see cref="Native.ShowPlayerDialog" /> by
         ///     either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
         /// </summary>
         public event DialogResponseHandler DialogResponse;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerTakeDamage" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerTakeDamage" /> callback is being called.
         ///     This callback is called when a player takes damage.
         /// </summary>
         public event PlayerDamageHandler PlayerTakeDamage;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerGiveDamage" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerGiveDamage" /> callback is being called.
         ///     This callback is called when a player gives damage to another player.
         /// </summary>
         /// <remarks>
@@ -362,7 +362,7 @@ namespace GameMode
         public event PlayerDamageHandler PlayerGiveDamage;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickMap" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerClickMap" /> callback is being called.
         ///     This callback is called when a player places a target/waypoint on the pause menu map (by right-clicking).
         /// </summary>
         /// <remarks>
@@ -372,7 +372,7 @@ namespace GameMode
         public event PlayerClickMapHandler PlayerClickMap;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickTextDraw" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerClickTextDraw" /> callback is being called.
         ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
         /// </summary>
         /// <remarks>
@@ -382,14 +382,14 @@ namespace GameMode
         public event PlayerClickTextDrawHandler PlayerClickTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickPlayerTextDraw" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerClickPlayerTextDraw" /> callback is being called.
         ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
         ///     mode (ESC) - however, <see cref="OnPlayerClickTextDraw" /> is.
         /// </summary>
         public event PlayerClickTextDrawHandler PlayerClickPlayerTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickPlayer" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerClickPlayer" /> callback is being called.
         ///     Called when a player double-clicks on a player on the scoreboard.
         /// </summary>
         /// <remarks>
@@ -399,13 +399,13 @@ namespace GameMode
         public event PlayerClickPlayerHandler PlayerClickPlayer;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEditObject" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerEditObject" /> callback is being called.
         ///     This callback is called when a player ends object edition mode.
         /// </summary>
         public event PlayerEditObjectHandler PlayerEditObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEditAttachedObject" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerEditAttachedObject" /> callback is being called.
         ///     This callback is called when a player ends attached object edition mode.
         /// </summary>
         /// <remarks>
@@ -415,13 +415,13 @@ namespace GameMode
         public event PlayerEditAttachedObjectHandler PlayerEditAttachedObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerSelectObject" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerSelectObject" /> callback is being called.
         ///     This callback is called when a player selects an object after <see cref="Native.SelectObject" /> has been used.
         /// </summary>
         public event PlayerSelectObjectHandler PlayerSelectObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerWeaponShot" /> is being called.
+        ///     Occurs when the <see cref="OnPlayerWeaponShot" /> callback is being called.
         ///     This callback is called when a player fires a shot from a weapon.
         /// </summary>
         /// <remarks>
@@ -429,6 +429,21 @@ namespace GameMode
         ///     Others: the fX, fY and fZ are offsets from the center of hitid.
         /// </remarks>
         public event WeaponShotHandler PlayerWeaponShot;
+
+        /// <summary>
+        ///     Occurs when the <see cref="OnTick" /> callback is being called.
+        ///     This callback is called every tick(50 times per second).
+        /// </summary>
+        /// <remarks>
+        ///     USE WITH CARE!
+        /// </remarks>
+        public event EventHandler Tick;
+
+        /// <summary>
+        ///     Occurs when the <see cref="OnTimerTick" /> callback is being called.
+        ///     This callback is called when a timer ticks.
+        /// </summary>
+        public event TimerTickHandler TimerTick;
 
         #endregion
 
@@ -446,10 +461,8 @@ namespace GameMode
         /// <returns>This callback does not handle returns.</returns>
         public virtual bool OnTimerTick(int timerid, object args)
         {
-            var timer = args as Timer;
-
-            if (timer != null)
-                timer.OnTick(EventArgs.Empty);
+            if (TimerTick != null)
+                TimerTick(args, EventArgs.Empty);
 
             return true;
         }
@@ -1415,6 +1428,17 @@ namespace GameMode
             return args.Success;
         }
 
+        /// <summary>
+        ///     This callback is called every tick.
+        /// </summary>
+        /// <returns>This callback does not handle returns.</returns>
+        public virtual bool OnTick()
+        {
+            if (Tick != null)
+                Tick(this, EventArgs.Empty);
+
+            return true;
+        }
         #endregion
     }
 }
