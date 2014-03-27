@@ -7,7 +7,7 @@
 
 using namespace std;
 
-static ThisPlugin proxyPlugin;
+static ThisPlugin sampSharpPlugin;
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
 	return SUPPORTS_VERSION | SUPPORTS_PROCESS_TICK;
@@ -15,7 +15,7 @@ PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
 
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 	//Load plugin
-	if (proxyPlugin.Load(ppData) < 0)
+	if (sampSharpPlugin.Load(ppData) < 0)
 		return false;
 
 	//Load proxy information from config
@@ -39,7 +39,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 		(char*)gamemode_class.c_str(), 
 		(char*)gamemode_path.c_str());
 
-	CSampSharp::p_instance = new CSampSharp((char *)basemode_path.c_str(),
+	CSampSharp::instance = new CSampSharp((char *)basemode_path.c_str(),
 		(char *)gamemode_path.c_str(),
 		(char *)gamemode_namespace.c_str(), 
 		(char *)gamemode_class.c_str(), 
@@ -51,10 +51,10 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
-	delete CSampSharp::p_instance;
-	proxyPlugin.Unload();
+	delete CSampSharp::instance;
+	sampSharpPlugin.Unload();
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
-	proxyPlugin.ProcessTimers();
+	sampSharpPlugin.ProcessTimers();
 }
