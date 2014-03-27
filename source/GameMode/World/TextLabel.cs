@@ -136,13 +136,13 @@ namespace GameMode.World
             Native.Delete3DTextLabel(LabelId);
         }
 
-        public virtual void AttachToPlayer(Player player, Vector offset)
+        public virtual void AttachTo(Player player, Vector offset)
         {
             if (player == null) return;
             Native.Attach3DTextLabelToPlayer(LabelId, player.PlayerId, offset.X, offset.Y, offset.Z);
         }
 
-        public virtual void AttachToVehicle(Vehicle vehicle, Vector offset)
+        public virtual void AttachTo(Vehicle vehicle, Vector offset)
         {
             if (vehicle == null) return;
             Native.Attach3DTextLabelToVehicle(LabelId, vehicle.VehicleId, offset.X, offset.Y, offset.Z);
