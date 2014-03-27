@@ -36,7 +36,7 @@ namespace GameMode.World
         private int _outline;
         private int _previewModel;
         private int _previewPrimaryColor = -1;
-        private Rotation _previewRotation;
+        private Vector _previewRotation;
         private int _previewSecondaryColor = -1;
         private float _previewZoom = 1;
         private bool _proportional;
@@ -234,7 +234,7 @@ namespace GameMode.World
             }
         }
 
-        public virtual Rotation PreviewRotation
+        public virtual Vector PreviewRotation
         {
             get { return _previewRotation; }
             set
@@ -539,7 +539,7 @@ namespace GameMode.World
             UpdatePlayers();
         }
 
-        protected virtual void SetPreviewRotation(Rotation rotation, float zoom)
+        protected virtual void SetPreviewRotation(Vector rotation, float zoom)
         {
             if (TextDrawId < 0) return;
             Native.TextDrawSetPreviewRot(TextDrawId, rotation.X, rotation.Y, rotation.Z, zoom);

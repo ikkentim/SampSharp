@@ -1321,7 +1321,7 @@ namespace GameMode
             float fZ, float fRotX, float fRotY, float fRotZ)
         {
             var args = new PlayerEditObjectEventArgs(playerid, playerobject, objectid, (EditObjectResponse) response,
-                new Vector(fX, fY, fZ), new Rotation(fRotX, fRotY, fRotZ));
+                new Vector(fX, fY, fZ), new Vector(fRotX, fRotY, fRotZ));
 
             if (PlayerEditObject != null)
                 PlayerEditObject(this, args);
@@ -1356,7 +1356,7 @@ namespace GameMode
             float fScaleY, float fScaleZ)
         {
             var args = new PlayerEditAttachedObjectEventArgs(playerid, (EditObjectResponse) response, index, modelid,
-                boneid, new Vector(fOffsetX, fOffsetY, fOffsetZ), new Rotation(fRotX, fRotY, fRotZ),
+                boneid, new Vector(fOffsetX, fOffsetY, fOffsetZ), new Vector(fRotX, fRotY, fRotZ),
                 new Vector(fScaleX, fScaleY, fScaleZ));
 
             if (PlayerEditAttachedObject != null)
