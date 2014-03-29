@@ -14,16 +14,17 @@
 namespace GameMode.Definitions
 {
     /// <summary>
-    /// Contains all dialogbuttons.
+    ///     Contains all dialogbuttons.
     /// </summary>
     public enum DialogButton
     {
         /// <summary>
-        /// Right button of the dialog.
+        ///     Right button of the dialog.
         /// </summary>
         Right = 0,
+
         /// <summary>
-        /// Left button of the dialog.
+        ///     Left button of the dialog.
         /// </summary>
         Left = 1
     }

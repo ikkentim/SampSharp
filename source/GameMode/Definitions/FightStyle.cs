@@ -14,32 +14,37 @@
 namespace GameMode.Definitions
 {
     /// <summary>
-    /// Contains all fighting styles.
+    ///     Contains all fighting styles.
     /// </summary>
     public enum FightStyle
     {
         /// <summary>
-        /// Normal fighting style.
+        ///     Normal fighting style.
         /// </summary>
         Normal = 4,
+
         /// <summary>
-        /// Borxing fighting style.
+        ///     Borxing fighting style.
         /// </summary>
         Boxing = 5,
+
         /// <summary>
-        /// Kung fu fighting style.
+        ///     Kung fu fighting style.
         /// </summary>
         Kungfu = 6,
+
         /// <summary>
-        /// Kneehead fighting style.
+        ///     Kneehead fighting style.
         /// </summary>
         Kneehead = 7,
+
         /// <summary>
-        /// Grabkick fighting style.
+        ///     Grabkick fighting style.
         /// </summary>
         Grabkick = 15,
+
         /// <summary>
-        /// Elbow fighting style.
+        ///     Elbow fighting style.
         /// </summary>
         Elbow = 16
     }

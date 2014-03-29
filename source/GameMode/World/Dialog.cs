@@ -11,11 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Dynamic;
-using System.Linq;
 using GameMode.Definitions;
 using GameMode.Events;
 
@@ -130,7 +126,7 @@ namespace GameMode.World
         #endregion
 
         #region Methods
-        
+
         /// <summary>
         ///     Shows the dialog box to a Player.
         /// </summary>
@@ -156,7 +152,7 @@ namespace GameMode.World
         }
 
         /// <summary>
-        /// Gets the dialog currently being shown to a Player.
+        ///     Gets the dialog currently being shown to a Player.
         /// </summary>
         /// <param name="player">The Player whose Dialog you want.</param>
         /// <returns>The Dialog currently being shown to the Player.</returns>

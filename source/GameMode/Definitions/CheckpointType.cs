@@ -14,28 +14,32 @@
 namespace GameMode.Definitions
 {
     /// <summary>
-    /// Contains all racecheckpoint types.
+    ///     Contains all racecheckpoint types.
     /// </summary>
     public enum CheckpointType
     {
         /// <summary>
-        /// Normal racecheckpoint. (Normal red circle)
+        ///     Normal racecheckpoint. (Normal red circle)
         /// </summary>
         Normal = 0,
+
         /// <summary>
-        /// Finish racecheckpoint. (Finish flag in red circle)
+        ///     Finish racecheckpoint. (Finish flag in red circle)
         /// </summary>
         Finish = 1,
+
         /// <summary>
-        /// No checkpoint.
+        ///     No checkpoint.
         /// </summary>
         Nothing = 2,
+
         /// <summary>
-        /// Air racecheckpoint. (normal red circle in the air)
+        ///     Air racecheckpoint. (normal red circle in the air)
         /// </summary>
         Air = 3,
+
         /// <summary>
-        /// Finish air racecheckpoint. (Finish flag in red circle in the air)
+        ///     Finish air racecheckpoint. (Finish flag in red circle in the air)
         /// </summary>
         AirFinish = 4
     }

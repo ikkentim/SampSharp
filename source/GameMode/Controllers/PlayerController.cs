@@ -1,14 +1,27 @@
-﻿using GameMode.World;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using GameMode.World;
 
 namespace GameMode.Controllers
 {
     /// <summary>
-    /// A controller processing all player actions.
+    ///     A controller processing all player actions.
     /// </summary>
     public class PlayerController : IController
     {
         /// <summary>
-        /// Registers the events this PlayerController wants to listen to.
+        ///     Registers the events this PlayerController wants to listen to.
         /// </summary>
         /// <param name="gameMode">The running GameMode.</param>
         public void RegisterEvents(BaseMode gameMode)
@@ -26,8 +39,10 @@ namespace GameMode.Controllers
             gameMode.PlayerStateChanged += (sender, args) => Player.Find(args.PlayerId).OnStateChanged(args);
             gameMode.PlayerEnterCheckpoint += (sender, args) => Player.Find(args.PlayerId).OnEnterCheckpoint(args);
             gameMode.PlayerLeaveCheckpoint += (sender, args) => Player.Find(args.PlayerId).OnLeaveCheckpoint(args);
-            gameMode.PlayerEnterRaceCheckpoint += (sender, args) => Player.Find(args.PlayerId).OnEnterRaceCheckpoint(args);
-            gameMode.PlayerLeaveRaceCheckpoint += (sender, args) => Player.Find(args.PlayerId).OnLeaveRaceCheckpoint(args);
+            gameMode.PlayerEnterRaceCheckpoint +=
+                (sender, args) => Player.Find(args.PlayerId).OnEnterRaceCheckpoint(args);
+            gameMode.PlayerLeaveRaceCheckpoint +=
+                (sender, args) => Player.Find(args.PlayerId).OnLeaveRaceCheckpoint(args);
             gameMode.PlayerRequestSpawn += (sender, args) => Player.Find(args.PlayerId).OnRequestSpawn(args);
             gameMode.PlayerPickUpPickup += (sender, args) => Player.Find(args.PickupId).OnPickUpPickup(args);
             gameMode.PlayerEnterExitModShop += (sender, args) => Player.Find(args.PlayerId).OnEnterExitModShop(args);
@@ -43,7 +58,8 @@ namespace GameMode.Controllers
             gameMode.PlayerGiveDamage += (sender, args) => Player.Find(args.PlayerId).OnGiveDamage(args);
             gameMode.PlayerClickMap += (sender, args) => Player.Find(args.PlayerId).OnClickMap(args);
             gameMode.PlayerClickTextDraw += (sender, args) => Player.Find(args.PlayerId).OnClickTextDraw(args);
-            gameMode.PlayerClickPlayerTextDraw += (sender, args) => Player.Find(args.PlayerId).OnClickPlayerTextDraw(args);
+            gameMode.PlayerClickPlayerTextDraw +=
+                (sender, args) => Player.Find(args.PlayerId).OnClickPlayerTextDraw(args);
             gameMode.PlayerClickPlayer += (sender, args) => Player.Find(args.PlayerId).OnClickPlayer(args);
             gameMode.PlayerEditObject += (sender, args) => Player.Find(args.PlayerId).OnEditObject(args);
             gameMode.PlayerEditAttachedObject += (sender, args) => Player.Find(args.PlayerId).OnEditAttachedObject(args);

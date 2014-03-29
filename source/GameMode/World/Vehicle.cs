@@ -91,27 +91,6 @@ namespace GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the position of this Vehicle.
-        /// </summary>
-        public virtual Vector Position
-        {
-            get { return Native.GetVehiclePos(VehicleId); }
-            set { Native.SetVehiclePos(VehicleId, value); }
-        }
-
-        /// <summary>
-        ///     Gets or sets the rotation of this Vehicle.
-        /// </summary>
-        /// <remarks>
-        ///     Only the Z angle can be set!
-        /// </remarks>
-        public virtual Vector Rotation
-        {
-            get { return new Vector(0, 0, Angle); }
-            set { Native.SetVehicleZAngle(VehicleId, value.Z); }
-        }
-
-        /// <summary>
         ///     Gets or sets the Z angle of this Vehicle.
         /// </summary>
         public virtual float Angle
@@ -263,6 +242,27 @@ namespace GameMode.World
                 GetParams(out misc, out value, out misc, out misc, out misc, out misc, out value);
                 return value;
             }
+        }
+
+        /// <summary>
+        ///     Gets or sets the position of this Vehicle.
+        /// </summary>
+        public virtual Vector Position
+        {
+            get { return Native.GetVehiclePos(VehicleId); }
+            set { Native.SetVehiclePos(VehicleId, value); }
+        }
+
+        /// <summary>
+        ///     Gets or sets the rotation of this Vehicle.
+        /// </summary>
+        /// <remarks>
+        ///     Only the Z angle can be set!
+        /// </remarks>
+        public virtual Vector Rotation
+        {
+            get { return new Vector(0, 0, Angle); }
+            set { Native.SetVehicleZAngle(VehicleId, value.Z); }
         }
 
         #endregion

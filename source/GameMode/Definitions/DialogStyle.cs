@@ -14,24 +14,27 @@
 namespace GameMode.Definitions
 {
     /// <summary>
-    /// Contains all dialogstyles.
+    ///     Contains all dialogstyles.
     /// </summary>
     public enum DialogStyle
     {
         /// <summary>
-        /// A box with a caption, text and one or two buttons.
+        ///     A box with a caption, text and one or two buttons.
         /// </summary>
         MessageBox = 0,
+
         /// <summary>
-        /// A box with a caption, text, an inputbox and one or two buttons.
+        ///     A box with a caption, text, an inputbox and one or two buttons.
         /// </summary>
         Input = 1,
+
         /// <summary>
-        /// A box with a caption, a bunch of selectable items and one or two buttons.
+        ///     A box with a caption, a bunch of selectable items and one or two buttons.
         /// </summary>
         List = 2,
+
         /// <summary>
-        /// A box with a caption, text, an password-inputbox and one or two buttons.
+        ///     A box with a caption, text, an password-inputbox and one or two buttons.
         /// </summary>
         Password = 3
     }
