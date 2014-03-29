@@ -238,7 +238,8 @@ namespace GameMode
             float rY, float rZ, float drawDistance);
 
         /// <summary>
-        ///     The same as <see cref="AttachObjectToPlayer(int,int,Vector,Vector)" /> but for objects which were created for player.
+        ///     The same as <see cref="AttachObjectToPlayer(int,int,Vector,Vector)" /> but for objects which were created for
+        ///     player.
         /// </summary>
         /// <param name="objectplayer">The id of the player which is linked with the object.</param>
         /// <param name="objectid">The objectid you want to attach to the player.</param>
@@ -338,7 +339,10 @@ namespace GameMode
         ///     Destroy a player-object.
         /// </summary>
         /// <param name="playerid">The ID of the player the object is associated to.</param>
-        /// <param name="objectid">The ID of the player-object to delete (returned by <see cref="CreatePlayerObject(int,int,Vector,Vector,float)" />).</param>
+        /// <param name="objectid">
+        ///     The ID of the player-object to delete (returned by
+        ///     <see cref="CreatePlayerObject(int,int,Vector,Vector,float)" />).
+        /// </param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool DestroyPlayerObject(int playerid, int objectid);
@@ -457,79 +461,6 @@ namespace GameMode
             int materialsize, string fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         /// <summary>
         ///     Creates an object.
         /// </summary>
@@ -573,7 +504,8 @@ namespace GameMode
         ///     example.
         /// </param>
         /// <returns>This function doesn't return a specific value.</returns>
-        public static bool AttachObjectToObject(int objectid, int attachtoid, Vector offset, Vector rotation, bool syncRotation)
+        public static bool AttachObjectToObject(int objectid, int attachtoid, Vector offset, Vector rotation,
+            bool syncRotation)
         {
             return AttachObjectToObject(objectid, attachtoid, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
                 rotation.Z, syncRotation);
@@ -672,7 +604,8 @@ namespace GameMode
         }
 
         /// <summary>
-        ///     The same as <see cref="AttachObjectToPlayer(int,int,Vector,Vector)" /> but for objects which were created for player.
+        ///     The same as <see cref="AttachObjectToPlayer(int,int,Vector,Vector)" /> but for objects which were created for
+        ///     player.
         /// </summary>
         /// <param name="objectplayer">The id of the player which is linked with the object.</param>
         /// <param name="objectid">The objectid you want to attach to the player.</param>
@@ -696,7 +629,8 @@ namespace GameMode
         /// <param name="offset">The position offset for attachment.</param>
         /// <param name="rotation">The rotation offset for attachment.</param>
         /// <returns>This function doesn't return a specific value.</returns>
-        public static bool AttachPlayerObjectToVehicle(int playerid, int objectid, int vehicleid, Vector offset, Vector rotation)
+        public static bool AttachPlayerObjectToVehicle(int playerid, int objectid, int vehicleid, Vector offset,
+            Vector rotation)
         {
             return AttachPlayerObjectToVehicle(playerid, objectid, vehicleid, offset.X, offset.Y, offset.Z, rotation.X,
                 rotation.Y, rotation.Z);

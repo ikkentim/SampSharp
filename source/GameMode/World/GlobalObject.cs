@@ -1,4 +1,17 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using GameMode.Definitions;
 using GameMode.Events;
 
@@ -14,7 +27,7 @@ namespace GameMode.World
 
         #region Properties
 
-        public virtual Vector Position 
+        public virtual Vector Position
         {
             get { return Native.GetObjectPos(ObjectId); }
             set { Native.SetObjectPos(ObjectId, value); }
@@ -78,12 +91,16 @@ namespace GameMode.World
 
         public GlobalObject(int modelid, Vector position, Vector rotation) : this(modelid, position, rotation, 0)
         {
-
         }
 
         #endregion
 
         #region Methods
+
+        public virtual void Dispose()
+        {
+            Native.DestroyObject(ObjectId);
+        }
 
         public virtual void AttachTo(Player player, Vector offset, Vector rotation)
         {
@@ -93,11 +110,6 @@ namespace GameMode.World
         public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
         {
             Native.AttachObjectToVehicle(ObjectId, vehicle.VehicleId, offset, rotation);
-        }
-
-        public virtual void AttachTo(GlobalObject globalObject, Vector offset, Vector rotation)
-        {
-            Native.AttachObjectToVehicle(ObjectId, globalObject.ObjectId, offset, rotation);
         }
 
         public virtual int Move(Vector position, float speed, Vector rotation)
@@ -115,17 +127,8 @@ namespace GameMode.World
             Native.StopObject(ObjectId);
         }
 
-        public virtual void Edit(Player player)
-        {
-            Native.EditObject(player.PlayerId, ObjectId);
-        }
-
-        public static void Select(Player player)
-        {
-            Native.SelectObject(player.PlayerId);
-        }
-
-        public virtual void SetMaterial(int materialindex, int modelid, string txdname, string texturename, Color materialcolor)
+        public virtual void SetMaterial(int materialindex, int modelid, string txdname, string texturename,
+            Color materialcolor)
         {
             Native.SetObjectMaterial(ObjectId, materialindex, modelid, txdname, texturename,
                 materialcolor.GetColorValue(ColorFormat.ARGB));
@@ -140,9 +143,19 @@ namespace GameMode.World
                 (int) textalignment);
         }
 
-        public virtual void Dispose()
+        public virtual void AttachTo(GlobalObject globalObject, Vector offset, Vector rotation)
         {
-            Native.DestroyObject(ObjectId);
+            Native.AttachObjectToVehicle(ObjectId, globalObject.ObjectId, offset, rotation);
+        }
+
+        public virtual void Edit(Player player)
+        {
+            Native.EditObject(player.PlayerId, ObjectId);
+        }
+
+        public static void Select(Player player)
+        {
+            Native.SelectObject(player.PlayerId);
         }
 
         #endregion
@@ -165,7 +178,7 @@ namespace GameMode.World
         /// <param name="e">An <see cref="PlayerSelectObjectEventArgs" /> that contains the event data. </param>
         public virtual void OnSelected(PlayerSelectObjectEventArgs e)
         {
-            if(Selected != null)
+            if (Selected != null)
                 Selected(this, e);
         }
 

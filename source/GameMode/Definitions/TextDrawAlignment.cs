@@ -14,20 +14,22 @@
 namespace GameMode.Definitions
 {
     /// <summary>
-    /// Contains all textdraw alignments.
+    ///     Contains all textdraw alignments.
     /// </summary>
     public enum TextDrawAlignment
     {
         /// <summary>
-        /// Align left.
+        ///     Align left.
         /// </summary>
         Left = 1,
+
         /// <summary>
-        /// Align center.
+        ///     Align center.
         /// </summary>
         Center = 2,
+
         /// <summary>
-        /// Align right.
+        ///     Align right.
         /// </summary>
         Right = 3
     }

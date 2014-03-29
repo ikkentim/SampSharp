@@ -14,16 +14,17 @@
 namespace GameMode.Definitions
 {
     /// <summary>
-    /// Contains all object types
+    ///     Contains all object types
     /// </summary>
     public enum ObjectType
     {
         /// <summary>
-        /// Global object.
+        ///     Global object.
         /// </summary>
         GlobalObject = 1,
+
         /// <summary>
-        /// Player object.
+        ///     Player object.
         /// </summary>
         PlayerObject = 2
     }

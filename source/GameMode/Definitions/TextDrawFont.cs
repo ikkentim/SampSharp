@@ -14,7 +14,7 @@
 namespace GameMode.Definitions
 {
     /// <summary>
-    /// Contains all fonts.
+    ///     Contains all fonts.
     /// </summary>
     public enum TextDrawFont
     {

@@ -14,28 +14,32 @@
 namespace GameMode.Definitions
 {
     /// <summary>
-    /// Contains all things bullets can hit.
+    ///     Contains all things bullets can hit.
     /// </summary>
     public enum BulletHitType
     {
         /// <summary>
-        /// Hit nothing.
+        ///     Hit nothing.
         /// </summary>
         None = 0,
+
         /// <summary>
-        /// Hit a player.
+        ///     Hit a player.
         /// </summary>
         Player = 1,
+
         /// <summary>
-        /// Hit a vehicle.
+        ///     Hit a vehicle.
         /// </summary>
         Vehicle = 2,
+
         /// <summary>
-        /// Hit an GlobalObject.
+        ///     Hit an GlobalObject.
         /// </summary>
         Object = 3,
+
         /// <summary>
-        /// Hit a PlayerObject.
+        ///     Hit a PlayerObject.
         /// </summary>
         PlayerObject = 4
     }

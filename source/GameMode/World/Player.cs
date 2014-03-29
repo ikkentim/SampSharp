@@ -98,28 +98,6 @@ namespace GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the position of this Player.
-        /// </summary>
-        public virtual Vector Position
-        {
-            get { return Native.GetPlayerPos(PlayerId); }
-            set { Native.SetPlayerPos(PlayerId, value); }
-        }
-
-
-        /// <summary>
-        ///     Gets or sets the rotation of this Player.
-        /// </summary>
-        /// <remarks>
-        ///     Only the Z angle can be set!
-        /// </remarks>
-        public virtual Vector Rotation
-        {
-            get { return new Vector(0, 0, Angle); }
-            set { Angle = value.Z; }
-        }
-
-        /// <summary>
         ///     Gets or sets the facing angle of this Player.
         /// </summary>
         public virtual float Angle
@@ -413,6 +391,28 @@ namespace GameMode.World
         public virtual bool IsConnected
         {
             get { return Native.IsPlayerConnected(PlayerId); }
+        }
+
+        /// <summary>
+        ///     Gets or sets the position of this Player.
+        /// </summary>
+        public virtual Vector Position
+        {
+            get { return Native.GetPlayerPos(PlayerId); }
+            set { Native.SetPlayerPos(PlayerId, value); }
+        }
+
+
+        /// <summary>
+        ///     Gets or sets the rotation of this Player.
+        /// </summary>
+        /// <remarks>
+        ///     Only the Z angle can be set!
+        /// </remarks>
+        public virtual Vector Rotation
+        {
+            get { return new Vector(0, 0, Angle); }
+            set { Angle = value.Z; }
         }
 
         #endregion
@@ -1233,7 +1233,8 @@ namespace GameMode.World
         ///     Sets a checkpoint (red circle) for this Player. Also shows a red blip on the radar.
         /// </summary>
         /// <remarks>
-        ///     Checkpoints created on server-created objects will appear down on the 'real' ground, but will still function correctly.
+        ///     Checkpoints created on server-created objects will appear down on the 'real' ground, but will still function
+        ///     correctly.
         ///     There is no fix available for this issue. A pickup can be used instead.
         /// </remarks>
         /// <param name="point">The point to set the checkpoint at.</param>

@@ -46,7 +46,7 @@ namespace GameMode
             LoadDefaultControllers(controllers);
             LoadControllers(controllers);
 
-            foreach (var controller in controllers)
+            foreach (IController controller in controllers)
                 controller.RegisterEvents(this);
         }
 
@@ -1445,6 +1445,7 @@ namespace GameMode
 
             return true;
         }
+
         #endregion
     }
 }

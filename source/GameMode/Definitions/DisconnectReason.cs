@@ -14,20 +14,22 @@
 namespace GameMode.Definitions
 {
     /// <summary>
-    /// Contains all reasons for a Player to disconnect.
+    ///     Contains all reasons for a Player to disconnect.
     /// </summary>
     public enum DisconnectReason
     {
         /// <summary>
-        /// The Player timed out.
+        ///     The Player timed out.
         /// </summary>
         TimedOut = 0,
+
         /// <summary>
-        /// The Player left. (/q(uit) or trough the menu)
+        ///     The Player left. (/q(uit) or trough the menu)
         /// </summary>
         Left = 1,
+
         /// <summary>
-        /// The Player was kicked or banned.
+        ///     The Player was kicked or banned.
         /// </summary>
         Kicked = 2
     }
