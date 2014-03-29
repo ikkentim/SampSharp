@@ -46,11 +46,6 @@ namespace TestMode.World
             return Instances.Cast<MyPlayer>().FirstOrDefault(p => p.PlayerId == playerId) ?? new MyPlayer(playerId);
         }
 
-        public new static void RegisterEvents(BaseMode gameMode)
-        {
-            RegisterEvents(gameMode, Find);
-        }
-
         public override void OnConnected(PlayerEventArgs e)
         {
             //Test dialog

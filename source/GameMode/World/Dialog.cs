@@ -13,6 +13,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Dynamic;
 using System.Linq;
 using GameMode.Definitions;
 using GameMode.Events;
@@ -128,32 +130,7 @@ namespace GameMode.World
         #endregion
 
         #region Methods
-
-        /// <summary>
-        ///     Registers all events the Dialog class listens to.
-        /// </summary>
-        /// <param name="gameMode">An instance of the BaseMode to which to listen.</param>
-        /// <param name="cast">A function to get a <see cref="Dialog" /> object from a dialogid.</param>
-        protected static void RegisterEvents(BaseMode gameMode, Func<int, Dialog> cast)
-        {
-            gameMode.DialogResponse += (sender, args) =>
-            {
-                Dialog dialog = cast(args.PlayerId);
-                if (dialog != null) dialog.OnResponse(args);
-            };
-
-            gameMode.PlayerDisconnected += (sender, args) => OpenDialogs.Remove(args.PlayerId);
-        }
-
-        /// <summary>
-        ///     Registers all events the Dialog class listens to.
-        /// </summary>
-        /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
-        public static void RegisterEvents(BaseMode gameMode)
-        {
-            RegisterEvents(gameMode, playerId => OpenDialogs.FirstOrDefault(d => d.Key == playerId).Value);
-        }
-
+        
         /// <summary>
         ///     Shows the dialog box to a Player.
         /// </summary>
@@ -176,6 +153,16 @@ namespace GameMode.World
 
             Native.ShowPlayerDialog(player.PlayerId, DialogHideId, (int) DialogStyle.MessageBox, string.Empty,
                 string.Empty, string.Empty, string.Empty);
+        }
+
+        /// <summary>
+        /// Gets the dialog currently being shown to a Player.
+        /// </summary>
+        /// <param name="player">The Player whose Dialog you want.</param>
+        /// <returns>The Dialog currently being shown to the Player.</returns>
+        public static Dialog GetOpenDialog(Player player)
+        {
+            return OpenDialogs[player.PlayerId];
         }
 
         /// <summary>

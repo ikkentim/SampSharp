@@ -22,8 +22,6 @@ namespace GameMode.World
     public class Timer : IDisposable
     {
         private bool _hit;
-        private static BaseMode _gameMode;
-
         /// <summary>
         ///     Initializes a new instance of the Timer class.
         /// </summary>
@@ -31,8 +29,6 @@ namespace GameMode.World
         /// <param name="repeat">Whether to repeat the timer (True); or stop after the first Tick(False).</param>
         public Timer(int interval, bool repeat)
         {
-            _gameMode.Exited += GameModeExited;
-
             Id = Native.SetTimer(interval, repeat, this);
             Interval = interval;
             Repeat = repeat;
@@ -69,14 +65,11 @@ namespace GameMode.World
                 {
                     _hit = false;
                     Id = Native.SetTimer(Interval, Repeat, this);
-
-                    _gameMode.Exited += GameModeExited;
                 }
                 else if (!value && Running)
                 {
                     Native.KillTimer(Id);
 
-                    _gameMode.Exited -= GameModeExited;
                 }
             }
         }
@@ -97,21 +90,6 @@ namespace GameMode.World
         public event EventHandler Tick;
 
         /// <summary>
-        ///     Registers all events the Timer class listens to.
-        /// </summary>
-        /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
-        public static void RegisterEvents(BaseMode gameMode)
-        {
-            _gameMode = gameMode;
-            gameMode.TimerTick += (sender, args) =>
-            {
-                var timer = sender as Timer;
-                if(timer != null)
-                    timer.OnTick(args);
-            };
-        }
-
-        /// <summary>
         ///     Raises the <see cref="Tick" /> event.
         /// </summary>
         /// <param name="e">A <see cref="System.EventArgs" /> that contains the event data.</param>
@@ -121,14 +99,6 @@ namespace GameMode.World
                 Tick(this, e);
 
             _hit = true;
-
-            if (!Running)
-                _gameMode.Exited -= GameModeExited;
-        }
-
-        private void GameModeExited(object sender, GameModeEventArgs e)
-        {
-            Dispose();
         }
     }
 }

@@ -3,7 +3,7 @@
     /// <summary>
     /// Defines an object that is placed in the world.
     /// </summary>
-    interface IWorldObject
+    public interface IWorldObject
     {
         /// <summary>
         /// Gets or sets the position of this IWorldObject.
