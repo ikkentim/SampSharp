@@ -13,6 +13,9 @@
 
 namespace GameMode.Definitions
 {
+    /// <summary>
+    /// Contains all weapons.
+    /// </summary>
     public enum Weapon
     {
         None = 0,
