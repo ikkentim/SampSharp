@@ -1,9 +1,10 @@
-﻿using GameMode.Definitions;
+﻿using System;
+using GameMode.Definitions;
 using GameMode.Events;
 
 namespace GameMode.World
 {
-    public class PlayerObject
+    public class PlayerObject : IWorldObject, IDisposable
     {
         #region Fields
 

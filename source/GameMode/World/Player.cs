@@ -22,7 +22,7 @@ namespace GameMode.World
     /// <summary>
     ///     Represents a SA:MP player.
     /// </summary>
-    public class Player : IDisposable
+    public class Player : IWorldObject, IDisposable
     {
         #region Fields
 
@@ -104,6 +104,19 @@ namespace GameMode.World
         {
             get { return Native.GetPlayerPos(PlayerId); }
             set { Native.SetPlayerPos(PlayerId, value); }
+        }
+
+
+        /// <summary>
+        ///     Gets or sets the rotation of this Player.
+        /// </summary>
+        /// <remarks>
+        ///     Only the Z angle can be set!
+        /// </remarks>
+        public virtual Vector Rotation
+        {
+            get { return new Vector(0, 0, Angle); }
+            set { Angle = value.Z; }
         }
 
         /// <summary>

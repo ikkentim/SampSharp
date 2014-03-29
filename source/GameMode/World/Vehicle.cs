@@ -19,7 +19,7 @@ using GameMode.Events;
 
 namespace GameMode.World
 {
-    public class Vehicle : IDisposable
+    public class Vehicle : IWorldObject, IDisposable
     {
         #region Fields
 
@@ -100,7 +100,19 @@ namespace GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the z rotation of this Vehicle.
+        ///     Gets or sets the rotation of this Vehicle.
+        /// </summary>
+        /// <remarks>
+        ///     Only the Z angle can be set!
+        /// </remarks>
+        public virtual Vector Rotation
+        {
+            get { return new Vector(0, 0, Angle); }
+            set { Native.SetVehicleZAngle(VehicleId, value.Z); }
+        }
+
+        /// <summary>
+        ///     Gets or sets the Z angle of this Vehicle.
         /// </summary>
         public virtual float Angle
         {
