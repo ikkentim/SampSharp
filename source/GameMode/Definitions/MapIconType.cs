@@ -14,7 +14,7 @@
 namespace GameMode.Definitions
 {
     /// <summary>
-    /// Contains all mapicon styles.
+    ///     Contains all mapicon styles.
     /// </summary>
     public enum MapIconType
     {

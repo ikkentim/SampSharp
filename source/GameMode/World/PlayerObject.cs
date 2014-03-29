@@ -1,4 +1,17 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using GameMode.Definitions;
 using GameMode.Events;
 
@@ -13,6 +26,8 @@ namespace GameMode.World
         #endregion
 
         #region Properties
+
+        public virtual Player Player { get; private set; }
 
         public virtual Vector Position
         {
@@ -42,8 +57,6 @@ namespace GameMode.World
 
         public virtual int ObjectId { get; private set; }
 
-        public virtual Player Player { get; private set; }
-
         #endregion
 
         #region Events
@@ -68,7 +81,6 @@ namespace GameMode.World
 
         #endregion
 
-
         #region Constructor
 
         public PlayerObject(Player player, int modelid, Vector position, Vector rotation, float drawDistance)
@@ -77,18 +89,22 @@ namespace GameMode.World
             ModelId = modelid;
             DrawDistance = drawDistance;
 
-            ObjectId = Native.CreatePlayerObject(player.PlayerId, modelid , position, rotation, drawDistance);
+            ObjectId = Native.CreatePlayerObject(player.PlayerId, modelid, position, rotation, drawDistance);
         }
 
-        public PlayerObject(Player player,  int modelid, Vector position, Vector rotation)
-           : this(player, modelid, position, rotation, 0)
+        public PlayerObject(Player player, int modelid, Vector position, Vector rotation)
+            : this(player, modelid, position, rotation, 0)
         {
-
         }
 
         #endregion
 
         #region Methods
+
+        public virtual void Dispose()
+        {
+            Native.DestroyObject(ObjectId);
+        }
 
         public virtual void AttachTo(Player player, Vector offset, Vector rotation)
         {
@@ -107,12 +123,30 @@ namespace GameMode.World
 
         public virtual int Move(Vector position, float speed)
         {
-            return Native.MovePlayerObject(Player.PlayerId, ObjectId, position.X, position.Y, position.Z, speed, -1000, -1000, -1000);
+            return Native.MovePlayerObject(Player.PlayerId, ObjectId, position.X, position.Y, position.Z, speed, -1000,
+                -1000, -1000);
         }
 
         public virtual void Stop()
         {
             Native.StopPlayerObject(Player.PlayerId, ObjectId);
+        }
+
+        public virtual void SetMaterial(int materialindex, int modelid, string txdname, string texturename,
+            Color materialcolor)
+        {
+            Native.SetPlayerObjectMaterial(Player.PlayerId, ObjectId, materialindex, modelid, txdname, texturename,
+                materialcolor.GetColorValue(ColorFormat.ARGB));
+        }
+
+        public virtual void SetMaterialText(string text, int materialindex, ObjectMaterialSize materialsize,
+            string fontface, int fontsize, bool bold, Color foreColor, Color backColor,
+            ObjectMaterialTextAlign textalignment)
+        {
+            Native.SetPlayerObjectMaterialText(Player.PlayerId, ObjectId, text, materialindex, (int) materialsize,
+                fontface, fontsize, bold,
+                foreColor.GetColorValue(ColorFormat.ARGB), backColor.GetColorValue(ColorFormat.ARGB),
+                (int) textalignment);
         }
 
         public virtual void Edit()
@@ -123,26 +157,6 @@ namespace GameMode.World
         public static void Select(Player player)
         {
             Native.SelectObject(player.PlayerId);
-        }
-
-        public virtual void SetMaterial(int materialindex, int modelid, string txdname, string texturename, Color materialcolor)
-        {
-            Native.SetPlayerObjectMaterial(Player.PlayerId, ObjectId, materialindex, modelid, txdname, texturename,
-                materialcolor.GetColorValue(ColorFormat.ARGB));
-        }
-
-        public virtual void SetMaterialText(string text, int materialindex, ObjectMaterialSize materialsize,
-            string fontface, int fontsize, bool bold, Color foreColor, Color backColor,
-            ObjectMaterialTextAlign textalignment)
-        {
-            Native.SetPlayerObjectMaterialText(Player.PlayerId, ObjectId, text, materialindex, (int)materialsize, fontface, fontsize, bold,
-                foreColor.GetColorValue(ColorFormat.ARGB), backColor.GetColorValue(ColorFormat.ARGB),
-                (int)textalignment);
-        }
-
-        public virtual void Dispose()
-        {
-            Native.DestroyObject(ObjectId);
         }
 
         #endregion

@@ -16,64 +16,77 @@ using GameMode.World;
 namespace GameMode.Definitions
 {
     /// <summary>
-    /// Contains all camera modes.
+    ///     Contains all camera modes.
     /// </summary>
     public enum CameraMode
     {
         /// <summary>
-        /// Invalid mode.
+        ///     Invalid mode.
         /// </summary>
         Invalid = -1,
+
         /// <summary>
-        /// Camera is behind a car.
+        ///     Camera is behind a car.
         /// </summary>
         BehindCar = 3,
+
         /// <summary>
-        /// Camera is behind a Ped.
+        ///     Camera is behind a Ped.
         /// </summary>
         FollowPed = 4,
+
         /// <summary>
-        /// Sniper view.
+        ///     Sniper view.
         /// </summary>
         SniperAiming = 7,
+
         /// <summary>
-        /// Rocket launcher view.
+        ///     Rocket launcher view.
         /// </summary>
         RocketLauncherAiming = 8,
+
         /// <summary>
-        /// Camera is set to a fixed point (e.g. after setting <see cref="Player.CameraPosition"/>)
+        ///     Camera is set to a fixed point (e.g. after setting <see cref="Player.CameraPosition" />)
         /// </summary>
         Fixed = 15,
+
         /// <summary>
-        /// Camera is in first person mode (e.g. when looking from inside the vehicle)
+        ///     Camera is in first person mode (e.g. when looking from inside the vehicle)
         /// </summary>
         FirstPerson = 16,
+
         /// <summary>
-        /// Camera 'normally' behind a car.
+        ///     Camera 'normally' behind a car.
         /// </summary>
         NormalCar = 18,
+
         /// <summary>
-        /// Camera behind a boat.
+        ///     Camera behind a boat.
         /// </summary>
         BehindBoat = 22,
+
         /// <summary>
-        /// Camera when aiming.
+        ///     Camera when aiming.
         /// </summary>
         CameraWeaponAiming = 46,
+
         /// <summary>
-        /// Heatseeking rochet launcher view.
+        ///     Heatseeking rochet launcher view.
         /// </summary>
         HeatseekingRocketLauncher = 51,
+
         /// <summary>
-        /// Aiming a weapon.
+        ///     Aiming a weapon.
         /// </summary>
         AimingWeapon = 53,
+
         /// <summary>
-        /// Drive by view.
+        ///     Drive by view.
         /// </summary>
         VehicleDriveBy = 55,
+
         /// <summary>
-        /// Helicopter chase view.
+        ///     Helicopter chase view.
         /// </summary>
         HelicopterChaseCam = 56
     }

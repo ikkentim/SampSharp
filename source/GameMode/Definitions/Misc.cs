@@ -14,40 +14,47 @@
 namespace GameMode.Definitions
 {
     /// <summary>
-    /// Misc defined values.
+    ///     Misc defined values.
     /// </summary>
     public static class Misc
     {
         /// <summary>
-        /// Invalid player id.
+        ///     Invalid player id.
         /// </summary>
         public const int InvalidPlayerId = 0xFFFF;
+
         /// <summary>
-        /// Invalid vehicle id.
+        ///     Invalid vehicle id.
         /// </summary>
         public const int InvalidVehicleId = 0xFFFF;
+
         /// <summary>
-        /// No team.
+        ///     No team.
         /// </summary>
         public const int NoTeam = 255;
+
         /// <summary>
-        /// Invalid object id.
+        ///     Invalid object id.
         /// </summary>
         public const int InvalidObjectId = 0xFFFF;
+
         /// <summary>
-        /// Invalid menu id.
+        ///     Invalid menu id.
         /// </summary>
         public const int InvalidMenu = 0xFF;
+
         /// <summary>
-        /// Invalid textdraw id.
+        ///     Invalid textdraw id.
         /// </summary>
         public const int InvalidTextDraw = 0xFFFF;
+
         /// <summary>
-        /// Invalid gangzone id.
+        ///     Invalid gangzone id.
         /// </summary>
         public const int InvalidGangZone = -1;
+
         /// <summary>
-        /// Invalid 3D textlabel id.
+        ///     Invalid 3D textlabel id.
         /// </summary>
         public const int Invalid_3DTextId = 0xFFFF;
     }

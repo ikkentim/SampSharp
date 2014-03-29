@@ -12,7 +12,6 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
-using GameMode.Events;
 
 namespace GameMode.World
 {
@@ -22,6 +21,7 @@ namespace GameMode.World
     public class Timer : IDisposable
     {
         private bool _hit;
+
         /// <summary>
         ///     Initializes a new instance of the Timer class.
         /// </summary>
@@ -69,7 +69,6 @@ namespace GameMode.World
                 else if (!value && Running)
                 {
                     Native.KillTimer(Id);
-
                 }
             }
         }

@@ -14,24 +14,27 @@
 namespace GameMode.Definitions
 {
     /// <summary>
-    /// Contains all playervar types.
+    ///     Contains all playervar types.
     /// </summary>
     public enum PlayerVarType
     {
         /// <summary>
-        /// Var does not exist.
+        ///     Var does not exist.
         /// </summary>
         None = 0,
+
         /// <summary>
-        /// Var as an integer.
+        ///     Var as an integer.
         /// </summary>
         Int = 1,
+
         /// <summary>
-        /// Var is a string.
+        ///     Var is a string.
         /// </summary>
         String = 2,
+
         /// <summary>
-        /// Var is a float.
+        ///     Var is a float.
         /// </summary>
         Float = 3
     }
