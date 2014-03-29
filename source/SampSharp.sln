@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "environment", "environment"
 		..\environment\samp-npc.exe = ..\environment\samp-npc.exe
 		..\environment\samp-server.exe = ..\environment\samp-server.exe
 		..\environment\sampgdk3.dll = ..\environment\sampgdk3.dll
+		..\environment\SampSharp_errors.log = ..\environment\SampSharp_errors.log
 		..\environment\server.cfg = ..\environment\server.cfg
 		..\environment\server_log.txt = ..\environment\server_log.txt
 	EndProjectSection

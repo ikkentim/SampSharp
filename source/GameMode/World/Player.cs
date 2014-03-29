@@ -1938,59 +1938,6 @@ namespace GameMode.World
             Instances.Remove(this);
         }
 
-        /// <summary>
-        ///     Registers all events the Player class listens to.
-        /// </summary>
-        /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
-        /// <param name="cast">A function to get a <see cref="Player" /> object from a playerid.</param>
-        protected static void RegisterEvents(BaseMode gameMode, Func<int, Player> cast)
-        {
-            gameMode.PlayerConnected += (sender, args) => cast(args.PlayerId).OnConnected(args);
-            gameMode.PlayerDisconnected += (sender, args) => cast(args.PlayerId).OnDisconnected(args);
-            gameMode.PlayerSpawned += (sender, args) => cast(args.PlayerId).OnSpawned(args);
-            gameMode.PlayerDied += (sender, args) => cast(args.PlayerId).OnDeath(args);
-            gameMode.PlayerText += (sender, args) => cast(args.PlayerId).OnText(args);
-            gameMode.PlayerCommandText += (sender, args) => cast(args.PlayerId).OnCommandText(args);
-            gameMode.PlayerRequestClass += (sender, args) => cast(args.PlayerId).OnRequestClass(args);
-            gameMode.PlayerEnterVehicle += (sender, args) => cast(args.PlayerId).OnEnterVehicle(args);
-            gameMode.PlayerExitVehicle += (sender, args) => cast(args.PlayerId).OnExitVehicle(args);
-            gameMode.PlayerStateChanged += (sender, args) => cast(args.PlayerId).OnStateChanged(args);
-            gameMode.PlayerEnterCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterCheckpoint(args);
-            gameMode.PlayerLeaveCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveCheckpoint(args);
-            gameMode.PlayerEnterRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnEnterRaceCheckpoint(args);
-            gameMode.PlayerLeaveRaceCheckpoint += (sender, args) => cast(args.PlayerId).OnLeaveRaceCheckpoint(args);
-            gameMode.PlayerRequestSpawn += (sender, args) => cast(args.PlayerId).OnRequestSpawn(args);
-            gameMode.PlayerPickUpPickup += (sender, args) => cast(args.PickupId).OnPickUpPickup(args);
-            gameMode.PlayerEnterExitModShop += (sender, args) => cast(args.PlayerId).OnEnterExitModShop(args);
-            gameMode.PlayerSelectedMenuRow += (sender, args) => cast(args.PlayerId).OnSelectedMenuRow(args);
-            gameMode.PlayerExitedMenu += (sender, args) => cast(args.PlayerId).OnExitedMenu(args);
-            gameMode.PlayerInteriorChanged += (sender, args) => cast(args.PlayerId).OnInteriorChanged(args);
-            gameMode.PlayerKeyStateChanged += (sender, args) => cast(args.PlayerId).OnKeyStateChanged(args);
-            gameMode.PlayerUpdate += (sender, args) => cast(args.PlayerId).OnUpdate(args);
-            gameMode.PlayerStreamIn += (sender, args) => cast(args.PlayerId).OnStreamIn(args);
-            gameMode.PlayerStreamOut += (sender, args) => cast(args.PlayerId).OnStreamOut(args);
-            gameMode.DialogResponse += (sender, args) => cast(args.PlayerId).OnDialogResponse(args);
-            gameMode.PlayerTakeDamage += (sender, args) => cast(args.PlayerId).OnTakeDamage(args);
-            gameMode.PlayerGiveDamage += (sender, args) => cast(args.PlayerId).OnGiveDamage(args);
-            gameMode.PlayerClickMap += (sender, args) => cast(args.PlayerId).OnClickMap(args);
-            gameMode.PlayerClickTextDraw += (sender, args) => cast(args.PlayerId).OnClickTextDraw(args);
-            gameMode.PlayerClickPlayerTextDraw += (sender, args) => cast(args.PlayerId).OnClickPlayerTextDraw(args);
-            gameMode.PlayerClickPlayer += (sender, args) => cast(args.PlayerId).OnClickPlayer(args);
-            gameMode.PlayerEditObject += (sender, args) => cast(args.PlayerId).OnEditObject(args);
-            gameMode.PlayerEditAttachedObject += (sender, args) => cast(args.PlayerId).OnEditAttachedObject(args);
-            gameMode.PlayerSelectObject += (sender, args) => cast(args.PlayerId).OnSelectObject(args);
-            gameMode.PlayerWeaponShot += (sender, args) => cast(args.PlayerId).OnWeaponShot(args);
-        }
-
-        /// <summary>
-        ///     Registers all events the Player class listens to.
-        /// </summary>
-        /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
-        public static void RegisterEvents(BaseMode gameMode)
-        {
-            RegisterEvents(gameMode, Find);
-        }
-
         public override int GetHashCode()
         {
             return PlayerId;

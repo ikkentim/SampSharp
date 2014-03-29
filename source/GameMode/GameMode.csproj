@@ -39,6 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ControllerCollection.cs" />
+    <Compile Include="Controllers\DialogController.cs" />
+    <Compile Include="Controllers\IController.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Controllers\TimerController.cs" />
+    <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="Definitions\BodyPart.cs" />
     <Compile Include="Definitions\CameraMode.cs" />
     <Compile Include="Definitions\CheckpointType.cs" />
@@ -125,6 +131,7 @@
     <Compile Include="World\Dialog.cs" />
     <Compile Include="World\GangZone.cs" />
     <Compile Include="World\GlobalObject.cs" />
+    <Compile Include="World\IGameObject.cs" />
     <Compile Include="World\IWorldObject.cs" />
     <Compile Include="World\Player.cs" />
     <Compile Include="World\PlayerObject.cs" />

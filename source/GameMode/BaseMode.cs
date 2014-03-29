@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
+using GameMode.Controllers;
 using GameMode.Definitions;
 using GameMode.Events;
 using GameMode.World;
@@ -21,7 +22,7 @@ namespace GameMode
     /// <summary>
     ///     Represents a SA:MP gamemode.
     /// </summary>
-    public abstract class BaseMode : IDisposable
+    public abstract class BaseMode
     {
         #region Constructor
 
@@ -30,7 +31,7 @@ namespace GameMode
         /// </summary>
         protected BaseMode()
         {
-            RegisterEvents();
+            RegisterControllers();
             Console.SetOut(new LogWriter());
         }
 
@@ -38,12 +39,27 @@ namespace GameMode
 
         #region Methods
 
-        public virtual void RegisterEvents()
+        private void RegisterControllers()
         {
-            Timer.RegisterEvents(this);
-            Player.RegisterEvents(this);
-            Vehicle.RegisterEvents(this);
-            Dialog.RegisterEvents(this);
+            var controllers = new ControllerCollection();
+
+            LoadDefaultControllers(controllers);
+            LoadControllers(controllers);
+
+            foreach (var controller in controllers)
+                controller.RegisterEvents(this);
+        }
+
+        private void LoadDefaultControllers(ControllerCollection controllers)
+        {
+            controllers.Add(new PlayerController());
+            controllers.Add(new TimerController());
+            controllers.Add(new VehicleController());
+            controllers.Add(new DialogController());
+        }
+
+        protected virtual void LoadControllers(ControllerCollection controllers)
+        {
         }
 
         #endregion
@@ -442,10 +458,6 @@ namespace GameMode
         #endregion
 
         #region Callbacks
-
-        public void Dispose()
-        {
-        }
 
         /// <summary>
         ///     This callback is triggered when a timer ticks.
