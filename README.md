@@ -8,7 +8,7 @@ This project is still under construction and has not yet been tested on Linux.
 
 Some functions/parts may give problems, crash or not may not even compile.
 
-I'm a total C++ newb (but awesome with c# (-: ) and all feedback is welcome, file an Issue or contact me on the SA-MP forums.
+I'm a total C++ newb (but awesome with c# ![](https://mail.google.com/mail/u/0/e/330) ) and all feedback is welcome, file an Issue or contact me on the SA-MP forums.
 
 http://forum.sa-mp.com/member.php?u=76946
 
