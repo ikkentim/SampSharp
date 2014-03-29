@@ -13,10 +13,22 @@
 
 namespace GameMode.Definitions
 {
+    /// <summary>
+    /// Contains all edit object responses.
+    /// </summary>
     public enum EditObjectResponse
     {
+        /// <summary>
+        /// Editing has been canceled.
+        /// </summary>
         Cancel = 0,
+        /// <summary>
+        /// The current is the final edit sate.
+        /// </summary>
         Final = 1,
+        /// <summary>
+        /// The current is a updated edit state.
+        /// </summary>
         Update = 2
     }
 }

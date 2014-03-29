@@ -74,7 +74,6 @@
     <Compile Include="Definitions\PlayerRecordingType.cs" />
     <Compile Include="Definitions\PlayerState.cs" />
     <Compile Include="Definitions\PlayerVarType.cs" />
-    <Compile Include="Definitions\SelectedObjectType.cs" />
     <Compile Include="Definitions\SpecialAction.cs" />
     <Compile Include="Definitions\SpectateMode.cs" />
     <Compile Include="Definitions\TextDrawFont.cs" />
