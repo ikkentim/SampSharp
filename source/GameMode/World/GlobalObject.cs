@@ -4,7 +4,7 @@ using GameMode.Events;
 
 namespace GameMode.World
 {
-    public class GlobalObject : IWorldObject, IDisposable
+    public class GlobalObject : IGameObject, IDisposable
     {
         #region Fields
 

@@ -13,33 +13,25 @@
 
 using System;
 using GameMode;
-using GameMode.Tools;
+using GameMode.Controllers;
 using GameMode.World;
-using TestMode.World;
+using TestMode.Controllers;
 
 namespace TestMode
 {
     public class GameMode : BaseMode
     {
-        public override void RegisterEvents()
+        protected override void LoadControllers(ControllerCollection controllers)
         {
-            Timer.RegisterEvents(this);
-            MyPlayer.RegisterEvents(this);
-            Vehicle.RegisterEvents(this);
-            Dialog.RegisterEvents(this);
+            controllers.Remove<PlayerController>();
+            controllers.Add(new MyPlayerContoller());
         }
 
         public override bool OnGameModeInit()
         {
             Console.WriteLine("OnGameModeInit");
-            MapAndreas.Load(MapAndreasMode.Minimal);
 
-            Console.WriteLine("[MapAndreas] Test: " + MapAndreas.Find(new Vector()));
-            Console.WriteLine("[MapAndreas] Test: " + MapAndreas.Find(new Vector(1700, -1700, 0)));
-            Console.WriteLine("[MapAndreas] Test: " + MapAndreas.FindAverage(new Vector()));
-            Console.WriteLine("[MapAndreas] Test: " + MapAndreas.FindAverage(new Vector(1700, -1700, 0)));
-
-            var label = new TextLabel("Test123", Color.Blue, new Vector(0, 0, 5), 100);
+            new TextLabel("Test123", Color.Blue, new Vector(0, 0, 5), 100);
 
             var obj = new GlobalObject(18764, new Vector(111.44f, -77.37f, 13.18f), new Vector(0.00f, 0.00f, 0.00f));
 

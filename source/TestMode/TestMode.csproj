@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\MyPlayerContoller.cs" />
     <Compile Include="GameMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="World\MyPlayer.cs" />

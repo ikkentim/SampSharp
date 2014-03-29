@@ -774,35 +774,6 @@ namespace GameMode.World
             Instances.Remove(this);
         }
 
-        /// <summary>
-        ///     Registers all events the Vehicle class listens to.
-        /// </summary>
-        /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
-        /// <param name="cast">A function to get a <see cref="Vehicle" /> object from a vehicleid.</param>
-        protected static void RegisterEvents(BaseMode gameMode, Func<int, Vehicle> cast)
-        {
-            gameMode.VehicleSpawned += (sender, args) => cast(args.VehicleId).OnSpawn(args);
-            gameMode.VehicleDied += (sender, args) => cast(args.VehicleId).OnDeath(args);
-            gameMode.PlayerEnterVehicle += (sender, args) => cast(args.VehicleId).OnPlayerEnter(args);
-            gameMode.PlayerExitVehicle += (sender, args) => cast(args.VehicleId).OnPlayerExit(args);
-            gameMode.VehicleMod += (sender, args) => cast(args.VehicleId).OnMod(args);
-            gameMode.VehiclePaintjobApplied += (sender, args) => cast(args.VehicleId).OnPaintjobApplied(args);
-            gameMode.VehicleResprayed += (sender, args) => cast(args.VehicleId).OnResprayed(args);
-            gameMode.VehicleDamageStatusUpdated += (sender, args) => cast(args.VehicleId).OnDamageStatusUpdated(args);
-            gameMode.UnoccupiedVehicleUpdated += (sender, args) => cast(args.VehicleId).OnUnoccupiedUpdate(args);
-            gameMode.VehicleStreamIn += (sender, args) => cast(args.VehicleId).OnStreamIn(args);
-            gameMode.VehicleStreamOut += (sender, args) => cast(args.VehicleId).OnStreamOut(args);
-        }
-
-        /// <summary>
-        ///     Registers all events the Vehicle class listens to.
-        /// </summary>
-        /// <param name="gameMode">An instance of BaseMode to which to listen.</param>
-        public static void RegisterEvents(BaseMode gameMode)
-        {
-            RegisterEvents(gameMode, Find);
-        }
-
         public override int GetHashCode()
         {
             return VehicleId;
