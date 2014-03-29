@@ -13,6 +13,9 @@
 
 namespace GameMode.Definitions
 {
+    /// <summary>
+    /// Contains all weapon skills.
+    /// </summary>
     public enum WeaponSkill
     {
         Pistol = 0,
