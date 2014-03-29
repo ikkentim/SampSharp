@@ -16,7 +16,6 @@ ToDo's
 ======
 	-Add docs to Textdraw, PlayerTextDraw, TextLabel, PlayerTextLabel, Gangzone, GlobalObject, PlayerObject.
     -Add docs to EventsArgs.
-    -Add docs to definitions.
     -Add more remarks to native docs.
     -Improve and test.
     -Test on linux.
