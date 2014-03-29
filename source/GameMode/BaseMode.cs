@@ -23,12 +23,6 @@ namespace GameMode
     /// </summary>
     public abstract class BaseMode : IDisposable
     {
-        #region Fields
-
-        //public static BaseMode Instance;
-
-        #endregion
-
         #region Constructor
 
         /// <summary>
@@ -36,7 +30,6 @@ namespace GameMode
         /// </summary>
         protected BaseMode()
         {
-            Instance = this;
             RegisterEvents();
             Console.SetOut(new LogWriter());
         }
@@ -47,6 +40,7 @@ namespace GameMode
 
         public virtual void RegisterEvents()
         {
+            Timer.RegisterEvents(this);
             Player.RegisterEvents(this);
             Vehicle.RegisterEvents(this);
             Dialog.RegisterEvents(this);
