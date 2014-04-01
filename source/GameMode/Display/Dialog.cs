@@ -14,8 +14,9 @@
 using System.Collections.Generic;
 using GameMode.Definitions;
 using GameMode.Events;
+using GameMode.World;
 
-namespace GameMode.World
+namespace GameMode.Display
 {
     /// <summary>
     ///     Represents a SA:MP dialog.
