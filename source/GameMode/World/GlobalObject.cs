@@ -29,31 +29,31 @@ namespace GameMode.World
 
         public virtual Vector Position
         {
-            get { return Native.GetObjectPos(ObjectId); }
-            set { Native.SetObjectPos(ObjectId, value); }
+            get { return Native.GetObjectPos(Id); }
+            set { Native.SetObjectPos(Id, value); }
         }
 
         public virtual Vector Rotation
         {
-            get { return Native.GetObjectRot(ObjectId); }
-            set { Native.SetObjectRot(ObjectId, value); }
+            get { return Native.GetObjectRot(Id); }
+            set { Native.SetObjectRot(Id, value); }
         }
 
         public virtual bool IsMoving
         {
-            get { return Native.IsObjectMoving(ObjectId); }
+            get { return Native.IsObjectMoving(Id); }
         }
 
         public virtual bool IsValid
         {
-            get { return Native.IsValidObject(ObjectId); }
+            get { return Native.IsValidObject(Id); }
         }
 
         public virtual int ModelId { get; private set; }
 
         public virtual float DrawDistance { get; private set; }
 
-        public virtual int ObjectId { get; private set; }
+        public virtual int Id { get; private set; }
 
         #endregion
 
@@ -86,7 +86,7 @@ namespace GameMode.World
             ModelId = modelid;
             DrawDistance = drawDistance;
 
-            ObjectId = Native.CreateObject(modelid, position, rotation, drawDistance);
+            Id = Native.CreateObject(modelid, position, rotation, drawDistance);
         }
 
         public GlobalObject(int modelid, Vector position, Vector rotation) : this(modelid, position, rotation, 0)
@@ -99,38 +99,38 @@ namespace GameMode.World
 
         public virtual void Dispose()
         {
-            Native.DestroyObject(ObjectId);
+            Native.DestroyObject(Id);
         }
 
         public virtual void AttachTo(Player player, Vector offset, Vector rotation)
         {
-            Native.AttachObjectToPlayer(ObjectId, player.PlayerId, offset, rotation);
+            Native.AttachObjectToPlayer(Id, player.Id, offset, rotation);
         }
 
         public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
         {
-            Native.AttachObjectToVehicle(ObjectId, vehicle.VehicleId, offset, rotation);
+            Native.AttachObjectToVehicle(Id, vehicle.Id, offset, rotation);
         }
 
         public virtual int Move(Vector position, float speed, Vector rotation)
         {
-            return Native.MoveObject(ObjectId, position, speed, rotation);
+            return Native.MoveObject(Id, position, speed, rotation);
         }
 
         public virtual int Move(Vector position, float speed)
         {
-            return Native.MoveObject(ObjectId, position.X, position.Y, position.Z, speed, -1000, -1000, -1000);
+            return Native.MoveObject(Id, position.X, position.Y, position.Z, speed, -1000, -1000, -1000);
         }
 
         public virtual void Stop()
         {
-            Native.StopObject(ObjectId);
+            Native.StopObject(Id);
         }
 
         public virtual void SetMaterial(int materialindex, int modelid, string txdname, string texturename,
             Color materialcolor)
         {
-            Native.SetObjectMaterial(ObjectId, materialindex, modelid, txdname, texturename,
+            Native.SetObjectMaterial(Id, materialindex, modelid, txdname, texturename,
                 materialcolor.GetColorValue(ColorFormat.ARGB));
         }
 
@@ -138,24 +138,24 @@ namespace GameMode.World
             string fontface, int fontsize, bool bold, Color foreColor, Color backColor,
             ObjectMaterialTextAlign textalignment)
         {
-            Native.SetObjectMaterialText(ObjectId, text, materialindex, (int) materialsize, fontface, fontsize, bold,
+            Native.SetObjectMaterialText(Id, text, materialindex, (int) materialsize, fontface, fontsize, bold,
                 foreColor.GetColorValue(ColorFormat.ARGB), backColor.GetColorValue(ColorFormat.ARGB),
                 (int) textalignment);
         }
 
         public virtual void AttachTo(GlobalObject globalObject, Vector offset, Vector rotation)
         {
-            Native.AttachObjectToVehicle(ObjectId, globalObject.ObjectId, offset, rotation);
+            Native.AttachObjectToVehicle(Id, globalObject.Id, offset, rotation);
         }
 
         public virtual void Edit(Player player)
         {
-            Native.EditObject(player.PlayerId, ObjectId);
+            Native.EditObject(player.Id, Id);
         }
 
         public static void Select(Player player)
         {
-            Native.SelectObject(player.PlayerId);
+            Native.SelectObject(player.Id);
         }
 
         #endregion

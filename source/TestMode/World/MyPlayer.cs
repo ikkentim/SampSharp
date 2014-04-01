@@ -21,14 +21,14 @@ namespace TestMode.World
 {
     public class MyPlayer : Player
     {
-        protected MyPlayer(int playerId) : base(playerId)
+        protected MyPlayer(int id) : base(id)
         {
         }
 
         /// <summary>
-        ///     Get sor sets this Player's Database ID (Test purpose, not connected to a DB)
+        ///     Gets or sets this Player's Database ID (Test purpose, not connected to a DB)
         /// </summary>
-        public int Id { get; set; }
+        public int DbId { get; set; }
 
         /// <summary>
         ///     Gets or sets whether this Player has logged in.
