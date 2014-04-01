@@ -12,8 +12,9 @@
 // For more information, please refer to <http://unlicense.org>
 
 using GameMode.Definitions;
+using GameMode.World;
 
-namespace GameMode.World
+namespace GameMode.Display
 {
     public class PlayerTextDraw : TextDraw
     {
