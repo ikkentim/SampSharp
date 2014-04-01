@@ -16,7 +16,7 @@ using GameMode.Definitions;
 
 namespace GameMode.World
 {
-    public class TextLabel : IDisposable
+    public class TextLabel : IIdentifyable, IDisposable
     {
         #region Fields
 

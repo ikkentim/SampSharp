@@ -131,6 +131,7 @@
     <Compile Include="World\GangZone.cs" />
     <Compile Include="World\GlobalObject.cs" />
     <Compile Include="World\IGameObject.cs" />
+    <Compile Include="World\IIdentifyable.cs" />
     <Compile Include="World\IWorldObject.cs" />
     <Compile Include="World\Player.cs" />
     <Compile Include="World\PlayerObject.cs" />

@@ -19,7 +19,7 @@ using GameMode.Events;
 
 namespace GameMode.World
 {
-    public class Vehicle : IWorldObject, IDisposable
+    public class Vehicle : IIdentifyable, IWorldObject, IDisposable
     {
         #region Fields
 
