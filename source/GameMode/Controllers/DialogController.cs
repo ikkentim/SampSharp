@@ -12,7 +12,6 @@
 // For more information, please refer to <http://unlicense.org>
 
 using GameMode.Display;
-using GameMode.World;
 
 namespace GameMode.Controllers
 {
@@ -25,7 +24,7 @@ namespace GameMode.Controllers
         ///     Registers the events this DialogController wants to listen to.
         /// </summary>
         /// <param name="gameMode">The running GameMode.</param>
-        public void RegisterEvents(BaseMode gameMode)
+        public virtual void RegisterEvents(BaseMode gameMode)
         {
             gameMode.DialogResponse += (sender, args) =>
             {
@@ -36,6 +35,13 @@ namespace GameMode.Controllers
             };
 
             gameMode.PlayerDisconnected += (sender, args) => Dialog.Hide(args.Player);
+        }
+
+        /// <summary>
+        ///     Registers types this DialogController requires the system to use.
+        /// </summary>
+        public virtual void RegisterTypes()
+        {
         }
     }
 }

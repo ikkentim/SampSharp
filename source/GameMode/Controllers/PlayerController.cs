@@ -24,7 +24,7 @@ namespace GameMode.Controllers
         ///     Registers the events this PlayerController wants to listen to.
         /// </summary>
         /// <param name="gameMode">The running GameMode.</param>
-        public void RegisterEvents(BaseMode gameMode)
+        public virtual void RegisterEvents(BaseMode gameMode)
         {
             //Register all player events
             gameMode.PlayerConnected += (sender, args) => Player.Find(args.PlayerId).OnConnected(args);
@@ -65,6 +65,14 @@ namespace GameMode.Controllers
             gameMode.PlayerEditAttachedObject += (sender, args) => Player.Find(args.PlayerId).OnEditAttachedObject(args);
             gameMode.PlayerSelectObject += (sender, args) => Player.Find(args.PlayerId).OnSelectObject(args);
             gameMode.PlayerWeaponShot += (sender, args) => Player.Find(args.PlayerId).OnWeaponShot(args);
+        }
+
+        /// <summary>
+        ///     Registers types this PlayerController requires the system to use.
+        /// </summary>
+        public virtual void RegisterTypes()
+        {
+            Player.Register<Player>();
         }
     }
 }

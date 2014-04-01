@@ -47,7 +47,10 @@ namespace GameMode
             LoadControllers(controllers);
 
             foreach (IController controller in controllers)
+            {
+                controller.RegisterTypes();
                 controller.RegisterEvents(this);
+            }
         }
 
         private void LoadDefaultControllers(ControllerCollection controllers)
@@ -56,6 +59,10 @@ namespace GameMode
             controllers.Add(new TimerController());
             controllers.Add(new VehicleController());
             controllers.Add(new DialogController());
+            controllers.Add(new TextDrawController());
+            controllers.Add(new PlayerTextDrawController());
+            controllers.Add(new GlobalObjectController());
+            controllers.Add(new PlayerObjectController());
         }
 
         protected virtual void LoadControllers(ControllerCollection controllers)

@@ -11,12 +11,11 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
 using GameMode.Definitions;
 
 namespace GameMode.World
 {
-    public class TextLabel : IIdentifyable, IDisposable
+    public class TextLabel : InstanceKeeper<TextLabel>, IIdentifyable
     {
         #region Fields
 
@@ -131,9 +130,11 @@ namespace GameMode.World
 
         #region Methods
 
-        public virtual void Dispose()
+        public override void Dispose()
         {
             Native.Delete3DTextLabel(Id);
+
+            base.Dispose();
         }
 
         public virtual void AttachTo(Player player, Vector offset)
