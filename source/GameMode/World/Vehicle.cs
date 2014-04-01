@@ -11,15 +11,13 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using GameMode.Definitions;
 using GameMode.Events;
 
 namespace GameMode.World
 {
-    public class Vehicle : IIdentifyable, IWorldObject, IDisposable
+    public class Vehicle : InstanceKeeper<Vehicle>, IIdentifyable, IWorldObject
     {
         #region Fields
 
@@ -27,26 +25,6 @@ namespace GameMode.World
         ///     Gets an ID commonly returned by methods to point out that no vehicle matched the requirements.
         /// </summary>
         public const int InvalidId = Misc.InvalidVehicleId;
-
-        /// <summary>
-        ///     Contains all instances of Vehicles.
-        /// </summary>
-        protected static List<Vehicle> Instances = new List<Vehicle>();
-
-        #endregion
-
-        #region Factories
-
-        /// <summary>
-        ///     Returns an instance of <see cref="Vehicle" /> that deals with <paramref name="vehicleId" />.
-        /// </summary>
-        /// <param name="vehicleId">The ID of the vehicle we are dealing with.</param>
-        /// <returns>An instance of <see cref="Vehicle" />.</returns>
-        public static Vehicle Find(int vehicleId)
-        {
-            //Find player in memory or initialize new player
-            return Instances.FirstOrDefault(p => p.Id == vehicleId) ?? new Vehicle(vehicleId);
-        }
 
         #endregion
 
@@ -69,14 +47,6 @@ namespace GameMode.World
         ///     Gets the ID of this Vehicle.
         /// </summary>
         public int Id { get; private set; }
-
-        /// <summary>
-        ///     Gets a readonly set of all <see cref="Vehicle" /> instances.
-        /// </summary>
-        public static IReadOnlyCollection<Vehicle> All
-        {
-            get { return Instances.AsReadOnly(); }
-        }
 
         #endregion
 
@@ -765,14 +735,6 @@ namespace GameMode.World
         #endregion
 
         #region Methods
-
-        /// <summary>
-        ///     Removes this Vehicle from memory. It is best to dispose the object when the vehicle is destroyed.
-        /// </summary>
-        public virtual void Dispose()
-        {
-            Instances.Remove(this);
-        }
 
         public override int GetHashCode()
         {

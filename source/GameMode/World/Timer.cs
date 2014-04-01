@@ -18,7 +18,7 @@ namespace GameMode.World
     /// <summary>
     ///     Represents a SA:MP timer.
     /// </summary>
-    public class Timer : IDisposable
+    public class Timer : InstanceKeeper<Timer>, IIdentifyable, IDisposable
     {
         private bool _hit;
 
@@ -33,11 +33,6 @@ namespace GameMode.World
             Interval = interval;
             Repeat = repeat;
         }
-
-        /// <summary>
-        ///     Gets the ID of this Timer.
-        /// </summary>
-        public int Id { get; private set; }
 
         /// <summary>
         ///     Gets the interval of this Timer.
@@ -82,6 +77,11 @@ namespace GameMode.World
         {
             Running = false;
         }
+
+        /// <summary>
+        ///     Gets the ID of this Timer.
+        /// </summary>
+        public int Id { get; private set; }
 
         /// <summary>
         ///     Occurs when the interval has elapsed.

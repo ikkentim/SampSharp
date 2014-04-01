@@ -41,8 +41,12 @@
   <ItemGroup>
     <Compile Include="Controllers\ControllerCollection.cs" />
     <Compile Include="Controllers\DialogController.cs" />
+    <Compile Include="Controllers\GlobalObjectController.cs" />
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Controllers\PlayerObjectController.cs" />
+    <Compile Include="Controllers\PlayerTextDrawController.cs" />
+    <Compile Include="Controllers\TextDrawController.cs" />
     <Compile Include="Controllers\TimerController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="Definitions\BodyPart.cs" />
@@ -132,6 +136,7 @@
     <Compile Include="World\GlobalObject.cs" />
     <Compile Include="World\IGameObject.cs" />
     <Compile Include="World\IIdentifyable.cs" />
+    <Compile Include="World\InstanceKeeper.cs" />
     <Compile Include="World\IWorldObject.cs" />
     <Compile Include="World\Player.cs" />
     <Compile Include="World\PlayerObject.cs" />

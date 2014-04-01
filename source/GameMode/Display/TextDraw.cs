@@ -11,13 +11,13 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
 using GameMode.Definitions;
+using GameMode.Events;
 using GameMode.World;
 
 namespace GameMode.Display
 {
-    public class TextDraw : IIdentifyable, IDisposable
+    public class TextDraw : InstanceKeeper<TextDraw>, IIdentifyable
     {
         #region Fields
 
@@ -59,7 +59,9 @@ namespace GameMode.Display
             set
             {
                 _alignment = value;
-                SetAlignment(value);
+                if (Id == -1) return;
+                Native.TextDrawAlignment(Id, (int) value);
+                UpdatePlayers();
             }
         }
 
@@ -69,7 +71,9 @@ namespace GameMode.Display
             set
             {
                 _backColor = value;
-                SetBackColor(value);
+                if (Id == -1) return;
+                Native.TextDrawBackgroundColor(Id, value);
+                UpdatePlayers();
             }
         }
 
@@ -79,7 +83,9 @@ namespace GameMode.Display
             set
             {
                 _foreColor = value;
-                SetForeColor(value);
+                if (Id == -1) return;
+                Native.TextDrawColor(Id, value);
+                UpdatePlayers();
             }
         }
 
@@ -89,7 +95,9 @@ namespace GameMode.Display
             set
             {
                 _boxColor = value;
-                SetBoxColor(value);
+                if (Id == -1) return;
+                Native.TextDrawBoxColor(Id, value);
+                UpdatePlayers();
             }
         }
 
@@ -99,7 +107,9 @@ namespace GameMode.Display
             set
             {
                 _font = value;
-                SetFont(value);
+                if (Id == -1) return;
+                Native.TextDrawFont(Id, (int) value);
+                UpdatePlayers();
             }
         }
 
@@ -109,7 +119,9 @@ namespace GameMode.Display
             set
             {
                 _letterWidth = value;
-                SetLetterSize(value, _letterHeight);
+                if (Id == -1) return;
+                Native.TextDrawLetterSize(Id, _letterWidth, _letterHeight);
+                UpdatePlayers();
             }
         }
 
@@ -119,7 +131,9 @@ namespace GameMode.Display
             set
             {
                 _letterHeight = value;
-                SetLetterSize(_letterWidth, value);
+                if (Id == -1) return;
+                Native.TextDrawLetterSize(Id, _letterWidth, _letterHeight);
+                UpdatePlayers();
             }
         }
 
@@ -129,7 +143,9 @@ namespace GameMode.Display
             set
             {
                 _outline = value;
-                SetOutline(value);
+                if (Id == -1) return;
+                Native.TextDrawSetOutline(Id, value);
+                UpdatePlayers();
             }
         }
 
@@ -139,7 +155,9 @@ namespace GameMode.Display
             set
             {
                 _proportional = value;
-                SetProportional(value);
+                if (Id == -1) return;
+                Native.TextDrawSetProportional(Id, value);
+                UpdatePlayers();
             }
         }
 
@@ -149,7 +167,9 @@ namespace GameMode.Display
             set
             {
                 _shadow = value;
-                SetShadow(value);
+                if (Id == -1) return;
+                Native.TextDrawSetShadow(Id, value);
+                UpdatePlayers();
             }
         }
 
@@ -159,7 +179,9 @@ namespace GameMode.Display
             set
             {
                 _text = value;
-                SetText(value);
+                if (Id == -1) return;
+                Native.TextDrawSetString(Id, value);
+                UpdatePlayers();
             }
         }
 
@@ -169,7 +191,7 @@ namespace GameMode.Display
             set
             {
                 _x = value;
-                if (Id < 0) return;
+                if (Id == -1) return;
                 Prepare();
             }
         }
@@ -180,7 +202,7 @@ namespace GameMode.Display
             set
             {
                 _y = value;
-                if (Id < 0) return;
+                if (Id == -1) return;
                 Prepare();
             }
         }
@@ -191,7 +213,9 @@ namespace GameMode.Display
             set
             {
                 _width = value;
-                SetSize(value, _height);
+                if (Id == -1) return;
+                Native.TextDrawTextSize(Id, _width, _height);
+                UpdatePlayers();
             }
         }
 
@@ -201,7 +225,9 @@ namespace GameMode.Display
             set
             {
                 _height = value;
-                SetSize(_width, value);
+                if (Id == -1) return;
+                Native.TextDrawTextSize(Id, _width, _height);
+                UpdatePlayers();
             }
         }
 
@@ -211,7 +237,9 @@ namespace GameMode.Display
             set
             {
                 _useBox = value;
-                SetUseBox(value);
+                if (Id == -1) return;
+                Native.TextDrawUseBox(Id, value);
+                UpdatePlayers();
             }
         }
 
@@ -221,7 +249,9 @@ namespace GameMode.Display
             set
             {
                 _selectable = value;
-                SetSelectable(value);
+                if (Id == -1) return;
+                Native.TextDrawSetSelectable(Id, value);
+                UpdatePlayers();
             }
         }
 
@@ -231,7 +261,9 @@ namespace GameMode.Display
             set
             {
                 _previewModel = value;
-                SetPreviewModel(value);
+                if (Id == -1) return;
+                Native.TextDrawSetPreviewModel(Id, value);
+                UpdatePlayers();
             }
         }
 
@@ -241,7 +273,9 @@ namespace GameMode.Display
             set
             {
                 _previewRotation = value;
-                SetPreviewRotation(value, _previewZoom);
+                if (Id == -1) return;
+                Native.TextDrawSetPreviewRot(Id, value.X, value.Y, value.Z, PreviewZoom);
+                UpdatePlayers();
             }
         }
 
@@ -251,7 +285,9 @@ namespace GameMode.Display
             set
             {
                 _previewZoom = value;
-                SetPreviewRotation(_previewRotation, value);
+                if (Id == -1) return;
+                Native.TextDrawSetPreviewRot(Id, PreviewRotation.X, PreviewRotation.Y, PreviewRotation.Z, value);
+                UpdatePlayers();
             }
         }
 
@@ -261,7 +297,9 @@ namespace GameMode.Display
             set
             {
                 _previewPrimaryColor = value;
-                SetPreviewVehicleColors(_previewPrimaryColor, _previewSecondaryColor);
+                if (Id == -1) return;
+                Native.TextDrawSetPreviewVehCol(Id, _previewPrimaryColor, _previewSecondaryColor);
+                UpdatePlayers();
             }
         }
 
@@ -271,11 +309,23 @@ namespace GameMode.Display
             set
             {
                 _previewSecondaryColor = value;
-                SetPreviewVehicleColors(_previewPrimaryColor, _previewSecondaryColor);
+                if (Id == -1) return;
+                Native.TextDrawSetPreviewVehCol(Id, _previewPrimaryColor, _previewSecondaryColor);
+                UpdatePlayers();
             }
         }
 
         public virtual int Id { get; protected set; }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw" /> is being called.
+        ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
+        /// </summary>
+        public event PlayerClickTextDrawHandler Click;
 
         #endregion
 
@@ -284,6 +334,11 @@ namespace GameMode.Display
         public TextDraw()
         {
             Id = -1;
+        }
+
+        public TextDraw(int id)
+        {
+            Id = id;
         }
 
         public TextDraw(float x, float y, string text) : this()
@@ -303,84 +358,20 @@ namespace GameMode.Display
             ForeColor = foreColor;
         }
 
-        public TextDraw(float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
-            float letterHeight) : this(x, y, text, font, foreColor)
-        {
-            LetterWidth = letterWidth;
-            LetterHeight = letterHeight;
-        }
-
-        public TextDraw(float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
-            float letterHeight, float width, float height)
-            : this(x, y, text, font, foreColor, letterWidth, letterHeight)
-        {
-            Width = width;
-            Height = height;
-        }
-
-        public TextDraw(float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
-            float letterHeight, float width, float height, TextDrawAlignment alignment)
-            : this(x, y, text, font, foreColor, letterWidth, letterHeight, width, height)
-        {
-            Alignment = alignment;
-        }
-
-        public TextDraw(float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
-            float letterHeight, float width, float height, TextDrawAlignment alignment, int shadow)
-            : this(x, y, text, font, foreColor, letterWidth, letterHeight, width, height, alignment)
-        {
-            Shadow = shadow;
-        }
-
-        public TextDraw(float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
-            float letterHeight, float width, float height, TextDrawAlignment alignment, int shadow, int outline)
-            : this(x, y, text, font, foreColor, letterWidth, letterHeight, width, height, alignment, shadow)
-        {
-            Outline = outline;
-        }
-
-        public TextDraw(float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
-            float letterHeight, float width, float height, TextDrawAlignment alignment, int shadow, int outline,
-            Color backColor)
-            : this(x, y, text, font, foreColor, letterWidth, letterHeight, width, height, alignment, shadow, outline)
-        {
-            BackColor = backColor;
-        }
-
-        public TextDraw(float x, float y, string text, TextDrawFont font, Color foreColor, float letterWidth,
-            float letterHeight, float width, float height, TextDrawAlignment alignment, int shadow, int outline,
-            Color backColor, bool proportional)
-            : this(
-                x, y, text, font, foreColor, letterWidth, letterHeight, width, height, alignment, shadow, outline,
-                backColor)
-        {
-            Proportional = proportional;
-        }
-
         #endregion
 
         #region Methods
 
-        public virtual void Dispose()
-        {
-            if (Id < 0) return;
-            Native.TextDrawDestroy(Id);
-        }
-
         public virtual void Show()
         {
-            if (Id == -1)
-                Prepare();
-
+            if (Id == -1) Prepare();
             Native.TextDrawShowForAll(Id);
         }
 
         public virtual void Show(Player player)
         {
-            if (Id == -1)
-                Prepare();
-            if (player != null)
-                Native.TextDrawShowForPlayer(player.Id, Id);
+            if (Id == -1) Prepare();
+            if (player != null) Native.TextDrawShowForPlayer(player.Id, Id);
         }
 
         public virtual void Hide()
@@ -395,45 +386,33 @@ namespace GameMode.Display
             Native.TextDrawHideForPlayer(player.Id, Id);
         }
 
-        protected virtual void Create()
-        {
-            Id = Native.TextDrawCreate(X, Y, Text);
-        }
-
         protected virtual void Prepare()
         {
-            Create();
+            if (Id != -1) Native.TextDrawDestroy(Id);
+            Id = Native.TextDrawCreate(X, Y, Text);
 
-            if (Alignment != default(TextDrawAlignment))
-                SetAlignment(Alignment);
-            if (BackColor != 0)
-                SetBackColor(BackColor);
-            if (ForeColor != 0)
-                SetForeColor(ForeColor);
-            if (BoxColor != 0)
-                SetBoxColor(BoxColor);
-            if (Font != default(TextDrawFont))
-                SetFont(Font);
-            if (LetterWidth != 0 || LetterHeight != 0)
-                SetLetterSize(LetterWidth, LetterHeight);
-            if (Outline > 0)
-                SetOutline(Outline);
-            if (Proportional)
-                SetProportional(Proportional);
-            if (Shadow > 0)
-                SetShadow(Shadow);
-            if (Width != 0 || Height != 0)
-                SetSize(Width, Height);
-            if (UseBox)
-                SetUseBox(UseBox);
-            if (Selectable)
-                SetSelectable(Selectable);
-            if (PreviewModel != 0)
-                SetPreviewModel(PreviewModel);
-            if (PreviewRotation.X != 0 || PreviewRotation.Y != 0 || PreviewRotation.Z != 0 || PreviewZoom != 1)
-                SetPreviewRotation(PreviewRotation, PreviewZoom);
-            if (PreviewPrimaryColor == -1 && PreviewSecondaryColor == -1)
-                SetPreviewVehicleColors(PreviewPrimaryColor, PreviewSecondaryColor);
+            //Reset properties
+            if (Alignment != default(TextDrawAlignment)) Alignment = Alignment;
+            if (BackColor != 0) BackColor = BackColor;
+            if (ForeColor != 0) ForeColor = ForeColor;
+            if (BoxColor != 0) BoxColor = BoxColor;
+            if (Font != default(TextDrawFont)) Font = Font;
+            if (LetterWidth != 0) LetterWidth = LetterWidth;
+            if (LetterHeight != 0) LetterHeight = LetterHeight;
+            if (Outline > 0) Outline = Outline;
+            if (Proportional) Proportional = Proportional;
+            if (Shadow > 0) Shadow = Shadow;
+            if (Width != 0) Width = Width;
+            if (Height != 0) Height = Height;
+            if (UseBox) UseBox = UseBox;
+            if (Selectable) Selectable = Selectable;
+            if (PreviewModel != 0) PreviewModel = PreviewModel;
+            if (PreviewRotation != Vector.Zero) PreviewRotation = PreviewRotation;
+            if (PreviewZoom != 1) PreviewZoom = PreviewZoom;
+            if (PreviewPrimaryColor != -1) PreviewPrimaryColor = PreviewPrimaryColor;
+            if (PreviewSecondaryColor != -1) PreviewSecondaryColor = PreviewSecondaryColor;
+
+            UpdatePlayers();
         }
 
         protected virtual void UpdatePlayers()
@@ -442,116 +421,26 @@ namespace GameMode.Display
             //Then update the TD for these players here.
         }
 
-        protected virtual void SetAlignment(TextDrawAlignment alignment)
+        public override void Dispose()
         {
-            if (Id < 0) return;
-            Native.TextDrawAlignment(Id, (int) alignment);
-            UpdatePlayers();
+            if (Id == -1) return;
+            Native.TextDrawDestroy(Id);
+
+            base.Dispose();
         }
 
-        protected virtual void SetText(string text)
-        {
-            if (Id < 0) return;
-            Native.TextDrawSetString(Id, text);
-            UpdatePlayers();
-        }
+        #endregion
 
-        protected virtual void SetBackColor(Color color)
-        {
-            if (Id < 0) return;
-            Native.TextDrawBackgroundColor(Id, color);
-            UpdatePlayers();
-        }
+        #region Event raisers
 
-        protected virtual void SetForeColor(Color color)
+        /// <summary>
+        ///     Raises the <see cref="Click" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerClickTextDrawEventArgs" /> that contains the event data. </param>
+        public virtual void OnClick(PlayerClickTextDrawEventArgs e)
         {
-            if (Id < 0) return;
-            Native.TextDrawColor(Id, color);
-            UpdatePlayers();
-        }
-
-        protected virtual void SetBoxColor(Color color)
-        {
-            if (Id < 0) return;
-            Native.TextDrawBoxColor(Id, color);
-            UpdatePlayers();
-        }
-
-        protected virtual void SetFont(TextDrawFont font)
-        {
-            if (Id < 0) return;
-            Native.TextDrawFont(Id, (int) font);
-            UpdatePlayers();
-        }
-
-        protected virtual void SetLetterSize(float width, float height)
-        {
-            if (Id < 0) return;
-            Native.TextDrawLetterSize(Id, width, height);
-            UpdatePlayers();
-        }
-
-        protected virtual void SetOutline(int size)
-        {
-            if (Id < 0) return;
-            Native.TextDrawSetOutline(Id, size);
-            UpdatePlayers();
-        }
-
-        protected virtual void SetProportional(bool proportional)
-        {
-            if (Id < 0) return;
-            Native.TextDrawSetProportional(Id, proportional);
-            UpdatePlayers();
-        }
-
-        protected virtual void SetShadow(int shadow)
-        {
-            if (Id < 0) return;
-            Native.TextDrawSetShadow(Id, shadow);
-            UpdatePlayers();
-        }
-
-        protected virtual void SetSize(float width, float height)
-        {
-            if (Id < 0) return;
-            Native.TextDrawTextSize(Id, width, height);
-            UpdatePlayers();
-        }
-
-        protected virtual void SetUseBox(bool useBox)
-        {
-            if (Id < 0) return;
-            Native.TextDrawUseBox(Id, useBox);
-            UpdatePlayers();
-        }
-
-        protected virtual void SetSelectable(bool selectable)
-        {
-            if (Id < 0) return;
-            Native.TextDrawSetSelectable(Id, selectable);
-            UpdatePlayers();
-        }
-
-        protected virtual void SetPreviewModel(int model)
-        {
-            if (Id < 0) return;
-            Native.TextDrawSetPreviewModel(Id, model);
-            UpdatePlayers();
-        }
-
-        protected virtual void SetPreviewRotation(Vector rotation, float zoom)
-        {
-            if (Id < 0) return;
-            Native.TextDrawSetPreviewRot(Id, rotation.X, rotation.Y, rotation.Z, zoom);
-            UpdatePlayers();
-        }
-
-        protected virtual void SetPreviewVehicleColors(int primaryColor, int secondaryColor)
-        {
-            if (Id < 0) return;
-            Native.TextDrawSetPreviewVehCol(Id, primaryColor, secondaryColor);
-            UpdatePlayers();
+            if (Click != null)
+                Click(this, e);
         }
 
         #endregion

@@ -11,22 +11,30 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using GameMode.Display;
+
 namespace GameMode.Controllers
 {
     /// <summary>
-    ///     Provides the functionality for a controller to act on events.
+    ///     A controller processing all textdraw actions.
     /// </summary>
-    public interface IController
+    public class TextDrawController : IController
     {
         /// <summary>
-        ///     Registers the events this IController wants to listen to.
+        ///     Registers the events this TextDrawController wants to listen to.
         /// </summary>
         /// <param name="gameMode">The running GameMode.</param>
-        void RegisterEvents(BaseMode gameMode);
+        public void RegisterEvents(BaseMode gameMode)
+        {
+            gameMode.PlayerClickTextDraw += (sender, args) => TextDraw.Find(args.TextDrawId).OnClick(args);
+        }
 
         /// <summary>
-        ///     Registers types this IController requires the system to use.
+        ///     Registers types this TextDrawController requires the system to use.
         /// </summary>
-        void RegisterTypes();
+        public void RegisterTypes()
+        {
+            TextDraw.Register<TextDraw>();
+        }
     }
 }

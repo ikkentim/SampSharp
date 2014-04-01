@@ -24,7 +24,7 @@ namespace GameMode.Controllers
         ///     Registers the events this TimerController wants to listen to.
         /// </summary>
         /// <param name="gameMode">The running GameMode.</param>
-        public void RegisterEvents(BaseMode gameMode)
+        public virtual void RegisterEvents(BaseMode gameMode)
         {
             gameMode.TimerTick += (sender, args) =>
             {
@@ -33,6 +33,14 @@ namespace GameMode.Controllers
                 if (timer != null)
                     timer.OnTick(args);
             };
+        }
+
+        /// <summary>
+        ///     Registers types this TimerController requires the system to use.
+        /// </summary>
+        public virtual void RegisterTypes()
+        {
+            Timer.Register<Timer>();
         }
     }
 }

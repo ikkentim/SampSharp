@@ -34,13 +34,27 @@ namespace TestMode
             new TextLabel("Test123", Color.Blue, new Vector(0, 0, 5), 100);
 
             var obj = new GlobalObject(18764, new Vector(111.44f, -77.37f, 13.18f), new Vector(0.00f, 0.00f, 0.00f));
-
+            new GlobalObject(18764, new Vector(111.44f, -77.37f, 23.18f), new Vector(0.00f, 0.00f, 0.00f));
             var m = new Vector(0, 0, 0.01f);
-            var t = new Timer(100, true);
+            var t = new Timer(10, true);
             t.Tick += (sender, args) =>
             {
                 m = -m;
-                obj.Move(obj.Position.Add(m), 0.45f, obj.Rotation.Add(new Vector(1)));
+                obj.Move(obj.Position.Add(m), 1.0f, obj.Rotation.Add(new Vector(5)));
+            };
+
+            var t2 = new Timer(2000, true);
+            t2.Tick += (sender, args) =>
+            {
+                Console.WriteLine("GlobalObject:");
+                foreach (var go in GlobalObject.AllIden)
+                    Console.WriteLine(go);
+
+                Console.WriteLine("Timer:");
+                foreach (var p in Timer.AllIden)
+                    Console.WriteLine(p);
+
+
             };
 
             return base.OnGameModeInit();
