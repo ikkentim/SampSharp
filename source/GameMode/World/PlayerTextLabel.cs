@@ -17,7 +17,7 @@ using GameMode.Exceptions;
 
 namespace GameMode.World
 {
-    public class PlayerTextLabel : IDisposable
+    public class PlayerTextLabel : IIdentifyable, IDisposable
     {
         #region Fields
 

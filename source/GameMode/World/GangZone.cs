@@ -16,7 +16,7 @@ using GameMode.Definitions;
 
 namespace GameMode.World
 {
-    public class GangZone : IDisposable
+    public class GangZone : IIdentifyable, IDisposable
     {
         /// <summary>
         ///     Gets an ID commonly returned by methods to point out that no GangZone matched the requirements.

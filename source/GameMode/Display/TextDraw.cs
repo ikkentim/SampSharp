@@ -17,7 +17,7 @@ using GameMode.World;
 
 namespace GameMode.Display
 {
-    public class TextDraw : IDisposable
+    public class TextDraw : IIdentifyable, IDisposable
     {
         #region Fields
 
