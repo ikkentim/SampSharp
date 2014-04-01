@@ -13,8 +13,9 @@
 
 using System;
 using GameMode.Definitions;
+using GameMode.World;
 
-namespace GameMode.World
+namespace GameMode.Display
 {
     public class TextDraw : IDisposable
     {
