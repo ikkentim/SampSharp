@@ -48,7 +48,7 @@ namespace GameMode.World
         public static Player Find(int playerId)
         {
             //Find player in memory or initialize new player
-            return Instances.FirstOrDefault(p => p.PlayerId == playerId) ?? new Player(playerId);
+            return Instances.FirstOrDefault(p => p.Id == playerId) ?? new Player(playerId);
         }
 
         #endregion
@@ -58,11 +58,11 @@ namespace GameMode.World
         /// <summary>
         ///     Initalizes a new instance of the Player class.
         /// </summary>
-        /// <param name="playerId">The ID of the player to initialize.</param>
-        protected Player(int playerId)
+        /// <param name="idayerId">The ID of the player to initialize.</param>
+        protected Player(int id)
         {
             //Fill properties
-            PlayerId = playerId;
+            Id = id;
 
             Instances.Add(this);
         }
@@ -74,7 +74,7 @@ namespace GameMode.World
         /// <summary>
         ///     Gets the ID of this Player.
         /// </summary>
-        public int PlayerId { get; private set; }
+        public int Id { get; private set; }
 
         /// <summary>
         ///     Gets a readonly set of all <see cref="Player" /> instances.
@@ -93,8 +93,8 @@ namespace GameMode.World
         /// </summary>
         public virtual string Name
         {
-            get { return Native.GetPlayerName(PlayerId); }
-            set { Native.SetPlayerName(PlayerId, value); }
+            get { return Native.GetPlayerName(Id); }
+            set { Native.SetPlayerName(Id, value); }
         }
 
         /// <summary>
@@ -102,8 +102,8 @@ namespace GameMode.World
         /// </summary>
         public virtual float Angle
         {
-            get { return Native.GetPlayerFacingAngle(PlayerId); }
-            set { Native.SetPlayerFacingAngle(PlayerId, value); }
+            get { return Native.GetPlayerFacingAngle(Id); }
+            set { Native.SetPlayerFacingAngle(Id, value); }
         }
 
         /// <summary>
@@ -111,8 +111,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Interior
         {
-            get { return Native.GetPlayerInterior(PlayerId); }
-            set { Native.SetPlayerInterior(PlayerId, value); }
+            get { return Native.GetPlayerInterior(Id); }
+            set { Native.SetPlayerInterior(Id, value); }
         }
 
         /// <summary>
@@ -120,8 +120,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int VirtualWorld
         {
-            get { return Native.GetPlayerVirtualWorld(PlayerId); }
-            set { Native.SetPlayerVirtualWorld(PlayerId, value); }
+            get { return Native.GetPlayerVirtualWorld(Id); }
+            set { Native.SetPlayerVirtualWorld(Id, value); }
         }
 
         /// <summary>
@@ -129,8 +129,8 @@ namespace GameMode.World
         /// </summary>
         public virtual float Heath
         {
-            get { return Native.GetPlayerHealth(PlayerId); }
-            set { Native.SetPlayerHealth(PlayerId, value); }
+            get { return Native.GetPlayerHealth(Id); }
+            set { Native.SetPlayerHealth(Id, value); }
         }
 
         /// <summary>
@@ -138,8 +138,8 @@ namespace GameMode.World
         /// </summary>
         public virtual float Armour
         {
-            get { return Native.GetPlayerArmour(PlayerId); }
-            set { Native.SetPlayerArmour(PlayerId, value); }
+            get { return Native.GetPlayerArmour(Id); }
+            set { Native.SetPlayerArmour(Id, value); }
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace GameMode.World
         /// </summary>
         public virtual int WeaponAmmo
         {
-            get { return Native.GetPlayerAmmo(PlayerId); }
+            get { return Native.GetPlayerAmmo(Id); }
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace GameMode.World
         /// </summary>
         public virtual WeaponState WeaponState
         {
-            get { return (WeaponState) Native.GetPlayerWeaponState(PlayerId); }
+            get { return (WeaponState) Native.GetPlayerWeaponState(Id); }
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace GameMode.World
         /// </summary>
         public virtual Weapon Weapon
         {
-            get { return (Weapon) Native.GetPlayerWeapon(PlayerId); }
+            get { return (Weapon) Native.GetPlayerWeapon(Id); }
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace GameMode.World
         {
             get
             {
-                int target = Native.GetPlayerTargetPlayer(PlayerId);
+                int target = Native.GetPlayerTargetPlayer(Id);
                 return target == InvalidId ? null : Find(target);
             }
         }
@@ -183,8 +183,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Team
         {
-            get { return Native.GetPlayerTeam(PlayerId); }
-            set { Native.SetPlayerTeam(PlayerId, value); }
+            get { return Native.GetPlayerTeam(Id); }
+            set { Native.SetPlayerTeam(Id, value); }
         }
 
         /// <summary>
@@ -192,8 +192,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Score
         {
-            get { return Native.GetPlayerScore(PlayerId); }
-            set { Native.SetPlayerScore(PlayerId, value); }
+            get { return Native.GetPlayerScore(Id); }
+            set { Native.SetPlayerScore(Id, value); }
         }
 
         /// <summary>
@@ -201,8 +201,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int DrunkLevel
         {
-            get { return Native.GetPlayerDrunkLevel(PlayerId); }
-            set { Native.SetPlayerDrunkLevel(PlayerId, value); }
+            get { return Native.GetPlayerDrunkLevel(Id); }
+            set { Native.SetPlayerDrunkLevel(Id, value); }
         }
 
         /// <summary>
@@ -210,8 +210,8 @@ namespace GameMode.World
         /// </summary>
         public virtual Color Color
         {
-            get { return new Color(Native.GetPlayerColor(PlayerId)); }
-            set { Native.SetPlayerColor(PlayerId, value); }
+            get { return new Color(Native.GetPlayerColor(Id)); }
+            set { Native.SetPlayerColor(Id, value); }
         }
 
         /// <summary>
@@ -219,8 +219,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Skin
         {
-            get { return Native.GetPlayerSkin(PlayerId); }
-            set { Native.SetPlayerSkin(PlayerId, value); }
+            get { return Native.GetPlayerSkin(Id); }
+            set { Native.SetPlayerSkin(Id, value); }
         }
 
         /// <summary>
@@ -228,8 +228,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int Money
         {
-            get { return Native.GetPlayerMoney(PlayerId); }
-            set { Native.GivePlayerMoney(PlayerId, Money + value); }
+            get { return Native.GetPlayerMoney(Id); }
+            set { Native.GivePlayerMoney(Id, Money + value); }
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace GameMode.World
         /// </summary>
         public virtual PlayerState PlayerState
         {
-            get { return (PlayerState) Native.GetPlayerState(PlayerId); }
+            get { return (PlayerState) Native.GetPlayerState(Id); }
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace GameMode.World
         /// </summary>
         public virtual string IP
         {
-            get { return Native.GetPlayerIp(PlayerId); }
+            get { return Native.GetPlayerIp(Id); }
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace GameMode.World
         /// </summary>
         public virtual int Ping
         {
-            get { return Native.GetPlayerPing(PlayerId); }
+            get { return Native.GetPlayerPing(Id); }
         }
 
         /// <summary>
@@ -261,8 +261,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int WantedLevel
         {
-            get { return Native.GetPlayerWantedLevel(PlayerId); }
-            set { Native.SetPlayerWantedLevel(PlayerId, value); }
+            get { return Native.GetPlayerWantedLevel(Id); }
+            set { Native.SetPlayerWantedLevel(Id, value); }
         }
 
         /// <summary>
@@ -270,8 +270,8 @@ namespace GameMode.World
         /// </summary>
         public virtual FightStyle FightStyle
         {
-            get { return (FightStyle) Native.GetPlayerFightingStyle(PlayerId); }
-            set { Native.SetPlayerFightingStyle(PlayerId, (int) value); }
+            get { return (FightStyle) Native.GetPlayerFightingStyle(Id); }
+            set { Native.SetPlayerFightingStyle(Id, (int) value); }
         }
 
         /// <summary>
@@ -282,10 +282,10 @@ namespace GameMode.World
             get
             {
                 float x, y, z;
-                Native.GetPlayerVelocity(PlayerId, out x, out y, out z);
+                Native.GetPlayerVelocity(Id, out x, out y, out z);
                 return new Vector(x, y, z);
             }
-            set { Native.SetPlayerVelocity(PlayerId, value.X, value.Y, value.Z); }
+            set { Native.SetPlayerVelocity(Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace GameMode.World
         /// </summary>
         public virtual int VehicleSeat
         {
-            get { return Native.GetPlayerVehicleSeat(PlayerId); }
+            get { return Native.GetPlayerVehicleSeat(Id); }
         }
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace GameMode.World
         /// </summary>
         public virtual int AnimationIndex
         {
-            get { return Native.GetPlayerAnimationIndex(PlayerId); }
+            get { return Native.GetPlayerAnimationIndex(Id); }
         }
 
         /// <summary>
@@ -309,8 +309,8 @@ namespace GameMode.World
         /// </summary>
         public virtual SpecialAction SpecialAction
         {
-            get { return (SpecialAction) Native.GetPlayerSpecialAction(PlayerId); }
-            set { Native.SetPlayerSpecialAction(PlayerId, value); }
+            get { return (SpecialAction) Native.GetPlayerSpecialAction(Id); }
+            set { Native.SetPlayerSpecialAction(Id, value); }
         }
 
         /// <summary>
@@ -318,7 +318,7 @@ namespace GameMode.World
         /// </summary>
         public virtual Vector CameraPosition
         {
-            get { return Native.GetPlayerCameraPos(PlayerId); }
+            get { return Native.GetPlayerCameraPos(Id); }
         }
 
         /// <summary>
@@ -326,7 +326,7 @@ namespace GameMode.World
         /// </summary>
         public virtual Vector CameraFrontVector
         {
-            get { return Native.GetPlayerCameraFrontVector(PlayerId); }
+            get { return Native.GetPlayerCameraFrontVector(Id); }
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace GameMode.World
         /// </summary>
         public virtual CameraMode CameraMode
         {
-            get { return (CameraMode) Native.GetPlayerCameraMode(PlayerId); }
+            get { return (CameraMode) Native.GetPlayerCameraMode(Id); }
         }
 
         /// <summary>
@@ -342,7 +342,7 @@ namespace GameMode.World
         /// </summary>
         public virtual bool InAnyVehicle
         {
-            get { return Native.IsPlayerInAnyVehicle(PlayerId); }
+            get { return Native.IsPlayerInAnyVehicle(Id); }
         }
 
         /// <summary>
@@ -350,7 +350,7 @@ namespace GameMode.World
         /// </summary>
         public virtual bool InCheckpoint
         {
-            get { return Native.IsPlayerInCheckpoint(PlayerId); }
+            get { return Native.IsPlayerInCheckpoint(Id); }
         }
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace GameMode.World
         /// </summary>
         public virtual bool InRaceCheckpoint
         {
-            get { return Native.IsPlayerInRaceCheckpoint(PlayerId); }
+            get { return Native.IsPlayerInRaceCheckpoint(Id); }
         }
 
         /// <summary>
@@ -368,7 +368,7 @@ namespace GameMode.World
         {
             get
             {
-                int vehicleid = Native.GetPlayerSurfingVehicleID(PlayerId);
+                int vehicleid = Native.GetPlayerSurfingVehicleID(Id);
                 return vehicleid == Vehicle.InvalidId ? null : Vehicle.Find(vehicleid);
             }
         }
@@ -380,7 +380,7 @@ namespace GameMode.World
         {
             get
             {
-                int vehicleid = Native.GetPlayerVehicleID(PlayerId); //Returns 0, not Vehicle.InvalidId!
+                int vehicleid = Native.GetPlayerVehicleID(Id); //Returns 0, not Vehicle.InvalidId!
                 return vehicleid == 0 ? null : Vehicle.Find(vehicleid);
             }
         }
@@ -390,7 +390,7 @@ namespace GameMode.World
         /// </summary>
         public virtual bool IsConnected
         {
-            get { return Native.IsPlayerConnected(PlayerId); }
+            get { return Native.IsPlayerConnected(Id); }
         }
 
         /// <summary>
@@ -398,8 +398,8 @@ namespace GameMode.World
         /// </summary>
         public virtual Vector Position
         {
-            get { return Native.GetPlayerPos(PlayerId); }
-            set { Native.SetPlayerPos(PlayerId, value); }
+            get { return Native.GetPlayerPos(Id); }
+            set { Native.SetPlayerPos(Id, value); }
         }
 
 
@@ -424,7 +424,7 @@ namespace GameMode.World
         /// </summary>
         public virtual bool IsNPC
         {
-            get { return Native.IsPlayerNPC(PlayerId); }
+            get { return Native.IsPlayerNPC(Id); }
         }
 
         /// <summary>
@@ -432,7 +432,7 @@ namespace GameMode.World
         /// </summary>
         public virtual bool IsAdmin
         {
-            get { return Native.IsPlayerAdmin(PlayerId); }
+            get { return Native.IsPlayerAdmin(Id); }
         }
 
         /// <summary>
@@ -440,7 +440,7 @@ namespace GameMode.World
         /// </summary>
         public virtual string NetworkStats
         {
-            get { return Native.GetPlayerNetworkStats(PlayerId); }
+            get { return Native.GetPlayerNetworkStats(Id); }
         }
 
         /// <summary>
@@ -448,7 +448,7 @@ namespace GameMode.World
         /// </summary>
         public virtual string Version
         {
-            get { return Native.GetPlayerVersion(PlayerId); }
+            get { return Native.GetPlayerVersion(Id); }
         }
 
         /// <summary>
@@ -456,7 +456,7 @@ namespace GameMode.World
         /// </summary>
         public virtual string GPCI
         {
-            get { return Native.gpci(PlayerId); }
+            get { return Native.gpci(Id); }
         }
 
         /// <summary>
@@ -754,7 +754,7 @@ namespace GameMode.World
         public virtual void SetSpawnInfo(int team, int skin, Vector position, float rotation, Weapon weapon1,
             int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
-            Native.SetSpawnInfo(PlayerId, team, skin, position, rotation, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
+            Native.SetSpawnInfo(Id, team, skin, position, rotation, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
                 weapon3, weapon3Ammo);
         }
 
@@ -763,7 +763,7 @@ namespace GameMode.World
         /// </summary>
         public virtual void Spawn()
         {
-            Native.SpawnPlayer(PlayerId);
+            Native.SpawnPlayer(Id);
         }
 
         /// <summary>
@@ -773,7 +773,7 @@ namespace GameMode.World
         /// <param name="position">The position to move this Player to.</param>
         public virtual void SetPositionFindZ(Vector position)
         {
-            Native.SetPlayerPosFindZ(PlayerId, position);
+            Native.SetPlayerPosFindZ(Id, position);
         }
 
         /// <summary>
@@ -784,7 +784,7 @@ namespace GameMode.World
         /// <returns>True if this Player is in range of the point, otherwise False.</returns>
         public virtual bool IsInRangeOfPoint(float range, Vector point)
         {
-            return Native.IsPlayerInRangeOfPoint(PlayerId, range, point);
+            return Native.IsPlayerInRangeOfPoint(Id, range, point);
         }
 
         /// <summary>
@@ -794,7 +794,7 @@ namespace GameMode.World
         /// <returns>The distance between the player and the point as a float.</returns>
         public virtual float GetDistanceFromPoint(Vector point)
         {
-            return Native.GetPlayerDistanceFromPoint(PlayerId, point);
+            return Native.GetPlayerDistanceFromPoint(Id, point);
         }
 
         /// <summary>
@@ -811,7 +811,7 @@ namespace GameMode.World
         /// <returns>True if the other Player is streamed in for this Player, False if not.</returns>
         public virtual bool IsPlayerStreamedIn(Player other)
         {
-            return Native.IsPlayerStreamedIn(other.PlayerId, PlayerId);
+            return Native.IsPlayerStreamedIn(other.Id, Id);
         }
 
         /// <summary>
@@ -821,7 +821,7 @@ namespace GameMode.World
         /// <param name="ammo">The amount of ammo to set.</param>
         public virtual void SetAmmo(Weapon weapon, int ammo)
         {
-            Native.SetPlayerAmmo(PlayerId, (int) weapon, ammo);
+            Native.SetPlayerAmmo(Id, (int) weapon, ammo);
         }
 
         /// <summary>
@@ -831,7 +831,7 @@ namespace GameMode.World
         /// <param name="ammo">The amount of ammo to give to this Player.</param>
         public virtual void GiveWeapon(Weapon weapon, int ammo)
         {
-            Native.GivePlayerWeapon(PlayerId, (int) weapon, ammo);
+            Native.GivePlayerWeapon(Id, (int) weapon, ammo);
         }
 
 
@@ -840,7 +840,7 @@ namespace GameMode.World
         /// </summary>
         public virtual void ResetWeapons()
         {
-            Native.ResetPlayerWeapons(PlayerId);
+            Native.ResetPlayerWeapons(Id);
         }
 
         /// <summary>
@@ -849,7 +849,7 @@ namespace GameMode.World
         /// <param name="weapon">The weapon that the player should be armed with.</param>
         public virtual void SetArmedWeapon(Weapon weapon)
         {
-            Native.SetPlayerArmedWeapon(PlayerId, (int) weapon);
+            Native.SetPlayerArmedWeapon(Id, (int) weapon);
         }
 
         /// <summary>
@@ -861,7 +861,7 @@ namespace GameMode.World
         public virtual void GetWeaponData(int slot, out Weapon weapon, out int ammo)
         {
             int weaponid;
-            Native.GetPlayerWeaponData(PlayerId, slot, out weaponid, out ammo);
+            Native.GetPlayerWeaponData(Id, slot, out weaponid, out ammo);
             weapon = (Weapon) weaponid;
         }
 
@@ -871,7 +871,7 @@ namespace GameMode.World
         /// <param name="money">The amount of money to give this Player. Use a minus value to take money.</param>
         public virtual void GiveMoney(int money)
         {
-            Native.GivePlayerMoney(PlayerId, money);
+            Native.GivePlayerMoney(Id, money);
         }
 
         /// <summary>
@@ -879,7 +879,7 @@ namespace GameMode.World
         /// </summary>
         public virtual void ResetMoney()
         {
-            Native.ResetPlayerMoney(PlayerId);
+            Native.ResetPlayerMoney(Id);
         }
 
         /// <summary>
@@ -895,7 +895,7 @@ namespace GameMode.World
         public virtual void GetKeys(out Keys keys, out int updown, out int leftright)
         {
             int keysDown;
-            Native.GetPlayerKeys(PlayerId, out keysDown, out updown, out leftright);
+            Native.GetPlayerKeys(Id, out keysDown, out updown, out leftright);
             keys = (Keys) keysDown;
         }
 
@@ -906,7 +906,7 @@ namespace GameMode.World
         /// <param name="minutes">Minutes to set (0-59).</param>
         public virtual void SetTime(int hour, int minutes)
         {
-            Native.SetPlayerTime(PlayerId, hour, minutes);
+            Native.SetPlayerTime(Id, hour, minutes);
         }
 
         /// <summary>
@@ -917,7 +917,7 @@ namespace GameMode.World
         /// <param name="minutes">The variable to store the minutes in, passed by reference.</param>
         public virtual void GetTime(out int hour, out int minutes)
         {
-            Native.GetPlayerTime(PlayerId, out hour, out minutes);
+            Native.GetPlayerTime(Id, out hour, out minutes);
         }
 
         /// <summary>
@@ -929,7 +929,7 @@ namespace GameMode.World
         /// <param name="toggle">True to show, False to hide.</param>
         public virtual void ToggleClock(bool toggle)
         {
-            Native.TogglePlayerClock(PlayerId, toggle);
+            Native.TogglePlayerClock(Id, toggle);
         }
 
         /// <summary>
@@ -939,7 +939,7 @@ namespace GameMode.World
         /// <param name="weather">The weather to set.</param>
         public virtual void SetWeather(int weather)
         {
-            Native.SetPlayerWeather(PlayerId, weather);
+            Native.SetPlayerWeather(Id, weather);
         }
 
         /// <summary>
@@ -951,7 +951,7 @@ namespace GameMode.World
         /// </remarks>
         public virtual void ForceClassSelection()
         {
-            Native.ForceClassSelection(PlayerId);
+            Native.ForceClassSelection(Id);
         }
 
         /// <summary>
@@ -961,7 +961,7 @@ namespace GameMode.World
         /// <param name="crime">The crime ID, which will be reported as a 10-code (i.e. 10-16 if 16 was passed as the crimeid).</param>
         public virtual void PlayCrimeReport(int suspectid, int crime)
         {
-            Native.PlayCrimeReportForPlayer(PlayerId, suspectid, crime);
+            Native.PlayCrimeReportForPlayer(Id, suspectid, crime);
         }
 
         /// <summary>
@@ -975,7 +975,7 @@ namespace GameMode.World
         /// <param name="distance">The distance over which the audio will be heard. Has no effect unless usepos is set to True.</param>
         public virtual void PlayAudioStream(string url, Vector position, float distance)
         {
-            Native.PlayAudioStreamForPlayer(PlayerId, url, position.X, position.Y, position.Z, distance, true);
+            Native.PlayAudioStreamForPlayer(Id, url, position.X, position.Y, position.Z, distance, true);
         }
 
         /// <summary>
@@ -987,7 +987,7 @@ namespace GameMode.World
         /// </param>
         public virtual void PlayAudioStream(string url)
         {
-            Native.PlayAudioStreamForPlayer(PlayerId, url, 0, 0, 0, 0, false);
+            Native.PlayAudioStreamForPlayer(Id, url, 0, 0, 0, 0, false);
         }
 
         /// <summary>
@@ -995,7 +995,7 @@ namespace GameMode.World
         /// </summary>
         public virtual void StopAudioStream()
         {
-            Native.StopAudioStreamForPlayer(PlayerId);
+            Native.StopAudioStreamForPlayer(Id);
         }
 
         /// <summary>
@@ -1004,7 +1004,7 @@ namespace GameMode.World
         /// <param name="shopname"></param>
         public virtual void SetShopName(string shopname)
         {
-            Native.SetPlayerShopName(PlayerId, shopname);
+            Native.SetPlayerShopName(Id, shopname);
         }
 
         /// <summary>
@@ -1020,7 +1020,7 @@ namespace GameMode.World
         /// </param>
         public virtual void SetSkillLevel(WeaponSkill skill, int level)
         {
-            Native.SetPlayerSkillLevel(PlayerId, (int) skill, level);
+            Native.SetPlayerSkillLevel(Id, (int) skill, level);
         }
 
         /// <summary>
@@ -1031,7 +1031,7 @@ namespace GameMode.World
         /// <param name="radius">The radius. Objects within this radius from the coordinates above will be removed.</param>
         public virtual void RemoveBuilding(int modelid, Vector point, float radius)
         {
-            Native.RemoveBuildingForPlayer(PlayerId, modelid, point.X, point.Y, point.Z, radius);
+            Native.RemoveBuildingForPlayer(Id, modelid, point.X, point.Y, point.Z, radius);
         }
 
         /// <summary>
@@ -1049,7 +1049,7 @@ namespace GameMode.World
         public virtual bool SetAttachedObject(int index, int modelid, int bone, Vector offset, Vector rotation,
             Vector scale, Color materialcolor1, Color materialcolor2)
         {
-            return Native.SetPlayerAttachedObject(PlayerId, index, modelid, bone, offset.X, offset.Y, offset.Z,
+            return Native.SetPlayerAttachedObject(Id, index, modelid, bone, offset.X, offset.Y, offset.Z,
                 rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z,
                 materialcolor1.GetColorValue(ColorFormat.ARGB), materialcolor2.GetColorValue(ColorFormat.ARGB));
         }
@@ -1061,7 +1061,7 @@ namespace GameMode.World
         /// <returns>True on success, False otherwise.</returns>
         public virtual bool RemoveAttachedObject(int index)
         {
-            return Native.RemovePlayerAttachedObject(PlayerId, index);
+            return Native.RemovePlayerAttachedObject(Id, index);
         }
 
         /// <summary>
@@ -1071,7 +1071,7 @@ namespace GameMode.World
         /// <returns>True if the slot is used, False otherwise.</returns>
         public virtual bool IsAttachedObjectSlotUsed(int index)
         {
-            return Native.IsPlayerAttachedObjectSlotUsed(PlayerId, index);
+            return Native.IsPlayerAttachedObjectSlotUsed(Id, index);
         }
 
         /// <summary>
@@ -1081,7 +1081,7 @@ namespace GameMode.World
         /// <returns>True on success, False otherwise.</returns>
         public virtual bool DoEditAttachedObject(int index)
         {
-            return Native.EditAttachedObject(PlayerId, index);
+            return Native.EditAttachedObject(Id, index);
         }
 
         /// <summary>
@@ -1094,7 +1094,7 @@ namespace GameMode.World
         public virtual void SetChatBubble(string text, Color color, float drawdistance,
             int expiretime)
         {
-            Native.SetPlayerChatBubble(PlayerId, text, color.GetColorValue(ColorFormat.RGBA), drawdistance, expiretime);
+            Native.SetPlayerChatBubble(Id, text, color.GetColorValue(ColorFormat.RGBA), drawdistance, expiretime);
         }
 
         /// <summary>
@@ -1104,7 +1104,7 @@ namespace GameMode.World
         /// <param name="seatid">The ID of the seat to put the player in.</param>
         public virtual void PutInVehicle(Vehicle vehicle, int seatid)
         {
-            Native.PutPlayerInVehicle(PlayerId, vehicle.VehicleId, seatid);
+            Native.PutPlayerInVehicle(Id, vehicle.Id, seatid);
         }
 
         /// <summary>
@@ -1117,7 +1117,7 @@ namespace GameMode.World
         /// </remarks>
         public virtual void RemoveFromVehicle()
         {
-            Native.RemovePlayerFromVehicle(PlayerId);
+            Native.RemovePlayerFromVehicle(Id);
         }
 
         /// <summary>
@@ -1126,7 +1126,7 @@ namespace GameMode.World
         /// <param name="toggle">False to freeze the player or True to unfreeze them.</param>
         public virtual void ToggleControllable(bool toggle)
         {
-            Native.TogglePlayerControllable(PlayerId, toggle);
+            Native.TogglePlayerControllable(Id, toggle);
         }
 
         /// <summary>
@@ -1136,7 +1136,7 @@ namespace GameMode.World
         /// <param name="point">Point for the sound to play at.</param>
         public virtual void PlaySound(int soundid, Vector point)
         {
-            Native.PlayerPlaySound(PlayerId, soundid, point.X, point.Y, point.Z);
+            Native.PlayerPlaySound(Id, soundid, point.X, point.Y, point.Z);
         }
 
         /// <summary>
@@ -1145,7 +1145,7 @@ namespace GameMode.World
         /// <param name="soundid">The sound to play.</param>
         public virtual void PlaySound(int soundid)
         {
-            Native.PlayerPlaySound(PlayerId, soundid, 0, 0, 0);
+            Native.PlayerPlaySound(Id, soundid, 0, 0, 0);
         }
 
         /// <summary>
@@ -1175,7 +1175,7 @@ namespace GameMode.World
         public virtual void ApplyAnimation(string animlib, string animname, float fDelta, bool loop, bool lockx,
             bool locky, bool freeze, int time, bool forcesync)
         {
-            Native.ApplyAnimation(PlayerId, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync);
+            Native.ApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync);
         }
 
         /// <summary>
@@ -1198,7 +1198,7 @@ namespace GameMode.World
         public virtual void ApplyAnimation(string animlib, string animname, float fDelta, bool loop, bool lockx,
             bool locky, bool freeze, int time)
         {
-            Native.ApplyAnimation(PlayerId, animlib, animname, fDelta, loop, lockx, locky, freeze, time, false);
+            Native.ApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, false);
         }
 
         /// <summary>
@@ -1207,7 +1207,7 @@ namespace GameMode.World
         /// <param name="forcesync">Specifies whether the animation should be shown to streamed in players.</param>
         public virtual void ClearAnimations(bool forcesync)
         {
-            Native.ClearAnimations(PlayerId, forcesync);
+            Native.ClearAnimations(Id, forcesync);
         }
 
         /// <summary>
@@ -1215,7 +1215,7 @@ namespace GameMode.World
         /// </summary>
         public virtual void ClearAnimations()
         {
-            Native.ClearAnimations(PlayerId, false);
+            Native.ClearAnimations(Id, false);
         }
 
         /// <summary>
@@ -1241,7 +1241,7 @@ namespace GameMode.World
         /// <param name="size">The size of the checkpoint.</param>
         public virtual void SetCheckpoint(Vector point, float size)
         {
-            Native.SetPlayerCheckpoint(PlayerId, point, size);
+            Native.SetPlayerCheckpoint(Id, point, size);
         }
 
         /// <summary>
@@ -1249,7 +1249,7 @@ namespace GameMode.World
         /// </summary>
         public virtual void DisableCheckpoint()
         {
-            Native.DisablePlayerCheckpoint(PlayerId);
+            Native.DisablePlayerCheckpoint(Id);
         }
 
         /// <summary>
@@ -1261,7 +1261,7 @@ namespace GameMode.World
         /// <param name="size">Size (diameter) of the checkpoint</param>
         public virtual void SetRaceCheckpoint(CheckpointType type, Vector point, Vector nextPosition, float size)
         {
-            Native.SetPlayerRaceCheckpoint(PlayerId, type, point, nextPosition, size);
+            Native.SetPlayerRaceCheckpoint(Id, type, point, nextPosition, size);
         }
 
         /// <summary>
@@ -1269,7 +1269,7 @@ namespace GameMode.World
         /// </summary>
         public virtual void DisableRaceCheckpoint()
         {
-            Native.DisablePlayerRaceCheckpoint(PlayerId);
+            Native.DisablePlayerRaceCheckpoint(Id);
         }
 
         /// <summary>
@@ -1285,7 +1285,7 @@ namespace GameMode.World
         /// <param name="yMin">The minimum Y coordinate the player can go to.</param>
         public virtual void SetWorldBounds(float xMax, float xMin, float yMax, float yMin)
         {
-            Native.SetPlayerWorldBounds(PlayerId, xMax, xMin, yMax, yMin);
+            Native.SetPlayerWorldBounds(Id, xMax, xMin, yMax, yMin);
         }
 
         /// <summary>
@@ -1295,7 +1295,7 @@ namespace GameMode.World
         /// <param name="color">New color.</param>
         public virtual void SetMarkerForPlayer(Player player, Color color)
         {
-            Native.SetPlayerMarkerForPlayer(PlayerId, player.PlayerId, color.GetColorValue(ColorFormat.RGBA));
+            Native.SetPlayerMarkerForPlayer(Id, player.Id, color.GetColorValue(ColorFormat.RGBA));
         }
 
         /// <summary>
@@ -1310,7 +1310,7 @@ namespace GameMode.World
         /// <param name="show">True to show name tag, False to hide name tag.</param>
         public virtual void ShowNameTagForPlayer(Player player, bool show)
         {
-            Native.ShowPlayerNameTagForPlayer(PlayerId, player.PlayerId, show);
+            Native.ShowPlayerNameTagForPlayer(Id, player.Id, show);
         }
 
         /// <summary>
@@ -1328,7 +1328,7 @@ namespace GameMode.World
         public virtual bool SetMapIcon(int iconid, Vector position, PlayerMarkersMode markertype, Color color,
             MapIconType style)
         {
-            return Native.SetPlayerMapIcon(PlayerId, iconid, position, markertype, color, (int) style);
+            return Native.SetPlayerMapIcon(Id, iconid, position, markertype, color, (int) style);
         }
 
         /// <summary>
@@ -1337,7 +1337,7 @@ namespace GameMode.World
         /// <param name="iconid">The ID of the icon to remove. This is the second parameter of <see cref="SetMapIcon" />.</param>
         public virtual void RemovePlayerMapIcon(int iconid)
         {
-            Native.RemovePlayerMapIcon(PlayerId, iconid);
+            Native.RemovePlayerMapIcon(Id, iconid);
         }
 
         /// <summary>
@@ -1347,7 +1347,7 @@ namespace GameMode.World
         /// <param name="cut">The style the camera-position changes.</param>
         public virtual void SetCameraLookAt(Vector point, CameraCut cut)
         {
-            Native.SetPlayerCameraLookAt(PlayerId, point, cut);
+            Native.SetPlayerCameraLookAt(Id, point, cut);
         }
 
         /// <summary>
@@ -1360,7 +1360,7 @@ namespace GameMode.World
         /// <returns>This function doesn't return a specific value.</returns>
         public virtual void AttachCameraToObject(int objectid)
         {
-            Native.AttachCameraToObject(PlayerId, objectid);
+            Native.AttachCameraToObject(Id, objectid);
         }
 
         /// <summary>
@@ -1370,7 +1370,7 @@ namespace GameMode.World
         /// <param name="playerobjectid">The ID of the player-object to which the player's camera will be attached.</param>
         public virtual void AttachCameraToPlayerObject(int playerobjectid)
         {
-            Native.AttachCameraToPlayerObject(PlayerId, playerobjectid);
+            Native.AttachCameraToPlayerObject(Id, playerobjectid);
         }
 
         /// <summary>
@@ -1382,7 +1382,7 @@ namespace GameMode.World
         /// <param name="cut">The jumpcut to use. Defaults to CameraCut.Cut. Set to CameraCut. Move for a smooth movement.</param>
         public virtual void InterpolateCameraPos(Vector from, Vector to, int time, CameraCut cut)
         {
-            Native.InterpolateCameraPos(PlayerId, from, to, time, cut);
+            Native.InterpolateCameraPos(Id, from, to, time, cut);
         }
 
         /// <summary>
@@ -1394,7 +1394,7 @@ namespace GameMode.World
         /// <param name="cut">The 'jumpcut' to use. Defaults to CameraCut.Cut (pointless). Set to CameraCut.Move for interpolation.</param>
         public virtual void InterpolateCameraLookAt(Vector from, Vector to, int time, CameraCut cut)
         {
-            Native.InterpolateCameraLookAt(PlayerId, from, to, time, cut);
+            Native.InterpolateCameraLookAt(Id, from, to, time, cut);
         }
 
         /// <summary>
@@ -1404,7 +1404,7 @@ namespace GameMode.World
         /// <returns>True if player is in the vehicle, otherwise False.</returns>
         public virtual bool IsInVehicle(Vehicle vehicle)
         {
-            return Native.IsPlayerInVehicle(PlayerId, vehicle.VehicleId);
+            return Native.IsPlayerInVehicle(Id, vehicle.Id);
         }
 
         /// <summary>
@@ -1413,7 +1413,7 @@ namespace GameMode.World
         /// <param name="enable">True to enable stunt bonuses, False to disable them.</param>
         public virtual void EnableStuntBonus(bool enable)
         {
-            Native.EnableStuntBonusForPlayer(PlayerId, enable);
+            Native.EnableStuntBonusForPlayer(Id, enable);
         }
 
         /// <summary>
@@ -1425,7 +1425,7 @@ namespace GameMode.World
         /// <param name="toggle">True to enable spectating and False to disable.</param>
         public virtual void ToggleSpectating(bool toggle)
         {
-            Native.TogglePlayerSpectating(PlayerId, toggle);
+            Native.TogglePlayerSpectating(Id, toggle);
         }
 
         /// <summary>
@@ -1438,7 +1438,7 @@ namespace GameMode.World
         /// <param name="mode">The mode to spectate with.</param>
         public virtual void SpectatePlayer(int targetplayerid, SpectateMode mode)
         {
-            Native.PlayerSpectatePlayer(PlayerId, targetplayerid, (int) mode);
+            Native.PlayerSpectatePlayer(Id, targetplayerid, (int) mode);
         }
 
         /// <summary>
@@ -1452,7 +1452,7 @@ namespace GameMode.World
         /// <returns>This function doesn't return a specific value.</returns>
         public virtual void SpectateVehicle(Vehicle targetvehicle, SpectateMode mode)
         {
-            Native.PlayerSpectateVehicle(PlayerId, targetvehicle.VehicleId, (int) mode);
+            Native.PlayerSpectateVehicle(Id, targetvehicle.Id, (int) mode);
         }
 
         /// <summary>
@@ -1464,7 +1464,7 @@ namespace GameMode.World
         /// </returns>
         public virtual int GetSurfingObjectID()
         {
-            return Native.GetPlayerSurfingObjectID(PlayerId);
+            return Native.GetPlayerSurfingObjectID(Id);
         }
 
         /// <summary>
@@ -1477,7 +1477,7 @@ namespace GameMode.World
         /// </param>
         public virtual void StartRecordingPlayerData(PlayerRecordingType recordtype, string recordname)
         {
-            Native.StartRecordingPlayerData(PlayerId, (int) recordtype, recordname);
+            Native.StartRecordingPlayerData(Id, (int) recordtype, recordname);
         }
 
         /// <summary>
@@ -1485,7 +1485,7 @@ namespace GameMode.World
         /// </summary>
         public virtual void StopRecordingPlayerData()
         {
-            Native.StopRecordingPlayerData(PlayerId);
+            Native.StopRecordingPlayerData(Id);
         }
 
         #endregion
@@ -1500,7 +1500,7 @@ namespace GameMode.World
         /// <param name="message">The text that will be displayed (max 144 characters).</param>
         public void SendClientMessage(Color color, string message)
         {
-            Native.SendClientMessage(PlayerId, color.GetColorValue(ColorFormat.RGBA), message);
+            Native.SendClientMessage(Id, color.GetColorValue(ColorFormat.RGBA), message);
         }
 
         /// <summary>
@@ -1523,7 +1523,7 @@ namespace GameMode.World
         /// <param name="message">The message that will be sent.</param>
         public void SendPlayerMessageToPlayer(Player receiver, string message)
         {
-            Native.SendPlayerMessageToPlayer(receiver.PlayerId, PlayerId, message);
+            Native.SendPlayerMessageToPlayer(receiver.Id, Id, message);
         }
 
         /// <summary>
@@ -1533,7 +1533,7 @@ namespace GameMode.World
         /// <param name="message">The message that will be sent.</param>
         public void SendPlayerMessageToAll(string message)
         {
-            Native.SendPlayerMessageToAll(PlayerId, message);
+            Native.SendPlayerMessageToAll(Id, message);
         }
 
         /// <summary>
@@ -1546,7 +1546,7 @@ namespace GameMode.World
         /// </param>
         public void SendDeathMessage(Player killer, Weapon weapon)
         {
-            Native.SendDeathMessage(killer == null ? InvalidId : killer.PlayerId, PlayerId, (int) weapon);
+            Native.SendDeathMessage(killer == null ? InvalidId : killer.Id, Id, (int) weapon);
         }
 
         /// <summary>
@@ -1568,7 +1568,7 @@ namespace GameMode.World
         /// <param name="style">The style of text to be displayed.</param>
         public void GameText(string text, int time, int style)
         {
-            Native.GameTextForPlayer(PlayerId, text, time, style);
+            Native.GameTextForPlayer(Id, text, time, style);
         }
 
         #endregion
@@ -1941,12 +1941,12 @@ namespace GameMode.World
 
         public override int GetHashCode()
         {
-            return PlayerId;
+            return Id;
         }
 
         public override string ToString()
         {
-            return string.Format("Player(Id:{0}, Name:{1})", PlayerId, Name);
+            return string.Format("Player(Id:{0}, Name:{1})", Id, Name);
         }
 
         #endregion

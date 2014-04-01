@@ -20,7 +20,7 @@ namespace GameMode.World
         public PlayerTextDraw(Player player)
         {
             Player = player;
-            TextDrawId = -1;
+            Id = -1;
         }
 
         public PlayerTextDraw(Player player, float x, float y, string text) : this(player)
@@ -111,10 +111,10 @@ namespace GameMode.World
 
         public override void Show()
         {
-            if (TextDrawId == -1)
+            if (Id == -1)
                 Prepare();
             if (Player != null)
-                Native.PlayerTextDrawShow(Player.PlayerId, TextDrawId);
+                Native.PlayerTextDrawShow(Player.Id, Id);
         }
 
         public override void Show(Player player)
@@ -125,8 +125,8 @@ namespace GameMode.World
 
         public override void Hide()
         {
-            if (TextDrawId == -1) return;
-            Native.TextDrawHideForAll(TextDrawId);
+            if (Id == -1) return;
+            Native.TextDrawHideForAll(Id);
         }
 
         public override void Hide(Player player)
@@ -138,13 +138,13 @@ namespace GameMode.World
 
         public override void Dispose()
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawDestroy(Player.PlayerId, TextDrawId);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawDestroy(Player.Id, Id);
         }
 
         protected override void Create()
         {
-            TextDrawId = Player == null ? -1 : Native.CreatePlayerTextDraw(Player.PlayerId, X, Y, Text);
+            Id = Player == null ? -1 : Native.CreatePlayerTextDraw(Player.Id, X, Y, Text);
         }
 
         protected override void UpdatePlayers()
@@ -155,113 +155,113 @@ namespace GameMode.World
 
         protected override void SetAlignment(TextDrawAlignment alignment)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawAlignment(Player.PlayerId, TextDrawId, (int) alignment);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawAlignment(Player.Id, Id, (int) alignment);
             UpdatePlayers();
         }
 
         protected override void SetText(string text)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawSetString(Player.PlayerId, TextDrawId, text);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawSetString(Player.Id, Id, text);
             UpdatePlayers();
         }
 
         protected override void SetBackColor(Color color)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawBackgroundColor(Player.PlayerId, TextDrawId, color);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawBackgroundColor(Player.Id, Id, color);
             UpdatePlayers();
         }
 
         protected override void SetForeColor(Color color)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawColor(Player.PlayerId, TextDrawId, color);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawColor(Player.Id, Id, color);
             UpdatePlayers();
         }
 
         protected override void SetBoxColor(Color color)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawBoxColor(Player.PlayerId, TextDrawId, color);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawBoxColor(Player.Id, Id, color);
             UpdatePlayers();
         }
 
         protected override void SetFont(TextDrawFont font)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawFont(Player.PlayerId, TextDrawId, (int) font);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawFont(Player.Id, Id, (int) font);
             UpdatePlayers();
         }
 
         protected override void SetLetterSize(float width, float height)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawLetterSize(Player.PlayerId, TextDrawId, width, height);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawLetterSize(Player.Id, Id, width, height);
             UpdatePlayers();
         }
 
         protected override void SetOutline(int size)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawSetOutline(Player.PlayerId, TextDrawId, size);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawSetOutline(Player.Id, Id, size);
             UpdatePlayers();
         }
 
         protected override void SetProportional(bool proportional)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawSetProportional(Player.PlayerId, TextDrawId, proportional);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawSetProportional(Player.Id, Id, proportional);
             UpdatePlayers();
         }
 
         protected override void SetShadow(int shadow)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawSetShadow(Player.PlayerId, TextDrawId, shadow);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawSetShadow(Player.Id, Id, shadow);
             UpdatePlayers();
         }
 
         protected override void SetSize(float width, float height)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawTextSize(Player.PlayerId, TextDrawId, width, height);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawTextSize(Player.Id, Id, width, height);
             UpdatePlayers();
         }
 
         protected override void SetUseBox(bool useBox)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawUseBox(Player.PlayerId, TextDrawId, useBox);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawUseBox(Player.Id, Id, useBox);
             UpdatePlayers();
         }
 
         protected override void SetSelectable(bool selectable)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawSetSelectable(Player.PlayerId, TextDrawId, selectable);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawSetSelectable(Player.Id, Id, selectable);
             UpdatePlayers();
         }
 
         protected override void SetPreviewModel(int model)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawSetPreviewModel(Player.PlayerId, TextDrawId, model);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawSetPreviewModel(Player.Id, Id, model);
             UpdatePlayers();
         }
 
         protected override void SetPreviewRotation(Vector rotation, float zoom)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawSetPreviewRot(Player.PlayerId, TextDrawId, rotation.X, rotation.Y, rotation.Z, zoom);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawSetPreviewRot(Player.Id, Id, rotation.X, rotation.Y, rotation.Z, zoom);
             UpdatePlayers();
         }
 
         protected override void SetPreviewVehicleColors(int primaryColor, int secondaryColor)
         {
-            if (TextDrawId < 0 || Player == null) return;
-            Native.PlayerTextDrawSetPreviewVehCol(Player.PlayerId, TextDrawId, primaryColor, secondaryColor);
+            if (Id < 0 || Player == null) return;
+            Native.PlayerTextDrawSetPreviewVehCol(Player.Id, Id, primaryColor, secondaryColor);
             UpdatePlayers();
         }
     }

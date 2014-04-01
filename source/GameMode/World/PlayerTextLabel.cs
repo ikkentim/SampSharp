@@ -45,7 +45,7 @@ namespace GameMode.World
             set
             {
                 _color = value;
-                Native.UpdatePlayer3DTextLabelText(Player.PlayerId, LabelId, Color, Text);
+                Native.UpdatePlayer3DTextLabelText(Player.Id, Id, Color, Text);
             }
         }
 
@@ -55,7 +55,7 @@ namespace GameMode.World
             set
             {
                 _text = value;
-                Native.UpdatePlayer3DTextLabelText(Player.PlayerId, LabelId, Color, Text);
+                Native.UpdatePlayer3DTextLabelText(Player.Id, Id, Color, Text);
             }
         }
 
@@ -66,9 +66,9 @@ namespace GameMode.World
             {
                 _position = value;
                 Dispose();
-                LabelId = Native.CreatePlayer3DTextLabel(Player.PlayerId, Text, Color, Position, DrawDistance,
-                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.PlayerId,
-                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.VehicleId, TestLOS);
+                Id = Native.CreatePlayer3DTextLabel(Player.Id, Text, Color, Position, DrawDistance,
+                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.Id,
+                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
         }
 
@@ -79,9 +79,9 @@ namespace GameMode.World
             {
                 _drawDistance = value;
                 Dispose();
-                LabelId = Native.CreatePlayer3DTextLabel(Player.PlayerId, Text, Color, Position, DrawDistance,
-                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.PlayerId,
-                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.VehicleId, TestLOS);
+                Id = Native.CreatePlayer3DTextLabel(Player.Id, Text, Color, Position, DrawDistance,
+                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.Id,
+                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
         }
 
@@ -92,9 +92,9 @@ namespace GameMode.World
             {
                 _testLOS = value;
                 Dispose();
-                LabelId = Native.CreatePlayer3DTextLabel(Player.PlayerId, Text, Color, Position, DrawDistance,
-                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.PlayerId,
-                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.VehicleId, TestLOS);
+                Id = Native.CreatePlayer3DTextLabel(Player.Id, Text, Color, Position, DrawDistance,
+                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.Id,
+                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
         }
 
@@ -105,9 +105,9 @@ namespace GameMode.World
             {
                 _attachedPlayer = value;
                 Dispose();
-                LabelId = Native.CreatePlayer3DTextLabel(Player.PlayerId, Text, Color, Position, DrawDistance,
-                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.PlayerId,
-                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.VehicleId, TestLOS);
+                Id = Native.CreatePlayer3DTextLabel(Player.Id, Text, Color, Position, DrawDistance,
+                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.Id,
+                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
         }
 
@@ -118,13 +118,13 @@ namespace GameMode.World
             {
                 _attachedVehicle = value;
                 Dispose();
-                LabelId = Native.CreatePlayer3DTextLabel(Player.PlayerId, Text, Color, Position, DrawDistance,
-                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.PlayerId,
-                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.VehicleId, TestLOS);
+                Id = Native.CreatePlayer3DTextLabel(Player.Id, Text, Color, Position, DrawDistance,
+                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.Id,
+                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
         }
 
-        public virtual int LabelId { get; private set; }
+        public virtual int Id { get; private set; }
 
         public virtual Player Player { get; private set; }
 
@@ -144,7 +144,7 @@ namespace GameMode.World
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            LabelId = Native.CreatePlayer3DTextLabel(player.PlayerId, text, color, position, drawDistance,
+            Id = Native.CreatePlayer3DTextLabel(player.Id, text, color, position, drawDistance,
                 Player.InvalidId, Vehicle.InvalidId, testLOS);
         }
 
@@ -168,8 +168,8 @@ namespace GameMode.World
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            LabelId = Native.CreatePlayer3DTextLabel(player.PlayerId, text, color, position, drawDistance,
-                attachedPlayer.PlayerId, Vehicle.InvalidId, testLOS);
+            Id = Native.CreatePlayer3DTextLabel(player.Id, text, color, position, drawDistance,
+                attachedPlayer.Id, Vehicle.InvalidId, testLOS);
         }
 
         public PlayerTextLabel(Player player, string text, Color color, Vector position, float drawDistance,
@@ -192,8 +192,8 @@ namespace GameMode.World
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            LabelId = Native.CreatePlayer3DTextLabel(player.PlayerId, text, color, position, drawDistance,
-                Player.InvalidId, attachedVehicle.VehicleId, testLOS);
+            Id = Native.CreatePlayer3DTextLabel(player.Id, text, color, position, drawDistance,
+                Player.InvalidId, attachedVehicle.Id, testLOS);
         }
 
         public PlayerTextLabel(Player player, string text, Color color, Vector position, float drawDistance,
@@ -208,7 +208,7 @@ namespace GameMode.World
 
         public virtual void Dispose()
         {
-            Native.DeletePlayer3DTextLabel(Player.PlayerId, LabelId);
+            Native.DeletePlayer3DTextLabel(Player.Id, Id);
         }
 
         #endregion

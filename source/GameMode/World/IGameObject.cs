@@ -21,7 +21,7 @@ namespace GameMode.World
         bool IsValid { get; }
         int ModelId { get; }
         float DrawDistance { get; }
-        int ObjectId { get; }
+        int Id { get; }
 
 
         void AttachTo(Player player, Vector offset, Vector rotation);

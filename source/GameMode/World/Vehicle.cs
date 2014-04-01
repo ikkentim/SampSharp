@@ -45,7 +45,7 @@ namespace GameMode.World
         public static Vehicle Find(int vehicleId)
         {
             //Find player in memory or initialize new player
-            return Instances.FirstOrDefault(p => p.VehicleId == vehicleId) ?? new Vehicle(vehicleId);
+            return Instances.FirstOrDefault(p => p.Id == vehicleId) ?? new Vehicle(vehicleId);
         }
 
         #endregion
@@ -55,10 +55,10 @@ namespace GameMode.World
         /// <summary>
         ///     Initalizes a new instance of the Vehicle class.
         /// </summary>
-        /// <param name="vehicleId">The ID of the vehicle to initialize.</param>
-        protected Vehicle(int vehicleId)
+        /// <param name="id">The ID of the vehicle to initialize.</param>
+        protected Vehicle(int id)
         {
-            VehicleId = vehicleId;
+            Id = id;
         }
 
         #endregion
@@ -68,7 +68,7 @@ namespace GameMode.World
         /// <summary>
         ///     Gets the ID of this Vehicle.
         /// </summary>
-        public int VehicleId { get; private set; }
+        public int Id { get; private set; }
 
         /// <summary>
         ///     Gets a readonly set of all <see cref="Vehicle" /> instances.
@@ -87,7 +87,7 @@ namespace GameMode.World
         /// </summary>
         public virtual bool IsValid
         {
-            get { return Native.IsValidVehicle(VehicleId); }
+            get { return Native.IsValidVehicle(Id); }
         }
 
         /// <summary>
@@ -95,8 +95,8 @@ namespace GameMode.World
         /// </summary>
         public virtual float Angle
         {
-            get { return Native.GetVehicleZAngle(VehicleId); }
-            set { Native.SetVehicleZAngle(VehicleId, value); }
+            get { return Native.GetVehicleZAngle(Id); }
+            set { Native.SetVehicleZAngle(Id, value); }
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace GameMode.World
         /// </summary>
         public virtual int Model
         {
-            get { return Native.GetVehicleModel(VehicleId); }
+            get { return Native.GetVehicleModel(Id); }
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace GameMode.World
         /// </summary>
         public virtual bool HasTrailer
         {
-            get { return Native.IsTrailerAttachedToVehicle(VehicleId); }
+            get { return Native.IsTrailerAttachedToVehicle(Id); }
         }
 
         /// <summary>
@@ -123,15 +123,15 @@ namespace GameMode.World
         {
             get
             {
-                int id = Native.GetVehicleTrailer(VehicleId);
+                int id = Native.GetVehicleTrailer(Id);
                 return id == 0 ? null : Find(id);
             }
             set
             {
                 if (value == null)
-                    Native.DetachTrailerFromVehicle(VehicleId);
+                    Native.DetachTrailerFromVehicle(Id);
                 else
-                    Native.AttachTrailerToVehicle(value.VehicleId, VehicleId);
+                    Native.AttachTrailerToVehicle(value.Id, Id);
             }
         }
 
@@ -140,8 +140,8 @@ namespace GameMode.World
         /// </summary>
         public virtual Vector Velocity
         {
-            get { return Native.GetVehicleVelocity(VehicleId); }
-            set { Native.SetVehicleVelocity(VehicleId, value); }
+            get { return Native.GetVehicleVelocity(Id); }
+            set { Native.SetVehicleVelocity(Id, value); }
         }
 
         /// <summary>
@@ -149,8 +149,8 @@ namespace GameMode.World
         /// </summary>
         public virtual int VirtualWorld
         {
-            get { return Native.GetVehicleVirtualWorld(VehicleId); }
-            set { Native.SetVehicleVirtualWorld(VehicleId, value); }
+            get { return Native.GetVehicleVirtualWorld(Id); }
+            set { Native.SetVehicleVirtualWorld(Id, value); }
         }
 
         /// <summary>
@@ -249,8 +249,8 @@ namespace GameMode.World
         /// </summary>
         public virtual Vector Position
         {
-            get { return Native.GetVehiclePos(VehicleId); }
-            set { Native.SetVehiclePos(VehicleId, value); }
+            get { return Native.GetVehiclePos(Id); }
+            set { Native.SetVehiclePos(Id, value); }
         }
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace GameMode.World
         public virtual Vector Rotation
         {
             get { return new Vector(0, 0, Angle); }
-            set { Native.SetVehicleZAngle(VehicleId, value.Z); }
+            set { Native.SetVehicleZAngle(Id, value.Z); }
         }
 
         #endregion
@@ -349,7 +349,7 @@ namespace GameMode.World
         /// <returns>A float containing the distance from the point specified in the coordinates.</returns>
         public virtual float GetDistanceFromPoint(Vector point)
         {
-            return Native.GetVehicleDistanceFromPoint(VehicleId, point.X, point.Y, point.Z);
+            return Native.GetVehicleDistanceFromPoint(Id, point.X, point.Y, point.Z);
         }
 
         /// <summary>
@@ -422,7 +422,7 @@ namespace GameMode.World
         /// <returns>False: Vehicle is not streamed in for the Player. False: Vehicle is streamed in for the Player.</returns>
         public virtual bool IsStreamedIn(Player forplayer)
         {
-            return Native.IsVehicleStreamedIn(VehicleId, forplayer.PlayerId);
+            return Native.IsVehicleStreamedIn(Id, forplayer.Id);
         }
 
         /// <summary>
@@ -435,7 +435,7 @@ namespace GameMode.World
         public virtual void GetRotationQuat(out float w, out float x, out float y,
             out float z)
         {
-            Native.GetVehicleRotationQuat(VehicleId, out w, out x, out y, out z);
+            Native.GetVehicleRotationQuat(Id, out w, out x, out y, out z);
         }
 
         /// <summary>
@@ -447,7 +447,7 @@ namespace GameMode.World
         public virtual void SetParamsForPlayer(Player player, bool objective,
             bool doorslocked)
         {
-            Native.SetVehicleParamsForPlayer(VehicleId, player.PlayerId, objective, doorslocked);
+            Native.SetVehicleParamsForPlayer(Id, player.Id, objective, doorslocked);
         }
 
         /// <summary>
@@ -473,7 +473,7 @@ namespace GameMode.World
         public virtual void SetParams(bool engine, bool lights, bool alarm, bool doors, bool bonnet, bool boot,
             bool objective)
         {
-            Native.SetVehicleParamsEx(VehicleId, engine, lights, alarm, doors, bonnet, boot, objective);
+            Native.SetVehicleParamsEx(Id, engine, lights, alarm, doors, bonnet, boot, objective);
         }
 
 
@@ -490,7 +490,7 @@ namespace GameMode.World
         public virtual void GetParams(out bool engine, out bool lights, out bool alarm,
             out bool doors, out bool bonnet, out bool boot, out bool objective)
         {
-            Native.GetVehicleParamsEx(VehicleId, out engine, out lights, out alarm, out doors, out bonnet, out boot,
+            Native.GetVehicleParamsEx(Id, out engine, out lights, out alarm, out doors, out bonnet, out boot,
                 out objective);
         }
 
@@ -499,7 +499,7 @@ namespace GameMode.World
         /// </summary>
         public virtual void Respawn()
         {
-            Native.SetVehicleToRespawn(VehicleId);
+            Native.SetVehicleToRespawn(Id);
         }
 
         /// <summary>
@@ -508,7 +508,7 @@ namespace GameMode.World
         /// <param name="interiorid">Interior ID.</param>
         public virtual void LinkToInterior(int interiorid)
         {
-            Native.LinkVehicleToInterior(VehicleId, interiorid);
+            Native.LinkVehicleToInterior(Id, interiorid);
         }
 
         /// <summary>
@@ -517,7 +517,7 @@ namespace GameMode.World
         /// <param name="componentid">The ID of the component to add to the vehicle.</param>
         public virtual void AddComponent(int componentid)
         {
-            Native.AddVehicleComponent(VehicleId, componentid);
+            Native.AddVehicleComponent(Id, componentid);
         }
 
         /// <summary>
@@ -526,7 +526,7 @@ namespace GameMode.World
         /// <param name="componentid">ID of the component to remove.</param>
         public virtual void RemoveComponent(int componentid)
         {
-            Native.RemoveVehicleComponent(VehicleId, componentid);
+            Native.RemoveVehicleComponent(Id, componentid);
         }
 
         /// <summary>
@@ -536,7 +536,7 @@ namespace GameMode.World
         /// <param name="color2">The new vehicle's secondary Color ID.</param>
         public virtual void ChangeColor(int color1, int color2)
         {
-            Native.ChangeVehicleColor(VehicleId, color1, color2);
+            Native.ChangeVehicleColor(Id, color1, color2);
         }
 
         /// <summary>
@@ -545,7 +545,7 @@ namespace GameMode.World
         /// <param name="paintjobid">The ID of the Paintjob to apply. Use 3 to remove a paintjob.</param>
         public virtual void ChangePaintjob(int paintjobid)
         {
-            Native.ChangeVehiclePaintjob(VehicleId, paintjobid);
+            Native.ChangeVehiclePaintjob(Id, paintjobid);
         }
 
         /// <summary>
@@ -554,7 +554,7 @@ namespace GameMode.World
         /// <param name="numberplate">The text that should be displayed on the numberplate. Color Embedding> is supported.</param>
         public virtual void SetNumberPlate(string numberplate)
         {
-            Native.SetVehicleNumberPlate(VehicleId, numberplate);
+            Native.SetVehicleNumberPlate(Id, numberplate);
         }
 
         /// <summary>
@@ -564,7 +564,7 @@ namespace GameMode.World
         /// <returns>The ID of the component installed in the specified slot.</returns>
         public virtual int GetComponentInSlot(int slot)
         {
-            return Native.GetVehicleComponentInSlot(VehicleId, slot);
+            return Native.GetVehicleComponentInSlot(Id, slot);
         }
 
         /// <summary>
@@ -582,7 +582,7 @@ namespace GameMode.World
         /// </summary>
         public virtual void Repair()
         {
-            Native.RepairVehicle(VehicleId);
+            Native.RepairVehicle(Id);
         }
 
         /// <summary>
@@ -591,7 +591,7 @@ namespace GameMode.World
         /// <param name="velocity">The amount of velocity in the angular directions.</param>
         public virtual void SetVehicleAngularVelocity(Vector velocity)
         {
-            Native.SetVehicleAngularVelocity(VehicleId, velocity);
+            Native.SetVehicleAngularVelocity(Id, velocity);
         }
 
         /// <summary>
@@ -603,7 +603,7 @@ namespace GameMode.World
         /// <param name="tires">A variable to store the tire damage data in, passed by reference.</param>
         public virtual void GetVehicleDamageStatus(out int panels, out int doors, out int lights, out int tires)
         {
-            Native.GetVehicleDamageStatus(VehicleId, out panels, out doors, out lights, out tires);
+            Native.GetVehicleDamageStatus(Id, out panels, out doors, out lights, out tires);
         }
 
         /// <summary>
@@ -615,7 +615,7 @@ namespace GameMode.World
         /// <param name="tires">A set of bits containing the tire damage status.</param>
         public virtual void UpdateVehicleDamageStatus(int panels, int doors, int lights, int tires)
         {
-            Native.UpdateVehicleDamageStatus(VehicleId, panels, doors, lights, tires);
+            Native.UpdateVehicleDamageStatus(Id, panels, doors, lights, tires);
         }
 
         /// <summary>
@@ -644,7 +644,7 @@ namespace GameMode.World
         /// </summary>
         public virtual void Destroy()
         {
-            Native.DestroyVehicle(VehicleId);
+            Native.DestroyVehicle(Id);
             Dispose();
         }
 
@@ -776,12 +776,12 @@ namespace GameMode.World
 
         public override int GetHashCode()
         {
-            return VehicleId;
+            return Id;
         }
 
         public override string ToString()
         {
-            return string.Format("Vehicle(Id:{0}, Model: {1})", VehicleId, Model);
+            return string.Format("Vehicle(Id:{0}, Model: {1})", Id, Model);
         }
 
         #endregion

@@ -133,9 +133,9 @@ namespace GameMode.World
         /// <param name="player">The Player to show the dialog to.</param>
         public virtual void Show(Player player)
         {
-            OpenDialogs.Add(player.PlayerId, this);
+            OpenDialogs.Add(player.Id, this);
 
-            Native.ShowPlayerDialog(player.PlayerId, DialogId, (int) Style, Caption, Message, Button1,
+            Native.ShowPlayerDialog(player.Id, DialogId, (int) Style, Caption, Message, Button1,
                 Button2 ?? string.Empty);
         }
 
@@ -145,9 +145,9 @@ namespace GameMode.World
         /// <param name="player">The Player to hide all dialogs from.</param>
         public static void Hide(Player player)
         {
-            OpenDialogs.Remove(player.PlayerId);
+            OpenDialogs.Remove(player.Id);
 
-            Native.ShowPlayerDialog(player.PlayerId, DialogHideId, (int) DialogStyle.MessageBox, string.Empty,
+            Native.ShowPlayerDialog(player.Id, DialogHideId, (int) DialogStyle.MessageBox, string.Empty,
                 string.Empty, string.Empty, string.Empty);
         }
 
@@ -158,7 +158,7 @@ namespace GameMode.World
         /// <returns>The Dialog currently being shown to the Player.</returns>
         public static Dialog GetOpenDialog(Player player)
         {
-            return OpenDialogs[player.PlayerId];
+            return OpenDialogs[player.Id];
         }
 
         /// <summary>
