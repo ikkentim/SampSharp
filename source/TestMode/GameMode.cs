@@ -53,12 +53,9 @@ namespace TestMode
                 Console.WriteLine("Timer:");
                 foreach (var p in Timer.AllIden)
                     Console.WriteLine(p);
-
-
             };
 
             return base.OnGameModeInit();
-
         }
     }
 }
