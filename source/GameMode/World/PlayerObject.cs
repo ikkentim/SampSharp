@@ -31,31 +31,31 @@ namespace GameMode.World
 
         public virtual Vector Position
         {
-            get { return Native.GetPlayerObjectPos(Player.PlayerId, ObjectId); }
-            set { Native.SetPlayerObjectPos(Player.PlayerId, ObjectId, value); }
+            get { return Native.GetPlayerObjectPos(Player.Id, Id); }
+            set { Native.SetPlayerObjectPos(Player.Id, Id, value); }
         }
 
         public virtual Vector Rotation
         {
-            get { return Native.GetPlayerObjectRot(Player.PlayerId, ObjectId); }
-            set { Native.SetPlayerObjectRot(Player.PlayerId, ObjectId, value); }
+            get { return Native.GetPlayerObjectRot(Player.Id, Id); }
+            set { Native.SetPlayerObjectRot(Player.Id, Id, value); }
         }
 
         public virtual bool IsMoving
         {
-            get { return Native.IsPlayerObjectMoving(Player.PlayerId, ObjectId); }
+            get { return Native.IsPlayerObjectMoving(Player.Id, Id); }
         }
 
         public virtual bool IsValid
         {
-            get { return Native.IsValidPlayerObject(Player.PlayerId, ObjectId); }
+            get { return Native.IsValidPlayerObject(Player.Id, Id); }
         }
 
         public virtual int ModelId { get; private set; }
 
         public virtual float DrawDistance { get; private set; }
 
-        public virtual int ObjectId { get; private set; }
+        public virtual int Id { get; private set; }
 
         #endregion
 
@@ -89,7 +89,7 @@ namespace GameMode.World
             ModelId = modelid;
             DrawDistance = drawDistance;
 
-            ObjectId = Native.CreatePlayerObject(player.PlayerId, modelid, position, rotation, drawDistance);
+            Id = Native.CreatePlayerObject(player.Id, modelid, position, rotation, drawDistance);
         }
 
         public PlayerObject(Player player, int modelid, Vector position, Vector rotation)
@@ -103,39 +103,39 @@ namespace GameMode.World
 
         public virtual void Dispose()
         {
-            Native.DestroyObject(ObjectId);
+            Native.DestroyObject(Id);
         }
 
         public virtual void AttachTo(Player player, Vector offset, Vector rotation)
         {
-            Native.AttachPlayerObjectToPlayer(Player.PlayerId, ObjectId, player.PlayerId, offset, rotation);
+            Native.AttachPlayerObjectToPlayer(Player.Id, Id, player.Id, offset, rotation);
         }
 
         public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
         {
-            Native.AttachPlayerObjectToVehicle(Player.PlayerId, ObjectId, vehicle.VehicleId, offset, rotation);
+            Native.AttachPlayerObjectToVehicle(Player.Id, Id, vehicle.Id, offset, rotation);
         }
 
         public virtual int Move(Vector position, float speed, Vector rotation)
         {
-            return Native.MovePlayerObject(Player.PlayerId, ObjectId, position, speed, rotation);
+            return Native.MovePlayerObject(Player.Id, Id, position, speed, rotation);
         }
 
         public virtual int Move(Vector position, float speed)
         {
-            return Native.MovePlayerObject(Player.PlayerId, ObjectId, position.X, position.Y, position.Z, speed, -1000,
+            return Native.MovePlayerObject(Player.Id, Id, position.X, position.Y, position.Z, speed, -1000,
                 -1000, -1000);
         }
 
         public virtual void Stop()
         {
-            Native.StopPlayerObject(Player.PlayerId, ObjectId);
+            Native.StopPlayerObject(Player.Id, Id);
         }
 
         public virtual void SetMaterial(int materialindex, int modelid, string txdname, string texturename,
             Color materialcolor)
         {
-            Native.SetPlayerObjectMaterial(Player.PlayerId, ObjectId, materialindex, modelid, txdname, texturename,
+            Native.SetPlayerObjectMaterial(Player.Id, Id, materialindex, modelid, txdname, texturename,
                 materialcolor.GetColorValue(ColorFormat.ARGB));
         }
 
@@ -143,7 +143,7 @@ namespace GameMode.World
             string fontface, int fontsize, bool bold, Color foreColor, Color backColor,
             ObjectMaterialTextAlign textalignment)
         {
-            Native.SetPlayerObjectMaterialText(Player.PlayerId, ObjectId, text, materialindex, (int) materialsize,
+            Native.SetPlayerObjectMaterialText(Player.Id, Id, text, materialindex, (int) materialsize,
                 fontface, fontsize, bold,
                 foreColor.GetColorValue(ColorFormat.ARGB), backColor.GetColorValue(ColorFormat.ARGB),
                 (int) textalignment);
@@ -151,12 +151,12 @@ namespace GameMode.World
 
         public virtual void Edit()
         {
-            Native.EditPlayerObject(Player.PlayerId, ObjectId);
+            Native.EditPlayerObject(Player.Id, Id);
         }
 
         public static void Select(Player player)
         {
-            Native.SelectObject(player.PlayerId);
+            Native.SelectObject(player.Id);
         }
 
         #endregion

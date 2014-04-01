@@ -168,7 +168,7 @@ namespace GameMode.World
             set
             {
                 _x = value;
-                if (TextDrawId < 0) return;
+                if (Id < 0) return;
                 Prepare();
             }
         }
@@ -179,7 +179,7 @@ namespace GameMode.World
             set
             {
                 _y = value;
-                if (TextDrawId < 0) return;
+                if (Id < 0) return;
                 Prepare();
             }
         }
@@ -274,7 +274,7 @@ namespace GameMode.World
             }
         }
 
-        public virtual int TextDrawId { get; protected set; }
+        public virtual int Id { get; protected set; }
 
         #endregion
 
@@ -282,7 +282,7 @@ namespace GameMode.World
 
         public TextDraw()
         {
-            TextDrawId = -1;
+            Id = -1;
         }
 
         public TextDraw(float x, float y, string text) : this()
@@ -362,41 +362,41 @@ namespace GameMode.World
 
         public virtual void Dispose()
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawDestroy(TextDrawId);
+            if (Id < 0) return;
+            Native.TextDrawDestroy(Id);
         }
 
         public virtual void Show()
         {
-            if (TextDrawId == -1)
+            if (Id == -1)
                 Prepare();
 
-            Native.TextDrawShowForAll(TextDrawId);
+            Native.TextDrawShowForAll(Id);
         }
 
         public virtual void Show(Player player)
         {
-            if (TextDrawId == -1)
+            if (Id == -1)
                 Prepare();
             if (player != null)
-                Native.TextDrawShowForPlayer(player.PlayerId, TextDrawId);
+                Native.TextDrawShowForPlayer(player.Id, Id);
         }
 
         public virtual void Hide()
         {
-            if (TextDrawId == -1) return;
-            Native.TextDrawHideForAll(TextDrawId);
+            if (Id == -1) return;
+            Native.TextDrawHideForAll(Id);
         }
 
         public virtual void Hide(Player player)
         {
-            if (TextDrawId == -1 || player == null) return;
-            Native.TextDrawHideForPlayer(player.PlayerId, TextDrawId);
+            if (Id == -1 || player == null) return;
+            Native.TextDrawHideForPlayer(player.Id, Id);
         }
 
         protected virtual void Create()
         {
-            TextDrawId = Native.TextDrawCreate(X, Y, Text);
+            Id = Native.TextDrawCreate(X, Y, Text);
         }
 
         protected virtual void Prepare()
@@ -443,113 +443,113 @@ namespace GameMode.World
 
         protected virtual void SetAlignment(TextDrawAlignment alignment)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawAlignment(TextDrawId, (int) alignment);
+            if (Id < 0) return;
+            Native.TextDrawAlignment(Id, (int) alignment);
             UpdatePlayers();
         }
 
         protected virtual void SetText(string text)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawSetString(TextDrawId, text);
+            if (Id < 0) return;
+            Native.TextDrawSetString(Id, text);
             UpdatePlayers();
         }
 
         protected virtual void SetBackColor(Color color)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawBackgroundColor(TextDrawId, color);
+            if (Id < 0) return;
+            Native.TextDrawBackgroundColor(Id, color);
             UpdatePlayers();
         }
 
         protected virtual void SetForeColor(Color color)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawColor(TextDrawId, color);
+            if (Id < 0) return;
+            Native.TextDrawColor(Id, color);
             UpdatePlayers();
         }
 
         protected virtual void SetBoxColor(Color color)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawBoxColor(TextDrawId, color);
+            if (Id < 0) return;
+            Native.TextDrawBoxColor(Id, color);
             UpdatePlayers();
         }
 
         protected virtual void SetFont(TextDrawFont font)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawFont(TextDrawId, (int) font);
+            if (Id < 0) return;
+            Native.TextDrawFont(Id, (int) font);
             UpdatePlayers();
         }
 
         protected virtual void SetLetterSize(float width, float height)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawLetterSize(TextDrawId, width, height);
+            if (Id < 0) return;
+            Native.TextDrawLetterSize(Id, width, height);
             UpdatePlayers();
         }
 
         protected virtual void SetOutline(int size)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawSetOutline(TextDrawId, size);
+            if (Id < 0) return;
+            Native.TextDrawSetOutline(Id, size);
             UpdatePlayers();
         }
 
         protected virtual void SetProportional(bool proportional)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawSetProportional(TextDrawId, proportional);
+            if (Id < 0) return;
+            Native.TextDrawSetProportional(Id, proportional);
             UpdatePlayers();
         }
 
         protected virtual void SetShadow(int shadow)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawSetShadow(TextDrawId, shadow);
+            if (Id < 0) return;
+            Native.TextDrawSetShadow(Id, shadow);
             UpdatePlayers();
         }
 
         protected virtual void SetSize(float width, float height)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawTextSize(TextDrawId, width, height);
+            if (Id < 0) return;
+            Native.TextDrawTextSize(Id, width, height);
             UpdatePlayers();
         }
 
         protected virtual void SetUseBox(bool useBox)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawUseBox(TextDrawId, useBox);
+            if (Id < 0) return;
+            Native.TextDrawUseBox(Id, useBox);
             UpdatePlayers();
         }
 
         protected virtual void SetSelectable(bool selectable)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawSetSelectable(TextDrawId, selectable);
+            if (Id < 0) return;
+            Native.TextDrawSetSelectable(Id, selectable);
             UpdatePlayers();
         }
 
         protected virtual void SetPreviewModel(int model)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawSetPreviewModel(TextDrawId, model);
+            if (Id < 0) return;
+            Native.TextDrawSetPreviewModel(Id, model);
             UpdatePlayers();
         }
 
         protected virtual void SetPreviewRotation(Vector rotation, float zoom)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawSetPreviewRot(TextDrawId, rotation.X, rotation.Y, rotation.Z, zoom);
+            if (Id < 0) return;
+            Native.TextDrawSetPreviewRot(Id, rotation.X, rotation.Y, rotation.Z, zoom);
             UpdatePlayers();
         }
 
         protected virtual void SetPreviewVehicleColors(int primaryColor, int secondaryColor)
         {
-            if (TextDrawId < 0) return;
-            Native.TextDrawSetPreviewVehCol(TextDrawId, primaryColor, secondaryColor);
+            if (Id < 0) return;
+            Native.TextDrawSetPreviewVehCol(Id, primaryColor, secondaryColor);
             UpdatePlayers();
         }
 

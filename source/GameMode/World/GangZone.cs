@@ -25,7 +25,7 @@ namespace GameMode.World
 
         public GangZone(float minX, float minY, float maxX, float maxY)
         {
-            GangZoneId = Native.GangZoneCreate(minX, minY, maxX, maxY);
+            Id = Native.GangZoneCreate(minX, minY, maxX, maxY);
         }
 
         public virtual float MinX { get; private set; }
@@ -38,71 +38,71 @@ namespace GameMode.World
 
         public virtual Color Color { get; set; }
 
-        public virtual int GangZoneId { get; private set; }
+        public virtual int Id { get; private set; }
 
         public virtual void Dispose()
         {
-            Native.GangZoneDestroy(GangZoneId);
+            Native.GangZoneDestroy(Id);
         }
 
         public virtual void Show()
         {
-            Native.GangZoneShowForAll(GangZoneId, Color);
+            Native.GangZoneShowForAll(Id, Color);
         }
 
         public virtual void Show(Player player)
         {
-            Native.GangZoneShowForPlayer(player.PlayerId, GangZoneId, Color);
+            Native.GangZoneShowForPlayer(player.Id, Id, Color);
         }
 
         public virtual void Show(Color color)
         {
-            Native.GangZoneShowForAll(GangZoneId, color);
+            Native.GangZoneShowForAll(Id, color);
         }
 
         public virtual void Show(Player player, Color color)
         {
-            Native.GangZoneShowForPlayer(player.PlayerId, GangZoneId, color);
+            Native.GangZoneShowForPlayer(player.Id, Id, color);
         }
 
         public virtual void Hide()
         {
-            Native.GangZoneHideForAll(GangZoneId);
+            Native.GangZoneHideForAll(Id);
         }
 
         public virtual void Hide(Player player)
         {
-            Native.GangZoneHideForPlayer(player.PlayerId, GangZoneId);
+            Native.GangZoneHideForPlayer(player.Id, Id);
         }
 
         public virtual void Flash()
         {
-            Native.GangZoneFlashForAll(GangZoneId, Color);
+            Native.GangZoneFlashForAll(Id, Color);
         }
 
         public virtual void Flash(Color color)
         {
-            Native.GangZoneFlashForAll(GangZoneId, color);
+            Native.GangZoneFlashForAll(Id, color);
         }
 
         public virtual void Flash(Player player)
         {
-            Native.GangZoneFlashForPlayer(player.PlayerId, GangZoneId, Color);
+            Native.GangZoneFlashForPlayer(player.Id, Id, Color);
         }
 
         public virtual void Flash(Player player, Color color)
         {
-            Native.GangZoneFlashForPlayer(player.PlayerId, GangZoneId, color);
+            Native.GangZoneFlashForPlayer(player.Id, Id, color);
         }
 
         public virtual void StopFlash()
         {
-            Native.GangZoneStopFlashForAll(GangZoneId);
+            Native.GangZoneStopFlashForAll(Id);
         }
 
         public virtual void StopFlash(Player player)
         {
-            Native.GangZoneStopFlashForPlayer(player.PlayerId, GangZoneId);
+            Native.GangZoneStopFlashForPlayer(player.Id, Id);
         }
     }
 }

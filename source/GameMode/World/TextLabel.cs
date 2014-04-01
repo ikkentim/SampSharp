@@ -42,7 +42,7 @@ namespace GameMode.World
             set
             {
                 _color = value;
-                Native.Update3DTextLabelText(LabelId, Color, Text);
+                Native.Update3DTextLabelText(Id, Color, Text);
             }
         }
 
@@ -52,7 +52,7 @@ namespace GameMode.World
             set
             {
                 _text = value;
-                Native.Update3DTextLabelText(LabelId, Color, Text);
+                Native.Update3DTextLabelText(Id, Color, Text);
             }
         }
 
@@ -63,7 +63,7 @@ namespace GameMode.World
             {
                 _position = value;
                 Dispose();
-                LabelId = Native.Create3DTextLabel(Text, Color, Position, DrawDistance, VirtualWorld, TestLOS);
+                Id = Native.Create3DTextLabel(Text, Color, Position, DrawDistance, VirtualWorld, TestLOS);
             }
         }
 
@@ -74,7 +74,7 @@ namespace GameMode.World
             {
                 _drawDistance = value;
                 Dispose();
-                LabelId = Native.Create3DTextLabel(Text, Color, Position, DrawDistance, VirtualWorld, TestLOS);
+                Id = Native.Create3DTextLabel(Text, Color, Position, DrawDistance, VirtualWorld, TestLOS);
             }
         }
 
@@ -85,7 +85,7 @@ namespace GameMode.World
             {
                 _virtualWorld = value;
                 Dispose();
-                LabelId = Native.Create3DTextLabel(Text, Color, Position, DrawDistance, VirtualWorld, TestLOS);
+                Id = Native.Create3DTextLabel(Text, Color, Position, DrawDistance, VirtualWorld, TestLOS);
             }
         }
 
@@ -96,11 +96,11 @@ namespace GameMode.World
             {
                 _testLOS = value;
                 Dispose();
-                LabelId = Native.Create3DTextLabel(Text, Color, Position, DrawDistance, VirtualWorld, TestLOS);
+                Id = Native.Create3DTextLabel(Text, Color, Position, DrawDistance, VirtualWorld, TestLOS);
             }
         }
 
-        public virtual int LabelId { get; private set; }
+        public virtual int Id { get; private set; }
 
         #endregion
 
@@ -114,7 +114,7 @@ namespace GameMode.World
             _drawDistance = drawDistance;
             _virtualWorld = virtualWorld;
             _testLOS = testLOS;
-            LabelId = Native.Create3DTextLabel(text, color, position, drawDistance, virtualWorld, testLOS);
+            Id = Native.Create3DTextLabel(text, color, position, drawDistance, virtualWorld, testLOS);
         }
 
         public TextLabel(string text, Color color, Vector position, float drawDistance, int virtualWorld)
@@ -133,19 +133,19 @@ namespace GameMode.World
 
         public virtual void Dispose()
         {
-            Native.Delete3DTextLabel(LabelId);
+            Native.Delete3DTextLabel(Id);
         }
 
         public virtual void AttachTo(Player player, Vector offset)
         {
             if (player == null) return;
-            Native.Attach3DTextLabelToPlayer(LabelId, player.PlayerId, offset.X, offset.Y, offset.Z);
+            Native.Attach3DTextLabelToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z);
         }
 
         public virtual void AttachTo(Vehicle vehicle, Vector offset)
         {
             if (vehicle == null) return;
-            Native.Attach3DTextLabelToVehicle(LabelId, vehicle.VehicleId, offset.X, offset.Y, offset.Z);
+            Native.Attach3DTextLabelToVehicle(Id, vehicle.Id, offset.X, offset.Y, offset.Z);
         }
 
         #endregion
