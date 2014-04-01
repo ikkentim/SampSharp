@@ -11,12 +11,11 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
 using GameMode.Definitions;
 
 namespace GameMode.World
 {
-    public class GangZone : IIdentifyable, IDisposable
+    public class GangZone : InstanceKeeper<GangZone>, IIdentifyable
     {
         /// <summary>
         ///     Gets an ID commonly returned by methods to point out that no GangZone matched the requirements.
@@ -40,7 +39,7 @@ namespace GameMode.World
 
         public virtual int Id { get; private set; }
 
-        public virtual void Dispose()
+        public override void Dispose()
         {
             Native.GangZoneDestroy(Id);
         }

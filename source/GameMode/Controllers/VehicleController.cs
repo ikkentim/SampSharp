@@ -24,7 +24,7 @@ namespace GameMode.Controllers
         ///     Registers the events this VehicleController wants to listen to.
         /// </summary>
         /// <param name="gameMode">The running GameMode.</param>
-        public void RegisterEvents(BaseMode gameMode)
+        public virtual void RegisterEvents(BaseMode gameMode)
         {
             //Register all vehicle events
             gameMode.VehicleSpawned += (sender, args) => Vehicle.Find(args.VehicleId).OnSpawn(args);
@@ -39,6 +39,14 @@ namespace GameMode.Controllers
             gameMode.UnoccupiedVehicleUpdated += (sender, args) => Vehicle.Find(args.VehicleId).OnUnoccupiedUpdate(args);
             gameMode.VehicleStreamIn += (sender, args) => Vehicle.Find(args.VehicleId).OnStreamIn(args);
             gameMode.VehicleStreamOut += (sender, args) => Vehicle.Find(args.VehicleId).OnStreamOut(args);
+        }
+
+        /// <summary>
+        ///     Registers types this VehicleController requires the system to use.
+        /// </summary>
+        public virtual void RegisterTypes()
+        {
+            Vehicle.Register<Vehicle>();
         }
     }
 }

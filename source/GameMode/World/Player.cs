@@ -11,9 +11,6 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using GameMode.Definitions;
 using GameMode.Events;
 
@@ -22,7 +19,7 @@ namespace GameMode.World
     /// <summary>
     ///     Represents a SA:MP player.
     /// </summary>
-    public class Player : IIdentifyable, IWorldObject, IDisposable
+    public class Player : InstanceKeeper<Player>, IIdentifyable, IWorldObject
     {
         #region Fields
 
@@ -31,26 +28,6 @@ namespace GameMode.World
         /// </summary>
         public const int InvalidId = Misc.InvalidPlayerId;
 
-        /// <summary>
-        ///     Contains all instances of Players.
-        /// </summary>
-        protected static List<Player> Instances = new List<Player>();
-
-        #endregion
-
-        #region Factories
-
-        /// <summary>
-        ///     Returns an instance of <see cref="Player" /> that deals with <paramref name="playerId" />.
-        /// </summary>
-        /// <param name="playerId">The ID of the player we are dealing with.</param>
-        /// <returns>An instance of <see cref="Player" />.</returns>
-        public static Player Find(int playerId)
-        {
-            //Find player in memory or initialize new player
-            return Instances.FirstOrDefault(p => p.Id == playerId) ?? new Player(playerId);
-        }
-
         #endregion
 
         #region Constructors
@@ -58,13 +35,11 @@ namespace GameMode.World
         /// <summary>
         ///     Initalizes a new instance of the Player class.
         /// </summary>
-        /// <param name="idayerId">The ID of the player to initialize.</param>
-        protected Player(int id)
+        /// <param name="id">The ID of the player to initialize.</param>
+        public Player(int id)
         {
             //Fill properties
             Id = id;
-
-            Instances.Add(this);
         }
 
         #endregion
@@ -75,14 +50,6 @@ namespace GameMode.World
         ///     Gets the ID of this Player.
         /// </summary>
         public int Id { get; private set; }
-
-        /// <summary>
-        ///     Gets a readonly set of all <see cref="Player" /> instances.
-        /// </summary>
-        public static IReadOnlyCollection<Player> All
-        {
-            get { return Instances.AsReadOnly(); }
-        }
 
         #endregion
 
@@ -1930,14 +1897,6 @@ namespace GameMode.World
         #endregion
 
         #region Methods
-
-        /// <summary>
-        ///     Removes this Player from memory. It is best to dispose the object when the player has disconnected.
-        /// </summary>
-        public virtual void Dispose()
-        {
-            Instances.Remove(this);
-        }
 
         public override int GetHashCode()
         {

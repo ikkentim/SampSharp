@@ -136,7 +136,17 @@ MonoMethod * CSampSharp::LoadCallback(const char * cname, const char * name) {
 bool CSampSharp::CallCallback(MonoMethod* method, void **params) {
 	//Call callback
 	MonoObject * exception = NULL;
-	MonoObject * response = mono_runtime_invoke(method, gameMode, params, &exception);
+	MonoObject * response;
+	try
+	{
+		response = mono_runtime_invoke(method, gameMode, params, &exception);
+	}
+	catch (int param) { cout << "int exception" << param << endl; }
+	catch (char param) { cout << "char exception" << param << endl; }
+	catch (...) { cout << "default exception" << endl; }
+
+	if (!response)
+		return false;
 
 	//Catch exceptions
 	if (exception) {

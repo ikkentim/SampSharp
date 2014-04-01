@@ -11,13 +11,12 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
 using GameMode.Definitions;
 using GameMode.Events;
 
 namespace GameMode.World
 {
-    public class GlobalObject : IGameObject, IDisposable
+    public class GlobalObject : InstanceKeeper<GlobalObject>, IGameObject
     {
         #region Fields
 
@@ -81,6 +80,11 @@ namespace GameMode.World
 
         #region Constructor
 
+        public GlobalObject(int id)
+        {
+            Id = id;
+        }
+
         public GlobalObject(int modelid, Vector position, Vector rotation, float drawDistance)
         {
             ModelId = modelid;
@@ -96,11 +100,6 @@ namespace GameMode.World
         #endregion
 
         #region Methods
-
-        public virtual void Dispose()
-        {
-            Native.DestroyObject(Id);
-        }
 
         public virtual void AttachTo(Player player, Vector offset, Vector rotation)
         {
@@ -141,6 +140,12 @@ namespace GameMode.World
             Native.SetObjectMaterialText(Id, text, materialindex, (int) materialsize, fontface, fontsize, bold,
                 foreColor.GetColorValue(ColorFormat.ARGB), backColor.GetColorValue(ColorFormat.ARGB),
                 (int) textalignment);
+        }
+
+        public virtual void Dispose()
+        {
+            Native.DestroyObject(Id);
+            base.Dispose();
         }
 
         public virtual void AttachTo(GlobalObject globalObject, Vector offset, Vector rotation)
