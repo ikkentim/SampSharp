@@ -15,7 +15,7 @@ using GameMode.Definitions;
 
 namespace GameMode.World
 {
-    public interface IGameObject : IWorldObject
+    public interface IGameObject : IIdentifyable, IWorldObject
     {
         bool IsMoving { get; }
         bool IsValid { get; }

@@ -22,7 +22,7 @@ namespace GameMode.World
     /// <summary>
     ///     Represents a SA:MP player.
     /// </summary>
-    public class Player : IWorldObject, IDisposable
+    public class Player : IIdentifyable, IWorldObject, IDisposable
     {
         #region Fields
 
