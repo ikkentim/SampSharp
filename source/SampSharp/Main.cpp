@@ -33,7 +33,6 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 	server_cfg.GetOption("gamemode_generate_symbols", gamemode_generate_symbols);
 
 	//Load Mono
-	char * runtime_ver = "v4.0.30319";
 	ServerLog::Printf("[SampSharp] Loading gamemode: %s::%s at \"%s\".", 
 		(char*)gamemode_namespace.c_str(), 
 		(char*)gamemode_class.c_str(), 
@@ -43,10 +42,9 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 		(char *)gamemode_path.c_str(),
 		(char *)gamemode_namespace.c_str(), 
 		(char *)gamemode_class.c_str(), 
-		runtime_ver,
 		gamemode_generate_symbols);
 
-	ServerLog::Printf("[SampSharp] Running Mono runtime version %s.", runtime_ver);
+	ServerLog::Printf("[SampSharp] Running Mono runtime.");
 	return true;
 }
 

@@ -27,11 +27,21 @@ namespace GameMode.World
             Z = z;
         }
 
+        public Vector(double x, double y, double z) : this((float)x, (float)y, (float)z)
+        {
+            
+        }
+
         public Vector(float xyz) : this()
         {
             X = xyz;
             Y = xyz;
             Z = xyz;
+        }
+
+        public Vector(double xyz) : this((float)xyz)
+        {
+
         }
 
         public Vector(Vector vector) : this()

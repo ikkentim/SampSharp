@@ -26,7 +26,7 @@ namespace GameMode.Events
 
         public Player Player
         {
-            get { return Player.Find(PlayerId); }
+            get { return PlayerId == Player.InvalidId ? null : Player.Find(PlayerId); }
         }
     }
 }

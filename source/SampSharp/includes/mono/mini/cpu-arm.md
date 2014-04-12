@@ -53,8 +53,8 @@ nop: len:4
 relaxed_nop: len:4
 break: len:4
 jmp: len:92
-br: len:4
-switch: src1:i len:8
+br: len:16
+switch: src1:i len:12
 # See the comment in resume_from_signal_handler, we can't copy the fp regs from sigctx to MonoContext on linux,
 # since the corresponding sigctx structures are not well defined.
 seq_point: len:38 clob:c
@@ -62,11 +62,11 @@ seq_point: len:38 clob:c
 throw: src1:i len:24
 rethrow: src1:i len:20
 start_handler: len:20
-endfinally: len:20
-call_handler: len:12 clob:c
+endfinally: len:32
+call_handler: len:16 clob:c
 endfilter: src1:i len:16
 
-ckfinite: dest:f src1:f len:64
+ckfinite: dest:f src1:f len:112
 ceq: dest:i len:12
 cgt: dest:i len:12
 cgt.un: dest:i len:12
@@ -81,7 +81,7 @@ setlret: src1:i src2:i len:12
 checkthis: src1:b len:4
 call: dest:a clob:c len:20
 call_reg: dest:a src1:i len:8 clob:c
-call_membase: dest:a src1:b len:16 clob:c
+call_membase: dest:a src1:b len:24 clob:c
 voidcall: len:20 clob:c
 voidcall_reg: src1:i len:8 clob:c
 voidcall_membase: src1:b len:16 clob:c
@@ -94,6 +94,7 @@ lcall_membase: dest:l src1:b len:16 clob:c
 vcall: len:20 clob:c
 vcall_reg: src1:i len:8 clob:c
 vcall_membase: src1:b len:16 clob:c
+tailcall: len:160 clob:c
 iconst: dest:i len:16
 r4const: dest:f len:24
 r8const: dest:f len:20
@@ -108,7 +109,7 @@ storei4_membase_imm: dest:b len:20
 storei4_membase_reg: dest:b src1:i len:20
 storei8_membase_imm: dest:b 
 storei8_membase_reg: dest:b src1:i 
-storer4_membase_reg: dest:b src1:f len:12
+storer4_membase_reg: dest:b src1:f len:60
 storer8_membase_reg: dest:b src1:f len:24
 store_memindex: dest:b src1:i src2:i len:4
 storei1_memindex: dest:b src1:i src2:i len:4
@@ -122,7 +123,7 @@ loadu2_membase: dest:i src1:b len:4
 loadi4_membase: dest:i src1:b len:4
 loadu4_membase: dest:i src1:b len:4
 loadi8_membase: dest:i src1:b
-loadr4_membase: dest:f src1:b len:8
+loadr4_membase: dest:f src1:b len:56
 loadr8_membase: dest:f src1:b len:24
 load_memindex: dest:i src1:b src2:i len:4
 loadi1_memindex: dest:i src1:b src2:i len:4
@@ -176,15 +177,15 @@ float_rem: dest:f src1:f src2:f len:16
 float_rem_un: dest:f src1:f src2:f len:16
 float_neg: dest:f src1:f len:4
 float_not: dest:f src1:f len:4
-float_conv_to_i1: dest:i src1:f len:40
-float_conv_to_i2: dest:i src1:f len:40
-float_conv_to_i4: dest:i src1:f len:40
-float_conv_to_i8: dest:l src1:f len:40
+float_conv_to_i1: dest:i src1:f len:88
+float_conv_to_i2: dest:i src1:f len:88
+float_conv_to_i4: dest:i src1:f len:88
+float_conv_to_i8: dest:l src1:f len:88
 float_conv_to_r4: dest:f src1:f len:8
-float_conv_to_u4: dest:i src1:f len:40
-float_conv_to_u8: dest:l src1:f len:40
-float_conv_to_u2: dest:i src1:f len:40
-float_conv_to_u1: dest:i src1:f len:40
+float_conv_to_u4: dest:i src1:f len:88
+float_conv_to_u8: dest:l src1:f len:88
+float_conv_to_u2: dest:i src1:f len:88
+float_conv_to_u1: dest:i src1:f len:88
 float_conv_to_i: dest:i src1:f len:40
 float_ceq: dest:i src1:f src2:f len:16
 float_cgt: dest:i src1:f src2:f len:16
@@ -194,6 +195,7 @@ float_clt_un: dest:i src1:f src2:f len:20
 float_conv_to_u: dest:i src1:f len:36
 setfret: src1:f len:12
 aot_const: dest:i len:16
+objc_get_selector: dest:i len:32
 sqrt: dest:f src1:f len:4
 adc: dest:i src1:i src2:i len:4
 addcc: dest:i src1:i src2:i len:4
@@ -212,10 +214,10 @@ tls_get: len:8 dest:i clob:c
 int_add: dest:i src1:i src2:i len:4
 int_sub: dest:i src1:i src2:i len:4
 int_mul: dest:i src1:i src2:i len:4
-int_div: dest:i src1:i src2:i len:40
-int_div_un: dest:i src1:i src2:i len:16
-int_rem: dest:i src1:i src2:i len:48
-int_rem_un: dest:i src1:i src2:i len:24
+int_div: dest:i src1:i src2:i len:4
+int_div_un: dest:i src1:i src2:i len:4
+int_rem: dest:i src1:i src2:i len:8
+int_rem_un: dest:i src1:i src2:i len:8
 int_and: dest:i src1:i src2:i len:4
 int_or: dest:i src1:i src2:i len:4
 int_xor: dest:i src1:i src2:i len:4
@@ -227,22 +229,22 @@ int_not: dest:i src1:i len:4
 int_conv_to_i1: dest:i src1:i len:8
 int_conv_to_i2: dest:i src1:i len:8
 int_conv_to_i4: dest:i src1:i len:4
-int_conv_to_r4: dest:f src1:i len:36
-int_conv_to_r8: dest:f src1:i len:36
+int_conv_to_r4: dest:f src1:i len:84
+int_conv_to_r8: dest:f src1:i len:84
 int_conv_to_u4: dest:i src1:i
 int_conv_to_r_un: dest:f src1:i len:56
 int_conv_to_u2: dest:i src1:i len:8
 int_conv_to_u1: dest:i src1:i len:4
-int_beq: len:8
-int_bge: len:8
-int_bgt: len:8
-int_ble: len:8
-int_blt: len:8
-int_bne_un: len:8
-int_bge_un: len:8
-int_bgt_un: len:8
-int_ble_un: len:8
-int_blt_un: len:8
+int_beq: len:16
+int_bge: len:16
+int_bgt: len:16
+int_ble: len:16
+int_blt: len:16
+int_bne_un: len:16
+int_bge_un: len:16
+int_bgt_un: len:16
+int_ble_un: len:16
+int_blt_un: len:16
 int_add_ovf: dest:i src1:i src2:i len:16
 int_add_ovf_un: dest:i src1:i src2:i len:16
 int_mul_ovf: dest:i src1:i src2:i len:16
@@ -260,6 +262,8 @@ arm_rsc_imm: dest:i src1:i len:4
 # Linear IR opcodes
 dummy_use: src1:i len:0
 dummy_store: len:0
+dummy_iconst: dest:i len:0
+dummy_r8const: dest:f len:0
 not_reached: len:0
 not_null: src1:i len:0
 
@@ -290,20 +294,20 @@ int_cgt_un: dest:i len:12
 int_clt: dest:i len:12
 int_clt_un: dest:i len:12
 
-cond_exc_ieq: len:8
-cond_exc_ine_un: len:8
-cond_exc_ilt: len:8
-cond_exc_ilt_un: len:8
-cond_exc_igt: len:8
-cond_exc_igt_un: len:8
-cond_exc_ige: len:8
-cond_exc_ige_un: len:8
-cond_exc_ile: len:8
-cond_exc_ile_un: len:8
-cond_exc_iov: len:12
-cond_exc_ino: len:8
-cond_exc_ic: len:12
-cond_exc_inc: len:8
+cond_exc_ieq: len:16
+cond_exc_ine_un: len:16
+cond_exc_ilt: len:16
+cond_exc_ilt_un: len:16
+cond_exc_igt: len:16
+cond_exc_igt_un: len:16
+cond_exc_ige: len:16
+cond_exc_ige_un: len:16
+cond_exc_ile: len:16
+cond_exc_ile_un: len:16
+cond_exc_iov: len:20
+cond_exc_ino: len:16
+cond_exc_ic: len:20
+cond_exc_inc: len:16
 
 icompare: src1:i src2:i len:4
 icompare_imm: src1:i len:12
@@ -316,16 +320,16 @@ vcall2_membase: src1:b len:12 clob:c
 dyn_call: src1:i src2:i len:120 clob:c
 
 # This is different from the original JIT opcodes
-float_beq: len:20
-float_bne_un: len:20
-float_blt: len:20
-float_blt_un: len:20
-float_bgt: len:20
-float_bgt_un: len:20
-float_bge: len:20
-float_bge_un: len:20
-float_ble: len:20
-float_ble_un: len:20
+float_beq: len:32
+float_bne_un: len:32
+float_blt: len:32
+float_blt_un: len:32
+float_bgt: len:32
+float_bgt_un: len:32
+float_bge: len:32
+float_bge_un: len:32
+float_ble: len:32
+float_ble_un: len:32
 
 liverange_start: len:0
 liverange_end: len:0

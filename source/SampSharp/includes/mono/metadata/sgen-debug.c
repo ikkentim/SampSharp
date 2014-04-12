@@ -29,7 +29,6 @@
 
 #include "metadata/sgen-gc.h"
 #include "metadata/sgen-cardtable.h"
-#include "metadata/sgen-ssb.h"
 #include "metadata/sgen-protocol.h"
 #include "metadata/sgen-memory-governor.h"
 #include "metadata/sgen-pinning.h"
@@ -50,14 +49,14 @@ void check_object (char *start);
  */
 
 const char*descriptor_types [] = {
+	"INVALID",
 	"run_length",
 	"small_bitmap",
-	"string",
 	"complex",
 	"vector",
-	"array",
 	"large_bitmap",
-	"complex_arr"
+	"complex_arr",
+	"complex_ptrfree"
 };
 
 static char* describe_nursery_ptr (char *ptr, gboolean need_setup);
@@ -78,6 +77,7 @@ describe_pointer (char *ptr, gboolean need_setup)
 		if (!start)
 			return;
 		ptr = start;
+		vtable = (MonoVTable*)LOAD_VTABLE (ptr);
 	} else {
 		if (sgen_ptr_is_in_los (ptr, &start)) {
 			if (ptr == start)
@@ -86,6 +86,7 @@ describe_pointer (char *ptr, gboolean need_setup)
 				printf ("Pointer is at offset 0x%x of object %p in LOS space.\n", (int)(ptr - start), start);
 			ptr = start;
 			mono_sgen_los_describe_pointer (ptr);
+			vtable = (MonoVTable*)LOAD_VTABLE (ptr);
 		} else if (major_collector.ptr_is_in_non_pinned_space (ptr, &start)) {
 			if (ptr == start)
 				printf ("Pointer is the start of object %p in oldspace.\n", start);
@@ -95,9 +96,11 @@ describe_pointer (char *ptr, gboolean need_setup)
 				printf ("Pointer inside oldspace.\n");
 			if (start)
 				ptr = start;
-			major_collector.describe_pointer (ptr);
+			vtable = major_collector.describe_pointer (ptr);
 		} else if (major_collector.obj_is_from_pinned_alloc (ptr)) {
+			// FIXME: Handle pointers to the inside of objects
 			printf ("Pointer is inside a pinned chunk.\n");
+			vtable = (MonoVTable*)LOAD_VTABLE (ptr);
 		} else {
 			printf ("Pointer unknown.\n");
 			return;
@@ -113,17 +116,14 @@ describe_pointer (char *ptr, gboolean need_setup)
 		goto restart;
 	}
 
-	// FIXME: Handle pointers to the inside of objects
-	vtable = (MonoVTable*)LOAD_VTABLE (ptr);
-
 	printf ("VTable: %p\n", vtable);
 	if (vtable == NULL) {
 		printf ("VTable is invalid (empty).\n");
-		return;
+		goto bridge;
 	}
 	if (sgen_ptr_in_nursery (vtable)) {
 		printf ("VTable is invalid (points inside nursery).\n");
-		return;
+		goto bridge;
 	}
 	printf ("Class: %s\n", vtable->klass->name);
 
@@ -134,7 +134,10 @@ describe_pointer (char *ptr, gboolean need_setup)
 	printf ("Descriptor type: %d (%s)\n", type, descriptor_types [type]);
 
 	size = sgen_safe_object_get_size ((MonoObject*)ptr);
-	printf ("Size: %td\n", size);
+	printf ("Size: %d\n", (int)size);
+
+ bridge:
+	sgen_bridge_describe_pointer ((MonoObject*)ptr);
 }
 
 void
@@ -173,7 +176,6 @@ check_consistency_callback (char *start, size_t size, void *dummy)
 	GCVTable *vt = (GCVTable*)LOAD_VTABLE (start);
 	SGEN_LOG (8, "Scanning object %p, vtable: %p (%s)", start, vt, vt->klass->name);
 
-#define SCAN_OBJECT_ACTION
 #include "sgen-scan-object.h"
 }
 
@@ -202,6 +204,59 @@ sgen_check_consistency (void)
 		g_assert (!missing_remsets);
 }
 
+static gboolean
+is_major_or_los_object_marked (char *obj)
+{
+	if (sgen_safe_object_get_size ((MonoObject*)obj) > SGEN_MAX_SMALL_OBJ_SIZE) {
+		return sgen_los_object_is_pinned (obj);
+	} else {
+		return sgen_get_major_collector ()->is_object_live (obj);
+	}
+}
+
+#undef HANDLE_PTR
+#define HANDLE_PTR(ptr,obj)	do {	\
+	if (*(ptr) && !sgen_ptr_in_nursery ((char*)*(ptr)) && !is_major_or_los_object_marked ((char*)*(ptr))) { \
+		if (!sgen_get_remset ()->find_address_with_cards (start, cards, (char*)(ptr))) { \
+			SGEN_LOG (0, "major->major reference %p at offset %td in object %p (%s.%s) not found in remsets.", *(ptr), (char*)(ptr) - (char*)(obj), (obj), ((MonoObject*)(obj))->vtable->klass->name_space, ((MonoObject*)(obj))->vtable->klass->name); \
+			binary_protocol_missing_remset ((obj), (gpointer)LOAD_VTABLE ((obj)), (char*)(ptr) - (char*)(obj), *(ptr), (gpointer)LOAD_VTABLE(*(ptr)), object_is_pinned (*(ptr))); \
+		}																\
+	}																	\
+	} while (0)
+
+static void
+check_mod_union_callback (char *start, size_t size, void *dummy)
+{
+	gboolean in_los = (gboolean) (size_t) dummy;
+	GCVTable *vt = (GCVTable*)LOAD_VTABLE (start);
+	guint8 *cards;
+	SGEN_LOG (8, "Scanning object %p, vtable: %p (%s)", start, vt, vt->klass->name);
+
+	if (!is_major_or_los_object_marked (start))
+		return;
+
+	if (in_los)
+		cards = sgen_los_header_for_object (start)->cardtable_mod_union;
+	else
+		cards = sgen_get_major_collector ()->get_cardtable_mod_union_for_object (start);
+
+	SGEN_ASSERT (0, cards, "we must have mod union for marked major objects");
+
+#include "sgen-scan-object.h"
+}
+
+void
+sgen_check_mod_union_consistency (void)
+{
+	missing_remsets = FALSE;
+
+	major_collector.iterate_objects (TRUE, TRUE, (IterateObjectCallbackFunc)check_mod_union_callback, (void*)FALSE);
+
+	sgen_los_iterate_objects ((IterateObjectCallbackFunc)check_mod_union_callback, (void*)TRUE);
+
+	if (!binary_protocol_is_enabled ())
+		g_assert (!missing_remsets);
+}
 
 #undef HANDLE_PTR
 #define HANDLE_PTR(ptr,obj)	do {					\
@@ -212,7 +267,6 @@ sgen_check_consistency (void)
 static void
 check_major_refs_callback (char *start, size_t size, void *dummy)
 {
-#define SCAN_OBJECT_ACTION
 #include "sgen-scan-object.h"
 }
 
@@ -368,9 +422,8 @@ FIXME Flag missing remsets due to pinning as non fatal
 static void
 verify_object_pointers_callback (char *start, size_t size, void *data)
 {
-	gboolean allow_missing_pinned = (gboolean)data;
+	gboolean allow_missing_pinned = (gboolean) (size_t) data;
 
-#define SCAN_OBJECT_ACTION
 #include "sgen-scan-object.h"
 }
 
@@ -385,9 +438,9 @@ sgen_check_whole_heap (gboolean allow_missing_pinned)
 	setup_valid_nursery_objects ();
 
 	broken_heap = FALSE;
-	sgen_scan_area_with_callback (nursery_section->data, nursery_section->end_data, verify_object_pointers_callback, (void*)allow_missing_pinned, FALSE);
-	major_collector.iterate_objects (TRUE, TRUE, verify_object_pointers_callback, (void*)allow_missing_pinned);
-	sgen_los_iterate_objects (verify_object_pointers_callback, (void*)allow_missing_pinned);
+	sgen_scan_area_with_callback (nursery_section->data, nursery_section->end_data, verify_object_pointers_callback, (void*) (size_t) allow_missing_pinned, FALSE);
+	major_collector.iterate_objects (TRUE, TRUE, verify_object_pointers_callback, (void*) (size_t) allow_missing_pinned);
+	sgen_los_iterate_objects (verify_object_pointers_callback, (void*) (size_t) allow_missing_pinned);
 
 	g_assert (!broken_heap);
 }
@@ -492,7 +545,7 @@ find_pinning_reference (char *obj, size_t size)
 static void
 check_marked_callback (char *start, size_t size, void *dummy)
 {
-	gboolean is_los = (gboolean)dummy;
+	gboolean is_los = (gboolean) (size_t) dummy;
 
 	if (is_los) {
 		if (!sgen_los_object_is_pinned (start))
@@ -502,7 +555,6 @@ check_marked_callback (char *start, size_t size, void *dummy)
 			return;
 	}
 
-#define SCAN_OBJECT_ACTION
 #include "sgen-scan-object.h"
 }
 
@@ -518,7 +570,7 @@ sgen_check_major_heap_marked (void)
 static void
 check_nursery_objects_pinned_callback (char *obj, size_t size, void *data /* ScanCopyContext *ctx */)
 {
-	gboolean pinned = (gboolean)data;
+	gboolean pinned = (gboolean) (size_t) data;
 
 	g_assert (!SGEN_OBJECT_IS_FORWARDED (obj));
 	if (pinned)
@@ -532,7 +584,7 @@ sgen_check_nursery_objects_pinned (gboolean pinned)
 {
 	sgen_clear_nursery_fragments ();
 	sgen_scan_area_with_callback (nursery_section->data, nursery_section->end_data,
-			(IterateObjectCallbackFunc)check_nursery_objects_pinned_callback, (void*)pinned /* (void*)&ctx */, FALSE);
+			(IterateObjectCallbackFunc)check_nursery_objects_pinned_callback, (void*) (size_t) pinned /* (void*)&ctx */, FALSE);
 }
 
 #endif /*HAVE_SGEN_GC*/

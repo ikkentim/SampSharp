@@ -76,6 +76,18 @@ namespace GameMode.World
             B = c.B;
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the Color struct.
+        /// </summary>
+        /// <param name="color">The Color values to use for this Color.</param>
+        public Color(uint color)
+            : this()
+        {
+            Color c = GetColorFromValue(color, ColorFormat.RGBA); //Default format
+            R = c.R;
+            G = c.G;
+            B = c.B;
+        }
         #endregion
 
         #region Defaults
@@ -1403,7 +1415,7 @@ namespace GameMode.World
         /// <param name="color">The color to convert.</param>
         /// <param name="colorFormat">The ColorFormat to use in the conversion.</param>
         /// <returns>An Color representation of this Integer.</returns>
-        public static Color GetColorFromValue(int color, ColorFormat colorFormat)
+        public static Color GetColorFromValue(uint color, ColorFormat colorFormat)
         {
             byte r = 0,
                 g = 0,
@@ -1433,6 +1445,17 @@ namespace GameMode.World
             return new Color(r, g, b, a);
         }
 
+        /// <summary>
+        ///     Returns an Color representation of this Integer.
+        /// </summary>
+        /// <param name="color">The color to convert.</param>
+        /// <param name="colorFormat">The ColorFormat to use in the conversion.</param>
+        /// <returns>An Color representation of this Integer.</returns>
+        public static Color GetColorFromValue(int color, ColorFormat colorFormat)
+        {
+            return GetColorFromValue(unchecked((uint) color), colorFormat);
+        }
+
         public static implicit operator int(Color color)
         {
             return color.GetColorValue(ColorFormat.RGBA); //Default format
@@ -1443,6 +1466,10 @@ namespace GameMode.World
             return new Color(color);
         }
 
+        public static implicit operator Color(uint color)
+        {
+            return new Color(color);
+        }
         /// <summary>
         ///     Returns a String representation of this Color.
         /// </summary>

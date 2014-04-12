@@ -1252,5 +1252,51 @@ namespace GameMode
             return CreatePlayer3DTextLabel(0, text, color, position.X, position.Y, position.Z, drawDistance,
                 attachedplayer, attachedvehicle, testLOS);
         }
+
+        /// <summary>
+        ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
+        /// </summary>
+        /// <param name="modelid">The skin which the player will spawn with.</param>
+        /// <param name="position">The coordinate of the spawnpoint of this class.</param>
+        /// <param name="zAngle">The direction in which the player should face after spawning.</param>
+        /// <param name="weapon1">The first spawn-weapon for the player.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the primary spawnweapon.</param>
+        /// <param name="weapon2">The second spawn-weapon for the player.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <param name="weapon3">The third spawn-weapon for the player.</param>
+        /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
+        /// <returns>
+        ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
+        ///     ID is 299.
+        /// </returns>
+        public static int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon1, int weapon1Ammo,
+            Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
+        {
+            return AddPlayerClass(modelid, position.X, position.Y, position.Z, zAngle, (int) weapon1, weapon1Ammo,
+                (int) weapon2, weapon2Ammo, (int) weapon3, weapon3Ammo);
+        }
+
+        /// <summary>
+        ///     This function is exactly the same as the <see cref="AddPlayerClass" /> function, with the addition of a team
+        ///     parameter.
+        /// </summary>
+        /// <param name="teamid">The team you want the player to spawn in.</param>
+        /// <param name="modelid">The skin which the player will spawn with.</param>
+        /// <param name="position">The coordinate of the class' spawn position.</param>
+        /// <param name="zAngle">The direction in which the player will face after spawning.</param>
+        /// <param name="weapon1">The first spawn-weapon for the player.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the first spawnweapon.</param>
+        /// <param name="weapon2">The second spawn-weapon for the player.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <param name="weapon3">The third spawn-weapon for the player.</param>
+        /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
+        /// <returns>The ID of the class that was just created.</returns>
+        public static int AddPlayerClassEx(int teamid, int modelid, Vector position, float zAngle, Weapon weapon1,
+            int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
+        {
+            return AddPlayerClassEx(teamid, modelid, position.X, position.Y, position.Z, zAngle, (int) weapon1,
+                weapon1Ammo, (int) weapon2, weapon2Ammo, (int) weapon3, weapon3Ammo);
+        }
+
     }
 }
