@@ -68,7 +68,6 @@
 #include <mono/io-layer/wapi-private.h>
 #include <mono/io-layer/handles-private.h>
 #include <mono/io-layer/misc-private.h>
-#include <mono/io-layer/mono-mutex.h>
 #include <mono/io-layer/process-private.h>
 #include <mono/io-layer/threads.h>
 #include <mono/utils/strenc.h>
@@ -76,6 +75,8 @@
 #include <mono/io-layer/timefuncs-private.h>
 #include <mono/utils/mono-time.h>
 #include <mono/utils/mono-membar.h>
+#include <mono/utils/mono-mutex.h>
+#include <mono/utils/mono-signal-handler.h>
 
 /* The process' environment strings */
 #if defined(__APPLE__) && !defined (__arm__)
@@ -141,6 +142,7 @@ static void mono_processes_cleanup (void);
 
 static mono_once_t process_current_once=MONO_ONCE_INIT;
 static gpointer current_process=NULL;
+static char *cli_launcher;
 
 static mono_once_t process_ops_once=MONO_ONCE_INIT;
 
@@ -329,10 +331,7 @@ gboolean ShellExecuteEx (WapiShellExecuteInfo *sei)
 			return FALSE;
 
 #ifdef PLATFORM_MACOSX
-		if (is_macos_10_5_or_higher ())
-			handler = g_strdup ("/usr/bin/open -W");
-		else
-			handler = g_strdup ("/usr/bin/open");
+		handler = g_strdup ("/usr/bin/open");
 #else
 		/*
 		 * On Linux, try: xdg-open, the FreeDesktop standard way of doing it,
@@ -378,9 +377,13 @@ gboolean ShellExecuteEx (WapiShellExecuteInfo *sei)
 				     sei->lpDirectory, NULL, &process_info);
 		g_free (args);
 		if (!ret){
-			SetLastError (ERROR_INVALID_DATA);
+			if (GetLastError () != ERROR_OUTOFMEMORY)
+				SetLastError (ERROR_INVALID_DATA);
 			return FALSE;
 		}
+		/* Shell exec should not return a process handle when it spawned a GUI thing, like a browser. */
+		CloseHandle (process_info.hProcess);
+		process_info.hProcess = NULL;
 	}
 	
 	if (sei->fMask & SEE_MASK_NOCLOSEPROCESS) {
@@ -564,6 +567,7 @@ gboolean CreateProcess (const gunichar2 *appname, const gunichar2 *cmdline,
 	int startup_pipe [2] = {-1, -1};
 	int dummy;
 	struct MonoProcess *mono_process;
+	gboolean fork_failed = FALSE;
 	
 	mono_once (&process_ops_once, process_ops_init);
 	mono_once (&process_sig_chld_once, process_add_sigchld_handler);
@@ -803,10 +807,13 @@ gboolean CreateProcess (const gunichar2 *appname, const gunichar2 *cmdline,
 	 * them using the same mono binary that started us.
 	 */
 	if (is_managed_binary (prog)) {
-		gunichar2 *newapp, *newcmd;
+		gunichar2 *newapp = NULL, *newcmd;
 		gsize bytes_ignored;
 
-		newapp = mono_unicode_from_external ("mono", &bytes_ignored);
+		if (cli_launcher)
+			newapp = mono_unicode_from_external (cli_launcher, &bytes_ignored);
+		else
+			newapp = mono_unicode_from_external ("mono", &bytes_ignored);
 
 		if (newapp != NULL) {
 			if (appname != NULL) {
@@ -965,14 +972,15 @@ gboolean CreateProcess (const gunichar2 *appname, const gunichar2 *cmdline,
 	if (pid == -1) {
 		/* Error */
 		SetLastError (ERROR_OUTOFMEMORY);
-		_wapi_handle_unref (handle);
+		ret = FALSE;
+		fork_failed = TRUE;
 		goto cleanup;
 	} else if (pid == 0) {
 		/* Child */
 		
 		if (startup_pipe [0] != -1) {
 			/* Wait until the parent has updated it's internal data */
-			read (startup_pipe [0], &dummy, 1);
+			ssize_t _i G_GNUC_UNUSED = read (startup_pipe [0], &dummy, 1);
 			DEBUG ("%s: child: parent has completed its setup", __func__);
 			close (startup_pipe [0]);
 			close (startup_pipe [1]);
@@ -1070,9 +1078,12 @@ gboolean CreateProcess (const gunichar2 *appname, const gunichar2 *cmdline,
 cleanup:
 	_wapi_handle_unlock_shared_handles ();
 
+	if (fork_failed)
+		_wapi_handle_unref (handle);
+
 	if (startup_pipe [1] != -1) {
 		/* Write 1 byte, doesn't matter what */
-		write (startup_pipe [1], startup_pipe, 1);
+		ssize_t _i G_GNUC_UNUSED = write (startup_pipe [1], startup_pipe, 1);
 		close (startup_pipe [0]);
 		close (startup_pipe [1]);
 	}
@@ -1380,8 +1391,10 @@ gboolean EnumProcesses (guint32 *pids, guint32 len, guint32 *needed)
 
 			if (err == 0) 
 				done = TRUE;
-			else
+			else {
 				free (result);
+				result = NULL;
+			}
 		}
 	} while (err == 0 && !done);
 	
@@ -1704,14 +1717,13 @@ static GSList *load_modules (void)
 		const struct section *sec;
 #endif
 		const char *name;
-		intptr_t slide;
 
-		slide = _dyld_get_image_vmaddr_slide (i);
 		name = _dyld_get_image_name (i);
-		hdr = _dyld_get_image_header (i);
 #if SIZEOF_VOID_P == 8
+		hdr = (const struct mach_header_64*)_dyld_get_image_header (i);
 		sec = getsectbynamefromheader_64 (hdr, SEG_DATA, SECT_DATA);
 #else
+		hdr = _dyld_get_image_header (i);
 		sec = getsectbynamefromheader (hdr, SEG_DATA, SECT_DATA);
 #endif
 
@@ -2112,9 +2124,11 @@ static gchar *get_process_name_from_proc (pid_t pid)
 	size_t size;
 	struct kinfo_proc2 *pi;
 #elif defined(PLATFORM_MACOSX)
+#if !(!defined (__mono_ppc__) && defined (TARGET_OSX))
 	size_t size;
 	struct kinfo_proc *pi;
 	int mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PID, pid };
+#endif
 #else
 	FILE *fp;
 	gchar *filename = NULL;
@@ -2248,6 +2262,42 @@ retry:
 #endif
 
 	return ret;
+}
+
+/*
+ * wapi_process_get_path:
+ *
+ *   Return the full path of the executable of the process PID, or NULL if it cannot be determined.
+ * Returns malloc-ed memory.
+ */
+gchar*
+wapi_process_get_path (pid_t pid)
+{
+#if defined(PLATFORM_MACOSX) && !defined(__mono_ppc__) && defined(TARGET_OSX)
+	gchar buf [PROC_PIDPATHINFO_MAXSIZE];
+	int res;
+
+	res = proc_pidpath (pid, buf, sizeof (buf));
+	if (res <= 0)
+		return NULL;
+	if (buf [0] == '\0')
+		return NULL;
+	return g_strdup (buf);
+#else
+	return get_process_name_from_proc (pid);
+#endif
+}
+
+/*
+ * wapi_process_set_cli_launcher:
+ *
+ *   Set the full path of the runtime executable used to launch managed exe's.
+ */
+void
+wapi_process_set_cli_launcher (char *path)
+{
+	g_free (cli_launcher);
+	cli_launcher = path ? g_strdup (path) : NULL;
 }
 
 static guint32 get_module_name (gpointer process, gpointer module,
@@ -2822,8 +2872,7 @@ process_close (gpointer handle, gpointer data)
 }
 
 #if HAVE_SIGACTION
-static void
-mono_sigchld_signal_handler (int _dummy, siginfo_t *info, void *context)
+MONO_SIGNAL_HANDLER_FUNC (static, mono_sigchld_signal_handler, (int _dummy, siginfo_t *info, void *context))
 {
 	int status;
 	int pid;
@@ -2864,6 +2913,7 @@ mono_sigchld_signal_handler (int _dummy, siginfo_t *info, void *context)
 	fprintf (stdout, "SIG CHILD handler: done looping.");
 #endif
 }
+
 #endif
 
 static void process_add_sigchld_handler (void)
@@ -2891,7 +2941,7 @@ static guint32 process_wait (gpointer handle, guint32 timeout, gboolean alertabl
 	gboolean spin;
 	gpointer current_thread;
 
-	current_thread = _wapi_thread_handle_from_id (pthread_self ());
+	current_thread = wapi_get_current_thread_handle ();
 	if (current_thread == NULL) {
 		SetLastError (ERROR_INVALID_HANDLE);
 		return WAIT_FAILED;
@@ -3015,3 +3065,8 @@ static guint32 process_wait (gpointer handle, guint32 timeout, gboolean alertabl
 	return WAIT_OBJECT_0;
 }
 
+void
+wapi_processes_cleanup (void)
+{
+	g_free (cli_launcher);
+}

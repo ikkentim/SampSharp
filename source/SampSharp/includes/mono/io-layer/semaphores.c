@@ -21,8 +21,9 @@
 #include <mono/io-layer/wapi-private.h>
 #include <mono/io-layer/misc-private.h>
 #include <mono/io-layer/handles-private.h>
-#include <mono/io-layer/mono-mutex.h>
 #include <mono/io-layer/semaphore-private.h>
+
+#include <mono/utils/mono-mutex.h>
 
 #if 0
 #define DEBUG(...) g_message(__VA_ARGS__)
@@ -181,8 +182,6 @@ static gpointer sem_create (WapiSecurityAttributes *security G_GNUC_UNUSED,
 		return(NULL);
 	}
 
-	pthread_cleanup_push ((void(*)(void *))_wapi_handle_unlock_handle,
-			      handle);
 	thr_ret = _wapi_handle_lock_handle (handle);
 	g_assert (thr_ret == 0);
 	
@@ -195,7 +194,6 @@ static gpointer sem_create (WapiSecurityAttributes *security G_GNUC_UNUSED,
 
 	thr_ret = _wapi_handle_unlock_handle (handle);
 	g_assert (thr_ret == 0);
-	pthread_cleanup_pop (0);
 
 	return(handle);
 }
@@ -357,8 +355,6 @@ static gboolean sem_release (gpointer handle, gint32 count, gint32 *prevcount)
 		return(FALSE);
 	}
 
-	pthread_cleanup_push ((void(*)(void *))_wapi_handle_unlock_handle,
-			      handle);
 	thr_ret = _wapi_handle_lock_handle (handle);
 	g_assert (thr_ret == 0);
 
@@ -389,7 +385,6 @@ static gboolean sem_release (gpointer handle, gint32 count, gint32 *prevcount)
 end:
 	thr_ret = _wapi_handle_unlock_handle (handle);
 	g_assert (thr_ret == 0);
-	pthread_cleanup_pop (0);
 
 	return(ret);
 }

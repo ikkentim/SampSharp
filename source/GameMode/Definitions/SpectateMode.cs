@@ -14,7 +14,7 @@
 namespace GameMode.Definitions
 {
     /// <summary>
-    ///     Contains all  specating modes.
+    ///     Contains all specating modes.
     /// </summary>
     public enum SpectateMode
     {
@@ -22,7 +22,6 @@ namespace GameMode.Definitions
         ///     Normal spectating mode.
         /// </summary>
         Normal = 1,
-
         /// <summary>
         ///     Player is looking from a fixed point.
         /// </summary>

@@ -5,7 +5,6 @@
 #include <sampgdk/a_samp.h>
 #include <sampgdk/a_objects.h>
 #include <sampgdk/a_vehicles.h>
-
 #include "Callbacks.h"
 
 //

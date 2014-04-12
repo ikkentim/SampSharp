@@ -26,6 +26,7 @@
 #include <mono/metadata/marshal.h>
 #include <mono/metadata/profiler-private.h>
 #include <mono/utils/mono-time.h>
+#include <mono/utils/atomic.h>
 
 /*
  * Pull the list of opcodes
@@ -160,7 +161,7 @@ void
 mono_monitor_init_tls (void)
 {
 #if !defined(HOST_WIN32) && defined(HAVE_KW_THREAD)
-	tls_pthread_self = pthread_self ();
+	tls_pthread_self = (gsize) pthread_self ();
 #endif
 }
 
@@ -784,6 +785,8 @@ mono_monitor_get_object_monitor_weak_link (MonoObject *object)
 	return NULL;
 }
 
+#ifndef DISABLE_JIT
+
 static void
 emit_obj_syncp_check (MonoMethodBuilder *mb, int syncp_loc, int *obj_null_branch, int *true_locktaken_branch, int *syncp_true_false_branch,
 	int *thin_hash_branch, gboolean branch_on_true)
@@ -847,6 +850,8 @@ emit_obj_syncp_check (MonoMethodBuilder *mb, int syncp_loc, int *obj_null_branch
 	mono_mb_emit_ldloc (mb, syncp_loc);
 	*syncp_true_false_branch = mono_mb_emit_short_branch (mb, branch_on_true ? CEE_BRTRUE_S : CEE_BRFALSE_S);
 }
+
+#endif
 
 static MonoMethod* monitor_il_fastpaths[3];
 
@@ -918,6 +923,7 @@ mono_monitor_get_fast_enter_method (MonoMethod *monitor_enter_method)
 	mb->method->flags = METHOD_ATTRIBUTE_PUBLIC | METHOD_ATTRIBUTE_STATIC |
 		METHOD_ATTRIBUTE_HIDE_BY_SIG | METHOD_ATTRIBUTE_FINAL;
 
+#ifndef DISABLE_JIT
 	tid_loc = mono_mb_add_local (mb, &mono_defaults.int_class->byval_arg);
 	syncp_loc = mono_mb_add_local (mb, &mono_defaults.int_class->byval_arg);
 	owner_loc = mono_mb_add_local (mb, &mono_defaults.int_class->byval_arg);
@@ -941,7 +947,7 @@ mono_monitor_get_fast_enter_method (MonoMethod *monitor_enter_method)
 
 	mono_mb_emit_byte (mb, MONO_CUSTOM_PREFIX);
 	mono_mb_emit_byte (mb, CEE_MONO_TLS);
-	mono_mb_emit_i4 (mb, thread_tls_offset);
+	mono_mb_emit_i4 (mb, TLS_KEY_THREAD);
 	mono_mb_emit_icon (mb, G_STRUCT_OFFSET (MonoInternalThread, tid));
 	mono_mb_emit_byte (mb, CEE_ADD);
 	mono_mb_emit_byte (mb, CEE_LDIND_I);
@@ -1037,6 +1043,7 @@ mono_monitor_get_fast_enter_method (MonoMethod *monitor_enter_method)
 		mono_mb_emit_byte (mb, CEE_LDARG_1);
 	mono_mb_emit_managed_call (mb, monitor_enter_method, NULL);
 	mono_mb_emit_byte (mb, CEE_RET);
+#endif
 
 	res = register_fastpath (mono_mb_create_method (mb, mono_signature_no_pinvoke (monitor_enter_method), 5), fast_path_idx);
 
@@ -1071,6 +1078,7 @@ mono_monitor_get_fast_exit_method (MonoMethod *monitor_exit_method)
 	mb->method->flags = METHOD_ATTRIBUTE_PUBLIC | METHOD_ATTRIBUTE_STATIC |
 		METHOD_ATTRIBUTE_HIDE_BY_SIG | METHOD_ATTRIBUTE_FINAL;
 
+#ifndef DISABLE_JIT
 	syncp_loc = mono_mb_add_local (mb, &mono_defaults.int_class->byval_arg);
 
 	emit_obj_syncp_check (mb, syncp_loc, &obj_null_branch, NULL, &has_syncp_branch, &thin_hash_branch, TRUE);
@@ -1101,7 +1109,7 @@ mono_monitor_get_fast_exit_method (MonoMethod *monitor_exit_method)
 	mono_mb_emit_byte (mb, CEE_LDIND_I);
 	mono_mb_emit_byte (mb, MONO_CUSTOM_PREFIX);
 	mono_mb_emit_byte (mb, CEE_MONO_TLS);
-	mono_mb_emit_i4 (mb, thread_tls_offset);
+	mono_mb_emit_i4 (mb, TLS_KEY_THREAD);
 	mono_mb_emit_icon (mb, G_STRUCT_OFFSET (MonoInternalThread, tid));
 	mono_mb_emit_byte (mb, CEE_ADD);
 	mono_mb_emit_byte (mb, CEE_LDIND_I);
@@ -1197,6 +1205,7 @@ mono_monitor_get_fast_exit_method (MonoMethod *monitor_exit_method)
 	mono_mb_emit_byte (mb, CEE_LDARG_0);
 	mono_mb_emit_managed_call (mb, monitor_exit_method, NULL);
 	mono_mb_emit_byte (mb, CEE_RET);
+#endif
 
 	res = register_fastpath (mono_mb_create_method (mb, mono_signature_no_pinvoke (monitor_exit_method), 5), FASTPATH_EXIT);
 	mono_mb_free (mb);

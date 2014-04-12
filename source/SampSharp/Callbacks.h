@@ -1,9 +1,7 @@
 #pragma once
 
 #include <iostream>
-
 #include <mono/metadata/threads.h>
-
 #include "SampSharp.h"
 
 static void SAMPGDK_TIMER_CALL p_TimerCallback(int timerid, void * data) {
@@ -447,5 +445,6 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerWeaponShot(int playerid, int weaponid, in
 	args[5] = &fY;
 	args[6] = &fZ;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerWeaponShot, args);
+	bool r = CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerWeaponShot, args);
+	return r;
 }

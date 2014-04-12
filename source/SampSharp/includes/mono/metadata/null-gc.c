@@ -11,6 +11,7 @@
 #include <mono/metadata/mono-gc.h>
 #include <mono/metadata/gc-internal.h>
 #include <mono/metadata/runtime.h>
+#include <mono/utils/mono-threads.h>
 
 #ifdef HAVE_NULL_GC
 
@@ -22,6 +23,9 @@ mono_gc_base_init (void)
 	memset (&cb, 0, sizeof (cb));
 	cb.mono_method_is_critical = mono_runtime_is_critical_method;
 	cb.mono_gc_pthread_create = (gpointer)mono_gc_pthread_create;
+	cb.thread_exit = mono_gc_pthread_exit;
+
+	mono_threads_init (&cb, sizeof (MonoThreadInfo));
 }
 
 void
@@ -190,6 +194,12 @@ mono_gc_wbarrier_generic_store (gpointer ptr, MonoObject* value)
 }
 
 void
+mono_gc_wbarrier_generic_store_atomic (gpointer ptr, MonoObject *value)
+{
+	InterlockedWritePointer (ptr, value);
+}
+
+void
 mono_gc_wbarrier_generic_nostore (gpointer ptr)
 {
 }
@@ -215,13 +225,13 @@ mono_gc_is_critical_method (MonoMethod *method)
 }
 
 MonoMethod*
-mono_gc_get_managed_allocator (MonoVTable *vtable, gboolean for_box)
+mono_gc_get_managed_allocator (MonoClass *klass, gboolean for_box)
 {
 	return NULL;
 }
 
 MonoMethod*
-mono_gc_get_managed_array_allocator (MonoVTable *vtable, int rank)
+mono_gc_get_managed_array_allocator (MonoClass *klass)
 {
 	return NULL;
 }
@@ -451,6 +461,12 @@ mono_gc_get_vtable_bits (MonoClass *class)
 void
 mono_gc_register_altstack (gpointer stack, gint32 stack_size, gpointer altstack, gint32 altstack_size)
 {
+}
+
+gboolean
+mono_gc_set_allow_synchronous_major (gboolean flag)
+{
+	return TRUE;
 }
 
 #endif

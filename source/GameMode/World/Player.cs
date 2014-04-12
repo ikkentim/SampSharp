@@ -94,7 +94,7 @@ namespace GameMode.World
         /// <summary>
         ///     Gets or sets the health of this Player.
         /// </summary>
-        public virtual float Heath
+        public virtual float Health
         {
             get { return Native.GetPlayerHealth(Id); }
             set { Native.SetPlayerHealth(Id, value); }
@@ -281,11 +281,12 @@ namespace GameMode.World
         }
 
         /// <summary>
-        ///     Gets the position of this Players's camera.
+        ///     Gets or sets the position of this Players's camera.
         /// </summary>
         public virtual Vector CameraPosition
         {
             get { return Native.GetPlayerCameraPos(Id); }
+            set { Native.SetPlayerCameraPos(Id, value); }
         }
 
         /// <summary>
@@ -1318,6 +1319,15 @@ namespace GameMode.World
         }
 
         /// <summary>
+        ///     Set the direction this Player's camera looks at. To be used in combination with SetPlayerCameraPos.
+        /// </summary>
+        /// <param name="point">The coordinates for this Player's camera to look at.</param>
+        public virtual void SetCameraLookAt(Vector point)
+        {
+            Native.SetPlayerCameraLookAt(Id, point, CameraCut.Cut);
+        }
+
+        /// <summary>
         ///     You can use this function to attach this Player camera to objects.
         /// </summary>
         /// <remarks>
@@ -1401,11 +1411,23 @@ namespace GameMode.World
         /// <remarks>
         ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectatePlayer" />.
         /// </remarks>
-        /// <param name="targetplayerid">The ID of the player that should be spectated.</param>
+        /// <param name="targetPlayer">The Player that should be spectated.</param>
         /// <param name="mode">The mode to spectate with.</param>
-        public virtual void SpectatePlayer(int targetplayerid, SpectateMode mode)
+        public virtual void SpectatePlayer(Player targetPlayer, SpectateMode mode)
         {
-            Native.PlayerSpectatePlayer(Id, targetplayerid, (int) mode);
+            Native.PlayerSpectatePlayer(Id, targetPlayer.Id, (int)mode);
+        }
+
+        /// <summary>
+        ///     Makes this Player spectate (watch) another player.
+        /// </summary>
+        /// <remarks>
+        ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectatePlayer" />.
+        /// </remarks>
+        /// <param name="targetPlayer">The Player that should be spectated.</param>
+        public virtual void SpectatePlayer(Player targetPlayer)
+        {
+            SpectatePlayer(targetPlayer, SpectateMode.Normal);
         }
 
         /// <summary>
@@ -1416,10 +1438,21 @@ namespace GameMode.World
         /// </remarks>
         /// <param name="targetvehicle">The vehicle to spectate.</param>
         /// <param name="mode">Spectate mode.</param>
-        /// <returns>This function doesn't return a specific value.</returns>
         public virtual void SpectateVehicle(Vehicle targetvehicle, SpectateMode mode)
         {
             Native.PlayerSpectateVehicle(Id, targetvehicle.Id, (int) mode);
+        }
+
+        /// <summary>
+        ///     Sets this Player to spectate another vehicle, i.e. see what its driver sees.
+        /// </summary>
+        /// <remarks>
+        ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectateVehicle" />.
+        /// </remarks>
+        /// <param name="targetvehicle">The vehicle to spectate.</param>
+        public virtual void SpectateVehicle(Vehicle targetvehicle)
+        {
+            SpectateVehicle(targetvehicle, SpectateMode.Normal);
         }
 
         /// <summary>

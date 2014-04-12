@@ -26,7 +26,7 @@ namespace GameMode.Events
 
         public Vehicle Vehicle
         {
-            get { return Vehicle.Find(VehicleId); }
+            get { return VehicleId == Vehicle.InvalidId ? null : Vehicle.Find(VehicleId); }
         }
     }
 }

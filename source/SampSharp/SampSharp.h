@@ -5,10 +5,12 @@
 #include <mono/metadata/mono-debug.h>
 #include <mono/metadata/debug-helpers.h>
 
+using namespace std;
+
 class CSampSharp
 {
 public:
-	CSampSharp(char * basemode_path, char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version, bool generate_symbols);
+	CSampSharp(string bmPath, string gmPath, string gmNamespace, string gmClass, bool generateSymbols);
 	~CSampSharp();
 
 	bool CallCallback(MonoMethod * method, void ** params);
@@ -72,10 +74,9 @@ public:
  
 private:
 	MonoMethod * LoadCallback(const char * cname, const char * name);
+	char * GetTimeStamp();
 	MonoImage * gameModeImage;
 	MonoImage * baseModeImage;
-
-	MonoObject * gameMode;
-	MonoClass * gameModeClass;
+	uint32_t gameModeHandle;
 };
 

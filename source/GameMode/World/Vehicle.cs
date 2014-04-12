@@ -34,7 +34,7 @@ namespace GameMode.World
         ///     Initalizes a new instance of the Vehicle class.
         /// </summary>
         /// <param name="id">The ID of the vehicle to initialize.</param>
-        protected Vehicle(int id)
+        public Vehicle(int id)
         {
             Id = id;
         }

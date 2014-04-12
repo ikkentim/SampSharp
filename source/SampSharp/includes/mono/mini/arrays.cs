@@ -23,11 +23,18 @@ using System.Reflection;
  * the IL code looks.
  */
 
-class Tests {
+#if MOBILE
+class ArrayTests
+#else
+class Tests
+#endif
+{
 
-	static int Main () {
-		return TestDriver.RunTests (typeof (Tests));
+#if !MOBILE
+	public static int Main (string[] args) {
+		return TestDriver.RunTests (typeof (Tests), args);
 	}
+#endif
 	
 	public static int test_10_create () {
 		int[] a = new int [10];
@@ -101,30 +108,31 @@ class Tests {
 		return 0;
 	}
 
-	private Int32[] m_array = new int [10];
+	class BitClass {
+		private Int32[] m_array = new int [10];
+
+		public void setBit (int bitIndex, bool value) {
+			int index = bitIndex/32;
+			int shift = bitIndex%32;
+
+			Int32 theBit = 1 << shift;
+			if (value)
+				m_array[index] |= theBit;
+			else
+				m_array[index] &= ~theBit;
+		}
 	
-	void setBit (int bitIndex, bool value) {
-		int index = bitIndex/32;
-		int shift = bitIndex%32;
+		public bool getBit (int bitIndex) {
+			int index = bitIndex/32;
+			int shift = bitIndex%32;
 
-		Int32 theBit = 1 << shift;
-		if (value)
-			m_array[index] |= theBit;
-		else
-			m_array[index] &= ~theBit;
-	}
-	
-	bool getBit (int bitIndex) {
-		int index = bitIndex/32;
-		int shift = bitIndex%32;
-
-		Int32 theBit = m_array[index] & (1 << shift);
-		return (theBit == 0) ? false : true;
-
+			Int32 theBit = m_array[index] & (1 << shift);
+			return (theBit == 0) ? false : true;
+		}
 	}
 	
 	public static int test_1_bit_index () {
-		Tests t = new Tests ();
+		var t = new BitClass ();
 		t.setBit (0, true);
 		t.setBit (3, true);
 		if (t.getBit (1))
@@ -499,10 +507,13 @@ class Tests {
 		return y;
 	}
 
-	public static int test_0_stelem_ref_null_opt () {
-		object[] arr = new Tests [1];
+	class RefClass {
+	}
 
-		arr [0] = new Tests ();
+	public static int test_0_stelem_ref_null_opt () {
+		object[] arr = new RefClass [1];
+
+		arr [0] = new RefClass ();
 		arr [0] = null;
 
 		return arr [0] == null ? 0 : 1;
@@ -755,7 +766,46 @@ class Tests {
             test[x+100,y+100] = true;
         }
 		return 0;
-	}		
+	}
+
+	static bool alloc_long (long l) {
+		try {
+			var arr = new byte[l];
+			return false;
+		} catch (Exception e) {
+			return true;
+		}
+	}
+
+	// #13544
+	public static int test_0_newarr_ovf () {
+		if (!alloc_long (5000000000))
+			return 1;
+		if (!alloc_long (4000000000))
+			return 2;
+		if (!alloc_long (-1))
+			return 3;
+		if (!alloc_long (-4000000000))
+			return 4;
+		if (!alloc_long (-6000000000))
+			return 5;
+		return 0;
+	}
+
+	static int llvm_ldlen_licm (int[] arr) {
+		int sum = 0;
+		// The ldlen should be moved out of the loop
+		for (int i = 0; i < arr.Length; ++i)
+			sum += arr [i];
+		return sum;
+	}
+
+	public static int test_10_llvm_ldlen_licm () {
+		int[] arr = new int [10];
+		for (int i = 0; i < 10; ++i)
+			arr [i] = 1;
+		return llvm_ldlen_licm (arr);
+	}
 }
 
 

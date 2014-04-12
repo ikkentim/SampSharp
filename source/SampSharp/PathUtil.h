@@ -6,28 +6,34 @@
 #elif
 #include <unistd.h>
 #endif
-
 #include <string>
+
+using namespace std;
 
 struct PathUtil
 {
-	static std::string GetBinDirectory()
+	static string GetBinDirectory()
 	{
-		std::string s_cwd(getcwd(NULL, 0));
+		string s_cwd(getcwd(NULL, 0));
 		return s_cwd.append("\\");
 	}
 
-	static std::string GetMonoDirectory()
+	static string GetPathInBin(string append)
+	{
+		return GetBinDirectory().append(append);
+	}
+
+	static string GetMonoDirectory()
 	{
 		return GetBinDirectory().append("Mono\\");
 	}
 
-	static std::string GetLibDirectory()
+	static string GetLibDirectory()
 	{
 		return GetMonoDirectory().append("lib\\");
 	}
 
-	static std::string GetConfigDirectory()
+	static string GetConfigDirectory()
 	{
 		return GetMonoDirectory().append("etc\\");
 	}

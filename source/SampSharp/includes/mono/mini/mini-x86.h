@@ -262,11 +262,10 @@ typedef struct {
 #define MONO_ARCH_HAVE_CONTEXT_SET_INT_REG 1
 #define MONO_ARCH_HAVE_SETUP_ASYNC_CALLBACK 1
 #define MONO_ARCH_GSHAREDVT_SUPPORTED 1
-
-gboolean
-mono_x86_tail_call_supported (MonoMethodSignature *caller_sig, MonoMethodSignature *callee_sig) MONO_INTERNAL;
-
-#define MONO_ARCH_USE_OP_TAIL_CALL(caller_sig, callee_sig) mono_x86_tail_call_supported (caller_sig, callee_sig)
+#define MONO_ARCH_HAVE_OP_TAIL_CALL 1
+#define MONO_ARCH_HAVE_TRANSLATE_TLS_OFFSET 1
+#define MONO_ARCH_HAVE_TLS_GET_REG 1
+#define MONO_ARCH_HAVE_DUMMY_INIT 1
 
 /* Used for optimization, not complete */
 #define MONO_ARCH_IS_OP_MEMBASE(opcode) ((opcode) == OP_X86_PUSH_MEMBASE)
@@ -298,7 +297,8 @@ typedef enum {
 	GSHAREDVT_RET_I1 = 5,
 	GSHAREDVT_RET_U1 = 6,
 	GSHAREDVT_RET_I2 = 7,
-	GSHAREDVT_RET_U2 = 8
+	GSHAREDVT_RET_U2 = 8,
+	GSHAREDVT_RET_IREG = 9
 } GSharedVtRetMarshal;
 
 typedef struct {
@@ -323,6 +323,9 @@ typedef struct {
 guint8*
 mono_x86_emit_tls_get (guint8* code, int dreg, int tls_offset) MONO_INTERNAL;
 
+guint8*
+mono_x86_emit_tls_get_reg (guint8* code, int dreg, int offset_reg) MONO_INTERNAL;
+
 guint32
 mono_x86_get_this_arg_offset (MonoGenericSharingContext *gsctx, MonoMethodSignature *sig) MONO_INTERNAL;
 
@@ -340,8 +343,8 @@ mono_x86_throw_corlib_exception (mgreg_t *regs, guint32 ex_token_index,
 void 
 mono_x86_patch (unsigned char* code, gpointer target) MONO_INTERNAL;
 
-void
-mono_x86_start_gsharedvt_call (GSharedVtCallInfo *info, gpointer *caller, gpointer *callee) MONO_INTERNAL;
+gpointer
+mono_x86_start_gsharedvt_call (GSharedVtCallInfo *info, gpointer *caller, gpointer *callee, gpointer mrgctx_reg) MONO_INTERNAL;
 
 #endif /* __MONO_MINI_X86_H__ */  
 
