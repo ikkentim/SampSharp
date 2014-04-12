@@ -22,4 +22,4 @@ ToDo's
 
 Known Bugs
 ======
-	-Calling gmx twice will result in all callbacks being called twice.
+	-Calling gmx twice will result in OnGameModeInit being called twice (will be fixed when updating sampgdk).
