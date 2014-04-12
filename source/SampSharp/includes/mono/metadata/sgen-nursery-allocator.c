@@ -70,6 +70,7 @@
 #include "metadata/sgen-protocol.h"
 #include "metadata/sgen-archdep.h"
 #include "metadata/sgen-bridge.h"
+#include "metadata/sgen-memory-governor.h"
 #include "metadata/mono-gc.h"
 #include "metadata/method-builder.h"
 #include "metadata/profiler-private.h"
@@ -151,6 +152,8 @@ static AllocRecord *alloc_records;
 static volatile int next_record;
 static volatile int alloc_count;
 
+void dump_alloc_records (void);
+void verify_alloc_records (void);
 
 static const char*
 get_reason_name (AllocRecord *rec)
@@ -199,7 +202,7 @@ void
 dump_alloc_records (void)
 {
 	int i;
-	qsort (alloc_records, next_record, sizeof (AllocRecord), comp_alloc_record);
+	sgen_qsort (alloc_records, next_record, sizeof (AllocRecord), comp_alloc_record);
 
 	printf ("------------------------------------DUMP RECORDS----------------------------\n");
 	for (i = 0; i < next_record; ++i) {
@@ -217,7 +220,7 @@ verify_alloc_records (void)
 	int max_hole = 0;
 	AllocRecord *prev = NULL;
 
-	qsort (alloc_records, next_record, sizeof (AllocRecord), comp_alloc_record);
+	sgen_qsort (alloc_records, next_record, sizeof (AllocRecord), comp_alloc_record);
 	printf ("------------------------------------DUMP RECORDS- %d %d---------------------------\n", next_record, alloc_count);
 	for (i = 0; i < next_record; ++i) {
 		AllocRecord *rec = alloc_records + i;
@@ -850,6 +853,10 @@ gboolean
 sgen_can_alloc_size (size_t size)
 {
 	SgenFragment *frag;
+
+	if (!SGEN_CAN_ALIGN_UP (size))
+		return FALSE;
+
 	size = SGEN_ALIGN_UP (size);
 
 	for (frag = unmask (mutator_allocator.alloc_head); frag; frag = unmask (frag->next)) {
@@ -862,6 +869,8 @@ sgen_can_alloc_size (size_t size)
 void*
 sgen_nursery_alloc (size_t size)
 {
+	SGEN_ASSERT (1, size >= sizeof (MonoObject) && size <= SGEN_MAX_SMALL_OBJ_SIZE, "Invalid nursery object size");
+
 	SGEN_LOG (4, "Searching nursery for size: %zd", size);
 	size = SGEN_ALIGN_UP (size);
 

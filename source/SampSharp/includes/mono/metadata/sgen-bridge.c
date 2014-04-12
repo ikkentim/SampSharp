@@ -308,10 +308,10 @@ sgen_is_bridge_object (MonoObject *obj)
 	return bridge_callbacks.is_bridge_object (obj);
 }
 
-gboolean
-sgen_is_bridge_class (MonoClass *class)
+MonoGCBridgeObjectKind
+sgen_bridge_class_kind (MonoClass *class)
 {
-	return bridge_callbacks.is_bridge_class (class);
+	return bridge_callbacks.bridge_class_kind (class);
 }
 
 gboolean
@@ -558,7 +558,6 @@ sgen_bridge_processing_stw_step (void)
 	 * bridge_processing_in_progress must be set with the world
 	 * stopped.  If not there would be race conditions.
 	 */
-	g_assert (!bridge_processing_in_progress);
 	bridge_processing_in_progress = TRUE;
 
 	SGEN_TV_GETTIME (btv);
@@ -569,8 +568,20 @@ sgen_bridge_processing_stw_step (void)
 	dyn_array_int_init (&merge_array);
 
 	current_time = 0;
+	/*
+	First we insert all bridges into the hash table and then we do dfs1.
+
+	It must be done in 2 steps since the bridge arrays doesn't come in reverse topological order,
+	which means that we can have entry N pointing to entry N + 1.
+
+	If we dfs1 entry N before N + 1 is registered we'll not consider N + 1 for this bridge
+	pass and not create the required xref between the two.
+	*/
 	for (i = 0; i < registered_bridges.size; ++i)
-		dfs1 (register_bridge_object (DYN_ARRAY_PTR_REF (&registered_bridges, i)), NULL);
+		register_bridge_object (DYN_ARRAY_PTR_REF (&registered_bridges, i));
+
+	for (i = 0; i < registered_bridges.size; ++i)
+		dfs1 (get_hash_entry (DYN_ARRAY_PTR_REF (&registered_bridges, i), NULL), NULL);
 
 	SGEN_TV_GETTIME (atv);
 	step_2 = SGEN_TV_ELAPSED (btv, atv);
@@ -625,7 +636,7 @@ sgen_bridge_processing_finish (int generation)
 
 	/* sort array according to decreasing finishing time */
 
-	qsort (all_entries, hash_table.num_entries, sizeof (HashEntry*), compare_hash_entries);
+	sgen_qsort (all_entries, hash_table.num_entries, sizeof (HashEntry*), compare_hash_entries);
 
 	SGEN_TV_GETTIME (btv);
 	step_3 = SGEN_TV_ELAPSED (atv, btv);
@@ -805,12 +816,36 @@ sgen_bridge_processing_finish (int generation)
 	bridge_processing_in_progress = FALSE;
 }
 
+void
+sgen_bridge_describe_pointer (MonoObject *obj)
+{
+	HashEntry *entry;
+	int i;
+
+	for (i = 0; i < registered_bridges.size; ++i) {
+		if (obj == DYN_ARRAY_PTR_REF (&registered_bridges, i)) {
+			printf ("Pointer is a registered bridge object.\n");
+			break;
+		}
+	}
+
+	entry = sgen_hash_table_lookup (&hash_table, obj);
+	if (!entry)
+		return;
+
+	printf ("Bridge hash table entry %p:\n", entry);
+	printf ("  is bridge: %d\n", (int)entry->is_bridge);
+	printf ("  is visited: %d\n", (int)entry->is_visited);
+}
+
 static const char *bridge_class;
 
-static gboolean
-bridge_test_is_bridge_class (MonoClass *class)
+static MonoGCBridgeObjectKind
+bridge_test_bridge_class_kind (MonoClass *class)
 {
-	return !strcmp (bridge_class, class->name);
+	if (!strcmp (bridge_class, class->name))
+		return GC_BRIDGE_TRANSPARENT_BRIDGE_CLASS;
+	return GC_BRIDGE_TRANSPARENT_CLASS;
 }
 
 static gboolean
@@ -829,7 +864,7 @@ bridge_test_cross_reference (int num_sccs, MonoGCBridgeSCC **sccs, int num_xrefs
 		for (j = 0; j < sccs [i]->num_objs; ++j) {
 	//		g_print ("  %s\n", sgen_safe_name (sccs [i]->objs [j]));
 			if (i & 1) /*retain half of the bridged objects */
-				sccs [i]->objs [0] = NULL;
+				sccs [i]->is_alive = TRUE;
 		}
 	}
 	for (i = 0; i < num_xrefs; ++i) {
@@ -839,17 +874,95 @@ bridge_test_cross_reference (int num_sccs, MonoGCBridgeSCC **sccs, int num_xrefs
 	}
 }
 
+static MonoClassField *mono_bridge_test_field;
+
+enum {
+	BRIDGE_DEAD,
+	BRIDGE_ROOT,
+	BRIDGE_SAME_SCC,
+	BRIDGE_XREF,
+};
+
+static gboolean
+test_scc (MonoGCBridgeSCC *scc, int i)
+{
+	int status = BRIDGE_DEAD;
+	mono_field_get_value (scc->objs [i], mono_bridge_test_field, &status);
+	return status > 0;
+}
+
+static void
+mark_scc (MonoGCBridgeSCC *scc, int value)
+{
+	int i;
+	for (i = 0; i < scc->num_objs; ++i) {
+		if (!test_scc (scc, i)) {
+			int status = value;
+			mono_field_set_value (scc->objs [i], mono_bridge_test_field, &status);
+		}
+	}
+}
+
+static void
+bridge_test_cross_reference2 (int num_sccs, MonoGCBridgeSCC **sccs, int num_xrefs, MonoGCBridgeXRef *xrefs)
+{
+	int i;
+	gboolean modified;
+
+	if (!mono_bridge_test_field) {
+		mono_bridge_test_field = mono_class_get_field_from_name (mono_object_get_class (sccs[0]->objs [0]), "__test");
+		g_assert (mono_bridge_test_field);
+	}
+
+	/*We mark all objects in a scc with live objects as reachable by scc*/
+	for (i = 0; i < num_sccs; ++i) {
+		int j;
+		gboolean live = FALSE;
+		for (j = 0; j < sccs [i]->num_objs; ++j) {
+			if (test_scc (sccs [i], j)) {
+				live = TRUE;
+				break;
+			}
+		}
+		if (!live)
+			continue;
+		for (j = 0; j < sccs [i]->num_objs; ++j) {
+			if (!test_scc (sccs [i], j)) {
+				int status = BRIDGE_SAME_SCC;
+				mono_field_set_value (sccs [i]->objs [j], mono_bridge_test_field, &status);
+			}
+		}
+	}
+
+	/*Now we mark the transitive closure of reachable objects from the xrefs*/
+	modified = TRUE;
+	while (modified) {
+		modified = FALSE;
+		/* Mark all objects that are brought to life due to xrefs*/
+		for (i = 0; i < num_xrefs; ++i) {
+			MonoGCBridgeXRef ref = xrefs [i];
+			if (test_scc (sccs [ref.src_scc_index], 0) && !test_scc (sccs [ref.dst_scc_index], 0)) {
+				modified = TRUE;
+				mark_scc (sccs [ref.dst_scc_index], BRIDGE_XREF);
+			}
+		}
+	}
+
+	/* keep everything in memory, all we want to do is test persistence */
+	for (i = 0; i < num_sccs; ++i)
+		sccs [i]->is_alive = TRUE;
+}
 
 void
 sgen_register_test_bridge_callbacks (const char *bridge_class_name)
 {
 	MonoGCBridgeCallbacks callbacks;
 	callbacks.bridge_version = SGEN_BRIDGE_VERSION;
-	callbacks.is_bridge_class = bridge_test_is_bridge_class;
+	callbacks.bridge_class_kind = bridge_test_bridge_class_kind;
 	callbacks.is_bridge_object = bridge_test_is_bridge_object;
-	callbacks.cross_references = bridge_test_cross_reference;
+	callbacks.cross_references = bridge_class_name[0] == '2' ? bridge_test_cross_reference2 : bridge_test_cross_reference;
 	mono_gc_register_bridge_callbacks (&callbacks);
-	bridge_class = bridge_class_name;
+	bridge_class = bridge_class_name + (bridge_class_name[0] == '2' ? 1 : 0);
 }
 
 #endif

@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{685A353F-F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gamemodes", "Gamemodes", "{666B51C5-EA54-4BF0-962E-73DD954D3FD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiverShell", "RiverShell\RiverShell.csproj", "{03B51943-271B-45D4-B13A-711A01A9247B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,16 @@ Global
 		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Win32.ActiveCfg = Release|Any CPU
+		{03B51943-271B-45D4-B13A-711A01A9247B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03B51943-271B-45D4-B13A-711A01A9247B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03B51943-271B-45D4-B13A-711A01A9247B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{03B51943-271B-45D4-B13A-711A01A9247B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{03B51943-271B-45D4-B13A-711A01A9247B}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{03B51943-271B-45D4-B13A-711A01A9247B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03B51943-271B-45D4-B13A-711A01A9247B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03B51943-271B-45D4-B13A-711A01A9247B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{03B51943-271B-45D4-B13A-711A01A9247B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{03B51943-271B-45D4-B13A-711A01A9247B}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,5 +94,6 @@ Global
 		{39908193-8E5A-42EC-B71B-5D457CE87823} = {685A353F-FB6A-4D33-80EA-D57F0AA6D703}
 		{8D02A77A-1DBC-4208-B7E4-DD1DB26CC2B0} = {F3BECF35-708E-4611-902B-5C3A6BD7F738}
 		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC} = {666B51C5-EA54-4BF0-962E-73DD954D3FD8}
+		{03B51943-271B-45D4-B13A-711A01A9247B} = {666B51C5-EA54-4BF0-962E-73DD954D3FD8}
 	EndGlobalSection
 EndGlobal

@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using System.Linq;
 using GameMode;
 using GameMode.Definitions;
@@ -76,6 +77,7 @@ namespace TestMode.World
                     var sendingPlayer = args.Player as MyPlayer;
                     sendingPlayer.LoggedIn = true;
                     Native.SendClientMessage(sendingPlayer.Id, Color.GreenYellow, "You logged in!");
+                    Console.WriteLine(CameraPosition.ToString());
                 }
                 else
                 {

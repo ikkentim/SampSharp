@@ -5,7 +5,7 @@
 # It is necessary for linking the library.
 
 # The name that we can dlopen(3).
-dlname='../bin/MonoPosixHelper.dll'
+dlname='../bin/libMonoPosixHelper.dll'
 
 # Names of this library.
 library_names='libMonoPosixHelper.dll.a'

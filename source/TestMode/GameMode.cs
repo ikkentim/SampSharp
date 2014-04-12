@@ -43,18 +43,6 @@ namespace TestMode
                 obj.Move(obj.Position.Add(m), 1.0f, obj.Rotation.Add(new Vector(5)));
             };
 
-            var t2 = new Timer(2000, true);
-            t2.Tick += (sender, args) =>
-            {
-                Console.WriteLine("GlobalObject:");
-                foreach (var go in GlobalObject.AllIden)
-                    Console.WriteLine(go);
-
-                Console.WriteLine("Timer:");
-                foreach (var p in Timer.AllIden)
-                    Console.WriteLine(p);
-            };
-
             return base.OnGameModeInit();
         }
     }

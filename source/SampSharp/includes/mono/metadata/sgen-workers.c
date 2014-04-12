@@ -370,11 +370,12 @@ static mono_native_thread_return_t
 workers_thread_func (void *data_untyped)
 {
 	WorkerData *data = data_untyped;
+	SgenMajorCollector *major = sgen_get_major_collector ();
 
 	mono_thread_info_register_small_id ();
 
-	if (sgen_get_major_collector ()->init_worker_thread)
-		sgen_get_major_collector ()->init_worker_thread (data->major_collector_data);
+	if (major->init_worker_thread)
+		major->init_worker_thread (data->major_collector_data);
 
 	init_private_gray_queue (data);
 
@@ -387,8 +388,10 @@ workers_thread_func (void *data_untyped)
 		}
 
 		if (workers_marking && (!sgen_gray_object_queue_is_empty (&data->private_gray_queue) || workers_get_work (data))) {
-			ScanCopyContext ctx = { sgen_get_major_collector ()->major_ops.scan_object, NULL,
-				&data->private_gray_queue };
+			SgenObjectOperations *ops = sgen_concurrent_collection_in_progress ()
+				? &major->major_concurrent_ops
+				: &major->major_ops;
+			ScanCopyContext ctx = { ops->scan_object, NULL, &data->private_gray_queue };
 
 			g_assert (!sgen_gray_object_queue_is_empty (&data->private_gray_queue));
 
@@ -457,7 +460,7 @@ sgen_workers_init (int num_workers)
 
 	for (i = 0; i < workers_num; ++i) {
 		/* private gray queue is inited by the thread itself */
-		mono_mutex_init (&workers_data [i].stealable_stack_mutex, NULL);
+		mono_mutex_init (&workers_data [i].stealable_stack_mutex);
 		workers_data [i].stealable_stack_fill = 0;
 
 		if (sgen_get_major_collector ()->alloc_worker_data)

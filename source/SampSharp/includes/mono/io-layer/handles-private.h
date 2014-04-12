@@ -13,7 +13,6 @@
 #include <config.h>
 #include <glib.h>
 #include <errno.h>
-#include <signal.h>
 #include <string.h>
 #include <sys/types.h>
 
@@ -21,6 +20,7 @@
 #include <mono/io-layer/misc-private.h>
 #include <mono/io-layer/collection.h>
 #include <mono/io-layer/shared.h>
+#include <mono/utils/atomic.h>
 
 #define _WAPI_PRIVATE_MAX_SLOTS		(1024 * 16)
 #define _WAPI_PRIVATE_HANDLES(x) (_wapi_private_handles [x / _WAPI_HANDLE_INITIAL_COUNT][x % _WAPI_HANDLE_INITIAL_COUNT])
@@ -144,7 +144,6 @@ static inline void _wapi_handle_set_signal_state (gpointer handle,
 		/* The condition the global signal cond is waiting on is the signalling of
 		 * _any_ handle. So lock it before setting the signalled state.
 		 */
-		pthread_cleanup_push ((void(*)(void *))mono_mutex_unlock_in_cleanup, (void *)_wapi_global_signal_mutex);
 		thr_ret = mono_mutex_lock (_wapi_global_signal_mutex);
 		if (thr_ret != 0)
 			g_warning ("Bad call to mono_mutex_lock result %d for global signal mutex", thr_ret);
@@ -179,8 +178,6 @@ static inline void _wapi_handle_set_signal_state (gpointer handle,
 		if (thr_ret != 0)
 			g_warning ("Bad call to mono_mutex_unlock result %d for global signal mutex", thr_ret);
 		g_assert (thr_ret == 0);
-
-		pthread_cleanup_pop (0);
 	} else {
 		handle_data->signalled=state;
 	}

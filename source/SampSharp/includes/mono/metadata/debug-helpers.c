@@ -326,10 +326,10 @@ mono_method_desc_new (const char *name, gboolean include_namespace)
 		g_free (class_nspace);
 		return NULL;
 	}
-	*method_name++ = 0;
 	/* allow two :: to separate the method name */
-	if (*method_name == ':')
-		method_name++;
+	if (method_name != class_nspace && method_name [-1] == ':')
+		method_name [-1] = 0;
+	*method_name++ = 0;
 	class_name = strrchr (class_nspace, '.');
 	if (class_name) {
 		*class_name++ = 0;
@@ -468,6 +468,8 @@ match_class (MonoMethodDesc *desc, int pos, MonoClass *klass)
 gboolean
 mono_method_desc_full_match (MonoMethodDesc *desc, MonoMethod *method)
 {
+	if (!desc->klass)
+		return FALSE;
 	if (!match_class (desc, strlen (desc->klass), method->klass))
 		return FALSE;
 
@@ -573,7 +575,7 @@ dis_one (GString *str, MonoDisHelper *dh, MonoMethod *method, const unsigned cha
 		size_t len2;
 		char *blob2 = NULL;
 
-		if (!method->klass->image->dynamic) {
+		if (!method->klass->image->dynamic && !method->dynamic) {
 			token = read32 (ip);
 			blob = mono_metadata_user_string (method->klass->image, mono_metadata_token_index (token));
 

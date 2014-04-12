@@ -17,7 +17,7 @@ old_library='libmono-profiler-cov.a'
 inherited_linker_flags=''
 
 # Libraries that this one depends upon.
-dependency_libs=' /tmp/install/lib/libmono-2.0.la -L../../eglib/src -lmswsock -lkernel32 -lws2_32 -lpsapi -lole32 -lwinmm -loleaut32 -ladvapi32 -lversion'
+dependency_libs=' /tmp/install/lib/libmonosgen-2.0.la -L../../eglib/src /usr/lib/gcc/i686-pc-mingw32/4.5.2/libstdc++.la -lmswsock -lkernel32 -lws2_32 -lpsapi -lole32 -lwinmm -loleaut32 -ladvapi32 -lversion'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''

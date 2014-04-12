@@ -10,39 +10,42 @@ using namespace std;
 
 CSampSharp * CSampSharp::instance;
 
-CSampSharp::CSampSharp(char * basemode_path, char * gamemode_path, char * gamemode_namespace, char * gamemode_class, char * runtime_version, bool generate_symbols) {
+CSampSharp::CSampSharp(string bmPath, string gmPath, string gmNamespace, string gmClass, bool generateSymbols) {
 	
 	//Initialize the Mono runtime
 	mono_set_dirs(PathUtil::GetLibDirectory().c_str(), PathUtil::GetConfigDirectory().c_str());
+	
 	mono_debug_init(MONO_DEBUG_FORMAT_MONO);
-	rootDomain = mono_jit_init_version("SampSharp", runtime_version);
+	rootDomain = mono_jit_init(PathUtil::GetPathInBin(gmPath).c_str());
 
-	if (generate_symbols == true) {
+	//Symbol generator
+	if (generateSymbols == true) {
+		//Construct path to pdb2mdb
 		string mdbpath = PathUtil::GetBinDirectory().append("Mono/lib/mono/4.5/pdb2mdb.exe");
 		char *cmdbpath = new char[mdbpath.size() + 1];
 		std::strcpy(cmdbpath, mdbpath.c_str());
 
 		MonoAssembly * mdbconverter = mono_domain_assembly_open(rootDomain, cmdbpath);
-
 		if (mdbconverter) {
 			int argc = 2;
 			char * argv[2];
 			argv[0] = cmdbpath;
 			
-			cout << "[SampSharp] Generating symbol file for " << gamemode_path << "." << endl;
-			argv[1] = gamemode_path;
+			cout << "[SampSharp] Generating symbol file for " << gmPath << "." << endl;
+			argv[1] = (char *) gmPath.c_str();
 			mono_jit_exec(rootDomain, mdbconverter, argc, argv);
 
-			cout << "[SampSharp] Generating symbol file for " << basemode_path << "." << endl;
-			argv[1] = basemode_path;
+			cout << "[SampSharp] Generating symbol file for " << bmPath << "." << endl;
+			argv[1] = (char *) bmPath.c_str();
 			mono_jit_exec(rootDomain, mdbconverter, argc, argv);
 		}
 
 		delete cmdbpath;
 	}
+
 	//Load the gamemode's assembly
-	MonoAssembly * pMonoAssembly = mono_domain_assembly_open(mono_domain_get(), PathUtil::GetBinDirectory().append(gamemode_path).c_str());
-	MonoAssembly * bMonoAssembly = mono_domain_assembly_open(mono_domain_get(), PathUtil::GetBinDirectory().append(basemode_path).c_str());
+	MonoAssembly * pMonoAssembly = mono_domain_assembly_open(mono_domain_get(), PathUtil::GetPathInBin(gmPath).c_str());
+	MonoAssembly * bMonoAssembly = mono_domain_assembly_open(mono_domain_get(), PathUtil::GetPathInBin(bmPath).c_str());
 
 	gameModeImage = mono_assembly_get_image(pMonoAssembly);
 	baseModeImage = mono_assembly_get_image(bMonoAssembly);
@@ -51,78 +54,92 @@ CSampSharp::CSampSharp(char * basemode_path, char * gamemode_path, char * gamemo
 	LoadNatives(); 
 
 	//Create instance of the gamemode's class
-	gameModeClass = mono_class_from_name(gameModeImage, gamemode_namespace, gamemode_class);
-
-	gameMode = mono_object_new(mono_domain_get(), gameModeClass);
+	MonoClass * gameModeMonoClass = mono_class_from_name(gameModeImage, gmNamespace.c_str(), gmClass.c_str());
+	MonoObject * gameMode = mono_object_new(mono_domain_get(), gameModeMonoClass);
+	gameModeHandle = mono_gchandle_new(gameMode, true);
 	mono_runtime_object_init(gameMode);
 
 	//Load all SA:MP callbacks
-	onGameModeInit = LoadCallback(gamemode_class, "OnGameModeInit()");
-	onGameModeExit = LoadCallback(gamemode_class, "OnGameModeExit()");
-	onPlayerConnect = LoadCallback(gamemode_class, "OnPlayerConnect(int)");
-	onPlayerDisconnect = LoadCallback(gamemode_class, "OnPlayerDisconnect(int,int)");
-	onPlayerSpawn = LoadCallback(gamemode_class, "OnPlayerSpawn(int)");
-	onPlayerDeath = LoadCallback(gamemode_class, "OnPlayerDeath(int,int,int)");
-	onVehicleSpawn = LoadCallback(gamemode_class, "OnVehicleSpawn(int)");
-	onVehicleDeath = LoadCallback(gamemode_class, "OnVehicleDeath(int,int)");
-	onPlayerText = LoadCallback(gamemode_class, "OnPlayerText(int,string)");
-	onPlayerCommandText = LoadCallback(gamemode_class, "OnPlayerCommandText(int,string)");
-	onPlayerRequestClass = LoadCallback(gamemode_class, "OnPlayerRequestClass(int,int)");
-	onPlayerEnterVehicle = LoadCallback(gamemode_class, "OnPlayerEnterVehicle(int,int,bool)");
-	onPlayerExitVehicle = LoadCallback(gamemode_class, "OnPlayerExitVehicle(int,int)");
-	onPlayerStateChange = LoadCallback(gamemode_class, "OnPlayerStateChange(int,int,int)");
-	onPlayerEnterCheckpoint = LoadCallback(gamemode_class, "OnPlayerEnterCheckpoint(int)");
-	onPlayerLeaveCheckpoint = LoadCallback(gamemode_class, "OnPlayerLeaveCheckpoint(int)");
-	onPlayerEnterRaceCheckpoint = LoadCallback(gamemode_class, "OnPlayerEnterRaceCheckpoint(int)");
-	onPlayerLeaveRaceCheckpoint = LoadCallback(gamemode_class, "OnPlayerLeaveRaceCheckpoint(int)");
-	onRconCommand = LoadCallback(gamemode_class, "OnRconCommand(string)");
-	onPlayerRequestSpawn = LoadCallback(gamemode_class, "OnPlayerRequestSpawn(int)");
-	onObjectMoved = LoadCallback(gamemode_class, "OnObjectMoved(int)");
-	onPlayerObjectMoved = LoadCallback(gamemode_class, "OnPlayerObjectMoved(int,int)");
-	onPlayerPickUpPickup = LoadCallback(gamemode_class, "OnPlayerPickUpPickup(int,int)");
-	onVehicleMod = LoadCallback(gamemode_class, "OnVehicleMod(int,int,int)");
-	onEnterExitModShop = LoadCallback(gamemode_class, "OnEnterExitModShop(int,int,int)");
-	onVehiclePaintjob = LoadCallback(gamemode_class, "OnVehiclePaintjob(int,int,int)");
-	onVehicleRespray = LoadCallback(gamemode_class, "OnVehicleRespray(int,int,int,int)");
-	onVehicleDamageStatusUpdate = LoadCallback(gamemode_class, "OnVehicleDamageStatusUpdate(int,int)");
-	onUnoccupiedVehicleUpdate = LoadCallback(gamemode_class, "OnUnoccupiedVehicleUpdate(int,int,int)");
-	onPlayerSelectedMenuRow = LoadCallback(gamemode_class, "OnPlayerSelectedMenuRow(int,int)");
-	onPlayerExitedMenu = LoadCallback(gamemode_class, "OnPlayerExitedMenu(int)");
-	onPlayerInteriorChange = LoadCallback(gamemode_class, "OnPlayerInteriorChange(int,int,int)");
-	onPlayerKeyStateChange = LoadCallback(gamemode_class, "OnPlayerKeyStateChange(int,int,int)");
-	onRconLoginAttempt = LoadCallback(gamemode_class, "OnRconLoginAttempt(string,string,bool)");
-	onPlayerUpdate = LoadCallback(gamemode_class, "OnPlayerUpdate(int)");
-	onPlayerStreamIn = LoadCallback(gamemode_class, "OnPlayerStreamIn(int,int)");
-	onPlayerStreamOut = LoadCallback(gamemode_class, "OnPlayerStreamOut(int,int)");
-	onVehicleStreamIn = LoadCallback(gamemode_class, "OnVehicleStreamIn(int,int)");
-	onVehicleStreamOut = LoadCallback(gamemode_class, "OnVehicleStreamOut(int,int)");
-	onDialogResponse = LoadCallback(gamemode_class, "OnDialogResponse(int,int,int,int,string)");
-	onPlayerTakeDamage = LoadCallback(gamemode_class, "OnPlayerTakeDamage(int,int,float,int,int)");
-	onPlayerGiveDamage = LoadCallback(gamemode_class, "OnPlayerGiveDamage(int,int,float,int,int)");
-	onPlayerClickMap = LoadCallback(gamemode_class, "OnPlayerClickMap(int,float,float,float)");
-	onPlayerClickTextDraw = LoadCallback(gamemode_class, "OnPlayerClickTextDraw(int,int)");
-	onPlayerClickPlayerTextDraw = LoadCallback(gamemode_class, "OnPlayerClickPlayerTextDraw(int,int)");
-	onPlayerClickPlayer = LoadCallback(gamemode_class, "OnPlayerClickPlayer(int,int,int)");
-	onPlayerEditObject = LoadCallback(gamemode_class, "OnPlayerEditObject(int,bool,int,int,float,float,float,float,float,float)");
-	onPlayerEditAttachedObject = LoadCallback(gamemode_class, "OnPlayerEditAttachedObject(int,int,int,int,int,float,float,float,float,float,float,float,float,float)");
-	onPlayerSelectObject = LoadCallback(gamemode_class, "OnPlayerSelectObject(int,int,int,int,float,float,float)");
-	onPlayerWeaponShot = LoadCallback(gamemode_class, "OnPlayerWeaponShot(int,int,int,int,float,float,float)");
-	onTimerTick = LoadCallback(gamemode_class, "OnTimerTick(int,object)");
-	onTick = LoadCallback(gamemode_class, "OnTick()");
+	const char * gameModeClass = gmClass.c_str();
+	onGameModeInit = LoadCallback(gameModeClass, "OnGameModeInit");
+	onGameModeExit = LoadCallback(gameModeClass, "OnGameModeExit");
+	onPlayerConnect = LoadCallback(gameModeClass, "OnPlayerConnect");
+	onPlayerDisconnect = LoadCallback(gameModeClass, "OnPlayerDisconnect");
+	onPlayerSpawn = LoadCallback(gameModeClass, "OnPlayerSpawn");
+	onPlayerDeath = LoadCallback(gameModeClass, "OnPlayerDeath");
+	onVehicleSpawn = LoadCallback(gameModeClass, "OnVehicleSpawn");
+	onVehicleDeath = LoadCallback(gameModeClass, "OnVehicleDeath");
+	onPlayerText = LoadCallback(gameModeClass, "OnPlayerText");
+	onPlayerCommandText = LoadCallback(gameModeClass, "OnPlayerCommandText");
+	onPlayerRequestClass = LoadCallback(gameModeClass, "OnPlayerRequestClass");
+	onPlayerEnterVehicle = LoadCallback(gameModeClass, "OnPlayerEnterVehicle");
+	onPlayerExitVehicle = LoadCallback(gameModeClass, "OnPlayerExitVehicle");
+	onPlayerStateChange = LoadCallback(gameModeClass, "OnPlayerStateChange");
+	onPlayerEnterCheckpoint = LoadCallback(gameModeClass, "OnPlayerEnterCheckpoint");
+	onPlayerLeaveCheckpoint = LoadCallback(gameModeClass, "OnPlayerLeaveCheckpoint");
+	onPlayerEnterRaceCheckpoint = LoadCallback(gameModeClass, "OnPlayerEnterRaceCheckpoint");
+	onPlayerLeaveRaceCheckpoint = LoadCallback(gameModeClass, "OnPlayerLeaveRaceCheckpoint");
+	onRconCommand = LoadCallback(gameModeClass, "OnRconCommand");
+	onPlayerRequestSpawn = LoadCallback(gameModeClass, "OnPlayerRequestSpawn");
+	onObjectMoved = LoadCallback(gameModeClass, "OnObjectMoved");
+	onPlayerObjectMoved = LoadCallback(gameModeClass, "OnPlayerObjectMoved");
+	onPlayerPickUpPickup = LoadCallback(gameModeClass, "OnPlayerPickUpPickup");
+	onVehicleMod = LoadCallback(gameModeClass, "OnVehicleMod");
+	onEnterExitModShop = LoadCallback(gameModeClass, "OnEnterExitModShop");
+	onVehiclePaintjob = LoadCallback(gameModeClass, "OnVehiclePaintjob");
+	onVehicleRespray = LoadCallback(gameModeClass, "OnVehicleRespray");
+	onVehicleDamageStatusUpdate = LoadCallback(gameModeClass, "OnVehicleDamageStatusUpdate");
+	onUnoccupiedVehicleUpdate = LoadCallback(gameModeClass, "OnUnoccupiedVehicleUpdate");
+	onPlayerSelectedMenuRow = LoadCallback(gameModeClass, "OnPlayerSelectedMenuRow");
+	onPlayerExitedMenu = LoadCallback(gameModeClass, "OnPlayerExitedMenu");
+	onPlayerInteriorChange = LoadCallback(gameModeClass, "OnPlayerInteriorChange");
+	onPlayerKeyStateChange = LoadCallback(gameModeClass, "OnPlayerKeyStateChange");
+	onRconLoginAttempt = LoadCallback(gameModeClass, "OnRconLoginAttempt");
+	onPlayerUpdate = LoadCallback(gameModeClass, "OnPlayerUpdate");
+	onPlayerStreamIn = LoadCallback(gameModeClass, "OnPlayerStreamIn");
+	onPlayerStreamOut = LoadCallback(gameModeClass, "OnPlayerStreamOut");
+	onVehicleStreamIn = LoadCallback(gameModeClass, "OnVehicleStreamIn");
+	onVehicleStreamOut = LoadCallback(gameModeClass, "OnVehicleStreamOut");
+	onDialogResponse = LoadCallback(gameModeClass, "OnDialogResponse");
+	onPlayerTakeDamage = LoadCallback(gameModeClass, "OnPlayerTakeDamage");
+	onPlayerGiveDamage = LoadCallback(gameModeClass, "OnPlayerGiveDamage");
+	onPlayerClickMap = LoadCallback(gameModeClass, "OnPlayerClickMap");
+	onPlayerClickTextDraw = LoadCallback(gameModeClass, "OnPlayerClickTextDraw");
+	onPlayerClickPlayerTextDraw = LoadCallback(gameModeClass, "OnPlayerClickPlayerTextDraw");
+	onPlayerClickPlayer = LoadCallback(gameModeClass, "OnPlayerClickPlayer");
+	onPlayerEditObject = LoadCallback(gameModeClass, "OnPlayerEditObject");
+	onPlayerEditAttachedObject = LoadCallback(gameModeClass, "OnPlayerEditAttachedObject");
+	onPlayerSelectObject = LoadCallback(gameModeClass, "OnPlayerSelectObject");
+	onPlayerWeaponShot = LoadCallback(gameModeClass, "OnPlayerWeaponShot");
+	onTimerTick = LoadCallback(gameModeClass, "OnTimerTick");
+	onTick = LoadCallback(gameModeClass, "OnTick");
+}
+
+char * CSampSharp::GetTimeStamp() {
+	time_t now = time(0);
+	struct tm tstruct;
+	char timestamp[32];
+	tstruct = *localtime(&now);
+	strftime(timestamp, sizeof(timestamp), "[%d/%m/%Y %H:%M:%S]", &tstruct);
+
+	char * cpr = new char[32];
+	strcpy(cpr, timestamp);
+	return cpr;
 }
 
 MonoMethod * CSampSharp::LoadCallback(const char * cname, const char * name) {
 	//Construct method name
 	char * cl_buffer = new char[256];
 	char * bl_buffer = new char[256];
-
 	sprintf(cl_buffer, "%s:%s", cname, name);
 	sprintf(bl_buffer, "BaseMode:%s", name);
 
-	//Create method description and find method in image
+	//Look for the method in the gamemode image
 	MonoMethodDesc * m_methodDescription = mono_method_desc_new(cl_buffer, false);
 	MonoMethod * m_method = mono_method_desc_search_in_image(m_methodDescription, gameModeImage);
 	mono_method_desc_free(m_methodDescription);
+
+	//If not found, look in base image
 	if (!m_method)
 	{
 		m_methodDescription = mono_method_desc_new(bl_buffer, false);
@@ -130,43 +147,70 @@ MonoMethod * CSampSharp::LoadCallback(const char * cname, const char * name) {
 		mono_method_desc_free(m_methodDescription);
 	}
 
+	//Recheck if method has been found or log it
+	if (!m_method)
+	{
+		ofstream logfile;
+		logfile.open("SampSharp_errors.log", ios::app);
+		cout << "[SampSharp] ERROR: Method '" << name << "' not found in image!" << endl;
+		logfile << GetTimeStamp() << "ERROR: Method '" << name << "' not found in image!" << endl;
+		logfile.close();
+	}
 	return m_method;
 }
 
 bool CSampSharp::CallCallback(MonoMethod* method, void **params) {
-	//Call callback
+
 	MonoObject * exception = NULL;
 	MonoObject * response;
-	try
-	{
-		response = mono_runtime_invoke(method, gameMode, params, &exception);
-	}
-	catch (int param) { cout << "int exception" << param << endl; }
-	catch (char param) { cout << "char exception" << param << endl; }
-	catch (...) { cout << "default exception" << endl; }
+	MonoObject * gameMode = mono_gchandle_get_target(gameModeHandle);
 
-	if (!response)
-		return false;
-
-	//Catch exceptions
-	if (exception) {
-		char * stacktrace = mono_string_to_utf8(mono_object_to_string(exception, NULL));
-		cout << "Exception thrown:\r\n " << stacktrace << endl;
+	//Check for a method
+	if (!method) {
 		ofstream logfile;
 		logfile.open("SampSharp_errors.log", ios::app);
+		cout << "[SampSharp] ERROR: No method given in CallCallback!" << endl;
+		logfile << GetTimeStamp() << "ERROR: No method given in CallCallback!" << endl;
+		logfile.close();
+		return false;
+	}
 
-		time_t     now = time(0);
-		struct tm  tstruct;
-		char       timestamp[80];
-		tstruct = *localtime(&now);
-		strftime(timestamp, sizeof(timestamp), "[%d/%m/%Y %H:%M:%S]", &tstruct);
+	//Check the gamemode opbject
+	if (!gameMode) {
+		ofstream logfile;
+		logfile.open("SampSharp_errors.log", ios::app);
+		cout << "[SampSharp] ERROR: GameMode object disappeared!" << endl;
+		logfile << GetTimeStamp() << "ERROR: GameMode object disappeared!" << endl;
+		logfile.close();
+		return false;
+	}
 
-		logfile << timestamp << " Exception thrown:" << endl << stacktrace << endl;
+	//Call callback
+	response = mono_runtime_invoke(method, gameMode, params, &exception);
+
+	if (!response){
+		ofstream logfile;
+		logfile.open("SampSharp_errors.log", ios::app);
+		cout << "[SampSharp] ERROR: No response given in CallCallback!" << endl;
+		logfile << GetTimeStamp() << "ERROR: No response given in CallCallback!" << endl;
 		logfile.close();
 		return false; //Default return value
 	}
 
-	//cast response to bool and return it.
+	//Catch exceptions
+	if (exception) {
+		char * stacktrace = mono_string_to_utf8(mono_object_to_string(exception, NULL));
+
+		ofstream logfile;
+		logfile.open("SampSharp_errors.log", ios::app);
+		cout << "[SampSharp] Exception thrown:" << endl << stacktrace << endl;
+		logfile << GetTimeStamp() << " Exception thrown:" << endl << stacktrace << endl;
+		logfile.close();
+
+		return false; //Default return value
+	}
+
+	//Cast response to bool and return it.
 	return *(bool *)mono_object_unbox(response);
 }
 

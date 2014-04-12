@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using GameMode.Definitions;
+using GameMode.World;
 
 namespace GameMode.Events
 {
@@ -24,6 +25,11 @@ namespace GameMode.Events
         }
 
         public int KillerId { get; private set; }
+
+        public Player Killer
+        {
+            get { return KillerId == Player.InvalidId ? null : Player.Find(KillerId); }
+        }
         public Weapon DeathReason { get; private set; }
     }
 }

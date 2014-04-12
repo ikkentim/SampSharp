@@ -1,0 +1,7 @@
+prefix=E:/Applications/Mono-3.2.3
+assemblies_dir=${prefix}/lib/mono-source-libs
+Sources=${assemblies_dir}/getline.cs
+
+Name: Mono.Terminal.LineEditor
+Description: Terminal text entry editor using System.Console.
+Version: 0.2.1
