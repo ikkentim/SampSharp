@@ -215,6 +215,14 @@ namespace RiverShell.World
                     GameMode.ObjectiveReached = true;
                     foreach (var p in All)
                         p.PlaySound(1185);
+
+                    var exitTimer = new Timer(6000, false);
+                    exitTimer.Tick += (sender, args) =>
+                    {
+                        foreach (var p in All)
+                            p.PlaySound(1186);
+                        Native.GameModeExit();
+                    };
                 }
                 else
                 {
@@ -234,6 +242,14 @@ namespace RiverShell.World
                     GameMode.ObjectiveReached = true;
                     foreach (var p in All)
                         p.PlaySound(1185);
+
+                    var exitTimer = new Timer(6000, false);
+                    exitTimer.Tick += (sender, args) =>
+                    {
+                        foreach (var p in All)
+                            p.PlaySound(1186);
+                        Native.GameModeExit();
+                    };
                 }
                 else
                 {
