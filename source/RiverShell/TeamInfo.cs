@@ -10,5 +10,6 @@ namespace RiverShell
         public int TimesCaptured { get; set; }
 
         public Vehicle Vehicle { get; set; }
+
     }
 }

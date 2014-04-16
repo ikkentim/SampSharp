@@ -188,11 +188,5 @@ namespace RiverShell
             controllers.Remove<VehicleController>();
             controllers.Add(new RVehicleController());
         }
-
-        public override bool OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY, float fZ)
-        {
-            Console.WriteLine("OnPlayerWeaponShot({0},{1},{2},{3},{4},{5},{6})", playerid, weaponid, hittype, hitid, fX, fY, fZ);
-            return base.OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
-        }
     }
 }
