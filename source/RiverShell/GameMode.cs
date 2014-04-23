@@ -1,9 +1,10 @@
 ﻿using System;
-using GameMode;
-using GameMode.Controllers;
-using GameMode.Definitions;
-using GameMode.World;
 using RiverShell.Controllers;
+using SampSharp.GameMode;
+using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.World;
 
 namespace RiverShell
 {

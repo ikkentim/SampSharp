@@ -20,10 +20,10 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 
 	//Load proxy information from config
 	ConfigReader server_cfg("server.cfg");
-	string basemode_path = "plugins/GameMode.dll"; 
+	string basemode_path = "plugins/SampSharp.GameMode.dll"; 
 	string gamemode_path = "plugins/GameMode.dll";
 	string gamemode_namespace = "GameMode";
-	string gamemode_class = "BaseMode";
+	string gamemode_class = "GameMode";
 	bool gamemode_generate_symbols = false;
 
 	server_cfg.GetOption("basemode_path", basemode_path);

@@ -1,8 +1,9 @@
 ﻿using System.Linq;
-using GameMode;
-using GameMode.Events;
-using GameMode.World;
-using GameMode.Definitions;
+using SampSharp.GameMode;
+using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Events;
+using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.World;
 
 namespace RiverShell.World
 {

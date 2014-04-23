@@ -12,9 +12,9 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
-using GameMode;
-using GameMode.Controllers;
-using GameMode.World;
+using SampSharp.GameMode;
+using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.World;
 using TestMode.Controllers;
 
 namespace TestMode

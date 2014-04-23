@@ -45,9 +45,9 @@
     <Compile Include="World\MyPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GameMode\GameMode.csproj">
+    <ProjectReference Include="..\SampSharp.GameMode\SampSharp.GameMode.csproj">
       <Project>{ccfb350d-bd04-41ab-a9f8-79767e94727e}</Project>
-      <Name>GameMode</Name>
+      <Name>SampSharp.GameMode</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
