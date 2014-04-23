@@ -1,5 +1,5 @@
-﻿using GameMode.Events;
-using GameMode.World;
+﻿using SampSharp.GameMode.Events;
+using SampSharp.GameMode.World;
 
 namespace RiverShell.World
 {

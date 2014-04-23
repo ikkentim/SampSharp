@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CCFB350D-BD04-41AB-A9F8-79767E94727E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SampSharp.GameMode</RootNamespace>
+    <AssemblyName>SampSharp.GameMode</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\ControllerCollection.cs" />
+    <Compile Include="Controllers\DialogController.cs" />
+    <Compile Include="Controllers\GlobalObjectController.cs" />
+    <Compile Include="Controllers\IController.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Controllers\PlayerObjectController.cs" />
+    <Compile Include="Controllers\PlayerTextDrawController.cs" />
+    <Compile Include="Controllers\TextDrawController.cs" />
+    <Compile Include="Controllers\TimerController.cs" />
+    <Compile Include="Controllers\VehicleController.cs" />
+    <Compile Include="Definitions\BodyPart.cs" />
+    <Compile Include="Definitions\CameraMode.cs" />
+    <Compile Include="Definitions\CheckpointType.cs" />
+    <Compile Include="Definitions\DialogButton.cs" />
+    <Compile Include="Definitions\EnterExit.cs" />
+    <Compile Include="Definitions\ObjectType.cs" />
+    <Compile Include="Definitions\DisconnectReason.cs" />
+    <Compile Include="Definitions\ShopName.cs" />
+    <Compile Include="Definitions\TextDrawAlignment.cs" />
+    <Compile Include="Events\DialogResponseEventArgs.cs" />
+    <Compile Include="Events\EventHandlers.cs" />
+    <Compile Include="Events\GameModeEventArgs.cs" />
+    <Compile Include="Definitions\BulletHitType.cs" />
+    <Compile Include="Definitions\CameraCut.cs" />
+    <Compile Include="Definitions\CarModType.cs" />
+    <Compile Include="Definitions\DialogStyle.cs" />
+    <Compile Include="Definitions\EditObjectResponse.cs" />
+    <Compile Include="Definitions\FightStyle.cs" />
+    <Compile Include="Definitions\Keys.cs" />
+    <Compile Include="Definitions\Limits.cs" />
+    <Compile Include="Definitions\MapIconType.cs" />
+    <Compile Include="Definitions\Misc.cs" />
+    <Compile Include="Definitions\ObjectMaterialSize.cs" />
+    <Compile Include="Definitions\ObjectMaterialTextAlign.cs" />
+    <Compile Include="Definitions\PlayerClickSource.cs" />
+    <Compile Include="Definitions\PlayerMarkersMode.cs" />
+    <Compile Include="Definitions\PlayerRecordingType.cs" />
+    <Compile Include="Definitions\PlayerState.cs" />
+    <Compile Include="Definitions\PlayerVarType.cs" />
+    <Compile Include="Definitions\SpecialAction.cs" />
+    <Compile Include="Definitions\SpectateMode.cs" />
+    <Compile Include="Definitions\TextDrawFont.cs" />
+    <Compile Include="Definitions\VehicleModelInfo.cs" />
+    <Compile Include="Definitions\VehicleParams.cs" />
+    <Compile Include="Definitions\Weapon.cs" />
+    <Compile Include="Definitions\WeaponSkill.cs" />
+    <Compile Include="Definitions\WeaponState.cs" />
+    <Compile Include="Events\ObjectEventArgs.cs" />
+    <Compile Include="Events\PlayerVehicleEventArgs.cs" />
+    <Compile Include="Events\PlayerClickMapEventArgs.cs" />
+    <Compile Include="Events\PlayerClickPlayerEventArgs.cs" />
+    <Compile Include="Events\PlayerClickTextDrawEventArgs.cs" />
+    <Compile Include="Events\PlayerDamageEventArgs.cs" />
+    <Compile Include="Events\PlayerDeathEventArgs.cs" />
+    <Compile Include="Events\PlayerDisconnectedEventArgs.cs" />
+    <Compile Include="Events\PlayerEditAttachedObjectEventArgs.cs" />
+    <Compile Include="Events\PlayerEditObjectEventArgs.cs" />
+    <Compile Include="Events\PlayerEnterModShopEventArgs.cs" />
+    <Compile Include="Events\PlayerEnterVehicleEventArgs.cs" />
+    <Compile Include="Events\PlayerEventArgs.cs" />
+    <Compile Include="Events\PlayerInteriorChangedEventArgs.cs" />
+    <Compile Include="Events\PlayerKeyStateChangedEventArgs.cs" />
+    <Compile Include="Events\PlayerObjectEventArgs.cs" />
+    <Compile Include="Events\PlayerPickupEventArgs.cs" />
+    <Compile Include="Events\PlayerRequestClassEventArgs.cs" />
+    <Compile Include="Events\PlayerSelectedMenuRowEventArgs.cs" />
+    <Compile Include="Events\PlayerSelectObjectEventArgs.cs" />
+    <Compile Include="Events\PlayerStateEventArgs.cs" />
+    <Compile Include="Events\PlayerTextEventArgs.cs" />
+    <Compile Include="Events\RconEventArgs.cs" />
+    <Compile Include="Events\RconLoginAttemptEventArgs.cs" />
+    <Compile Include="Events\StreamPlayerEventArgs.cs" />
+    <Compile Include="Events\UnoccupiedVehicleEventArgs.cs" />
+    <Compile Include="Events\VehicleEventArgs.cs" />
+    <Compile Include="Events\VehicleModEventArgs.cs" />
+    <Compile Include="Events\VehiclePaintjobEventArgs.cs" />
+    <Compile Include="Events\VehicleResprayedEventArgs.cs" />
+    <Compile Include="Events\WeaponShotEventArgs.cs" />
+    <Compile Include="Exceptions\PlayerNotConnectedException.cs" />
+    <Compile Include="Exceptions\VehicleDoesNotExistException.cs" />
+    <Compile Include="LogWriter.cs" />
+    <Compile Include="Natives\Native.logging.cs" />
+    <Compile Include="Natives\Native.objects.cs" />
+    <Compile Include="Natives\Native.samp.cs" />
+    <Compile Include="Natives\Native.players.cs" />
+    <Compile Include="Natives\Native.vehicles.cs" />
+    <Compile Include="BaseMode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\MapAndreas.cs" />
+    <Compile Include="Tools\MapAndreasMode.cs" />
+    <Compile Include="World\Color.cs" />
+    <Compile Include="World\ColorFormat.cs" />
+    <Compile Include="Display\Dialog.cs" />
+    <Compile Include="World\GangZone.cs" />
+    <Compile Include="World\GlobalObject.cs" />
+    <Compile Include="World\IGameObject.cs" />
+    <Compile Include="World\IIdentifyable.cs" />
+    <Compile Include="World\InstanceKeeper.cs" />
+    <Compile Include="World\IWorldObject.cs" />
+    <Compile Include="World\Player.cs" />
+    <Compile Include="World\PlayerObject.cs" />
+    <Compile Include="Display\PlayerTextDraw.cs" />
+    <Compile Include="World\PlayerTextLabel.cs" />
+    <Compile Include="Display\TextDraw.cs" />
+    <Compile Include="World\TextLabel.cs" />
+    <Compile Include="World\Timer.cs" />
+    <Compile Include="World\Vector.cs" />
+    <Compile Include="World\Vehicle.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

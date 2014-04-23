@@ -11,7 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using GameMode.Controllers;
+using SampSharp.GameMode.Controllers;
 using TestMode.World;
 
 namespace TestMode.Controllers
