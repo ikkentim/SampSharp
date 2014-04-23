@@ -22,6 +22,7 @@ namespace GameMode.Definitions
         ///     Normal spectating mode.
         /// </summary>
         Normal = 1,
+
         /// <summary>
         ///     Player is looking from a fixed point.
         /// </summary>
