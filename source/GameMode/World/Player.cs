@@ -1261,7 +1261,7 @@ namespace GameMode.World
         /// </summary>
         /// <param name="player">The player whose color will be changed.</param>
         /// <param name="color">New color.</param>
-        public virtual void SetMarkerForPlayer(Player player, Color color)
+        public virtual void SetPlayerMarker(Player player, Color color)
         {
             Native.SetPlayerMarkerForPlayer(Id, player.Id, color.GetColorValue(ColorFormat.RGBA));
         }
@@ -1415,7 +1415,7 @@ namespace GameMode.World
         /// <param name="mode">The mode to spectate with.</param>
         public virtual void SpectatePlayer(Player targetPlayer, SpectateMode mode)
         {
-            Native.PlayerSpectatePlayer(Id, targetPlayer.Id, (int)mode);
+            Native.PlayerSpectatePlayer(Id, targetPlayer.Id, (int) mode);
         }
 
         /// <summary>

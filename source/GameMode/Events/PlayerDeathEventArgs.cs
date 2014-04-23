@@ -30,6 +30,7 @@ namespace GameMode.Events
         {
             get { return KillerId == Player.InvalidId ? null : Player.Find(KillerId); }
         }
+
         public Weapon DeathReason { get; private set; }
     }
 }

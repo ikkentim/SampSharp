@@ -71,6 +71,225 @@ namespace GameMode
 
         #endregion
 
+        #region SA-MP methods
+
+        /// <summary>
+        ///     Set the name of the game mode, which appears in the server browser.
+        /// </summary>
+        /// <param name="text">GameMode name.</param>
+        public void SetGameModeText(string text)
+        {
+            Native.SetGameModeText(text);
+        }
+
+        /// <summary>
+        ///     A function that can be used in <see cref="BaseMode.OnGameModeInit" /> to enable or disable the players markers,
+        ///     which would normally be shown on the radar. If you want to change the marker settings at some other point in the
+        ///     gamemode, have a look at <see cref="Player.SetPlayerMarker" /> which does exactly that.
+        /// </summary>
+        /// <param name="mode">The mode you want to use.</param>
+        public void ShowPlayerMarkers(PlayerMarkersMode mode)
+        {
+            Native.ShowPlayerMarkers((int) mode);
+        }
+
+        /// <summary>
+        ///     Toggle the drawing of player nametags, healthbars and armor bars above players.
+        /// </summary>
+        /// <param name="show">False to disable, True to enable.</param>
+        public void ShowNameTags(bool show)
+        {
+            Native.ShowNameTags(show);
+        }
+
+        /// <summary>
+        ///     Sets the world time to a specific hour.
+        /// </summary>
+        /// <param name="hour">Which time to set.</param>
+        public void SetWorldTime(int hour)
+        {
+            Native.SetWorldTime(hour);
+        }
+
+        /// <summary>
+        ///     Set the world weather for all players.
+        /// </summary>
+        /// <param name="weatherid">The weather to set.</param>
+        public void SetWeather(int weatherid)
+        {
+            Native.SetWeather(weatherid);
+        }
+
+        /// <summary>
+        ///     Uses standard player walking animation (animation of CJ) instead of custom animations for every skin (e.g. skating
+        ///     for skater skins).
+        /// </summary>
+        public void UsePlayerPedAnims()
+        {
+            Native.UsePlayerPedAnims();
+        }
+
+        /// <summary>
+        ///     Enable friendly fire for team vehicles.
+        /// </summary>
+        /// <remarks>
+        ///     Players will be unable to damage teammates' vehicles (<see cref="Player.Team" /> must be used!)
+        /// </remarks>
+        public void EnableVehicleFriendlyFire()
+        {
+            Native.EnableVehicleFriendlyFire();
+        }
+
+        /// <summary>
+        ///     Set the maximum distance to display the names of players.
+        /// </summary>
+        /// <param name="distance">The distance to set.</param>
+        public void SetNameTagDrawDistance(float distance)
+        {
+            Native.SetNameTagDrawDistance(distance);
+        }
+
+        /// <summary>
+        ///     Disable all the interior entrances and exits in the game (the yellow arrows at doors).
+        /// </summary>
+        public void DisableInteriorEnterExists()
+        {
+            Native.DisableInteriorEnterExits();
+        }
+
+        /// <summary>
+        ///     This function is used to change the amount of teams used in the gamemode. It has no obvious way of being used, but
+        ///     can help to indicate the number of teams used for better (more effective) internal handling. This function should
+        ///     only be used in the <see cref="OnGameModeInit" /> callback.
+        /// </summary>
+        /// <remarks>
+        ///     You can pass 2 billion here if you like, this function has no effect at all.
+        /// </remarks>
+        /// <param name="count">Number of teams the gamemode knows.</param>
+        public void SetTeamCount(int count)
+        {
+            Native.SetTeamCount(count);
+        }
+
+        /// <summary>
+        ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
+        /// </summary>
+        /// <param name="modelid">The skin which the player will spawn with.</param>
+        /// <param name="position">The coordinate of the spawnpoint of this class.</param>
+        /// <param name="zAngle">The direction in which the player should face after spawning.</param>
+        /// <param name="weapon1">The first spawn-weapon for the player.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the primary spawnweapon.</param>
+        /// <param name="weapon2">The second spawn-weapon for the player.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <param name="weapon3">The third spawn-weapon for the player.</param>
+        /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
+        /// <returns>
+        ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
+        ///     ID is 299.
+        /// </returns>
+        public int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon1, int weapon1Ammo,
+            Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
+        {
+            return Native.AddPlayerClass(modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo, weapon3,
+                weapon3Ammo);
+        }
+
+        /// <summary>
+        ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
+        /// </summary>
+        /// <param name="teamid">The team you want the player to spawn in.</param>
+        /// <param name="modelid">The skin which the player will spawn with.</param>
+        /// <param name="position">The coordinate of the class' spawn position.</param>
+        /// <param name="zAngle">The direction in which the player will face after spawning.</param>
+        /// <param name="weapon1">The first spawn-weapon for the player.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the first spawnweapon.</param>
+        /// <param name="weapon2">The second spawn-weapon for the player.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <param name="weapon3">The third spawn-weapon for the player.</param>
+        /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
+        /// <returns>The ID of the class that was just created.</returns>
+        public int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon1,
+            int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
+        {
+            return Native.AddPlayerClassEx(teamid, modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
+                weapon3, weapon3Ammo);
+        }
+
+        /// <summary>
+        ///     Enables or disables stunt bonuses for all players.
+        /// </summary>
+        /// <param name="enable">True to enable stunt bonuses, False to disable.</param>
+        public void EnableStuntBonusForAll(bool enable)
+        {
+            Native.EnableStuntBonusForAll(enable);
+        }
+
+        /// <summary>
+        ///     Set a radius limitation for the chat. Only players at a certain distance from the player will see their message in
+        ///     the chat. Also changes the distance at which a player can see other players on the map at the same distance.
+        /// </summary>
+        /// <param name="chatRadius">Radius limit.</param>
+        public void LimitGlobalChatRadius(float chatRadius)
+        {
+            Native.LimitGlobalChatRadius(chatRadius);
+        }
+
+        /// <summary>
+        ///     Set the player marker radius.
+        /// </summary>
+        /// <param name="markerRadius">The radius that markers will show at.</param>
+        public void LimitPlayerMarkerRadius(float markerRadius)
+        {
+            Native.LimitPlayerMarkerRadius(markerRadius);
+        }
+
+        /// <summary>
+        ///     Use this function before any player connects (<see cref="BaseMode.OnGameModeInit" />) to tell all clients that the
+        ///     script will control vehicle engines and lights. This prevents the game automatically turning the engine on/off when
+        ///     players enter/exit vehicles and headlights automatically coming on when it is dark.
+        /// </summary>
+        public void ManualVehicleEngineAndLights()
+        {
+            Native.ManualVehicleEngineAndLights();
+        }
+
+        /// <summary>
+        ///     Ends the currently active gamemode.
+        /// </summary>
+        public void Exit()
+        {
+            Native.GameModeExit();
+        }
+
+        /// <summary>
+        ///     Toggle whether the usage of weapons in interiors is allowed or not.
+        /// </summary>
+        /// <param name="allow">True to enable weapons in interiors (enabled by default), False to disable weapons in interiors.</param>
+        public void AllowInteriorWeapons(bool allow)
+        {
+            Native.AllowInteriorWeapons(allow);
+        }
+
+        /// <summary>
+        ///     With this function you can enable or disable tire popping.
+        /// </summary>
+        /// <param name="enable">True to enable, False to disable tire popping.</param>
+        public void EnableTirePopping(bool enable)
+        {
+            Native.EnableTirePopping(enable);
+        }
+
+        /// <summary>
+        ///     Sends an RCON command.
+        /// </summary>
+        /// <param name="command">The RCON command to be executed.</param>
+        public void SendRconCommand(string command)
+        {
+            Native.SendRconCommand(command);
+        }
+
+        #endregion
+
         #region Events
 
         /// <summary>

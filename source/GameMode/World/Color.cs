@@ -88,6 +88,7 @@ namespace GameMode.World
             G = c.G;
             B = c.B;
         }
+
         #endregion
 
         #region Defaults
@@ -1470,6 +1471,7 @@ namespace GameMode.World
         {
             return new Color(color);
         }
+
         /// <summary>
         ///     Returns a String representation of this Color.
         /// </summary>
