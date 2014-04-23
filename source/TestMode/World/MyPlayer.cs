@@ -13,11 +13,12 @@
 
 using System;
 using System.Linq;
-using GameMode;
-using GameMode.Definitions;
-using GameMode.Display;
-using GameMode.Events;
-using GameMode.World;
+using SampSharp.GameMode;
+using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Display;
+using SampSharp.GameMode.Events;
+using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.World;
 
 namespace TestMode.World
 {

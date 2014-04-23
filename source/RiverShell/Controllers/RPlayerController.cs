@@ -1,5 +1,5 @@
-﻿using GameMode.Controllers;
-using RiverShell.World;
+﻿using RiverShell.World;
+using SampSharp.GameMode.Controllers;
 
 namespace RiverShell.Controllers
 {
