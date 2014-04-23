@@ -1,9 +1,0 @@
-prefix=E:/Applications/Mono-3.2.3
-exec_prefix=${prefix}
-libdir=${prefix}/lib
-
-
-Name: Boo
-Description: A wrist friendly language for the CLI
-Version: 0.9.4.9
-Libs: -r:${libdir}/boo/Boo.Lang.dll -r:${libdir}/boo/Boo.Lang.Useful.dll -r:${libdir}/boo/Boo.Lang.CodeDom.dll -r:${libdir}/boo/Boo.Lang.Compiler.dll -r:${libdir}/boo/Boo.Lang.Parser.dll -r:${libdir}/boo/Boo.Lang.Interpreter.dll
