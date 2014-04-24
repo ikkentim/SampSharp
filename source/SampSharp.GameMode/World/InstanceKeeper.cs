@@ -78,7 +78,6 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets a <see cref="ReadOnlyCollection{T}" /> containing all Instances of type
         ///     <typeparam name="T2" />
-        ///     .
         /// </summary>
         public static ReadOnlyCollection<T2> GetAll<T2>()
         {

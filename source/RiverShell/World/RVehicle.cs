@@ -14,9 +14,9 @@ namespace RiverShell.World
             var player = e.Player as RPlayer;
 
             if (this == GameMode.BlueTeam.Vehicle)
-                e.Vehicle.SetParamsForPlayer(player, true, player.Team == Team.Green);
+                e.Vehicle.SetParamsForPlayer(player, true, player.Team == GameMode.GreenTeam);
             else if (this == GameMode.GreenTeam.Vehicle)
-                e.Vehicle.SetParamsForPlayer(player, true, player.Team == Team.Blue);
+                e.Vehicle.SetParamsForPlayer(player, true, player.Team == GameMode.BlueTeam);
 
             base.OnStreamIn(e);
         }
