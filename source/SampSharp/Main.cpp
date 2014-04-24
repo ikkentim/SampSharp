@@ -44,7 +44,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 		(char *)gamemode_class.c_str(), 
 		gamemode_generate_symbols);
 
-	ServerLog::Printf("[SampSharp] Running Mono runtime.");
+	ServerLog::Printf("[SampSharp] SampSharp is ready!");
 	return true;
 }
 
