@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
@@ -21,8 +20,8 @@ namespace RiverShell.World
 
         public new Team Team
         {
-            get { return (Team) base.Team; }
-            set { base.Team = (int) value; }
+            get { return Team.Find(base.Team); }
+            set { base.Team = value.Id; }
         }
 
         public override void OnRequestClass(PlayerRequestClassEventArgs e)
@@ -36,12 +35,12 @@ namespace RiverShell.World
             {
                 case 0:
                 case 1:
-                    Team = Team.Green;
+                    Team = GameMode.GreenTeam;
                     GameText("~g~GREEN ~w~TEAM", 1000, 5);
                     break;
                 case 2:
                 case 3:
-                    Team = Team.Blue;
+                    Team = GameMode.BlueTeam;
                     GameText("~b~BLUE ~w~TEAM", 1000, 5);
                     break;
             }
@@ -56,15 +55,8 @@ namespace RiverShell.World
                 Color = 0xE2C063FF;
                 return;
             }
-            switch (Team)
-            {
-                case Team.Blue:
-                    Color = 0x7777DDFF;
-                    break;
-                case Team.Green:
-                    Color = 0x77CC77FF;
-                    break;
-            }
+
+            Color = Team.Color;
         }
 
         public override void OnStateChanged(PlayerStateEventArgs e)
@@ -74,7 +66,7 @@ namespace RiverShell.World
                 case PlayerState.Driving:
                     var vehicle = Vehicle;
                     var team = Team;
-                    if (team == Team.Green && vehicle == GameMode.GreenTeam.Vehicle)
+                    if (team == GameMode.GreenTeam && vehicle == GameMode.GreenTeam.Vehicle)
                     {
                         // It's the objective vehicle
                         SetToColor(true);
@@ -82,7 +74,7 @@ namespace RiverShell.World
                         SetCheckpoint(new Vector(2135.7368f, -179.8811f, -0.5323f), 10.0f);
                         GameMode.GreenTeam.PlayerWithVehicle = this;
                     }
-                    if (team == Team.Blue && vehicle == GameMode.BlueTeam.Vehicle)
+                    if (team == GameMode.BlueTeam && vehicle == GameMode.BlueTeam.Vehicle)
                     {
                         // It's the objective vehicle
                         SetToColor(true);
@@ -113,23 +105,25 @@ namespace RiverShell.World
         public override void OnConnected(PlayerEventArgs e)
         {
             Color = 0x888888FF;
+
             GameText("~r~SA-MP: ~w~Rivershell", 2000, 5);
 
-            if (Native.GetPVarInt(Id, "BuildingsRemoved") == 0)
+            if (PVars.Get<int>("BuildingsRemoved") == 0)
             {
-                Native.RemoveBuildingForPlayer(Id, 9090, 2317.0859f, 572.2656f, -20.9688f, 10.0f);
-                Native.RemoveBuildingForPlayer(Id, 9091, 2317.0859f, 572.2656f, -20.9688f, 10.0f);
-                Native.RemoveBuildingForPlayer(Id, 13483, 2113.5781f, -96.7344f, 0.9844f, 0.25f);
-                Native.RemoveBuildingForPlayer(Id, 12990, 2113.5781f, -96.7344f, 0.9844f, 0.25f);
-                Native.RemoveBuildingForPlayer(Id, 935, 2119.8203f, -84.4063f, -0.0703f, 0.25f);
-                Native.RemoveBuildingForPlayer(Id, 1369, 2104.0156f, -105.2656f, 1.7031f, 0.25f);
-                Native.RemoveBuildingForPlayer(Id, 935, 2122.3750f, -83.3828f, 0.4609f, 0.25f);
-                Native.RemoveBuildingForPlayer(Id, 935, 2119.5313f, -82.8906f, -0.1641f, 0.25f);
-                Native.RemoveBuildingForPlayer(Id, 935, 2120.5156f, -79.0859f, 0.2188f, 0.25f);
-                Native.RemoveBuildingForPlayer(Id, 935, 2119.4688f, -69.7344f, 0.2266f, 0.25f);
-                Native.RemoveBuildingForPlayer(Id, 935, 2119.4922f, -73.6172f, 0.1250f, 0.25f);
-                Native.RemoveBuildingForPlayer(Id, 935, 2117.8438f, -67.8359f, 0.1328f, 0.25f);
-                Native.SetPVarInt(Id, "BuildingsRemoved", 1);
+                GlobalObject.Remove(this, 9090, new Vector(2317.0859f, 572.2656f, -20.9688f), 10.0f);
+                GlobalObject.Remove(this, 9091, new Vector(2317.0859f, 572.2656f, -20.9688f), 10.0f);
+                GlobalObject.Remove(this, 13483, new Vector(2113.5781f, -96.7344f, 0.9844f), 0.25f);
+                GlobalObject.Remove(this, 12990, new Vector(2113.5781f, -96.7344f, 0.9844f), 0.25f);
+                GlobalObject.Remove(this, 935, new Vector(2119.8203f, -84.4063f, -0.0703f), 0.25f);
+                GlobalObject.Remove(this, 1369, new Vector(2104.0156f, -105.2656f, 1.7031f), 0.25f);
+                GlobalObject.Remove(this, 935, new Vector(2122.3750f, -83.3828f, 0.4609f), 0.25f);
+                GlobalObject.Remove(this, 935, new Vector(2119.5313f, -82.8906f, -0.1641f), 0.25f);
+                GlobalObject.Remove(this, 935, new Vector(2120.5156f, -79.0859f, 0.2188f), 0.25f);
+                GlobalObject.Remove(this, 935, new Vector(2119.4688f, -69.7344f, 0.2266f), 0.25f);
+                GlobalObject.Remove(this, 935, new Vector(2119.4922f, -73.6172f, 0.1250f), 0.25f);
+                GlobalObject.Remove(this, 935, new Vector(2117.8438f, -67.8359f, 0.1328f), 0.25f);
+
+                PVars["BuildingsRemoved"] = 1;
             }
 
             base.OnConnected(e);
@@ -155,17 +149,12 @@ namespace RiverShell.World
 
             SetToColor(false);
 
-            switch (Team)
-            {
-                case Team.Green:
-                    GameText("Defend the ~g~GREEN ~w~team's ~y~Reefer~n~~w~Capture the ~b~BLUE ~w~team's ~y~Reefer",
-                        6000, 5);
-                    break;
-                case Team.Blue:
-                    GameText("Defend the ~b~BLUE ~w~team's ~y~Reefer~n~~w~Capture the ~g~GREEN ~w~team's ~y~Reefer",
-                        6000, 5);
-                    break;
-            }
+            GameText(
+                Team == GameMode.GreenTeam
+                    ? "Defend the ~g~GREEN ~w~team's ~y~Reefer~n~~w~Capture the ~b~BLUE ~w~team's ~y~Reefer"
+                    : "Defend the ~b~BLUE ~w~team's ~y~Reefer~n~~w~Capture the ~g~GREEN ~w~team's ~y~Reefer",
+                6000, 5);
+
 
             Health = 100;
             Armour = 100;
@@ -204,7 +193,7 @@ namespace RiverShell.World
             if (GameMode.ObjectiveReached)
                 return;
 
-            if (vehicle == GameMode.GreenTeam.Vehicle && Team == Team.Green)
+            if (vehicle == GameMode.GreenTeam.Vehicle && Team == GameMode.GreenTeam)
             {
                 // Green OBJECTIVE REACHED.
                 GameMode.GreenTeam.TimesCaptured++;
@@ -231,7 +220,7 @@ namespace RiverShell.World
                     vehicle.Respawn();
                 }
             }
-            else if (vehicle == GameMode.BlueTeam.Vehicle && Team == Team.Blue)
+            else if (vehicle == GameMode.BlueTeam.Vehicle && Team == GameMode.BlueTeam)
             {
                 // Blue OBJECTIVE REACHED.
                 GameMode.BlueTeam.TimesCaptured++;
@@ -270,6 +259,9 @@ namespace RiverShell.World
             if (killer != null && Team != killer.Team)
                 killer.Score++;
 
+            _lastDeathTick = Native.GetTickCount();
+            _lastKiller = killer;
+
             base.OnDeath(e);
         }
 
@@ -305,7 +297,7 @@ namespace RiverShell.World
                     // Else switch to the fixed position camera
                     if (_spectateState != SpectateState.Fixed)
                     {
-                        if (Team == Team.Green)
+                        if (Team == GameMode.GreenTeam)
                         {
                             CameraPosition = new Vector(2221.5820, -273.9985, 61.7806);
                             SetCameraLookAt(new Vector(2220.9978, -273.1861, 61.4606));

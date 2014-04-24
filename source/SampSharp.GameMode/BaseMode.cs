@@ -153,7 +153,7 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Disable all the interior entrances and exits in the game (the yellow arrows at doors).
         /// </summary>
-        public void DisableInteriorEnterExists()
+        public void DisableInteriorEnterExits()
         {
             Native.DisableInteriorEnterExits();
         }

@@ -14,6 +14,7 @@
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
@@ -41,6 +42,7 @@ namespace SampSharp.GameMode.World
         {
             //Fill properties
             Id = id;
+            PVars = new PVarCollection(this);
         }
 
         #endregion
@@ -51,6 +53,11 @@ namespace SampSharp.GameMode.World
         ///     Gets the ID of this Player.
         /// </summary>
         public int Id { get; private set; }
+
+        /// <summary>
+        ///     Gets a collections of Player Variables of this Player.
+        /// </summary>
+        public PVarCollection PVars { get; private set; }
 
         #endregion
 
