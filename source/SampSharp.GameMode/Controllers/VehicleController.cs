@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all vehicle actions.
     /// </summary>
-    public class VehicleController : IController
+    public class VehicleController : IEventListener, ITypeProvider, IController
     {
         /// <summary>
         ///     Registers the events this VehicleController wants to listen to.

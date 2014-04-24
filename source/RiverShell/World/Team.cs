@@ -4,21 +4,22 @@ namespace RiverShell.World
 {
     public class Team : InstanceKeeper<Team>, IIdentifyable
     {
-        public Team(int id, Color color)
-        {
-            Id = id;
-            Color = color;
-        }
-
         public int Id { get; set; }
 
         public Color Color { get; set; }
 
-        public RPlayer PlayerWithVehicle { get; set; }
+        public string GameTextTeamName { get; set; }
+
+        public Vector Target { get; set; }
 
         public int TimesCaptured { get; set; }
 
-        public Vehicle Vehicle { get; set; }
+        public Vehicle TargetVehicle { get; set; }
 
+        public Vector FixedSpectatePosition { get; set; }
+
+        public Vector FixedSpectateLookAtPosition { get; set; }
+
+        public Vector ResupplyPosition { get; set; }
     }
 }

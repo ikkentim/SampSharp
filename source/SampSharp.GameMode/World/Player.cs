@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System.Linq;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
@@ -409,6 +410,14 @@ namespace SampSharp.GameMode.World
         public virtual bool IsAdmin
         {
             get { return Native.IsPlayerAdmin(Id); }
+        }
+
+        /// <summary>
+        ///     Gets whether this Player is alive;
+        /// </summary>
+        public virtual bool IsAlive
+        {
+            get { return !new[] {PlayerState.None, PlayerState.Spectating, PlayerState.Wasted}.Contains(PlayerState); }
         }
 
         /// <summary>
