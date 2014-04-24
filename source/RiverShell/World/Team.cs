@@ -1,9 +1,24 @@
-﻿namespace RiverShell.World
+﻿using SampSharp.GameMode.World;
+
+namespace RiverShell.World
 {
-    public enum Team
+    public class Team : InstanceKeeper<Team>, IIdentifyable
     {
-        None=0,
-        Green=1,
-        Blue=2
+        public Team(int id, Color color)
+        {
+            Id = id;
+            Color = color;
+        }
+
+        public int Id { get; set; }
+
+        public Color Color { get; set; }
+
+        public RPlayer PlayerWithVehicle { get; set; }
+
+        public int TimesCaptured { get; set; }
+
+        public Vehicle Vehicle { get; set; }
+
     }
 }

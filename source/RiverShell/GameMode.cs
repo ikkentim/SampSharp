@@ -1,42 +1,41 @@
 ﻿using System;
 using RiverShell.Controllers;
+using RiverShell.World;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;
 
 namespace RiverShell
 {
     public class GameMode : BaseMode
     {
-        public static TeamInfo BlueTeam;
-        public static TeamInfo GreenTeam;
+        public static Team BlueTeam;
+        public static Team GreenTeam;
         public static bool ObjectiveReached;
 
         public override bool OnGameModeInit()
         {
-            BlueTeam = new TeamInfo();
-            GreenTeam = new TeamInfo();
+            BlueTeam = new Team(1, 0x7777DDFF);
+            GreenTeam = new Team(2, 0x77CC77FF);
 
-            Native.SetGameModeText("Rivershell");
-
-            Native.ShowPlayerMarkers(0);
-            Native.ShowNameTags(true);
-            Native.SetWorldTime(17);
-            Native.SetWeather(11);
-            Native.UsePlayerPedAnims();
-            Native.EnableVehicleFriendlyFire();
-            Native.SetNameTagDrawDistance(110.0f);
-            Native.DisableInteriorEnterExits();
+            SetGameModeText("Rivershell");
+            ShowPlayerMarkers(0);
+            ShowNameTags(true);
+            SetWorldTime(17);
+            SetWeather(11);
+            UsePlayerPedAnims();
+            EnableVehicleFriendlyFire();
+            SetNameTagDrawDistance(110.0f);
+            DisableInteriorEnterExits();
 
             // Green classes
-            Native.AddPlayerClass(162, new Vector(2117.0129, -224.4389, 8.15), 0, (Weapon)31, 100, (Weapon)29, 200, (Weapon)34, 10);
-            Native.AddPlayerClass(157, new Vector(2148.6606, -224.3336, 8.15), 347.1396f, (Weapon)31, 100, (Weapon)29, 200, (Weapon)34, 10);
+            AddPlayerClass(162, new Vector(2117.0129, -224.4389, 8.15), 0, Weapon.M4, 100, Weapon.MP5, 200, Weapon.Sniper, 10);
+            AddPlayerClass(157, new Vector(2148.6606, -224.3336, 8.15), 347.1396f, Weapon.M4, 100, Weapon.MP5, 200, Weapon.Sniper, 10);
 
             // Blue classes
-            Native.AddPlayerClass(154, new Vector(2352.9873, 580.3051, 7.7813), 178.1424f, (Weapon)31, 100, (Weapon)29, 200, (Weapon)34, 10);
-            Native.AddPlayerClass(138, new Vector(2281.1504, 567.6248, 7.7813), 163.7289f, (Weapon)31, 100, (Weapon)29, 200, (Weapon)34, 10);
+            AddPlayerClass(154, new Vector(2352.9873, 580.3051, 7.7813), 178.1424f, Weapon.M4, 100, Weapon.MP5, 200, Weapon.Sniper, 10);
+            AddPlayerClass(138, new Vector(2281.1504, 567.6248, 7.7813), 163.7289f, Weapon.M4, 100, Weapon.MP5, 200, Weapon.Sniper, 10);
 
             // Objective vehicles
             BlueTeam.Vehicle = Vehicle.Create(453, new Vector(2184.7156, -188.5401, -0.0239), 0.0000f, 114, 1, 100); // gr reefer
@@ -81,7 +80,6 @@ namespace RiverShell
             // Blue Mavericks
             Vehicle.Create(487, new Vector(2260.2637, 578.5220, 8.1223), 182.3401f, 79, 7, 100);
             Vehicle.Create(487, new Vector(2379.9792, 580.0323, 8.0178), 177.9601f, 79, 7, 100);
-
 
             // Green Base Section
             new GlobalObject(9090, new Vector(2148.64, -222.88, -20.60), new Vector(0.00, 0.00, 179.70));

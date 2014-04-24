@@ -102,6 +102,11 @@ namespace SampSharp.GameMode.World
 
         #region Methods
 
+        public static void Remove(Player player, int modelid, Vector position, float radius)
+        {
+            Native.RemoveBuildingForPlayer(player.Id, modelid, position.X, position.Y, position.Z, radius);
+        }
+
         public virtual void AttachTo(Player player, Vector offset, Vector rotation)
         {
             Native.AttachObjectToPlayer(Id, player.Id, offset, rotation);
