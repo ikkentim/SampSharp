@@ -49,8 +49,14 @@ namespace SampSharp.GameMode
 
             foreach (IController controller in controllers)
             {
-                controller.RegisterTypes();
-                controller.RegisterEvents(this);
+                var typeProvider = controller as ITypeProvider;
+                var eventListener = controller as IEventListener;
+
+                if (typeProvider != null)
+                    typeProvider.RegisterTypes();
+
+                if (eventListener != null)
+                    eventListener.RegisterEvents(this);
             }
         }
 

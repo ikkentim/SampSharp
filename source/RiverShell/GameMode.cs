@@ -16,8 +16,26 @@ namespace RiverShell
 
         public override bool OnGameModeInit()
         {
-            BlueTeam = new Team(1, 0x7777DDFF);
-            GreenTeam = new Team(2, 0x77CC77FF);
+            BlueTeam = new Team
+            {
+                Id = 1,
+                Color = 0x7777DDFF,
+                GameTextTeamName = "~b~BLUE ~w~team",
+                Target = new Vector(2329.4226f, 532.7426f, 0.5862f),
+                FixedSpectatePosition = new Vector(2221.5820, -273.9985, 61.7806),
+                FixedSpectateLookAtPosition = new Vector(2220.9978, -273.1861, 61.4606),
+                ResupplyPosition = new Vector(2140.83f, -235.13f, 7.13f)
+            };
+            GreenTeam = new Team
+            {
+                Id = 2,
+                Color = 0x77CC77FF,
+                GameTextTeamName = "~g~GREEN ~w~team",
+                Target = new Vector(2135.7368f, -179.8811f, -0.5323f),
+                FixedSpectatePosition = new Vector(2274.8467, 591.3257, 30.1311),
+                FixedSpectateLookAtPosition = new Vector(2275.0503, 590.3463, 29.9460),
+                ResupplyPosition = new Vector(2318.73f, 590.96f, 6.75f)
+            };
 
             SetGameModeText("Rivershell");
             ShowPlayerMarkers(0);
@@ -38,8 +56,8 @@ namespace RiverShell
             AddPlayerClass(138, new Vector(2281.1504, 567.6248, 7.7813), 163.7289f, Weapon.M4, 100, Weapon.MP5, 200, Weapon.Sniper, 10);
 
             // Objective vehicles
-            BlueTeam.Vehicle = Vehicle.Create(453, new Vector(2184.7156, -188.5401, -0.0239), 0.0000f, 114, 1, 100); // gr reefer
-            GreenTeam.Vehicle = Vehicle.Create(453, new Vector(2380.0542, 535.2582, -0.0272), 178.4999f, 79, 7, 100);// bl reefer
+            BlueTeam.TargetVehicle = Vehicle.Create(453, new Vector(2184.7156, -188.5401, -0.0239), 0.0000f, 114, 1, 100); // gr reefer
+            GreenTeam.TargetVehicle = Vehicle.Create(453, new Vector(2380.0542, 535.2582, -0.0272), 178.4999f, 79, 7, 100);// bl reefer
 
             // Green Dhingys
             Vehicle.Create(473, new Vector(2096.0833, -168.7771, 0.3528), 4.5000f, 114, 1, 100);
@@ -186,6 +204,11 @@ namespace RiverShell
 
             controllers.Remove<VehicleController>();
             controllers.Add(new RVehicleController());
+
+            controllers.Add(new TeamController());
+            controllers.Add(new ResupplyController());
+            controllers.Add(new ObjectiveController());
+
         }
     }
 }

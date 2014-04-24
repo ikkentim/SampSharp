@@ -43,6 +43,7 @@
     <Compile Include="Controllers\DialogController.cs" />
     <Compile Include="Controllers\GlobalObjectController.cs" />
     <Compile Include="Controllers\IController.cs" />
+    <Compile Include="Controllers\ITypeProvider.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\PlayerObjectController.cs" />
     <Compile Include="Controllers\PlayerTextDrawController.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Display\Dialog.cs" />
     <Compile Include="World\GangZone.cs" />
     <Compile Include="World\GlobalObject.cs" />
+    <Compile Include="Controllers\IEventListener.cs" />
     <Compile Include="World\IGameObject.cs" />
     <Compile Include="World\IIdentifyable.cs" />
     <Compile Include="World\InstanceKeeper.cs" />

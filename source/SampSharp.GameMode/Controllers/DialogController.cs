@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all dialog actions.
     /// </summary>
-    public class DialogController : IController
+    public class DialogController :  IEventListener, IController
     {
         /// <summary>
         ///     Registers the events this DialogController wants to listen to.
@@ -35,13 +35,6 @@ namespace SampSharp.GameMode.Controllers
             };
 
             gameMode.PlayerDisconnected += (sender, args) => Dialog.Hide(args.Player);
-        }
-
-        /// <summary>
-        ///     Registers types this DialogController requires the system to use.
-        /// </summary>
-        public virtual void RegisterTypes()
-        {
         }
     }
 }
