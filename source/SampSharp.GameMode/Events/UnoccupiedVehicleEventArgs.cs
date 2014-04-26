@@ -11,15 +11,20 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using SampSharp.GameMode.World;
+
 namespace SampSharp.GameMode.Events
 {
     public class UnoccupiedVehicleEventArgs : PlayerVehicleEventArgs
     {
-        public UnoccupiedVehicleEventArgs(int playerid, int vehicleid, int passengerSeat) : base(playerid, vehicleid)
+        public UnoccupiedVehicleEventArgs(int playerid, int vehicleid, int passengerSeat, Vector newPosition) : base(playerid, vehicleid)
         {
             PassengerSeat = passengerSeat;
+            NewPosition = newPosition;
         }
 
         public int PassengerSeat { get; private set; }
+
+        public Vector NewPosition { get; private set; }
     }
 }

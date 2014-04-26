@@ -1199,10 +1199,13 @@ namespace SampSharp.GameMode
         /// <param name="vehicleid">The vehicleid that the callback is processing.</param>
         /// <param name="playerid">The playerid that the callback is processing (the playerid affecting the vehicle).</param>
         /// <param name="passengerSeat">The passenger seat of the playerid moving the vehicle. 0 if they're not in the vehicle.</param>
+        /// <param name="newX">The new X coordinate of the vehicle.</param>
+        /// <param name="newY">The new y coordinate of the vehicle.</param>
+        /// <param name="newZ">The new z coordinate of the vehicle.</param>
         /// <returns>This callback does not handle returns.</returns>
-        public virtual bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat)
+        public virtual bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX, float newY, float newZ)
         {
-            var args = new UnoccupiedVehicleEventArgs(playerid, vehicleid, passengerSeat);
+            var args = new UnoccupiedVehicleEventArgs(playerid, vehicleid, passengerSeat, new Vector(newX, newY, newZ));
 
             if (UnoccupiedVehicleUpdated != null)
                 UnoccupiedVehicleUpdated(this, args);
