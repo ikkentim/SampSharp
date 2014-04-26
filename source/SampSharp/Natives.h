@@ -220,7 +220,7 @@ static inline bool p_SetVehicleNumberPlate(int vehicleid, MonoString * numberpla
 //
 // serverlog string converters 
 static inline void p_Print(MonoString * str) {
-	ServerLog::Printf(mono_string_to_utf8(str));
+	sampgdk::logprintf(mono_string_to_utf8(str));
 }
 static void LoadNatives()
 {

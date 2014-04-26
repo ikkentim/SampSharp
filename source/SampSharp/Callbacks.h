@@ -4,7 +4,7 @@
 #include <mono/metadata/threads.h>
 #include "SampSharp.h"
 
-static void SAMPGDK_TIMER_CALL p_TimerCallback(int timerid, void * data) {
+static void SAMPGDK_CALL p_TimerCallback(int timerid, void * data) {
 	void *args[2];
 	args[0] = &timerid;
 	args[1] = data;
@@ -228,11 +228,15 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnVehicleDamageStatusUpdate(int vehicleid, int pl
 	return CSampSharp::instance->CallCallback(CSampSharp::instance->onVehicleDamageStatusUpdate, args);
 }
 
-PLUGIN_EXPORT bool PLUGIN_CALL OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passenger_seat) {
-	void *args[3];
+PLUGIN_EXPORT bool PLUGIN_CALL OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passenger_seat, float new_x, float new_y, float new_z) {
+	return true;
+	void *args[6];
 	args[0] = &vehicleid;
 	args[1] = &playerid;
 	args[2] = &passenger_seat;
+	args[3] = &new_x;
+	args[4] = &new_y;
+	args[5] = &new_z;
 
 	return CSampSharp::instance->CallCallback(CSampSharp::instance->onUnoccupiedVehicleUpdate, args);
 }
