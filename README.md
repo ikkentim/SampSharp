@@ -19,7 +19,3 @@ ToDo's
     -Add more remarks to native docs.
     -Improve and test.
     -Test on linux.
-
-Known Bugs
-======
-	-Calling gmx twice will result in OnGameModeInit being called twice (will be fixed when updating sampgdk).
