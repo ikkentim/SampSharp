@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2013 Zeex
+/* Copyright (C) 2011-2014 Zeex
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,18 @@
 #define SAMPGDK_A_SAMP_H
 
 #include <sampgdk/bool.h>
-#include <sampgdk/compatibility.h>
 #include <sampgdk/export.h>
-#include <sampgdk/plugin.h>
 
-typedef void (SAMPGDK_TIMER_CALL *TimerCallback)(int timerid, void *param);
+/**
+ * \brief Defines the signature of a timer callback function.
+ * \ingroup natives
+ *
+ * \param timerid The unique ID for the timer returned by SetTimer().
+ * \param param A pointer to user-supplied data passed to SetTimer().
+ * This parameter may be \c NULL.
+ */
+typedef void (SAMPGDK_CALL *TimerCallback)(int timerid, void *param);
 
 #include <sampgdk/a_samp-decl.h>
-
-#ifdef __cplusplus
-  #include <sampgdk/a_samp.hpp>
-#endif
 
 #endif /* !SAMPGDK_A_SAMP_H */
