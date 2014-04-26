@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2013 Zeex
+/* Copyright (C) 2011-2014 Zeex
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 #ifndef SAMPGDK_EXPORT_H
 #define SAMPGDK_EXPORT_H
 
+#include <sampgdk/platform.h>
+#include <sampgdk/sdk.h>
+
 #undef SAMPGDK_EXPORT
 #undef SAMPGDK_CALL
-
-#include <sampgdk/platform.h>
-#include <sampgdk/plugincommon.h>
 
 #ifdef __cplusplus
   #define SAMPGDK_EXTERN_C extern "C"
@@ -54,28 +54,23 @@
   #endif
 #endif
 
-#ifndef SAMPGDK_NATIVE_EXPORT
-  #define SAMPGDK_NATIVE_EXPORT SAMPGDK_EXPORT
-#endif
-#ifndef SAMPGDK_NATIVE_CALL
-  #define SAMPGDK_NATIVE_CALL SAMPGDK_CALL
-#endif
-#ifndef SAMPGDK_NATIVE
-  #define SAMPGDK_NATIVE(type, func) \
-    SAMPGDK_NATIVE_EXPORT type SAMPGDK_NATIVE_CALL sampgdk_##func
-#endif
+#define SAMPGDK_API(return_type, rest) \
+  SAMPGDK_EXPORT return_type SAMPGDK_CALL rest
 
-#ifndef SAMPGDK_CALLBACK_EXPORT
-  #define SAMPGDK_CALLBACK_EXPORT PLUGIN_EXPORT
-#endif
-#ifndef SAMPGDK_CALLBACK_CALL
-  #define SAMPGDK_CALLBACK_CALL PLUGIN_CALL
-#endif
-#ifndef SAMPGDK_CALLBACK
-  #define SAMPGDK_CALLBACK(type, func) \
-    SAMPGDK_CALLBACK_EXPORT type SAMPGDK_CALLBACK_CALL func
-#endif
+#undef SAMPGDK_NATIVE_EXPORT
+#undef SAMPGDK_NATIVE_CALL
 
-#define SAMPGDK_TIMER_CALL SAMPGDK_CALL
+#define SAMPGDK_NATIVE_EXPORT SAMPGDK_EXPORT
+#define SAMPGDK_NATIVE_CALL SAMPGDK_CALL
+#define SAMPGDK_NATIVE(return_type, rest) \
+  SAMPGDK_NATIVE_EXPORT return_type SAMPGDK_NATIVE_CALL rest
+
+#undef SAMPGDK_CALLBACK_EXPORT
+#undef SAMPGDK_CALLBACK_CALL
+
+#define SAMPGDK_CALLBACK_EXPORT PLUGIN_EXPORT
+#define SAMPGDK_CALLBACK_CALL PLUGIN_CALL
+#define SAMPGDK_CALLBACK(return_type, rest) \
+  SAMPGDK_CALLBACK_EXPORT return_type SAMPGDK_CALLBACK_CALL rest
 
 #endif /* !SAMPGDK_EXPORT_H */

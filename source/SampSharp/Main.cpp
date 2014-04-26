@@ -6,17 +6,16 @@
 #include "ConfigReader.h"
 
 using namespace std;
-
-static ThisPlugin sampSharpPlugin;
+using sampgdk::logprintf;
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
-	return SUPPORTS_VERSION | SUPPORTS_PROCESS_TICK;
+	return sampgdk::Supports() | SUPPORTS_PROCESS_TICK;
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 	//Load plugin
-	if (sampSharpPlugin.Load(ppData) < 0)
-		return false;
+	//TODO: should check if ::Load succeeds?
+	sampgdk::Load(ppData);
 
 	//Load proxy information from config
 	ConfigReader server_cfg("server.cfg");
@@ -33,7 +32,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 	server_cfg.GetOption("gamemode_generate_symbols", gamemode_generate_symbols);
 
 	//Load Mono
-	ServerLog::Printf("[SampSharp] Loading gamemode: %s::%s at \"%s\".", 
+	logprintf("[SampSharp] Loading gamemode: %s::%s at \"%s\".", 
 		(char*)gamemode_namespace.c_str(), 
 		(char*)gamemode_class.c_str(), 
 		(char*)gamemode_path.c_str());
@@ -44,16 +43,16 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 		(char *)gamemode_class.c_str(), 
 		gamemode_generate_symbols);
 
-	ServerLog::Printf("[SampSharp] SampSharp is ready!");
+	logprintf("[SampSharp] SampSharp is ready!");
 	return true;
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
 	delete CSampSharp::instance;
-	sampSharpPlugin.Unload();
+	sampgdk::Unload();
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
-	sampSharpPlugin.ProcessTimers();
+	sampgdk::ProcessTick();
 	CSampSharp::instance->CallCallback(CSampSharp::instance->onTick, NULL);
 }

@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2013 Zeex
+/* Copyright (C) 2011-2014 Zeex
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 #ifndef SAMPGDK_PLATFORM_H
 #define SAMPGDK_PLATFORM_H
 
-#if !(defined _M_IX86 || defined __i386__)
+#if !defined _M_IX86 && !defined __i386__ && !defined RC_INVOKED
   #error Unsupported architecture
 #endif
 
@@ -34,11 +34,13 @@
 #endif
 
 #if defined __GNUC__
-  #define SAMPGDK_DEPRECATED(func) func __attribute__((deprecated))
+  #define SAMPGDK_DEPRECATED_API(type, rest) \
+    SAMPGDK_API(type, rest) __attribute__((deprecated))
 #elif defined _MSC_VER
-  #define SAMPGDK_DEPRECATED(func) __declspec(deprecated) func
+  #define SAMPGDK_DEPRECATED_API(return_type, rest) \
+    __declspec(deprecated) SAMPGDK_API(return_type, rest)
 #else
-  #define SAMPGDK_DEPRECATED(func)
+  #define SAMPGDK_DEPRECATED_API(return_type, rest)
 #endif
 
 #if SAMPGDK_WINDOWS
