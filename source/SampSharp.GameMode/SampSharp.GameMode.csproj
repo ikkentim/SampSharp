@@ -129,6 +129,7 @@
     <Compile Include="BaseMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SAMP\PVarCollection.cs" />
+    <Compile Include="Tools\KeyUtils.cs" />
     <Compile Include="Tools\MapAndreas.cs" />
     <Compile Include="Tools\MapAndreasMode.cs" />
     <Compile Include="SAMP\Color.cs" />
