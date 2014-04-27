@@ -72,19 +72,15 @@ namespace TestMode.World
         public override void OnKeyStateChanged(PlayerKeyStateChangedEventArgs e)
         {
             Keys keys;
-            int lr;
-            int ud;
+            int lr, ud;
 
             GetKeys(out keys, out ud, out lr);
 
-            if (KeyUtils.HasPressed(e, Keys.Sprint) && lr < 0)
-                GameMode.Test.X -= 1;
-            if (KeyUtils.HasPressed(e, Keys.Sprint) && lr > 0)
-                GameMode.Test.X += 1;
-            if (KeyUtils.HasPressed(e, Keys.Sprint) && ud < 0)
-                GameMode.Test.Y -= 1;
-            if (KeyUtils.HasPressed(e, Keys.Sprint) && ud > 0)
-                GameMode.Test.Y += 1;
+            if (KeyUtils.HasPressed(e, Keys.Sprint) && lr != 0)
+            {
+                byte v = (byte)((GameMode.Test.ForeColor.R + (lr < 0 ? -2 : 2)) % 256);
+                GameMode.Test.ForeColor = new Color(v, v, v);
+            }
 
             base.OnKeyStateChanged(e);
         }

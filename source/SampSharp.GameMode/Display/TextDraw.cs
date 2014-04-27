@@ -482,6 +482,7 @@ namespace SampSharp.GameMode.Display
         public virtual void Show()
         {
             if (Id == -1) Refresh();
+            _playersShownTo.Clear();
             _playersShownTo.AddRange(Player.All);
             Native.TextDrawShowForAll(Id);
         }
@@ -495,7 +496,8 @@ namespace SampSharp.GameMode.Display
             if (Id == -1) Refresh();
             if (player != null)
             {
-                _playersShownTo.Add(player);
+                if(!_playersShownTo.Contains(player))
+                    _playersShownTo.Add(player);
                 Native.TextDrawShowForPlayer(player.Id, Id);
             }
         }
@@ -549,7 +551,7 @@ namespace SampSharp.GameMode.Display
             if (PreviewZoom != 1) PreviewZoom = PreviewZoom;
             if (PreviewPrimaryColor != -1) PreviewPrimaryColor = PreviewPrimaryColor;
             if (PreviewSecondaryColor != -1) PreviewSecondaryColor = PreviewSecondaryColor;
-
+            
             UpdateClients();
         }
 
@@ -558,7 +560,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         protected virtual void UpdateClients()
         {
-            foreach(Player p in _playersShownTo)
+            foreach (Player p in _playersShownTo.AsReadOnly())
                 Show(p);
         }
 
