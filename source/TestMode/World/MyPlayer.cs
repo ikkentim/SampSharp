@@ -18,6 +18,7 @@ using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 
 namespace TestMode.World

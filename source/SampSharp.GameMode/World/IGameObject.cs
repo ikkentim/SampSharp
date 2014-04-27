@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright (C) 2014 Tim Potze
+// Copyright (C) 04 Tim Potze
 // 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
