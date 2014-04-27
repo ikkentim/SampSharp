@@ -204,6 +204,60 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
         /// </summary>
+        /// <param name="modelid">The skin which the player will spawn with.</param>
+        /// <param name="position">The coordinate of the spawnpoint of this class.</param>
+        /// <param name="zAngle">The direction in which the player should face after spawning.</param>
+        /// <param name="weapon1">The first spawn-weapon for the player.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the primary spawnweapon.</param>
+        /// <param name="weapon2">The second spawn-weapon for the player.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <returns>
+        ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
+        ///     ID is 299.
+        /// </returns>
+        public int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon1, int weapon1Ammo,
+            Weapon weapon2, int weapon2Ammo)
+        {
+            return Native.AddPlayerClass(modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo, 0, 0);
+        }
+
+
+        /// <summary>
+        ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
+        /// </summary>
+        /// <param name="modelid">The skin which the player will spawn with.</param>
+        /// <param name="position">The coordinate of the spawnpoint of this class.</param>
+        /// <param name="zAngle">The direction in which the player should face after spawning.</param>
+        /// <param name="weapon">The spawn-weapon for the player.</param>
+        /// <param name="weaponAmmo">The amount of ammunition for the spawnweapon.</param>
+        /// <returns>
+        ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
+        ///     ID is 299.
+        /// </returns>
+        public int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon, int weaponAmmo)
+        {
+            return Native.AddPlayerClass(modelid, position, zAngle, weapon, weaponAmmo, 0, 0, 0, 0);
+        }
+
+
+        /// <summary>
+        ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
+        /// </summary>
+        /// <param name="modelid">The skin which the player will spawn with.</param>
+        /// <param name="position">The coordinate of the spawnpoint of this class.</param>
+        /// <param name="zAngle">The direction in which the player should face after spawning.</param>
+        /// <returns>
+        ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
+        ///     ID is 299.
+        /// </returns>
+        public int AddPlayerClass(int modelid, Vector position, float zAngle)
+        {
+            return Native.AddPlayerClass(modelid, position, zAngle, 0, 0, 0, 0, 0, 0);
+        }
+
+        /// <summary>
+        ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
+        /// </summary>
         /// <param name="teamid">The team you want the player to spawn in.</param>
         /// <param name="modelid">The skin which the player will spawn with.</param>
         /// <param name="position">The coordinate of the class' spawn position.</param>
@@ -220,6 +274,53 @@ namespace SampSharp.GameMode
         {
             return Native.AddPlayerClassEx(teamid, modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
                 weapon3, weapon3Ammo);
+        }
+
+        /// <summary>
+        ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
+        /// </summary>
+        /// <param name="teamid">The team you want the player to spawn in.</param>
+        /// <param name="modelid">The skin which the player will spawn with.</param>
+        /// <param name="position">The coordinate of the class' spawn position.</param>
+        /// <param name="zAngle">The direction in which the player will face after spawning.</param>
+        /// <param name="weapon1">The first spawn-weapon for the player.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the first spawnweapon.</param>
+        /// <param name="weapon2">The second spawn-weapon for the player.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <returns>The ID of the class that was just created.</returns>
+        public int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon1,
+            int weapon1Ammo, Weapon weapon2, int weapon2Ammo)
+        {
+            return Native.AddPlayerClassEx(teamid, modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
+                0, 0);
+        }
+
+        /// <summary>
+        ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
+        /// </summary>
+        /// <param name="teamid">The team you want the player to spawn in.</param>
+        /// <param name="modelid">The skin which the player will spawn with.</param>
+        /// <param name="position">The coordinate of the class' spawn position.</param>
+        /// <param name="zAngle">The direction in which the player will face after spawning.</param>
+        /// <param name="weapon">The spawn-weapon for the player.</param>
+        /// <param name="weaponAmmo">The amount of ammunition for the spawnweapon.</param>
+        /// <returns>The ID of the class that was just created.</returns>
+        public int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon, int weaponAmmo)
+        {
+            return Native.AddPlayerClassEx(teamid, modelid, position, zAngle, weapon, weaponAmmo, 0, 0, 0, 0);
+        }
+
+        /// <summary>
+        ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
+        /// </summary>
+        /// <param name="teamid">The team you want the player to spawn in.</param>
+        /// <param name="modelid">The skin which the player will spawn with.</param>
+        /// <param name="position">The coordinate of the class' spawn position.</param>
+        /// <param name="zAngle">The direction in which the player will face after spawning.</param>
+        /// <returns>The ID of the class that was just created.</returns>
+        public int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle)
+        {
+            return Native.AddPlayerClassEx(teamid, modelid, position, zAngle, 0, 0, 0, 0, 0, 0);
         }
 
         /// <summary>
@@ -672,6 +773,12 @@ namespace SampSharp.GameMode
         ///     Others: the fX, fY and fZ are offsets from the center of hitid.
         /// </remarks>
         public event WeaponShotHandler PlayerWeaponShot;
+
+        /// <summary>
+        ///     Occurs when the <see cref="OnIncommingConnection" /> callback is being called.
+        ///     This callback is called when an IP address attempts a connection to the server.
+        /// </summary>
+        public event ConnectionHandler IncommingConnection;
 
         /// <summary>
         ///     Occurs when the <see cref="OnTick" /> callback is being called.
@@ -1667,6 +1774,23 @@ namespace SampSharp.GameMode
 
             if (PlayerWeaponShot != null)
                 PlayerWeaponShot(this, args);
+
+            return args.Success;
+        }
+
+        /// <summary>
+        /// This callback is called when an IP address attempts a connection to the server.
+        /// </summary>
+        /// <param name="playerid">The ID of the player attempting to connect.</param>
+        /// <param name="ipAddress">The IP address of the player attempting to connect.</param>
+        /// <param name="port">The port of the attempted connection.</param>
+        /// <returns>This callback does not handle returns.</returns>
+        public virtual bool OnIncommingConnection(int playerid, string ipAddress, int port)
+        {
+            var args = new ConnectionEventArgs(playerid, ipAddress, port);
+
+            if (IncommingConnection != null)
+                IncommingConnection(this, args);
 
             return args.Success;
         }

@@ -13,12 +13,14 @@
 
 using System;
 using System.Linq;
+using System.Net.Sockets;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.SAMP;
+using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
 namespace TestMode.World
@@ -28,16 +30,6 @@ namespace TestMode.World
         public MyPlayer(int id) : base(id)
         {
         }
-
-        /// <summary>
-        ///     Gets or sets this Player's Database ID (Test purpose, not connected to a DB)
-        /// </summary>
-        public int DbId { get; set; }
-
-        /// <summary>
-        ///     Gets or sets whether this Player has logged in.
-        /// </summary>
-        public bool LoggedIn { get; set; }
 
         public override void OnConnected(PlayerEventArgs e)
         {
@@ -65,68 +57,36 @@ namespace TestMode.World
                 0xCF72A9FF, 0xE59338FF, 0xEEDC2DFF, 0xD8C762FF, 0xD8C762FF
             }.Select(u => unchecked((int) u)).ElementAt(Id%100);
 
-
-            //Test dialog
-            var dialog = new Dialog(DialogStyle.Password, Color.Red + "Gimme yo password",
-                Color.White + "For this test, it will be 'mono'", "Login");
-            dialog.Response += (sender, args) =>
-            {
-                var sendingDialog = sender as Dialog;
-
-                if (args.InputText == "mono")
-                {
-                    //Log in
-                    var sendingPlayer = args.Player as MyPlayer;
-                    sendingPlayer.LoggedIn = true;
-                    Native.SendClientMessage(sendingPlayer.Id, Color.GreenYellow, "You logged in!");
-                    Console.WriteLine(CameraPosition.ToString());
-                }
-                else
-                {
-                    //Re-enter
-                    sendingDialog.Message = Color.Red + "INVALID PASSWORD!\n" + Color.White +
-                                            "For this test, it will be 'mono'";
-                    sendingDialog.Show(args.Player);
-                }
-            };
-            dialog.Show(e.Player);
-
-            //Test textdraw
-            /*
-            var td = new TextDraw(459.375000f, 78.166671f, "San Andreas", TextDrawFont.Diploma, Color.Red)
-            {
-                LetterWidth = 0.449999f,
-                LetterHeight = 1.600000f,
-                Width = 6.250000f,
-                Height = 86.333374f,
-                Shadow = 1,
-                BackColor = Color.Black
-
-            };
-            td.Show(this);
-
-            //Test playertextdraw
-            var ptd = new PlayerTextDraw(this, 359.375000f, 78.166671f, "San Player", TextDrawFont.Diploma, Color.Red)
-            {
-                LetterWidth = 0.449999f,
-                LetterHeight = 1.600000f,
-                Width = 6.250000f,
-                Height = 86.333374f,
-                Shadow = 1,
-                BackColor = Color.Black
-
-            };
-
-            ptd.Show();*/
+            GameMode.Test.Show();
 
             base.OnConnected(e);
         }
 
         public override void OnText(PlayerTextEventArgs e)
         {
-            SendClientMessageToAll(Color, string.Format("{0}{1}: {2}", this, Color.White, e.Text));
+            SendClientMessageToAll(Color, string.Format("{0}{1}{2}: {3}", Color, this, Color.White, e.Text));
             e.Success = false;
             base.OnText(e);
+        }
+
+        public override void OnKeyStateChanged(PlayerKeyStateChangedEventArgs e)
+        {
+            Keys keys;
+            int lr;
+            int ud;
+
+            GetKeys(out keys, out ud, out lr);
+
+            if (KeyUtils.HasPressed(e, Keys.Sprint) && lr < 0)
+                GameMode.Test.X -= 1;
+            if (KeyUtils.HasPressed(e, Keys.Sprint) && lr > 0)
+                GameMode.Test.X += 1;
+            if (KeyUtils.HasPressed(e, Keys.Sprint) && ud < 0)
+                GameMode.Test.Y -= 1;
+            if (KeyUtils.HasPressed(e, Keys.Sprint) && ud > 0)
+                GameMode.Test.Y += 1;
+
+            base.OnKeyStateChanged(e);
         }
     }
 }

@@ -264,4 +264,11 @@ namespace SampSharp.GameMode.Events
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">A <see cref="EventArgs" /> that contains the event data.</param>
     public delegate void TimerTickHandler(object sender, EventArgs e);
+
+    /// <summary>
+    ///     Represents the method that will handle the <see cref="BaseMode.IncommingConnection" /> event.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">A <see cref="ConnectionEventArgs" /> that contains the event data.</param>
+    public delegate void ConnectionHandler(object sender, ConnectionEventArgs e);
 }

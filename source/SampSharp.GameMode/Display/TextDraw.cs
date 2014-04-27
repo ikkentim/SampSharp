@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System.Collections.Generic;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
@@ -51,6 +52,7 @@ namespace SampSharp.GameMode.Display
         private float _x;
         private float _y;
 
+        private readonly List<Player> _playersShownTo = new List<Player>(); 
         #endregion
 
         #region Constructors
@@ -467,6 +469,8 @@ namespace SampSharp.GameMode.Display
         public override void Dispose()
         {
             if (Id == -1) return;
+
+            _playersShownTo.Clear();
             Native.TextDrawDestroy(Id);
 
             base.Dispose();
@@ -478,6 +482,7 @@ namespace SampSharp.GameMode.Display
         public virtual void Show()
         {
             if (Id == -1) Refresh();
+            _playersShownTo.AddRange(Player.All);
             Native.TextDrawShowForAll(Id);
         }
 
@@ -488,7 +493,11 @@ namespace SampSharp.GameMode.Display
         public virtual void Show(Player player)
         {
             if (Id == -1) Refresh();
-            if (player != null) Native.TextDrawShowForPlayer(player.Id, Id);
+            if (player != null)
+            {
+                _playersShownTo.Add(player);
+                Native.TextDrawShowForPlayer(player.Id, Id);
+            }
         }
 
         /// <summary>
@@ -497,6 +506,7 @@ namespace SampSharp.GameMode.Display
         public virtual void Hide()
         {
             if (Id == -1) return;
+            _playersShownTo.Clear();
             Native.TextDrawHideForAll(Id);
         }
 
@@ -507,6 +517,7 @@ namespace SampSharp.GameMode.Display
         public virtual void Hide(Player player)
         {
             if (Id == -1 || player == null) return;
+            _playersShownTo.Remove(player);
             Native.TextDrawHideForPlayer(player.Id, Id);
         }
 
@@ -547,8 +558,8 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         protected virtual void UpdateClients()
         {
-            //TODO: Check what happens after Show() or Show() Hide(Player), does it still show for newcomers?
-            //Then update the TD for these players here.
+            foreach(Player p in _playersShownTo)
+                Show(p);
         }
 
         #endregion
