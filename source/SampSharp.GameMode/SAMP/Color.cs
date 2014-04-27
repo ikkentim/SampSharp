@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright (C) 2014 Tim Potze
+// Copyright (C) 04 Tim Potze
 // 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -11,7 +11,9 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-namespace SampSharp.GameMode.World
+using SampSharp.GameMode.World;
+
+namespace SampSharp.GameMode.SAMP
 {
     /// <summary>
     ///     Represents a hexidecimal color.

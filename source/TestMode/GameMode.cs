@@ -14,6 +14,7 @@
 using System;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 using TestMode.Controllers;
 

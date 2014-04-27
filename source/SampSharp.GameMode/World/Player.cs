@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright (C) 2014 Tim Potze
+// Copyright (C) 04 Tim Potze
 // 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -51,14 +51,14 @@ namespace SampSharp.GameMode.World
         #region Properties
 
         /// <summary>
-        ///     Gets the ID of this Player.
-        /// </summary>
-        public int Id { get; private set; }
-
-        /// <summary>
         ///     Gets a collections of Player Variables of this Player.
         /// </summary>
         public PVarCollection PVars { get; private set; }
+
+        /// <summary>
+        ///     Gets the ID of this Player.
+        /// </summary>
+        public int Id { get; private set; }
 
         #endregion
 

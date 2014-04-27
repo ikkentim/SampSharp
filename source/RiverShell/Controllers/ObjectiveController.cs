@@ -3,6 +3,7 @@ using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 using SampSharp.GameMode.Events;
 
