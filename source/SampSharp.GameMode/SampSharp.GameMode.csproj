@@ -87,6 +87,7 @@
     <Compile Include="Definitions\Weapon.cs" />
     <Compile Include="Definitions\WeaponSkill.cs" />
     <Compile Include="Definitions\WeaponState.cs" />
+    <Compile Include="Events\ConnectionEventArgs.cs" />
     <Compile Include="Events\ObjectEventArgs.cs" />
     <Compile Include="Events\PlayerVehicleEventArgs.cs" />
     <Compile Include="Events\PlayerClickMapEventArgs.cs" />
