@@ -63,6 +63,7 @@ namespace SampSharp.GameMode.SAMP
             R = color.R;
             G = color.G;
             B = color.B;
+            A = color.A;
         }
 
         /// <summary>
@@ -76,6 +77,7 @@ namespace SampSharp.GameMode.SAMP
             R = c.R;
             G = c.G;
             B = c.B;
+            A = c.A;
         }
 
         /// <summary>
@@ -89,6 +91,7 @@ namespace SampSharp.GameMode.SAMP
             R = c.R;
             G = c.G;
             B = c.B;
+            A = c.A;
         }
 
         #endregion
@@ -1496,7 +1499,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>A String representation of this Color.</returns>
         public override string ToString()
         {
-            return "{" + GetColorValue(ColorFormat.RGB).ToString("X6") + "}";
+            return ToString(ColorFormat.RGB);
         }
 
         #endregion
