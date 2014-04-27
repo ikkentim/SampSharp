@@ -36,6 +36,13 @@ namespace TestMode
         {
             Console.WriteLine("OnGameModeInit");
 
+            Color color1 = new Color(0xDD, 0xEE, 0xAA, 0xFF);
+            int color1i = color1.GetColorValue(ColorFormat.RGBA);
+            Console.WriteLine("(1): color: {0}, int: {1}", color1.ToString(ColorFormat.RGBA), color1i);
+            var color2i = 0xFFEEDDCC;
+            Color color2 = color2i;
+            Console.Write("(2): uint: {0}, color: {1}", color2i, color2.ToString(ColorFormat.RGBA));
+
             AddPlayerClass(1, new Vector(0, 0, 5), 0);
 
             Test = new TextDraw(459.375000f, 78.166671f, "San Andreas", TextDrawFont.Diploma, Color.Red)
