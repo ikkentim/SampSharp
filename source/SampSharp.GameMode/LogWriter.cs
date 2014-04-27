@@ -34,7 +34,19 @@ namespace SampSharp.GameMode
         /// <param name="value">The character to write. </param>
         public override void Write(char value)
         {
-            Native.Print(value.ToString(CultureInfo.InvariantCulture));
+            switch (value)
+            {
+                case '\r':
+                case '\n':
+                    /*
+                     * Do not print \r \n characters.
+                     * There are emitted by Console.WriteLine, but Native.Print breaks for itself.
+                     */
+                    break;
+                default:
+                    Native.Print(value.ToString(CultureInfo.InvariantCulture));
+                    break;
+            }
         }
 
         /// <summary>
@@ -53,7 +65,7 @@ namespace SampSharp.GameMode
         /// <param name="value">The character to write to the log. </param>
         public override void WriteLine(char value)
         {
-            Native.Print(value.ToString(CultureInfo.InvariantCulture));
+            Write(value.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -62,7 +74,15 @@ namespace SampSharp.GameMode
         /// <param name="value">The string to write. If <paramref name="value" /> is null, only the line terminator is written. </param>
         public override void WriteLine(string value)
         {
-            Native.Print(value ?? string.Empty);
+            Write(value);
+        }
+
+        /// <summary>
+        /// Writes an empty line to the log.
+        /// </summary>
+        public override void WriteLine()
+        {
+            Write(string.Empty);
         }
     }
 }
