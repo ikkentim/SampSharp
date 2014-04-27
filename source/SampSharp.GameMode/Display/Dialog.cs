@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System.Collections.Generic;
+using System.Linq;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
@@ -79,6 +80,42 @@ namespace SampSharp.GameMode.Display
             Style = style;
             Caption = caption;
             Message = message;
+            Button1 = button1;
+            Button2 = button2;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the Dialog class with the <see cref="DialogStyle.List" />.
+        /// </summary>
+        /// <param name="caption">
+        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
+        ///     characters before it starts to cut off.
+        /// </param>
+        /// <param name="lines">The lines to display in the list dialog.</param>
+        /// <param name="button">The text on the button.</param>
+        public Dialog(string caption, string[] lines, string button)
+        {
+            Style = DialogStyle.List;
+            Caption = caption;
+            Message = string.Join("\n", lines);
+            Button1 = button;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the Dialog class with the <see cref="DialogStyle.List" />.
+        /// </summary>
+        /// <param name="caption">
+        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
+        ///     characters before it starts to cut off.
+        /// </param>
+        /// <param name="lines">The lines to display in the list dialog.</param>
+        /// <param name="button1">The text on the left button.</param>
+        /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
+        public Dialog(string caption, string[] lines, string button1, string button2)
+        {
+            Style = DialogStyle.List;
+            Caption = caption;
+            Message = string.Join("\n", lines);
             Button1 = button1;
             Button2 = button2;
         }
