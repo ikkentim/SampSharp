@@ -53,8 +53,70 @@ namespace SampSharp.GameMode.Display
 
         #endregion
 
+        #region Constructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="TextDraw" /> class.
+        /// </summary>
+        public TextDraw()
+        {
+            Id = -1;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="TextDraw" /> class.
+        /// </summary>
+        /// <param name="id">The ID of the textdraw.</param>
+        public TextDraw(int id)
+        {
+            Id = id;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="TextDraw" /> class.
+        /// </summary>
+        /// <param name="x">The x-position of the textdraw on the screen.</param>
+        /// <param name="y">The y-position of the textdraw on the screen.</param>
+        /// <param name="text">The text of the textdraw.</param>
+        public TextDraw(float x, float y, string text) : this()
+        {
+            X = x;
+            Y = y;
+            Text = text;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="TextDraw" /> class.
+        /// </summary>
+        /// <param name="x">The x-position of the textdraw on the screen.</param>
+        /// <param name="y">The y-position of the textdraw on the screen.</param>
+        /// <param name="text">The text of the textdraw.</param>
+        /// <param name="font">The <see cref="TextDrawFont" /> of the textdraw.</param>
+        public TextDraw(float x, float y, string text, TextDrawFont font) : this(x, y, text)
+        {
+            Font = font;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="TextDraw" /> class.
+        /// </summary>
+        /// <param name="x">The x-position of the textdraw on the screen.</param>
+        /// <param name="y">The y-position of the textdraw on the screen.</param>
+        /// <param name="text">The text of the textdraw.</param>
+        /// <param name="font">The <see cref="TextDrawFont" /> of the textdraw.</param>
+        /// <param name="foreColor">The foreground <see cref="Color" /> of the textdraw.</param>
+        public TextDraw(float x, float y, string text, TextDrawFont font, Color foreColor) : this(x, y, text, font)
+        {
+            ForeColor = foreColor;
+        }
+
+        #endregion
+
         #region Properties
 
+        /// <summary>
+        ///     Gets or sets the <see cref="TextDrawAlignment" /> of this textdraw.
+        /// </summary>
         public virtual TextDrawAlignment Alignment
         {
             get { return _alignment; }
@@ -63,10 +125,13 @@ namespace SampSharp.GameMode.Display
                 _alignment = value;
                 if (Id == -1) return;
                 Native.TextDrawAlignment(Id, (int) value);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the background <see cref="Color" /> of this textdraw.
+        /// </summary>
         public virtual Color BackColor
         {
             get { return _backColor; }
@@ -75,10 +140,13 @@ namespace SampSharp.GameMode.Display
                 _backColor = value;
                 if (Id == -1) return;
                 Native.TextDrawBackgroundColor(Id, value);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the foreground <see cref="Color" /> of this textdraw.
+        /// </summary>
         public virtual Color ForeColor
         {
             get { return _foreColor; }
@@ -87,10 +155,13 @@ namespace SampSharp.GameMode.Display
                 _foreColor = value;
                 if (Id == -1) return;
                 Native.TextDrawColor(Id, value);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the box <see cref="Color" /> of this textdraw.
+        /// </summary>
         public virtual Color BoxColor
         {
             get { return _boxColor; }
@@ -99,10 +170,13 @@ namespace SampSharp.GameMode.Display
                 _boxColor = value;
                 if (Id == -1) return;
                 Native.TextDrawBoxColor(Id, value);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the <see cref="TextDrawFont" /> to use in this textdraw.
+        /// </summary>
         public virtual TextDrawFont Font
         {
             get { return _font; }
@@ -111,10 +185,13 @@ namespace SampSharp.GameMode.Display
                 _font = value;
                 if (Id == -1) return;
                 Native.TextDrawFont(Id, (int) value);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the letter-width of this textdraw.
+        /// </summary>
         public virtual float LetterWidth
         {
             get { return _letterWidth; }
@@ -123,10 +200,13 @@ namespace SampSharp.GameMode.Display
                 _letterWidth = value;
                 if (Id == -1) return;
                 Native.TextDrawLetterSize(Id, _letterWidth, _letterHeight);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the letter-height of this textdraw.
+        /// </summary>
         public virtual float LetterHeight
         {
             get { return _letterHeight; }
@@ -135,10 +215,13 @@ namespace SampSharp.GameMode.Display
                 _letterHeight = value;
                 if (Id == -1) return;
                 Native.TextDrawLetterSize(Id, _letterWidth, _letterHeight);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the outline size of this textdraw.
+        /// </summary>
         public virtual int Outline
         {
             get { return _outline; }
@@ -147,10 +230,13 @@ namespace SampSharp.GameMode.Display
                 _outline = value;
                 if (Id == -1) return;
                 Native.TextDrawSetOutline(Id, value);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets wheter proporionally space the characters of this textdraw.
+        /// </summary>
         public virtual bool Proportional
         {
             get { return _proportional; }
@@ -159,10 +245,13 @@ namespace SampSharp.GameMode.Display
                 _proportional = value;
                 if (Id == -1) return;
                 Native.TextDrawSetProportional(Id, value);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the shadow-size of this textdraw.
+        /// </summary>
         public virtual int Shadow
         {
             get { return _shadow; }
@@ -171,10 +260,13 @@ namespace SampSharp.GameMode.Display
                 _shadow = value;
                 if (Id == -1) return;
                 Native.TextDrawSetShadow(Id, value);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the text of this textdraw.
+        /// </summary>
         public virtual string Text
         {
             get { return _text; }
@@ -183,10 +275,13 @@ namespace SampSharp.GameMode.Display
                 _text = value;
                 if (Id == -1) return;
                 Native.TextDrawSetString(Id, value);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the x-position of this textdraw on the screen.
+        /// </summary>
         public virtual float X
         {
             get { return _x; }
@@ -194,10 +289,13 @@ namespace SampSharp.GameMode.Display
             {
                 _x = value;
                 if (Id == -1) return;
-                Prepare();
+                Refresh();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the y-position of this textdraw on the screen.
+        /// </summary>
         public virtual float Y
         {
             get { return _y; }
@@ -205,10 +303,13 @@ namespace SampSharp.GameMode.Display
             {
                 _y = value;
                 if (Id == -1) return;
-                Prepare();
+                Refresh();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the width of this textdraw's box.
+        /// </summary>
         public virtual float Width
         {
             get { return _width; }
@@ -217,10 +318,13 @@ namespace SampSharp.GameMode.Display
                 _width = value;
                 if (Id == -1) return;
                 Native.TextDrawTextSize(Id, _width, _height);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the height of this textdraw's box.
+        /// </summary>
         public virtual float Height
         {
             get { return _height; }
@@ -229,10 +333,13 @@ namespace SampSharp.GameMode.Display
                 _height = value;
                 if (Id == -1) return;
                 Native.TextDrawTextSize(Id, _width, _height);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets whether to draw a box behind the textdraw.
+        /// </summary>
         public virtual bool UseBox
         {
             get { return _useBox; }
@@ -241,10 +348,13 @@ namespace SampSharp.GameMode.Display
                 _useBox = value;
                 if (Id == -1) return;
                 Native.TextDrawUseBox(Id, value);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets whether this textdraw is selectable.
+        /// </summary>
         public virtual bool Selectable
         {
             get { return _selectable; }
@@ -253,10 +363,13 @@ namespace SampSharp.GameMode.Display
                 _selectable = value;
                 if (Id == -1) return;
                 Native.TextDrawSetSelectable(Id, value);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the previewmodel to draw on this textdraw.
+        /// </summary>
         public virtual int PreviewModel
         {
             get { return _previewModel; }
@@ -265,10 +378,13 @@ namespace SampSharp.GameMode.Display
                 _previewModel = value;
                 if (Id == -1) return;
                 Native.TextDrawSetPreviewModel(Id, value);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the rotation of this textdraw's previewmodel.
+        /// </summary>
         public virtual Vector PreviewRotation
         {
             get { return _previewRotation; }
@@ -277,10 +393,13 @@ namespace SampSharp.GameMode.Display
                 _previewRotation = value;
                 if (Id == -1) return;
                 Native.TextDrawSetPreviewRot(Id, value.X, value.Y, value.Z, PreviewZoom);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the zoom level of this textdraw's previewmodel.
+        /// </summary>
         public virtual float PreviewZoom
         {
             get { return _previewZoom; }
@@ -289,10 +408,13 @@ namespace SampSharp.GameMode.Display
                 _previewZoom = value;
                 if (Id == -1) return;
                 Native.TextDrawSetPreviewRot(Id, PreviewRotation.X, PreviewRotation.Y, PreviewRotation.Z, value);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the primary vehicle color of this textdraw's previewmodel.
+        /// </summary>
         public virtual int PreviewPrimaryColor
         {
             get { return _previewPrimaryColor; }
@@ -301,10 +423,13 @@ namespace SampSharp.GameMode.Display
                 _previewPrimaryColor = value;
                 if (Id == -1) return;
                 Native.TextDrawSetPreviewVehCol(Id, _previewPrimaryColor, _previewSecondaryColor);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the secondary vehicle color of this textdraw's previewmodel.
+        /// </summary>
         public virtual int PreviewSecondaryColor
         {
             get { return _previewSecondaryColor; }
@@ -313,10 +438,13 @@ namespace SampSharp.GameMode.Display
                 _previewSecondaryColor = value;
                 if (Id == -1) return;
                 Native.TextDrawSetPreviewVehCol(Id, _previewPrimaryColor, _previewSecondaryColor);
-                UpdatePlayers();
+                UpdateClients();
             }
         }
 
+        /// <summary>
+        ///     Gets the id of this textdraw.
+        /// </summary>
         public virtual int Id { get; protected set; }
 
         #endregion
@@ -331,64 +459,61 @@ namespace SampSharp.GameMode.Display
 
         #endregion
 
-        #region Constructors
-
-        public TextDraw()
-        {
-            Id = -1;
-        }
-
-        public TextDraw(int id)
-        {
-            Id = id;
-        }
-
-        public TextDraw(float x, float y, string text) : this()
-        {
-            X = x;
-            Y = y;
-            Text = text;
-        }
-
-        public TextDraw(float x, float y, string text, TextDrawFont font) : this(x, y, text)
-        {
-            Font = font;
-        }
-
-        public TextDraw(float x, float y, string text, TextDrawFont font, Color foreColor) : this(x, y, text, font)
-        {
-            ForeColor = foreColor;
-        }
-
-        #endregion
-
         #region Methods
 
+        /// <summary>
+        ///     Destroys this textdraw and removes it from the known instances list.
+        /// </summary>
+        public override void Dispose()
+        {
+            if (Id == -1) return;
+            Native.TextDrawDestroy(Id);
+
+            base.Dispose();
+        }
+
+        /// <summary>
+        ///     Displays this textdraw to all players.
+        /// </summary>
         public virtual void Show()
         {
-            if (Id == -1) Prepare();
+            if (Id == -1) Refresh();
             Native.TextDrawShowForAll(Id);
         }
 
+        /// <summary>
+        ///     Display this textdraw to the given <paramref name="player" />.
+        /// </summary>
+        /// <param name="player">The player to display this textdraw to.</param>
         public virtual void Show(Player player)
         {
-            if (Id == -1) Prepare();
+            if (Id == -1) Refresh();
             if (player != null) Native.TextDrawShowForPlayer(player.Id, Id);
         }
 
+        /// <summary>
+        ///     Hides this textdraw.
+        /// </summary>
         public virtual void Hide()
         {
             if (Id == -1) return;
             Native.TextDrawHideForAll(Id);
         }
 
+        /// <summary>
+        ///     Hides this textdraw for the given <paramref name="player" />.
+        /// </summary>
+        /// <param name="player">The player to hide this textdraw from.</param>
         public virtual void Hide(Player player)
         {
             if (Id == -1 || player == null) return;
             Native.TextDrawHideForPlayer(player.Id, Id);
         }
 
-        protected virtual void Prepare()
+        /// <summary>
+        ///     Recreates this textdraw with all set properties. Called when changing the location on the screen.
+        /// </summary>
+        protected virtual void Refresh()
         {
             if (Id != -1) Native.TextDrawDestroy(Id);
             Id = Native.TextDrawCreate(X, Y, Text);
@@ -414,21 +539,16 @@ namespace SampSharp.GameMode.Display
             if (PreviewPrimaryColor != -1) PreviewPrimaryColor = PreviewPrimaryColor;
             if (PreviewSecondaryColor != -1) PreviewSecondaryColor = PreviewSecondaryColor;
 
-            UpdatePlayers();
+            UpdateClients();
         }
 
-        protected virtual void UpdatePlayers()
+        /// <summary>
+        ///     Updates this textdraw on all client's screens.
+        /// </summary>
+        protected virtual void UpdateClients()
         {
             //TODO: Check what happens after Show() or Show() Hide(Player), does it still show for newcomers?
             //Then update the TD for these players here.
-        }
-
-        public override void Dispose()
-        {
-            if (Id == -1) return;
-            Native.TextDrawDestroy(Id);
-
-            base.Dispose();
         }
 
         #endregion

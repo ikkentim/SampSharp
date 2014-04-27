@@ -20,6 +20,9 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Display
 {
+    /// <summary>
+    ///     Represents a player-textdraw.
+    /// </summary>
     public class PlayerTextDraw : InstanceKeeper<PlayerTextDraw>, IIdentifyable, IDisposable
     {
         #region Fields
@@ -55,8 +58,79 @@ namespace SampSharp.GameMode.Display
 
         #endregion
 
+        #region Constructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
+        /// </summary>
+        /// <param name="id">The ID of the textdraw.</param>
+        public PlayerTextDraw(int id) : this(Player.Find(id/(Limits.MaxTextDraws + 1)), id%(Limits.MaxTextDraws + 1))
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
+        /// </summary>
+        /// <param name="player">The <see cref="Player" /> whose textdraw it is.</param>
+        /// <param name="id">The id of the player-textdraw.</param>
+        public PlayerTextDraw(Player player, int id)
+        {
+            Player = player;
+            TextDrawId = id;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
+        /// </summary>
+        /// <param name="player">The owner of the player-textdraw.</param>
+        /// <param name="x">The x-position of the player-textdraw on the screen.</param>
+        /// <param name="y">The y-position of the player-textdraw on the screen.</param>
+        /// <param name="text">The text of the player-textdraw.</param>
+        public PlayerTextDraw(Player player, float x, float y, string text)
+        {
+            TextDrawId = -1;
+            Player = player;
+            X = x;
+            Y = y;
+            Text = text;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
+        /// </summary>
+        /// <param name="player">The owner of the player-textdraw.</param>
+        /// <param name="x">The x-position of the player-textdraw on the screen.</param>
+        /// <param name="y">The y-position of the player-textdraw on the screen.</param>
+        /// <param name="text">The text of the player-textdraw.</param>
+        /// <param name="font">The <see cref="TextDrawFont" /> of this textdraw.</param>
+        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font)
+            : this(player, x, y, text)
+        {
+            Font = font;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
+        /// </summary>
+        /// <param name="player">The owner of the player-textdraw.</param>
+        /// <param name="x">The x-position of the player-textdraw on the screen.</param>
+        /// <param name="y">The y-position of the player-textdraw on the screen.</param>
+        /// <param name="text">The text of the player-textdraw.</param>
+        /// <param name="font">The <see cref="TextDrawFont" /> of the player-textdraw.</param>
+        /// <param name="foreColor">The foreground <see cref="Color" /> of the player-textdraw.</param>
+        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor)
+            : this(player, x, y, text, font)
+        {
+            ForeColor = foreColor;
+        }
+
+        #endregion
+
         #region Properties
 
+        /// <summary>
+        ///     Gets or sets the <see cref="TextDrawAlignment" /> of this player-textdraw.
+        /// </summary>
         public virtual TextDrawAlignment Alignment
         {
             get { return _alignment; }
@@ -69,6 +143,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the background <see cref="Color" /> of this player-textdraw.
+        /// </summary>
         public virtual Color BackColor
         {
             get { return _backColor; }
@@ -81,6 +158,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the foreground <see cref="Color" /> of this player-textdraw.
+        /// </summary>
         public virtual Color ForeColor
         {
             get { return _foreColor; }
@@ -93,6 +173,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the box <see cref="Color" /> of this player-textdraw.
+        /// </summary>
         public virtual Color BoxColor
         {
             get { return _boxColor; }
@@ -105,6 +188,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the <see cref="TextDrawFont" /> to use in this player-textdraw.
+        /// </summary>
         public virtual TextDrawFont Font
         {
             get { return _font; }
@@ -117,6 +203,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the letter-width of this player-textdraw.
+        /// </summary>
         public virtual float LetterWidth
         {
             get { return _letterWidth; }
@@ -129,6 +218,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the letter-height of this player-textdraw.
+        /// </summary>
         public virtual float LetterHeight
         {
             get { return _letterHeight; }
@@ -141,6 +233,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the outline size of this player-textdraw.
+        /// </summary>
         public virtual int Outline
         {
             get { return _outline; }
@@ -153,6 +248,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets wheter proporionally space the characters of this player-textdraw.
+        /// </summary>
         public virtual bool Proportional
         {
             get { return _proportional; }
@@ -165,6 +263,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the shadow-size of this player-textdraw.
+        /// </summary>
         public virtual int Shadow
         {
             get { return _shadow; }
@@ -177,6 +278,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the text of this player-textdraw.
+        /// </summary>
         public virtual string Text
         {
             get { return _text; }
@@ -189,6 +293,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the x-position of this player-textdraw on the screen.
+        /// </summary>
         public virtual float X
         {
             get { return _x; }
@@ -196,10 +303,13 @@ namespace SampSharp.GameMode.Display
             {
                 _x = value;
                 if (TextDrawId == -1) return;
-                Prepare();
+                Refresh();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the y-position of this player-textdraw on the screen.
+        /// </summary>
         public virtual float Y
         {
             get { return _y; }
@@ -207,10 +317,13 @@ namespace SampSharp.GameMode.Display
             {
                 _y = value;
                 if (TextDrawId == -1) return;
-                Prepare();
+                Refresh();
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the width of this player-textdraw's box.
+        /// </summary>
         public virtual float Width
         {
             get { return _width; }
@@ -223,6 +336,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the height of this player-textdraw's box.
+        /// </summary>
         public virtual float Height
         {
             get { return _height; }
@@ -235,6 +351,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets whether to draw a box behind the player-textdraw.
+        /// </summary>
         public virtual bool UseBox
         {
             get { return _useBox; }
@@ -247,6 +366,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets whether this player-textdraw is selectable.
+        /// </summary>
         public virtual bool Selectable
         {
             get { return _selectable; }
@@ -259,6 +381,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the previewmodel to draw on this player-textdraw.
+        /// </summary>
         public virtual int PreviewModel
         {
             get { return _previewModel; }
@@ -271,6 +396,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the rotation of this player-textdraw's previewmodel.
+        /// </summary>
         public virtual Vector PreviewRotation
         {
             get { return _previewRotation; }
@@ -283,6 +411,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the zoom level of this player-textdraw's previewmodel.
+        /// </summary>
         public virtual float PreviewZoom
         {
             get { return _previewZoom; }
@@ -296,6 +427,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the primary vehicle color of this player-textdraw's previewmodel.
+        /// </summary>
         public virtual int PreviewPrimaryColor
         {
             get { return _previewPrimaryColor; }
@@ -309,6 +443,9 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the secondary vehicle color of this player-textdraw's previewmodel.
+        /// </summary>
         public virtual int PreviewSecondaryColor
         {
             get { return _previewSecondaryColor; }
@@ -322,10 +459,19 @@ namespace SampSharp.GameMode.Display
             }
         }
 
+        /// <summary>
+        ///     Gets the textdraw-id of this player-textdraw.
+        /// </summary>
         public virtual int TextDrawId { get; protected set; }
 
+        /// <summary>
+        ///     Gets the owner of this player-textdraw.
+        /// </summary>
         public virtual Player Player { get; protected set; }
 
+        /// <summary>
+        ///     Gets the id of this player-textdraw.
+        /// </summary>
         public virtual int Id
         {
             get { return Player.Id*(Limits.MaxTextDraws + 1) + TextDrawId; }
@@ -343,43 +489,11 @@ namespace SampSharp.GameMode.Display
 
         #endregion
 
-        #region Constructors
-
-        public PlayerTextDraw(int id) : this(Player.Find(id/(Limits.MaxTextDraws + 1)), id%(Limits.MaxTextDraws + 1))
-        {
-        }
-
-        public PlayerTextDraw(Player player, int id)
-        {
-            Player = player;
-            TextDrawId = id;
-        }
-
-        public PlayerTextDraw(Player player, float x, float y, string text)
-        {
-            TextDrawId = -1;
-            Player = player;
-            X = x;
-            Y = y;
-            Text = text;
-        }
-
-        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font)
-            : this(player, x, y, text)
-        {
-            Font = font;
-        }
-
-        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor)
-            : this(player, x, y, text, font)
-        {
-            ForeColor = foreColor;
-        }
-
-        #endregion
-
         #region Methods
 
+        /// <summary>
+        ///     Destroys this player-textdraw and removes it from the known instances list.
+        /// </summary>
         public override void Dispose()
         {
             if (TextDrawId == -1) return;
@@ -388,22 +502,33 @@ namespace SampSharp.GameMode.Display
             base.Dispose();
         }
 
+        /// <summary>
+        ///     Displays this player-textdraw to the <see cref="Player" /> of this textdraw.
+        /// </summary>
         public virtual void Show()
         {
-            if (TextDrawId == -1) Prepare();
+            if (TextDrawId == -1) Refresh();
             _visible = true;
             Native.PlayerTextDrawShow(Player.Id, TextDrawId);
         }
 
+        /// <summary>
+        ///     Hides this player-textdraw.
+        /// </summary>
         public virtual void Hide()
         {
-            if (TextDrawId == -1) return;
+            if (TextDrawId == -1 && _visible) return;
             _visible = false;
             Native.PlayerTextDrawHide(Player.Id, TextDrawId);
         }
 
-        protected virtual void Prepare()
+        /// <summary>
+        ///     Recreates this player-textdraw with all set properties. Called when changing the location on the screen.
+        /// </summary>
+        protected virtual void Refresh()
         {
+            Hide();
+
             if (TextDrawId != -1) Native.PlayerTextDrawDestroy(Player.Id, TextDrawId);
             TextDrawId = Native.CreatePlayerTextDraw(Player.Id, X, Y, Text);
 
@@ -431,14 +556,23 @@ namespace SampSharp.GameMode.Display
             Update();
         }
 
+        /// <summary>
+        ///     Updates this textdraw on the client's screen.
+        /// </summary>
         protected virtual void Update()
         {
             if (_visible) Show();
         }
 
+        /// <summary>
+        ///     Finds an instance with the given <paramref name="id" /> and <paramref name="player" />.
+        /// </summary>
+        /// <param name="player">The player of the instance to find</param>
+        /// <param name="id">The identity of the instance to find.</param>
+        /// <returns>The found instance.</returns>
         public static PlayerTextDraw Find(Player player, int id)
         {
-            return Find(player.Id*(Limits.MaxTextDraws + 1) + id);
+            return FindExisting(player.Id*(Limits.MaxTextDraws + 1) + id);
         }
 
         #endregion
