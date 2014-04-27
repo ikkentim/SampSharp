@@ -50,6 +50,7 @@ namespace SampSharp.GameMode.SAMP
             R = r;
             G = g;
             B = b;
+            A = 255;
         }
 
 
