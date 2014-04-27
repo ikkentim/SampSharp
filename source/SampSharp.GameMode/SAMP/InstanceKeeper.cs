@@ -68,6 +68,16 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
+        ///     Finds an instance with the given <paramref name="id" />.
+        /// </summary>
+        /// <param name="id">The identity of the instance to find.</param>
+        /// <returns>The found instance.</returns>
+        public static T FindExisting(int id)
+        {
+            return (T) InstanceList.FirstOrDefault(i => i.Id == id);
+        }
+
+        /// <summary>
         ///     Registers the type to use when initializing new instances.
         /// </summary>
         /// <typeparam name="T2">The Type to use when initializing new instances.</typeparam>
