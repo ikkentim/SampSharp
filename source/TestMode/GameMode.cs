@@ -36,6 +36,8 @@ namespace TestMode
 
         public override bool OnGameModeInit()
         {
+            throw new Exception("Test exception");
+
             AddPlayerClass(1, new Vector(0, 0, 5), 0);
 
             Test = new TextDraw(459.375000f, 78.166671f, "San Andreas", TextDrawFont.Diploma, Color.Red)
