@@ -111,6 +111,7 @@ CSampSharp::CSampSharp(string bmPath, string gmPath, string gmNamespace, string 
 	onPlayerEditAttachedObject = LoadCallback(gameModeClass, "OnPlayerEditAttachedObject");
 	onPlayerSelectObject = LoadCallback(gameModeClass, "OnPlayerSelectObject");
 	onPlayerWeaponShot = LoadCallback(gameModeClass, "OnPlayerWeaponShot");
+	onIncomingConnection = LoadCallback(gameModeClass, "OnIncomingConnection");
 	onTimerTick = LoadCallback(gameModeClass, "OnTimerTick");
 	onTick = LoadCallback(gameModeClass, "OnTick");
 }

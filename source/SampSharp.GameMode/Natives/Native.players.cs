@@ -1684,6 +1684,23 @@ namespace SampSharp.GameMode.Natives
         public static extern bool StopRecordingPlayerData(int playerid);
 
         /// <summary>
+        ///     Creates an explosion for a player.
+        ///     Only the specific player will see explosion and feel its effects.
+        ///     This is useful when you want to isolate explosions from other players or to make them only appear in specific
+        ///     virtual worlds.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to create the explosion for.</param>
+        /// <param name="x">The X coordinate of the explosion.</param>
+        /// <param name="y">The Y coordinate of the explosion.</param>
+        /// <param name="z">The Z coordinate of the explosion.</param>
+        /// <param name="type">The explosion type.</param>
+        /// <param name="radius">The radius of the explosion.</param>
+        /// <returns>This function does not return any specific values.</returns>
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool CreateExplosionForPlayer(int playerid, float x, float y, float z, int type,
+            float radius);
+
+        /// <summary>
         ///     This function can be used to change the spawn information of a specific player. It allows you to automatically set
         ///     someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn
         ///     systems. This function is more crash-safe then using <see cref="SetPlayerSkin" /> in
@@ -2186,6 +2203,22 @@ namespace SampSharp.GameMode.Natives
         public static bool InterpolateCameraLookAt(int playerid, Vector from, Vector to, int time, CameraCut cut)
         {
             return InterpolateCameraLookAt(playerid, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
+        }
+
+        /// <summary>
+        ///     Creates an explosion for a player.
+        ///     Only the specific player will see explosion and feel its effects.
+        ///     This is useful when you want to isolate explosions from other players or to make them only appear in specific
+        ///     virtual worlds.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to create the explosion for.</param>
+        /// <param name="position">The position of the explosion.</param>
+        /// <param name="type">The explosion type.</param>
+        /// <param name="radius">The radius of the explosion.</param>
+        /// <returns>This function does not return any specific values.</returns>
+        public static bool CreateExplosionForPlayer(int playerid, Vector position, int type, float radius)
+        {
+            return CreateExplosionForPlayer(playerid, position.X, position.Y, position.Z, type, radius);
         }
     }
 }

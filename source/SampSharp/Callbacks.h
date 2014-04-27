@@ -449,6 +449,15 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerWeaponShot(int playerid, int weaponid, in
 	args[5] = &fY;
 	args[6] = &fZ;
 
-	bool r = CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerWeaponShot, args);
-	return r;
+	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerWeaponShot, args);
+}
+
+PLUGIN_EXPORT bool PLUGIN_CALL OnIncomingConnection(int playerid, const char * ip_address, int port)
+{
+	void *args[3];
+	args[0] = &playerid;
+	args[1] = mono_string_new(mono_domain_get(), ip_address);
+	args[2] = &port;
+
+	return CSampSharp::instance->CallCallback(CSampSharp::instance->onIncomingConnection, args);
 }

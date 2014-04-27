@@ -1122,7 +1122,6 @@ namespace SampSharp.GameMode.Natives
         ///     It is not a unique ID.
         ///     It was added to assist owners of large servers who deal with constant attacks from cheaters and botters.
         ///     It has been in SA-MP for 2 years.
-        ///     ///
         /// </remarks>
         /// <param name="playerid">The ID of the player whose gpci you'd like</param>
         /// <param name="buffer">A string to store the gpci, passed by reference.</param>
@@ -1133,6 +1132,37 @@ namespace SampSharp.GameMode.Natives
         public static extern bool gpci(int playerid, out string buffer, int size);
 
         /// <summary>
+        ///     Adds a death to the 'killfeed' on the right-hand side of the screen for a single player.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to send the death message to.</param>
+        /// <param name="killer">The ID of the killer (can be <see cref="Misc.InvalidPlayerId" />).</param>
+        /// <param name="killee">The ID of the player that died.</param>
+        /// <param name="weapon">
+        ///     The reason (not always a weapon) for the victim's death. Special icons can also be used
+        ///     (ICON_CONNECT and ICON_DISCONNECT).
+        /// </param>
+        /// <returns>True if the function executed successfully, False otherwise.</returns>
+        public static extern bool SendDeathMessageToPlayer(int playerid, int killer, int killee, int weapon);
+
+        /// <summary>
+        ///     Blocks an IP address from further communication with the server for a set amount of time (with wildcards allowed).
+        /// </summary>
+        /// <param name="ipAddress">The IP to block.</param>
+        /// <param name="timems">
+        ///     The time (in milliseconds) that the connection will be blocked for. 0 can be used for an
+        ///     indefinite block.
+        /// </param>
+        /// <returns>This function does not return any specific values.</returns>
+        public static extern bool BlockIpAddress(string ipAddress, int timems);
+
+        /// <summary>
+        ///     Unblock an IP address that was previously blocked using <see cref="BlockIpAddress" />.
+        /// </summary>
+        /// <param name="ipAddress">The IP address to unblock.</param>
+        /// <returns>This function does not return any specific values.</returns>
+        public static extern bool UnBlockIpAddress(string ipAddress);
+
+        /// <summary>
         ///     Returns a hash build from information of the player's PC.
         /// </summary>
         /// <remarks>
@@ -1140,7 +1170,6 @@ namespace SampSharp.GameMode.Natives
         ///     It is not a unique ID.
         ///     It was added to assist owners of large servers who deal with constant attacks from cheaters and botters.
         ///     It has been in SA-MP for 2 years.
-        ///     ///
         /// </remarks>
         /// <param name="playerid">The ID of the player whose gpci you'd like</param>
         /// <returns>The gpci value.</returns>

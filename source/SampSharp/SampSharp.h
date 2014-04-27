@@ -69,6 +69,7 @@ public:
 	MonoMethod * onPlayerEditAttachedObject;
 	MonoMethod * onPlayerSelectObject;
 	MonoMethod * onPlayerWeaponShot;
+	MonoMethod * onIncomingConnection;
 	MonoMethod * onTimerTick;
 	MonoMethod * onTick;
  
