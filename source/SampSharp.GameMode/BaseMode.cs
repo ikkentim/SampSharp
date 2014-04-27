@@ -775,10 +775,10 @@ namespace SampSharp.GameMode
         public event WeaponShotHandler PlayerWeaponShot;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnIncommingConnection" /> callback is being called.
+        ///     Occurs when the <see cref="OnIncomingConnection" /> callback is being called.
         ///     This callback is called when an IP address attempts a connection to the server.
         /// </summary>
-        public event ConnectionHandler IncommingConnection;
+        public event ConnectionHandler IncomingConnection;
 
         /// <summary>
         ///     Occurs when the <see cref="OnTick" /> callback is being called.
@@ -1785,12 +1785,12 @@ namespace SampSharp.GameMode
         /// <param name="ipAddress">The IP address of the player attempting to connect.</param>
         /// <param name="port">The port of the attempted connection.</param>
         /// <returns>This callback does not handle returns.</returns>
-        public virtual bool OnIncommingConnection(int playerid, string ipAddress, int port)
+        public virtual bool OnIncomingConnection(int playerid, string ipAddress, int port)
         {
             var args = new ConnectionEventArgs(playerid, ipAddress, port);
 
-            if (IncommingConnection != null)
-                IncommingConnection(this, args);
+            if (IncomingConnection != null)
+                IncomingConnection(this, args);
 
             return args.Success;
         }
