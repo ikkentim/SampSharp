@@ -1515,7 +1515,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="color">The color of the message.</param>
         /// <param name="message">The text that will be displayed (max 144 characters).</param>
-        public void SendClientMessage(Color color, string message)
+        public virtual void SendClientMessage(Color color, string message)
         {
             Native.SendClientMessage(Id, color.GetColorValue(ColorFormat.RGBA), message);
         }
@@ -1538,7 +1538,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="receiver">The Player who will recieve the message</param>
         /// <param name="message">The message that will be sent.</param>
-        public void SendPlayerMessageToPlayer(Player receiver, string message)
+        public virtual void SendPlayerMessageToPlayer(Player receiver, string message)
         {
             Native.SendPlayerMessageToPlayer(receiver.Id, Id, message);
         }
@@ -1551,19 +1551,6 @@ namespace SampSharp.GameMode.World
         public void SendPlayerMessageToAll(string message)
         {
             Native.SendPlayerMessageToAll(Id, message);
-        }
-
-        /// <summary>
-        ///     Adds a death to the 'killfeed' on the right-hand side of the screen.
-        /// </summary>
-        /// <param name="killer">The Player that killer this Player.</param>
-        /// <param name="weapon">
-        ///     The reason (not always a weapon) for this Player's death. Special icons can also be used
-        ///     (ICON_CONNECT and ICON_DISCONNECT).
-        /// </param>
-        public void SendDeathMessage(Player killer, Weapon weapon)
-        {
-            Native.SendDeathMessage(killer == null ? InvalidId : killer.Id, Id, (int) weapon);
         }
 
         /// <summary>
@@ -1583,11 +1570,85 @@ namespace SampSharp.GameMode.World
         /// <param name="text">The text to be displayed.</param>
         /// <param name="time">The duration of the text being shown in milliseconds.</param>
         /// <param name="style">The style of text to be displayed.</param>
-        public void GameText(string text, int time, int style)
+        public virtual void GameText(string text, int time, int style)
         {
             Native.GameTextForPlayer(Id, text, time, style);
         }
 
+        /// <summary>
+        ///     Create an explosion at the specified coordinates.
+        /// </summary>
+        /// <param name="position">The position of the explosion.</param>
+        /// <param name="type">The type of explosion.</param>
+        /// <param name="radius">The explosion radius.</param>
+        public static void CreateExplosionForAll(Vector position, int type, float radius)
+        {
+            Native.CreateExplosion(position, type, radius);
+        }
+
+        /// <summary>
+        ///     Create an explosion at the specified coordinates.
+        /// </summary>
+        /// <param name="position">The position of the explosion.</param>
+        /// <param name="type">The type of explosion.</param>
+        /// <param name="radius">The explosion radius.</param>
+        /// <param name="interior">The interior of the explosion.</param>
+        public static void CreateExposionForAll(Vector position, int type, float radius, int interior)
+        {
+            foreach (Player p in All.Where(p => p.Interior == interior))
+                p.CreateExplosion(position, type, radius);
+        }
+
+        /// <summary>
+        ///     Create an explosion at the specified coordinates.
+        /// </summary>
+        /// <param name="position">The position of the explosion.</param>
+        /// <param name="type">The type of explosion.</param>
+        /// <param name="radius">The explosion radius.</param>
+        /// <param name="interior">The interior of the explosion.</param>
+        /// <param name="virtualworld">The virtualworld of the explosion.</param>
+        public static void CreateExposionForAll(Vector position, int type, float radius, int interior, int virtualworld)
+        {
+            foreach (Player p in All.Where(p => p.Interior == interior && p.VirtualWorld == virtualworld))
+                p.CreateExplosion(position, type, radius);
+        }
+
+        /// <summary>
+        ///     Creates an explosion for a player.
+        ///     Only the specific player will see explosion and feel its effects.
+        ///     This is useful when you want to isolate explosions from other players or to make them only appear in specific
+        ///     virtual worlds.
+        /// </summary>
+        /// <param name="position">The position of the explosion.</param>
+        /// <param name="type">The explosion type.</param>
+        /// <param name="radius">The radius of the explosion.</param>
+        public virtual void CreateExplosion(Vector position, int type, float radius)
+        {
+            Native.CreateExplosionForPlayer(Id, position, type, radius);
+        }
+
+        /// <summary>
+        ///     Adds a death to the 'killfeed' on the right-hand side of the screen of this Player.
+        /// </summary>
+        /// <param name="killer">The Player that killer the <paramref name="killee"/>.</param>
+        /// <param name="killee">The player that has been killed.</param>
+        /// <param name="weapon">The reason for this Player's death.</param>
+        public virtual void SendDeathMessage(Player killer, Player killee, Weapon weapon)
+        {
+            Native.SendDeathMessageToPlayer(Id, killer == null ? InvalidId : killer.Id,
+                killee == null ? InvalidId : killee.Id, (int)weapon);
+        }
+
+        /// <summary>
+        ///     Adds a death to the 'killfeed' on the right-hand side of the screen.
+        /// </summary>
+        /// <param name="killer">The Player that killer the <paramref name="killee"/>.</param>
+        /// <param name="killee">The player that has been killed.</param>
+        /// <param name="weapon">The reason for this Player's death.</param>
+        public static void SendDeathMessageToAll(Player killer, Player killee, Weapon weapon)
+        {
+            Native.SendDeathMessage(killer == null ? InvalidId : killer.Id, killee == null ? InvalidId : killee.Id, (int)weapon);
+        }
         #endregion
 
         #region Event raisers
