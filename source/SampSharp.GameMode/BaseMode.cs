@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright (C) 2014 Tim Potze
+// Copyright (C) 04 Tim Potze
 // 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -1203,7 +1203,8 @@ namespace SampSharp.GameMode
         /// <param name="newY">The new y coordinate of the vehicle.</param>
         /// <param name="newZ">The new z coordinate of the vehicle.</param>
         /// <returns>This callback does not handle returns.</returns>
-        public virtual bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX, float newY, float newZ)
+        public virtual bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX,
+            float newY, float newZ)
         {
             var args = new UnoccupiedVehicleEventArgs(playerid, vehicleid, passengerSeat, new Vector(newX, newY, newZ));
 

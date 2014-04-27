@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright (C) 2014 Tim Potze
+// Copyright (C) 04 Tim Potze
 // 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all dialog actions.
     /// </summary>
-    public class DialogController :  IEventListener, IController
+    public class DialogController : IEventListener, IController
     {
         /// <summary>
         ///     Registers the events this DialogController wants to listen to.

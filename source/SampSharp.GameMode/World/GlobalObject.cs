@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright (C) 2014 Tim Potze
+// Copyright (C) 04 Tim Potze
 // 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -14,6 +14,7 @@
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
@@ -102,11 +103,6 @@ namespace SampSharp.GameMode.World
 
         #region Methods
 
-        public static void Remove(Player player, int modelid, Vector position, float radius)
-        {
-            Native.RemoveBuildingForPlayer(player.Id, modelid, position.X, position.Y, position.Z, radius);
-        }
-
         public virtual void AttachTo(Player player, Vector offset, Vector rotation)
         {
             Native.AttachObjectToPlayer(Id, player.Id, offset, rotation);
@@ -146,6 +142,11 @@ namespace SampSharp.GameMode.World
             Native.SetObjectMaterialText(Id, text, materialindex, (int) materialsize, fontface, fontsize, bold,
                 foreColor.GetColorValue(ColorFormat.ARGB), backColor.GetColorValue(ColorFormat.ARGB),
                 (int) textalignment);
+        }
+
+        public static void Remove(Player player, int modelid, Vector position, float radius)
+        {
+            Native.RemoveBuildingForPlayer(player.Id, modelid, position.X, position.Y, position.Z, radius);
         }
 
         public virtual void Dispose()

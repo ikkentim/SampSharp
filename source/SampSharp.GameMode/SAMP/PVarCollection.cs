@@ -1,4 +1,17 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 04 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using SampSharp.GameMode.Definitions;
@@ -27,8 +40,8 @@ namespace SampSharp.GameMode.SAMP
             get
             {
                 if (varname == null || _player == null) return null;
-      
-                switch ((PlayerVarType)Native.GetPVarType(_player.Id, varname))
+
+                switch ((PlayerVarType) Native.GetPVarType(_player.Id, varname))
                 {
                     case PlayerVarType.Int:
                         return Get<int>(varname);
@@ -51,11 +64,11 @@ namespace SampSharp.GameMode.SAMP
                 }
 
                 if (value is int)
-                    Native.SetPVarInt(_player.Id, varname, (int)value);
+                    Native.SetPVarInt(_player.Id, varname, (int) value);
                 else if (value is float)
-                    Native.SetPVarFloat(_player.Id, varname, (float)value);
+                    Native.SetPVarFloat(_player.Id, varname, (float) value);
                 else if (value is bool)
-                    Native.SetPVarInt(_player.Id, varname, (bool)value ? 1 : 0);
+                    Native.SetPVarInt(_player.Id, varname, (bool) value ? 1 : 0);
                 else
                 {
                     var s = value as string;
@@ -92,20 +105,20 @@ namespace SampSharp.GameMode.SAMP
             if (_player == null) return default(T);
 
             object value = default(T);
-            if (typeof(T) == typeof(int))
+            if (typeof (T) == typeof (int))
                 value = Native.GetPVarInt(_player.Id, varname);
-            else if (typeof(T) == typeof(float))
+            else if (typeof (T) == typeof (float))
                 value = Native.GetPVarFloat(_player.Id, varname);
-            else if (typeof(T) == typeof(string))
+            else if (typeof (T) == typeof (string))
                 value = Native.GetPVarString(_player.Id, varname);
             else if (typeof (T) == typeof (bool))
                 value = Native.GetPVarInt(_player.Id, varname) > 0;
-            return (T)Convert.ChangeType(value, typeof(T));
+            return (T) Convert.ChangeType(value, typeof (T));
         }
 
         public bool Exists(string varname)
         {
-            return _player != null && Native.GetPVarType(_player.Id, varname) != (int)PlayerVarType.None;
+            return _player != null && Native.GetPVarType(_player.Id, varname) != (int) PlayerVarType.None;
         }
 
         public Type GetType(string varname)
