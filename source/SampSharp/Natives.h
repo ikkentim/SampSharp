@@ -195,6 +195,12 @@ static inline bool p_GetNetworkStats(MonoString ** retstr, int size) {
 static inline int p_SetTimer(int interval, bool repeat, MonoObject * params) {
 	return SetTimer(interval, repeat, p_TimerCallback, params);
 }
+static inline bool p_BlockIpAddress(MonoString * ip_address, int timems) {
+	return sampgdk_BlockIpAddress(mono_string_to_utf8(ip_address), timems);
+}
+static inline bool p_UnBlockIpAddress(MonoString * ip_address) {
+	return sampgdk_UnBlockIpAddress(mono_string_to_utf8(ip_address));
+}
 
 //
 // a_objects string converters
@@ -370,6 +376,7 @@ static void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::PlayerSpectateVehicle", sampgdk_PlayerSpectateVehicle);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::StartRecordingPlayerData", p_StartRecordingPlayerData);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::StopRecordingPlayerData", sampgdk_StopRecordingPlayerData);
+	mono_add_internal_call("SampSharp.GameMode.Natives.Native::CreateExplosionForPlayer", sampgdk_CreateExplosionForPlayer);
 
 	//
 	// a_samp natives
@@ -480,6 +487,9 @@ static void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetTimer", p_SetTimer);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::KillTimer", sampgdk_KillTimer);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::gpci", p_gpci);
+	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SendDeathMessageToPlayer", sampgdk_SendDeathMessageToPlayer);
+	mono_add_internal_call("SampSharp.GameMode.Natives.Native::BlockIpAddress", p_BlockIpAddress);
+	mono_add_internal_call("SampSharp.GameMode.Natives.Native::UnBlockIpAddress", p_UnBlockIpAddress);
 
 	//
 	// a_objects natives
