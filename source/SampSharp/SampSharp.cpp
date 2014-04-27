@@ -189,28 +189,8 @@ bool CSampSharp::CallCallback(MonoMethod* method, void **params) {
 	//Call callback
 	response = mono_runtime_invoke(method, gameMode, params, &exception);
 
-	if(exception){
-		MonoString * str = mono_object_to_string(exception, NULL);
-		char * exc = mono_string_to_utf8(str);
-
-		ofstream logfile;
-		logfile.open("SampSharp_errors.log", ios::app);
-		cout << "[SampSharp] Uncought exception:" << exc << endl;
-		logfile << GetTimeStamp() << "Uncought exception:" << exc << endl;
-		logfile.close();
-	}
-
-	if (!response){
-		ofstream logfile;
-		logfile.open("SampSharp_errors.log", ios::app);
-		cout << "[SampSharp] ERROR: No response given in CallCallback!" << endl;
-		logfile << GetTimeStamp() << "ERROR: No response given in CallCallback!" << endl;
-		logfile.close();
-		return false; //Default return value
-	}
-
 	//Catch exceptions
-	if (exception) {
+	if (!!exception) {
 		char * stacktrace = mono_string_to_utf8(mono_object_to_string(exception, NULL));
 
 		ofstream logfile;
@@ -219,6 +199,15 @@ bool CSampSharp::CallCallback(MonoMethod* method, void **params) {
 		logfile << GetTimeStamp() << " Exception thrown:" << endl << stacktrace << endl;
 		logfile.close();
 
+		return false; //Default return value
+	}
+
+	if (!response){
+		ofstream logfile;
+		logfile.open("SampSharp_errors.log", ios::app);
+		cout << "[SampSharp] ERROR: No response given in CallCallback!" << endl;
+		logfile << GetTimeStamp() << "ERROR: No response given in CallCallback!" << endl;
+		logfile.close();
 		return false; //Default return value
 	}
 
