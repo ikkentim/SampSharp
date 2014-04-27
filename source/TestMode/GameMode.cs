@@ -12,6 +12,8 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
