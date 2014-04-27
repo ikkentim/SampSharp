@@ -1327,5 +1327,17 @@ namespace SampSharp.GameMode.Natives
             return AddPlayerClassEx(teamid, modelid, position.X, position.Y, position.Z, zAngle, (int) weapon1,
                 weapon1Ammo, (int) weapon2, weapon2Ammo, (int) weapon3, weapon3Ammo);
         }
+
+        /// <summary>
+        ///     Create an explosion at the specified coordinates.
+        /// </summary>
+        /// <param name="position">The position of the explosion.</param>
+        /// <param name="type">The type of explosion.</param>
+        /// <param name="radius">The explosion radius.</param>
+        public static bool CreateExplosion(Vector position, int type, float radius)
+        {
+            return CreateExplosion(position.X, position.Y, position.Z, type, radius);
+        }
+
     }
 }
