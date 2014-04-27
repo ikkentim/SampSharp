@@ -17,5 +17,4 @@ ToDo's
     -Add docs to methods and classes not having any.
     -Focus on OO (Avoid having to call natives).
     -Object streaming utilities.
-    -Keystate checking utilities.
     -Test on linux.
