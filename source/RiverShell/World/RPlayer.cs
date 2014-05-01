@@ -132,7 +132,7 @@ namespace RiverShell.World
         public override void OnDeath(PlayerDeathEventArgs e)
         {
             var killer = e.Killer as RPlayer;
-            SendDeathMessage(killer, e.DeathReason);
+            SendDeathMessageToAll(killer, this, e.DeathReason);
 
             if (killer != null && Team != killer.Team)
                 killer.Score++;
