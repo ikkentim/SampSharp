@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <cstring> //strcpy
 #include <time.h>
 
 #include "SampSharp.h"
@@ -23,7 +24,7 @@ CSampSharp::CSampSharp(string bmPath, string gmPath, string gmNamespace, string 
 		//Construct path to pdb2mdb
 		string mdbpath = PathUtil::GetBinDirectory().append("Mono/lib/mono/4.5/pdb2mdb.exe");
 		char *cmdbpath = new char[mdbpath.size() + 1];
-		std::strcpy(cmdbpath, mdbpath.c_str());
+		strcpy(cmdbpath, mdbpath.c_str());
 
 		MonoAssembly * mdbconverter = mono_domain_assembly_open(rootDomain, cmdbpath);
 		if (mdbconverter) {

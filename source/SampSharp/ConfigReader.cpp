@@ -30,7 +30,7 @@
 #include <sstream>
 #include <string>
 
-#include "configreader.h"
+#include "ConfigReader.h"
 
 ConfigReader::ConfigReader()
 : loaded_(false)

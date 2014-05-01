@@ -3,7 +3,7 @@
 #ifdef _WIN32
 #include <direct.h>
 #define getcwd _getcwd // stupid MSFT "deprecation" warning
-#elif
+#else
 #include <unistd.h>
 #endif
 #include <string>
