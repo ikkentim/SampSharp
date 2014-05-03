@@ -15,8 +15,6 @@ CSampSharp::CSampSharp(string bmPath, string gmPath, string gmNamespace, string 
 	
 	//Initialize the Mono runtime
 	mono_set_dirs(PathUtil::GetLibDirectory().c_str(), PathUtil::GetConfigDirectory().c_str());
-	
-	mono_debug_init(MONO_DEBUG_FORMAT_MONO);
 	rootDomain = mono_jit_init(PathUtil::GetPathInBin(gmPath).c_str());
 
 	//Symbol generator
