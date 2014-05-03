@@ -46,3 +46,6 @@ ClientBin/
 *.publishsettings
 node_modules/
 
+# make
+Makefile
+*.make
