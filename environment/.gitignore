@@ -1,9 +1,17 @@
+# Windows
 announce.exe
 samp-npc.exe
 samp-server.exe
 
+# Linux
+announce
+samp-npc
+samp03svr
+
+# Logs
 crashinfo.txt
 SampSharp_errors.log
 server_log.txt
 
+# Build directories
 plugins/
