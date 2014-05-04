@@ -29,11 +29,7 @@ struct PathUtil
 
 	static string GetMonoDirectory()
 	{
-		#ifdef _WIN32
-		return GetPathInBin("mono/win32/");
-		#else
-		return GetPathInBin("mono/linux/");
-		#endif
+		return GetPathInBin("mono/");
 	}
 
 	static string GetLibDirectory()
