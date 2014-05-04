@@ -25,7 +25,7 @@ CSampSharp::CSampSharp(string bmPath, string gmPath, string gmNamespace, string 
 		strcpy(cmdbpath, mdbpath.c_str());
 
 		//debug
-		cout << "[SampSharp] (debug) mdbPath:" << endl << cmdbpath << endl;
+		sampgdk::logprintf("[SampSharp] (debug) mdbPath: %s", cmdbpath);
 
 		MonoAssembly * mdbconverter = mono_domain_assembly_open(rootDomain, cmdbpath);
 		if (mdbconverter) {
@@ -33,11 +33,11 @@ CSampSharp::CSampSharp(string bmPath, string gmPath, string gmNamespace, string 
 			char * argv[2];
 			argv[0] = cmdbpath;
 			
-			cout << "[SampSharp] Generating symbol file for " << gmPath << "." << endl;
+			sampgdk::logprintf("[SampSharp] Generating symbol file for  %s.", (char *) gmPath.c_str());
 			argv[1] = (char *) gmPath.c_str();
 			mono_jit_exec(rootDomain, mdbconverter, argc, argv);
 
-			cout << "[SampSharp] Generating symbol file for " << bmPath << "." << endl;
+			sampgdk::logprintf("[SampSharp] Generating symbol file for  %s.", (char *) bmPath.c_str());
 			argv[1] = (char *) bmPath.c_str();
 			mono_jit_exec(rootDomain, mdbconverter, argc, argv);
 		}
@@ -46,13 +46,14 @@ CSampSharp::CSampSharp(string bmPath, string gmPath, string gmNamespace, string 
 	}
 
 	//debug
-	cout << "[SampSharp] (debug) Paths:" << endl;
-	cout << PathUtil::GetPathInBin(gmPath) << endl;
-	cout << PathUtil::GetPathInBin(bmPath) << endl;
+	sampgdk::logprintf("[SampSharp] (debug) Paths:");
+	sampgdk::logprintf((char *) PathUtil::GetPathInBin(bmPath).c_str());
+	sampgdk::logprintf((char *) PathUtil::GetPathInBin(gmPath).c_str());
+
 
 	//Load the gamemode's assembly
-	MonoAssembly * pMonoAssembly = mono_domain_assembly_open(mono_domain_get(), PathUtil::GetPathInBin(gmPath).c_str());
-	MonoAssembly * bMonoAssembly = mono_domain_assembly_open(mono_domain_get(), PathUtil::GetPathInBin(bmPath).c_str());
+	MonoAssembly * pMonoAssembly = mono_domain_assembly_open(mono_domain_get(), (char *)PathUtil::GetPathInBin(gmPath).c_str());
+	MonoAssembly * bMonoAssembly = mono_domain_assembly_open(mono_domain_get(), (char *)PathUtil::GetPathInBin(bmPath).c_str());
 
 	gameModeImage = mono_assembly_get_image(pMonoAssembly);
 	baseModeImage = mono_assembly_get_image(bMonoAssembly);
