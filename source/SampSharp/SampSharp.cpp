@@ -20,9 +20,12 @@ CSampSharp::CSampSharp(string bmPath, string gmPath, string gmNamespace, string 
 	//Symbol generator
 	if (generateSymbols == true) {
 		//Construct path to pdb2mdb
-		string mdbpath = PathUtil::GetBinDirectory().append("Mono/lib/mono/4.5/pdb2mdb.exe");
+		string mdbpath = PathUtil::GetBinDirectory().append("Mono\\lib\\mono\\4.5\\pdb2mdb.exe");
 		char *cmdbpath = new char[mdbpath.size() + 1];
 		strcpy(cmdbpath, mdbpath.c_str());
+
+		//debug
+		cout << "[SampSharp] (debug) mdbPath:" << endl << cmdbpath << endl;
 
 		MonoAssembly * mdbconverter = mono_domain_assembly_open(rootDomain, cmdbpath);
 		if (mdbconverter) {
@@ -41,6 +44,11 @@ CSampSharp::CSampSharp(string bmPath, string gmPath, string gmNamespace, string 
 
 		delete cmdbpath;
 	}
+
+	//debug
+	cout << "[SampSharp] (debug) Paths:" << endl;
+	cout << PathUtil::GetPathInBin(gmPath) << endl;
+	cout << PathUtil::GetPathInBin(bmPath) << endl;
 
 	//Load the gamemode's assembly
 	MonoAssembly * pMonoAssembly = mono_domain_assembly_open(mono_domain_get(), PathUtil::GetPathInBin(gmPath).c_str());
