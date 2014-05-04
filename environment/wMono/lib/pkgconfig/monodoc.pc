@@ -1,9 +1,0 @@
-prefix=E:/Applications/Mono-3.2.3
-exec_prefix=${prefix}
-libdir=/tmp/install/lib
-sourcesdir=${libdir}/monodoc/sources
-
-Name: Monodoc
-Description: Monodoc - Mono Documentation Tools
-Version: 3.3.0
-Libs: /r:${prefix}/lib/mono/monodoc/monodoc.dll 

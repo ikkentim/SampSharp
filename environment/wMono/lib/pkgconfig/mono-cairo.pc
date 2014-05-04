@@ -1,9 +1,0 @@
-prefix=E:/Applications/Mono-3.2.3
-exec_prefix=${pcfiledir}/../..
-libdir=${prefix}/lib
-includedir=${prefix}/include
-
-Name: Mono.Cairo
-Description: Cairo bindings for Mono
-Version: 3.3.0
-Libs: -r:Mono.Cairo

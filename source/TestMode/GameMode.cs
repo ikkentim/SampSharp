@@ -12,45 +12,17 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 using SampSharp.GameMode;
-using SampSharp.GameMode.Controllers;
-using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.Display;
-using SampSharp.GameMode.SAMP;
-using SampSharp.GameMode.World;
-using TestMode.Controllers;
 
 namespace TestMode
 {
     public class GameMode : BaseMode
     {
-        public static TextDraw Test;
-
-        protected override void LoadControllers(ControllerCollection controllers)
-        {
-            controllers.Remove<PlayerController>();
-            controllers.Add(new MyPlayerContoller());
-        }
-
         public override bool OnGameModeInit()
         {
+            Console.WriteLine("GameMode loaded");
+
             throw new Exception("Test exception");
-
-            AddPlayerClass(1, new Vector(0, 0, 5), 0);
-
-            Test = new TextDraw(459.375000f, 78.166671f, "San Andreas", TextDrawFont.Diploma, Color.Red)
-            {
-                LetterWidth = 0.449999f,
-                LetterHeight = 1.600000f,
-                Width = 6.250000f,
-                Height = 86.333374f,
-                Shadow = 1,
-                BackColor = Color.Black
-            };
-
-            return base.OnGameModeInit();
         }
     }
 }
