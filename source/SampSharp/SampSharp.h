@@ -75,6 +75,7 @@ public:
 private:
 	MonoMethod * LoadCallback(const char * cname, const char * name);
 	char * GetTimeStamp();
+	void GenerateSymbols(string path);
 	MonoImage * gameModeImage;
 	MonoImage * baseModeImage;
 	uint32_t gameModeHandle;

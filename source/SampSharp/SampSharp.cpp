@@ -14,35 +14,17 @@ CSampSharp * CSampSharp::instance;
 CSampSharp::CSampSharp(string bmPath, string gmPath, string gmNamespace, string gmClass, bool generateSymbols) {
 	
 	//Initialize the Mono runtime
+	#ifdef _WIN32
 	mono_set_dirs(PathUtil::GetLibDirectory().c_str(), PathUtil::GetConfigDirectory().c_str());
+	#endif
+
 	rootDomain = mono_jit_init(PathUtil::GetPathInBin(gmPath).c_str());
 
 	//Symbol generator
-	#ifdef _WIN32
 	if (generateSymbols == true) {
-		//Construct path to pdb2mdb
-		string mdbpath = PathUtil::GetLibDirectory().append("mono/4.5/pdb2mdb.exe");
-		char *cmdbpath = new char[mdbpath.size() + 1];
-		strcpy(cmdbpath, mdbpath.c_str());
-
-		MonoAssembly * mdbconverter = mono_domain_assembly_open(rootDomain, cmdbpath);
-		if (mdbconverter) {
-			int argc = 2;
-			char * argv[2];
-			argv[0] = cmdbpath;
-			
-			sampgdk::logprintf("[SampSharp] Generating symbol file for  %s.", (char *) gmPath.c_str());
-			argv[1] = (char *) gmPath.c_str();
-			mono_jit_exec(rootDomain, mdbconverter, argc, argv);
-
-			sampgdk::logprintf("[SampSharp] Generating symbol file for  %s.", (char *) bmPath.c_str());
-			argv[1] = (char *) bmPath.c_str();
-			mono_jit_exec(rootDomain, mdbconverter, argc, argv);
-		}
-
-		delete cmdbpath;
+		GenerateSymbols(bmPath);
+		GenerateSymbols(gmPath);
 	}
-	#endif
 
 	//Load the gamemode's assembly
 	MonoAssembly * pMonoAssembly = mono_domain_assembly_open(mono_domain_get(), (char *)PathUtil::GetPathInBin(gmPath).c_str());
@@ -117,16 +99,38 @@ CSampSharp::CSampSharp(string bmPath, string gmPath, string gmNamespace, string 
 	onTick = LoadCallback(gameModeClass, "OnTick");
 }
 
+void CSampSharp::GenerateSymbols(string path)
+{
+	#ifdef _WIN32
+	string mdbpath = PathUtil::GetLibDirectory().append("mono/4.5/pdb2mdb.exe");
+	char *cmdbpath = new char[mdbpath.size() + 1];
+	strcpy(cmdbpath, mdbpath.c_str());
+	
+	MonoAssembly * mdbconverter = mono_domain_assembly_open(rootDomain, cmdbpath);
+	if (mdbconverter) {
+		char * argv[2];
+		argv[0] = cmdbpath;
+		argv[1] = (char *) path.c_str();
+
+		sampgdk::logprintf("[SampSharp] Generating symbol file for %s.", argv[1]);
+		mono_jit_exec(rootDomain, mdbconverter, 2, argv);
+	}
+
+	delete cmdbpath;
+	#endif
+}
+
 char * CSampSharp::GetTimeStamp() {
 	time_t now = time(0);
 	struct tm tstruct;
 	char timestamp[32];
 	tstruct = *localtime(&now);
+	//Format stamp
 	strftime(timestamp, sizeof(timestamp), "[%d/%m/%Y %H:%M:%S]", &tstruct);
 
 	char * cpr = new char[32];
 	strcpy(cpr, timestamp);
-	return cpr;
+	return  cpr;
 }
 
 MonoMethod * CSampSharp::LoadCallback(const char * cname, const char * name) {
@@ -191,7 +195,7 @@ bool CSampSharp::CallCallback(MonoMethod* method, void **params) {
 	response = mono_runtime_invoke(method, gameMode, params, &exception);
 
 	//Catch exceptions
-	if (!!exception) {
+	if (exception) {
 		char * stacktrace = mono_string_to_utf8(mono_object_to_string(exception, NULL));
 
 		ofstream logfile;
