@@ -29,7 +29,16 @@ struct PathUtil
 
 	static string GetMonoDirectory()
 	{
-		return GetBinDirectory().append("Mono/");
+		#ifdef _WIN32
+		return GetPathInBin("mono/win32/");
+		#else
+		return GetPathInBind("mono/linux/");
+		#endif
+	}
+
+	static string GetSymbolsDirectory()
+	{
+		return GetPathInBin("mono/symbols/");
 	}
 
 	static string GetLibDirectory()

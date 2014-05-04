@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <cstring> //strcpy
+#include <cstring> //strcpy on linux
 #include <time.h>
 
 #include "SampSharp.h"
@@ -20,12 +20,9 @@ CSampSharp::CSampSharp(string bmPath, string gmPath, string gmNamespace, string 
 	//Symbol generator
 	if (generateSymbols == true) {
 		//Construct path to pdb2mdb
-		string mdbpath = PathUtil::GetBinDirectory().append("Mono\\lib\\mono\\4.5\\pdb2mdb.exe");
+		string mdbpath = PathUtil::GetSymbolsDirectory().append("/pdb2mdb.exe");
 		char *cmdbpath = new char[mdbpath.size() + 1];
 		strcpy(cmdbpath, mdbpath.c_str());
-
-		//debug
-		sampgdk::logprintf("[SampSharp] (debug) mdbPath: %s", cmdbpath);
 
 		MonoAssembly * mdbconverter = mono_domain_assembly_open(rootDomain, cmdbpath);
 		if (mdbconverter) {
@@ -44,12 +41,6 @@ CSampSharp::CSampSharp(string bmPath, string gmPath, string gmNamespace, string 
 
 		delete cmdbpath;
 	}
-
-	//debug
-	sampgdk::logprintf("[SampSharp] (debug) Paths:");
-	sampgdk::logprintf((char *) PathUtil::GetPathInBin(bmPath).c_str());
-	sampgdk::logprintf((char *) PathUtil::GetPathInBin(gmPath).c_str());
-
 
 	//Load the gamemode's assembly
 	MonoAssembly * pMonoAssembly = mono_domain_assembly_open(mono_domain_get(), (char *)PathUtil::GetPathInBin(gmPath).c_str());
