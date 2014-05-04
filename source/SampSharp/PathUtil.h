@@ -14,8 +14,12 @@ struct PathUtil
 {
 	static string GetBinDirectory()
 	{
+		#ifdef _WIN32
 		string s_cwd(getcwd(NULL, 0));
-		return s_cwd.append("\\");
+		return s_cwd.append("/");
+		#else
+		return "~/";
+		#endif
 	}
 
 	static string GetPathInBin(string append)
@@ -25,16 +29,16 @@ struct PathUtil
 
 	static string GetMonoDirectory()
 	{
-		return GetBinDirectory().append("Mono\\");
+		return GetBinDirectory().append("Mono/");
 	}
 
 	static string GetLibDirectory()
 	{
-		return GetMonoDirectory().append("lib\\");
+		return GetMonoDirectory().append("lib/");
 	}
 
 	static string GetConfigDirectory()
 	{
-		return GetMonoDirectory().append("etc\\");
+		return GetMonoDirectory().append("etc/");
 	}
 };
