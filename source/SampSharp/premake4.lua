@@ -11,8 +11,8 @@ solution "SampSharp"
       platforms { "x32" }
       defines { "LINUX", "SAMPGDK_STATIC" }
       
-      libdirs { "lib/sampgdk/linux/", "lib/subhook/linux" }
-      links { "rt", "sampgdk", "subhook" }
+      libdirs { "lib/sampgdk/linux/", "lib/subhook/linux", "lib/mono/linux" }
+      links { "sampgdk", "subhook", "mono-2.0", "rt" }
       includedirs { "includes", "includes/sdk" }
 
       files { "**.h", "**.cpp" }

@@ -18,7 +18,7 @@ struct PathUtil
 		string s_cwd(getcwd(NULL, 0));
 		return s_cwd.append("/");
 		#else
-		return "~/";
+		return "./";
 		#endif
 	}
 
