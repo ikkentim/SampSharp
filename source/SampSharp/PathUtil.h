@@ -36,11 +36,6 @@ struct PathUtil
 		#endif
 	}
 
-	static string GetSymbolsDirectory()
-	{
-		return GetPathInBin("mono/symbols/");
-	}
-
 	static string GetLibDirectory()
 	{
 		return GetMonoDirectory().append("lib/");
