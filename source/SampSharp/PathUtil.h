@@ -32,7 +32,7 @@ struct PathUtil
 		#ifdef _WIN32
 		return GetPathInBin("mono/win32/");
 		#else
-		return GetPathInBind("mono/linux/");
+		return GetPathInBin("mono/linux/");
 		#endif
 	}
 
