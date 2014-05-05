@@ -1630,25 +1630,27 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Adds a death to the 'killfeed' on the right-hand side of the screen of this Player.
         /// </summary>
-        /// <param name="killer">The Player that killer the <paramref name="killee"/>.</param>
+        /// <param name="killer">The Player that killer the <paramref name="killee" />.</param>
         /// <param name="killee">The player that has been killed.</param>
         /// <param name="weapon">The reason for this Player's death.</param>
         public virtual void SendDeathMessage(Player killer, Player killee, Weapon weapon)
         {
             Native.SendDeathMessageToPlayer(Id, killer == null ? InvalidId : killer.Id,
-                killee == null ? InvalidId : killee.Id, (int)weapon);
+                killee == null ? InvalidId : killee.Id, (int) weapon);
         }
 
         /// <summary>
         ///     Adds a death to the 'killfeed' on the right-hand side of the screen.
         /// </summary>
-        /// <param name="killer">The Player that killer the <paramref name="killee"/>.</param>
+        /// <param name="killer">The Player that killer the <paramref name="killee" />.</param>
         /// <param name="killee">The player that has been killed.</param>
         /// <param name="weapon">The reason for this Player's death.</param>
         public static void SendDeathMessageToAll(Player killer, Player killee, Weapon weapon)
         {
-            Native.SendDeathMessage(killer == null ? InvalidId : killer.Id, killee == null ? InvalidId : killee.Id, (int)weapon);
+            Native.SendDeathMessage(killer == null ? InvalidId : killer.Id, killee == null ? InvalidId : killee.Id,
+                (int) weapon);
         }
+
         #endregion
 
         #region Event raisers

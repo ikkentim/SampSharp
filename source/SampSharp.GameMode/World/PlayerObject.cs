@@ -13,6 +13,7 @@
 
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
+using SampSharp.GameMode.Exceptions;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.SAMP;
 
@@ -94,22 +95,28 @@ namespace SampSharp.GameMode.World
 
         public PlayerObject(Player player, int id)
         {
+            if (player == null)
+                throw new PlayerNotConnectedException();
+
             Player = player;
             ObjectId = id;
-        }
-
-        public PlayerObject(Player player, int modelid, Vector position, Vector rotation, float drawDistance)
-        {
-            Player = player;
-            ModelId = modelid;
-            DrawDistance = drawDistance;
-
-            ObjectId = Native.CreatePlayerObject(player.Id, modelid, position, rotation, drawDistance);
         }
 
         public PlayerObject(Player player, int modelid, Vector position, Vector rotation)
             : this(player, modelid, position, rotation, 0)
         {
+        }
+
+        public PlayerObject(Player player, int modelid, Vector position, Vector rotation, float drawDistance)
+        {
+            if (player == null)
+                throw new PlayerNotConnectedException();
+
+            Player = player;
+            ModelId = modelid;
+            DrawDistance = drawDistance;
+
+            ObjectId = Native.CreatePlayerObject(player.Id, modelid, position, rotation, drawDistance);
         }
 
         #endregion

@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all dialog actions.
     /// </summary>
-    public class DialogController : IEventListener, IController
+    public class DialogController : IEventListener
     {
         /// <summary>
         ///     Registers the events this DialogController wants to listen to.
