@@ -19,7 +19,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all global-object actions.
     /// </summary>
-    public class GlobalObjectController : IEventListener, ITypeProvider, IController
+    public class GlobalObjectController : IEventListener, ITypeProvider
     {
         /// <summary>
         ///     Registers the events this GlobalObjectController wants to listen to.

@@ -1338,6 +1338,5 @@ namespace SampSharp.GameMode.Natives
         {
             return CreateExplosion(position.X, position.Y, position.Z, type, radius);
         }
-
     }
 }

@@ -19,7 +19,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all player-object actions.
     /// </summary>
-    public class PlayerObjectController : IEventListener, ITypeProvider, IController
+    public class PlayerObjectController : IEventListener, ITypeProvider
     {
         /// <summary>
         ///     Registers the events this PlayerObjectController wants to listen to.

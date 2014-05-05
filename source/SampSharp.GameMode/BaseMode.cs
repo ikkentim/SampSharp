@@ -70,6 +70,7 @@ namespace SampSharp.GameMode
             controllers.Add(new PlayerTextDrawController());
             controllers.Add(new GlobalObjectController());
             controllers.Add(new PlayerObjectController());
+            controllers.Add(new CommandController());
         }
 
         protected virtual void LoadControllers(ControllerCollection controllers)
@@ -1779,7 +1780,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// This callback is called when an IP address attempts a connection to the server.
+        ///     This callback is called when an IP address attempts a connection to the server.
         /// </summary>
         /// <param name="playerid">The ID of the player attempting to connect.</param>
         /// <param name="ipAddress">The IP address of the player attempting to connect.</param>
