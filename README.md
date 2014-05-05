@@ -31,11 +31,12 @@ This repository contains the following projects:
 
 Things to do
 ===
-* Write an install guide
+* Write an install guide.
+* Write a build guide.
 * Add docs to methods and classes not having any.
 * Focus on OO (Avoid having to call natives).
-* Object streaming utilities.
-* Area detection functionality (like in the streamer plugin)
+* Object streaming utilities. (like the streamer plugin)
+* Area detection functionality. (like in the streamer plugin)
 * Test async functionallity(.NET 4.5)
 * Benchmark testing.
 * Convert all SA-MP sample gamemodes to C#.
