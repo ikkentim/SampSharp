@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\CommandController.cs" />
     <Compile Include="Controllers\ControllerCollection.cs" />
     <Compile Include="Controllers\DialogController.cs" />
     <Compile Include="Controllers\GlobalObjectController.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Events\WeaponShotEventArgs.cs" />
     <Compile Include="Exceptions\PlayerNotConnectedException.cs" />
     <Compile Include="Exceptions\VehicleDoesNotExistException.cs" />
+    <Compile Include="LinqExtention.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="Natives\Native.logging.cs" />
     <Compile Include="Natives\Native.objects.cs" />
@@ -129,6 +131,12 @@
     <Compile Include="Natives\Native.vehicles.cs" />
     <Compile Include="BaseMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SAMP\Command.cs" />
+    <Compile Include="SAMP\Commands\Parameter.cs" />
+    <Compile Include="SAMP\Commands\IntegerParameter.cs" />
+    <Compile Include="SAMP\Commands\TextParameter.cs" />
+    <Compile Include="SAMP\Commands\WordParameter.cs" />
+    <Compile Include="SAMP\ICommand.cs" />
     <Compile Include="SAMP\PVarCollection.cs" />
     <Compile Include="Tools\KeyUtils.cs" />
     <Compile Include="Tools\MapAndreas.cs" />

@@ -19,7 +19,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all timer actions.
     /// </summary>
-    public class TimerController : IEventListener, ITypeProvider, IController
+    public class TimerController : IEventListener, ITypeProvider
     {
         /// <summary>
         ///     Registers the events this TimerController wants to listen to.

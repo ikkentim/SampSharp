@@ -29,6 +29,8 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public const int InvalidId = Misc.InvalidTextDraw;
 
+        private readonly List<Player> _playersShownTo = new List<Player>();
+
         private TextDrawAlignment _alignment;
         private Color _backColor;
         private Color _boxColor;
@@ -52,7 +54,6 @@ namespace SampSharp.GameMode.Display
         private float _x;
         private float _y;
 
-        private readonly List<Player> _playersShownTo = new List<Player>(); 
         #endregion
 
         #region Constructors
@@ -496,7 +497,7 @@ namespace SampSharp.GameMode.Display
             if (Id == -1) Refresh();
             if (player != null)
             {
-                if(!_playersShownTo.Contains(player))
+                if (!_playersShownTo.Contains(player))
                     _playersShownTo.Add(player);
                 Native.TextDrawShowForPlayer(player.Id, Id);
             }
@@ -551,7 +552,7 @@ namespace SampSharp.GameMode.Display
             if (PreviewZoom != 1) PreviewZoom = PreviewZoom;
             if (PreviewPrimaryColor != -1) PreviewPrimaryColor = PreviewPrimaryColor;
             if (PreviewSecondaryColor != -1) PreviewSecondaryColor = PreviewSecondaryColor;
-            
+
             UpdateClients();
         }
 
