@@ -2,7 +2,7 @@
 
 SampSharp
 ===
-SampSharp is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# (and possibly VB in the future). SampSharp aims on OO-programming, it contains many classes (see the SampSharp.World, SampSharp.SAMP and SampSharp.Screen namespaces) in order to get the most out of OO. All classes contain extensive documention. (although in the beta stage, some files may lack this yet)
+SampSharp is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. SampSharp aims on OO-programming, it contains many classes (see the SampSharp.World, SampSharp.SAMP and SampSharp.Screen namespaces) in order to get the most out of OO. All classes contain extensive documention. (although in the beta stage, some files may lack this yet)
 
 Although the .NET framework only exists for windows, SampSharp also works on Linux. SampSharp uses the [Mono Framework](http://www.mono-project.com/). Be aware! Altough you can thoroughly enjoy the possiblilities of .NET, NuGet and C#, Mono is *not* **fully** compatible with all of .NET's features. Check [their website](http://www.mono-project.com/Compatibility) for more details.
 
@@ -25,6 +25,10 @@ This repository contains the following projects:
 
   Just ignore this project. When i work on features i ofter put code in this project to test them.
 
+* VBTest
+
+  This project is a very basic support test for visual basic. Personally I'm terrible with VB, but for those who want it; it's there.
+  
 * RiverShell
 
   One of the example gamemodes provided by SA-MP, converted to C#. This is a gamemode I use to check whether all classes and systems are efficient and usefull. The code may change when I add features to SampSharp.
@@ -37,7 +41,6 @@ Things to do
 * Focus on OO (Avoid having to call natives).
 * Object streaming utilities. (like the streamer plugin)
 * Area detection functionality. (like in the streamer plugin)
-* Test async functionallity(.NET 4.5)
 * Benchmark testing.
 * Convert all SA-MP sample gamemodes to C#.
 
