@@ -41,7 +41,6 @@ Things to do
 * Focus on OO (Avoid having to call natives).
 * Object streaming utilities. (like the streamer plugin)
 * Area detection functionality. (like in the streamer plugin)
-* Test async functionallity(.NET 4.5)
 * Benchmark testing.
 * Convert all SA-MP sample gamemodes to C#.
 
