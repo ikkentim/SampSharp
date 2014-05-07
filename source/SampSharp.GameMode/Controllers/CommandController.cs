@@ -14,8 +14,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using SampSharp.GameMode.Helpers;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers
 {
@@ -24,8 +27,8 @@ namespace SampSharp.GameMode.Controllers
     /// </summary>
     public class CommandController : IEventListener
     {
-        private static List<ICommand> _commands = new List<ICommand>();
-        private readonly WordParameter _nameFilter = new WordParameter();
+        private MethodInfo[] _commands;
+        private readonly WordParameterAttribute _nameFilter = new WordParameterAttribute(string.Empty);
 
         /// <summary>
         ///     Initalizes a new instance of the CommandController class.
@@ -33,29 +36,20 @@ namespace SampSharp.GameMode.Controllers
         public CommandController()
         {
             UsageFormat =
-                c =>
-                    string.Format("Usage: /{0}{1}{2}", c.Name, c.Parameters.Any() ? ": " : string.Empty,
-                        string.Join(" ", c.Parameters.Select(
+                (name, parameters) =>
+                    string.Format("Usage: /{0}{1}{2}", name, parameters.Any() ? ": " : string.Empty,
+                        string.Join(" ", parameters.Select(
                             p => p.Optional
-                                ? string.Format("({0})", p.Name)
-                                : string.Format("[{0}]", p.Name)
+                                ? string.Format("({0})", p.DisplayName)
+                                : string.Format("[{0}]", p.DisplayName)
                             ))
                         );
         }
 
         /// <summary>
-        ///     Gets or sets a collection of commands to be processed by this controller.
-        /// </summary>
-        public static List<ICommand> Commands
-        {
-            get { return _commands; }
-            set { _commands = value; }
-        }
-
-        /// <summary>
         ///     Gets or sets the usage message send when a wrongly formatted command is being processed.
         /// </summary>
-        public virtual Func<ICommand, string> UsageFormat { get; set; }
+        public Func<string, ParameterAttribute[], string> UsageFormat { get; set; }
 
         /// <summary>
         ///     Registers the events this GlobalObjectController wants to listen to.
@@ -63,6 +57,11 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="gameMode">The running GameMode.</param>
         public virtual void RegisterEvents(BaseMode gameMode)
         {
+            //Detect commands if assembly containing the gamemode
+            _commands = gameMode.GetType().Assembly.GetTypes().SelectMany(t => t.GetMethods())
+                .Where(m => m.IsStatic && m.GetCustomAttributes(typeof(CommandAttribute), false).Length > 0)
+                .ToArray();
+
             gameMode.PlayerCommandText += gameMode_PlayerCommandText;
         }
 
@@ -78,18 +77,27 @@ namespace SampSharp.GameMode.Controllers
 
             var player = e.Player;
 
-            //Loop trough all command with the given name.
-            foreach (var command in Commands.Where(c => c.Name == commandName))
+            foreach (var command in _commands)
             {
-                //Construct a list of parameters.
-                var arguments = new List<object>();
-
-                if (!command.CanExecute(player))
+                //Get CommandAttribute from method
+                var attribute = command.GetCustomAttribute<CommandAttribute>();
+                if (attribute == null)
                     continue;
+
+                //If name doesn't match, continue
+                if(attribute.Name != commandName)
+                    continue;
+
+                var methodParameters = command.GetParameters().Select(q => q.Name);
+                var arguments = new Dictionary<string, object>();
+                var parameters =
+                    command.GetCustomAttributes<ParameterAttribute>()
+                        .OrderBy(p => command.GetParameters().Select(q => q.Name).IndexOf(p.Name));
 
                 //Loop trough all parameters.
                 bool pass = true;
-                foreach (var parameter in command.Parameters)
+
+                foreach (var parameter in parameters)
                 {
                     //Trim commandtext.
                     commandText = commandText.Trim();
@@ -99,10 +107,11 @@ namespace SampSharp.GameMode.Controllers
 
                     if (commandText.Length == 0 && parameter.Optional)
                     {
-                        //Optional parameter not given; add null
-                        arguments.Add(null);
+                        //Optional parameter not given; set null
+                        arguments[parameter.Name] = null;
                         continue;
                     }
+
                     if (commandText.Length == 0 || !parameter.Check(ref commandText, out argument))
                     {
                         pass = false;
@@ -110,8 +119,9 @@ namespace SampSharp.GameMode.Controllers
                     }
 
                     //Add argument to list.
-                    arguments.Add(argument);
+                    arguments[parameter.Name] = argument;
                 }
+                
 
                 //If tests didn't pass.
                 if (!pass)
@@ -119,7 +129,7 @@ namespace SampSharp.GameMode.Controllers
                     //If we want to show the usage.
                     if (UsageFormat != null)
                     {
-                        player.SendClientMessage(Color.White, UsageFormat(command));
+                        player.SendClientMessage(Color.White, UsageFormat(commandName, parameters.ToArray()));
 
                         //Show usage and stop.
                         e.Success = true;
@@ -130,14 +140,18 @@ namespace SampSharp.GameMode.Controllers
                     continue;
                 }
 
-                //Run the command.
-                if (command.Execute(e.Player, arguments))
+                //Assign player to first parameter
+                arguments[methodParameters.First()] = player;
+
+                //Check parameter counts match.
+                if (methodParameters.Count() != parameters.Count() + 1 ||
+                    parameters.Any(p => !methodParameters.Contains(p.Name)))
                 {
-                    e.Success = true;
-                    return;
+                    continue;
                 }
 
-                //Success; Don't continue to next commands.
+                //Run the command.
+                e.Success = (bool)command.Invoke(null, arguments.OrderBy(pair => methodParameters.IndexOf(pair.Key)).Select(pair => pair.Value).ToArray());
                 return;
             }
         }

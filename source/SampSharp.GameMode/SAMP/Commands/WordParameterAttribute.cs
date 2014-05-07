@@ -14,33 +14,18 @@
 namespace SampSharp.GameMode.SAMP.Commands
 {
     /// <summary>
-    ///     Represents an integer command-parameter.
+    ///     Represents an word command-parameter.
     /// </summary>
-    public class IntegerParameter : WordParameter
+    public class WordParameterAttribute : ParameterAttribute
     {
         /// <summary>
-        ///     Initializes a new instance of the IntegerParameter class.
-        /// </summary>
-        public IntegerParameter()
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the IntegerParameter class.
+        ///     Initializes a new instance of the WordParameterAttribute class.
         /// </summary>
         /// <param name="name">The name of this parameter.</param>
-        public IntegerParameter(string name) : base(name)
+        public WordParameterAttribute(string name)
+            : base(name)
         {
-        }
 
-        /// <summary>
-        ///     Initializes a new instance of the IntegerParameter class.
-        /// </summary>
-        /// <param name="name">The name of this parameter.</param>
-        /// <param name="optional">Whether this parameter is optional.</param>
-        public IntegerParameter(string name, bool optional)
-            : base(name, optional)
-        {
         }
 
         /// <summary>
@@ -51,23 +36,14 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>True if the parameter is well-formatted, False otherwise.</returns>
         public override bool Check(ref string command, out object output)
         {
-            //Get word from command
-            if (!base.Check(ref command, out output))
-                return false;
+            //Find space
+            var idx = command.IndexOf(' ');
 
-            string word = (string) output;
+            //Substring output
+            output = idx == -1 ? command : command.Substring(0, idx);
 
-            //Try to parse this number
-            int number;
-            if (!int.TryParse(word, out number))
-            {
-                //Clear output
-                output = null;
-                return false;
-            }
-
-            //Set output
-            output = number;
+            //Remove word from command
+            command = idx == -1 || command.Length < idx ? string.Empty : command.Substring(idx + 1);
 
             return true;
         }

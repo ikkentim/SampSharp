@@ -11,35 +11,40 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
+
 namespace SampSharp.GameMode.SAMP.Commands
 {
     /// <summary>
-    ///     Represents an word command-parameter.
+    ///     Represents a command-parameter.
     /// </summary>
-    public class WordParameter : Parameter
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    public abstract class ParameterAttribute : Attribute
     {
         /// <summary>
-        ///     Initializes a new instance of the WordParameter class.
-        /// </summary>
-        public WordParameter()
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the WordParameter class.
-        /// </summary>
-        public WordParameter(string name) : base(name)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the WordParameter class.
+        ///     Initializes a new instance of the Parameter class.
         /// </summary>
         /// <param name="name">The name of this parameter.</param>
-        /// <param name="optional">Whether this parameter is optional.</param>
-        public WordParameter(string name, bool optional) : base(name, optional)
+        protected ParameterAttribute(string name)
         {
+            Name = name;
+            DisplayName = Name;
         }
+
+        /// <summary>
+        ///     Gets the name of this parameter.
+        /// </summary>
+        public string Name { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the displayname of this parameter.
+        /// </summary>
+        public string DisplayName { get; set; }
+
+        /// <summary>
+        ///     Gets or sets whether this parameter is optional.
+        /// </summary>
+        public bool Optional { get; set; }
 
         /// <summary>
         ///     Check if the parameter is well-formatted and return the output.
@@ -47,18 +52,6 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <param name="command">The command text.</param>
         /// <param name="output">The output of this parameter.</param>
         /// <returns>True if the parameter is well-formatted, False otherwise.</returns>
-        public override bool Check(ref string command, out object output)
-        {
-            //Find space
-            var idx = command.IndexOf(' ');
-
-            //Substring output
-            output = idx == -1 ? command : command.Substring(0, idx);
-
-            //Remove word from command
-            command = idx == -1 || command.Length < idx ? string.Empty : command.Substring(idx + 1);
-
-            return true;
-        }
+        public abstract bool Check(ref string command, out object output);
     }
 }
