@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.Helpers;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
