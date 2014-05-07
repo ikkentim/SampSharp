@@ -16,31 +16,16 @@ namespace SampSharp.GameMode.SAMP.Commands
     /// <summary>
     ///     Represents an text command-parameter.
     /// </summary>
-    public class TextParameter : Parameter
+    public class TextParameterAttribute : ParameterAttribute
     {
         /// <summary>
-        ///     Initializes a new instance of the TextParameter class.
-        /// </summary>
-        public TextParameter()
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the TextParameter class.
+        ///     Initializes a new instance of the TextParameterAttribute class.
         /// </summary>
         /// <param name="name">The name of this parameter.</param>
-        public TextParameter(string name) : base(name)
+        public TextParameterAttribute(string name)
+            : base(name)
         {
-        }
 
-        /// <summary>
-        ///     Initializes a new instance of the TextParameter class.
-        /// </summary>
-        /// <param name="name">The name of this parameter.</param>
-        /// <param name="optional">Whether this parameter is optional.</param>
-        public TextParameter(string name, bool optional)
-            : base(name, optional)
-        {
         }
 
         /// <summary>

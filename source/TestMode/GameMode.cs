@@ -29,7 +29,7 @@ namespace TestMode
             List<ITest> tests = new List<ITest>
             {
                 new CommandsTest(),
-                new ASyncTest()
+                //new ASyncTest(),
             };
 
             foreach (var test in tests)
