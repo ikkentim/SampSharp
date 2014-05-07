@@ -122,7 +122,7 @@
     <Compile Include="Events\WeaponShotEventArgs.cs" />
     <Compile Include="Exceptions\PlayerNotConnectedException.cs" />
     <Compile Include="Exceptions\VehicleDoesNotExistException.cs" />
-    <Compile Include="LinqExtention.cs" />
+    <Compile Include="Helpers\LinqExtention.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="Natives\Native.logging.cs" />
     <Compile Include="Natives\Native.objects.cs" />

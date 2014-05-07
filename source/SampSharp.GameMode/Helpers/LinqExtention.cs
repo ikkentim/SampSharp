@@ -15,7 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SampSharp.GameMode
+namespace SampSharp.GameMode.Helpers
 {
     public static class LinqExtention
     {
