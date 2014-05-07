@@ -42,6 +42,7 @@
     <Compile Include="GameMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\ASyncTest.cs" />
+    <Compile Include="Tests\CommandsTest.cs" />
     <Compile Include="Tests\ITest.cs" />
   </ItemGroup>
   <ItemGroup>
