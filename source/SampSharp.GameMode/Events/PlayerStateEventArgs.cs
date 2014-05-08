@@ -15,6 +15,9 @@ using SampSharp.GameMode.Definitions;
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerStateChanged" /> event.
+    /// </summary>
     public class PlayerStateEventArgs : PlayerEventArgs
     {
         public PlayerStateEventArgs(int playerid, PlayerState newstate, PlayerState oldstate)

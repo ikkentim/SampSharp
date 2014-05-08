@@ -13,6 +13,9 @@
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerRequestClass" /> event.
+    /// </summary>
     public class PlayerRequestClassEventArgs : PlayerEventArgs
     {
         public PlayerRequestClassEventArgs(int playerid, int classid) : base(playerid)

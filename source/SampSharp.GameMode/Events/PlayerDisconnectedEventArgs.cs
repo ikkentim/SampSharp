@@ -15,14 +15,25 @@ using SampSharp.GameMode.Definitions;
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerDisconnected" /> event.
+    /// </summary>
     public class PlayerDisconnectedEventArgs : PlayerEventArgs
     {
+        /// <summary>
+        /// Initializes a new instance of the PlayerDisconnectedEventArgs class
+        /// </summary>
+        /// <param name="playerid">Id of the player disconnected.</param>
+        /// <param name="reason">DisconnectReason.</param>
         public PlayerDisconnectedEventArgs(int playerid, DisconnectReason reason)
             : base(playerid)
         {
             Reason = reason;
         }
 
+        /// <summary>
+        /// Gets the reason of the disconnection.
+        /// </summary>
         public DisconnectReason Reason { get; private set; }
     }
 }

@@ -15,6 +15,9 @@ using SampSharp.GameMode.Definitions;
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerEnterExitModShop" /> event.
+    /// </summary>
     public class PlayerEnterModShopEventArgs : PlayerEventArgs
     {
         public PlayerEnterModShopEventArgs(int playerid, EnterExit enterExit, int interiorid) : base(playerid)

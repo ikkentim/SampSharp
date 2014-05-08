@@ -15,13 +15,24 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerClickMap" /> event.
+    /// </summary>
     public class PlayerClickMapEventArgs : PlayerEventArgs
     {
+        /// <summary>
+        /// Initializes a new instance of the PlayerClickMapEventArgs class.
+        /// </summary>
+        /// <param name="playerid">Id of the player.</param>
+        /// <param name="position">Position the player has clicked at.</param>
         public PlayerClickMapEventArgs(int playerid, Vector position) : base(playerid)
         {
             Position = position;
         }
 
+        /// <summary>
+        /// Gets the position the player has clicked at.
+        /// </summary>
         public Vector Position { get; private set; }
     }
 }

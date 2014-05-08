@@ -13,6 +13,10 @@
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerStreamIn" /> or
+    ///     <see cref="BaseMode.PlayerStreamOut" /> event.
+    /// </summary>
     public class StreamPlayerEventArgs : PlayerEventArgs
     {
         public StreamPlayerEventArgs(int playerid, int forplayerid) : base(playerid)

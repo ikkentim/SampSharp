@@ -15,17 +15,31 @@ using System;
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    ///     Provides data for the <see cref="BaseMode.Initialized" /> or <see cref="BaseMode.Exited" />
+    ///     event.
+    /// </summary>
     public class GameModeEventArgs : EventArgs
     {
+        /// <summary>
+        /// Initializes a new instance of the GameModeEventArgs class.
+        /// </summary>
         public GameModeEventArgs() : this(true)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the GameModeEventArgs class.
+        /// </summary>
+        /// <param name="success">Whether the event has been handled successfully.</param>
         public GameModeEventArgs(bool success)
         {
             Success = success;
         }
 
+        /// <summary>
+        /// Gets or sets whether this event has been handled sucessfully.
+        /// </summary>
         public bool Success { get; set; }
     }
 }

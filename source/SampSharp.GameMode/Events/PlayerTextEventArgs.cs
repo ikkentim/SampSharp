@@ -13,6 +13,10 @@
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerText" /> or
+    ///     <see cref="BaseMode.PlayerCommandText" /> event.
+    /// </summary>
     public class PlayerTextEventArgs : PlayerEventArgs
     {
         public PlayerTextEventArgs(int playerid, string text) : base(playerid)
