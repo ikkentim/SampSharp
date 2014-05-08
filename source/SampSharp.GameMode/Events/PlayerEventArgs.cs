@@ -15,6 +15,14 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerConnected" />,
+    ///     <see cref="BaseMode.PlayerSpawned" />, <see cref="BaseMode.PlayerEnterCheckpoint" />,
+    ///     <see cref="BaseMode.PlayerLeaveCheckpoint" />, <see cref="BaseMode.PlayerEnterRaceCheckpoint" />,
+    ///     <see cref="BaseMode.PlayerLeaveRaceCheckpoint" />, <see cref="BaseMode.PlayerRequestSpawn" />,
+    ///     <see cref="BaseMode.VehicleDamageStatusUpdated" />, <see cref="BaseMode.PlayerExitedMenu" /> or
+    ///     <see cref="BaseMode.PlayerUpdate" /> event.
+    /// </summary>
     public class PlayerEventArgs : GameModeEventArgs
     {
         public PlayerEventArgs(int playerid)

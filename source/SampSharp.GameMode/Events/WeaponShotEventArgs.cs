@@ -16,6 +16,9 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerWeaponShot" /> event.
+    /// </summary>
     public class WeaponShotEventArgs : PlayerClickMapEventArgs
     {
         public WeaponShotEventArgs(int playerid, Weapon weapon, BulletHitType hittype, int hitid, Vector position)

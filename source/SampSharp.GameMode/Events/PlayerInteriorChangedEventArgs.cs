@@ -13,6 +13,9 @@
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerInteriorChanged" /> event.
+    /// </summary>
     public class PlayerInteriorChangedEventArgs : PlayerEventArgs
     {
         public PlayerInteriorChangedEventArgs(int playerid, int newinterior, int oldinterior) : base(playerid)

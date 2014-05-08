@@ -18,7 +18,6 @@ using System.Reflection;
 using SampSharp.GameMode.Helpers;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
-using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers
 {
