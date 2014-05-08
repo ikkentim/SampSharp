@@ -16,6 +16,9 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerSelectObject" /> event.
+    /// </summary>
     public class PlayerSelectObjectEventArgs : PlayerClickMapEventArgs
     {
         public PlayerSelectObjectEventArgs(int playerid, ObjectType type, int objectid, int modelid, Vector position)

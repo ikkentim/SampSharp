@@ -13,6 +13,9 @@
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerPickUpPickup" /> event.
+    /// </summary>
     public class PlayerPickupEventArgs : PlayerEventArgs
     {
         public PlayerPickupEventArgs(int playerid, int pickupid) : base(playerid)

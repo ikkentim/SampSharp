@@ -13,6 +13,9 @@
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.VehicleResprayed" /> event.
+    /// </summary>
     public class VehicleResprayedEventArgs : PlayerVehicleEventArgs
     {
         public VehicleResprayedEventArgs(int playerid, int vehicleid, int color1, int color2)

@@ -16,30 +16,68 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
-    public class PlayerEditAttachedObjectEventArgs : PlayerClickMapEventArgs
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerEditAttachedObject" /> event.
+    /// </summary>
+    public class PlayerEditAttachedObjectEventArgs : PlayerEventArgs
     {
+        /// <summary>
+        /// Initializes a new instance of the PlayerEditAttachedObjectEventArgs class.
+        /// </summary>
+        /// <param name="playerid">Id of the player.</param>
+        /// <param name="response">EditObjectResponse.</param>
+        /// <param name="index">Index of the attached object.</param>
+        /// <param name="modelid">Model of the attached object.</param>
+        /// <param name="boneid">Id of the bone the object was attached to.</param>
+        /// <param name="offset">Offset of the attached object.</param>
+        /// <param name="rotation">Rotation of the attached object.</param>
+        /// <param name="scale">Scale of the attached object.</param>
         public PlayerEditAttachedObjectEventArgs(int playerid, EditObjectResponse response, int index, int modelid,
-            int boneid, Vector position, Vector rotation, Vector offset)
-            : base(playerid, position)
+            int boneid, Vector offset, Vector rotation, Vector scale)
+            : base(playerid)
         {
-            EidEditObjectResponse = response;
+            EditObjectResponse = response;
             Index = index;
             ModelId = modelid;
             BoneId = boneid;
-            Rotation = rotation;
             Offset = offset;
+            Rotation = rotation;
+            Scale = scale;
         }
 
-        public EditObjectResponse EidEditObjectResponse { get; private set; }
+        /// <summary>
+        /// Gets the EditObjectResponse.
+        /// </summary>
+        public EditObjectResponse EditObjectResponse { get; private set; }
 
+        /// <summary>
+        /// Gets the index of the attachedobject.
+        /// </summary>
         public int Index { get; private set; }
 
+        /// <summary>
+        /// Gets the id of the model.
+        /// </summary>
         public int ModelId { get; private set; }
 
+        /// <summary>
+        /// Gets the boneid the object was attached to.
+        /// </summary>
         public int BoneId { get; private set; }
 
+        /// <summary>
+        /// Gets the offset of the attached object.
+        /// </summary>
+        public Vector Offset { get; private set; }
+
+        /// <summary>
+        /// Gets the rotation of the attached object.
+        /// </summary>
         public Vector Rotation { get; private set; }
 
-        public Vector Offset { get; private set; }
+        /// <summary>
+        /// Gets the scale of the attached object.
+        /// </summary>
+        public Vector Scale { get; private set; }
     }
 }

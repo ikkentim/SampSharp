@@ -13,6 +13,9 @@
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerEnterVehicle" /> event.
+    /// </summary>
     public class PlayerEnterVehicleEventArgs : PlayerVehicleEventArgs
     {
         public PlayerEnterVehicleEventArgs(int playerid, int vehicleid, bool ispassenger) : base(playerid, vehicleid)
