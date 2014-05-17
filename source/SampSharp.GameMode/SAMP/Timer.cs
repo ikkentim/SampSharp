@@ -75,7 +75,7 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public object Tag { get; set; }
 
-        public void Dispose()
+        public override void Dispose()
         {
             Running = false;
         }

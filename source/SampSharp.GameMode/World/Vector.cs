@@ -17,8 +17,9 @@ namespace SampSharp.GameMode.World
 {
     public struct Vector
     {
-        public static Vector Zero = NewZero();
-        public static Vector One = NewOne();
+
+
+        #region Constructors
 
         public Vector(float x, float y, float z) : this()
         {
@@ -49,24 +50,70 @@ namespace SampSharp.GameMode.World
             Z = vector.Z;
         }
 
+        #endregion
+
+        #region Properties
+
         public float X { get; set; }
         public float Y { get; set; }
         public float Z { get; set; }
 
-        public static Vector NewZero()
+        #endregion
+
+        public static Vector Zero
         {
-            return new Vector(0.0f);
+            get { return new Vector(0); }
         }
 
-        public static Vector NewOne()
+        public static Vector One
         {
-            return new Vector(1.0f);
+            get { return new Vector(1); }
         }
 
+        public static Vector CrossProduct(Vector a, Vector b)
+        {
+            return new Vector(a.Y*b.Z - a.Z*b.Y, a.Z*b.X - a.X*b.Z, a.X*b.Y - a.Y*b.X);
+        }
+
+        #region Methods
         public float DotProduct(Vector other)
         {
             return X*other.X + Y*other.Y + Z*other.Z;
         }
+
+        public Vector Add(Vector v)
+        {
+            X += v.X;
+            Y += v.Y;
+            Z += v.Z;
+            return this;
+        }
+
+        public float DistanceTo(Vector v)
+        {
+            float dx = X - v.X;
+            float dy = Y - v.Y;
+            float dz = Z - v.Z;
+            return (float) Math.Sqrt(dx*dx + dy*dy + dz*dz);
+        }
+
+        public float Size()
+        {
+            return DistanceTo(Zero);
+        }
+
+        public Vector Normalize()
+        {
+            float size = Size();
+            X /= size;
+            Y /= size;
+            Z /= size;
+            return this;
+        }
+
+        #endregion
+
+        #region Operators
 
         public static Vector operator +(Vector left, Vector right)
         {
@@ -117,40 +164,9 @@ namespace SampSharp.GameMode.World
             }
         }
 
-        public static Vector CrossProduct(Vector a, Vector b)
-        {
-            return new Vector(a.Y*b.Z - a.Z*b.Y, a.Z*b.X - a.X*b.Z, a.X*b.Y - a.Y*b.X);
-        }
+        #endregion
 
-        public Vector Add(Vector v)
-        {
-            X += v.X;
-            Y += v.Y;
-            Z += v.Z;
-            return this;
-        }
-
-        public float DistanceTo(Vector v)
-        {
-            float dx = X - v.X;
-            float dy = Y - v.Y;
-            float dz = Z - v.Z;
-            return (float) Math.Sqrt(dx*dx + dy*dy + dz*dz);
-        }
-
-        public float Size()
-        {
-            return DistanceTo(Zero);
-        }
-
-        public Vector Normalize()
-        {
-            float size = Size();
-            X /= size;
-            Y /= size;
-            Z /= size;
-            return this;
-        }
+        #region Object releated methods
 
         public Vector Clone()
         {
@@ -183,5 +199,8 @@ namespace SampSharp.GameMode.World
         {
             return "(" + X + ", " + Y + ", " + Z + ")";
         }
+
+        #endregion
+
     }
 }
