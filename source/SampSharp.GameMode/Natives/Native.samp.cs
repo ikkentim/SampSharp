@@ -1142,6 +1142,7 @@ namespace SampSharp.GameMode.Natives
         ///     (ICON_CONNECT and ICON_DISCONNECT).
         /// </param>
         /// <returns>True if the function executed successfully, False otherwise.</returns>
+        [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SendDeathMessageToPlayer(int playerid, int killer, int killee, int weapon);
 
         /// <summary>
@@ -1153,6 +1154,7 @@ namespace SampSharp.GameMode.Natives
         ///     indefinite block.
         /// </param>
         /// <returns>This function does not return any specific values.</returns>
+        [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool BlockIpAddress(string ipAddress, int timems);
 
         /// <summary>
@@ -1160,6 +1162,7 @@ namespace SampSharp.GameMode.Natives
         /// </summary>
         /// <param name="ipAddress">The IP address to unblock.</param>
         /// <returns>This function does not return any specific values.</returns>
+        [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool UnBlockIpAddress(string ipAddress);
 
         /// <summary>
