@@ -35,10 +35,10 @@
     <ClInclude Include="ConfigReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Callbacks.h">
+    <ClInclude Include="SampSharp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SampSharp.h">
+    <ClInclude Include="Events.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
