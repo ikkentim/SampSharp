@@ -1,83 +1,88 @@
 #pragma once
 
+#include <iostream>
+#include <fstream>
+#include <cstring> //strcpy
+#include <time.h>
+
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
+#include <mono/metadata/mono-debug.h>
 #include <mono/metadata/debug-helpers.h>
 
 using namespace std;
 
-class CSampSharp
+class SampSharp
 {
 public:
-	CSampSharp(string bmPath, string gmPath, string gmNamespace, string gmClass, bool generateSymbols);
-	~CSampSharp();
+	static void Load(string baseModePath, string gamemodePath, string gameModeNamespace, string gameModeClass, bool debug);
+	static void Unload();
+	static bool Reload();
+	static bool CallEvent(MonoMethod * method, void ** params);
 
-	bool CallCallback(MonoMethod * method, void ** params);
-
-	static CSampSharp * instance;
-
-	MonoDomain * rootDomain;
-
-	MonoMethod * onGameModeInit;
-	MonoMethod * onGameModeExit;
-	MonoMethod * onPlayerConnect;
-	MonoMethod * onPlayerDisconnect;
-	MonoMethod * onPlayerSpawn;
-	MonoMethod * onPlayerDeath;
-	MonoMethod * onVehicleSpawn;
-	MonoMethod * onVehicleDeath;
-	MonoMethod * onPlayerText;
-	MonoMethod * onPlayerCommandText;
-	MonoMethod * onPlayerRequestClass;
-	MonoMethod * onPlayerEnterVehicle;
-	MonoMethod * onPlayerExitVehicle;
-	MonoMethod * onPlayerStateChange;
-	MonoMethod * onPlayerEnterCheckpoint;
-	MonoMethod * onPlayerLeaveCheckpoint;
-	MonoMethod * onPlayerEnterRaceCheckpoint;
-	MonoMethod * onPlayerLeaveRaceCheckpoint;
-	MonoMethod * onRconCommand;
-	MonoMethod * onPlayerRequestSpawn;
-	MonoMethod * onObjectMoved;
-	MonoMethod * onPlayerObjectMoved;
-	MonoMethod * onPlayerPickUpPickup;
-	MonoMethod * onVehicleMod;
-	MonoMethod * onEnterExitModShop;
-	MonoMethod * onVehiclePaintjob;
-	MonoMethod * onVehicleRespray;
-	MonoMethod * onVehicleDamageStatusUpdate;
-	MonoMethod * onUnoccupiedVehicleUpdate;
-	MonoMethod * onPlayerSelectedMenuRow;
-	MonoMethod * onPlayerExitedMenu;
-	MonoMethod * onPlayerInteriorChange;
-	MonoMethod * onPlayerKeyStateChange;
-	MonoMethod * onRconLoginAttempt;
-	MonoMethod * onPlayerUpdate;
-	MonoMethod * onPlayerStreamIn;
-	MonoMethod * onPlayerStreamOut;
-	MonoMethod * onVehicleStreamIn;
-	MonoMethod * onVehicleStreamOut;
-	MonoMethod * onDialogResponse;
-	MonoMethod * onPlayerTakeDamage;
-	MonoMethod * onPlayerGiveDamage;
-	MonoMethod * onPlayerClickMap;
-	MonoMethod * onPlayerClickTextDraw;
-	MonoMethod * onPlayerClickPlayerTextDraw;
-	MonoMethod * onPlayerClickPlayer;
-	MonoMethod * onPlayerEditObject;
-	MonoMethod * onPlayerEditAttachedObject;
-	MonoMethod * onPlayerSelectObject;
-	MonoMethod * onPlayerWeaponShot;
-	MonoMethod * onIncomingConnection;
-	MonoMethod * onTimerTick;
-	MonoMethod * onTick;
+	static MonoDomain * rootDomain;
+	static MonoMethod * onGameModeInit;
+	static MonoMethod * onGameModeExit;
+	static MonoMethod * onPlayerConnect;
+	static MonoMethod * onPlayerDisconnect;
+	static MonoMethod * onPlayerSpawn;
+	static MonoMethod * onPlayerDeath;
+	static MonoMethod * onVehicleSpawn;
+	static MonoMethod * onVehicleDeath;
+	static MonoMethod * onPlayerText;
+	static MonoMethod * onPlayerCommandText;
+	static MonoMethod * onPlayerRequestClass;
+	static MonoMethod * onPlayerEnterVehicle;
+	static MonoMethod * onPlayerExitVehicle;
+	static MonoMethod * onPlayerStateChange;
+	static MonoMethod * onPlayerEnterCheckpoint;
+	static MonoMethod * onPlayerLeaveCheckpoint;
+	static MonoMethod * onPlayerEnterRaceCheckpoint;
+	static MonoMethod * onPlayerLeaveRaceCheckpoint;
+	static MonoMethod * onRconCommand;
+	static MonoMethod * onPlayerRequestSpawn;
+	static MonoMethod * onObjectMoved;
+	static MonoMethod * onPlayerObjectMoved;
+	static MonoMethod * onPlayerPickUpPickup;
+	static MonoMethod * onVehicleMod;
+	static MonoMethod * onEnterExitModShop;
+	static MonoMethod * onVehiclePaintjob;
+	static MonoMethod * onVehicleRespray;
+	static MonoMethod * onVehicleDamageStatusUpdate;
+	static MonoMethod * onUnoccupiedVehicleUpdate;
+	static MonoMethod * onPlayerSelectedMenuRow;
+	static MonoMethod * onPlayerExitedMenu;
+	static MonoMethod * onPlayerInteriorChange;
+	static MonoMethod * onPlayerKeyStateChange;
+	static MonoMethod * onRconLoginAttempt;
+	static MonoMethod * onPlayerUpdate;
+	static MonoMethod * onPlayerStreamIn;
+	static MonoMethod * onPlayerStreamOut;
+	static MonoMethod * onVehicleStreamIn;
+	static MonoMethod * onVehicleStreamOut;
+	static MonoMethod * onDialogResponse;
+	static MonoMethod * onPlayerTakeDamage;
+	static MonoMethod * onPlayerGiveDamage;
+	static MonoMethod * onPlayerClickMap;
+	static MonoMethod * onPlayerClickTextDraw;
+	static MonoMethod * onPlayerClickPlayerTextDraw;
+	static MonoMethod * onPlayerClickPlayer;
+	static MonoMethod * onPlayerEditObject;
+	static MonoMethod * onPlayerEditAttachedObject;
+	static MonoMethod * onPlayerSelectObject;
+	static MonoMethod * onPlayerWeaponShot;
+	static MonoMethod * onIncomingConnection;
+	static MonoMethod * onTimerTick;
+	static MonoMethod * onTick;
+	static MonoMethod * dispose;
  
 private:
-	MonoMethod * LoadCallback(const char * cname, const char * name);
-	char * GetTimeStamp();
-	void GenerateSymbols(string path);
-	MonoImage * gameModeImage;
-	MonoImage * baseModeImage;
-	uint32_t gameModeHandle;
+	static MonoMethod * LoadEvent(const char * cname, const char * name);
+	static void LoadEvents(const char * gmClass);
+	static void GenerateSymbols(string path);
+
+	static MonoImage * gameModeImage;
+	static MonoImage * baseModeImage;
+	static uint32_t gameModeHandle;
 };
 

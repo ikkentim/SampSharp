@@ -4,26 +4,28 @@
 #include <mono/metadata/threads.h>
 #include "SampSharp.h"
 
+#define mstring(a) mono_string_new(mono_domain_get(), a);
+
 static void SAMPGDK_CALL p_TimerCallback(int timerid, void * data) {
 	void *args[2];
 	args[0] = &timerid;
 	args[1] = data;
-	bool response = CSampSharp::instance->CallCallback(CSampSharp::instance->onTimerTick, args);
+	bool response = SampSharp::CallEvent(SampSharp::onTimerTick, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnGameModeInit() {
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onGameModeInit, NULL);
+	return SampSharp::CallEvent(SampSharp::onGameModeInit, NULL);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnGameModeExit() {
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onGameModeExit, NULL);
+	return SampSharp::CallEvent(SampSharp::onGameModeExit, NULL);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerConnect(int playerid) {
 	void *args[1];
 	args[0] = &playerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerConnect, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerConnect, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerDisconnect(int playerid, int reason) {
@@ -31,14 +33,14 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerDisconnect(int playerid, int reason) {
 	args[0] = &playerid;
 	args[1] = &reason;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerDisconnect, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerDisconnect, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerSpawn(int playerid) {
 	void *args[1];
 	args[0] = &playerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerSpawn, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerSpawn, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerDeath(int playerid, int killerid, int reason) {
@@ -47,14 +49,14 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerDeath(int playerid, int killerid, int rea
 	args[1] = &killerid;
 	args[2] = &reason;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerDeath, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerDeath, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnVehicleSpawn(int vehicleid) {
 	void *args[1];
 	args[0] = &vehicleid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onVehicleSpawn, args);
+	return SampSharp::CallEvent(SampSharp::onVehicleSpawn, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnVehicleDeath(int vehicleid, int killerid) {
@@ -62,23 +64,23 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnVehicleDeath(int vehicleid, int killerid) {
 	args[0] = &vehicleid;
 	args[1] = &killerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onVehicleDeath, args);
+	return SampSharp::CallEvent(SampSharp::onVehicleDeath, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerText(int playerid, const char * text) {
 	void *args[2];
 	args[0] = &playerid;
-	args[1] = mono_string_new(mono_domain_get(), text);
+	args[1] = mstring(text);
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerText, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerText, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerCommandText(int playerid, const char * cmdtext) {
 	void *args[2];
 	args[0] = &playerid;
-	args[1] = mono_string_new(mono_domain_get(), cmdtext);
+	args[1] = mstring(cmdtext);
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerCommandText, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerCommandText, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerRequestClass(int playerid, int classid) {
@@ -86,7 +88,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerRequestClass(int playerid, int classid) {
 	args[0] = &playerid;
 	args[1] = &classid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerRequestClass, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerRequestClass, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerEnterVehicle(int playerid, int vehicleid, bool ispassenger) {
@@ -95,7 +97,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerEnterVehicle(int playerid, int vehicleid,
 	args[1] = &vehicleid;
 	args[2] = &ispassenger;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerEnterVehicle, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerEnterVehicle, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerExitVehicle(int playerid, int vehicleid) {
@@ -103,7 +105,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerExitVehicle(int playerid, int vehicleid) 
 	args[0] = &playerid;
 	args[1] = &vehicleid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerExitVehicle, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerExitVehicle, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerStateChange(int playerid, int newstate, int oldstate) {
@@ -112,59 +114,59 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerStateChange(int playerid, int newstate, i
 	args[1] = &newstate;
 	args[2] = &oldstate;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerStateChange, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerStateChange, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerEnterCheckpoint(int playerid) {
 	void *args[1];
 	args[0] = &playerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerEnterCheckpoint, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerEnterCheckpoint, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerLeaveCheckpoint(int playerid) {
 	void *args[1];
 	args[0] = &playerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerLeaveCheckpoint, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerLeaveCheckpoint, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerEnterRaceCheckpoint(int playerid) {
 	void *args[1];
 	args[0] = &playerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerEnterRaceCheckpoint, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerEnterRaceCheckpoint, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerLeaveRaceCheckpoint(int playerid) {
 	void *args[1];
 	args[0] = &playerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerLeaveRaceCheckpoint, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerLeaveRaceCheckpoint, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnRconCommand(const char * cmd) {
-	mono_thread_attach(CSampSharp::instance->rootDomain);
+	mono_thread_attach(SampSharp::rootDomain);
 
 	void *args[1];
 
-	args[0] = mono_string_new(mono_domain_get(), cmd);
+	args[0] = mstring(cmd);
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onRconCommand, args);
+	return SampSharp::CallEvent(SampSharp::onRconCommand, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerRequestSpawn(int playerid) {
 	void *args[1];
 	args[0] = &playerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerRequestSpawn, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerRequestSpawn, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnObjectMoved(int objectid) {
 	void *args[1];
 	args[0] = &objectid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onObjectMoved, args);
+	return SampSharp::CallEvent(SampSharp::onObjectMoved, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerObjectMoved(int playerid, int objectid) {
@@ -172,7 +174,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerObjectMoved(int playerid, int objectid) {
 	args[0] = &playerid;
 	args[1] = &objectid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerObjectMoved, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerObjectMoved, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerPickUpPickup(int playerid, int pickupid) {
@@ -180,7 +182,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerPickUpPickup(int playerid, int pickupid) 
 	args[0] = &playerid;
 	args[1] = &pickupid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerPickUpPickup, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerPickUpPickup, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnVehicleMod(int playerid, int vehicleid, int componentid) {
@@ -189,7 +191,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnVehicleMod(int playerid, int vehicleid, int com
 	args[1] = &vehicleid;
 	args[2] = &componentid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onVehicleMod, args);
+	return SampSharp::CallEvent(SampSharp::onVehicleMod, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnEnterExitModShop(int playerid, int enterexit, int interiorid) {
@@ -198,7 +200,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnEnterExitModShop(int playerid, int enterexit, i
 	args[1] = &enterexit;
 	args[2] = &interiorid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onEnterExitModShop, args);
+	return SampSharp::CallEvent(SampSharp::onEnterExitModShop, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnVehiclePaintjob(int playerid, int vehicleid, int paintjobid) {
@@ -207,7 +209,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnVehiclePaintjob(int playerid, int vehicleid, in
 	args[1] = &vehicleid;
 	args[2] = &paintjobid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onVehiclePaintjob, args);
+	return SampSharp::CallEvent(SampSharp::onVehiclePaintjob, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnVehicleRespray(int playerid, int vehicleid, int color1, int color2) {
@@ -217,7 +219,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnVehicleRespray(int playerid, int vehicleid, int
 	args[2] = &color1;
 	args[3] = &color2;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onVehicleRespray, args);
+	return SampSharp::CallEvent(SampSharp::onVehicleRespray, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnVehicleDamageStatusUpdate(int vehicleid, int playerid) {
@@ -225,7 +227,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnVehicleDamageStatusUpdate(int vehicleid, int pl
 	args[0] = &vehicleid;
 	args[1] = &playerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onVehicleDamageStatusUpdate, args);
+	return SampSharp::CallEvent(SampSharp::onVehicleDamageStatusUpdate, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passenger_seat, float new_x, float new_y, float new_z) {
@@ -238,7 +240,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnUnoccupiedVehicleUpdate(int vehicleid, int play
 	args[4] = &new_y;
 	args[5] = &new_z;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onUnoccupiedVehicleUpdate, args);
+	return SampSharp::CallEvent(SampSharp::onUnoccupiedVehicleUpdate, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerSelectedMenuRow(int playerid, int row) {
@@ -246,14 +248,14 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerSelectedMenuRow(int playerid, int row) {
 	args[0] = &playerid;
 	args[1] = &row;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerSelectedMenuRow, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerSelectedMenuRow, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerExitedMenu(int playerid) {
 	void *args[1];
 	args[0] = &playerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerExitedMenu, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerExitedMenu, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerInteriorChange(int playerid, int newinteriorid, int oldinteriorid) {
@@ -262,7 +264,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerInteriorChange(int playerid, int newinter
 	args[1] = &newinteriorid;
 	args[2] = &oldinteriorid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerInteriorChange, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerInteriorChange, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys) {
@@ -271,23 +273,23 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerKeyStateChange(int playerid, int newkeys,
 	args[1] = &newkeys;
 	args[2] = &oldkeys;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerKeyStateChange, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerKeyStateChange, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnRconLoginAttempt(const char * ip, const char * password, bool success) {
 	void *args[3];
-	args[0] = mono_string_new(mono_domain_get(), ip);
-	args[1] = mono_string_new(mono_domain_get(), password);
+	args[0] = mstring(ip);
+	args[1] = mstring(password);
 	args[2] = &success;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onRconLoginAttempt, args);
+	return SampSharp::CallEvent(SampSharp::onRconLoginAttempt, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerUpdate(int playerid) {
 	void *args[1];
 	args[0] = &playerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerUpdate, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerUpdate, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerStreamIn(int playerid, int forplayerid) {
@@ -295,7 +297,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerStreamIn(int playerid, int forplayerid) {
 	args[0] = &playerid;
 	args[1] = &forplayerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerStreamIn, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerStreamIn, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerStreamOut(int playerid, int forplayerid) {
@@ -303,7 +305,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerStreamOut(int playerid, int forplayerid) 
 	args[0] = &playerid;
 	args[1] = &forplayerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerStreamOut, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerStreamOut, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnVehicleStreamIn(int vehicleid, int forplayerid) {
@@ -311,7 +313,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnVehicleStreamIn(int vehicleid, int forplayerid)
 	args[0] = &vehicleid;
 	args[1] = &forplayerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onVehicleStreamIn, args);
+	return SampSharp::CallEvent(SampSharp::onVehicleStreamIn, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnVehicleStreamOut(int vehicleid, int forplayerid) {
@@ -319,7 +321,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnVehicleStreamOut(int vehicleid, int forplayerid
 	args[0] = &vehicleid;
 	args[1] = &forplayerid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onVehicleStreamOut, args);
+	return SampSharp::CallEvent(SampSharp::onVehicleStreamOut, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnDialogResponse(int playerid, int dialogid, int response, int listitem, const char * inputtext) {
@@ -328,9 +330,9 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnDialogResponse(int playerid, int dialogid, int 
 	args[1] = &dialogid;
 	args[2] = &response;
 	args[3] = &listitem;
-	args[4] = mono_string_new(mono_domain_get(), inputtext);
+	args[4] = mstring(inputtext);
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onDialogResponse, args);
+	return SampSharp::CallEvent(SampSharp::onDialogResponse, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid, int bodypart) {
@@ -341,7 +343,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerTakeDamage(int playerid, int issuerid, fl
 	args[3] = &weaponid;
 	args[4] = &bodypart;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerTakeDamage, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerTakeDamage, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerGiveDamage(int playerid, int damagedid, float amount, int weaponid, int bodypart) {
@@ -352,7 +354,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerGiveDamage(int playerid, int damagedid, f
 	args[3] = &weaponid;
 	args[4] = &bodypart;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerGiveDamage, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerGiveDamage, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerClickMap(int playerid, float fX, float fY, float fZ) {
@@ -362,7 +364,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerClickMap(int playerid, float fX, float fY
 	args[2] = &fY;
 	args[3] = &fZ;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerClickMap, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerClickMap, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerClickTextDraw(int playerid, int clickedid) {
@@ -370,7 +372,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerClickTextDraw(int playerid, int clickedid
 	args[0] = &playerid;
 	args[1] = &clickedid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerClickTextDraw, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerClickTextDraw, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerClickPlayerTextDraw(int playerid, int playertextid) {
@@ -378,7 +380,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerClickPlayerTextDraw(int playerid, int pla
 	args[0] = &playerid;
 	args[1] = &playertextid;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerClickPlayerTextDraw, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerClickPlayerTextDraw, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerClickPlayer(int playerid, int clickedplayerid, int source) {
@@ -387,7 +389,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerClickPlayer(int playerid, int clickedplay
 	args[1] = &clickedplayerid;
 	args[2] = &source;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerClickPlayer, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerClickPlayer, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerEditObject(int playerid, bool playerobject, int objectid, int response, float fX, float fY, float fZ, float fRotX, float fRotY, float fRotZ) {
@@ -403,7 +405,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerEditObject(int playerid, bool playerobjec
 	args[8] = &fRotY;
 	args[9] = &fRotZ;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerEditObject, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerEditObject, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ) {
@@ -423,7 +425,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerEditAttachedObject(int playerid, int resp
 	args[12] = &fScaleY;
 	args[13] = &fScaleZ;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerEditAttachedObject, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerEditAttachedObject, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ) {
@@ -436,7 +438,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerSelectObject(int playerid, int type, int 
 	args[5] = &fY;
 	args[6] = &fZ;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerSelectObject, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerSelectObject, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY, float fZ) {
@@ -449,15 +451,15 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerWeaponShot(int playerid, int weaponid, in
 	args[5] = &fY;
 	args[6] = &fZ;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onPlayerWeaponShot, args);
+	return SampSharp::CallEvent(SampSharp::onPlayerWeaponShot, args);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnIncomingConnection(int playerid, const char * ip_address, int port)
 {
 	void *args[3];
 	args[0] = &playerid;
-	args[1] = mono_string_new(mono_domain_get(), ip_address);
+	args[1] = mstring(ip_address);
 	args[2] = &port;
 
-	return CSampSharp::instance->CallCallback(CSampSharp::instance->onIncomingConnection, args);
+	return SampSharp::CallEvent(SampSharp::onIncomingConnection, args);
 }
