@@ -23,13 +23,13 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 	string gamemode_path = "plugins/GameMode.dll";
 	string gamemode_namespace = "GameMode";
 	string gamemode_class = "GameMode";
-	bool gamemode_generate_symbols = false;
+	bool gamemode_debug = false;
 
 	server_cfg.GetOption("basemode_path", basemode_path);
 	server_cfg.GetOption("gamemode_path", gamemode_path);
 	server_cfg.GetOption("gamemode_namespace", gamemode_namespace);
 	server_cfg.GetOption("gamemode_class", gamemode_class);
-	server_cfg.GetOption("gamemode_generate_symbols", gamemode_generate_symbols);
+	server_cfg.GetOption("gamemode_debug", gamemode_debug);
 
 	//Load Mono
 	logprintf("[SampSharp] Loading gamemode: %s::%s at \"%s\".", 
@@ -37,22 +37,22 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 		(char*)gamemode_class.c_str(), 
 		(char*)gamemode_path.c_str());
 
-	CSampSharp::instance = new CSampSharp((char *)basemode_path.c_str(),
+	SampSharp::Load((char *)basemode_path.c_str(),
 		(char *)gamemode_path.c_str(),
 		(char *)gamemode_namespace.c_str(), 
 		(char *)gamemode_class.c_str(), 
-		gamemode_generate_symbols);
+		gamemode_debug);
 
 	logprintf("[SampSharp] SampSharp is ready!");
 	return true;
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
-	delete CSampSharp::instance;
+	SampSharp::Unload();
 	sampgdk::Unload();
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
 	sampgdk::ProcessTick();
-	CSampSharp::instance->CallCallback(CSampSharp::instance->onTick, NULL);
+	SampSharp::CallEvent(SampSharp::onTick, NULL);
 }
