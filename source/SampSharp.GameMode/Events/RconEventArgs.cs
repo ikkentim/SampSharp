@@ -14,7 +14,7 @@
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.RconCommand" /> event.
+    ///     Provides data for the <see cref="BaseMode.RconCommand" /> event.
     /// </summary>
     public class RconEventArgs : GameModeEventArgs
     {

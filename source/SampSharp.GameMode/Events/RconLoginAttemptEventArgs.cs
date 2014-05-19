@@ -14,7 +14,7 @@
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.RconLoginAttempt" /> event.
+    ///     Provides data for the <see cref="BaseMode.RconLoginAttempt" /> event.
     /// </summary>
     public class RconLoginAttemptEventArgs : GameModeEventArgs
     {

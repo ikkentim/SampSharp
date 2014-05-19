@@ -12,7 +12,6 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System.Collections.Generic;
-using System.Linq;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;

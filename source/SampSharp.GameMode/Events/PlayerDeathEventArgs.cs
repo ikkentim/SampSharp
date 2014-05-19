@@ -17,12 +17,12 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerDied" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerDied" /> event.
     /// </summary>
     public class PlayerDeathEventArgs : PlayerEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the PlayerDeathEventArgs class.
+        ///     Initializes a new instance of the PlayerDeathEventArgs class.
         /// </summary>
         /// <param name="playerid">Id of the player.</param>
         /// <param name="killerid">Id of the killer.</param>
@@ -34,12 +34,12 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the id of the killer.
+        ///     Gets the id of the killer.
         /// </summary>
         public int KillerId { get; private set; }
 
         /// <summary>
-        /// Gets the killer.
+        ///     Gets the killer.
         /// </summary>
         public Player Killer
         {
@@ -47,7 +47,7 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the reason of the death.
+        ///     Gets the reason of the death.
         /// </summary>
         public Weapon DeathReason { get; private set; }
     }

@@ -22,14 +22,14 @@ namespace SampSharp.GameMode.Events
     public class GameModeEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the GameModeEventArgs class.
+        ///     Initializes a new instance of the GameModeEventArgs class.
         /// </summary>
         public GameModeEventArgs() : this(true)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the GameModeEventArgs class.
+        ///     Initializes a new instance of the GameModeEventArgs class.
         /// </summary>
         /// <param name="success">Whether the event has been handled successfully.</param>
         public GameModeEventArgs(bool success)
@@ -38,7 +38,7 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets or sets whether this event has been handled sucessfully.
+        ///     Gets or sets whether this event has been handled sucessfully.
         /// </summary>
         public bool Success { get; set; }
     }

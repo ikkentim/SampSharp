@@ -16,12 +16,12 @@ using SampSharp.GameMode.Definitions;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerClickPlayer" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerClickPlayer" /> event.
     /// </summary>
     public class PlayerClickPlayerEventArgs : PlayerEventArgs
     {
         /// <summary>
-        /// Intializes a new instance of the PlayerClickPlayerEventArgs class.
+        ///     Intializes a new instance of the PlayerClickPlayerEventArgs class.
         /// </summary>
         /// <param name="playerid">Id of the player.</param>
         /// <param name="clickedplayerid">Id of the clicked player.</param>
@@ -33,12 +33,12 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the id of the clicked player.
+        ///     Gets the id of the clicked player.
         /// </summary>
         public int ClickPlayerId { get; private set; }
 
         /// <summary>
-        /// Gets the PlayerClickSource of this event.
+        ///     Gets the PlayerClickSource of this event.
         /// </summary>
         public PlayerClickSource PlayerClickSource { get; private set; }
     }

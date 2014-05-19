@@ -14,13 +14,13 @@
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerClickTextDraw" /> or
-    ///     <see cref="BaseMode.PlayerClickPlayerTextDraw" /> event. 
+    ///     Provides data for the <see cref="BaseMode.PlayerClickTextDraw" /> or
+    ///     <see cref="BaseMode.PlayerClickPlayerTextDraw" /> event.
     /// </summary>
     public class PlayerClickTextDrawEventArgs : PlayerEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the PlayerClickTextDrawEventArgs class.
+        ///     Initializes a new instance of the PlayerClickTextDrawEventArgs class.
         /// </summary>
         /// <param name="playerid">Id of the player.</param>
         /// <param name="textdrawid">Id of the textdraw.</param>
@@ -30,7 +30,7 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the id of the textdraw.
+        ///     Gets the id of the textdraw.
         /// </summary>
         public int TextDrawId { get; private set; }
     }

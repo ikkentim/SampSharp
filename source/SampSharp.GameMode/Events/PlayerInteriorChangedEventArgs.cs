@@ -14,7 +14,7 @@
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerInteriorChanged" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerInteriorChanged" /> event.
     /// </summary>
     public class PlayerInteriorChangedEventArgs : PlayerEventArgs
     {

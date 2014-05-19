@@ -17,12 +17,12 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerEditAttachedObject" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerEditAttachedObject" /> event.
     /// </summary>
     public class PlayerEditAttachedObjectEventArgs : PlayerEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the PlayerEditAttachedObjectEventArgs class.
+        ///     Initializes a new instance of the PlayerEditAttachedObjectEventArgs class.
         /// </summary>
         /// <param name="playerid">Id of the player.</param>
         /// <param name="response">EditObjectResponse.</param>
@@ -46,37 +46,37 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the EditObjectResponse.
+        ///     Gets the EditObjectResponse.
         /// </summary>
         public EditObjectResponse EditObjectResponse { get; private set; }
 
         /// <summary>
-        /// Gets the index of the attachedobject.
+        ///     Gets the index of the attachedobject.
         /// </summary>
         public int Index { get; private set; }
 
         /// <summary>
-        /// Gets the id of the model.
+        ///     Gets the id of the model.
         /// </summary>
         public int ModelId { get; private set; }
 
         /// <summary>
-        /// Gets the boneid the object was attached to.
+        ///     Gets the boneid the object was attached to.
         /// </summary>
         public int BoneId { get; private set; }
 
         /// <summary>
-        /// Gets the offset of the attached object.
+        ///     Gets the offset of the attached object.
         /// </summary>
         public Vector Offset { get; private set; }
 
         /// <summary>
-        /// Gets the rotation of the attached object.
+        ///     Gets the rotation of the attached object.
         /// </summary>
         public Vector Rotation { get; private set; }
 
         /// <summary>
-        /// Gets the scale of the attached object.
+        ///     Gets the scale of the attached object.
         /// </summary>
         public Vector Scale { get; private set; }
     }

@@ -17,7 +17,7 @@ namespace SampSharp.GameMode.SAMP.Commands
     ///     Represents an integer command-parameter.
     /// </summary>
     public class IntegerParameterAttribute : WordParameterAttribute
-    {        
+    {
         /// <summary>
         ///     Initializes a new instance of the IntegerParameterAttribute class.
         /// </summary>
@@ -25,7 +25,6 @@ namespace SampSharp.GameMode.SAMP.Commands
         public IntegerParameterAttribute(string name)
             : base(name)
         {
-
         }
 
         /// <summary>
@@ -40,7 +39,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             if (!base.Check(ref command, out output))
                 return false;
 
-            string word = (string) output;
+            var word = (string) output;
 
             //Try to parse this number
             int number;

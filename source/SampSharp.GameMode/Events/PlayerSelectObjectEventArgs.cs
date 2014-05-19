@@ -17,7 +17,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerSelectObject" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerSelectObject" /> event.
     /// </summary>
     public class PlayerSelectObjectEventArgs : PlayerClickMapEventArgs
     {
