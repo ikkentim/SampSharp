@@ -15,11 +15,12 @@ using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Exceptions;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
-    public class PlayerObject : InstanceKeeper<PlayerObject>, IGameObject
+    public class PlayerObject : IdentifiedOwnedPool<PlayerObject>, IGameObject, IOwnable
     {
         #region Fields
 
@@ -30,38 +31,33 @@ namespace SampSharp.GameMode.World
         #region Properties
 
         public virtual Player Player { get; private set; }
-        public virtual int ObjectId { get; private set; }
+        public virtual int Id { get; private set; }
 
         public virtual Vector Position
         {
-            get { return Native.GetPlayerObjectPos(Player.Id, ObjectId); }
-            set { Native.SetPlayerObjectPos(Player.Id, ObjectId, value); }
+            get { return Native.GetPlayerObjectPos(Player.Id, Id); }
+            set { Native.SetPlayerObjectPos(Player.Id, Id, value); }
         }
 
         public virtual Vector Rotation
         {
-            get { return Native.GetPlayerObjectRot(Player.Id, ObjectId); }
-            set { Native.SetPlayerObjectRot(Player.Id, ObjectId, value); }
+            get { return Native.GetPlayerObjectRot(Player.Id, Id); }
+            set { Native.SetPlayerObjectRot(Player.Id, Id, value); }
         }
 
         public virtual bool IsMoving
         {
-            get { return Native.IsPlayerObjectMoving(Player.Id, ObjectId); }
+            get { return Native.IsPlayerObjectMoving(Player.Id, Id); }
         }
 
         public virtual bool IsValid
         {
-            get { return Native.IsValidPlayerObject(Player.Id, ObjectId); }
+            get { return Native.IsValidPlayerObject(Player.Id, Id); }
         }
 
         public virtual int ModelId { get; private set; }
 
         public virtual float DrawDistance { get; private set; }
-
-        public virtual int Id
-        {
-            get { return Player.Id*(Limits.MaxObjects + 1) + ObjectId; }
-        }
 
         #endregion
 
@@ -99,7 +95,7 @@ namespace SampSharp.GameMode.World
                 throw new PlayerNotConnectedException();
 
             Player = player;
-            ObjectId = id;
+            Id = id;
         }
 
         public PlayerObject(Player player, int modelid, Vector position, Vector rotation)
@@ -116,7 +112,7 @@ namespace SampSharp.GameMode.World
             ModelId = modelid;
             DrawDistance = drawDistance;
 
-            ObjectId = Native.CreatePlayerObject(player.Id, modelid, position, rotation, drawDistance);
+            Id = Native.CreatePlayerObject(player.Id, modelid, position, rotation, drawDistance);
         }
 
         #endregion
@@ -125,34 +121,34 @@ namespace SampSharp.GameMode.World
 
         public virtual void AttachTo(Player player, Vector offset, Vector rotation)
         {
-            Native.AttachPlayerObjectToPlayer(Player.Id, ObjectId, player.Id, offset, rotation);
+            Native.AttachPlayerObjectToPlayer(Player.Id, Id, player.Id, offset, rotation);
         }
 
         public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
         {
-            Native.AttachPlayerObjectToVehicle(Player.Id, ObjectId, vehicle.Id, offset, rotation);
+            Native.AttachPlayerObjectToVehicle(Player.Id, Id, vehicle.Id, offset, rotation);
         }
 
         public virtual int Move(Vector position, float speed, Vector rotation)
         {
-            return Native.MovePlayerObject(Player.Id, ObjectId, position, speed, rotation);
+            return Native.MovePlayerObject(Player.Id, Id, position, speed, rotation);
         }
 
         public virtual int Move(Vector position, float speed)
         {
-            return Native.MovePlayerObject(Player.Id, ObjectId, position.X, position.Y, position.Z, speed, -1000,
+            return Native.MovePlayerObject(Player.Id, Id, position.X, position.Y, position.Z, speed, -1000,
                 -1000, -1000);
         }
 
         public virtual void Stop()
         {
-            Native.StopPlayerObject(Player.Id, ObjectId);
+            Native.StopPlayerObject(Player.Id, Id);
         }
 
         public virtual void SetMaterial(int materialindex, int modelid, string txdname, string texturename,
             Color materialcolor)
         {
-            Native.SetPlayerObjectMaterial(Player.Id, ObjectId, materialindex, modelid, txdname, texturename,
+            Native.SetPlayerObjectMaterial(Player.Id, Id, materialindex, modelid, txdname, texturename,
                 materialcolor.GetColorValue(ColorFormat.ARGB));
         }
 
@@ -160,7 +156,7 @@ namespace SampSharp.GameMode.World
             string fontface, int fontsize, bool bold, Color foreColor, Color backColor,
             ObjectMaterialTextAlign textalignment)
         {
-            Native.SetPlayerObjectMaterialText(Player.Id, ObjectId, text, materialindex, (int) materialsize,
+            Native.SetPlayerObjectMaterialText(Player.Id, Id, text, materialindex, (int) materialsize,
                 fontface, fontsize, bold,
                 foreColor.GetColorValue(ColorFormat.ARGB), backColor.GetColorValue(ColorFormat.ARGB),
                 (int) textalignment);
@@ -168,24 +164,19 @@ namespace SampSharp.GameMode.World
 
         public override void Dispose()
         {
-            Native.DestroyObject(ObjectId);
+            Native.DestroyObject(Id);
 
             base.Dispose();
         }
 
         public virtual void Edit()
         {
-            Native.EditPlayerObject(Player.Id, ObjectId);
+            Native.EditPlayerObject(Player.Id, Id);
         }
 
         public static void Select(Player player)
         {
             Native.SelectObject(player.Id);
-        }
-
-        public static PlayerObject Find(Player player, int id)
-        {
-            return Find(player.Id*(Limits.MaxObjects + 1) + id);
         }
 
         #endregion

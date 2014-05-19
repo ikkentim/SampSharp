@@ -14,11 +14,12 @@
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
-    public class GlobalObject : InstanceKeeper<GlobalObject>, IGameObject
+    public class GlobalObject : IdentifiedPool<GlobalObject>, IGameObject
     {
         #region Fields
 
@@ -149,7 +150,7 @@ namespace SampSharp.GameMode.World
             Native.RemoveBuildingForPlayer(player.Id, modelid, position.X, position.Y, position.Z, radius);
         }
 
-        public virtual void Dispose()
+        public override void Dispose()
         {
             Native.DestroyObject(Id);
             base.Dispose();

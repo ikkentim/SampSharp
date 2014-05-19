@@ -15,6 +15,7 @@ using System.Linq;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
@@ -22,7 +23,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a SA:MP player.
     /// </summary>
-    public class Player : InstanceKeeper<Player>, IIdentifyable, IWorldObject
+    public class Player : IdentifiedPool<Player>, IIdentifyable, IWorldObject
     {
         #region Fields
 
