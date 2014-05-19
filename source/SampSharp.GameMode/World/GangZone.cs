@@ -13,11 +13,12 @@
 
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
-    public class GangZone : InstanceKeeper<GangZone>, IIdentifyable
+    public class GangZone : IdentifiedPool<GangZone>, IIdentifyable
     {
         /// <summary>
         ///     Gets an ID commonly returned by methods to point out that no GangZone matched the requirements.
@@ -27,6 +28,11 @@ namespace SampSharp.GameMode.World
         public GangZone(float minX, float minY, float maxX, float maxY)
         {
             Id = Native.GangZoneCreate(minX, minY, maxX, maxY);
+
+            MinX = minX;
+            MaxX = maxX;
+            MinY = minY;
+            MaxY = maxY;
         }
 
         public virtual float MinX { get; private set; }

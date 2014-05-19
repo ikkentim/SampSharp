@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using System.Collections.Generic;
 using SampSharp.GameMode;
 using SampSharp.GameMode.World;
@@ -23,22 +24,28 @@ namespace TestMode
  
         public override bool OnGameModeInit()
         {
+            Console.WriteLine("OnGameModeInit");
+
             SetGameModeText("Test mode");
             AddPlayerClass(65, new Vector(), 0);
 
             List<ITest> tests = new List<ITest>
             {
-                new CommandsTest(),
+                //new CommandsTest(),
                 //new ASyncTest(),
             };
 
             foreach (var test in tests)
                 test.Start(this);
             
+            throw new Exception();
             return true;
         }
 
-
-
+        public override bool OnGameModeExit()
+        {
+            Console.WriteLine("OnGameModeExit");
+            return base.OnGameModeExit();
+        }
     }
 }

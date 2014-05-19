@@ -48,6 +48,7 @@
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\PlayerObjectController.cs" />
     <Compile Include="Controllers\PlayerTextDrawController.cs" />
+    <Compile Include="Controllers\RegionsController.cs" />
     <Compile Include="Controllers\TextDrawController.cs" />
     <Compile Include="Controllers\TimerController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
@@ -130,6 +131,9 @@
     <Compile Include="Natives\Native.players.cs" />
     <Compile Include="Natives\Native.vehicles.cs" />
     <Compile Include="BaseMode.cs" />
+    <Compile Include="Pools\IdentifiedOwnedPool`1.cs" />
+    <Compile Include="Pools\IdentifiedPool`1.cs" />
+    <Compile Include="Pools\Pool`1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SAMP\Commands\CommandAttribute.cs" />
     <Compile Include="SAMP\Commands\ParameterAttribute.cs" />
@@ -148,7 +152,7 @@
     <Compile Include="Controllers\IEventListener.cs" />
     <Compile Include="World\IGameObject.cs" />
     <Compile Include="World\IIdentifyable.cs" />
-    <Compile Include="SAMP\InstanceKeeper.cs" />
+    <Compile Include="World\IOwnable.cs" />
     <Compile Include="World\IWorldObject.cs" />
     <Compile Include="World\Player.cs" />
     <Compile Include="World\PlayerObject.cs" />
@@ -157,6 +161,11 @@
     <Compile Include="Display\TextDraw.cs" />
     <Compile Include="SAMP\TextLabel.cs" />
     <Compile Include="SAMP\Timer.cs" />
+    <Compile Include="World\Region.cs" />
+    <Compile Include="World\Shapes\Cube.cs" />
+    <Compile Include="World\Shapes\IShape.cs" />
+    <Compile Include="World\Shapes\Sphere.cs" />
+    <Compile Include="World\Shapes\Square.cs" />
     <Compile Include="World\Vector.cs" />
     <Compile Include="World\Vehicle.cs" />
   </ItemGroup>

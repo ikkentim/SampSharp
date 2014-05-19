@@ -15,11 +15,12 @@ using System.Linq;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
-    public class Vehicle : InstanceKeeper<Vehicle>, IIdentifyable, IWorldObject
+    public class Vehicle : IdentifiedPool<Vehicle>, IIdentifyable, IWorldObject
     {
         #region Fields
 

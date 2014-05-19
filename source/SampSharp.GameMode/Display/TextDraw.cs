@@ -15,12 +15,13 @@ using System.Collections.Generic;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Display
 {
-    public class TextDraw : InstanceKeeper<TextDraw>, IIdentifyable
+    public class TextDraw : IdentifiedPool<TextDraw>, IIdentifyable
     {
         #region Fields
 
