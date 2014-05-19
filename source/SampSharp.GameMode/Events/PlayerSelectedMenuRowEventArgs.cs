@@ -14,7 +14,7 @@
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerSelectedMenuRow" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerSelectedMenuRow" /> event.
     /// </summary>
     public class PlayerSelectedMenuRowEventArgs : PlayerEventArgs
     {

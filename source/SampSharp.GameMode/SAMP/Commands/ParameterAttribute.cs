@@ -37,7 +37,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         public string Name { get; private set; }
 
         /// <summary>
-        /// Gets or sets the displayname of this parameter.
+        ///     Gets or sets the displayname of this parameter.
         /// </summary>
         public string DisplayName { get; set; }
 

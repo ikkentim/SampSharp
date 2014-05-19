@@ -16,7 +16,7 @@ using SampSharp.GameMode.Definitions;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerKeyStateChanged" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerKeyStateChanged" /> event.
     /// </summary>
     public class PlayerKeyStateChangedEventArgs : PlayerEventArgs
     {

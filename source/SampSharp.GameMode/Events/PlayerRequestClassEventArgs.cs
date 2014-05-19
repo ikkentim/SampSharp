@@ -14,7 +14,7 @@
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerRequestClass" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerRequestClass" /> event.
     /// </summary>
     public class PlayerRequestClassEventArgs : PlayerEventArgs
     {

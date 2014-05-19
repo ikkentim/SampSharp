@@ -16,12 +16,12 @@ using SampSharp.GameMode.Definitions;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.DialogResponse" /> event.
+    ///     Provides data for the <see cref="BaseMode.DialogResponse" /> event.
     /// </summary>
     public class DialogResponseEventArgs : PlayerEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the DialogResponseEventArgs class.
+        ///     Initializes a new instance of the DialogResponseEventArgs class.
         /// </summary>
         /// <param name="playerid">Id of the player.</param>
         /// <param name="dialogid">Id of the dialog.</param>
@@ -38,22 +38,22 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the id of dialog of this response.
+        ///     Gets the id of dialog of this response.
         /// </summary>
         public int DialogId { get; private set; }
 
         /// <summary>
-        /// Gets the button clicked for this response.
+        ///     Gets the button clicked for this response.
         /// </summary>
         public DialogButton DialogButton { get; private set; }
 
         /// <summary>
-        /// Gets the index of the listitem clicked for this response.
+        ///     Gets the index of the listitem clicked for this response.
         /// </summary>
         public int ListItem { get; private set; }
 
         /// <summary>
-        /// Gets the inputtext of this response.
+        ///     Gets the inputtext of this response.
         /// </summary>
         public string InputText { get; private set; }
     }

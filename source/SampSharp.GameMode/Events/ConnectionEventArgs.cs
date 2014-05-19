@@ -14,12 +14,12 @@
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.IncomingConnection" /> event.
+    ///     Provides data for the <see cref="BaseMode.IncomingConnection" /> event.
     /// </summary>
     public class ConnectionEventArgs : GameModeEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the ConnectionEventArgs class.
+        ///     Initializes a new instance of the ConnectionEventArgs class.
         /// </summary>
         /// <param name="playerid">Id of the player trying to connect.</param>
         /// <param name="ipAddress">Ip of the connection.</param>
@@ -36,17 +36,17 @@ namespace SampSharp.GameMode.Events
         // the player fails to connect to the server.
 
         /// <summary>
-        /// Gets the id of the player trying to connect.
+        ///     Gets the id of the player trying to connect.
         /// </summary>
         public int PlayerId { get; private set; }
 
         /// <summary>
-        /// Gets the ip of this connection.
+        ///     Gets the ip of this connection.
         /// </summary>
         public string IpAddress { get; private set; }
 
         /// <summary>
-        /// Gets the port of this connection.
+        ///     Gets the port of this connection.
         /// </summary>
         public int Port { get; private set; }
     }

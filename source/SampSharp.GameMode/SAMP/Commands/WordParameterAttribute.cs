@@ -25,7 +25,6 @@ namespace SampSharp.GameMode.SAMP.Commands
         public WordParameterAttribute(string name)
             : base(name)
         {
-
         }
 
         /// <summary>
@@ -37,7 +36,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         public override bool Check(ref string command, out object output)
         {
             //Find space
-            var idx = command.IndexOf(' ');
+            int idx = command.IndexOf(' ');
 
             //Substring output
             output = idx == -1 ? command : command.Substring(0, idx);

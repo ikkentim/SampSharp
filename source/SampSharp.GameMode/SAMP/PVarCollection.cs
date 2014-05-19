@@ -86,9 +86,9 @@ namespace SampSharp.GameMode.SAMP
         public IEnumerator<object> GetEnumerator()
         {
             var vars = new List<object>();
-            for (var i = 0; i <= UpperIndex; i++)
+            for (int i = 0; i <= UpperIndex; i++)
             {
-                var v = this[i];
+                object v = this[i];
                 if (v != null) vars.Add(v);
             }
 

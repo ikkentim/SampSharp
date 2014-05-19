@@ -15,9 +15,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Helpers;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers
 {
@@ -26,8 +28,8 @@ namespace SampSharp.GameMode.Controllers
     /// </summary>
     public class CommandController : IEventListener
     {
-        private MethodInfo[] _commands;
         private readonly WordParameterAttribute _nameFilter = new WordParameterAttribute(string.Empty);
+        private MethodInfo[] _commands;
 
         /// <summary>
         ///     Initalizes a new instance of the CommandController class.
@@ -58,13 +60,13 @@ namespace SampSharp.GameMode.Controllers
         {
             //Detect commands if assembly containing the gamemode
             _commands = gameMode.GetType().Assembly.GetTypes().SelectMany(t => t.GetMethods())
-                .Where(m => m.IsStatic && m.GetCustomAttributes(typeof(CommandAttribute), false).Length > 0)
+                .Where(m => m.IsStatic && m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0)
                 .ToArray();
 
             gameMode.PlayerCommandText += gameMode_PlayerCommandText;
         }
 
-        private void gameMode_PlayerCommandText(object sender, Events.PlayerTextEventArgs e)
+        private void gameMode_PlayerCommandText(object sender, PlayerTextEventArgs e)
         {
             //Strip / and trim spaces.
             string commandText = e.Text.Substring(1).Trim();
@@ -72,11 +74,11 @@ namespace SampSharp.GameMode.Controllers
             //Filter name of the command to be executed.
             object name;
             _nameFilter.Check(ref commandText, out name);
-            string commandName = name as string;
+            var commandName = name as string;
 
-            var player = e.Player;
+            Player player = e.Player;
 
-            foreach (var command in _commands)
+            foreach (MethodInfo command in _commands)
             {
                 //Get CommandAttribute from method
                 var attribute = command.GetCustomAttribute<CommandAttribute>();
@@ -84,19 +86,19 @@ namespace SampSharp.GameMode.Controllers
                     continue;
 
                 //If name doesn't match, continue
-                if(attribute.Name != commandName)
+                if (attribute.Name != commandName)
                     continue;
 
-                var methodParameters = command.GetParameters().Select(q => q.Name);
+                IEnumerable<string> methodParameters = command.GetParameters().Select(q => q.Name);
                 var arguments = new Dictionary<string, object>();
-                var parameters =
+                IOrderedEnumerable<ParameterAttribute> parameters =
                     command.GetCustomAttributes<ParameterAttribute>()
                         .OrderBy(p => command.GetParameters().Select(q => q.Name).IndexOf(p.Name));
 
                 //Loop trough all parameters.
                 bool pass = true;
 
-                foreach (var parameter in parameters)
+                foreach (ParameterAttribute parameter in parameters)
                 {
                     //Trim commandtext.
                     commandText = commandText.Trim();
@@ -120,7 +122,7 @@ namespace SampSharp.GameMode.Controllers
                     //Add argument to list.
                     arguments[parameter.Name] = argument;
                 }
-                
+
 
                 //If tests didn't pass.
                 if (!pass)
@@ -150,7 +152,12 @@ namespace SampSharp.GameMode.Controllers
                 }
 
                 //Run the command.
-                e.Success = (bool)command.Invoke(null, arguments.OrderBy(pair => methodParameters.IndexOf(pair.Key)).Select(pair => pair.Value).ToArray());
+                e.Success =
+                    (bool)
+                        command.Invoke(null,
+                            arguments.OrderBy(pair => methodParameters.IndexOf(pair.Key))
+                                .Select(pair => pair.Value)
+                                .ToArray());
                 return;
             }
         }

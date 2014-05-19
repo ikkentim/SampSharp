@@ -16,13 +16,13 @@ using SampSharp.GameMode.Definitions;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerTakeDamage" /> or
+    ///     Provides data for the <see cref="BaseMode.PlayerTakeDamage" /> or
     ///     <see cref="BaseMode.PlayerGiveDamage" /> event.
     /// </summary>
     public class PlayerDamageEventArgs : PlayerEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the PlayerDamageEventArgs class.
+        ///     Initializes a new instance of the PlayerDamageEventArgs class.
         /// </summary>
         /// <param name="playerid">Id of the player.</param>
         /// <param name="otherplayerid">Id of the other player.</param>
@@ -39,22 +39,22 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the id of the other player.
+        ///     Gets the id of the other player.
         /// </summary>
         public int OtherPlayerId { get; private set; }
 
         /// <summary>
-        /// Gets the amount of damage done.
+        ///     Gets the amount of damage done.
         /// </summary>
         public float Amount { get; private set; }
 
         /// <summary>
-        /// Gets the Weapon used to damage another player.
+        ///     Gets the Weapon used to damage another player.
         /// </summary>
         public Weapon Weapon { get; private set; }
 
         /// <summary>
-        /// Gets the BodyPart shot at.
+        ///     Gets the BodyPart shot at.
         /// </summary>
         public BodyPart BodyPart { get; private set; }
     }

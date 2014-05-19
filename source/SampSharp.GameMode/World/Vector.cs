@@ -17,8 +17,6 @@ namespace SampSharp.GameMode.World
 {
     public struct Vector
     {
-
-
         #region Constructors
 
         public Vector(float x, float y, float z) : this()
@@ -76,6 +74,7 @@ namespace SampSharp.GameMode.World
         }
 
         #region Methods
+
         public float DotProduct(Vector other)
         {
             return X*other.X + Y*other.Y + Z*other.Z;
@@ -201,6 +200,5 @@ namespace SampSharp.GameMode.World
         }
 
         #endregion
-
     }
 }
