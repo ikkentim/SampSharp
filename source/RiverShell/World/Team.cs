@@ -1,9 +1,10 @@
-﻿using SampSharp.GameMode.SAMP;
+﻿using SampSharp.GameMode.Pools;
+using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 
 namespace RiverShell.World
 {
-    public class Team : InstanceKeeper<Team>, IIdentifyable
+    public class Team : IdentifiedPool<Team>, IIdentifyable
     {
         public int Id { get; set; }
 

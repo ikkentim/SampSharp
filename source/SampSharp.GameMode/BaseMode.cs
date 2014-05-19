@@ -23,7 +23,7 @@ namespace SampSharp.GameMode
     /// <summary>
     ///     Represents a SA:MP gamemode.
     /// </summary>
-    public abstract class BaseMode
+    public abstract class BaseMode : IDisposable
     {
         #region Constructor
 
@@ -1809,5 +1809,11 @@ namespace SampSharp.GameMode
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            //
+            Console.WriteLine("Dispose!");
+        }
     }
 }

@@ -14,11 +14,12 @@
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Exceptions;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP
 {
-    public class PlayerTextLabel : InstanceKeeper<PlayerTextLabel>, IIdentifyable
+    public class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel>, IIdentifyable, IOwnable
     {
         #region Fields
 
@@ -126,11 +127,21 @@ namespace SampSharp.GameMode.SAMP
         }
 
         public virtual Player Player { get; private set; }
+
         public virtual int Id { get; private set; }
 
         #endregion
 
         #region Constructors
+
+        public PlayerTextLabel(Player player, int id)
+        {
+            if (player == null)
+                throw new PlayerNotConnectedException();
+
+            Player = player;
+            Id = id;
+        }
 
         public PlayerTextLabel(Player player, string text, Color color, Vector position, float drawDistance,
             bool testLOS)

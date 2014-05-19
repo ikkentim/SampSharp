@@ -13,11 +13,12 @@
 
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP
 {
-    public class TextLabel : InstanceKeeper<TextLabel>, IIdentifyable
+    public class TextLabel : IdentifiedPool<TextLabel>, IIdentifyable
     {
         #region Fields
 

@@ -13,6 +13,7 @@
 
 using System;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP
@@ -20,7 +21,7 @@ namespace SampSharp.GameMode.SAMP
     /// <summary>
     ///     Represents a SA:MP timer.
     /// </summary>
-    public class Timer : InstanceKeeper<Timer>, IIdentifyable, IDisposable
+    public class Timer : IdentifiedPool<Timer>, IIdentifyable
     {
         private bool _hit;
 

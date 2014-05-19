@@ -1,39 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampSharp", "SampSharp\SampSharp.vcxproj", "{39908193-8E5A-42EC-B71B-5D457CE87823}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampSharp.GameMode", "SampSharp.GameMode\SampSharp.GameMode.csproj", "{CCFB350D-BD04-41AB-A9F8-79767E94727E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F3BECF35-708E-4611-902B-5C3A6BD7F738}"
-	ProjectSection(SolutionItems) = preProject
-		..\.gitignore = ..\.gitignore
-		..\LICENSE = ..\LICENSE
-		..\README.md = ..\README.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "environment", "environment", "{8D02A77A-1DBC-4208-B7E4-DD1DB26CC2B0}"
-	ProjectSection(SolutionItems) = preProject
-		..\environment\.gitignore = ..\environment\.gitignore
-		..\environment\announce.exe = ..\environment\announce.exe
-		..\environment\mono-2.0.dll = ..\environment\mono-2.0.dll
-		..\environment\samp-npc.exe = ..\environment\samp-npc.exe
-		..\environment\samp-server.exe = ..\environment\samp-server.exe
-		..\environment\sampgdk3.dll = ..\environment\sampgdk3.dll
-		..\environment\SampSharp_errors.log = ..\environment\SampSharp_errors.log
-		..\environment\server.cfg = ..\environment\server.cfg
-		..\environment\server_log.txt = ..\environment\server_log.txt
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMode", "TestMode\TestMode.csproj", "{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{39908193-8E5A-42EC-B71B-5D457CE87823} = {39908193-8E5A-42EC-B71B-5D457CE87823}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{685A353F-FB6A-4D33-80EA-D57F0AA6D703}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gamemodes", "Gamemodes", "{666B51C5-EA54-4BF0-962E-73DD954D3FD8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{666B51C5-EA54-4BF0-962E-73DD954D3FD8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiverShell", "RiverShell\RiverShell.csproj", "{03B51943-271B-45D4-B13A-711A01A9247B}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VBTest", "VBTest\VBTest.vbproj", "{EA615755-EC00-413A-909E-5D652262A755}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{58154611-D2D9-48CC-ADED-29B6304051DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -102,9 +89,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CCFB350D-BD04-41AB-A9F8-79767E94727E} = {685A353F-FB6A-4D33-80EA-D57F0AA6D703}
 		{39908193-8E5A-42EC-B71B-5D457CE87823} = {685A353F-FB6A-4D33-80EA-D57F0AA6D703}
-		{8D02A77A-1DBC-4208-B7E4-DD1DB26CC2B0} = {F3BECF35-708E-4611-902B-5C3A6BD7F738}
 		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC} = {666B51C5-EA54-4BF0-962E-73DD954D3FD8}
-		{03B51943-271B-45D4-B13A-711A01A9247B} = {666B51C5-EA54-4BF0-962E-73DD954D3FD8}
 		{EA615755-EC00-413A-909E-5D652262A755} = {666B51C5-EA54-4BF0-962E-73DD954D3FD8}
+		{03B51943-271B-45D4-B13A-711A01A9247B} = {58154611-D2D9-48CC-ADED-29B6304051DD}
 	EndGlobalSection
 EndGlobal
