@@ -11,8 +11,6 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using SampSharp.GameMode.World;
-
 namespace SampSharp.GameMode.SAMP
 {
     /// <summary>

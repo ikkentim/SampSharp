@@ -25,7 +25,6 @@ namespace SampSharp.GameMode.SAMP.Commands
         public TextParameterAttribute(string name)
             : base(name)
         {
-
         }
 
         /// <summary>

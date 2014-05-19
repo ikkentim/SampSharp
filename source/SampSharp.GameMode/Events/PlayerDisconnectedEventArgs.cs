@@ -16,12 +16,12 @@ using SampSharp.GameMode.Definitions;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerDisconnected" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerDisconnected" /> event.
     /// </summary>
     public class PlayerDisconnectedEventArgs : PlayerEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the PlayerDisconnectedEventArgs class
+        ///     Initializes a new instance of the PlayerDisconnectedEventArgs class
         /// </summary>
         /// <param name="playerid">Id of the player disconnected.</param>
         /// <param name="reason">DisconnectReason.</param>
@@ -32,7 +32,7 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the reason of the disconnection.
+        ///     Gets the reason of the disconnection.
         /// </summary>
         public DisconnectReason Reason { get; private set; }
     }

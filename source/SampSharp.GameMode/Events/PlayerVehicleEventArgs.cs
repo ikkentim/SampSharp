@@ -16,7 +16,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.VehicleDied" />,
+    ///     Provides data for the <see cref="BaseMode.VehicleDied" />,
     ///     <see cref="BaseMode.PlayerExitVehicle" />, <see cref="BaseMode.VehicleStreamIn" /> or
     ///     <see cref="BaseMode.VehicleStreamOut" /> event.
     /// </summary>

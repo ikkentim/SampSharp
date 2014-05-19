@@ -76,15 +76,15 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public object Tag { get; set; }
 
-        public override void Dispose()
-        {
-            Running = false;
-        }
-
         /// <summary>
         ///     Gets the ID of this Timer.
         /// </summary>
         public int Id { get; private set; }
+
+        public override void Dispose()
+        {
+            Running = false;
+        }
 
         /// <summary>
         ///     Occurs when the interval has elapsed.

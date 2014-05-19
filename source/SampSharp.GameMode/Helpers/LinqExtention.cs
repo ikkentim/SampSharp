@@ -29,7 +29,7 @@ namespace SampSharp.GameMode.Helpers
             if (predicate == null) throw new ArgumentNullException("predicate");
 
             int retVal = 0;
-            foreach (var item in items)
+            foreach (T item in items)
             {
                 if (predicate(item)) return retVal;
                 retVal++;

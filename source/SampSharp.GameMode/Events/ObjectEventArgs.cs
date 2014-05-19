@@ -14,12 +14,12 @@
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.ObjectMoved" /> event.
+    ///     Provides data for the <see cref="BaseMode.ObjectMoved" /> event.
     /// </summary>
     public class ObjectEventArgs : GameModeEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the ObjectEventArgs class.
+        ///     Initializes a new instance of the ObjectEventArgs class.
         /// </summary>
         /// <param name="objectid">Id of the object.</param>
         public ObjectEventArgs(int objectid)
@@ -28,7 +28,7 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the id of the object.
+        ///     Gets the id of the object.
         /// </summary>
         public int ObjectId { get; private set; }
     }

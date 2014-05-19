@@ -17,7 +17,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerEditObject" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerEditObject" /> event.
     /// </summary>
     public class PlayerEditObjectEventArgs : PlayerClickMapEventArgs
     {

@@ -126,9 +126,8 @@ namespace SampSharp.GameMode.SAMP
             }
         }
 
-        public virtual Player Player { get; private set; }
-
         public virtual int Id { get; private set; }
+        public virtual Player Player { get; private set; }
 
         #endregion
 
