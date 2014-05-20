@@ -1,4 +1,17 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -19,8 +32,8 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public const int InvalidId = Misc.InvalidMenu;
 
+        private readonly List<Player> _viewers = new List<Player>();
         private MenuColumn[] _columns;
-        private readonly List<Player> _viewers = new List<Player>(); 
 
         #endregion
 
@@ -46,7 +59,7 @@ namespace SampSharp.GameMode.Display
         #region Properties
 
         /// <summary>
-        /// Gets the id of this menu.
+        ///     Gets the id of this menu.
         /// </summary>
         public int Id { get; private set; }
 
@@ -59,7 +72,7 @@ namespace SampSharp.GameMode.Display
         public ReadOnlyCollection<Player> Viewers
         {
             get { return _viewers.AsReadOnly(); }
-        } 
+        }
 
         public MenuColumn[] Columns
         {
@@ -68,10 +81,10 @@ namespace SampSharp.GameMode.Display
             {
                 if (value == null)
                     throw new ArgumentNullException("value cannot be null");
-                
+
                 if (value.Length < 1 || value.Length > 2)
                     throw new ArgumentOutOfRangeException("value must contain 1 or 2 elements");
-                
+
 
                 _columns = value;
             }
@@ -90,9 +103,10 @@ namespace SampSharp.GameMode.Display
         #endregion
 
         #region Methods
+
         public bool Show(Player player)
         {
-            if(Id == InvalidId)
+            if (Id == InvalidId)
                 Create();
 
             //Check for successful creation
@@ -116,9 +130,8 @@ namespace SampSharp.GameMode.Display
                 Native.HideMenuForPlayer(Id, player.Id);
 
             //Keep dialog count low
-            if(_viewers.Count == 0)
+            if (_viewers.Count == 0)
                 Destroy();
-            
         }
 
         public void HideForAll()
@@ -131,7 +144,7 @@ namespace SampSharp.GameMode.Display
         private void Create()
         {
             Destroy();
-            
+
             //Create menu
             Id = Native.CreateMenu(Title, Columns.Length, X, Y,
                 Columns[0].Width, Columns.Length == 2 ? Columns[1].Width : 0);
@@ -199,6 +212,5 @@ namespace SampSharp.GameMode.Display
         }
 
         #endregion
-
     }
 }
