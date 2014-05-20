@@ -24,30 +24,23 @@ namespace TestMode
  
         public override bool OnGameModeInit()
         {
-            Console.WriteLine("OnGameModeInit");
-
-            SetGameModeText("Test mode");
+            SetGameModeText("sa-mp# testmode");
             UsePlayerPedAnims();
 
             AddPlayerClass(65, new Vector(5), 0);
 
             List<ITest> tests = new List<ITest>
             {
-                //new CommandsTest(),
-                //new ASyncTest(),
+                new CommandsTest(),
+                new ASyncTest(),
                 new RegionsTest(),
+                new MenuTest(),
             };
 
             foreach (var test in tests)
                 test.Start(this);
             
             return base.OnGameModeInit();
-        }
-
-        public override bool OnGameModeExit()
-        {
-            Console.WriteLine("OnGameModeExit");
-            return base.OnGameModeExit();
         }
     }
 }

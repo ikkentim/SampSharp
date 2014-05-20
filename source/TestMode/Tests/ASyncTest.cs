@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Timer = SampSharp.GameMode.SAMP.Timer;
 
@@ -9,12 +8,15 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            Console.WriteLine("Starting async gm-init.");
+            //Proof timers and C# async can run at the same time.
+
             ASyncTestMethod();
 
-            Console.WriteLine("Starting timer gm-init.");
             var timer = new Timer(1000, true);
-            timer.Tick += (sender, args) => Console.WriteLine("Timer!");
+            timer.Tick += (sender, args) =>
+            {
+                
+            };
         }
 
         public void ASyncTestMethod()
@@ -24,7 +26,6 @@ namespace TestMode.Tests
                 for (int i = 0; i < 60; i++)
                 {
                     Thread.Sleep(2000);
-                    Console.WriteLine("ASYNC");
                 }
             });
 
