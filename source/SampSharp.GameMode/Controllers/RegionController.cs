@@ -16,11 +16,11 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers
 {
-    public class RegionsController : IEventListener
+    public class RegionController : IEventListener
     {
         private int _tick;
 
-        public RegionsController()
+        public RegionController()
         {
             TickRate = 10;
         }
