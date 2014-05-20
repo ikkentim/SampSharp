@@ -45,10 +45,11 @@
     <Compile Include="Controllers\GlobalObjectController.cs" />
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\ITypeProvider.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\PlayerObjectController.cs" />
     <Compile Include="Controllers\PlayerTextDrawController.cs" />
-    <Compile Include="Controllers\RegionsController.cs" />
+    <Compile Include="Controllers\RegionController.cs" />
     <Compile Include="Controllers\TextDrawController.cs" />
     <Compile Include="Controllers\TimerController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
