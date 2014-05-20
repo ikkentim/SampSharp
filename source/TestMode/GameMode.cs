@@ -27,19 +27,21 @@ namespace TestMode
             Console.WriteLine("OnGameModeInit");
 
             SetGameModeText("Test mode");
-            AddPlayerClass(65, new Vector(), 0);
+            UsePlayerPedAnims();
+
+            AddPlayerClass(65, new Vector(5), 0);
 
             List<ITest> tests = new List<ITest>
             {
                 //new CommandsTest(),
                 //new ASyncTest(),
+                new RegionsTest(),
             };
 
             foreach (var test in tests)
                 test.Start(this);
             
-            throw new Exception();
-            return true;
+            return base.OnGameModeInit();
         }
 
         public override bool OnGameModeExit()
