@@ -25,7 +25,7 @@ namespace SampSharp.GameMode.Controllers
             TickRate = 10;
         }
 
-        public virtual int TickRate { get; set; }
+        public int TickRate { get; set; }
 
         public void RegisterEvents(BaseMode gameMode)
         {

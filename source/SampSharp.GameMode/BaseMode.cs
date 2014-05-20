@@ -71,6 +71,7 @@ namespace SampSharp.GameMode
             controllers.Add(new GlobalObjectController());
             controllers.Add(new PlayerObjectController());
             controllers.Add(new CommandController());
+            controllers.Add(new RegionsController());
         }
 
         protected virtual void LoadControllers(ControllerCollection controllers)

@@ -164,6 +164,7 @@
     <Compile Include="World\Region.cs" />
     <Compile Include="World\Shapes\Cube.cs" />
     <Compile Include="World\Shapes\IShape.cs" />
+    <Compile Include="World\Shapes\Polygon.cs" />
     <Compile Include="World\Shapes\Sphere.cs" />
     <Compile Include="World\Shapes\Square.cs" />
     <Compile Include="World\Vector.cs" />
