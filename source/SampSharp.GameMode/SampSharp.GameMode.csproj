@@ -62,6 +62,9 @@
     <Compile Include="Definitions\DisconnectReason.cs" />
     <Compile Include="Definitions\ShopName.cs" />
     <Compile Include="Definitions\TextDrawAlignment.cs" />
+    <Compile Include="Display\Menu.cs" />
+    <Compile Include="Display\MenuColumn.cs" />
+    <Compile Include="Display\MenuRow.cs" />
     <Compile Include="Events\DialogResponseEventArgs.cs" />
     <Compile Include="Events\EventHandlers.cs" />
     <Compile Include="Events\GameModeEventArgs.cs" />
@@ -142,6 +145,7 @@
     <Compile Include="SAMP\Commands\TextParameterAttribute.cs" />
     <Compile Include="SAMP\Commands\WordParameterAttribute.cs" />
     <Compile Include="SAMP\PVarCollection.cs" />
+    <Compile Include="Tools\Disposable.cs" />
     <Compile Include="Tools\KeyUtils.cs" />
     <Compile Include="Tools\MapAndreas.cs" />
     <Compile Include="Tools\MapAndreasMode.cs" />
