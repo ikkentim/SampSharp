@@ -14,7 +14,7 @@
 namespace SampSharp.GameMode.World.Shapes
 {
     /// <summary>
-    /// Represents a 2D polygon.
+    ///     Represents a 2D polygon.
     /// </summary>
     public class Polygon : IShape
     {

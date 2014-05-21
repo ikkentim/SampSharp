@@ -29,7 +29,6 @@ namespace SampSharp.GameMode.World
         public Vector(float x, float y)
             : this(x, y, 0)
         {
-
         }
 
         public Vector(double x, double y, double z)
@@ -40,13 +39,11 @@ namespace SampSharp.GameMode.World
         public Vector(double x, double y)
             : this(x, y, 0)
         {
-            
         }
 
         public Vector(float xyz)
             : this(xyz, xyz, xyz)
         {
-
         }
 
         public Vector(double xyz)
@@ -57,7 +54,6 @@ namespace SampSharp.GameMode.World
         public Vector(Vector vector)
             : this(vector.X, vector.Y, vector.Z)
         {
-
         }
 
         #endregion

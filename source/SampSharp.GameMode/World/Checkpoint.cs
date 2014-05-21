@@ -1,4 +1,17 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SampSharp.GameMode.Events;
@@ -9,11 +22,14 @@ namespace SampSharp.GameMode.World
 {
     public class Checkpoint : Pool<Checkpoint>
     {
-        private bool _isVisible;
-        private readonly List<Player> _viewers = new List<Player>();
         private readonly List<Player> _active = new List<Player>();
         private readonly List<Player> _forced = new List<Player>();
- 
+        private readonly List<Player> _viewers = new List<Player>();
+        public EventHandler<PlayerEventArgs> Enter;
+
+        public EventHandler<PlayerEventArgs> Leave;
+        private bool _isVisible;
+
         public Checkpoint(Vector position, float size)
         {
             Position = position;
@@ -27,11 +43,7 @@ namespace SampSharp.GameMode.World
         public ReadOnlyCollection<Player> Viewers
         {
             get { return _viewers.AsReadOnly(); }
-        } 
-
-        public EventHandler<PlayerEventArgs> Enter;
-
-        public EventHandler<PlayerEventArgs> Leave;
+        }
 
         public void OnEnter(PlayerEventArgs e)
         {
@@ -52,7 +64,7 @@ namespace SampSharp.GameMode.World
 
         public void Show(Player player)
         {
-            if(!IsVisible(player))
+            if (!IsVisible(player))
                 _viewers.Add(player);
         }
 
@@ -91,7 +103,7 @@ namespace SampSharp.GameMode.World
             Native.DisablePlayerCheckpoint(player.Id);
             _active.Remove(player);
         }
-    
+
         public bool IsActive(Player player)
         {
             return _active.Contains(player);
