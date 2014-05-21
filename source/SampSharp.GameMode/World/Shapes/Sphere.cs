@@ -13,6 +13,9 @@
 
 namespace SampSharp.GameMode.World.Shapes
 {
+    /// <summary>
+    /// Represents a 3D sphere.
+    /// </summary>
     public class Sphere : IShape
     {
         public Sphere(Vector position, float radius)

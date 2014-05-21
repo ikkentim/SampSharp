@@ -11,10 +11,11 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using SampSharp.GameMode.SAMP;
-
 namespace SampSharp.GameMode.World.Shapes
 {
+    /// <summary>
+    /// Represents a 3D cube.
+    /// </summary>
     public class Cube : IShape
     {
         public Cube(float minX, float maxX, float minY, float maxY, float minZ, float maxZ)

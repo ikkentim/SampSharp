@@ -15,6 +15,9 @@ using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World.Shapes
 {
+    /// <summary>
+    /// Represents a 2D square.
+    /// </summary>
     public class Square : IShape
     {
         public Square(float minX, float maxX, float minY, float maxY)

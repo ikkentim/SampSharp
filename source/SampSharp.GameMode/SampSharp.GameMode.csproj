@@ -167,6 +167,7 @@
     <Compile Include="SAMP\TextLabel.cs" />
     <Compile Include="SAMP\Timer.cs" />
     <Compile Include="World\Region.cs" />
+    <Compile Include="World\Shapes\Circle.cs" />
     <Compile Include="World\Shapes\Cube.cs" />
     <Compile Include="World\Shapes\IShape.cs" />
     <Compile Include="World\Shapes\Polygon.cs" />
