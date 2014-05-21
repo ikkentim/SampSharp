@@ -33,24 +33,28 @@ namespace SampSharp.GameMode.Display
         public const int InvalidId = Misc.InvalidMenu;
 
         private readonly List<Player> _viewers = new List<Player>();
-        private MenuColumn[] _columns;
 
         #endregion
 
         #region Constructors
 
-        public Menu(string title, float x, float y, MenuColumn[] columns)
+        public Menu(string title, float x, float y)
+            : this(title, x, y, new List<MenuColumn>(), new List<MenuRow>())
+        {
+        }
+
+        public Menu(string title, float x, float y, List<MenuColumn> columns)
+            : this(title, x, y, columns, new List<MenuRow>())
+        {
+        }
+
+        public Menu(string title, float x, float y, List<MenuColumn> columns, List<MenuRow> rows)
         {
             Id = InvalidId;
             Title = title;
             X = x;
             Y = y;
             Columns = columns;
-        }
-
-        public Menu(string title, float x, float y, MenuColumn[] columns, MenuRow[] rows)
-            : this(title, x, y, columns)
-        {
             Rows = rows;
         }
 
@@ -74,23 +78,9 @@ namespace SampSharp.GameMode.Display
             get { return _viewers.AsReadOnly(); }
         }
 
-        public MenuColumn[] Columns
-        {
-            get { return _columns; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value cannot be null");
+        public List<MenuColumn> Columns { get; set; }
 
-                if (value.Length < 1 || value.Length > 2)
-                    throw new ArgumentOutOfRangeException("value must contain 1 or 2 elements");
-
-
-                _columns = value;
-            }
-        }
-
-        public MenuRow[] Rows { get; set; }
+        public List<MenuRow> Rows { get; set; }
 
         #endregion
 
@@ -145,26 +135,30 @@ namespace SampSharp.GameMode.Display
         {
             Destroy();
 
+            //Check for data
+            if (Columns == null || Columns.Count == 0 || Rows == null || Rows.Count == 0)
+                return;
+
             //Create menu
-            Id = Native.CreateMenu(Title, Columns.Length, X, Y,
-                Columns[0].Width, Columns.Length == 2 ? Columns[1].Width : 0);
+            Id = Native.CreateMenu(Title, Columns.Count, X, Y,
+                Columns[0].Width, Columns.Count == 2 ? Columns[1].Width : 0);
 
             //Check success
             if (Id == InvalidId)
                 return;
 
             //Set captions of all columns
-            for (int i = 0; i < Columns.Length; i++)
+            for (int i = 0; i < Math.Min(Columns.Count, 2); i++)
             {
                 if (Columns[i].Caption != null)
                     Native.SetMenuColumnHeader(Id, i, Columns[i].Caption);
             }
 
             //Add rows  to menu
-            for (int i = 0; i < Rows.Length; i++)
+            for (int i = 0; i < Rows.Count; i++)
             {
                 //Set text
-                for (int j = 0; j < Columns.Length; j++)
+                for (int j = 0; j < Math.Min(Columns.Count, 2); j++)
                 {
                     if (Rows[i].Text.Length > j)
                         Native.AddMenuItem(Id, j, Rows[i].Text[j]);
