@@ -16,7 +16,7 @@ using SampSharp.GameMode.SAMP;
 namespace SampSharp.GameMode.World.Shapes
 {
     /// <summary>
-    /// Represents a 2D square.
+    ///     Represents a 2D square.
     /// </summary>
     public class Square : IShape
     {
