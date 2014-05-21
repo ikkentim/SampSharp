@@ -35,6 +35,7 @@ namespace TestMode
                 new ASyncTest(),
                 new RegionsTest(),
                 new MenuTest(),
+                new CheckpointTest(),
             };
 
             foreach (var test in tests)

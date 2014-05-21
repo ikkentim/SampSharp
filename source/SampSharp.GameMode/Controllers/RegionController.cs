@@ -29,15 +29,17 @@ namespace SampSharp.GameMode.Controllers
 
         public void RegisterEvents(BaseMode gameMode)
         {
-            gameMode.Tick += Tick;
+            gameMode.Tick += (sender, args) =>
+            {
+                if (++_tick < TickRate) return;
+
+                _tick = 0;
+                Update();
+            };
         }
 
-        private void Tick(object sender, EventArgs e)
+        public static void Update()
         {
-            if (++_tick < TickRate) return;
-
-            _tick = 0;
-
             foreach (Region region in Region.All)
                 region.Test();
         }
