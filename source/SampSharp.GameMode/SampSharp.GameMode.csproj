@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\CheckpointController.cs" />
     <Compile Include="Controllers\CommandController.cs" />
     <Compile Include="Controllers\ControllerCollection.cs" />
     <Compile Include="Controllers\DialogController.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="SAMP\Color.cs" />
     <Compile Include="SAMP\ColorFormat.cs" />
     <Compile Include="Display\Dialog.cs" />
+    <Compile Include="World\Checkpoint.cs" />
     <Compile Include="World\GangZone.cs" />
     <Compile Include="World\GlobalObject.cs" />
     <Compile Include="Controllers\IEventListener.cs" />
