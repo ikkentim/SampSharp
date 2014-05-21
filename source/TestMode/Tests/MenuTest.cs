@@ -1,4 +1,5 @@
-﻿using SampSharp.GameMode.Display;
+﻿using System.Collections.Generic;
+using SampSharp.GameMode.Display;
 using SampSharp.GameMode.SAMP;
 
 namespace TestMode.Tests
@@ -9,8 +10,13 @@ namespace TestMode.Tests
         {
             gameMode.PlayerConnected += (sender, args) =>
             {
-                Menu m = new Menu("Test menu", 0, 0, new[] {new MenuColumn(100)},
-                    new[] {new MenuRow("Active"), new MenuRow("Disabled", true), new MenuRow("Active2"),});
+                Menu m = new Menu("Test menu", 0, 0);
+
+                m.Columns.Add(new MenuColumn(100));
+
+                m.Rows.Add(new MenuRow("Active"));
+                m.Rows.Add(new MenuRow("Disabled", true));
+                m.Rows.Add(new MenuRow("Active2"));
 
                 m.Show(args.Player);
 
