@@ -14,7 +14,7 @@
 namespace SampSharp.GameMode.World.Shapes
 {
     /// <summary>
-    /// Represents a 3D cube.
+    ///     Represents a 3D cube.
     /// </summary>
     public class Cube : IShape
     {
