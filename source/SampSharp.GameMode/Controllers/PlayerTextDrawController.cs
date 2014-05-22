@@ -26,8 +26,13 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="gameMode">The running GameMode.</param>
         public void RegisterEvents(BaseMode gameMode)
         {
-            gameMode.PlayerClickPlayerTextDraw +=
-                (sender, args) => PlayerTextDraw.Find(args.Player, args.TextDrawId).OnClick(args);
+            gameMode.PlayerClickPlayerTextDraw += (sender, args) =>
+            {
+                var obj = PlayerTextDraw.Find(args.Player, args.TextDrawId);
+
+                if (obj != null)
+                    obj.OnClick(args);
+            };
         }
 
         /// <summary>
