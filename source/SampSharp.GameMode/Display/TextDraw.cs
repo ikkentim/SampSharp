@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using System.Collections.Generic;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
@@ -495,13 +496,16 @@ namespace SampSharp.GameMode.Display
         /// <param name="player">The player to display this textdraw to.</param>
         public virtual void Show(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             if (Id == -1) Refresh();
-            if (player != null)
-            {
-                if (!_playersShownTo.Contains(player))
-                    _playersShownTo.Add(player);
-                Native.TextDrawShowForPlayer(player.Id, Id);
-            }
+
+            if (!_playersShownTo.Contains(player))
+                _playersShownTo.Add(player);
+
+            Native.TextDrawShowForPlayer(player.Id, Id);
+
         }
 
         /// <summary>
@@ -520,8 +524,12 @@ namespace SampSharp.GameMode.Display
         /// <param name="player">The player to hide this textdraw from.</param>
         public virtual void Hide(Player player)
         {
-            if (Id == -1 || player == null) return;
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             _playersShownTo.Remove(player);
+
+            if (Id == -1) return;
             Native.TextDrawHideForPlayer(player.Id, Id);
         }
 

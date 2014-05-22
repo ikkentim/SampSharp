@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
@@ -19,7 +20,7 @@ using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
-    public class GlobalObject : IdentifiedPool<GlobalObject>, IGameObject
+    public class GlobalObject : IdentifiedPool<GlobalObject>, IGameObject, IIdentifyable
     {
         #region Fields
 
@@ -106,11 +107,17 @@ namespace SampSharp.GameMode.World
 
         public virtual void AttachTo(Player player, Vector offset, Vector rotation)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             Native.AttachObjectToPlayer(Id, player.Id, offset, rotation);
         }
 
         public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
         {
+            if (vehicle == null)
+                throw new NullReferenceException("vehicle cannot be null");
+
             Native.AttachObjectToVehicle(Id, vehicle.Id, offset, rotation);
         }
 
@@ -147,6 +154,9 @@ namespace SampSharp.GameMode.World
 
         public static void Remove(Player player, int modelid, Vector position, float radius)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             Native.RemoveBuildingForPlayer(player.Id, modelid, position.X, position.Y, position.Z, radius);
         }
 
@@ -158,16 +168,25 @@ namespace SampSharp.GameMode.World
 
         public virtual void AttachTo(GlobalObject globalObject, Vector offset, Vector rotation)
         {
+            if (globalObject == null)
+                throw new NullReferenceException("globalObject cannot be null");
+
             Native.AttachObjectToVehicle(Id, globalObject.Id, offset, rotation);
         }
 
         public virtual void Edit(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             Native.EditObject(player.Id, Id);
         }
 
         public static void Select(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             Native.SelectObject(player.Id);
         }
 

@@ -2,8 +2,6 @@
 #include "PathUtil.h"
 #include "Natives.h"
 
-#include <regex>
-
 using namespace std;
 
 MonoMethod * SampSharp::onGameModeInit;

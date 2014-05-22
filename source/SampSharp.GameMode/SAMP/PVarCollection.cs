@@ -26,6 +26,9 @@ namespace SampSharp.GameMode.SAMP
 
         public PVarCollection(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             _player = player;
         }
 

@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
@@ -142,13 +143,17 @@ namespace SampSharp.GameMode.SAMP
 
         public virtual void AttachTo(Player player, Vector offset)
         {
-            if (player == null) return;
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             Native.Attach3DTextLabelToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z);
         }
 
         public virtual void AttachTo(Vehicle vehicle, Vector offset)
         {
-            if (vehicle == null) return;
+            if (vehicle == null)
+                throw new NullReferenceException("vehicle cannot be null");
+
             Native.Attach3DTextLabelToVehicle(Id, vehicle.Id, offset.X, offset.Y, offset.Z);
         }
 
