@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SampSharp.GameMode.Events;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 
 namespace SampSharp.GameMode.World
@@ -64,6 +63,9 @@ namespace SampSharp.GameMode.World
 
         public void Show(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             if (!IsVisible(player))
                 _viewers.Add(player);
         }
@@ -75,6 +77,9 @@ namespace SampSharp.GameMode.World
 
         public void Hide(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             _viewers.Remove(player);
         }
 
@@ -85,32 +90,41 @@ namespace SampSharp.GameMode.World
 
         public bool IsVisible(Player player)
         {
-            return _isVisible || _viewers.Contains(player);
+            return player != null && (_isVisible || _viewers.Contains(player));
         }
 
         public void Activate(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             if (IsActive(player)) return;
 
-            Native.SetPlayerCheckpoint(player.Id, Position, Size);
+            player.SetCheckpoint(Position, Size);
             _active.Add(player);
         }
 
         public void Deactivate(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             if (!IsActive(player)) return;
 
-            Native.DisablePlayerCheckpoint(player.Id);
+            player.DisableCheckpoint();
             _active.Remove(player);
         }
 
         public bool IsActive(Player player)
         {
-            return _active.Contains(player);
+            return player != null && _active.Contains(player);
         }
 
         public void Force(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             if (IsForced(player)) return;
 
             _forced.Add(player);
@@ -118,12 +132,15 @@ namespace SampSharp.GameMode.World
 
         public void Unforce(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             _forced.Remove(player);
         }
 
         public bool IsForced(Player player)
         {
-            return _forced.Contains(player);
+            return player != null && _forced.Contains(player);
         }
     }
 }

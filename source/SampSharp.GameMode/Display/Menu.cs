@@ -96,6 +96,9 @@ namespace SampSharp.GameMode.Display
 
         public bool Show(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             if (Id == InvalidId)
                 Create();
 
@@ -112,6 +115,9 @@ namespace SampSharp.GameMode.Display
 
         public void Hide(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             //Remove menu from viewers list
             _viewers.Remove(player);
 

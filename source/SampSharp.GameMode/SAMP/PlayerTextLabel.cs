@@ -11,8 +11,8 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.Exceptions;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.World;
@@ -136,7 +136,7 @@ namespace SampSharp.GameMode.SAMP
         public PlayerTextLabel(Player player, int id)
         {
             if (player == null)
-                throw new PlayerNotConnectedException();
+                throw new NullReferenceException("player cannot be null");
 
             Player = player;
             Id = id;
@@ -146,7 +146,7 @@ namespace SampSharp.GameMode.SAMP
             bool testLOS)
         {
             if (player == null)
-                throw new PlayerNotConnectedException();
+                throw new NullReferenceException("player cannot be null");
 
             Player = player;
             _color = color;
@@ -167,10 +167,10 @@ namespace SampSharp.GameMode.SAMP
             bool testLOS, Player attachedPlayer)
         {
             if (player == null)
-                throw new PlayerNotConnectedException();
+                throw new NullReferenceException("player cannot be null");
 
             if (attachedPlayer == null)
-                throw new PlayerNotConnectedException();
+                throw new NullReferenceException("attachedPlayer cannot be null");
 
             Player = player;
             _color = color;
@@ -191,10 +191,10 @@ namespace SampSharp.GameMode.SAMP
             bool testLOS, Vehicle attachedVehicle)
         {
             if (player == null)
-                throw new PlayerNotConnectedException();
+                throw new NullReferenceException("player cannot be null");
 
             if (attachedVehicle == null)
-                throw new VehicleDoesNotExistException();
+                throw new NullReferenceException("attachedVehicle cannot be null");
 
             Player = player;
             _color = color;
