@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using System.Linq;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
@@ -52,7 +53,7 @@ namespace SampSharp.GameMode.World
 
         #endregion
 
-        #region Vehicles natives
+        #region Vehicles native properties
 
         /// <summary>
         ///     Gets whether this Vehicle has been created and still is alive.
@@ -419,6 +420,9 @@ namespace SampSharp.GameMode.World
         public virtual void SetParamsForPlayer(Player player, bool objective,
             bool doorslocked)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             Native.SetVehicleParamsForPlayer(Id, player.Id, objective, doorslocked);
         }
 

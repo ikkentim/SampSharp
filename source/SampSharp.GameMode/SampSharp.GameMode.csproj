@@ -126,8 +126,6 @@
     <Compile Include="Events\VehiclePaintjobEventArgs.cs" />
     <Compile Include="Events\VehicleResprayedEventArgs.cs" />
     <Compile Include="Events\WeaponShotEventArgs.cs" />
-    <Compile Include="Exceptions\PlayerNotConnectedException.cs" />
-    <Compile Include="Exceptions\VehicleDoesNotExistException.cs" />
     <Compile Include="Helpers\LinqExtention.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="Natives\Native.logging.cs" />

@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using System.Collections.Generic;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
@@ -171,6 +172,9 @@ namespace SampSharp.GameMode.Display
         /// <param name="player">The Player to show the dialog to.</param>
         public virtual void Show(Player player)
         {
+            if(player == null)
+                throw new NullReferenceException("player cannot be null");
+
             OpenDialogs.Add(player.Id, this);
 
             Native.ShowPlayerDialog(player.Id, DialogId, (int) Style, Caption, Message, Button1,
@@ -183,6 +187,9 @@ namespace SampSharp.GameMode.Display
         /// <param name="player">The Player to hide all dialogs from.</param>
         public static void Hide(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             OpenDialogs.Remove(player.Id);
 
             Native.ShowPlayerDialog(player.Id, DialogHideId, (int) DialogStyle.MessageBox, string.Empty,
@@ -196,6 +203,9 @@ namespace SampSharp.GameMode.Display
         /// <returns>The Dialog currently being shown to the Player.</returns>
         public static Dialog GetOpenDialog(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             return OpenDialogs[player.Id];
         }
 
