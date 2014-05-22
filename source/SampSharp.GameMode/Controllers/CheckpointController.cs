@@ -63,46 +63,51 @@ namespace SampSharp.GameMode.Controllers
         {
             foreach (Player player in Player.All)
             {
-                Vector position = player.Position;
+                Update(player);
+            }
+        }
 
-                Checkpoint active = null;
-                Checkpoint forced = null;
-                Dictionary<Checkpoint, float> checkpoints = new Dictionary<Checkpoint, float>();
+        public static void Update(Player player)
+        {
+            Vector position = player.Position;
 
-                foreach (Checkpoint checkpoint in Checkpoint.All)
-                {
-                    if (checkpoint.IsVisible(player))
-                        checkpoints.Add(checkpoint, checkpoint.Position.DistanceTo(position));
+            Checkpoint active = null;
+            Checkpoint forced = null;
+            Dictionary<Checkpoint, float> checkpoints = new Dictionary<Checkpoint, float>();
 
-                    if (checkpoint.IsForced(player))
-                        forced = checkpoint;
+            foreach (Checkpoint checkpoint in Checkpoint.All)
+            {
+                if (checkpoint.IsVisible(player))
+                    checkpoints.Add(checkpoint, checkpoint.Position.DistanceTo(position));
 
-                    if (checkpoint.IsActive(player))
-                        active = checkpoint;
-                }
+                if (checkpoint.IsForced(player))
+                    forced = checkpoint;
 
-                if (forced != null)
-                {
-                    if (active == forced) break;
+                if (checkpoint.IsActive(player))
+                    active = checkpoint;
+            }
 
-                    if (active != null)
-                        active.Deactivate(player);
-
-                    forced.Activate(player);
-
-                    break;
-                }
-
-                var nearest = checkpoints.OrderBy(p => p.Value).FirstOrDefault().Key;
-
-                if (active == nearest) break;
+            if (forced != null)
+            {
+                if (active == forced) return;
 
                 if (active != null)
                     active.Deactivate(player);
 
-                if (nearest != null)
-                    nearest.Activate(player);
+                forced.Activate(player);
+
+                return;
             }
+
+            var nearest = checkpoints.OrderBy(p => p.Value).FirstOrDefault().Key;
+
+            if (active == nearest) return;
+
+            if (active != null)
+                active.Deactivate(player);
+
+            if (nearest != null)
+                nearest.Activate(player);
         }
     }
 }

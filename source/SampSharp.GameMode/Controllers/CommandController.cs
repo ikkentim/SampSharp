@@ -58,7 +58,7 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="gameMode">The running GameMode.</param>
         public virtual void RegisterEvents(BaseMode gameMode)
         {
-            //Detect commands if assembly containing the gamemode
+            //Detect commands in assembly containing the gamemode
             _commands = gameMode.GetType().Assembly.GetTypes().SelectMany(t => t.GetMethods())
                 .Where(m => m.IsStatic && m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0)
                 .ToArray();
