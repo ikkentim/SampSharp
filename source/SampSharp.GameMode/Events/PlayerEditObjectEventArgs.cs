@@ -21,16 +21,16 @@ namespace SampSharp.GameMode.Events
     /// </summary>
     public class PlayerEditObjectEventArgs : PlayerClickMapEventArgs
     {
-        public PlayerEditObjectEventArgs(int playerid, bool playerobject, int objectid, EditObjectResponse response,
+        public PlayerEditObjectEventArgs(int playerid, ObjectType objectType, int objectid, EditObjectResponse response,
             Vector position, Vector rotation) : base(playerid, position)
         {
-            PlayerObject = playerobject;
+            ObjectType = objectType;
             ObjectId = objectid;
             EditObjectResponse = response;
             Rotation = rotation;
         }
 
-        public bool PlayerObject { get; private set; }
+        public ObjectType ObjectType { get; private set; }
 
         public int ObjectId { get; private set; }
 
