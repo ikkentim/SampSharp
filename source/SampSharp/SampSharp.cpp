@@ -2,6 +2,8 @@
 #include "PathUtil.h"
 #include "Natives.h"
 
+#include <regex>
+
 using namespace std;
 
 MonoMethod * SampSharp::onGameModeInit;
@@ -245,9 +247,10 @@ bool SampSharp::CallEvent(MonoMethod* method, void **params) {
 		char * stacktrace = mono_string_to_utf8(mono_object_to_string(exception, NULL));
 
 		ofstream logfile;
-		logfile.open("SampSharp_errors.log", ios::app);
+		logfile.open("SampSharp_errors.log", ios::app | ios::binary);
 		cout << "[SampSharp] Exception thrown:" << endl << stacktrace << endl;
-		logfile << GetTimeStamp() << " Exception thrown:" << endl << stacktrace << endl;
+		logfile << GetTimeStamp() << " Exception thrown:" << "\r\n" << stacktrace << "\r\n";
+		
 		logfile.close();
 
 		return false; //Default return value

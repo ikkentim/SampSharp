@@ -23,7 +23,7 @@ namespace SampSharp.GameMode.Controllers
 
         public CheckpointController()
         {
-            TickRate = 40;
+            TickRate = 50;
         }
 
         public int TickRate { get; set; }
