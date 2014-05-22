@@ -33,9 +33,9 @@ namespace RiverShell.Controllers
             player.LastResupplyTime = Native.GetTickCount();
 
             player.ResetWeapons();
-            player.GiveWeapon((Weapon)31, 100);
-            player.GiveWeapon((Weapon)29, 200);
-            player.GiveWeapon((Weapon)34, 10);
+            player.GiveWeapon(Weapon.M4, 100);
+            player.GiveWeapon(Weapon.MP5, 200);
+            player.GiveWeapon(Weapon.Sniper, 10);
 
             player.Health = 100.0f;
             player.Armour = 100.0f;

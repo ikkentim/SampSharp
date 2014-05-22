@@ -8,7 +8,7 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            
+        
         }
 
         [Command("checkpoint")]
