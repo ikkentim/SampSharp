@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using System.Linq;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
@@ -797,6 +798,9 @@ namespace SampSharp.GameMode.World
         /// <returns>True if the other Player is streamed in for this Player, False if not.</returns>
         public virtual bool IsPlayerStreamedIn(Player other)
         {
+            if (other == null)
+                throw new NullReferenceException("other cannot be null");
+
             return Native.IsPlayerStreamedIn(other.Id, Id);
         }
 
@@ -1090,6 +1094,9 @@ namespace SampSharp.GameMode.World
         /// <param name="seatid">The ID of the seat to put the player in.</param>
         public virtual void PutInVehicle(Vehicle vehicle, int seatid)
         {
+            if (vehicle == null)
+                throw new NullReferenceException("vehicle cannot be null");
+
             Native.PutPlayerInVehicle(Id, vehicle.Id, seatid);
         }
 
@@ -1281,6 +1288,9 @@ namespace SampSharp.GameMode.World
         /// <param name="color">New color.</param>
         public virtual void SetPlayerMarker(Player player, Color color)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             Native.SetPlayerMarkerForPlayer(Id, player.Id, color.GetColorValue(ColorFormat.RGBA));
         }
 
@@ -1296,6 +1306,9 @@ namespace SampSharp.GameMode.World
         /// <param name="show">True to show name tag, False to hide name tag.</param>
         public virtual void ShowNameTagForPlayer(Player player, bool show)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             Native.ShowPlayerNameTagForPlayer(Id, player.Id, show);
         }
 
@@ -1433,6 +1446,9 @@ namespace SampSharp.GameMode.World
         /// <param name="mode">The mode to spectate with.</param>
         public virtual void SpectatePlayer(Player targetPlayer, SpectateMode mode)
         {
+            if (targetPlayer == null)
+                throw new NullReferenceException("targetPlayer cannot be null");
+
             Native.PlayerSpectatePlayer(Id, targetPlayer.Id, (int) mode);
         }
 
@@ -1445,6 +1461,9 @@ namespace SampSharp.GameMode.World
         /// <param name="targetPlayer">The Player that should be spectated.</param>
         public virtual void SpectatePlayer(Player targetPlayer)
         {
+            if (targetPlayer == null)
+                throw new NullReferenceException("targetPlayer cannot be null");
+
             SpectatePlayer(targetPlayer, SpectateMode.Normal);
         }
 
@@ -1454,11 +1473,14 @@ namespace SampSharp.GameMode.World
         /// <remarks>
         ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectateVehicle" />.
         /// </remarks>
-        /// <param name="targetvehicle">The vehicle to spectate.</param>
+        /// <param name="targetVehicle">The vehicle to spectate.</param>
         /// <param name="mode">Spectate mode.</param>
-        public virtual void SpectateVehicle(Vehicle targetvehicle, SpectateMode mode)
+        public virtual void SpectateVehicle(Vehicle targetVehicle, SpectateMode mode)
         {
-            Native.PlayerSpectateVehicle(Id, targetvehicle.Id, (int) mode);
+            if (targetVehicle == null)
+                throw new NullReferenceException("targetVehicle cannot be null");
+
+            Native.PlayerSpectateVehicle(Id, targetVehicle.Id, (int) mode);
         }
 
         /// <summary>
@@ -1467,10 +1489,13 @@ namespace SampSharp.GameMode.World
         /// <remarks>
         ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectateVehicle" />.
         /// </remarks>
-        /// <param name="targetvehicle">The vehicle to spectate.</param>
-        public virtual void SpectateVehicle(Vehicle targetvehicle)
+        /// <param name="targetVehicle">The vehicle to spectate.</param>
+        public virtual void SpectateVehicle(Vehicle targetVehicle)
         {
-            SpectateVehicle(targetvehicle, SpectateMode.Normal);
+            if (targetVehicle == null)
+                throw new NullReferenceException("targetVehicle cannot be null");
+
+            SpectateVehicle(targetVehicle, SpectateMode.Normal);
         }
 
         /// <summary>
@@ -1541,6 +1566,9 @@ namespace SampSharp.GameMode.World
         /// <param name="message">The message that will be sent.</param>
         public virtual void SendPlayerMessageToPlayer(Player receiver, string message)
         {
+            if (receiver == null)
+                throw new NullReferenceException("receiver cannot be null");
+
             Native.SendPlayerMessageToPlayer(receiver.Id, Id, message);
         }
 

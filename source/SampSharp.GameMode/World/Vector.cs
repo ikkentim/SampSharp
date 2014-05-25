@@ -26,26 +26,34 @@ namespace SampSharp.GameMode.World
             Z = z;
         }
 
-        public Vector(double x, double y, double z) : this((float) x, (float) y, (float) z)
+        public Vector(float x, float y)
+            : this(x, y, 0)
         {
         }
 
-        public Vector(float xyz) : this()
-        {
-            X = xyz;
-            Y = xyz;
-            Z = xyz;
-        }
-
-        public Vector(double xyz) : this((float) xyz)
+        public Vector(double x, double y, double z)
+            : this((float) x, (float) y, (float) z)
         {
         }
 
-        public Vector(Vector vector) : this()
+        public Vector(double x, double y)
+            : this(x, y, 0)
         {
-            X = vector.X;
-            Y = vector.Y;
-            Z = vector.Z;
+        }
+
+        public Vector(float xyz)
+            : this(xyz, xyz, xyz)
+        {
+        }
+
+        public Vector(double xyz)
+            : this((float) xyz)
+        {
+        }
+
+        public Vector(Vector vector)
+            : this(vector.X, vector.Y, vector.Z)
+        {
         }
 
         #endregion

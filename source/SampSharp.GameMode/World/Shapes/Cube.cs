@@ -13,6 +13,9 @@
 
 namespace SampSharp.GameMode.World.Shapes
 {
+    /// <summary>
+    ///     Represents a 3D cube.
+    /// </summary>
     public class Cube : IShape
     {
         public Cube(float minX, float maxX, float minY, float maxY, float minZ, float maxZ)

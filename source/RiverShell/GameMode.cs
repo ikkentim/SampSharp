@@ -199,6 +199,8 @@ namespace RiverShell
 
         protected override void LoadControllers(ControllerCollection controllers)
         {
+            base.LoadControllers(controllers);
+
             controllers.Remove<PlayerController>();
             controllers.Add(new RPlayerController());
 

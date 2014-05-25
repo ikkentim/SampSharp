@@ -39,16 +39,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\CheckpointController.cs" />
     <Compile Include="Controllers\CommandController.cs" />
     <Compile Include="Controllers\ControllerCollection.cs" />
     <Compile Include="Controllers\DialogController.cs" />
     <Compile Include="Controllers\GlobalObjectController.cs" />
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\ITypeProvider.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\PlayerObjectController.cs" />
     <Compile Include="Controllers\PlayerTextDrawController.cs" />
-    <Compile Include="Controllers\RegionsController.cs" />
+    <Compile Include="Controllers\RegionController.cs" />
     <Compile Include="Controllers\TextDrawController.cs" />
     <Compile Include="Controllers\TimerController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
@@ -61,6 +63,9 @@
     <Compile Include="Definitions\DisconnectReason.cs" />
     <Compile Include="Definitions\ShopName.cs" />
     <Compile Include="Definitions\TextDrawAlignment.cs" />
+    <Compile Include="Display\Menu.cs" />
+    <Compile Include="Display\MenuColumn.cs" />
+    <Compile Include="Display\MenuRow.cs" />
     <Compile Include="Events\DialogResponseEventArgs.cs" />
     <Compile Include="Events\EventHandlers.cs" />
     <Compile Include="Events\GameModeEventArgs.cs" />
@@ -121,8 +126,6 @@
     <Compile Include="Events\VehiclePaintjobEventArgs.cs" />
     <Compile Include="Events\VehicleResprayedEventArgs.cs" />
     <Compile Include="Events\WeaponShotEventArgs.cs" />
-    <Compile Include="Exceptions\PlayerNotConnectedException.cs" />
-    <Compile Include="Exceptions\VehicleDoesNotExistException.cs" />
     <Compile Include="Helpers\LinqExtention.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="Natives\Native.logging.cs" />
@@ -141,12 +144,14 @@
     <Compile Include="SAMP\Commands\TextParameterAttribute.cs" />
     <Compile Include="SAMP\Commands\WordParameterAttribute.cs" />
     <Compile Include="SAMP\PVarCollection.cs" />
+    <Compile Include="Tools\Disposable.cs" />
     <Compile Include="Tools\KeyUtils.cs" />
     <Compile Include="Tools\MapAndreas.cs" />
     <Compile Include="Tools\MapAndreasMode.cs" />
     <Compile Include="SAMP\Color.cs" />
     <Compile Include="SAMP\ColorFormat.cs" />
     <Compile Include="Display\Dialog.cs" />
+    <Compile Include="World\Checkpoint.cs" />
     <Compile Include="World\GangZone.cs" />
     <Compile Include="World\GlobalObject.cs" />
     <Compile Include="Controllers\IEventListener.cs" />
@@ -162,8 +167,10 @@
     <Compile Include="SAMP\TextLabel.cs" />
     <Compile Include="SAMP\Timer.cs" />
     <Compile Include="World\Region.cs" />
+    <Compile Include="World\Shapes\Circle.cs" />
     <Compile Include="World\Shapes\Cube.cs" />
     <Compile Include="World\Shapes\IShape.cs" />
+    <Compile Include="World\Shapes\Polygon.cs" />
     <Compile Include="World\Shapes\Sphere.cs" />
     <Compile Include="World\Shapes\Square.cs" />
     <Compile Include="World\Vector.cs" />

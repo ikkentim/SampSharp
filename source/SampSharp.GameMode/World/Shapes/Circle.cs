@@ -14,11 +14,11 @@
 namespace SampSharp.GameMode.World.Shapes
 {
     /// <summary>
-    ///     Represents a 3D sphere.
+    ///     Represents a 2D circle.
     /// </summary>
-    public class Sphere : IShape
+    public class Circle : IShape
     {
-        public Sphere(Vector position, float radius)
+        public Circle(Vector position, float radius)
         {
             Position = position;
             Radius = radius;
@@ -30,7 +30,7 @@ namespace SampSharp.GameMode.World.Shapes
 
         public bool Contains(Vector point)
         {
-            return Position.DistanceTo(point) < Radius;
+            return new Vector(Position.X, Position.Y).DistanceTo(new Vector(point.X, point.Y)) < Radius;
         }
     }
 }
