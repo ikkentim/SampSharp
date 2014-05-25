@@ -12,36 +12,36 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
-using System.Collections.Generic;
-using SampSharp.GameMode;
 using SampSharp.GameMode.World;
-using TestMode.Tests;
 
-namespace TestMode
+namespace SampSharp.GameMode.Controllers
 {
-    public class GameMode : BaseMode
+    public class RegionController : IEventListener
     {
- 
-        public override bool OnGameModeInit()
+        private int _tick;
+
+        public RegionController()
         {
-            SetGameModeText("sa-mp# testmode");
-            UsePlayerPedAnims();
+            TickRate = 10;
+        }
 
-            AddPlayerClass(65, new Vector(5), 0);
+        public int TickRate { get; set; }
 
-            List<ITest> tests = new List<ITest>
+        public void RegisterEvents(BaseMode gameMode)
+        {
+            gameMode.Tick += (sender, args) =>
             {
-                new CommandsTest(),
-                new ASyncTest(),
-                new RegionsTest(),
-                new MenuTest(),
-                new CheckpointTest(),
+                if (++_tick < TickRate) return;
+
+                _tick = 0;
+                Update();
             };
+        }
 
-            foreach (var test in tests)
-                test.Start(this);
-
-            return true;
+        public static void Update()
+        {
+            foreach (Region region in Region.All)
+                region.Test();
         }
     }
 }

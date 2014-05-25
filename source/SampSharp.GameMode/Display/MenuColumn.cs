@@ -11,35 +11,32 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
-using SampSharp.GameMode.World;
-
-namespace SampSharp.GameMode.Controllers
+namespace SampSharp.GameMode.Display
 {
-    public class RegionsController : IEventListener
+    /// <summary>
+    ///     Represents a column in a <see cref="Menu" />.
+    /// </summary>
+    public class MenuColumn
     {
-        private int _tick;
-
-        public RegionsController()
+        public MenuColumn(string caption, float width)
         {
-            TickRate = 10;
+            Caption = caption;
+            Width = width;
         }
 
-        public virtual int TickRate { get; set; }
-
-        public void RegisterEvents(BaseMode gameMode)
+        public MenuColumn(float width)
         {
-            gameMode.Tick += Tick;
+            Width = width;
         }
 
-        private void Tick(object sender, EventArgs e)
-        {
-            if (++_tick < TickRate) return;
+        /// <summary>
+        ///     Gets or sets the caption of this column.
+        /// </summary>
+        public string Caption { get; set; }
 
-            _tick = 0;
-
-            foreach (Region region in Region.All)
-                region.Test();
-        }
+        /// <summary>
+        ///     Gets ro sets the width if this column.
+        /// </summary>
+        public float Width { get; set; }
     }
 }

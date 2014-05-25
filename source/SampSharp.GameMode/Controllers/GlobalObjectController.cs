@@ -27,16 +27,33 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="gameMode">The running GameMode.</param>
         public virtual void RegisterEvents(BaseMode gameMode)
         {
-            gameMode.ObjectMoved += (sender, args) => GlobalObject.Find(args.ObjectId).OnMoved(args);
+            gameMode.ObjectMoved += (sender, args) =>
+            {
+                var obj = GlobalObject.Find(args.ObjectId);
+
+                if (obj != null)
+                    obj.OnMoved(args);
+            };
             gameMode.PlayerEditObject += (sender, args) =>
             {
-                if (!args.PlayerObject)
-                    GlobalObject.Find(args.ObjectId).OnEdited(args);
+                if (args.ObjectType == ObjectType.GlobalObject)
+                {
+                    var obj = GlobalObject.Find(args.ObjectId);
+
+                    if (obj != null)
+                        obj.OnEdited(args);
+                }
             };
             gameMode.PlayerSelectObject += (sender, args) =>
             {
                 if (args.ObjectType == ObjectType.GlobalObject)
-                    GlobalObject.Find(args.ObjectId).OnSelected(args);
+                    if (args.ObjectType == ObjectType.GlobalObject)
+                    {
+                        var obj = GlobalObject.Find(args.ObjectId);
+
+                        if (obj != null)
+                            obj.OnSelected(args);
+                    }
             };
         }
 

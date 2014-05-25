@@ -16,7 +16,7 @@ using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
-    public interface IGameObject : IIdentifyable, IWorldObject
+    public interface IGameObject : IWorldObject
     {
         bool IsMoving { get; }
         bool IsValid { get; }

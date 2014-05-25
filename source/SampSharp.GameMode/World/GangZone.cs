@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
@@ -59,7 +60,7 @@ namespace SampSharp.GameMode.World
 
         public virtual void Show(Player player)
         {
-            Native.GangZoneShowForPlayer(player.Id, Id, Color);
+            Show(player, Color);
         }
 
         public virtual void Show(Color color)
@@ -69,6 +70,9 @@ namespace SampSharp.GameMode.World
 
         public virtual void Show(Player player, Color color)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             Native.GangZoneShowForPlayer(player.Id, Id, color);
         }
 
@@ -94,11 +98,14 @@ namespace SampSharp.GameMode.World
 
         public virtual void Flash(Player player)
         {
-            Native.GangZoneFlashForPlayer(player.Id, Id, Color);
+            Flash(player, Color);
         }
 
         public virtual void Flash(Player player, Color color)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             Native.GangZoneFlashForPlayer(player.Id, Id, color);
         }
 
@@ -109,6 +116,9 @@ namespace SampSharp.GameMode.World
 
         public virtual void StopFlash(Player player)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             Native.GangZoneStopFlashForPlayer(player.Id, Id);
         }
     }

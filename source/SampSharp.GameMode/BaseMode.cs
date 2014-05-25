@@ -43,8 +43,6 @@ namespace SampSharp.GameMode
         private void RegisterControllers()
         {
             var controllers = new ControllerCollection();
-
-            LoadDefaultControllers(controllers);
             LoadControllers(controllers);
 
             foreach (IController controller in controllers)
@@ -60,21 +58,20 @@ namespace SampSharp.GameMode
             }
         }
 
-        private void LoadDefaultControllers(ControllerCollection controllers)
-        {
-            controllers.Add(new PlayerController());
-            controllers.Add(new TimerController());
-            controllers.Add(new VehicleController());
-            controllers.Add(new DialogController());
-            controllers.Add(new TextDrawController());
-            controllers.Add(new PlayerTextDrawController());
-            controllers.Add(new GlobalObjectController());
-            controllers.Add(new PlayerObjectController());
-            controllers.Add(new CommandController());
-        }
-
         protected virtual void LoadControllers(ControllerCollection controllers)
         {
+            controllers.Add(new CheckpointController());
+            controllers.Add(new CommandController());
+            controllers.Add(new DialogController());
+            controllers.Add(new GlobalObjectController());
+            controllers.Add(new MenuController());
+            controllers.Add(new PlayerController());
+            controllers.Add(new PlayerObjectController());
+            controllers.Add(new PlayerTextDrawController());
+            controllers.Add(new RegionController());
+            controllers.Add(new TextDrawController());
+            controllers.Add(new TimerController());
+            controllers.Add(new VehicleController());
         }
 
         #endregion
@@ -1684,7 +1681,7 @@ namespace SampSharp.GameMode
             float fY,
             float fZ, float fRotX, float fRotY, float fRotZ)
         {
-            var args = new PlayerEditObjectEventArgs(playerid, playerobject, objectid, (EditObjectResponse) response,
+            var args = new PlayerEditObjectEventArgs(playerid, playerobject ? ObjectType.PlayerObject : ObjectType.GlobalObject, objectid, (EditObjectResponse) response,
                 new Vector(fX, fY, fZ), new Vector(fRotX, fRotY, fRotZ));
 
             if (PlayerEditObject != null)
