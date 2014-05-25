@@ -37,7 +37,11 @@ namespace TestMode
 
             foreach (var test in tests)
                 test.Start(this);
-            
+
+            var testVehicle = Vehicle.Create(455, new Vector(10, 10, 10), 10, 0, 0, -1);
+
+            Console.WriteLine(testVehicle == null);
+
             throw new Exception();
             return true;
         }
