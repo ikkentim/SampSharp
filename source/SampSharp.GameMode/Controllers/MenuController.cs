@@ -11,36 +11,37 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System.Linq;
 using SampSharp.GameMode.Display;
 
 namespace SampSharp.GameMode.Controllers
 {
     /// <summary>
-    ///     A controller processing all player-textdraw actions.
+    ///     A controller processing all menu actions.
     /// </summary>
-    public class PlayerTextDrawController : IEventListener, ITypeProvider
+    public class MenuController : IEventListener
     {
         /// <summary>
-        ///     Registers the events this PlayerTextDrawController wants to listen to.
+        ///     Registers the events this PlayerController wants to listen to.
         /// </summary>
         /// <param name="gameMode">The running GameMode.</param>
         public void RegisterEvents(BaseMode gameMode)
         {
-            gameMode.PlayerClickPlayerTextDraw += (sender, args) =>
+            gameMode.PlayerExitedMenu += (sender, args) =>
             {
-                var obj = PlayerTextDraw.Find(args.Player, args.TextDrawId);
+                var menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(args.Player));
 
-                if (obj != null)
-                    obj.OnClick(args);
+                if (menu != null)
+                    menu.OnExit(args);
             };
-        }
 
-        /// <summary>
-        ///     Registers types this PlayerTextDrawController requires the system to use.
-        /// </summary>
-        public void RegisterTypes()
-        {
-            PlayerTextDraw.Register<PlayerTextDraw>();
+            gameMode.PlayerSelectedMenuRow += (sender, args) =>
+            {
+                var menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(args.Player));
+
+                if (menu != null)
+                    menu.OnResponse(args);
+            };
         }
     }
 }

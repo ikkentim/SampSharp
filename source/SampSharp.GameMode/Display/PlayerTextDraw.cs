@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
@@ -67,6 +68,9 @@ namespace SampSharp.GameMode.Display
         /// <param name="id">The id of the player-textdraw.</param>
         public PlayerTextDraw(Player player, int id)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             Player = player;
             Id = id;
         }
@@ -80,6 +84,9 @@ namespace SampSharp.GameMode.Display
         /// <param name="text">The text of the player-textdraw.</param>
         public PlayerTextDraw(Player player, float x, float y, string text)
         {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
             Id = -1;
             Player = player;
             X = x;
