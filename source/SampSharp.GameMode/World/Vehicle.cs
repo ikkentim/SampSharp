@@ -346,7 +346,7 @@ namespace SampSharp.GameMode.World
                 : Native.CreateVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
                     respawnDelay);
 
-            return id == InvalidId ? null : Find(id);
+            return id == InvalidId ? null : FindOrCreate(id);
         }
 
         /// <summary>
@@ -368,7 +368,7 @@ namespace SampSharp.GameMode.World
             int id = Native.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
                 respawnDelay);
 
-            return id == InvalidId ? null : Find(id);
+            return id == InvalidId ? null : FindOrCreate(id);
         }
 
         /// <summary>
@@ -384,7 +384,7 @@ namespace SampSharp.GameMode.World
         {
             int id = Native.AddStaticVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2);
 
-            return id == InvalidId ? null : Find(id);
+            return id == InvalidId ? null : FindOrCreate(id);
         }
 
         /// <summary>
