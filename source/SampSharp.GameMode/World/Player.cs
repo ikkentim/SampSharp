@@ -462,50 +462,50 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="BaseMode.OnPlayerConnect" /> is being called.
         ///     This callback is called when a player connects to the server.
         /// </summary>
-        public event PlayerHandler Connected;
+        public event EventHandler<PlayerEventArgs> Connected;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerDisconnect" /> is being called.
         ///     This callback is called when a player disconnects from the server.
         /// </summary>
-        public event PlayerDisconnectedHandler Disconnected;
+        public event EventHandler<PlayerDisconnectedEventArgs> Disconnected;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerSpawn" /> is being called.
         ///     This callback is called when a player spawns.
         /// </summary>
-        public event PlayerHandler Spawned;
+        public event EventHandler<PlayerEventArgs> Spawned;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnGameModeInit" /> is being called.
         ///     This callback is triggered when the gamemode starts.
         /// </summary>
-        public event PlayerDeathHandler Died;
+        public event EventHandler<PlayerDeathEventArgs> Died;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerText" /> is being called.
         ///     Called when a player sends a chat message.
         /// </summary>
-        public event PlayerTextHandler Text;
+        public event EventHandler<PlayerTextEventArgs> Text;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerCommandText" /> is being called.
         ///     This callback is called when a player enters a command into the client chat window, e.g. /help.
         /// </summary>
-        public event PlayerTextHandler CommandText;
+        public event EventHandler<PlayerTextEventArgs> CommandText;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerRequestClass" /> is being called.
         ///     Called when a player changes class at class selection (and when class selection first appears).
         /// </summary>
-        public event PlayerRequestClassHandler RequestClass;
+        public event EventHandler<PlayerRequestClassEventArgs> RequestClass;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerEnterVehicle" /> is being called.
         ///     This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the
         ///     time this callback is called.
         /// </summary>
-        public event PlayerEnterVehicleHandler EnterVehicle;
+        public event EventHandler<PlayerVehicleEventArgs> EnterVehicle;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerExitVehicle" /> is being called.
@@ -515,7 +515,7 @@ namespace SampSharp.GameMode.World
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as using
         ///     <see cref="Native.SetPlayerPos(int,Vector)" />.
         /// </remarks>
-        public event PlayerVehicleHandler ExitVehicle;
+        public event EventHandler<PlayerVehicleEventArgs> ExitVehicle;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerStateChange" /> is being called.
@@ -525,61 +525,61 @@ namespace SampSharp.GameMode.World
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as using
         ///     <see cref="Native.SetPlayerPos(int,Vector)" />.
         /// </remarks>
-        public event PlayerStateHandler StateChanged;
+        public event EventHandler<PlayerStateEventArgs> StateChanged;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerEnterCheckpoint" /> is being called.
         ///     This callback is called when a player enters the checkpoint set for that player.
         /// </summary>
-        public event PlayerHandler EnterCheckpoint;
+        public event EventHandler<PlayerEventArgs> EnterCheckpoint;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerLeaveCheckpoint" /> is being called.
         ///     This callback is called when a player leaves the checkpoint set for that player.
         /// </summary>
-        public event PlayerHandler LeaveCheckpoint;
+        public event EventHandler<PlayerEventArgs> LeaveCheckpoint;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerEnterRaceCheckpoint" /> is being called.
         ///     This callback is called when a player enters a race checkpoint.
         /// </summary>
-        public event PlayerHandler EnterRaceCheckpoint;
+        public event EventHandler<PlayerEventArgs> EnterRaceCheckpoint;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerLeaveRaceCheckpoint" /> is being called.
         ///     This callback is called when a player leaves the race checkpoint.
         /// </summary>
-        public event PlayerHandler LeaveRaceCheckpoint;
+        public event EventHandler<PlayerEventArgs> LeaveRaceCheckpoint;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerRequestSpawn" /> is being called.
         ///     Called when a player attempts to spawn via class selection.
         /// </summary>
-        public event PlayerHandler RequestSpawn;
+        public event EventHandler<PlayerEventArgs> RequestSpawn;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerPickUpPickup" /> is being called.
         ///     Called when a player picks up a pickup created with <see cref="Native.CreatePickup" />.
         /// </summary>
-        public event PlayerPickupHandler PickUpPickup;
+        public event EventHandler<PlayerPickupEventArgs> PickUpPickup;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnEnterExitModShop" /> is being called.
         ///     This callback is called when a player enters or exits a mod shop.
         /// </summary>
-        public event PlayerEnterModShopHandler EnterExitModShop;
+        public event EventHandler<PlayerEnterModShopEventArgs> EnterExitModShop;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerSelectedMenuRow" /> is being called.
         ///     This callback is called when a player selects an item from a menu.
         /// </summary>
-        public event PlayerSelectedMenuRowHandler SelectedMenuRow;
+        public event EventHandler<PlayerSelectedMenuRowEventArgs> SelectedMenuRow;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerExitedMenu" /> is being called.
         ///     Called when a player exits a menu.
         /// </summary>
-        public event PlayerHandler ExitedMenu;
+        public event EventHandler<PlayerEventArgs> ExitedMenu;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerInteriorChange" /> is being called.
@@ -588,14 +588,14 @@ namespace SampSharp.GameMode.World
         /// <remarks>
         ///     This is also called when <see cref="Native.SetPlayerInterior" /> is used.
         /// </remarks>
-        public event PlayerInteriorChangedHandler InteriorChanged;
+        public event EventHandler<PlayerInteriorChangedEventArgs> InteriorChanged;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerKeyStateChange" /> is being called.
         ///     This callback is called when the state of any supported key is changed (pressed/released). Directional keys do not
         ///     trigger this callback.
         /// </summary>
-        public event PlayerKeyStateChangedHandler KeyStateChanged;
+        public event EventHandler<PlayerKeyStateChangedEventArgs> KeyStateChanged;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerUpdate" /> is being called.
@@ -604,32 +604,32 @@ namespace SampSharp.GameMode.World
         /// <remarks>
         ///     This callback is called very frequently per second per player, only use it when you know what it's meant for.
         /// </remarks>
-        public event PlayerHandler Update;
+        public event EventHandler<PlayerEventArgs> Update;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerStreamIn" /> is being called.
         ///     This callback is called when a player is streamed by some other player's client.
         /// </summary>
-        public event StreamPlayerHandler StreamIn;
+        public event EventHandler<StreamPlayerEventArgs> StreamIn;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerStreamOut" /> is being called.
         ///     This callback is called when a player is streamed out from some other player's client.
         /// </summary>
-        public event StreamPlayerHandler StreamOut;
+        public event EventHandler<StreamPlayerEventArgs> StreamOut;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnDialogResponse" /> is being called.
         ///     This callback is called when a player responds to a dialog shown using <see cref="Native.ShowPlayerDialog" /> by
         ///     either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
         /// </summary>
-        public event DialogResponseHandler DialogResponse;
+        public event EventHandler<DialogResponseEventArgs> DialogResponse;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerTakeDamage" /> is being called.
         ///     This callback is called when a player takes damage.
         /// </summary>
-        public event PlayerDamageHandler TakeDamage;
+        public event EventHandler<PlayerDamageEventArgs> TakeDamage;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerGiveDamage" /> is being called.
@@ -647,7 +647,7 @@ namespace SampSharp.GameMode.World
         ///     normally does this. GiveDamage provides some extra information which may be useful when you require a different
         ///     level of trust.
         /// </remarks>
-        public event PlayerDamageHandler GiveDamage;
+        public event EventHandler<PlayerDamageEventArgs> GiveDamage;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickMap" /> is being called.
@@ -657,7 +657,7 @@ namespace SampSharp.GameMode.World
         ///     The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get
         ///     a more accurate Z coordinate (or for teleportation; use <see cref="Native.SetPlayerPosFindZ(int,Vector)" />).
         /// </remarks>
-        public event PlayerClickMapHandler ClickMap;
+        public event EventHandler<PlayerClickMapEventArgs> ClickMap;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw" /> is being called.
@@ -667,14 +667,14 @@ namespace SampSharp.GameMode.World
         ///     The clickable area is defined by <see cref="Native.TextDrawTextSize" />. The x and y parameters passed to that
         ///     function must not be zero or negative.
         /// </remarks>
-        public event PlayerClickTextDrawHandler ClickTextDraw;
+        public event EventHandler<PlayerClickTextDrawEventArgs> ClickTextDraw;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw" /> is being called.
         ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
         ///     mode (ESC) - however, <see cref="BaseMode.OnPlayerClickTextDraw" /> is.
         /// </summary>
-        public event PlayerClickTextDrawHandler ClickPlayerTextDraw;
+        public event EventHandler<PlayerClickTextDrawEventArgs> ClickPlayerTextDraw;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayer" /> is being called.
@@ -684,13 +684,13 @@ namespace SampSharp.GameMode.World
         ///     There is currently only one 'source' (<see cref="PlayerClickSource.Scoreboard" />). The existence of this argument
         ///     suggests that more sources may be supported in the future.
         /// </remarks>
-        public event PlayerClickPlayerHandler ClickPlayer;
+        public event EventHandler<PlayerClickPlayerEventArgs> ClickPlayer;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerEditObject" /> is being called.
         ///     This callback is called when a player ends object edition mode.
         /// </summary>
-        public event PlayerEditObjectHandler EditObject;
+        public event EventHandler<PlayerEditObjectEventArgs> EditObject;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerEditAttachedObject" /> is being called.
@@ -700,13 +700,13 @@ namespace SampSharp.GameMode.World
         ///     Editions should be discarded if response was '0' (cancelled). This must be done by storing the offsets etc. in an
         ///     array BEFORE using EditAttachedObject.
         /// </remarks>
-        public event PlayerEditAttachedObjectHandler EditAttachedObject;
+        public event EventHandler<PlayerEditAttachedObjectEventArgs> EditAttachedObject;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerSelectObject" /> is being called.
         ///     This callback is called when a player selects an object after <see cref="Native.SelectObject" /> has been used.
         /// </summary>
-        public event PlayerSelectObjectHandler SelectObject;
+        public event EventHandler<PlayerSelectObjectEventArgs> SelectObject;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerWeaponShot" /> is being called.
@@ -716,7 +716,7 @@ namespace SampSharp.GameMode.World
         ///     <see cref="BulletHitType.None" />: the fX, fY and fZ parameters are normal coordinates;
         ///     Others: the fX, fY and fZ are offsets from the center of hitid.
         /// </remarks>
-        public event WeaponShotHandler WeaponShot;
+        public event EventHandler<WeaponShotEventArgs> WeaponShot;
 
         #endregion
 
