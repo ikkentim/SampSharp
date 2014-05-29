@@ -246,69 +246,69 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="BaseMode.OnVehicleSpawn" /> is being called.
         ///     This callback is called when a vehicle spawns.
         /// </summary>
-        public event VehicleHandler Spawn;
+        public event EventHandler<VehicleEventArgs> Spawn;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnVehicleDeath" /> is being called.
         ///     This callback is called when a vehicle is destroyed - either by exploding or becoming submerged in water.
         /// </summary>
-        public event PlayerVehicleHandler Died;
+        public event EventHandler<PlayerVehicleEventArgs> Died;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerEnterVehicle" /> is being called.
         ///     This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the
         ///     time this callback is called.
         /// </summary>
-        public event PlayerEnterVehicleHandler PlayerEnter;
+        public event EventHandler<PlayerVehicleEventArgs> PlayerEnter;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerExitVehicle" /> is being called.
         ///     This callback is called when a player exits a vehicle.
         /// </summary>
-        public event PlayerVehicleHandler PlayerExit;
+        public event EventHandler<PlayerVehicleEventArgs> PlayerExit;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnVehicleMod" /> is being called.
         ///     This callback is called when a vehicle is modded.
         /// </summary>
-        public event VehicleModHandler Mod;
+        public event EventHandler<VehicleModEventArgs> Mod;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnVehiclePaintjob" /> is being called.
         ///     Called when a player changes the paintjob of their vehicle (in a modshop).
         /// </summary>
-        public event VehiclePaintjobHandler PaintjobApplied;
+        public event EventHandler<VehiclePaintjobEventArgs> PaintjobApplied;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnVehicleRespray" /> is being called.
         ///     The callback name is deceptive, this callback is called when a player exits a mod shop, regardless of whether the
         ///     vehicle's colors were changed, and is NEVER called for pay 'n' spray garages.
         /// </summary>
-        public event VehicleResprayedHandler Resprayed;
+        public event EventHandler<VehicleResprayedEventArgs> Resprayed;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnVehicleDamageStatusUpdate" /> is being called.
         ///     This callback is called when a vehicle element such as doors, tires, panels, or lights get damaged.
         /// </summary>
-        public event PlayerVehicleHandler DamageStatusUpdated;
+        public event EventHandler<PlayerVehicleEventArgs> DamageStatusUpdated;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnUnoccupiedVehicleUpdate" /> is being called.
         ///     This callback is called everytime an unoccupied vehicle updates the server with their status.
         /// </summary>
-        public event UnoccupiedVehicleUpdatedHandler UnoccupiedUpdate;
+        public event EventHandler<UnoccupiedVehicleEventArgs> UnoccupiedUpdate;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnVehicleStreamIn" /> is being called.
         ///     Called when a vehicle is streamed to a player's client.
         /// </summary>
-        public event PlayerVehicleHandler StreamIn;
+        public event EventHandler<PlayerVehicleEventArgs> StreamIn;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnVehicleStreamOut" /> is being called.
         ///     This callback is called when a vehicle is streamed out from some player's client.
         /// </summary>
-        public event PlayerVehicleHandler StreamOut;
+        public event EventHandler<PlayerVehicleEventArgs> StreamOut;
 
         #endregion
 

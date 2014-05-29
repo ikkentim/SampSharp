@@ -160,7 +160,7 @@ namespace SampSharp.GameMode.Display
         ///     double-clicking a list item (if using a <see cref="DialogStyle.List" />).
         ///     This callback is called when a player connects to the server.
         /// </summary>
-        public event DialogResponseHandler Response;
+        public event EventHandler<DialogResponseEventArgs> Response;
 
         #endregion
 

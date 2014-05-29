@@ -402,43 +402,43 @@ namespace SampSharp.GameMode
         ///     Occurs when the <see cref="OnGameModeInit" /> callback is being called.
         ///     This callback is triggered when the gamemode starts.
         /// </summary>
-        public event GameModeHandler Initialized;
+        public event EventHandler<GameModeEventArgs> Initialized;
 
         /// <summary>
         ///     Occurs when the <see cref="OnGameModeExit" /> callback is being called.
         ///     This callback is called when a gamemode ends.
         /// </summary>
-        public event GameModeHandler Exited;
+        public event EventHandler<GameModeEventArgs> Exited;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerConnect" /> callback is being called.
         ///     This callback is called when a player connects to the server.
         /// </summary>
-        public event PlayerHandler PlayerConnected;
+        public event EventHandler<PlayerEventArgs> PlayerConnected;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerDisconnect" /> callback is being called.
         ///     This callback is called when a player disconnects from the server.
         /// </summary>
-        public event PlayerDisconnectedHandler PlayerDisconnected;
+        public event EventHandler<PlayerDisconnectedEventArgs> PlayerDisconnected;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerSpawn" /> callback is being called.
         ///     This callback is called when a player spawns.
         /// </summary>
-        public event PlayerHandler PlayerSpawned;
+        public event EventHandler<PlayerEventArgs> PlayerSpawned;
 
         /// <summary>
         ///     Occurs when the <see cref="OnGameModeInit" /> callback is being called.
         ///     This callback is triggered when the gamemode starts.
         /// </summary>
-        public event PlayerDeathHandler PlayerDied;
+        public event EventHandler<PlayerDeathEventArgs> PlayerDied;
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehicleSpawn" /> callback is being called.
         ///     This callback is called when a vehicle respawns.
         /// </summary>
-        public event VehicleHandler VehicleSpawned;
+        public event EventHandler<VehicleEventArgs> VehicleSpawned;
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehicleDeath" /> callback is being called.
@@ -449,32 +449,32 @@ namespace SampSharp.GameMode
         ///     teleportation or driving out (if only partially submerged). The callback won't be called a second time, and the
         ///     vehicle may disappear when the driver exits, or after a short time.
         /// </remarks>
-        public event PlayerVehicleHandler VehicleDied;
+        public event EventHandler<PlayerVehicleEventArgs> VehicleDied;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerText" /> callback is being called.
         ///     Called when a player sends a chat message.
         /// </summary>
-        public event PlayerTextHandler PlayerText;
+        public event EventHandler<PlayerTextEventArgs> PlayerText;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerCommandText" /> callback is being called.
         ///     This callback is called when a player enters a command into the client chat window, e.g. /help.
         /// </summary>
-        public event PlayerTextHandler PlayerCommandText;
+        public event EventHandler<PlayerTextEventArgs> PlayerCommandText;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerRequestClass" /> callback is being called.
         ///     Called when a player changes class at class selection (and when class selection first appears).
         /// </summary>
-        public event PlayerRequestClassHandler PlayerRequestClass;
+        public event EventHandler<PlayerRequestClassEventArgs> PlayerRequestClass;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerEnterVehicle" /> callback is being called.
         ///     This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the
         ///     time this callback is called.
         /// </summary>
-        public event PlayerEnterVehicleHandler PlayerEnterVehicle;
+        public event EventHandler<PlayerEnterVehicleEventArgs> PlayerEnterVehicle;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerExitVehicle" /> callback is being called.
@@ -484,7 +484,7 @@ namespace SampSharp.GameMode
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as using
         ///     <see cref="Native.SetPlayerPos(int,Vector)" />.
         /// </remarks>
-        public event PlayerVehicleHandler PlayerExitVehicle;
+        public event EventHandler<PlayerVehicleEventArgs> PlayerExitVehicle;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerStateChange" /> callback is being called.
@@ -494,63 +494,63 @@ namespace SampSharp.GameMode
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as using
         ///     <see cref="Native.SetPlayerPos(int,Vector)" />.
         /// </remarks>
-        public event PlayerStateHandler PlayerStateChanged;
+        public event EventHandler<PlayerStateEventArgs> PlayerStateChanged;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerEnterCheckpoint" /> callback is being called.
         ///     This callback is called when a player enters the checkpoint set for that player.
         /// </summary>
-        public event PlayerHandler PlayerEnterCheckpoint;
+        public event EventHandler<PlayerEventArgs> PlayerEnterCheckpoint;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerLeaveCheckpoint" /> callback is being called.
         ///     This callback is called when a player leaves the checkpoint set for that player.
         /// </summary>
-        public event PlayerHandler PlayerLeaveCheckpoint;
+        public event EventHandler<PlayerEventArgs> PlayerLeaveCheckpoint;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerEnterRaceCheckpoint" /> callback is being called.
         ///     This callback is called when a player enters a race checkpoint.
         /// </summary>
-        public event PlayerHandler PlayerEnterRaceCheckpoint;
+        public event EventHandler<PlayerEventArgs> PlayerEnterRaceCheckpoint;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerLeaveRaceCheckpoint" /> callback is being called.
         ///     This callback is called when a player leaves the race checkpoint.
         /// </summary>
-        public event PlayerHandler PlayerLeaveRaceCheckpoint;
+        public event EventHandler<PlayerEventArgs> PlayerLeaveRaceCheckpoint;
 
         /// <summary>
         ///     Occurs when the <see cref="OnRconCommand" /> callback is being called.
         ///     This callback is called when a command is sent through the server console, remote RCON, or via the in-game /rcon
         ///     command.
         /// </summary>
-        public event RconHandler RconCommand;
+        public event EventHandler<RconEventArgs> RconCommand;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerRequestSpawn" /> callback is being called.
         ///     Called when a player attempts to spawn via class selection.
         /// </summary>
-        public event PlayerHandler PlayerRequestSpawn;
+        public event EventHandler<PlayerEventArgs> PlayerRequestSpawn;
 
         /// <summary>
         ///     Occurs when the <see cref="OnObjectMoved" /> callback is being called.
         ///     This callback is called when an object is moved after <see cref="Native.MoveObject" /> (when it stops moving).
         /// </summary>
-        public event ObjectHandler ObjectMoved;
+        public event EventHandler<ObjectEventArgs> ObjectMoved;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerObjectMoved" /> callback is being called.
         ///     This callback is called when a player object is moved after <see cref="Native.MovePlayerObject" /> (when it stops
         ///     moving).
         /// </summary>
-        public event PlayerObjectHandler PlayerObjectMoved;
+        public event EventHandler<PlayerObjectEventArgs> PlayerObjectMoved;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerPickUpPickup" /> callback is being called.
         ///     Called when a player picks up a pickup created with <see cref="Native.CreatePickup" />.
         /// </summary>
-        public event PlayerPickupHandler PlayerPickUpPickup;
+        public event EventHandler<PlayerPickupEventArgs> PlayerPickUpPickup;
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehicleMod" /> callback is being called.
@@ -559,19 +559,19 @@ namespace SampSharp.GameMode
         /// <remarks>
         ///     This callback is not called by <see cref="Native.AddVehicleComponent" />.
         /// </remarks>
-        public event VehicleModHandler VehicleMod;
+        public event EventHandler<VehicleModEventArgs> VehicleMod;
 
         /// <summary>
         ///     Occurs when the <see cref="OnEnterExitModShop" /> callback is being called.
         ///     This callback is called when a player enters or exits a mod shop.
         /// </summary>
-        public event PlayerEnterModShopHandler PlayerEnterExitModShop;
+        public event EventHandler<PlayerEnterModShopEventArgs> PlayerEnterExitModShop;
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehiclePaintjob" /> callback is being called.
         ///     Called when a player changes the paintjob of their vehicle (in a modshop).
         /// </summary>
-        public event VehiclePaintjobHandler VehiclePaintjobApplied;
+        public event EventHandler<VehiclePaintjobEventArgs> VehiclePaintjobApplied;
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehicleRespray" /> callback is being called.
@@ -581,7 +581,7 @@ namespace SampSharp.GameMode
         /// <remarks>
         ///     Misleadingly, this callback is not called for pay 'n' spray (only modshops).
         /// </remarks>
-        public event VehicleResprayedHandler VehicleResprayed;
+        public event EventHandler<VehicleResprayedEventArgs> VehicleResprayed;
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehicleDamageStatusUpdate" /> callback is being called.
@@ -590,7 +590,7 @@ namespace SampSharp.GameMode
         /// <remarks>
         ///     This does not include vehicle health changes.
         /// </remarks>
-        public event PlayerVehicleHandler VehicleDamageStatusUpdated;
+        public event EventHandler<PlayerVehicleEventArgs> VehicleDamageStatusUpdated;
 
         /// <summary>
         ///     Occurs when the <see cref="OnUnoccupiedVehicleUpdate" /> callback is being called.
@@ -600,19 +600,19 @@ namespace SampSharp.GameMode
         ///     This callback is called very frequently per second per unoccupied vehicle. You should refrain from implementing
         ///     intensive calculations or intensive file writing/reading operations in this callback.
         /// </remarks>
-        public event UnoccupiedVehicleUpdatedHandler UnoccupiedVehicleUpdated;
+        public event EventHandler<UnoccupiedVehicleEventArgs> UnoccupiedVehicleUpdated;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerSelectedMenuRow" /> callback is being called.
         ///     This callback is called when a player selects an item from a menu.
         /// </summary>
-        public event PlayerSelectedMenuRowHandler PlayerSelectedMenuRow;
+        public event EventHandler<PlayerSelectedMenuRowEventArgs> PlayerSelectedMenuRow;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerExitedMenu" /> callback is being called.
         ///     Called when a player exits a menu.
         /// </summary>
-        public event PlayerHandler PlayerExitedMenu;
+        public event EventHandler<PlayerEventArgs> PlayerExitedMenu;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerInteriorChange" /> callback is being called.
@@ -621,14 +621,14 @@ namespace SampSharp.GameMode
         /// <remarks>
         ///     This is also called when <see cref="Native.SetPlayerInterior" /> is used.
         /// </remarks>
-        public event PlayerInteriorChangedHandler PlayerInteriorChanged;
+        public event EventHandler<PlayerInteriorChangedEventArgs> PlayerInteriorChanged;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerKeyStateChange" /> callback is being called.
         ///     This callback is called when the state of any supported key is changed (pressed/released). Directional keys do not
         ///     trigger this callback.
         /// </summary>
-        public event PlayerKeyStateChangedHandler PlayerKeyStateChanged;
+        public event EventHandler<PlayerKeyStateChangedEventArgs> PlayerKeyStateChanged;
 
         /// <summary>
         ///     Occurs when the <see cref="OnRconLoginAttempt" /> callback is being called.
@@ -637,7 +637,7 @@ namespace SampSharp.GameMode
         /// <remarks>
         ///     This callback is only called when /rcon login is used.
         /// </remarks>
-        public event RconLoginAttemptHandler RconLoginAttempt;
+        public event EventHandler<RconLoginAttemptEventArgs> RconLoginAttempt;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerUpdate" /> callback is being called.
@@ -646,44 +646,44 @@ namespace SampSharp.GameMode
         /// <remarks>
         ///     This callback is called very frequently per second per player, only use it when you know what it's meant for.
         /// </remarks>
-        public event PlayerHandler PlayerUpdate;
+        public event EventHandler<PlayerEventArgs> PlayerUpdate;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerStreamIn" /> callback is being called.
         ///     This callback is called when a player is streamed by some other player's client.
         /// </summary>
-        public event StreamPlayerHandler PlayerStreamIn;
+        public event EventHandler<StreamPlayerEventArgs> PlayerStreamIn;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerStreamOut" /> callback is being called.
         ///     This callback is called when a player is streamed out from some other player's client.
         /// </summary>
-        public event StreamPlayerHandler PlayerStreamOut;
+        public event EventHandler<StreamPlayerEventArgs> PlayerStreamOut;
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehicleStreamIn" /> callback is being called.
         ///     Called when a vehicle is streamed to a player's client.
         /// </summary>
-        public event PlayerVehicleHandler VehicleStreamIn;
+        public event EventHandler<PlayerVehicleEventArgs> VehicleStreamIn;
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehicleStreamOut" /> callback is being called.
         ///     This callback is called when a vehicle is streamed out from some player's client.
         /// </summary>
-        public event PlayerVehicleHandler VehicleStreamOut;
+        public event EventHandler<PlayerVehicleEventArgs> VehicleStreamOut;
 
         /// <summary>
         ///     Occurs when the <see cref="OnDialogResponse" /> callback is being called.
         ///     This callback is called when a player responds to a dialog shown using <see cref="Native.ShowPlayerDialog" /> by
         ///     either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
         /// </summary>
-        public event DialogResponseHandler DialogResponse;
+        public event EventHandler<DialogResponseEventArgs> DialogResponse;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerTakeDamage" /> callback is being called.
         ///     This callback is called when a player takes damage.
         /// </summary>
-        public event PlayerDamageHandler PlayerTakeDamage;
+        public event EventHandler<PlayerDamageEventArgs> PlayerTakeDamage;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerGiveDamage" /> callback is being called.
@@ -701,7 +701,7 @@ namespace SampSharp.GameMode
         ///     normally does this. GiveDamage provides some extra information which may be useful when you require a different
         ///     level of trust.
         /// </remarks>
-        public event PlayerDamageHandler PlayerGiveDamage;
+        public event EventHandler<PlayerDamageEventArgs> PlayerGiveDamage;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerClickMap" /> callback is being called.
@@ -711,7 +711,7 @@ namespace SampSharp.GameMode
         ///     The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get
         ///     a more accurate Z coordinate (or for teleportation; use <see cref="Native.SetPlayerPosFindZ(int,Vector)" />).
         /// </remarks>
-        public event PlayerClickMapHandler PlayerClickMap;
+        public event EventHandler<PlayerClickMapEventArgs> PlayerClickMap;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerClickTextDraw" /> callback is being called.
@@ -721,14 +721,14 @@ namespace SampSharp.GameMode
         ///     The clickable area is defined by <see cref="Native.TextDrawTextSize" />. The x and y parameters passed to that
         ///     function must not be zero or negative.
         /// </remarks>
-        public event PlayerClickTextDrawHandler PlayerClickTextDraw;
+        public event EventHandler<PlayerClickTextDrawEventArgs> PlayerClickTextDraw;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerClickPlayerTextDraw" /> callback is being called.
         ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
         ///     mode (ESC) - however, <see cref="OnPlayerClickTextDraw" /> is.
         /// </summary>
-        public event PlayerClickTextDrawHandler PlayerClickPlayerTextDraw;
+        public event EventHandler<PlayerClickTextDrawEventArgs> PlayerClickPlayerTextDraw;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerClickPlayer" /> callback is being called.
@@ -738,13 +738,13 @@ namespace SampSharp.GameMode
         ///     There is currently only one 'source' (<see cref="PlayerClickSource.Scoreboard" />). The existence of this argument
         ///     suggests that more sources may be supported in the future.
         /// </remarks>
-        public event PlayerClickPlayerHandler PlayerClickPlayer;
+        public event EventHandler<PlayerClickPlayerEventArgs> PlayerClickPlayer;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerEditObject" /> callback is being called.
         ///     This callback is called when a player ends object edition mode.
         /// </summary>
-        public event PlayerEditObjectHandler PlayerEditObject;
+        public event EventHandler<PlayerEditObjectEventArgs> PlayerEditObject;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerEditAttachedObject" /> callback is being called.
@@ -754,13 +754,13 @@ namespace SampSharp.GameMode
         ///     Editions should be discarded if response was '0' (cancelled). This must be done by storing the offsets etc. in an
         ///     array BEFORE using EditAttachedObject.
         /// </remarks>
-        public event PlayerEditAttachedObjectHandler PlayerEditAttachedObject;
+        public event EventHandler<PlayerEditAttachedObjectEventArgs> PlayerEditAttachedObject;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerSelectObject" /> callback is being called.
         ///     This callback is called when a player selects an object after <see cref="Native.SelectObject" /> has been used.
         /// </summary>
-        public event PlayerSelectObjectHandler PlayerSelectObject;
+        public event EventHandler<PlayerSelectObjectEventArgs> PlayerSelectObject;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerWeaponShot" /> callback is being called.
@@ -770,13 +770,13 @@ namespace SampSharp.GameMode
         ///     <see cref="BulletHitType.None" />: the fX, fY and fZ parameters are normal coordinates;
         ///     Others: the fX, fY and fZ are offsets from the center of hitid.
         /// </remarks>
-        public event WeaponShotHandler PlayerWeaponShot;
+        public event EventHandler<WeaponShotEventArgs> PlayerWeaponShot;
 
         /// <summary>
         ///     Occurs when the <see cref="OnIncomingConnection" /> callback is being called.
         ///     This callback is called when an IP address attempts a connection to the server.
         /// </summary>
-        public event ConnectionHandler IncomingConnection;
+        public event EventHandler<ConnectionEventArgs> IncomingConnection;
 
         /// <summary>
         ///     Occurs when the <see cref="OnTick" /> callback is being called.
@@ -785,13 +785,13 @@ namespace SampSharp.GameMode
         /// <remarks>
         ///     USE WITH CARE!
         /// </remarks>
-        public event EventHandler Tick;
+        public event EventHandler<EventArgs> Tick;
 
         /// <summary>
         ///     Occurs when the <see cref="OnTimerTick" /> callback is being called.
         ///     This callback is called when a timer ticks.
         /// </summary>
-        public event TimerTickHandler TimerTick;
+        public event EventHandler<EventArgs> TimerTick;
 
         #endregion
 

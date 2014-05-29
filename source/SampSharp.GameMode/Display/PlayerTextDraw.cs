@@ -476,7 +476,7 @@ namespace SampSharp.GameMode.Display
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw" /> is being called.
         ///     This callback is called when a player clicks on a player-textdraw.
         /// </summary>
-        public event PlayerClickTextDrawHandler Click;
+        public event EventHandler<PlayerClickTextDrawEventArgs> Click;
 
         #endregion
 
