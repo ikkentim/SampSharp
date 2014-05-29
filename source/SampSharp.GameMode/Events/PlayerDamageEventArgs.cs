@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
@@ -42,6 +43,14 @@ namespace SampSharp.GameMode.Events
         ///     Gets the id of the other player.
         /// </summary>
         public int OtherPlayerId { get; private set; }
+
+        /// <summary>
+        /// Gets the other player.
+        /// </summary>
+        public Player OtherPlayer
+        {
+            get { return OtherPlayerId == Player.InvalidId ? null :  Player.FindOrCreate(OtherPlayerId); }
+        }
 
         /// <summary>
         ///     Gets the amount of damage done.

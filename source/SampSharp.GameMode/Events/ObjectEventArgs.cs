@@ -11,6 +11,8 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using SampSharp.GameMode.World;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
@@ -31,5 +33,10 @@ namespace SampSharp.GameMode.Events
         ///     Gets the id of the object.
         /// </summary>
         public int ObjectId { get; private set; }
+
+        public GlobalObject GlobalObject
+        {
+            get { return ObjectId == GlobalObject.InvalidId ? null : GlobalObject.FindOrCreate(ObjectId); }
+        }
     }
 }

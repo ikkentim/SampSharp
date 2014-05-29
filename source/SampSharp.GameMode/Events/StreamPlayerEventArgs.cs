@@ -11,6 +11,8 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using SampSharp.GameMode.World;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
@@ -25,5 +27,10 @@ namespace SampSharp.GameMode.Events
         }
 
         public int ForPlayerId { get; private set; }
+
+        public Player ForPlayer
+        {
+            get { return ForPlayerId == Player.InvalidId ? null : Player.FindOrCreate(ForPlayerId); }
+        }
     }
 }

@@ -43,7 +43,7 @@ namespace SampSharp.GameMode.Events
         /// </summary>
         public Player Killer
         {
-            get { return KillerId == Player.InvalidId ? null : Player.Find(KillerId); }
+            get { return KillerId == Player.InvalidId ? null : Player.FindOrCreate(KillerId); }
         }
 
         /// <summary>

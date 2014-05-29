@@ -29,7 +29,7 @@ namespace SampSharp.GameMode.Events
 
         public Vehicle Vehicle
         {
-            get { return VehicleId == Vehicle.InvalidId ? null : Vehicle.Find(VehicleId); }
+            get { return VehicleId == Vehicle.InvalidId ? null : Vehicle.FindOrCreate(VehicleId); }
         }
     }
 }
