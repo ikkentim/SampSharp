@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Pools;
 
@@ -33,6 +34,12 @@ namespace SampSharp.GameMode.World
         {
             Position = position;
             Size = size;
+        }
+
+        public Checkpoint(Vector position, float size, bool isVisible)
+            : this(position, size)
+        {
+            _isVisible = isVisible;
         }
 
         public Vector Position { get; set; }
@@ -146,6 +153,12 @@ namespace SampSharp.GameMode.World
                 throw new NullReferenceException("player cannot be null");
 
             if (IsForced(player)) return;
+
+            //Unforce previously forced checkpoints
+            var forced = All.FirstOrDefault(cp => cp.IsForced(player));
+
+            if (forced != null)
+                forced.Unforce(player);
 
             _forced.Add(player);
         }
