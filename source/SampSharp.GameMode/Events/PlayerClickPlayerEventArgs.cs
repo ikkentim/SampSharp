@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
@@ -28,14 +29,22 @@ namespace SampSharp.GameMode.Events
         /// <param name="source">PlayerClickSource of the event.</param>
         public PlayerClickPlayerEventArgs(int playerid, int clickedplayerid, PlayerClickSource source) : base(playerid)
         {
-            ClickPlayerId = clickedplayerid;
+            ClickedPlayerId = clickedplayerid;
             PlayerClickSource = source;
         }
 
         /// <summary>
         ///     Gets the id of the clicked player.
         /// </summary>
-        public int ClickPlayerId { get; private set; }
+        public int ClickedPlayerId { get; private set; }
+
+        /// <summary>
+        /// Gets the clicked player.
+        /// </summary>
+        public Player ClickedPlayer
+        {
+            get { return ClickedPlayerId == Player.InvalidId ? null : Player.FindOrCreate(ClickedPlayerId); }
+        }
 
         /// <summary>
         ///     Gets the PlayerClickSource of this event.

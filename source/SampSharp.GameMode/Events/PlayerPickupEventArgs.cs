@@ -24,5 +24,6 @@ namespace SampSharp.GameMode.Events
         }
 
         public int PickupId { get; private set; }
+
     }
 }
