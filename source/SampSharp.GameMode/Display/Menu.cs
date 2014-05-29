@@ -96,6 +96,8 @@ namespace SampSharp.GameMode.Display
 
         public bool Show(Player player)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
@@ -115,6 +117,8 @@ namespace SampSharp.GameMode.Display
 
         public void Hide(Player player)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
@@ -132,6 +136,8 @@ namespace SampSharp.GameMode.Display
 
         public void HideForAll()
         {
+            CheckDisposure();
+
             //Clone list and hide for all.
             foreach (Player p in _viewers.ToList())
                 Hide(p);
@@ -189,10 +195,11 @@ namespace SampSharp.GameMode.Display
             }
         }
 
-        public override void Dispose()
-        {
-            Destroy();
-            base.Dispose();
+        protected override void Dispose(bool disposing)
+        {      
+            Destroy(); 
+
+            base.Dispose(disposing);
         }
 
         #endregion

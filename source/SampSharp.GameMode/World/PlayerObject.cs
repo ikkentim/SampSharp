@@ -121,6 +121,8 @@ namespace SampSharp.GameMode.World
 
         public virtual void AttachTo(Player player, Vector offset, Vector rotation)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
@@ -129,6 +131,8 @@ namespace SampSharp.GameMode.World
 
         public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
         {
+            CheckDisposure();
+
             if (vehicle == null)
                 throw new NullReferenceException("vehicle cannot be null");
 
@@ -137,23 +141,31 @@ namespace SampSharp.GameMode.World
 
         public virtual int Move(Vector position, float speed, Vector rotation)
         {
+            CheckDisposure();
+
             return Native.MovePlayerObject(Player.Id, Id, position, speed, rotation);
         }
 
         public virtual int Move(Vector position, float speed)
         {
+            CheckDisposure();
+
             return Native.MovePlayerObject(Player.Id, Id, position.X, position.Y, position.Z, speed, -1000,
                 -1000, -1000);
         }
 
         public virtual void Stop()
         {
+            CheckDisposure();
+
             Native.StopPlayerObject(Player.Id, Id);
         }
 
         public virtual void SetMaterial(int materialindex, int modelid, string txdname, string texturename,
             Color materialcolor)
         {
+            CheckDisposure();
+
             Native.SetPlayerObjectMaterial(Player.Id, Id, materialindex, modelid, txdname, texturename,
                 materialcolor.GetColorValue(ColorFormat.ARGB));
         }
@@ -162,21 +174,25 @@ namespace SampSharp.GameMode.World
             string fontface, int fontsize, bool bold, Color foreColor, Color backColor,
             ObjectMaterialTextAlign textalignment)
         {
+            CheckDisposure();
+
             Native.SetPlayerObjectMaterialText(Player.Id, Id, text, materialindex, (int) materialsize,
                 fontface, fontsize, bold,
                 foreColor.GetColorValue(ColorFormat.ARGB), backColor.GetColorValue(ColorFormat.ARGB),
                 (int) textalignment);
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            Native.DestroyObject(Id);
+            base.Dispose(disposing);
 
-            base.Dispose();
+            Native.DestroyObject(Id);
         }
 
         public virtual void Edit()
         {
+            CheckDisposure();
+
             Native.EditPlayerObject(Player.Id, Id);
         }
 

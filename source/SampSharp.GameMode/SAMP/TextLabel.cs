@@ -134,15 +134,17 @@ namespace SampSharp.GameMode.SAMP
 
         #region Methods
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            Native.Delete3DTextLabel(Id);
+            base.Dispose(disposing);
 
-            base.Dispose();
+            Native.Delete3DTextLabel(Id);
         }
 
         public virtual void AttachTo(Player player, Vector offset)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
@@ -151,6 +153,8 @@ namespace SampSharp.GameMode.SAMP
 
         public virtual void AttachTo(Vehicle vehicle, Vector offset)
         {
+            CheckDisposure();
+
             if (vehicle == null)
                 throw new NullReferenceException("vehicle cannot be null");
 
