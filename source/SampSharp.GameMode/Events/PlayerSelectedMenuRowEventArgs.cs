@@ -11,6 +11,8 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using SampSharp.GameMode.Display;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>

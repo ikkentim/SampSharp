@@ -34,6 +34,28 @@ namespace SampSharp.GameMode.Events
 
         public int ObjectId { get; private set; }
 
+        public GlobalObject GlobalObject
+        {
+            get
+            {
+                if (ObjectType != ObjectType.GlobalObject)
+                    return null;
+
+                return ObjectId == GlobalObject.InvalidId ? null : GlobalObject.FindOrCreate(ObjectId);
+            }
+        }
+
+        public PlayerObject PlayerObject
+        {
+            get
+            {
+                if (ObjectType != ObjectType.PlayerObject)
+                    return null;
+
+                return ObjectId == PlayerObject.InvalidId ? null : PlayerObject.FindOrCreate(Player, ObjectId);
+            }
+        }
+
         public EditObjectResponse EditObjectResponse { get; private set; }
 
         public Vector Rotation { get; private set; }

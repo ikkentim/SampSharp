@@ -11,6 +11,8 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using SampSharp.GameMode.Display;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
@@ -33,5 +35,13 @@ namespace SampSharp.GameMode.Events
         ///     Gets the id of the textdraw.
         /// </summary>
         public int TextDrawId { get; private set; }
+
+        /// <summary>
+        /// Gets the textdraw.
+        /// </summary>
+        public TextDraw TextDraw
+        {
+            get { return TextDrawId == TextDraw.InvalidId ? null : TextDraw.FindOrCreate(TextDrawId); }
+        }
     }
 }
