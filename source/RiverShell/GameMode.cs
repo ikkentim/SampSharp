@@ -15,7 +15,7 @@ namespace RiverShell
             Id = 1,
             Color = 0x7777DDFF,
             GameTextTeamName = "~b~BLUE ~w~team",
-            Target = new Vector(2329.4226f, 532.7426f, 0.5862f),
+            Target = new Checkpoint(new Vector(2329.4226f, 532.7426f, 0.5862f), 10.0f),
             FixedSpectatePosition = new Vector(2221.5820, -273.9985, 61.7806),
             FixedSpectateLookAtPosition = new Vector(2220.9978, -273.1861, 61.4606),
             ResupplyPosition = new Vector(2140.83f, -235.13f, 7.13f)
@@ -25,7 +25,7 @@ namespace RiverShell
                 Id = 2,
                 Color = 0x77CC77FF,
                 GameTextTeamName = "~g~GREEN ~w~team",
-                Target = new Vector(2135.7368f, -179.8811f, -0.5323f),
+                Target = new Checkpoint(new Vector(2135.7368f, -179.8811f, -0.5323f), 10.0f),
                 FixedSpectatePosition = new Vector(2274.8467, 591.3257, 30.1311),
                 FixedSpectateLookAtPosition = new Vector(2275.0503, 590.3463, 29.9460),
                 ResupplyPosition = new Vector(2318.73f, 590.96f, 6.75f)

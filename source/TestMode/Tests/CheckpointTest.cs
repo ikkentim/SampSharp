@@ -15,7 +15,7 @@ namespace TestMode.Tests
         public static bool CheckpointCommand(Player player)
         {
             var cp = new Checkpoint(player.Position, 2.5f);
-            cp.Show();
+            cp.Show(player);
 
             cp.Enter += (sender, args) => args.Player.SendClientMessage(Color.BlueViolet, "Entered checkpoint");
             cp.Leave += (sender, args) => args.Player.SendClientMessage(Color.BlueViolet, "Left checkpoint");
