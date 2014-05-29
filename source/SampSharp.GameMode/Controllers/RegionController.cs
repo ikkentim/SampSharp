@@ -22,7 +22,7 @@ namespace SampSharp.GameMode.Controllers
 
         public RegionController()
         {
-            TickRate = 10;
+            TickRate = 20;
         }
 
         public int TickRate { get; set; }
