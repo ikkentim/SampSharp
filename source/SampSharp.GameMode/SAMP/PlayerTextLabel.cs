@@ -216,11 +216,11 @@ namespace SampSharp.GameMode.SAMP
 
         #region Methods
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            Native.DeletePlayer3DTextLabel(Player.Id, Id);
+            base.Dispose(disposing);
 
-            base.Dispose();
+            Native.DeletePlayer3DTextLabel(Player.Id, Id);
         }
 
         #endregion

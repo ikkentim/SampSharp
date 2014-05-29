@@ -482,15 +482,13 @@ namespace SampSharp.GameMode.Display
 
         #region Methods
 
-        /// <summary>
-        ///     Destroys this player-textdraw and removes it from the known instances list.
-        /// </summary>
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            if (Id == -1) return;
-            Native.PlayerTextDrawDestroy(Player.Id, Id);
+            base.Dispose(disposing);
 
-            base.Dispose();
+            if (Id == -1) return;
+
+            Native.PlayerTextDrawDestroy(Player.Id, Id);
         }
 
         /// <summary>
@@ -498,8 +496,11 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual void Show()
         {
+            CheckDisposure();
+
             if (Id == -1) Refresh();
             _visible = true;
+
             Native.PlayerTextDrawShow(Player.Id, Id);
         }
 
@@ -508,8 +509,11 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual void Hide()
         {
-            if (Id == -1 && _visible) return;
+            CheckDisposure();
+
+            if (Id == -1 || !_visible) return;
             _visible = false;
+
             Native.PlayerTextDrawHide(Player.Id, Id);
         }
 

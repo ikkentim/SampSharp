@@ -36,6 +36,8 @@ namespace SampSharp.GameMode.World
 
         public void Test()
         {
+            CheckDisposure();
+
             foreach (Player player in Player.All)
             {
                 if (_playersInRegion.Contains(player))

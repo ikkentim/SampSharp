@@ -81,8 +81,10 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public int Id { get; private set; }
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
+
             Running = false;
         }
 

@@ -58,7 +58,7 @@ namespace SampSharp.GameMode.Tools
             //We don't care to set Disposed value; Resource is being collected by GC anyways.
         }
 
-        public void CheckDisposure()
+        protected void CheckDisposure()
         {
             if (Disposed)
             {

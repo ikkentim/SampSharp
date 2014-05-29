@@ -466,17 +466,13 @@ namespace SampSharp.GameMode.Display
 
         #region Methods
 
-        /// <summary>
-        ///     Destroys this textdraw and removes it from the known instances list.
-        /// </summary>
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
+
             if (Id == -1) return;
 
-            _playersShownTo.Clear();
             Native.TextDrawDestroy(Id);
-
-            base.Dispose();
         }
 
         /// <summary>
@@ -484,7 +480,10 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual void Show()
         {
+            CheckDisposure();
+
             if (Id == -1) Refresh();
+
             _playersShownTo.Clear();
             _playersShownTo.AddRange(Player.All);
             Native.TextDrawShowForAll(Id);
@@ -496,6 +495,8 @@ namespace SampSharp.GameMode.Display
         /// <param name="player">The player to display this textdraw to.</param>
         public virtual void Show(Player player)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
@@ -513,6 +514,8 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual void Hide()
         {
+            CheckDisposure();
+
             if (Id == -1) return;
             _playersShownTo.Clear();
             Native.TextDrawHideForAll(Id);
@@ -524,6 +527,8 @@ namespace SampSharp.GameMode.Display
         /// <param name="player">The player to hide this textdraw from.</param>
         public virtual void Hide(Player player)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 

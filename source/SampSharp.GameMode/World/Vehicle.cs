@@ -322,6 +322,8 @@ namespace SampSharp.GameMode.World
         /// <returns>A float containing the distance from the point specified in the coordinates.</returns>
         public virtual float GetDistanceFromPoint(Vector point)
         {
+            CheckDisposure();
+
             return Native.GetVehicleDistanceFromPoint(Id, point.X, point.Y, point.Z);
         }
 
@@ -395,6 +397,8 @@ namespace SampSharp.GameMode.World
         /// <returns>False: Vehicle is not streamed in for the Player. False: Vehicle is streamed in for the Player.</returns>
         public virtual bool IsStreamedIn(Player forplayer)
         {
+            CheckDisposure();
+
             return Native.IsVehicleStreamedIn(Id, forplayer.Id);
         }
 
@@ -408,6 +412,8 @@ namespace SampSharp.GameMode.World
         public virtual void GetRotationQuat(out float w, out float x, out float y,
             out float z)
         {
+            CheckDisposure();
+
             Native.GetVehicleRotationQuat(Id, out w, out x, out y, out z);
         }
 
@@ -420,6 +426,8 @@ namespace SampSharp.GameMode.World
         public virtual void SetParamsForPlayer(Player player, bool objective,
             bool doorslocked)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
@@ -449,6 +457,8 @@ namespace SampSharp.GameMode.World
         public virtual void SetParams(bool engine, bool lights, bool alarm, bool doors, bool bonnet, bool boot,
             bool objective)
         {
+            CheckDisposure();
+
             Native.SetVehicleParamsEx(Id, engine, lights, alarm, doors, bonnet, boot, objective);
         }
 
@@ -466,6 +476,8 @@ namespace SampSharp.GameMode.World
         public virtual void GetParams(out bool engine, out bool lights, out bool alarm,
             out bool doors, out bool bonnet, out bool boot, out bool objective)
         {
+            CheckDisposure();
+
             Native.GetVehicleParamsEx(Id, out engine, out lights, out alarm, out doors, out bonnet, out boot,
                 out objective);
         }
@@ -475,6 +487,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Respawn()
         {
+            CheckDisposure();
+
             Native.SetVehicleToRespawn(Id);
         }
 
@@ -484,6 +498,8 @@ namespace SampSharp.GameMode.World
         /// <param name="interiorid">Interior ID.</param>
         public virtual void LinkToInterior(int interiorid)
         {
+            CheckDisposure();
+
             Native.LinkVehicleToInterior(Id, interiorid);
         }
 
@@ -493,6 +509,8 @@ namespace SampSharp.GameMode.World
         /// <param name="componentid">The ID of the component to add to the vehicle.</param>
         public virtual void AddComponent(int componentid)
         {
+            CheckDisposure();
+
             Native.AddVehicleComponent(Id, componentid);
         }
 
@@ -502,6 +520,8 @@ namespace SampSharp.GameMode.World
         /// <param name="componentid">ID of the component to remove.</param>
         public virtual void RemoveComponent(int componentid)
         {
+            CheckDisposure();
+
             Native.RemoveVehicleComponent(Id, componentid);
         }
 
@@ -512,6 +532,8 @@ namespace SampSharp.GameMode.World
         /// <param name="color2">The new vehicle's secondary Color ID.</param>
         public virtual void ChangeColor(int color1, int color2)
         {
+            CheckDisposure();
+
             Native.ChangeVehicleColor(Id, color1, color2);
         }
 
@@ -521,6 +543,8 @@ namespace SampSharp.GameMode.World
         /// <param name="paintjobid">The ID of the Paintjob to apply. Use 3 to remove a paintjob.</param>
         public virtual void ChangePaintjob(int paintjobid)
         {
+            CheckDisposure();
+
             Native.ChangeVehiclePaintjob(Id, paintjobid);
         }
 
@@ -530,6 +554,8 @@ namespace SampSharp.GameMode.World
         /// <param name="numberplate">The text that should be displayed on the numberplate. Color Embedding> is supported.</param>
         public virtual void SetNumberPlate(string numberplate)
         {
+            CheckDisposure();
+
             Native.SetVehicleNumberPlate(Id, numberplate);
         }
 
@@ -540,6 +566,8 @@ namespace SampSharp.GameMode.World
         /// <returns>The ID of the component installed in the specified slot.</returns>
         public virtual int GetComponentInSlot(int slot)
         {
+            CheckDisposure();
+
             return Native.GetVehicleComponentInSlot(Id, slot);
         }
 
@@ -558,6 +586,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Repair()
         {
+            CheckDisposure();
+
             Native.RepairVehicle(Id);
         }
 
@@ -567,6 +597,8 @@ namespace SampSharp.GameMode.World
         /// <param name="velocity">The amount of velocity in the angular directions.</param>
         public virtual void SetVehicleAngularVelocity(Vector velocity)
         {
+            CheckDisposure();
+
             Native.SetVehicleAngularVelocity(Id, velocity);
         }
 
@@ -579,6 +611,8 @@ namespace SampSharp.GameMode.World
         /// <param name="tires">A variable to store the tire damage data in, passed by reference.</param>
         public virtual void GetVehicleDamageStatus(out int panels, out int doors, out int lights, out int tires)
         {
+            CheckDisposure();
+
             Native.GetVehicleDamageStatus(Id, out panels, out doors, out lights, out tires);
         }
 
@@ -591,6 +625,8 @@ namespace SampSharp.GameMode.World
         /// <param name="tires">A set of bits containing the tire damage status.</param>
         public virtual void UpdateVehicleDamageStatus(int panels, int doors, int lights, int tires)
         {
+            CheckDisposure();
+
             Native.UpdateVehicleDamageStatus(Id, panels, doors, lights, tires);
         }
 
@@ -612,16 +648,16 @@ namespace SampSharp.GameMode.World
         /// <returns>The offset vector.</returns>
         public virtual Vector GetVehicleModelInfo(VehicleModelInfo infotype)
         {
+            CheckDisposure();
+
             return Native.GetVehicleModelInfo(Model, infotype);
         }
 
-        /// <summary>
-        ///     Destroys this Vehicle.
-        /// </summary>
-        public virtual void Destroy()
+        protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
+
             Native.DestroyVehicle(Id);
-            Dispose();
         }
 
         #endregion

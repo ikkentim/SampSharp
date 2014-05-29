@@ -49,7 +49,7 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         /// <param name="id">The identity of the instance to create.</param>
         /// <returns>The initialized instance.</returns>
-        public static T Add(int id)
+        public static T Create(int id)
         {
             return (T) Activator.CreateInstance(Type, id);
         }
@@ -61,7 +61,7 @@ namespace SampSharp.GameMode.Pools
         /// <returns>The found instance.</returns>
         public static T FindOrCreate(int id)
         {
-            return Find(id) ?? Add(id);
+            return Find(id) ?? Create(id);
         }
     }
 }
