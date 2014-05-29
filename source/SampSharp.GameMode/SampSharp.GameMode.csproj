@@ -67,7 +67,6 @@
     <Compile Include="Display\MenuColumn.cs" />
     <Compile Include="Display\MenuRow.cs" />
     <Compile Include="Events\DialogResponseEventArgs.cs" />
-    <Compile Include="Events\EventHandlers.cs" />
     <Compile Include="Events\GameModeEventArgs.cs" />
     <Compile Include="Definitions\BulletHitType.cs" />
     <Compile Include="Definitions\CameraCut.cs" />

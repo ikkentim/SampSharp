@@ -460,7 +460,7 @@ namespace SampSharp.GameMode.Display
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw" /> is being called.
         ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
         /// </summary>
-        public event PlayerClickTextDrawHandler Click;
+        public event EventHandler<PlayerClickTextDrawEventArgs> Click;
 
         #endregion
 
