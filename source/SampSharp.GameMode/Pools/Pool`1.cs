@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.Pools
 {
@@ -22,7 +23,7 @@ namespace SampSharp.GameMode.Pools
     ///     Keeps track of a pool of instances.
     /// </summary>
     /// <typeparam name="T">Base type of instances to keep track of.</typeparam>
-    public abstract class Pool<T> : IDisposable
+    public abstract class Pool<T> : Disposable
     {
         protected static readonly List<object> Instances = new List<object>();
         protected static ReadOnlyCollection<T> ReadOnly = new ReadOnlyCollection<T>(new List<T>());
@@ -49,7 +50,7 @@ namespace SampSharp.GameMode.Pools
         /// <summary>
         ///     Removes this instance from the pool.
         /// </summary>
-        public virtual void Dispose()
+        protected override void Dispose(bool disposing)
         {
             Instances.Remove(this);
 
@@ -61,7 +62,7 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         /// <param name="item">The instance to check the presence of.</param>
         /// <returns>Whether the given instance is present in the pool.</returns>
-        public bool Contains(T item)
+        public static bool Contains(T item)
         {
             return Instances.Contains(item);
         }

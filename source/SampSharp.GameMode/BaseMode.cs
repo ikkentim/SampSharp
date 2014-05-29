@@ -1809,8 +1809,7 @@ namespace SampSharp.GameMode
 
         public void Dispose()
         {
-            //
-            Console.WriteLine("Dispose!");
+            //Todo
         }
     }
 }

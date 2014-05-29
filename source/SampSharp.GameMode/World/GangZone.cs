@@ -48,28 +48,38 @@ namespace SampSharp.GameMode.World
 
         public virtual int Id { get; private set; }
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
+
             Native.GangZoneDestroy(Id);
         }
 
         public virtual void Show()
         {
+            CheckDisposure();
+
             Native.GangZoneShowForAll(Id, Color);
         }
 
         public virtual void Show(Player player)
         {
+            CheckDisposure();
+
             Show(player, Color);
         }
 
         public virtual void Show(Color color)
         {
+            CheckDisposure();   
+
             Native.GangZoneShowForAll(Id, color);
         }
 
         public virtual void Show(Player player, Color color)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
@@ -78,31 +88,43 @@ namespace SampSharp.GameMode.World
 
         public virtual void Hide()
         {
+            CheckDisposure();
+
             Native.GangZoneHideForAll(Id);
         }
 
         public virtual void Hide(Player player)
         {
+            CheckDisposure();
+
             Native.GangZoneHideForPlayer(player.Id, Id);
         }
 
         public virtual void Flash()
         {
+            CheckDisposure();
+
             Native.GangZoneFlashForAll(Id, Color);
         }
 
         public virtual void Flash(Color color)
         {
+            CheckDisposure();
+
             Native.GangZoneFlashForAll(Id, color);
         }
 
         public virtual void Flash(Player player)
         {
+            CheckDisposure();
+
             Flash(player, Color);
         }
 
         public virtual void Flash(Player player, Color color)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
@@ -111,11 +133,15 @@ namespace SampSharp.GameMode.World
 
         public virtual void StopFlash()
         {
+            CheckDisposure();
+
             Native.GangZoneStopFlashForAll(Id);
         }
 
         public virtual void StopFlash(Player player)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 

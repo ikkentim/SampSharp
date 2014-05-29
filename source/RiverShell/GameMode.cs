@@ -10,23 +10,17 @@ namespace RiverShell
 {
     public class GameMode : BaseMode
     {
-        public static Team BlueTeam;
-        public static Team GreenTeam;
-        public static bool ObjectiveReached;
-
-        public override bool OnGameModeInit()
+        public static Team BlueTeam = new Team
         {
-            BlueTeam = new Team
-            {
-                Id = 1,
-                Color = 0x7777DDFF,
-                GameTextTeamName = "~b~BLUE ~w~team",
-                Target = new Vector(2329.4226f, 532.7426f, 0.5862f),
-                FixedSpectatePosition = new Vector(2221.5820, -273.9985, 61.7806),
-                FixedSpectateLookAtPosition = new Vector(2220.9978, -273.1861, 61.4606),
-                ResupplyPosition = new Vector(2140.83f, -235.13f, 7.13f)
-            };
-            GreenTeam = new Team
+            Id = 1,
+            Color = 0x7777DDFF,
+            GameTextTeamName = "~b~BLUE ~w~team",
+            Target = new Vector(2329.4226f, 532.7426f, 0.5862f),
+            FixedSpectatePosition = new Vector(2221.5820, -273.9985, 61.7806),
+            FixedSpectateLookAtPosition = new Vector(2220.9978, -273.1861, 61.4606),
+            ResupplyPosition = new Vector(2140.83f, -235.13f, 7.13f)
+        };
+        public static Team GreenTeam = new Team
             {
                 Id = 2,
                 Color = 0x77CC77FF,
@@ -36,7 +30,10 @@ namespace RiverShell
                 FixedSpectateLookAtPosition = new Vector(2275.0503, 590.3463, 29.9460),
                 ResupplyPosition = new Vector(2318.73f, 590.96f, 6.75f)
             };
+        public static bool ObjectiveReached;
 
+        public override bool OnGameModeInit()
+        {
             SetGameModeText("Rivershell");
             ShowPlayerMarkers(0);
             ShowNameTags(true);

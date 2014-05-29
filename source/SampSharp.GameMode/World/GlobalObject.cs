@@ -160,10 +160,11 @@ namespace SampSharp.GameMode.World
             Native.RemoveBuildingForPlayer(player.Id, modelid, position.X, position.Y, position.Z, radius);
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
+
             Native.DestroyObject(Id);
-            base.Dispose();
         }
 
         public virtual void AttachTo(GlobalObject globalObject, Vector offset, Vector rotation)

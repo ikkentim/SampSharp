@@ -58,11 +58,15 @@ namespace SampSharp.GameMode.World
 
         public void Show()
         {
+            CheckDisposure();
+
             _isVisible = true;
         }
 
         public void Show(Player player)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
@@ -72,11 +76,15 @@ namespace SampSharp.GameMode.World
 
         public void Hide()
         {
+            CheckDisposure();
+
             _isVisible = false;
         }
 
         public void Hide(Player player)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
@@ -85,16 +93,22 @@ namespace SampSharp.GameMode.World
 
         public bool IsVisible()
         {
+            CheckDisposure();
+
             return _isVisible;
         }
 
         public bool IsVisible(Player player)
         {
+            CheckDisposure();
+
             return player != null && (_isVisible || _viewers.Contains(player));
         }
 
         public void Activate(Player player)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
@@ -106,6 +120,8 @@ namespace SampSharp.GameMode.World
 
         public void Deactivate(Player player)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
@@ -117,11 +133,15 @@ namespace SampSharp.GameMode.World
 
         public bool IsActive(Player player)
         {
+            CheckDisposure();
+
             return player != null && _active.Contains(player);
         }
 
         public void Force(Player player)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
@@ -132,6 +152,8 @@ namespace SampSharp.GameMode.World
 
         public void Unforce(Player player)
         {
+            CheckDisposure();
+
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
@@ -140,6 +162,8 @@ namespace SampSharp.GameMode.World
 
         public bool IsForced(Player player)
         {
+            CheckDisposure();
+
             return player != null && _forced.Contains(player);
         }
     }
