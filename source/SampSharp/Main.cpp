@@ -1,5 +1,8 @@
 #include <iostream>
 #include <sampgdk/core.h>
+
+#include "plugincommon.h"
+
 #include <sampgdk/a_samp.h>
 
 #include "SampSharp.h"
@@ -55,4 +58,14 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload() {
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
 	sampgdk::ProcessTick();
 	SampSharp::CallEvent(SampSharp::onTick, NULL);
+}
+
+PLUGIN_EXPORT bool PLUGIN_CALL
+OnPublicCall(AMX * amx, const char * name, cell * params)
+{
+	char* text = NULL;
+	amx_StrParam(amx, params[1], text);
+
+	cout << text << endl;
+	return true;
 }
