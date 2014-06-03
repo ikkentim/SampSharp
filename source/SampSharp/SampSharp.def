@@ -13,7 +13,6 @@ EXPORTS
 	OnVehicleSpawn
 	OnVehicleDeath
 	OnPlayerText
-	OnPlayerCommandText
 	OnPlayerRequestClass
 	OnPlayerEnterVehicle
 	OnPlayerExitVehicle
