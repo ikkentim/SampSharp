@@ -1,15 +1,17 @@
 #include <iostream>
+
 #include <sampgdk/core.h>
-
-#include "plugincommon.h"
-
 #include <sampgdk/a_samp.h>
 
 #include "SampSharp.h"
 #include "ConfigReader.h"
 
+#include "amxplugin.cpp"
+
 using namespace std;
 using sampgdk::logprintf;
+
+extern void *pAMXFunctions;
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
 	return sampgdk::Supports() | SUPPORTS_PROCESS_TICK;
@@ -17,6 +19,9 @@ PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
 
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 	//Load plugin
+
+	pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
+
 	//TODO: should check if ::Load succeeds?
 	sampgdk::Load(ppData);
 
@@ -63,9 +68,35 @@ PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
 PLUGIN_EXPORT bool PLUGIN_CALL
 OnPublicCall(AMX * amx, const char * name, cell * params)
 {
-	char* text = NULL;
-	amx_StrParam(amx, params[1], text);
+	const int param_count = params[0] / sizeof(cell);
 
-	cout << text << endl;
-	return true;
+	if (strcmp("OnRconCommand", name) == 0)
+	{
+		int
+			len = NULL;
+
+		cell *addr = NULL;
+
+		amx_GetAddr(amx, params[1], &addr);
+		amx_StrLen(addr, &len);
+
+		if (len)
+		{
+			len++;
+
+			char* text = new char[len];
+			amx_GetString(text, addr, 0, len);
+
+
+			delete[] text;
+		}
+		return true;
+	}
+
+	if (strcmp("OnPlayerCommandText", name) == 0)
+	{
+		cout << "PCT" << endl;
+		return false;
+	}
+	return false;
 }
