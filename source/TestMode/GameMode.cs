@@ -44,5 +44,13 @@ namespace TestMode
 
             return true;
         }
+
+        public override bool OnRconCommand(string command)
+        {
+            Console.WriteLine("[DEBUG-RCON] " + command);
+
+            return true;
+            return base.OnRconCommand(command);
+        }
     }
 }
