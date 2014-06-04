@@ -1,68 +1,25 @@
 #include "SampSharp.h"
+
+#include <mono/metadata/threads.h>
 #include "PathUtil.h"
 #include "Natives.h"
 
 using namespace std;
 
-MonoMethod * SampSharp::onGameModeInit;
-MonoMethod * SampSharp::onGameModeExit;
-MonoMethod * SampSharp::onPlayerConnect;
-MonoMethod * SampSharp::onPlayerDisconnect;
-MonoMethod * SampSharp::onPlayerSpawn;
-MonoMethod * SampSharp::onPlayerDeath;
-MonoMethod * SampSharp::onVehicleSpawn;
-MonoMethod * SampSharp::onVehicleDeath;
-MonoMethod * SampSharp::onPlayerText;
-MonoMethod * SampSharp::onPlayerCommandText;
-MonoMethod * SampSharp::onPlayerRequestClass;
-MonoMethod * SampSharp::onPlayerEnterVehicle;
-MonoMethod * SampSharp::onPlayerExitVehicle;
-MonoMethod * SampSharp::onPlayerStateChange;
-MonoMethod * SampSharp::onPlayerEnterCheckpoint;
-MonoMethod * SampSharp::onPlayerLeaveCheckpoint;
-MonoMethod * SampSharp::onPlayerEnterRaceCheckpoint;
-MonoMethod * SampSharp::onPlayerLeaveRaceCheckpoint;
-MonoMethod * SampSharp::onRconCommand;
-MonoMethod * SampSharp::onPlayerRequestSpawn;
-MonoMethod * SampSharp::onObjectMoved;
-MonoMethod * SampSharp::onPlayerObjectMoved;
-MonoMethod * SampSharp::onPlayerPickUpPickup;
-MonoMethod * SampSharp::onVehicleMod;
-MonoMethod * SampSharp::onEnterExitModShop;
-MonoMethod * SampSharp::onVehiclePaintjob;
-MonoMethod * SampSharp::onVehicleRespray;
-MonoMethod * SampSharp::onVehicleDamageStatusUpdate;
-MonoMethod * SampSharp::onUnoccupiedVehicleUpdate;
-MonoMethod * SampSharp::onPlayerSelectedMenuRow;
-MonoMethod * SampSharp::onPlayerExitedMenu;
-MonoMethod * SampSharp::onPlayerInteriorChange;
-MonoMethod * SampSharp::onPlayerKeyStateChange;
-MonoMethod * SampSharp::onRconLoginAttempt;
-MonoMethod * SampSharp::onPlayerUpdate;
-MonoMethod * SampSharp::onPlayerStreamIn;
-MonoMethod * SampSharp::onPlayerStreamOut;
-MonoMethod * SampSharp::onVehicleStreamIn;
-MonoMethod * SampSharp::onVehicleStreamOut;
-MonoMethod * SampSharp::onDialogResponse;
-MonoMethod * SampSharp::onPlayerTakeDamage;
-MonoMethod * SampSharp::onPlayerGiveDamage;
-MonoMethod * SampSharp::onPlayerClickMap;
-MonoMethod * SampSharp::onPlayerClickTextDraw;
-MonoMethod * SampSharp::onPlayerClickPlayerTextDraw;
-MonoMethod * SampSharp::onPlayerClickPlayer;
-MonoMethod * SampSharp::onPlayerEditObject;
-MonoMethod * SampSharp::onPlayerEditAttachedObject;
-MonoMethod * SampSharp::onPlayerSelectObject;
-MonoMethod * SampSharp::onPlayerWeaponShot;
-MonoMethod * SampSharp::onIncomingConnection;
 MonoMethod * SampSharp::onTimerTick;
 MonoMethod * SampSharp::onTick;
-MonoMethod * SampSharp::dispose;
+
+MonoDomain * SampSharp::rootDomain;
 
 MonoImage * SampSharp::gameModeImage;
 MonoImage * SampSharp::baseModeImage;
-MonoDomain * SampSharp::rootDomain;
+
+MonoClass * SampSharp::gameModeClassType;
+MonoClass * SampSharp::baseModeClassType;
+
 uint32_t SampSharp::gameModeHandle;
+
+EventMap SampSharp::events;
 
 void SampSharp::Load(string baseModePath, string gameModePath, string gameModeNamespace, string gameModeClass, bool debug) {
 
@@ -77,10 +34,12 @@ void SampSharp::Load(string baseModePath, string gameModePath, string gameModeNa
 	rootDomain = mono_jit_init(PathUtil::GetPathInBin(gameModePath).c_str());
 
 	//Generate symbols if needed
+	#ifdef _WIN32
 	if (debug == true) {
 		GenerateSymbols(baseModePath);
 		GenerateSymbols(gameModePath);
 	}
+	#endif
 
 	//Load the gamemode's assembly
 	gameModeImage = mono_assembly_get_image(mono_domain_assembly_open(mono_domain_get(), (char *)PathUtil::GetPathInBin(gameModePath).c_str()));
@@ -90,76 +49,22 @@ void SampSharp::Load(string baseModePath, string gameModePath, string gameModeNa
 	LoadNatives(); 
 
 	//Create instance of the gamemode's class
-	MonoClass * gameModeClassType = mono_class_from_name(gameModeImage, gameModeNamespace.c_str(), gameModeClass.c_str());
+	baseModeClassType = mono_class_from_name(baseModeImage, "SampSharp.GameMode", "BaseMode");
+	gameModeClassType = mono_class_from_name(gameModeImage, gameModeNamespace.c_str(), gameModeClass.c_str());
+
 	MonoObject * gameModeObject = mono_object_new(mono_domain_get(), gameModeClassType);
 	gameModeHandle = mono_gchandle_new(gameModeObject, true);
 	mono_runtime_object_init(gameModeObject);
 
-	//Load all sa-mp events
-	LoadEvents(gameModeClass.c_str());
+	//Load tick events
+	onTimerTick = LoadEvent(gameModeClass.c_str(), "OnTimerTick");
+	onTick = LoadEvent(gameModeClass.c_str(), "OnTick");
 }
 
-void SampSharp::LoadEvents(const char * gmClass)
-{
-	onGameModeInit = LoadEvent(gmClass, "OnGameModeInit");
-	onGameModeExit = LoadEvent(gmClass, "OnGameModeExit");
-	onPlayerConnect = LoadEvent(gmClass, "OnPlayerConnect");
-	onPlayerDisconnect = LoadEvent(gmClass, "OnPlayerDisconnect");
-	onPlayerSpawn = LoadEvent(gmClass, "OnPlayerSpawn");
-	onPlayerDeath = LoadEvent(gmClass, "OnPlayerDeath");
-	onVehicleSpawn = LoadEvent(gmClass, "OnVehicleSpawn");
-	onVehicleDeath = LoadEvent(gmClass, "OnVehicleDeath");
-	onPlayerText = LoadEvent(gmClass, "OnPlayerText");
-	onPlayerCommandText = LoadEvent(gmClass, "OnPlayerCommandText");
-	onPlayerRequestClass = LoadEvent(gmClass, "OnPlayerRequestClass");
-	onPlayerEnterVehicle = LoadEvent(gmClass, "OnPlayerEnterVehicle");
-	onPlayerExitVehicle = LoadEvent(gmClass, "OnPlayerExitVehicle");
-	onPlayerStateChange = LoadEvent(gmClass, "OnPlayerStateChange");
-	onPlayerEnterCheckpoint = LoadEvent(gmClass, "OnPlayerEnterCheckpoint");
-	onPlayerLeaveCheckpoint = LoadEvent(gmClass, "OnPlayerLeaveCheckpoint");
-	onPlayerEnterRaceCheckpoint = LoadEvent(gmClass, "OnPlayerEnterRaceCheckpoint");
-	onPlayerLeaveRaceCheckpoint = LoadEvent(gmClass, "OnPlayerLeaveRaceCheckpoint");
-	onRconCommand = LoadEvent(gmClass, "OnRconCommand");
-	onPlayerRequestSpawn = LoadEvent(gmClass, "OnPlayerRequestSpawn");
-	onObjectMoved = LoadEvent(gmClass, "OnObjectMoved");
-	onPlayerObjectMoved = LoadEvent(gmClass, "OnPlayerObjectMoved");
-	onPlayerPickUpPickup = LoadEvent(gmClass, "OnPlayerPickUpPickup");
-	onVehicleMod = LoadEvent(gmClass, "OnVehicleMod");
-	onEnterExitModShop = LoadEvent(gmClass, "OnEnterExitModShop");
-	onVehiclePaintjob = LoadEvent(gmClass, "OnVehiclePaintjob");
-	onVehicleRespray = LoadEvent(gmClass, "OnVehicleRespray");
-	onVehicleDamageStatusUpdate = LoadEvent(gmClass, "OnVehicleDamageStatusUpdate");
-	onUnoccupiedVehicleUpdate = LoadEvent(gmClass, "OnUnoccupiedVehicleUpdate");
-	onPlayerSelectedMenuRow = LoadEvent(gmClass, "OnPlayerSelectedMenuRow");
-	onPlayerExitedMenu = LoadEvent(gmClass, "OnPlayerExitedMenu");
-	onPlayerInteriorChange = LoadEvent(gmClass, "OnPlayerInteriorChange");
-	onPlayerKeyStateChange = LoadEvent(gmClass, "OnPlayerKeyStateChange");
-	onRconLoginAttempt = LoadEvent(gmClass, "OnRconLoginAttempt");
-	onPlayerUpdate = LoadEvent(gmClass, "OnPlayerUpdate");
-	onPlayerStreamIn = LoadEvent(gmClass, "OnPlayerStreamIn");
-	onPlayerStreamOut = LoadEvent(gmClass, "OnPlayerStreamOut");
-	onVehicleStreamIn = LoadEvent(gmClass, "OnVehicleStreamIn");
-	onVehicleStreamOut = LoadEvent(gmClass, "OnVehicleStreamOut");
-	onDialogResponse = LoadEvent(gmClass, "OnDialogResponse");
-	onPlayerTakeDamage = LoadEvent(gmClass, "OnPlayerTakeDamage");
-	onPlayerGiveDamage = LoadEvent(gmClass, "OnPlayerGiveDamage");
-	onPlayerClickMap = LoadEvent(gmClass, "OnPlayerClickMap");
-	onPlayerClickTextDraw = LoadEvent(gmClass, "OnPlayerClickTextDraw");
-	onPlayerClickPlayerTextDraw = LoadEvent(gmClass, "OnPlayerClickPlayerTextDraw");
-	onPlayerClickPlayer = LoadEvent(gmClass, "OnPlayerClickPlayer");
-	onPlayerEditObject = LoadEvent(gmClass, "OnPlayerEditObject");
-	onPlayerEditAttachedObject = LoadEvent(gmClass, "OnPlayerEditAttachedObject");
-	onPlayerSelectObject = LoadEvent(gmClass, "OnPlayerSelectObject");
-	onPlayerWeaponShot = LoadEvent(gmClass, "OnPlayerWeaponShot");
-	onIncomingConnection = LoadEvent(gmClass, "OnIncomingConnection");
-	onTimerTick = LoadEvent(gmClass, "OnTimerTick");
-	onTick = LoadEvent(gmClass, "OnTick");
-	dispose = LoadEvent(gmClass, "Dispose");
-}
-
+#ifdef _WIN32
 void SampSharp::GenerateSymbols(string path)
 {
-	#ifdef _WIN32
+	
 	string mdbpath = PathUtil::GetLibDirectory().append("mono/4.5/pdb2mdb.exe");
 	char *cmdbpath = new char[mdbpath.size() + 1];
 	strcpy(cmdbpath, mdbpath.c_str());
@@ -175,8 +80,8 @@ void SampSharp::GenerateSymbols(string path)
 	}
 
 	delete cmdbpath;
-	#endif
 }
+#endif
 
 char * GetTimeStamp() {
 	//Get current time
@@ -193,24 +98,20 @@ char * GetTimeStamp() {
 }
 
 MonoMethod * SampSharp::LoadEvent(const char * className, const char * name) {
-	//Construct method name
-	char * gamemodeBuffer = new char[256];
-	char * basemodeBuffer = new char[256];
+	char * gamemodeBuffer = new char[128];
+	char * basemodeBuffer = new char[128];
 	sprintf(gamemodeBuffer, "%s:%s", className, name);
 	sprintf(basemodeBuffer, "BaseMode:%s", name);
 
-	//Look for the method in the gamemode image
 	MonoMethodDesc * methodDescription = mono_method_desc_new(gamemodeBuffer, false);
 	MonoMethod * method = mono_method_desc_search_in_image(methodDescription, gameModeImage);
 	mono_method_desc_free(methodDescription);
 
-	//If not found, look in base image
 	if (!method) {
 		methodDescription = mono_method_desc_new(basemodeBuffer, false);
 		method = mono_method_desc_search_in_image(methodDescription, baseModeImage);
 		mono_method_desc_free(methodDescription);
 
-		//Recheck if method has been found or log it
 		if (!method) {
 			ofstream logfile;
 			logfile.open("SampSharp_errors.log", ios::app);
@@ -223,10 +124,118 @@ MonoMethod * SampSharp::LoadEvent(const char * className, const char * name) {
 	return method;
 }
 
-bool SampSharp::CallEvent(MonoMethod* method, void **params) {
-	MonoObject * exception = NULL;
+bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retval) {
+	const int param_count = params[0] / sizeof(cell);
 
-	//Check for a method or report to the log
+	if (param_count > 16) {
+		return true;
+	}
+
+	mono_thread_attach(SampSharp::rootDomain);
+
+	if (events.find(name) == events.end())
+	{
+		MonoMethod * m_method = mono_class_get_method_from_name(gameModeClassType, name, param_count);
+		bool useBaseModeImage = false;
+		if (!m_method) {
+			m_method = mono_class_get_method_from_name(baseModeClassType, name, param_count);
+			useBaseModeImage = true;
+		}
+
+		if (!m_method){
+			events[name] = NULL;
+			return true;
+		}
+
+		uint32_t token = mono_method_get_token(m_method);
+		MonoMethodSignature * sig = mono_method_get_signature(m_method, useBaseModeImage ? baseModeImage : gameModeImage, token);
+		
+		void * iter = NULL;
+		string format = "";
+		MonoType* type = NULL;
+		
+		while (type = mono_signature_get_params(sig, &iter)) {
+			string type_name = mono_type_get_name(type);
+
+			if (!type_name.compare("System.Int32")) {
+				format.append("i");	
+			}
+			else if (!type_name.compare("System.Single")) {
+				format.append("f");
+			}
+			else if (!type_name.compare("System.String")) {
+				format.append("s");
+			}
+			else if (!type_name.compare("System.Boolean")) {
+				format.append("b");
+			}
+			else {
+				events[name] = NULL;
+				return true;
+			}
+		}
+		
+		event_t * event_add = new event_t;
+		event_add->method = m_method;
+		event_add->format = format;
+		events[name] = event_add;
+	}
+
+	event_t * event_p = events[name];
+	
+	if (event_p)
+	{
+		if (!param_count) {
+			int retint = SampSharp::CallEvent(event_p->method, NULL) ? 1 : 0;
+			*retval = retint;
+			return false;
+		}
+		else {
+			void * args[16];
+			for (int i = 0; i < param_count; i++) {
+				switch (event_p->format[i])
+				{
+				case 'i':
+				case 'f':
+				case 'b':
+					args[i] = &params[i + 1];
+					break;
+				case 's':
+					int len = NULL;
+					cell * addr = NULL;
+
+					amx_GetAddr(amx, params[1], &addr);
+					amx_StrLen(addr, &len);
+
+					if (len) {
+						len++;
+
+						char* text = new char[len];
+
+						amx_GetString(text, addr, 0, len);
+						args[i] = mono_string_new(mono_domain_get(), text);
+					}
+					else {
+						args[i] = mono_string_new(mono_domain_get(), "");
+					}
+					break;
+				}
+			}
+
+			int retint = SampSharp::CallEvent(event_p->method, args) ? 1 : 0;
+			*retval = retint;
+			return false;
+		}
+		return false;
+	}
+
+	return true;
+}
+
+bool SampSharp::CallEvent(MonoMethod* method, void **params) {
+
+	MonoObject * exception = NULL;
+	
 	if (!method) {
 		ofstream logfile;
 		logfile.open("SampSharp_errors.log", ios::app);
@@ -237,24 +246,20 @@ bool SampSharp::CallEvent(MonoMethod* method, void **params) {
 		return false;
 	}
 
-	//Invoke method in mono runtime
-	MonoObject * response = mono_runtime_invoke(method, mono_gchandle_get_target(gameModeHandle), params, &exception);
+	MonoObject *response = mono_runtime_invoke(method, mono_gchandle_get_target(gameModeHandle), params, &exception);
 
-	//Catch exceptions and report to the log
 	if (exception) {
-		char * stacktrace = mono_string_to_utf8(mono_object_to_string(exception, NULL));
+		char *stacktrace = mono_string_to_utf8(mono_object_to_string(exception, NULL));
 
 		ofstream logfile;
 		logfile.open("SampSharp_errors.log", ios::app | ios::binary);
 		cout << "[SampSharp] Exception thrown:" << endl << stacktrace << endl;
 		logfile << GetTimeStamp() << " Exception thrown:" << "\r\n" << stacktrace << "\r\n";
-		
 		logfile.close();
 
-		return false; //Default return value
+		return false;
 	}
 
-	//If no response has been given, report to the log
 	if (!response) {
 		ofstream logfile;
 		logfile.open("SampSharp_errors.log", ios::app);
@@ -262,14 +267,12 @@ bool SampSharp::CallEvent(MonoMethod* method, void **params) {
 		logfile << GetTimeStamp() << "ERROR: No response given in CallEvent!" << endl;
 		logfile.close();
 
-		return false; //Default return value
+		return false;
 	}
 
-	//Cast response to bool and return it.
 	return *(bool *)mono_object_unbox(response);
 }
 
 void SampSharp::Unload() {
-	//Cleanup mono runtime
 	mono_jit_cleanup(mono_domain_get());
 }
