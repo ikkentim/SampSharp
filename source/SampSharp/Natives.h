@@ -5,7 +5,6 @@
 #include <sampgdk/a_samp.h>
 #include <sampgdk/a_objects.h>
 #include <sampgdk/a_vehicles.h>
-#include "Events.h"
 
 //
 //a_players string converters
@@ -192,6 +191,14 @@ static inline bool p_GetNetworkStats(MonoString ** retstr, int size) {
 	*retstr = mono_string_new(mono_domain_get(), buffer);
 	return retbool;
 }
+
+static void SAMPGDK_CALL p_TimerCallback(int timerid, void * data) {
+	void *args[2];
+	args[0] = &timerid;
+	args[1] = data;
+	bool response = SampSharp::CallEvent(SampSharp::onTimerTick, args);
+}
+
 static inline int p_SetTimer(int interval, bool repeat, MonoObject * params) {
 	return SetTimer(interval, repeat, p_TimerCallback, params);
 }

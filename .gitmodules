@@ -1,6 +1,6 @@
 [submodule "sampgdk"]
 	path = sampgdk
-	url = git://github.com/Zeex/sampgdk.git
+	url = git://github.com/ikkentim/sampgdk.git
 	ignore = dirty
 [submodule "sdk"]
 	path = sdk

@@ -93,7 +93,6 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Events.h" />
     <ClInclude Include="ConfigReader.h" />
     <ClInclude Include="SampSharp.h" />
     <ClInclude Include="Natives.h" />

@@ -19,7 +19,6 @@ PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
 
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 	//Load plugin
-
 	pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
 
 	//TODO: should check if ::Load succeeds?
@@ -66,37 +65,6 @@ PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL
-OnPublicCall(AMX * amx, const char * name, cell * params)
-{
-	const int param_count = params[0] / sizeof(cell);
-
-	if (strcmp("OnRconCommand", name) == 0)
-	{
-		int
-			len = NULL;
-
-		cell *addr = NULL;
-
-		amx_GetAddr(amx, params[1], &addr);
-		amx_StrLen(addr, &len);
-
-		if (len)
-		{
-			len++;
-
-			char* text = new char[len];
-			amx_GetString(text, addr, 0, len);
-
-
-			delete[] text;
-		}
-		return true;
-	}
-
-	if (strcmp("OnPlayerCommandText", name) == 0)
-	{
-		cout << "PCT" << endl;
-		return false;
-	}
-	return false;
+OnPublicCall(AMX *amx, const char *name, cell *params, cell *retval) {
+	return SampSharp::HandleEvent(amx, name, params, retval);
 }
