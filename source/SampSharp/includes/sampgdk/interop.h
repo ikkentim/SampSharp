@@ -142,12 +142,14 @@ SAMPGDK_API(cell, sampgdk_InvokeNativeV(AMX_NATIVE native,
  *
  * \param amx The AMX instance on which the public function is called.
  * \param name The name of the function.
- * \param params The function's arguments as stored on the AMX stack, with the
- * \c params[0] equal to the number of arguments multiplied by \c sizeof(cell).
+ * \param params The function's arguments as stored on the AMX stack, with
+ * \c params[0] set to the number of arguments multiplied by \c sizeof(cell).
+ * \param retval The function's return value. This parameter can be \c NULL.
  *
  * \returns If returns \c true the callback is executed, otherwise it's ignored.
  */
-SAMPGDK_CALLBACK(bool, OnPublicCall(AMX *amx, const char *name, cell *params));
+SAMPGDK_CALLBACK(bool, OnPublicCall(AMX *amx, const char *name, cell *params,
+                                    cell *retval));
 
 /** @} */
 
