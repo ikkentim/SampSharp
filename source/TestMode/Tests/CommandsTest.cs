@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
@@ -24,5 +23,15 @@ namespace TestMode.Tests
             player.SendClientMessage(Color.Green, "Text written to console!");
             return true;
         }
+
+        [Command("vehicle")]
+        [IntegerParameter("modelid")]
+        public static bool VehicleCommand(Player player, int modelid)
+        {
+            Vehicle.Create(modelid, player.Position + new Vector(0, 0, 1), player.Rotation.Z, -1, -1, -1);
+            return true;
+        }
+
+
     }
 }
