@@ -186,7 +186,7 @@ namespace SampSharp.GameMode.World
         {
             base.Dispose(disposing);
 
-            Native.DestroyObject(Id);
+            Native.DestroyPlayerObject(Player.Id, Id);
         }
 
         public virtual void Edit()
