@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Timer = SampSharp.GameMode.SAMP.Timer;
 
@@ -8,7 +9,8 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            //Proof timers and C# async can run at the same time.
+            //Proof timers and C# async can run at the same time
+            //while the game is still functioning properly
 
             ASyncTestMethod();
 
@@ -17,6 +19,8 @@ namespace TestMode.Tests
             {
                 
             };
+
+            Console.WriteLine("Started async method");
         }
 
         public void ASyncTestMethod()
