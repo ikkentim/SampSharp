@@ -10,7 +10,6 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            Console.WriteLine("RegionsTest loaded");
             Region test = new Region(new Cube(5, 10, 5, 10, 0, 10));
             Region test2 = new Region(new Sphere(new Vector(30, 30, 1), 10));
             Region test3 = new Region(new Square(-10, 0, -10, 0));
@@ -23,6 +22,7 @@ namespace TestMode.Tests
  
             
             }));
+
             test.Enter += (sender, args) => args.Player.SendClientMessage(Color.Red, "Entered test region");
             test.Leave += (sender, args) => args.Player.SendClientMessage(Color.Red, "Left test region");
             test2.Enter += (sender, args) => args.Player.SendClientMessage(Color.White, "Entered test2 region");
@@ -31,7 +31,8 @@ namespace TestMode.Tests
             test3.Leave += (sender, args) => args.Player.SendClientMessage(Color.BlueViolet, "Left test3 region");
             test4.Enter += (sender, args) => args.Player.SendClientMessage(Color.OrangeRed, "Entered test4 region");
             test4.Leave += (sender, args) => args.Player.SendClientMessage(Color.OrangeRed, "Left test4 region");
-            
+
+            Console.WriteLine("RegionsTest loaded");
         }
 
         [Command("coords")]
