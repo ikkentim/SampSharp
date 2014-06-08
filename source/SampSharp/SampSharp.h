@@ -27,25 +27,25 @@ class SampSharp
 public:
 	static void Load(string baseModePath, string gamemodePath, string gameModeNamespace, string gameModeClass, bool debug);
 	static void Unload();
-	static bool CallEvent(MonoMethod * method, void ** params);
+	static bool CallEvent(MonoMethod *method, void ** params);
 	static bool HandleEvent(AMX *amx, const char *name, cell *params, cell *retval);
 
-	static MonoMethod * onTimerTick;
-	static MonoMethod * onTick;
+	static MonoMethod *onTimerTick;
+	static MonoMethod *onTick;
  
 private:
-	static MonoMethod * LoadEvent(const char * cname, const char * name);
+	static MonoMethod *LoadEvent(const char *cname, const char *name);
 	#ifdef _WIN32
 	static void GenerateSymbols(string path);
 	#endif
 
-	static MonoDomain * rootDomain;
+	static MonoDomain *rootDomain;
 
-	static MonoImage * gameModeImage;
-	static MonoImage * baseModeImage;
+	static MonoImage *gameModeImage;
+	static MonoImage *baseModeImage;
 
-	static MonoClass * gameModeClassType;
-	static MonoClass * baseModeClassType;
+	static MonoClass *gameModeClassType;
+	static MonoClass *baseModeClassType;
 
 	static uint32_t gameModeHandle;
 

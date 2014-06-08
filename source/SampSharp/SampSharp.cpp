@@ -6,16 +6,16 @@
 
 using namespace std;
 
-MonoMethod * SampSharp::onTimerTick;
-MonoMethod * SampSharp::onTick;
+MonoMethod *SampSharp::onTimerTick;
+MonoMethod *SampSharp::onTick;
 
-MonoDomain * SampSharp::rootDomain;
+MonoDomain *SampSharp::rootDomain;
 
-MonoImage * SampSharp::gameModeImage;
-MonoImage * SampSharp::baseModeImage;
+MonoImage *SampSharp::gameModeImage;
+MonoImage *SampSharp::baseModeImage;
 
-MonoClass * SampSharp::gameModeClassType;
-MonoClass * SampSharp::baseModeClassType;
+MonoClass *SampSharp::gameModeClassType;
+MonoClass *SampSharp::baseModeClassType;
 
 uint32_t SampSharp::gameModeHandle;
 
@@ -52,7 +52,7 @@ void SampSharp::Load(string baseModePath, string gameModePath, string gameModeNa
 	baseModeClassType = mono_class_from_name(baseModeImage, "SampSharp.GameMode", "BaseMode");
 	gameModeClassType = mono_class_from_name(gameModeImage, gameModeNamespace.c_str(), gameModeClass.c_str());
 
-	MonoObject * gameModeObject = mono_object_new(mono_domain_get(), gameModeClassType);
+	MonoObject *gameModeObject = mono_object_new(mono_domain_get(), gameModeClassType);
 	gameModeHandle = mono_gchandle_new(gameModeObject, true);
 	mono_runtime_object_init(gameModeObject);
 
@@ -69,9 +69,9 @@ void SampSharp::GenerateSymbols(string path)
 	char *cmdbpath = new char[mdbpath.size() + 1];
 	strcpy(cmdbpath, mdbpath.c_str());
 	
-	MonoAssembly * mdbconverter = mono_domain_assembly_open(rootDomain, cmdbpath);
+	MonoAssembly *mdbconverter = mono_domain_assembly_open(rootDomain, cmdbpath);
 	if (mdbconverter) {
-		char * argv[2];
+		char *argv[2];
 		argv[0] = cmdbpath;
 		argv[1] = (char *) path.c_str();
 
@@ -83,7 +83,7 @@ void SampSharp::GenerateSymbols(string path)
 }
 #endif
 
-char * GetTimeStamp() {
+char *GetTimeStamp() {
 	//Get current time
 	time_t now = time(0);
 
@@ -92,19 +92,19 @@ char * GetTimeStamp() {
 	
 	strftime(timestamp, sizeof(timestamp), "[%d/%m/%Y %H:%M:%S]", localtime(&now));
 
-	char * timestamp2 = new char[32];
+	char *timestamp2 = new char[32];
 	strcpy(timestamp2, timestamp);
 	return  timestamp2;
 }
 
-MonoMethod * SampSharp::LoadEvent(const char * className, const char * name) {
-	char * gamemodeBuffer = new char[128];
-	char * basemodeBuffer = new char[128];
+MonoMethod *SampSharp::LoadEvent(const char *className, const char *name) {
+	char *gamemodeBuffer = new char[128];
+	char *basemodeBuffer = new char[128];
 	sprintf(gamemodeBuffer, "%s:%s", className, name);
 	sprintf(basemodeBuffer, "BaseMode:%s", name);
 
-	MonoMethodDesc * methodDescription = mono_method_desc_new(gamemodeBuffer, false);
-	MonoMethod * method = mono_method_desc_search_in_image(methodDescription, gameModeImage);
+	MonoMethodDesc *methodDescription = mono_method_desc_new(gamemodeBuffer, false);
+	MonoMethod *method = mono_method_desc_search_in_image(methodDescription, gameModeImage);
 	mono_method_desc_free(methodDescription);
 
 	if (!method) {
@@ -135,7 +135,7 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 
 	if (events.find(name) == events.end())
 	{
-		MonoMethod * m_method = mono_class_get_method_from_name(gameModeClassType, name, param_count);
+		MonoMethod *m_method = mono_class_get_method_from_name(gameModeClassType, name, param_count);
 		bool useBaseModeImage = false;
 		if (!m_method) {
 			m_method = mono_class_get_method_from_name(baseModeClassType, name, param_count);
@@ -148,9 +148,9 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 		}
 
 		uint32_t token = mono_method_get_token(m_method);
-		MonoMethodSignature * sig = mono_method_get_signature(m_method, useBaseModeImage ? baseModeImage : gameModeImage, token);
+		MonoMethodSignature *sig = mono_method_get_signature(m_method, useBaseModeImage ? baseModeImage : gameModeImage, token);
 		
-		void * iter = NULL;
+		void *iter = NULL;
 		string format = "";
 		MonoType* type = NULL;
 		
@@ -175,13 +175,13 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 			}
 		}
 		
-		event_t * event_add = new event_t;
+		event_t *event_add = new event_t;
 		event_add->method = m_method;
 		event_add->format = format;
 		events[name] = event_add;
 	}
 
-	event_t * event_p = events[name];
+	event_t *event_p = events[name];
 	
 	if (event_p)
 	{
@@ -191,7 +191,7 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 			return false;
 		}
 		else {
-			void * args[16];
+			void *args[16];
 			for (int i = 0; i < param_count; i++) {
 				switch (event_p->format[i])
 				{
@@ -202,7 +202,7 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 					break;
 				case 's':
 					int len = NULL;
-					cell * addr = NULL;
+					cell *addr = NULL;
 
 					amx_GetAddr(amx, params[1], &addr);
 					amx_StrLen(addr, &len);
@@ -234,7 +234,7 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 
 bool SampSharp::CallEvent(MonoMethod* method, void **params) {
 
-	MonoObject * exception = NULL;
+	MonoObject *exception = NULL;
 	
 	if (!method) {
 		ofstream logfile;
