@@ -204,7 +204,7 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 					int len = NULL;
 					cell *addr = NULL;
 
-					amx_GetAddr(amx, params[1], &addr);
+					amx_GetAddr(amx, params[i + 1], &addr);
 					amx_StrLen(addr, &len);
 
 					if (len) {
