@@ -36,7 +36,8 @@ namespace TestMode
                 new RegionsTest(),
                 new MenuTest(),
                 new CheckpointTest(),
-                new DisposureTest()
+                new DisposureTest(),
+                new DialogTest(),
             };
 
             foreach (var test in tests)
