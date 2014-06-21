@@ -44,6 +44,7 @@
     <Compile Include="Tests\ASyncTest.cs" />
     <Compile Include="Tests\CheckpointTest.cs" />
     <Compile Include="Tests\CommandsTest.cs" />
+    <Compile Include="Tests\DialogTest.cs" />
     <Compile Include="Tests\DisposureTest.cs" />
     <Compile Include="Tests\ITest.cs" />
     <Compile Include="Tests\MenuTest.cs" />
