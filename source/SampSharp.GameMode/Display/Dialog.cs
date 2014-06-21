@@ -175,7 +175,7 @@ namespace SampSharp.GameMode.Display
             if(player == null)
                 throw new NullReferenceException("player cannot be null");
 
-            OpenDialogs.Add(player.Id, this);
+            OpenDialogs[player.Id] = this;
 
             Native.ShowPlayerDialog(player.Id, DialogId, (int) Style, Caption, Message, Button1,
                 Button2 ?? string.Empty);
@@ -190,7 +190,8 @@ namespace SampSharp.GameMode.Display
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
-            OpenDialogs.Remove(player.Id);
+            if (OpenDialogs.ContainsKey(player.Id))
+                OpenDialogs.Remove(player.Id);
 
             Native.ShowPlayerDialog(player.Id, DialogHideId, (int) DialogStyle.MessageBox, string.Empty,
                 string.Empty, string.Empty, string.Empty);
@@ -206,7 +207,7 @@ namespace SampSharp.GameMode.Display
             if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
-            return OpenDialogs[player.Id];
+            return OpenDialogs.ContainsKey(player.Id) ? OpenDialogs[player.Id] : null;
         }
 
         /// <summary>
@@ -215,7 +216,8 @@ namespace SampSharp.GameMode.Display
         /// <param name="e">An <see cref="DialogResponseEventArgs" /> that contains the event data. </param>
         public virtual void OnResponse(DialogResponseEventArgs e)
         {
-            OpenDialogs.Remove(e.PlayerId);
+            if (OpenDialogs.ContainsKey(e.PlayerId))
+                OpenDialogs.Remove(e.PlayerId);
 
             if (Response != null)
                 Response(this, e);
