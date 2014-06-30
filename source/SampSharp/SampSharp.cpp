@@ -186,8 +186,10 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 	if (event_p)
 	{
 		if (!param_count) {
-			int retint = SampSharp::CallEvent(event_p->method, NULL) ? 1 : 0;
-			*retval = retint;
+			int retint = SampSharp::CallEvent(event_p->method, NULL);
+			if (retint != -1) {
+				*retval = retint;
+			}
 			return false;
 		}
 		else {
@@ -222,8 +224,11 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 				}
 			}
 
-			int retint = SampSharp::CallEvent(event_p->method, args) ? 1 : 0;
-			*retval = retint;
+			int retint = SampSharp::CallEvent(event_p->method, args);
+
+			if (retint != -1) {
+				*retval = retint;
+			}
 			return false;
 		}
 		return false;
@@ -232,7 +237,7 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 	return true;
 }
 
-bool SampSharp::CallEvent(MonoMethod* method, void **params) {
+int SampSharp::CallEvent(MonoMethod* method, void **params) {
 
 	MonoObject *exception = NULL;
 	
@@ -257,20 +262,14 @@ bool SampSharp::CallEvent(MonoMethod* method, void **params) {
 		logfile << GetTimeStamp() << " Exception thrown:" << "\r\n" << stacktrace << "\r\n";
 		logfile.close();
 
-		return false;
+		return -1;
 	}
 
 	if (!response) {
-		ofstream logfile;
-		logfile.open("SampSharp_errors.log", ios::app);
-		cout << "[SampSharp] ERROR: No response given in CallEvent!" << endl;
-		logfile << GetTimeStamp() << "ERROR: No response given in CallEvent!" << endl;
-		logfile.close();
-
-		return false;
+		return -1;
 	}
 
-	return *(bool *)mono_object_unbox(response);
+	return *(bool *)mono_object_unbox(response) == true ? 1 : 0;;
 }
 
 void SampSharp::Unload() {

@@ -27,7 +27,7 @@ class SampSharp
 public:
 	static void Load(string baseModePath, string gamemodePath, string gameModeNamespace, string gameModeClass, bool debug);
 	static void Unload();
-	static bool CallEvent(MonoMethod *method, void ** params);
+	static int CallEvent(MonoMethod *method, void ** params);
 	static bool HandleEvent(AMX *amx, const char *name, cell *params, cell *retval);
 
 	static MonoMethod *onTimerTick;
