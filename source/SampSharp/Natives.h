@@ -92,9 +92,9 @@ static inline bool p_GetAnimationName(int index, MonoString ** animlib, int anim
 static inline bool p_SendClientMessage(int playerid, int color, MonoString *message) {
 	return sampgdk_SendClientMessage(playerid, color, mono_string_to_utf8(message));
 }
-static inline bool p_SendClientMessageToAll(int color, MonoString *message) {
-	return sampgdk_SendClientMessageToAll(color, mono_string_to_utf8(message));
-}
+//static inline bool p_SendClientMessageToAll(int color, MonoString *message) {
+//	return sampgdk_SendClientMessageToAll(color, mono_string_to_utf8(message));
+//}
 static inline bool p_SendPlayerMessageToPlayer(int playerid, int senderid, MonoString *message) {
 	return sampgdk_SendPlayerMessageToPlayer(playerid, senderid, mono_string_to_utf8(message));
 }
@@ -232,8 +232,22 @@ static inline bool p_SetVehicleNumberPlate(int vehicleid, MonoString *numberplat
 
 //
 // serverlog string converters 
+
 static inline void p_Print(MonoString *str) {
-	sampgdk::logprintf(mono_string_to_utf8(str));
+	wchar_t *wstr = (wchar_t *)mono_string_to_utf16(str);
+	char *wcchar = (char *)wstr;
+	wcstombs(wcchar, wstr, mono_string_length(str));
+
+	sampgdk_logprintf(wcchar);
+}
+
+static inline bool p_SendClientMessageToAll(int color, MonoString *message) {
+
+	wchar_t *wstr = (wchar_t *)mono_string_to_utf16(message);
+	char *wcchar = (char *)wstr;
+	wcstombs(wcchar, wstr, mono_string_length(message));
+
+	return sampgdk_SendClientMessageToAll(color, wcchar);
 }
 
 static void LoadNatives()
@@ -580,4 +594,5 @@ static void LoadNatives()
 	//
 	// logging
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::Print", (void *)p_Print);
+
 }

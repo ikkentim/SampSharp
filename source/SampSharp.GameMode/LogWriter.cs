@@ -26,7 +26,7 @@ namespace SampSharp.GameMode
     {
         public override Encoding Encoding
         {
-            get { return Encoding.UTF8; }
+            get { return Encoding.Default; }
         }
 
         #region WriteLine
@@ -146,7 +146,7 @@ namespace SampSharp.GameMode
         public override void Write(string value)
         {
             if (value != null)
-                Native.Print(value.TrimEnd('\r', '\n'));
+                Native.Print(value);
         }
 
         public override void Write(bool value)
