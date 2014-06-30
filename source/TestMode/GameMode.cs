@@ -38,6 +38,7 @@ namespace TestMode
                 new CheckpointTest(),
                 new DisposureTest(),
                 new DialogTest(),
+                new CharsetTest(),
             };
 
             foreach (var test in tests)
