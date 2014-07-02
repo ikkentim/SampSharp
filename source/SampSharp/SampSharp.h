@@ -16,9 +16,16 @@
 
 using namespace std;
 
+enum paramtypes_t { PARAM_INT, PARAM_FLOAT, PARAM_BOOL, PARAM_STRING, PARAM_INT_ARRAY };
+struct param_t {
+	paramtypes_t type;
+	int length_idx;
+};
+typedef map<int, param_t *> ParamMap;
+
 struct event_t {
 	MonoMethod *method;
-	string format;
+	ParamMap params;
 };
 typedef map<string, event_t *> EventMap;
 
@@ -39,6 +46,8 @@ private:
 	static void GenerateSymbols(string path);
 	#endif
 
+	static int SampSharp::GetParamLengthIndex(MonoMethod *method, int idx);
+
 	static MonoDomain *rootDomain;
 
 	static MonoImage *gameModeImage;
@@ -46,6 +55,9 @@ private:
 
 	static MonoClass *gameModeClassType;
 	static MonoClass *baseModeClassType;
+	static MonoClass *parameterLengthAttributeClassType;
+	
+	static MonoMethod *parameterLengthAttributeIndexGetMethod;
 
 	static uint32_t gameModeHandle;
 
