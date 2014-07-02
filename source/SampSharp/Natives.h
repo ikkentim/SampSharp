@@ -8,6 +8,7 @@
 
 string mono_string_to_string(MonoString *str)
 {
+	//TODO: seems a little sloppy, should research better solutions.
 	mono_unichar2 *chl = mono_string_chars(str);
 	string out("");
 	for (int i = 0; i < mono_string_length(str); i++) {

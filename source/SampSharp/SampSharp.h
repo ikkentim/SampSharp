@@ -65,7 +65,7 @@ private:
 	static MonoClass *baseModeClassType;
 	static MonoClass *parameterLengthAttributeClassType;
 	
-	static MonoMethod *parameterLengthAttributeIndexGetMethod;
+	static MonoMethod *parameterLengthAttributeGetIndexMethod;
 
 	static uint32_t gameModeHandle;
 

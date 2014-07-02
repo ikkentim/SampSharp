@@ -1,11 +1,9 @@
 #include <iostream>
-
 #include <sampgdk/core.h>
 #include <sampgdk/a_samp.h>
 
 #include "SampSharp.h"
 #include "ConfigReader.h"
-
 #include "amxplugin.cpp"
 
 using namespace std;
@@ -13,17 +11,20 @@ using sampgdk::logprintf;
 
 extern void *pAMXFunctions;
 
-PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
+PLUGIN_EXPORT unsigned int PLUGIN_CALL
+Supports() {
 	return sampgdk::Supports() | SUPPORTS_PROCESS_TICK;
 }
 
-PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
+PLUGIN_EXPORT bool PLUGIN_CALL
+Load(void **ppData) {
 	pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
 
-	//TODO: should check if ::Load succeeds?
-	sampgdk::Load(ppData);
+	if (!sampgdk::Load(ppData)) {
+		return false;
+	}
 
-	//read config file
+	//read config
 	ConfigReader server_cfg("server.cfg");
 	string basemode_path = "plugins/SampSharp.GameMode.dll"; 
 	string gamemode_path = "plugins/GameMode.dll";
@@ -37,16 +38,6 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 	server_cfg.GetOption("gamemode_class", gamemode_class);
 	server_cfg.GetOption("gamemode_debug", gamemode_debug);
 
-	ofstream logfile;
-	logfile.open("SampSharp_errors.log", ios::app);
-
-
-	for (int i = 0; i < 256; i++)
-	{
-		char j = (char)i;
-		logfile << i << "::" << j << endl;
-	}
-	logfile.close();
 	//load gamemode
 	logprintf("[SampSharp] Loading gamemode: %s::%s at \"%s\".", 
 		(char *)gamemode_namespace.c_str(), 
@@ -63,12 +54,14 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 	return true;
 }
 
-PLUGIN_EXPORT void PLUGIN_CALL Unload() {
+PLUGIN_EXPORT void PLUGIN_CALL
+Unload() {
 	SampSharp::Unload();
 	sampgdk::Unload();
 }
 
-PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
+PLUGIN_EXPORT void PLUGIN_CALL
+ProcessTick() {
 	sampgdk::ProcessTick();
 	SampSharp::CallEvent(SampSharp::onTick, NULL);
 }
