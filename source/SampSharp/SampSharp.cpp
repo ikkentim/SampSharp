@@ -18,7 +18,7 @@ MonoClass *SampSharp::gameModeClassType;
 MonoClass *SampSharp::baseModeClassType;
 MonoClass *SampSharp::parameterLengthAttributeClassType;
 
-MonoMethod *SampSharp::parameterLengthAttributeIndexGetMethod;
+MonoMethod *SampSharp::parameterLengthAttributeGetIndexMethod;
 
 uint32_t SampSharp::gameModeHandle;
 
@@ -50,7 +50,7 @@ void SampSharp::Load(string baseModePath, string gameModePath, string gameModeNa
 	gameModeClassType = mono_class_from_name(gameModeImage, gameModeNamespace.c_str(), gameModeClass.c_str());
 
 	parameterLengthAttributeClassType = mono_class_from_name(baseModeImage, "SampSharp.GameMode", "ParameterLengthAttribute");
-	parameterLengthAttributeIndexGetMethod = mono_property_get_get_method(mono_class_get_property_from_name(parameterLengthAttributeClassType, "Index"));
+	parameterLengthAttributeGetIndexMethod = mono_property_get_get_method(mono_class_get_property_from_name(parameterLengthAttributeClassType, "Index"));
 
 	MonoObject *gameModeObject = mono_object_new(mono_domain_get(), gameModeClassType);
 	gameModeHandle = mono_gchandle_new(gameModeObject, true);
@@ -142,7 +142,7 @@ int SampSharp::GetParamLengthIndex(MonoMethod *method, int idx) {
 		return -1;
 	}
 
-	return *(int*)mono_object_unbox(mono_runtime_invoke(parameterLengthAttributeIndexGetMethod, attrObj, NULL, NULL));
+	return *(int*)mono_object_unbox(mono_runtime_invoke(parameterLengthAttributeGetIndexMethod, attrObj, NULL, NULL));
 }
 bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retval) {
 	const int param_count = params[0] / sizeof(cell);
