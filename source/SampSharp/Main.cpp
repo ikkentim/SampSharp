@@ -37,6 +37,16 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 	server_cfg.GetOption("gamemode_class", gamemode_class);
 	server_cfg.GetOption("gamemode_debug", gamemode_debug);
 
+	ofstream logfile;
+	logfile.open("SampSharp_errors.log", ios::app);
+
+
+	for (int i = 0; i < 256; i++)
+	{
+		char j = (char)i;
+		logfile << i << "::" << j << endl;
+	}
+	logfile.close();
 	//load gamemode
 	logprintf("[SampSharp] Loading gamemode: %s::%s at \"%s\".", 
 		(char *)gamemode_namespace.c_str(), 

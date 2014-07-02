@@ -145,12 +145,6 @@ int SampSharp::GetParamLengthIndex(MonoMethod *method, int idx) {
 	return *(int*)mono_object_unbox(mono_runtime_invoke(parameterLengthAttributeIndexGetMethod, attrObj, NULL, NULL));
 }
 bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retval) {
-	if (strcmp(name, "OnPlayerConnect") == 0) {
-		cout << "Char test: \u00D6" << endl;
-		SendClientMessageToAll(-1, "Char test: \u00D6");
-		SendClientMessageToAll(-1, "Test2: \x0089");
-	}
-
 	const int param_count = params[0] / sizeof(cell);
 
 	if (strlen(name) == 0 || param_count > 16) {
