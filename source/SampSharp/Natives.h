@@ -196,7 +196,7 @@ static void SAMPGDK_CALL p_TimerCallback(int timerid, void *data) {
 	void *args[2];
 	args[0] = &timerid;
 	args[1] = data;
-	bool response = SampSharp::CallEvent(SampSharp::onTimerTick, args);
+	SampSharp::CallEvent(SampSharp::onTimerTick, args);
 }
 
 static inline int p_SetTimer(int interval, bool repeat, MonoObject *params) {

@@ -51,7 +51,6 @@ namespace TestMode
         {
             Console.WriteLine("[DEBUG-RCON] " + command);
 
-            return true;
             return base.OnRconCommand(command);
         }
     }
