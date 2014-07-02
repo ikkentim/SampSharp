@@ -126,8 +126,8 @@ MonoMethod *SampSharp::LoadEvent(const char *className, const char *name) {
 
 bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retval) {
 	const int param_count = params[0] / sizeof(cell);
-
-	if (param_count > 16) {
+	
+	if (strlen(name) == 0 || param_count > 16) {
 		return true;
 	}
 
