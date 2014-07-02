@@ -64,35 +64,7 @@ PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
 	SampSharp::CallEvent(SampSharp::onTick, NULL);
 }
 
-//Debug
-void SAMPGDK_CALL PrintTickCountTimer(int timerid, void *params) {
-	AMX *amx = (AMX *)params;
-	int idx;
-
-	cell arr[] = { 100, 4, 33 };
-	if (!amx_FindPublic(amx, "OnPawnCallbackEmitted", &idx))
-	{
-		cell
-			amx_addr,
-			*phys_addr;
-
-		amx_Push(amx, 3);
-
-		amx_Allot(amx, sizeof(arr) / sizeof(cell), &amx_addr, &phys_addr);
-		memcpy(phys_addr, arr, sizeof(arr));
-		amx_Push(amx, amx_addr);
-
-		amx_Exec(amx, NULL, idx);
-	}
-}
-
 PLUGIN_EXPORT bool PLUGIN_CALL
 OnPublicCall(AMX *amx, const char *name, cell *params, cell *retval) {
-	cout << name << endl;
-	//Debug
-	if (strcmp(name, "OnGameModeInit") == 0) {
-		SetTimer(1000, 0, PrintTickCountTimer, amx);
-	}
-
 	return SampSharp::HandleEvent(amx, name, params, retval);
 }

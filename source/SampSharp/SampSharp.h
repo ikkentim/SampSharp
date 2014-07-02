@@ -16,7 +16,15 @@
 
 using namespace std;
 
-enum paramtypes_t { PARAM_INT, PARAM_FLOAT, PARAM_BOOL, PARAM_STRING, PARAM_INT_ARRAY };
+enum paramtypes_t { 
+	PARAM_INT,
+	PARAM_FLOAT,
+	PARAM_BOOL,
+	PARAM_STRING,
+	PARAM_INT_ARRAY,
+	PARAM_FLOAT_ARRAY,
+	PARAM_BOOL_ARRAY
+};
 struct param_t {
 	paramtypes_t type;
 	int length_idx;
