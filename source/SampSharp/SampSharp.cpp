@@ -153,6 +153,7 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 
 	mono_thread_attach(SampSharp::rootDomain);
 
+	//detect unknown methods
 	if (events.find(name) == events.end())
 	{
 		//find method
@@ -178,8 +179,6 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 		MonoMethodSignature *sig = mono_method_get_signature(m_method, image, mono_method_get_token(m_method));
 		while (type = mono_signature_get_params(sig, &iter)) {
 			string type_name = mono_type_get_name(type);
-
-			
 
 			if (!type_name.compare("System.Int32")) {
 				param_t *par = new param_t;
@@ -214,6 +213,30 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 				par->length_idx = index;
 	
 			}
+			else if (!type_name.compare("System.Single[]")) {
+				param_t *par = new param_t;
+				par->type = PARAM_FLOAT_ARRAY;
+				params[iter_idx] = par;
+
+				int index = GetParamLengthIndex(m_method, iter_idx);
+				if (index == -1) {
+					events[name] = NULL;
+					return true;
+				}
+				par->length_idx = index;
+			}
+			else if (!type_name.compare("System.Boolean[]")) {
+				param_t *par = new param_t;
+				par->type = PARAM_BOOL_ARRAY;
+				params[iter_idx] = par;
+
+				int index = GetParamLengthIndex(m_method, iter_idx);
+				if (index == -1) {
+					events[name] = NULL;
+					return true;
+				}
+				par->length_idx = index;
+			}
 			else {
 				ofstream logfile;
 				logfile.open("SampSharp_errors.log", ios::app);
@@ -235,6 +258,7 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 
 	event_t *event_p = events[name];
 	
+	//call known events
 	if (event_p)
 	{
 		if (!param_count) {
@@ -248,6 +272,7 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 			void *args[16];
 			int len = NULL;
 			cell *addr = NULL;
+			MonoArray *arr;
 
 			for (int i = 0; i < param_count; i++) {
 				switch (event_p->params[i]->type)
@@ -274,9 +299,8 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 					}
 					break;
 				case PARAM_INT_ARRAY:
-					int len = params[event_p->params[i]->length_idx];
-					cout << len << endl;
-					MonoArray *arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
+					len = params[event_p->params[i]->length_idx];
+					arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
 
 					if (len > 0) {
 						cell* addr = NULL;
@@ -284,6 +308,34 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 
 						for (int i = 0; i < len; i++) {
 							mono_array_set(arr, int, i, *(addr + i));
+						}
+					}
+					args[i] = arr;
+					break;
+				case PARAM_FLOAT_ARRAY:
+					len = params[event_p->params[i]->length_idx];
+					arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
+
+					if (len > 0) {
+						cell* addr = NULL;
+						amx_GetAddr(amx, params[i + 1], &addr);
+
+						for (int i = 0; i < len; i++) {
+							mono_array_set(arr, float, i, amx_ctof(*(addr + i)));
+						}
+					}
+					args[i] = arr;
+					break;
+				case PARAM_BOOL_ARRAY:
+					len = params[event_p->params[i]->length_idx];
+					arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
+
+					if (len > 0) {
+						cell* addr = NULL;
+						amx_GetAddr(amx, params[i + 1], &addr);
+
+						for (int i = 0; i < len; i++) {
+							mono_array_set(arr, bool, i, *(addr + i));
 						}
 					}
 					args[i] = arr;
