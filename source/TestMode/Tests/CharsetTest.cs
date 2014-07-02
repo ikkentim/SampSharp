@@ -12,7 +12,6 @@ namespace TestMode.Tests
         {
             Native.Print(": \u00D6");
             Native.Print(": Ä ä Ö ö Ü ü ß ...");
-            gameMode.PlayerConnected += (sender, args) => CharsetCommand(args.Player);
         }
 
         [Command("charset")]
