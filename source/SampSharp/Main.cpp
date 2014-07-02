@@ -18,13 +18,12 @@ PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
-	//Load plugin
 	pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
 
 	//TODO: should check if ::Load succeeds?
 	sampgdk::Load(ppData);
 
-	//Load proxy information from config
+	//read config file
 	ConfigReader server_cfg("server.cfg");
 	string basemode_path = "plugins/SampSharp.GameMode.dll"; 
 	string gamemode_path = "plugins/GameMode.dll";
@@ -38,11 +37,11 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 	server_cfg.GetOption("gamemode_class", gamemode_class);
 	server_cfg.GetOption("gamemode_debug", gamemode_debug);
 
-	//Load Mono
+	//load gamemode
 	logprintf("[SampSharp] Loading gamemode: %s::%s at \"%s\".", 
-		(char*)gamemode_namespace.c_str(), 
-		(char*)gamemode_class.c_str(), 
-		(char*)gamemode_path.c_str());
+		(char *)gamemode_namespace.c_str(), 
+		(char *)gamemode_class.c_str(), 
+		(char *)gamemode_path.c_str());
 
 	SampSharp::Load((char *)basemode_path.c_str(),
 		(char *)gamemode_path.c_str(),
