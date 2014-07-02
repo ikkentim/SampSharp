@@ -31,13 +31,13 @@ namespace TestMode
 
             List<ITest> tests = new List<ITest>
             {
-                new CommandsTest(),
-                new ASyncTest(),
-                new RegionsTest(),
-                new MenuTest(),
-                new CheckpointTest(),
-                new DisposureTest(),
-                new DialogTest(),
+                //new CommandsTest(),
+                //new ASyncTest(),
+                //new RegionsTest(),
+                //new MenuTest(),
+                //new CheckpointTest(),
+                //new DisposureTest(),
+                //new DialogTest(),
                 new CharsetTest(),
             };
 
