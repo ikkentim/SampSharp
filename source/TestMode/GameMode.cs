@@ -50,8 +50,12 @@ namespace TestMode
         {
             Console.WriteLine("[DEBUG-RCON] " + command);
 
-            return true;
             return base.OnRconCommand(command);
+        }
+
+        public virtual void OnPawnCallbackEmitted([ParameterLength(2)]int[] xyz, int len)
+        {
+            Console.WriteLine("Emit: {0} {1} {2}", xyz[0], xyz[1], xyz[2]);
         }
     }
 }

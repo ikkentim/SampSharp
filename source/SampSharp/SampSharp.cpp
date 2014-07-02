@@ -16,6 +16,9 @@ MonoImage *SampSharp::baseModeImage;
 
 MonoClass *SampSharp::gameModeClassType;
 MonoClass *SampSharp::baseModeClassType;
+MonoClass *SampSharp::parameterLengthAttributeClassType;
+
+MonoMethod *SampSharp::parameterLengthAttributeIndexGetMethod;
 
 uint32_t SampSharp::gameModeHandle;
 
@@ -24,16 +27,13 @@ EventMap SampSharp::events;
 void SampSharp::Load(string baseModePath, string gameModePath, string gameModeNamespace, string gameModeClass, bool debug) {
 
 	#ifdef _WIN32
-	//On windows, use the embedded mono tools
 	mono_set_dirs(PathUtil::GetLibDirectory().c_str(), PathUtil::GetConfigDirectory().c_str());
 	#endif
 
 	mono_debug_init(MONO_DEBUG_FORMAT_MONO);
 
-	//Initialize mono runtime
 	rootDomain = mono_jit_init(PathUtil::GetPathInBin(gameModePath).c_str());
 
-	//Generate symbols if needed
 	#ifdef _WIN32
 	if (debug == true) {
 		GenerateSymbols(baseModePath);
@@ -41,22 +41,21 @@ void SampSharp::Load(string baseModePath, string gameModePath, string gameModeNa
 	}
 	#endif
 
-	//Load the gamemode's assembly
 	gameModeImage = mono_assembly_get_image(mono_domain_assembly_open(mono_domain_get(), (char *)PathUtil::GetPathInBin(gameModePath).c_str()));
 	baseModeImage = mono_assembly_get_image(mono_domain_assembly_open(mono_domain_get(), (char *)PathUtil::GetPathInBin(baseModePath).c_str()));
 
-	//Load all sa-mp natives
 	LoadNatives(); 
 
-	//Create instance of the gamemode's class
 	baseModeClassType = mono_class_from_name(baseModeImage, "SampSharp.GameMode", "BaseMode");
 	gameModeClassType = mono_class_from_name(gameModeImage, gameModeNamespace.c_str(), gameModeClass.c_str());
+
+	parameterLengthAttributeClassType = mono_class_from_name(baseModeImage, "SampSharp.GameMode", "ParameterLengthAttribute");
+	parameterLengthAttributeIndexGetMethod = mono_property_get_get_method(mono_class_get_property_from_name(parameterLengthAttributeClassType, "Index"));
 
 	MonoObject *gameModeObject = mono_object_new(mono_domain_get(), gameModeClassType);
 	gameModeHandle = mono_gchandle_new(gameModeObject, true);
 	mono_runtime_object_init(gameModeObject);
 
-	//Load tick events
 	onTimerTick = LoadEvent(gameModeClass.c_str(), "OnTimerTick");
 	onTick = LoadEvent(gameModeClass.c_str(), "OnTick");
 }
@@ -84,10 +83,7 @@ void SampSharp::GenerateSymbols(string path)
 #endif
 
 char *GetTimeStamp() {
-	//Get current time
 	time_t now = time(0);
-
-	//Format timestamp 
 	char timestamp[32];
 	
 	strftime(timestamp, sizeof(timestamp), "[%d/%m/%Y %H:%M:%S]", localtime(&now));
@@ -124,9 +120,33 @@ MonoMethod *SampSharp::LoadEvent(const char *className, const char *name) {
 	return method;
 }
 
+int SampSharp::GetParamLengthIndex(MonoMethod *method, int idx) {
+	
+	MonoCustomAttrInfo *attr = mono_custom_attrs_from_param(method, idx + 1);
+	if (!attr) {
+		ofstream logfile;
+		logfile.open("SampSharp_errors.log", ios::app);
+		cout << "[SampSharp] ERROR: No attribute info for " << mono_method_get_name(method) << "@" << idx << endl;
+		logfile << GetTimeStamp() << "ERROR: No attribute info for " << mono_method_get_name(method) << "@" << idx << endl;
+		logfile.close();
+		return -1;
+	}
+
+	MonoObject *attrObj = mono_custom_attrs_get_attr(attr, parameterLengthAttributeClassType);
+	if (!attrObj) {
+		ofstream logfile;
+		logfile.open("SampSharp_errors.log", ios::app);
+		cout << "[SampSharp] ERROR: Array parameter has no specified size: " << mono_method_get_name(method) << "@" << idx << endl;
+		logfile << GetTimeStamp() << "ERROR: Array parameter has no specified size: " << mono_method_get_name(method) << "@" << idx << endl;
+		logfile.close();
+		return -1;
+	}
+
+	return *(int*)mono_object_unbox(mono_runtime_invoke(parameterLengthAttributeIndexGetMethod, attrObj, NULL, NULL));
+}
 bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retval) {
 	const int param_count = params[0] / sizeof(cell);
-	
+
 	if (strlen(name) == 0 || param_count > 16) {
 		return true;
 	}
@@ -135,11 +155,13 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 
 	if (events.find(name) == events.end())
 	{
+		//find method
 		MonoMethod *m_method = mono_class_get_method_from_name(gameModeClassType, name, param_count);
-		bool useBaseModeImage = false;
+		
+		MonoImage *image = gameModeImage;
 		if (!m_method) {
 			m_method = mono_class_get_method_from_name(baseModeClassType, name, param_count);
-			useBaseModeImage = true;
+			image = baseModeImage;
 		}
 
 		if (!m_method){
@@ -147,37 +169,67 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 			return true;
 		}
 
-		uint32_t token = mono_method_get_token(m_method);
-		MonoMethodSignature *sig = mono_method_get_signature(m_method, useBaseModeImage ? baseModeImage : gameModeImage, token);
-		
+		//iterate params
 		void *iter = NULL;
-		string format = "";
+		int iter_idx = 0;
+		ParamMap params;
+
 		MonoType* type = NULL;
-		
+		MonoMethodSignature *sig = mono_method_get_signature(m_method, image, mono_method_get_token(m_method));
 		while (type = mono_signature_get_params(sig, &iter)) {
 			string type_name = mono_type_get_name(type);
 
+			
+
 			if (!type_name.compare("System.Int32")) {
-				format.append("i");	
+				param_t *par = new param_t;
+				par->type = PARAM_INT;
+				params[iter_idx] = par;
 			}
 			else if (!type_name.compare("System.Single")) {
-				format.append("f");
+				param_t *par = new param_t;
+				par->type = PARAM_FLOAT;
+				params[iter_idx] = par;
 			}
 			else if (!type_name.compare("System.String")) {
-				format.append("s");
+				param_t *par = new param_t;
+				par->type = PARAM_STRING;
+				params[iter_idx] = par;
 			}
 			else if (!type_name.compare("System.Boolean")) {
-				format.append("b");
+				param_t *par = new param_t;
+				par->type = PARAM_BOOL;
+				params[iter_idx] = par;
+			}
+			else if (!type_name.compare("System.Int32[]")) {
+				param_t *par = new param_t;
+				par->type = PARAM_INT_ARRAY;
+				params[iter_idx] = par;
+				
+				int index = GetParamLengthIndex(m_method, iter_idx);
+				if (index == -1) {
+					events[name] = NULL;
+					return true;
+				}
+				par->length_idx = index;
+	
 			}
 			else {
+				ofstream logfile;
+				logfile.open("SampSharp_errors.log", ios::app);
+				cout << "[SampSharp] ERROR: Incompatible parameter type: " << type_name << " in " << name << endl;
+				logfile << GetTimeStamp() << "ERROR: Incompatible parameter type: " << type_name << " in " << name << endl;
+				logfile.close();
 				events[name] = NULL;
 				return true;
 			}
+
+			iter_idx++;
 		}
 		
 		event_t *event_add = new event_t;
 		event_add->method = m_method;
-		event_add->format = format;
+		event_add->params = params;
 		events[name] = event_add;
 	}
 
@@ -194,18 +246,18 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 		}
 		else {
 			void *args[16];
+			int len = NULL;
+			cell *addr = NULL;
+
 			for (int i = 0; i < param_count; i++) {
-				switch (event_p->format[i])
+				switch (event_p->params[i]->type)
 				{
-				case 'i':
-				case 'f':
-				case 'b':
+				case PARAM_INT:
+				case PARAM_FLOAT:
+				case PARAM_BOOL:
 					args[i] = &params[i + 1];
 					break;
-				case 's':
-					int len = NULL;
-					cell *addr = NULL;
-
+				case PARAM_STRING:
 					amx_GetAddr(amx, params[i + 1], &addr);
 					amx_StrLen(addr, &len);
 
@@ -220,6 +272,21 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 					else {
 						args[i] = mono_string_new(mono_domain_get(), "");
 					}
+					break;
+				case PARAM_INT_ARRAY:
+					int len = params[event_p->params[i]->length_idx];
+					cout << len << endl;
+					MonoArray *arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
+
+					if (len > 0) {
+						cell* addr = NULL;
+						amx_GetAddr(amx, params[i + 1], &addr);
+
+						for (int i = 0; i < len; i++) {
+							mono_array_set(arr, int, i, *(addr + i));
+						}
+					}
+					args[i] = arr;
 					break;
 				}
 			}
