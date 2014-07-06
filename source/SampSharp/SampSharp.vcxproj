@@ -62,7 +62,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>mono.lib;subhook.lib;sampgdk3s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mono.lib;subhook.lib;sampgdk4s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>SampSharp.def</ModuleDefinitionFile>
       <AdditionalLibraryDirectories>lib\sampgdk\win32;lib\mono\win32;lib\subhook\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
