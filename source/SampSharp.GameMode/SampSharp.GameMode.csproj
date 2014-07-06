@@ -63,7 +63,8 @@
     <Compile Include="Definitions\DisconnectReason.cs" />
     <Compile Include="Definitions\ShopName.cs" />
     <Compile Include="Definitions\TextDrawAlignment.cs" />
-    <Compile Include="Definitions\VehicleInfo.cs" />
+    <Compile Include="Definitions\VehicleModelType.cs" />
+    <Compile Include="World\VehicleModelInfo.cs" />
     <Compile Include="Definitions\VehicleCategory.cs" />
     <Compile Include="Display\Menu.cs" />
     <Compile Include="Display\MenuColumn.cs" />
@@ -90,7 +91,7 @@
     <Compile Include="Definitions\SpecialAction.cs" />
     <Compile Include="Definitions\SpectateMode.cs" />
     <Compile Include="Definitions\TextDrawFont.cs" />
-    <Compile Include="Definitions\VehicleModelInfo.cs" />
+    <Compile Include="Definitions\VehicleModelInfoType.cs" />
     <Compile Include="Definitions\VehicleParams.cs" />
     <Compile Include="Definitions\Weapon.cs" />
     <Compile Include="Definitions\WeaponSkill.cs" />

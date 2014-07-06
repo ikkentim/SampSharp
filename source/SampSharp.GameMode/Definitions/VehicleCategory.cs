@@ -94,7 +94,7 @@ namespace SampSharp.GameMode.Definitions
         RemoteControl = 15,
 
         /// <summary>
-        ///     Train trailers (Doesn't exist in the wiki).
+        ///     Train trailers.
         /// </summary>
         TrainTrailer  = 16,
     }

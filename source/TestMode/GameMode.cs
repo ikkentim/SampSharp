@@ -39,6 +39,7 @@ namespace TestMode
                 new DisposureTest(),
                 new DialogTest(),
                 new CharsetTest(),
+                new VehicleInfoTest(),
             };
 
             foreach (var test in tests)
