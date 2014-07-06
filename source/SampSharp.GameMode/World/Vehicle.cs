@@ -52,13 +52,13 @@ namespace SampSharp.GameMode.World
         public int Id { get; private set; }
 
         /// <summary>
-        ///     Gets the Vehicle info of this Vehicle.
+        ///     Gets an instance of VehicleModelInfo about this Vehicle.
         /// </summary>
-        public VehicleInfo VehicleInfo
+        public VehicleModelInfo Info
         {
             get
             {
-                return VehicleInfo.Find(Id);
+                return VehicleModelInfo.ForVehicle(this);
             }
         }
 
@@ -352,7 +352,7 @@ namespace SampSharp.GameMode.World
         /// </param>
         /// <returns> The vehicle created.</returns>
         public static Vehicle Create(int vehicletype, Vector position, float rotation, int color1, int color2,
-            int respawnDelay)
+            int respawnDelay = -1)
         {
             int id = new[] {449, 537, 538, 569, 570, 590}.Contains(vehicletype)
                 ? Native.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
@@ -361,6 +361,25 @@ namespace SampSharp.GameMode.World
                     respawnDelay);
 
             return id == InvalidId ? null : FindOrCreate(id);
+        }
+
+        /// <summary>
+        ///     Creates a vehicle in the world.
+        /// </summary>
+        /// <param name="vehicletype">The model for the vehicle.</param>
+        /// <param name="position">The coordinates for the vehicle.</param>
+        /// <param name="rotation">The facing angle for the vehicle.</param>
+        /// <param name="color1">The primary color ID.</param>
+        /// <param name="color2">The secondary color ID.</param>
+        /// <param name="respawnDelay">
+        ///     The delay until the car is respawned without a driver in seconds. Using -1 will prevent the
+        ///     vehicle from respawning.
+        /// </param>
+        /// <returns> The vehicle created.</returns>
+        public static Vehicle Create(VehicleModelType vehicletype, Vector position, float rotation, int color1, int color2,
+            int respawnDelay = -1)
+        {
+            return Create((int) vehicletype, position, rotation, color1, color2, respawnDelay);
         }
 
         /// <summary>
@@ -647,7 +666,7 @@ namespace SampSharp.GameMode.World
         /// <param name="model">The vehicle model to get info of.</param>
         /// <param name="infotype">The type of information to retrieve.</param>
         /// <returns>The offset vector.</returns>
-        public static Vector GetVehicleModelInfo(int model, VehicleModelInfo infotype)
+        public static Vector GetVehicleModelInfo(int model, VehicleModelInfoType infotype)
         {
             return Native.GetVehicleModelInfo(model, infotype);
         }
@@ -657,7 +676,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="infotype">The type of information to retrieve.</param>
         /// <returns>The offset vector.</returns>
-        public virtual Vector GetVehicleModelInfo(VehicleModelInfo infotype)
+        public virtual Vector GetVehicleModelInfo(VehicleModelInfoType infotype)
         {
             CheckDisposure();
 
