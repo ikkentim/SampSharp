@@ -58,7 +58,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                return VehicleInfo.Find(Id);
+                return VehicleInfo.Find(Model);
             }
         }
 
