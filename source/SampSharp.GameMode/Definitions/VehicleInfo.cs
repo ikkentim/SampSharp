@@ -23,7 +23,9 @@ namespace SampSharp.GameMode.Definitions
     /// </summary>
     public class VehicleInfo : IdentifiedPool<VehicleInfo>, IIdentifyable
     {
-		public static readonly VehicleInfo Landstalker = new VehicleInfo { Id = 400, Name = "Landstalker", Category = VehicleCategory.OffRoad };
+        #region VehicleInfos
+
+        public static readonly VehicleInfo Landstalker = new VehicleInfo { Id = 400, Name = "Landstalker", Category = VehicleCategory.OffRoad };
         public static readonly VehicleInfo Bravura = new VehicleInfo { Id = 401, Name = "Bravura", Category = VehicleCategory.Saloon };
         public static readonly VehicleInfo Buffalo = new VehicleInfo { Id = 402, Name = "Buffalo", Category = VehicleCategory.Sport };
         public static readonly VehicleInfo Linerunner = new VehicleInfo { Id = 403, Name = "Linerunner", Category = VehicleCategory.Industrial };
@@ -235,6 +237,7 @@ namespace SampSharp.GameMode.Definitions
         public static readonly VehicleInfo Boxville2 = new VehicleInfo { Id = 609, Name = "Boxville 2", Category = VehicleCategory.Industrial };
         public static readonly VehicleInfo FarmTrailer = new VehicleInfo { Id = 610, Name = "Farm Trailer", Category = VehicleCategory.Trailer };
 
+        #endregion
 
         public int Id { get; private set; }
         public string Name { get; private set; }
