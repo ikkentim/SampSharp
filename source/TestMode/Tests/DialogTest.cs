@@ -7,7 +7,7 @@ using SampSharp.GameMode.Display;
 
 namespace TestMode.Tests
 {
-    class DialogTest : ITest
+    public class DialogTest : ITest
     {
         public void Start(GameMode gameMode)
         {

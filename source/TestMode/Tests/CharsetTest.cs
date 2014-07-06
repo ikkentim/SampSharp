@@ -6,7 +6,7 @@ using SampSharp.GameMode.World;
 
 namespace TestMode.Tests
 {
-    class CharsetTest : ITest
+    public class CharsetTest : ITest
     {
         public void Start(GameMode gameMode)
         {

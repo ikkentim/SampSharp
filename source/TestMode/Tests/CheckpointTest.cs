@@ -4,7 +4,7 @@ using SampSharp.GameMode.World;
 
 namespace TestMode.Tests
 {
-    class CheckpointTest : ITest
+    public class CheckpointTest : ITest
     {
         public void Start(GameMode gameMode)
         {
