@@ -116,22 +116,48 @@ SAMPGDK_API(cell, sampgdk_CallNative(AMX_NATIVE native, cell *params));
  * \see sampgdk_GetNatives()
  * \see sampgdk_FindNative()
  * \see sampgdk_InvokeNativeV()
+ * \see sampgdk_InvokeNativeArray()
  */
-SAMPGDK_API(cell, sampgdk_InvokeNative(AMX_NATIVE native,
+SAMPGDK_API(cell, sampgdk_InvokeNative(AMX_NATIVE native, 
                                        const char *format, ...));
 
 /**
- * \brief Invokes a native function with the specified arguments.
- *
- * This function is identical to sampgdk_InvokeNative() but takes a
- * \c va_list instead of a variable number of arguments.
- *
- * \see sampgdk_GetNatives()
- * \see sampgdk_FindNative()
- * \see sampgdk_InvokeNative()
- */
+* \brief Invokes a native function with the specified arguments.
+*
+* This function is identical to sampgdk_InvokeNative() but takes a
+* \c va_list instead of a variable number of arguments.
+*
+* \see sampgdk_GetNatives()
+* \see sampgdk_FindNative()
+* \see sampgdk_InvokeNative()
+* \see sampgdk_InvokeNativeArray()
+*/
 SAMPGDK_API(cell, sampgdk_InvokeNativeV(AMX_NATIVE native,
                                         const char *format, va_list args));
+
+/**
+* \brief Invokes a native function with the specified arguments.
+*
+* This function is similar to sampgdk_InvokeNative() but the arguments
+* are passed as an array where each element is a pointer pointing to
+* the actual value.
+*
+* Argument types are specified via \p format where each character, or
+* *specifier*, corresponds to a single argument. See sampgdk_InvokeNative()
+* for the list of supported format specifiers.
+*
+* \param native A pointer to the native function.
+* \param format A format string specifying the types of the arguments.
+* \param args The arguments themselves.
+*
+* \returns The value returned by the function.
+*
+* \see sampgdk_GetNatives()
+* \see sampgdk_FindNative()
+* \see sampgdk_InvokeNative()
+*/
+SAMPGDK_API(cell, sampgdk_InvokeNativeArray(AMX_NATIVE native,
+                                            const char *format, void **args));
 
 /**
  * \brief Gets called on every public function call.
@@ -189,6 +215,11 @@ inline cell InvokeNative(AMX_NATIVE native, const char *format, ...) {
 /// \brief C++ wrapper around sampgdk_InvokeNativeV().
 inline cell InvokeNative(AMX_NATIVE native, const char *format, va_list args) {
   return sampgdk_InvokeNativeV(native, format, args);
+}
+
+/// \brief C++ wrapper around sampgdk_InvokeNativeArray().
+inline cell InvokeNativeArray(AMX_NATIVE native, const char *format, void **args) {
+	return sampgdk_InvokeNativeArray(native, format, args);
 }
 
 /** @} */
