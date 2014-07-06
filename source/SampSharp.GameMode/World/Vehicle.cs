@@ -51,6 +51,17 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public int Id { get; private set; }
 
+        /// <summary>
+        ///     Gets the Vehicle info of this Vehicle.
+        /// </summary>
+        public VehicleInfo VehicleInfo
+        {
+            get
+            {
+                return VehicleInfo.Find(Id);
+            }
+        }
+
         #endregion
 
         #region Vehicles native properties
