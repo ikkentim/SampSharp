@@ -184,7 +184,7 @@ namespace SampSharp.GameMode.World
             new VehicleModelInfo(553, "Nevada", VehicleCategory.Airplane),
             new VehicleModelInfo(554, "Yosemite", VehicleCategory.Industrial),
             new VehicleModelInfo(555, "Windsor", VehicleCategory.Convertible),
-            new VehicleModelInfo(556, "Monster\"A\"", VehicleCategory.OffRoad),
+            new VehicleModelInfo(556, "Monster \"A\"", VehicleCategory.OffRoad),
             new VehicleModelInfo(557, "Monster \"B\"", VehicleCategory.OffRoad),
             new VehicleModelInfo(558, "Uranus", VehicleCategory.Sport),
             new VehicleModelInfo(559, "Jester", VehicleCategory.Sport),
