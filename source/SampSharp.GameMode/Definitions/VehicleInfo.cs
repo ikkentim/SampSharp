@@ -125,10 +125,10 @@ namespace SampSharp.GameMode.Definitions
         public static readonly VehicleInfo Benson = new VehicleInfo { Id = 499, Name = "Benson", Category = VehicleCategory.Industrial };
         public static readonly VehicleInfo Mesa = new VehicleInfo { Id = 500, Name = "Mesa", Category = VehicleCategory.OffRoad };
         public static readonly VehicleInfo RCGoblin = new VehicleInfo { Id = 501, Name = "RC Goblin", Category = VehicleCategory.RemoteControl };
-        public static readonly VehicleInfo HotringRacer = new VehicleInfo { Id = 502, Name = "Hotring Racer", Category = VehicleCategory.Sport };
-        public static readonly VehicleInfo HotringRacer2 = new VehicleInfo { Id = 503, Name = "Hotring Racer 2", Category = VehicleCategory.Sport };
+        public static readonly VehicleInfo HotringRacer2 = new VehicleInfo { Id = 502, Name = "Hotring Racer 2", Category = VehicleCategory.Sport };
+        public static readonly VehicleInfo HotringRacer3 = new VehicleInfo { Id = 503, Name = "Hotring Racer 3", Category = VehicleCategory.Sport };
         public static readonly VehicleInfo BloodringBanger = new VehicleInfo { Id = 504, Name = "Bloodring Banger", Category = VehicleCategory.Saloon };
-        public static readonly VehicleInfo Rancher = new VehicleInfo { Id = 505, Name = "Rancher", Category = VehicleCategory.OffRoad };
+        public static readonly VehicleInfo Rancher2 = new VehicleInfo { Id = 505, Name = "Rancher", Category = VehicleCategory.OffRoad };
         public static readonly VehicleInfo SuperGT = new VehicleInfo { Id = 506, Name = "Super GT", Category = VehicleCategory.Sport };
         public static readonly VehicleInfo Elegant = new VehicleInfo { Id = 507, Name = "Elegant", Category = VehicleCategory.Saloon };
         public static readonly VehicleInfo Journey = new VehicleInfo { Id = 508, Name = "Journey", Category = VehicleCategory.Unique };
@@ -232,7 +232,7 @@ namespace SampSharp.GameMode.Definitions
         public static readonly VehicleInfo BaggageTrailerA = new VehicleInfo { Id = 606, Name = "Baggage Trailer \"A\"", Category = VehicleCategory.Trailer };
         public static readonly VehicleInfo BaggageTrailerB = new VehicleInfo { Id = 607, Name = "Baggage Trailer \"B\"", Category = VehicleCategory.Trailer };
         public static readonly VehicleInfo TugStairsTrailer = new VehicleInfo { Id = 608, Name = "Tug Stairs Trailer", Category = VehicleCategory.Trailer };
-        public static readonly VehicleInfo Boxville = new VehicleInfo { Id = 609, Name = "Boxville", Category = VehicleCategory.Industrial };
+        public static readonly VehicleInfo Boxville2 = new VehicleInfo { Id = 609, Name = "Boxville 2", Category = VehicleCategory.Industrial };
         public static readonly VehicleInfo FarmTrailer = new VehicleInfo { Id = 610, Name = "Farm Trailer", Category = VehicleCategory.Trailer };
 
 
