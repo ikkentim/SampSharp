@@ -244,7 +244,7 @@ inline bool p_SetVehicleNumberPlate(int vehicleid, MonoString *numberplate) {
 //
 // serverlog string converters 
 inline void p_Print(MonoString *str) {
-	sampgdk_logprintf(mono_string_to_string(str).c_str());
+	sampgdk_logprintf("%s", mono_string_to_string(str).c_str());
 }
 
 void LoadNatives()
