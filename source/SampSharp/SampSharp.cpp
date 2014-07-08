@@ -1,6 +1,8 @@
 #include "SampSharp.h"
 
 #include <mono/metadata/threads.h>
+#include <sampgdk/interop.h>
+#include <assert.h>
 #include "PathUtil.h"
 #include "Natives.h"
 
@@ -45,7 +47,10 @@ void SampSharp::Load(string baseModePath, string gameModePath, string gameModeNa
 	baseModeImage = mono_assembly_get_image(mono_domain_assembly_open(mono_domain_get(), (char *)PathUtil::GetPathInBin(baseModePath).c_str()));
 
 	LoadNatives(); 
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::Test", (void *)Test);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::CallNativeArray", (void *)CallNativeArray);
 
+    
 	baseModeClassType = mono_class_from_name(baseModeImage, "SampSharp.GameMode", "BaseMode");
 	gameModeClassType = mono_class_from_name(gameModeImage, gameModeNamespace.c_str(), gameModeClass.c_str());
 
@@ -60,10 +65,125 @@ void SampSharp::Load(string baseModePath, string gameModePath, string gameModeNa
 	onTick = LoadEvent(gameModeClass.c_str(), "OnTick");
 }
 
+void SampSharp::Test(MonoArray *arr) {
+    assert(arr != NULL);
+
+
+    MonoString ** fv = mono_array_get(arr, MonoString **, 0);
+    cout << mono_string_to_utf8(*fv) << endl;
+    *fv = mono_string_new(mono_domain_get(), "Bravo");
+
+}
+int SampSharp::CallNativeArray(MonoString *name, MonoString *format, MonoArray *args) {
+    assert(name != NULL);
+    assert(format != NULL);
+    assert(args != NULL);
+
+    char *native_str = mono_string_to_utf8(name);
+    char *format_str = mono_string_to_utf8(format);
+    int len = mono_array_length(args);
+    void *params[32];
+    char *amx_format = new char[32];
+
+    strcpy(amx_format, format_str);
+
+    assert(strlen(format_str) == len);
+
+    cout << format_str << endl;
+    for (int i = 0; i < len; i++) {
+        switch (format_str[i]) {
+        case 'i': /* integer */
+        case 'd': /* integer */ {
+            int value = *(int *)mono_object_unbox(mono_array_get(args, MonoObject *, i));
+            
+            params[i] = &value;
+            break;
+        }
+        case 'b': /* boolean */ {
+            bool value = *(bool *)mono_object_unbox(mono_array_get(args, MonoObject *, i));
+            params[i] = &value;
+            break;
+        }
+        
+        case 'f': /* floating-point */ {
+            float value = *(float *)mono_object_unbox(mono_array_get(args, MonoObject *, i));
+            params[i] = &value;
+            break;
+        }
+        case 'F': /* floating-point reference */ {
+            MonoObject ***obj = mono_array_get(args, MonoObject ***, i);
+           
+            float r = **(float **)mono_object_unbox(**obj);
+            cout << "I: " << r << endl;
+            cout << "IN:" << mono_class_get_name(mono_object_get_class(**obj)) << endl;
+            cout << "IN:" << *(float *)obj << endl;
+            float t = 4;
+            cell value = amx_ftoc(t);// = amx_ftoc(*(float *)mono_object_unbox(obj));
+          
+            amx_format[i] = 'R';
+            params[i] = &value;
+            break;
+        }
+        case 's': /* const string */ {
+            MonoString *str = mono_array_get(args, MonoString *, i);
+            string std_str = mono_string_to_string(str).c_str();
+
+            char *value = new char[std_str.length() + 1];
+            strcpy(value, std_str.c_str());
+
+            params[i] = value;
+            break;
+        }
+        case 'S': /* non-const string (writeable) */ {
+            MonoString *str = mono_array_get(args, MonoString *, i);
+            
+            char *value = new char[mono_string_length(str) + 1];
+
+            params[i] = value;
+            break;
+        }
+        default:
+            assert(0 && "Invalid type specifier");
+            break;
+        }
+    }
+
+    AMX_NATIVE native = sampgdk::FindNative(native_str);
+
+    assert(native != NULL);
+
+    cout << amx_format << endl;
+
+    int retval = sampgdk::InvokeNativeArray(native, amx_format, params);
+
+    for (int i = 0; i < len; i++) {
+        switch (format_str[i]) {
+        case 'S': {
+            MonoString **str = mono_array_get(args, MonoString **, i);
+            int len = *(int *)mono_object_unbox(mono_array_get(args, MonoObject *, i + 1));
+
+            char *value = (char *)params[i];
+
+            *str = mono_string_new(mono_domain_get(), value);
+            break;
+        }
+        case 'F': {
+            //MonoObject **ref = mono_array_get(args, MonoObject **, i);
+            float value = amx_ctof(*(cell *)params[i]);
+            cout << "OUT: " << value << endl;
+
+            //*ref = mono_value_box(mono_domain_get(), mono_get_single_class(), &value);
+
+            break;
+        }
+        }
+    }
+
+    return retval;
+}
+
 #ifdef _WIN32
-void SampSharp::GenerateSymbols(string path)
-{
-	
+void SampSharp::GenerateSymbols(string path) {	
 	string mdbpath = PathUtil::GetLibDirectory().append("mono/4.5/pdb2mdb.exe");
 	char *cmdbpath = new char[mdbpath.size() + 1];
 	strcpy(cmdbpath, mdbpath.c_str());
@@ -121,7 +241,6 @@ MonoMethod *SampSharp::LoadEvent(const char *className, const char *name) {
 }
 
 int SampSharp::GetParamLengthIndex(MonoMethod *method, int idx) {
-	
 	MonoCustomAttrInfo *attr = mono_custom_attrs_from_param(method, idx + 1);
 	if (!attr) {
 		ofstream logfile;
@@ -154,8 +273,7 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 	mono_thread_attach(SampSharp::rootDomain);
 
 	//detect unknown methods
-	if (events.find(name) == events.end())
-	{
+	if (events.find(name) == events.end()) {
 		//find method
 		MonoMethod *m_method = mono_class_get_method_from_name(gameModeClassType, name, param_count);
 		
@@ -259,8 +377,7 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 	event_t *event_p = events[name];
 	
 	//call known events
-	if (event_p)
-	{
+	if (event_p) {
 		if (!param_count) {
 			int retint = SampSharp::CallEvent(event_p->method, NULL);
 			if (retint != -1) {
@@ -275,72 +392,79 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 			MonoArray *arr;
 
 			for (int i = 0; i < param_count; i++) {
-				switch (event_p->params[i]->type)
-				{
-				case PARAM_INT:
-				case PARAM_FLOAT:
-				case PARAM_BOOL:
-					args[i] = &params[i + 1];
-					break;
-				case PARAM_STRING:
-					amx_GetAddr(amx, params[i + 1], &addr);
-					amx_StrLen(addr, &len);
+                switch (event_p->params[i]->type) {
+                case PARAM_INT:
+                case PARAM_FLOAT:
+                case PARAM_BOOL: {
+                    args[i] = &params[i + 1];
+                    break;
+                }
+                case PARAM_STRING: {
+                    amx_GetAddr(amx, params[i + 1], &addr);
+                    amx_StrLen(addr, &len);
 
-					if (len) {
-						len++;
+                    if (len) {
+                        len++;
 
-						char* text = new char[len];
+                        char* text = new char[len];
 
-						amx_GetString(text, addr, 0, len);
-						args[i] = mono_string_new(mono_domain_get(), text);
-					}
-					else {
-						args[i] = mono_string_new(mono_domain_get(), "");
-					}
-					break;
-				case PARAM_INT_ARRAY:
-					len = params[event_p->params[i]->length_idx];
-					arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
+                        amx_GetString(text, addr, 0, len);
+                        args[i] = mono_string_new(mono_domain_get(), text);
+                    }
+                    else {
+                        args[i] = mono_string_new(mono_domain_get(), "");
+                    }
+                    break;
+                }
+                case PARAM_INT_ARRAY: {
+                    len = params[event_p->params[i]->length_idx];
+                    arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
 
-					if (len > 0) {
-						cell* addr = NULL;
-						amx_GetAddr(amx, params[i + 1], &addr);
+                    if (len > 0) {
+                        cell* addr = NULL;
+                        amx_GetAddr(amx, params[i + 1], &addr);
 
-						for (int i = 0; i < len; i++) {
-							mono_array_set(arr, int, i, *(addr + i));
-						}
-					}
-					args[i] = arr;
-					break;
-				case PARAM_FLOAT_ARRAY:
-					len = params[event_p->params[i]->length_idx];
-					arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
+                        for (int i = 0; i < len; i++) {
+                            mono_array_set(arr, int, i, *(addr + i));
+                        }
+                    }
+                    args[i] = arr;
+                    break;
+                }
+                case PARAM_FLOAT_ARRAY: {
+                    len = params[event_p->params[i]->length_idx];
+                    arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
 
-					if (len > 0) {
-						cell* addr = NULL;
-						amx_GetAddr(amx, params[i + 1], &addr);
+                    if (len > 0) {
+                        cell* addr = NULL;
+                        amx_GetAddr(amx, params[i + 1], &addr);
 
-						for (int i = 0; i < len; i++) {
-							mono_array_set(arr, float, i, amx_ctof(*(addr + i)));
-						}
-					}
-					args[i] = arr;
-					break;
-				case PARAM_BOOL_ARRAY:
-					len = params[event_p->params[i]->length_idx];
-					arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
+                        for (int i = 0; i < len; i++) {
+                            mono_array_set(arr, float, i, amx_ctof(*(addr + i)));
+                        }
+                    }
+                    args[i] = arr;
+                    break;
+                }
+                case PARAM_BOOL_ARRAY: {
+                    len = params[event_p->params[i]->length_idx];
+                    arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
 
-					if (len > 0) {
-						cell* addr = NULL;
-						amx_GetAddr(amx, params[i + 1], &addr);
+                    if (len > 0) {
+                        cell* addr = NULL;
+                        amx_GetAddr(amx, params[i + 1], &addr);
 
-						for (int i = 0; i < len; i++) {
-							mono_array_set(arr, bool, i, *(addr + i));
-						}
-					}
-					args[i] = arr;
-					break;
-				}
+                        for (int i = 0; i < len; i++) {
+                            mono_array_set(arr, bool, i, *(addr + i));
+                        }
+                    }
+                    args[i] = arr;
+                    break;
+                }
+                default:
+                    assert(0 && "Invalid type specifier");
+                    break;
+                }
 			}
 
 			int retint = SampSharp::CallEvent(event_p->method, args);
