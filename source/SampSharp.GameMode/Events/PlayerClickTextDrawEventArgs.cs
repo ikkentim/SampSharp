@@ -37,7 +37,7 @@ namespace SampSharp.GameMode.Events
         public int TextDrawId { get; private set; }
 
         /// <summary>
-        /// Gets the textdraw.
+        ///     Gets the textdraw.
         /// </summary>
         public TextDraw TextDraw
         {

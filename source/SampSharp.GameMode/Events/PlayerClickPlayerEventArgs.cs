@@ -39,7 +39,7 @@ namespace SampSharp.GameMode.Events
         public int ClickedPlayerId { get; private set; }
 
         /// <summary>
-        /// Gets the clicked player.
+        ///     Gets the clicked player.
         /// </summary>
         public Player ClickedPlayer
         {

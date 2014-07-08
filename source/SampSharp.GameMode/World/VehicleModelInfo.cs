@@ -22,8 +22,7 @@ namespace SampSharp.GameMode.World
     ///     Contains vehicle category infos.
     /// </summary>
     public struct VehicleModelInfo
-    {        
-
+    {
         #region Fields
 
         private static readonly VehicleModelInfo[] VehicleModelInfos =
@@ -255,30 +254,27 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Gets the id of this vehiclemodel.
+        ///     Gets the id of this vehiclemodel.
         /// </summary>
         public int TypeId { get; private set; }
 
         /// <summary>
-        /// Gets the name of this vehiclemodel.
+        ///     Gets the name of this vehiclemodel.
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// Gets the category of this vehiclemodel.
+        ///     Gets the category of this vehiclemodel.
         /// </summary>
         public VehicleCategory Category { get; private set; }
 
         public Vector this[VehicleModelInfoType infotype]
         {
-            get
-            {
-                return Native.GetVehicleModelInfo(TypeId, infotype);
-            }
+            get { return Native.GetVehicleModelInfo(TypeId, infotype); }
         }
 
         /// <summary>
-        /// Returns an instance of VehicleModelInfo containing information about the given Vehicle.
+        ///     Returns an instance of VehicleModelInfo containing information about the given Vehicle.
         /// </summary>
         /// <param name="vehicle">The vehicle to find information about.</param>
         /// <returns>An instance of VehicleModelInfo containing information about the given Vehicle.</returns>
@@ -300,18 +296,18 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Returns an instance of VehicleModelInfo containing information about the given VehicleModelType.
+        ///     Returns an instance of VehicleModelInfo containing information about the given VehicleModelType.
         /// </summary>
         /// <param name="model">The VehicleModelType to find information about.</param>
         /// <returns>An instance of VehicleModelInfo containing information about the given VehicleModelType.</returns>
         public static VehicleModelInfo ForVehicle(VehicleModelType model)
         {
-            if ((int)model < 400 || (int)model > 611)
+            if ((int) model < 400 || (int) model > 611)
             {
                 throw new ArgumentOutOfRangeException("vehicle's model is non-existant");
             }
 
-            return VehicleModelInfos[(int)model - 400];
+            return VehicleModelInfos[(int) model - 400];
         }
     }
 }

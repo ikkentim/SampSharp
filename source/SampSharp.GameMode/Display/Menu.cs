@@ -196,8 +196,8 @@ namespace SampSharp.GameMode.Display
         }
 
         protected override void Dispose(bool disposing)
-        {      
-            Destroy(); 
+        {
+            Destroy();
 
             base.Dispose(disposing);
         }
