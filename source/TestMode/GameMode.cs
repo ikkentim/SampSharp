@@ -14,6 +14,8 @@
 using System;
 using System.Collections.Generic;
 using SampSharp.GameMode;
+using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;
 using TestMode.Tests;
 
@@ -45,6 +47,39 @@ namespace TestMode
             foreach (var test in tests)
                 test.Start(this);
 
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("CALLING GetNetworkStats");
+            Console.WriteLine();
+            Console.WriteLine();
+
+            string str="emtpy";
+            Native.CallNative("GetNetworkStats", __arglist(ref str, 400));
+            Console.WriteLine(str);
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("CALLING GetVehicleModelInfo (Doesn't work yet)");
+            Console.WriteLine();
+            Console.WriteLine();
+
+            float x = 1;
+            float y = 2;
+            float z = 3;
+            Native.CallNative("GetVehicleModelInfo", __arglist(400, (int)VehicleModelInfoType.Size, x, ref y, z));
+            Console.WriteLine("{0} {1} {2}", x, y, z);
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("CALLING GetWeaponName (Doesn't work yet)");
+            Console.WriteLine();
+            Console.WriteLine();
+
+            string weapon = "empty";
+
+            Native.CallNative("GetWeaponName", __arglist(21, ref weapon, 128));
+            Console.WriteLine("Weapon: {0}", weapon);
             return true;
         }
 
