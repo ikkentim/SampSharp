@@ -45,11 +45,11 @@ namespace SampSharp.GameMode.Events
         public int OtherPlayerId { get; private set; }
 
         /// <summary>
-        /// Gets the other player.
+        ///     Gets the other player.
         /// </summary>
         public Player OtherPlayer
         {
-            get { return OtherPlayerId == Player.InvalidId ? null :  Player.FindOrCreate(OtherPlayerId); }
+            get { return OtherPlayerId == Player.InvalidId ? null : Player.FindOrCreate(OtherPlayerId); }
         }
 
         /// <summary>

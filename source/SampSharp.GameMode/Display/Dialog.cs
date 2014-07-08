@@ -172,7 +172,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="player">The Player to show the dialog to.</param>
         public virtual void Show(Player player)
         {
-            if(player == null)
+            if (player == null)
                 throw new NullReferenceException("player cannot be null");
 
             OpenDialogs[player.Id] = this;
