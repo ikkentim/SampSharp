@@ -71,7 +71,7 @@ namespace SampSharp.GameMode.World
 
         public virtual void Show(Color color)
         {
-            CheckDisposure();   
+            CheckDisposure();
 
             Native.GangZoneShowForAll(Id, color);
         }

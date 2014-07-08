@@ -98,14 +98,16 @@ SAMPGDK_API(cell, sampgdk_CallNative(AMX_NATIVE native, cell *params));
  * d         | int           | integer value (same as 'i')
  * b         | bool          | boolean value
  * f         | double        | floating-point value
- * r         | const cell *  | const reference (input-only)
- * R         | cell *        | non-const reference (input and output)
- * s         | const char *  | const string (input-only)
- * S         | char *        | non-const string (input and output)
+ * r         | const cell *  | const reference (input only)
+ * R         | cell *        | non-const reference (both input and output)
+ * s         | const char *  | const string (input only)
+ * S         | char *        | non-const string (both input and output)
+ * a         | const cell *  | const string (input only)
+ * A         | cell *        | non-const string (both input and output)
  *
- * \note For the 'S' specifier, the argument passed next to it specifies
- * the size of the string buffer. Fortunately all current SA-MP natives
- * follow this convention.
+ * \note For the 'S', 'a' and 'A' specifiers you have to specify the size
+ * of the string/array in square brackets, e.g. "a[100]" (fixed size)
+ * or s[*2] (size passed via 2nd argument).
  *
  * \param native A pointer to the native function.
  * \param format A format string specifying the types of the arguments.
@@ -118,7 +120,7 @@ SAMPGDK_API(cell, sampgdk_CallNative(AMX_NATIVE native, cell *params));
  * \see sampgdk_InvokeNativeV()
  * \see sampgdk_InvokeNativeArray()
  */
-SAMPGDK_API(cell, sampgdk_InvokeNative(AMX_NATIVE native, 
+SAMPGDK_API(cell, sampgdk_InvokeNative(AMX_NATIVE native,
                                        const char *format, ...));
 
 /**
@@ -213,13 +215,14 @@ inline cell InvokeNative(AMX_NATIVE native, const char *format, ...) {
 }
 
 /// \brief C++ wrapper around sampgdk_InvokeNativeV().
-inline cell InvokeNative(AMX_NATIVE native, const char *format, va_list args) {
+inline cell InvokeNativeV(AMX_NATIVE native, const char *format, va_list args) {
   return sampgdk_InvokeNativeV(native, format, args);
 }
 
 /// \brief C++ wrapper around sampgdk_InvokeNativeArray().
-inline cell InvokeNativeArray(AMX_NATIVE native, const char *format, void **args) {
-	return sampgdk_InvokeNativeArray(native, format, args);
+inline cell InvokeNativeArray(AMX_NATIVE native, const char *format,
+                              void **args) {
+  return sampgdk_InvokeNativeArray(native, format, args);
 }
 
 /** @} */

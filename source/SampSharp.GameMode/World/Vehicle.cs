@@ -47,20 +47,17 @@ namespace SampSharp.GameMode.World
         #region Properties
 
         /// <summary>
-        ///     Gets the ID of this Vehicle.
-        /// </summary>
-        public int Id { get; private set; }
-
-        /// <summary>
         ///     Gets an instance of VehicleModelInfo about this Vehicle.
         /// </summary>
         public VehicleModelInfo Info
         {
-            get
-            {
-                return VehicleModelInfo.ForVehicle(this);
-            }
+            get { return VehicleModelInfo.ForVehicle(this); }
         }
+
+        /// <summary>
+        ///     Gets the ID of this Vehicle.
+        /// </summary>
+        public int Id { get; private set; }
 
         #endregion
 
@@ -376,7 +373,8 @@ namespace SampSharp.GameMode.World
         ///     vehicle from respawning.
         /// </param>
         /// <returns> The vehicle created.</returns>
-        public static Vehicle Create(VehicleModelType vehicletype, Vector position, float rotation, int color1, int color2,
+        public static Vehicle Create(VehicleModelType vehicletype, Vector position, float rotation, int color1,
+            int color2,
             int respawnDelay = -1)
         {
             return Create((int) vehicletype, position, rotation, color1, color2, respawnDelay);

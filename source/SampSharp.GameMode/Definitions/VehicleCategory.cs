@@ -22,7 +22,7 @@ namespace SampSharp.GameMode.Definitions
         ///     Airplanes.
         /// </summary>
         Airplane = 1,
-        
+
         /// <summary>
         ///     Helicopters.
         /// </summary>
@@ -81,7 +81,7 @@ namespace SampSharp.GameMode.Definitions
         /// <summary>
         ///     Trailers.
         /// </summary>
-        Trailer  = 13,
+        Trailer = 13,
 
         /// <summary>
         ///     Unique Vehicles.
@@ -96,6 +96,6 @@ namespace SampSharp.GameMode.Definitions
         /// <summary>
         ///     Train trailers.
         /// </summary>
-        TrainTrailer  = 16,
+        TrainTrailer = 16,
     }
 }

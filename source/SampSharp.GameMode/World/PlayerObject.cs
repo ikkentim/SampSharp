@@ -30,8 +30,6 @@ namespace SampSharp.GameMode.World
 
         #region Properties
 
-        public virtual int Id { get; private set; }
-
         public virtual Vector Position
         {
             get { return Native.GetPlayerObjectPos(Player.Id, Id); }
@@ -57,6 +55,7 @@ namespace SampSharp.GameMode.World
         public virtual int ModelId { get; private set; }
 
         public virtual float DrawDistance { get; private set; }
+        public virtual int Id { get; private set; }
         public virtual Player Player { get; private set; }
 
         #endregion

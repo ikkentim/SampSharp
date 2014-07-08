@@ -506,7 +506,6 @@ namespace SampSharp.GameMode.Display
                 _playersShownTo.Add(player);
 
             Native.TextDrawShowForPlayer(player.Id, Id);
-
         }
 
         /// <summary>

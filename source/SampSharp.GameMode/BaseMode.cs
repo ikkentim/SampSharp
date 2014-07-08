@@ -1681,7 +1681,9 @@ namespace SampSharp.GameMode
             float fY,
             float fZ, float fRotX, float fRotY, float fRotZ)
         {
-            var args = new PlayerEditObjectEventArgs(playerid, playerobject ? ObjectType.PlayerObject : ObjectType.GlobalObject, objectid, (EditObjectResponse) response,
+            var args = new PlayerEditObjectEventArgs(playerid,
+                playerobject ? ObjectType.PlayerObject : ObjectType.GlobalObject, objectid,
+                (EditObjectResponse) response,
                 new Vector(fX, fY, fZ), new Vector(fRotX, fRotY, fRotZ));
 
             if (PlayerEditObject != null)
