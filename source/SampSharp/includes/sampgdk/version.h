@@ -47,7 +47,7 @@
 /**
  * \brief Library version string.
  */
-#define SAMPGDK_VERSION_STRING "4.0.0-beta"
+#define SAMPGDK_VERSION_STRING "4.0.0-beta2"
 
 /**
  * \brief Gets library version number.

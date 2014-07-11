@@ -155,7 +155,7 @@ int SampSharp::CallNativeArray(MonoString *name, MonoString *format, MonoArray *
     cout << amx_format << endl;
 
     int retval = sampgdk::InvokeNativeArray(native, amx_format, params);
-
+	cell ref_cell[32];
     for (int i = 0; i < len; i++) {
         switch (format_str[i]) {
         case 'S': {
@@ -329,7 +329,6 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 					return true;
 				}
 				par->length_idx = index;
-	
 			}
 			else if (!type_name.compare("System.Single[]")) {
 				param_t *par = new param_t;
@@ -455,7 +454,7 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
                         amx_GetAddr(amx, params[i + 1], &addr);
 
                         for (int i = 0; i < len; i++) {
-                            mono_array_set(arr, bool, i, *(addr + i));
+                            mono_array_set(arr, bool, i, !!*(addr + i));
                         }
                     }
                     args[i] = arr;
