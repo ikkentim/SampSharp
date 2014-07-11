@@ -12,7 +12,7 @@ string mono_string_to_string(MonoString *str)
 	mono_unichar2 *chl = mono_string_chars(str);
 	string out("");
 	for (int i = 0; i < mono_string_length(str); i++) {
-		out += chl[i];
+		out += (char)chl[i];
 	}
 	return out;
 }
