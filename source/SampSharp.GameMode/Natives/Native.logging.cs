@@ -11,10 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace SampSharp.GameMode.Natives
 {

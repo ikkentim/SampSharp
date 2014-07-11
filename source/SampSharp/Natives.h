@@ -12,7 +12,7 @@ string mono_string_to_string(MonoString *str)
 	mono_unichar2 *chl = mono_string_chars(str);
 	string out("");
 	for (int i = 0; i < mono_string_length(str); i++) {
-		out += chl[i];
+		out += (char)chl[i];
 	}
 	return out;
 }
@@ -247,6 +247,116 @@ inline void p_Print(MonoString *str) {
 	sampgdk_logprintf("%s", mono_string_to_string(str).c_str());
 }
 
+//
+// native functions
+cell call_native_array(MonoString *name, MonoString *format, MonoArray *args) {
+    assert(name != NULL);
+    assert(format != NULL);
+    assert(args != NULL);
+
+    char *native_str = mono_string_to_utf8(name);
+    char *format_str = mono_string_to_utf8(format);
+    int len = mono_array_length(args);
+
+    void *params[32];
+	cell value_ref[32];
+    string amx_format;
+	if(strlen(format_str) != len)
+	{
+		mono_raise_exception(mono_get_exception_invalid_operation("invalid format length"));
+		return -1;
+	}
+
+    for (int i = 0; i < len; i++) {
+        switch (format_str[i]) {
+        case 'i': /* integer */
+        case 'd': /* integer */ {
+            int value = *(int *)mono_object_unbox(mono_array_get(args, MonoObject *, i));
+            value_ref[i] = value;
+            params[i] = &value_ref[i];
+			amx_format += 'd';
+            break;
+        }
+        case 'b': /* boolean */ {
+            bool value = *(bool *)mono_object_unbox(mono_array_get(args, MonoObject *, i));
+			value_ref[i] = value;
+            params[i] = &value_ref[i];
+			amx_format += 'b';
+            break;
+        }
+        
+        case 'f': /* floating-point */ {
+            float value = *(float *)mono_object_unbox(mono_array_get(args, MonoObject *, i));
+			value_ref[i] = value;
+            params[i] = &value_ref[i];
+			amx_format += 'f';
+            break;
+        }
+        case 'F': /* floating-point reference */ {
+			float value = **(float **)mono_object_unbox(mono_array_get(args, MonoObject *, i));
+			value_ref[i] = amx_ftoc(value);
+            params[i] = &value_ref[i];
+			amx_format += 'R';
+            break;
+        }
+        case 's': /* const string */ {
+            MonoString *str = mono_array_get(args, MonoString *, i);
+            string std_str = mono_string_to_string(str).c_str();
+
+            char *value = new char[std_str.length() + 1];
+            strcpy(value, std_str.c_str());
+
+			value_ref[i] = value[0];
+            params[i] = value;
+			amx_format += 's';
+            break;
+        }
+        case 'S': /* non-const string (writeable) */ {
+            MonoString *str = mono_array_get(args, MonoString *, i);
+            char *value = new char[mono_string_length(str) + 1];
+
+            params[i] = value;
+			char *length_param = new char[7];
+			sprintf(length_param, "S[*%d]", i+1);
+			amx_format += length_param;
+            break;
+        }
+        default:
+			mono_raise_exception(mono_get_exception_invalid_operation("invalid format type"));
+			return -1;
+        }
+    }
+
+    AMX_NATIVE native = sampgdk::FindNative(native_str);
+
+    assert(native != NULL);
+
+    int retval = sampgdk::InvokeNativeArray(native, amx_format.c_str(), params);
+
+    for (int i = 0; i < len; i++) {
+        switch (format_str[i]) {
+        case 'S': {
+            MonoString **str = mono_array_get(args, MonoString **, i);
+
+            *str = mono_string_new(mono_domain_get(), (char *)params[i]);
+            break;
+        }
+        case 'F': {
+			float ** value = (float **)mono_object_unbox(mono_array_get(args, MonoObject *, i));
+			**value = amx_ctof(value_ref[i]);
+            break;
+        }
+        }
+    }
+
+    return retval;
+}
+
+float call_native_array_float(MonoString *name, MonoString *format, MonoArray *args) {
+	cell value = call_native_array(name, format, args);
+
+	return value == -1 ? 0 : amx_ctof(value);
+}
 void LoadNatives()
 {
 	//
@@ -591,5 +701,10 @@ void LoadNatives()
 	//
 	// logging
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::Print", (void *)p_Print);
+
+	//
+	// natives
+	mono_add_internal_call("SampSharp.GameMode.Natives.Native::CallNativeArray", (void *)call_native_array);
+	mono_add_internal_call("SampSharp.GameMode.Natives.Native::CallNativeArrayFloat", (void *)call_native_array_float);
 
 }
