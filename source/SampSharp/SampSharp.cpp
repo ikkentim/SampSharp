@@ -75,7 +75,7 @@ void SampSharp::Test(MonoArray *arr) {
     *fv = mono_string_new(mono_domain_get(), "Bravo");
 
 }
-int SampSharp::CallNativeArray(MonoString *name, MonoString *format, MonoArray *args) {
+cell SampSharp::CallNativeArray(MonoString *name, MonoString *format, MonoArray *args) {
     assert(name != NULL);
     assert(format != NULL);
     assert(args != NULL);
@@ -139,12 +139,10 @@ int SampSharp::CallNativeArray(MonoString *name, MonoString *format, MonoArray *
         }
         case 'S': /* non-const string (writeable) */ {
             MonoString *str = mono_array_get(args, MonoString *, i);
-            
             char *value = new char[mono_string_length(str) + 1];
 
             params[i] = value;
-
-			char * length_param = new char[7];
+			char *length_param = new char[7];
 			sprintf(length_param, "S[*%d]", i+1);
 			amx_format += length_param;
             break;
@@ -166,8 +164,7 @@ int SampSharp::CallNativeArray(MonoString *name, MonoString *format, MonoArray *
         case 'S': {
             MonoString **str = mono_array_get(args, MonoString **, i);
 
-            char *value = (char *)params[i];
-            *str = mono_string_new(mono_domain_get(), value);
+            *str = mono_string_new(mono_domain_get(), (char *)params[i]);
             break;
         }
         case 'F': {
