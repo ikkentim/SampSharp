@@ -56,7 +56,7 @@ private:
 
 	static int SampSharp::GetParamLengthIndex(MonoMethod *method, int idx);
     static void SampSharp::Test(MonoArray *arr);
-    static int SampSharp::CallNativeArray(MonoString *name, MonoString *format, MonoArray *args);
+    static cell SampSharp::CallNativeArray(MonoString *name, MonoString *format, MonoArray *args);
 
 	static MonoDomain *rootDomain;
 
