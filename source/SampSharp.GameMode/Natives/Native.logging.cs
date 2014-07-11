@@ -48,7 +48,7 @@ namespace SampSharp.GameMode.Natives
                 var arg = iterator.GetNextArg();
                 var type = TypedReference.GetTargetType(arg);
 
-                Console.WriteLine("{0}", type);
+                //Console.WriteLine("{0}", type);
                 switch (type.ToString())
                 {
                     case "System.String":
