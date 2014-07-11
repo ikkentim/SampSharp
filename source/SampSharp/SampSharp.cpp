@@ -48,9 +48,6 @@ void SampSharp::Load(string baseModePath, string gameModePath, string gameModeNa
 	baseModeImage = mono_assembly_get_image(mono_domain_assembly_open(mono_domain_get(), (char *)PathUtil::GetPathInBin(baseModePath).c_str()));
 
 	LoadNatives(); 
-    mono_add_internal_call("SampSharp.GameMode.Natives.Native::Test", (void *)Test);
-    mono_add_internal_call("SampSharp.GameMode.Natives.Native::CallNativeArray", (void *)CallNativeArray);
-
     
 	baseModeClassType = mono_class_from_name(baseModeImage, "SampSharp.GameMode", "BaseMode");
 	gameModeClassType = mono_class_from_name(gameModeImage, gameModeNamespace.c_str(), gameModeClass.c_str());
@@ -64,118 +61,6 @@ void SampSharp::Load(string baseModePath, string gameModePath, string gameModeNa
 
 	onTimerTick = LoadEvent(gameModeClass.c_str(), "OnTimerTick");
 	onTick = LoadEvent(gameModeClass.c_str(), "OnTick");
-}
-
-void SampSharp::Test(MonoArray *arr) {
-    assert(arr != NULL);
-
-
-    MonoString ** fv = mono_array_get(arr, MonoString **, 0);
-    cout << mono_string_to_utf8(*fv) << endl;
-    *fv = mono_string_new(mono_domain_get(), "Bravo");
-
-}
-cell SampSharp::CallNativeArray(MonoString *name, MonoString *format, MonoArray *args) {
-    assert(name != NULL);
-    assert(format != NULL);
-    assert(args != NULL);
-
-    char *native_str = mono_string_to_utf8(name);
-    char *format_str = mono_string_to_utf8(format);
-    int len = mono_array_length(args);
-
-    void *params[32];
-	cell value_ref[32];
-    string amx_format;
-	if(strlen(format_str) != len)
-	{
-		mono_raise_exception(mono_get_exception_invalid_operation("invalid format length"));
-		return -1;
-	}
-
-    for (int i = 0; i < len; i++) {
-        switch (format_str[i]) {
-        case 'i': /* integer */
-        case 'd': /* integer */ {
-            int value = *(int *)mono_object_unbox(mono_array_get(args, MonoObject *, i));
-            value_ref[i] = value;
-            params[i] = &value_ref[i];
-			amx_format += 'd';
-            break;
-        }
-        case 'b': /* boolean */ {
-            bool value = *(bool *)mono_object_unbox(mono_array_get(args, MonoObject *, i));
-			value_ref[i] = value;
-            params[i] = &value_ref[i];
-			amx_format += 'b';
-            break;
-        }
-        
-        case 'f': /* floating-point */ {
-            float value = *(float *)mono_object_unbox(mono_array_get(args, MonoObject *, i));
-			value_ref[i] = value;
-            params[i] = &value_ref[i];
-			amx_format += 'f';
-            break;
-        }
-        case 'F': /* floating-point reference */ {
-			float value = **(float **)mono_object_unbox(mono_array_get(args, MonoObject *, i));
-			value_ref[i] = amx_ftoc(value);
-            params[i] = &value_ref[i];
-			amx_format += 'R';
-            break;
-        }
-        case 's': /* const string */ {
-            MonoString *str = mono_array_get(args, MonoString *, i);
-            string std_str = mono_string_to_string(str).c_str();
-
-            char *value = new char[std_str.length() + 1];
-            strcpy(value, std_str.c_str());
-
-			value_ref[i] = value[0];
-            params[i] = value;
-			amx_format += 's';
-            break;
-        }
-        case 'S': /* non-const string (writeable) */ {
-            MonoString *str = mono_array_get(args, MonoString *, i);
-            char *value = new char[mono_string_length(str) + 1];
-
-            params[i] = value;
-			char *length_param = new char[7];
-			sprintf(length_param, "S[*%d]", i+1);
-			amx_format += length_param;
-            break;
-        }
-        default:
-			mono_raise_exception(mono_get_exception_invalid_operation("invalid format type"));
-			return -1;
-        }
-    }
-
-    AMX_NATIVE native = sampgdk::FindNative(native_str);
-
-    assert(native != NULL);
-
-    int retval = sampgdk::InvokeNativeArray(native, amx_format.c_str(), params);
-
-    for (int i = 0; i < len; i++) {
-        switch (format_str[i]) {
-        case 'S': {
-            MonoString **str = mono_array_get(args, MonoString **, i);
-
-            *str = mono_string_new(mono_domain_get(), (char *)params[i]);
-            break;
-        }
-        case 'F': {
-			float ** value = (float **)mono_object_unbox(mono_array_get(args, MonoObject *, i));
-			**value = amx_ctof(value_ref[i]);
-            break;
-        }
-        }
-    }
-
-    return retval;
 }
 
 #ifdef _WIN32
