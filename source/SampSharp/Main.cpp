@@ -24,6 +24,7 @@ Load(void **ppData) {
 		return false;
 	}
 
+
 	//read config
 	ConfigReader server_cfg("server.cfg");
 	string basemode_path = "plugins/SampSharp.GameMode.dll"; 

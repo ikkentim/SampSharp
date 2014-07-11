@@ -1,6 +1,9 @@
 #include "SampSharp.h"
 
 #include <mono/metadata/threads.h>
+#include <mono/metadata/exception.h>
+#include <sampgdk/interop.h>
+#include <assert.h>
 #include "PathUtil.h"
 #include "Natives.h"
 
@@ -45,7 +48,7 @@ void SampSharp::Load(string baseModePath, string gameModePath, string gameModeNa
 	baseModeImage = mono_assembly_get_image(mono_domain_assembly_open(mono_domain_get(), (char *)PathUtil::GetPathInBin(baseModePath).c_str()));
 
 	LoadNatives(); 
-
+    
 	baseModeClassType = mono_class_from_name(baseModeImage, "SampSharp.GameMode", "BaseMode");
 	gameModeClassType = mono_class_from_name(gameModeImage, gameModeNamespace.c_str(), gameModeClass.c_str());
 
@@ -61,9 +64,7 @@ void SampSharp::Load(string baseModePath, string gameModePath, string gameModeNa
 }
 
 #ifdef _WIN32
-void SampSharp::GenerateSymbols(string path)
-{
-	
+void SampSharp::GenerateSymbols(string path) {	
 	string mdbpath = PathUtil::GetLibDirectory().append("mono/4.5/pdb2mdb.exe");
 	char *cmdbpath = new char[mdbpath.size() + 1];
 	strcpy(cmdbpath, mdbpath.c_str());
@@ -121,7 +122,6 @@ MonoMethod *SampSharp::LoadEvent(const char *className, const char *name) {
 }
 
 int SampSharp::GetParamLengthIndex(MonoMethod *method, int idx) {
-	
 	MonoCustomAttrInfo *attr = mono_custom_attrs_from_param(method, idx + 1);
 	if (!attr) {
 		ofstream logfile;
@@ -154,8 +154,7 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 	mono_thread_attach(SampSharp::rootDomain);
 
 	//detect unknown methods
-	if (events.find(name) == events.end())
-	{
+	if (events.find(name) == events.end()) {
 		//find method
 		MonoMethod *m_method = mono_class_get_method_from_name(gameModeClassType, name, param_count);
 		
@@ -211,7 +210,6 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 					return true;
 				}
 				par->length_idx = index;
-	
 			}
 			else if (!type_name.compare("System.Single[]")) {
 				param_t *par = new param_t;
@@ -259,8 +257,7 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 	event_t *event_p = events[name];
 	
 	//call known events
-	if (event_p)
-	{
+	if (event_p) {
 		if (!param_count) {
 			int retint = SampSharp::CallEvent(event_p->method, NULL);
 			if (retint != -1) {
@@ -275,72 +272,79 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 			MonoArray *arr;
 
 			for (int i = 0; i < param_count; i++) {
-				switch (event_p->params[i]->type)
-				{
-				case PARAM_INT:
-				case PARAM_FLOAT:
-				case PARAM_BOOL:
-					args[i] = &params[i + 1];
-					break;
-				case PARAM_STRING:
-					amx_GetAddr(amx, params[i + 1], &addr);
-					amx_StrLen(addr, &len);
+                switch (event_p->params[i]->type) {
+                case PARAM_INT:
+                case PARAM_FLOAT:
+                case PARAM_BOOL: {
+                    args[i] = &params[i + 1];
+                    break;
+                }
+                case PARAM_STRING: {
+                    amx_GetAddr(amx, params[i + 1], &addr);
+                    amx_StrLen(addr, &len);
 
-					if (len) {
-						len++;
+                    if (len) {
+                        len++;
 
-						char* text = new char[len];
+                        char* text = new char[len];
 
-						amx_GetString(text, addr, 0, len);
-						args[i] = mono_string_new(mono_domain_get(), text);
-					}
-					else {
-						args[i] = mono_string_new(mono_domain_get(), "");
-					}
-					break;
-				case PARAM_INT_ARRAY:
-					len = params[event_p->params[i]->length_idx];
-					arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
+                        amx_GetString(text, addr, 0, len);
+                        args[i] = mono_string_new(mono_domain_get(), text);
+                    }
+                    else {
+                        args[i] = mono_string_new(mono_domain_get(), "");
+                    }
+                    break;
+                }
+                case PARAM_INT_ARRAY: {
+                    len = params[event_p->params[i]->length_idx];
+                    arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
 
-					if (len > 0) {
-						cell* addr = NULL;
-						amx_GetAddr(amx, params[i + 1], &addr);
+                    if (len > 0) {
+                        cell* addr = NULL;
+                        amx_GetAddr(amx, params[i + 1], &addr);
 
-						for (int i = 0; i < len; i++) {
-							mono_array_set(arr, int, i, *(addr + i));
-						}
-					}
-					args[i] = arr;
-					break;
-				case PARAM_FLOAT_ARRAY:
-					len = params[event_p->params[i]->length_idx];
-					arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
+                        for (int i = 0; i < len; i++) {
+                            mono_array_set(arr, int, i, *(addr + i));
+                        }
+                    }
+                    args[i] = arr;
+                    break;
+                }
+                case PARAM_FLOAT_ARRAY: {
+                    len = params[event_p->params[i]->length_idx];
+                    arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
 
-					if (len > 0) {
-						cell* addr = NULL;
-						amx_GetAddr(amx, params[i + 1], &addr);
+                    if (len > 0) {
+                        cell* addr = NULL;
+                        amx_GetAddr(amx, params[i + 1], &addr);
 
-						for (int i = 0; i < len; i++) {
-							mono_array_set(arr, float, i, amx_ctof(*(addr + i)));
-						}
-					}
-					args[i] = arr;
-					break;
-				case PARAM_BOOL_ARRAY:
-					len = params[event_p->params[i]->length_idx];
-					arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
+                        for (int i = 0; i < len; i++) {
+                            mono_array_set(arr, float, i, amx_ctof(*(addr + i)));
+                        }
+                    }
+                    args[i] = arr;
+                    break;
+                }
+                case PARAM_BOOL_ARRAY: {
+                    len = params[event_p->params[i]->length_idx];
+                    arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
 
-					if (len > 0) {
-						cell* addr = NULL;
-						amx_GetAddr(amx, params[i + 1], &addr);
+                    if (len > 0) {
+                        cell* addr = NULL;
+                        amx_GetAddr(amx, params[i + 1], &addr);
 
-						for (int i = 0; i < len; i++) {
-							mono_array_set(arr, bool, i, *(addr + i));
-						}
-					}
-					args[i] = arr;
-					break;
-				}
+                        for (int i = 0; i < len; i++) {
+                            mono_array_set(arr, bool, i, !!*(addr + i));
+                        }
+                    }
+                    args[i] = arr;
+                    break;
+                }
+                default:
+                    assert(0 && "Invalid type specifier");
+                    break;
+                }
 			}
 
 			int retint = SampSharp::CallEvent(event_p->method, args);
