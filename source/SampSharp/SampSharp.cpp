@@ -120,7 +120,7 @@ int SampSharp::CallNativeArray(MonoString *name, MonoString *format, MonoArray *
         }
         case 'F': /* floating-point reference */ {
 			float value = **(float **)mono_object_unbox(mono_array_get(args, MonoObject *, i));
-
+			value_ref[i] = amx_ftoc(value);
             params[i] = &value_ref[i];
 			amx_format += 'R';
             break;
