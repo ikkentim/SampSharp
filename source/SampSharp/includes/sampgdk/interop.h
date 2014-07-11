@@ -29,12 +29,14 @@
 /**
  * \brief Returns all currently registered native functions.
  *
- * This function can be used to retrieve the names and addresses of all native
- * functions that were registered with amx_Register() by the server and plugins
- * loaded prior to the call. The \p number parameter is filled with the total
- * number of functions.
+ * This function can be used to get the names and addresses of all native
+ * functions that have been registered with amx_Register(), by both the
+ * server and plugins.
  *
- * \param number The number of elements in the returned array.
+ * \note The returned array is NULL-terminated.
+ *
+ * \param number A pointer to the variable that will store the number of
+ *               elements in the returned array (may be \c NULL).
  *
  * \returns A pointer to the internal array of native functions.
  *
@@ -71,8 +73,8 @@ SAMPGDK_API(AMX_NATIVE, sampgdk_FindNative(const char *name));
  * a reference or a string use sampgdk_InvokeNative() instead.
  *
  * \note The first element of \p params should contain the number of arguments
- * multiplied by \c sizeof(cell). If the function takes no arguments, \p params
- * may be \c NULL.
+ * multiplied by \c sizeof(cell). If the function takes no arguments \p params
+ * may be \c NULL (but that really depends on the function).
  *
  * \param native A pointer to the native function.
  * \param params The \c params array passsed to the function.
@@ -105,9 +107,14 @@ SAMPGDK_API(cell, sampgdk_CallNative(AMX_NATIVE native, cell *params));
  * a         | const cell *  | const string (input only)
  * A         | cell *        | non-const string (both input and output)
  *
- * \note For the 'S', 'a' and 'A' specifiers you have to specify the size
+ * \remarks For the 'S', 'a' and 'A' specifiers you have to specify the size
  * of the string/array in square brackets, e.g. "a[100]" (fixed size)
  * or s[*2] (size passed via 2nd argument).
+ *
+ * \note In Pawn, variadic functions always take their variable arguments
+ * (those represented by "...") by reference. This means that for such
+ * functions you have to use the 'r' specifier where you would normally
+ * use 'b', 'i' 'd' or 'f'.
  *
  * \param native A pointer to the native function.
  * \param format A format string specifying the types of the arguments.
@@ -193,6 +200,11 @@ namespace sampgdk {
 /// \brief C++ wrapper around sampgdk_GetNatives().
 inline const AMX_NATIVE_INFO *GetNatives(int &number) {
   return sampgdk_GetNatives(&number);
+}
+
+/// \brief C++ wrapper around sampgdk_GetNatives().
+inline const AMX_NATIVE_INFO *GetNatives() {
+  return sampgdk_GetNatives(NULL);
 }
 
 /// \brief C++ wrapper around sampgdk_FindNative().
