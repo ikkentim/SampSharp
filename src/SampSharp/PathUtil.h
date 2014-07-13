@@ -8,36 +8,34 @@
 #endif
 #include <string>
 
-using namespace std;
-
 struct PathUtil
 {
-	static string GetBinDirectory()
+	static std::string GetBinDirectory()
 	{
 		#ifdef _WIN32
-		string s_cwd(getcwd(NULL, 0));
+		std::string s_cwd(getcwd(NULL, 0));
 		return s_cwd.append("/");
 		#else
 		return "./";
 		#endif
 	}
 
-	static string GetPathInBin(string append)
+	static std::string GetPathInBin(std::string append)
 	{
 		return GetBinDirectory().append(append);
 	}
 
-	static string GetMonoDirectory()
+	static std::string GetMonoDirectory()
 	{
 		return GetPathInBin("mono/");
 	}
 
-	static string GetLibDirectory()
+	static std::string GetLibDirectory()
 	{
 		return GetMonoDirectory().append("lib/");
 	}
 
-	static string GetConfigDirectory()
+	static std::string GetConfigDirectory()
 	{
 		return GetMonoDirectory().append("etc/");
 	}

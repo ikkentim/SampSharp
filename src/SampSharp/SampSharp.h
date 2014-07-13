@@ -1,13 +1,14 @@
 #pragma once
 
-
 #include <map>
-
+#include <list>
 #include <sampgdk/export.h>
 #include <mono/jit/jit.h>
 
 #define BASEMODE_NAMESPACE "SampSharp.GameMode"
 #define BASEMODE_CLASS "BaseMode"
+#define PARAM_LENGTH_ATTRIBUTE_NAMESPACE "SampSharp.GameMode"
+#define PARAM_LENGTH_ATTRIBUTE_CLASS "ParameterLengthAttribute"
 
 enum paramtypes_t { 
 	PARAM_INT,
@@ -36,6 +37,7 @@ typedef struct gamemodeimage_t {
     MonoClass *klass;
 } GamemodeImage;
 
+typedef std::list<MonoObject *> ExtensionList;
 
 class SampSharp
 {
@@ -53,12 +55,13 @@ private:
 	static MonoMethod *LoadEvent(const char *name, int param_count);
 	static int GetParamLengthIndex(MonoMethod *method, int idx);
     static int CallEvent(MonoMethod *method, void **params);
-
+    static bool RegisterExtension(MonoObject *extension);
 	static MonoDomain *root;
     static GamemodeImage gamemode;
     static GamemodeImage basemode;
 
 	static uint32_t gameModeHandle;
 	static EventMap events;
+    static ExtensionList extensions;
 };
 

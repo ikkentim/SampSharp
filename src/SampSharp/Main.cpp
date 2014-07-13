@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <sampgdk/core.h>
 #include <sampgdk/a_samp.h>
 
@@ -6,7 +7,6 @@
 #include "ConfigReader.h"
 #include "amxplugin.cpp"
 
-using namespace std;
 using sampgdk::logprintf;
 
 extern void *pAMXFunctions;
@@ -26,10 +26,10 @@ Load(void **ppData) {
 
 	//read config
 	ConfigReader server_cfg("server.cfg");
-	string basemode_path = "plugins/SampSharp.GameMode.dll"; 
-	string gamemode_path = "plugins/GameMode.dll";
-	string gamemode_namespace = "GameMode";
-	string gamemode_class = "GameMode";
+	std::string basemode_path = "plugins/SampSharp.GameMode.dll"; 
+	std::string gamemode_path = "plugins/GameMode.dll";
+	std::string gamemode_namespace = "GameMode";
+	std::string gamemode_class = "GameMode";
 	bool gamemode_debug = false;
 
 	server_cfg.GetOption("basemode_path", basemode_path);
