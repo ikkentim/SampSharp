@@ -314,7 +314,7 @@ cell call_native_array(MonoString *name, MonoString *format, MonoArray *args) {
             /*
             TODO:
             Dynamic memory allocation seems to slow down the process
-            by a considerable amount should research how to do this properly.
+            by a considerable amount. Should research how to do this properly.
             */
             char *value[1024];// = (char *)malloc(sizeof(char) * (len + 1));
          
