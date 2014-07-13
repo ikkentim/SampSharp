@@ -24,7 +24,7 @@ GamemodeImage SampSharp::basemode;
 
 uint32_t SampSharp::gameModeHandle;
 EventMap SampSharp::events;
-
+ExtensionList SampSharp::extensions;
 void SampSharp::Load(const char *basemode_path, const char *gamemode_path,
                      const char *gamemode_namespace,
                      const char *gamemode_class, bool debug) {
@@ -46,13 +46,14 @@ void SampSharp::Load(const char *basemode_path, const char *gamemode_path,
 	}
 	#endif
 
+    basemode.image = mono_assembly_get_image(mono_domain_assembly_open(root, PathUtil::GetPathInBin(basemode_path).c_str()));
     gamemode.image = mono_assembly_get_image(mono_domain_assembly_open(root, PathUtil::GetPathInBin(gamemode_path).c_str()));
-	basemode.image = mono_assembly_get_image(mono_domain_assembly_open(root, PathUtil::GetPathInBin(basemode_path).c_str()));
     
 	basemode.klass = mono_class_from_name(basemode.image, BASEMODE_NAMESPACE, BASEMODE_CLASS);
 	gamemode.klass = mono_class_from_name(gamemode.image, gamemode_namespace, gamemode_class);
 
 	LoadNatives(); 
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::RegisterExtension", (void *)RegisterExtension);
 
 	MonoObject *gamemode_obj = mono_object_new(mono_domain_get(), gamemode.klass);
 	gameModeHandle = mono_gchandle_new(gamemode_obj, true);
@@ -82,6 +83,22 @@ void SampSharp::ProcessTick() {
     CallEvent(method, NULL);
 }
 
+bool SampSharp::RegisterExtension(MonoObject *extension) {
+    if(!extension) {
+        return false;
+    }
+
+    for(ExtensionList::iterator iter = extensions.begin(); iter != extensions.end();iter++) {
+        if((*iter) == extension) {
+            return false;
+        }
+    }
+
+    mono_gchandle_new(extension, false);
+    extensions.push_back(extension);
+    return true;
+}
+
 MonoMethod *SampSharp::LoadEvent(const char *name, int param_count) {
 	MonoMethod *method = mono_class_get_method_from_name(gamemode.klass, name, param_count);
 
@@ -97,7 +114,8 @@ int SampSharp::GetParamLengthIndex(MonoMethod *method, int idx) {
     static MonoMethod *param_get;
 
     if(!param) {
-        param = mono_class_from_name(basemode.image, "SampSharp.GameMode", "ParameterLengthAttribute");
+        param = mono_class_from_name(basemode.image, PARAM_LENGTH_ATTRIBUTE_NAMESPACE, 
+            PARAM_LENGTH_ATTRIBUTE_CLASS);
     }
     if(!param_get) {
 	    param_get = mono_property_get_get_method(mono_class_get_property_from_name(param, "Index"));
@@ -152,7 +170,15 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 			image = basemode.image;
 		}
 
-		if (!method){
+        if(!method) {
+            for(ExtensionList::iterator iter = extensions.begin(); !method && iter != extensions.end();iter++) {
+                MonoClass *klass = mono_object_get_class((*iter));
+
+                method = mono_class_get_method_from_name(klass, name, param_count);
+                image = mono_class_get_image(klass);
+            }
+        }
+		if (!method) {
 			events[name] = NULL;
 			return true;
 		}
