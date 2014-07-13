@@ -1,7 +1,16 @@
 #include "SampSharp.h"
 
+#include "TimeUtil.h"
+#include "MonoUtil.h"
+
+#include <iostream>
+#include <fstream>
 #include <mono/metadata/threads.h>
 #include <mono/metadata/exception.h>
+#include <mono/jit/jit.h>
+#include <mono/metadata/assembly.h>
+#include <mono/metadata/mono-debug.h>
+#include <mono/metadata/debug-helpers.h>
 #include <sampgdk/interop.h>
 #include <assert.h>
 #include "PathUtil.h"
@@ -9,162 +18,141 @@
 
 using namespace std;
 
-MonoMethod *SampSharp::onTimerTick;
-MonoMethod *SampSharp::onTick;
-
-MonoDomain *SampSharp::rootDomain;
-
-MonoImage *SampSharp::gameModeImage;
-MonoImage *SampSharp::baseModeImage;
-
-MonoClass *SampSharp::gameModeClassType;
-MonoClass *SampSharp::baseModeClassType;
-MonoClass *SampSharp::parameterLengthAttributeClassType;
-
-MonoMethod *SampSharp::parameterLengthAttributeGetIndexMethod;
+MonoDomain *SampSharp::root;
+GamemodeImage SampSharp::gamemode;
+GamemodeImage SampSharp::basemode;
 
 uint32_t SampSharp::gameModeHandle;
-
 EventMap SampSharp::events;
 
-void SampSharp::Load(string baseModePath, string gameModePath, string gameModeNamespace, string gameModeClass, bool debug) {
+void SampSharp::Load(const char *basemode_path, const char *gamemode_path,
+                     const char *gamemode_namespace,
+                     const char *gamemode_class, bool debug) {
 
 	#ifdef _WIN32
-	mono_set_dirs(PathUtil::GetLibDirectory().c_str(), PathUtil::GetConfigDirectory().c_str());
+	mono_set_dirs(PathUtil::GetLibDirectory().c_str(), 
+        PathUtil::GetConfigDirectory().c_str());
 	#endif
 
 	mono_debug_init(MONO_DEBUG_FORMAT_MONO);
 
-	rootDomain = mono_jit_init(PathUtil::GetPathInBin(gameModePath).c_str());
+	root = mono_jit_init(PathUtil::GetPathInBin(gamemode_path).c_str());
 
 	#ifdef _WIN32
 	if (debug == true) {
-		GenerateSymbols(baseModePath);
-		GenerateSymbols(gameModePath);
+		sampgdk::logprintf("[SampSharp] Generating symbol files");
+		MonoUtil::GenerateSymbols(basemode_path);
+		MonoUtil::GenerateSymbols(gamemode_path);
 	}
 	#endif
 
-	gameModeImage = mono_assembly_get_image(mono_domain_assembly_open(mono_domain_get(), (char *)PathUtil::GetPathInBin(gameModePath).c_str()));
-	baseModeImage = mono_assembly_get_image(mono_domain_assembly_open(mono_domain_get(), (char *)PathUtil::GetPathInBin(baseModePath).c_str()));
+    gamemode.image = mono_assembly_get_image(mono_domain_assembly_open(root, PathUtil::GetPathInBin(gamemode_path).c_str()));
+	basemode.image = mono_assembly_get_image(mono_domain_assembly_open(root, PathUtil::GetPathInBin(basemode_path).c_str()));
+    
+	basemode.klass = mono_class_from_name(basemode.image, BASEMODE_NAMESPACE, BASEMODE_CLASS);
+	gamemode.klass = mono_class_from_name(gamemode.image, gamemode_namespace, gamemode_class);
 
 	LoadNatives(); 
-    
-	baseModeClassType = mono_class_from_name(baseModeImage, "SampSharp.GameMode", "BaseMode");
-	gameModeClassType = mono_class_from_name(gameModeImage, gameModeNamespace.c_str(), gameModeClass.c_str());
 
-	parameterLengthAttributeClassType = mono_class_from_name(baseModeImage, "SampSharp.GameMode", "ParameterLengthAttribute");
-	parameterLengthAttributeGetIndexMethod = mono_property_get_get_method(mono_class_get_property_from_name(parameterLengthAttributeClassType, "Index"));
-
-	MonoObject *gameModeObject = mono_object_new(mono_domain_get(), gameModeClassType);
-	gameModeHandle = mono_gchandle_new(gameModeObject, true);
-	mono_runtime_object_init(gameModeObject);
-
-	onTimerTick = LoadEvent(gameModeClass.c_str(), "OnTimerTick");
-	onTick = LoadEvent(gameModeClass.c_str(), "OnTick");
+	MonoObject *gamemode_obj = mono_object_new(mono_domain_get(), gamemode.klass);
+	gameModeHandle = mono_gchandle_new(gamemode_obj, true);
+	mono_runtime_object_init(gamemode_obj);
 }
 
-#ifdef _WIN32
-void SampSharp::GenerateSymbols(string path) {	
-	string mdbpath = PathUtil::GetLibDirectory().append("mono/4.5/pdb2mdb.exe");
-	char *cmdbpath = new char[mdbpath.size() + 1];
-	strcpy(cmdbpath, mdbpath.c_str());
-	
-	MonoAssembly *mdbconverter = mono_domain_assembly_open(rootDomain, cmdbpath);
-	if (mdbconverter) {
-		char *argv[2];
-		argv[0] = cmdbpath;
-		argv[1] = (char *) path.c_str();
+void SAMPGDK_CALL SampSharp::ProcessTimerTick(int timerid, void *data) {
+    static MonoMethod *method;
 
-		sampgdk::logprintf("[SampSharp] Generating symbol file for %s.", argv[1]);
-		mono_jit_exec(rootDomain, mdbconverter, 2, argv);
-	}
+    if (method == NULL) {
+        method = LoadEvent("OnTimerTick", 2);
+    }
 
-	delete cmdbpath;
-}
-#endif
-
-char *GetTimeStamp() {
-	time_t now = time(0);
-	char timestamp[32];
-	
-	strftime(timestamp, sizeof(timestamp), "[%d/%m/%Y %H:%M:%S]", localtime(&now));
-
-	char *timestamp2 = new char[32];
-	strcpy(timestamp2, timestamp);
-	return  timestamp2;
+	void *args[2];
+	args[0] = &timerid;
+	args[1] = data;
+	CallEvent(method, args);
 }
 
-MonoMethod *SampSharp::LoadEvent(const char *className, const char *name) {
-	char *gamemodeBuffer = new char[128];
-	char *basemodeBuffer = new char[128];
-	sprintf(gamemodeBuffer, "%s:%s", className, name);
-	sprintf(basemodeBuffer, "BaseMode:%s", name);
+void SampSharp::ProcessTick() {
+    static MonoMethod *method;
 
-	MonoMethodDesc *methodDescription = mono_method_desc_new(gamemodeBuffer, false);
-	MonoMethod *method = mono_method_desc_search_in_image(methodDescription, gameModeImage);
-	mono_method_desc_free(methodDescription);
+    if (method == NULL) {
+        method = LoadEvent("OnTick", 0);
+    }
+
+    CallEvent(method, NULL);
+}
+
+MonoMethod *SampSharp::LoadEvent(const char *name, int param_count) {
+	MonoMethod *method = mono_class_get_method_from_name(gamemode.klass, name, param_count);
 
 	if (!method) {
-		methodDescription = mono_method_desc_new(basemodeBuffer, false);
-		method = mono_method_desc_search_in_image(methodDescription, baseModeImage);
-		mono_method_desc_free(methodDescription);
-
-		if (!method) {
-			ofstream logfile;
-			logfile.open("SampSharp_errors.log", ios::app);
-			cout << "[SampSharp] ERROR: Method '" << name << "' not found in image!" << endl;
-			logfile << GetTimeStamp() << "ERROR: Method '" << name << "' not found in image!" << endl;
-			logfile.close();
-		}
+		method = mono_class_get_method_from_name(basemode.klass, name, param_count);
 	}
 
 	return method;
 }
 
 int SampSharp::GetParamLengthIndex(MonoMethod *method, int idx) {
+    static MonoClass *param;
+    static MonoMethod *param_get;
+
+    if(!param) {
+        param = mono_class_from_name(basemode.image, "SampSharp.GameMode", "ParameterLengthAttribute");
+    }
+    if(!param_get) {
+	    param_get = mono_property_get_get_method(mono_class_get_property_from_name(param, "Index"));
+    }
+
+    assert(param);
+    assert(param_get);
+
 	MonoCustomAttrInfo *attr = mono_custom_attrs_from_param(method, idx + 1);
 	if (!attr) {
 		ofstream logfile;
+        
 		logfile.open("SampSharp_errors.log", ios::app);
-		cout << "[SampSharp] ERROR: No attribute info for " << mono_method_get_name(method) << "@" << idx << endl;
-		logfile << GetTimeStamp() << "ERROR: No attribute info for " << mono_method_get_name(method) << "@" << idx << endl;
+		cout << "[SampSharp] ERROR: No attribute info for " << mono_method_get_name(method)
+            << "@" << idx << endl;
+		logfile << TimeUtil::GetTimeStamp() << "ERROR: No attribute info for "
+            << mono_method_get_name(method) << "@" << idx << endl;
 		logfile.close();
 		return -1;
 	}
 
-	MonoObject *attrObj = mono_custom_attrs_get_attr(attr, parameterLengthAttributeClassType);
+	MonoObject *attrObj = mono_custom_attrs_get_attr(attr, param);
 	if (!attrObj) {
 		ofstream logfile;
 		logfile.open("SampSharp_errors.log", ios::app);
-		cout << "[SampSharp] ERROR: Array parameter has no specified size: " << mono_method_get_name(method) << "@" << idx << endl;
-		logfile << GetTimeStamp() << "ERROR: Array parameter has no specified size: " << mono_method_get_name(method) << "@" << idx << endl;
+		cout << "[SampSharp] ERROR: Array parameter has no specified size: "
+            << mono_method_get_name(method) << "@" << idx << endl;
+		logfile << TimeUtil::GetTimeStamp() << "ERROR: Array parameter has no specified size: "
+            << mono_method_get_name(method) << "@" << idx << endl;
 		logfile.close();
 		return -1;
 	}
 
-	return *(int*)mono_object_unbox(mono_runtime_invoke(parameterLengthAttributeGetIndexMethod, attrObj, NULL, NULL));
+	return *(int*)mono_object_unbox(mono_runtime_invoke(param_get, attrObj, NULL, NULL));
 }
-bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retval) {
+bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell *retval) {
 	const int param_count = params[0] / sizeof(cell);
-
 	if (strlen(name) == 0 || param_count > 16) {
 		return true;
 	}
 
-	mono_thread_attach(SampSharp::rootDomain);
+	mono_thread_attach(root);
 
 	//detect unknown methods
 	if (events.find(name) == events.end()) {
 		//find method
-		MonoMethod *m_method = mono_class_get_method_from_name(gameModeClassType, name, param_count);
+		MonoMethod *method = mono_class_get_method_from_name(gamemode.klass, name, param_count);
 		
-		MonoImage *image = gameModeImage;
-		if (!m_method) {
-			m_method = mono_class_get_method_from_name(baseModeClassType, name, param_count);
-			image = baseModeImage;
+		MonoImage *image = gamemode.image;
+		if (!method) {
+			method = mono_class_get_method_from_name(basemode.klass, name, param_count);
+			image = basemode.image;
 		}
 
-		if (!m_method){
+		if (!method){
 			events[name] = NULL;
 			return true;
 		}
@@ -175,87 +163,91 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 		ParamMap params;
 
 		MonoType* type = NULL;
-		MonoMethodSignature *sig = mono_method_get_signature(m_method, image, mono_method_get_token(m_method));
+		MonoMethodSignature *sig = mono_method_get_signature(method, image, 
+            mono_method_get_token(method));
+
 		while (type = mono_signature_get_params(sig, &iter)) {
-			string type_name = mono_type_get_name(type);
+			char *type_name = mono_type_get_name(type);
+            param_t *par = new param_t;
 
-			if (!type_name.compare("System.Int32")) {
-				param_t *par = new param_t;
+			if (!strcmp(type_name, "System.Int32")) {
 				par->type = PARAM_INT;
-				params[iter_idx] = par;
 			}
-			else if (!type_name.compare("System.Single")) {
-				param_t *par = new param_t;
+			else if (!strcmp(type_name, "System.Single")) {
 				par->type = PARAM_FLOAT;
-				params[iter_idx] = par;
 			}
-			else if (!type_name.compare("System.String")) {
-				param_t *par = new param_t;
+			else if (!strcmp(type_name, "System.String")) {
 				par->type = PARAM_STRING;
-				params[iter_idx] = par;
 			}
-			else if (!type_name.compare("System.Boolean")) {
-				param_t *par = new param_t;
+			else if (!strcmp(type_name, "System.Boolean")) {
 				par->type = PARAM_BOOL;
-				params[iter_idx] = par;
 			}
-			else if (!type_name.compare("System.Int32[]")) {
-				param_t *par = new param_t;
+			else if (!strcmp(type_name, "System.Int32[]")) {
 				par->type = PARAM_INT_ARRAY;
-				params[iter_idx] = par;
 				
-				int index = GetParamLengthIndex(m_method, iter_idx);
+				int index = GetParamLengthIndex(method, iter_idx);
 				if (index == -1) {
 					events[name] = NULL;
 					return true;
 				}
 				par->length_idx = index;
 			}
-			else if (!type_name.compare("System.Single[]")) {
-				param_t *par = new param_t;
+			else if (!strcmp(type_name, "System.Single[]")) {
 				par->type = PARAM_FLOAT_ARRAY;
-				params[iter_idx] = par;
 
-				int index = GetParamLengthIndex(m_method, iter_idx);
+				int index = GetParamLengthIndex(method, iter_idx);
 				if (index == -1) {
-					events[name] = NULL;
-					return true;
+	                ofstream logfile;
+				    logfile.open("SampSharp_errors.log", ios::app);
+				    cout << "[SampSharp] ERROR: No parameter length provided: "
+                        << type_name << " in " << name << endl;
+				    logfile << TimeUtil::GetTimeStamp() << "ERROR: No parameter length provided: "
+                        << type_name << " in " << name << endl;
+				    logfile.close();
+				    events[name] = NULL;
+				    return true;
 				}
 				par->length_idx = index;
 			}
-			else if (!type_name.compare("System.Boolean[]")) {
-				param_t *par = new param_t;
+			else if (!strcmp(type_name, "System.Boolean[]")) {
 				par->type = PARAM_BOOL_ARRAY;
-				params[iter_idx] = par;
 
-				int index = GetParamLengthIndex(m_method, iter_idx);
+				int index = GetParamLengthIndex(method, iter_idx);
 				if (index == -1) {
-					events[name] = NULL;
-					return true;
+				    ofstream logfile;
+				    logfile.open("SampSharp_errors.log", ios::app);
+				    cout << "[SampSharp] ERROR: No parameter length provided: "
+                        << type_name << " in " << name << endl;
+				    logfile << TimeUtil::GetTimeStamp() << "ERROR: No parameter length provided: "
+                        << type_name << " in " << name << endl;
+				    logfile.close();
+				    events[name] = NULL;
+				    return true;
 				}
 				par->length_idx = index;
 			}
 			else {
 				ofstream logfile;
 				logfile.open("SampSharp_errors.log", ios::app);
-				cout << "[SampSharp] ERROR: Incompatible parameter type: " << type_name << " in " << name << endl;
-				logfile << GetTimeStamp() << "ERROR: Incompatible parameter type: " << type_name << " in " << name << endl;
+				cout << "[SampSharp] ERROR: Incompatible parameter type: "
+                    << type_name << " in " << name << endl;
+				logfile << TimeUtil::GetTimeStamp() << "ERROR: Incompatible parameter type: "
+                    << type_name << " in " << name << endl;
 				logfile.close();
 				events[name] = NULL;
 				return true;
 			}
-
-			iter_idx++;
+            
+			params[iter_idx++] = par;
 		}
 		
 		event_t *event_add = new event_t;
-		event_add->method = m_method;
+		event_add->method = method;
 		event_add->params = params;
 		events[name] = event_add;
 	}
 
 	event_t *event_p = events[name];
-	
 	//call known events
 	if (event_p) {
 		if (!param_count) {
@@ -361,20 +353,11 @@ bool SampSharp::HandleEvent(AMX *amx, const char *name, cell *params, cell *retv
 }
 
 int SampSharp::CallEvent(MonoMethod* method, void **params) {
+    assert(method);
 
-	MonoObject *exception = NULL;
-	
-	if (!method) {
-		ofstream logfile;
-		logfile.open("SampSharp_errors.log", ios::app);
-		cout << "[SampSharp] ERROR: No method given in CallEvent!" << endl;
-		logfile << GetTimeStamp() << "ERROR: No method given in CallEvent!" << endl;
-		logfile.close();
-
-		return false;
-	}
-
-	MonoObject *response = mono_runtime_invoke(method, mono_gchandle_get_target(gameModeHandle), params, &exception);
+    MonoObject *exception;
+	MonoObject *response = mono_runtime_invoke(method, mono_gchandle_get_target(gameModeHandle),
+        params, &exception);
 
 	if (exception) {
 		char *stacktrace = mono_string_to_utf8(mono_object_to_string(exception, NULL));
@@ -382,7 +365,7 @@ int SampSharp::CallEvent(MonoMethod* method, void **params) {
 		ofstream logfile;
 		logfile.open("SampSharp_errors.log", ios::app | ios::binary);
 		cout << "[SampSharp] Exception thrown:" << endl << stacktrace << endl;
-		logfile << GetTimeStamp() << " Exception thrown:" << "\r\n" << stacktrace << "\r\n";
+		logfile << TimeUtil::GetTimeStamp() << " Exception thrown:" << "\r\n" << stacktrace << "\r\n";
 		logfile.close();
 
 		return -1;
@@ -392,7 +375,7 @@ int SampSharp::CallEvent(MonoMethod* method, void **params) {
 		return -1;
 	}
 
-	return *(bool *)mono_object_unbox(response) == true ? 1 : 0;;
+	return *(bool *)mono_object_unbox(response) == true ? 1 : 0;
 }
 
 void SampSharp::Unload() {

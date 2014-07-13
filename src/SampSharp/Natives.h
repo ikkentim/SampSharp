@@ -6,6 +6,8 @@
 #include <sampgdk/a_objects.h>
 #include <sampgdk/a_vehicles.h>
 
+#define MAX_NATIVE_ARGS 32
+
 string mono_string_to_string(MonoString *str)
 {
 	//TODO: seems a little sloppy, should research better solutions.
@@ -203,15 +205,10 @@ inline bool p_GetNetworkStats(MonoString ** retstr, int size) {
 	return retbool;
 }
 
-void SAMPGDK_CALL p_TimerCallback(int timerid, void *data) {
-	void *args[2];
-	args[0] = &timerid;
-	args[1] = data;
-	SampSharp::CallEvent(SampSharp::onTimerTick, args);
-}
+
 
 inline int p_SetTimer(int interval, bool repeat, MonoObject *params) {
-	return SetTimer(interval, repeat, p_TimerCallback, params);
+	return SetTimer(interval, repeat, SampSharp::ProcessTimerTick, params);
 }
 inline bool p_BlockIpAddress(MonoString *ip_address, int timems) {
 	return sampgdk_BlockIpAddress(mono_string_to_string(ip_address).c_str(), timems);
@@ -259,7 +256,7 @@ cell call_native_array(MonoString *name, MonoString *format, MonoArray *args) {
     char *format_str = mono_string_to_utf8(format);
     int len = mono_array_length(args);
 
-    void *params[32];
+    void *params[MAX_NATIVE_ARGS];
     string amx_format;
 
 	if(strlen(format_str) != len)
@@ -268,6 +265,13 @@ cell call_native_array(MonoString *name, MonoString *format, MonoArray *args) {
             "invalid format length"));
 		return -1;
 	}
+
+    if(len > MAX_NATIVE_ARGS)
+    {
+        mono_raise_exception(mono_get_exception_invalid_operation(
+            "too many arguments"));
+		return -1;
+    }
 
     for (int i = 0; i < len; i++) {
         switch (format_str[i]) {
