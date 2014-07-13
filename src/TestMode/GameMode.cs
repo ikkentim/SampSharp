@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System.Collections.Generic;
+using System.Linq;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.World;
@@ -22,6 +23,20 @@ namespace TestMode
 {
     public class GameMode : BaseMode
     {
+        private readonly List<ITest> _tests = new List<ITest>
+        {
+            new CommandsTest(),
+            new ASyncTest(),
+            new RegionsTest(),
+            new MenuTest(),
+            new CheckpointTest(),
+            new DisposureTest(),
+            new DialogTest(),
+            new CharsetTest(),
+            new VehicleInfoTest(),
+            new NativesTest(),
+            new StreamerTest(),
+        };
 
         public override bool OnGameModeInit()
         {
@@ -30,22 +45,7 @@ namespace TestMode
 
             AddPlayerClass(65, new Vector(5), 0);
 
-            List<ITest> tests = new List<ITest>
-            {
-                new CommandsTest(),
-                new ASyncTest(),
-                new RegionsTest(),
-                new MenuTest(),
-                new CheckpointTest(),
-                new DisposureTest(),
-                new DialogTest(),
-                new CharsetTest(),
-                new VehicleInfoTest(),
-                new NativesTest(),
-                new StreamerTest(),
-            };
-
-            foreach (var test in tests)
+            foreach (var test in _tests)
                 test.Start(this);
 
             return true;
@@ -53,8 +53,10 @@ namespace TestMode
 
         protected override void LoadControllers(ControllerCollection controllers)
         {
-            Streamer.LoadControllers(controllers);
             base.LoadControllers(controllers);
+
+            foreach (var test in _tests.OfType<IControllerTest>())
+                test.LoadControllers(controllers);
         }
     }
 }

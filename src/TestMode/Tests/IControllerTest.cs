@@ -11,21 +11,12 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SampSharp.GameMode.Display;
+using SampSharp.GameMode.Controllers;
 
 namespace TestMode.Tests
 {
-    public class DialogTest : ITest
+    public interface IControllerTest
     {
-        public void Start(GameMode gameMode)
-        {
-            //Hide before any dialog is shown
-            gameMode.PlayerConnected += (sender, args) => Dialog.Hide(args.Player);
-        }
+        void LoadControllers(ControllerCollection controllers);
     }
 }
