@@ -8,6 +8,8 @@
 
 #define MAX_NATIVE_ARGS 32
 
+using std::string;
+
 string mono_string_to_string(MonoString *str)
 {
 	//TODO: seems a little sloppy, should research better solutions.
@@ -309,8 +311,6 @@ cell call_native_array(MonoString *name, MonoString *format, MonoArray *args) {
             break;
         }
         case 'S': /* non-const string (writeable) */ {
-            MonoString *str = mono_array_get(args, MonoString *, i);
-
             /*
             TODO:
             Dynamic memory allocation seems to slow down the process

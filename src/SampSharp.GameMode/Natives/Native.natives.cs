@@ -24,6 +24,14 @@ namespace SampSharp.GameMode.Natives
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern float CallNativeArrayFloat(string name, string format, object[] args);
 
+        /// <summary>
+        ///     Registers an extension to the plugin.
+        /// </summary>
+        /// <param name="extension">The extension to register.</param>
+        /// <returns>True on success, False otherwise.</returns>
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool RegisterExtension(object extension);
+
         private static string FormatNativeList(out object[] args, RuntimeArgumentHandle handle)
         {
             var iterator = new ArgIterator(handle);
