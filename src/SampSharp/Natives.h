@@ -333,7 +333,11 @@ cell call_native_array(MonoString *name, MonoString *format, MonoArray *args) {
 
     AMX_NATIVE native = sampgdk::FindNative(native_str);
 
-    assert(native != NULL);
+    if(native == NULL) {
+        mono_raise_exception(mono_get_exception_invalid_operation(
+                "native not found"));
+			return -1;
+    }
 
     int retval = sampgdk::InvokeNativeArray(native, amx_format.c_str(), params);
 
