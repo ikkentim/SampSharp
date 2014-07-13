@@ -24,7 +24,6 @@ Load(void **ppData) {
 		return false;
 	}
 
-
 	//read config
 	ConfigReader server_cfg("server.cfg");
 	string basemode_path = "plugins/SampSharp.GameMode.dll"; 
@@ -63,11 +62,11 @@ Unload() {
 
 PLUGIN_EXPORT void PLUGIN_CALL
 ProcessTick() {
+    SampSharp::ProcessTick();
 	sampgdk::ProcessTick();
-	SampSharp::CallEvent(SampSharp::onTick, NULL);
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL
 OnPublicCall(AMX *amx, const char *name, cell *params, cell *retval) {
-	return SampSharp::HandleEvent(amx, name, params, retval);
+	return SampSharp::ProcessPublicCall(amx, name, params, retval);
 }

@@ -1,20 +1,13 @@
 #pragma once
 
-#include <iostream>
-#include <fstream>
-#include <cstring> //strcpy
+
 #include <map>
-#include <time.h>
 
-#include <sampgdk/sdk.h>
-#include <plugincommon.h>
-
+#include <sampgdk/export.h>
 #include <mono/jit/jit.h>
-#include <mono/metadata/assembly.h>
-#include <mono/metadata/mono-debug.h>
-#include <mono/metadata/debug-helpers.h>
 
-using namespace std;
+#define BASEMODE_NAMESPACE "SampSharp.GameMode"
+#define BASEMODE_CLASS "BaseMode"
 
 enum paramtypes_t { 
 	PARAM_INT,
@@ -25,50 +18,47 @@ enum paramtypes_t {
 	PARAM_FLOAT_ARRAY,
 	PARAM_BOOL_ARRAY
 };
+
 struct param_t {
 	paramtypes_t type;
 	int length_idx;
 };
-typedef map<int, param_t *> ParamMap;
+typedef std::map<int, param_t *> ParamMap;
 
 struct event_t {
 	MonoMethod *method;
 	ParamMap params;
 };
-typedef map<string, event_t *> EventMap;
+typedef std::map<std::string, event_t *> EventMap;
+
+typedef struct gamemodeimage_t {
+    MonoImage *image;
+    MonoClass *klass;
+} GamemodeImage;
+
 
 class SampSharp
 {
 public:
-	static void Load(string baseModePath, string gamemodePath, string gameModeNamespace, string gameModeClass, bool debug);
-	static void Unload();
-	static int CallEvent(MonoMethod *method, void ** params);
-	static bool HandleEvent(AMX *amx, const char *name, cell *params, cell *retval);
-
-	static MonoMethod *onTimerTick;
-	static MonoMethod *onTick;
+    static void Load(const char *basemode_path, const char *gamemode_path,
+                     const char *gamemode_namespace,
+                     const char *gamemode_class, bool debug);
+    static void Unload();
+	static bool ProcessPublicCall(AMX *amx, const char *name, cell *params,
+                                  cell *retval);
+    static void SAMPGDK_CALL ProcessTimerTick(int timerid, void *data);
+    static void ProcessTick();
  
 private:
-	static MonoMethod *LoadEvent(const char *cname, const char *name);
-	#ifdef _WIN32
-	static void GenerateSymbols(string path);
-	#endif
+	static MonoMethod *LoadEvent(const char *name, int param_count);
+	static int GetParamLengthIndex(MonoMethod *method, int idx);
+    static int CallEvent(MonoMethod *method, void **params);
 
-	static int SampSharp::GetParamLengthIndex(MonoMethod *method, int idx);
-
-	static MonoDomain *rootDomain;
-
-	static MonoImage *gameModeImage;
-	static MonoImage *baseModeImage;
-
-	static MonoClass *gameModeClassType;
-	static MonoClass *baseModeClassType;
-	static MonoClass *parameterLengthAttributeClassType;
-	
-	static MonoMethod *parameterLengthAttributeGetIndexMethod;
+	static MonoDomain *root;
+    static GamemodeImage gamemode;
+    static GamemodeImage basemode;
 
 	static uint32_t gameModeHandle;
-
 	static EventMap events;
 };
 
