@@ -38,6 +38,12 @@
     <ClInclude Include="SampSharp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TimeUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MonoUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SampSharp.def">

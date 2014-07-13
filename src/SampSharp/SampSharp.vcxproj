@@ -99,9 +99,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConfigReader.h" />
+    <ClInclude Include="MonoUtil.h" />
     <ClInclude Include="SampSharp.h" />
     <ClInclude Include="Natives.h" />
     <ClInclude Include="PathUtil.h" />
+    <ClInclude Include="TimeUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
