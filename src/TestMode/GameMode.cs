@@ -11,14 +11,11 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using SampSharp.GameMode;
-using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.World;
+using SampSharp.Streamer;
 using TestMode.Tests;
 
 namespace TestMode
@@ -45,12 +42,19 @@ namespace TestMode
                 new CharsetTest(),
                 new VehicleInfoTest(),
                 new NativesTest(),
+                new StreamerTest(),
             };
 
             foreach (var test in tests)
                 test.Start(this);
 
             return true;
+        }
+
+        protected override void LoadControllers(ControllerCollection controllers)
+        {
+            Streamer.LoadControllers(controllers);
+            base.LoadControllers(controllers);
         }
     }
 }
