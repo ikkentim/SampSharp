@@ -1,4 +1,17 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using System.CodeDom;
 using System.Configuration;
 using System.Linq.Expressions;
@@ -88,14 +101,16 @@ namespace SampSharp.Streamer.Natives
         {
             //TODO: Plugin does not yet support string-size args not located after the output string itself
             throw new NotImplementedException();
-            //int holderMaterialColor;
-            //int response = Native.CallNative("GetDynamicObjectMaterial",
-            //    __arglist(
-            //        objectid, materialindex, out modelid, out txdname, out texturename, out holderMaterialColor, maxtxdname,
-            //        maxtexturename));
 
-            //materialcolor = holderMaterialColor;
-            //return response;
+            int holderMaterialColor;
+            int response = Native.CallNative("GetDynamicObjectMaterial",
+                __arglist(
+                    objectid, materialindex, out modelid, out txdname, out texturename, out holderMaterialColor,
+                    maxtxdname,
+                    maxtexturename));
+
+            materialcolor = holderMaterialColor;
+            return response;
         }
 
         public static int SetDynamicObjectMaterial(int objectid, int materialindex, int modelid, string txdname,
@@ -114,14 +129,15 @@ namespace SampSharp.Streamer.Natives
         {
             //TODO: Plugin does not yet support string-size args not located after the output string itself
             throw new NotImplementedException();
+
             int holderMaterialSize, holderTextAlignment, holderFontColor, holderBackColor;
             return Native.CallNative("GetDynamicObjectMaterialText",
                 __arglist(
-                    objectid, materialindex, out text, out holderMaterialSize, out fontface, out fountsize, out bold,
+                    objectid, materialindex, out text, out holderMaterialSize, out fontface, out fontsize, out bold,
                     out holderFontColor, out holderBackColor, out holderTextAlignment, maxtext, maxfontface));
 
-            materialsize = (ObjectMaterialSize)holderMaterialSize;
-            textalignment = (ObjectMaterialTextAlign)holderTextAlignment;
+            materialsize = (ObjectMaterialSize) holderMaterialSize;
+            textalignment = (ObjectMaterialTextAlign) holderTextAlignment;
             fontcolor = holderFontColor;
             backcolor = holderBackColor;
         }
@@ -132,7 +148,7 @@ namespace SampSharp.Streamer.Natives
             ObjectMaterialTextAlign textalignment = ObjectMaterialTextAlign.Center)
         {
             //TODO: Default fontcolor should be white.
-            Native.CallNative("SetDynamicObjectMaterialText",
+            return Native.CallNative("SetDynamicObjectMaterialText",
                 __arglist(
                     objectid, materialindex, text, (int) materialsize, fontface, fontsize, bold, (int) fontcolor,
                     (int) backcolor, (int) textalignment));

@@ -11,26 +11,12 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SampSharp.GameMode;
-using SampSharp.GameMode.Controllers;
-
-namespace SampSharp.Streamer
+namespace SampSharp.Streamer.Definitions
 {
-    public class StreamerController : ITypeProvider, IEventListener
+    public enum StreamerObjectType
     {
-        public void RegisterEvents(BaseMode gameMode)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RegisterTypes()
-        {
-            throw new NotImplementedException();
-        }
+        Global = 0,
+        Player = 1,
+        Dynamic = 2,
     }
 }
