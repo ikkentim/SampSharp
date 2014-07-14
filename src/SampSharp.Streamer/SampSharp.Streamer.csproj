@@ -40,12 +40,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Definitions\AreaType.cs" />
-    <Compile Include="Definitions\DynamicObjectType.cs" />
+    <Compile Include="Definitions\StreamerObjectType.cs" />
     <Compile Include="Definitions\StreamerDataType.cs" />
     <Compile Include="Definitions\StreamType.cs" />
+    <Compile Include="Natives\StreamerNative.areas.cs" />
+    <Compile Include="Natives\StreamerNative.checkpoints.cs" />
     <Compile Include="Natives\StreamerNative.data-manipulation.cs" />
+    <Compile Include="Natives\StreamerNative.map-icons.cs" />
     <Compile Include="Natives\StreamerNative.miscellaneous.cs" />
     <Compile Include="Natives\StreamerNative.objects.cs" />
+    <Compile Include="Natives\StreamerNative.pickups.cs" />
+    <Compile Include="Natives\StreamerNative.race-checkpoints.cs" />
     <Compile Include="Natives\StreamerNative.settings.cs" />
     <Compile Include="Natives\StreamerNative.updates.cs" />
     <Compile Include="Streamer.cs" />
@@ -57,6 +62,12 @@
       <Project>{ccfb350d-bd04-41ab-a9f8-79767e94727e}</Project>
       <Name>SampSharp.GameMode</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Natives\StreamerNative.3d-text-labels.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Natives\StreamerNative.extended.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

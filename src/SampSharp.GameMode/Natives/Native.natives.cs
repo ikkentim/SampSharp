@@ -94,7 +94,10 @@ namespace SampSharp.GameMode.Natives
         /// <returns>The returned boolean.</returns>
         public static bool CallNativeBool(string name, __arglist)
         {
-            return CallNative(name, __arglist) > 0;
+            object[] args;
+            string format = FormatNativeList(out args, __arglist);
+
+            return CallNativeArray(name, format, args) > 0;
         }
 
         /// <summary>
