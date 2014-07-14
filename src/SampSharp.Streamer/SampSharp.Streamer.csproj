@@ -41,8 +41,10 @@
   <ItemGroup>
     <Compile Include="Definitions\AreaType.cs" />
     <Compile Include="Definitions\DynamicObjectType.cs" />
+    <Compile Include="Definitions\StreamerDataType.cs" />
     <Compile Include="Definitions\StreamType.cs" />
     <Compile Include="Natives\StreamerNative.data-manipulation.cs" />
+    <Compile Include="Natives\StreamerNative.miscellaneous.cs" />
     <Compile Include="Natives\StreamerNative.settings.cs" />
     <Compile Include="Natives\StreamerNative.updates.cs" />
     <Compile Include="Streamer.cs" />
