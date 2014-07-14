@@ -20,6 +20,10 @@ This repository contains the following projects:
 * SampSharp.GameMode
 
   The basemode to extend on. Contains a lot of usefull classes
+
+* SampSharp.Streamer
+
+  Wrapper for the streamer plugin by Incognito.
   
 * TestMode
 
@@ -28,16 +32,6 @@ This repository contains the following projects:
 * RiverShell
 
   One of the example gamemodes provided by SA-MP, converted to C#. This is a gamemode I use to check whether all classes and systems are efficient and usefull. The code may change when I add features to SampSharp.
-
-Things to do
-===
-* Write an install guide.
-* Write a build guide.
-* Add docs to methods and classes not having any.
-* Focus on OO (Avoid having to call natives).
-* Object streaming utilities. (like the streamer plugin)
-* Benchmark testing.
-* Convert all SA-MP sample gamemodes to C#.
 
 Licence
 ===
