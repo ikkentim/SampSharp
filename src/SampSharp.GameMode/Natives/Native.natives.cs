@@ -91,6 +91,16 @@ namespace SampSharp.GameMode.Natives
         ///     Call a native with the given arguments.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
+        /// <returns>The returned boolean.</returns>
+        public static bool CallNativeBool(string name, __arglist)
+        {
+            return CallNative(name, __arglist) > 0;
+        }
+
+        /// <summary>
+        ///     Call a native with the given arguments.
+        /// </summary>
+        /// <param name="name">The name of the native to call.</param>
         /// <returns>The returned float.</returns>
         public static float CallNativeFloat(string name, __arglist)
         {
