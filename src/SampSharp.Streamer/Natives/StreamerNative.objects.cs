@@ -94,7 +94,7 @@ namespace SampSharp.Streamer.Natives
             out string texturename, out Color materialcolor, int maxtxdname, int maxtexturename)
         {
             int holderMaterialColor;
-            int response = Native.CallNative("GetDynamicObjectMaterial", new []{6,7},
+            int response = Native.CallNative("GetDynamicObjectMaterial", new[] {6, 7},
                 __arglist(
                     objectid, materialindex, out modelid, out txdname, out texturename, out holderMaterialColor,
                     maxtxdname,
@@ -119,7 +119,7 @@ namespace SampSharp.Streamer.Natives
             int maxfontface)
         {
             int holderMaterialSize, holderTextAlignment, holderFontColor, holderBackColor;
-            int retval = Native.CallNative("GetDynamicObjectMaterialText", new []{10,11},
+            int retval = Native.CallNative("GetDynamicObjectMaterialText", new[] {10, 11},
                 __arglist(
                     objectid, materialindex, out text, out holderMaterialSize, out fontface, out fontsize, out bold,
                     out holderFontColor, out holderBackColor, out holderTextAlignment, maxtext, maxfontface));
