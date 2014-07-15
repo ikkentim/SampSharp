@@ -41,17 +41,11 @@ namespace SampSharp.Streamer.Natives
 
         public static int GetArrayData(StreamType type, int id, StreamerDataType data, out int[] dest, int maxlength)
         {
-            //TODO: array types are not yet supported in CallNative
-            throw new NotImplementedException();
-
             return Native.CallNative("Streamer_GetArrayData", __arglist((int) type, id, (int) data, out dest, maxlength));
         }
 
         public static int SetArrayData(StreamType type, int id, StreamerDataType data, int[] src, int maxlength)
         {
-            //TODO: array types are not yet supported in CallNative
-            throw new NotImplementedException();
-
             return Native.CallNative("Streamer_SetArrayData", __arglist((int) type, id, (int) data, src, maxlength));
         }
 
