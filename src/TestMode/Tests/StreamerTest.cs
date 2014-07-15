@@ -29,6 +29,14 @@ namespace TestMode.Tests
         {
             Console.WriteLine("StreamerTest started...");
             Console.WriteLine("Streamer tick rate: {0}", StreamerNative.GetTickRate());
+
+            int polygon = StreamerNative.CreateDynamicPolygon(new [] {1f, 2f, 3.333f, 4f}, -1, 1, 4);
+      
+            float[] points;
+            StreamerNative.GetDynamicPolygonPoints(polygon, out points, 10);
+            
+            if(points == null) Console.WriteLine("NULL ARRAY");
+            else foreach(var p in points) Console.WriteLine("ARRAY VALUE: {0}", p);
         }
     }
 }

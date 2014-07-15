@@ -248,34 +248,43 @@ inline void p_Print(MonoString *str) {
 
 //
 // native functions
-cell call_native_array(MonoString *name, MonoString *format, MonoArray *args) {
-    assert(name != NULL);
-    assert(format != NULL);
-    assert(args != NULL);
+cell call_native_array(MonoString *name, MonoString *format, MonoArray *args, MonoArray *sizes) {
 
+	if(!name) {
+		mono_raise_exception(mono_get_exception_invalid_operation(
+            "name cannot be null"));
+		return -1;
+	}
 
-    char *native_str = mono_string_to_utf8(name);
+	if(!format) {
+		mono_raise_exception(mono_get_exception_invalid_operation(
+            "format cannot be null"));
+		return -1;
+	}
+
     char *format_str = mono_string_to_utf8(format);
-    int len = mono_array_length(args);
+    int len = !args ? 0 : mono_array_length(args);
 
-    void *params[MAX_NATIVE_ARGS];
-    string amx_format;
-
-	if(strlen(format_str) != len)
-	{
+	if(strlen(format_str) != len) {
 		mono_raise_exception(mono_get_exception_invalid_operation(
             "invalid format length"));
 		return -1;
 	}
 
-    if(len > MAX_NATIVE_ARGS)
-    {
+    if(len > MAX_NATIVE_ARGS) {
         mono_raise_exception(mono_get_exception_invalid_operation(
             "too many arguments"));
 		return -1;
     }
+    
+    void *params[MAX_NATIVE_ARGS];
+    int param_size[MAX_NATIVE_ARGS];
+    int size_idx = 0;
+
+    string amx_format;
 
     for (int i = 0; i < len; i++) {
+
         switch (format_str[i]) {
         case 'i': /* integer */
         case 'd': /* integer */
@@ -301,7 +310,6 @@ cell call_native_array(MonoString *name, MonoString *format, MonoArray *args) {
             MonoString *str = mono_array_get(args, MonoString *, i);
             //char *value = mono_string_to_utf8(str);
             string std_str = mono_string_to_string(str).c_str();
-
             char *value = new char[std_str.length() + 1];
             strcpy(value, std_str.c_str());
 
@@ -318,10 +326,150 @@ cell call_native_array(MonoString *name, MonoString *format, MonoArray *args) {
             */
             char *value[1024];// = (char *)malloc(sizeof(char) * (len + 1));
          
+            if(!sizes) {
+                mono_raise_exception(mono_get_exception_invalid_operation(
+                    "sizes cannot be null when an array or string reference type is passed as parameter."));
+		        return -1;
+            }
+
+            int size_info = mono_array_get(sizes, int, size_idx++);
+            param_size[i] = size_info < 0 ? -size_info 
+                : *(int *)mono_object_unbox(mono_array_get(args, MonoObject *, size_info));
+
             params[i] = value;
-			char *length_param = new char[7];
-			sprintf(length_param, "S[*%d]", i+1);
-			amx_format += length_param;
+
+			char *format_el = new char[10];
+            if(size_info < 0) {
+                sprintf(format_el, "S[%d]", param_size[i]);
+            }
+            else {
+			    sprintf(format_el, "S[*%d]", size_info);
+            }
+			amx_format += format_el;
+            break;
+        }
+        case 'v': {
+            MonoArray *arr = mono_array_get(args, MonoArray *, i);
+            
+            cell value[1024];
+            
+            if(!sizes) {
+                mono_raise_exception(mono_get_exception_invalid_operation(
+                    "sizes cannot be null when an array or string reference type is passed as parameter."));
+		        return -1;
+            }
+
+            int size_info = mono_array_get(sizes, int, size_idx++);
+            param_size[i] = size_info < 0 ? -size_info 
+                : *(int *)mono_object_unbox(mono_array_get(args, MonoObject *, size_info));
+
+            for(int j=0;j<param_size[i];j++) {
+                value[j] = amx_ftoc(mono_array_get(arr, float, j));
+            }
+            params[i] = value;
+
+			char *format_el = new char[10];
+            if(size_info < 0) {
+                sprintf(format_el, "a[%d]", param_size[i]);
+            }
+            else {
+			    sprintf(format_el, "a[*%d]", size_info);
+            }
+			amx_format += format_el;
+            break;
+        }
+        case 'V': {
+            MonoArray *arr = *mono_array_get(args, MonoArray **, i);
+            
+            cell value[1024];
+            
+            if(!sizes) {
+                mono_raise_exception(mono_get_exception_invalid_operation(
+                    "sizes cannot be null when an array or string reference type is passed as parameter."));
+		        return -1;
+            }
+
+            int size_info = mono_array_get(sizes, int, size_idx++);
+            param_size[i] = size_info < 0 ? -size_info 
+                : *(int *)mono_object_unbox(mono_array_get(args, MonoObject *, size_info));
+
+            //for(int j=0;j<param_size[i];j++) {
+                //ref was not yet set
+                //value[j] = amx_ftoc(mono_array_get(arr, float, j));
+            //}
+
+            params[i] = value;
+
+			char *format_el = new char[10];
+            if(size_info < 0) {
+                sprintf(format_el, "A[%d]", param_size[i]);
+            }
+            else {
+			    sprintf(format_el, "A[*%d]", size_info);
+            }
+			amx_format += format_el;
+            break;
+        }
+        case 'a': {
+           MonoArray *arr = mono_array_get(args, MonoArray *, i);
+            
+            cell value[1024];
+            
+            if(!sizes) {
+                mono_raise_exception(mono_get_exception_invalid_operation(
+                    "sizes cannot be null when an array or string reference type is passed as parameter."));
+		        return -1;
+            }
+
+            int size_info = mono_array_get(sizes, int, size_idx++);
+            param_size[i] = size_info < 0 ? -size_info 
+                : *(int *)mono_object_unbox(mono_array_get(args, MonoObject *, size_info));
+
+            for(int j=0;j<param_size[i];j++) {
+                value[j] = mono_array_get(arr, int, j);
+            }
+            params[i] = value;
+
+			char *format_el = new char[10];
+            if(size_info < 0) {
+                sprintf(format_el, "a[%d]", param_size[i]);
+            }
+            else {
+			    sprintf(format_el, "a[*%d]", size_info);
+            }
+			amx_format += format_el;
+            break;
+        }
+        case 'A': {
+            MonoArray *arr = *mono_array_get(args, MonoArray **, i);
+            
+            cell value[1024];
+            
+            if(!sizes) {
+                mono_raise_exception(mono_get_exception_invalid_operation(
+                    "sizes cannot be null when an array or string reference type is passed as parameter."));
+		        return -1;
+            }
+
+            int size_info = mono_array_get(sizes, int, size_idx++);
+            param_size[i] = size_info < 0 ? -size_info 
+                : *(int *)mono_object_unbox(mono_array_get(args, MonoObject *, size_info));
+
+            //for(int j=0;j<param_size[i];j++) {
+                //ref was not yet set
+                //value[j] = mono_array_get(arr, int, j);
+            //}
+
+            params[i] = value;
+
+			char *format_el = new char[10];
+            if(size_info < 0) {
+                sprintf(format_el, "A[%d]", param_size[i]);
+            }
+            else {
+			    sprintf(format_el, "A[*%d]", size_info);
+            }
+			amx_format += format_el;
             break;
         }
         default:
@@ -331,6 +479,7 @@ cell call_native_array(MonoString *name, MonoString *format, MonoArray *args) {
         }
     }
 
+    char *native_str = mono_string_to_utf8(name);
     AMX_NATIVE native = sampgdk::FindNative(native_str);
 
     if(native == NULL) {
@@ -351,17 +500,37 @@ cell call_native_array(MonoString *name, MonoString *format, MonoArray *args) {
 			**(float **)mono_object_unbox(mono_array_get(args, MonoObject *, i)) = amx_ctof(*(cell *)params[i]);
             break;
         }
+        case 'V': {
+            cell *par_arr = (cell *)params[i];
+            int len = param_size[i];
+
+            MonoArray *arr = mono_array_new(mono_domain_get(), mono_get_single_class(), len);
+            for(int j=0;j<len;j++) {
+                mono_array_set(arr, float, j, amx_ctof(par_arr[j]));
+            }
+            *mono_array_get(args, MonoArray **, i) = arr;
+        }
+        case 'A': {
+            cell *par_arr = (cell *)params[i];
+            int len = param_size[i];
+
+            MonoArray *arr = mono_array_new(mono_domain_get(), mono_get_single_class(), len);
+            for(int j=0;j<len;j++) {
+                mono_array_set(arr, int, j, par_arr[j]);
+            }
+            *mono_array_get(args, MonoArray **, i) = arr;
+        }
         }
     }
 
     return retval;
 }
-
+/* Never seen the this happen, not bothing to update it right now.
 float call_native_array_float(MonoString *name, MonoString *format, MonoArray *args) {
 	cell value = call_native_array(name, format, args);
 
 	return value == -1 ? 0 : amx_ctof(value);
-}
+}*/
 void LoadNatives()
 {
 	//
@@ -710,6 +879,6 @@ void LoadNatives()
 	//
 	// natives
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::CallNativeArray", (void *)call_native_array);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::CallNativeArrayFloat", (void *)call_native_array_float);
+	//mono_add_internal_call("SampSharp.GameMode.Natives.Native::CallNativeArrayFloat", (void *)call_native_array_float);
 
 }
