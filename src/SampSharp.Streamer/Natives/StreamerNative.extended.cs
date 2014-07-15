@@ -37,7 +37,7 @@ namespace SampSharp.Streamer.Natives
             if (maxinteriors < 0) maxinteriors = interiors.Length;
             if (maxplayers < 0) maxplayers = players.Length;
 
-            return Native.CallNative("CreateDynamicObjectEx", new []{13,14,15},
+            return Native.CallNative("CreateDynamicObjectEx", new[] {13, 14, 15},
                 __arglist(
                     modelid, x, y, z, rx, ry, rz, drawdistance, streamdistance, worlds, interiors, players, maxworlds,
                     maxinteriors, maxplayers));
@@ -56,7 +56,7 @@ namespace SampSharp.Streamer.Natives
             if (maxinteriors < 0) maxinteriors = interiors.Length;
             if (maxplayers < 0) maxplayers = players.Length;
 
-            return Native.CallNative("CreateDynamicPickupEx", new []{10,11,12},
+            return Native.CallNative("CreateDynamicPickupEx", new[] {10, 11, 12},
                 __arglist(
                     modelid, type, x, y, z, streamdistance, worlds, interiors, players, maxworlds, maxinteriors,
                     maxplayers));
@@ -75,7 +75,7 @@ namespace SampSharp.Streamer.Natives
             if (maxinteriors < 0) maxinteriors = interiors.Length;
             if (maxplayers < 0) maxplayers = players.Length;
 
-            return Native.CallNative("CreateDynamicCPEx", new []{9,10,11},
+            return Native.CallNative("CreateDynamicCPEx", new[] {9, 10, 11},
                 __arglist(x, y, z, size, streamdistance, worlds, interiors, players, maxworlds, maxinteriors, maxplayers
                     ));
         }
@@ -93,7 +93,7 @@ namespace SampSharp.Streamer.Natives
             if (maxinteriors < 0) maxinteriors = interiors.Length;
             if (maxplayers < 0) maxplayers = players.Length;
 
-            return Native.CallNative("CreateDynamicRaceCPEx", new []{13,14,15},
+            return Native.CallNative("CreateDynamicRaceCPEx", new[] {13, 14, 15},
                 __arglist(
                     type, x, y, z, nextx, nexty, nextz, size, streamdistance, worlds, interiors, players, maxworlds,
                     maxinteriors, maxplayers));
@@ -112,7 +112,7 @@ namespace SampSharp.Streamer.Natives
             if (maxinteriors < 0) maxinteriors = interiors.Length;
             if (maxplayers < 0) maxplayers = players.Length;
 
-            return Native.CallNative("CreateDynamicMapIconEx", new []{11,12,13},
+            return Native.CallNative("CreateDynamicMapIconEx", new[] {11, 12, 13},
                 __arglist(
                     x, y, z, type, (int) color, (int) style, streamdistance, worlds, interiors, players, maxworlds,
                     maxinteriors, maxplayers));
@@ -132,7 +132,7 @@ namespace SampSharp.Streamer.Natives
             if (maxinteriors < 0) maxinteriors = interiors.Length;
             if (maxplayers < 0) maxplayers = players.Length;
 
-            return Native.CallNative("CreateDynamic3DTextLabelEx", new []{14,15,16},
+            return Native.CallNative("CreateDynamic3DTextLabelEx", new[] {14, 15, 16},
                 __arglist(
                     text, (int) color, x, y, z, drawdistance, attachedplayer, attachedvehicle, testlos, streamdistance,
                     worlds, interiors, players, maxworlds, maxinteriors, maxplayers));
@@ -151,7 +151,7 @@ namespace SampSharp.Streamer.Natives
             if (maxinteriors < 0) maxinteriors = interiors.Length;
             if (maxplayers < 0) maxplayers = players.Length;
 
-            return Native.CallNative("CreateDynamicCircleEx", new []{7,8,9},
+            return Native.CallNative("CreateDynamicCircleEx", new[] {7, 8, 9},
                 __arglist(x, y, size, worlds, interiors, players, maxworlds, maxinteriors, maxplayers));
         }
 
@@ -167,7 +167,7 @@ namespace SampSharp.Streamer.Natives
             if (maxinteriors < 0) maxinteriors = interiors.Length;
             if (maxplayers < 0) maxplayers = players.Length;
 
-            return Native.CallNative("CreateDynamicRectangleEx", new []{8,9,10},
+            return Native.CallNative("CreateDynamicRectangleEx", new[] {8, 9, 10},
                 __arglist(minx, miny, maxx, maxy, worlds, interiors, players, maxworlds, maxinteriors, maxplayers));
         }
 
@@ -183,7 +183,7 @@ namespace SampSharp.Streamer.Natives
             if (maxinteriors < 0) maxinteriors = interiors.Length;
             if (maxplayers < 0) maxplayers = players.Length;
 
-            return Native.CallNative("CreateDynamicSphereEx", new []{8,9,10},
+            return Native.CallNative("CreateDynamicSphereEx", new[] {8, 9, 10},
                 __arglist(x, y, z, size, worlds, interiors, players, maxworlds, maxinteriors, maxplayers));
         }
 
@@ -200,7 +200,7 @@ namespace SampSharp.Streamer.Natives
             if (maxinteriors < 0) maxinteriors = interiors.Length;
             if (maxplayers < 0) maxplayers = players.Length;
 
-            return Native.CallNative("CreateDynamicCubeEx", new []{10,11,12},
+            return Native.CallNative("CreateDynamicCubeEx", new[] {10, 11, 12},
                 __arglist(
                     minx, miny, minz, maxx, maxy, maxz, worlds, interiors, players, maxworlds, maxinteriors, maxplayers));
         }
@@ -222,7 +222,7 @@ namespace SampSharp.Streamer.Natives
             if (maxplayers < 0) maxplayers = players.Length;
             if (maxpoints < 0) maxpoints = points.Length;
 
-            return Native.CallNative("CreateDynamicPolygonEx", new []{8,9,10},
+            return Native.CallNative("CreateDynamicPolygonEx", new[] {8, 9, 10},
                 __arglist(points, minz, maxz, maxpoints, worlds, interiors, players, maxworlds, maxinteriors, maxplayers
                     ));
         }
