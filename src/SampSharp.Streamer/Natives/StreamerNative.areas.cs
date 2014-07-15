@@ -47,7 +47,8 @@ namespace SampSharp.Streamer.Natives
         }
 
         public static int CreateDynamicPolygon(float[] points, float minz = float.NegativeInfinity,
-            float maxz = float.PositiveInfinity, int maxpoints = -1, int worldid = -1, int interiorid = -1, int playerid = -1)
+            float maxz = float.PositiveInfinity, int maxpoints = -1, int worldid = -1, int interiorid = -1,
+            int playerid = -1)
         {
             //Check defaults
             if (maxpoints < 0) maxpoints = points.Length;
