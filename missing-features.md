@@ -1,14 +1,11 @@
 Classes:
 -Pickup
 
-Native.CallNative features:
--array type
--ref array type
--string/array size parameter not located after string/array itself
-
 Documention:
 -Multiple classes in SampSharp.GameMode lack documentation
+-SampSharp.Streamer?
+-How to use EntityFramework with SampSharp
 -Build guide
 -Installation guide
--Use guide
+-Usage guide
 -Benchmark testing

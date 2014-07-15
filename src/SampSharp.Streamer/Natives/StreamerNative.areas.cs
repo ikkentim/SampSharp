@@ -49,14 +49,11 @@ namespace SampSharp.Streamer.Natives
         public static int CreateDynamicPolygon(float[] points, float minz = float.NegativeInfinity,
             float maxz = float.PositiveInfinity, int maxpoints = -1, int worldid = -1, int interiorid = -1, int playerid = -1)
         {
-            //TODO: array types are not yet supported in CallNative
-            throw new NotImplementedException();
-
             //Check defaults
             if (maxpoints < 0) maxpoints = points.Length;
 
-            return Native.CallNative("CreateDynamicPolygon",
-                __arglist(points, maxpoints, minz, maxz, worldid, interiorid, playerid));
+            return Native.CallNative("CreateDynamicPolygon", new[] {3},
+                __arglist(points, minz, maxz, maxpoints, worldid, interiorid, playerid));
         }
 
         public static int DestroyDynamicArea(int areaid)
@@ -69,12 +66,9 @@ namespace SampSharp.Streamer.Natives
             return Native.CallNativeBool("IsValidDynamicArea", __arglist(areaid));
         }
 
-        public static int GetDynamicPolygonPoints(int areaid, float[] points, int maxlength)
+        public static int GetDynamicPolygonPoints(int areaid, out float[] points, int maxlength)
         {
-            //TODO: array types are not yet supported in CallNative
-            throw new NotImplementedException();
-
-            return Native.CallNative("GetDynamicPolygonPoints", __arglist(areaid, points, maxlength));
+            return Native.CallNative("GetDynamicPolygonPoints", __arglist(areaid, out points, maxlength));
         }
 
         public static int GetDynamicPolygonNumberPoints(int areaid)
@@ -114,9 +108,6 @@ namespace SampSharp.Streamer.Natives
 
         public static int GetPlayerDynamicAreas(int playerid, out int[] areas, int maxlength)
         {
-            //TODO: array types are not yet supported in CallNative
-            throw new NotImplementedException();
-
             return Native.CallNative("GetPlayerDynamicAreas", __arglist(playerid, out areas, maxlength));
         }
 

@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace SampSharp.GameMode.Natives
@@ -19,10 +20,10 @@ namespace SampSharp.GameMode.Natives
     public static partial class Native
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
-        private static extern int CallNativeArray(string name, string format, object[] args);
+        private static extern int CallNativeArray(string name, string format, object[] args, int[] sizes);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        private static extern float CallNativeArrayFloat(string name, string format, object[] args);
+        //[MethodImpl(MethodImplOptions.InternalCall)]
+        //private static extern float CallNativeArrayFloat(string name, string format, object[] args);
 
         /// <summary>
         ///     Registers an extension to the plugin.
@@ -32,10 +33,11 @@ namespace SampSharp.GameMode.Natives
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool RegisterExtension(object extension);
 
-        private static string FormatNativeList(out object[] args, RuntimeArgumentHandle handle)
+        private static string FormatNativeList(out object[] args, out int[] lengths, RuntimeArgumentHandle handle)
         {
             var iterator = new ArgIterator(handle);
             var len = iterator.GetRemainingCount();
+            var lengthList = new List<int>();
             args = new object[len];
 
             string format = "";
@@ -51,15 +53,32 @@ namespace SampSharp.GameMode.Natives
                         break;
                     case "System.String&":
                         format += "S";
+                        lengthList.Add(idx + 1);
                         break;
                     case "System.Int32":
                         format += "d";
+                        break;
+                    case "System.Int32[]":
+                        format += "a";
+                        lengthList.Add(idx + 1);
+                        break;
+                    case "System.Int32[]&":
+                        format += "A";
+                        lengthList.Add(idx + 1);
                         break;
                     case "System.Single":
                         format += "f";
                         break;
                     case "System.Single&":
                         format += "F";
+                        break;
+                    case "System.Single[]":
+                        format += "v";
+                        lengthList.Add(idx + 1);
+                        break;
+                    case "System.Single[]&":
+                        format += "V";
+                        lengthList.Add(idx + 1);
                         break;
                     case "System.Boolean":
                         format += "b";
@@ -71,6 +90,7 @@ namespace SampSharp.GameMode.Natives
                 args[idx] = TypedReference.ToObject(arg);
             }
 
+            lengths = lengthList.Count > 0 ? lengthList.ToArray() : null;
             return format;
         }
 
@@ -82,9 +102,25 @@ namespace SampSharp.GameMode.Natives
         public static int CallNative(string name, __arglist)
         {
             object[] args;
-            string format = FormatNativeList(out args, __arglist);
+            int[] sizes;
+            string format = FormatNativeList(out args, out sizes, __arglist);
 
-            return CallNativeArray(name, format, args);
+            return CallNativeArray(name, format, args, sizes);
+        }
+
+        /// <summary>
+        ///     Call a native with the given arguments.
+        /// </summary>
+        /// <param name="name">The name of the native to call.</param>
+        /// <param name="lengths"></param>
+        /// <returns>The returned integer.</returns>
+        public static int CallNative(string name, int[] lengths, __arglist)
+        {
+            object[] args;
+            int[] sizes;
+            string format = FormatNativeList(out args, out sizes, __arglist);
+
+            return CallNativeArray(name, format, args, lengths);
         }
 
         /// <summary>
@@ -95,11 +131,13 @@ namespace SampSharp.GameMode.Natives
         public static bool CallNativeBool(string name, __arglist)
         {
             object[] args;
-            string format = FormatNativeList(out args, __arglist);
+            int[] sizes;
+            string format = FormatNativeList(out args, out sizes, __arglist);
 
-            return CallNativeArray(name, format, args) > 0;
+            return CallNativeArray(name, format, args, sizes) > 0;
         }
 
+        /* Never seen the this happen, not bothing to update it right now.
         /// <summary>
         ///     Call a native with the given arguments.
         /// </summary>
@@ -111,6 +149,6 @@ namespace SampSharp.GameMode.Natives
             string format = FormatNativeList(out args, __arglist);
 
             return CallNativeArrayFloat(name, format, args);
-        }
+        }*/
     }
 }
