@@ -20,7 +20,7 @@ namespace SampSharp.Streamer.Natives
     {
         public static int GetTickRate()
         {
-            return Native.CallNative("Streamer_GetTickRate", __arglist());
+            return Native.CallNative("Streamer_GetTickRate");
         }
 
         public static int SetTickRate(int rate)

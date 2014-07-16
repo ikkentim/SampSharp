@@ -64,7 +64,7 @@ namespace SampSharp.Streamer.Natives
 
         public static bool IsValidDynamicArea(int areaid)
         {
-            return Native.CallNativeBool("IsValidDynamicArea", __arglist(areaid));
+            return Native.CallNativeAsBool("IsValidDynamicArea", __arglist(areaid));
         }
 
         public static int GetDynamicPolygonPoints(int areaid, out float[] points, int maxlength)
@@ -89,22 +89,22 @@ namespace SampSharp.Streamer.Natives
 
         public static bool IsPlayerInDynamicArea(int playerid, int areaid, bool recheck = false)
         {
-            return Native.CallNativeBool("IsPlayerInDynamicArea", __arglist(playerid, areaid, recheck));
+            return Native.CallNativeAsBool("IsPlayerInDynamicArea", __arglist(playerid, areaid, recheck));
         }
 
         public static bool IsPlayerInAnyDynamicArea(int playerid, bool recheck = false)
         {
-            return Native.CallNativeBool("IsPlayerInAnyDynamicArea", __arglist(playerid, recheck));
+            return Native.CallNativeAsBool("IsPlayerInAnyDynamicArea", __arglist(playerid, recheck));
         }
 
         public static bool IsAnyPlayerInDynamicArea(int areaid, bool recheck = false)
         {
-            return Native.CallNativeBool("IsAnyPlayerInDynamicArea", __arglist(areaid, recheck));
+            return Native.CallNativeAsBool("IsAnyPlayerInDynamicArea", __arglist(areaid, recheck));
         }
 
         public static bool IsAnyPlayerInAnyDynamicArea(bool recheck = false)
         {
-            return Native.CallNativeBool("IsAnyPlayerInAnyDynamicArea", __arglist(recheck));
+            return Native.CallNativeAsBool("IsAnyPlayerInAnyDynamicArea", __arglist(recheck));
         }
 
         public static int GetPlayerDynamicAreas(int playerid, out int[] areas, int maxlength)
@@ -119,12 +119,12 @@ namespace SampSharp.Streamer.Natives
 
         public static bool IsPointInDynamicArea(int areaid, float x, float y, float z)
         {
-            return Native.CallNativeBool("IsPointInDynamicArea", __arglist(areaid, x, y, z));
+            return Native.CallNativeAsBool("IsPointInDynamicArea", __arglist(areaid, x, y, z));
         }
 
         public static bool IsPointInAnyDynamicArea(float x, float y, float z)
         {
-            return Native.CallNativeBool("IsPointInAnyDynamicArea", __arglist(x, y, z));
+            return Native.CallNativeAsBool("IsPointInAnyDynamicArea", __arglist(x, y, z));
         }
 
         public static int AttachDynamicAreaToObject(int areaid, int objectid,

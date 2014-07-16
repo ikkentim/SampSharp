@@ -35,7 +35,7 @@ namespace SampSharp.Streamer.Natives
 
         public static bool IsValidDynamicMapIcon(int iconid)
         {
-            return Native.CallNativeBool("IsValidDynamicMapIcon", __arglist(iconid));
+            return Native.CallNativeAsBool("IsValidDynamicMapIcon", __arglist(iconid));
         }
     }
 }
