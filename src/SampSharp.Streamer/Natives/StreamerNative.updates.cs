@@ -20,7 +20,7 @@ namespace SampSharp.Streamer.Natives
     {
         public static int ProcessActiveItems()
         {
-            return Native.CallNative("Streamer_ProcessActiveItems", __arglist());
+            return Native.CallNative("Streamer_ProcessActiveItems");
         }
 
         public static int ToggleIdleUpdate(int playerid, bool toggle)

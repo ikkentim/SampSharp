@@ -51,7 +51,7 @@ namespace SampSharp.Streamer.Natives
 
         public static bool IsInArrayData(StreamType type, int id, StreamerDataType data, int value)
         {
-            return Native.CallNativeBool("Streamer_IsInArrayData", __arglist((int) type, id, (int) data, value));
+            return Native.CallNativeAsBool("Streamer_IsInArrayData", __arglist((int) type, id, (int) data, value));
         }
 
         public static int AppendArrayData(StreamType type, int id, StreamerDataType data, int value)

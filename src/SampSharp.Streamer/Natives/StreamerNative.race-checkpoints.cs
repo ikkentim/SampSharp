@@ -31,7 +31,7 @@ namespace SampSharp.Streamer.Natives
 
         public static bool IsValidDynamicRaceCP(int checkpointid)
         {
-            return Native.CallNativeBool("IsValidDynamicRaceCP", __arglist(checkpointid));
+            return Native.CallNativeAsBool("IsValidDynamicRaceCP", __arglist(checkpointid));
         }
 
         public static int TogglePlayerDynamicRaceCP(int playerid, int checkpointid, bool toggle)
@@ -46,7 +46,7 @@ namespace SampSharp.Streamer.Natives
 
         public static bool IsPlayerInDynamicRaceCP(int playerid, int checkpointid)
         {
-            return Native.CallNativeBool("IsPlayerInDynamicRaceCP", __arglist(playerid, checkpointid));
+            return Native.CallNativeAsBool("IsPlayerInDynamicRaceCP", __arglist(playerid, checkpointid));
         }
 
         public static int GetPlayerVisibleDynamicRaceCP(int playerid)

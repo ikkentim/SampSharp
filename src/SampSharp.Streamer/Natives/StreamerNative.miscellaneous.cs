@@ -38,7 +38,7 @@ namespace SampSharp.Streamer.Natives
 
         public static bool IsItemVisible(int playerid, StreamType type, int id)
         {
-            return Native.CallNativeBool("Streamer_IsItemVisible", __arglist(playerid, (int) type, id));
+            return Native.CallNativeAsBool("Streamer_IsItemVisible", __arglist(playerid, (int) type, id));
         }
 
         public static int DestroyAllVisibleItems(int playerid, StreamType type, bool serverwide = true)

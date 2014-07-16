@@ -34,7 +34,7 @@ namespace SampSharp.Streamer.Natives
 
         public static bool IsValidDynamicObject(int objectid)
         {
-            return Native.CallNativeBool("IsValidDynamicObject", __arglist(objectid));
+            return Native.CallNativeAsBool("IsValidDynamicObject", __arglist(objectid));
         }
 
         public static int SetDynamicObjectPos(int objectid, float x, float y, float z)
@@ -70,7 +70,7 @@ namespace SampSharp.Streamer.Natives
 
         public static bool IsDynamicObjectMoving(int objectid)
         {
-            return Native.CallNativeBool("IsDynamicObjectMoving", __arglist(objectid));
+            return Native.CallNativeAsBool("IsDynamicObjectMoving", __arglist(objectid));
         }
 
         public static int AttachCameraToDynamicObject(int playerid, int objectid)

@@ -22,17 +22,6 @@ namespace SampSharp.GameMode.Natives
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern int CallNativeArray(string name, string format, object[] args, int[] sizes);
 
-        //[MethodImpl(MethodImplOptions.InternalCall)]
-        //private static extern float CallNativeArrayFloat(string name, string format, object[] args);
-
-        /// <summary>
-        ///     Registers an extension to the plugin.
-        /// </summary>
-        /// <param name="extension">The extension to register.</param>
-        /// <returns>True on success, False otherwise.</returns>
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool RegisterExtension(object extension);
-
         private static string FormatNativeList(out object[] args, out int[] lengths, RuntimeArgumentHandle handle)
         {
             var iterator = new ArgIterator(handle);
@@ -95,6 +84,23 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
+        ///     Registers an extension to the plugin.
+        /// </summary>
+        /// <param name="extension">The extension to register.</param>
+        /// <returns>True on success, False otherwise.</returns>
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool RegisterExtension(object extension);
+
+        /// <summary>
+        /// Call a native.
+        /// </summary>
+        /// <param name="name">The name of the native to call.</param>
+        /// <returns>The returned integer.</returns>
+        public static int CallNative(string name)
+        {
+            return CallNativeArray(name, "", null, null);
+        }
+        /// <summary>
         ///     Call a native with the given arguments.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
@@ -124,11 +130,20 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
+        /// Call a native.
+        /// </summary>
+        /// <param name="name">The name of the native to call.</param>
+        /// <returns>The returned boolean.</returns>
+        public static bool CallNativeAsBool(string name)
+        {
+            return CallNativeArray(name, "", null, null) > 0;
+        }
+        /// <summary>
         ///     Call a native with the given arguments.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
         /// <returns>The returned boolean.</returns>
-        public static bool CallNativeBool(string name, __arglist)
+        public static bool CallNativeAsBool(string name, __arglist)
         {
             object[] args;
             int[] sizes;
@@ -137,18 +152,19 @@ namespace SampSharp.GameMode.Natives
             return CallNativeArray(name, format, args, sizes) > 0;
         }
 
-        /* Never seen the this happen, not bothing to update it right now.
         /// <summary>
         ///     Call a native with the given arguments.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
-        /// <returns>The returned float.</returns>
-        public static float CallNativeFloat(string name, __arglist)
+        /// <param name="lengths"></param>
+        /// <returns>The returned boolean.</returns>
+        public static bool CallNativeAsBool(string name, int[] lengths, __arglist)
         {
             object[] args;
-            string format = FormatNativeList(out args, __arglist);
+            int[] sizes;
+            string format = FormatNativeList(out args, out sizes, __arglist);
 
-            return CallNativeArrayFloat(name, format, args);
-        }*/
+            return CallNativeArray(name, format, args, lengths) > 0;
+        }
     }
 }
