@@ -37,7 +37,7 @@ namespace SampSharp.Streamer.Natives
 
         public static bool IsValidDynamic3DTextLabel(int id)
         {
-            return Native.CallNativeBool("IsValidDynamic3DTextLabel", __arglist(id));
+            return Native.CallNativeAsBool("IsValidDynamic3DTextLabel", __arglist(id));
         }
 
         public static int GetDynamic3DTextLabelText(int id, out string text, int maxlength)
