@@ -1,13 +1,16 @@
 #include <iostream>
+#include <time.h>
 #include <sampgdk/core.h>
 #include <sampgdk/a_samp.h>
 #include <sampgdk/a_players.h>
 #include <sampgdk/a_vehicles.h>
-#include <time.h>
-#include <float.h>
+
+#pragma once
+
 using sampgdk::logprintf;
 
 #ifdef DO_BENCHMARK
+
 typedef void (Test) ();
 
 void NativeIsPlayerConnected()

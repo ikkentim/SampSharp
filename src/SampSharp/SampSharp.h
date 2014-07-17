@@ -1,9 +1,9 @@
-#pragma once
-
 #include <map>
 #include <list>
 #include <sampgdk/export.h>
 #include <mono/jit/jit.h>
+
+#pragma once
 
 #define BASEMODE_NAMESPACE "SampSharp.GameMode"
 #define BASEMODE_CLASS "BaseMode"

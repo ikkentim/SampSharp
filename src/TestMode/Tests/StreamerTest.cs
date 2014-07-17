@@ -31,12 +31,12 @@ namespace TestMode.Tests
             Console.WriteLine("Streamer tick rate: {0}", StreamerNative.GetTickRate());
 
             float[] points;
-            int polygon = StreamerNative.CreateDynamicPolygon(new[] { 1f, 2f, 3.333f, 4f }, -1, 1, 4);
-            int length = StreamerNative.GetDynamicPolygonNumberPoints(polygon) * 2;
+            int polygon = StreamerNative.CreateDynamicPolygon(new[] {1f, 2f, 3.333f, 4f}, -1, 1, 4);
+            int length = StreamerNative.GetDynamicPolygonNumberPoints(polygon)*2;
             StreamerNative.GetDynamicPolygonPoints(polygon, out points, length);
-            
-            if(points == null) Console.WriteLine("NULL ARRAY");
-            else foreach(var p in points) Console.WriteLine("ARRAY VALUE: {0}", p);
+
+            if (points == null) Console.WriteLine("NULL ARRAY");
+            else foreach (var p in points) Console.WriteLine("ARRAY VALUE: {0}", p);
         }
     }
 }

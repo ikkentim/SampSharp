@@ -1,9 +1,10 @@
-#pragma once
-
 #include <string>
 #include <assert.h>
 #include <mono/jit/jit.h>
+
 #include "PathUtil.h"
+
+#pragma once
 
 struct MonoUtil
 {
