@@ -15,10 +15,16 @@ public OnFilterScriptInit()
 	print(" SampSharp benchmark PAWN test");
 	print("--------------------------------------\n");
 	
-	START_BENCH(1000);
+	START_BENCH(5000);
 	{
 		IsPlayerConnected(0);
 	}
 	FINISH_BENCH("NativeIsPlayerConnected");
+	START_BENCH(5000);
+	{
+		new id = CreateVehicle(400, 0, 0, 0 ,0, -1, -1, 0);
+		DestroyVehicle(id);
+	}
+	FINISH_BENCH("NativeCreateDestroyVehicle");
 	return 1;
 }
