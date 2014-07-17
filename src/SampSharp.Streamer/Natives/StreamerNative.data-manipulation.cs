@@ -11,7 +11,6 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
 using SampSharp.GameMode.Natives;
 using SampSharp.Streamer.Definitions;
 

@@ -16,7 +16,6 @@ using System.Linq;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.World;
-using SampSharp.Streamer;
 using TestMode.Tests;
 
 namespace TestMode

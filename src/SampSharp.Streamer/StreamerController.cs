@@ -12,10 +12,6 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
 

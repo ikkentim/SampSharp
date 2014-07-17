@@ -14,7 +14,6 @@
 using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
-using SampSharp.GameMode.Pools;
 
 namespace SampSharp.GameMode.World
 {

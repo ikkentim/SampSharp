@@ -11,7 +11,6 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System.Runtime.InteropServices;
 using SampSharp.GameMode.Natives;
 
 namespace SampSharp.Streamer.Natives

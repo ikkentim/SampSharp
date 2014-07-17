@@ -11,7 +11,6 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System.Runtime.InteropServices;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
