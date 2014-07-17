@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Mime;
+using System.Reflection;
 using BenchmarkMode.Tests;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
@@ -12,9 +14,13 @@ namespace BenchmarkMode
 {
     public class GameMode : BaseMode
     {
+        
+
         private readonly List<ITest> _tests = new List<ITest>
         {
-            new NativeIsPlayerConnected()
+            new NativeIsPlayerConnected(),
+            new NativeCreateDestroyVehicle(),
+            new CreateDestroyVehicle(),
         };
 
         public override bool OnGameModeInit()
@@ -29,7 +35,7 @@ namespace BenchmarkMode
             {
                 int count = 0;
                 sw.Start();
-                while (sw.ElapsedMilliseconds < 1000)
+                while (sw.ElapsedMilliseconds < 5000)
                 {
                     count ++;
                     test.Run(this);
