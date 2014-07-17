@@ -92,7 +92,7 @@ namespace SampSharp.GameMode.Natives
         public static extern bool RegisterExtension(object extension);
 
         /// <summary>
-        /// Call a native.
+        ///     Call a native.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
         /// <returns>The returned integer.</returns>
@@ -100,6 +100,7 @@ namespace SampSharp.GameMode.Natives
         {
             return CallNativeArray(name, "", null, null);
         }
+
         /// <summary>
         ///     Call a native with the given arguments.
         /// </summary>
@@ -130,7 +131,7 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
-        /// Call a native.
+        ///     Call a native.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
         /// <returns>The returned boolean.</returns>
@@ -138,6 +139,7 @@ namespace SampSharp.GameMode.Natives
         {
             return CallNativeArray(name, "", null, null) > 0;
         }
+
         /// <summary>
         ///     Call a native with the given arguments.
         /// </summary>

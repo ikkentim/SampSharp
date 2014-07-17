@@ -1,7 +1,7 @@
-#pragma once
-
 #include <time.h>
 #include <string.h>
+
+#pragma once
 
 struct TimeUtil
 {

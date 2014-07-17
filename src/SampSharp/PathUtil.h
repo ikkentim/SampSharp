@@ -1,5 +1,3 @@
-#pragma once
-
 #ifdef _WIN32
 #include <direct.h>
 #define getcwd _getcwd // stupid MSFT "deprecation" warning
@@ -7,6 +5,8 @@
 #include <unistd.h>
 #endif
 #include <string>
+
+#pragma once
 
 struct PathUtil
 {
