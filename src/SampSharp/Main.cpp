@@ -1,10 +1,10 @@
-#include <iostream>
 #include <string>
 #include <sampgdk/core.h>
 #include <sampgdk/a_samp.h>
 
 #include "SampSharp.h"
 #include "ConfigReader.h"
+#include "Benchmark.h"
 #include "amxplugin.cpp"
 
 using sampgdk::logprintf;
@@ -68,5 +68,10 @@ ProcessTick() {
 
 PLUGIN_EXPORT bool PLUGIN_CALL
 OnPublicCall(AMX *amx, const char *name, cell *params, cell *retval) {
+    #ifdef DO_BENCHMARK
+    if(!strcmp(name, "OnGameModeInit")) {
+        Benchmark();
+    }
+    #endif
 	return SampSharp::ProcessPublicCall(amx, name, params, retval);
 }

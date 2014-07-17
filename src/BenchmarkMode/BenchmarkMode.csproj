@@ -41,6 +41,8 @@
   <ItemGroup>
     <Compile Include="GameMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\CreateDestroyVehicle.cs" />
+    <Compile Include="Tests\NativeCreateDestroyVehicle.cs" />
     <Compile Include="Tests\NativeIsPlayerConnected.cs" />
     <Compile Include="Tests\IControllerTest.cs" />
     <Compile Include="Tests\ITest.cs" />
