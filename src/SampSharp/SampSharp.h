@@ -29,6 +29,7 @@ typedef std::map<int, param_t *> ParamMap;
 struct event_t {
 	MonoMethod *method;
 	ParamMap params;
+    uint32_t handle;
 };
 typedef std::map<std::string, event_t *> EventMap;
 
@@ -37,7 +38,7 @@ typedef struct gamemodeimage_t {
     MonoClass *klass;
 } GamemodeImage;
 
-typedef std::list<MonoObject *> ExtensionList;
+typedef std::list<uint32_t> ExtensionList;
 
 class SampSharp
 {
@@ -54,7 +55,7 @@ public:
 private:
 	static MonoMethod *LoadEvent(const char *name, int param_count);
 	static int GetParamLengthIndex(MonoMethod *method, int idx);
-    static int CallEvent(MonoMethod *method, void **params);
+    static int CallEvent(MonoMethod *method, uint32_t handle, void **params);
     static bool RegisterExtension(MonoObject *extension);
 	static MonoDomain *root;
     static GamemodeImage gamemode;

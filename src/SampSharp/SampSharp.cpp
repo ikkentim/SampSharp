@@ -70,7 +70,7 @@ void SAMPGDK_CALL SampSharp::ProcessTimerTick(int timerid, void *data) {
 	void *args[2];
 	args[0] = &timerid;
 	args[1] = data;
-	CallEvent(method, args);
+	CallEvent(method, gameModeHandle, args);
 }
 
 void SampSharp::ProcessTick() {
@@ -80,7 +80,7 @@ void SampSharp::ProcessTick() {
         method = LoadEvent("OnTick", 0);
     }
 
-    CallEvent(method, NULL);
+    CallEvent(method, gameModeHandle, NULL);
 }
 
 bool SampSharp::RegisterExtension(MonoObject *extension) {
@@ -89,13 +89,12 @@ bool SampSharp::RegisterExtension(MonoObject *extension) {
     }
 
     for(ExtensionList::iterator iter = extensions.begin(); iter != extensions.end();iter++) {
-        if((*iter) == extension) {
+        if(mono_gchandle_get_target(*iter) == extension) {
             return false;
         }
     }
 
-    mono_gchandle_new(extension, false);
-    extensions.push_back(extension);
+    extensions.push_back(mono_gchandle_new(extension, false));
     return true;
 }
 
@@ -163,7 +162,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 	if (events.find(name) == events.end()) {
 		//find method
 		MonoMethod *method = mono_class_get_method_from_name(gamemode.klass, name, param_count);
-		
+		uint32_t handle = gameModeHandle;
 		MonoImage *image = gamemode.image;
 		if (!method) {
 			method = mono_class_get_method_from_name(basemode.klass, name, param_count);
@@ -172,7 +171,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 
         if(!method) {
             for(ExtensionList::iterator iter = extensions.begin(); !method && iter != extensions.end();iter++) {
-                MonoClass *klass = mono_object_get_class((*iter));
+                MonoClass *klass = mono_object_get_class(mono_gchandle_get_target(handle = *iter));
 
                 method = mono_class_get_method_from_name(klass, name, param_count);
                 image = mono_class_get_image(klass);
@@ -270,6 +269,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 		event_t *event_add = new event_t;
 		event_add->method = method;
 		event_add->params = params;
+        event_add->handle = handle;
 		events[name] = event_add;
 	}
 
@@ -277,7 +277,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 	//call known events
 	if (event_p) {
 		if (!param_count) {
-			int retint = SampSharp::CallEvent(event_p->method, NULL);
+			int retint = CallEvent(event_p->method, event_p->handle, NULL);
 			if (retint != -1) {
 				*retval = retint;
 			}
@@ -365,7 +365,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
                 }
 			}
 
-			int retint = SampSharp::CallEvent(event_p->method, args);
+			int retint = CallEvent(event_p->method, gameModeHandle, args);
 
 			if (retint != -1) {
 				*retval = retint;
@@ -378,11 +378,11 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 	return true;
 }
 
-int SampSharp::CallEvent(MonoMethod* method, void **params) {
+int SampSharp::CallEvent(MonoMethod* method, uint32_t handle, void **params) {
     assert(method);
 
     MonoObject *exception;
-	MonoObject *response = mono_runtime_invoke(method, mono_gchandle_get_target(gameModeHandle),
+	MonoObject *response = mono_runtime_invoke(method, mono_gchandle_get_target(handle),
         params, &exception);
 
 	if (exception) {
