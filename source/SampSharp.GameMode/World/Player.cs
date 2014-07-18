@@ -207,7 +207,11 @@ namespace SampSharp.GameMode.World
         public virtual int Money
         {
             get { return Native.GetPlayerMoney(Id); }
-            set { Native.GivePlayerMoney(Id, Money + value); }
+            set
+            {
+                Native.ResetPlayerMoney(Id);
+                Native.GivePlayerMoney(Id, value);
+            }
         }
 
         /// <summary>
