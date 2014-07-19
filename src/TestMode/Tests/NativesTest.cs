@@ -27,7 +27,7 @@ namespace TestMode.Tests
             Console.WriteLine(str);
 
             Console.WriteLine("CALLING SetWeather");
-            Native.CallNative("SetWeather", __arglist(20));
+            Native.CallNative("SetWeather", __arglist(10));
 
             Console.WriteLine("CALLING AllowAdminTeleport");
             Native.CallNative("AllowAdminTeleport", __arglist(true));
@@ -36,13 +36,14 @@ namespace TestMode.Tests
             Console.WriteLine("CALLING SetGameModeText");
             Native.CallNative("SetGameModeText", __arglist("Blablab"));
 
-            Console.WriteLine("CALLING SetGravity");
-            Native.CallNative("SetGravity", __arglist(0.42f));
+            //Console.WriteLine("CALLING SetGravity");
+            //Native.CallNative("SetGravity", __arglist(0.008));
 
             Console.WriteLine("CALLING CreateVehicle");
             int vid = Native.CallNative("CreateVehicle", __arglist(400, 50.50f, 60.60f, 70.70f, 0.0f, -1, -1, -1));
             Console.WriteLine("pos: {0}",
                 Native.GetVehiclePos(vid));
+            Native.DestroyVehicle(vid);
 
             Console.WriteLine("CALLING GetVehicleModelInfo");
             float x = 1;

@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SampSharp.GameMode;
@@ -33,7 +34,7 @@ namespace TestMode
             new DialogTest(),
             new CharsetTest(),
             new VehicleInfoTest(),
-            new NativesTest(),
+            //new NativesTest(),
             new StreamerTest(),
         };
 
@@ -45,7 +46,12 @@ namespace TestMode
             AddPlayerClass(65, new Vector(5), 0);
 
             foreach (var test in _tests)
+            {
+                Console.WriteLine("=========");
+                Console.WriteLine("Starting test: {0}", test);
                 test.Start(this);
+                Console.WriteLine();
+            }
 
             return true;
         }
