@@ -23,9 +23,6 @@ namespace SampSharp.GameMode.World
         int ModelId { get; }
         float DrawDistance { get; }
 
-
-        void AttachTo(Player player, Vector offset, Vector rotation);
-        void AttachTo(Vehicle vehicle, Vector offset, Vector rotation);
         int Move(Vector position, float speed, Vector rotation);
         int Move(Vector position, float speed);
         void Stop();

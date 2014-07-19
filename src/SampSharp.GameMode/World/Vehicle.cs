@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
@@ -52,6 +53,28 @@ namespace SampSharp.GameMode.World
         public VehicleModelInfo Info
         {
             get { return VehicleModelInfo.ForVehicle(this); }
+        }
+
+        /// <summary>
+        /// Gets the driver of this Vehicle.
+        /// </summary>
+        public Player Driver
+        {
+            get
+            {
+                return Player.All.FirstOrDefault(p => p.Vehicle == this && p.VehicleSeat == 0);
+            }
+        }
+
+        /// <summary>
+        /// Gets the passengers of this Vehicle. (not the driver)
+        /// </summary>
+        public IEnumerable<Player> Passengers
+        {
+            get
+            {
+                return Player.All.Where(p => p.Vehicle == this).Where(player => player.VehicleSeat > 0);
+            }
         }
 
         /// <summary>
