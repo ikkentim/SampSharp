@@ -21,14 +21,9 @@ namespace SampSharp.GameMode.SAMP.Commands
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public abstract class ParameterAttribute : Attribute
     {
-        /// <summary>
-        ///     Initializes a new instance of the Parameter class.
-        /// </summary>
-        /// <param name="name">The name of this parameter.</param>
         protected ParameterAttribute(string name)
         {
             Name = name;
-            DisplayName = Name;
         }
 
         /// <summary>

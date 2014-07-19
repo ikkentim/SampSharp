@@ -14,16 +14,11 @@
 namespace SampSharp.GameMode.SAMP.Commands
 {
     /// <summary>
-    ///     Represents an text command-parameter.
+    ///     Represents an integer command-parameter.
     /// </summary>
-    public class TextParameterAttribute : ParameterAttribute
+    public class IntegerAttribute : WordAttribute
     {
-        /// <summary>
-        ///     Initializes a new instance of the TextParameterAttribute class.
-        /// </summary>
-        /// <param name="name">The name of this parameter.</param>
-        public TextParameterAttribute(string name)
-            : base(name)
+        public IntegerAttribute(string name) : base(name)
         {
         }
 
@@ -35,12 +30,17 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>True if the parameter is well-formatted, False otherwise.</returns>
         public override bool Check(ref string command, out object output)
         {
-            //Set output
-            output = command;
+            if (!base.Check(ref command, out output))
+                return false;
 
-            //Clear command
-            command = string.Empty;
+            int number;
+            if (!int.TryParse((string) output, out number))
+            {
+                output = null;
+                return false;
+            }
 
+            output = number;
             return true;
         }
     }

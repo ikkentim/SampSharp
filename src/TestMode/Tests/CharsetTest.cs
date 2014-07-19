@@ -28,13 +28,15 @@ namespace TestMode.Tests
         }
 
         [Command("charset")]
-        public static void CharsetCommand(Player player)
+        public static bool CharsetCommand(Player player)
         {
             Player.SendClientMessageToAll(Color.Teal, "this is a test: \u00D6");
             Player.SendClientMessageToAll(Color.Teal, "this is a test: Ä ä Ö ö Ü ü ß ...");
 
             Console.WriteLine("this is a test: \u00D6");
             Console.WriteLine("this is a test: Ä ä Ö ö Ü ü ß ...");
+
+            return true;
         }
     }
 }

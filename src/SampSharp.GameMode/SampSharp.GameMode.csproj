@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\environment\plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -64,6 +64,10 @@
     <Compile Include="Definitions\ShopName.cs" />
     <Compile Include="Definitions\TextDrawAlignment.cs" />
     <Compile Include="Definitions\VehicleModelType.cs" />
+    <Compile Include="SAMP\Commands\CommandGroup.cs" />
+    <Compile Include="SAMP\Commands\CommandGroupAttribute.cs" />
+    <Compile Include="SAMP\Commands\DetectedCommand.cs" />
+    <Compile Include="SAMP\Commands\Command.cs" />
     <Compile Include="World\VehicleModelInfo.cs" />
     <Compile Include="Definitions\VehicleCategory.cs" />
     <Compile Include="Display\Menu.cs" />
@@ -143,9 +147,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SAMP\Commands\CommandAttribute.cs" />
     <Compile Include="SAMP\Commands\ParameterAttribute.cs" />
-    <Compile Include="SAMP\Commands\IntegerParameterAttribute.cs" />
-    <Compile Include="SAMP\Commands\TextParameterAttribute.cs" />
-    <Compile Include="SAMP\Commands\WordParameterAttribute.cs" />
+    <Compile Include="SAMP\Commands\IntegerAttribute.cs" />
+    <Compile Include="SAMP\Commands\TextAttribute.cs" />
+    <Compile Include="SAMP\Commands\WordAttribute.cs" />
     <Compile Include="SAMP\PVarCollection.cs" />
     <Compile Include="Tools\Disposable.cs" />
     <Compile Include="Tools\KeyUtils.cs" />
