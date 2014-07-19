@@ -20,6 +20,7 @@ public OnFilterScriptInit()
 		IsPlayerConnected(0);
 	}
 	FINISH_BENCH("NativeIsPlayerConnected");
+	
 	START_BENCH(5000);
 	{
 		new id = CreateVehicle(400, 0, 0, 0 ,0, -1, -1, 0);

@@ -33,7 +33,6 @@ namespace SampSharp.GameMode.Pools
         protected Pool()
         {
             Instances.Add(this);
-
             ReadOnly = Instances.OfType<T>().ToList().AsReadOnly();
         }
 

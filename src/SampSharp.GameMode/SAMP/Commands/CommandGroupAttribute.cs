@@ -16,19 +16,18 @@ using System;
 namespace SampSharp.GameMode.SAMP.Commands
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public class CommandAttribute : Attribute
+    public class CommandGroupAttribute : Attribute
     {
-        public CommandAttribute(string name)
+        public CommandGroupAttribute(params string[] group)
         {
-            Name = name;
+            Group = string.Join(" ", group);
         }
 
-        public string Name { get; set; }
+        public CommandGroupAttribute(string group)
+        {
+            Group = group;
+        }
 
-        public string Alias { get; set; }
-
-        public string Shortcut { get; set; }
-
-        public string PermissionCheckMethod { get; set; }
+        public string Group { get; set; }
     }
 }

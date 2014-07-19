@@ -14,16 +14,11 @@
 namespace SampSharp.GameMode.SAMP.Commands
 {
     /// <summary>
-    ///     Represents an word command-parameter.
+    ///     Represents an text command-parameter.
     /// </summary>
-    public class WordParameterAttribute : ParameterAttribute
+    public class TextAttribute : ParameterAttribute
     {
-        /// <summary>
-        ///     Initializes a new instance of the WordParameterAttribute class.
-        /// </summary>
-        /// <param name="name">The name of this parameter.</param>
-        public WordParameterAttribute(string name)
-            : base(name)
+        public TextAttribute(string name) : base(name)
         {
         }
 
@@ -35,14 +30,17 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>True if the parameter is well-formatted, False otherwise.</returns>
         public override bool Check(ref string command, out object output)
         {
-            //Find space
-            int idx = command.IndexOf(' ');
+            /*
+             * Text should at least be one character long.
+             */
+            if (command.Length == 0)
+            {
+                output = null;
+                return false;
+            }
 
-            //Substring output
-            output = idx == -1 ? command : command.Substring(0, idx);
-
-            //Remove word from command
-            command = idx == -1 || command.Length < idx ? string.Empty : command.Substring(idx + 1);
+            output = command;
+            command = string.Empty;
 
             return true;
         }

@@ -11,15 +11,9 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using SampSharp.GameMode.Events;
-using SampSharp.GameMode.Helpers;
-using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
-using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers
 {
@@ -28,29 +22,8 @@ namespace SampSharp.GameMode.Controllers
     /// </summary>
     public class CommandController : IEventListener
     {
-        private readonly WordParameterAttribute _nameFilter = new WordParameterAttribute(string.Empty);
-        private MethodInfo[] _commands;
-
-        /// <summary>
-        ///     Initalizes a new instance of the CommandController class.
-        /// </summary>
-        public CommandController()
-        {
-            UsageFormat =
-                (name, parameters) =>
-                    string.Format("Usage: /{0}{1}{2}", name, parameters.Any() ? ": " : string.Empty,
-                        string.Join(" ", parameters.Select(
-                            p => p.Optional
-                                ? string.Format("({0})", p.DisplayName)
-                                : string.Format("[{0}]", p.DisplayName)
-                            ))
-                        );
-        }
-
-        /// <summary>
-        ///     Gets or sets the usage message send when a wrongly formatted command is being processed.
-        /// </summary>
-        public Func<string, ParameterAttribute[], string> UsageFormat { get; set; }
+        //private readonly WordParameterAttribute _nameFilter = new WordParameterAttribute(string.Empty);
+        //private MethodInfo[] _commands;
 
         /// <summary>
         ///     Registers the events this GlobalObjectController wants to listen to.
@@ -59,22 +32,38 @@ namespace SampSharp.GameMode.Controllers
         public virtual void RegisterEvents(BaseMode gameMode)
         {
             //Detect commands in assembly containing the gamemode
-            _commands = gameMode.GetType().Assembly.GetTypes().SelectMany(t => t.GetMethods())
-                .Where(m => m.IsStatic && m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0)
-                .ToArray();
+            foreach (var method in gameMode.GetType().Assembly.GetTypes().SelectMany(t => t.GetMethods())
+                .Where(m => m.IsStatic && m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0))
+            {
+                new DetectedCommand(method);
+            }
 
             gameMode.PlayerCommandText += gameMode_PlayerCommandText;
         }
 
         private void gameMode_PlayerCommandText(object sender, PlayerTextEventArgs e)
         {
-            //Strip / and trim spaces.
-            string commandText = e.Text.Substring(1).Trim();
+            string text = e.Text.Substring(1);
+            var player = e.Player;
 
+            foreach (var cmd in Command.All.Where(c => c.HasPlayerPermissionForCommand(player)))
+            {
+                string args = text;
+                if (cmd.CommandTextMatchesCommand(ref args))
+                {
+                    if (cmd.RunCommand(player, args))
+                    {
+                        e.Success = true;
+                        break;
+                    }
+                }
+            }
+
+            /*
             //Filter name of the command to be executed.
-            object name;
-            _nameFilter.Check(ref commandText, out name);
-            var commandName = name as string;
+            //object name;
+            //_nameFilter.Check(ref commandText, out name);
+            //var commandName = name as string;
 
             Player player = e.Player;
 
@@ -159,7 +148,7 @@ namespace SampSharp.GameMode.Controllers
                                 .Select(pair => pair.Value)
                                 .ToArray());
                 return;
-            }
+            }*/
         }
     }
 }

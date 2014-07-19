@@ -14,16 +14,11 @@
 namespace SampSharp.GameMode.SAMP.Commands
 {
     /// <summary>
-    ///     Represents an integer command-parameter.
+    ///     Represents an word command-parameter.
     /// </summary>
-    public class IntegerParameterAttribute : WordParameterAttribute
+    public class WordAttribute : ParameterAttribute
     {
-        /// <summary>
-        ///     Initializes a new instance of the IntegerParameterAttribute class.
-        /// </summary>
-        /// <param name="name">The name of this parameter.</param>
-        public IntegerParameterAttribute(string name)
-            : base(name)
+        public WordAttribute(string name) : base(name)
         {
         }
 
@@ -35,23 +30,20 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>True if the parameter is well-formatted, False otherwise.</returns>
         public override bool Check(ref string command, out object output)
         {
-            //Get word from command
-            if (!base.Check(ref command, out output))
-                return false;
-
-            var word = (string) output;
-
-            //Try to parse this number
-            int number;
-            if (!int.TryParse(word, out number))
+            /*
+             * A word should at least be one character long.
+             */
+            if (command.Length == 0)
             {
-                //Clear output
                 output = null;
                 return false;
             }
 
-            //Set output
-            output = number;
+            var idx = command.IndexOf(' ');
+            var word = idx == -1 ? command : command.Substring(0, idx);
+
+            output = word;
+            command = word == command ? string.Empty : command.Substring(word.Length);
 
             return true;
         }
