@@ -1085,8 +1085,8 @@ namespace SampSharp.GameMode.World
         /// <param name="offset">offset for the object position.</param>
         /// <param name="rotation">rotation of the object.</param>
         /// <param name="scale">scale of the object.</param>
-        /// <param name="materialcolor1">The first object color to set, as an integer or hex in ARGB color format.</param>
-        /// <param name="materialcolor2">The second object color to set, as an integer or hex in ARGB color format.</param>
+        /// <param name="materialcolor1">The first object color to set.</param>
+        /// <param name="materialcolor2">The second object color to set.</param>
         /// <returns>True on success, False otherwise.</returns>
         public virtual bool SetAttachedObject(int index, int modelid, int bone, Vector offset, Vector rotation,
             Vector scale, Color materialcolor1, Color materialcolor2)
@@ -1669,7 +1669,7 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     This function sends a message to this Player with a chosen color in the chat. The whole line in the chatbox will be
-        ///     in the set color unless colour embedding is used.<br />
+        ///     in the set color unless colour embedding is used.
         /// </summary>
         /// <param name="color">The color of the message.</param>
         /// <param name="message">The text that will be displayed (max 144 characters).</param>
@@ -1681,14 +1681,36 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Displays a message in chat to all players. This is a multi-player equivalent of <see cref="SendClientMessage" />.
-        ///     <br />
+        ///     This function sends a message to this Player with a chosen color in the chat. The whole line in the chatbox will be
+        ///     in the set color unless colour embedding is used.
         /// </summary>
-        /// <param name="color">The color of the message (RGBA Hex format).</param>
+        /// <param name="color">The color of the message.</param>
+        /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        public virtual void SendClientMessage(Color color, string messageFormat, params object[] args)
+        {
+            SendClientMessage(color, string.Format(messageFormat, args));
+        }
+
+        /// <summary>
+        ///     Displays a message in chat to all players. This is a multi-player equivalent of <see cref="SendClientMessage" />.
+        /// </summary>
+        /// <param name="color">The color of the message.</param>
         /// <param name="message">The message to show (max 144 characters).</param>
         public static void SendClientMessageToAll(Color color, string message)
         {
             Native.SendClientMessageToAll(color.GetColorValue(ColorFormat.RGBA), message);
+        }
+
+        /// <summary>
+        ///     Displays a message in chat to all players. This is a multi-player equivalent of <see cref="SendClientMessage" />.
+        /// </summary>
+        /// <param name="color">The color of the message.</param>
+        /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        public static void SendClientMessageToAll(Color color, string messageFormat, params object[] args)
+        {
+            SendClientMessageToAll(color, string.Format(messageFormat, args));
         }
 
         /// <summary>

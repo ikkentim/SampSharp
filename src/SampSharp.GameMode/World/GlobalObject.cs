@@ -167,12 +167,13 @@ namespace SampSharp.GameMode.World
             Native.DestroyObject(Id);
         }
 
-        public virtual void AttachTo(GlobalObject globalObject, Vector offset, Vector rotation)
+        public virtual void AttachTo(GlobalObject globalObject, Vector offset, Vector rotation,
+            bool syncRotation = false)
         {
             if (globalObject == null)
                 throw new NullReferenceException("globalObject cannot be null");
 
-            Native.AttachObjectToVehicle(Id, globalObject.Id, offset, rotation);
+            Native.AttachObjectToObject(Id, globalObject.Id, offset, rotation, syncRotation);
         }
 
         public virtual void Edit(Player player)

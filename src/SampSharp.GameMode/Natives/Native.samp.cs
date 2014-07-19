@@ -23,7 +23,7 @@ namespace SampSharp.GameMode.Natives
     {
         /// <summary>
         ///     This function sends a message to a specific player with a chosen color in the chat. The whole line in the chatbox
-        ///     will be in the set color unless colour embedding is used.<br />
+        ///     will be in the set color unless colour embedding is used.
         /// </summary>
         /// <param name="playerid">The ID of the player to display the message to.</param>
         /// <param name="color">The color of the message.</param>
@@ -38,7 +38,6 @@ namespace SampSharp.GameMode.Natives
 
         /// <summary>
         ///     Displays a message in chat to all players. This is a multi-player equivalent of <see cref="SendClientMessage" />.
-        ///     <br />
         /// </summary>
         /// <param name="color">The color of the message (RGBA Hex format).</param>
         /// <param name="message">The message to show (max 144 characters).</param>
@@ -1174,7 +1173,7 @@ namespace SampSharp.GameMode.Natives
         ///     It was added to assist owners of large servers who deal with constant attacks from cheaters and botters.
         ///     It has been in SA-MP for 2 years.
         /// </remarks>
-        /// <param name="playerid">The ID of the player whose gpci you'd like</param>
+        /// <param name="playerid">The ID of the player whose gpci you'd like.</param>
         /// <returns>The gpci value.</returns>
         // ReSharper disable once InconsistentNaming
         public static string gpci(int playerid)
@@ -1280,7 +1279,7 @@ namespace SampSharp.GameMode.Natives
         /// <param name="testLOS">Whether to test the line-of-sight so this text can't be seen through walls.</param>
         /// <returns>The ID of the newly created Player 3D Text Label.</returns>
         public static int CreatePlayer3DTextLabel(int playerid, string text, int color, Vector position,
-            float drawDistance, int attachedplayer, int attachedvehicle, bool testLOS)
+            float drawDistance, int attachedplayer = Misc.InvalidPlayerId, int attachedvehicle = Misc.InvalidVehicleId, bool testLOS = false)
         {
             return CreatePlayer3DTextLabel(0, text, color, position.X, position.Y, position.Z, drawDistance,
                 attachedplayer, attachedvehicle, testLOS);

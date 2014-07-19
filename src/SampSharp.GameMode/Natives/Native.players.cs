@@ -14,6 +14,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Natives
@@ -743,7 +744,7 @@ namespace SampSharp.GameMode.Natives
         /// <param name="playerid">The ID of the player to remove the object from.</param>
         /// <param name="index">
         ///     The index of the object to remove (set with
-        ///     <see cref="SetPlayerAttachedObject(int,int,int,int,Vector,Rotation,Vector,int,int)" />).
+        ///     <see cref="SetPlayerAttachedObject(int,int,int,int,Vector,Vector,Vector,int,int)" />).
         /// </param>
         /// <returns>True on success, False otherwise.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
@@ -1993,14 +1994,14 @@ namespace SampSharp.GameMode.Natives
         /// <param name="offset">offset for the object position.</param>
         /// <param name="rotation">rotation of the object.</param>
         /// <param name="scale"> scale of the object.</param>
-        /// <param name="materialcolor1">The first object color to set, as an integer or hex in ARGB color format.</param>
-        /// <param name="materialcolor2">The second object color to set, as an integer or hex in ARGB color format.</param>
+        /// <param name="materialcolor1">The first object color to set.</param>
+        /// <param name="materialcolor2">The second object color to set.</param>
         /// <returns>True on success, False otherwise.</returns>
         public static bool SetPlayerAttachedObject(int playerid, int index, int modelid, int bone, Vector offset,
-            Vector rotation, Vector scale, int materialcolor1, int materialcolor2)
+            Vector rotation, Vector scale, Color materialcolor1, Color materialcolor2)
         {
             return SetPlayerAttachedObject(playerid, index, modelid, bone, offset.X, offset.Y, offset.Z, rotation.X,
-                rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z, materialcolor1, materialcolor2);
+                rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z, materialcolor1.GetColorValue(ColorFormat.ARGB), materialcolor2.GetColorValue(ColorFormat.ARGB));
         }
 
 
@@ -2039,7 +2040,7 @@ namespace SampSharp.GameMode.Natives
         ///     camera further away.
         /// </param>
         /// <returns>This function doesn't return a specific value.</returns>
-        public static bool PlayerTextDrawSetPreviewRot(int playerid, int text, Vector rotation, float fZoom)
+        public static bool PlayerTextDrawSetPreviewRot(int playerid, int text, Vector rotation, float fZoom = 1.0f)
         {
             return PlayerTextDrawSetPreviewRot(playerid, text, rotation.X, rotation.Y, rotation.Z, fZoom);
         }
@@ -2055,7 +2056,7 @@ namespace SampSharp.GameMode.Natives
         /// <param name="soundid">The sound to play.</param>
         /// <param name="position">coordinates for the sound to play at. (0,0,0 for no position)</param>
         /// <returns>This function doesn't return a specific value.</returns>
-        public static bool PlayerPlaySound(int playerid, int soundid, Vector position)
+        public static bool PlayerPlaySound(int playerid, int soundid, Vector position = new Vector())
         {
             return PlayerPlaySound(playerid, soundid, position.X, position.Y, position.Z);
         }
