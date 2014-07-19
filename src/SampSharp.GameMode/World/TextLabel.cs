@@ -15,9 +15,9 @@ using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
-using SampSharp.GameMode.World;
+using SampSharp.GameMode.SAMP;
 
-namespace SampSharp.GameMode.SAMP
+namespace SampSharp.GameMode.World
 {
     public class TextLabel : IdentifiedPool<TextLabel>, IIdentifyable
     {
