@@ -472,7 +472,7 @@ namespace SampSharp.GameMode.Natives
         ///     default distances.
         /// </param>
         /// <returns>The ID of the object that was created.</returns>
-        public static int CreateObject(int modelid, Vector position, Vector rotation, float drawDistance)
+        public static int CreateObject(int modelid, Vector position, Vector rotation, float drawDistance = 0.0f)
         {
             return CreateObject(modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z,
                 drawDistance);
@@ -597,7 +597,7 @@ namespace SampSharp.GameMode.Natives
         /// </param>
         /// <returns>The ID of the object that was created, or INVALID_OBJECT_ID if the object limit (MAX_OBJECTS) was reached.</returns>
         public static int CreatePlayerObject(int playerid, int modelid, Vector position, Vector rotation,
-            float drawDistance)
+            float drawDistance = 0.0f)
         {
             return CreatePlayerObject(playerid, modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y,
                 rotation.Z, drawDistance);

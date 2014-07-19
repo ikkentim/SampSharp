@@ -434,7 +434,7 @@ namespace SampSharp.GameMode.Natives
         ///     Get the X Y Z coordinates of a vehicle.
         /// </summary>
         /// <param name="vehicleid">The ID of the vehicle to get the position of.</param>
-        /// <returns>The position.</returns>
+        /// <returns>The position of the vehicle.</returns>
         public static Vector GetVehiclePos(int vehicleid)
         {
             float x, y, z;
