@@ -171,7 +171,7 @@
     <Compile Include="Display\PlayerTextDraw.cs" />
     <Compile Include="SAMP\PlayerTextLabel.cs" />
     <Compile Include="Display\TextDraw.cs" />
-    <Compile Include="SAMP\TextLabel.cs" />
+    <Compile Include="World\TextLabel.cs" />
     <Compile Include="SAMP\Timer.cs" />
     <Compile Include="World\Region.cs" />
     <Compile Include="World\Shapes\Circle.cs" />
