@@ -85,5 +85,39 @@ namespace TestMode.Tests
             player.PutInVehicle(v, seat);
             return true;
         }
+
+        [Command("position")]
+        public static bool PositionCommand(Player player)
+        {
+            player.SendClientMessage(Color.Green, "Position: {0}", player.Position);
+
+            return true;
+        }
+
+        [Command("tp")]
+        [Integer("x")]
+        [Integer("y")]
+        [Integer("z")]
+        public static bool TpCommand(Player player, int x, int y, int z)
+        {
+            player.Position = new Vector(x, y, z);
+            return true;
+        }
+
+        [Command("wor")]
+        [Integer("world")]
+        public static bool World(Player player, int world)
+        {
+            player.VirtualWorld = world;
+            return true;
+        }
+
+        [Command("int")]
+        [Integer("interior")]
+        public static bool Interior(Player player, int interior)
+        {
+            player.Interior = interior;
+            return true;
+        }
     }
 }

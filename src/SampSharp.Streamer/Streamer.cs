@@ -157,6 +157,52 @@ namespace SampSharp.Streamer
                 set { StreamerNative.SetMaxItems(StreamType, value); }
             }
 
+            public int GetInteger(int id, StreamerDataType data)
+            {
+                return StreamerNative.GetIntData(StreamType, id, data);
+            }
+
+            public float GetFloat(int id, StreamerDataType data)
+            {
+                float value;
+                StreamerNative.GetFloatData(StreamType, id, data, out value);
+
+                return value;
+            }
+
+            public int[] GetArray(int id, StreamerDataType data, int maxlength)
+            {
+                int[] value;
+                StreamerNative.GetArrayData(StreamType, id, data, out value, maxlength);
+
+                return value;
+            }
+
+            public void AppendToArray(int id, StreamerDataType data, int value)
+            {
+                StreamerNative.AppendArrayData(StreamType, id, data, value);
+            }
+
+            public bool IsInArray(int id, StreamerDataType data, int value)
+            {
+                return StreamerNative.IsInArrayData(StreamType, id, data, value);
+            }
+
+            public void SetInteger(int id, StreamerDataType data, int value)
+            {
+                StreamerNative.SetIntData(StreamType, id, data, value);
+            }
+
+            public void SetFloat(int id, StreamerDataType data, float value)
+            {
+                StreamerNative.SetFloatData(StreamType, id, data, value);
+            }
+
+            public void SetArray(int id, StreamerDataType data, int[] value)
+            {
+                StreamerNative.SetArrayData(StreamType, id, data, value);
+            }
+
             public void ToggleUpdate(Player player, bool toggle)
             {
                 if (player == null)

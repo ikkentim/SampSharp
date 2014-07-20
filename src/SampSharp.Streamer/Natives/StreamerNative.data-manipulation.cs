@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using SampSharp.GameMode.Natives;
 using SampSharp.Streamer.Definitions;
 
@@ -43,8 +44,18 @@ namespace SampSharp.Streamer.Natives
             return Native.CallNative("Streamer_GetArrayData", __arglist((int) type, id, (int) data, out dest, maxlength));
         }
 
-        public static int SetArrayData(StreamType type, int id, StreamerDataType data, int[] src, int maxlength)
+        public static int SetArrayData(StreamType type, int id, StreamerDataType data, int[] src, int maxlength = -1)
         {
+            if (src == null)
+            {
+                throw new ArgumentNullException("src");
+            }
+
+            if (maxlength == -1)
+            {
+                maxlength = src.Length;
+            }
+
             return Native.CallNative("Streamer_SetArrayData", __arglist((int) type, id, (int) data, src, maxlength));
         }
 
