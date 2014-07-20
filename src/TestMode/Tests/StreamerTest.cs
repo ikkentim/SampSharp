@@ -13,8 +13,11 @@
 
 using System;
 using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.World;
 using SampSharp.Streamer;
+using SampSharp.Streamer.Definitions;
 using SampSharp.Streamer.Natives;
+using SampSharp.Streamer.World;
 
 namespace TestMode.Tests
 {
@@ -27,16 +30,15 @@ namespace TestMode.Tests
 
         public void Start(GameMode gameMode)
         {
-            Console.WriteLine("StreamerTest started...");
-            Console.WriteLine("Streamer tick rate: {0}", StreamerNative.GetTickRate());
-
-            float[] points;
-            int polygon = StreamerNative.CreateDynamicPolygon(new[] {1f, 2f, 3.333f, 4f}, -1, 1, 4);
-            int length = StreamerNative.GetDynamicPolygonNumberPoints(polygon)*2;
-            StreamerNative.GetDynamicPolygonPoints(polygon, out points, length);
-
-            if (points == null) Console.WriteLine("NULL ARRAY");
-            else foreach (var p in points) Console.WriteLine("ARRAY VALUE: {0}", p);
+            var area =
+                DynamicArea.CreatePolygon(new[]
+                {
+                    new Vector(-1, -1, 0),
+                    new Vector(1, -1, 0),
+                    new Vector(1, 1, 0),
+                    new Vector(-1, 1, 0)
+                });
+            Console.WriteLine("area.IsValid = {0}", area.IsValid);
         }
     }
 }

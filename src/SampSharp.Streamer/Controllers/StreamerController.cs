@@ -14,19 +14,16 @@
 using System;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
+using SampSharp.Streamer.World;
 
 namespace SampSharp.Streamer
 {
-    public class StreamerController : ITypeProvider, IEventListener
+    public class StreamerController : ITypeProvider
     {
-        public void RegisterEvents(BaseMode gameMode)
-        {
-            throw new NotImplementedException();
-        }
-
         public void RegisterTypes()
         {
-            throw new NotImplementedException();
+            DynamicObject.Register<DynamicObject>();
+            DynamicArea.Register<DynamicArea>();
         }
     }
 }

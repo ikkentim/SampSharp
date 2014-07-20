@@ -20,7 +20,7 @@ namespace SampSharp.Streamer.Definitions
         Checkpoint = 2,
         RaceCheckpoint = 3,
         MapIcon = 4,
-        _3DTextLabel = 5,
+        TextLabel = 5,
         Area = 6
     }
 }
