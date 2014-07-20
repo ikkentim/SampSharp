@@ -22,10 +22,5 @@ namespace SampSharp.GameMode.World
         ///     Gets or sets the position of this IWorldObject.
         /// </summary>
         Vector Position { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the rotation of this IWorldObject.
-        /// </summary>
-        Vector Rotation { get; set; }
     }
 }

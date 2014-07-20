@@ -13,6 +13,9 @@
 
 using System;
 using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.SAMP;
+using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 using SampSharp.Streamer;
 using SampSharp.Streamer.Definitions;
@@ -39,6 +42,15 @@ namespace TestMode.Tests
                     new Vector(-1, 1, 0)
                 });
             Console.WriteLine("area.IsValid = {0}", area.IsValid);
+
+            var icon = new DynamicMapIcon(new Vector(1500, -1500, 0), Color.Firebrick, MapIconType.Global, -1, -1, null, 300);
+
+            Console.WriteLine(icon.Position);
+
+            icon.Position = new Vector(50, 50, 5);
+
+            Console.WriteLine(icon.Position);
+
         }
     }
 }
