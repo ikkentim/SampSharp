@@ -50,6 +50,8 @@ namespace TestMode.Tests
             Console.WriteLine("Player: {0}, Word: {1}, Rest: {2}, Num: {3}", player, word, text, num);
             Console.WriteLine("Text written to console...");
             player.SendClientMessage(Color.Green, "Text written to console!");
+
+            player.SendClientMessage(Color.Green, "Formattest {0} -- {1} ,, {2}", 123, "xyz", "::DD");
             return true;
         }
 

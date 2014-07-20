@@ -54,8 +54,15 @@
     <Compile Include="Natives\StreamerNative.settings.cs" />
     <Compile Include="Natives\StreamerNative.updates.cs" />
     <Compile Include="Streamer.cs" />
-    <Compile Include="StreamerController.cs" />
+    <Compile Include="Controllers\StreamerController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="World\DynamicTextLabel.cs" />
+    <Compile Include="World\DynamicArea.cs" />
+    <Compile Include="World\DynamicCheckpoint.cs" />
+    <Compile Include="World\DynamicMapIcon.cs" />
+    <Compile Include="World\DynamicObject.cs" />
+    <Compile Include="World\DynamicPickup.cs" />
+    <Compile Include="World\DynamicRaceCheckpoint.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SampSharp.GameMode\SampSharp.GameMode.csproj">
