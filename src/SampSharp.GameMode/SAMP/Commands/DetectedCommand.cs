@@ -203,6 +203,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                     {
                         player.SendClientMessage(Color.White,
                             UsageFormat(Name,
+                            //TODO: Bug: ParameterAttribute are not attached to the parameter, but to the method.
                                 Command.GetParameters()
                                     .Skip(1) // Skip 'sender' parameter
                                     .Select(p => p.GetCustomAttribute<ParameterAttribute>())
