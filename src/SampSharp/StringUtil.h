@@ -22,57 +22,30 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#include <algorithm>
-#include <cctype>
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <sstream>
 #include <string>
+#include <algorithm>
 
-#include "ConfigReader.h"
-#include "StringUtil.h"
+#pragma once
 
-ConfigReader::ConfigReader()
-: loaded_(false)
+struct StringUtil
 {
-}
+    struct is_not_space {
+	    bool operator()(char c) {
+		    return !(c == ' ' || c == '\r' || c == '\n' || c == '\t');
+	    }
+    };
 
-ConfigReader::ConfigReader(const std::string &filename)
-: loaded_(false)
-{
-	LoadFile(filename);
-}
+    static inline std::string &TrimStringLeft(std::string &s) {
+	    s.erase(s.begin(), std::find_if(s.begin(), s.end(), is_not_space()));
+	    return s;
+    }
 
-bool ConfigReader::LoadFile(const std::string &filename) {
-	std::ifstream cfg(filename.c_str());
+    static inline std::string &TrimStringRight(std::string &s) {
+	    s.erase(std::find_if(s.rbegin(), s.rend(), is_not_space()).base(), s.end());
+	    return s;
+    }
 
-	if (cfg.is_open()) {
-		std::string line, name, value;
-
-		while (std::getline(cfg, line, '\n')) {
-			std::stringstream stream(line);
-
-			std::getline(stream, name, ' ');
-			StringUtil::TrimString(name);
-
-			std::getline(stream, value, '\n');
-			StringUtil::TrimString(value);
-
-			options_.insert(std::make_pair(name, value));
-		}
-
-		loaded_ = true;
-	}
-
-	return loaded_;
-}
-
-void ConfigReader::GetOptionAsString(const std::string &name, std::string &value) const {
-	value = GetOptionAsStringDefault(name, value);
-}
-
-std::string ConfigReader::GetOptionAsStringDefault(const std::string &name, const std::string &default_) const {
-    OptionMap::const_iterator iterator = options_.find(name);
-	return iterator != options_.end() ? iterator->second : default_;
-}
+    static inline std::string &TrimString(std::string &s) {
+	    return TrimStringLeft(TrimStringRight(s));
+    }
+};

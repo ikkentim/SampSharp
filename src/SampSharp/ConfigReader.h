@@ -26,8 +26,7 @@
 #include <sstream>
 #include <string>
 
-#ifndef CONFIGREADER_H
-#define CONFIGREADER_H
+#pragma once
 
 class ConfigReader {
 public:
@@ -41,8 +40,12 @@ public:
 	template<typename T>
 	void GetOption(const std::string &name, T &value) const;
 
+    void GetOptionAsString(const std::string &name, std::string &value) const;
+
 	template<typename T>
 	T GetOptionDefault(const std::string &name, const T &defaultValue) const;
+
+    std::string GetOptionAsStringDefault(const std::string &name, const std::string &defaultValue) const;
 
 	bool IsLoaded() const { return loaded_; }
 
@@ -70,5 +73,3 @@ T ConfigReader::GetOptionDefault(const std::string &name,
 	}
 	return default_;
 }
-
-#endif // !CONFIGREADER_H

@@ -1,7 +1,6 @@
 #include "SampSharp.h"
 
 #include "TimeUtil.h"
-#include "MonoUtil.h"
 
 #include <iostream>
 #include <fstream>
@@ -25,34 +24,38 @@ GamemodeImage SampSharp::basemode;
 uint32_t SampSharp::gameModeHandle;
 EventMap SampSharp::events;
 ExtensionList SampSharp::extensions;
-void SampSharp::Load(const char *basemode_path, const char *gamemode_path,
-                     const char *gamemode_namespace,
-                     const char *gamemode_class, bool debug) {
 
-	#ifdef _WIN32
-	mono_set_dirs(PathUtil::GetLibDirectory().c_str(), 
-        PathUtil::GetConfigDirectory().c_str());
-	#endif
+void SampSharp::Load(MonoDomain * domain, MonoImage * image, MonoClass *klass) {
 
-	mono_debug_init(MONO_DEBUG_FORMAT_MONO);
+    root = domain;
 
-	root = mono_jit_init(PathUtil::GetPathInBin(gamemode_path).c_str());
+    gamemode.image = image;
+    gamemode.klass = klass;
 
-	#ifdef _WIN32
-	if (debug == true) {
-		sampgdk::logprintf("[SampSharp] Generating symbol files");
-		MonoUtil::GenerateSymbols(basemode_path);
-		MonoUtil::GenerateSymbols(gamemode_path);
-	}
-	#endif
+    basemode.klass = mono_class_get_parent(gamemode.klass);
+    if(!basemode.klass) {
+		ofstream logfile;
+        
+		logfile.open("SampSharp_errors.log", ios::app);
+		cout << "[SampSharp] ERROR: The given gamemode has no parent class." << endl;
+		logfile << TimeUtil::GetTimeStamp() << "ERROR: The given gamemode has no parent class." << endl;
+		logfile.close();
 
-    basemode.image = mono_assembly_get_image(mono_domain_assembly_open(root, PathUtil::GetPathInBin(basemode_path).c_str()));
-    gamemode.image = mono_assembly_get_image(mono_domain_assembly_open(root, PathUtil::GetPathInBin(gamemode_path).c_str()));
-    
-	basemode.klass = mono_class_from_name(basemode.image, BASEMODE_NAMESPACE, BASEMODE_CLASS);
-	gamemode.klass = mono_class_from_name(gamemode.image, gamemode_namespace, gamemode_class);
+        exit(0);
+    }
+    if(strcmp("BaseMode", mono_class_get_name(basemode.klass)) != 0) {
+		ofstream logfile;
+        
+		logfile.open("SampSharp_errors.log", ios::app);
+		cout << "[SampSharp] ERROR: The given gamemode's parent class is not of type BaseMode." << endl;
+		logfile << TimeUtil::GetTimeStamp() << "ERROR: The given gamemode's parent class is not of type BaseMode." << endl;
+		logfile.close();
 
-	LoadNatives(); 
+        exit(0);
+    }
+    basemode.image = mono_class_get_image(basemode.klass);
+
+    LoadNatives(); 
     mono_add_internal_call("SampSharp.GameMode.Natives.Native::RegisterExtension", (void *)RegisterExtension);
 
 	MonoObject *gamemode_obj = mono_object_new(mono_domain_get(), gamemode.klass);
