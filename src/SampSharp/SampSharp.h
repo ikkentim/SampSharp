@@ -43,9 +43,7 @@ typedef std::list<uint32_t> ExtensionList;
 class SampSharp
 {
 public:
-    static void Load(const char *basemode_path, const char *gamemode_path,
-                     const char *gamemode_namespace,
-                     const char *gamemode_class, bool debug);
+    static void Load(MonoDomain * domain, MonoImage * image, MonoClass *klass);
     static void Unload();
 	static bool ProcessPublicCall(AMX *amx, const char *name, cell *params,
                                   cell *retval);
