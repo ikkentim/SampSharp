@@ -19,12 +19,12 @@ namespace SampSharp.GameMode.Definitions
     public enum CheckpointType
     {
         /// <summary>
-        ///     Normal racecheckpoint. (Normal red circle)
+        ///     Normal racecheckpoint. (Normal red cilinder)
         /// </summary>
         Normal = 0,
 
         /// <summary>
-        ///     Finish racecheckpoint. (Finish flag in red circle)
+        ///     Finish racecheckpoint. (Finish flag in red cilinder)
         /// </summary>
         Finish = 1,
 
