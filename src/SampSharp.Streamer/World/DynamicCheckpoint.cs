@@ -36,6 +36,11 @@ namespace SampSharp.Streamer.World
             get { return StreamType.Checkpoint; }
         }
 
+        public float Size
+        {
+            get { return Streamer.ItemType[StreamType].GetFloat(Id, StreamerDataType.Size); }
+            set { Streamer.ItemType[StreamType].SetFloat(Id, StreamerDataType.Size, value); }
+        }
         public void ToggleForPlayer(Player player, bool toggle)
         {
             CheckDisposure();
