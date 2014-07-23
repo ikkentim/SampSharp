@@ -11,19 +11,27 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.SAMP;
 using SampSharp.Streamer.World;
 
-namespace SampSharp.Streamer
+namespace SampSharp.Streamer.Controllers
 {
-    public class StreamerController : ITypeProvider
+    public class StreamerController : ITypeProvider, IEventListener
     {
         public void RegisterTypes()
         {
             DynamicObject.Register<DynamicObject>();
             DynamicArea.Register<DynamicArea>();
+        }
+
+        public void RegisterEvents(BaseMode gameMode)
+        {
+            gameMode.PlayerSpawned += (sender, args) => {
+                                                            args.Player.SendClientMessage(Color.Red, "Spawning at {0}", args.Player.Position);
+                                                            Streamer.Update(args.Player, args.Player.Position); };
+            gameMode.PlayerConnected += (sender, args) => Streamer.Update(args.Player);
         }
     }
 }

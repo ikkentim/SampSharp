@@ -35,7 +35,7 @@ namespace SampSharp.Streamer.Natives
 
         public static int Update(int playerid)
         {
-            return Native.CallNative("Steamer_Update", __arglist(playerid));
+            return Native.CallNative("Streamer_Update", __arglist(playerid));
         }
 
         public static int UpdateEx(int playerid, float x, float y, float z, int worldid = -1, int interiorid = -1)

@@ -8,12 +8,11 @@ using SampSharp.Streamer.Natives;
 
 namespace SampSharp.Streamer.World
 {
-    public class DynamicArea : IdentifiedPool<DynamicArea>, IIdentifyable
+    public class DynamicArea : DynamicWorldObject<DynamicArea>
     {
         public DynamicArea(int id)
         {
             Id = id;
-
         }
 
         #region Factories
@@ -149,11 +148,14 @@ namespace SampSharp.Streamer.World
 
         #endregion
 
-        public int Id { get; private set; }
-
         public bool IsValid
         {
             get { return StreamerNative.IsValidDynamicArea(Id); }
+        }
+
+        public override StreamType StreamType
+        {
+            get { return StreamType.Area; }
         }
 
         public void AttachTo(IGameObject obj)
@@ -290,7 +292,7 @@ namespace SampSharp.Streamer.World
             return areas == null ? null : areas.Select(FindOrCreate);
         }
 
-        public void ToggleAreaForPlayer(Player player, bool toggle)
+        public void ToggleForPlayer(Player player, bool toggle)
         {
             CheckDisposure();
 
@@ -302,7 +304,7 @@ namespace SampSharp.Streamer.World
             StreamerNative.TogglePlayerDynamicArea(player.Id, Id, toggle);
         }
 
-        public static void ToggleAllAreasForPlayer(Player player, bool toggle)
+        public static void ToggleAllForPlayer(Player player, bool toggle)
         {
             if (player == null)
             {
