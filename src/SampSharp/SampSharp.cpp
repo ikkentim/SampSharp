@@ -1,19 +1,13 @@
 #include "SampSharp.h"
-
-#include "TimeUtil.h"
-
 #include <iostream>
 #include <fstream>
+#include <assert.h>
 #include <mono/metadata/threads.h>
 #include <mono/metadata/exception.h>
-#include <mono/jit/jit.h>
-#include <mono/metadata/assembly.h>
-#include <mono/metadata/mono-debug.h>
-#include <mono/metadata/debug-helpers.h>
 #include <sampgdk/interop.h>
-#include <assert.h>
-#include "PathUtil.h"
 #include "Natives.h"
+#include "PathUtil.h"
+#include "TimeUtil.h"
 
 using namespace std;
 
