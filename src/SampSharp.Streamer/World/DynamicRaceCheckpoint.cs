@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 using SampSharp.Streamer.Definitions;
 using SampSharp.Streamer.Natives;
@@ -13,7 +14,7 @@ namespace SampSharp.Streamer.World
             Id = id;
         }
 
-        public DynamicRaceCheckpoint(int type, Vector position, Vector nextPosition = new Vector(), float size = 3.0f, int worldid = -1,
+        public DynamicRaceCheckpoint(CheckpointType type, Vector position, Vector nextPosition = new Vector(), float size = 3.0f, int worldid = -1,
             int interiorid = -1, Player player = null, float streamdistance = 100.0f)
         {
             Id = StreamerNative.CreateDynamicRaceCP(type, position.X, position.Y, position.Z, nextPosition.X,
@@ -21,7 +22,7 @@ namespace SampSharp.Streamer.World
                 streamdistance);
         }
 
-        public DynamicRaceCheckpoint(int type, Vector position, Vector nextPosition = new Vector(), float size = 3.0f, int[] worlds = null, int[] interiors = null,
+        public DynamicRaceCheckpoint(CheckpointType type, Vector position, Vector nextPosition = new Vector(), float size = 3.0f, int[] worlds = null, int[] interiors = null,
             Player[] players = null, float streamdistance = 100.0f)
         {
             Id = StreamerNative.CreateDynamicRaceCPEx(type, position.X, position.Y, position.Z, nextPosition.X,
