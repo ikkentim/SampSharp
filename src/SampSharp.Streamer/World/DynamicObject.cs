@@ -17,11 +17,12 @@ using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
+using SampSharp.Streamer.Definitions;
 using SampSharp.Streamer.Natives;
 
 namespace SampSharp.Streamer.World
 {
-    public class DynamicObject : IdentifiedPool<DynamicObject>, IGameObject, IIdentifyable
+    public class DynamicObject : DynamicWorldObject<DynamicObject>, IGameObject
     {
         #region Fields
 
@@ -29,9 +30,31 @@ namespace SampSharp.Streamer.World
 
         #endregion
 
+        #region Constructor
+
+        public DynamicObject(int id)
+        {
+            Id = id;
+        }
+
+        public DynamicObject(int modelid, Vector position, Vector rotation, float drawDistance)
+        {
+            ModelId = modelid;
+            DrawDistance = drawDistance;
+
+            Id = Native.CreateObject(modelid, position, rotation, drawDistance);
+        }
+
+        public DynamicObject(int modelid, Vector position, Vector rotation)
+            : this(modelid, position, rotation, 0)
+        {
+        }
+
+        #endregion
+
         #region Properties
 
-        public virtual Vector Position
+        public override Vector Position
         {
             get { return StreamerNative.GetDynamicObjectPos(Id); }
             set { StreamerNative.SetDynamicObjectPos(Id, value); }
@@ -53,11 +76,12 @@ namespace SampSharp.Streamer.World
             get { return StreamerNative.IsValidDynamicObject(Id); }
         }
 
+        public override StreamType StreamType
+        {
+            get { return StreamType.Object; }
+        }
+
         public virtual int ModelId { get; private set; }
-
-        public virtual float DrawDistance { get; private set; }
-
-        public virtual int Id { get; private set; }
 
         #endregion
 
@@ -83,37 +107,8 @@ namespace SampSharp.Streamer.World
         */
         #endregion
 
-        #region Constructor
-
-        public DynamicObject(int id)
-        {
-            Id = id;
-        }
-
-        public DynamicObject(int modelid, Vector position, Vector rotation, float drawDistance)
-        {
-            ModelId = modelid;
-            DrawDistance = drawDistance;
-
-            //Id = Native.CreateObject(modelid, position, rotation, drawDistance);
-        }
-
-        public DynamicObject(int modelid, Vector position, Vector rotation)
-            : this(modelid, position, rotation, 0)
-        {
-        }
-
-        #endregion
 
         #region Methods
-
-        /*public virtual void AttachTo(Player player, Vector offset, Vector rotation)
-        {
-            if (player == null)
-                throw new NullReferenceException("player cannot be null");
-
-            StreamerNative.AttachDynamicObjectToPlayer(Id, player.Id, offset, rotation);
-        }*/
 
         public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
         {

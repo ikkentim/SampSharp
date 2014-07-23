@@ -8,7 +8,7 @@ using SampSharp.Streamer.Natives;
 
 namespace SampSharp.Streamer.World
 {
-    public class DynamicMapIcon : IdentifiedPool<DynamicMapIcon>, IIdentifyable, IWorldObject
+    public class DynamicMapIcon : DynamicWorldObject<DynamicMapIcon>
     {
         public DynamicMapIcon(int id)
         {
@@ -29,29 +29,14 @@ namespace SampSharp.Streamer.World
                 player == null ? -1 : player.Id, streamDistance, mapIconType);
         }
 
-        public int Id { get; private set; }
-
         public bool IsValid
         {
             get { return StreamerNative.IsValidDynamicMapIcon(Id); }
         }
 
-        public Vector Position
+        public override StreamType StreamType
         {
-            get
-            {
-                float x = Streamer.ItemType[StreamType.MapIcon].GetFloat(Id, StreamerDataType.X);
-                float y = Streamer.ItemType[StreamType.MapIcon].GetFloat(Id, StreamerDataType.Y);
-                float z = Streamer.ItemType[StreamType.MapIcon].GetFloat(Id, StreamerDataType.Z);
-
-                return new Vector(x, y, z);
-            }
-            set
-            {
-                Streamer.ItemType[StreamType.MapIcon].SetFloat(Id, StreamerDataType.X, value.X);
-                Streamer.ItemType[StreamType.MapIcon].SetFloat(Id, StreamerDataType.Y, value.Y);
-                Streamer.ItemType[StreamType.MapIcon].SetFloat(Id, StreamerDataType.Z, value.Z);
-            }
+            get { return StreamType.MapIcon; }
         }
 
         protected override void Dispose(bool disposing)
