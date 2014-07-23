@@ -1163,6 +1163,14 @@ namespace SampSharp.GameMode.World
 
             Native.PutPlayerInVehicle(Id, vehicle.Id, seatid);
         }
+        /// <summary>
+        ///     Puts this Player in a vehicle as driver.
+        /// </summary>
+        /// <param name="vehicle">The vehicle for the player to be put in.</param>
+        public virtual void PutInVehicle(Vehicle vehicle)
+        {
+            PutInVehicle(vehicle, 0);
+        }
 
         /// <summary>
         ///     Removes/ejects this Player from his vehicle.
