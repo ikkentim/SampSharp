@@ -43,6 +43,14 @@
     <Compile Include="Definitions\StreamerObjectType.cs" />
     <Compile Include="Definitions\StreamerDataType.cs" />
     <Compile Include="Definitions\StreamType.cs" />
+    <Compile Include="Events\DynamicObjectEventArgs.cs" />
+    <Compile Include="Events\PlayerDynamicAreaEventArgs.cs" />
+    <Compile Include="Events\PlayerDynamicCheckpointEventArgs.cs" />
+    <Compile Include="Events\PlayerDynamicRaceCheckpointEventArgs.cs" />
+    <Compile Include="Events\PlayerEditDynamicObjectEventArgs.cs" />
+    <Compile Include="Events\PlayerDynamicPickupEventArgs.cs" />
+    <Compile Include="Events\PlayerSelectDynamicObjectEventArgs.cs" />
+    <Compile Include="Events\PlayerShootDynamicObjectEventArgs.cs" />
     <Compile Include="Natives\StreamerNative.areas.cs" />
     <Compile Include="Natives\StreamerNative.checkpoints.cs" />
     <Compile Include="Natives\StreamerNative.data-manipulation.cs" />
@@ -63,6 +71,7 @@
     <Compile Include="World\DynamicObject.cs" />
     <Compile Include="World\DynamicPickup.cs" />
     <Compile Include="World\DynamicRaceCheckpoint.cs" />
+    <Compile Include="World\DynamicWorldObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SampSharp.GameMode\SampSharp.GameMode.csproj">

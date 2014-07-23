@@ -51,6 +51,12 @@ namespace TestMode.Tests
 
             Console.WriteLine(icon.Position);
 
+            float x = Streamer.ItemType[StreamType.Area].GetFloat(icon.Id, StreamerDataType.X);
+            float y = Streamer.ItemType[StreamType.Area].GetFloat(icon.Id, StreamerDataType.Y);
+            float z = Streamer.ItemType[StreamType.Area].GetFloat(icon.Id, StreamerDataType.Z);
+
+            Console.WriteLine("Area.Position = {0}", new Vector(x, y, z));
+
         }
     }
 }
