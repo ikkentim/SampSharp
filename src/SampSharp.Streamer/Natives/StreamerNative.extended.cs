@@ -77,7 +77,7 @@ namespace SampSharp.Streamer.Natives
                     ));
         }
 
-        public static int CreateDynamicRaceCPEx(int type, float x, float y, float z, float nextx, float nexty,
+        public static int CreateDynamicRaceCPEx(CheckpointType type, float x, float y, float z, float nextx, float nexty,
             float nextz, float size, float streamdistance = 100.0f, int[] worlds = null, int[] interiors = null,
             int[] players = null, int maxworlds = -1, int maxinteriors = -1, int maxplayers = -1)
         {
