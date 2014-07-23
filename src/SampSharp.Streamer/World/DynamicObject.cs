@@ -83,6 +83,8 @@ namespace SampSharp.Streamer.World
 
         public virtual int ModelId { get; private set; }
 
+        public virtual float DrawDistance { get; private set; }
+
         #endregion
 
         #region Events
