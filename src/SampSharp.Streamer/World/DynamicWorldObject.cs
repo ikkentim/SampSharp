@@ -24,20 +24,20 @@ namespace SampSharp.Streamer.World
 
         public virtual int Interior
         {
-            get { return Streamer.ItemType[StreamType].GetInteger(Id, StreamerDataType.InteriorId); }
-            set { Streamer.ItemType[StreamType].SetInteger(Id, StreamerDataType.InteriorId, value); }
+            get { return GetInteger(StreamerDataType.InteriorId); }
+            set { SetInteger(StreamerDataType.InteriorId, value); }
         }
 
         public virtual int World
         {
-            get { return Streamer.ItemType[StreamType].GetInteger(Id, StreamerDataType.WorldId); }
-            set { Streamer.ItemType[StreamType].SetInteger(Id, StreamerDataType.WorldId, value); }
+            get { return GetInteger(StreamerDataType.WorldId); }
+            set { SetInteger(StreamerDataType.WorldId, value); }
         }
 
         public virtual float StreamDistance
         {
-            get { return Streamer.ItemType[StreamType].GetFloat(Id, StreamerDataType.StreamDistance); }
-            set { Streamer.ItemType[StreamType].SetFloat(Id, StreamerDataType.StreamDistance, value); }
+            get { return GetFloat(StreamerDataType.StreamDistance); }
+            set { SetFloat(StreamerDataType.StreamDistance, value); }
         }
 
         public int Id { get; protected set; }
@@ -46,16 +46,57 @@ namespace SampSharp.Streamer.World
         {
             get
             {
-                return new Vector(Streamer.ItemType[StreamType].GetFloat(Id, StreamerDataType.X),
-                    Streamer.ItemType[StreamType].GetFloat(Id, StreamerDataType.Y),
-                    Streamer.ItemType[StreamType].GetFloat(Id, StreamerDataType.Z));
+                return new Vector(GetFloat(StreamerDataType.X),
+                    GetFloat(StreamerDataType.Y),
+                    GetFloat(StreamerDataType.Z));
             }
             set
             {
-                Streamer.ItemType[StreamType].SetFloat(Id, StreamerDataType.X, value.X);
-                Streamer.ItemType[StreamType].SetFloat(Id, StreamerDataType.Y, value.Y);
-                Streamer.ItemType[StreamType].SetFloat(Id, StreamerDataType.Z, value.Z);
+                SetFloat(StreamerDataType.X, value.X);
+                SetFloat(StreamerDataType.Y, value.Y);
+                SetFloat(StreamerDataType.Z, value.Z);
             }
+        }
+
+
+        protected int GetInteger(StreamerDataType data)
+        {
+            return Streamer.ItemType[StreamType].GetInteger(Id, data);
+        }
+
+        protected float GetFloat(StreamerDataType data)
+        {
+            return Streamer.ItemType[StreamType].GetFloat(Id, data);
+        }
+
+        protected int[] GetArray(StreamerDataType data, int maxlength)
+        {
+            return Streamer.ItemType[StreamType].GetArray(Id, data, maxlength);
+        }
+
+        protected void AppendToArray(StreamerDataType data, int value)
+        {
+            Streamer.ItemType[StreamType].AppendToArray(Id, data, value);
+        }
+
+        protected bool IsInArray(StreamerDataType data, int value)
+        {
+            return Streamer.ItemType[StreamType].IsInArray(Id, data, value);
+        }
+
+        protected void SetInteger(StreamerDataType data, int value)
+        {
+            Streamer.ItemType[StreamType].SetInteger(Id, data, value);
+        }
+
+        protected void SetFloat(StreamerDataType data, float value)
+        {
+            Streamer.ItemType[StreamType].SetFloat(Id, data, value);
+        }
+
+        protected void SetArray(StreamerDataType data, int[] value)
+        {
+            Streamer.ItemType[StreamType].SetArray(Id, data, value);
         }
     }
 }

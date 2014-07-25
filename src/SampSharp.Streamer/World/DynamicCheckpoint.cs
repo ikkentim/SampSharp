@@ -33,8 +33,8 @@ namespace SampSharp.Streamer.World
                 player == null ? -1 : player.Id, streamdistance);
         }
 
-        public DynamicCheckpoint(Vector position, float size = 1.0f, int[] worlds = null, int[] interiors = null,
-            Player[] players = null, float streamdistance = 100.0f)
+        public DynamicCheckpoint(Vector position, float size, float streamdistance, int[] worlds = null, int[] interiors = null,
+            Player[] players = null)
         {
             Id = StreamerNative.CreateDynamicCPEx(position.X, position.Y, position.Z, size, streamdistance, worlds,
                 interiors,
@@ -53,8 +53,8 @@ namespace SampSharp.Streamer.World
 
         public float Size
         {
-            get { return Streamer.ItemType[StreamType].GetFloat(Id, StreamerDataType.Size); }
-            set { Streamer.ItemType[StreamType].SetFloat(Id, StreamerDataType.Size, value); }
+            get { return GetFloat(StreamerDataType.Size); }
+            set { SetFloat(StreamerDataType.Size, value); }
         }
 
         public void ToggleForPlayer(Player player, bool toggle)
@@ -94,6 +94,13 @@ namespace SampSharp.Streamer.World
             int id = StreamerNative.GetPlayerVisibleDynamicCP(player.Id);
 
             return id < 0 ? null : FindOrCreate(id);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            StreamerNative.DestroyDynamicCP(Id);
         }
     }
 }
