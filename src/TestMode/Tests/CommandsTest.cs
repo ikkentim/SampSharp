@@ -22,6 +22,14 @@ namespace TestMode.Tests
 {
     public class CommandsTest : ITest
     {
+        private class A
+        {
+        }
+
+        private class B : A
+        {
+        }
+
         public void Start(GameMode gameMode)
         {
             CommandGroup.Register("tools", "t", CommandGroup.Register("test", "t"));
@@ -87,6 +95,7 @@ namespace TestMode.Tests
         }
 
         [Command("teleport", Alias = "tp")]
+        [Integer("z",  Optional = true, DefaultValue = 4)]
         public static bool TpCommand(Player player, int x, int y, int z)
         {
             player.Position = new Vector(x, y, z);
