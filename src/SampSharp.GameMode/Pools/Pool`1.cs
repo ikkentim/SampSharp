@@ -26,14 +26,18 @@ namespace SampSharp.GameMode.Pools
     {
         protected static readonly List<object> Instances = new List<object>();
         protected static ReadOnlyCollection<T> ReadOnly = new ReadOnlyCollection<T>(new List<T>());
+        protected static object Lock = new object();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Pool{T}" /> class.
         /// </summary>
         protected Pool()
         {
-            Instances.Add(this);
-            ReadOnly = Instances.OfType<T>().ToList().AsReadOnly();
+            lock (Lock)
+            {
+                Instances.Add(this);
+                ReadOnly = Instances.OfType<T>().ToList().AsReadOnly();
+            }
         }
 
         /// <summary>
@@ -42,7 +46,13 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         public static ReadOnlyCollection<T> All
         {
-            get { return ReadOnly; }
+            get
+            {
+                lock (Lock)
+                {
+                    return ReadOnly;
+                }
+            }
         }
 
         /// <summary>
@@ -50,9 +60,11 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         protected override void Dispose(bool disposing)
         {
-            Instances.Remove(this);
-
-            ReadOnly = Instances.OfType<T>().ToList().AsReadOnly();
+            lock (Lock)
+            {
+                Instances.Remove(this);
+                ReadOnly = Instances.OfType<T>().ToList().AsReadOnly();
+            }
         }
 
         /// <summary>
@@ -62,7 +74,10 @@ namespace SampSharp.GameMode.Pools
         /// <returns>Whether the given instance is present in the pool.</returns>
         public static bool Contains(T item)
         {
-            return Instances.Contains(item);
+            lock (Lock)
+            {
+                return Instances.Contains(item);
+            }
         }
 
         /// <summary>
@@ -72,7 +87,10 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         public static ReadOnlyCollection<T2> GetAll<T2>()
         {
-            return Instances.OfType<T2>().ToList().AsReadOnly();
+            lock (Lock)
+            {
+                return Instances.OfType<T2>().ToList().AsReadOnly();
+            }
         }
     }
 }

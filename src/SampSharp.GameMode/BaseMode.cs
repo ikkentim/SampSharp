@@ -70,6 +70,7 @@ namespace SampSharp.GameMode
             controllers.Add(new TextDrawController());
             controllers.Add(new TimerController());
             controllers.Add(new VehicleController());
+            controllers.Add(new SyncController());
         }
 
         #endregion
