@@ -1,7 +1,19 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.World;
 using SampSharp.Streamer.Definitions;
 using SampSharp.Streamer.Natives;
@@ -25,7 +37,8 @@ namespace SampSharp.Streamer.World
                     player == null ? -1 : player.Id));
         }
 
-        public static DynamicArea CreateCircleEx(float x, float y, float size, int[] worlds = null, int[] interiors = null,
+        public static DynamicArea CreateCircleEx(float x, float y, float size, int[] worlds = null,
+            int[] interiors = null,
             Player[] players = null)
         {
             return
@@ -86,7 +99,7 @@ namespace SampSharp.Streamer.World
             Player player = null)
         {
             return
-                FindOrCreate(StreamerNative.CreateDynamicPolygon(points.SelectMany(p => new[] { p.X, p.Y }).ToArray(),
+                FindOrCreate(StreamerNative.CreateDynamicPolygon(points.SelectMany(p => new[] {p.X, p.Y}).ToArray(),
                     points.Min(p => p.Z), points.Max(p => p.Z), -1, worlid, interiorid, player == null ? -1 : player.Id));
         }
 
@@ -102,7 +115,7 @@ namespace SampSharp.Streamer.World
             float maxz = float.PositiveInfinity, int[] worlds = null, int[] interiors = null, Player[] players = null)
         {
             return
-                FindOrCreate(StreamerNative.CreateDynamicPolygonEx(points.SelectMany(p => new[] { p.X, p.Y }).ToArray(),
+                FindOrCreate(StreamerNative.CreateDynamicPolygonEx(points.SelectMany(p => new[] {p.X, p.Y}).ToArray(),
                     minz, maxz, -1, worlds, interiors, players == null ? null : players.Select(p => p.Id).ToArray()));
         }
 
@@ -110,7 +123,7 @@ namespace SampSharp.Streamer.World
             Player[] players = null)
         {
             return
-                FindOrCreate(StreamerNative.CreateDynamicPolygonEx(points.SelectMany(p => new[] { p.X, p.Y }).ToArray(),
+                FindOrCreate(StreamerNative.CreateDynamicPolygonEx(points.SelectMany(p => new[] {p.X, p.Y}).ToArray(),
                     points.Min(p => p.Z), points.Max(p => p.Z), -1, worlds, interiors,
                     players == null ? null : players.Select(p => p.Id).ToArray()));
         }

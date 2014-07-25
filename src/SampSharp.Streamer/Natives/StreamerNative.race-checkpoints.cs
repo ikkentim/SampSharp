@@ -18,11 +18,12 @@ namespace SampSharp.Streamer.Natives
 {
     public static partial class StreamerNative
     {
-        public static int CreateDynamicRaceCP(CheckpointType type, float x, float y, float z, float nextx, float nexty, float nextz,
+        public static int CreateDynamicRaceCP(CheckpointType type, float x, float y, float z, float nextx, float nexty,
+            float nextz,
             float size, int worldid = -1, int interiorid = -1, int playerid = -1, float streamdistance = 100.0f)
         {
             return Native.CallNative("CreateDynamicRaceCP",
-                __arglist((int)type, x, y, z, nextx, nexty, nextz, size, worldid, interiorid, playerid, streamdistance));
+                __arglist((int) type, x, y, z, nextx, nexty, nextz, size, worldid, interiorid, playerid, streamdistance));
         }
 
         public static int DestroyDynamicRaceCP(int checkpointid)

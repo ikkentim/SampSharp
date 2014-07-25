@@ -1279,7 +1279,8 @@ namespace SampSharp.GameMode.Natives
         /// <param name="testLOS">Whether to test the line-of-sight so this text can't be seen through walls.</param>
         /// <returns>The ID of the newly created Player 3D Text Label.</returns>
         public static int CreatePlayer3DTextLabel(int playerid, string text, int color, Vector position,
-            float drawDistance, int attachedplayer = Misc.InvalidPlayerId, int attachedvehicle = Misc.InvalidVehicleId, bool testLOS = false)
+            float drawDistance, int attachedplayer = Misc.InvalidPlayerId, int attachedvehicle = Misc.InvalidVehicleId,
+            bool testLOS = false)
         {
             return CreatePlayer3DTextLabel(0, text, color, position.X, position.Y, position.Z, drawDistance,
                 attachedplayer, attachedvehicle, testLOS);

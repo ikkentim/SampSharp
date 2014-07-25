@@ -11,7 +11,6 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.SAMP;
@@ -24,7 +23,7 @@ namespace SampSharp.Streamer.Natives
             int interiorid = -1, int playerid = -1, float streamdistance = 100.0f, MapIconType style = MapIconType.Local)
         {
             return Native.CallNative("CreateDynamicMapIcon",
-                __arglist(x, y, z, type, (int) color, worldid, interiorid, playerid, streamdistance, (int)style));
+                __arglist(x, y, z, type, (int) color, worldid, interiorid, playerid, streamdistance, (int) style));
         }
 
 

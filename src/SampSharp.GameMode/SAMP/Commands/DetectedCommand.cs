@@ -34,11 +34,11 @@ namespace SampSharp.GameMode.SAMP.Commands
         {
             if (type == typeof (int)) return new IntegerAttribute(name);
             if (type == typeof (string)) return new WordAttribute(name);
-            if (type == typeof(float)) return null; //new FloatAttribute(name);
-            if (typeof(Player).IsAssignableFrom(type)) return new PlayerAttribute(name);
-            
+            if (type == typeof (float)) return null; //new FloatAttribute(name);
+            if (typeof (Player).IsAssignableFrom(type)) return new PlayerAttribute(name);
+
             return type.IsEnum ? new EnumAttribute(name, type) : null;
-        }; 
+        };
 
         public DetectedCommand(MethodInfo command, bool ignoreCase)
         {
@@ -72,7 +72,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             if (PermissionCheck != null)
             {
                 var permParams = PermissionCheck.GetParameters();
-                if (permParams.Length != 1 || !typeof(Player).IsAssignableFrom(permParams[0].ParameterType))
+                if (permParams.Length != 1 || !typeof (Player).IsAssignableFrom(permParams[0].ParameterType))
                 {
                     throw new ArgumentException("PermissionCheckMethod of " + Name +
                                                 " does not take a Player as parameter");
@@ -86,9 +86,9 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             var cmdParams = Command.GetParameters();
 
-            if (cmdParams.Length == 0 || !typeof(Player).IsAssignableFrom(cmdParams[0].ParameterType))
+            if (cmdParams.Length == 0 || !typeof (Player).IsAssignableFrom(cmdParams[0].ParameterType))
             {
-                throw new ArgumentException("command "+ Name + " does not accept a player as first parameter");
+                throw new ArgumentException("command " + Name + " does not accept a player as first parameter");
             }
 
             if (Command.ReturnType != typeof (bool))
@@ -114,7 +114,8 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             if (Parameters.Contains(null))
             {
-                throw new ArgumentException("command " + Name + " has a parameter of a unknown type without an attached attrubute");
+                throw new ArgumentException("command " + Name +
+                                            " has a parameter of a unknown type without an attached attrubute");
             }
         }
 

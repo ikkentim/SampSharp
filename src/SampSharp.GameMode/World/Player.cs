@@ -372,15 +372,6 @@ namespace SampSharp.GameMode.World
             get { return Native.IsPlayerConnected(Id); }
         }
 
-        /// <summary>
-        ///     Gets or sets the position of this Player.
-        /// </summary>
-        public virtual Vector Position
-        {
-            get { return Native.GetPlayerPos(Id); }
-            set { Native.SetPlayerPos(Id, value); }
-        }
-
 
         /// <summary>
         ///     Gets or sets the rotation of this Player.
@@ -392,6 +383,15 @@ namespace SampSharp.GameMode.World
         {
             get { return new Vector(0, 0, Angle); }
             set { Angle = value.Z; }
+        }
+
+        /// <summary>
+        ///     Gets or sets the position of this Player.
+        /// </summary>
+        public virtual Vector Position
+        {
+            get { return Native.GetPlayerPos(Id); }
+            set { Native.SetPlayerPos(Id, value); }
         }
 
         #endregion
@@ -1163,6 +1163,7 @@ namespace SampSharp.GameMode.World
 
             Native.PutPlayerInVehicle(Id, vehicle.Id, seatid);
         }
+
         /// <summary>
         ///     Puts this Player in a vehicle as driver.
         /// </summary>

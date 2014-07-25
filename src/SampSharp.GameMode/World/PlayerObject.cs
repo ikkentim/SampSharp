@@ -30,16 +30,16 @@ namespace SampSharp.GameMode.World
 
         #region Properties
 
-        public virtual Vector Position
-        {
-            get { return Native.GetPlayerObjectPos(Player.Id, Id); }
-            set { Native.SetPlayerObjectPos(Player.Id, Id, value); }
-        }
-
         public virtual Vector Rotation
         {
             get { return Native.GetPlayerObjectRot(Player.Id, Id); }
             set { Native.SetPlayerObjectRot(Player.Id, Id, value); }
+        }
+
+        public virtual Vector Position
+        {
+            get { return Native.GetPlayerObjectPos(Player.Id, Id); }
+            set { Native.SetPlayerObjectPos(Player.Id, Id, value); }
         }
 
         public virtual bool IsMoving
@@ -118,26 +118,6 @@ namespace SampSharp.GameMode.World
 
         #region Methods
 
-        public virtual void AttachTo(Player player, Vector offset, Vector rotation)
-        {
-            CheckDisposure();
-
-            if (player == null)
-                throw new NullReferenceException("player cannot be null");
-
-            Native.AttachPlayerObjectToPlayer(Player.Id, Id, player.Id, offset, rotation);
-        }
-
-        public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
-        {
-            CheckDisposure();
-
-            if (vehicle == null)
-                throw new NullReferenceException("vehicle cannot be null");
-
-            Native.AttachPlayerObjectToVehicle(Player.Id, Id, vehicle.Id, offset, rotation);
-        }
-
         public virtual int Move(Vector position, float speed, Vector rotation)
         {
             CheckDisposure();
@@ -179,6 +159,26 @@ namespace SampSharp.GameMode.World
                 fontface, fontsize, bold,
                 foreColor.GetColorValue(ColorFormat.ARGB), backColor.GetColorValue(ColorFormat.ARGB),
                 (int) textalignment);
+        }
+
+        public virtual void AttachTo(Player player, Vector offset, Vector rotation)
+        {
+            CheckDisposure();
+
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
+            Native.AttachPlayerObjectToPlayer(Player.Id, Id, player.Id, offset, rotation);
+        }
+
+        public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
+        {
+            CheckDisposure();
+
+            if (vehicle == null)
+                throw new NullReferenceException("vehicle cannot be null");
+
+            Native.AttachPlayerObjectToVehicle(Player.Id, Id, vehicle.Id, offset, rotation);
         }
 
         protected override void Dispose(bool disposing)

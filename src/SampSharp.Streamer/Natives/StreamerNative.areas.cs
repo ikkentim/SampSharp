@@ -52,7 +52,7 @@ namespace SampSharp.Streamer.Natives
             //Check defaults
             if (maxpoints < 0) maxpoints = points.Length;
 
-            return Native.CallNative("CreateDynamicPolygon", new[] { 3 },
+            return Native.CallNative("CreateDynamicPolygon", new[] {3},
                 __arglist(points, minz, maxz, maxpoints, worldid, interiorid, playerid));
         }
 
@@ -139,7 +139,7 @@ namespace SampSharp.Streamer.Natives
         public static int AttachDynamicAreaToObject(int areaid, int objectid,
             StreamerObjectType type = StreamerObjectType.Dynamic, int playerid = Player.InvalidId)
         {
-            return Native.CallNative("AttachDynamicAreaToObject", __arglist(areaid, objectid, (int)type, playerid));
+            return Native.CallNative("AttachDynamicAreaToObject", __arglist(areaid, objectid, (int) type, playerid));
         }
 
         public static int AttachDynamicAreaToPlayer(int areaid, int playerid)
