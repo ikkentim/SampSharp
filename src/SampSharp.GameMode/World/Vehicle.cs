@@ -474,7 +474,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Native.SetVehicleParamsForPlayer(Id, player.Id, objective, doorslocked);
         }

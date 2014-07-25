@@ -91,7 +91,7 @@ namespace SampSharp.GameMode.World
         public PlayerObject(Player player, int id)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Player = player;
             Id = id;
@@ -105,7 +105,7 @@ namespace SampSharp.GameMode.World
         public PlayerObject(Player player, int modelid, Vector position, Vector rotation, float drawDistance)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Player = player;
             ModelId = modelid;
@@ -166,7 +166,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Native.AttachPlayerObjectToPlayer(Player.Id, Id, player.Id, offset, rotation);
         }
@@ -176,7 +176,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (vehicle == null)
-                throw new NullReferenceException("vehicle cannot be null");
+                throw new ArgumentNullException("vehicle");
 
             Native.AttachPlayerObjectToVehicle(Player.Id, Id, vehicle.Id, offset, rotation);
         }
@@ -198,7 +198,7 @@ namespace SampSharp.GameMode.World
         public static void Select(Player player)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Native.SelectObject(player.Id);
         }

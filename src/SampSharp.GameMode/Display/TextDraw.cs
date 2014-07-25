@@ -498,7 +498,7 @@ namespace SampSharp.GameMode.Display
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             if (Id == -1) Refresh();
 
@@ -529,7 +529,7 @@ namespace SampSharp.GameMode.Display
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             _playersShownTo.Remove(player);
 

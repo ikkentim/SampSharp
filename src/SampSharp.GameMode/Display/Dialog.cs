@@ -173,7 +173,7 @@ namespace SampSharp.GameMode.Display
         public virtual void Show(Player player)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             OpenDialogs[player.Id] = this;
 
@@ -188,7 +188,7 @@ namespace SampSharp.GameMode.Display
         public static void Hide(Player player)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             if (OpenDialogs.ContainsKey(player.Id))
                 OpenDialogs.Remove(player.Id);
@@ -205,7 +205,7 @@ namespace SampSharp.GameMode.Display
         public static Dialog GetOpenDialog(Player player)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             return OpenDialogs.ContainsKey(player.Id) ? OpenDialogs[player.Id] : null;
         }

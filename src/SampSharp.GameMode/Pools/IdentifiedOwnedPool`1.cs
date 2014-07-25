@@ -43,7 +43,7 @@ namespace SampSharp.GameMode.Pools
         public static T Find(Player owner, int id)
         {
             if (owner == null)
-                throw new NullReferenceException("owner cannot be null");
+                throw new ArgumentNullException("owner");
 
             return All.FirstOrDefault(i => i.Player == owner && i.Id == id);
         }
@@ -57,7 +57,7 @@ namespace SampSharp.GameMode.Pools
         public static T Add(Player owner, int id)
         {
             if (owner == null)
-                throw new NullReferenceException("owner cannot be null");
+                throw new ArgumentNullException("owner");
 
             return (T) Activator.CreateInstance(Type, owner, id);
         }

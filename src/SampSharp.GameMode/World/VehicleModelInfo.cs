@@ -281,7 +281,7 @@ namespace SampSharp.GameMode.World
         {
             if (vehicle == null)
             {
-                throw new NullReferenceException("vehicle cannot be null");
+                throw new ArgumentNullException("vehicle");
             }
 
             int model = vehicle.Model;
