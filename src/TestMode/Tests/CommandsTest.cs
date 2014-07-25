@@ -25,6 +25,7 @@ namespace TestMode.Tests
         public void Start(GameMode gameMode)
         {
             CommandGroup.Register("tools", "t", CommandGroup.Register("test", "t"));
+            CommandGroup.Register("vehicle", "v");
 
             var cmd = Command.GetAll<DetectedCommand>().FirstOrDefault(c => c.Name == "console");
             Console.WriteLine("Command paths: {0}", string.Join(", ", cmd.CommandPaths));
@@ -50,9 +51,37 @@ namespace TestMode.Tests
             return player.IsAdmin;
         }
 
-        [Command("vehicle", Alias = "v")]
+        [Command("list", Alias = "l")]
+        [CommandGroup("vehicle")]
+        public static bool VehicleListCommand(Player player)
+        {
+            player.SendClientMessage(Color.Green, "Available vehicles:");
+            player.SendClientMessage(Color.GreenYellow, string.Join(", ", typeof (VehicleModelType).GetEnumNames()));
+
+            return true;
+        }
+
+        [Command("commands")]
+        public static bool CommandsCommand(Player player)
+        {
+            player.SendClientMessage(Color.Green, "Commands:");
+            foreach (
+                var cmd in
+                    Command.GetAll<DetectedCommand>()
+                        .Where(c => c.HasPlayerPermissionForCommand(player))
+                        .OrderBy( /* category??? */c => c.CommandPath))
+            {
+                player.SendClientMessage(Color.White,
+                    "/{0}: I could add an Attribute in my gamemode with an help message and/or color", cmd.CommandPath);
+            }
+
+            return true;
+        }
+        [Command("spawn", Alias = "s", Shortcut = "v")]
+        [CommandGroup("vehicle")]
         public static bool VehicleCommand(Player player, VehicleModelType model)
         {
+            player.SendClientMessage(Color.GreenYellow, "You have spawned a {0}", model);
             Console.WriteLine("Spawning a {0} {2} for {1}", model, player, (int)model);
             var vehicle = Vehicle.Create(model, player.Position + new Vector(0, 0, 0.5), player.Rotation.Z, -1, -1);
             //Console.WriteLine("VehicleCommand passes point 1");
