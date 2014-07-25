@@ -34,7 +34,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         {
             if (type == typeof (int)) return new IntegerAttribute(name);
             if (type == typeof (string)) return new WordAttribute(name);
-            if (type == typeof (float)) return null; //new FloatAttribute(name);
+            if (type == typeof (float)) return new FloatAttribute(name);
             if (typeof (Player).IsAssignableFrom(type)) return new PlayerAttribute(name);
 
             return type.IsEnum ? new EnumAttribute(name, type) : null;
