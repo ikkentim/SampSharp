@@ -139,7 +139,7 @@ namespace SampSharp.GameMode.World
         public virtual void AttachTo(Player player, Vector offset, Vector rotation)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Native.AttachObjectToPlayer(Id, player.Id, offset, rotation);
         }
@@ -147,7 +147,7 @@ namespace SampSharp.GameMode.World
         public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
         {
             if (vehicle == null)
-                throw new NullReferenceException("vehicle cannot be null");
+                throw new ArgumentNullException("vehicle");
 
             Native.AttachObjectToVehicle(Id, vehicle.Id, offset, rotation);
         }
@@ -155,7 +155,7 @@ namespace SampSharp.GameMode.World
         public static void Remove(Player player, int modelid, Vector position, float radius)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Native.RemoveBuildingForPlayer(player.Id, modelid, position.X, position.Y, position.Z, radius);
         }
@@ -171,7 +171,7 @@ namespace SampSharp.GameMode.World
             bool syncRotation = false)
         {
             if (globalObject == null)
-                throw new NullReferenceException("globalObject cannot be null");
+                throw new ArgumentNullException("globalObject");
 
             Native.AttachObjectToObject(Id, globalObject.Id, offset, rotation, syncRotation);
         }
@@ -179,7 +179,7 @@ namespace SampSharp.GameMode.World
         public virtual void Edit(Player player)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Native.EditObject(player.Id, Id);
         }
@@ -187,7 +187,7 @@ namespace SampSharp.GameMode.World
         public static void Select(Player player)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Native.SelectObject(player.Id);
         }

@@ -136,7 +136,7 @@ namespace SampSharp.GameMode.SAMP
         public PlayerTextLabel(Player player, int id)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Player = player;
             Id = id;
@@ -146,7 +146,7 @@ namespace SampSharp.GameMode.SAMP
             bool testLOS)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Player = player;
             _color = color;
@@ -167,10 +167,10 @@ namespace SampSharp.GameMode.SAMP
             bool testLOS, Player attachedPlayer)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             if (attachedPlayer == null)
-                throw new NullReferenceException("attachedPlayer cannot be null");
+                throw new ArgumentNullException("attachedPlayer");
 
             Player = player;
             _color = color;
@@ -191,10 +191,10 @@ namespace SampSharp.GameMode.SAMP
             bool testLOS, Vehicle attachedVehicle)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             if (attachedVehicle == null)
-                throw new NullReferenceException("attachedVehicle cannot be null");
+                throw new ArgumentNullException("attachedVehicle");
 
             Player = player;
             _color = color;
