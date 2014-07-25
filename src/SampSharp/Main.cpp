@@ -34,7 +34,7 @@ Load(void **ppData) {
 
 	//read config
 	ConfigReader server_cfg("server.cfg");
-    std::string gamemode = "gamemode/Default.GameMode.dll Default.GameMode::GameMode";
+    std::string gamemode = "gamemode/Default.GameMode.dll Default.GameMode:GameMode";
     std::string path, name_space, klass, symbols;
 
     server_cfg.GetOptionAsString("gamemode", gamemode);
@@ -76,7 +76,7 @@ Load(void **ppData) {
 	#endif
 
     //load gamemode
-	logprintf("[SampSharp] Loading gamemode: %s::%s at \"%s\".", 
+	logprintf("[SampSharp] Loading gamemode: %s::%s from \"%s\".", 
 		(char *)name_space.c_str(), 
 		(char *)klass.c_str(), 
 		(char *)path.c_str());
