@@ -52,7 +52,7 @@ namespace TestMode.Tests
 
             var checkpoint = new DynamicCheckpoint(new Vector(10, 10, 3));
             var racecheckpoint = new DynamicRaceCheckpoint(CheckpointType.Normal, new Vector(-10, -10, 3));
-
+            var label = new DynamicTextLabel("I am maroon", Color.Maroon, new Vector(0, 0, 5), 100.0f);
         }
     }
 }
