@@ -23,9 +23,6 @@ namespace SampSharp.GameMode.Controllers
     /// </summary>
     public class CommandController : IEventListener
     {
-        //private readonly WordParameterAttribute _nameFilter = new WordParameterAttribute(string.Empty);
-        //private MethodInfo[] _commands;
-
         /// <summary>
         ///     Registers the events this GlobalObjectController wants to listen to.
         /// </summary>
@@ -59,97 +56,6 @@ namespace SampSharp.GameMode.Controllers
                     }
                 }
             }
-
-            /*
-            //Filter name of the command to be executed.
-            //object name;
-            //_nameFilter.Check(ref commandText, out name);
-            //var commandName = name as string;
-
-            Player player = e.Player;
-
-            foreach (MethodInfo command in _commands)
-            {
-                //Get CommandAttribute from method
-                var attribute = command.GetCustomAttribute<CommandAttribute>();
-                if (attribute == null)
-                    continue;
-
-                //If name doesn't match, continue
-                if (attribute.Name != commandName)
-                    continue;
-
-                IEnumerable<string> methodParameters = command.GetParameters().Select(q => q.Name);
-                var arguments = new Dictionary<string, object>();
-                IOrderedEnumerable<ParameterAttribute> parameters =
-                    command.GetCustomAttributes<ParameterAttribute>()
-                        .OrderBy(p => command.GetParameters().Select(q => q.Name).IndexOf(p.Name));
-
-                //Loop trough all parameters.
-                bool pass = true;
-
-                foreach (ParameterAttribute parameter in parameters)
-                {
-                    //Trim commandtext.
-                    commandText = commandText.Trim();
-
-                    //Check if parameter is correctly formatted.
-                    object argument;
-
-                    if (commandText.Length == 0 && parameter.Optional)
-                    {
-                        //Optional parameter not given; set null
-                        arguments[parameter.Name] = null;
-                        continue;
-                    }
-
-                    if (commandText.Length == 0 || !parameter.Check(ref commandText, out argument))
-                    {
-                        pass = false;
-                        break;
-                    }
-
-                    //Add argument to list.
-                    arguments[parameter.Name] = argument;
-                }
-
-
-                //If tests didn't pass.
-                if (!pass)
-                {
-                    //If we want to show the usage.
-                    if (UsageFormat != null)
-                    {
-                        player.SendClientMessage(Color.White, UsageFormat(commandName, parameters.ToArray()));
-
-                        //Show usage and stop.
-                        e.Success = true;
-                        return;
-                    }
-
-                    //Continue to next command.
-                    continue;
-                }
-
-                //Assign player to first parameter
-                arguments[methodParameters.First()] = player;
-
-                //Check parameter counts match.
-                if (methodParameters.Count() != parameters.Count() + 1 ||
-                    parameters.Any(p => !methodParameters.Contains(p.Name)))
-                {
-                    continue;
-                }
-
-                //Run the command.
-                e.Success =
-                    (bool)
-                        command.Invoke(null,
-                            arguments.OrderBy(pair => methodParameters.IndexOf(pair.Key))
-                                .Select(pair => pair.Value)
-                                .ToArray());
-                return;
-            }*/
         }
     }
 }
