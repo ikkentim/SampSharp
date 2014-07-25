@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization.Formatters;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP.Commands
@@ -36,7 +35,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             if (type == typeof (int)) return new IntegerAttribute(name);
             if (type == typeof (string)) return new WordAttribute(name);
             if (type == typeof(float)) return null; //new FloatAttribute(name);
-            if (type == typeof (Player)) return new PlayerAttribute(name);
+            if (typeof(Player).IsAssignableFrom(type)) return new PlayerAttribute(name);
             
             return type.IsEnum ? new EnumAttribute(name, type) : null;
         }; 
@@ -73,7 +72,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             if (PermissionCheck != null)
             {
                 var permParams = PermissionCheck.GetParameters();
-                if (permParams.Length != 1 || permParams[0].ParameterType != typeof (Player))
+                if (permParams.Length != 1 || !typeof(Player).IsAssignableFrom(permParams[0].ParameterType))
                 {
                     throw new ArgumentException("PermissionCheckMethod of " + Name +
                                                 " does not take a Player as parameter");
@@ -87,7 +86,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             var cmdParams = Command.GetParameters();
 
-            if (cmdParams.Length == 0 || cmdParams[0].ParameterType != typeof (Player))
+            if (cmdParams.Length == 0 || !typeof(Player).IsAssignableFrom(cmdParams[0].ParameterType))
             {
                 throw new ArgumentException("command "+ Name + " does not accept a player as first parameter");
             }
@@ -233,9 +232,9 @@ namespace SampSharp.GameMode.SAMP.Commands
                 /*
                  * Check for missing optional parameters. This is obviously allowed.
                  */
-                if (args.Length == 0 && attr.Optional && parameter.HasDefaultValue)
+                if (args.Length == 0 && attr.Optional)
                 {
-                    arguments.Add(parameter.DefaultValue);
+                    arguments.Add(attr.DefaultValue);
                     continue;
                 }
 
