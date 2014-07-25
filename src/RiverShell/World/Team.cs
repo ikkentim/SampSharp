@@ -12,7 +12,7 @@ namespace RiverShell.World
 
         public string GameTextTeamName { get; set; }
 
-        public Checkpoint Target { get; set; }
+        public Vector Target { get; set; }
 
         public int TimesCaptured { get; set; }
 
