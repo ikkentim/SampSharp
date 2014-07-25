@@ -13,12 +13,11 @@ namespace RiverShell.Controllers
     {
         public ObjectiveController()
         {
-            GameMode.BlueTeam.Target.Enter += checkpoint_Enter;
-            GameMode.GreenTeam.Target.Enter += checkpoint_Enter;
         }
 
         public void RegisterEvents(BaseMode gameMode)
         {
+            gameMode.PlayerEnterCheckpoint += checkpoint_Enter;
             gameMode.PlayerStateChanged += gameMode_PlayerStateChanged;
         }
 
@@ -34,12 +33,12 @@ namespace RiverShell.Controllers
                         // It's the objective vehicle
                         player.Color = 0xE2C063FF;
                         player.GameText("~w~Take the ~y~boat ~w~back to the ~r~spawn!", 3000, 5);
-                        player.Team.Target.Force(player);
+                        player.SetCheckpoint(player.Team.Target, 10.0f);
                     }
                     break;
                 case PlayerState.OnFoot:
                     player.Color = player.Team.Color;
-                    player.Team.Target.Unforce(player);
+                    player.DisableCheckpoint();
                     break;
             }
         }

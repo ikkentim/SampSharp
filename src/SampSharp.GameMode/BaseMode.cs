@@ -60,7 +60,6 @@ namespace SampSharp.GameMode
 
         protected virtual void LoadControllers(ControllerCollection controllers)
         {
-            controllers.Add(new CheckpointController());
             controllers.Add(new CommandController());
             controllers.Add(new DialogController());
             controllers.Add(new GlobalObjectController());
