@@ -45,16 +45,14 @@ namespace TestMode.Tests
                 300);
 
             Console.WriteLine(icon.Position);
-
             icon.Position = new Vector(50, 50, 5);
-
             Console.WriteLine(icon.Position);
 
-            float x = Streamer.ItemType[StreamType.Area].GetFloat(icon.Id, StreamerDataType.X);
-            float y = Streamer.ItemType[StreamType.Area].GetFloat(icon.Id, StreamerDataType.Y);
-            float z = Streamer.ItemType[StreamType.Area].GetFloat(icon.Id, StreamerDataType.Z);
+            var pickup = new DynamicPickup(1274, 23, new Vector(0, 0, 3)); //Dollar icon
 
-            Console.WriteLine("Area.Position = {0}", new Vector(x, y, z));
+            var checkpoint = new DynamicCheckpoint(new Vector(10, 10, 3));
+            var racecheckpoint = new DynamicRaceCheckpoint(CheckpointType.Normal, new Vector(-10, -10, 3));
+
         }
     }
 }

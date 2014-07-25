@@ -23,7 +23,7 @@ namespace SampSharp.GameMode.Pools
     /// <typeparam name="T">Base type of instances to keep track of.</typeparam>
     public abstract class IdentifiedPool<T> : Pool<T> where T : class, IIdentifyable
     {
-        protected static Type Type;
+        protected static Type InstanceType;
 
         /// <summary>
         ///     Registers the type to use when initializing new instances.
@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.Pools
         /// <typeparam name="T2">The Type to use when initializing new instances.</typeparam>
         public static void Register<T2>() where T2 : T
         {
-            Type = typeof (T2);
+            InstanceType = typeof (T2);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace SampSharp.GameMode.Pools
         /// <returns>The initialized instance.</returns>
         public static T Create(int id)
         {
-            return (T) Activator.CreateInstance(Type, id);
+            return (T) Activator.CreateInstance(InstanceType, id);
         }
 
         /// <summary>

@@ -36,9 +36,9 @@ namespace SampSharp.Streamer.World
                 streamdistance);
         }
 
-        public DynamicRaceCheckpoint(CheckpointType type, Vector position, Vector nextPosition = new Vector(),
-            float size = 3.0f, int[] worlds = null, int[] interiors = null,
-            Player[] players = null, float streamdistance = 100.0f)
+        public DynamicRaceCheckpoint(CheckpointType type, Vector position, Vector nextPosition,
+            float size, float streamdistance, int[] worlds = null, int[] interiors = null,
+            Player[] players = null)
         {
             Id = StreamerNative.CreateDynamicRaceCPEx(type, position.X, position.Y, position.Z, nextPosition.X,
                 nextPosition.Y, nextPosition.Z, size, streamdistance, worlds, interiors,
@@ -57,25 +57,25 @@ namespace SampSharp.Streamer.World
 
         public float Size
         {
-            get { return Streamer.ItemType[StreamType].GetFloat(Id, StreamerDataType.Size); }
-            set { Streamer.ItemType[StreamType].SetFloat(Id, StreamerDataType.Size, value); }
+            get { return GetFloat(StreamerDataType.Size); }
+            set { SetFloat(StreamerDataType.Size, value); }
         }
 
         public virtual Vector NextPosition
         {
             get
             {
-                float x = Streamer.ItemType[StreamType].GetFloat(Id, StreamerDataType.NextX);
-                float y = Streamer.ItemType[StreamType].GetFloat(Id, StreamerDataType.NextY);
-                float z = Streamer.ItemType[StreamType].GetFloat(Id, StreamerDataType.NextZ);
+                float x = GetFloat(StreamerDataType.NextX);
+                float y = GetFloat(StreamerDataType.NextY);
+                float z = GetFloat(StreamerDataType.NextZ);
 
                 return new Vector(x, y, z);
             }
             set
             {
-                Streamer.ItemType[StreamType].SetFloat(Id, StreamerDataType.NextX, value.X);
-                Streamer.ItemType[StreamType].SetFloat(Id, StreamerDataType.NextY, value.Y);
-                Streamer.ItemType[StreamType].SetFloat(Id, StreamerDataType.NextZ, value.Z);
+                SetFloat(StreamerDataType.NextX, value.X);
+                SetFloat(StreamerDataType.NextY, value.Y);
+                SetFloat(StreamerDataType.NextZ, value.Z);
             }
         }
 
@@ -116,6 +116,13 @@ namespace SampSharp.Streamer.World
             int id = StreamerNative.GetPlayerVisibleDynamicRaceCP(player.Id);
 
             return id < 0 ? null : FindOrCreate(id);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            StreamerNative.DestroyDynamicRaceCP(Id);
         }
     }
 }
