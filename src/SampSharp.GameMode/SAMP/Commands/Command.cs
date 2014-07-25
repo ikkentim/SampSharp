@@ -18,7 +18,9 @@ namespace SampSharp.GameMode.SAMP.Commands
 {
     public abstract class Command : Pool<Command>
     {
-        public abstract string Name { get; protected set; }
+        public virtual string Name { get; protected set; }
+
+        public virtual bool IgnoreCase { get; protected set; }
 
         public abstract bool RunCommand(Player player, string args);
 

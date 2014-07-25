@@ -24,6 +24,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         protected ParameterAttribute(string name)
         {
             Name = name;
+            DisplayName = name;
         }
 
         /// <summary>
