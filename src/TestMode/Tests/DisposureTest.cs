@@ -45,7 +45,7 @@ namespace TestMode.Tests
                 Console.WriteLine("DisposureTest: Passed SetChatBubble.");
                 success = false;
             }
-            catch (ObjectDisposedException e)
+            catch (ObjectDisposedException)
             {
                 Console.WriteLine("DisposureTest: Exception thrown.");
             }

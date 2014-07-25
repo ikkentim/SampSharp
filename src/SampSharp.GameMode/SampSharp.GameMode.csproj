@@ -49,7 +49,6 @@
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\PlayerObjectController.cs" />
     <Compile Include="Controllers\PlayerTextDrawController.cs" />
-    <Compile Include="Controllers\RegionController.cs" />
     <Compile Include="Controllers\TextDrawController.cs" />
     <Compile Include="Controllers\TimerController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
@@ -174,13 +173,6 @@
     <Compile Include="Display\TextDraw.cs" />
     <Compile Include="World\TextLabel.cs" />
     <Compile Include="SAMP\Timer.cs" />
-    <Compile Include="World\Region.cs" />
-    <Compile Include="World\Shapes\Circle.cs" />
-    <Compile Include="World\Shapes\Cube.cs" />
-    <Compile Include="World\Shapes\IShape.cs" />
-    <Compile Include="World\Shapes\Polygon.cs" />
-    <Compile Include="World\Shapes\Sphere.cs" />
-    <Compile Include="World\Shapes\Square.cs" />
     <Compile Include="World\Vector.cs" />
     <Compile Include="World\Vehicle.cs" />
   </ItemGroup>
