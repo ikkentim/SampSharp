@@ -1,28 +1,27 @@
 ﻿using RiverShell.World;
+using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
-using SampSharp.GameMode.World;
-using SampSharp.GameMode.World.Shapes;
 
 namespace RiverShell.Controllers
 {
-    public class ResupplyController : IController
+    public class ResupplyController : IController, IEventListener
     {
-        public ResupplyController()
+        public void RegisterEvents(BaseMode gameMode)
         {
-            Region blueResupply = new Region(new Sphere(GameMode.BlueTeam.ResupplyPosition, 2.5f));
-            Region greenResupply = new Region(new Sphere(GameMode.GreenTeam.ResupplyPosition, 2.5f));
-
-            blueResupply.Enter += Enter;
-            greenResupply.Enter += Enter;
+            gameMode.PlayerUpdate += (sender, args) =>
+            {
+                RPlayer player = args.Player as RPlayer;
+                if (player.IsInRangeOfPoint(2.5f, GameMode.BlueTeam.ResupplyPosition))
+                {
+                    Resupply(player);
+                }
+            };
         }
 
-        private void Enter(object sender, PlayerEventArgs e)
+        private void Resupply(RPlayer player)
         {
-            var player = e.Player as RPlayer;
-
             //Check if we haven't resupplied recently
             if (player.LastResupplyTime != 0 &&
                 (Native.GetTickCount() - player.LastResupplyTime) <= Config.ResupplyTime * 1000) return;

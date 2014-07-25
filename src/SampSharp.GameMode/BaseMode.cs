@@ -67,7 +67,6 @@ namespace SampSharp.GameMode
             controllers.Add(new PlayerController());
             controllers.Add(new PlayerObjectController());
             controllers.Add(new PlayerTextDrawController());
-            controllers.Add(new RegionController());
             controllers.Add(new TextDrawController());
             controllers.Add(new TimerController());
             controllers.Add(new VehicleController());
