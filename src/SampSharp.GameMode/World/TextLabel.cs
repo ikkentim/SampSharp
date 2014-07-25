@@ -146,7 +146,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Native.Attach3DTextLabelToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z);
         }
@@ -156,7 +156,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (vehicle == null)
-                throw new NullReferenceException("vehicle cannot be null");
+                throw new ArgumentNullException("vehicle");
 
             Native.Attach3DTextLabelToVehicle(Id, vehicle.Id, offset.X, offset.Y, offset.Z);
         }

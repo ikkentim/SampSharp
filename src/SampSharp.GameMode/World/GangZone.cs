@@ -81,7 +81,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Native.GangZoneShowForPlayer(player.Id, Id, color);
         }
@@ -126,7 +126,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Native.GangZoneFlashForPlayer(player.Id, Id, color);
         }
@@ -143,7 +143,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Native.GangZoneStopFlashForPlayer(player.Id, Id);
         }

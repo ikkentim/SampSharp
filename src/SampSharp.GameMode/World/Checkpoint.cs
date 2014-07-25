@@ -75,7 +75,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             if (!IsVisible(player))
                 _viewers.Add(player);
@@ -93,7 +93,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             _viewers.Remove(player);
         }
@@ -117,7 +117,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             if (IsActive(player)) return;
 
@@ -130,7 +130,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             if (!IsActive(player)) return;
 
@@ -150,7 +150,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             if (IsForced(player)) return;
 
@@ -168,7 +168,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             _forced.Remove(player);
         }

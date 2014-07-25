@@ -44,7 +44,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         {
             if (command == null)
             {
-                throw new NullReferenceException("command cannot be null");
+                throw new ArgumentNullException("command");
             }
 
             var commandAttribute = command.GetCustomAttribute<CommandAttribute>();

@@ -811,7 +811,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (other == null)
-                throw new NullReferenceException("other cannot be null");
+                throw new ArgumentNullException("other");
 
             return Native.IsPlayerStreamedIn(other.Id, Id);
         }
@@ -1159,7 +1159,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (vehicle == null)
-                throw new NullReferenceException("vehicle cannot be null");
+                throw new ArgumentNullException("vehicle");
 
             Native.PutPlayerInVehicle(Id, vehicle.Id, seatid);
         }
@@ -1392,7 +1392,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Native.SetPlayerMarkerForPlayer(Id, player.Id, color.GetColorValue(ColorFormat.RGBA));
         }
@@ -1412,7 +1412,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Native.ShowPlayerNameTagForPlayer(Id, player.Id, show);
         }
@@ -1576,7 +1576,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (targetPlayer == null)
-                throw new NullReferenceException("targetPlayer cannot be null");
+                throw new ArgumentNullException("targetPlayer");
 
             Native.PlayerSpectatePlayer(Id, targetPlayer.Id, (int) mode);
         }
@@ -1593,7 +1593,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (targetPlayer == null)
-                throw new NullReferenceException("targetPlayer cannot be null");
+                throw new ArgumentNullException("targetPlayer");
 
             SpectatePlayer(targetPlayer, SpectateMode.Normal);
         }
@@ -1611,7 +1611,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (targetVehicle == null)
-                throw new NullReferenceException("targetVehicle cannot be null");
+                throw new ArgumentNullException("targetVehicle");
 
             Native.PlayerSpectateVehicle(Id, targetVehicle.Id, (int) mode);
         }
@@ -1628,7 +1628,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (targetVehicle == null)
-                throw new NullReferenceException("targetVehicle cannot be null");
+                throw new ArgumentNullException("targetVehicle");
 
             SpectateVehicle(targetVehicle, SpectateMode.Normal);
         }
@@ -1734,7 +1734,7 @@ namespace SampSharp.GameMode.World
             CheckDisposure();
 
             if (receiver == null)
-                throw new NullReferenceException("receiver cannot be null");
+                throw new ArgumentNullException("receiver");
 
             Native.SendPlayerMessageToPlayer(receiver.Id, Id, message);
         }

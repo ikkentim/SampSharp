@@ -69,7 +69,7 @@ namespace SampSharp.GameMode.Display
         public PlayerTextDraw(Player player, int id)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Player = player;
             Id = id;
@@ -85,7 +85,7 @@ namespace SampSharp.GameMode.Display
         public PlayerTextDraw(Player player, float x, float y, string text)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+                throw new ArgumentNullException("player");
 
             Id = -1;
             Player = player;
