@@ -1,3 +1,6 @@
+Bugs:
+-Player.PutInVehicle sometimes crashes the server. See CommandsTest.cs for an example
+
 Missing Classes:
 -Pickup
 

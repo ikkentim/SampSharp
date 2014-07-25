@@ -28,6 +28,8 @@ namespace TestMode.Tests
 
             var cmd = Command.GetAll<DetectedCommand>().FirstOrDefault(c => c.Name == "console");
             Console.WriteLine("Command paths: {0}", string.Join(", ", cmd.CommandPaths));
+
+            gameMode.OnPlayerCommandText(new Player(999).Id, "/vehicle list");
         }
 
         [Command("console", Alias = "c", Shortcut = "1", PermissionCheckMethod = "TestCommandPermission")]
@@ -51,8 +53,12 @@ namespace TestMode.Tests
         [Command("vehicle", Alias = "v")]
         public static bool VehicleCommand(Player player, VehicleModelType model)
         {
+            Console.WriteLine("Spawning a {0} {2} for {1}", model, player, (int)model);
             var vehicle = Vehicle.Create(model, player.Position + new Vector(0, 0, 0.5), player.Rotation.Z, -1, -1);
-            player.PutInVehicle(vehicle);
+            //Console.WriteLine("VehicleCommand passes point 1");
+            //TODO: Player.PutInVehicle sometimes crashes the server. Should investigate
+            //player.PutInVehicle(vehicle);
+            //Console.WriteLine("VehicleCommand passes point 2");
             return true;
         }
 
