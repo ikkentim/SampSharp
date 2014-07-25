@@ -223,12 +223,10 @@ namespace SampSharp.GameMode.SAMP.Commands
             };
             var idx = 0;
 
-            foreach (ParameterInfo parameter in Command.GetParameters().Skip(1))
+            foreach (var attr in Parameters)
             {
                 args = args.Trim();
                 object argument;
-
-                var attr = Parameters[idx++];
 
                 /*
                  * Check for missing optional parameters. This is obviously allowed.
@@ -243,7 +241,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 {
                     if (UsageFormat != null)
                     {
-                        player.SendClientMessage(Color.White, UsageFormat(Name, Parameters));
+                        player.SendClientMessage(Color.White, UsageFormat(CommandPath, Parameters));
                         return true;
                     }
 

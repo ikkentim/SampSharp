@@ -1686,7 +1686,15 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposure();
 
-            Native.SendClientMessage(Id, color.GetColorValue(ColorFormat.RGBA), message);
+            if (message.Length > 144)
+            {
+                Native.SendClientMessage(Id, color.GetColorValue(ColorFormat.RGBA), message.Substring(0, 144));
+                SendClientMessage(color, message.Substring(144));
+            }
+            else
+            {
+                Native.SendClientMessage(Id, color.GetColorValue(ColorFormat.RGBA), message);
+            }
         }
 
         /// <summary>
