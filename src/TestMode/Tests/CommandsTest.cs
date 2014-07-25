@@ -13,6 +13,7 @@
 
 using System;
 using System.Linq;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
@@ -27,23 +28,10 @@ namespace TestMode.Tests
 
             var cmd = Command.GetAll<DetectedCommand>().FirstOrDefault(c => c.Name == "console");
             Console.WriteLine("Command paths: {0}", string.Join(", ", cmd.CommandPaths));
-
-            Console.WriteLine("[RESULT] {0}",
-                gameMode.OnPlayerCommandText(Player.Create(0).Id, "/ 1 word 4 and more!")
-                    ? "command executed successfully"
-                    : "command failed to execute");
-
-            Console.WriteLine("[RESULT] {0}",
-                gameMode.OnPlayerCommandText(Player.Create(0).Id, "/ 1 word 4 and more!")
-                    ? "command executed successfully"
-                    : "command failed to execute");
-
         }
 
         [Command("console", Alias = "c", Shortcut = "1", PermissionCheckMethod = "TestCommandPermission")]
         [CommandGroup("tools")]
-        [Word("word")]
-        [Integer("num")]
         [Text("text")]
         public static bool TestCommand(Player player, string word, int num, string text)
         {
@@ -55,24 +43,28 @@ namespace TestMode.Tests
             return true;
         }
 
-        private static bool _perms = true;
         public static bool TestCommandPermission(Player player)
         {
-            bool can = _perms;
-            _perms = false;
-            return can;
+            return player.IsAdmin;
         }
 
-        [Command("vehicle")]
-        [Integer("modelid")]
-        public static bool VehicleCommand(Player player, int modelid)
+        [Command("vehicle", Alias = "v")]
+        public static bool VehicleCommand(Player player, VehicleModelType model)
         {
-            Vehicle.Create(modelid, player.Position + new Vector(0, 0, 1), player.Rotation.Z, -1, -1);
+            var vehicle = Vehicle.Create(model, player.Position + new Vector(0, 0, 0.5), player.Rotation.Z, -1, -1);
+            player.PutInVehicle(vehicle);
+            return true;
+        }
+
+        [Command("tell")]
+        [Text("message")]
+        public static bool TellCommand(Player player, Player to, string message)
+        {
+            to.SendClientMessage(Color.Green, "{0} tells you: {1}", player.Name, message);
             return true;
         }
 
         [Command("put")]
-        [Integer("vehicleid")]
         [Integer("seat", Optional = true)]
         public static bool PutCommand(Player player, int vehicleid, int seat=0)
         {
@@ -94,18 +86,15 @@ namespace TestMode.Tests
             return true;
         }
 
-        [Command("tp")]
-        [Integer("x")]
-        [Integer("y")]
-        [Integer("z")]
+        [Command("teleport", Alias = "tp")]
         public static bool TpCommand(Player player, int x, int y, int z)
         {
             player.Position = new Vector(x, y, z);
+            Console.WriteLine("Teleporting {0} to {1}, {2}, {3}", player, x, y, z);
             return true;
         }
 
         [Command("wor")]
-        [Integer("world")]
         public static bool World(Player player, int world)
         {
             player.VirtualWorld = world;
@@ -113,7 +102,6 @@ namespace TestMode.Tests
         }
 
         [Command("int")]
-        [Integer("interior")]
         public static bool Interior(Player player, int interior)
         {
             player.Interior = interior;

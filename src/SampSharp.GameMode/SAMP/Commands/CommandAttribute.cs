@@ -21,9 +21,12 @@ namespace SampSharp.GameMode.SAMP.Commands
         public CommandAttribute(string name)
         {
             Name = name;
+            IgnoreCase = true;
         }
 
         public string Name { get; set; }
+
+        public bool IgnoreCase { get; set; }
 
         public string Alias { get; set; }
 
