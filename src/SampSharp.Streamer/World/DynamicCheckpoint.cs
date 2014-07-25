@@ -1,4 +1,17 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using System.Linq;
 using SampSharp.GameMode.World;
 using SampSharp.Streamer.Definitions;
@@ -16,13 +29,15 @@ namespace SampSharp.Streamer.World
         public DynamicCheckpoint(Vector position, float size = 1.0f, int worldid = -1, int interiorid = -1,
             Player player = null, float streamdistance = 100.0f)
         {
-            Id = StreamerNative.CreateDynamicCP(position.X, position.Y, position.Z, size, worldid, interiorid, player == null ? -1 : player.Id, streamdistance);
+            Id = StreamerNative.CreateDynamicCP(position.X, position.Y, position.Z, size, worldid, interiorid,
+                player == null ? -1 : player.Id, streamdistance);
         }
 
         public DynamicCheckpoint(Vector position, float size = 1.0f, int[] worlds = null, int[] interiors = null,
             Player[] players = null, float streamdistance = 100.0f)
         {
-            Id =StreamerNative.CreateDynamicCPEx(position.X, position.Y, position.Z, size, streamdistance, worlds, interiors,
+            Id = StreamerNative.CreateDynamicCPEx(position.X, position.Y, position.Z, size, streamdistance, worlds,
+                interiors,
                 players == null ? null : players.Select(p => p.Id).ToArray());
         }
 

@@ -30,16 +30,16 @@ namespace SampSharp.GameMode.World
 
         #region Properties
 
-        public virtual Vector Position
-        {
-            get { return Native.GetObjectPos(Id); }
-            set { Native.SetObjectPos(Id, value); }
-        }
-
         public virtual Vector Rotation
         {
             get { return Native.GetObjectRot(Id); }
             set { Native.SetObjectRot(Id, value); }
+        }
+
+        public virtual Vector Position
+        {
+            get { return Native.GetObjectPos(Id); }
+            set { Native.SetObjectPos(Id, value); }
         }
 
         public virtual bool IsMoving
@@ -105,22 +105,6 @@ namespace SampSharp.GameMode.World
 
         #region Methods
 
-        public virtual void AttachTo(Player player, Vector offset, Vector rotation)
-        {
-            if (player == null)
-                throw new NullReferenceException("player cannot be null");
-
-            Native.AttachObjectToPlayer(Id, player.Id, offset, rotation);
-        }
-
-        public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
-        {
-            if (vehicle == null)
-                throw new NullReferenceException("vehicle cannot be null");
-
-            Native.AttachObjectToVehicle(Id, vehicle.Id, offset, rotation);
-        }
-
         public virtual int Move(Vector position, float speed, Vector rotation)
         {
             return Native.MoveObject(Id, position, speed, rotation);
@@ -150,6 +134,22 @@ namespace SampSharp.GameMode.World
             Native.SetObjectMaterialText(Id, text, materialindex, (int) materialsize, fontface, fontsize, bold,
                 foreColor.GetColorValue(ColorFormat.ARGB), backColor.GetColorValue(ColorFormat.ARGB),
                 (int) textalignment);
+        }
+
+        public virtual void AttachTo(Player player, Vector offset, Vector rotation)
+        {
+            if (player == null)
+                throw new NullReferenceException("player cannot be null");
+
+            Native.AttachObjectToPlayer(Id, player.Id, offset, rotation);
+        }
+
+        public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
+        {
+            if (vehicle == null)
+                throw new NullReferenceException("vehicle cannot be null");
+
+            Native.AttachObjectToVehicle(Id, vehicle.Id, offset, rotation);
         }
 
         public static void Remove(Player player, int modelid, Vector position, float radius)

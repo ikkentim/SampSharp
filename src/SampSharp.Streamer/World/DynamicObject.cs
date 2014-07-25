@@ -14,7 +14,6 @@
 using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
-using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 using SampSharp.Streamer.Definitions;
@@ -54,16 +53,21 @@ namespace SampSharp.Streamer.World
 
         #region Properties
 
-        public override Vector Position
-        {
-            get { return StreamerNative.GetDynamicObjectPos(Id); }
-            set { StreamerNative.SetDynamicObjectPos(Id, value); }
-        }
-
         public virtual Vector Rotation
         {
             get { return StreamerNative.GetDynamicObjectRot(Id); }
             set { StreamerNative.SetDynamicObjectRot(Id, value); }
+        }
+
+        public override StreamType StreamType
+        {
+            get { return StreamType.Object; }
+        }
+
+        public override Vector Position
+        {
+            get { return StreamerNative.GetDynamicObjectPos(Id); }
+            set { StreamerNative.SetDynamicObjectPos(Id, value); }
         }
 
         public virtual bool IsMoving
@@ -76,11 +80,6 @@ namespace SampSharp.Streamer.World
             get { return StreamerNative.IsValidDynamicObject(Id); }
         }
 
-        public override StreamType StreamType
-        {
-            get { return StreamType.Object; }
-        }
-
         public virtual int ModelId { get; private set; }
 
         public virtual float DrawDistance { get; private set; }
@@ -88,6 +87,7 @@ namespace SampSharp.Streamer.World
         #endregion
 
         #region Events
+
         /*
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnObjectMoved" /> callback is being called.
@@ -107,18 +107,10 @@ namespace SampSharp.Streamer.World
         /// </summary>
         public event EventHandler<PlayerEditObjectEventArgs> Edited;
         */
+
         #endregion
 
-
         #region Methods
-
-        public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
-        {
-            if (vehicle == null)
-                throw new NullReferenceException("vehicle cannot be null");
-
-            StreamerNative.AttachDynamicObjectToVehicle(Id, vehicle.Id, offset, rotation);
-        }
 
         public virtual int Move(Vector position, float speed, Vector rotation)
         {
@@ -151,6 +143,14 @@ namespace SampSharp.Streamer.World
                 textalignment);
         }
 
+        public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
+        {
+            if (vehicle == null)
+                throw new NullReferenceException("vehicle cannot be null");
+
+            StreamerNative.AttachDynamicObjectToVehicle(Id, vehicle.Id, offset, rotation);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
@@ -177,6 +177,7 @@ namespace SampSharp.Streamer.World
         #endregion
 
         #region Event raisers
+
         /*
         /// <summary>
         ///     Raises the <see cref="Moved" /> event.
@@ -208,6 +209,7 @@ namespace SampSharp.Streamer.World
                 Edited(this, e);
         }
         */
+
         #endregion
     }
 }

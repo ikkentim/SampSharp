@@ -56,25 +56,19 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Gets the driver of this Vehicle.
+        ///     Gets the driver of this Vehicle.
         /// </summary>
         public Player Driver
         {
-            get
-            {
-                return Player.All.FirstOrDefault(p => p.Vehicle == this && p.VehicleSeat == 0);
-            }
+            get { return Player.All.FirstOrDefault(p => p.Vehicle == this && p.VehicleSeat == 0); }
         }
 
         /// <summary>
-        /// Gets the passengers of this Vehicle. (not the driver)
+        ///     Gets the passengers of this Vehicle. (not the driver)
         /// </summary>
         public IEnumerable<Player> Passengers
         {
-            get
-            {
-                return Player.All.Where(p => p.Vehicle == this).Where(player => player.VehicleSeat > 0);
-            }
+            get { return Player.All.Where(p => p.Vehicle == this).Where(player => player.VehicleSeat > 0); }
         }
 
         /// <summary>
@@ -249,15 +243,6 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the position of this Vehicle.
-        /// </summary>
-        public virtual Vector Position
-        {
-            get { return Native.GetVehiclePos(Id); }
-            set { Native.SetVehiclePos(Id, value); }
-        }
-
-        /// <summary>
         ///     Gets or sets the rotation of this Vehicle.
         /// </summary>
         /// <remarks>
@@ -267,6 +252,15 @@ namespace SampSharp.GameMode.World
         {
             get { return new Vector(0, 0, Angle); }
             set { Native.SetVehicleZAngle(Id, value.Z); }
+        }
+
+        /// <summary>
+        ///     Gets or sets the position of this Vehicle.
+        /// </summary>
+        public virtual Vector Position
+        {
+            get { return Native.GetVehiclePos(Id); }
+            set { Native.SetVehiclePos(Id, value); }
         }
 
         #endregion

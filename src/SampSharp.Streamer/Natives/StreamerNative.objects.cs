@@ -90,7 +90,8 @@ namespace SampSharp.Streamer.Natives
 
         public static int MoveDynamicObject(int objectid, Vector position, float speed, Vector rotation)
         {
-            return MoveDynamicObject(objectid, position.X, position.Y, position.Z, speed, rotation.X, rotation.Y, rotation.Z);
+            return MoveDynamicObject(objectid, position.X, position.Y, position.Z, speed, rotation.X, rotation.Y,
+                rotation.Z);
         }
 
         public static int MoveDynamicObject(int objectid, Vector position, float speed)

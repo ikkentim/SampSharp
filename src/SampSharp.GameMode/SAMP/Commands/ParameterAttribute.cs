@@ -43,7 +43,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         public bool Optional { get; set; }
 
         /// <summary>
-        /// Gets or sets the default value of this parameter.
+        ///     Gets or sets the default value of this parameter.
         /// </summary>
         /*
          * ParameterInfo.HasDefaultValue and ParameterInfo.Default value are not implemented in mono.

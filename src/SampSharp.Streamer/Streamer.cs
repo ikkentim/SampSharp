@@ -12,7 +12,6 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
-using System.ComponentModel;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
@@ -226,6 +225,8 @@ namespace SampSharp.Streamer
                 set { StreamerNative.SetMaxItems(StreamType, value); }
             }
 
+            public StreamType StreamType { get; set; }
+
             public int GetInteger(int id, StreamerDataType data)
             {
                 return StreamerNative.GetIntData(StreamType, id, data);
@@ -281,18 +282,16 @@ namespace SampSharp.Streamer
 
                 StreamerNative.ToggleItemUpdate(player.Id, StreamType, toggle);
             }
-            public StreamType StreamType { get; set; }
         }
 
         public class OptionItemTypeCollection
         {
             public OptionItemType this[StreamType t]
             {
-                get { return new OptionItemType { StreamType = t }; }
+                get { return new OptionItemType {StreamType = t}; }
             }
         }
 
         #endregion
-
     }
 }
