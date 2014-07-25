@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP.Commands
@@ -30,8 +31,17 @@ namespace SampSharp.GameMode.SAMP.Commands
                     ))
                 );
 
+        private static Func<Type, string, ParameterAttribute> _resolveParameterType = (type, name) =>
+        {
+            if (type == typeof (int)) return new IntegerAttribute(name);
+            if (type == typeof (string)) return new WordAttribute(name);
+            if (type == typeof(float)) return null; //new FloatAttribute(name);
+            if (type == typeof (Player)) return new PlayerAttribute(name);
+            
+            return type.IsEnum ? new EnumAttribute(name, type) : null;
+        }; 
 
-        public DetectedCommand(MethodInfo command)
+        public DetectedCommand(MethodInfo command, bool ignoreCase)
         {
             if (command == null)
             {
@@ -51,6 +61,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             }
 
             Name = commandAttribute.Name;
+            IgnoreCase = ignoreCase;
             Alias = commandAttribute.Alias;
             Shortcut = commandAttribute.Shortcut;
             Command = command;
@@ -61,8 +72,8 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             if (PermissionCheck != null)
             {
-                var parms = PermissionCheck.GetParameters();
-                if (parms.Length != 1 || parms[0].ParameterType != typeof (Player))
+                var permParams = PermissionCheck.GetParameters();
+                if (permParams.Length != 1 || permParams[0].ParameterType != typeof (Player))
                 {
                     throw new ArgumentException("PermissionCheckMethod of " + Name +
                                                 " does not take a Player as parameter");
@@ -74,18 +85,48 @@ namespace SampSharp.GameMode.SAMP.Commands
                 }
             }
 
+            var cmdParams = Command.GetParameters();
+
+            if (cmdParams.Length == 0 || cmdParams[0].ParameterType != typeof (Player))
+            {
+                throw new ArgumentException("command "+ Name + " does not accept a player as first parameter");
+            }
+
             if (Command.ReturnType != typeof (bool))
             {
                 throw new ArgumentException("command " + Name + " does not return a boolean");
             }
+
+            Parameters =
+                Command.GetParameters()
+                    .Skip(1)
+                    .Select(
+                        parameter =>
+                            /*
+                             * Custom attributes on parameters are on the time of writing this not
+                             * available in mono. When this is available, AttributeTargets of ParameterAttribute
+                             * should be changed from Method to Parameter.
+                             * 
+                             * At the moment these attributes are attached to the method instead of the parameter.
+                             */
+                            Command.GetCustomAttributes<ParameterAttribute>()
+                                .FirstOrDefault(a => a.Name == parameter.Name) ??
+                            ResolveParameterType(parameter.ParameterType, parameter.Name)).ToArray();
+
+            if (Parameters.Contains(null))
+            {
+                throw new ArgumentException("command " + Name + " has a parameter of a unknown type without an attached attrubute");
+            }
         }
 
-        public override string Name { get; protected set; }
+        #region Properties
+
         public string Alias { get; private set; }
         public string Shortcut { get; set; }
         public CommandGroup Group { get; set; }
         public MethodInfo Command { get; private set; }
         public MethodInfo PermissionCheck { get; private set; }
+        public ParameterAttribute[] Parameters { get; private set; }
 
         public IEnumerable<string> CommandPaths
         {
@@ -134,19 +175,32 @@ namespace SampSharp.GameMode.SAMP.Commands
             set { _usageFormat = value; }
         }
 
+        /// <summary>
+        ///     Gets or sets the metod the find the parameter type of a parameter when no attribute was
+        ///     attached to the parameter.
+        /// </summary>
+        public static Func<Type, string, ParameterAttribute> ResolveParameterType
+        {
+            get { return _resolveParameterType; }
+            set { _resolveParameterType = value; }
+        }
+
+        #endregion
+
         public override bool CommandTextMatchesCommand(ref string commandText)
         {
             commandText = commandText.Trim(' ');
 
             foreach (var str in CommandPaths)
             {
-                if (commandText == str)
+                if (commandText == str || (IgnoreCase && commandText.ToLower() == str.ToLower()))
                 {
                     commandText = string.Empty;
                     return true;
                 }
 
-                if (commandText.StartsWith(str + " "))
+                if (commandText.StartsWith(str + " ") ||
+                    (IgnoreCase && commandText.ToLower().StartsWith(str.ToLower() + " ")))
                 {
                     commandText = commandText.Substring(str.Length);
                     return true;
@@ -163,35 +217,23 @@ namespace SampSharp.GameMode.SAMP.Commands
 
         public override bool RunCommand(Player player, string args)
         {
-            var arguments = new List<object>();
-
-            /*
-             * Custom attributes on parameters are on the time of writing this not
-             * available in mono. When this is available, AttributeTargets of ParameterAttribute
-             * should be changed from Method to Parameter.
-             */
-
-            //TODO: Check for newer version of the mono runtime with implementation of AttributeTargets.Parameter
+            var arguments = new List<object>
+            {
+                player
+            };
+            var idx = 0;
 
             foreach (ParameterInfo parameter in Command.GetParameters().Skip(1))
             {
                 args = args.Trim();
                 object argument;
 
-                var attr =
-                    Command.GetCustomAttributes<ParameterAttribute>().FirstOrDefault(a => a.Name == parameter.Name);
+                var attr = Parameters[idx++];
 
-                if (attr == null)
-                {
-                    /*
-                     * Skip command when a parameter is missing an attribute.
-                     */
-                    return false;
-                }
                 /*
                  * Check for missing optional parameters. This is obviously allowed.
                  */
-                if (args.Length == 0 && attr.Optional)
+                if (args.Length == 0 && attr.Optional && parameter.HasDefaultValue)
                 {
                     arguments.Add(parameter.DefaultValue);
                     continue;
@@ -201,13 +243,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 {
                     if (UsageFormat != null)
                     {
-                        player.SendClientMessage(Color.White,
-                            UsageFormat(Name,
-                            //TODO: Bug: ParameterAttribute are not attached to the parameter, but to the method.
-                                Command.GetParameters()
-                                    .Skip(1) // Skip 'sender' parameter
-                                    .Select(p => p.GetCustomAttribute<ParameterAttribute>())
-                                    .ToArray()));
+                        player.SendClientMessage(Color.White, UsageFormat(Name, Parameters));
                         return true;
                     }
 
@@ -216,9 +252,6 @@ namespace SampSharp.GameMode.SAMP.Commands
 
                 arguments.Add(argument);
             }
-
-
-            arguments.Insert(0, player);
 
             return (bool) Command.Invoke(null, arguments.ToArray());
         }

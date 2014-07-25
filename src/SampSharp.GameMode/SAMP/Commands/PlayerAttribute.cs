@@ -11,14 +11,18 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System.Linq;
+using SampSharp.GameMode.World;
+
 namespace SampSharp.GameMode.SAMP.Commands
 {
     /// <summary>
-    ///     Represents an integer command-parameter.
+    ///     Represents a player command-parameter.
     /// </summary>
-    public class IntegerAttribute : WordAttribute
+    public class PlayerAttribute : WordAttribute
     {
-        public IntegerAttribute(string name) : base(name)
+        public PlayerAttribute(string name)
+            : base(name)
         {
         }
 
@@ -33,14 +37,34 @@ namespace SampSharp.GameMode.SAMP.Commands
             if (!base.Check(ref command, out output))
                 return false;
 
-            int number;
-            if (!int.TryParse(output as string, out number))
+            int id;
+            Player player = null;
+            var word = (output as string).ToLower();
+            
+            /*
+             * Check whether the word is not a number.
+             * If it is, find the player with this id.
+             */
+            if (!int.TryParse(word, out id))
+            {
+                var players = Player.All.Where(p => p.Name.ToLower().Contains(word.ToLower()));
+                if (players.Count() == 1)
+                {
+                    player = players.First();
+                }
+            }
+            else
+            {
+                player = Player.Find(id);
+            }
+
+            if (player == null || !player.IsConnected)
             {
                 output = null;
                 return false;
             }
 
-            output = number;
+            output = player;
             return true;
         }
     }

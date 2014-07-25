@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System.Linq;
+using System.Reflection;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP.Commands;
 
@@ -35,7 +36,7 @@ namespace SampSharp.GameMode.Controllers
             foreach (var method in gameMode.GetType().Assembly.GetTypes().SelectMany(t => t.GetMethods())
                 .Where(m => m.IsStatic && m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0))
             {
-                new DetectedCommand(method);
+                new DetectedCommand(method, method.GetCustomAttribute<CommandAttribute>().IgnoreCase);
             }
 
             gameMode.PlayerCommandText += gameMode_PlayerCommandText;

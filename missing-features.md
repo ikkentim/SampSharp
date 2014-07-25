@@ -1,3 +1,6 @@
+Bugs:
+-DetectedCommand checks for y == typeof(x), however this returns false when y inherits x.
+
 Classes:
 -Pickup
 
