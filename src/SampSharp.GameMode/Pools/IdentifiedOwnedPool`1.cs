@@ -23,7 +23,7 @@ namespace SampSharp.GameMode.Pools
     /// <typeparam name="T">Base type of instances to keep track of.</typeparam>
     public abstract class IdentifiedOwnedPool<T> : Pool<T> where T : class, IIdentifyable, IOwnable
     {
-        protected static Type Type;
+        protected static Type InstanceType;
 
         /// <summary>
         ///     Registers the type to use when initializing new instances.
@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.Pools
         /// <typeparam name="T2">The Type to use when initializing new instances.</typeparam>
         public static void Register<T2>()
         {
-            Type = typeof (T2);
+            InstanceType = typeof (T2);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace SampSharp.GameMode.Pools
             if (owner == null)
                 throw new ArgumentNullException("owner");
 
-            return (T) Activator.CreateInstance(Type, owner, id);
+            return (T) Activator.CreateInstance(InstanceType, owner, id);
         }
 
         /// <summary>

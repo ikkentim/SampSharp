@@ -29,9 +29,9 @@ namespace SampSharp.Streamer.Natives
             return Native.CallNative("DestroyDynamicPickup", __arglist(pickupid));
         }
 
-        public static int IsValidDynamicPickup(int pickupid)
+        public static bool IsValidDynamicPickup(int pickupid)
         {
-            return Native.CallNative("IsValidDynamicPickup", __arglist(pickupid));
+            return Native.CallNativeAsBool("IsValidDynamicPickup", __arglist(pickupid));
         }
     }
 }
