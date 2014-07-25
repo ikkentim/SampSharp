@@ -11,7 +11,6 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.World;
@@ -34,10 +33,7 @@ namespace SampSharp.Streamer.Events
 
         public DynamicObject DynamicObject
         {
-            get
-            {
-                return ObjectId == GlobalObject.InvalidId ? null : DynamicObject.FindOrCreate(ObjectId);
-            }
+            get { return ObjectId == GlobalObject.InvalidId ? null : DynamicObject.FindOrCreate(ObjectId); }
         }
 
         public EditObjectResponse EditObjectResponse { get; private set; }

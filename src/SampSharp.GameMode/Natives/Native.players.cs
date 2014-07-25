@@ -2001,7 +2001,8 @@ namespace SampSharp.GameMode.Natives
             Vector rotation, Vector scale, Color materialcolor1, Color materialcolor2)
         {
             return SetPlayerAttachedObject(playerid, index, modelid, bone, offset.X, offset.Y, offset.Z, rotation.X,
-                rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z, materialcolor1.GetColorValue(ColorFormat.ARGB), materialcolor2.GetColorValue(ColorFormat.ARGB));
+                rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z, materialcolor1.GetColorValue(ColorFormat.ARGB),
+                materialcolor2.GetColorValue(ColorFormat.ARGB));
         }
 
 

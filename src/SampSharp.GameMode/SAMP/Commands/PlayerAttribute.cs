@@ -40,7 +40,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             int id;
             Player player = null;
             var word = (output as string).ToLower();
-            
+
             /*
              * Check whether the word is not a number.
              * If it is, find the player with this id.

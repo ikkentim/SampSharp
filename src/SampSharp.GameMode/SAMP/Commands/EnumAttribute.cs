@@ -12,14 +12,13 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using SampSharp.GameMode.Helpers;
 
 namespace SampSharp.GameMode.SAMP.Commands
 {
     /// <summary>
-    /// Represents an enum command-parameter.
+    ///     Represents an enum command-parameter.
     /// </summary>
     public class EnumAttribute : WordAttribute
     {
@@ -34,13 +33,13 @@ namespace SampSharp.GameMode.SAMP.Commands
         }
 
         /// <summary>
-        /// Gets the enum type in which to look for values.
+        ///     Gets the enum type in which to look for values.
         /// </summary>
         public Type Type { get; private set; }
 
         /// <summary>
-        /// Gets or sets whether input should be matches against the enum values.
-        /// When False, the input will only be matches agains the names.
+        ///     Gets or sets whether input should be matches against the enum values.
+        ///     When False, the input will only be matches agains the names.
         /// </summary>
         public bool TestForValue { get; set; }
 
@@ -63,7 +62,8 @@ namespace SampSharp.GameMode.SAMP.Commands
             var names = Type.GetEnumNames();
             var values = Type.GetEnumValues();
             var results =
-                names.Where((e, i) => e.ToLower().Contains(word) || (TestForValue && values.GetValue(i).ToString() == word));
+                names.Where(
+                    (e, i) => e.ToLower().Contains(word) || (TestForValue && values.GetValue(i).ToString() == word));
 
             if (results.Count() > 1)
             {
