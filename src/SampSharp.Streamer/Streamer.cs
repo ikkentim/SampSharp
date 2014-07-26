@@ -75,11 +75,16 @@ namespace SampSharp.Streamer
         public event EventHandler<PlayerDynamicAreaEventArgs> PlayerEnterDynamicArea;
         public event EventHandler<PlayerDynamicAreaEventArgs> PlayerLeaveDynamicArea;
 
-        public static void LoadControllers(ControllerCollection controllers)
+        public static Streamer Load(ControllerCollection controllers)
         {
-            Native.RegisterExtension(new Streamer());
+            var streamer = new Streamer();
+            Native.RegisterExtension(streamer);
+            var controller = new StreamerController();
 
-            controllers.Add(new StreamerController());
+            controller.RegisterStreamerEvents(streamer);
+            controllers.Add(controller);
+
+            return streamer;
         }
 
         public static void ToggleIdleUpdate(Player player, bool toggle)

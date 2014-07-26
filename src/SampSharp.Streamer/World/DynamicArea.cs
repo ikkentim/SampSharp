@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SampSharp.GameMode.World;
 using SampSharp.Streamer.Definitions;
+using SampSharp.Streamer.Events;
 using SampSharp.Streamer.Natives;
 
 namespace SampSharp.Streamer.World
@@ -160,6 +161,9 @@ namespace SampSharp.Streamer.World
         }
 
         #endregion
+
+        public event EventHandler<PlayerDynamicAreaEventArgs> Enter;
+        public event EventHandler<PlayerDynamicAreaEventArgs> Leave;
 
         public bool IsValid
         {
@@ -332,6 +336,18 @@ namespace SampSharp.Streamer.World
             base.Dispose(disposing);
 
             StreamerNative.DestroyDynamicArea(Id);
+        }
+
+        public virtual void OnEnter(PlayerDynamicAreaEventArgs e)
+        {
+            if (Enter != null)
+                Enter(this, e);
+        }
+
+        public virtual void OnLeave(PlayerDynamicAreaEventArgs e)
+        {
+            if (Leave != null)
+                Leave(this, e);
         }
     }
 }
