@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
+using System.Linq;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.SAMP;
@@ -77,6 +78,10 @@ namespace TestMode.Tests
 
             obj.Move(obj.Position + poschange, 0.5f, obj.Rotation + rotate);
             poschange = -poschange;
+
+            var pu = new DynamicPickup(1274, 23, new Vector(111), 3);
+            
+            Console.WriteLine("World: {0}", string.Join(",", pu.Worlds));
         }
     }
 }
