@@ -92,7 +92,6 @@ bool SampSharp::RegisterExtension(MonoObject *extension) {
     }
 
     uint32_t handle = mono_gchandle_new(extension, false);
-    cout << "Extension with handle " << handle << " registered." << endl;
     extensions.push_back(handle);
     return true;
 }
