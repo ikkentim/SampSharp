@@ -91,11 +91,6 @@ namespace SampSharp.GameMode.SAMP.Commands
                 throw new ArgumentException("command " + Name + " does not accept a player as first parameter");
             }
 
-            if (Command.ReturnType != typeof (bool))
-            {
-                throw new ArgumentException("command " + Name + " does not return a boolean");
-            }
-
             Parameters =
                 Command.GetParameters()
                     .Skip(1)
@@ -251,7 +246,9 @@ namespace SampSharp.GameMode.SAMP.Commands
                 arguments.Add(argument);
             }
 
-            return (bool) Command.Invoke(null, arguments.ToArray());
+            object result  = Command.Invoke(null, arguments.ToArray());
+
+            return Command.ReturnType != typeof (bool) || (bool) result;
         }
     }
 }
