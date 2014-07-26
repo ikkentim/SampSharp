@@ -36,14 +36,13 @@ namespace TestMode.Tests
         [Command("console", Alias = "c", Shortcut = "1", PermissionCheckMethod = "TestCommandPermission")]
         [CommandGroup("tools")]
         [Text("text")]
-        public static bool TestCommand(Player player, string word, int num, string text)
+        public static void TestCommand(Player player, string word, int num, string text)
         {
             Console.WriteLine("Player: {0}, Word: {1}, Rest: {2}, Num: {3}", player, word, text, num);
             Console.WriteLine("Text written to console...");
             player.SendClientMessage(Color.Green, "Text written to console!");
 
             player.SendClientMessage(Color.Green, "Formattest {0} -- {1} ,, {2}", 123, "xyz", "::DD");
-            return true;
         }
 
         public static bool TestCommandPermission(Player player)
@@ -53,16 +52,14 @@ namespace TestMode.Tests
 
         [Command("list", Alias = "l")]
         [CommandGroup("vehicle")]
-        public static bool VehicleListCommand(Player player)
+        public static void VehicleListCommand(Player player)
         {
             player.SendClientMessage(Color.Green, "Available vehicles:");
             player.SendClientMessage(Color.GreenYellow, string.Join(", ", typeof (VehicleModelType).GetEnumNames()));
-
-            return true;
         }
 
         [Command("commands")]
-        public static bool CommandsCommand(Player player)
+        public static void CommandsCommand(Player player)
         {
             player.SendClientMessage(Color.Green, "Commands:");
             foreach (
@@ -74,12 +71,10 @@ namespace TestMode.Tests
                 player.SendClientMessage(Color.White,
                     "/{0}: I could add an Attribute in my gamemode with an help message and/or color", cmd.CommandPath);
             }
-
-            return true;
         }
         [Command("spawn", Alias = "s", Shortcut = "v")]
         [CommandGroup("vehicle")]
-        public static bool VehicleCommand(Player player, VehicleModelType model)
+        public static void VehicleCommand(Player player, VehicleModelType model)
         {
             player.SendClientMessage(Color.GreenYellow, "You have spawned a {0}", model);
             Console.WriteLine("Spawning a {0} {2} for {1}", model, player, (int)model);
@@ -88,60 +83,52 @@ namespace TestMode.Tests
             //TODO: Player.PutInVehicle sometimes crashes the server. Should investigate
             //player.PutInVehicle(vehicle);
             //Console.WriteLine("VehicleCommand passes point 2");
-            return true;
         }
 
         [Command("tell")]
         [Text("message")]
-        public static bool TellCommand(Player player, Player to, string message)
+        public static void TellCommand(Player player, Player to, string message)
         {
             to.SendClientMessage(Color.Green, "{0} tells you: {1}", player.Name, message);
-            return true;
         }
 
         [Command("put")]
         [Integer("seat", Optional = true)]
-        public static bool PutCommand(Player player, int vehicleid, int seat = 0)
+        public static void PutCommand(Player player, int vehicleid, int seat = 0)
         {
             var v = Vehicle.Find(vehicleid);
             if (v == null)
             {
                 player.SendClientMessage(Color.Red, "This vehicle does not exist!");
-                return false;
+                return;
             }
             player.PutInVehicle(v, seat);
-            return true;
         }
 
         [Command("position")]
-        public static bool PositionCommand(Player player)
+        public static void PositionCommand(Player player)
         {
             player.SendClientMessage(Color.Green, "Position: {0}", player.Position);
-
-            return true;
         }
 
         [Command("teleport", Alias = "tp")]
         [Integer("z", Optional = true, DefaultValue = 4)]
-        public static bool TpCommand(Player player, int x, int y, int z)
+        public static void TpCommand(Player player, int x, int y, int z)
         {
             player.Position = new Vector(x, y, z);
             Console.WriteLine("Teleporting {0} to {1}, {2}, {3}", player, x, y, z);
-            return true;
         }
 
         [Command("wor")]
-        public static bool World(Player player, int world)
+        public static void World(Player player, int world)
         {
             player.VirtualWorld = world;
-            return true;
         }
 
         [Command("int")]
-        public static bool Interior(Player player, int interior)
+        public static void Interior(Player player, int interior)
         {
             player.Interior = interior;
-            return true;
         }
     }
 }
