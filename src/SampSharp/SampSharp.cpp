@@ -91,7 +91,9 @@ bool SampSharp::RegisterExtension(MonoObject *extension) {
         }
     }
 
-    extensions.push_back(mono_gchandle_new(extension, false));
+    uint32_t handle = mono_gchandle_new(extension, false);
+    cout << "Extension with handle " << handle << " registered." << endl;
+    extensions.push_back(handle);
     return true;
 }
 
@@ -362,7 +364,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
                 }
 			}
 
-			int retint = CallEvent(event_p->method, gameModeHandle, args);
+			int retint = CallEvent(event_p->method, event_p->handle, args);
 
 			if (retint != -1) {
 				*retval = retint;
@@ -377,7 +379,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 
 int SampSharp::CallEvent(MonoMethod* method, uint32_t handle, void **params) {
     assert(method);
-
+    
     MonoObject *exception;
 	MonoObject *response = mono_runtime_invoke(method, mono_gchandle_get_target(handle),
         params, &exception);
