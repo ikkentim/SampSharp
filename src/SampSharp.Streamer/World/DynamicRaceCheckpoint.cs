@@ -28,7 +28,7 @@ namespace SampSharp.Streamer.World
             Id = id;
         }
 
-        public DynamicRaceCheckpoint(CheckpointType type, Vector position, Vector nextPosition = new Vector(),
+        public DynamicRaceCheckpoint(CheckpointType type, Vector position, Vector nextPosition,
             float size = 3.0f, int worldid = -1,
             int interiorid = -1, Player player = null, float streamdistance = 100.0f)
         {

@@ -58,7 +58,7 @@ namespace TestMode.Tests
             checkpoint.Enter += (sender, args) => args.Player.SendClientMessage(Color.White, "Entered CP");
             checkpoint.Leave += (sender, args) => args.Player.SendClientMessage(Color.White, "Left CP");
 
-            var racecheckpoint = new DynamicRaceCheckpoint(CheckpointType.Normal, new Vector(-10, -10, 3));
+            var racecheckpoint = new DynamicRaceCheckpoint(CheckpointType.Normal, new Vector(-10, -10, 3), new Vector());
             racecheckpoint.Enter += (sender, args) => args.Player.SendClientMessage(Color.White, "Entered RCP");
             racecheckpoint.Leave += (sender, args) => args.Player.SendClientMessage(Color.White, "Left RCP");
 

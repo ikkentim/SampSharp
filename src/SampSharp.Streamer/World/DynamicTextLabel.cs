@@ -51,6 +51,18 @@ namespace SampSharp.Streamer.World
             get { return StreamType.TextLabel; }
         }
 
+        public bool TestLOS
+        {
+            get { return GetInteger(StreamerDataType.TestLOS) != 0; }
+            set { SetInteger(StreamerDataType.TestLOS, value ? 1 : 0); }
+        }
+
+        public float DrawDistance
+        {
+            get { return GetFloat(StreamerDataType.DrawDistance); }
+            set { SetFloat(StreamerDataType.DrawDistance, value); }
+        }
+
         public string Text
         {
             get
