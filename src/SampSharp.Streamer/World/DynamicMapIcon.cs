@@ -42,6 +42,18 @@ namespace SampSharp.Streamer.World
                 player == null ? -1 : player.Id, streamDistance, mapIconType);
         }
 
+        public int Type
+        {
+            get { return GetInteger(StreamerDataType.Type); }
+            set { SetInteger(StreamerDataType.Type, value); }
+        }
+
+        public Color Color
+        {
+            get { return GetInteger(StreamerDataType.Color); }
+            set { SetInteger(StreamerDataType.Color, value); }
+        }
+
         public bool IsValid
         {
             get { return StreamerNative.IsValidDynamicMapIcon(Id); }
