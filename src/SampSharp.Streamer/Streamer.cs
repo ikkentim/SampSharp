@@ -258,6 +258,11 @@ namespace SampSharp.Streamer
                 StreamerNative.AppendArrayData(StreamType, id, data, value);
             }
 
+            public void RemoveArrayData(int id, StreamerDataType data, int value)
+            {
+                StreamerNative.RemoveArrayData(StreamType, id, data, value);
+            }
+
             public bool IsInArray(int id, StreamerDataType data, int value)
             {
                 return StreamerNative.IsInArrayData(StreamType, id, data, value);
