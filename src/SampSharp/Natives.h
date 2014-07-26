@@ -493,7 +493,7 @@ cell call_native_array(MonoString *name, MonoString *format, MonoArray *args, Mo
             cell *par_arr = (cell *)params[i];
             int len = param_size[i];
 
-            MonoArray *arr = mono_array_new(mono_domain_get(), mono_get_single_class(), len);
+            MonoArray *arr = mono_array_new(mono_domain_get(), mono_get_int32_class(), len);
             for(int j=0;j<len;j++) {
                 mono_array_set(arr, int, j, par_arr[j]);
             }
