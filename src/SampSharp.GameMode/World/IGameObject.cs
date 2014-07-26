@@ -22,13 +22,14 @@ namespace SampSharp.GameMode.World
         bool IsValid { get; }
         int ModelId { get; }
         float DrawDistance { get; }
+        Vector Rotation { get; set; }
 
         int Move(Vector position, float speed, Vector rotation);
         int Move(Vector position, float speed);
         void Stop();
         void SetMaterial(int materialindex, int modelid, string txdname, string texturename, Color materialcolor);
 
-        void SetMaterialText(string text, int materialindex, ObjectMaterialSize materialsize, string fontface,
+        void SetMaterialText(int materialindex, string text, ObjectMaterialSize materialsize, string fontface,
             int fontsize, bool bold, Color foreColor, Color backColor, ObjectMaterialTextAlign textalignment);
     }
 }
