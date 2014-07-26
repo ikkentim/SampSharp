@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.SAMP;
@@ -25,7 +26,7 @@ namespace SampSharp.Streamer.Natives
             float drawdistance = 0.0f)
         {
             return Native.CallNative("CreateDynamicObject",
-                __arglist(modelid, x, y, z, rx, ry, rz, worldid, interiorid, playerid, streamdistance));
+                __arglist(modelid, x, y, z, rx, ry, rz, worldid, interiorid, playerid, streamdistance, drawdistance));
         }
 
         public static int DestroyDynamicObject(int objectid)
