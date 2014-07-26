@@ -1681,7 +1681,7 @@ namespace SampSharp.GameMode.World
         ///     in the set color unless colour embedding is used.
         /// </summary>
         /// <param name="color">The color of the message.</param>
-        /// <param name="message">The text that will be displayed (max 144 characters).</param>
+        /// <param name="message">The text that will be displayed.</param>
         public virtual void SendClientMessage(Color color, string message)
         {
             CheckDisposure();
@@ -1710,24 +1710,72 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Displays a message in chat to all players. This is a multi-player equivalent of <see cref="SendClientMessage" />.
+        ///     This function sends a message to this Player in white in the chat. The whole line in the chatbox will be
+        ///     in the set color unless colour embedding is used.
+        /// </summary>
+        /// <param name="message">The text that will be displayed.</param>
+        public virtual void SendClientMessage(string message)
+        {
+            SendClientMessage(Color.White, message);
+        }
+
+        /// <summary>
+        ///     This function sends a message to this Player in white in the chat. The whole line in the chatbox will be
+        ///     in the set color unless colour embedding is used.
+        /// </summary>
+        /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        public virtual void SendClientMessage(string messageFormat, params object[] args)
+        {
+            SendClientMessage(Color.White, string.Format(messageFormat, args));
+        }
+
+        /// <summary>
+        ///     Displays a message in chat to all players.
         /// </summary>
         /// <param name="color">The color of the message.</param>
         /// <param name="message">The message to show (max 144 characters).</param>
         public static void SendClientMessageToAll(Color color, string message)
         {
-            Native.SendClientMessageToAll(color.GetColorValue(ColorFormat.RGBA), message);
+            if (message.Length > 144)
+            {
+                Native.SendClientMessageToAll(color.GetColorValue(ColorFormat.RGBA), message.Substring(0, 144));
+                SendClientMessageToAll(color, message.Substring(144));
+            }
+            else
+            {
+                Native.SendClientMessageToAll(color.GetColorValue(ColorFormat.RGBA), message);
+            }
         }
 
         /// <summary>
-        ///     Displays a message in chat to all players. This is a multi-player equivalent of <see cref="SendClientMessage" />.
+        ///     Displays a message in chat to all players.
         /// </summary>
         /// <param name="color">The color of the message.</param>
-        /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
+        /// <param name="messageFormat">The composite format string of the text that will be displayed.</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void SendClientMessageToAll(Color color, string messageFormat, params object[] args)
         {
             SendClientMessageToAll(color, string.Format(messageFormat, args));
+        }
+
+        /// <summary>
+        ///     Displays a message in white in chat to all players.
+        /// </summary>
+        /// <param name="message">The message to show.</param>
+        public static void SendClientMessageToAll(string message)
+        {
+            SendClientMessageToAll(Color.White, message);
+        }
+
+        /// <summary>
+        ///     Displays a message in white in chat to all players..
+        /// </summary>
+        /// <param name="messageFormat">The composite format string of the text that will be displayed.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        public static void SendClientMessageToAll(string messageFormat, params object[] args)
+        {
+            SendClientMessageToAll(Color.White, string.Format(messageFormat, args));
         }
 
         /// <summary>
