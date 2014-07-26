@@ -149,7 +149,7 @@ namespace SampSharp.GameMode.World
                 materialcolor.GetColorValue(ColorFormat.ARGB));
         }
 
-        public virtual void SetMaterialText(string text, int materialindex, ObjectMaterialSize materialsize,
+        public virtual void SetMaterialText(int materialindex, string text, ObjectMaterialSize materialsize,
             string fontface, int fontsize, bool bold, Color foreColor, Color backColor,
             ObjectMaterialTextAlign textalignment)
         {
