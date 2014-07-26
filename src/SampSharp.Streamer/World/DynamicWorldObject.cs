@@ -11,9 +11,14 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.World;
 using SampSharp.Streamer.Definitions;
+using SampSharp.Streamer.Natives;
 
 namespace SampSharp.Streamer.World
 {
@@ -28,10 +33,65 @@ namespace SampSharp.Streamer.World
             set { SetInteger(StreamerDataType.InteriorId, value); }
         }
 
+        public virtual IEnumerable<int> Interiors
+        {
+            get { return GetArray(StreamerDataType.InteriorId, 1024).Where(v => v != int.MinValue); }
+            set
+            {
+                if (value == null)
+                {
+                    SetArray(StreamerDataType.InteriorId, new[] { -1 });
+                    return;
+                }
+                SetArray(StreamerDataType.InteriorId, value.ToArray());
+            }
+        }
+
         public virtual int World
         {
             get { return GetInteger(StreamerDataType.WorldId); }
             set { SetInteger(StreamerDataType.WorldId, value); }
+        }
+
+        public virtual IEnumerable<int> Worlds
+        {
+            get { return GetArray(StreamerDataType.WorldId, 1024).Where(v => v != int.MinValue); }
+            set
+            {
+                if (value == null)
+                {
+                    SetArray(StreamerDataType.WorldId, new[] {-1});
+                    return;
+                }
+                SetArray(StreamerDataType.WorldId, value.ToArray());
+            }
+        }
+
+        public virtual Player Player
+        {
+            get { return Player.FindOrCreate(GetInteger(StreamerDataType.PlayerId)); }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("value");
+                }
+                SetInteger(StreamerDataType.PlayerId, value.Id);
+            }
+        }
+
+        public virtual IEnumerable<Player> Players
+        {
+            get { return GetArray(StreamerDataType.PlayerId, 1024).Where(v => v != int.MinValue).Select(Player.FindOrCreate); }
+            set
+            {
+                if (value == null)
+                {
+                    SetArray(StreamerDataType.PlayerId, new[] { -1 });
+                    return;
+                }
+                SetArray(StreamerDataType.PlayerId, value.Select(p => p == null ? -1 : p.Id).ToArray());
+            }
         }
 
         public virtual float StreamDistance
@@ -58,6 +118,70 @@ namespace SampSharp.Streamer.World
             }
         }
 
+        public virtual bool IsVisibleForPlayer(Player player)
+        {
+            if (player == null)
+            {
+                throw new ArgumentNullException("player");
+            }
+
+            return IsInArray(StreamerDataType.PlayerId, player.Id);
+        }
+
+        public virtual void ShowForPlayer(Player player)
+        {
+            if (player == null)
+            {
+                throw new ArgumentNullException("player");
+            }
+
+            AppendToArray(StreamerDataType.PlayerId, player.Id);
+        }
+
+        public virtual void HideForPlayer(Player player)
+        {
+            if (player == null)
+            {
+                throw new ArgumentNullException("player");
+            }
+
+            RemoveArrayData(StreamerDataType.PlayerId, player.Id);
+        }
+
+        public virtual bool IsVisibleInWorld(int worldid)
+        {
+            return IsInArray(StreamerDataType.WorldId, worldid);
+        }
+
+        public void ShowInWorld(int worlid)
+        {
+            AppendToArray(StreamerDataType.WorldId, worlid);
+        }
+
+        public void HideInWorld(int worlid)
+        {
+            RemoveArrayData(StreamerDataType.WorldId, worlid);
+        }
+
+        public virtual bool IsVisibleInInterior(int interiorid)
+        {
+            return IsInArray(StreamerDataType.InteriorId, interiorid);
+        }
+
+        public void ShowInInterior(int interiorid)
+        {
+            AppendToArray(StreamerDataType.InteriorId, interiorid);
+        }
+
+        public void HideInInterior(int interiorid)
+        {
+            RemoveArrayData(StreamerDataType.InteriorId, interiorid);
+        }
+
+        public void ToggleUpdate(Player player, bool toggle)
+        {
+            Streamer.ItemType[StreamType].ToggleUpdate(player, toggle);
+        }
 
         protected int GetInteger(StreamerDataType data)
         {
@@ -77,6 +201,11 @@ namespace SampSharp.Streamer.World
         protected void AppendToArray(StreamerDataType data, int value)
         {
             Streamer.ItemType[StreamType].AppendToArray(Id, data, value);
+        }
+
+        protected void RemoveArrayData(StreamerDataType data, int value)
+        {
+            Streamer.ItemType[StreamType].RemoveArrayData(Id, data, value);
         }
 
         protected bool IsInArray(StreamerDataType data, int value)
