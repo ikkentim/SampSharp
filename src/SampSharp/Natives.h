@@ -374,7 +374,7 @@ cell call_native_array(MonoString *name, MonoString *format, MonoArray *args, Mo
             int size_info = mono_array_get(sizes, int, size_idx++);
             param_size[i] = size_info < 0 ? -size_info 
                 : *(int *)mono_object_unbox(mono_array_get(args, MonoObject *, size_info));
-
+            
             //for(int j=0;j<param_size[i];j++) {
                 //ref was not yet set
                 //value[j] = amx_ftoc(mono_array_get(arr, float, j));
@@ -434,12 +434,14 @@ cell call_native_array(MonoString *name, MonoString *format, MonoArray *args, Mo
             param_size[i] = size_info < 0 ? -size_info 
                 : *(int *)mono_object_unbox(mono_array_get(args, MonoObject *, size_info));
 
-            //for(int j=0;j<param_size[i];j++) {
+            cell *value = new cell[1024];
+            for(int j=0;j<param_size[i];j++) {
                 //ref was not yet set
                 //value[j] = mono_array_get(arr, int, j);
-            //}
+                value[j] = -2147483648;//int.MinValue
+            }
 
-            params[i] = new cell[1024];
+            params[i] = value;
 
 			char *format_el = new char[10];
             if(size_info < 0) {
