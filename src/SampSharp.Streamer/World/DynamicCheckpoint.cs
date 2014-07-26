@@ -15,6 +15,7 @@ using System;
 using System.Linq;
 using SampSharp.GameMode.World;
 using SampSharp.Streamer.Definitions;
+using SampSharp.Streamer.Events;
 using SampSharp.Streamer.Natives;
 
 namespace SampSharp.Streamer.World
@@ -40,6 +41,9 @@ namespace SampSharp.Streamer.World
                 interiors,
                 players == null ? null : players.Select(p => p.Id).ToArray());
         }
+
+        public event EventHandler<PlayerDynamicCheckpointEventArgs> Enter;
+        public event EventHandler<PlayerDynamicCheckpointEventArgs> Leave;
 
         public bool IsValid
         {
@@ -101,6 +105,18 @@ namespace SampSharp.Streamer.World
             base.Dispose(disposing);
 
             StreamerNative.DestroyDynamicCP(Id);
+        }
+
+        public virtual void OnEnter(PlayerDynamicCheckpointEventArgs e)
+        {
+            if (Enter != null)
+                Enter(this, e);
+        }
+
+        public virtual void OnLeave(PlayerDynamicCheckpointEventArgs e)
+        {
+            if (Leave != null)
+                Leave(this, e);
         }
     }
 }

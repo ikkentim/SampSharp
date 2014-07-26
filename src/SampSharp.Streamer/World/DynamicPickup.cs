@@ -11,10 +11,12 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using System.Linq;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;
 using SampSharp.Streamer.Definitions;
+using SampSharp.Streamer.Events;
 using SampSharp.Streamer.Natives;
 
 namespace SampSharp.Streamer.World
@@ -39,6 +41,8 @@ namespace SampSharp.Streamer.World
             Id = StreamerNative.CreateDynamicPickupEx(modelid, type, position.X, position.Y, position.Z, streamdistance,
                 worlds, interiors, players == null ? null : players.Select(p => p.Id).ToArray());
         }
+
+        public event EventHandler<PlayerDynamicPickupEventArgs> PickedUp;
 
         public override StreamType StreamType
         {
@@ -67,6 +71,12 @@ namespace SampSharp.Streamer.World
             base.Dispose(disposing);
 
             StreamerNative.DestroyDynamicPickup(Id);
+        }
+
+        public virtual void OnPickedUp(PlayerDynamicPickupEventArgs e)
+        {
+            if (PickedUp != null)
+                PickedUp(this, e);
         }
     }
 }

@@ -15,9 +15,12 @@ using System;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.SAMP;
+using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 using SampSharp.Streamer;
 using SampSharp.Streamer.Definitions;
+using SampSharp.Streamer.Events;
+using SampSharp.Streamer.Natives;
 using SampSharp.Streamer.World;
 
 namespace TestMode.Tests
@@ -26,7 +29,7 @@ namespace TestMode.Tests
     {
         public void LoadControllers(ControllerCollection controllers)
         {
-            Streamer.LoadControllers(controllers);
+            Streamer.Load(controllers);
         }
 
         public void Start(GameMode gameMode)
@@ -50,9 +53,30 @@ namespace TestMode.Tests
 
             var pickup = new DynamicPickup(1274, 23, new Vector(0, 0, 3)); //Dollar icon
 
+            pickup.PickedUp += (sender, args) => args.Player.SendClientMessage(Color.White, "Picked Up");
             var checkpoint = new DynamicCheckpoint(new Vector(10, 10, 3));
+            checkpoint.Enter += (sender, args) => args.Player.SendClientMessage(Color.White, "Entered CP");
+            checkpoint.Leave += (sender, args) => args.Player.SendClientMessage(Color.White, "Left CP");
+
             var racecheckpoint = new DynamicRaceCheckpoint(CheckpointType.Normal, new Vector(-10, -10, 3));
-            var label = new DynamicTextLabel("I am maroon", Color.Maroon, new Vector(0, 0, 5), 100.0f);
+            racecheckpoint.Enter += (sender, args) => args.Player.SendClientMessage(Color.White, "Entered RCP");
+            racecheckpoint.Leave += (sender, args) => args.Player.SendClientMessage(Color.White, "Left RCP");
+
+            new DynamicTextLabel("I am maroon", Color.Maroon, new Vector(0, 0, 5), 100.0f);
+
+            
+            var rotate = new Vector(20);
+            var poschange = new Vector(0, 0, 1f);
+            var obj = new DynamicObject(12991, new Vector(15));
+
+            obj.Moved += (sender, args) =>
+            {
+                obj.Move(obj.Position + poschange, 0.5f, obj.Rotation + rotate);
+                poschange = -poschange;
+            };
+
+            obj.Move(obj.Position + poschange, 0.5f, obj.Rotation + rotate);
+            poschange = -poschange;
         }
     }
 }

@@ -17,6 +17,7 @@ using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 using SampSharp.Streamer.Definitions;
+using SampSharp.Streamer.Events;
 using SampSharp.Streamer.Natives;
 
 namespace SampSharp.Streamer.World
@@ -36,17 +37,12 @@ namespace SampSharp.Streamer.World
             Id = id;
         }
 
-        public DynamicObject(int modelid, Vector position, Vector rotation, float drawDistance)
+        public DynamicObject(int modelid, Vector position, Vector rotation = new Vector(), float drawDistance = 0.0f)
         {
             ModelId = modelid;
             DrawDistance = drawDistance;
 
-            Id = Native.CreateObject(modelid, position, rotation, drawDistance);
-        }
-
-        public DynamicObject(int modelid, Vector position, Vector rotation)
-            : this(modelid, position, rotation, 0)
-        {
+            Id = StreamerNative.CreateDynamicObject(modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z);
         }
 
         #endregion
@@ -88,25 +84,10 @@ namespace SampSharp.Streamer.World
 
         #region Events
 
-        /*
-        /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnObjectMoved" /> callback is being called.
-        ///     This callback is called when an object is moved after <see cref="Move" /> (when it stops moving).
-        /// </summary>
-        public event EventHandler<ObjectEventArgs> Moved;
-
-        /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerSelectObject" /> callback is being called.
-        ///     This callback is called when a player selects an object after <see cref="Native.SelectObject" /> has been used.
-        /// </summary>
-        public event EventHandler<PlayerSelectObjectEventArgs> Selected;
-
-        /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEditObject" /> callback is being called.
-        ///     This callback is called when a player ends object edition mode.
-        /// </summary>
-        public event EventHandler<PlayerEditObjectEventArgs> Edited;
-        */
+        public event EventHandler<DynamicObjectEventArgs> Moved;
+        public event EventHandler<PlayerSelectDynamicObjectEventArgs> Selected;
+        public event EventHandler<PlayerEditDynamicObjectEventArgs> Edited;
+        public event EventHandler<PlayerShootDynamicObjectEventArgs> Shot;
 
         #endregion
 
@@ -178,37 +159,29 @@ namespace SampSharp.Streamer.World
 
         #region Event raisers
 
-        /*
-        /// <summary>
-        ///     Raises the <see cref="Moved" /> event.
-        /// </summary>
-        /// <param name="e">An <see cref="ObjectEventArgs" /> that contains the event data. </param>
-        public virtual void OnMoved(ObjectEventArgs e)
+        public virtual void OnMoved(DynamicObjectEventArgs e)
         {
             if (Moved != null)
                 Moved(this, e);
         }
 
-        /// <summary>
-        ///     Raises the <see cref="Selected" /> event.
-        /// </summary>
-        /// <param name="e">An <see cref="PlayerSelectObjectEventArgs" /> that contains the event data. </param>
-        public virtual void OnSelected(PlayerSelectObjectEventArgs e)
+        public virtual void OnSelected(PlayerSelectDynamicObjectEventArgs e)
         {
             if (Selected != null)
                 Selected(this, e);
         }
 
-        /// <summary>
-        ///     Raises the <see cref="Edited" /> event.
-        /// </summary>
-        /// <param name="e">An <see cref="PlayerEditObjectEventArgs" /> that contains the event data. </param>
-        public virtual void OnEdited(PlayerEditObjectEventArgs e)
+        public virtual void OnEdited(PlayerEditDynamicObjectEventArgs e)
         {
             if (Edited != null)
                 Edited(this, e);
         }
-        */
+
+        public virtual void OnShot(PlayerShootDynamicObjectEventArgs e)
+        {
+            if (Shot != null)
+                Shot(this, e);
+        }
 
         #endregion
     }
