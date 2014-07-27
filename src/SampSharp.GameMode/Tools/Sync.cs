@@ -24,6 +24,14 @@ namespace SampSharp.GameMode.Tools
     public static class Sync
     {
         /// <summary>
+        ///     Gets whether is it required to sync before calling natives.
+        /// </summary>
+        public static bool IsRequired
+        {
+            get { return SyncController.IsMainThread; }
+        }
+
+        /// <summary>
         ///     Run a function on the main VM thread.
         /// </summary>
         /// <param name="action">The action the run</param>

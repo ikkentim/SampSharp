@@ -23,12 +23,15 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Display
 {
+    /// <summary>
+    ///     Represents a menu
+    /// </summary>
     public class Menu : Pool<Menu>
     {
         #region Fields
 
         /// <summary>
-        ///     Gets an ID commonly returned by methods to point to no menu.
+        ///     Gets the ID commonly returned by methods to point to no menu.
         /// </summary>
         public const int InvalidId = Misc.InvalidMenu;
 
@@ -38,24 +41,22 @@ namespace SampSharp.GameMode.Display
 
         #region Constructors
 
-        public Menu(string title, float x, float y)
-            : this(title, x, y, new List<MenuColumn>(), new List<MenuRow>())
-        {
-        }
-
-        public Menu(string title, float x, float y, List<MenuColumn> columns)
-            : this(title, x, y, columns, new List<MenuRow>())
-        {
-        }
-
-        public Menu(string title, float x, float y, List<MenuColumn> columns, List<MenuRow> rows)
+        /// <summary>
+        ///     Initializes a new instance of the Menu class.
+        /// </summary>
+        /// <param name="title">The title of the menu.</param>
+        /// <param name="x">The x-position of the menu on the screen.</param>
+        /// <param name="y">The y-position of the menu on the screen.</param>
+        /// <param name="columns">The columns to display in the menu.</param>
+        /// <param name="rows">The rows to display in the menu.</param>
+        public Menu(string title, float x, float y, List<MenuColumn> columns = null, List<MenuRow> rows = null)
         {
             Id = InvalidId;
             Title = title;
             X = x;
             Y = y;
-            Columns = columns;
-            Rows = rows;
+            Columns = columns ?? new List<MenuColumn>();
+            Rows = rows ?? new List<MenuRow>();
         }
 
         #endregion
@@ -67,20 +68,38 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public int Id { get; private set; }
 
+        /// <summary>
+        ///     Gets or sets the title of this menu.
+        /// </summary>
         public string Title { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the x-position of this menu on the screen.
+        /// </summary>
         public float X { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the y-position of this menu on the screen.
+        /// </summary>
         public float Y { get; set; }
 
+        /// <summary>
+        ///     Gets a list of viewers of this menu.
+        /// </summary>
         public ReadOnlyCollection<Player> Viewers
         {
             get { return _viewers.AsReadOnly(); }
         }
 
-        public List<MenuColumn> Columns { get; set; }
+        /// <summary>
+        ///     Gets a collection of columns in this menu.
+        /// </summary>
+        public List<MenuColumn> Columns { get; private set; }
 
-        public List<MenuRow> Rows { get; set; }
+        /// <summary>
+        ///     Gets a collection of rows in this menu.
+        /// </summary>
+        public List<MenuRow> Rows { get; private set; }
 
         #endregion
 
@@ -94,6 +113,11 @@ namespace SampSharp.GameMode.Display
 
         #region Methods
 
+        /// <summary>
+        ///     Show this menu for the specified player.
+        /// </summary>
+        /// <param name="player">The player to show this menu for.</param>
+        /// <returns>True when successfull, False otherwise.</returns>
         public bool Show(Player player)
         {
             CheckDisposure();
@@ -102,38 +126,50 @@ namespace SampSharp.GameMode.Display
                 throw new ArgumentNullException("player");
 
             if (Id == InvalidId)
+            {
                 Create();
+            }
 
-            //Check for successful creation
             if (Id == InvalidId)
+            {
                 return false;
+            }
 
-            //Show menu
             _viewers.Add(player);
             Native.ShowMenuForPlayer(Id, player.Id);
 
             return true;
         }
 
+        /// <summary>
+        ///     Hides this menu for the specified player.
+        /// </summary>
+        /// <param name="player">The player to hide this menu for.</param>
         public void Hide(Player player)
         {
             CheckDisposure();
 
             if (player == null)
+            {
                 throw new ArgumentNullException("player");
+            }
 
-            //Remove menu from viewers list
             _viewers.Remove(player);
 
-            //Hide menu
             if (Id != InvalidId)
+            {
                 Native.HideMenuForPlayer(Id, player.Id);
+            }
 
-            //Keep dialog count low
             if (_viewers.Count == 0)
+            {
                 Destroy();
+            }
         }
 
+        /// <summary>
+        ///     Hides this menu for all players that are viewing this menu.
+        /// </summary>
         public void HideForAll()
         {
             CheckDisposure();
@@ -147,38 +183,44 @@ namespace SampSharp.GameMode.Display
         {
             Destroy();
 
-            //Check for data
-            if (Columns == null || Columns.Count == 0 || Rows == null || Rows.Count == 0)
-                return;
+            if (Columns == null || Columns.Count == 0)
+            {
+                throw new Exception("This menu contains no columns");
+            }
 
-            //Create menu
+            if (Rows == null || Rows.Count == 0)
+            {
+                throw new Exception("This menu contains no rows");
+            }
+
             Id = Native.CreateMenu(Title, Columns.Count, X, Y,
                 Columns[0].Width, Columns.Count == 2 ? Columns[1].Width : 0);
 
-            //Check success
             if (Id == InvalidId)
+            {
                 return;
+            }
 
-            //Set captions of all columns
             for (int i = 0; i < Math.Min(Columns.Count, 2); i++)
             {
                 if (Columns[i].Caption != null)
+                {
                     Native.SetMenuColumnHeader(Id, i, Columns[i].Caption);
+                }
             }
 
-            //Add rows  to menu
             for (int i = 0; i < Rows.Count; i++)
             {
-                //Set text
                 for (int j = 0; j < Math.Min(Columns.Count, 2); j++)
                 {
                     if (Rows[i].Text.Length > j)
                         Native.AddMenuItem(Id, j, Rows[i].Text[j]);
                 }
 
-                //Set disabled
                 if (Rows[i].Disabled)
+                {
                     Native.DisableMenuRow(Id, i);
+                }
             }
         }
 
@@ -186,10 +228,8 @@ namespace SampSharp.GameMode.Display
         {
             if (Id != InvalidId)
             {
-                //Hide for fall players
                 HideForAll();
 
-                //Destroy resource
                 Native.DestroyMenu(Id);
                 Id = InvalidId;
             }

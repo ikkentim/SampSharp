@@ -18,23 +18,24 @@ namespace SampSharp.GameMode.Display
     /// </summary>
     public class MenuRow
     {
-        public MenuRow(string col1Text)
-        {
-            Text = new[] {col1Text};
-        }
-
-        public MenuRow(string col1Text, bool disabled)
+        /// <summary>
+        ///     Initializes a new instance of the MenuRow class.
+        /// </summary>
+        /// <param name="col1Text">The text in the first column.</param>
+        /// <param name="disabled">Whether this row should be disabled.</param>
+        public MenuRow(string col1Text, bool disabled = false)
         {
             Text = new[] {col1Text};
             Disabled = disabled;
         }
 
-        public MenuRow(string col1Text, string col2Text)
-        {
-            Text = new[] {col1Text, col2Text};
-        }
-
-        public MenuRow(string col1Text, string col2Text, bool disabled)
+        /// <summary>
+        ///     Initializes a new instance of the MenuRow class.
+        /// </summary>
+        /// <param name="col1Text">The text in the first column.</param>
+        /// <param name="col2Text">The text in the second column.</param>
+        /// <param name="disabled">Whether this row should be disabled.</param>
+        public MenuRow(string col1Text, string col2Text, bool disabled = false)
         {
             Text = new[] {col1Text, col2Text};
             Disabled = disabled;

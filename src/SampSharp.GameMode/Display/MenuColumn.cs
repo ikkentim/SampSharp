@@ -18,12 +18,21 @@ namespace SampSharp.GameMode.Display
     /// </summary>
     public class MenuColumn
     {
+        /// <summary>
+        ///     Initializes a new instance of the MenuColumn class.
+        /// </summary>
+        /// <param name="caption">The caption of the column.</param>
+        /// <param name="width">The width of the column.</param>
         public MenuColumn(string caption, float width)
         {
             Caption = caption;
             Width = width;
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the menuColumn structure.
+        /// </summary>
+        /// <param name="width">The width of the column.</param>
         public MenuColumn(float width)
         {
             Width = width;

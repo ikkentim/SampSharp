@@ -13,6 +13,9 @@ Missing Documention:
 -Usage guide
 -Benchmark testing
 
+Misc:
+-Look if MenuColumn/MenuRow should be a struct
+
 Mono features to look forward to:
 -Implementation of AttributeTargets.Parameter
  When this is implemented ParameterAttribute instances (command system) can be atached to
