@@ -1472,33 +1472,6 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     You can use this function to attach this Player camera to objects.
-        /// </summary>
-        /// <remarks>
-        ///     You need to create the object first, before attempting to attach a player camera for that.
-        /// </remarks>
-        /// <param name="objectid">The object id which you want to attach the player camera.</param>
-        /// <returns>This function doesn't return a specific value.</returns>
-        public virtual void AttachCameraToObject(int objectid)
-        {
-            CheckDisposure();
-
-            Native.AttachCameraToObject(Id, objectid);
-        }
-
-        /// <summary>
-        ///     Attaches this Player's camera to a player-object. They are able to move their camera while it is attached to an
-        ///     object.
-        /// </summary>
-        /// <param name="playerobjectid">The ID of the player-object to which the player's camera will be attached.</param>
-        public virtual void AttachCameraToPlayerObject(int playerobjectid)
-        {
-            CheckDisposure();
-
-            Native.AttachCameraToPlayerObject(Id, playerobjectid);
-        }
-
-        /// <summary>
         ///     Move this Player's camera from one position to another, within the set time.
         /// </summary>
         /// <param name="from">The position the camera should start to move from.</param>
