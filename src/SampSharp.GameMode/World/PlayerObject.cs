@@ -181,6 +181,19 @@ namespace SampSharp.GameMode.World
             Native.AttachPlayerObjectToVehicle(Player.Id, Id, vehicle.Id, offset, rotation);
         }
 
+        /// <summary>
+        ///     Attaches the player's camera to this PlayerObject.
+        /// </summary>
+        /// <remarks>
+        ///     This will attach the camera of the player whose object this is to this object.
+        /// </remarks>
+        public virtual void AttachCameraToObject()
+        {
+            CheckDisposure();
+
+            Native.AttachCameraToPlayerObject(Player.Id, Id);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
