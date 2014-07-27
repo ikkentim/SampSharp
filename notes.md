@@ -4,9 +4,6 @@ Bugs:
 Missing Classes:
 -Pickup
 
-Missing Features:
--System.Boolean& and System.Int32& support in Native.CallNative(...)
-
 Missing Documention:
 -Multiple classes in SampSharp.GameMode lack documentation
 -SampSharp.Streamer? (don't know whether i will add documentation here, it currently has as much documentation as the plugin itself)

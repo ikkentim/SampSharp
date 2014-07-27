@@ -60,12 +60,21 @@ namespace TestMode.Tests
             racecheckpoint.Leave += (sender, args) => args.Player.SendClientMessage(Color.White, "Left RCP");
 
             new DynamicTextLabel("I am maroon", Color.Maroon, new Vector(0, 0, 5), 100.0f);
-
             
             var rotate = new Vector(20);
             var poschange = new Vector(0, 0, 1f);
             _obj = new DynamicObject(12991, new Vector(15));
 
+            _obj.SetMaterialText(1, "Test", ObjectMaterialSize.X512X512, "Arial", 24, false, Color.Red, Color.White);
+            string text, font;
+            int fontsize;
+            bool bold;
+            ObjectMaterialSize size;
+            Color c1, c2;
+            ObjectMaterialTextAlign ta;
+            _obj.GetMaterialText(1, out text, out size, out font, out fontsize, out bold, out c1, out c2, out ta);
+            Console.WriteLine("GetMaterialText: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}", text, size, font, fontsize, bold, c1, c2,
+                ta);
             _obj.Moved += (sender, args) =>
             {
                 _obj.Move(_obj.Position + poschange, 0.5f, _obj.Rotation + rotate);
