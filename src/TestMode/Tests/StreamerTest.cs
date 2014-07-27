@@ -12,16 +12,12 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
-using System.Linq;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 using SampSharp.Streamer;
-using SampSharp.Streamer.Definitions;
-using SampSharp.Streamer.Events;
-using SampSharp.Streamer.Natives;
 using SampSharp.Streamer.World;
 
 namespace TestMode.Tests
@@ -68,20 +64,28 @@ namespace TestMode.Tests
             
             var rotate = new Vector(20);
             var poschange = new Vector(0, 0, 1f);
-            var obj = new DynamicObject(12991, new Vector(15));
+            _obj = new DynamicObject(12991, new Vector(15));
 
-            obj.Moved += (sender, args) =>
+            _obj.Moved += (sender, args) =>
             {
-                obj.Move(obj.Position + poschange, 0.5f, obj.Rotation + rotate);
+                _obj.Move(_obj.Position + poschange, 0.5f, _obj.Rotation + rotate);
                 poschange = -poschange;
             };
 
-            obj.Move(obj.Position + poschange, 0.5f, obj.Rotation + rotate);
+            _obj.Move(_obj.Position + poschange, 0.5f, _obj.Rotation + rotate);
             poschange = -poschange;
 
             var pu = new DynamicPickup(1274, 23, new Vector(111), 3);
             
             Console.WriteLine("World: {0}", string.Join(",", pu.Worlds));
+        }
+
+        private static DynamicObject _obj;
+
+        [Command("attachcam")]
+        public static void AttachCamCommand(Player player)
+        {
+            _obj.AttachCameraToObject(player);
         }
     }
 }
