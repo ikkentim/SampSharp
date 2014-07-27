@@ -161,17 +161,17 @@ namespace SampSharp.Streamer.Natives
             out Color fontcolor, out Color backcolor, out ObjectMaterialTextAlign textalignment, int maxtext,
             int maxfontface)
         {
-            int holderMaterialSize, holderTextAlignment, holderFontColor, holderBackColor;
+            int holderMaterialSize, holderTextAlignment, holderFontColor, holderBackColor, holderBold;
             int retval = Native.CallNative("GetDynamicObjectMaterialText", new[] {10, 11},
                 __arglist(
-                    objectid, materialindex, out text, out holderMaterialSize, out fontface, out fontsize, out bold,
+                    objectid, materialindex, out text, out holderMaterialSize, out fontface, out fontsize, out holderBold,
                     out holderFontColor, out holderBackColor, out holderTextAlignment, maxtext, maxfontface));
 
             materialsize = (ObjectMaterialSize) holderMaterialSize;
             textalignment = (ObjectMaterialTextAlign) holderTextAlignment;
             fontcolor = holderFontColor;
             backcolor = holderBackColor;
-
+            bold = holderBold != 0;
             return retval;
         }
 

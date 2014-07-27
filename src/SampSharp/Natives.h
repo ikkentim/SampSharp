@@ -273,18 +273,20 @@ cell call_native_array(MonoString *name, MonoString *format, MonoArray *args, Mo
     int size_idx = 0;
 
     string amx_format;
-
     for (int i = 0; i < len; i++) {
 
         switch (format_str[i]) {
-        case 'i': /* integer */
         case 'd': /* integer */
         case 'b': /* boolean */ {
             params[i] = mono_object_unbox(mono_array_get(args, MonoObject *, i));
 			amx_format += format_str[i];
             break;
         }
-        
+        case 'D': /* integer reference */ {
+            params[i] = *(int **)mono_object_unbox(mono_array_get(args, MonoObject *, i));
+			amx_format += 'R';
+            break;
+        }
         case 'f': /* floating-point */ {
             params[i] = &amx_ftoc(*(float *)mono_object_unbox(
                 mono_array_get(args, MonoObject *, i)));
@@ -473,6 +475,10 @@ cell call_native_array(MonoString *name, MonoString *format, MonoArray *args, Mo
 
     for (int i = 0; i < len; i++) {
         switch (format_str[i]) {
+        case 'D': {
+            **(int **)mono_object_unbox(mono_array_get(args, MonoObject *, i)) = *(int *)params[i];
+            break;
+        }
         case 'S': {
             *mono_array_get(args, MonoString **, i) = mono_string_new(mono_domain_get(), (char *)params[i]);
             break;
