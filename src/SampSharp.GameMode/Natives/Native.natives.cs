@@ -47,6 +47,9 @@ namespace SampSharp.GameMode.Natives
                     case "System.Int32":
                         format += "d";
                         break;
+                    case "System.Int32&":
+                        format += "D";
+                        break;
                     case "System.Int32[]":
                         format += "a";
                         lengthList.Add(idx + 1);
@@ -151,7 +154,7 @@ namespace SampSharp.GameMode.Natives
             int[] sizes;
             string format = FormatNativeList(out args, out sizes, __arglist);
 
-            return CallNativeArray(name, format, args, sizes) > 0;
+            return CallNativeArray(name, format, args, sizes) != 0;
         }
 
         /// <summary>
@@ -166,7 +169,7 @@ namespace SampSharp.GameMode.Natives
             int[] sizes;
             string format = FormatNativeList(out args, out sizes, __arglist);
 
-            return CallNativeArray(name, format, args, lengths) > 0;
+            return CallNativeArray(name, format, args, lengths) != 0;
         }
     }
 }
