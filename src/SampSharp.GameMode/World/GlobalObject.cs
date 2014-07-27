@@ -152,6 +152,22 @@ namespace SampSharp.GameMode.World
             Native.AttachObjectToVehicle(Id, vehicle.Id, offset, rotation);
         }
 
+        /// <summary>
+        ///     Attaches a player's camera to this GlobalObject.
+        /// </summary>
+        /// <param name="player">The player whose camera to attach to this GlobalObject.</param>
+        public virtual void AttachCameraToObject(Player player)
+        {
+            if (player == null)
+            {
+                throw new ArgumentNullException("player");
+            }
+
+            CheckDisposure();
+
+            Native.AttachCameraToObject(player.Id, Id);
+        }
+
         public static void Remove(Player player, int modelid, Vector position, float radius)
         {
             if (player == null)
