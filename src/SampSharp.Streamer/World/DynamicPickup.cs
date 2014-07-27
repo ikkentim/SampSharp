@@ -13,7 +13,6 @@
 
 using System;
 using System.Linq;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;
 using SampSharp.Streamer.Definitions;
 using SampSharp.Streamer.Events;
