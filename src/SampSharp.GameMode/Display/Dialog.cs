@@ -28,12 +28,12 @@ namespace SampSharp.GameMode.Display
         #region Fields
 
         /// <summary>
-        ///     Gets an ID this system will use.
+        ///     Gets the ID this system will use.
         /// </summary>
         protected const int DialogId = 10000;
 
         /// <summary>
-        ///     Gets an ID this system will use to hide Dialogs.
+        ///     Gets the ID this system will use to hide Dialogs.
         /// </summary>
         protected const int DialogHideId = -1;
 

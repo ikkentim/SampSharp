@@ -22,6 +22,9 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Display
 {
+    /// <summary>
+    ///     Represents a textdraw.
+    /// </summary>
     public class TextDraw : IdentifiedPool<TextDraw>, IIdentifyable
     {
         #region Fields

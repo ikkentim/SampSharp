@@ -34,7 +34,7 @@ namespace SampSharp.GameMode.Controllers
         }
 
         /// <summary>
-        ///     Registers the events this PlayerController wants to listen to.
+        ///     Registers the events this SyncController wants to listen to.
         /// </summary>
         /// <param name="gameMode">The running GameMode.</param>
         public void RegisterEvents(BaseMode gameMode)
@@ -44,7 +44,7 @@ namespace SampSharp.GameMode.Controllers
         }
 
         /// <summary>
-        ///     Start waiting for a gamemode tick to sync all resync requiests.
+        ///     Start waiting for a gamemode tick to sync all resync requests.
         /// </summary>
         public static void Start()
         {
