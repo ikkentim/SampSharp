@@ -12,13 +12,11 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.World;
 using SampSharp.Streamer.Definitions;
-using SampSharp.Streamer.Natives;
 
 namespace SampSharp.Streamer.World
 {

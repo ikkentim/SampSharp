@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
+using System.Linq;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.SAMP;
@@ -24,35 +25,23 @@ namespace SampSharp.Streamer.World
 {
     public class DynamicObject : DynamicWorldObject<DynamicObject>, IGameObject
     {
-        #region Fields
-
-        public const int InvalidId = Misc.InvalidObjectId;
-
-        #endregion
-
-        #region Constructor
-
         public DynamicObject(int id)
         {
             Id = id;
         }
 
-        public DynamicObject(int modelid, Vector position, Vector rotation = new Vector(), float drawDistance = 0.0f)
+        public DynamicObject(int modelid, Vector position, Vector rotation = new Vector(), int worldid = -1,
+            int interiorid = -1, Player player = null, float streamdistance = 200.0f, float drawdistance = 0.0f)
         {
-            ModelId = modelid;
-            DrawDistance = drawDistance;
-
-            Id = StreamerNative.CreateDynamicObject(modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z);
+            Id = StreamerNative.CreateDynamicObject(modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y,
+                rotation.Z, worldid, interiorid, player == null ? -1 : player.Id, streamdistance, drawdistance);
         }
 
-        #endregion
-
-        #region Properties
-
-        public virtual Vector Rotation
+        public DynamicObject(int modelid, Vector position, Vector rotation, float streamdistance, int[] worlds = null,
+            int[] interiors = null, Player[] players = null, float drawdistance = 0.0f)
         {
-            get { return StreamerNative.GetDynamicObjectRot(Id); }
-            set { StreamerNative.SetDynamicObjectRot(Id, value); }
+            Id = StreamerNative.CreateDynamicObjectEx(modelid, position.X, position.Y, position.Z, rotation.X,
+                rotation.Y, rotation.Z, drawdistance, streamdistance, worlds, interiors, players.Select(p => p.Id).ToArray());
         }
 
         public override StreamType StreamType
@@ -60,77 +49,38 @@ namespace SampSharp.Streamer.World
             get { return StreamType.Object; }
         }
 
-        public override Vector Position
-        {
-            get { return StreamerNative.GetDynamicObjectPos(Id); }
-            set { StreamerNative.SetDynamicObjectPos(Id, value); }
-        }
-
-        public virtual bool IsMoving
+        public bool IsMoving
         {
             get { return StreamerNative.IsDynamicObjectMoving(Id); }
         }
 
-        public virtual bool IsValid
+        public bool IsValid
         {
             get { return StreamerNative.IsValidDynamicObject(Id); }
         }
 
-        public virtual int ModelId { get; private set; }
+        public int ModelId
+        {
+            get { return GetInteger(StreamerDataType.ModelId); }
+            set { SetInteger(StreamerDataType.ModelId, value); }
+        }
 
-        public virtual float DrawDistance { get; private set; }
+        public float DrawDistance
+        {
+            get { return GetFloat(StreamerDataType.DrawDistance); }
+            set { SetFloat(StreamerDataType.DrawDistance, value); }
+        }
 
-        #endregion
-
-        #region Events
+        public Vector Rotation
+        {
+            get { return StreamerNative.GetDynamicObjectRot(Id); }
+            set { StreamerNative.SetDynamicObjectRot(Id, value); }
+        }
 
         public event EventHandler<DynamicObjectEventArgs> Moved;
         public event EventHandler<PlayerSelectDynamicObjectEventArgs> Selected;
         public event EventHandler<PlayerEditDynamicObjectEventArgs> Edited;
         public event EventHandler<PlayerShootDynamicObjectEventArgs> Shot;
-
-        #endregion
-
-        #region Methods
-
-        public virtual int Move(Vector position, float speed, Vector rotation)
-        {
-            return StreamerNative.MoveDynamicObject(Id, position, speed, rotation);
-        }
-
-        public virtual int Move(Vector position, float speed)
-        {
-            return StreamerNative.MoveDynamicObject(Id, position, speed);
-        }
-
-        public virtual void Stop()
-        {
-            StreamerNative.StopDynamicObject(Id);
-        }
-
-        public virtual void SetMaterial(int materialindex, int modelid, string txdname, string texturename,
-            Color materialcolor)
-        {
-            StreamerNative.SetDynamicObjectMaterial(Id, materialindex, modelid, txdname, texturename,
-                materialcolor.GetColorValue(ColorFormat.ARGB));
-        }
-
-        public virtual void SetMaterialText(string text, int materialindex, ObjectMaterialSize materialsize,
-            string fontface, int fontsize, bool bold, Color foreColor, Color backColor,
-            ObjectMaterialTextAlign textalignment)
-        {
-            StreamerNative.SetDynamicObjectMaterialText(Id, materialindex, text, materialsize, fontface, fontsize, bold,
-                foreColor.GetColorValue(ColorFormat.ARGB), backColor.GetColorValue(ColorFormat.ARGB),
-                textalignment);
-        }
-
-        public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
-        {
-            if (vehicle == null)
-                throw new NullReferenceException("vehicle cannot be null");
-
-            StreamerNative.AttachDynamicObjectToVehicle(Id, vehicle.Id, offset, rotation);
-        }
 
         protected override void Dispose(bool disposing)
         {
@@ -139,25 +89,89 @@ namespace SampSharp.Streamer.World
             StreamerNative.DestroyDynamicObject(Id);
         }
 
+        public int Move(Vector position, float speed, Vector rotation)
+        {
+            return StreamerNative.MoveDynamicObject(Id, position, speed, rotation);
+        }
+
+        public int Move(Vector position, float speed)
+        {
+            return StreamerNative.MoveDynamicObject(Id, position, speed);
+        }
+
+        public void Stop()
+        {
+            StreamerNative.StopDynamicObject(Id);
+        }
+
+        public void SetMaterial(int materialindex, int modelid, string txdname, string texturename,
+            Color materialcolor = new Color())
+        {
+            StreamerNative.SetDynamicObjectMaterial(Id, materialindex, modelid, txdname, texturename, materialcolor);
+        }
+
+        public void GetMaterial(int materialindex, out int modelid, out string txdname, out string texturename,
+            out Color materialcolor)
+        {
+            StreamerNative.GetDynamicObjectMaterial(Id, materialindex, out modelid, out txdname, out texturename,
+                out materialcolor, 64, 64);
+        }
+
+        public void SetMaterialText(int materialindex, string text,
+            ObjectMaterialSize materialsize = ObjectMaterialSize.X256X128, string fontface = "Arial", int fontsize = 24,
+            bool bold = true, Color fontcolor = new Color(), Color backcolor = new Color(),
+            ObjectMaterialTextAlign textalignment = ObjectMaterialTextAlign.Center)
+        {
+            StreamerNative.SetDynamicObjectMaterialText(Id, materialindex, text, materialsize, fontface, fontsize, bold,
+                fontcolor, backcolor, textalignment);
+        }
+
+        public void GetMaterialText(int materialindex, out string text, out ObjectMaterialSize materialSize,
+            out string fontface, out int fontsize, out bool bold, out Color fontcolor, out Color backcolor,
+            out ObjectMaterialTextAlign textalignment)
+        {
+            StreamerNative.GetDynamicObjectMaterialText(Id, materialindex, out text, out materialSize, out fontface,
+                out fontsize, out bold, out fontcolor, out backcolor, out textalignment, 1024, 64);
+        }
+
         public virtual void Edit(Player player)
         {
-            if (player == null)
-                throw new NullReferenceException("player cannot be null");
+            CheckDisposure();
 
-            StreamerNative.EditDynamicObject(player.Id, Id);
+            Native.EditPlayerObject(player.Id, Id);
         }
 
         public static void Select(Player player)
         {
             if (player == null)
-                throw new NullReferenceException("player cannot be null");
+            {
+                throw new ArgumentNullException("player");
+            }
 
             Native.SelectObject(player.Id);
         }
 
-        #endregion
+        public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
+        {
+            CheckDisposure();
 
-        #region Event raisers
+            if (vehicle == null)
+                throw new ArgumentNullException("vehicle");
+
+            StreamerNative.AttachDynamicObjectToVehicle(Id, vehicle.Id, offset, rotation);
+        }
+
+        public virtual void AttachCameraToObject(Player player)
+        {
+            if (player == null)
+            {
+                throw new ArgumentNullException("player");
+            }
+
+            CheckDisposure();
+
+            StreamerNative.AttachCameraToDynamicObject(player.Id, Id);
+        }
 
         public virtual void OnMoved(DynamicObjectEventArgs e)
         {
@@ -182,7 +196,5 @@ namespace SampSharp.Streamer.World
             if (Shot != null)
                 Shot(this, e);
         }
-
-        #endregion
     }
 }
