@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -18,11 +19,27 @@ using SampSharp.GameMode.Pools;
 
 namespace SampSharp.GameMode.SAMP.Commands
 {
+    /// <summary>
+    /// Represents a group of commands.
+    /// </summary>
     public sealed class CommandGroup : Pool<CommandGroup>
     {
-        public CommandGroup(string name)
+        /// <summary>
+        /// Initializes a new instance of the CommandGroup class.
+        /// </summary>
+        /// <param name="name">The name of the command group.</param>
+        /// <param name="alias">An alias for the command group.</param>
+        /// <param name="parentGroup">The parent command group of the command group.</param>
+        public CommandGroup(string name, string alias = null, CommandGroup parentGroup = null)
         {
+            if (name == null)
+            {
+                throw new ArgumentNullException("name");
+            }
+
             Name = name;
+            Alias = alias;
+            ParentGroup = parentGroup;
 
             foreach (var cmd in Command.GetAll<DetectedCommand>().Where(c => c.Group == null))
             {
@@ -35,23 +52,24 @@ namespace SampSharp.GameMode.SAMP.Commands
             }
         }
 
-        public CommandGroup(string name, string alias) : this(name)
-        {
-            Alias = alias;
-        }
-
-        public CommandGroup(string name, string alias, CommandGroup commandGroup)
-            : this(name, alias)
-        {
-            ParentGroup = commandGroup;
-        }
-
+        /// <summary>
+        /// Gets or sets the name of this CommandGroup.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Gets or sets the alias of this CommandGroup.
+        /// </summary>
         public string Alias { get; set; }
 
+        /// <summary>
+        /// Gets or sets the parent CommandGroup of this CommandGroup.
+        /// </summary>
         public CommandGroup ParentGroup { get; set; }
 
+        /// <summary>
+        /// Gets the paths to this command.
+        /// </summary>
         public IEnumerable<string> CommandPaths
         {
             get
@@ -80,30 +98,24 @@ namespace SampSharp.GameMode.SAMP.Commands
             }
         }
 
+        /// <summary>
+        /// Gets the main path to this CommandGroup.
+        /// </summary>
         public string CommandPath
         {
             get { return ParentGroup == null ? Name : string.Format("{0} {1}", ParentGroup.CommandPath, Name); }
         }
 
-        public static CommandGroup Register(string name)
+        /// <summary>
+        /// Initializes a new instance of the CommandGroup class.
+        /// </summary>
+        /// <param name="name">The name of the command group.</param>
+        /// <param name="alias">An alias for the command group.</param>
+        /// <param name="parentGroup">The parent command group of the command group.</param>
+        /// <returns>The new CommandGroup instance.</returns>
+        public static CommandGroup Register(string name, string alias = null, CommandGroup parentGroup = null)
         {
-            return new CommandGroup(name);
-        }
-
-        public static CommandGroup Register(string name, string alias)
-        {
-            return new CommandGroup(name, alias);
-        }
-
-
-        public static CommandGroup Register(string name, CommandGroup parentGroup)
-        {
-            return new CommandGroup(name, null, parentGroup);
-        }
-
-        public static CommandGroup Register(string name, string alias, CommandGroup commandGroup)
-        {
-            return new CommandGroup(name, alias, commandGroup);
+            return new CommandGroup(name, alias, parentGroup);
         }
     }
 }
