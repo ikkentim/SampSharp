@@ -46,6 +46,7 @@
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\ITypeProvider.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\PickupController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\PlayerObjectController.cs" />
     <Compile Include="Controllers\PlayerTextDrawController.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="SAMP\Commands\FloatAttribute.cs" />
     <Compile Include="SAMP\Commands\PlayerAttribute.cs" />
     <Compile Include="Tools\Sync.cs" />
+    <Compile Include="World\Pickup.cs" />
     <Compile Include="World\VehicleModelInfo.cs" />
     <Compile Include="Definitions\VehicleCategory.cs" />
     <Compile Include="Display\Menu.cs" />

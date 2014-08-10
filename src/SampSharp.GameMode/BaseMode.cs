@@ -71,6 +71,7 @@ namespace SampSharp.GameMode
             controllers.Add(new TimerController());
             controllers.Add(new VehicleController());
             controllers.Add(new SyncController());
+            controllers.Add(new PickupController());
         }
 
         #endregion
