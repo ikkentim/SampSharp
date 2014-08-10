@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="Controllers\ObjectiveController.cs" />
+    <Compile Include="Controllers\PickupController.cs" />
     <Compile Include="Controllers\ResupplyController.cs" />
     <Compile Include="Controllers\RPlayerController.cs" />
     <Compile Include="Controllers\RVehicleController.cs" />

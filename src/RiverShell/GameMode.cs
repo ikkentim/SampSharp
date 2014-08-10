@@ -4,6 +4,7 @@ using RiverShell.World;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
 namespace RiverShell
@@ -191,6 +192,27 @@ namespace RiverShell
             Console.WriteLine("  SAMPSHARP PORT");
             Console.WriteLine("----------------------------------");
 
+            Pickup.CreateStatic(1240, 2, new Vector(2124.4734, -208.8074, 8.1500));
+            Pickup.CreateStatic(1240, 2, new Vector(2138.0786, -208.2986, 8.1500));
+            Pickup.CreateStatic(1242, 2, new Vector(2153.3616, -209.3678, 8.1490));
+
+            var adrenaline = Pickup.Create(1241, 1, new Vector(2119.3833, -220.9392, 8.1500));
+            adrenaline.PlayerPickup += (sender, args) =>
+            {
+                var player = args.Player;
+
+                player.GiveWeapon(Weapon.Sniper, 100);
+                player.GiveWeapon(Weapon.M4, 100);
+                player.GiveWeapon(Weapon.Shotgun, 100);
+                player.GiveWeapon(Weapon.Rifle, 1);
+                player.GiveWeapon(Weapon.Deagle, 250);
+
+                player.Health = 100;
+                player.Armour = 100;
+
+                player.SendClientMessage("Restored!");
+            };
+
             return base.OnGameModeInit();
         }
 
@@ -207,7 +229,16 @@ namespace RiverShell
             controllers.Add(new TeamController());
             controllers.Add(new ResupplyController());
             controllers.Add(new ObjectiveController());
+        }
 
+        [Command("hello")]
+        public static void TestCommand(Player player)
+        {
+            player.SendClientMessage("Hello world");
+
+            var vehicle = Vehicle.Create(400, player.Position, 0f, 0, 0);
+            player.SendClientMessage("Is null? "  + (vehicle == null));
+            player.PutInVehicle(vehicle, 1);
         }
     }
 }

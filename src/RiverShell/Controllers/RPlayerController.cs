@@ -7,7 +7,7 @@ namespace RiverShell.Controllers
     {
         public override void RegisterTypes()
         {
-            RPlayer.Register<RPlayer>();
+            RPlayer.Register<RPlayer>();   
         }
     }
 }
