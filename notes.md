@@ -7,7 +7,6 @@ Bugs:
 Missing Classes:
 ------
 
-* Pickup
  
 
 Missing Documention:
