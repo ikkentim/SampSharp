@@ -83,8 +83,20 @@ Load(void **ppData) {
 
     MonoImage *image = mono_assembly_get_image(
         mono_assembly_open(PathUtil::GetPathInBin(path).c_str(), NULL));
-    SampSharp::Load(root, image,
-        mono_class_from_name(image, name_space.c_str(), klass.c_str()));
+
+	auto class_from_name = mono_class_from_name(image, name_space.c_str(), klass.c_str());
+
+	if (class_from_name == NULL)
+	{
+		logprintf("[SampShart] %s::%s is not a valid Namespace:Class combination inside \"%s\".",
+			(char *)name_space.c_str(),
+			(char *)klass.c_str(),
+			(char *)path.c_str());
+
+		return true;
+	}
+
+	SampSharp::Load(root, image, class_from_name);
 
 	logprintf("[SampSharp] SampSharp is ready!\n");
 	return true;
