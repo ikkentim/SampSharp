@@ -20,15 +20,18 @@ namespace SampSharp.GameMode.Events
     /// </summary>
     public class UnoccupiedVehicleEventArgs : PlayerVehicleEventArgs
     {
-        public UnoccupiedVehicleEventArgs(int playerid, int vehicleid, int passengerSeat, Vector newPosition)
+        public UnoccupiedVehicleEventArgs(int playerid, int vehicleid, int passengerSeat, Vector newPosition, Vector newVelocity)
             : base(playerid, vehicleid)
         {
             PassengerSeat = passengerSeat;
             NewPosition = newPosition;
+            NewVelocity = newVelocity;
         }
 
         public int PassengerSeat { get; private set; }
 
         public Vector NewPosition { get; private set; }
+
+        public Vector NewVelocity { get; private set; }
     }
 }
