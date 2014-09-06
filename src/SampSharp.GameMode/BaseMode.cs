@@ -1307,11 +1307,14 @@ namespace SampSharp.GameMode
         /// <param name="newX">The new X coordinate of the vehicle.</param>
         /// <param name="newY">The new y coordinate of the vehicle.</param>
         /// <param name="newZ">The new z coordinate of the vehicle.</param>
+        /// <param name="velX">The new X velocity of the vehicle. <b>This parameter was added in 0.3z R4</b></param>
+        /// <param name="velY">The new Y velocity of the vehicle. <b>This parameter was added in 0.3z R4</b></param>
+        /// <param name="velZ">The new Z velocity of the vehicle. <b>This parameter was added in 0.3z R4</b></param>
         /// <returns>This callback does not handle returns.</returns>
         public virtual bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX,
-            float newY, float newZ)
+            float newY, float newZ, float velX, float velY, float velZ)
         {
-            var args = new UnoccupiedVehicleEventArgs(playerid, vehicleid, passengerSeat, new Vector(newX, newY, newZ));
+            var args = new UnoccupiedVehicleEventArgs(playerid, vehicleid, passengerSeat, new Vector(newX, newY, newZ), new Vector(velX, velY, velZ));
 
             if (UnoccupiedVehicleUpdated != null)
                 UnoccupiedVehicleUpdated(this, args);
