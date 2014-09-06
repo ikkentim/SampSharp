@@ -41,6 +41,7 @@ namespace SampSharp.GameMode.Controllers
                 (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnUnoccupiedUpdate(args);
             gameMode.VehicleStreamIn += (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnStreamIn(args);
             gameMode.VehicleStreamOut += (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnStreamOut(args);
+            gameMode.TrailerUpdate += (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnTrailerUpdate(args);
         }
 
         /// <summary>
