@@ -673,6 +673,12 @@ namespace SampSharp.GameMode
         public event EventHandler<PlayerVehicleEventArgs> VehicleStreamOut;
 
         /// <summary>
+        ///     Occurs when the <see cref="OnTrailerUpdate" /> callback is being called.
+        ///     This callback is called when a player sent a trailer update.
+        /// </summary>
+        public event EventHandler<PlayerVehicleEventArgs> TrailerUpdate;
+
+        /// <summary>
         ///     Occurs when the <see cref="OnDialogResponse" /> callback is being called.
         ///     This callback is called when a player responds to a dialog shown using <see cref="Native.ShowPlayerDialog" /> by
         ///     either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
@@ -1492,6 +1498,30 @@ namespace SampSharp.GameMode
 
             if (VehicleStreamOut != null)
                 VehicleStreamOut(this, args);
+
+            return args.Success;
+        }
+
+        /// <summary>
+        ///     This callback is called when a player sent a trailer update.
+        /// </summary>
+        /// <param name="playerId">The ID of the player who sent a trailer update</param>
+        /// <param name="vehicleId">The Trailer being updated</param>
+        /// <returns>
+        ///     Return false if the update from this player and vehicle will not be replicated to other clients 
+        ///     or return true Indicates that this update can be processed normally and sent to other players.
+        /// </returns>
+        /// <remarks>
+        ///     The trailer's position will still be updated internally on the server
+        /// </remarks>
+        public virtual bool OnTrailerUpdate(int playerId, int vehicleId)
+        {
+            var args = new PlayerVehicleEventArgs(playerId, vehicleId);
+
+            if (TrailerUpdate != null)
+            {
+                TrailerUpdate(this, args);
+            }
 
             return args.Success;
         }
