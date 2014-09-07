@@ -45,5 +45,37 @@ namespace SampSharp.GameMode.SAMP
         {
             Native.UnBlockIpAddress(ip);
         }
+
+        /// <summary>
+        /// Retrieve a server variable.
+        /// 
+        /// </summary>
+        /// <typeparam name="T">
+        /// If <see cref="T"/> is <see cref="int"/> the <see cref="varName"/> will be readed as an int variable
+        /// If <see cref="T"/> is <see cref="bool"/> the <see cref="varName"/> will be readed as an boolean variable
+        /// If <see cref="T"/> is <see cref="string"/> the <see cref="varName"/> will be readed as an string variable
+        /// </typeparam>
+        /// <param name="varName">The server variable to read</param>
+        /// <returns>The value of the server variable</returns>
+        /// <exception cref="NotSupportedException"><see cref="T"/> is not supported by SA:MP</exception>
+        public static T Get<T>(string varName)
+        {
+            if (typeof(T) == typeof(string))
+            {
+                return (T)Convert.ChangeType(Native.GetServerVarAsString(varName), TypeCode.String);
+            }
+            
+            if (typeof (T) == typeof (bool))
+            {
+                return (T)Convert.ChangeType(Native.GetServerVarAsBool(varName), TypeCode.Boolean);
+            }
+            
+            if (typeof (T) == typeof (int))
+            {
+                return (T)Convert.ChangeType(Native.GetServerVarAsInt(varName), TypeCode.Int32);
+            }
+
+            throw new NotSupportedException("Type " + typeof(T) + " is not supported by SA:MP");
+        }
     }
 }
