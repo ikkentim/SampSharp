@@ -1,7 +1,0 @@
-[submodule "sampgdk"]
-	path = sampgdk
-	url = git://github.com/Zeex/sampgdk.git
-	ignore = dirty
-[submodule "sdk"]
-	path = sdk
-	url = git://github.com/Zeex/samp-plugin-sdk.git
