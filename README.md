@@ -33,6 +33,10 @@ This repository contains the following projects:
 
   One of the example gamemodes provided by SA-MP, converted to C#. This is a gamemode I use to check whether all classes and systems are efficient and usefull. The code may change when I add features to SampSharp.
 
+* Grandlarc
+
+  Another gamemode available in the default server package, converted to C#.
+
 Licence
 ===
 This is free and unencumbered software released into the public domain.
