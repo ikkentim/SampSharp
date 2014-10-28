@@ -1,4 +1,4 @@
-prefix=E:/Applications/Mono-3.2.3
+prefix=${pcfiledir}/../..
 assemblies_dir=${prefix}/lib/mono-source-libs
 Sources=${assemblies_dir}/getline.cs
 

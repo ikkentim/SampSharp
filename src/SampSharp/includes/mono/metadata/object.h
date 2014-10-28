@@ -26,7 +26,7 @@ typedef struct _MonoDynamicImage MonoDynamicImage;
 typedef struct _MonoReflectionMethodBody MonoReflectionMethodBody;
 typedef struct _MonoAppContext MonoAppContext;
 
-typedef struct {
+typedef struct _MonoObject {
 	MonoVTable *vtable;
 	MonoThreadsSync *synchronisation;
 } MonoObject;
@@ -127,6 +127,9 @@ mono_string_new_wrapper	    (const char *text);
 MONO_API MonoString*
 mono_string_new_len	    (MonoDomain *domain, const char *text, unsigned int length);
 
+MONO_API MonoString*
+mono_string_new_utf32	    (MonoDomain *domain, const mono_unichar4 *text, int32_t len);
+
 MONO_API char *
 mono_string_to_utf8	    (MonoString *string_obj);
 
@@ -136,8 +139,14 @@ mono_string_to_utf8_checked (MonoString *string_obj, MonoError *error);
 MONO_API mono_unichar2 *
 mono_string_to_utf16	    (MonoString *string_obj);
 
+MONO_API mono_unichar4 *
+mono_string_to_utf32	    (MonoString *string_obj);
+
 MONO_API MonoString *
 mono_string_from_utf16	    (mono_unichar2 *data);
+
+MONO_API MonoString *
+mono_string_from_utf32	    (mono_unichar4 *data);
 
 MONO_API mono_bool
 mono_string_equal           (MonoString *s1, MonoString *s2);
@@ -244,6 +253,9 @@ mono_runtime_run_main	    (MonoMethod *method, int argc, char* argv[],
 MONO_API int
 mono_runtime_exec_main	    (MonoMethod *method, MonoArray *args,
 			     MonoObject **exc);
+
+MONO_API int
+mono_runtime_set_main_args  (int argc, char* argv[]);
 
 /* The following functions won't be available with mono was configured with remoting disabled. */
 /*#ifndef DISABLE_REMOTING */
