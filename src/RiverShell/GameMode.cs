@@ -4,6 +4,7 @@ using RiverShell.World;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
 namespace RiverShell
@@ -207,7 +208,6 @@ namespace RiverShell
             controllers.Add(new TeamController());
             controllers.Add(new ResupplyController());
             controllers.Add(new ObjectiveController());
-
         }
     }
 }
