@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Iesi.Collections</id>
+    <version>4.0.1.4000</version>
+    <authors>Aidant Systems,  Jason Smith,  NHibernate community</authors>
+    <owners>Aidant Systems,  Jason Smith,  NHibernate community</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The System.Collections namespace in the .NET Framework provides a number of collection types that are extremely useful for manipulating data in memory. However, some specialized		implementations of ISet are not available. Iesi.Collections 4.0 for .Net 4.0 contains the LinkedHashSet (preserves insertion order), the ReadOnlySet and the SynchronizedSet. The latter two wrap an actual set.</description>
+    <summary>Additional implementations of System.Collections.Generic.ISet&lt;T&gt;.</summary>
+    <language>en-US</language>
+    <tags>Collections</tags>
+  </metadata>
+</package>
