@@ -5,6 +5,7 @@
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/mono-debug.h>
 #include <mono/metadata/debug-helpers.h>
+#include <mono/utils/mono-logger.h>
 
 #include "SampSharp.h"
 #include "ConfigReader.h"
@@ -54,6 +55,7 @@ Load(void **ppData) {
         PathUtil::GetConfigDirectory().c_str());
 	#endif
 
+    //mono_trace_set_level_string("debug");
 	mono_debug_init(MONO_DEBUG_FORMAT_MONO);
 	MonoDomain *root = mono_jit_init(PathUtil::GetPathInBin(path).c_str());
 
@@ -80,8 +82,9 @@ Load(void **ppData) {
 		(char *)klass.c_str(), 
 		(char *)path.c_str());
 
-    MonoImage *image = mono_assembly_get_image(
-        mono_assembly_open(PathUtil::GetPathInBin(path).c_str(), NULL));
+    MonoAssembly *assm = mono_assembly_open(PathUtil::GetPathInBin(path).c_str(), NULL);
+    MonoImage *image = mono_assembly_get_image(assm);
+    
     SampSharp::Load(root, image,
         mono_class_from_name(image, name_space.c_str(), klass.c_str()));
 
