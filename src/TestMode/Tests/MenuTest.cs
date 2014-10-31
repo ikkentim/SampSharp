@@ -27,7 +27,7 @@ namespace TestMode.Tests
         [Command("menu")]
         public static bool MenuCommand(Player player)
         {
-            Menu m = new Menu("Test menu", 0, 0);
+            var m = new Menu("Test menu", 0, 0);
 
             m.Columns.Add(new MenuColumn(100));
 

@@ -1,10 +1,22 @@
-﻿using System;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using RiverShell.Controllers;
 using RiverShell.World;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
 namespace RiverShell
@@ -21,16 +33,18 @@ namespace RiverShell
             FixedSpectateLookAtPosition = new Vector(2220.9978, -273.1861, 61.4606),
             ResupplyPosition = new Vector(2140.83f, -235.13f, 7.13f)
         };
+
         public static Team GreenTeam = new Team
-            {
-                Id = 2,
-                Color = 0x77CC77FF,
-                GameTextTeamName = "~g~GREEN ~w~team",
-                Target = new Vector(2135.7368f, -179.8811f, -0.5323f),
-                FixedSpectatePosition = new Vector(2274.8467, 591.3257, 30.1311),
-                FixedSpectateLookAtPosition = new Vector(2275.0503, 590.3463, 29.9460),
-                ResupplyPosition = new Vector(2318.73f, 590.96f, 6.75f)
-            };
+        {
+            Id = 2,
+            Color = 0x77CC77FF,
+            GameTextTeamName = "~g~GREEN ~w~team",
+            Target = new Vector(2135.7368f, -179.8811f, -0.5323f),
+            FixedSpectatePosition = new Vector(2274.8467, 591.3257, 30.1311),
+            FixedSpectateLookAtPosition = new Vector(2275.0503, 590.3463, 29.9460),
+            ResupplyPosition = new Vector(2318.73f, 590.96f, 6.75f)
+        };
+
         public static bool ObjectiveReached;
 
         public override bool OnGameModeInit()
@@ -46,16 +60,22 @@ namespace RiverShell
             DisableInteriorEnterExits();
 
             // Green classes
-            AddPlayerClass(162, new Vector(2117.0129, -224.4389, 8.15), 0, Weapon.M4, 100, Weapon.MP5, 200, Weapon.Sniper, 10);
-            AddPlayerClass(157, new Vector(2148.6606, -224.3336, 8.15), 347.1396f, Weapon.M4, 100, Weapon.MP5, 200, Weapon.Sniper, 10);
+            AddPlayerClass(162, new Vector(2117.0129, -224.4389, 8.15), 0, Weapon.M4, 100, Weapon.MP5, 200,
+                Weapon.Sniper, 10);
+            AddPlayerClass(157, new Vector(2148.6606, -224.3336, 8.15), 347.1396f, Weapon.M4, 100, Weapon.MP5, 200,
+                Weapon.Sniper, 10);
 
             // Blue classes
-            AddPlayerClass(154, new Vector(2352.9873, 580.3051, 7.7813), 178.1424f, Weapon.M4, 100, Weapon.MP5, 200, Weapon.Sniper, 10);
-            AddPlayerClass(138, new Vector(2281.1504, 567.6248, 7.7813), 163.7289f, Weapon.M4, 100, Weapon.MP5, 200, Weapon.Sniper, 10);
+            AddPlayerClass(154, new Vector(2352.9873, 580.3051, 7.7813), 178.1424f, Weapon.M4, 100, Weapon.MP5, 200,
+                Weapon.Sniper, 10);
+            AddPlayerClass(138, new Vector(2281.1504, 567.6248, 7.7813), 163.7289f, Weapon.M4, 100, Weapon.MP5, 200,
+                Weapon.Sniper, 10);
 
             // Objective vehicles
-            BlueTeam.TargetVehicle = Vehicle.Create(453, new Vector(2184.7156, -188.5401, -0.0239), 0.0000f, 114, 1, 100); // gr reefer
-            GreenTeam.TargetVehicle = Vehicle.Create(453, new Vector(2380.0542, 535.2582, -0.0272), 178.4999f, 79, 7, 100);// bl reefer
+            BlueTeam.TargetVehicle = Vehicle.Create(453, new Vector(2184.7156, -188.5401, -0.0239), 0.0000f, 114, 1, 100);
+                // gr reefer
+            GreenTeam.TargetVehicle = Vehicle.Create(453, new Vector(2380.0542, 535.2582, -0.0272), 178.4999f, 79, 7,
+                100); // bl reefer
 
             // Green Dhingys
             Vehicle.Create(473, new Vector(2096.0833, -168.7771, 0.3528), 4.5000f, 114, 1, 100);
@@ -170,7 +190,7 @@ namespace RiverShell
             new GlobalObject(17029, new Vector(2141.10, -81.30, -2.41), new Vector(5.94, 7.56, 39.54));
             new GlobalObject(17031, new Vector(2277.07, 399.31, -1.65), new Vector(-2.22, -4.80, -121.74));
             new GlobalObject(17026, new Vector(2072.75, -224.40, -5.25), new Vector(0.00, 0.00, -41.22));
-            
+
             // Ramps
             new GlobalObject(1632, new Vector(2131.97, 110.24, 0.00), new Vector(0.00, 0.00, 153.72));
             new GlobalObject(1632, new Vector(2124.59, 113.69, 0.00), new Vector(0.00, 0.00, 157.56));

@@ -13,7 +13,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
@@ -44,7 +43,7 @@ namespace TestMode
 
             AddPlayerClass(65, new Vector(5), 0);
 
-            foreach (var test in _tests)
+            foreach (ITest test in _tests)
             {
                 Console.WriteLine("=========");
                 Console.WriteLine("Starting test: {0}", test);
@@ -59,7 +58,7 @@ namespace TestMode
         {
             base.LoadControllers(controllers);
 
-            foreach (var test in _tests.OfType<IControllerTest>())
+            foreach (IControllerTest test in _tests.OfType<IControllerTest>())
                 test.LoadControllers(controllers);
         }
     }

@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System.Collections.Generic;
 using System.Linq;
 using SampSharp.GameMode.World;
 
@@ -39,7 +40,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             int id;
             Player player = null;
-            var word = (output as string).ToLower();
+            string word = (output as string).ToLower();
 
             /*
              * Check whether the word is not a number.
@@ -47,7 +48,7 @@ namespace SampSharp.GameMode.SAMP.Commands
              */
             if (!int.TryParse(word, out id))
             {
-                var players = Player.All.Where(p => p.Name.ToLower().Contains(word.ToLower()));
+                IEnumerable<Player> players = Player.All.Where(p => p.Name.ToLower().Contains(word.ToLower()));
                 if (players.Count() == 1)
                 {
                     player = players.First();

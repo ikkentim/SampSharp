@@ -1,10 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using System.IO;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using Grandlarc.Controllers;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
@@ -115,21 +123,22 @@ namespace Grandlarc
         {
             if (!Directory.Exists("scriptfiles/vehicles/"))
             {
-                Console.WriteLine("Vehicles folder doesn't exists. Remember to copy this folder to insert vehicles in the gamemode!");
+                Console.WriteLine(
+                    "Vehicles folder doesn't exists. Remember to copy this folder to insert vehicles in the gamemode!");
                 return;
             }
 
-            var files = Directory.GetFiles("scriptfiles/vehicles/");
-            var totalVehicles = 0;
-            
-            foreach (var file in files)
+            string[] files = Directory.GetFiles("scriptfiles/vehicles/");
+            int totalVehicles = 0;
+
+            foreach (string file in files)
             {
-                foreach (var line in File.ReadLines(file))
+                foreach (string line in File.ReadLines(file))
                 {
-                    var tokens = line.Split(',');
+                    string[] tokens = line.Split(',');
 
                     // the sa-mp team thinks that was funny to put a ; at the end of the line *-*
-                    var endOfLineDelimiter = tokens[6].IndexOf(';');
+                    int endOfLineDelimiter = tokens[6].IndexOf(';');
 
                     Vehicle.CreateStatic(
                         int.Parse(tokens[0]),
@@ -138,8 +147,8 @@ namespace Grandlarc
                         int.Parse(tokens[5]),
                         int.Parse(tokens[6].Substring(0,
                             endOfLineDelimiter != -1 ? endOfLineDelimiter - 1 : tokens[6].Length)
-                        )
-                    );
+                            )
+                        );
 
                     ++totalVehicles;
                 }
@@ -155,12 +164,12 @@ namespace Grandlarc
 
             SanFierroTextDraw = new TextDraw(10.0f, 380.0f, "San Fierro");
             InitCitySelectTextDraw(SanFierroTextDraw);
-            
+
             LasVenturasTextDraw = new TextDraw(10.0f, 380.0f, "Las Venturas");
             InitCitySelectTextDraw(LasVenturasTextDraw);
 
-            HelpSpawnTextdraw = new TextDraw(10.0f, 415.0f, 
-                    "Press ~b~~k~~GO_LEFT~ ~w~or ~b~~k~~GO_RIGHT~ ~w~to switch cities.~n~ Press ~r~~k~~PED_FIREWEAPON~ ~w~to select.")
+            HelpSpawnTextdraw = new TextDraw(10.0f, 415.0f,
+                "Press ~b~~k~~GO_LEFT~ ~w~or ~b~~k~~GO_RIGHT~ ~w~to switch cities.~n~ Press ~r~~k~~PED_FIREWEAPON~ ~w~to select.")
             {
                 UseBox = true,
                 BoxColor = 0x222222BB,

@@ -41,7 +41,8 @@ namespace SampSharp.Streamer.World
             int[] interiors = null, Player[] players = null, float drawdistance = 0.0f)
         {
             Id = StreamerNative.CreateDynamicObjectEx(modelid, position.X, position.Y, position.Z, rotation.X,
-                rotation.Y, rotation.Z, drawdistance, streamdistance, worlds, interiors, players.Select(p => p.Id).ToArray());
+                rotation.Y, rotation.Z, drawdistance, streamdistance, worlds, interiors,
+                players.Select(p => p.Id).ToArray());
         }
 
         public override StreamType StreamType
@@ -77,18 +78,6 @@ namespace SampSharp.Streamer.World
             set { StreamerNative.SetDynamicObjectRot(Id, value); }
         }
 
-        public event EventHandler<DynamicObjectEventArgs> Moved;
-        public event EventHandler<PlayerSelectDynamicObjectEventArgs> Selected;
-        public event EventHandler<PlayerEditDynamicObjectEventArgs> Edited;
-        public event EventHandler<PlayerShootDynamicObjectEventArgs> Shot;
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-
-            StreamerNative.DestroyDynamicObject(Id);
-        }
-
         public int Move(Vector position, float speed, Vector rotation)
         {
             return StreamerNative.MoveDynamicObject(Id, position, speed, rotation);
@@ -110,13 +99,6 @@ namespace SampSharp.Streamer.World
             StreamerNative.SetDynamicObjectMaterial(Id, materialindex, modelid, txdname, texturename, materialcolor);
         }
 
-        public void GetMaterial(int materialindex, out int modelid, out string txdname, out string texturename,
-            out Color materialcolor)
-        {
-            StreamerNative.GetDynamicObjectMaterial(Id, materialindex, out modelid, out txdname, out texturename,
-                out materialcolor, 64, 64);
-        }
-
         public void SetMaterialText(int materialindex, string text,
             ObjectMaterialSize materialsize = ObjectMaterialSize.X256X128, string fontface = "Arial", int fontsize = 24,
             bool bold = true, Color fontcolor = new Color(), Color backcolor = new Color(),
@@ -124,6 +106,25 @@ namespace SampSharp.Streamer.World
         {
             StreamerNative.SetDynamicObjectMaterialText(Id, materialindex, text, materialsize, fontface, fontsize, bold,
                 fontcolor, backcolor, textalignment);
+        }
+
+        public event EventHandler<DynamicObjectEventArgs> Moved;
+        public event EventHandler<PlayerSelectDynamicObjectEventArgs> Selected;
+        public event EventHandler<PlayerEditDynamicObjectEventArgs> Edited;
+        public event EventHandler<PlayerShootDynamicObjectEventArgs> Shot;
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            StreamerNative.DestroyDynamicObject(Id);
+        }
+
+        public void GetMaterial(int materialindex, out int modelid, out string txdname, out string texturename,
+            out Color materialcolor)
+        {
+            StreamerNative.GetDynamicObjectMaterial(Id, materialindex, out modelid, out txdname, out texturename,
+                out materialcolor, 64, 64);
         }
 
         public void GetMaterialText(int materialindex, out string text, out ObjectMaterialSize materialSize,

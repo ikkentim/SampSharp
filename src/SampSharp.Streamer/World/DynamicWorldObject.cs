@@ -38,7 +38,7 @@ namespace SampSharp.Streamer.World
             {
                 if (value == null)
                 {
-                    SetArray(StreamerDataType.InteriorId, new[] { -1 });
+                    SetArray(StreamerDataType.InteriorId, new[] {-1});
                     return;
                 }
                 SetArray(StreamerDataType.InteriorId, value.ToArray());
@@ -80,12 +80,16 @@ namespace SampSharp.Streamer.World
 
         public virtual IEnumerable<Player> Players
         {
-            get { return GetArray(StreamerDataType.PlayerId, 1024).Where(v => v != int.MinValue).Select(Player.FindOrCreate); }
+            get
+            {
+                return
+                    GetArray(StreamerDataType.PlayerId, 1024).Where(v => v != int.MinValue).Select(Player.FindOrCreate);
+            }
             set
             {
                 if (value == null)
                 {
-                    SetArray(StreamerDataType.PlayerId, new[] { -1 });
+                    SetArray(StreamerDataType.PlayerId, new[] {-1});
                     return;
                 }
                 SetArray(StreamerDataType.PlayerId, value.Select(p => p == null ? -1 : p.Id).ToArray());

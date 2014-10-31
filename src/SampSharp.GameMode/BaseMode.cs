@@ -1320,7 +1320,8 @@ namespace SampSharp.GameMode
         public virtual bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX,
             float newY, float newZ, float velX, float velY, float velZ)
         {
-            var args = new UnoccupiedVehicleEventArgs(playerid, vehicleid, passengerSeat, new Vector(newX, newY, newZ), new Vector(velX, velY, velZ));
+            var args = new UnoccupiedVehicleEventArgs(playerid, vehicleid, passengerSeat, new Vector(newX, newY, newZ),
+                new Vector(velX, velY, velZ));
 
             if (UnoccupiedVehicleUpdated != null)
                 UnoccupiedVehicleUpdated(this, args);
@@ -1508,7 +1509,7 @@ namespace SampSharp.GameMode
         /// <param name="playerId">The ID of the player who sent a trailer update</param>
         /// <param name="vehicleId">The Trailer being updated</param>
         /// <returns>
-        ///     Return false if the update from this player and vehicle will not be replicated to other clients 
+        ///     Return false if the update from this player and vehicle will not be replicated to other clients
         ///     or return true Indicates that this update can be processed normally and sent to other players.
         /// </returns>
         /// <remarks>

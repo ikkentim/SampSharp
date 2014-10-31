@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using SampSharp.GameMode.Helpers;
 
@@ -54,14 +55,14 @@ namespace SampSharp.GameMode.SAMP.Commands
             if (!base.Check(ref command, out output))
                 return false;
 
-            var word = (output as string).ToLower();
+            string word = (output as string).ToLower();
 
             /*
              * Find an enum value that contains the given word and select its index.
              */
-            var names = Type.GetEnumNames();
-            var values = Type.GetEnumValues();
-            var results =
+            string[] names = Type.GetEnumNames();
+            Array values = Type.GetEnumValues();
+            IEnumerable<string> results =
                 names.Where(
                     (e, i) => e.ToLower().Contains(word) || (TestForValue && values.GetValue(i).ToString() == word));
 

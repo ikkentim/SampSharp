@@ -39,8 +39,8 @@ namespace SampSharp.GameMode.SAMP.Commands
                 return false;
             }
 
-            var idx = command.IndexOf(' ');
-            var word = idx == -1 ? command : command.Substring(0, idx);
+            int idx = command.IndexOf(' ');
+            string word = idx == -1 ? command : command.Substring(0, idx);
 
             output = word;
             command = word == command ? string.Empty : command.Substring(word.Length);

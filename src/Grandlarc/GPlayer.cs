@@ -1,23 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
-using SampSharp.GameMode.SAMP;
-using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
 namespace Grandlarc
 {
     public class GPlayer : Player
     {
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
 
-        public City SelectedCity { get; private set; }
         public bool HasCitySelected;
         private DateTime lastSelectionTime;
 
@@ -25,6 +29,8 @@ namespace Grandlarc
         {
             SelectedCity = City.LosSantos;
         }
+
+        public City SelectedCity { get; private set; }
 
         public override void OnConnected(PlayerEventArgs e)
         {
@@ -42,7 +48,7 @@ namespace Grandlarc
 
             Interior = 0;
 
-            var randomPosition = random.Next(0, SpawnPositions.Positions[SelectedCity].Count);
+            int randomPosition = random.Next(0, SpawnPositions.Positions[SelectedCity].Count);
 
             Position = SpawnPositions.Positions[SelectedCity][randomPosition].Position;
             Rotation = new Vector(SpawnPositions.Positions[SelectedCity][randomPosition].Rotation);
@@ -79,7 +85,7 @@ namespace Grandlarc
         {
             base.OnRequestClass(e);
 
-            if(!HasCitySelected)
+            if (!HasCitySelected)
             {
                 lastSelectionTime = DateTime.Now;
                 ToggleSpectating(true);
@@ -89,7 +95,7 @@ namespace Grandlarc
                 e.Success = false;
                 return;
             }
-            
+
             ShowCharacterSelection();
             e.Success = true;
         }
@@ -101,7 +107,6 @@ namespace Grandlarc
             if (PlayerState == PlayerState.Spectating && !HasCitySelected)
             {
                 HandleCitySelection();
-                return;
             }
         }
 
@@ -124,8 +129,8 @@ namespace Grandlarc
                 GameMode.SanFierroTextDraw.Hide(this);
                 return;
             }
-            
-            var now = DateTime.Now;
+
+            DateTime now = DateTime.Now;
 
             if ((now - lastSelectionTime).Milliseconds < 150)
             {
@@ -158,7 +163,7 @@ namespace Grandlarc
                     GameMode.LasVenturasTextDraw.Hide(this);
                     GameMode.LosSantosTextDraw.Show(this);
                     GameMode.SanFierroTextDraw.Hide(this);
-                    break;            
+                    break;
                 case City.SanFierro:
                     Interior = 0;
                     CameraPosition = new Vector(-1300.8754, 68.0546, 129.4823);
@@ -167,7 +172,7 @@ namespace Grandlarc
                     GameMode.LasVenturasTextDraw.Hide(this);
                     GameMode.LosSantosTextDraw.Hide(this);
                     GameMode.SanFierroTextDraw.Show(this);
-                    break;           
+                    break;
                 case City.LasVenturas:
                     Interior = 0;
                     CameraPosition = new Vector(1310.6155, 1675.9182, 110.7390);

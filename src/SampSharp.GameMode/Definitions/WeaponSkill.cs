@@ -19,47 +19,57 @@ namespace SampSharp.GameMode.Definitions
     public enum WeaponSkill
     {
         /// <summary>
-        /// Pistol skills.
+        ///     Pistol skills.
         /// </summary>
         Pistol = 0,
+
         /// <summary>
-        /// Silenced pistol skills.
+        ///     Silenced pistol skills.
         /// </summary>
         PistolSilenced = 1,
+
         /// <summary>
-        /// Desert eagle skills.
+        ///     Desert eagle skills.
         /// </summary>
         DesertEagle = 2,
+
         /// <summary>
-        /// Shotgun skills.
+        ///     Shotgun skills.
         /// </summary>
         Shotgun = 3,
+
         /// <summary>
-        /// Sawn-off shotgun skills.
+        ///     Sawn-off shotgun skills.
         /// </summary>
         SawnoffShotgun = 4,
+
         /// <summary>
-        /// Combat shotgun skills.
+        ///     Combat shotgun skills.
         /// </summary>
         Spas12Shotgun = 5,
+
         /// <summary>
-        /// Micro uzi skills.
+        ///     Micro uzi skills.
         /// </summary>
         MicroUzi = 6,
+
         /// <summary>
-        /// MP5 skills.
+        ///     MP5 skills.
         /// </summary>
         MP5 = 7,
+
         /// <summary>
-        /// AK47 skills.
+        ///     AK47 skills.
         /// </summary>
         AK47 = 8,
+
         /// <summary>
-        /// M4 skills.
+        ///     M4 skills.
         /// </summary>
         M4 = 9,
+
         /// <summary>
-        /// Sniper rifle skills.
+        ///     Sniper rifle skills.
         /// </summary>
         SniperRifle = 10
     }

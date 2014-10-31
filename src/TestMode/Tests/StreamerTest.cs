@@ -24,6 +24,8 @@ namespace TestMode.Tests
 {
     public class StreamerTest : ITest, IControllerTest
     {
+        private static DynamicObject _obj;
+
         public void LoadControllers(ControllerCollection controllers)
         {
             Streamer.Load(controllers);
@@ -31,7 +33,7 @@ namespace TestMode.Tests
 
         public void Start(GameMode gameMode)
         {
-            var area =
+            DynamicArea area =
                 DynamicArea.CreatePolygon(new[]
                 {
                     new Vector(-1, -1, 0),
@@ -60,7 +62,7 @@ namespace TestMode.Tests
             racecheckpoint.Leave += (sender, args) => args.Player.SendClientMessage(Color.White, "Left RCP");
 
             new DynamicTextLabel("I am maroon", Color.Maroon, new Vector(0, 0, 5), 100.0f);
-            
+
             var rotate = new Vector(20);
             var poschange = new Vector(0, 0, 1f);
             _obj = new DynamicObject(12991, new Vector(15));
@@ -73,7 +75,8 @@ namespace TestMode.Tests
             Color c1, c2;
             ObjectMaterialTextAlign ta;
             _obj.GetMaterialText(1, out text, out size, out font, out fontsize, out bold, out c1, out c2, out ta);
-            Console.WriteLine("GetMaterialText: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}", text, size, font, fontsize, bold, c1, c2,
+            Console.WriteLine("GetMaterialText: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}", text, size, font, fontsize,
+                bold, c1, c2,
                 ta);
             _obj.Moved += (sender, args) =>
             {
@@ -85,11 +88,9 @@ namespace TestMode.Tests
             poschange = -poschange;
 
             var pu = new DynamicPickup(1274, 23, new Vector(111), 3);
-            
+
             Console.WriteLine("World: {0}", string.Join(",", pu.Worlds));
         }
-
-        private static DynamicObject _obj;
 
         [Command("attachcam")]
         public static void AttachCamCommand(Player player)
