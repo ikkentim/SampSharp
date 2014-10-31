@@ -35,10 +35,12 @@ Load(void **ppData) {
 	//read config
 	ConfigReader server_cfg("server.cfg");
     std::string gamemode = "gamemode/Default.GameMode.dll Default.GameMode:GameMode";
+    std::string trace_level = "error";
     std::string path, name_space, klass, symbols;
 
     server_cfg.GetOptionAsString("gamemode", gamemode);
 	server_cfg.GetOptionAsString("symbols", symbols);
+    server_cfg.GetOptionAsString("trace_level", trace_level);
 
     std::stringstream gamemode_stream(gamemode);
 	std::getline(gamemode_stream, path, ' ');
@@ -55,7 +57,7 @@ Load(void **ppData) {
         PathUtil::GetConfigDirectory().c_str());
 	#endif
 
-    //mono_trace_set_level_string("debug");
+    mono_trace_set_level_string(trace_level.c_str());
 	mono_debug_init(MONO_DEBUG_FORMAT_MONO);
 	MonoDomain *root = mono_jit_init(PathUtil::GetPathInBin(path).c_str());
 
