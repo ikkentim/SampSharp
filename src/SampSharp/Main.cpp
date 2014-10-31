@@ -79,9 +79,9 @@ Load(void **ppData) {
 	#endif
 
     //load gamemode
-	auto namespace_ctr = (char *)name_space.c_str();
-	auto klass_ctr = (char *)klass.c_str();
-	auto path_ctr = (char *)path.c_str();
+	char *namespace_ctr = (char *)name_space.c_str();
+    char *klass_ctr = (char *)klass.c_str();
+    char *path_ctr = (char *)path.c_str();
 
 	logprintf("[SampSharp] Loading gamemode: %s::%s from \"%s\".", 
 		namespace_ctr,
@@ -91,7 +91,7 @@ Load(void **ppData) {
     MonoImage *image = mono_assembly_get_image(
         mono_assembly_open(PathUtil::GetPathInBin(path).c_str(), NULL));
 
-	auto class_from_name = mono_class_from_name(image, namespace_ctr, klass_ctr);
+    MonoClass *class_from_name = mono_class_from_name(image, namespace_ctr, klass_ctr);
 
 	if (class_from_name == NULL)
 	{
