@@ -19,7 +19,7 @@ namespace BenchmarkMode.Tests
     {
         public void Run(GameMode gameMode)
         {
-            var v = Vehicle.Create(400, new Vector(), 0, -1, -1);
+            Vehicle v = Vehicle.Create(400, new Vector(), 0, -1, -1);
             v.Dispose();
         }
     }

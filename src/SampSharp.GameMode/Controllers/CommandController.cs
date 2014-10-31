@@ -16,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP.Commands;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers
 {
@@ -33,7 +34,7 @@ namespace SampSharp.GameMode.Controllers
             try
             {
                 //Detect commands in assembly containing the gamemode
-                foreach (var method in gameMode.GetType().Assembly.GetTypes().SelectMany(t => t.GetMethods())
+                foreach (MethodInfo method in gameMode.GetType().Assembly.GetTypes().SelectMany(t => t.GetMethods())
                     .Where(m => m.IsStatic && m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0))
                 {
                     new DetectedCommand(method, method.GetCustomAttribute<CommandAttribute>().IgnoreCase);
@@ -54,9 +55,9 @@ namespace SampSharp.GameMode.Controllers
         private void gameMode_PlayerCommandText(object sender, PlayerTextEventArgs e)
         {
             string text = e.Text.Substring(1);
-            var player = e.Player;
+            Player player = e.Player;
 
-            foreach (var cmd in Command.All.Where(c => c.HasPlayerPermissionForCommand(player)))
+            foreach (Command cmd in Command.All.Where(c => c.HasPlayerPermissionForCommand(player)))
             {
                 string args = text;
                 if (cmd.CommandTextMatchesCommand(ref args))

@@ -27,7 +27,7 @@ namespace TestMode.Tests
             CommandGroup.Register("tools", "t", CommandGroup.Register("test", "t"));
             CommandGroup.Register("vehicle", "v");
 
-            var cmd = Command.GetAll<DetectedCommand>().FirstOrDefault(c => c.Name == "console");
+            DetectedCommand cmd = Command.GetAll<DetectedCommand>().FirstOrDefault(c => c.Name == "console");
             Console.WriteLine("Command paths: {0}", string.Join(", ", cmd.CommandPaths));
 
             gameMode.OnPlayerCommandText(new Player(999).Id, "/vehicle list");
@@ -63,7 +63,7 @@ namespace TestMode.Tests
         {
             player.SendClientMessage(Color.Green, "Commands:");
             foreach (
-                var cmd in
+                DetectedCommand cmd in
                     Command.GetAll<DetectedCommand>()
                         .Where(c => c.HasPlayerPermissionForCommand(player))
                         .OrderBy( /* category??? */c => c.CommandPath))
@@ -72,13 +72,14 @@ namespace TestMode.Tests
                     "/{0}: I could add an Attribute in my gamemode with an help message and/or color", cmd.CommandPath);
             }
         }
+
         [Command("spawn", Alias = "s", Shortcut = "v")]
         [CommandGroup("vehicle")]
         public static void VehicleCommand(Player player, VehicleModelType model)
         {
             player.SendClientMessage(Color.GreenYellow, "You have spawned a {0}", model);
-            Console.WriteLine("Spawning a {0} {2} for {1}", model, player, (int)model);
-            var vehicle = Vehicle.Create(model, player.Position + new Vector(0, 0, 0.5), player.Rotation.Z, -1, -1);
+            Console.WriteLine("Spawning a {0} {2} for {1}", model, player, (int) model);
+            Vehicle vehicle = Vehicle.Create(model, player.Position + new Vector(0, 0, 0.5), player.Rotation.Z, -1, -1);
             player.PutInVehicle(vehicle);
         }
 
@@ -93,7 +94,7 @@ namespace TestMode.Tests
         [Integer("seat")]
         public static void PutCommand(Player player, int vehicleid, int seat = 0)
         {
-            var v = Vehicle.Find(vehicleid);
+            Vehicle v = Vehicle.Find(vehicleid);
             if (v == null)
             {
                 player.SendClientMessage(Color.Red, "This vehicle does not exist!");

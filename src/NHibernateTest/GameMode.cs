@@ -26,7 +26,7 @@ namespace NHibernateTest
             //Lets store our current session
             using (ISession session = DbSession.OpenSession())
             {
-                session.Save(new ServerInfo {Number = new Random().Next(0,100)});
+                session.Save(new ServerInfo {Number = new Random().Next(0, 100)});
             }
 
             //...

@@ -11,7 +11,6 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.SAMP;
@@ -164,7 +163,8 @@ namespace SampSharp.Streamer.Natives
             int holderMaterialSize, holderTextAlignment, holderFontColor, holderBackColor, holderBold;
             int retval = Native.CallNative("GetDynamicObjectMaterialText", new[] {10, 11},
                 __arglist(
-                    objectid, materialindex, out text, out holderMaterialSize, out fontface, out fontsize, out holderBold,
+                    objectid, materialindex, out text, out holderMaterialSize, out fontface, out fontsize,
+                    out holderBold,
                     out holderFontColor, out holderBackColor, out holderTextAlignment, maxtext, maxfontface));
 
             materialsize = (ObjectMaterialSize) holderMaterialSize;

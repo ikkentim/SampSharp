@@ -21,8 +21,8 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            var playercount = Player.All.Count;
-            var success = true;
+            int playercount = Player.All.Count;
+            bool success = true;
 
             Player player = Player.Create(499);
 

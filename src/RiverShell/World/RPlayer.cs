@@ -1,4 +1,17 @@
-﻿using SampSharp.GameMode.Definitions;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;
@@ -8,12 +21,11 @@ namespace RiverShell.World
     public class RPlayer : Player
     {
         private RPlayer _lastKiller;
-        private SpectatingMode _spectatingMode;
         private SpectateState _spectateState;
+        private SpectatingMode _spectatingMode;
 
         public RPlayer(int id) : base(id)
         {
-
         }
 
         public new Team Team
@@ -102,7 +114,7 @@ namespace RiverShell.World
             Color = Team.Color;
             Health = 100;
             Armour = 100;
-            
+
             _spectateState = SpectateState.None;
             _spectatingMode = SpectatingMode.None;
 
@@ -111,7 +123,7 @@ namespace RiverShell.World
 
         private void GoSpectatePlayer(Player player)
         {
-            var state = PlayerState;
+            PlayerState state = PlayerState;
 
             switch (state)
             {
@@ -150,18 +162,18 @@ namespace RiverShell.World
             if (PlayerState == PlayerState.Spectating)
             {
                 // Allow respawn after an arbitrary time has passed
-                if (LastDeathTick == 0 || Native.GetTickCount() - LastDeathTick > Config.RespawnTime * 1000)
+                if (LastDeathTick == 0 || Native.GetTickCount() - LastDeathTick > Config.RespawnTime*1000)
                 {
                     ToggleSpectating(false);
                     base.OnUpdate(e);
                     return;
                 }
-                
+
                 // Make sure the killer player is still active in the world
                 if (_lastKiller.IsConnected && _lastKiller.IsAlive)
                 {
                     GoSpectatePlayer(_lastKiller);
-                    _spectatingMode=SpectatingMode.Player;
+                    _spectatingMode = SpectatingMode.Player;
                 }
                 else if (_spectateState != SpectateState.Fixed)
                 {

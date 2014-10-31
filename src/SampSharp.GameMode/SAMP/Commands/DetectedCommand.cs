@@ -21,8 +21,6 @@ namespace SampSharp.GameMode.SAMP.Commands
 {
     public sealed class DetectedCommand : Command
     {
-        private readonly ParameterInfo[] _parameterInfos;
-
         private static Func<string, ParameterAttribute[], string> _usageFormat = (name, parameters) =>
             string.Format("Usage: /{0}{1}{2}", name, parameters.Any() ? ": " : string.Empty,
                 string.Join(" ", parameters.Select(
@@ -41,6 +39,8 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             return type.IsEnum ? new EnumAttribute(name, type) : null;
         };
+
+        private readonly ParameterInfo[] _parameterInfos;
 
         public DetectedCommand(MethodInfo command, bool ignoreCase)
         {
@@ -75,7 +75,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             if (PermissionCheck != null)
             {
-                var permParams = PermissionCheck.GetParameters();
+                ParameterInfo[] permParams = PermissionCheck.GetParameters();
                 if (permParams.Length != 1 || !typeof (Player).IsAssignableFrom(permParams[0].ParameterType))
                 {
                     throw new ArgumentException("PermissionCheckMethod of " + Name +
@@ -88,7 +88,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 }
             }
 
-            var cmdParams = Command.GetParameters();
+            ParameterInfo[] cmdParams = Command.GetParameters();
 
             if (cmdParams.Length == 0 || !typeof (Player).IsAssignableFrom(cmdParams[0].ParameterType))
             {
@@ -109,18 +109,18 @@ namespace SampSharp.GameMode.SAMP.Commands
                              * At the moment these attributes are attached to the method instead of the parameter.
                              */
 
-                            var attribute = Command.GetCustomAttributes<ParameterAttribute>()
+                            ParameterAttribute attribute = Command.GetCustomAttributes<ParameterAttribute>()
                                 .FirstOrDefault(a => a.Name == parameter.Name);
 
-                            if (attribute != null) 
+                            if (attribute != null)
                             {
                                 attribute.Optional = parameter.HasDefaultValue;
                             }
 
                             return attribute ?? ResolveParameterType(parameter.ParameterType, parameter.Name);
                         }).
-                            ToArray();
-                        
+                    ToArray();
+
 
             if (Parameters.Contains(null))
             {
@@ -158,7 +158,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 }
                 else
                 {
-                    foreach (var str in Group.CommandPaths)
+                    foreach (string str in Group.CommandPaths)
                     {
                         yield return string.Format("{0} {1}", str, Name);
 
@@ -201,7 +201,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         {
             commandText = commandText.Trim(' ');
 
-            foreach (var str in CommandPaths)
+            foreach (string str in CommandPaths)
             {
                 if (commandText == str || (IgnoreCase && commandText.ToLower() == str.ToLower()))
                 {
@@ -231,10 +231,10 @@ namespace SampSharp.GameMode.SAMP.Commands
             {
                 player
             };
-            for (var idx = 0; idx < Command.GetParameters().Length - 1; idx++)
+            for (int idx = 0; idx < Command.GetParameters().Length - 1; idx++)
             {
-                var parameterInfo = _parameterInfos[idx+1];
-                var parameter = Parameters[idx];
+                ParameterInfo parameterInfo = _parameterInfos[idx + 1];
+                ParameterAttribute parameter = Parameters[idx];
 
                 args = args.Trim();
                 object argument;

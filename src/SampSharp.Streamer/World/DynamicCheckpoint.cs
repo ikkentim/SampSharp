@@ -34,16 +34,14 @@ namespace SampSharp.Streamer.World
                 player == null ? -1 : player.Id, streamdistance);
         }
 
-        public DynamicCheckpoint(Vector position, float size, float streamdistance, int[] worlds = null, int[] interiors = null,
+        public DynamicCheckpoint(Vector position, float size, float streamdistance, int[] worlds = null,
+            int[] interiors = null,
             Player[] players = null)
         {
             Id = StreamerNative.CreateDynamicCPEx(position.X, position.Y, position.Z, size, streamdistance, worlds,
                 interiors,
                 players == null ? null : players.Select(p => p.Id).ToArray());
         }
-
-        public event EventHandler<PlayerDynamicCheckpointEventArgs> Enter;
-        public event EventHandler<PlayerDynamicCheckpointEventArgs> Leave;
 
         public bool IsValid
         {
@@ -60,6 +58,9 @@ namespace SampSharp.Streamer.World
             get { return GetFloat(StreamerDataType.Size); }
             set { SetFloat(StreamerDataType.Size, value); }
         }
+
+        public event EventHandler<PlayerDynamicCheckpointEventArgs> Enter;
+        public event EventHandler<PlayerDynamicCheckpointEventArgs> Leave;
 
         public void ToggleForPlayer(Player player, bool toggle)
         {

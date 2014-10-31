@@ -37,7 +37,8 @@ namespace SampSharp.Streamer.World
         }
 
         public DynamicTextLabel(string text, Color color, Vector position,
-            float drawdistance, float streamdistance, Player attachedPlayer = null, Vehicle attachedVehicle = null, bool testLOS = false,
+            float drawdistance, float streamdistance, Player attachedPlayer = null, Vehicle attachedVehicle = null,
+            bool testLOS = false,
             int[] worlds = null, int[] interiors = null, Player[] players = null)
         {
             Id = StreamerNative.CreateDynamic3DTextLabelEx(text, color, position.X, position.Y, position.Z, drawdistance,

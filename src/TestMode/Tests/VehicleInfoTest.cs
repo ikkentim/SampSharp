@@ -21,7 +21,7 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            var veh = Vehicle.Create(VehicleModelType.Burrito, new Vector(5), 0, -1, -1);
+            Vehicle veh = Vehicle.Create(VehicleModelType.Burrito, new Vector(5), 0, -1, -1);
             Console.WriteLine("Vehiclesize of {1}: {0}", veh.Info[VehicleModelInfoType.Size], veh.Info.Name);
         }
     }

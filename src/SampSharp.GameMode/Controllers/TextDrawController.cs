@@ -28,7 +28,7 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.PlayerClickTextDraw += (sender, args) =>
             {
-                var obj = TextDraw.Find(args.TextDrawId);
+                TextDraw obj = TextDraw.Find(args.TextDrawId);
 
                 if (obj != null)
                     obj.OnClick(args);

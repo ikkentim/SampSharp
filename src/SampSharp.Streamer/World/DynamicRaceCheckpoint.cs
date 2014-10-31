@@ -46,9 +46,6 @@ namespace SampSharp.Streamer.World
                 players == null ? null : players.Select(p => p.Id).ToArray());
         }
 
-        public event EventHandler<PlayerDynamicRaceCheckpointEventArgs> Enter;
-        public event EventHandler<PlayerDynamicRaceCheckpointEventArgs> Leave;
-
         public bool IsValid
         {
             get { return StreamerNative.IsValidDynamicRaceCP(Id); }
@@ -82,6 +79,9 @@ namespace SampSharp.Streamer.World
                 SetFloat(StreamerDataType.NextZ, value.Z);
             }
         }
+
+        public event EventHandler<PlayerDynamicRaceCheckpointEventArgs> Enter;
+        public event EventHandler<PlayerDynamicRaceCheckpointEventArgs> Leave;
 
         public void ToggleForPlayer(Player player, bool toggle)
         {
