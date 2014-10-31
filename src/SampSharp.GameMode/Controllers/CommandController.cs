@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using System.Linq;
 using System.Reflection;
 using SampSharp.GameMode.Events;
@@ -29,12 +30,20 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="gameMode">The running GameMode.</param>
         public virtual void RegisterEvents(BaseMode gameMode)
         {
-            //Detect commands in assembly containing the gamemode
-            foreach (var method in gameMode.GetType().Assembly.GetTypes().SelectMany(t => t.GetMethods())
-                .Where(m => m.IsStatic && m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0))
+            try
             {
-                new DetectedCommand(method, method.GetCustomAttribute<CommandAttribute>().IgnoreCase);
+                //Detect commands in assembly containing the gamemode
+                foreach (var method in gameMode.GetType().Assembly.GetTypes().SelectMany(t => t.GetMethods())
+                    .Where(m => m.IsStatic && m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0))
+                {
+                    new DetectedCommand(method, method.GetCustomAttribute<CommandAttribute>().IgnoreCase);
+                }
             }
+            catch (Exception)
+            {
+                Console.WriteLine("[SampSharp] FAILED to load DetectedCommand");
+            }
+
 
             gameMode.PlayerCommandText += gameMode_PlayerCommandText;
         }
