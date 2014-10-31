@@ -40,16 +40,10 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <summary>
         ///     Gets or sets whether this parameter is optional.
         /// </summary>
+        /// <remarks>
+        ///     This property is auto-filled based on the methods' signature.
+        /// </remarks>
         public bool Optional { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the default value of this parameter.
-        /// </summary>
-        /*
-         * ParameterInfo.HasDefaultValue and ParameterInfo.Default value are not implemented in mono.
-         * When there are this.Optional and this.DefaultValue are no longer required as these can be found the in ParameterInfo.
-         */
-        public object DefaultValue { get; set; }
 
         /// <summary>
         ///     Check if the parameter is well-formatted and return the output.
