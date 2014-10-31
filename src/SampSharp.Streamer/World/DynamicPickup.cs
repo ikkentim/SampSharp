@@ -41,8 +41,6 @@ namespace SampSharp.Streamer.World
                 worlds, interiors, players == null ? null : players.Select(p => p.Id).ToArray());
         }
 
-        public event EventHandler<PlayerDynamicPickupEventArgs> PickedUp;
-
         public override StreamType StreamType
         {
             get { return StreamType.Pickup; }
@@ -64,6 +62,8 @@ namespace SampSharp.Streamer.World
         {
             get { return StreamerNative.IsValidDynamicPickup(Id); }
         }
+
+        public event EventHandler<PlayerDynamicPickupEventArgs> PickedUp;
 
         protected override void Dispose(bool disposing)
         {

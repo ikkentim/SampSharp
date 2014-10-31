@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using System.Threading;
 using SampSharp.GameMode.Tools;
 
@@ -55,9 +56,9 @@ namespace SampSharp.GameMode.Controllers
             }
         }
 
-        private static void _gameMode_Tick(object sender, System.EventArgs e)
+        private static void _gameMode_Tick(object sender, EventArgs e)
         {
-            foreach (var t in Sync.SyncTask.All)
+            foreach (Sync.SyncTask t in Sync.SyncTask.All)
             {
                 t.Run();
                 t.Dispose();

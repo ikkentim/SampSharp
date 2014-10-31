@@ -20,12 +20,12 @@ using SampSharp.GameMode.Pools;
 namespace SampSharp.GameMode.SAMP.Commands
 {
     /// <summary>
-    /// Represents a group of commands.
+    ///     Represents a group of commands.
     /// </summary>
     public sealed class CommandGroup : Pool<CommandGroup>
     {
         /// <summary>
-        /// Initializes a new instance of the CommandGroup class.
+        ///     Initializes a new instance of the CommandGroup class.
         /// </summary>
         /// <param name="name">The name of the command group.</param>
         /// <param name="alias">An alias for the command group.</param>
@@ -41,7 +41,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             Alias = alias;
             ParentGroup = parentGroup;
 
-            foreach (var cmd in Command.GetAll<DetectedCommand>().Where(c => c.Group == null))
+            foreach (DetectedCommand cmd in Command.GetAll<DetectedCommand>().Where(c => c.Group == null))
             {
                 var groupAttribute = cmd.Command.GetCustomAttribute<CommandGroupAttribute>();
 
@@ -53,22 +53,22 @@ namespace SampSharp.GameMode.SAMP.Commands
         }
 
         /// <summary>
-        /// Gets or sets the name of this CommandGroup.
+        ///     Gets or sets the name of this CommandGroup.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the alias of this CommandGroup.
+        ///     Gets or sets the alias of this CommandGroup.
         /// </summary>
         public string Alias { get; set; }
 
         /// <summary>
-        /// Gets or sets the parent CommandGroup of this CommandGroup.
+        ///     Gets or sets the parent CommandGroup of this CommandGroup.
         /// </summary>
         public CommandGroup ParentGroup { get; set; }
 
         /// <summary>
-        /// Gets the paths to this command.
+        ///     Gets the paths to this command.
         /// </summary>
         public IEnumerable<string> CommandPaths
         {
@@ -85,7 +85,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 }
                 else
                 {
-                    foreach (var str in ParentGroup.CommandPaths)
+                    foreach (string str in ParentGroup.CommandPaths)
                     {
                         yield return string.Format("{0} {1}", str, Name);
 
@@ -99,7 +99,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         }
 
         /// <summary>
-        /// Gets the main path to this CommandGroup.
+        ///     Gets the main path to this CommandGroup.
         /// </summary>
         public string CommandPath
         {
@@ -107,7 +107,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         }
 
         /// <summary>
-        /// Initializes a new instance of the CommandGroup class.
+        ///     Initializes a new instance of the CommandGroup class.
         /// </summary>
         /// <param name="name">The name of the command group.</param>
         /// <param name="alias">An alias for the command group.</param>

@@ -39,7 +39,7 @@ namespace TestMode.Tests
         public void ASyncTestMethod()
         {
             Thread main = Thread.CurrentThread;
-            
+
             Task.Run(() =>
             {
                 Thread.Sleep(1000);

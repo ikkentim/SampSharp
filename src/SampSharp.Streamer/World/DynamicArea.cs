@@ -162,9 +162,6 @@ namespace SampSharp.Streamer.World
 
         #endregion
 
-        public event EventHandler<PlayerDynamicAreaEventArgs> Enter;
-        public event EventHandler<PlayerDynamicAreaEventArgs> Leave;
-
         public bool IsValid
         {
             get { return StreamerNative.IsValidDynamicArea(Id); }
@@ -174,6 +171,9 @@ namespace SampSharp.Streamer.World
         {
             get { return StreamType.Area; }
         }
+
+        public event EventHandler<PlayerDynamicAreaEventArgs> Enter;
+        public event EventHandler<PlayerDynamicAreaEventArgs> Leave;
 
         public void AttachTo(IGameObject obj)
         {
@@ -189,8 +189,8 @@ namespace SampSharp.Streamer.World
                 throw new ArgumentException("obj must be IIdentifyable");
             }
 
-            var playerid = Player.InvalidId;
-            var objectid = (obj as IIdentifyable).Id;
+            int playerid = Player.InvalidId;
+            int objectid = (obj as IIdentifyable).Id;
             var type = StreamerObjectType.Global;
 
             if (obj is IOwnable)

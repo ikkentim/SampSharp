@@ -38,8 +38,8 @@ namespace BenchmarkMode
             Console.WriteLine("\n--------------------------------------");
             Console.WriteLine(" SampSharp benchmark MONO test");
             Console.WriteLine("--------------------------------------\n");
-            Stopwatch sw = new Stopwatch();
-            foreach (var test in _tests)
+            var sw = new Stopwatch();
+            foreach (ITest test in _tests)
             {
                 int count = 0;
                 sw.Start();
@@ -63,7 +63,7 @@ namespace BenchmarkMode
         {
             base.LoadControllers(controllers);
 
-            foreach (var test in _tests.OfType<IControllerTest>())
+            foreach (IControllerTest test in _tests.OfType<IControllerTest>())
                 test.LoadControllers(controllers);
         }
     }

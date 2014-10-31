@@ -1,20 +1,29 @@
-﻿using RiverShell.World;
+﻿// SampSharp
+// Copyright (C) 2014 Tim Potze
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+// 
+// For more information, please refer to <http://unlicense.org>
+
+using RiverShell.World;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
-using SampSharp.GameMode.Events;
 
 namespace RiverShell.Controllers
 {
     public class ObjectiveController : IEventListener, IController
     {
-        public ObjectiveController()
-        {
-        }
-
         public void RegisterEvents(BaseMode gameMode)
         {
             gameMode.PlayerEnterCheckpoint += checkpoint_Enter;
@@ -47,7 +56,7 @@ namespace RiverShell.Controllers
         {
             var player = e.Player as RPlayer;
 
-            var vehicle = player.Vehicle;
+            Vehicle vehicle = player.Vehicle;
 
             //Check if game's already over
             if (GameMode.ObjectiveReached)
@@ -64,13 +73,13 @@ namespace RiverShell.Controllers
             {
                 RPlayer.GameTextForAll(string.Format("{0} wins!", player.Team.GameTextTeamName), 3000, 5);
                 GameMode.ObjectiveReached = true;
-                foreach (var p in RPlayer.All)
+                foreach (Player p in RPlayer.All)
                     p.PlaySound(1185);
 
                 var exitTimer = new Timer(6000, false);
                 exitTimer.Tick += (tsender, args) =>
                 {
-                    foreach (var p in RPlayer.All)
+                    foreach (Player p in RPlayer.All)
                         p.PlaySound(1186);
                     Native.GameModeExit();
                 };

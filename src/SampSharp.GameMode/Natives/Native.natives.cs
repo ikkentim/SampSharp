@@ -25,15 +25,15 @@ namespace SampSharp.GameMode.Natives
         private static string FormatNativeList(out object[] args, out int[] lengths, RuntimeArgumentHandle handle)
         {
             var iterator = new ArgIterator(handle);
-            var len = iterator.GetRemainingCount();
+            int len = iterator.GetRemainingCount();
             var lengthList = new List<int>();
             args = new object[len];
 
             string format = "";
             for (int idx = 0; idx < len; idx++)
             {
-                var arg = iterator.GetNextArg();
-                var type = TypedReference.GetTargetType(arg);
+                TypedReference arg = iterator.GetNextArg();
+                Type type = TypedReference.GetTargetType(arg);
 
                 switch (type.ToString())
                 {
