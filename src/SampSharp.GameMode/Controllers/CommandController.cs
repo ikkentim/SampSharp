@@ -43,7 +43,7 @@ namespace SampSharp.GameMode.Controllers
             {
                 /*
                  * If no commands where found this statement throws an exception.
-                 * We dissmiss it and assume no commands were registered.
+                 * We dismiss it and assume no commands were registered.
                  */
             }
 

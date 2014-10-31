@@ -89,8 +89,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>SampSharp.def</ModuleDefinitionFile>
-      <AdditionalDependencies>mono.lib;subhook.lib;sampgdk4s.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>lib\sampgdk\win32;lib\mono\win32;lib\subhook\win32</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mono.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib\mono\win32</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
