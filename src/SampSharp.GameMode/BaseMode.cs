@@ -673,6 +673,12 @@ namespace SampSharp.GameMode
         public event EventHandler<PlayerVehicleEventArgs> VehicleStreamOut;
 
         /// <summary>
+        ///     Occurs when the <see cref="OnTrailerUpdate" /> callback is being called.
+        ///     This callback is called when a player sent a trailer update.
+        /// </summary>
+        public event EventHandler<PlayerVehicleEventArgs> TrailerUpdate;
+
+        /// <summary>
         ///     Occurs when the <see cref="OnDialogResponse" /> callback is being called.
         ///     This callback is called when a player responds to a dialog shown using <see cref="Native.ShowPlayerDialog" /> by
         ///     either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
@@ -1307,11 +1313,14 @@ namespace SampSharp.GameMode
         /// <param name="newX">The new X coordinate of the vehicle.</param>
         /// <param name="newY">The new y coordinate of the vehicle.</param>
         /// <param name="newZ">The new z coordinate of the vehicle.</param>
+        /// <param name="velX">The new X velocity of the vehicle. <b>This parameter was added in 0.3z R4</b></param>
+        /// <param name="velY">The new Y velocity of the vehicle. <b>This parameter was added in 0.3z R4</b></param>
+        /// <param name="velZ">The new Z velocity of the vehicle. <b>This parameter was added in 0.3z R4</b></param>
         /// <returns>This callback does not handle returns.</returns>
         public virtual bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX,
-            float newY, float newZ)
+            float newY, float newZ, float velX, float velY, float velZ)
         {
-            var args = new UnoccupiedVehicleEventArgs(playerid, vehicleid, passengerSeat, new Vector(newX, newY, newZ));
+            var args = new UnoccupiedVehicleEventArgs(playerid, vehicleid, passengerSeat, new Vector(newX, newY, newZ), new Vector(velX, velY, velZ));
 
             if (UnoccupiedVehicleUpdated != null)
                 UnoccupiedVehicleUpdated(this, args);
@@ -1489,6 +1498,30 @@ namespace SampSharp.GameMode
 
             if (VehicleStreamOut != null)
                 VehicleStreamOut(this, args);
+
+            return args.Success;
+        }
+
+        /// <summary>
+        ///     This callback is called when a player sent a trailer update.
+        /// </summary>
+        /// <param name="playerId">The ID of the player who sent a trailer update</param>
+        /// <param name="vehicleId">The Trailer being updated</param>
+        /// <returns>
+        ///     Return false if the update from this player and vehicle will not be replicated to other clients 
+        ///     or return true Indicates that this update can be processed normally and sent to other players.
+        /// </returns>
+        /// <remarks>
+        ///     The trailer's position will still be updated internally on the server
+        /// </remarks>
+        public virtual bool OnTrailerUpdate(int playerId, int vehicleId)
+        {
+            var args = new PlayerVehicleEventArgs(playerId, vehicleId);
+
+            if (TrailerUpdate != null)
+            {
+                TrailerUpdate(this, args);
+            }
 
             return args.Success;
         }

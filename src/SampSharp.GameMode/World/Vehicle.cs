@@ -335,6 +335,12 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public event EventHandler<PlayerVehicleEventArgs> StreamOut;
 
+        /// <summary>
+        ///     Occurs when the <see cref="BaseMode.OnTrailerUpdate" /> is being called.
+        ///     This callback is called when a player sent a trailer update.
+        /// </summary>
+        public event EventHandler<PlayerVehicleEventArgs> TrailerUpdate; 
+
         #endregion
 
         #region Vehicles natives
@@ -817,6 +823,18 @@ namespace SampSharp.GameMode.World
         {
             if (StreamOut != null)
                 StreamOut(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="TrailerUpdate" /> event.
+        /// </summary>
+        /// <param name="args">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
+        public virtual void OnTrailerUpdate(PlayerVehicleEventArgs args)
+        {
+            if (TrailerUpdate != null)
+            {
+                TrailerUpdate(this, args);
+            }
         }
 
         #endregion
