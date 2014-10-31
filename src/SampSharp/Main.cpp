@@ -62,7 +62,7 @@ Load(void **ppData) {
     //generate symbol files
     #ifdef _WIN32
     if(symbols.length() > 0) {
-	    logprintf("[SampSharp] Generating symbol files");
+        logprintf("[SampSharp] Generating symbol files...");
         
         std::stringstream symbols_stream(symbols);
 	    std::string file;
@@ -93,7 +93,7 @@ Load(void **ppData) {
 
 	if (class_from_name == NULL)
 	{
-		logprintf("[SampSharp] %s::%s is not a valid Namespace:Class combination inside \"%s\".",
+		logprintf("[SampSharp] %s::%s was not found inside \"%s\".",
 			namespace_ctr,
 			klass_ctr,
 			path_ctr);

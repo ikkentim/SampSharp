@@ -41,7 +41,10 @@ namespace SampSharp.GameMode.Controllers
             }
             catch (Exception)
             {
-                Console.WriteLine("[SampSharp] FAILED to load DetectedCommand");
+                /*
+                 * If no commands where found this statement throws an exception.
+                 * We dissmiss it and assume no commands were registered.
+                 */
             }
 
 
