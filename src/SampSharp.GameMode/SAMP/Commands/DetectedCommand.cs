@@ -21,6 +21,8 @@ namespace SampSharp.GameMode.SAMP.Commands
 {
     public sealed class DetectedCommand : Command
     {
+        private readonly ParameterInfo[] _parameterInfos;
+
         private static Func<string, ParameterAttribute[], string> _usageFormat = (name, parameters) =>
             string.Format("Usage: /{0}{1}{2}", name, parameters.Any() ? ": " : string.Empty,
                 string.Join(" ", parameters.Select(
@@ -46,6 +48,8 @@ namespace SampSharp.GameMode.SAMP.Commands
             {
                 throw new ArgumentNullException("command");
             }
+
+            _parameterInfos = command.GetParameters();
 
             var commandAttribute = command.GetCustomAttribute<CommandAttribute>();
             var groupAttribute = command.GetCustomAttribute<CommandGroupAttribute>();
@@ -96,6 +100,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                     .Skip(1)
                     .Select(
                         parameter =>
+                        {
                             /*
                              * Custom attributes on parameters are on the time of writing this not
                              * available in mono. When this is available, AttributeTargets of ParameterAttribute
@@ -103,9 +108,19 @@ namespace SampSharp.GameMode.SAMP.Commands
                              * 
                              * At the moment these attributes are attached to the method instead of the parameter.
                              */
-                            Command.GetCustomAttributes<ParameterAttribute>()
-                                .FirstOrDefault(a => a.Name == parameter.Name) ??
-                            ResolveParameterType(parameter.ParameterType, parameter.Name)).ToArray();
+
+                            var attribute = Command.GetCustomAttributes<ParameterAttribute>()
+                                .FirstOrDefault(a => a.Name == parameter.Name);
+
+                            if (attribute != null) 
+                            {
+                                attribute.Optional = parameter.HasDefaultValue;
+                            }
+
+                            return attribute ?? ResolveParameterType(parameter.ParameterType, parameter.Name);
+                        }).
+                            ToArray();
+                        
 
             if (Parameters.Contains(null))
             {
@@ -216,23 +231,24 @@ namespace SampSharp.GameMode.SAMP.Commands
             {
                 player
             };
-            var idx = 0;
-
-            foreach (var attr in Parameters)
+            for (var idx = 0; idx < Command.GetParameters().Length - 1; idx++)
             {
+                var parameterInfo = _parameterInfos[idx+1];
+                var parameter = Parameters[idx];
+
                 args = args.Trim();
                 object argument;
 
                 /*
                  * Check for missing optional parameters. This is obviously allowed.
                  */
-                if (args.Length == 0 && attr.Optional)
+                if (args.Length == 0 && parameter.Optional)
                 {
-                    arguments.Add(attr.DefaultValue);
+                    arguments.Add(parameterInfo.DefaultValue);
                     continue;
                 }
 
-                if (args.Length == 0 || !attr.Check(ref args, out argument))
+                if (args.Length == 0 || !parameter.Check(ref args, out argument))
                 {
                     if (UsageFormat != null)
                     {
