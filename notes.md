@@ -13,8 +13,6 @@ Missing Documention:
 ------
 
 - Multiple classes in SampSharp.GameMode lack documentation
-- SampSharp.Streamer? (don't know whether i will add documentation here, it currently has as much documentation as the plugin itself)
-- How to use EntityFramework with SampSharp
 - Build guide
 - Installation guide
 - Usage guide
