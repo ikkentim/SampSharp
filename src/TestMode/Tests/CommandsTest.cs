@@ -79,10 +79,7 @@ namespace TestMode.Tests
             player.SendClientMessage(Color.GreenYellow, "You have spawned a {0}", model);
             Console.WriteLine("Spawning a {0} {2} for {1}", model, player, (int)model);
             var vehicle = Vehicle.Create(model, player.Position + new Vector(0, 0, 0.5), player.Rotation.Z, -1, -1);
-            //Console.WriteLine("VehicleCommand passes point 1");
-            //TODO: Player.PutInVehicle sometimes crashes the server. Should investigate
-            //player.PutInVehicle(vehicle);
-            //Console.WriteLine("VehicleCommand passes point 2");
+            player.PutInVehicle(vehicle);
         }
 
         [Command("tell")]
@@ -93,7 +90,7 @@ namespace TestMode.Tests
         }
 
         [Command("put")]
-        [Integer("seat", Optional = true)]
+        [Integer("seat")]
         public static void PutCommand(Player player, int vehicleid, int seat = 0)
         {
             var v = Vehicle.Find(vehicleid);
@@ -112,8 +109,7 @@ namespace TestMode.Tests
         }
 
         [Command("teleport", Alias = "tp")]
-        [Integer("z", Optional = true, DefaultValue = 4)]
-        public static void TpCommand(Player player, int x, int y, int z)
+        public static void TpCommand(Player player, int x, int y, int z = 4)
         {
             player.Position = new Vector(x, y, z);
             Console.WriteLine("Teleporting {0} to {1}, {2}, {3}", player, x, y, z);
