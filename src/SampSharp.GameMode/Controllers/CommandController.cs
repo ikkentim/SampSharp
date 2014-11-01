@@ -42,6 +42,7 @@ namespace SampSharp.GameMode.Controllers
             }
             catch (Exception)
             {
+                Console.WriteLine("[SampSharp] No commands were loaded.");
                 /*
                  * If no commands where found this statement throws an exception.
                  * We dismiss it and assume no commands were registered.
