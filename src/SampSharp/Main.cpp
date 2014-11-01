@@ -1,5 +1,5 @@
 #include <string>
-#include <sampgdk/core.h>
+#include <sampgdk/sampgdk.h>
 
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
