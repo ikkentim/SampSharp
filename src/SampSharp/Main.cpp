@@ -14,11 +14,10 @@
 #include "PathUtil.h"
 #include "Benchmark.h"
 
-#ifdef _WIN32
-//I don't get it either
+//#ifdef _WIN32 //I don't get it either
 #include "amxplugin.cpp"
 extern void *pAMXFunctions;
-#endif
+//#endif
 
 using sampgdk::logprintf;
 
@@ -33,6 +32,8 @@ Load(void **ppData) {
 	if (!sampgdk::Load(ppData)) {
 		return false;
 	}
+
+    pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
 
 	//read config
 	ConfigReader server_cfg("server.cfg");
@@ -130,5 +131,7 @@ OnPublicCall(AMX *amx, const char *name, cell *params, cell *retval) {
         Benchmark();
     }
     #endif
+
+    logprintf("publiccall %s", name);
 	return SampSharp::ProcessPublicCall(amx, name, params, retval);
 }

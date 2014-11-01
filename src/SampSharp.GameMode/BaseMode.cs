@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
+using System.Reflection;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
@@ -32,8 +33,17 @@ namespace SampSharp.GameMode
         /// </summary>
         protected BaseMode()
         {
-            RegisterControllers();
             Console.SetOut(new LogWriter());
+
+            Type type = Type.GetType("Mono.Runtime");
+            if (type != null)
+            {
+                MethodInfo displayName = type.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
+                if (displayName != null)
+                    Console.WriteLine("[SampSharp] Detected mono version: {0}", displayName.Invoke(null, null));
+            }
+
+            RegisterControllers();
         }
 
         #endregion
