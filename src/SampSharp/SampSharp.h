@@ -1,6 +1,7 @@
 #include <map>
 #include <list>
 #include <sampgdk/sampgdk.h>
+#include <string>
 #include <mono/jit/jit.h>
 
 #pragma once
