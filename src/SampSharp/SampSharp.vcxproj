@@ -99,6 +99,7 @@
   <ItemGroup>
     <ClCompile Include="ConfigReader.cpp" />
     <ClCompile Include="includes\sampgdk\sampgdk.c" />
+    <ClCompile Include="includes\sdk\amxplugin.cpp" />
     <ClCompile Include="SampSharp.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
