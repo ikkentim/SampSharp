@@ -9,23 +9,20 @@ solution "SampSharp"
 
       language "C++"
       platforms { "x32" }
-      defines { "LINUX", "SAMPGDK_AMALGAMATION" }
-      
-      libdirs { "lib/mono/linux" }
-      links { "mono-2.0", "rt" }
+      links { "mono-2.0", "dl" }
       includedirs { "includes", "includes/sdk" }
 
-      files { "**.cpp" }
+      files { "**.cpp", "includes/sampgdk/sampgdk.c" }
 
       configuration "Debug"
          objdir "obj/linux/Debug"
          targetdir "bin/linux/Debug"
-         defines { "DEBUG" }
+         defines { "DEBUG", "LINUX", "SAMPGDK_AMALGAMATION" }
          flags { "Symbols" }
 
       configuration "Release"
          objdir "obj/linux/Release"
          targetdir "bin/linux/Release"
-         defines { "NDEBUG" }
+         defines { "NDEBUG", "LINUX", "SAMPGDK_AMALGAMATION" }
          flags { "Optimize" }
 
