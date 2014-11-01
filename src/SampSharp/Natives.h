@@ -1,4 +1,7 @@
 #include <sampgdk/sampgdk.h>
+#include <string>
+#include <cstring>
+
 #include "MonoUtil.h"
 
 #pragma once
