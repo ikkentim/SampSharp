@@ -33,12 +33,16 @@ namespace SampSharp.GameMode.Controllers
         {
             try
             {
+                var n = 0;
                 //Detect commands in assembly containing the gamemode
                 foreach (MethodInfo method in gameMode.GetType().Assembly.GetTypes().SelectMany(t => t.GetMethods())
                     .Where(m => m.IsStatic && m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0))
                 {
                     new DetectedCommand(method, method.GetCustomAttribute<CommandAttribute>().IgnoreCase);
+                    n++;
                 }
+
+                Console.WriteLine("[SampSharp] Loaded {0} commands.", n);
             }
             catch (Exception)
             {
