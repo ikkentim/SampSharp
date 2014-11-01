@@ -10,6 +10,10 @@ Although the .NET framework only exists for windows, SA-MP# also works on Linux.
 
 All feedback is welcome, file an Issue or contact me on the SA-MP forums. http://forum.sa-mp.com/member.php?u=76946
 
+Requirements
+===
+Mono version 3.10
+
 Contains
 ===
 This repository contains the following projects:
