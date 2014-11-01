@@ -13,11 +13,15 @@
 #include "MonoUtil.h"
 #include "PathUtil.h"
 #include "Benchmark.h"
-//#include "amxplugin.cpp"
+
+#ifdef _WIN32
+//I don't get it either
+#include "amxplugin.cpp"
+extern void *pAMXFunctions;
+#endif
 
 using sampgdk::logprintf;
 
-//extern void *pAMXFunctions;
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL
 Supports() {
@@ -26,8 +30,6 @@ Supports() {
 
 PLUGIN_EXPORT bool PLUGIN_CALL
 Load(void **ppData) {
-	//pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
-
 	if (!sampgdk::Load(ppData)) {
 		return false;
 	}
