@@ -14,10 +14,7 @@
 #include "PathUtil.h"
 #include "Benchmark.h"
 
-//#ifdef _WIN32 //I don't get it either
-#include "amxplugin.cpp"
 extern void *pAMXFunctions;
-//#endif
 
 using sampgdk::logprintf;
 
