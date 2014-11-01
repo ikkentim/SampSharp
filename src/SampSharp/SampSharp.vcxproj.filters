@@ -24,9 +24,6 @@
     <ClCompile Include="SampSharp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="includes\sampgdk\sampgdk.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PathUtil.h">
