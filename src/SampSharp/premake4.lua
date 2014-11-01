@@ -9,13 +9,13 @@ solution "SampSharp"
 
       language "C++"
       platforms { "x32" }
-      defines { "LINUX" }
+      defines { "LINUX", "SAMPGDK_AMALGAMATION" }
       
       libdirs { "lib/mono/linux" }
       links { "mono-2.0", "rt" }
       includedirs { "includes", "includes/sdk" }
 
-      files { "**.h", "**.cpp" }
+      files { "**.cpp" }
 
       configuration "Debug"
          objdir "obj/linux/Debug"
