@@ -11,12 +11,14 @@ solution "SampSharp"
       platforms { "x32" }
       links { "mono-2.0", "dl" }
       includedirs { "includes", "includes/sdk" }
-
+      buildoptions { "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-m32" }
+      
       files { "**.cpp", "includes/sampgdk/sampgdk.c" }
 
       configuration "Debug"
          objdir "obj/linux/Debug"
-         targetdir "bin/linux/Debug"
+         -- targetdir "bin/linux/Debug"
+         targetdir "../../environment/plugins"
          defines { "DEBUG", "LINUX", "SAMPGDK_AMALGAMATION", "_GNU_SOURCE" }
          flags { "Symbols" }
 

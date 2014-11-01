@@ -117,8 +117,9 @@ Unload() {
 
 PLUGIN_EXPORT void PLUGIN_CALL
 ProcessTick() {
+
     SampSharp::ProcessTick();
-	sampgdk::ProcessTick();
+    sampgdk::ProcessTick();
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL
