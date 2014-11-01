@@ -28,3 +28,4 @@ solution "SampSharp"
          targetdir "bin/linux/Release"
          defines { "NDEBUG" }
          flags { "Optimize" }
+
