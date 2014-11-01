@@ -1,5 +1,6 @@
 #include <map>
 #include <list>
+#include <string>
 #include <sampgdk/core.h>
 #include <mono/jit/jit.h>
 

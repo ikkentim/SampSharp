@@ -35,7 +35,7 @@ void SampSharp::Load(MonoDomain * domain, MonoImage * image, MonoClass *klass) {
 		logfile << TimeUtil::GetTimeStamp() << "ERROR: The given gamemode has no parent class." << endl;
 		logfile.close();
 
-        exit(0);
+        return;
     }
     if(strcmp("BaseMode", mono_class_get_name(basemode.klass)) != 0) {
 		ofstream logfile;
@@ -45,7 +45,7 @@ void SampSharp::Load(MonoDomain * domain, MonoImage * image, MonoClass *klass) {
 		logfile << TimeUtil::GetTimeStamp() << "ERROR: The given gamemode's parent class is not of type BaseMode." << endl;
 		logfile.close();
 
-        exit(0);
+        return;
     }
     basemode.image = mono_class_get_image(basemode.klass);
 
@@ -283,7 +283,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 		}
 		else {
 			void *args[16];
-			int len = NULL;
+			int len = 0;
 			cell *addr = NULL;
 			MonoArray *arr;
 

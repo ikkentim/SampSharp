@@ -1,3 +1,5 @@
+#include <string>
+#include <cstring>
 #include <sampgdk/core.h>
 #include <sampgdk/a_players.h>
 #include <sampgdk/a_vehicles.h>
