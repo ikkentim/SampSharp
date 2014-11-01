@@ -9,10 +9,10 @@ solution "SampSharp"
 
       language "C++"
       platforms { "x32" }
-      defines { "LINUX", "SAMPGDK_STATIC" }
+      defines { "LINUX" }
       
-      libdirs { "lib/sampgdk/linux/", "lib/subhook/linux", "lib/mono/linux" }
-      links { "sampgdk", "subhook", "mono-2.0", "rt" }
+      libdirs { "lib/mono/linux" }
+      links { "mono-2.0", "rt" }
       includedirs { "includes", "includes/sdk" }
 
       files { "**.h", "**.cpp" }
