@@ -9,7 +9,7 @@ solution "SampSharp"
 
       language "C++"
       platforms { "x32" }
-      links { "mono-2.0", "dl" }
+      links { "mono-2.0", "rt" }
       includedirs { "includes", "includes/sdk" }
       buildoptions { "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-m32" }
       
