@@ -17,12 +17,12 @@ solution "SampSharp"
       configuration "Debug"
          objdir "obj/linux/Debug"
          targetdir "bin/linux/Debug"
-         defines { "DEBUG", "LINUX", "SAMPGDK_AMALGAMATION" }
+         defines { "DEBUG", "LINUX", "SAMPGDK_AMALGAMATION", "_GNU_SOURCE" }
          flags { "Symbols" }
 
       configuration "Release"
          objdir "obj/linux/Release"
          targetdir "bin/linux/Release"
-         defines { "NDEBUG", "LINUX", "SAMPGDK_AMALGAMATION" }
+         defines { "NDEBUG", "LINUX", "SAMPGDK_AMALGAMATION", "_GNU_SOURCE" }
          flags { "Optimize" }
 
