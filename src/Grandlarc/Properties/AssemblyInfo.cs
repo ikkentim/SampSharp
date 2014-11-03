@@ -13,17 +13,18 @@
 
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Resources;
 
 // Le informazioni generali relative a un assembly sono controllate dal seguente 
 // set di attributi. Per modificare le informazioni associate a un assembly
 // occorre quindi modificare i valori di questi attributi.
 
-[assembly: AssemblyTitle("Grandlarc")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Grandlarc gamemode for SA-MP#")]
+[assembly: AssemblyDescription("SA-MP's grandlarc gamemode converted to C#")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Grandlarc")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyProduct("Grandlarc gamemode for SA-MP#")]
+[assembly: AssemblyCopyright("Copyright © SA-MP team 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -48,5 +49,6 @@ using System.Runtime.InteropServices;
 // utilizzando l'asterisco (*) come descritto di seguito:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("0.1.0.0")]
+[assembly: AssemblyFileVersion("0.1.0.0")]
+[assembly: NeutralResourcesLanguageAttribute("en")]
