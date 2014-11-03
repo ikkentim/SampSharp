@@ -414,8 +414,9 @@ void SampSharp::Unload() {
 
     if (method)
     {
-        cout << "[SampSharp] Disposing of GameMode..." << endl;
+        cout << "[SampSharp] Disposing of GameMode... ";
         CallEvent(method, gameModeHandle, NULL);
+        cout << "Done!" << endl;
     }
     else
     {
