@@ -403,5 +403,24 @@ int SampSharp::CallEvent(MonoMethod* method, uint32_t handle, void **params) {
 }
 
 void SampSharp::Unload() {
+    mono_thread_attach(root);
+
+
+    static MonoMethod *method;
+
+    if (method == NULL) {
+        method = LoadEvent("Dispose", 0);
+    }
+
+    if (method)
+    {
+        cout << "[SampSharp] Disposing of GameMode..." << endl;
+        CallEvent(method, gameModeHandle, NULL);
+    }
+    else
+    {
+        cout << "[SampSharp] No dispose event found" << endl;
+    }
+
 	mono_jit_cleanup(mono_domain_get());
 }

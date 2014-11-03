@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers
@@ -18,7 +19,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all vehicle actions.
     /// </summary>
-    public class VehicleController : IEventListener, ITypeProvider
+    public class VehicleController : Disposable, IEventListener, ITypeProvider
     {
         /// <summary>
         ///     Registers the events this VehicleController wants to listen to.
@@ -50,6 +51,17 @@ namespace SampSharp.GameMode.Controllers
         public virtual void RegisterTypes()
         {
             Vehicle.Register<Vehicle>();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var vehicle in Vehicle.All)
+                {
+                    vehicle.Dispose();
+                }
+            }
         }
     }
 }
