@@ -1,17 +1,16 @@
 ![SampSharp](https://raw.githubusercontent.com/ikkentim/SampSharp/master/SampSharp.png)
 
-SA-MP#
-===
 SA-MP# is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. SA-MP# aims on OO-programming, it contains many classes (see the SampSharp.World, SampSharp.SAMP and SampSharp.Screen namespaces) in order to get the most out of OO. All classes contain extensive documention. (although in the beta stage, some files may lack this yet)
 
-Although the .NET framework only exists for windows, SA-MP# also works on Linux. This was made possible with the [Mono Framework](http://www.mono-project.com/). **Be aware!** Altough you can thoroughly enjoy the possiblilities of .NET, NuGet and C#, Mono is *not* **fully** compatible with all of .NET's features. Check [their website](http://www.mono-project.com/Compatibility) for more details.
+Although the .NET framework only exists for windows, SA-MP# also works on Linux. This was made possible with the [Mono Framework](http://www.mono-project.com/). 
 
 All feedback is welcome, file an Issue or contact me on the SA-MP forums. http://forum.sa-mp.com/member.php?u=76946
 
 Notes of caution
 ===
 - **SA-MP# is still in Beta! Although it's pretty stable already, crashes may occur.**
-- EntityFramework does not seem to be compatible with mono/SA-MP#! Instead, use NHibernate, which is just ase awesome as EntityFramework (if not more awesome). See src/NHibernateTest for an example of how to use NHibernate. For an why and how EF does not work with SA-MP#, see [#24](https://github.com/ikkentim/SampSharp/issues/24).
+- **Be aware!** Altough you can thoroughly enjoy the possiblilities of .NET, NuGet and C#, Mono is not **fully** compatible with all of .NET's features. Check [their website](http://www.mono-project.com/Compatibility) for more details.
+- EntityFramework does not seem to be compatible with mono/SA-MP#! Instead, use NHibernate, which is just ase awesome as EntityFramework (if not more awesome). See src/NHibernateTest for an example of how to use NHibernate. For a why and how EF does not work with SA-MP#, see [#24](https://github.com/ikkentim/SampSharp/issues/24).
 
 Requirements
 ===
