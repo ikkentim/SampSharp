@@ -11,7 +11,7 @@ All feedback is welcome, file an Issue or contact me on the SA-MP forums. http:/
 Notes of caution
 ===
 - **SA-MP# is still in Beta! Although it's pretty stable already, crashes may occur.**
-- EntityFramework does not seem to be compatible with mono/SA-MP#! Instead, use NHibernate, which is just ase awesome as EntityFramework (if not more awesome). See src/NHibernateTest for an example of how to use NHibernate. For an why and how EF does not work with SA-MP#, see #24.
+- EntityFramework does not seem to be compatible with mono/SA-MP#! Instead, use NHibernate, which is just ase awesome as EntityFramework (if not more awesome). See src/NHibernateTest for an example of how to use NHibernate. For an why and how EF does not work with SA-MP#, see [#24](https://github.com/ikkentim/SampSharp/issues/24).
 
 Requirements
 ===
