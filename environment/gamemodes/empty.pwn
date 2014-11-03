@@ -18,7 +18,7 @@ public OnPlayerDeath(playerid, killerid, reason)return 1;
 public OnVehicleSpawn(vehicleid)return 1;
 public OnVehicleDeath(vehicleid, killerid)return 1;
 public OnPlayerText(playerid, text[])return 1;
-public OnPlayerCommandText(playerid, cmdtext[])return 0;
+//public OnPlayerCommandText(playerid, cmdtext[])return 1;
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)return 1;
 public OnPlayerExitVehicle(playerid, vehicleid)return 1;
 public OnPlayerStateChange(playerid, newstate, oldstate)return 1;

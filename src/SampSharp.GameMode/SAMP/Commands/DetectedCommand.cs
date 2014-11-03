@@ -264,7 +264,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             object result = Command.Invoke(null, arguments.ToArray());
 
-            return Command.ReturnType != typeof (bool) || (bool) result;
+            return Command.ReturnType == typeof(void) || (bool) result;
         }
     }
 }
