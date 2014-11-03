@@ -16,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP.Commands;
+using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers
@@ -23,7 +24,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all commands.
     /// </summary>
-    public class CommandController : IEventListener
+    public class CommandController : Disposable, IEventListener
     {
         /// <summary>
         ///     Registers the events this GlobalObjectController wants to listen to.
@@ -72,6 +73,17 @@ namespace SampSharp.GameMode.Controllers
                         e.Success = true;
                         break;
                     }
+                }
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var cmd in Command.All)
+                {
+                    cmd.Dispose();
                 }
             }
         }

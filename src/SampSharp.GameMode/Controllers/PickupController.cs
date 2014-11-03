@@ -11,11 +11,12 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers
 {
-    public class PickupController : IEventListener, ITypeProvider
+    public class PickupController : Disposable, IEventListener, ITypeProvider
     {
         /// <summary>
         ///     Registers the events this TextDrawController wants to listen to.
@@ -40,6 +41,17 @@ namespace SampSharp.GameMode.Controllers
         public void RegisterTypes()
         {
             Pickup.Register<Pickup>();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var pickup in Pickup.All)
+                {
+                    pickup.Dispose();
+                }
+            }
         }
     }
 }

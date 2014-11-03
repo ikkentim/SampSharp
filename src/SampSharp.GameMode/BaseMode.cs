@@ -17,6 +17,7 @@ using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode
@@ -26,6 +27,8 @@ namespace SampSharp.GameMode
     /// </summary>
     public abstract class BaseMode : IDisposable
     {
+        readonly ControllerCollection _controllers = new ControllerCollection();
+
         #region Constructor
 
         /// <summary>
@@ -52,10 +55,9 @@ namespace SampSharp.GameMode
 
         private void RegisterControllers()
         {
-            var controllers = new ControllerCollection();
-            LoadControllers(controllers);
+            LoadControllers(_controllers);
 
-            foreach (IController controller in controllers)
+            foreach (IController controller in _controllers)
             {
                 var typeProvider = controller as ITypeProvider;
                 var eventListener = controller as IEventListener;
@@ -1853,9 +1855,11 @@ namespace SampSharp.GameMode
 
         #endregion
 
+
         public void Dispose()
         {
-            //Todo
+            _controllers.Dispose();
         }
+
     }
 }

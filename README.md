@@ -4,7 +4,7 @@ SA-MP# is a plugin and library that allows you to write San Andreas: Multiplayer
 
 All feedback is welcome, file an Issue or contact me on the SA-MP forums. http://forum.sa-mp.com/member.php?u=76946
 
-Notes of caution
+Note of caution
 ===
 - **SA-MP# is still in Beta! Although it's pretty stable already, crashes may occur.**
 - **Be aware!** Mono is not **fully** compatible with all of .NET's features. Check [their website](http://www.mono-project.com/Compatibility) for more details.

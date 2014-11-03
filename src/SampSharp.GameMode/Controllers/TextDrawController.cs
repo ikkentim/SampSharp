@@ -12,13 +12,14 @@
 // For more information, please refer to <http://unlicense.org>
 
 using SampSharp.GameMode.Display;
+using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.Controllers
 {
     /// <summary>
     ///     A controller processing all textdraw actions.
     /// </summary>
-    public class TextDrawController : IEventListener, ITypeProvider
+    public class TextDrawController : Disposable, IEventListener, ITypeProvider
     {
         /// <summary>
         ///     Registers the events this TextDrawController wants to listen to.
@@ -41,6 +42,17 @@ namespace SampSharp.GameMode.Controllers
         public void RegisterTypes()
         {
             TextDraw.Register<TextDraw>();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var td in PlayerTextDraw.All)
+                {
+                    td.Dispose();
+                }
+            }
         }
     }
 }
