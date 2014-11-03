@@ -1,20 +1,18 @@
 ![SampSharp](https://raw.githubusercontent.com/ikkentim/SampSharp/master/SampSharp.png)
 
-SA-MP# is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. SA-MP# aims on OO-programming, it contains many classes (see the SampSharp.World, SampSharp.SAMP and SampSharp.Screen namespaces) in order to get the most out of OO. All classes contain extensive documention. (although in the beta stage, some files may lack this yet)
-
-Although the .NET framework only exists for windows, SA-MP# also works on Linux. This was made possible with the [Mono Framework](http://www.mono-project.com/). 
+SA-MP# is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. SA-MP#'s aim is to allow you to enjoy all features of OO-programming and .NET. SA-MP# uses the [Mono Framework](http://www.mono-project.com/) to allow linux servers to run this plugin as well.
 
 All feedback is welcome, file an Issue or contact me on the SA-MP forums. http://forum.sa-mp.com/member.php?u=76946
 
 Notes of caution
 ===
 - **SA-MP# is still in Beta! Although it's pretty stable already, crashes may occur.**
-- **Be aware!** Altough you can thoroughly enjoy the possiblilities of .NET, NuGet and C#, Mono is not **fully** compatible with all of .NET's features. Check [their website](http://www.mono-project.com/Compatibility) for more details.
+- **Be aware!** Mono is not **fully** compatible with all of .NET's features. Check [their website](http://www.mono-project.com/Compatibility) for more details.
 - EntityFramework does not seem to be compatible with mono/SA-MP#! Instead, use NHibernate, which is just ase awesome as EntityFramework (if not more awesome). See src/NHibernateTest for an example of how to use NHibernate. For a why and how EF does not work with SA-MP#, see [#24](https://github.com/ikkentim/SampSharp/issues/24).
 
 Requirements
 ===
-Mono version 3.10
+- Mono version 3.10 or higher.
 
 Contains
 ===
@@ -46,6 +44,15 @@ This repository contains the following projects:
 * Grandlarc
 
   Another gamemode available in the default server package, converted to C#.
+
+Missing Documention
+===
+
+- Multiple classes in SampSharp.GameMode lack documentation
+- Build guide
+- Installation guide
+- Usage guide
+- Benchmark testing
 
 Licence
 ===
