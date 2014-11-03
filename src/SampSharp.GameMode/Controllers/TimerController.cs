@@ -12,13 +12,14 @@
 // For more information, please refer to <http://unlicense.org>
 
 using SampSharp.GameMode.SAMP;
+using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.Controllers
 {
     /// <summary>
     ///     A controller processing all timer actions.
     /// </summary>
-    public class TimerController : IEventListener, ITypeProvider
+    public class TimerController : Disposable, IEventListener, ITypeProvider
     {
         /// <summary>
         ///     Registers the events this TimerController wants to listen to.
@@ -41,6 +42,17 @@ namespace SampSharp.GameMode.Controllers
         public virtual void RegisterTypes()
         {
             Timer.Register<Timer>();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var t in Timer.All)
+                {
+                    t.Dispose();
+                }
+            }
         }
     }
 }

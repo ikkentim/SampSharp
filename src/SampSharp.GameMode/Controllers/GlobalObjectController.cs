@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers
@@ -19,7 +20,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all global-object actions.
     /// </summary>
-    public class GlobalObjectController : IEventListener, ITypeProvider
+    public class GlobalObjectController : Disposable, IEventListener, ITypeProvider
     {
         /// <summary>
         ///     Registers the events this GlobalObjectController wants to listen to.
@@ -63,6 +64,17 @@ namespace SampSharp.GameMode.Controllers
         public virtual void RegisterTypes()
         {
             GlobalObject.Register<GlobalObject>();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var o in GlobalObject.All)
+                {
+                    o.Dispose();
+                }
+            }
         }
     }
 }

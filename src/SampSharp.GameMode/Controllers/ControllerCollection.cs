@@ -11,15 +11,18 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.Controllers
 {
     /// <summary>
     ///     Represents a list of <see cref="IController" /> instances.
     /// </summary>
-    public class ControllerCollection : IEnumerable<IController>
+    public class ControllerCollection : Disposable, IEnumerable<IController>
     {
         private readonly List<IController> _controllers = new List<IController>();
 
@@ -70,6 +73,17 @@ namespace SampSharp.GameMode.Controllers
         public void Remove<T>()
         {
             _controllers.RemoveAll(c => c is T);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var controller in this.OfType<IDisposable>())
+                {
+                    controller.Dispose();
+                }
+            }
         }
     }
 }
