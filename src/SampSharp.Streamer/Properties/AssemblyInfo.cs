@@ -13,17 +13,18 @@
 
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Resources;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("SampSharp.Streamer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("SampSharp.Streamer extension for SA-MP#")]
+[assembly: AssemblyDescription("Provides classes for SA-MP's streamer plugin")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SampSharp.Streamer")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyProduct("SampSharp.Streamer extension for SA-MP#")]
+[assembly: AssemblyCopyright("Copyright © Tim Potze 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -50,3 +51,4 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: NeutralResourcesLanguageAttribute("en")]
