@@ -1,3 +1,4 @@
+#include "Main.h"
 #include <string>
 #include <sampgdk/sampgdk.h>
 
@@ -26,6 +27,9 @@ Supports() {
 
 PLUGIN_EXPORT bool PLUGIN_CALL
 Load(void **ppData) {
+
+    logprintf("[SampSharp] Loading SampSharp v%s", PLUGIN_VERSION);
+
     if (!sampgdk::Load(ppData)) {
         return false;
     }
