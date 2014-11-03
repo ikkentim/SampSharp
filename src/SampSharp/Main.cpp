@@ -74,7 +74,7 @@ Load(void **ppData) {
                 MonoUtil::GenerateSymbols(file.c_str());
             }
         }
-        sampgdk::logprintf("[SampSharp] Done!\n");
+        sampgdk::logprintf("[SampSharp] Symbol files generated!\n");
     }
     #endif
 
@@ -130,6 +130,5 @@ OnPublicCall(AMX *amx, const char *name, cell *params, cell *retval) {
     }
     #endif
 
-    logprintf("publiccall %s", name);
     return SampSharp::ProcessPublicCall(amx, name, params, retval);
 }
