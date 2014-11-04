@@ -9,7 +9,7 @@ solution "SampSharp"
 
       language "C++"
       platforms { "x32" }
-      links { "mono-2.0", "rt" }
+      links { "mono-2.0", "rt", "sampgdk" }
       includedirs { "includes", "includes/sdk", "includes/sdk/amx" }
       buildoptions { "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-m32" }
       
@@ -19,12 +19,12 @@ solution "SampSharp"
          objdir "obj/linux/Debug"
          -- targetdir "bin/linux/Debug"
          targetdir "../../environment/plugins"
-         defines { "DEBUG", "LINUX", "SAMPGDK_AMALGAMATION", "_GNU_SOURCE" }
+         defines { "DEBUG", "LINUX", "_GNU_SOURCE" }
          flags { "Symbols" }
 
       configuration "Release"
          objdir "obj/linux/Release"
          targetdir "bin/linux/Release"
-         defines { "NDEBUG", "LINUX", "SAMPGDK_AMALGAMATION", "_GNU_SOURCE" }
+         defines { "NDEBUG", "LINUX", "_GNU_SOURCE" }
          flags { "Optimize" }
 
