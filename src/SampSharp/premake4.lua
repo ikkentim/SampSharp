@@ -10,10 +10,10 @@ solution "SampSharp"
       language "C++"
       platforms { "x32" }
       links { "mono-2.0", "rt" }
-      includedirs { "includes", "includes/sdk" }
+      includedirs { "includes", "includes/sdk", "includes/sdk/amx" }
       buildoptions { "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-m32" }
       
-      files { "**.cpp", "includes/sampgdk/sampgdk.c" }
+      files { "**.cpp" }
 
       configuration "Debug"
          objdir "obj/linux/Debug"
