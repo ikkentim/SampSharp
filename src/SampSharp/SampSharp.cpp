@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <mono/metadata/threads.h>
 #include <mono/metadata/exception.h>
-#include <sampgdk/sampgdk.h>
+#include <sampgdk/core.h>
 #include "Natives.h"
 #include "PathUtil.h"
 #include "TimeUtil.h"
