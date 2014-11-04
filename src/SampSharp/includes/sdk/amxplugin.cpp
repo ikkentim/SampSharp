@@ -12,7 +12,6 @@
 
 #include "plugin.h"
 
-#pragma once
 //----------------------------------------------------------
 
 void *pAMXFunctions;

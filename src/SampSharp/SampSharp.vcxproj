@@ -57,16 +57,16 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>includes;includes/sdk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>includes;includes/sdk;includes/sdk/amx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>false</SDLCheck>
       <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>mono.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mono.lib;sampgdk4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>SampSharp.def</ModuleDefinitionFile>
-      <AdditionalLibraryDirectories>lib\mono\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>lib\mono\win32;lib\sampgdk\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -81,7 +81,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>includes;includes/sdk</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>includes;includes/sdk;includes/sdk/amx</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -89,8 +89,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>SampSharp.def</ModuleDefinitionFile>
-      <AdditionalDependencies>mono.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>lib\mono\win32</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mono.lib;sampgdk4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib\mono\win32;lib\sampgdk\win32</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -98,7 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConfigReader.cpp" />
-    <ClCompile Include="includes\sampgdk\sampgdk.c" />
     <ClCompile Include="includes\sdk\amxplugin.cpp" />
     <ClCompile Include="SampSharp.cpp" />
     <ClCompile Include="Main.cpp" />
