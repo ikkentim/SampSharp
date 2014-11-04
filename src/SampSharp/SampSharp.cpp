@@ -370,7 +370,6 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
             }
 
             *retval = retint;
-
 			return false;
 		}
 		return false;
@@ -402,7 +401,7 @@ int SampSharp::CallEvent(MonoMethod* method, uint32_t handle, void **params) {
 		return -1;
 	}
 
-	return *(bool *)mono_object_unbox(response) == 1 ? 1 : 0;
+	return *(bool *)mono_object_unbox(response) ? 1 : 0;
 }
 
 void SampSharp::Unload() {
