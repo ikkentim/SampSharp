@@ -23,8 +23,12 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            Native.Print(": \u00D6");
-            Native.Print(": Ä ä Ö ö Ü ü ß ...");
+            Console.WriteLine(": Common German characters:");
+            Console.WriteLine(": \u00D6");
+            Console.WriteLine(": Ä ä Ö ö Ü ü ß ...");
+
+            Console.WriteLine(": Cyrillic characters:");
+            Console.WriteLine(": АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЫЪЭЮЯ");
         }
 
         [Command("charset")]
@@ -33,8 +37,8 @@ namespace TestMode.Tests
             Player.SendClientMessageToAll(Color.Teal, "this is a test: \u00D6");
             Player.SendClientMessageToAll(Color.Teal, "this is a test: Ä ä Ö ö Ü ü ß ...");
 
-            Console.WriteLine("this is a test: \u00D6");
-            Console.WriteLine("this is a test: Ä ä Ö ö Ü ü ß ...");
+            Player.SendClientMessageToAll("Cyrillic characters:");
+            Player.SendClientMessageToAll("АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЫЪЭЮЯ");
 
             return true;
         }
