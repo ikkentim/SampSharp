@@ -12,8 +12,8 @@ Note of caution
 
 Requirements
 ===
-- Mono version 3.10 or higher.
-
+- Mono version 3.10 or higher. (Embedded in windows build)
+- sampgdk 4.1.0 or higher. (Embedded in windows build)
 Contains
 ===
 This repository contains the following projects:
