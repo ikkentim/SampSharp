@@ -1,4 +1,8 @@
-#include <sampgdk/sampgdk.h>
+#include <sampgdk/a_samp.h>
+#include <sampgdk/a_players.h>
+#include <sampgdk/a_vehicles.h>
+#include <sampgdk/a_objects.h>
+#include <sampgdk/interop.h>
 #include <string>
 #include <cstring>
 
