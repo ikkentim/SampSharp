@@ -6,7 +6,7 @@ All feedback is welcome, file an Issue or contact me on the SA-MP forums. http:/
 
 Note of caution
 ===
-- **SA-MP# is still in Beta! Although it's pretty stable already, crashes may occur.**
+- I've only tested SA-MP# on a 32-bit ubuntu linux machine. Altough it should work on other linux distros, I can't guarantee that it does.
 - **Be aware!** Mono is not **fully** compatible with all of .NET's features. Check [their website](http://www.mono-project.com/Compatibility) for more details.
 - EntityFramework does not seem to be compatible with mono/SA-MP#! Instead, use NHibernate, which is just ase awesome as EntityFramework (if not more awesome). See src/NHibernateTest for an example of how to use NHibernate. For a why and how EF does not work with SA-MP#, see [#24](https://github.com/ikkentim/SampSharp/issues/24).
 
@@ -46,13 +46,52 @@ This repository contains the following projects:
 
   Another gamemode available in the default server package, converted to C#.
 
+Building the SA-MP# plugin
+===
+**Windows**
+
+- Download visual studio (if you haven't already)
+- Open src/SampSharp.sln
+- In the toolbar select Debug or Release
+- In the Solution Explorer, right click on SampSharp > build.
+- If you build in Debug mode, the library will be saved in environment/plugins. If you build in Release mode, the library wil be saved in src/Release.
+
+**Linux**
+
+*The following guide is for Ubuntu, it might be a little different on different distros*
+
+- Install premake4 and g++: sudo apt-get install premake4 g++
+- Change to the directory src/SampSharp
+- Build the makefiles: premake4 gmake
+- Build the plugin: make (builds in debug mode) -or- make config=release32 (builds in release mode).
+- If you build in Debug mode, the library will be saved in environment/plugins. If you build in Release mode, the library wil be saved in src/SampSharp/bin/linux/Release.
+
+Installing SA-MP# and requirements
+===
+**Windows**
+
+- Download the windows release(sampsharp-*-win32.zip).
+- Copy the contents of (sampsharp-*-win32.zip)/environment to your server's directory.
+
+**Linux**
+
+- Install mono 3.10 or newer. You can find their instructions [here](http://www.mono-project.com/download/#download-lin).
+- Download sampgdk-*-linux.tar.gz [here](https://github.com/Zeex/sampgdk/releases) and copy all libsampgdk.x files to /usr/local/lib
+- Download the linux release(sampsharp-*-linux.zip).
+- Copy the contents of (sampsharp-*-linux.zip)/environment to your server's directory.
+
+Building a gamemode with SA-MP#
+===
+- Using visual studio, create a new Visual C# Class Library project.
+- In the Solution Explorer, under your newly created project, right click on References > Add Reference...
+- Click on Browse > Browse... and locate SampSharp.GameMode.
+- Create a class and Set it's base-class to SampSharp.GameMode.BaseMode. This will be your entrypoint.
+- For more examples, check src/RiverShell and src/Grandlarc.
+
 Missing Documention
 ===
 
 - Multiple classes in SampSharp.GameMode lack documentation
-- Build guide
-- Installation guide
-- Usage guide
 - Benchmark testing
 
 Licence
