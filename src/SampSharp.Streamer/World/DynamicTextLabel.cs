@@ -27,23 +27,23 @@ namespace SampSharp.Streamer.World
         }
 
         public DynamicTextLabel(string text, Color color, Vector position, float drawdistance,
-            Player attachedPlayer = null, Vehicle attachedVehicle = null, bool testLOS = false, int worldid = -1,
-            int interiorid = -1, Player player = null, float streamdistance = 100.0f)
+            GtaPlayer attachedPlayer = null, GtaVehicle attachedVehicle = null, bool testLOS = false, int worldid = -1,
+            int interiorid = -1, GtaPlayer player = null, float streamdistance = 100.0f)
         {
             Id = StreamerNative.CreateDynamic3DTextLabel(text, color, position.X, position.Y, position.Z, drawdistance,
-                attachedPlayer == null ? Player.InvalidId : attachedPlayer.Id,
-                attachedVehicle == null ? Vehicle.InvalidId : attachedVehicle.Id, testLOS, worldid, interiorid,
+                attachedPlayer == null ? GtaPlayer.InvalidId : attachedPlayer.Id,
+                attachedVehicle == null ? GtaVehicle.InvalidId : attachedVehicle.Id, testLOS, worldid, interiorid,
                 player == null ? -1 : player.Id, streamdistance);
         }
 
         public DynamicTextLabel(string text, Color color, Vector position,
-            float drawdistance, float streamdistance, Player attachedPlayer = null, Vehicle attachedVehicle = null,
+            float drawdistance, float streamdistance, GtaPlayer attachedPlayer = null, GtaVehicle attachedVehicle = null,
             bool testLOS = false,
-            int[] worlds = null, int[] interiors = null, Player[] players = null)
+            int[] worlds = null, int[] interiors = null, GtaPlayer[] players = null)
         {
             Id = StreamerNative.CreateDynamic3DTextLabelEx(text, color, position.X, position.Y, position.Z, drawdistance,
-                attachedPlayer == null ? Player.InvalidId : attachedPlayer.Id,
-                attachedVehicle == null ? Vehicle.InvalidId : attachedVehicle.Id, testLOS, streamdistance, worlds,
+                attachedPlayer == null ? GtaPlayer.InvalidId : attachedPlayer.Id,
+                attachedVehicle == null ? GtaVehicle.InvalidId : attachedVehicle.Id, testLOS, streamdistance, worlds,
                 interiors, players == null ? null : players.Select(p => p.Id).ToArray());
         }
 

@@ -41,9 +41,9 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the clicked player.
         /// </summary>
-        public Player ClickedPlayer
+        public GtaPlayer ClickedPlayer
         {
-            get { return ClickedPlayerId == Player.InvalidId ? null : Player.FindOrCreate(ClickedPlayerId); }
+            get { return ClickedPlayerId == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(ClickedPlayerId); }
         }
 
         /// <summary>

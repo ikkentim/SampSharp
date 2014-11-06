@@ -35,7 +35,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             if (type == typeof (int)) return new IntegerAttribute(name);
             if (type == typeof (string)) return new WordAttribute(name);
             if (type == typeof (float)) return new FloatAttribute(name);
-            if (typeof (Player).IsAssignableFrom(type)) return new PlayerAttribute(name);
+            if (typeof (GtaPlayer).IsAssignableFrom(type)) return new PlayerAttribute(name);
 
             return type.IsEnum ? new EnumAttribute(name, type) : null;
         };
@@ -76,7 +76,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             if (PermissionCheck != null)
             {
                 ParameterInfo[] permParams = PermissionCheck.GetParameters();
-                if (permParams.Length != 1 || !typeof (Player).IsAssignableFrom(permParams[0].ParameterType))
+                if (permParams.Length != 1 || !typeof (GtaPlayer).IsAssignableFrom(permParams[0].ParameterType))
                 {
                     throw new ArgumentException("PermissionCheckMethod of " + Name +
                                                 " does not take a Player as parameter");
@@ -90,7 +90,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             ParameterInfo[] cmdParams = Command.GetParameters();
 
-            if (cmdParams.Length == 0 || !typeof (Player).IsAssignableFrom(cmdParams[0].ParameterType))
+            if (cmdParams.Length == 0 || !typeof (GtaPlayer).IsAssignableFrom(cmdParams[0].ParameterType))
             {
                 throw new ArgumentException("command " + Name + " does not accept a player as first parameter");
             }
@@ -220,12 +220,12 @@ namespace SampSharp.GameMode.SAMP.Commands
             return false;
         }
 
-        public override bool HasPlayerPermissionForCommand(Player player)
+        public override bool HasPlayerPermissionForCommand(GtaPlayer player)
         {
             return PermissionCheck == null || (bool) PermissionCheck.Invoke(null, new object[] {player});
         }
 
-        public override bool RunCommand(Player player, string args)
+        public override bool RunCommand(GtaPlayer player, string args)
         {
             var arguments = new List<object>
             {

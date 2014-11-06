@@ -137,7 +137,7 @@ namespace SampSharp.Streamer.Natives
         }
 
         public static int AttachDynamicAreaToObject(int areaid, int objectid,
-            StreamerObjectType type = StreamerObjectType.Dynamic, int playerid = Player.InvalidId)
+            StreamerObjectType type = StreamerObjectType.Dynamic, int playerid = GtaPlayer.InvalidId)
         {
             return Native.CallNative("AttachDynamicAreaToObject", __arglist(areaid, objectid, (int) type, playerid));
         }

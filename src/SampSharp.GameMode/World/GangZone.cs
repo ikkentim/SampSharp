@@ -62,7 +62,7 @@ namespace SampSharp.GameMode.World
             Native.GangZoneShowForAll(Id, Color);
         }
 
-        public virtual void Show(Player player)
+        public virtual void Show(GtaPlayer player)
         {
             CheckDisposure();
 
@@ -76,7 +76,7 @@ namespace SampSharp.GameMode.World
             Native.GangZoneShowForAll(Id, color);
         }
 
-        public virtual void Show(Player player, Color color)
+        public virtual void Show(GtaPlayer player, Color color)
         {
             CheckDisposure();
 
@@ -93,7 +93,7 @@ namespace SampSharp.GameMode.World
             Native.GangZoneHideForAll(Id);
         }
 
-        public virtual void Hide(Player player)
+        public virtual void Hide(GtaPlayer player)
         {
             CheckDisposure();
 
@@ -114,14 +114,14 @@ namespace SampSharp.GameMode.World
             Native.GangZoneFlashForAll(Id, color);
         }
 
-        public virtual void Flash(Player player)
+        public virtual void Flash(GtaPlayer player)
         {
             CheckDisposure();
 
             Flash(player, Color);
         }
 
-        public virtual void Flash(Player player, Color color)
+        public virtual void Flash(GtaPlayer player, Color color)
         {
             CheckDisposure();
 
@@ -138,7 +138,7 @@ namespace SampSharp.GameMode.World
             Native.GangZoneStopFlashForAll(Id);
         }
 
-        public virtual void StopFlash(Player player)
+        public virtual void StopFlash(GtaPlayer player)
         {
             CheckDisposure();
 

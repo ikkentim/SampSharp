@@ -29,9 +29,9 @@ namespace SampSharp.GameMode.Events
 
         public int VehicleId { get; private set; }
 
-        public Vehicle Vehicle
+        public GtaVehicle Vehicle
         {
-            get { return VehicleId == Vehicle.InvalidId ? null : Vehicle.Find(VehicleId); }
+            get { return VehicleId == GtaVehicle.InvalidId ? null : GtaVehicle.Find(VehicleId); }
         }
     }
 }

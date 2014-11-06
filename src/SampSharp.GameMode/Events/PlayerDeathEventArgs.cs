@@ -41,9 +41,9 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the killer.
         /// </summary>
-        public Player Killer
+        public GtaPlayer Killer
         {
-            get { return KillerId == Player.InvalidId ? null : Player.FindOrCreate(KillerId); }
+            get { return KillerId == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(KillerId); }
         }
 
         /// <summary>

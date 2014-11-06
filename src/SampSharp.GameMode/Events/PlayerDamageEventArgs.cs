@@ -47,9 +47,9 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the other player.
         /// </summary>
-        public Player OtherPlayer
+        public GtaPlayer OtherPlayer
         {
-            get { return OtherPlayerId == Player.InvalidId ? null : Player.FindOrCreate(OtherPlayerId); }
+            get { return OtherPlayerId == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(OtherPlayerId); }
         }
 
         /// <summary>

@@ -18,7 +18,7 @@ using SampSharp.GameMode.World;
 
 namespace RiverShell.World
 {
-    public class RPlayer : Player
+    public class RPlayer : GtaPlayer
     {
         private RPlayer _lastKiller;
         private SpectateState _spectateState;
@@ -121,7 +121,7 @@ namespace RiverShell.World
             base.OnSpawned(e);
         }
 
-        private void GoSpectatePlayer(Player player)
+        private void GoSpectatePlayer(GtaPlayer player)
         {
             PlayerState state = PlayerState;
 

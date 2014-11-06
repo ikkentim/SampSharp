@@ -65,9 +65,9 @@ namespace SampSharp.Streamer.World
             }
         }
 
-        public virtual Player Player
+        public virtual GtaPlayer Player
         {
-            get { return Player.FindOrCreate(GetInteger(StreamerDataType.PlayerId)); }
+            get { return GtaPlayer.FindOrCreate(GetInteger(StreamerDataType.PlayerId)); }
             set
             {
                 if (value == null)
@@ -78,12 +78,12 @@ namespace SampSharp.Streamer.World
             }
         }
 
-        public virtual IEnumerable<Player> Players
+        public virtual IEnumerable<GtaPlayer> Players
         {
             get
             {
                 return
-                    GetArray(StreamerDataType.PlayerId, 1024).Where(v => v != int.MinValue).Select(Player.FindOrCreate);
+                    GetArray(StreamerDataType.PlayerId, 1024).Where(v => v != int.MinValue).Select(GtaPlayer.FindOrCreate);
             }
             set
             {
@@ -120,7 +120,7 @@ namespace SampSharp.Streamer.World
             }
         }
 
-        public virtual bool IsVisibleForPlayer(Player player)
+        public virtual bool IsVisibleForPlayer(GtaPlayer player)
         {
             if (player == null)
             {
@@ -130,7 +130,7 @@ namespace SampSharp.Streamer.World
             return IsInArray(StreamerDataType.PlayerId, player.Id);
         }
 
-        public virtual void ShowForPlayer(Player player)
+        public virtual void ShowForPlayer(GtaPlayer player)
         {
             if (player == null)
             {
@@ -140,7 +140,7 @@ namespace SampSharp.Streamer.World
             AppendToArray(StreamerDataType.PlayerId, player.Id);
         }
 
-        public virtual void HideForPlayer(Player player)
+        public virtual void HideForPlayer(GtaPlayer player)
         {
             if (player == null)
             {
@@ -180,7 +180,7 @@ namespace SampSharp.Streamer.World
             RemoveArrayData(StreamerDataType.InteriorId, interiorid);
         }
 
-        public void ToggleUpdate(Player player, bool toggle)
+        public void ToggleUpdate(GtaPlayer player, bool toggle)
         {
             Streamer.ItemType[StreamType].ToggleUpdate(player, toggle);
         }

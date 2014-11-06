@@ -56,7 +56,7 @@ namespace SampSharp.GameMode.World
 
         public virtual float DrawDistance { get; private set; }
         public virtual int Id { get; private set; }
-        public virtual Player Player { get; private set; }
+        public virtual GtaPlayer Player { get; private set; }
 
         #endregion
 
@@ -84,11 +84,11 @@ namespace SampSharp.GameMode.World
 
         #region Constructor
 
-        public PlayerObject(int id) : this(Player.Find(id/(Limits.MaxObjects + 1)), id%(Limits.MaxObjects + 1))
+        public PlayerObject(int id) : this(GtaPlayer.Find(id/(Limits.MaxObjects + 1)), id%(Limits.MaxObjects + 1))
         {
         }
 
-        public PlayerObject(Player player, int id)
+        public PlayerObject(GtaPlayer player, int id)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -97,12 +97,12 @@ namespace SampSharp.GameMode.World
             Id = id;
         }
 
-        public PlayerObject(Player player, int modelid, Vector position, Vector rotation)
+        public PlayerObject(GtaPlayer player, int modelid, Vector position, Vector rotation)
             : this(player, modelid, position, rotation, 0)
         {
         }
 
-        public PlayerObject(Player player, int modelid, Vector position, Vector rotation, float drawDistance)
+        public PlayerObject(GtaPlayer player, int modelid, Vector position, Vector rotation, float drawDistance)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -161,7 +161,7 @@ namespace SampSharp.GameMode.World
                 (int) textalignment);
         }
 
-        public virtual void AttachTo(Player player, Vector offset, Vector rotation)
+        public virtual void AttachTo(GtaPlayer player, Vector offset, Vector rotation)
         {
             CheckDisposure();
 
@@ -171,7 +171,7 @@ namespace SampSharp.GameMode.World
             Native.AttachPlayerObjectToPlayer(Player.Id, Id, player.Id, offset, rotation);
         }
 
-        public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
+        public virtual void AttachTo(GtaVehicle vehicle, Vector offset, Vector rotation)
         {
             CheckDisposure();
 
@@ -208,7 +208,7 @@ namespace SampSharp.GameMode.World
             Native.EditPlayerObject(Player.Id, Id);
         }
 
-        public static void Select(Player player)
+        public static void Select(GtaPlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException("player");

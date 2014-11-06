@@ -116,7 +116,7 @@ namespace SampSharp.Streamer.Natives
         }
 
         public static int CreateDynamic3DTextLabelEx(string text, Color color, float x, float y, float z,
-            float drawdistance, int attachedplayer = Player.InvalidId, int attachedvehicle = Vehicle.InvalidId,
+            float drawdistance, int attachedplayer = GtaPlayer.InvalidId, int attachedvehicle = GtaVehicle.InvalidId,
             bool testlos = false, float streamdistance = 100.0f, int[] worlds = null, int[] interiors = null,
             int[] players = null, int maxworlds = -1, int maxinteriors = -1, int maxplayers = -1)
         {

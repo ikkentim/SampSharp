@@ -28,14 +28,14 @@ namespace SampSharp.Streamer.World
         }
 
         public DynamicPickup(int modelid, int type, Vector position, int worldid = -1, int interiorid = -1,
-            Player player = null, float streamdistance = 100.0f)
+            GtaPlayer player = null, float streamdistance = 100.0f)
         {
             Id = StreamerNative.CreateDynamicPickup(modelid, type, position.X, position.Y, position.Z, worldid,
                 interiorid, player == null ? -1 : player.Id, streamdistance);
         }
 
         public DynamicPickup(int modelid, int type, Vector position, float streamdistance, int[] worlds = null,
-            int[] interiors = null, Player[] players = null)
+            int[] interiors = null, GtaPlayer[] players = null)
         {
             Id = StreamerNative.CreateDynamicPickupEx(modelid, type, position.X, position.Y, position.Z, streamdistance,
                 worlds, interiors, players == null ? null : players.Select(p => p.Id).ToArray());

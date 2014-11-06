@@ -22,9 +22,9 @@ namespace SampSharp.GameMode.SAMP
 {
     public class PVarCollection : IEnumerable<object>
     {
-        private readonly Player _player;
+        private readonly GtaPlayer _player;
 
-        public PVarCollection(Player player)
+        public PVarCollection(GtaPlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException("player");

@@ -66,7 +66,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         /// <param name="player">The <see cref="Player" /> whose textdraw it is.</param>
         /// <param name="id">The id of the player-textdraw.</param>
-        public PlayerTextDraw(Player player, int id)
+        public PlayerTextDraw(GtaPlayer player, int id)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -82,7 +82,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="x">The x-position of the player-textdraw on the screen.</param>
         /// <param name="y">The y-position of the player-textdraw on the screen.</param>
         /// <param name="text">The text of the player-textdraw.</param>
-        public PlayerTextDraw(Player player, float x, float y, string text)
+        public PlayerTextDraw(GtaPlayer player, float x, float y, string text)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -102,7 +102,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="y">The y-position of the player-textdraw on the screen.</param>
         /// <param name="text">The text of the player-textdraw.</param>
         /// <param name="font">The <see cref="TextDrawFont" /> of this textdraw.</param>
-        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font)
+        public PlayerTextDraw(GtaPlayer player, float x, float y, string text, TextDrawFont font)
             : this(player, x, y, text)
         {
             Font = font;
@@ -117,7 +117,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="text">The text of the player-textdraw.</param>
         /// <param name="font">The <see cref="TextDrawFont" /> of the player-textdraw.</param>
         /// <param name="foreColor">The foreground <see cref="Color" /> of the player-textdraw.</param>
-        public PlayerTextDraw(Player player, float x, float y, string text, TextDrawFont font, Color foreColor)
+        public PlayerTextDraw(GtaPlayer player, float x, float y, string text, TextDrawFont font, Color foreColor)
             : this(player, x, y, text, font)
         {
             ForeColor = foreColor;
@@ -466,7 +466,7 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Gets the owner of this player-textdraw.
         /// </summary>
-        public virtual Player Player { get; protected set; }
+        public virtual GtaPlayer Player { get; protected set; }
 
         #endregion
 

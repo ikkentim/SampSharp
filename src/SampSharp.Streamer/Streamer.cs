@@ -87,7 +87,7 @@ namespace SampSharp.Streamer
             return streamer;
         }
 
-        public static void ToggleIdleUpdate(Player player, bool toggle)
+        public static void ToggleIdleUpdate(GtaPlayer player, bool toggle)
         {
             if (player == null)
             {
@@ -97,7 +97,7 @@ namespace SampSharp.Streamer
             StreamerNative.ToggleIdleUpdate(player.Id, toggle);
         }
 
-        public static void Update(Player player)
+        public static void Update(GtaPlayer player)
         {
             if (player == null)
             {
@@ -107,7 +107,7 @@ namespace SampSharp.Streamer
             StreamerNative.Update(player.Id);
         }
 
-        public static void Update(Player player, Vector position, int worldid = -1, int interiorid = -1)
+        public static void Update(GtaPlayer player, Vector position, int worldid = -1, int interiorid = -1)
         {
             if (player == null)
             {
@@ -283,7 +283,7 @@ namespace SampSharp.Streamer
                 StreamerNative.SetArrayData(StreamType, id, data, value);
             }
 
-            public void ToggleUpdate(Player player, bool toggle)
+            public void ToggleUpdate(GtaPlayer player, bool toggle)
             {
                 if (player == null)
                 {
