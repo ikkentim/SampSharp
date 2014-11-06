@@ -32,7 +32,7 @@ namespace RiverShell.Controllers
 
         private void gameMode_PlayerStateChanged(object sender, PlayerStateEventArgs e)
         {
-            var player = e.Player as RPlayer;
+            var player = e.Player as Player;
 
             switch (e.NewState)
             {
@@ -54,7 +54,7 @@ namespace RiverShell.Controllers
 
         private void checkpoint_Enter(object sender, PlayerEventArgs e)
         {
-            var player = e.Player as RPlayer;
+            var player = e.Player as Player;
 
             GtaVehicle vehicle = player.Vehicle;
 
@@ -71,22 +71,22 @@ namespace RiverShell.Controllers
 
             if (player.Team.TimesCaptured == Config.CapturesToWin)
             {
-                RPlayer.GameTextForAll(string.Format("{0} wins!", player.Team.GameTextTeamName), 3000, 5);
+                Player.GameTextForAll(string.Format("{0} wins!", player.Team.GameTextTeamName), 3000, 5);
                 GameMode.ObjectiveReached = true;
-                foreach (GtaPlayer p in RPlayer.All)
+                foreach (GtaPlayer p in Player.All)
                     p.PlaySound(1185);
 
                 var exitTimer = new Timer(6000, false);
                 exitTimer.Tick += (tsender, args) =>
                 {
-                    foreach (GtaPlayer p in RPlayer.All)
+                    foreach (GtaPlayer p in Player.All)
                         p.PlaySound(1186);
                     Native.GameModeExit();
                 };
             }
             else
             {
-                RPlayer.GameTextForAll(string.Format("{0} captured the ~y~boat!", player.Team.GameTextTeamName), 3000, 5);
+                Player.GameTextForAll(string.Format("{0} captured the ~y~boat!", player.Team.GameTextTeamName), 3000, 5);
                 vehicle.Respawn();
             }
         }

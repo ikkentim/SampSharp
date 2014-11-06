@@ -16,15 +16,15 @@ using SampSharp.GameMode.World;
 
 namespace RiverShell.World
 {
-    public class RVehicle : GtaVehicle
+    public class Vehicle : GtaVehicle
     {
-        public RVehicle(int id) : base(id)
+        public Vehicle(int id) : base(id)
         {
         }
 
         public override void OnStreamIn(PlayerVehicleEventArgs e)
         {
-            var player = e.Player as RPlayer;
+            var player = e.Player as Player;
 
             if (this == GameMode.BlueTeam.TargetVehicle)
                 e.Vehicle.SetParamsForPlayer(player, true, player.Team == GameMode.GreenTeam);

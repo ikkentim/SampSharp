@@ -25,7 +25,7 @@ namespace RiverShell.Controllers
         {
             gameMode.PlayerUpdate += (sender, args) =>
             {
-                var player = args.Player as RPlayer;
+                var player = args.Player as Player;
                 if (player.IsInRangeOfPoint(2.5f, GameMode.BlueTeam.ResupplyPosition))
                 {
                     Resupply(player);
@@ -33,7 +33,7 @@ namespace RiverShell.Controllers
             };
         }
 
-        private void Resupply(RPlayer player)
+        private void Resupply(Player player)
         {
             //Check if we haven't resupplied recently
             if (player.LastResupplyTime != 0 &&

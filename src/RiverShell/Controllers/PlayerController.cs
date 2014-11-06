@@ -16,11 +16,11 @@ using SampSharp.GameMode.Controllers;
 
 namespace RiverShell.Controllers
 {
-    public class RPlayerController : PlayerController
+    public class PlayerController : GtaPlayerController
     {
         public override void RegisterTypes()
         {
-            RPlayer.Register<RPlayer>();
+            Player.Register<Player>();
         }
     }
 }
