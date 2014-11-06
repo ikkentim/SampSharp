@@ -1,4 +1,0 @@
-Name: AspNetWebStack
-Description: References Microsoft ASP.NET Web Stack
-Version: 3.10.0
-Libs: -r:/usr/local/lib/mono/gac/System.Web.Razor/2.0.0.0__31bf3856ad364e35/System.Web.Razor.dll -r:/usr/local/lib/mono/gac/System.Web.Http/4.0.0.0__31bf3856ad364e35/System.Web.Http.dll -r:/usr/local/lib/mono/gac/System.Web.WebPages/2.0.0.0__31bf3856ad364e35/System.Web.WebPages.dll -r:/usr/local/lib/mono/gac/System.Web.WebPages.Razor/2.0.0.0__31bf3856ad364e35/System.Web.WebPages.Razor.dll -r:/usr/local/lib/mono/gac/System.Web.WebPages.Deployment/2.0.0.0__31bf3856ad364e35/System.Web.WebPages.Deployment.dll
