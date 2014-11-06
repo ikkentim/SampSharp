@@ -68,7 +68,7 @@ namespace SampSharp.GameMode.Controllers
         {
             if (disposing)
             {
-                foreach (var o in PlayerObject.All)
+                foreach (PlayerObject o in PlayerObject.All)
                 {
                     o.Dispose();
                 }

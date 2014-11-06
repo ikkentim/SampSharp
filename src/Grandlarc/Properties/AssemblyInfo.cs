@@ -12,8 +12,8 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Resources;
+using System.Runtime.InteropServices;
 
 // Le informazioni generali relative a un assembly sono controllate dal seguente 
 // set di attributi. Per modificare le informazioni associate a un assembly
@@ -51,4 +51,4 @@ using System.Resources;
 
 [assembly: AssemblyVersion("0.1.0.0")]
 [assembly: AssemblyFileVersion("0.1.0.0")]
-[assembly: NeutralResourcesLanguageAttribute("en")]
+[assembly: NeutralResourcesLanguage("en")]

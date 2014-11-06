@@ -48,7 +48,7 @@ namespace SampSharp.GameMode.Controllers
         {
             if (disposing)
             {
-                foreach (var td in PlayerTextDraw.All)
+                foreach (PlayerTextDraw td in PlayerTextDraw.All)
                 {
                     td.Dispose();
                 }

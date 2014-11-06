@@ -64,7 +64,8 @@ namespace SampSharp.GameMode.Controllers
             gameMode.PlayerTakeDamage += (sender, args) => GtaPlayer.FindOrCreate(args.PlayerId).OnTakeDamage(args);
             gameMode.PlayerGiveDamage += (sender, args) => GtaPlayer.FindOrCreate(args.PlayerId).OnGiveDamage(args);
             gameMode.PlayerClickMap += (sender, args) => GtaPlayer.FindOrCreate(args.PlayerId).OnClickMap(args);
-            gameMode.PlayerClickTextDraw += (sender, args) => GtaPlayer.FindOrCreate(args.PlayerId).OnClickTextDraw(args);
+            gameMode.PlayerClickTextDraw +=
+                (sender, args) => GtaPlayer.FindOrCreate(args.PlayerId).OnClickTextDraw(args);
             gameMode.PlayerClickPlayerTextDraw +=
                 (sender, args) => GtaPlayer.FindOrCreate(args.PlayerId).OnClickPlayerTextDraw(args);
             gameMode.PlayerClickPlayer += (sender, args) => GtaPlayer.FindOrCreate(args.PlayerId).OnClickPlayer(args);
@@ -87,7 +88,7 @@ namespace SampSharp.GameMode.Controllers
         {
             if (disposing)
             {
-                foreach (var player in GtaPlayer.All)
+                foreach (GtaPlayer player in GtaPlayer.All)
                 {
                     player.Dispose();
                 }

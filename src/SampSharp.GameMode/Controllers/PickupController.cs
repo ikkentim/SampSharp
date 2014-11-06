@@ -47,7 +47,7 @@ namespace SampSharp.GameMode.Controllers
         {
             if (disposing)
             {
-                foreach (var pickup in Pickup.All)
+                foreach (Pickup pickup in Pickup.All)
                 {
                     pickup.Dispose();
                 }

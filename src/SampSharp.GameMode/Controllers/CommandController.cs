@@ -34,7 +34,7 @@ namespace SampSharp.GameMode.Controllers
         {
             try
             {
-                var n = 0;
+                int n = 0;
                 //Detect commands in assembly containing the gamemode
                 foreach (MethodInfo method in gameMode.GetType().Assembly.GetTypes().SelectMany(t => t.GetMethods())
                     .Where(m => m.IsStatic && m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0))
@@ -81,7 +81,7 @@ namespace SampSharp.GameMode.Controllers
         {
             if (disposing)
             {
-                foreach (var cmd in Command.All)
+                foreach (Command cmd in Command.All)
                 {
                     cmd.Dispose();
                 }

@@ -45,7 +45,8 @@ namespace SampSharp.GameMode.Display
         public static IEnumerable<Dialog> All
         {
             get { return OpenDialogs.Values; }
-        } 
+        }
+
         #endregion
 
         #region Constructors
