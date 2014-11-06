@@ -67,6 +67,7 @@
     <Compile Include="Definitions\ShopName.cs" />
     <Compile Include="Definitions\TextDrawAlignment.cs" />
     <Compile Include="Definitions\VehicleModelType.cs" />
+    <Compile Include="Natives\Native.cs" />
     <Compile Include="SAMP\Commands\CommandGroup.cs" />
     <Compile Include="SAMP\Commands\CommandGroupAttribute.cs" />
     <Compile Include="SAMP\Commands\DetectedCommand.cs" />
@@ -143,11 +144,21 @@
     <Compile Include="Events\WeaponShotEventArgs.cs" />
     <Compile Include="Helpers\LinqExtention.cs" />
     <Compile Include="LogWriter.cs" />
-    <Compile Include="Natives\Native.logging.cs" />
-    <Compile Include="Natives\Native.objects.cs" />
-    <Compile Include="Natives\Native.samp.cs" />
-    <Compile Include="Natives\Native.players.cs" />
-    <Compile Include="Natives\Native.vehicles.cs" />
+    <Compile Include="Natives\Native.logging.cs">
+      <DependentUpon>Native.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Natives\Native.objects.cs">
+      <DependentUpon>Native.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Natives\Native.samp.cs">
+      <DependentUpon>Native.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Natives\Native.players.cs">
+      <DependentUpon>Native.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Natives\Native.vehicles.cs">
+      <DependentUpon>Native.cs</DependentUpon>
+    </Compile>
     <Compile Include="BaseMode.cs" />
     <Compile Include="ParameterLengthAttribute.cs" />
     <Compile Include="Pools\IdentifiedOwnedPool`1.cs" />
@@ -185,7 +196,9 @@
     <Compile Include="World\Vehicle.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Natives\Native.natives.cs" />
+    <Compile Include="Natives\Native.natives.cs">
+      <DependentUpon>Native.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
