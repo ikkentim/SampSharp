@@ -16,7 +16,10 @@ using SampSharp.GameMode.Natives;
 
 namespace SampSharp.GameMode.SAMP
 {
-    public class Server
+    /// <summary>
+    ///     Contains methods affecting the SA-MP server.
+    /// </summary>
+    public static class Server
     {
         /// <summary>
         ///     Blocks an IP address from further communication with the server
