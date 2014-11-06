@@ -199,7 +199,7 @@ namespace Grandlarc
         {
             base.LoadControllers(controllers);
 
-            controllers.Remove<PlayerController>();
+            controllers.Remove<GtaPlayerController>();
             controllers.Add(new PlayerController());
         }
 

@@ -219,10 +219,10 @@ namespace RiverShell
         {
             base.LoadControllers(controllers);
 
-            controllers.Remove<PlayerController>();
+            controllers.Remove<GtaPlayerController>();
             controllers.Add(new PlayerController());
 
-            controllers.Remove<VehicleController>();
+            controllers.Remove<GtaVehicleController>();
             controllers.Add(new VehicleController());
 
             controllers.Add(new TeamController());
