@@ -17,7 +17,6 @@ using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
-using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode
@@ -27,7 +26,7 @@ namespace SampSharp.GameMode
     /// </summary>
     public abstract class BaseMode : IDisposable
     {
-        readonly ControllerCollection _controllers = new ControllerCollection();
+        private readonly ControllerCollection _controllers = new ControllerCollection();
 
         #region Constructor
 
@@ -433,6 +432,17 @@ namespace SampSharp.GameMode
         ///     This callback is called when a player disconnects from the server.
         /// </summary>
         public event EventHandler<PlayerDisconnectedEventArgs> PlayerDisconnected;
+
+        /// <summary>
+        ///     Occurs when the <see cref="OnPlayerCleanup" /> callback is being called.
+        ///     This callback is called after a player has disconnected.
+        /// </summary>
+        /// <remarks>
+        ///     Because <see cref="GtaPlayer" /> probably is the first listener of this event,
+        ///     the <see cref="GtaPlayer" /> object is already disposed before any other listeners are called.
+        ///     It is better to either use the <see cref="PlayerDisconnected" /> event or <see cref="GtaPlayer.Cleanup" />
+        /// </remarks>
+        public event EventHandler<PlayerDisconnectedEventArgs> PlayerCleanup;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerSpawn" /> callback is being called.
@@ -885,7 +895,19 @@ namespace SampSharp.GameMode
             if (PlayerDisconnected != null)
                 PlayerDisconnected(this, args);
 
+            OnPlayerCleanup(args);
+
             return args.Success;
+        }
+
+        /// <summary>
+        ///     This callback is called after a player disconnects from the server.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerDisconnectedEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerCleanup(PlayerDisconnectedEventArgs e)
+        {
+            if (PlayerCleanup != null)
+                PlayerCleanup(this, e);
         }
 
         /// <summary>
@@ -1855,11 +1877,9 @@ namespace SampSharp.GameMode
 
         #endregion
 
-
         public void Dispose()
         {
             _controllers.Dispose();
         }
-
     }
 }

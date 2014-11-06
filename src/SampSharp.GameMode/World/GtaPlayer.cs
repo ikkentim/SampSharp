@@ -475,6 +475,12 @@ namespace SampSharp.GameMode.World
         public event EventHandler<PlayerDisconnectedEventArgs> Disconnected;
 
         /// <summary>
+        ///     Occurs when the <see cref="BaseMode.OnPlayerDisconnect" /> is being called.
+        ///     This callback is called after a player disconnects from the server.
+        /// </summary>
+        public event EventHandler<PlayerDisconnectedEventArgs> Cleanup;
+
+        /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerSpawn" /> is being called.
         ///     This callback is called when a player spawns.
         /// </summary>
@@ -1910,9 +1916,20 @@ namespace SampSharp.GameMode.World
         {
             if (Disconnected != null)
                 Disconnected(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="Cleanup" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerDisconnectedEventArgs" /> that contains the event data. </param>
+        public virtual void OnCleanup(PlayerDisconnectedEventArgs e)
+        {
+            if (Cleanup != null)
+                Cleanup(this, e);
 
             Dispose();
         }
+
 
         /// <summary>
         ///     Raises the <see cref="Spawned" /> event.
