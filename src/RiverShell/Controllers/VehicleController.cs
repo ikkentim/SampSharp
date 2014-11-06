@@ -11,15 +11,16 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using RiverShell.World;
 using SampSharp.GameMode.Controllers;
 
-namespace Grandlarc.Controllers
+namespace RiverShell.Controllers
 {
-    public class GPlayerController : PlayerController
+    public class VehicleController : GtaVehicleController
     {
         public override void RegisterTypes()
         {
-            GPlayer.Register<GPlayer>();
+            Vehicle.Register<Vehicle>();
         }
     }
 }

@@ -220,10 +220,10 @@ namespace RiverShell
             base.LoadControllers(controllers);
 
             controllers.Remove<PlayerController>();
-            controllers.Add(new RPlayerController());
+            controllers.Add(new PlayerController());
 
             controllers.Remove<VehicleController>();
-            controllers.Add(new RVehicleController());
+            controllers.Add(new VehicleController());
 
             controllers.Add(new TeamController());
             controllers.Add(new ResupplyController());

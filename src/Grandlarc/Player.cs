@@ -18,14 +18,14 @@ using SampSharp.GameMode.World;
 
 namespace Grandlarc
 {
-    public class GPlayer : GtaPlayer
+    public class Player : GtaPlayer
     {
         private static readonly Random random = new Random();
 
         public bool HasCitySelected;
         private DateTime lastSelectionTime;
 
-        public GPlayer(int id) : base(id)
+        public Player(int id) : base(id)
         {
             SelectedCity = City.LosSantos;
         }

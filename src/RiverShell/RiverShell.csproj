@@ -42,14 +42,14 @@
     <Compile Include="Config.cs" />
     <Compile Include="Controllers\ObjectiveController.cs" />
     <Compile Include="Controllers\ResupplyController.cs" />
-    <Compile Include="Controllers\RPlayerController.cs" />
-    <Compile Include="Controllers\RVehicleController.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="GameMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="World\Team.cs" />
-    <Compile Include="World\RPlayer.cs" />
-    <Compile Include="World\RVehicle.cs" />
+    <Compile Include="World\Player.cs" />
+    <Compile Include="World\Vehicle.cs" />
     <Compile Include="World\SpectateState.cs" />
     <Compile Include="World\SpectatingMode.cs" />
   </ItemGroup>
