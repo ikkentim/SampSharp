@@ -83,7 +83,9 @@ namespace SampSharp.Streamer.World
             get
             {
                 return
-                    GetArray(StreamerDataType.PlayerId, 1024).Where(v => v != int.MinValue).Select(GtaPlayer.FindOrCreate);
+                    GetArray(StreamerDataType.PlayerId, 1024)
+                        .Where(v => v != int.MinValue)
+                        .Select(GtaPlayer.FindOrCreate);
             }
             set
             {

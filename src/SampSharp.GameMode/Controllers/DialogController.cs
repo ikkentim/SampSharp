@@ -12,7 +12,6 @@
 // For more information, please refer to <http://unlicense.org>
 
 using SampSharp.GameMode.Display;
-using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.Controllers
 {

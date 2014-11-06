@@ -12,7 +12,6 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;

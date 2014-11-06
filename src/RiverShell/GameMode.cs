@@ -72,8 +72,9 @@ namespace RiverShell
                 Weapon.Sniper, 10);
 
             // Objective vehicles
-            BlueTeam.TargetVehicle = GtaVehicle.Create(453, new Vector(2184.7156, -188.5401, -0.0239), 0.0000f, 114, 1, 100);
-                // gr reefer
+            BlueTeam.TargetVehicle = GtaVehicle.Create(453, new Vector(2184.7156, -188.5401, -0.0239), 0.0000f, 114, 1,
+                100);
+            // gr reefer
             GreenTeam.TargetVehicle = GtaVehicle.Create(453, new Vector(2380.0542, 535.2582, -0.0272), 178.4999f, 79, 7,
                 100); // bl reefer
 
