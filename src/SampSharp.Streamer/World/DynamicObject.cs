@@ -31,14 +31,14 @@ namespace SampSharp.Streamer.World
         }
 
         public DynamicObject(int modelid, Vector position, Vector rotation = new Vector(), int worldid = -1,
-            int interiorid = -1, Player player = null, float streamdistance = 200.0f, float drawdistance = 0.0f)
+            int interiorid = -1, GtaPlayer player = null, float streamdistance = 200.0f, float drawdistance = 0.0f)
         {
             Id = StreamerNative.CreateDynamicObject(modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y,
                 rotation.Z, worldid, interiorid, player == null ? -1 : player.Id, streamdistance, drawdistance);
         }
 
         public DynamicObject(int modelid, Vector position, Vector rotation, float streamdistance, int[] worlds = null,
-            int[] interiors = null, Player[] players = null, float drawdistance = 0.0f)
+            int[] interiors = null, GtaPlayer[] players = null, float drawdistance = 0.0f)
         {
             Id = StreamerNative.CreateDynamicObjectEx(modelid, position.X, position.Y, position.Z, rotation.X,
                 rotation.Y, rotation.Z, drawdistance, streamdistance, worlds, interiors,
@@ -135,14 +135,14 @@ namespace SampSharp.Streamer.World
                 out fontsize, out bold, out fontcolor, out backcolor, out textalignment, 1024, 64);
         }
 
-        public virtual void Edit(Player player)
+        public virtual void Edit(GtaPlayer player)
         {
             CheckDisposure();
 
             Native.EditPlayerObject(player.Id, Id);
         }
 
-        public static void Select(Player player)
+        public static void Select(GtaPlayer player)
         {
             if (player == null)
             {
@@ -152,7 +152,7 @@ namespace SampSharp.Streamer.World
             Native.SelectObject(player.Id);
         }
 
-        public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
+        public virtual void AttachTo(GtaVehicle vehicle, Vector offset, Vector rotation)
         {
             CheckDisposure();
 
@@ -162,7 +162,7 @@ namespace SampSharp.Streamer.World
             StreamerNative.AttachDynamicObjectToVehicle(Id, vehicle.Id, offset, rotation);
         }
 
-        public virtual void AttachCameraToObject(Player player)
+        public virtual void AttachCameraToObject(GtaPlayer player)
         {
             if (player == null)
             {

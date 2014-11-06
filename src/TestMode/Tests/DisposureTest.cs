@@ -21,19 +21,19 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            int playercount = Player.All.Count;
+            int playercount = GtaPlayer.All.Count;
             bool success = true;
 
-            Player player = Player.Create(499);
+            GtaPlayer player = GtaPlayer.Create(499);
 
-            if (Player.All.Count - 1 != playercount)
+            if (GtaPlayer.All.Count - 1 != playercount)
             {
                 Console.WriteLine("DisposureTest: Adding didn't add player to pool.");
                 success = false;
             }
             player.Dispose();
 
-            if (Player.All.Count != playercount)
+            if (GtaPlayer.All.Count != playercount)
             {
                 Console.WriteLine("DisposureTest: Disposing didn't remove player from pool.");
                 success = false;

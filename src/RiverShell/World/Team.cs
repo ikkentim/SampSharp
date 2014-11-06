@@ -27,7 +27,7 @@ namespace RiverShell.World
 
         public int TimesCaptured { get; set; }
 
-        public Vehicle TargetVehicle { get; set; }
+        public GtaVehicle TargetVehicle { get; set; }
 
         public Vector FixedSpectatePosition { get; set; }
 

@@ -18,7 +18,7 @@ using SampSharp.GameMode.World;
 
 namespace Grandlarc
 {
-    public class GPlayer : Player
+    public class GPlayer : GtaPlayer
     {
         private static readonly Random random = new Random();
 

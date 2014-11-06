@@ -28,7 +28,7 @@ namespace SampSharp.Streamer.World
 
         public DynamicMapIcon(Vector position, int type, MapIconType mapIconType = MapIconType.Local, int worldid = -1,
             int interiorid = -1,
-            Player player = null, float streamDistance = 100.0f)
+            GtaPlayer player = null, float streamDistance = 100.0f)
         {
             Id = StreamerNative.CreateDynamicMapIcon(position.X, position.Y, position.Z, type, 0, worldid, interiorid,
                 player == null ? -1 : player.Id, streamDistance, mapIconType);
@@ -36,7 +36,7 @@ namespace SampSharp.Streamer.World
 
         public DynamicMapIcon(Vector position, Color color, MapIconType mapIconType = MapIconType.Local,
             int worldid = -1, int interiorid = -1,
-            Player player = null, float streamDistance = 100.0f)
+            GtaPlayer player = null, float streamDistance = 100.0f)
         {
             Id = StreamerNative.CreateDynamicMapIcon(position.X, position.Y, position.Z, 0, color, worldid, interiorid,
                 player == null ? -1 : player.Id, streamDistance, mapIconType);

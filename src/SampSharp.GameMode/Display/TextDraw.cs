@@ -34,7 +34,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public const int InvalidId = Misc.InvalidTextDraw;
 
-        private readonly List<Player> _playersShownTo = new List<Player>();
+        private readonly List<GtaPlayer> _playersShownTo = new List<GtaPlayer>();
 
         private TextDrawAlignment _alignment;
         private Color _backColor;
@@ -488,7 +488,7 @@ namespace SampSharp.GameMode.Display
             if (Id == -1) Refresh();
 
             _playersShownTo.Clear();
-            _playersShownTo.AddRange(Player.All);
+            _playersShownTo.AddRange(GtaPlayer.All);
             Native.TextDrawShowForAll(Id);
         }
 
@@ -496,7 +496,7 @@ namespace SampSharp.GameMode.Display
         ///     Display this textdraw to the given <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player to display this textdraw to.</param>
-        public virtual void Show(Player player)
+        public virtual void Show(GtaPlayer player)
         {
             CheckDisposure();
 
@@ -527,7 +527,7 @@ namespace SampSharp.GameMode.Display
         ///     Hides this textdraw for the given <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player to hide this textdraw from.</param>
-        public virtual void Hide(Player player)
+        public virtual void Hide(GtaPlayer player)
         {
             CheckDisposure();
 
@@ -577,7 +577,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         protected virtual void UpdateClients()
         {
-            foreach (Player p in _playersShownTo.AsReadOnly())
+            foreach (GtaPlayer p in _playersShownTo.AsReadOnly())
                 Show(p);
         }
 

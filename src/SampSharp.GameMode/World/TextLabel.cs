@@ -141,7 +141,7 @@ namespace SampSharp.GameMode.World
             Native.Delete3DTextLabel(Id);
         }
 
-        public virtual void AttachTo(Player player, Vector offset)
+        public virtual void AttachTo(GtaPlayer player, Vector offset)
         {
             CheckDisposure();
 
@@ -151,7 +151,7 @@ namespace SampSharp.GameMode.World
             Native.Attach3DTextLabelToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z);
         }
 
-        public virtual void AttachTo(Vehicle vehicle, Vector offset)
+        public virtual void AttachTo(GtaVehicle vehicle, Vector offset)
         {
             CheckDisposure();
 

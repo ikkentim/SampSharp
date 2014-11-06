@@ -32,13 +32,13 @@ namespace TestMode.Tests
         }
 
         [Command("charset")]
-        public static bool CharsetCommand(Player player)
+        public static bool CharsetCommand(GtaPlayer player)
         {
-            Player.SendClientMessageToAll(Color.Teal, "this is a test: \u00D6");
-            Player.SendClientMessageToAll(Color.Teal, "this is a test: Ä ä Ö ö Ü ü ß ...");
+            GtaPlayer.SendClientMessageToAll(Color.Teal, "this is a test: \u00D6");
+            GtaPlayer.SendClientMessageToAll(Color.Teal, "this is a test: Ä ä Ö ö Ü ü ß ...");
 
-            Player.SendClientMessageToAll("Cyrillic characters:");
-            Player.SendClientMessageToAll("АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЫЪЭЮЯ");
+            GtaPlayer.SendClientMessageToAll("Cyrillic characters:");
+            GtaPlayer.SendClientMessageToAll("АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЫЪЭЮЯ");
 
             return true;
         }

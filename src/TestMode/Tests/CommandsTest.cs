@@ -30,13 +30,13 @@ namespace TestMode.Tests
             DetectedCommand cmd = Command.GetAll<DetectedCommand>().FirstOrDefault(c => c.Name == "console");
             Console.WriteLine("Command paths: {0}", string.Join(", ", cmd.CommandPaths));
 
-            gameMode.OnPlayerCommandText(new Player(999).Id, "/vehicle list");
+            gameMode.OnPlayerCommandText(new GtaPlayer(999).Id, "/vehicle list");
         }
 
         [Command("console", Alias = "c", Shortcut = "1", PermissionCheckMethod = "TestCommandPermission")]
         [CommandGroup("tools")]
         [Text("text")]
-        public static void TestCommand(Player player, string word, int num, string text)
+        public static void TestCommand(GtaPlayer player, string word, int num, string text)
         {
             Console.WriteLine("Player: {0}, Word: {1}, Rest: {2}, Num: {3}", player, word, text, num);
             Console.WriteLine("Text written to console...");
@@ -45,21 +45,21 @@ namespace TestMode.Tests
             player.SendClientMessage(Color.Green, "Formattest {0} -- {1} ,, {2}", 123, "xyz", "::DD");
         }
 
-        public static bool TestCommandPermission(Player player)
+        public static bool TestCommandPermission(GtaPlayer player)
         {
             return player.IsAdmin;
         }
 
         [Command("list", Alias = "l")]
         [CommandGroup("vehicle")]
-        public static void VehicleListCommand(Player player)
+        public static void VehicleListCommand(GtaPlayer player)
         {
             player.SendClientMessage(Color.Green, "Available vehicles:");
             player.SendClientMessage(Color.GreenYellow, string.Join(", ", typeof (VehicleModelType).GetEnumNames()));
         }
 
         [Command("commands")]
-        public static void CommandsCommand(Player player)
+        public static void CommandsCommand(GtaPlayer player)
         {
             player.SendClientMessage(Color.Green, "Commands:");
             foreach (
@@ -75,26 +75,26 @@ namespace TestMode.Tests
 
         [Command("spawn", Alias = "s", Shortcut = "v")]
         [CommandGroup("vehicle")]
-        public static void VehicleCommand(Player player, VehicleModelType model)
+        public static void VehicleCommand(GtaPlayer player, VehicleModelType model)
         {
             player.SendClientMessage(Color.GreenYellow, "You have spawned a {0}", model);
             Console.WriteLine("Spawning a {0} {2} for {1}", model, player, (int) model);
-            Vehicle vehicle = Vehicle.Create(model, player.Position + new Vector(0, 0, 0.5), player.Rotation.Z, -1, -1);
+            GtaVehicle vehicle = GtaVehicle.Create(model, player.Position + new Vector(0, 0, 0.5), player.Rotation.Z, -1, -1);
             player.PutInVehicle(vehicle);
         }
 
         [Command("tell")]
         [Text("message")]
-        public static void TellCommand(Player player, Player to, string message)
+        public static void TellCommand(GtaPlayer player, GtaPlayer to, string message)
         {
             to.SendClientMessage(Color.Green, "{0} tells you: {1}", player.Name, message);
         }
 
         [Command("put")]
         [Integer("seat")]
-        public static void PutCommand(Player player, int vehicleid, int seat = 0)
+        public static void PutCommand(GtaPlayer player, int vehicleid, int seat = 0)
         {
-            Vehicle v = Vehicle.Find(vehicleid);
+            GtaVehicle v = GtaVehicle.Find(vehicleid);
             if (v == null)
             {
                 player.SendClientMessage(Color.Red, "This vehicle does not exist!");
@@ -104,26 +104,26 @@ namespace TestMode.Tests
         }
 
         [Command("position")]
-        public static void PositionCommand(Player player)
+        public static void PositionCommand(GtaPlayer player)
         {
             player.SendClientMessage(Color.Green, "Position: {0}", player.Position);
         }
 
         [Command("teleport", Alias = "tp")]
-        public static void TpCommand(Player player, int x, int y, int z = 4)
+        public static void TpCommand(GtaPlayer player, int x, int y, int z = 4)
         {
             player.Position = new Vector(x, y, z);
             Console.WriteLine("Teleporting {0} to {1}, {2}, {3}", player, x, y, z);
         }
 
         [Command("wor")]
-        public static void World(Player player, int world)
+        public static void World(GtaPlayer player, int world)
         {
             player.VirtualWorld = world;
         }
 
         [Command("int")]
-        public static void Interior(Player player, int interior)
+        public static void Interior(GtaPlayer player, int interior)
         {
             player.Interior = interior;
         }

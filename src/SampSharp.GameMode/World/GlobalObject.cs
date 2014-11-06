@@ -136,7 +136,7 @@ namespace SampSharp.GameMode.World
                 (int) textalignment);
         }
 
-        public virtual void AttachTo(Player player, Vector offset, Vector rotation)
+        public virtual void AttachTo(GtaPlayer player, Vector offset, Vector rotation)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -144,7 +144,7 @@ namespace SampSharp.GameMode.World
             Native.AttachObjectToPlayer(Id, player.Id, offset, rotation);
         }
 
-        public virtual void AttachTo(Vehicle vehicle, Vector offset, Vector rotation)
+        public virtual void AttachTo(GtaVehicle vehicle, Vector offset, Vector rotation)
         {
             if (vehicle == null)
                 throw new ArgumentNullException("vehicle");
@@ -156,7 +156,7 @@ namespace SampSharp.GameMode.World
         ///     Attaches a player's camera to this GlobalObject.
         /// </summary>
         /// <param name="player">The player whose camera to attach to this GlobalObject.</param>
-        public virtual void AttachCameraToObject(Player player)
+        public virtual void AttachCameraToObject(GtaPlayer player)
         {
             if (player == null)
             {
@@ -168,7 +168,7 @@ namespace SampSharp.GameMode.World
             Native.AttachCameraToObject(player.Id, Id);
         }
 
-        public static void Remove(Player player, int modelid, Vector position, float radius)
+        public static void Remove(GtaPlayer player, int modelid, Vector position, float radius)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -192,7 +192,7 @@ namespace SampSharp.GameMode.World
             Native.AttachObjectToObject(Id, globalObject.Id, offset, rotation, syncRotation);
         }
 
-        public virtual void Edit(Player player)
+        public virtual void Edit(GtaPlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -200,7 +200,7 @@ namespace SampSharp.GameMode.World
             Native.EditObject(player.Id, Id);
         }
 
-        public static void Select(Player player)
+        public static void Select(GtaPlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException("player");

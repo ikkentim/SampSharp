@@ -30,7 +30,7 @@ namespace SampSharp.Streamer.World
 
         public DynamicRaceCheckpoint(CheckpointType type, Vector position, Vector nextPosition,
             float size = 3.0f, int worldid = -1,
-            int interiorid = -1, Player player = null, float streamdistance = 100.0f)
+            int interiorid = -1, GtaPlayer player = null, float streamdistance = 100.0f)
         {
             Id = StreamerNative.CreateDynamicRaceCP(type, position.X, position.Y, position.Z, nextPosition.X,
                 nextPosition.Y, nextPosition.Z, size, worldid, interiorid, player == null ? -1 : player.Id,
@@ -39,7 +39,7 @@ namespace SampSharp.Streamer.World
 
         public DynamicRaceCheckpoint(CheckpointType type, Vector position, Vector nextPosition,
             float size, float streamdistance, int[] worlds = null, int[] interiors = null,
-            Player[] players = null)
+            GtaPlayer[] players = null)
         {
             Id = StreamerNative.CreateDynamicRaceCPEx(type, position.X, position.Y, position.Z, nextPosition.X,
                 nextPosition.Y, nextPosition.Z, size, streamdistance, worlds, interiors,
@@ -83,7 +83,7 @@ namespace SampSharp.Streamer.World
         public event EventHandler<PlayerDynamicRaceCheckpointEventArgs> Enter;
         public event EventHandler<PlayerDynamicRaceCheckpointEventArgs> Leave;
 
-        public void ToggleForPlayer(Player player, bool toggle)
+        public void ToggleForPlayer(GtaPlayer player, bool toggle)
         {
             CheckDisposure();
 
@@ -95,7 +95,7 @@ namespace SampSharp.Streamer.World
             StreamerNative.TogglePlayerDynamicRaceCP(player.Id, Id, toggle);
         }
 
-        public bool IsPlayerInCheckpoint(Player player)
+        public bool IsPlayerInCheckpoint(GtaPlayer player)
         {
             if (player == null)
             {
@@ -105,7 +105,7 @@ namespace SampSharp.Streamer.World
             return StreamerNative.IsPlayerInDynamicRaceCP(player.Id, Id);
         }
 
-        public static void ToggleAllForPlayer(Player player, bool toggle)
+        public static void ToggleAllForPlayer(GtaPlayer player, bool toggle)
         {
             if (player == null)
             {
@@ -115,7 +115,7 @@ namespace SampSharp.Streamer.World
             StreamerNative.TogglePlayerAllDynamicRaceCPs(player.Id, toggle);
         }
 
-        public static DynamicRaceCheckpoint GetPlayerVisibleDynamicCheckpoint(Player player)
+        public static DynamicRaceCheckpoint GetPlayerVisibleDynamicCheckpoint(GtaPlayer player)
         {
             int id = StreamerNative.GetPlayerVisibleDynamicRaceCP(player.Id);
 

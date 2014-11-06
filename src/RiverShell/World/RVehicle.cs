@@ -16,7 +16,7 @@ using SampSharp.GameMode.World;
 
 namespace RiverShell.World
 {
-    public class RVehicle : Vehicle
+    public class RVehicle : GtaVehicle
     {
         public RVehicle(int id) : base(id)
         {

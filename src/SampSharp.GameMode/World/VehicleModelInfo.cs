@@ -277,7 +277,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="vehicle">The vehicle to find information about.</param>
         /// <returns>An instance of VehicleModelInfo containing information about the given Vehicle.</returns>
-        public static VehicleModelInfo ForVehicle(Vehicle vehicle)
+        public static VehicleModelInfo ForVehicle(GtaVehicle vehicle)
         {
             if (vehicle == null)
             {
