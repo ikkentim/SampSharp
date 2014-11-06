@@ -60,9 +60,9 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
         symbols;
 
     //Read configuration
-    //server_cfg.GetOptionAsString("gamemode", gamemode);
-    //server_cfg.GetOptionAsString("symbols", symbols);
-    //server_cfg.GetOptionAsString("trace_level", trace_level);
+    server_cfg.GetOptionAsString("gamemode", gamemode);
+    server_cfg.GetOptionAsString("symbols", symbols);
+    server_cfg.GetOptionAsString("trace_level", trace_level);
 
     std::stringstream gamemode_stream(gamemode);
     
