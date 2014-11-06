@@ -1,10 +1,24 @@
-![SampSharp](https://raw.githubusercontent.com/ikkentim/SampSharp/master/SampSharp.png)
+![SampSharp][icon]
 
-SA-MP# is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. SA-MP#'s aim is to allow you to enjoy all features of OO-programming and .NET. SA-MP# uses the [Mono Framework](http://www.mono-project.com/) to allow linux servers to run this plugin as well.
+SA-MP# is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. SA-MP#'s aim is to allow you to enjoy all features of OO-programming and .NET. SA-MP# uses the [Mono Framework] to allow linux servers to run this plugin as well.
 
-All feedback is welcome, file an Issue or contact me on the SA-MP forums. http://forum.sa-mp.com/member.php?u=76946
+All feedback is welcome, file an Issue or contact me on the SA-MP forums. 
 
-Note of caution
+[My SA-MP profile]
+
+| **Table of Contents:** |
+| --- |
+| [Note of Caution](#note-of-caution) |
+| [Requirements](#requirements) |
+| [Contains](#contains) |
+| [Building the SA-MP# plugin](#building-the-sa-mp-plugin) |
+| [Installing SA-MP# and requirements](#installing-sa-mp-and-requirements) |
+| [Building a gamemode with SA-MP#](#building-a-gamemode-with-sa-mp) |
+| [Installing MySql.Data.dll on linux](#installing-mysqldatadll-on-linux) |
+| [Missing Documentation](#missing-documention) |
+| [License](#licence) |
+
+Note of Caution
 ===
 - I've only tested SA-MP# on a 32-bit ubuntu linux machine. Altough it should work on other linux distros, I can't guarantee that it does.
 - **Be aware!** Mono is not **fully** compatible with all of .NET's features. Check [their website](http://www.mono-project.com/Compatibility) for more details.
@@ -88,6 +102,24 @@ Building a gamemode with SA-MP#
 - Create a class and Set it's base-class to SampSharp.GameMode.BaseMode. This will be your entrypoint.
 - For more examples, check src/RiverShell and src/Grandlarc.
 
+Installing MySql.Data.dll on linux
+===
+*The instructions on [MySql's website](http://dev.mysql.com/doc/connector-net/en/connector-net-installation-unix.html) are a little outdated, there for a more complete set of instructions:*
+
+- Make sure you've got mono installed already. (type ```mono --version``` to check if it's installed and to see your current version)
+- Download and extract the latest mysql-connector-net-(version)-noinstall.zip from http://dev.mysql.com/downloads/connector/net/ (select Platform: .NET & Mono)
+- Locate MySql.Data.dll for .NET 4.5 and change to it's directory. (usually in /v4.5/)
+- Add the library to the GAC using ```gacutil /i MySql.Data.dll```.
+- Open up the following file with a texteditor (mono-directory)/4.5/machine.config (usually /etc/mono/4.5/machine.config).
+- Locate the section ```<system.data>```.
+- Inside ```<DbProviderFactories>```, add the following. If you have a MySql Connector/Net version other than 6.9.4.0, change the ```Version``` field accordingly.
+
+  ```
+<add name="MySQL Data Provider" invariant="MySql.Data.MySqlClient"
+                 description=".Net Framework Data Provider for MySQL"
+                 type="MySql.Data.MySqlClient.MySqlClientFactory, MySql.Data, Version=6.9.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d" />
+```
+
 Missing Documention
 ===
 
@@ -120,3 +152,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <http://unlicense.org>
+
+[icon]: https://raw.githubusercontent.com/ikkentim/SampSharp/master/SampSharp.png
+[mono framework]: http://www.mono-project.com/
+[my sa-mp profile]: http://forum.sa-mp.com/member.php?u=76946
