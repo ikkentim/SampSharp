@@ -79,7 +79,8 @@ namespace TestMode.Tests
         {
             player.SendClientMessage(Color.GreenYellow, "You have spawned a {0}", model);
             Console.WriteLine("Spawning a {0} {2} for {1}", model, player, (int) model);
-            GtaVehicle vehicle = GtaVehicle.Create(model, player.Position + new Vector(0, 0, 0.5), player.Rotation.Z, -1, -1);
+            GtaVehicle vehicle = GtaVehicle.Create(model, player.Position + new Vector(0, 0, 0.5), player.Rotation.Z, -1,
+                -1);
             player.PutInVehicle(vehicle);
         }
 

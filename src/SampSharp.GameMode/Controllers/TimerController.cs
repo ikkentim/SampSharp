@@ -48,7 +48,7 @@ namespace SampSharp.GameMode.Controllers
         {
             if (disposing)
             {
-                foreach (var t in Timer.All)
+                foreach (Timer t in Timer.All)
                 {
                     t.Dispose();
                 }
