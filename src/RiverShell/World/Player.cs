@@ -18,13 +18,13 @@ using SampSharp.GameMode.World;
 
 namespace RiverShell.World
 {
-    public class RPlayer : GtaPlayer
+    public class Player : GtaPlayer
     {
-        private RPlayer _lastKiller;
+        private Player _lastKiller;
         private SpectateState _spectateState;
         private SpectatingMode _spectatingMode;
 
-        public RPlayer(int id) : base(id)
+        public Player(int id) : base(id)
         {
         }
 
@@ -143,7 +143,7 @@ namespace RiverShell.World
 
         public override void OnDeath(PlayerDeathEventArgs e)
         {
-            var killer = e.Killer as RPlayer;
+            var killer = e.Killer as Player;
             SendDeathMessageToAll(killer, this, e.DeathReason);
 
             if (killer != null && Team != killer.Team)

@@ -200,7 +200,7 @@ namespace Grandlarc
             base.LoadControllers(controllers);
 
             controllers.Remove<PlayerController>();
-            controllers.Add(new GPlayerController());
+            controllers.Add(new PlayerController());
         }
 
         [Command("kill")]
@@ -213,7 +213,7 @@ namespace Grandlarc
         public static void ChangeCity(GtaPlayer player)
         {
             player.ForceClassSelection();
-            (player as GPlayer).HasCitySelected = false;
+            (player as Player).HasCitySelected = false;
             player.SendClientMessage("You will change city the next time you spawn. Or use /kill.");
         }
     }

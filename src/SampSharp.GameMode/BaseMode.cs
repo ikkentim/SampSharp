@@ -76,12 +76,12 @@ namespace SampSharp.GameMode
             controllers.Add(new DialogController());
             controllers.Add(new GlobalObjectController());
             controllers.Add(new MenuController());
-            controllers.Add(new PlayerController());
+            controllers.Add(new GtaPlayerController());
             controllers.Add(new PlayerObjectController());
             controllers.Add(new PlayerTextDrawController());
             controllers.Add(new TextDrawController());
             controllers.Add(new TimerController());
-            controllers.Add(new VehicleController());
+            controllers.Add(new GtaVehicleController());
             controllers.Add(new SyncController());
             controllers.Add(new PickupController());
         }

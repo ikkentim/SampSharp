@@ -40,9 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="City.cs" />
-    <Compile Include="Controllers\GPlayerController.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="GameMode.cs" />
-    <Compile Include="GPlayer.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpawnPositions.cs" />
   </ItemGroup>
