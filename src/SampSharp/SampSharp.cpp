@@ -18,9 +18,9 @@ GamemodeImage SampSharp::basemode;
 uint32_t SampSharp::gameModeHandle;
 EventMap SampSharp::events;
 ExtensionList SampSharp::extensions;
+bool SampSharp::loaded;
 
 void SampSharp::Load(MonoDomain * domain, MonoImage * image, MonoClass *klass) {
-
     root = domain;
 
     gamemode.image = image;
@@ -55,9 +55,15 @@ void SampSharp::Load(MonoDomain * domain, MonoImage * image, MonoClass *klass) {
 	MonoObject *gamemode_obj = mono_object_new(mono_domain_get(), gamemode.klass);
 	gameModeHandle = mono_gchandle_new(gamemode_obj, true);
 	mono_runtime_object_init(gamemode_obj);
+
+    loaded = true;
 }
 
 void SAMPGDK_CALL SampSharp::ProcessTimerTick(int timerid, void *data) {
+    if (!loaded) {
+        return;
+    }
+
     static MonoMethod *method;
 
     if (method == NULL) {
@@ -71,6 +77,10 @@ void SAMPGDK_CALL SampSharp::ProcessTimerTick(int timerid, void *data) {
 }
 
 void SampSharp::ProcessTick() {
+    if (!loaded) {
+        return;
+    }
+
     static MonoMethod *method;
 
     if (method == NULL) {
@@ -81,7 +91,8 @@ void SampSharp::ProcessTick() {
 }
 
 bool SampSharp::RegisterExtension(MonoObject *extension) {
-    if(!extension) {
+
+    if(!loaded || !extension) {
         return false;
     }
 
@@ -149,6 +160,10 @@ int SampSharp::GetParamLengthIndex(MonoMethod *method, int idx) {
 	return *(int*)mono_object_unbox(mono_runtime_invoke(param_get, attrObj, NULL, NULL));
 }
 bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell *retval) {
+    if (!loaded) {
+        return true;
+    }
+
 	const int param_count = params[0] / sizeof(cell);
 	if (strlen(name) == 0 || param_count > 16) {
 		return true;
@@ -405,8 +420,11 @@ int SampSharp::CallEvent(MonoMethod* method, uint32_t handle, void **params) {
 }
 
 void SampSharp::Unload() {
-    mono_thread_attach(root);
+    if (!loaded) {
+        return;
+    }
 
+    mono_thread_attach(root);
 
     static MonoMethod *method;
 
@@ -422,8 +440,10 @@ void SampSharp::Unload() {
     }
     else
     {
-        cout << "[SampSharp] No dispose event found" << endl;
+        cout << "[SampSharp] No dispose event found." << endl;
     }
 
 	mono_jit_cleanup(mono_domain_get());
+
+    loaded = false;
 }

@@ -56,6 +56,7 @@ private:
 	static int GetParamLengthIndex(MonoMethod *method, int idx);
     static int CallEvent(MonoMethod *method, uint32_t handle, void **params);
     static bool RegisterExtension(MonoObject *extension);
+    static bool loaded;
 	static MonoDomain *root;
     static GamemodeImage gamemode;
     static GamemodeImage basemode;
