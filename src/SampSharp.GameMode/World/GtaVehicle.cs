@@ -21,7 +21,7 @@ using SampSharp.GameMode.Pools;
 
 namespace SampSharp.GameMode.World
 {
-    public class Vehicle : IdentifiedPool<Vehicle>, IIdentifyable, IWorldObject
+    public class GtaVehicle : IdentifiedPool<GtaVehicle>, IIdentifyable, IWorldObject
     {
         #region Fields
 
@@ -38,7 +38,7 @@ namespace SampSharp.GameMode.World
         ///     Initalizes a new instance of the Vehicle class.
         /// </summary>
         /// <param name="id">The ID of the vehicle to initialize.</param>
-        public Vehicle(int id)
+        public GtaVehicle(int id)
         {
             Id = id;
         }
@@ -58,17 +58,17 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the driver of this Vehicle.
         /// </summary>
-        public Player Driver
+        public GtaPlayer Driver
         {
-            get { return Player.All.FirstOrDefault(p => p.Vehicle == this && p.VehicleSeat == 0); }
+            get { return GtaPlayer.All.FirstOrDefault(p => p.Vehicle == this && p.VehicleSeat == 0); }
         }
 
         /// <summary>
         ///     Gets the passengers of this Vehicle. (not the driver)
         /// </summary>
-        public IEnumerable<Player> Passengers
+        public IEnumerable<GtaPlayer> Passengers
         {
-            get { return Player.All.Where(p => p.Vehicle == this).Where(player => player.VehicleSeat > 0); }
+            get { return GtaPlayer.All.Where(p => p.Vehicle == this).Where(player => player.VehicleSeat > 0); }
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace SampSharp.GameMode.World
         ///     Gets or sets the the trailer attached to this Vehicle.
         /// </summary>
         /// <returns>The trailer attached.</returns>
-        public virtual Vehicle Trailer
+        public virtual GtaVehicle Trailer
         {
             get
             {
@@ -371,7 +371,7 @@ namespace SampSharp.GameMode.World
         ///     vehicle from respawning.
         /// </param>
         /// <returns> The vehicle created.</returns>
-        public static Vehicle Create(int vehicletype, Vector position, float rotation, int color1, int color2,
+        public static GtaVehicle Create(int vehicletype, Vector position, float rotation, int color1, int color2,
             int respawnDelay = -1)
         {
             int id = new[] {449, 537, 538, 569, 570, 590}.Contains(vehicletype)
@@ -396,7 +396,7 @@ namespace SampSharp.GameMode.World
         ///     vehicle from respawning.
         /// </param>
         /// <returns> The vehicle created.</returns>
-        public static Vehicle Create(VehicleModelType vehicletype, Vector position, float rotation, int color1,
+        public static GtaVehicle Create(VehicleModelType vehicletype, Vector position, float rotation, int color1,
             int color2,
             int respawnDelay = -1)
         {
@@ -416,7 +416,7 @@ namespace SampSharp.GameMode.World
         ///     vehicle from respawning.
         /// </param>
         /// <returns> The vehicle created.</returns>
-        public static Vehicle CreateStatic(int vehicletype, Vector position, float rotation, int color1, int color2,
+        public static GtaVehicle CreateStatic(int vehicletype, Vector position, float rotation, int color1, int color2,
             int respawnDelay)
         {
             int id = Native.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
@@ -434,7 +434,7 @@ namespace SampSharp.GameMode.World
         /// <param name="color1">The primary color ID.</param>
         /// <param name="color2">The secondary color ID.</param>
         /// <returns> The vehicle created.</returns>
-        public static Vehicle CreateStatic(int vehicletype, Vector position, float rotation, int color1, int color2)
+        public static GtaVehicle CreateStatic(int vehicletype, Vector position, float rotation, int color1, int color2)
         {
             int id = Native.AddStaticVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2);
 
@@ -446,7 +446,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="forplayer">The Player to check.</param>
         /// <returns>False: Vehicle is not streamed in for the Player. False: Vehicle is streamed in for the Player.</returns>
-        public virtual bool IsStreamedIn(Player forplayer)
+        public virtual bool IsStreamedIn(GtaPlayer forplayer)
         {
             CheckDisposure();
 
@@ -474,7 +474,7 @@ namespace SampSharp.GameMode.World
         /// <param name="player">The Player to set this Vehicle's parameters for.</param>
         /// <param name="objective">False to disable the objective or True to show it.</param>
         /// <param name="doorslocked">False to unlock the doors or True to lock them.</param>
-        public virtual void SetParamsForPlayer(Player player, bool objective,
+        public virtual void SetParamsForPlayer(GtaPlayer player, bool objective,
             bool doorslocked)
         {
             CheckDisposure();

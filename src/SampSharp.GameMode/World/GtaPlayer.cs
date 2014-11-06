@@ -24,7 +24,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a SA:MP player.
     /// </summary>
-    public class Player : IdentifiedPool<Player>, IIdentifyable, IWorldObject
+    public class GtaPlayer : IdentifiedPool<GtaPlayer>, IIdentifyable, IWorldObject
     {
         #region Fields
 
@@ -41,7 +41,7 @@ namespace SampSharp.GameMode.World
         ///     Initalizes a new instance of the Player class.
         /// </summary>
         /// <param name="id">The ID of the player to initialize.</param>
-        public Player(int id)
+        public GtaPlayer(int id)
         {
             //Fill properties
             Id = id;
@@ -147,7 +147,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the Player this Player is aiming at.
         /// </summary>
-        public virtual Player TargetPlayer
+        public virtual GtaPlayer TargetPlayer
         {
             get
             {
@@ -347,24 +347,24 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the Vehicle that this Player is surfing.
         /// </summary>
-        public virtual Vehicle SurfingVehicle
+        public virtual GtaVehicle SurfingVehicle
         {
             get
             {
                 int vehicleid = Native.GetPlayerSurfingVehicleID(Id);
-                return vehicleid == Vehicle.InvalidId ? null : Vehicle.Find(vehicleid);
+                return vehicleid == GtaVehicle.InvalidId ? null : GtaVehicle.Find(vehicleid);
             }
         }
 
         /// <summary>
         ///     Gets the Vehicle this Player is currently in.
         /// </summary>
-        public virtual Vehicle Vehicle
+        public virtual GtaVehicle Vehicle
         {
             get
             {
                 int vehicleid = Native.GetPlayerVehicleID(Id); //Returns 0, not Vehicle.InvalidId!
-                return vehicleid == 0 ? null : Vehicle.Find(vehicleid);
+                return vehicleid == 0 ? null : GtaVehicle.Find(vehicleid);
             }
         }
 
@@ -810,7 +810,7 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         /// <param name="other">The Player to check is streamed in.</param>
         /// <returns>True if the other Player is streamed in for this Player, False if not.</returns>
-        public virtual bool IsPlayerStreamedIn(Player other)
+        public virtual bool IsPlayerStreamedIn(GtaPlayer other)
         {
             CheckDisposure();
 
@@ -1158,7 +1158,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="vehicle">The vehicle for the player to be put in.</param>
         /// <param name="seatid">The ID of the seat to put the player in.</param>
-        public virtual void PutInVehicle(Vehicle vehicle, int seatid)
+        public virtual void PutInVehicle(GtaVehicle vehicle, int seatid)
         {
             CheckDisposure();
 
@@ -1172,7 +1172,7 @@ namespace SampSharp.GameMode.World
         ///     Puts this Player in a vehicle as driver.
         /// </summary>
         /// <param name="vehicle">The vehicle for the player to be put in.</param>
-        public virtual void PutInVehicle(Vehicle vehicle)
+        public virtual void PutInVehicle(GtaVehicle vehicle)
         {
             PutInVehicle(vehicle, 0);
         }
@@ -1391,7 +1391,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="player">The player whose color will be changed.</param>
         /// <param name="color">New color.</param>
-        public virtual void SetPlayerMarker(Player player, Color color)
+        public virtual void SetPlayerMarker(GtaPlayer player, Color color)
         {
             CheckDisposure();
 
@@ -1411,7 +1411,7 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         /// <param name="player">Player whose name tag will be shown or hidden.</param>
         /// <param name="show">True to show name tag, False to hide name tag.</param>
-        public virtual void ShowNameTagForPlayer(Player player, bool show)
+        public virtual void ShowNameTagForPlayer(GtaPlayer player, bool show)
         {
             CheckDisposure();
 
@@ -1508,7 +1508,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="vehicle">The vehicle.</param>
         /// <returns>True if player is in the vehicle, otherwise False.</returns>
-        public virtual bool IsInVehicle(Vehicle vehicle)
+        public virtual bool IsInVehicle(GtaVehicle vehicle)
         {
             CheckDisposure();
 
@@ -1548,7 +1548,7 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         /// <param name="targetPlayer">The Player that should be spectated.</param>
         /// <param name="mode">The mode to spectate with.</param>
-        public virtual void SpectatePlayer(Player targetPlayer, SpectateMode mode)
+        public virtual void SpectatePlayer(GtaPlayer targetPlayer, SpectateMode mode)
         {
             CheckDisposure();
 
@@ -1565,7 +1565,7 @@ namespace SampSharp.GameMode.World
         ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectatePlayer" />.
         /// </remarks>
         /// <param name="targetPlayer">The Player that should be spectated.</param>
-        public virtual void SpectatePlayer(Player targetPlayer)
+        public virtual void SpectatePlayer(GtaPlayer targetPlayer)
         {
             CheckDisposure();
 
@@ -1583,7 +1583,7 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         /// <param name="targetVehicle">The vehicle to spectate.</param>
         /// <param name="mode">Spectate mode.</param>
-        public virtual void SpectateVehicle(Vehicle targetVehicle, SpectateMode mode)
+        public virtual void SpectateVehicle(GtaVehicle targetVehicle, SpectateMode mode)
         {
             CheckDisposure();
 
@@ -1600,7 +1600,7 @@ namespace SampSharp.GameMode.World
         ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectateVehicle" />.
         /// </remarks>
         /// <param name="targetVehicle">The vehicle to spectate.</param>
-        public virtual void SpectateVehicle(Vehicle targetVehicle)
+        public virtual void SpectateVehicle(GtaVehicle targetVehicle)
         {
             CheckDisposure();
 
@@ -1762,7 +1762,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="receiver">The Player who will recieve the message</param>
         /// <param name="message">The message that will be sent.</param>
-        public virtual void SendPlayerMessageToPlayer(Player receiver, string message)
+        public virtual void SendPlayerMessageToPlayer(GtaPlayer receiver, string message)
         {
             CheckDisposure();
 
@@ -1828,7 +1828,7 @@ namespace SampSharp.GameMode.World
         /// <param name="interior">The interior of the explosion.</param>
         public static void CreateExposionForAll(Vector position, int type, float radius, int interior)
         {
-            foreach (Player p in All.Where(p => p.Interior == interior))
+            foreach (GtaPlayer p in All.Where(p => p.Interior == interior))
                 p.CreateExplosion(position, type, radius);
         }
 
@@ -1842,7 +1842,7 @@ namespace SampSharp.GameMode.World
         /// <param name="virtualworld">The virtualworld of the explosion.</param>
         public static void CreateExposionForAll(Vector position, int type, float radius, int interior, int virtualworld)
         {
-            foreach (Player p in All.Where(p => p.Interior == interior && p.VirtualWorld == virtualworld))
+            foreach (GtaPlayer p in All.Where(p => p.Interior == interior && p.VirtualWorld == virtualworld))
                 p.CreateExplosion(position, type, radius);
         }
 
@@ -1868,7 +1868,7 @@ namespace SampSharp.GameMode.World
         /// <param name="killer">The Player that killer the <paramref name="killee" />.</param>
         /// <param name="killee">The player that has been killed.</param>
         /// <param name="weapon">The reason for this Player's death.</param>
-        public virtual void SendDeathMessage(Player killer, Player killee, Weapon weapon)
+        public virtual void SendDeathMessage(GtaPlayer killer, GtaPlayer killee, Weapon weapon)
         {
             CheckDisposure();
 
@@ -1882,7 +1882,7 @@ namespace SampSharp.GameMode.World
         /// <param name="killer">The Player that killer the <paramref name="killee" />.</param>
         /// <param name="killee">The player that has been killed.</param>
         /// <param name="weapon">The reason for this Player's death.</param>
-        public static void SendDeathMessageToAll(Player killer, Player killee, Weapon weapon)
+        public static void SendDeathMessageToAll(GtaPlayer killer, GtaPlayer killee, Weapon weapon)
         {
             Native.SendDeathMessage(killer == null ? InvalidId : killer.Id, killee == null ? InvalidId : killee.Id,
                 (int) weapon);

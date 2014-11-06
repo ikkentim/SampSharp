@@ -174,7 +174,7 @@ namespace SampSharp.GameMode.Display
         ///     Shows the dialog box to a Player.
         /// </summary>
         /// <param name="player">The Player to show the dialog to.</param>
-        public virtual void Show(Player player)
+        public virtual void Show(GtaPlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -189,7 +189,7 @@ namespace SampSharp.GameMode.Display
         ///     Hides all dialogs for a Player.
         /// </summary>
         /// <param name="player">The Player to hide all dialogs from.</param>
-        public static void Hide(Player player)
+        public static void Hide(GtaPlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -206,7 +206,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         /// <param name="player">The Player whose Dialog you want.</param>
         /// <returns>The Dialog currently being shown to the Player.</returns>
-        public static Dialog GetOpenDialog(Player player)
+        public static Dialog GetOpenDialog(GtaPlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException("player");

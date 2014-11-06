@@ -28,9 +28,9 @@ namespace SampSharp.GameMode.Events
 
         public int ForPlayerId { get; private set; }
 
-        public Player ForPlayer
+        public GtaPlayer ForPlayer
         {
-            get { return ForPlayerId == Player.InvalidId ? null : Player.FindOrCreate(ForPlayerId); }
+            get { return ForPlayerId == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(ForPlayerId); }
         }
     }
 }

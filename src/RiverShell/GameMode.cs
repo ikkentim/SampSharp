@@ -72,50 +72,50 @@ namespace RiverShell
                 Weapon.Sniper, 10);
 
             // Objective vehicles
-            BlueTeam.TargetVehicle = Vehicle.Create(453, new Vector(2184.7156, -188.5401, -0.0239), 0.0000f, 114, 1, 100);
+            BlueTeam.TargetVehicle = GtaVehicle.Create(453, new Vector(2184.7156, -188.5401, -0.0239), 0.0000f, 114, 1, 100);
                 // gr reefer
-            GreenTeam.TargetVehicle = Vehicle.Create(453, new Vector(2380.0542, 535.2582, -0.0272), 178.4999f, 79, 7,
+            GreenTeam.TargetVehicle = GtaVehicle.Create(453, new Vector(2380.0542, 535.2582, -0.0272), 178.4999f, 79, 7,
                 100); // bl reefer
 
             // Green Dhingys
-            Vehicle.Create(473, new Vector(2096.0833, -168.7771, 0.3528), 4.5000f, 114, 1, 100);
-            Vehicle.Create(473, new Vector(2103.2510, -168.7598, 0.3528), 3.1800f, 114, 1, 100);
-            Vehicle.Create(473, new Vector(2099.4966, -168.8216, 0.3528), 2.8200f, 114, 1, 100);
-            Vehicle.Create(473, new Vector(2107.1143, -168.7798, 0.3528), 3.1800f, 114, 1, 100);
-            Vehicle.Create(473, new Vector(2111.0674, -168.7609, 0.3528), 3.1800f, 114, 1, 100);
-            Vehicle.Create(473, new Vector(2114.8933, -168.7898, 0.3528), 3.1800f, 114, 1, 100);
-            Vehicle.Create(473, new Vector(2167.2217, -169.0570, 0.3528), 3.1800f, 114, 1, 100);
-            Vehicle.Create(473, new Vector(2170.4294, -168.9724, 0.3528), 3.1800f, 114, 1, 100);
-            Vehicle.Create(473, new Vector(2173.7952, -168.9217, 0.3528), 3.1800f, 114, 1, 100);
-            Vehicle.Create(473, new Vector(2177.0386, -168.9767, 0.3528), 3.1800f, 114, 1, 100);
-            Vehicle.Create(473, new Vector(2161.5786, -191.9538, 0.3528), 89.1000f, 114, 1, 100);
-            Vehicle.Create(473, new Vector(2161.6394, -187.2925, 0.3528), 89.1000f, 114, 1, 100);
-            Vehicle.Create(473, new Vector(2161.7610, -183.0225, 0.3528), 89.1000f, 114, 1, 100);
-            Vehicle.Create(473, new Vector(2162.0283, -178.5106, 0.3528), 89.1000f, 114, 1, 100);
+            GtaVehicle.Create(473, new Vector(2096.0833, -168.7771, 0.3528), 4.5000f, 114, 1, 100);
+            GtaVehicle.Create(473, new Vector(2103.2510, -168.7598, 0.3528), 3.1800f, 114, 1, 100);
+            GtaVehicle.Create(473, new Vector(2099.4966, -168.8216, 0.3528), 2.8200f, 114, 1, 100);
+            GtaVehicle.Create(473, new Vector(2107.1143, -168.7798, 0.3528), 3.1800f, 114, 1, 100);
+            GtaVehicle.Create(473, new Vector(2111.0674, -168.7609, 0.3528), 3.1800f, 114, 1, 100);
+            GtaVehicle.Create(473, new Vector(2114.8933, -168.7898, 0.3528), 3.1800f, 114, 1, 100);
+            GtaVehicle.Create(473, new Vector(2167.2217, -169.0570, 0.3528), 3.1800f, 114, 1, 100);
+            GtaVehicle.Create(473, new Vector(2170.4294, -168.9724, 0.3528), 3.1800f, 114, 1, 100);
+            GtaVehicle.Create(473, new Vector(2173.7952, -168.9217, 0.3528), 3.1800f, 114, 1, 100);
+            GtaVehicle.Create(473, new Vector(2177.0386, -168.9767, 0.3528), 3.1800f, 114, 1, 100);
+            GtaVehicle.Create(473, new Vector(2161.5786, -191.9538, 0.3528), 89.1000f, 114, 1, 100);
+            GtaVehicle.Create(473, new Vector(2161.6394, -187.2925, 0.3528), 89.1000f, 114, 1, 100);
+            GtaVehicle.Create(473, new Vector(2161.7610, -183.0225, 0.3528), 89.1000f, 114, 1, 100);
+            GtaVehicle.Create(473, new Vector(2162.0283, -178.5106, 0.3528), 89.1000f, 114, 1, 100);
 
             // Green Mavericks
-            Vehicle.Create(487, new Vector(2088.7905, -227.9593, 8.3662), 0.0000f, 114, 1, 100);
-            Vehicle.Create(487, new Vector(2204.5991, -225.3703, 8.2400), 0.0000f, 114, 1, 100);
+            GtaVehicle.Create(487, new Vector(2088.7905, -227.9593, 8.3662), 0.0000f, 114, 1, 100);
+            GtaVehicle.Create(487, new Vector(2204.5991, -225.3703, 8.2400), 0.0000f, 114, 1, 100);
 
             // Blue Dhingys
-            Vehicle.Create(473, new Vector(2370.3198, 518.3151, 0.1240), 180.3600f, 79, 7, 100);
-            Vehicle.Create(473, new Vector(2362.6484, 518.3978, 0.0598), 180.3600f, 79, 7, 100);
-            Vehicle.Create(473, new Vector(2358.6550, 518.2167, 0.2730), 180.3600f, 79, 7, 100);
-            Vehicle.Create(473, new Vector(2366.5544, 518.2680, 0.1080), 180.3600f, 79, 7, 100);
-            Vehicle.Create(473, new Vector(2354.6321, 518.1960, 0.3597), 180.3600f, 79, 7, 100);
-            Vehicle.Create(473, new Vector(2350.7449, 518.1929, 0.3597), 180.3600f, 79, 7, 100);
-            Vehicle.Create(473, new Vector(2298.8977, 518.4470, 0.3597), 180.3600f, 79, 7, 100);
-            Vehicle.Create(473, new Vector(2295.6118, 518.3963, 0.3597), 180.3600f, 79, 7, 100);
-            Vehicle.Create(473, new Vector(2292.3237, 518.4249, 0.3597), 180.3600f, 79, 7, 100);
-            Vehicle.Create(473, new Vector(2289.0901, 518.4363, 0.3597), 180.3600f, 79, 7, 100);
-            Vehicle.Create(473, new Vector(2304.8232, 539.7859, 0.3597), 270.5998f, 79, 7, 100);
-            Vehicle.Create(473, new Vector(2304.6936, 535.0454, 0.3597), 270.5998f, 79, 7, 100);
-            Vehicle.Create(473, new Vector(2304.8245, 530.3308, 0.3597), 270.5998f, 79, 7, 100);
-            Vehicle.Create(473, new Vector(2304.8142, 525.7471, 0.3597), 270.5998f, 79, 7, 100);
+            GtaVehicle.Create(473, new Vector(2370.3198, 518.3151, 0.1240), 180.3600f, 79, 7, 100);
+            GtaVehicle.Create(473, new Vector(2362.6484, 518.3978, 0.0598), 180.3600f, 79, 7, 100);
+            GtaVehicle.Create(473, new Vector(2358.6550, 518.2167, 0.2730), 180.3600f, 79, 7, 100);
+            GtaVehicle.Create(473, new Vector(2366.5544, 518.2680, 0.1080), 180.3600f, 79, 7, 100);
+            GtaVehicle.Create(473, new Vector(2354.6321, 518.1960, 0.3597), 180.3600f, 79, 7, 100);
+            GtaVehicle.Create(473, new Vector(2350.7449, 518.1929, 0.3597), 180.3600f, 79, 7, 100);
+            GtaVehicle.Create(473, new Vector(2298.8977, 518.4470, 0.3597), 180.3600f, 79, 7, 100);
+            GtaVehicle.Create(473, new Vector(2295.6118, 518.3963, 0.3597), 180.3600f, 79, 7, 100);
+            GtaVehicle.Create(473, new Vector(2292.3237, 518.4249, 0.3597), 180.3600f, 79, 7, 100);
+            GtaVehicle.Create(473, new Vector(2289.0901, 518.4363, 0.3597), 180.3600f, 79, 7, 100);
+            GtaVehicle.Create(473, new Vector(2304.8232, 539.7859, 0.3597), 270.5998f, 79, 7, 100);
+            GtaVehicle.Create(473, new Vector(2304.6936, 535.0454, 0.3597), 270.5998f, 79, 7, 100);
+            GtaVehicle.Create(473, new Vector(2304.8245, 530.3308, 0.3597), 270.5998f, 79, 7, 100);
+            GtaVehicle.Create(473, new Vector(2304.8142, 525.7471, 0.3597), 270.5998f, 79, 7, 100);
 
             // Blue Mavericks
-            Vehicle.Create(487, new Vector(2260.2637, 578.5220, 8.1223), 182.3401f, 79, 7, 100);
-            Vehicle.Create(487, new Vector(2379.9792, 580.0323, 8.0178), 177.9601f, 79, 7, 100);
+            GtaVehicle.Create(487, new Vector(2260.2637, 578.5220, 8.1223), 182.3401f, 79, 7, 100);
+            GtaVehicle.Create(487, new Vector(2379.9792, 580.0323, 8.0178), 177.9601f, 79, 7, 100);
 
             // Green Base Section
             new GlobalObject(9090, new Vector(2148.64, -222.88, -20.60), new Vector(0.00, 0.00, 179.70));

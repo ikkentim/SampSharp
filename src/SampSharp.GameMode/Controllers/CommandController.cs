@@ -61,7 +61,7 @@ namespace SampSharp.GameMode.Controllers
         private void gameMode_PlayerCommandText(object sender, PlayerTextEventArgs e)
         {
             string text = e.Text.Substring(1);
-            Player player = e.Player;
+            GtaPlayer player = e.Player;
 
             foreach (Command cmd in Command.All.Where(c => c.HasPlayerPermissionForCommand(player)))
             {

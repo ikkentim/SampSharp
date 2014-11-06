@@ -35,7 +35,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public const int InvalidId = Misc.InvalidMenu;
 
-        private readonly List<Player> _viewers = new List<Player>();
+        private readonly List<GtaPlayer> _viewers = new List<GtaPlayer>();
 
         #endregion
 
@@ -86,7 +86,7 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Gets a list of viewers of this menu.
         /// </summary>
-        public ReadOnlyCollection<Player> Viewers
+        public ReadOnlyCollection<GtaPlayer> Viewers
         {
             get { return _viewers.AsReadOnly(); }
         }
@@ -118,7 +118,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         /// <param name="player">The player to show this menu for.</param>
         /// <returns>True when successfull, False otherwise.</returns>
-        public bool Show(Player player)
+        public bool Show(GtaPlayer player)
         {
             CheckDisposure();
 
@@ -145,7 +145,7 @@ namespace SampSharp.GameMode.Display
         ///     Hides this menu for the specified player.
         /// </summary>
         /// <param name="player">The player to hide this menu for.</param>
-        public void Hide(Player player)
+        public void Hide(GtaPlayer player)
         {
             CheckDisposure();
 
@@ -175,7 +175,7 @@ namespace SampSharp.GameMode.Display
             CheckDisposure();
 
             //Clone list and hide for all.
-            foreach (Player p in _viewers.ToList())
+            foreach (GtaPlayer p in _viewers.ToList())
                 Hide(p);
         }
 

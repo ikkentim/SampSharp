@@ -140,7 +140,7 @@ namespace Grandlarc
                     // the sa-mp team thinks that was funny to put a ; at the end of the line *-*
                     int endOfLineDelimiter = tokens[6].IndexOf(';');
 
-                    Vehicle.CreateStatic(
+                    GtaVehicle.CreateStatic(
                         int.Parse(tokens[0]),
                         new Vector(float.Parse(tokens[1]), float.Parse(tokens[2]), float.Parse(tokens[3])),
                         float.Parse(tokens[4]),
@@ -204,13 +204,13 @@ namespace Grandlarc
         }
 
         [Command("kill")]
-        public static void KillMe(Player player)
+        public static void KillMe(GtaPlayer player)
         {
             player.Health = 0.0f;
         }
 
         [Command("changecity")]
-        public static void ChangeCity(Player player)
+        public static void ChangeCity(GtaPlayer player)
         {
             player.ForceClassSelection();
             (player as GPlayer).HasCitySelected = false;

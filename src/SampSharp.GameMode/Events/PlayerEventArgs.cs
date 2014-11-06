@@ -32,9 +32,9 @@ namespace SampSharp.GameMode.Events
 
         public int PlayerId { get; private set; }
 
-        public Player Player
+        public GtaPlayer Player
         {
-            get { return PlayerId == Player.InvalidId ? null : Player.Find(PlayerId); }
+            get { return PlayerId == GtaPlayer.InvalidId ? null : GtaPlayer.Find(PlayerId); }
         }
     }
 }

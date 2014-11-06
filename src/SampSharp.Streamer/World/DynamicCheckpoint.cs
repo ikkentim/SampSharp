@@ -28,7 +28,7 @@ namespace SampSharp.Streamer.World
         }
 
         public DynamicCheckpoint(Vector position, float size = 1.0f, int worldid = -1, int interiorid = -1,
-            Player player = null, float streamdistance = 100.0f)
+            GtaPlayer player = null, float streamdistance = 100.0f)
         {
             Id = StreamerNative.CreateDynamicCP(position.X, position.Y, position.Z, size, worldid, interiorid,
                 player == null ? -1 : player.Id, streamdistance);
@@ -36,7 +36,7 @@ namespace SampSharp.Streamer.World
 
         public DynamicCheckpoint(Vector position, float size, float streamdistance, int[] worlds = null,
             int[] interiors = null,
-            Player[] players = null)
+            GtaPlayer[] players = null)
         {
             Id = StreamerNative.CreateDynamicCPEx(position.X, position.Y, position.Z, size, streamdistance, worlds,
                 interiors,
@@ -62,7 +62,7 @@ namespace SampSharp.Streamer.World
         public event EventHandler<PlayerDynamicCheckpointEventArgs> Enter;
         public event EventHandler<PlayerDynamicCheckpointEventArgs> Leave;
 
-        public void ToggleForPlayer(Player player, bool toggle)
+        public void ToggleForPlayer(GtaPlayer player, bool toggle)
         {
             CheckDisposure();
 
@@ -74,7 +74,7 @@ namespace SampSharp.Streamer.World
             StreamerNative.TogglePlayerDynamicCP(player.Id, Id, toggle);
         }
 
-        public bool IsPlayerInCheckpoint(Player player)
+        public bool IsPlayerInCheckpoint(GtaPlayer player)
         {
             if (player == null)
             {
@@ -84,7 +84,7 @@ namespace SampSharp.Streamer.World
             return StreamerNative.IsPlayerInDynamicCP(player.Id, Id);
         }
 
-        public static void ToggleAllForPlayer(Player player, bool toggle)
+        public static void ToggleAllForPlayer(GtaPlayer player, bool toggle)
         {
             if (player == null)
             {
@@ -94,7 +94,7 @@ namespace SampSharp.Streamer.World
             StreamerNative.TogglePlayerAllDynamicCPs(player.Id, toggle);
         }
 
-        public static DynamicCheckpoint GetPlayerVisibleDynamicCheckpoint(Player player)
+        public static DynamicCheckpoint GetPlayerVisibleDynamicCheckpoint(GtaPlayer player)
         {
             int id = StreamerNative.GetPlayerVisibleDynamicCP(player.Id);
 

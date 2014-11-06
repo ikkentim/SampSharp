@@ -28,8 +28,8 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public const int InvalidId = Misc.Invalid_3DTextId;
 
-        private Player _attachedPlayer;
-        private Vehicle _attachedVehicle;
+        private GtaPlayer _attachedPlayer;
+        private GtaVehicle _attachedVehicle;
 
         private Color _color;
         private float _drawDistance;
@@ -69,8 +69,8 @@ namespace SampSharp.GameMode.SAMP
                 _position = value;
                 Dispose();
                 Id = Native.CreatePlayer3DTextLabel(Player.Id, Text, Color, Position, DrawDistance,
-                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.Id,
-                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.Id, TestLOS);
+                    AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
+                    AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
         }
 
@@ -82,8 +82,8 @@ namespace SampSharp.GameMode.SAMP
                 _drawDistance = value;
                 Dispose();
                 Id = Native.CreatePlayer3DTextLabel(Player.Id, Text, Color, Position, DrawDistance,
-                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.Id,
-                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.Id, TestLOS);
+                    AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
+                    AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
         }
 
@@ -95,12 +95,12 @@ namespace SampSharp.GameMode.SAMP
                 _testLOS = value;
                 Dispose();
                 Id = Native.CreatePlayer3DTextLabel(Player.Id, Text, Color, Position, DrawDistance,
-                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.Id,
-                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.Id, TestLOS);
+                    AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
+                    AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
         }
 
-        public virtual Player AttachedPlayer
+        public virtual GtaPlayer AttachedPlayer
         {
             get { return _attachedPlayer; }
             set
@@ -108,12 +108,12 @@ namespace SampSharp.GameMode.SAMP
                 _attachedPlayer = value;
                 Dispose();
                 Id = Native.CreatePlayer3DTextLabel(Player.Id, Text, Color, Position, DrawDistance,
-                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.Id,
-                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.Id, TestLOS);
+                    AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
+                    AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
         }
 
-        public virtual Vehicle AttachedVehicle
+        public virtual GtaVehicle AttachedVehicle
         {
             get { return _attachedVehicle; }
             set
@@ -121,19 +121,19 @@ namespace SampSharp.GameMode.SAMP
                 _attachedVehicle = value;
                 Dispose();
                 Id = Native.CreatePlayer3DTextLabel(Player.Id, Text, Color, Position, DrawDistance,
-                    AttachedPlayer == null ? Player.InvalidId : AttachedPlayer.Id,
-                    AttachedVehicle == null ? Vehicle.InvalidId : AttachedVehicle.Id, TestLOS);
+                    AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
+                    AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
         }
 
         public virtual int Id { get; private set; }
-        public virtual Player Player { get; private set; }
+        public virtual GtaPlayer Player { get; private set; }
 
         #endregion
 
         #region Constructors
 
-        public PlayerTextLabel(Player player, int id)
+        public PlayerTextLabel(GtaPlayer player, int id)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -142,7 +142,7 @@ namespace SampSharp.GameMode.SAMP
             Id = id;
         }
 
-        public PlayerTextLabel(Player player, string text, Color color, Vector position, float drawDistance,
+        public PlayerTextLabel(GtaPlayer player, string text, Color color, Vector position, float drawDistance,
             bool testLOS)
         {
             if (player == null)
@@ -155,16 +155,16 @@ namespace SampSharp.GameMode.SAMP
             _testLOS = testLOS;
 
             Id = Native.CreatePlayer3DTextLabel(player.Id, text, color, position, drawDistance,
-                Player.InvalidId, Vehicle.InvalidId, testLOS);
+                GtaPlayer.InvalidId, GtaVehicle.InvalidId, testLOS);
         }
 
-        public PlayerTextLabel(Player player, string text, Color color, Vector position, float drawDistance)
+        public PlayerTextLabel(GtaPlayer player, string text, Color color, Vector position, float drawDistance)
             : this(player, text, color, position, drawDistance, true)
         {
         }
 
-        public PlayerTextLabel(Player player, string text, Color color, Vector position, float drawDistance,
-            bool testLOS, Player attachedPlayer)
+        public PlayerTextLabel(GtaPlayer player, string text, Color color, Vector position, float drawDistance,
+            bool testLOS, GtaPlayer attachedPlayer)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -179,16 +179,16 @@ namespace SampSharp.GameMode.SAMP
             _testLOS = testLOS;
 
             Id = Native.CreatePlayer3DTextLabel(player.Id, text, color, position, drawDistance,
-                attachedPlayer.Id, Vehicle.InvalidId, testLOS);
+                attachedPlayer.Id, GtaVehicle.InvalidId, testLOS);
         }
 
-        public PlayerTextLabel(Player player, string text, Color color, Vector position, float drawDistance,
-            Player attachedPlayer) : this(player, text, color, position, drawDistance, true, attachedPlayer)
+        public PlayerTextLabel(GtaPlayer player, string text, Color color, Vector position, float drawDistance,
+            GtaPlayer attachedPlayer) : this(player, text, color, position, drawDistance, true, attachedPlayer)
         {
         }
 
-        public PlayerTextLabel(Player player, string text, Color color, Vector position, float drawDistance,
-            bool testLOS, Vehicle attachedVehicle)
+        public PlayerTextLabel(GtaPlayer player, string text, Color color, Vector position, float drawDistance,
+            bool testLOS, GtaVehicle attachedVehicle)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -203,11 +203,11 @@ namespace SampSharp.GameMode.SAMP
             _testLOS = testLOS;
 
             Id = Native.CreatePlayer3DTextLabel(player.Id, text, color, position, drawDistance,
-                Player.InvalidId, attachedVehicle.Id, testLOS);
+                GtaPlayer.InvalidId, attachedVehicle.Id, testLOS);
         }
 
-        public PlayerTextLabel(Player player, string text, Color color, Vector position, float drawDistance,
-            Vehicle attachedVehicle)
+        public PlayerTextLabel(GtaPlayer player, string text, Color color, Vector position, float drawDistance,
+            GtaVehicle attachedVehicle)
             : this(player, text, color, position, drawDistance, true, attachedVehicle)
         {
         }

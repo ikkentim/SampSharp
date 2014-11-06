@@ -39,7 +39,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 return false;
 
             int id;
-            Player player = null;
+            GtaPlayer player = null;
             string word = (output as string).ToLower();
 
             /*
@@ -48,7 +48,7 @@ namespace SampSharp.GameMode.SAMP.Commands
              */
             if (!int.TryParse(word, out id))
             {
-                IEnumerable<Player> players = Player.All.Where(p => p.Name.ToLower().Contains(word.ToLower()));
+                IEnumerable<GtaPlayer> players = GtaPlayer.All.Where(p => p.Name.ToLower().Contains(word.ToLower()));
                 if (players.Count() == 1)
                 {
                     player = players.First();
@@ -56,7 +56,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             }
             else
             {
-                player = Player.Find(id);
+                player = GtaPlayer.Find(id);
             }
 
             if (player == null || !player.IsConnected)

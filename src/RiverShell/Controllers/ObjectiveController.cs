@@ -56,7 +56,7 @@ namespace RiverShell.Controllers
         {
             var player = e.Player as RPlayer;
 
-            Vehicle vehicle = player.Vehicle;
+            GtaVehicle vehicle = player.Vehicle;
 
             //Check if game's already over
             if (GameMode.ObjectiveReached)
@@ -73,13 +73,13 @@ namespace RiverShell.Controllers
             {
                 RPlayer.GameTextForAll(string.Format("{0} wins!", player.Team.GameTextTeamName), 3000, 5);
                 GameMode.ObjectiveReached = true;
-                foreach (Player p in RPlayer.All)
+                foreach (GtaPlayer p in RPlayer.All)
                     p.PlaySound(1185);
 
                 var exitTimer = new Timer(6000, false);
                 exitTimer.Tick += (tsender, args) =>
                 {
-                    foreach (Player p in RPlayer.All)
+                    foreach (GtaPlayer p in RPlayer.All)
                         p.PlaySound(1186);
                     Native.GameModeExit();
                 };

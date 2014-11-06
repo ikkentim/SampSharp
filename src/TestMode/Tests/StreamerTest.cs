@@ -93,7 +93,7 @@ namespace TestMode.Tests
         }
 
         [Command("attachcam")]
-        public static void AttachCamCommand(Player player)
+        public static void AttachCamCommand(GtaPlayer player)
         {
             _obj.AttachCameraToObject(player);
         }

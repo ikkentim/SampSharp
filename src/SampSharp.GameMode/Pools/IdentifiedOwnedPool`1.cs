@@ -40,7 +40,7 @@ namespace SampSharp.GameMode.Pools
         /// <param name="owner">The owner of the instance to find.</param>
         /// <param name="id">The identity of the instance to find.</param>
         /// <returns>The found instance.</returns>
-        public static T Find(Player owner, int id)
+        public static T Find(GtaPlayer owner, int id)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
@@ -54,7 +54,7 @@ namespace SampSharp.GameMode.Pools
         /// <param name="owner">The owner of the instance to create.</param>
         /// <param name="id">The identity of the instance to create.</param>
         /// <returns>The initialized instance.</returns>
-        public static T Add(Player owner, int id)
+        public static T Add(GtaPlayer owner, int id)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
@@ -68,7 +68,7 @@ namespace SampSharp.GameMode.Pools
         /// <param name="owner">The owner of the instance to find or create.</param>
         /// <param name="id">The identity of the instance to find or create.</param>
         /// <returns>The found instance.</returns>
-        public static T FindOrCreate(Player owner, int id)
+        public static T FindOrCreate(GtaPlayer owner, int id)
         {
             return Find(owner, id) ?? Add(owner, id);
         }

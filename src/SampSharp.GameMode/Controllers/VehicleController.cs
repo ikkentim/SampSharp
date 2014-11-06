@@ -28,21 +28,21 @@ namespace SampSharp.GameMode.Controllers
         public virtual void RegisterEvents(BaseMode gameMode)
         {
             //Register all vehicle events
-            gameMode.VehicleSpawned += (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnSpawn(args);
-            gameMode.VehicleDied += (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnDeath(args);
-            gameMode.PlayerEnterVehicle += (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnPlayerEnter(args);
-            gameMode.PlayerExitVehicle += (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnPlayerExit(args);
-            gameMode.VehicleMod += (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnMod(args);
+            gameMode.VehicleSpawned += (sender, args) => GtaVehicle.FindOrCreate(args.VehicleId).OnSpawn(args);
+            gameMode.VehicleDied += (sender, args) => GtaVehicle.FindOrCreate(args.VehicleId).OnDeath(args);
+            gameMode.PlayerEnterVehicle += (sender, args) => GtaVehicle.FindOrCreate(args.VehicleId).OnPlayerEnter(args);
+            gameMode.PlayerExitVehicle += (sender, args) => GtaVehicle.FindOrCreate(args.VehicleId).OnPlayerExit(args);
+            gameMode.VehicleMod += (sender, args) => GtaVehicle.FindOrCreate(args.VehicleId).OnMod(args);
             gameMode.VehiclePaintjobApplied +=
-                (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnPaintjobApplied(args);
-            gameMode.VehicleResprayed += (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnResprayed(args);
+                (sender, args) => GtaVehicle.FindOrCreate(args.VehicleId).OnPaintjobApplied(args);
+            gameMode.VehicleResprayed += (sender, args) => GtaVehicle.FindOrCreate(args.VehicleId).OnResprayed(args);
             gameMode.VehicleDamageStatusUpdated +=
-                (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnDamageStatusUpdated(args);
+                (sender, args) => GtaVehicle.FindOrCreate(args.VehicleId).OnDamageStatusUpdated(args);
             gameMode.UnoccupiedVehicleUpdated +=
-                (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnUnoccupiedUpdate(args);
-            gameMode.VehicleStreamIn += (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnStreamIn(args);
-            gameMode.VehicleStreamOut += (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnStreamOut(args);
-            gameMode.TrailerUpdate += (sender, args) => Vehicle.FindOrCreate(args.VehicleId).OnTrailerUpdate(args);
+                (sender, args) => GtaVehicle.FindOrCreate(args.VehicleId).OnUnoccupiedUpdate(args);
+            gameMode.VehicleStreamIn += (sender, args) => GtaVehicle.FindOrCreate(args.VehicleId).OnStreamIn(args);
+            gameMode.VehicleStreamOut += (sender, args) => GtaVehicle.FindOrCreate(args.VehicleId).OnStreamOut(args);
+            gameMode.TrailerUpdate += (sender, args) => GtaVehicle.FindOrCreate(args.VehicleId).OnTrailerUpdate(args);
         }
 
         /// <summary>
@@ -50,14 +50,14 @@ namespace SampSharp.GameMode.Controllers
         /// </summary>
         public virtual void RegisterTypes()
         {
-            Vehicle.Register<Vehicle>();
+            GtaVehicle.Register<GtaVehicle>();
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                foreach (var vehicle in Vehicle.All)
+                foreach (var vehicle in GtaVehicle.All)
                 {
                     vehicle.Dispose();
                 }
