@@ -17,7 +17,7 @@ using SampSharp.GameMode.World;
 
 namespace RiverShell.World
 {
-    public class Team : IdentifiedPool<Team>, IIDentifiable
+    public class Team : IdentifiedPool<Team>, IIdentifiable
     {
         public Color Color { get; set; }
 

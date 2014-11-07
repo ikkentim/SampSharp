@@ -184,18 +184,18 @@ namespace SampSharp.Streamer.World
                 throw new ArgumentNullException("obj");
             }
 
-            if (!(obj is IIDentifiable))
+            if (!(obj is IIdentifiable))
             {
-                throw new ArgumentException("obj must be IIDentifiable");
+                throw new ArgumentException("obj must be IIdentifiable");
             }
 
             int playerid = GtaPlayer.InvalidId;
-            int objectid = (obj as IIDentifiable).Id;
+            int objectid = (obj as IIdentifiable).Id;
             var type = StreamerObjectType.Global;
 
-            if (obj is IOwnable)
+            if (obj is IOwnable<GtaPlayer>)
             {
-                playerid = (obj as IOwnable).Player.Id;
+                playerid = (obj as IOwnable<GtaPlayer>).Owner.Id;
             }
             if (obj is PlayerObject)
             {

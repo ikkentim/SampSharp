@@ -19,7 +19,7 @@ using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
-    public class TextLabel : IdentifiedPool<TextLabel>, IIDentifiable
+    public class TextLabel : IdentifiedPool<TextLabel>, IIdentifiable
     {
         #region Fields
 
