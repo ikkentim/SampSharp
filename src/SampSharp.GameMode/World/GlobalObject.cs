@@ -20,7 +20,7 @@ using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
-    public class GlobalObject : IdentifiedPool<GlobalObject>, IGameObject, IIdentifyable
+    public class GlobalObject : IdentifiedPool<GlobalObject>, IGameObject, IIDentifiable
     {
         #region Fields
 

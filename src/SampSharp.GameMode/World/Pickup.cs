@@ -18,7 +18,7 @@ using SampSharp.GameMode.Pools;
 
 namespace SampSharp.GameMode.World
 {
-    public class Pickup : IdentifiedPool<Pickup>, IIdentifyable, IWorldObject
+    public class Pickup : IdentifiedPool<Pickup>, IIDentifiable, IWorldObject
     {
         public Pickup(int id)
         {
