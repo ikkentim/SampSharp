@@ -1,6 +1,6 @@
 #include "Main.h"
 #include <string>
-#include <sampgdk/core.h>
+#include <sampgdk/sampgdk.h>
 #include <fstream>
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
