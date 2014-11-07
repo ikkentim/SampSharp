@@ -13,8 +13,12 @@
 
 namespace SampSharp.GameMode.World
 {
-    public interface IOwnable
+    /// <summary>
+    ///     Contains an Owner property.
+    /// </summary>
+    /// <typeparam name="T">The type of the owner</typeparam>
+    public interface IOwnable<T> where T : IIdentifiable
     {
-        GtaPlayer Player { get; }
+        T Owner { get; }
     }
 }

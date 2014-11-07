@@ -21,7 +21,7 @@ using SampSharp.GameMode.Pools;
 
 namespace SampSharp.GameMode.World
 {
-    public class GtaVehicle : IdentifiedPool<GtaVehicle>, IIDentifiable, IWorldObject
+    public class GtaVehicle : IdentifiedPool<GtaVehicle>, IIdentifiable, IWorldObject
     {
         #region Fields
 

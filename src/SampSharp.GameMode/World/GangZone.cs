@@ -19,7 +19,7 @@ using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
-    public class GangZone : IdentifiedPool<GangZone>, IIDentifiable
+    public class GangZone : IdentifiedPool<GangZone>, IIdentifiable
     {
         /// <summary>
         ///     Gets an ID commonly returned by methods to point out that no GangZone matched the requirements.
