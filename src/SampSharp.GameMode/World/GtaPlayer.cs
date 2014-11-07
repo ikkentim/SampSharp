@@ -748,8 +748,8 @@ namespace SampSharp.GameMode.World
         /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
         /// <param name="weapon3">The third spawn-weapon for the player.</param>
         /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
-        public virtual void SetSpawnInfo(int team, int skin, Vector position, float rotation, Weapon weapon1,
-            int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
+        public virtual void SetSpawnInfo(int team, int skin, Vector position, float rotation, Weapon weapon1 = Weapon.None,
+            int weapon1Ammo = 0, Weapon weapon2 = Weapon.None, int weapon2Ammo = 0, Weapon weapon3 = Weapon.None, int weapon3Ammo = 0)
         {
             CheckDisposure();
 
