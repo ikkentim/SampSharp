@@ -833,7 +833,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         public virtual bool OnTimerTick(int timerid, object args)
         {
-            if (TimerTick != null)
+            if (TimerTick != null && args != null)
                 TimerTick(args, EventArgs.Empty);
 
             return true;
