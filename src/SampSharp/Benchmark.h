@@ -1,6 +1,6 @@
 #include <iostream>
 #include <time.h>
-#include <sampgdk/a_samp.h>
+#include <sampgdk/sampgdk.h>
 
 
 #pragma once
