@@ -993,6 +993,27 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
+        ///     Display the cursor and allow this Player to select a textdraw.
+        /// </summary>
+        /// <param name="hoverColor">The color of the textdraw when hovering over with mouse.</param>
+        public virtual void SelectTextDraw(Color hoverColor)
+        {
+            CheckDisposure();
+
+            Native.SelectTextDraw(Id, hoverColor);
+        }
+        
+        /// <summary>
+        ///     Cancel textdraw selection with the mouse.
+        /// </summary>
+        public virtual void CancelSelectTextDraw()
+        {
+            CheckDisposure();
+
+            Native.CancelSelectTextDraw(Id);
+        }
+
+        /// <summary>
         ///     This function plays a crime report for this Player - just like in single-player when CJ commits a crime.
         /// </summary>
         /// <param name="suspectid">The ID of the suspect player which will be described in the crime report.</param>
