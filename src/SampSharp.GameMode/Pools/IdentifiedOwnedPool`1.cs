@@ -21,7 +21,7 @@ namespace SampSharp.GameMode.Pools
     ///     Keeps track of a pool of owned and identified instances.
     /// </summary>
     /// <typeparam name="T">Base type of instances to keep track of.</typeparam>
-    public abstract class IdentifiedOwnedPool<T> : Pool<T> where T : class, IIDentifiable, IOwnable
+    public abstract class IdentifiedOwnedPool<T> : Pool<T> where T : class, IIdentifiable, IOwnable<GtaPlayer>
     {
         protected static Type InstanceType;
 
@@ -45,7 +45,7 @@ namespace SampSharp.GameMode.Pools
             if (owner == null)
                 throw new ArgumentNullException("owner");
 
-            return All.FirstOrDefault(i => i.Player == owner && i.Id == id);
+            return All.FirstOrDefault(i => i.Owner == owner && i.Id == id);
         }
 
         /// <summary>

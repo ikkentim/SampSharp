@@ -20,7 +20,7 @@ using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
-    public class PlayerObject : IdentifiedOwnedPool<PlayerObject>, IGameObject, IOwnable, IIDentifiable
+    public class PlayerObject : IdentifiedOwnedPool<PlayerObject>, IGameObject, IOwnable<GtaPlayer>, IIdentifiable
     {
         #region Fields
 
@@ -32,31 +32,31 @@ namespace SampSharp.GameMode.World
 
         public virtual Vector Rotation
         {
-            get { return Native.GetPlayerObjectRot(Player.Id, Id); }
-            set { Native.SetPlayerObjectRot(Player.Id, Id, value); }
+            get { return Native.GetPlayerObjectRot(Owner.Id, Id); }
+            set { Native.SetPlayerObjectRot(Owner.Id, Id, value); }
         }
 
         public virtual Vector Position
         {
-            get { return Native.GetPlayerObjectPos(Player.Id, Id); }
-            set { Native.SetPlayerObjectPos(Player.Id, Id, value); }
+            get { return Native.GetPlayerObjectPos(Owner.Id, Id); }
+            set { Native.SetPlayerObjectPos(Owner.Id, Id, value); }
         }
 
         public virtual bool IsMoving
         {
-            get { return Native.IsPlayerObjectMoving(Player.Id, Id); }
+            get { return Native.IsPlayerObjectMoving(Owner.Id, Id); }
         }
 
         public virtual bool IsValid
         {
-            get { return Native.IsValidPlayerObject(Player.Id, Id); }
+            get { return Native.IsValidPlayerObject(Owner.Id, Id); }
         }
 
         public virtual int ModelId { get; private set; }
 
         public virtual float DrawDistance { get; private set; }
         public virtual int Id { get; private set; }
-        public virtual GtaPlayer Player { get; private set; }
+        public virtual GtaPlayer Owner { get; private set; }
 
         #endregion
 
@@ -88,30 +88,30 @@ namespace SampSharp.GameMode.World
         {
         }
 
-        public PlayerObject(GtaPlayer player, int id)
+        public PlayerObject(GtaPlayer owner, int id)
         {
-            if (player == null)
-                throw new ArgumentNullException("player");
+            if (owner == null)
+                throw new ArgumentNullException("owner");
 
-            Player = player;
+            Owner = owner;
             Id = id;
         }
 
-        public PlayerObject(GtaPlayer player, int modelid, Vector position, Vector rotation)
-            : this(player, modelid, position, rotation, 0)
+        public PlayerObject(GtaPlayer owner, int modelid, Vector position, Vector rotation)
+            : this(owner, modelid, position, rotation, 0)
         {
         }
 
-        public PlayerObject(GtaPlayer player, int modelid, Vector position, Vector rotation, float drawDistance)
+        public PlayerObject(GtaPlayer owner, int modelid, Vector position, Vector rotation, float drawDistance)
         {
-            if (player == null)
-                throw new ArgumentNullException("player");
+            if (owner == null)
+                throw new ArgumentNullException("owner");
 
-            Player = player;
+            Owner = owner;
             ModelId = modelid;
             DrawDistance = drawDistance;
 
-            Id = Native.CreatePlayerObject(player.Id, modelid, position, rotation, drawDistance);
+            Id = Native.CreatePlayerObject(owner.Id, modelid, position, rotation, drawDistance);
         }
 
         #endregion
@@ -122,14 +122,14 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposure();
 
-            return Native.MovePlayerObject(Player.Id, Id, position, speed, rotation);
+            return Native.MovePlayerObject(Owner.Id, Id, position, speed, rotation);
         }
 
         public virtual int Move(Vector position, float speed)
         {
             CheckDisposure();
 
-            return Native.MovePlayerObject(Player.Id, Id, position.X, position.Y, position.Z, speed, -1000,
+            return Native.MovePlayerObject(Owner.Id, Id, position.X, position.Y, position.Z, speed, -1000,
                 -1000, -1000);
         }
 
@@ -137,7 +137,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposure();
 
-            Native.StopPlayerObject(Player.Id, Id);
+            Native.StopPlayerObject(Owner.Id, Id);
         }
 
         public virtual void SetMaterial(int materialindex, int modelid, string txdname, string texturename,
@@ -145,7 +145,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposure();
 
-            Native.SetPlayerObjectMaterial(Player.Id, Id, materialindex, modelid, txdname, texturename,
+            Native.SetPlayerObjectMaterial(Owner.Id, Id, materialindex, modelid, txdname, texturename,
                 materialcolor.GetColorValue(ColorFormat.ARGB));
         }
 
@@ -155,7 +155,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposure();
 
-            Native.SetPlayerObjectMaterialText(Player.Id, Id, text, materialindex, (int) materialsize,
+            Native.SetPlayerObjectMaterialText(Owner.Id, Id, text, materialindex, (int) materialsize,
                 fontface, fontsize, bold,
                 foreColor.GetColorValue(ColorFormat.ARGB), backColor.GetColorValue(ColorFormat.ARGB),
                 (int) textalignment);
@@ -168,7 +168,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            Native.AttachPlayerObjectToPlayer(Player.Id, Id, player.Id, offset, rotation);
+            Native.AttachPlayerObjectToPlayer(Owner.Id, Id, player.Id, offset, rotation);
         }
 
         public virtual void AttachTo(GtaVehicle vehicle, Vector offset, Vector rotation)
@@ -178,7 +178,7 @@ namespace SampSharp.GameMode.World
             if (vehicle == null)
                 throw new ArgumentNullException("vehicle");
 
-            Native.AttachPlayerObjectToVehicle(Player.Id, Id, vehicle.Id, offset, rotation);
+            Native.AttachPlayerObjectToVehicle(Owner.Id, Id, vehicle.Id, offset, rotation);
         }
 
         /// <summary>
@@ -191,21 +191,21 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposure();
 
-            Native.AttachCameraToPlayerObject(Player.Id, Id);
+            Native.AttachCameraToPlayerObject(Owner.Id, Id);
         }
 
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
 
-            Native.DestroyPlayerObject(Player.Id, Id);
+            Native.DestroyPlayerObject(Owner.Id, Id);
         }
 
         public virtual void Edit()
         {
             CheckDisposure();
 
-            Native.EditPlayerObject(Player.Id, Id);
+            Native.EditPlayerObject(Owner.Id, Id);
         }
 
         public static void Select(GtaPlayer player)

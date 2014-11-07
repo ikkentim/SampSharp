@@ -16,7 +16,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Contains an Identity property.
     /// </summary>
-    public interface IIDentifiable
+    public interface IIdentifiable
     {
         /// <summary>
         ///     Gets the Identity of this instance.
