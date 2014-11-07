@@ -20,7 +20,7 @@ using SampSharp.Streamer.Definitions;
 
 namespace SampSharp.Streamer.World
 {
-    public abstract class DynamicWorldObject<T> : IdentifiedPool<T>, IIdentifyable, IWorldObject
+    public abstract class DynamicWorldObject<T> : IdentifiedPool<T>, IIDentifiable, IWorldObject
         where T : DynamicWorldObject<T>
     {
         public abstract StreamType StreamType { get; }

@@ -19,7 +19,7 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP
 {
-    public class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel>, IIdentifyable, IOwnable
+    public class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel>, IIDentifiable, IOwnable
     {
         #region Fields
 

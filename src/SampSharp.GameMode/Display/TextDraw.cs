@@ -25,7 +25,7 @@ namespace SampSharp.GameMode.Display
     /// <summary>
     ///     Represents a textdraw.
     /// </summary>
-    public class TextDraw : IdentifiedPool<TextDraw>, IIdentifyable
+    public class TextDraw : IdentifiedPool<TextDraw>, IIDentifiable
     {
         #region Fields
 
