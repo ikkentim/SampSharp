@@ -52,11 +52,11 @@ void SampSharp::Load(MonoDomain * domain, MonoImage * image, MonoClass *klass) {
     LoadNatives(); 
     mono_add_internal_call("SampSharp.GameMode.Natives.Native::RegisterExtension", (void *)RegisterExtension);
 
+    loaded = true;
+
 	MonoObject *gamemode_obj = mono_object_new(mono_domain_get(), gamemode.klass);
 	gameModeHandle = mono_gchandle_new(gamemode_obj, true);
 	mono_runtime_object_init(gamemode_obj);
-
-    loaded = true;
 }
 
 void SAMPGDK_CALL SampSharp::ProcessTimerTick(int timerid, void *data) {
