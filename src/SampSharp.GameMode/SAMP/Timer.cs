@@ -21,7 +21,7 @@ namespace SampSharp.GameMode.SAMP
     /// <summary>
     ///     Represents a SA:MP timer.
     /// </summary>
-    public class Timer : IdentifiedPool<Timer>, IIdentifyable
+    public class Timer : IdentifiedPool<Timer>, IIDentifiable
     {
         private bool _hit;
 

@@ -21,7 +21,7 @@ namespace SampSharp.GameMode.Pools
     ///     Keeps track of a pool of owned and identified instances.
     /// </summary>
     /// <typeparam name="T">Base type of instances to keep track of.</typeparam>
-    public abstract class IdentifiedOwnedPool<T> : Pool<T> where T : class, IIdentifyable, IOwnable
+    public abstract class IdentifiedOwnedPool<T> : Pool<T> where T : class, IIDentifiable, IOwnable
     {
         protected static Type InstanceType;
 

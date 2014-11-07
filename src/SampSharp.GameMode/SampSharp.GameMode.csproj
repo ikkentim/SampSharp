@@ -183,7 +183,7 @@
     <Compile Include="World\GlobalObject.cs" />
     <Compile Include="Controllers\IEventListener.cs" />
     <Compile Include="World\IGameObject.cs" />
-    <Compile Include="World\IIdentifyable.cs" />
+    <Compile Include="World\IIDentifiable.cs" />
     <Compile Include="World\IOwnable.cs" />
     <Compile Include="World\IWorldObject.cs" />
     <Compile Include="World\GtaPlayer.cs" />

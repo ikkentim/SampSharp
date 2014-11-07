@@ -24,7 +24,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a SA:MP player.
     /// </summary>
-    public class GtaPlayer : IdentifiedPool<GtaPlayer>, IIdentifyable, IWorldObject
+    public class GtaPlayer : IdentifiedPool<GtaPlayer>, IIDentifiable, IWorldObject
     {
         #region Fields
 
