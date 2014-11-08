@@ -704,11 +704,15 @@ namespace SampSharp.GameMode.World
             return Native.GetVehicleModelInfo(Model, infotype);
         }
 
+        /// <summary>
+        ///     Removes this instance from the pool.
+        /// </summary>
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
 
-            Native.DestroyVehicle(Id);
+            if (IsValid)
+                Native.DestroyVehicle(Id);
         }
 
         #endregion
@@ -841,11 +845,25 @@ namespace SampSharp.GameMode.World
 
         #region Methods
 
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
         {
             return Id;
         }
 
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
             return string.Format("Vehicle(Id:{0}, Model: {1})", Id, Model);
