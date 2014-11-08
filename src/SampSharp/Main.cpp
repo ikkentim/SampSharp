@@ -171,5 +171,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name, cell *pa
     }
     #endif
 
-    return SampSharp::ProcessPublicCall(amx, name, params, retval);
+    SampSharp::ProcessPublicCall(amx, name, params, retval);
+
+    return true;
 }
