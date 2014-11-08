@@ -1702,6 +1702,39 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
+        ///     Kicks this Player from the server. They will have to quit the game and re-connect if they wish to continue playing.
+        /// </summary>
+        public virtual void Kick()
+        {
+            CheckDisposure();
+
+            Native.Kick(Id);
+        }
+
+        /// <summary>
+        ///     Ban this Player. The ban will be IP-based, and be saved in the samp.ban file in the
+        ///     server's root directory. <see cref="Ban(string)" /> allows you to ban with a reason, while you can ban and unban IPs
+        ///     using the RCON banip and unbanip commands.
+        /// </summary>
+        public virtual void Ban()
+        {
+            CheckDisposure();
+
+            Native.Ban(Id);
+        }
+
+        /// <summary>
+        ///     Ban this Player with a reason.
+        /// </summary>
+        /// <param name="reason">The reason for the ban.</param>
+        public virtual void Ban(string reason)
+        {
+            CheckDisposure();
+
+            Native.BanEx(Id, reason);
+        }
+
+        /// <summary>
         ///     This function sends a message to this Player with a chosen color in the chat. The whole line in the chatbox will be
         ///     in the set color unless colour embedding is used.
         /// </summary>
@@ -2286,14 +2319,39 @@ namespace SampSharp.GameMode.World
 
         #region Methods
 
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
         {
             return Id;
         }
 
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
             return string.Format("Player(Id:{0}, Name:{1})", Id, Name);
+        }
+
+        /// <summary>
+        ///     Removes this instance from the pool.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (IsConnected)
+                Kick();
+
+            base.Dispose(disposing);
         }
 
         #endregion
