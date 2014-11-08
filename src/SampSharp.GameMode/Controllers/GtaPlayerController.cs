@@ -30,6 +30,7 @@ namespace SampSharp.GameMode.Controllers
             //Register all player events
             gameMode.PlayerConnected += (sender, args) => GtaPlayer.FindOrCreate(args.PlayerId).OnConnected(args);
             gameMode.PlayerDisconnected += (sender, args) => GtaPlayer.FindOrCreate(args.PlayerId).OnDisconnected(args);
+            gameMode.PlayerCleanup += (sender, args) => GtaPlayer.FindOrCreate(args.PlayerId).OnCleanup(args);
             gameMode.PlayerSpawned += (sender, args) => GtaPlayer.FindOrCreate(args.PlayerId).OnSpawned(args);
             gameMode.PlayerDied += (sender, args) => GtaPlayer.FindOrCreate(args.PlayerId).OnDeath(args);
             gameMode.PlayerText += (sender, args) => GtaPlayer.FindOrCreate(args.PlayerId).OnText(args);
