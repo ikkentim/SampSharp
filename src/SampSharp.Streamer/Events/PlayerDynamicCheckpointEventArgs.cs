@@ -31,8 +31,7 @@ namespace SampSharp.Streamer.Events
         {
             get
             {
-                throw new NotImplementedException();
-                //return CheckpointId == -1 ? null : DynamicCheckpoint.FindOrCreate(PickupId);
+                return CheckpointId == -1 ? null : DynamicCheckpoint.FindOrCreate(CheckpointId);
             }
         }
     }
