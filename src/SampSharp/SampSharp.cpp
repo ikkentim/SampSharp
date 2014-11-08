@@ -164,7 +164,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
         return true;
     }
 
-	const int param_count = params[0] / sizeof(cell);
+	int param_count = params[0] / sizeof(cell);
 	if (strlen(name) == 0 || param_count > 16) {
 		return true;
 	}
@@ -291,7 +291,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 	if (event_p) {
 		if (!param_count) {
 			int retint = CallEvent(event_p->method, event_p->handle, NULL);
-			if (retint != -1) {
+			if (retval != NULL && retint != -1) {
 				*retval = retint;
 			}
 			return false;
@@ -301,6 +301,16 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 			int len = 0;
 			cell *addr = NULL;
 			MonoArray *arr;
+
+            if (event_p->params.size() != param_count)
+            {
+                ofstream logfile;
+                logfile.open("SampSharp_errors.log", ios::app);
+                cout << "[SampSharp] ERROR: Parameters of callback " << name << " does not match description (called: " << param_count << ", description: " << event_p->params.size() << ")." << endl;
+                logfile << TimeUtil::GetTimeStamp() << "ERROR: Parameters of callback " << name << " does not match description(called: " << param_count << ", description: " << event_p->params.size() << ")." << endl;
+                logfile.close();
+                return true;
+            }
 
 			for (int i = 0; i < param_count; i++) {
                 switch (event_p->params[i]->type) {
@@ -373,8 +383,12 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
                     break;
                 }
                 default:
-                    assert(0 && "Invalid type specifier");
-                    break;
+                    ofstream logfile;
+                    logfile.open("SampSharp_errors.log", ios::app);
+                    cout << "[SampSharp] ERROR: Fingerprint of " << name << " contains unsupported parameters." << endl;
+                    logfile << TimeUtil::GetTimeStamp() << "ERROR: Fingerprint of " << name << " contains unsupported parameters." << endl;
+                    logfile.close();
+                    return true;
                 }
 			}
 
@@ -402,11 +416,11 @@ int SampSharp::CallEvent(MonoMethod* method, uint32_t handle, void **params) {
 
 	if (exception) {
 		char *stacktrace = mono_string_to_utf8(mono_object_to_string(exception, NULL));
-
+        
 		ofstream logfile;
 		logfile.open("SampSharp_errors.log", ios::app | ios::binary);
-		cout << "[SampSharp] Exception thrown:" << endl << stacktrace << endl;
-		logfile << TimeUtil::GetTimeStamp() << " Exception thrown:" << "\r\n" << stacktrace << "\r\n";
+        cout << "[SampSharp] Exception thrown during execution of " << mono_method_get_name(method) << ":" << endl << stacktrace << endl;
+        logfile << TimeUtil::GetTimeStamp() << " Exception thrown" << mono_method_get_name(method) << ":" << "\r\n" << stacktrace << "\r\n";
 		logfile.close();
 
 		return -1;
