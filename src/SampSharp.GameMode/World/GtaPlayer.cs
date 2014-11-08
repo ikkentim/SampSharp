@@ -2343,17 +2343,6 @@ namespace SampSharp.GameMode.World
             return string.Format("Player(Id:{0}, Name:{1})", Id, Name);
         }
 
-        /// <summary>
-        ///     Removes this instance from the pool.
-        /// </summary>
-        protected override void Dispose(bool disposing)
-        {
-            if (IsConnected)
-                Kick();
-
-            base.Dispose(disposing);
-        }
-
         #endregion
     }
 }
