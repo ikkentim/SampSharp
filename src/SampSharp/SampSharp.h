@@ -46,7 +46,7 @@ class SampSharp
 public:
     static void Load(MonoDomain * domain, MonoImage * image, MonoClass *klass);
     static void Unload();
-	static bool ProcessPublicCall(AMX *amx, const char *name, cell *params,
+	static void ProcessPublicCall(AMX *amx, const char *name, cell *params,
                                   cell *retval);
     static void SAMPGDK_CALL ProcessTimerTick(int timerid, void *data);
     static void ProcessTick();

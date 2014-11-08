@@ -159,14 +159,14 @@ int SampSharp::GetParamLengthIndex(MonoMethod *method, int idx) {
 
 	return *(int*)mono_object_unbox(mono_runtime_invoke(param_get, attrObj, NULL, NULL));
 }
-bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell *retval) {
+void SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell *retval) {
     if (!loaded) {
-        return true;
+        return;
     }
 
 	int param_count = params[0] / sizeof(cell);
 	if (strlen(name) == 0 || param_count > 16) {
-		return true;
+		return;
 	}
 
 	mono_thread_attach(root);
@@ -192,7 +192,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
         }
 		if (!method) {
 			events[name] = NULL;
-			return true;
+			return;
 		}
 
 		//iterate params
@@ -226,7 +226,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 				int index = GetParamLengthIndex(method, iter_idx);
 				if (index == -1) {
 					events[name] = NULL;
-					return true;
+					return;
 				}
 				par->length_idx = index;
 			}
@@ -243,7 +243,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
                         << type_name << " in " << name << endl;
 				    logfile.close();
 				    events[name] = NULL;
-				    return true;
+				    return;
 				}
 				par->length_idx = index;
 			}
@@ -260,7 +260,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
                         << type_name << " in " << name << endl;
 				    logfile.close();
 				    events[name] = NULL;
-				    return true;
+				    return;
 				}
 				par->length_idx = index;
 			}
@@ -273,7 +273,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
                     << type_name << " in " << name << endl;
 				logfile.close();
 				events[name] = NULL;
-				return true;
+				return;
 			}
             
 			params[iter_idx++] = par;
@@ -294,7 +294,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 			if (retval != NULL && retint != -1) {
 				*retval = retint;
 			}
-			return false;
+			return;
 		}
 		else {
 			void *args[16];
@@ -309,7 +309,7 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
                 cout << "[SampSharp] ERROR: Parameters of callback " << name << " does not match description (called: " << param_count << ", description: " << event_p->params.size() << ")." << endl;
                 logfile << TimeUtil::GetTimeStamp() << "ERROR: Parameters of callback " << name << " does not match description(called: " << param_count << ", description: " << event_p->params.size() << ")." << endl;
                 logfile.close();
-                return true;
+                return;
             }
 
 			for (int i = 0; i < param_count; i++) {
@@ -388,23 +388,17 @@ bool SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
                     cout << "[SampSharp] ERROR: Fingerprint of " << name << " contains unsupported parameters." << endl;
                     logfile << TimeUtil::GetTimeStamp() << "ERROR: Fingerprint of " << name << " contains unsupported parameters." << endl;
                     logfile.close();
-                    return true;
+                    return;
                 }
 			}
 
 			int retint = CallEvent(event_p->method, event_p->handle, args);
 
-            if (retint == -1) {
-                return true;
+            if (retval != NULL && retint != -1) {
+                *retval = retint;
             }
-
-            *retval = retint;
-			return false;
 		}
-		return false;
 	}
-
-	return true;
 }
 
 int SampSharp::CallEvent(MonoMethod* method, uint32_t handle, void **params) {
@@ -430,7 +424,7 @@ int SampSharp::CallEvent(MonoMethod* method, uint32_t handle, void **params) {
 		return -1;
 	}
 
-	return *(bool *)mono_object_unbox(response) ? 1 : 0;
+	return *(int *)mono_object_unbox(response);
 }
 
 void SampSharp::Unload() {
