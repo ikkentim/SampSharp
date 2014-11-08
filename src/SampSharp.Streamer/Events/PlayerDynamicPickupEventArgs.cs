@@ -30,8 +30,7 @@ namespace SampSharp.Streamer.Events
         {
             get
             {
-                throw new NotImplementedException();
-                //return PickupId == -1 ? null : DynamicPickup.FindOrCreate(PickupId);
+                return PickupId == -1 ? null : DynamicPickup.FindOrCreate(PickupId);
             }
         }
     }
