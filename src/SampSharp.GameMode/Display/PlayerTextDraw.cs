@@ -60,19 +60,19 @@ namespace SampSharp.GameMode.Display
         #endregion
 
         #region Constructors
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
         /// </summary>
-        /// <param name="owner">The <see cref="Owner" /> whose textdraw it is.</param>
-        /// <param name="id">The id of the player-textdraw.</param>
-        public PlayerTextDraw(GtaPlayer owner, int id)
+        /// <param name="owner">The owner of the player-textdraw.</param>
+        public PlayerTextDraw(GtaPlayer owner)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
 
+            IsApplyFixes = true;
+            Id = -1;
             Owner = owner;
-            Id = id;
+            Text = "_";
         }
 
         /// <summary>
@@ -87,6 +87,7 @@ namespace SampSharp.GameMode.Display
             if (owner == null)
                 throw new ArgumentNullException("owner");
 
+            IsApplyFixes = true;
             Id = -1;
             Owner = owner;
             X = x;
@@ -126,6 +127,11 @@ namespace SampSharp.GameMode.Display
         #endregion
 
         #region Properties
+
+        /// <summary>
+        ///     Gets or sets whether SA-MP fixes should be applied.
+        /// </summary>
+        public bool IsApplyFixes { get; set; }
 
         /// <summary>
         ///     Gets or sets the <see cref="TextDrawAlignment" /> of this player-textdraw.
@@ -525,7 +531,7 @@ namespace SampSharp.GameMode.Display
             Hide();
 
             if (Id != -1) Native.PlayerTextDrawDestroy(Owner.Id, Id);
-            Id = Native.CreatePlayerTextDraw(Owner.Id, X, Y, Text);
+            Id = Native.CreatePlayerTextDraw(Owner.Id, X, Y, FixString(Text));
 
             //Reset properties
             if (Alignment != default(TextDrawAlignment)) Alignment = Alignment;
@@ -549,6 +555,26 @@ namespace SampSharp.GameMode.Display
             if (PreviewSecondaryColor != -1) PreviewSecondaryColor = PreviewSecondaryColor;
 
             Update();
+        }
+
+        /// <summary>
+        ///     Fixes a string so no SA-MP bugs will occur during application. 
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <returns>The fixed string</returns>
+        protected virtual string FixString(string input)
+        {
+            if (!IsApplyFixes) return input;
+
+            //TextDraw string may at max. be 1024 char long
+            if (input.Length > 1024)
+                input = input.Substring(0, 1024);
+
+            //Empty strings can crash the server
+            if (string.IsNullOrEmpty(input))
+                input = "_";
+
+            return input.Replace("\n", "~n~");
         }
 
         /// <summary>
