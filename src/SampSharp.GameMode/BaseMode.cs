@@ -50,6 +50,11 @@ namespace SampSharp.GameMode
 
         #endregion
 
+        protected virtual ControllerCollection Controllers
+        {
+            get { return _controllers; }
+        }
+
         #region Methods
 
         private void RegisterControllers()
@@ -93,7 +98,7 @@ namespace SampSharp.GameMode
         ///     Set the name of the game mode, which appears in the server browser.
         /// </summary>
         /// <param name="text">GameMode name.</param>
-        public void SetGameModeText(string text)
+        public virtual void SetGameModeText(string text)
         {
             Native.SetGameModeText(text);
         }
@@ -104,7 +109,7 @@ namespace SampSharp.GameMode
         ///     gamemode, have a look at <see cref="GtaPlayer.SetPlayerMarker" /> which does exactly that.
         /// </summary>
         /// <param name="mode">The mode you want to use.</param>
-        public void ShowPlayerMarkers(PlayerMarkersMode mode)
+        public virtual void ShowPlayerMarkers(PlayerMarkersMode mode)
         {
             Native.ShowPlayerMarkers((int) mode);
         }
@@ -113,7 +118,7 @@ namespace SampSharp.GameMode
         ///     Toggle the drawing of player nametags, healthbars and armor bars above players.
         /// </summary>
         /// <param name="show">False to disable, True to enable.</param>
-        public void ShowNameTags(bool show)
+        public virtual void ShowNameTags(bool show)
         {
             Native.ShowNameTags(show);
         }
@@ -122,7 +127,7 @@ namespace SampSharp.GameMode
         ///     Sets the world time to a specific hour.
         /// </summary>
         /// <param name="hour">Which time to set.</param>
-        public void SetWorldTime(int hour)
+        public virtual void SetWorldTime(int hour)
         {
             Native.SetWorldTime(hour);
         }
@@ -131,7 +136,7 @@ namespace SampSharp.GameMode
         ///     Set the world weather for all players.
         /// </summary>
         /// <param name="weatherid">The weather to set.</param>
-        public void SetWeather(int weatherid)
+        public virtual void SetWeather(int weatherid)
         {
             Native.SetWeather(weatherid);
         }
@@ -140,7 +145,7 @@ namespace SampSharp.GameMode
         ///     Uses standard player walking animation (animation of CJ) instead of custom animations for every skin (e.g. skating
         ///     for skater skins).
         /// </summary>
-        public void UsePlayerPedAnims()
+        public virtual void UsePlayerPedAnims()
         {
             Native.UsePlayerPedAnims();
         }
@@ -151,7 +156,7 @@ namespace SampSharp.GameMode
         /// <remarks>
         ///     Players will be unable to damage teammates' vehicles (<see cref="GtaPlayer.Team" /> must be used!)
         /// </remarks>
-        public void EnableVehicleFriendlyFire()
+        public virtual void EnableVehicleFriendlyFire()
         {
             Native.EnableVehicleFriendlyFire();
         }
@@ -160,7 +165,7 @@ namespace SampSharp.GameMode
         ///     Set the maximum distance to display the names of players.
         /// </summary>
         /// <param name="distance">The distance to set.</param>
-        public void SetNameTagDrawDistance(float distance)
+        public virtual void SetNameTagDrawDistance(float distance)
         {
             Native.SetNameTagDrawDistance(distance);
         }
@@ -168,7 +173,7 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Disable all the interior entrances and exits in the game (the yellow arrows at doors).
         /// </summary>
-        public void DisableInteriorEnterExits()
+        public virtual void DisableInteriorEnterExits()
         {
             Native.DisableInteriorEnterExits();
         }
@@ -182,7 +187,7 @@ namespace SampSharp.GameMode
         ///     You can pass 2 billion here if you like, this function has no effect at all.
         /// </remarks>
         /// <param name="count">Number of teams the gamemode knows.</param>
-        public void SetTeamCount(int count)
+        public virtual void SetTeamCount(int count)
         {
             Native.SetTeamCount(count);
         }
@@ -203,7 +208,7 @@ namespace SampSharp.GameMode
         ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
         ///     ID is 299.
         /// </returns>
-        public int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon1, int weapon1Ammo,
+        public virtual int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon1, int weapon1Ammo,
             Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
             return Native.AddPlayerClass(modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo, weapon3,
@@ -224,7 +229,7 @@ namespace SampSharp.GameMode
         ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
         ///     ID is 299.
         /// </returns>
-        public int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon1, int weapon1Ammo,
+        public virtual int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon1, int weapon1Ammo,
             Weapon weapon2, int weapon2Ammo)
         {
             return Native.AddPlayerClass(modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo, 0, 0);
@@ -243,7 +248,7 @@ namespace SampSharp.GameMode
         ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
         ///     ID is 299.
         /// </returns>
-        public int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon, int weaponAmmo)
+        public virtual int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon, int weaponAmmo)
         {
             return Native.AddPlayerClass(modelid, position, zAngle, weapon, weaponAmmo, 0, 0, 0, 0);
         }
@@ -259,7 +264,7 @@ namespace SampSharp.GameMode
         ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
         ///     ID is 299.
         /// </returns>
-        public int AddPlayerClass(int modelid, Vector position, float zAngle)
+        public virtual int AddPlayerClass(int modelid, Vector position, float zAngle)
         {
             return Native.AddPlayerClass(modelid, position, zAngle, 0, 0, 0, 0, 0, 0);
         }
@@ -278,7 +283,7 @@ namespace SampSharp.GameMode
         /// <param name="weapon3">The third spawn-weapon for the player.</param>
         /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
         /// <returns>The ID of the class that was just created.</returns>
-        public int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon1,
+        public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon1,
             int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
             return Native.AddPlayerClassEx(teamid, modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
@@ -297,7 +302,7 @@ namespace SampSharp.GameMode
         /// <param name="weapon2">The second spawn-weapon for the player.</param>
         /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
         /// <returns>The ID of the class that was just created.</returns>
-        public int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon1,
+        public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon1,
             int weapon1Ammo, Weapon weapon2, int weapon2Ammo)
         {
             return Native.AddPlayerClassEx(teamid, modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
@@ -314,7 +319,7 @@ namespace SampSharp.GameMode
         /// <param name="weapon">The spawn-weapon for the player.</param>
         /// <param name="weaponAmmo">The amount of ammunition for the spawnweapon.</param>
         /// <returns>The ID of the class that was just created.</returns>
-        public int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon, int weaponAmmo)
+        public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon, int weaponAmmo)
         {
             return Native.AddPlayerClassEx(teamid, modelid, position, zAngle, weapon, weaponAmmo, 0, 0, 0, 0);
         }
@@ -327,7 +332,7 @@ namespace SampSharp.GameMode
         /// <param name="position">The coordinate of the class' spawn position.</param>
         /// <param name="zAngle">The direction in which the player will face after spawning.</param>
         /// <returns>The ID of the class that was just created.</returns>
-        public int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle)
+        public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle)
         {
             return Native.AddPlayerClassEx(teamid, modelid, position, zAngle, 0, 0, 0, 0, 0, 0);
         }
@@ -336,7 +341,7 @@ namespace SampSharp.GameMode
         ///     Enables or disables stunt bonuses for all players.
         /// </summary>
         /// <param name="enable">True to enable stunt bonuses, False to disable.</param>
-        public void EnableStuntBonusForAll(bool enable)
+        public virtual void EnableStuntBonusForAll(bool enable)
         {
             Native.EnableStuntBonusForAll(enable);
         }
@@ -346,7 +351,7 @@ namespace SampSharp.GameMode
         ///     the chat. Also changes the distance at which a player can see other players on the map at the same distance.
         /// </summary>
         /// <param name="chatRadius">Radius limit.</param>
-        public void LimitGlobalChatRadius(float chatRadius)
+        public virtual void LimitGlobalChatRadius(float chatRadius)
         {
             Native.LimitGlobalChatRadius(chatRadius);
         }
@@ -355,7 +360,7 @@ namespace SampSharp.GameMode
         ///     Set the player marker radius.
         /// </summary>
         /// <param name="markerRadius">The radius that markers will show at.</param>
-        public void LimitPlayerMarkerRadius(float markerRadius)
+        public virtual void LimitPlayerMarkerRadius(float markerRadius)
         {
             Native.LimitPlayerMarkerRadius(markerRadius);
         }
@@ -365,15 +370,15 @@ namespace SampSharp.GameMode
         ///     script will control vehicle engines and lights. This prevents the game automatically turning the engine on/off when
         ///     players enter/exit vehicles and headlights automatically coming on when it is dark.
         /// </summary>
-        public void ManualVehicleEngineAndLights()
+        public virtual void ManualVehicleEngineAndLights()
         {
             Native.ManualVehicleEngineAndLights();
         }
 
         /// <summary>
-        ///     Ends the currently active gamemode.
+        ///     Ends and restarts the gamemode.
         /// </summary>
-        public void Exit()
+        public virtual void Exit()
         {
             Native.GameModeExit();
         }
@@ -382,7 +387,7 @@ namespace SampSharp.GameMode
         ///     Toggle whether the usage of weapons in interiors is allowed or not.
         /// </summary>
         /// <param name="allow">True to enable weapons in interiors (enabled by default), False to disable weapons in interiors.</param>
-        public void AllowInteriorWeapons(bool allow)
+        public virtual void AllowInteriorWeapons(bool allow)
         {
             Native.AllowInteriorWeapons(allow);
         }
@@ -391,7 +396,7 @@ namespace SampSharp.GameMode
         ///     With this function you can enable or disable tire popping.
         /// </summary>
         /// <param name="enable">True to enable, False to disable tire popping.</param>
-        public void EnableTirePopping(bool enable)
+        public virtual void EnableTirePopping(bool enable)
         {
             Native.EnableTirePopping(enable);
         }
@@ -400,7 +405,7 @@ namespace SampSharp.GameMode
         ///     Sends an RCON command.
         /// </summary>
         /// <param name="command">The RCON command to be executed.</param>
-        public void SendRconCommand(string command)
+        public virtual void SendRconCommand(string command)
         {
             Native.SendRconCommand(command);
         }
