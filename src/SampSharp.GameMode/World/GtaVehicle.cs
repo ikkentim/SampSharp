@@ -100,9 +100,9 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the model ID of this Vehicle.
         /// </summary>
-        public virtual int Model
+        public virtual VehicleModelType Model
         {
-            get { return Native.GetVehicleModel(Id); }
+            get { return (VehicleModelType)Native.GetVehicleModel(Id); }
         }
 
         /// <summary>
