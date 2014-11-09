@@ -34,6 +34,8 @@ struct event_t {
 };
 typedef std::map<std::string, event_t *> EventMap;
 
+typedef std::map<int, uint32_t> TimerMap;
+
 typedef struct gamemodeimage_t {
     MonoImage *image;
     MonoClass *klass;
@@ -56,6 +58,8 @@ private:
 	static int GetParamLengthIndex(MonoMethod *method, int idx);
     static int CallEvent(MonoMethod *method, uint32_t handle, void **params);
     static bool RegisterExtension(MonoObject *extension);
+    static int SetRefTimer(int interval, bool repeat, MonoObject *params);
+    static int KillRefTimer(int timerid);
     static bool loaded;
 	static MonoDomain *root;
     static GamemodeImage gamemode;
@@ -63,6 +67,7 @@ private:
 
 	static uint32_t gameModeHandle;
 	static EventMap events;
+    static TimerMap timers;
     static ExtensionList extensions;
 };
 
