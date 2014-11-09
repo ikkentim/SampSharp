@@ -520,10 +520,10 @@ namespace SampSharp.GameMode.Natives
         /// <param name="model">The vehicle model to get info of.</param>
         /// <param name="infotype">The type of information to retrieve.</param>
         /// <returns>The model information.</returns>
-        public static Vector GetVehicleModelInfo(int model, VehicleModelInfoType infotype)
+        public static Vector GetVehicleModelInfo(VehicleModelType model, VehicleModelInfoType infotype)
         {
             float x, y, z;
-            GetVehicleModelInfo(model, (int) infotype, out x, out y, out z);
+            GetVehicleModelInfo((int) model, (int) infotype, out x, out y, out z);
             return new Vector(x, y, z);
         }
     }

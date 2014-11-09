@@ -687,7 +687,7 @@ namespace SampSharp.GameMode.World
         /// <param name="model">The vehicle model to get info of.</param>
         /// <param name="infotype">The type of information to retrieve.</param>
         /// <returns>The offset vector.</returns>
-        public static Vector GetVehicleModelInfo(int model, VehicleModelInfoType infotype)
+        public static Vector GetVehicleModelInfo(VehicleModelType model, VehicleModelInfoType infotype)
         {
             return Native.GetVehicleModelInfo(model, infotype);
         }
