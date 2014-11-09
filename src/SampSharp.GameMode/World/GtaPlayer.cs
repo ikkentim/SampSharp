@@ -217,7 +217,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the state of this Player.
         /// </summary>
-        public virtual PlayerState PlayerState
+        public virtual PlayerState State
         {
             get { return (PlayerState) Native.GetPlayerState(Id); }
         }
