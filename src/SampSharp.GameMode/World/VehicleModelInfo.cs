@@ -244,10 +244,10 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Initializes a new instance of the <see cref="VehicleModelInfo" /> class.
         /// </summary>
-        private VehicleModelInfo(int typeId, string name, VehicleCategory category)
+        private VehicleModelInfo(int type, string name, VehicleCategory category)
             : this()
         {
-            TypeId = typeId;
+            Type = (VehicleModelType) type;
             Name = name;
             Category = category;
         }
@@ -255,7 +255,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the id of this vehiclemodel.
         /// </summary>
-        public int TypeId { get; private set; }
+        public VehicleModelType Type { get; private set; }
 
         /// <summary>
         ///     Gets the name of this vehiclemodel.
@@ -269,7 +269,7 @@ namespace SampSharp.GameMode.World
 
         public Vector this[VehicleModelInfoType infotype]
         {
-            get { return Native.GetVehicleModelInfo(TypeId, infotype); }
+            get { return Native.GetVehicleModelInfo(Type, infotype); }
         }
 
         /// <summary>
@@ -284,7 +284,7 @@ namespace SampSharp.GameMode.World
                 throw new ArgumentNullException("vehicle");
             }
 
-            int model = vehicle.Model;
+            int model = (int)vehicle.Model;
 
             if (model < 400 || model > 611)
             {
