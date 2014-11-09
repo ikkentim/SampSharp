@@ -197,11 +197,6 @@ inline bool p_GetNetworkStats(MonoString ** retstr, int size) {
 	return retbool;
 }
 
-
-
-inline int p_SetTimer(int interval, bool repeat, MonoObject *params) {
-	return SetTimer(interval, repeat, SampSharp::ProcessTimerTick, params);
-}
 inline bool p_BlockIpAddress(MonoString *ip_address, int timems) {
 	return sampgdk_BlockIpAddress(MonoUtil::MonoStringToString(ip_address), timems);
 }
@@ -759,8 +754,8 @@ void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::DeletePlayer3DTextLabel", (void *)sampgdk_DeletePlayer3DTextLabel);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::UpdatePlayer3DTextLabelText", (void *)p_UpdatePlayer3DTextLabelText);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::ShowPlayerDialog", (void *)p_ShowPlayerDialog);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetTimer", (void *)p_SetTimer);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::KillTimer", (void *)sampgdk_KillTimer);
+	//mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetTimer", (void *)p_SetTimer);
+	//mono_add_internal_call("SampSharp.GameMode.Natives.Native::KillTimer", (void *)sampgdk_KillTimer);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::gpci", (void *)p_gpci);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SendDeathMessageToPlayer", (void *)sampgdk_SendDeathMessageToPlayer);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::BlockIpAddress", (void *)p_BlockIpAddress);

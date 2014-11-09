@@ -17,6 +17,7 @@ GamemodeImage SampSharp::basemode;
 
 uint32_t SampSharp::gameModeHandle;
 EventMap SampSharp::events;
+TimerMap SampSharp::timers;
 ExtensionList SampSharp::extensions;
 bool SampSharp::loaded;
 
@@ -51,16 +52,17 @@ void SampSharp::Load(MonoDomain * domain, MonoImage * image, MonoClass *klass) {
 
     LoadNatives(); 
     mono_add_internal_call("SampSharp.GameMode.Natives.Native::RegisterExtension", (void *)RegisterExtension);
-
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetTimer", (void *)SetRefTimer);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::KillTimer", (void *)KillRefTimer);
     loaded = true;
 
 	MonoObject *gamemode_obj = mono_object_new(mono_domain_get(), gamemode.klass);
-	gameModeHandle = mono_gchandle_new(gamemode_obj, true);
+	gameModeHandle = mono_gchandle_new(gamemode_obj, false);
 	mono_runtime_object_init(gamemode_obj);
 }
 
 void SAMPGDK_CALL SampSharp::ProcessTimerTick(int timerid, void *data) {
-    if (!loaded || !data) {
+    if (!loaded) {
         return;
     }
 
@@ -72,10 +74,36 @@ void SAMPGDK_CALL SampSharp::ProcessTimerTick(int timerid, void *data) {
 
 	void *args[2];
 	args[0] = &timerid;
-	args[1] = data;
+    args[1] = NULL;
+    if (timers.find(timerid) != timers.end()) {
+        args[1] = mono_gchandle_get_target(timers[timerid]);
+    }
 	CallEvent(method, gameModeHandle, args);
 }
 
+int SampSharp::SetRefTimer(int interval, bool repeat, MonoObject *params) {
+    if (!params) {
+        return SetTimer(interval, repeat, SampSharp::ProcessTimerTick, NULL);
+    }
+
+    uint32_t handle = mono_gchandle_new(params, false);
+    int id = SetTimer(interval, repeat, SampSharp::ProcessTimerTick, &handle);
+    timers[id] = handle;
+    return id;
+}
+
+int SampSharp::KillRefTimer(int timerid) {
+
+    if (timers.find(timerid) == timers.end())
+    {
+        uint32_t handle = timers[timerid];
+        mono_gchandle_free(handle);
+
+        timers.erase(timerid);
+    }
+
+    return KillTimer(timerid);
+}
 void SampSharp::ProcessTick() {
     if (!loaded) {
         return;
