@@ -671,13 +671,19 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw" /> is being called.
-        ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
+        ///     This callback is called when a player clicks on a textdraw.
         /// </summary>
         /// <remarks>
         ///     The clickable area is defined by <see cref="Native.TextDrawTextSize" />. The x and y parameters passed to that
         ///     function must not be zero or negative.
         /// </remarks>
         public event EventHandler<PlayerClickTextDrawEventArgs> ClickTextDraw;
+
+        /// <summary>
+        ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw" /> is being called.
+        ///     This callback is called when a player cancels the textdraw select mode(ESC).
+        /// </summary>
+        public event EventHandler<PlayerEventArgs> CancelClickTextDraw; 
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw" /> is being called.
@@ -2253,6 +2259,16 @@ namespace SampSharp.GameMode.World
         {
             if (ClickTextDraw != null)
                 ClickTextDraw(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="CancelClickTextDraw" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        public virtual void OnCancelClickTextDraw(PlayerEventArgs e)
+        {
+            if (CancelClickTextDraw != null)
+                CancelClickTextDraw(this, e);
         }
 
         /// <summary>
