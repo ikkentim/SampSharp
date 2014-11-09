@@ -232,7 +232,8 @@ namespace SampSharp.GameMode.Controllers
 
                 if (args.TextDrawId == TextDraw.InvalidId)
                 {
-                    
+                    if (player != null)
+                        player.OnCancelClickTextDraw(args);
                 }
                 else
                 {
