@@ -104,7 +104,7 @@ namespace Grandlarc
         {
             base.OnUpdate(e);
 
-            if (PlayerState == PlayerState.Spectating && !HasCitySelected)
+            if (State == PlayerState.Spectating && !HasCitySelected)
             {
                 HandleCitySelection();
             }

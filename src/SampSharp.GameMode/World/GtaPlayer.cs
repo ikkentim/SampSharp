@@ -423,7 +423,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual bool IsAlive
         {
-            get { return !new[] {PlayerState.None, PlayerState.Spectating, PlayerState.Wasted}.Contains(PlayerState); }
+            get { return !new[] {PlayerState.None, PlayerState.Spectating, PlayerState.Wasted}.Contains(State); }
         }
 
         /// <summary>
