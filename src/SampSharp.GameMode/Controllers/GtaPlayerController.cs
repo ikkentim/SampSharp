@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
@@ -229,8 +230,15 @@ namespace SampSharp.GameMode.Controllers
             {
                 var player = GtaPlayer.Find(args.PlayerId);
 
-                if (player != null)
-                    player.OnClickTextDraw(args);
+                if (args.TextDrawId == TextDraw.InvalidId)
+                {
+                    
+                }
+                else
+                {
+                    if (player != null)
+                        player.OnClickTextDraw(args);
+                }
             };
             gameMode.PlayerClickPlayerTextDraw += (sender, args) =>
             {
