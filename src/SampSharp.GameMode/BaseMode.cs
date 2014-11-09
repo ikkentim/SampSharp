@@ -1165,7 +1165,10 @@ namespace SampSharp.GameMode
         /// </returns>
         public virtual bool OnRconCommand(string command)
         {
-            var args = new RconEventArgs(command);
+            var args = new RconEventArgs(command)
+            {
+                Success = false
+            };
 
             if (RconCommand != null)
                 RconCommand(this, args);
