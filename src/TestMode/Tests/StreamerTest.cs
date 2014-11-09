@@ -75,9 +75,9 @@ namespace TestMode.Tests
             string text, font;
             int fontsize;
             bool bold;
-            ObjectMaterialSize size; 
+            ObjectMaterialSize size;
             Color c1, c2;
-            ObjectMaterialTextAlign ta; 
+            ObjectMaterialTextAlign ta;
          
             _obj.GetMaterialText(1, out text, out size, out font, out fontsize, out bold, out c1, out c2, out ta);
             Console.WriteLine("GetMaterialText: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}", text, size, font, fontsize,

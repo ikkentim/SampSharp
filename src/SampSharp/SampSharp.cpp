@@ -60,7 +60,7 @@ void SampSharp::Load(MonoDomain * domain, MonoImage * image, MonoClass *klass) {
 }
 
 void SAMPGDK_CALL SampSharp::ProcessTimerTick(int timerid, void *data) {
-    if (!loaded) {
+    if (!loaded || !data) {
         return;
     }
 

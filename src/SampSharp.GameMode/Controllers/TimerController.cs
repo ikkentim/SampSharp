@@ -29,6 +29,8 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.TimerTick += (sender, args) =>
             {
+                if (sender == null) return;
+
                 var timer = sender as Timer;
 
                 if (timer != null)
