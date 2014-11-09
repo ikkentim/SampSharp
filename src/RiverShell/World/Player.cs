@@ -123,9 +123,7 @@ namespace RiverShell.World
 
         private void GoSpectatePlayer(GtaPlayer player)
         {
-            PlayerState state = PlayerState;
-
-            switch (state)
+            switch (State)
             {
                 case PlayerState.OnFoot:
                     if (_spectatingMode == SpectatingMode.Player) return;
@@ -159,7 +157,7 @@ namespace RiverShell.World
         {
             if (IsNPC) return;
 
-            if (PlayerState == PlayerState.Spectating)
+            if (State == PlayerState.Spectating)
             {
                 // Allow respawn after an arbitrary time has passed
                 if (LastDeathTick == 0 || Native.GetTickCount() - LastDeathTick > Config.RespawnTime*1000)
