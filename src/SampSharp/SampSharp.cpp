@@ -70,6 +70,8 @@ void SAMPGDK_CALL SampSharp::ProcessTimerTick(int timerid, void *data) {
         method = LoadEvent("OnTimerTick", 2);
     }
 
+    sampgdk::logprintf("[SampSharp]timer-data @ %d", data);
+
 	void *args[2];
 	args[0] = &timerid;
 	args[1] = data;
