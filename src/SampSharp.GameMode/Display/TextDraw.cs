@@ -69,15 +69,8 @@ namespace SampSharp.GameMode.Display
         public TextDraw()
         {
             Id = -1;
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="TextDraw" /> class.
-        /// </summary>
-        /// <param name="id">The ID of the textdraw.</param>
-        public TextDraw(int id)
-        {
-            Id = id;
+            IsApplyFixes = true;
+            Text = "_";
         }
 
         /// <summary>
@@ -121,6 +114,11 @@ namespace SampSharp.GameMode.Display
         #endregion
 
         #region Properties
+
+        /// <summary>
+        ///     Gets or sets whether SA-MP fixes should be applied.
+        /// </summary>
+        public bool IsApplyFixes { get; set; }
 
         /// <summary>
         ///     Gets or sets the <see cref="TextDrawAlignment" /> of this textdraw.
@@ -546,7 +544,7 @@ namespace SampSharp.GameMode.Display
         protected virtual void Refresh()
         {
             if (Id != -1) Native.TextDrawDestroy(Id);
-            Id = Native.TextDrawCreate(X, Y, Text);
+            Id = Native.TextDrawCreate(X, Y, FixString(Text));
 
             //Reset properties
             if (Alignment != default(TextDrawAlignment)) Alignment = Alignment;
@@ -570,6 +568,26 @@ namespace SampSharp.GameMode.Display
             if (PreviewSecondaryColor != -1) PreviewSecondaryColor = PreviewSecondaryColor;
 
             UpdateClients();
+        }
+
+        /// <summary>
+        ///     Fixes a string so no SA-MP bugs will occur during application. 
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <returns>The fixed string</returns>
+        protected virtual string FixString(string input)
+        {
+            if (!IsApplyFixes) return input;
+
+            //TextDraw string may at max. be 1024 char long
+            if (input.Length > 1024) 
+                input = input.Substring(0, 1024);
+
+            //Empty strings can crash the server
+            if (string.IsNullOrEmpty(input))
+                input = "_";
+
+            return input.Replace("\n", "~n~");
         }
 
         /// <summary>
