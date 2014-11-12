@@ -262,7 +262,21 @@ namespace SampSharp.GameMode.World
             get { return Native.GetVehiclePos(Id); }
             set { Native.SetVehiclePos(Id, value); }
         }
-
+        
+        /// <summary>
+        ///     Gets or sets the health of this Vehicle.
+        /// </summary>
+        public virtual float Health
+        {
+            get
+            {
+                float value;
+                Native.GetVehicleHealth(Id, out value);
+                return value;
+            }
+            set { Native.SetVehicleHealth(Id, value); }
+        }
+        
         #endregion
 
         #region Events
