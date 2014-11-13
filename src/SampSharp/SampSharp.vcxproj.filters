@@ -30,6 +30,12 @@
     <ClCompile Include="includes\sampgdk\sampgdk.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="monostring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="unicode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PathUtil.h">
@@ -57,6 +63,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="monostring.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="unicode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -14,6 +14,7 @@
 #include "MonoUtil.h"
 #include "PathUtil.h"
 #include "Benchmark.h"
+#include "unicode.h"
 
 extern void *pAMXFunctions;
 
@@ -35,7 +36,6 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     /*
     * Loading sampgdk
     */
-
     if (!sampgdk::Load(ppData)) {
         return false;
     }
@@ -49,6 +49,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     */
 
     ConfigReader server_cfg("server.cfg");
+    int codepage = 1250;
     std::string gamemode = "TestMode:GameMode";
     std::string trace_level = "error";
     std::string 
@@ -63,6 +64,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     server_cfg.GetOptionAsString("gamemode", gamemode);
     server_cfg.GetOptionAsString("symbols", symbols);
     server_cfg.GetOptionAsString("trace_level", trace_level);
+    server_cfg.GetOption("codepage", codepage);
 
     std::stringstream gamemode_stream(gamemode);
     
@@ -78,6 +80,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     library_path = PathUtil::GetPathInBin("gamemode/").append(name_space).append(".dll");
     config_path = PathUtil::GetPathInBin("gamemode/").append(name_space).append(".dll.config");
 
+    set_codepage(codepage);
 
     /*
     * Filecheck
@@ -132,6 +135,8 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     /*
     * Loading gamemode
     */
+
+
     char *namespace_ctr = (char *)name_space.c_str();
     char *klass_ctr = (char *)klass.c_str();
     char *path_ctr = (char *)library_path.c_str();

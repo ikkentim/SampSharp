@@ -83,5 +83,14 @@ namespace SampSharp.GameMode.SAMP
 
             throw new NotSupportedException("Type " + typeof (T) + " is not supported by SA:MP");
         }
+
+        /// <summary>
+        ///     Sets the currently active codepage.
+        /// </summary>
+        /// <param name="codepage">Codepage to use.</param>
+        public static void SetCodepage(int codepage)
+        {
+            Native.SetCodepage(codepage);
+        }
     }
 }

@@ -11,8 +11,8 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace SampSharp.GameMode.Natives
 {
@@ -24,5 +24,13 @@ namespace SampSharp.GameMode.Natives
         /// <param name="msg">The message to print to the serverlog.</param>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern void Print(string msg);
+
+        /// <summary>
+        ///     Sets the currently active codepage.
+        /// </summary>
+        /// <param name="codepage">Codepage to use.</param>
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern void SetCodepage(int codepage);
+
     }
 }

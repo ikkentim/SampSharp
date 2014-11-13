@@ -100,6 +100,8 @@
     <ClCompile Include="ConfigReader.cpp" />
     <ClCompile Include="includes\sampgdk\sampgdk.c" />
     <ClCompile Include="includes\sdk\amxplugin.cpp" />
+    <ClCompile Include="monostring.cpp" />
+    <ClCompile Include="unicode.cpp" />
     <ClCompile Include="SampSharp.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -107,7 +109,9 @@
     <ClInclude Include="Benchmark.h" />
     <ClInclude Include="ConfigReader.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="monostring.h" />
     <ClInclude Include="MonoUtil.h" />
+    <ClInclude Include="unicode.h" />
     <ClInclude Include="SampSharp.h" />
     <ClInclude Include="Natives.h" />
     <ClInclude Include="PathUtil.h" />
