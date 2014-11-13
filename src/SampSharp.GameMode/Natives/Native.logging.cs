@@ -12,6 +12,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace SampSharp.GameMode.Natives
 {
