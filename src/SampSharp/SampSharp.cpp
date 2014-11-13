@@ -358,7 +358,7 @@ void SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
                         char* text = new char[len];
 
                         amx_GetString(text, addr, 0, len);
-                        args[i] = mono_string_new(mono_domain_get(), text);
+                        args[i] = string_to_monostring(text, len); //mono_string_new(mono_domain_get(), text);
                     }
                     else {
                         args[i] = mono_string_new(mono_domain_get(), "");

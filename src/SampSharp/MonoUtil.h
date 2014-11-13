@@ -1,10 +1,10 @@
 #include <string>
 #include <assert.h>
 #include <mono/jit/jit.h>
-
 #include "PathUtil.h"
 
 #pragma once
+
 
 struct MonoUtil
 {
@@ -23,19 +23,4 @@ struct MonoUtil
 		mono_jit_exec(mono_domain_get(), mdbconverter, 2, argv);
     }
     #endif
-
-    static char * MonoStringToString(MonoString *str)
-    {
-	    //TODO: seems a little sloppy, should research better solutions.
-	    mono_unichar2 *uni_buffer = mono_string_chars(str);
-        int len = mono_string_length(str);
- 
-        char *buffer = new char[len + 1];
-	    for (int i = 0; i < len; i++) {
-		    buffer[i] = (char)uni_buffer[i];
-	    }
-        buffer[len] = '\0';
-    
-        return buffer;
-    }
 };

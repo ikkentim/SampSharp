@@ -58,9 +58,9 @@ namespace TestMode
         public override bool OnPlayerText(int playerid, string text)
         {
             Console.WriteLine("{0} said: {1}", GtaPlayer.Find(playerid), text);
-            Console.WriteLine("{0} said: {1}", GtaPlayer.Find(playerid), text.Czech());
             GtaPlayer.SendClientMessageToAll("{0} said: {1}", GtaPlayer.Find(playerid), text);
-            GtaPlayer.SendClientMessageToAll("{0} said: {1}", GtaPlayer.Find(playerid), text.Czech());
+
+            Console.WriteLine(text.Contains("Й"));
 
             return base.OnPlayerText(playerid, text);
         }

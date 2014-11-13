@@ -68,7 +68,6 @@
     <Compile Include="Definitions\ShopName.cs" />
     <Compile Include="Definitions\TextDrawAlignment.cs" />
     <Compile Include="Definitions\VehicleModelType.cs" />
-    <Compile Include="Helpers\LanguageExtention.cs" />
     <Compile Include="Natives\Native.cs" />
     <Compile Include="SAMP\Commands\CommandGroup.cs" />
     <Compile Include="SAMP\Commands\CommandGroupAttribute.cs" />
