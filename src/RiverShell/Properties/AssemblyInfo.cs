@@ -24,7 +24,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("RiverShell gamemode for SA-MP#")]
-[assembly: AssemblyCopyright("Copyright © SA-MP team 2014")]
+[assembly: AssemblyCopyright("Copyright © Tim Potze 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

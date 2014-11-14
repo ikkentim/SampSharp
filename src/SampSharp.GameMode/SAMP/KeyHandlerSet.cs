@@ -14,7 +14,6 @@
 using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
-using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP
 {
