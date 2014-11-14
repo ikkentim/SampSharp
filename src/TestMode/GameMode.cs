@@ -26,15 +26,15 @@ namespace TestMode
     {
         private readonly List<ITest> _tests = new List<ITest>
         {
-//            new CommandsTest(),
-//            new ASyncTest(),
-//            new MenuTest(),
-//            new DisposureTest(),
-//            new DialogTest(),
+            new CommandsTest(),
+            new ASyncTest(),
+            new MenuTest(),
+            new DisposureTest(),
+            new DialogTest(),
             new CharsetTest(),
-//            new VehicleInfoTest(),
-//            new NativesTest(),
-//            new StreamerTest(),
+            new VehicleInfoTest(),
+            new NativesTest(),
+            new StreamerTest(),
         };
 
         public override bool OnGameModeInit()
@@ -53,16 +53,6 @@ namespace TestMode
             }
 
             return true;
-        }
-
-        public override bool OnPlayerText(int playerid, string text)
-        {
-            Console.WriteLine("{0} said: {1}", GtaPlayer.Find(playerid), text);
-            GtaPlayer.SendClientMessageToAll("{0} said: {1}", GtaPlayer.Find(playerid), text);
-
-            Console.WriteLine(text.Contains("Й"));
-
-            return base.OnPlayerText(playerid, text);
         }
 
         protected override void LoadControllers(ControllerCollection controllers)
