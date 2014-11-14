@@ -18,6 +18,7 @@ using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
+using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.World
 {
@@ -46,6 +47,7 @@ namespace SampSharp.GameMode.World
             //Fill properties
             Id = id;
             PVars = new PVarCollection(this);
+            Key = new KeyChangeHandlerSet();
         }
 
         #endregion
@@ -56,6 +58,11 @@ namespace SampSharp.GameMode.World
         ///     Gets a collections of Player Variables of this Player.
         /// </summary>
         public PVarCollection PVars { get; private set; }
+
+        /// <summary>
+        ///     Gets a set of KeyHandlers for different keystates.
+        /// </summary>
+        public KeyChangeHandlerSet Key { get; private set; }
 
         /// <summary>
         ///     Gets the ID of this Player.
@@ -2179,6 +2186,8 @@ namespace SampSharp.GameMode.World
         {
             if (KeyStateChanged != null)
                 KeyStateChanged(this, e);
+
+            Key.Handle(this, e);
         }
 
         /// <summary>

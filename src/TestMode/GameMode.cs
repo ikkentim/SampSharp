@@ -36,6 +36,7 @@ namespace TestMode
             new VehicleInfoTest(),
             new NativesTest(),
             new StreamerTest(),
+            new KeyHandlerTest(),
         };
 
         public override bool OnGameModeInit()
