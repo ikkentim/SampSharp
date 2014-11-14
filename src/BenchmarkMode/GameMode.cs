@@ -19,6 +19,7 @@ using BenchmarkMode.Tests;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.SAMP;
 
 namespace BenchmarkMode
 {
@@ -54,7 +55,7 @@ namespace BenchmarkMode
                 sw.Reset();
             }
 
-            Native.SendRconCommand("loadfs bench");
+            SendRconCommand("loadfs bench");
 
             return true;
         }

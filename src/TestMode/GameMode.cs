@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
@@ -42,6 +43,7 @@ namespace TestMode
             SetGameModeText("sa-mp# testmode");
             UsePlayerPedAnims();
 
+            Debug.WriteLine("Loading player classes...");
             AddPlayerClass(65, new Vector(5), 0);
 
             foreach (ITest test in _tests)

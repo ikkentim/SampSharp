@@ -42,7 +42,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 
     pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
 
-    logprintf("[SampSharp] Loading SampSharp v%s", PLUGIN_VERSION);
+    logprintf("[SampSharp] Loading SampSharp v%s by ikkentim", PLUGIN_VERSION);
 
     /*
     * Reading configuration file

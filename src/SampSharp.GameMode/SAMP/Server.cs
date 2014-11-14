@@ -85,12 +85,31 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
+        ///     Returns the uptime of the actual server in milliseconds.
+        /// </summary>
+        /// <returns>Uptime of the SA:MP server(NOT the physical box).</returns>
+        public static int GetTickCount()
+        {
+            return Native.GetTickCount();
+        }
+
+        /// <summary>
         ///     Sets the currently active codepage.
         /// </summary>
         /// <param name="codepage">Codepage to use.</param>
         public static void SetCodepage(int codepage)
         {
             Native.SetCodepage(codepage);
+        }
+
+        /// <summary>
+        ///     Sends an RCON command.
+        /// </summary>
+        /// <param name="command">The RCON command to be executed.</param>
+        /// <returns>This function doesn't return a specific value.</returns>
+        public static void SendRconCommand(string command)
+        {
+            Native.SendRconCommand(command);
         }
     }
 }
