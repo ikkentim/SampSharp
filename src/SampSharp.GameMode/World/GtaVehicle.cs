@@ -102,7 +102,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual VehicleModelType Model
         {
-            get { return (VehicleModelType)Native.GetVehicleModel(Id); }
+            get { return (VehicleModelType) Native.GetVehicleModel(Id); }
         }
 
         /// <summary>
@@ -255,15 +255,6 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the position of this Vehicle.
-        /// </summary>
-        public virtual Vector Position
-        {
-            get { return Native.GetVehiclePos(Id); }
-            set { Native.SetVehiclePos(Id, value); }
-        }
-        
-        /// <summary>
         ///     Gets or sets the health of this Vehicle.
         /// </summary>
         public virtual float Health
@@ -276,7 +267,16 @@ namespace SampSharp.GameMode.World
             }
             set { Native.SetVehicleHealth(Id, value); }
         }
-        
+
+        /// <summary>
+        ///     Gets or sets the position of this Vehicle.
+        /// </summary>
+        public virtual Vector Position
+        {
+            get { return Native.GetVehiclePos(Id); }
+            set { Native.SetVehiclePos(Id, value); }
+        }
+
         #endregion
 
         #region Events
@@ -860,10 +860,10 @@ namespace SampSharp.GameMode.World
         #region Methods
 
         /// <summary>
-        /// Serves as a hash function for a particular type. 
+        ///     Serves as a hash function for a particular type.
         /// </summary>
         /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
+        ///     A hash code for the current <see cref="T:System.Object" />.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
@@ -872,10 +872,10 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Returns a string that represents the current object.
+        ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
-        /// A string that represents the current object.
+        ///     A string that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override string ToString()

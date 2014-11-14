@@ -18,8 +18,6 @@ using System.Linq;
 using BenchmarkMode.Tests;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
-using SampSharp.GameMode.Natives;
-using SampSharp.GameMode.SAMP;
 
 namespace BenchmarkMode
 {

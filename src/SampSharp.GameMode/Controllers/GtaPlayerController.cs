@@ -32,203 +32,203 @@ namespace SampSharp.GameMode.Controllers
             gameMode.PlayerConnected += (sender, args) => GtaPlayer.FindOrCreate(args.PlayerId).OnConnected(args);
             gameMode.PlayerDisconnected += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnDisconnected(args);
             };
             gameMode.PlayerCleanup += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnCleanup(args);
             };
             gameMode.PlayerSpawned += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnSpawned(args);
             };
             gameMode.PlayerDied += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnDeath(args);
             };
             gameMode.PlayerText += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnText(args);
             };
             gameMode.PlayerCommandText += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnCommandText(args);
             };
             gameMode.PlayerRequestClass += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnRequestClass(args);
             };
             gameMode.PlayerEnterVehicle += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnEnterVehicle(args);
             };
             gameMode.PlayerExitVehicle += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnExitVehicle(args);
             };
             gameMode.PlayerStateChanged += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnStateChanged(args);
             };
             gameMode.PlayerEnterCheckpoint += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnEnterCheckpoint(args);
             };
             gameMode.PlayerLeaveCheckpoint += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnLeaveCheckpoint(args);
             };
             gameMode.PlayerEnterRaceCheckpoint += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnEnterRaceCheckpoint(args);
             };
             gameMode.PlayerLeaveRaceCheckpoint += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnLeaveRaceCheckpoint(args);
             };
             gameMode.PlayerRequestSpawn += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnRequestSpawn(args);
             };
             gameMode.PlayerPickUpPickup += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnPickUpPickup(args);
             };
             gameMode.PlayerEnterExitModShop += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnEnterExitModShop(args);
             };
             gameMode.PlayerSelectedMenuRow += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnSelectedMenuRow(args);
             };
             gameMode.PlayerExitedMenu += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnExitedMenu(args);
             };
             gameMode.PlayerInteriorChanged += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnInteriorChanged(args);
             };
             gameMode.PlayerKeyStateChanged += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnKeyStateChanged(args);
             };
             gameMode.PlayerUpdate += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnUpdate(args);
             };
             gameMode.PlayerStreamIn += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnStreamIn(args);
             };
             gameMode.PlayerStreamOut += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnStreamOut(args);
             };
             gameMode.DialogResponse += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnDialogResponse(args);
             };
             gameMode.PlayerTakeDamage += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnTakeDamage(args);
             };
             gameMode.PlayerGiveDamage += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnGiveDamage(args);
             };
             gameMode.PlayerClickMap += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnClickMap(args);
             };
             gameMode.PlayerClickTextDraw += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (args.TextDrawId == TextDraw.InvalidId)
                 {
@@ -243,42 +243,42 @@ namespace SampSharp.GameMode.Controllers
             };
             gameMode.PlayerClickPlayerTextDraw += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnClickPlayerTextDraw(args);
             };
             gameMode.PlayerClickPlayer += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnClickPlayer(args);
             };
             gameMode.PlayerEditObject += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnEditObject(args);
             };
             gameMode.PlayerEditAttachedObject += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnEditAttachedObject(args);
             };
             gameMode.PlayerSelectObject += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnSelectObject(args);
             };
             gameMode.PlayerWeaponShot += (sender, args) =>
             {
-                var player = GtaPlayer.Find(args.PlayerId);
+                GtaPlayer player = GtaPlayer.Find(args.PlayerId);
 
                 if (player != null)
                     player.OnWeaponShot(args);

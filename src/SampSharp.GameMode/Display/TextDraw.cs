@@ -571,7 +571,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Fixes a string so no SA-MP bugs will occur during application. 
+        ///     Fixes a string so no SA-MP bugs will occur during application.
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <returns>The fixed string</returns>
@@ -580,7 +580,7 @@ namespace SampSharp.GameMode.Display
             if (!IsApplyFixes) return input;
 
             //TextDraw string may at max. be 1024 char long
-            if (input.Length > 1024) 
+            if (input.Length > 1024)
                 input = input.Substring(0, 1024);
 
             //Empty strings can crash the server

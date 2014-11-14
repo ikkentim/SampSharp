@@ -284,7 +284,7 @@ namespace SampSharp.GameMode.World
                 throw new ArgumentNullException("vehicle");
             }
 
-            int model = (int)vehicle.Model;
+            var model = (int) vehicle.Model;
 
             if (model < 400 || model > 611)
             {

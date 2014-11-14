@@ -60,6 +60,7 @@ namespace SampSharp.GameMode.Display
         #endregion
 
         #region Constructors
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
         /// </summary>
@@ -558,7 +559,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Fixes a string so no SA-MP bugs will occur during application. 
+        ///     Fixes a string so no SA-MP bugs will occur during application.
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <returns>The fixed string</returns>

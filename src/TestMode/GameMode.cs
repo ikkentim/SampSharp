@@ -17,7 +17,6 @@ using System.Diagnostics;
 using System.Linq;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
-using SampSharp.GameMode.Helpers;
 using SampSharp.GameMode.World;
 using TestMode.Tests;
 

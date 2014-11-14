@@ -11,7 +11,6 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
 using SampSharp.GameMode.Events;
 using SampSharp.Streamer.World;
 
@@ -28,10 +27,7 @@ namespace SampSharp.Streamer.Events
 
         public DynamicPickup DynamicPickup
         {
-            get
-            {
-                return PickupId == -1 ? null : DynamicPickup.FindOrCreate(PickupId);
-            }
+            get { return PickupId == -1 ? null : DynamicPickup.FindOrCreate(PickupId); }
         }
     }
 }

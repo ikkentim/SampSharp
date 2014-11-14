@@ -14,7 +14,6 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
@@ -326,7 +325,8 @@ namespace SampSharp.GameMode
         /// <param name="weapon">The spawn-weapon for the player.</param>
         /// <param name="weaponAmmo">The amount of ammunition for the spawnweapon.</param>
         /// <returns>The ID of the class that was just created.</returns>
-        public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon, int weaponAmmo)
+        public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon,
+            int weaponAmmo)
         {
             return Native.AddPlayerClassEx(teamid, modelid, position, zAngle, weapon, weaponAmmo, 0, 0, 0, 0);
         }
