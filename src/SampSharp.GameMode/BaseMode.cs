@@ -12,11 +12,14 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
+using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode
@@ -36,6 +39,10 @@ namespace SampSharp.GameMode
         protected BaseMode()
         {
             Console.SetOut(new LogWriter());
+
+#if DEBUG
+            Debug.Listeners.Add(new ConsoleTraceListener(false));
+#endif
 
             Type type = Type.GetType("Mono.Runtime");
             if (type != null)
@@ -407,7 +414,7 @@ namespace SampSharp.GameMode
         /// <param name="command">The RCON command to be executed.</param>
         public virtual void SendRconCommand(string command)
         {
-            Native.SendRconCommand(command);
+            Server.SendRconCommand(command);
         }
 
         #endregion
