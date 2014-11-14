@@ -30,7 +30,6 @@ Note of Caution
 Requirements
 ===
 - Mono version 3.10 or higher. (Embedded in windows build)
-- sampgdk version 4.1.0 or higher. (Embedded in windows build)
 
 Contains
 ===
@@ -93,7 +92,6 @@ Installing SA-MP# and requirements
 **Linux**
 
 - Install mono 3.10 or newer. You can find their instructions [here](http://www.mono-project.com/download/#download-lin).
-- Download sampgdk-*-linux.tar.gz [here](https://github.com/Zeex/sampgdk/releases) and copy all libsampgdk.x files to /usr/local/lib
 - Download the linux release(sampsharp-*-linux.zip).
 - Copy the contents of (sampsharp-*-linux.zip)/environment to your server's directory.
 
