@@ -12,9 +12,6 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
-using System.Linq;
-using System.Text;
-using SampSharp.GameMode.Helpers;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
@@ -38,8 +35,6 @@ namespace TestMode.Tests
             Console.WriteLine(": Cyrillic characters:");
             Console.WriteLine(": АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЫЪЭЮЯ");
             Console.WriteLine();
-
-
         }
 
         [Command("charset")]

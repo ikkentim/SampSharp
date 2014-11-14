@@ -31,77 +31,77 @@ namespace SampSharp.GameMode.Controllers
             gameMode.VehicleSpawned += (sender, args) => GtaVehicle.FindOrCreate(args.VehicleId).OnSpawn(args);
             gameMode.VehicleDied += (sender, args) =>
             {
-                var vehicle = GtaVehicle.Find(args.VehicleId);
+                GtaVehicle vehicle = GtaVehicle.Find(args.VehicleId);
 
                 if (vehicle != null)
                     vehicle.OnDeath(args);
             };
             gameMode.PlayerEnterVehicle += (sender, args) =>
             {
-                var vehicle = GtaVehicle.Find(args.VehicleId);
+                GtaVehicle vehicle = GtaVehicle.Find(args.VehicleId);
 
                 if (vehicle != null)
                     vehicle.OnPlayerEnter(args);
             };
             gameMode.PlayerExitVehicle += (sender, args) =>
             {
-                var vehicle = GtaVehicle.Find(args.VehicleId);
+                GtaVehicle vehicle = GtaVehicle.Find(args.VehicleId);
 
                 if (vehicle != null)
                     vehicle.OnPlayerExit(args);
             };
             gameMode.VehicleMod += (sender, args) =>
             {
-                var vehicle = GtaVehicle.Find(args.VehicleId);
+                GtaVehicle vehicle = GtaVehicle.Find(args.VehicleId);
 
                 if (vehicle != null)
                     vehicle.OnMod(args);
             };
             gameMode.VehiclePaintjobApplied += (sender, args) =>
             {
-                var vehicle = GtaVehicle.Find(args.VehicleId);
+                GtaVehicle vehicle = GtaVehicle.Find(args.VehicleId);
 
                 if (vehicle != null)
                     vehicle.OnPaintjobApplied(args);
             };
             gameMode.VehicleResprayed += (sender, args) =>
             {
-                var vehicle = GtaVehicle.Find(args.VehicleId);
+                GtaVehicle vehicle = GtaVehicle.Find(args.VehicleId);
 
                 if (vehicle != null)
                     vehicle.OnResprayed(args);
             };
             gameMode.VehicleDamageStatusUpdated += (sender, args) =>
             {
-                var vehicle = GtaVehicle.Find(args.VehicleId);
+                GtaVehicle vehicle = GtaVehicle.Find(args.VehicleId);
 
                 if (vehicle != null)
                     vehicle.OnDamageStatusUpdated(args);
             };
             gameMode.UnoccupiedVehicleUpdated += (sender, args) =>
             {
-                var vehicle = GtaVehicle.Find(args.VehicleId);
+                GtaVehicle vehicle = GtaVehicle.Find(args.VehicleId);
 
                 if (vehicle != null)
                     vehicle.OnUnoccupiedUpdate(args);
             };
             gameMode.VehicleStreamIn += (sender, args) =>
             {
-                var vehicle = GtaVehicle.Find(args.VehicleId);
+                GtaVehicle vehicle = GtaVehicle.Find(args.VehicleId);
 
                 if (vehicle != null)
                     vehicle.OnStreamIn(args);
             };
             gameMode.VehicleStreamOut += (sender, args) =>
             {
-                var vehicle = GtaVehicle.Find(args.VehicleId);
+                GtaVehicle vehicle = GtaVehicle.Find(args.VehicleId);
 
                 if (vehicle != null)
                     vehicle.OnStreamOut(args);
             };
             gameMode.TrailerUpdate += (sender, args) =>
             {
-                var vehicle = GtaVehicle.Find(args.VehicleId);
+                GtaVehicle vehicle = GtaVehicle.Find(args.VehicleId);
 
                 if (vehicle != null)
                     vehicle.OnTrailerUpdate(args);

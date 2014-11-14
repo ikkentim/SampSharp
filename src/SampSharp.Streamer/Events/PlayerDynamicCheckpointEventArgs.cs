@@ -11,7 +11,6 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
 using SampSharp.GameMode.Events;
 using SampSharp.Streamer.World;
 
@@ -29,10 +28,7 @@ namespace SampSharp.Streamer.Events
 
         public DynamicCheckpoint DynamicCheckpoint
         {
-            get
-            {
-                return CheckpointId == -1 ? null : DynamicCheckpoint.FindOrCreate(CheckpointId);
-            }
+            get { return CheckpointId == -1 ? null : DynamicCheckpoint.FindOrCreate(CheckpointId); }
         }
     }
 }

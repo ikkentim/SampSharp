@@ -11,7 +11,6 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
 using System.Runtime.CompilerServices;
 
 namespace SampSharp.GameMode.Natives
@@ -31,6 +30,5 @@ namespace SampSharp.GameMode.Natives
         /// <param name="codepage">Codepage to use.</param>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern void SetCodepage(int codepage);
-
     }
 }
