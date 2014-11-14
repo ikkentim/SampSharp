@@ -18,7 +18,6 @@ using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
-using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.World
 {
@@ -690,7 +689,7 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw" /> is being called.
         ///     This callback is called when a player cancels the textdraw select mode(ESC).
         /// </summary>
-        public event EventHandler<PlayerEventArgs> CancelClickTextDraw; 
+        public event EventHandler<PlayerEventArgs> CancelClickTextDraw;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw" /> is being called.
@@ -761,8 +760,10 @@ namespace SampSharp.GameMode.World
         /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
         /// <param name="weapon3">The third spawn-weapon for the player.</param>
         /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
-        public virtual void SetSpawnInfo(int team, int skin, Vector position, float rotation, Weapon weapon1 = Weapon.None,
-            int weapon1Ammo = 0, Weapon weapon2 = Weapon.None, int weapon2Ammo = 0, Weapon weapon3 = Weapon.None, int weapon3Ammo = 0)
+        public virtual void SetSpawnInfo(int team, int skin, Vector position, float rotation,
+            Weapon weapon1 = Weapon.None,
+            int weapon1Ammo = 0, Weapon weapon2 = Weapon.None, int weapon2Ammo = 0, Weapon weapon3 = Weapon.None,
+            int weapon3Ammo = 0)
         {
             CheckDisposure();
 
@@ -1015,7 +1016,7 @@ namespace SampSharp.GameMode.World
 
             Native.SelectTextDraw(Id, hoverColor);
         }
-        
+
         /// <summary>
         ///     Cancel textdraw selection with the mouse.
         /// </summary>
@@ -1726,7 +1727,8 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Ban this Player. The ban will be IP-based, and be saved in the samp.ban file in the
-        ///     server's root directory. <see cref="Ban(string)" /> allows you to ban with a reason, while you can ban and unban IPs
+        ///     server's root directory. <see cref="Ban(string)" /> allows you to ban with a reason, while you can ban and unban
+        ///     IPs
         ///     using the RCON banip and unbanip commands.
         /// </summary>
         public virtual void Ban()
@@ -2345,10 +2347,10 @@ namespace SampSharp.GameMode.World
         #region Methods
 
         /// <summary>
-        /// Serves as a hash function for a particular type. 
+        ///     Serves as a hash function for a particular type.
         /// </summary>
         /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
+        ///     A hash code for the current <see cref="T:System.Object" />.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
@@ -2357,10 +2359,10 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Returns a string that represents the current object.
+        ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
-        /// A string that represents the current object.
+        ///     A string that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override string ToString()
