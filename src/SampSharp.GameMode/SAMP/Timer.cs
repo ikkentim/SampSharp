@@ -50,7 +50,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Gets or sets whether this Timer is running.
         /// </summary>
-        public bool Running
+        public bool IsRunning
         {
             get
             {
@@ -59,12 +59,12 @@ namespace SampSharp.GameMode.SAMP
             }
             set
             {
-                if (value && Running)
+                if (value && IsRunning)
                 {
                     _hit = false;
                     Id = Native.SetTimer(Interval, Repeat, this);
                 }
-                else if (!value && Running)
+                else if (!value && IsRunning)
                 {
                     Native.KillTimer(Id);
                 }
@@ -85,7 +85,7 @@ namespace SampSharp.GameMode.SAMP
         {
             base.Dispose(disposing);
 
-            Running = false;
+            IsRunning = false;
         }
 
         /// <summary>
@@ -99,10 +99,10 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="e">A <see cref="System.EventArgs" /> that contains the event data.</param>
         public virtual void OnTick(EventArgs e)
         {
+            _hit = true;
+
             if (Tick != null)
                 Tick(this, e);
-
-            _hit = true;
         }
     }
 }
