@@ -21,9 +21,13 @@ namespace SampSharp.GameMode.SAMP
     /// <summary>
     ///     Represents a SA:MP timer.
     /// </summary>
-    public class Timer : IdentifiedPool<Timer>, IIdentifiable
+    public sealed class Timer : IdentifiedPool<Timer>, IIdentifiable
     {
+        private const int InvalidId = -1;
+
         private bool _hit;
+        private int _interval;
+        private bool _repeat;
 
         /// <summary>
         ///     Initializes a new instance of the Timer class.
@@ -38,14 +42,49 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Gets the interval of this Timer.
+        ///     Initializes a new instance of the Timer class.
         /// </summary>
-        public int Interval { get; private set; }
+        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="repeat">Whether to repeat the timer (True); or stop after the first Tick(False).</param>
+        /// <param name="running">Whether the timer is running</param>
+        public Timer(int interval, bool repeat, bool running)
+        {
+            Id = running ? Native.SetTimer(interval, repeat, this) : InvalidId;
+            Interval = interval;
+            Repeat = repeat;
+        }
 
         /// <summary>
-        ///     Gets whether this Timer is a repeating timer.
+        ///     Gets or sets the interval of this Timer.
         /// </summary>
-        public bool Repeat { get; private set; }
+        public int Interval
+        {
+            get { return _interval; }
+            set
+            {
+                var wasRunning = IsRunning;
+                IsRunning = false;
+                _interval = value;
+                IsRunning = wasRunning;
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets whether this Timer is a repeating timer.
+        /// </summary>
+        public bool Repeat
+        {
+            get { return _repeat; }
+             set
+             {
+                 if (_repeat == value) return;
+
+                 var wasRunning = IsRunning;
+                 IsRunning = false;
+                 _repeat = value;
+                 IsRunning = wasRunning;
+             }
+        }
 
         /// <summary>
         ///     Gets or sets whether this Timer is running.
@@ -54,12 +93,11 @@ namespace SampSharp.GameMode.SAMP
         {
             get
             {
-                //Single-run and not hit yet, or a repeating timer
-                return !_hit || Repeat;
+                return (!Repeat && !_hit && Id != InvalidId) || (Repeat && Id != InvalidId);
             }
             set
             {
-                if (value && IsRunning)
+                if (value && !IsRunning)
                 {
                     _hit = false;
                     Id = Native.SetTimer(Interval, Repeat, this);
@@ -67,6 +105,7 @@ namespace SampSharp.GameMode.SAMP
                 else if (!value && IsRunning)
                 {
                     Native.KillTimer(Id);
+                    Id = InvalidId;
                 }
             }
         }
@@ -81,6 +120,9 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public int Id { get; private set; }
 
+        /// <summary>
+        ///     Removes this instance from the pool.
+        /// </summary>
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
@@ -97,9 +139,10 @@ namespace SampSharp.GameMode.SAMP
         ///     Raises the <see cref="Tick" /> event.
         /// </summary>
         /// <param name="e">A <see cref="System.EventArgs" /> that contains the event data.</param>
-        public virtual void OnTick(EventArgs e)
+        public void OnTick(EventArgs e)
         {
             _hit = true;
+            if (!Repeat) Id = InvalidId;
 
             if (Tick != null)
                 Tick(this, e);
