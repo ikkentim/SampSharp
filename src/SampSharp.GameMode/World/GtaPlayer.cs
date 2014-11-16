@@ -33,6 +33,11 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public const int InvalidId = Misc.InvalidPlayerId;
 
+        /// <summary>
+        ///     Max number of attachedobjects attached to a player.
+        /// </summary>
+        public const int MaxAttachedObjects = Misc.MaxPlayerAttachedObjects;
+
         #endregion
 
         #region Constructors

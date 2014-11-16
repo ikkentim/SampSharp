@@ -57,5 +57,10 @@ namespace SampSharp.GameMode.Definitions
         ///     Invalid 3D textlabel id.
         /// </summary>
         public const int Invalid_3DTextId = 0xFFFF;
+
+        /// <summary>
+        ///     Max number of attachedobjects attached to a player.
+        /// </summary>
+        public const int MaxPlayerAttachedObjects = 10;
     }
 }
