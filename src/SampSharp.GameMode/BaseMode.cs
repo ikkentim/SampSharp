@@ -39,10 +39,6 @@ namespace SampSharp.GameMode
         {
             Console.SetOut(new LogWriter());
 
-#if DEBUG
-            Debug.Listeners.Add(new ConsoleTraceListener(false));
-#endif
-
             Type type = Type.GetType("Mono.Runtime");
             if (type != null)
             {
