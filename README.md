@@ -1,16 +1,11 @@
 SampSharp
 -------------
 
-SA-MP# is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. SA-MP#'s aim is to allow you to enjoy all features of OO-programming and .NET. SA-MP# uses the [Mono Framework] to allow linux servers to run this plugin as well.
+SA-MP# is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. SA-MP#'s aim is to allow you to enjoy all features of OO-programming and .NET. SA-MP# uses the [Mono Framework] to allow linux servers to run this plugin as well. For information about installing and building SA-MP#, check the wiki.
 
-For information about installing and building SA-MP#, check the wiki.
-
-All feedback is welcome, file an Issue or contact me on the SA-MP forums. 
-
+All feedback is welcome, file an Issue or contact me on the SA-MP forums:<br/>
 [My SA-MP profile]<br/>
 [SA-MP# topic on SA-MP]
-
----
 
 Note of Caution
 -------------
@@ -21,6 +16,7 @@ Note of Caution
 
 Licence
 -------------
+
 This is free and unencumbered software released into the public domain.
 
 Anyone is free to copy, modify, publish, use, compile, sell, or
