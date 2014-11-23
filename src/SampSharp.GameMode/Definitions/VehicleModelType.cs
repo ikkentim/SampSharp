@@ -13,6 +13,9 @@
 
 namespace SampSharp.GameMode.Definitions
 {
+    /// <summary>
+    /// Contains all vehicle models.
+    /// </summary>
     public enum VehicleModelType
     {
         Landstalker = 400,

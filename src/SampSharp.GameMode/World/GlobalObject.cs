@@ -64,7 +64,7 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnObjectMoved" /> callback is being called.
-        ///     This callback is called when an object is moved after <see cref="Move" /> (when it stops moving).
+        ///     This callback is called when an object is moved after <see cref="Move(Vector,float)" /> (when it stops moving).
         /// </summary>
         public event EventHandler<ObjectEventArgs> Moved;
 
