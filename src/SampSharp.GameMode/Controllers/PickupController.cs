@@ -16,6 +16,9 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers
 {
+    /// <summary>
+    ///     A controller processing all pickup actions.
+    /// </summary>
     public class PickupController : Disposable, IEventListener, ITypeProvider
     {
         /// <summary>
@@ -43,6 +46,10 @@ namespace SampSharp.GameMode.Controllers
             Pickup.Register<Pickup>();
         }
 
+        /// <summary>
+        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">Whether managed resources should be disposed.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)

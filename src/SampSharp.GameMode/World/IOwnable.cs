@@ -17,8 +17,11 @@ namespace SampSharp.GameMode.World
     ///     Contains an Owner property.
     /// </summary>
     /// <typeparam name="T">The type of the owner</typeparam>
-    public interface IOwnable<T> where T : IIdentifiable
+    public interface IOwnable<out T> where T : IIdentifiable
     {
+        /// <summary>
+        /// Gets the owner of this IOwnable.
+        /// </summary>
         T Owner { get; }
     }
 }

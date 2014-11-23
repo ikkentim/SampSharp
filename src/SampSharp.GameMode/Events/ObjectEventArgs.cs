@@ -34,6 +34,9 @@ namespace SampSharp.GameMode.Events
         /// </summary>
         public int ObjectId { get; private set; }
 
+        /// <summary>
+        /// Gets the object.
+        /// </summary>
         public GlobalObject GlobalObject
         {
             get { return ObjectId == GlobalObject.InvalidId ? null : GlobalObject.FindOrCreate(ObjectId); }

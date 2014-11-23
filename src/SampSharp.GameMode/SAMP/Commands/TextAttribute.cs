@@ -18,6 +18,10 @@ namespace SampSharp.GameMode.SAMP.Commands
     /// </summary>
     public class TextAttribute : ParameterAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the TextAttribute class.
+        /// </summary>
+        /// <param name="name">The name of the parameter.</param>
         public TextAttribute(string name) : base(name)
         {
         }

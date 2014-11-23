@@ -45,6 +45,9 @@ namespace SampSharp.GameMode.Tools
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Deintializes this instance of Disposable.
+        /// </summary>
         ~Disposable()
         {
             if (Disposed)
@@ -58,12 +61,14 @@ namespace SampSharp.GameMode.Tools
             //We don't care to set Disposed value; Resource is being collected by GC anyways.
         }
 
+        /// <summary>
+        /// Checks whether this instance has been disposed. If it has, it throws an exception.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">Thrown when this instance has been disposed.</exception>
         protected void CheckDisposure()
         {
             if (Disposed)
-            {
                 throw new ObjectDisposedException("Cannot access disposed resource.");
-            }
         }
 
         /// <summary>

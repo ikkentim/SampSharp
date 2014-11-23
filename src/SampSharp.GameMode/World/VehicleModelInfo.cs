@@ -267,6 +267,10 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public VehicleCategory Category { get; private set; }
 
+        /// <summary>
+        /// Gets model information of the given type.
+        /// </summary>
+        /// <param name="infotype">The type of information to retrieve.</param>
         public Vector this[VehicleModelInfoType infotype]
         {
             get { return Native.GetVehicleModelInfo(Type, infotype); }

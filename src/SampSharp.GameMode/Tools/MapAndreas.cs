@@ -17,6 +17,9 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Tools
 {
+    /// <summary>
+    /// Contains methods for reading SA heightmap files.
+    /// </summary>
     public static class MapAndreas
     {
         private const string FullFile = "scriptfiles/SAfull.hmap";

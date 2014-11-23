@@ -18,6 +18,10 @@ namespace SampSharp.GameMode.SAMP.Commands
     /// </summary>
     public class IntegerAttribute : WordAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the IntegerAttribute class.
+        /// </summary>
+        /// <param name="name">The name of the parameter.</param>
         public IntegerAttribute(string name) : base(name)
         {
         }

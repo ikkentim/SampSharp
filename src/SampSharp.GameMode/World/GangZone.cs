@@ -48,6 +48,10 @@ namespace SampSharp.GameMode.World
 
         public virtual int Id { get; private set; }
 
+        /// <summary>
+        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">Whether managed resources should be disposed.</param>
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

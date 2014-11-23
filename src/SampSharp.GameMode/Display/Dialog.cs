@@ -42,6 +42,9 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         protected static Dictionary<int, Dialog> OpenDialogs = new Dictionary<int, Dialog>();
 
+        /// <summary>
+        /// Gets all opened dialogs.
+        /// </summary>
         public static IEnumerable<Dialog> All
         {
             get { return OpenDialogs.Values; }

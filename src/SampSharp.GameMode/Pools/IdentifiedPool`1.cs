@@ -23,6 +23,9 @@ namespace SampSharp.GameMode.Pools
     /// <typeparam name="T">Base type of instances to keep track of.</typeparam>
     public abstract class IdentifiedPool<T> : Pool<T> where T : class, IIdentifiable
     {
+        /// <summary>
+        /// The type to initialize when adding an instance to this pool by id.
+        /// </summary>
         protected static Type InstanceType;
 
         /// <summary>
