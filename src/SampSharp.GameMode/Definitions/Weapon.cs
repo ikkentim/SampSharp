@@ -102,7 +102,9 @@ namespace SampSharp.GameMode.Definitions
         ///     Cane.
         /// </summary>
         Cane = 15,
-        //Grenade.
+        /// <summary>
+        /// Grenade.
+        /// </summary>
         Grenade = 16,
 
         /// <summary>
