@@ -43,7 +43,7 @@ namespace SampSharp.GameMode.Display
         protected static Dictionary<int, Dialog> OpenDialogs = new Dictionary<int, Dialog>();
 
         /// <summary>
-        /// Gets all opened dialogs.
+        ///     Gets all opened dialogs.
         /// </summary>
         public static IEnumerable<Dialog> All
         {

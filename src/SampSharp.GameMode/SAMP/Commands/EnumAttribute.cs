@@ -24,7 +24,7 @@ namespace SampSharp.GameMode.SAMP.Commands
     public class EnumAttribute : WordAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the EnumAttribute class.
+        ///     Initializes a new instance of the EnumAttribute class.
         /// </summary>
         /// <param name="name">The name of the parameter.</param>
         /// <param name="type">The type of the parameter.</param>

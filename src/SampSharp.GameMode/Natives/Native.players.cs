@@ -1282,7 +1282,8 @@ namespace SampSharp.GameMode.Natives
         ///     Sets a checkpoint (red circle) for a player. Also shows a red blip on the radar.
         /// </summary>
         /// <remarks>
-        ///     Checkpoints created on server-created objects (<see cref="CreateObject(int,Vector,Vector,float)" />/<see cref="CreatePlayerObject(int,int,Vector,Vector,float)" />) will
+        ///     Checkpoints created on server-created objects (<see cref="CreateObject(int,Vector,Vector,float)" />/
+        ///     <see cref="CreatePlayerObject(int,int,Vector,Vector,float)" />) will
         ///     appear down on the 'real' ground, but will still function correctly. There is no fix available for this issue. A
         ///     pickup can be used instead.
         /// </remarks>
@@ -1496,7 +1497,8 @@ namespace SampSharp.GameMode.Natives
 
         /// <summary>
         ///     Attaches a player's camera to a player-object. They are able to move their camera while it is attached to an
-        ///     object. Can be used with <see cref="MovePlayerObject(int,int,Vector,float,Vector)" /> and <see cref="AttachPlayerObjectToVehicle(int,int,int,Vector,Vector)" />.
+        ///     object. Can be used with <see cref="MovePlayerObject(int,int,Vector,float,Vector)" /> and
+        ///     <see cref="AttachPlayerObjectToVehicle(int,int,int,Vector,Vector)" />.
         /// </summary>
         /// <param name="playerid">The ID of the player which will have their camera attached to a player-object.</param>
         /// <param name="playerobjectid">	The ID of the player-object to which the player's camera will be attached.</param>
@@ -2077,7 +2079,8 @@ namespace SampSharp.GameMode.Natives
         ///     Sets a checkpoint (red circle) for a player. Also shows a red blip on the radar.
         /// </summary>
         /// <remarks>
-        ///     Checkpoints created on server-created objects (<see cref="CreateObject(int,Vector,Vector,float)" />/<see cref="CreatePlayerObject(int,int,Vector,Vector,float)" />) will
+        ///     Checkpoints created on server-created objects (<see cref="CreateObject(int,Vector,Vector,float)" />/
+        ///     <see cref="CreatePlayerObject(int,int,Vector,Vector,float)" />) will
         ///     appear down on the 'real' ground, but will still function correctly. There is no fix available for this issue. A
         ///     pickup can be used instead.
         /// </remarks>

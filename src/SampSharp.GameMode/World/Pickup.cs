@@ -19,7 +19,7 @@ using SampSharp.GameMode.Pools;
 namespace SampSharp.GameMode.World
 {
     /// <summary>
-    /// Represents a SA-MP pickup.
+    ///     Represents a SA-MP pickup.
     /// </summary>
     public class Pickup : IdentifiedPool<Pickup>, IIdentifiable, IWorldObject
     {
@@ -27,8 +27,9 @@ namespace SampSharp.GameMode.World
         ///     Gets an ID commonly returned by methods to point out that no pickup matched the requirements.
         /// </summary>
         public const int InvalidId = -1;
+
         /// <summary>
-        /// Initializes a new instance of the Pickup class.
+        ///     Initializes a new instance of the Pickup class.
         /// </summary>
         /// <param name="id"></param>
         public Pickup(int id)
@@ -92,10 +93,10 @@ namespace SampSharp.GameMode.World
         #region Methods
 
         /// <summary>
-        /// Serves as a hash function for a particular type. 
+        ///     Serves as a hash function for a particular type.
         /// </summary>
         /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
+        ///     A hash code for the current <see cref="T:System.Object" />.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
@@ -104,10 +105,10 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Returns a string that represents the current object.
+        ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
-        /// A string that represents the current object.
+        ///     A string that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override string ToString()
@@ -144,7 +145,7 @@ namespace SampSharp.GameMode.World
         public int Model { get; private set; }
 
         /// <summary>
-        ///    Gets the type of this Pickup.
+        ///     Gets the type of this Pickup.
         /// </summary>
         public int SpawnType { get; private set; }
 

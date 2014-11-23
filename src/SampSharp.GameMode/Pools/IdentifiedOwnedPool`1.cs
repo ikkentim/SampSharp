@@ -24,7 +24,7 @@ namespace SampSharp.GameMode.Pools
     public abstract class IdentifiedOwnedPool<T> : Pool<T> where T : class, IIdentifiable, IOwnable<GtaPlayer>
     {
         /// <summary>
-        /// The type to initialize when adding an instance to this pool by id.
+        ///     The type to initialize when adding an instance to this pool by id.
         /// </summary>
         protected static Type InstanceType;
 

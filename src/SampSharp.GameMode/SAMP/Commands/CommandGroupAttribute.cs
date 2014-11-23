@@ -16,13 +16,13 @@ using System;
 namespace SampSharp.GameMode.SAMP.Commands
 {
     /// <summary>
-    /// Contains a Group property to group a command.
+    ///     Contains a Group property to group a command.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
     public class CommandGroupAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the CommandGroupAttribute class.
+        ///     Initializes a new instance of the CommandGroupAttribute class.
         /// </summary>
         /// <param name="group">The group in which this command lives.</param>
         public CommandGroupAttribute(params string[] group)
@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         }
 
         /// <summary>
-        /// Initializes a new instance of the CommandGroupAttribute class.
+        ///     Initializes a new instance of the CommandGroupAttribute class.
         /// </summary>
         /// <param name="group">The group in which this command lives.</param>
         public CommandGroupAttribute(string group)
@@ -40,7 +40,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         }
 
         /// <summary>
-        /// The group in which this command lives.
+        ///     The group in which this command lives.
         /// </summary>
         public string Group { get; set; }
     }

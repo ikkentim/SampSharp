@@ -12,7 +12,6 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
-using System.Diagnostics;
 using System.Reflection;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
@@ -53,7 +52,7 @@ namespace SampSharp.GameMode
         #endregion
 
         /// <summary>
-        /// Gets the collection of controllers loaded.
+        ///     Gets the collection of controllers loaded.
         /// </summary>
         protected virtual ControllerCollection Controllers
         {
@@ -80,7 +79,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Loads all default controllers into the given ControllerCollection.
+        ///     Loads all default controllers into the given ControllerCollection.
         /// </summary>
         /// <param name="controllers">The collection to load the default controllers into.</param>
         protected virtual void LoadControllers(ControllerCollection controllers)
@@ -572,13 +571,15 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     Occurs when the <see cref="OnObjectMoved" /> callback is being called.
-        ///     This callback is called when an object is moved after <see cref="Native.MoveObject(int,Vector,float,Vector)" /> (when it stops moving).
+        ///     This callback is called when an object is moved after <see cref="Native.MoveObject(int,Vector,float,Vector)" />
+        ///     (when it stops moving).
         /// </summary>
         public event EventHandler<ObjectEventArgs> ObjectMoved;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerObjectMoved" /> callback is being called.
-        ///     This callback is called when a player object is moved after <see cref="Native.MovePlayerObject(int,int,Vector,float,Vector)" /> (when it stops
+        ///     This callback is called when a player object is moved after
+        ///     <see cref="Native.MovePlayerObject(int,int,Vector,float,Vector)" /> (when it stops
         ///     moving).
         /// </summary>
         public event EventHandler<PlayerObjectEventArgs> PlayerObjectMoved;
@@ -1207,7 +1208,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     This callback is called when an object is moved after <see cref="Native.MoveObject(int,Vector,float,Vector)" /> (when it stops moving).
+        ///     This callback is called when an object is moved after <see cref="Native.MoveObject(int,Vector,float,Vector)" />
+        ///     (when it stops moving).
         /// </summary>
         /// <remarks>
         ///     SetObjectPos does not work when used in this callback. To fix it, delete and re-create the object, or use a timer.
@@ -1225,7 +1227,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     This callback is called when a player object is moved after <see cref="Native.MovePlayerObject(int,int,Vector,float,Vector)" /> (when it stops
+        ///     This callback is called when a player object is moved after
+        ///     <see cref="Native.MovePlayerObject(int,int,Vector,float,Vector)" /> (when it stops
         ///     moving).
         /// </summary>
         /// <param name="playerid">The playerid the object is assigned to.</param>
@@ -1896,7 +1899,7 @@ namespace SampSharp.GameMode
         #endregion
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
         public void Dispose()

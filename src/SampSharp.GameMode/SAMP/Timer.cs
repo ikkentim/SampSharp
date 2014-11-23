@@ -62,7 +62,7 @@ namespace SampSharp.GameMode.SAMP
             get { return _interval; }
             set
             {
-                var wasRunning = IsRunning;
+                bool wasRunning = IsRunning;
                 IsRunning = false;
                 _interval = value;
                 IsRunning = wasRunning;
@@ -75,15 +75,15 @@ namespace SampSharp.GameMode.SAMP
         public bool Repeat
         {
             get { return _repeat; }
-             set
-             {
-                 if (_repeat == value) return;
+            set
+            {
+                if (_repeat == value) return;
 
-                 var wasRunning = IsRunning;
-                 IsRunning = false;
-                 _repeat = value;
-                 IsRunning = wasRunning;
-             }
+                bool wasRunning = IsRunning;
+                IsRunning = false;
+                _repeat = value;
+                IsRunning = wasRunning;
+            }
         }
 
         /// <summary>
@@ -91,10 +91,7 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public bool IsRunning
         {
-            get
-            {
-                return (!Repeat && !_hit && Id != InvalidId) || (Repeat && Id != InvalidId);
-            }
+            get { return (!Repeat && !_hit && Id != InvalidId) || (Repeat && Id != InvalidId); }
             set
             {
                 if (value && !IsRunning)

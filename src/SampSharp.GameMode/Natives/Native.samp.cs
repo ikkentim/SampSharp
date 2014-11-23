@@ -160,7 +160,9 @@ namespace SampSharp.GameMode.Natives
             int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
 
         /// <summary>
-        ///     This function is exactly the same as the <see cref="AddPlayerClass(int,Vector,float,Weapon,int,Weapon,int,Weapon,int)" /> function, with the addition of a team
+        ///     This function is exactly the same as the
+        ///     <see cref="AddPlayerClass(int,Vector,float,Weapon,int,Weapon,int,Weapon,int)" /> function, with the addition of a
+        ///     team
         ///     parameter.
         /// </summary>
         /// <param name="teamid">The team you want the player to spawn in.</param>
@@ -1310,7 +1312,9 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
-        ///     This function is exactly the same as the <see cref="AddPlayerClass(int,Vector,float,Weapon,int,Weapon,int,Weapon,int)" /> function, with the addition of a team
+        ///     This function is exactly the same as the
+        ///     <see cref="AddPlayerClass(int,Vector,float,Weapon,int,Weapon,int,Weapon,int)" /> function, with the addition of a
+        ///     team
         ///     parameter.
         /// </summary>
         /// <param name="teamid">The team you want the player to spawn in.</param>

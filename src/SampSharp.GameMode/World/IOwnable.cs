@@ -20,7 +20,7 @@ namespace SampSharp.GameMode.World
     public interface IOwnable<out T> where T : IIdentifiable
     {
         /// <summary>
-        /// Gets the owner of this IOwnable.
+        ///     Gets the owner of this IOwnable.
         /// </summary>
         T Owner { get; }
     }

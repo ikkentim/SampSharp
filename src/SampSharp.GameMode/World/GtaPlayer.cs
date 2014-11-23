@@ -1598,7 +1598,8 @@ namespace SampSharp.GameMode.World
         ///     Makes this Player spectate (watch) another player.
         /// </summary>
         /// <remarks>
-        ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectatePlayer(GtaPlayer,SpectateMode)" />.
+        ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before
+        ///     <see cref="SpectatePlayer(GtaPlayer,SpectateMode)" />.
         /// </remarks>
         /// <param name="targetPlayer">The Player that should be spectated.</param>
         /// <param name="mode">The mode to spectate with.</param>
@@ -1616,7 +1617,8 @@ namespace SampSharp.GameMode.World
         ///     Makes this Player spectate (watch) another player.
         /// </summary>
         /// <remarks>
-        ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectatePlayer(GtaPlayer,SpectateMode)" />.
+        ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before
+        ///     <see cref="SpectatePlayer(GtaPlayer,SpectateMode)" />.
         /// </remarks>
         /// <param name="targetPlayer">The Player that should be spectated.</param>
         public virtual void SpectatePlayer(GtaPlayer targetPlayer)
@@ -1633,7 +1635,8 @@ namespace SampSharp.GameMode.World
         ///     Sets this Player to spectate another vehicle, i.e. see what its driver sees.
         /// </summary>
         /// <remarks>
-        ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectateVehicle(GtaVehicle,SpectateMode)" />.
+        ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before
+        ///     <see cref="SpectateVehicle(GtaVehicle,SpectateMode)" />.
         /// </remarks>
         /// <param name="targetVehicle">The vehicle to spectate.</param>
         /// <param name="mode">Spectate mode.</param>
@@ -1651,7 +1654,8 @@ namespace SampSharp.GameMode.World
         ///     Sets this Player to spectate another vehicle, i.e. see what its driver sees.
         /// </summary>
         /// <remarks>
-        ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before <see cref="SpectateVehicle(GtaVehicle,SpectateMode)" />.
+        ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before
+        ///     <see cref="SpectateVehicle(GtaVehicle,SpectateMode)" />.
         /// </remarks>
         /// <param name="targetVehicle">The vehicle to spectate.</param>
         public virtual void SpectateVehicle(GtaVehicle targetVehicle)

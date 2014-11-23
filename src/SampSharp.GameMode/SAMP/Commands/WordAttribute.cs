@@ -19,7 +19,7 @@ namespace SampSharp.GameMode.SAMP.Commands
     public class WordAttribute : ParameterAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the WordAttribute class.
+        ///     Initializes a new instance of the WordAttribute class.
         /// </summary>
         /// <param name="name">The name of the parameter.</param>
         public WordAttribute(string name) : base(name)

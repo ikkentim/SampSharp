@@ -25,15 +25,17 @@ namespace SampSharp.GameMode.Pools
     public abstract class Pool<T> : Disposable
     {
         /// <summary>
-        /// The instances alive in this pool.
+        ///     The instances alive in this pool.
         /// </summary>
         protected static readonly List<object> Instances = new List<object>();
+
         /// <summary>
-        /// A readonly collection of the instances in this pool.
+        ///     A readonly collection of the instances in this pool.
         /// </summary>
         protected static ReadOnlyCollection<T> ReadOnly = new ReadOnlyCollection<T>(new List<T>());
+
         /// <summary>
-        /// A Locker for tread-saving this pool.
+        ///     A Locker for tread-saving this pool.
         /// </summary>
         protected static object Lock = new object();
 

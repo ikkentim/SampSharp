@@ -56,10 +56,13 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Retrieve a server variable.
         /// </summary>
-        /// <typeparam name="T">The type to which the variable should be cast. Supported types: <see cref="int" />, <see cref="bool" />, <see cref="string" />.</typeparam>
+        /// <typeparam name="T">
+        ///     The type to which the variable should be cast. Supported types: <see cref="int" />,
+        ///     <see cref="bool" />, <see cref="string" />.
+        /// </typeparam>
         /// <param name="varName">The server variable to read.</param>
         /// <returns>The value of the server variable.</returns>
-        /// <exception cref="NotSupportedException"><typeparamref name="T"/> is not supported by SA-MP.</exception>
+        /// <exception cref="NotSupportedException"><typeparamref name="T" /> is not supported by SA-MP.</exception>
         public static T Get<T>(string varName)
         {
             if (typeof (T) == typeof (string))
