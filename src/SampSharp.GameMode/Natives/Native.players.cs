@@ -744,7 +744,7 @@ namespace SampSharp.GameMode.Natives
         /// <param name="playerid">The ID of the player to remove the object from.</param>
         /// <param name="index">
         ///     The index of the object to remove (set with
-        ///     <see cref="SetPlayerAttachedObject(int,int,int,int,Vector,Vector,Vector,int,int)" />).
+        ///     <see cref="SetPlayerAttachedObject(int,int,int,int,Vector,Vector,Vector,Color,Color)" />).
         /// </param>
         /// <returns>True on success, False otherwise.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
@@ -1155,8 +1155,8 @@ namespace SampSharp.GameMode.Natives
         /// </remarks>
         /// <param name="playerid">The ID of the player you want to get the seat of.</param>
         /// <returns>
-        ///     Seat ID (-1 if the player is not in a vehicle, 0 driver, 1 co-driver, 2&3 back seat passengers, 4+ if the
-        ///     vehicle has enough seats (i.e coach)).
+        ///     Seat ID (-1 if the player is not in a vehicle, 0: driver, 1: co-driver, 2,3: back seat passengers, 4,...: the
+        ///     more seats (i.e coach)).
         /// </returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetPlayerVehicleSeat(int playerid);
@@ -1282,7 +1282,7 @@ namespace SampSharp.GameMode.Natives
         ///     Sets a checkpoint (red circle) for a player. Also shows a red blip on the radar.
         /// </summary>
         /// <remarks>
-        ///     Checkpoints created on server-created objects (<see cref="CreateObject" />/<see cref="CreatePlayerObject" />) will
+        ///     Checkpoints created on server-created objects (<see cref="CreateObject(int,Vector,Vector,float)" />/<see cref="CreatePlayerObject(int,int,Vector,Vector,float)" />) will
         ///     appear down on the 'real' ground, but will still function correctly. There is no fix available for this issue. A
         ///     pickup can be used instead.
         /// </remarks>
@@ -1397,7 +1397,7 @@ namespace SampSharp.GameMode.Natives
         /// <param name="playerid">The ID of the player whose icon to remove.</param>
         /// <param name="iconid">
         ///     The ID of the icon to remove. This is the second parameter of
-        ///     <see cref="SetPlayerMapIcon(int,int,Vector,PlayerMarkersMode)" />.
+        ///     <see cref="SetPlayerMapIcon(int,int,Vector,PlayerMarkersMode,int,int)" />.
         /// </param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
@@ -1496,7 +1496,7 @@ namespace SampSharp.GameMode.Natives
 
         /// <summary>
         ///     Attaches a player's camera to a player-object. They are able to move their camera while it is attached to an
-        ///     object. Can be used with <see cref="MovePlayerObject" /> and <see cref="AttachPlayerObjectToVehicle" />.
+        ///     object. Can be used with <see cref="MovePlayerObject(int,int,Vector,float,Vector)" /> and <see cref="AttachPlayerObjectToVehicle(int,int,int,Vector,Vector)" />.
         /// </summary>
         /// <param name="playerid">The ID of the player which will have their camera attached to a player-object.</param>
         /// <param name="playerobjectid">	The ID of the player-object to which the player's camera will be attached.</param>
@@ -2077,7 +2077,7 @@ namespace SampSharp.GameMode.Natives
         ///     Sets a checkpoint (red circle) for a player. Also shows a red blip on the radar.
         /// </summary>
         /// <remarks>
-        ///     Checkpoints created on server-created objects (<see cref="CreateObject" />/<see cref="CreatePlayerObject" />) will
+        ///     Checkpoints created on server-created objects (<see cref="CreateObject(int,Vector,Vector,float)" />/<see cref="CreatePlayerObject(int,int,Vector,Vector,float)" />) will
         ///     appear down on the 'real' ground, but will still function correctly. There is no fix available for this issue. A
         ///     pickup can be used instead.
         /// </remarks>

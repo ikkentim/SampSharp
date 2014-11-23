@@ -26,16 +26,16 @@ namespace TestMode
     {
         private readonly List<ITest> _tests = new List<ITest>
         {
-            new CommandsTest(),
+//            new CommandsTest(),
             new ASyncTest(),
-            new MenuTest(),
-            new DisposureTest(),
-            new DialogTest(),
-            new CharsetTest(),
-            new VehicleInfoTest(),
-            new NativesTest(),
-            new StreamerTest(),
-            new KeyHandlerTest(),
+//            new MenuTest(),
+//            new DisposureTest(),
+//            new DialogTest(),
+//            new CharsetTest(),
+//            new VehicleInfoTest(),
+//            new NativesTest(),
+//            new StreamerTest(),
+//            new KeyHandlerTest(),
         };
 
         public override bool OnGameModeInit()

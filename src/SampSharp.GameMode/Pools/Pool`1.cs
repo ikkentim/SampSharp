@@ -42,7 +42,6 @@ namespace SampSharp.GameMode.Pools
 
         /// <summary>
         ///     Gets a <see cref="ReadOnlyCollection{T}" /> containing all instances of type.
-        ///     <typeparam name="T" />
         /// </summary>
         public static ReadOnlyCollection<T> All
         {
