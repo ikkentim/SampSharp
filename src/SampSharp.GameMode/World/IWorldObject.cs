@@ -19,8 +19,8 @@ namespace SampSharp.GameMode.World
     public interface IWorldObject
     {
         /// <summary>
-        ///     Gets or sets the position of this IWorldObject.
+        ///     Gets the position of this IWorldObject.
         /// </summary>
-        Vector Position { get; set; }
+        Vector Position { get; }
     }
 }
