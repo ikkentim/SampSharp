@@ -2,7 +2,7 @@
 
 SA-MP# is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. SA-MP#'s aim is to allow you to enjoy all features of OO-programming and .NET. SA-MP# uses the [Mono Framework] to allow linux servers to run this plugin as well.
 
-For information about installing and building the SA-MP#, check the wiki.
+For information about installing and building SA-MP#, check the wiki.
 
 All feedback is welcome, file an Issue or contact me on the SA-MP forums. 
 
