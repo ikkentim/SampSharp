@@ -1,4 +1,5 @@
-![SampSharp][icon]
+SampSharp
+-------------
 
 SA-MP# is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. SA-MP#'s aim is to allow you to enjoy all features of OO-programming and .NET. SA-MP# uses the [Mono Framework] to allow linux servers to run this plugin as well.
 
@@ -19,7 +20,7 @@ Note of Caution
 - EntityFramework does not seem to be compatible with mono/SA-MP#! Instead, use NHibernate, which is just ase awesome as EntityFramework (if not more awesome). See src/NHibernateTest for an example of how to use NHibernate. For a why and how EF does not work with SA-MP#, see [#24](https://github.com/ikkentim/SampSharp/issues/24).
 
 Licence
-===
+-------------
 This is free and unencumbered software released into the public domain.
 
 Anyone is free to copy, modify, publish, use, compile, sell, or
