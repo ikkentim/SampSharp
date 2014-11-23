@@ -32,30 +32,54 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="gameMode">The running GameMode.</param>
         public virtual void RegisterEvents(BaseMode gameMode)
         {
+            Console.WriteLine("[SampSharp] Loaded {0} commands.",
+                RegisterCommands(Assembly.GetAssembly(gameMode.GetType())));
+
+            gameMode.PlayerCommandText += gameMode_PlayerCommandText;
+        }
+
+        /// <summary>
+        ///     Loads all commands from the given assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly of who to load the commands from.</param>
+        /// <returns>The number of commands loaded.</returns>
+        public int RegisterCommands(Assembly assembly)
+        {
+            if (assembly == null) throw new ArgumentNullException("assembly");
+
             try
             {
-                int n = 0;
+                int commandsCount = 0;
                 //Detect commands in assembly containing the gamemode
-                foreach (MethodInfo method in gameMode.GetType().Assembly.GetTypes().SelectMany(t => t.GetMethods())
+                foreach (MethodInfo method in assembly.GetTypes().SelectMany(t => t.GetMethods())
                     .Where(m => m.IsStatic && m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0))
                 {
                     new DetectedCommand(method, method.GetCustomAttribute<CommandAttribute>().IgnoreCase);
-                    n++;
+                    commandsCount++;
                 }
 
-                Console.WriteLine("[SampSharp] Loaded {0} commands.", n);
+                return commandsCount;
             }
             catch (Exception)
             {
-                Console.WriteLine("[SampSharp] No commands were loaded.");
                 /*
-                 * If no commands where found this statement throws an exception.
+                 * If there are no non-static types in the given assembly,
+                 * in some cases this statement throws an exception.
                  * We dismiss it and assume no commands were registered.
                  */
+
+                return 0;
             }
+        }
 
-
-            gameMode.PlayerCommandText += gameMode_PlayerCommandText;
+        /// <summary>
+        ///     Loads all commands from the assembly of the given type.
+        /// </summary>
+        /// <typeparam name="T">A type of whose assembly to load.</typeparam>
+        /// <returns>The number of commands loaded.</returns>
+        public int RegisterCommands<T>() where T : class
+        {
+            return RegisterCommands(Assembly.GetAssembly(typeof (T)));
         }
 
         private void gameMode_PlayerCommandText(object sender, PlayerTextEventArgs e)
