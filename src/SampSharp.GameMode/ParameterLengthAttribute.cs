@@ -15,14 +15,25 @@ using System;
 
 namespace SampSharp.GameMode
 {
+    /// <summary>
+    ///     Contains an index property for defining which parameter of a callback contains the length of the parameter this
+    ///     attribute is attached to.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
     public class ParameterLengthAttribute : Attribute
     {
+        /// <summary>
+        ///     Initializes a new instance of the ParameterLengthAttribute class.
+        /// </summary>
+        /// <param name="index">The index of the parameter which contains the length of the paramter this attribute is attached to.</param>
         public ParameterLengthAttribute(int index)
         {
             Index = index;
         }
 
+        /// <summary>
+        ///     Gets the index of the parameter which contains the length of the paramter this attribute is attached to.
+        /// </summary>
         public int Index { get; private set; }
     }
 }
