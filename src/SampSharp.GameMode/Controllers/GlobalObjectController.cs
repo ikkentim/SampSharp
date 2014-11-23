@@ -66,6 +66,10 @@ namespace SampSharp.GameMode.Controllers
             GlobalObject.Register<GlobalObject>();
         }
 
+        /// <summary>
+        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">Whether managed resources should be disposed.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)

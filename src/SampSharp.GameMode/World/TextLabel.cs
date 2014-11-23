@@ -134,6 +134,10 @@ namespace SampSharp.GameMode.World
 
         #region Methods
 
+        /// <summary>
+        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">Whether managed resources should be disposed.</param>
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

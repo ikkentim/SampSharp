@@ -17,6 +17,9 @@ using System.Linq;
 
 namespace SampSharp.GameMode.Helpers
 {
+    /// <summary>
+    ///     Contains helper methods for LINQ queries.
+    /// </summary>
     public static class LinqExtention
     {
         /// <summary>Finds the index of the first item matching an expression in an enumerable.</summary>

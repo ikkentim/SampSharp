@@ -15,19 +15,33 @@ using System;
 
 namespace SampSharp.GameMode.SAMP.Commands
 {
+    /// <summary>
+    /// Contains a Group property to group a command.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
     public class CommandGroupAttribute : Attribute
     {
+        /// <summary>
+        /// Initializes a new instance of the CommandGroupAttribute class.
+        /// </summary>
+        /// <param name="group">The group in which this command lives.</param>
         public CommandGroupAttribute(params string[] group)
         {
             Group = string.Join(" ", group);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the CommandGroupAttribute class.
+        /// </summary>
+        /// <param name="group">The group in which this command lives.</param>
         public CommandGroupAttribute(string group)
         {
             Group = group;
         }
 
+        /// <summary>
+        /// The group in which this command lives.
+        /// </summary>
         public string Group { get; set; }
     }
 }

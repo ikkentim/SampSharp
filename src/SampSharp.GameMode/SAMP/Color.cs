@@ -1461,16 +1461,31 @@ namespace SampSharp.GameMode.SAMP
             return GetColorFromValue(unchecked((uint) color), colorFormat);
         }
 
+        /// <summary>
+        /// Cast a Color to an integer.
+        /// </summary>
+        /// <param name="color">The Color to cast to an integer.</param>
+        /// <returns>The resulting integer.</returns>
         public static implicit operator int(Color color)
         {
             return color.GetColorValue(ColorFormat.RGBA); //Default format
         }
 
+        /// <summary>
+        /// Cast an integer to a Color.
+        /// </summary>
+        /// <param name="color">The integer to cast to a Color.</param>
+        /// <returns>The resulting Color.</returns>
         public static implicit operator Color(int color)
         {
             return new Color(color);
         }
 
+        /// <summary>
+        /// Cast an unsigned integer to a Color.
+        /// </summary>
+        /// <param name="color">The unsigned integer to cast to a Color.</param>
+        /// <returns>The resulting Color.</returns>
         public static implicit operator Color(uint color)
         {
             return new Color(color);
