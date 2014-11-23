@@ -22,7 +22,7 @@ using SampSharp.GameMode.SAMP;
 namespace SampSharp.GameMode.World
 {
     /// <summary>
-    ///     Represents a SA:MP player.
+    ///     Represents a SA-MP player.
     /// </summary>
     public class GtaPlayer : IdentifiedPool<GtaPlayer>, IIdentifiable, IWorldObject
     {
@@ -43,7 +43,7 @@ namespace SampSharp.GameMode.World
         #region Constructors
 
         /// <summary>
-        ///     Initalizes a new instance of the Player class.
+        ///     Initalizes a new instance of the GtaPlayer class.
         /// </summary>
         /// <param name="id">The ID of the player to initialize.</param>
         public GtaPlayer(int id)

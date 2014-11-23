@@ -24,7 +24,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode
 {
     /// <summary>
-    ///     Represents a SA:MP gamemode.
+    ///     Represents a SA-MP gamemode.
     /// </summary>
     public abstract class BaseMode : IDisposable
     {
