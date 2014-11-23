@@ -70,9 +70,19 @@ namespace SampSharp.GameMode.Controllers
         ///     Removes all <see cref="IController" /> instances of the given type from this collection.
         /// </summary>
         /// <typeparam name="T">The type to remove from this collection.</typeparam>
-        public void Remove<T>()
+        public void Remove<T>() where T : IController
         {
             _controllers.RemoveAll(c => c is T);
+        }
+
+        /// <summary>
+        ///     Get the first instance of <see cref="IController" /> of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="IController" /> to find.</typeparam>
+        /// <returns>The found instance.</returns>
+        public IController Get<T>() where T : IController
+        {
+            return _controllers.FirstOrDefault(c => c is T);
         }
 
         protected override void Dispose(bool disposing)
