@@ -35,7 +35,7 @@ namespace SampSharp.GameMode.Events
         public int ObjectId { get; private set; }
 
         /// <summary>
-        /// Gets the object.
+        ///     Gets the object.
         /// </summary>
         public GlobalObject GlobalObject
         {

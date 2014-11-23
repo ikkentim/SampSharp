@@ -22,7 +22,7 @@ using SampSharp.GameMode.Pools;
 namespace SampSharp.GameMode.World
 {
     /// <summary>
-    /// Represents a SA-MP vehicle.
+    ///     Represents a SA-MP vehicle.
     /// </summary>
     public class GtaVehicle : IdentifiedPool<GtaVehicle>, IIdentifiable, IWorldObject
     {

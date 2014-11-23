@@ -19,7 +19,7 @@ namespace SampSharp.GameMode.SAMP.Commands
     public class FloatAttribute : WordAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the FloatAttribute class.
+        ///     Initializes a new instance of the FloatAttribute class.
         /// </summary>
         /// <param name="name">The name of the parameter.</param>
         public FloatAttribute(string name)

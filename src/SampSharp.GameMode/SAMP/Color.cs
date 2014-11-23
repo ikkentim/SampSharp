@@ -1462,7 +1462,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Cast a Color to an integer.
+        ///     Cast a Color to an integer.
         /// </summary>
         /// <param name="color">The Color to cast to an integer.</param>
         /// <returns>The resulting integer.</returns>
@@ -1472,7 +1472,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Cast an integer to a Color.
+        ///     Cast an integer to a Color.
         /// </summary>
         /// <param name="color">The integer to cast to a Color.</param>
         /// <returns>The resulting Color.</returns>
@@ -1482,7 +1482,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Cast an unsigned integer to a Color.
+        ///     Cast an unsigned integer to a Color.
         /// </summary>
         /// <param name="color">The unsigned integer to cast to a Color.</param>
         /// <returns>The resulting Color.</returns>
