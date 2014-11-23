@@ -115,7 +115,7 @@ Installing MySql.Data.dll on linux
 - Locate the section ```<system.data>```.
 - Inside ```<DbProviderFactories>```, add the following. If you have a MySql Connector/Net version other than 6.9.4.0, change the ```Version``` field accordingly.
 
-  ```
+``` XML
 <add name="MySQL Data Provider" invariant="MySql.Data.MySqlClient"
                  description=".Net Framework Data Provider for MySQL"
                  type="MySql.Data.MySqlClient.MySqlClientFactory, MySql.Data, Version=6.9.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d" />
@@ -124,8 +124,43 @@ Installing MySql.Data.dll on linux
 Missing Documention
 ===
 
-- Multiple classes in SampSharp.GameMode lack documentation
-- Benchmark testing
+* Add benchmark tests
+* The following classes in SampSharp.GameMode lack documentation:
+```
+Display.Menu
+Events.PlayerEditObjectEventArgs
+Events.PlayerEnterModShopEventArgs
+Events.PlayerEnterVehicleEventArgs
+Events.PlayerEventArgs
+Events.PlayerInteriorChangedEventArgs
+Events.PlayerKeyStateChangedEventArgs
+Events.PlayerObjectEventArgs
+Events.PlayerPickupEventArgs
+Events.PlayerRequestClassEventArgs
+Events.PlayerSelectObjectEventArgs
+Events.PlayerSelectedMenuRowEventArgs
+Events.PlayerStateEventArgs
+Events.PlayerTextEventArgs
+Events.PlayerVehicleEventArgs
+Events.RconEventArgs
+Events.RconLoginAttemptEventArgs
+Events.StreamPlayerEventArgs
+Events.UnoccupiedVehicleEventArgs
+Events.VehicleEventArgs
+Events.VehicleModEventArgs
+Events.VehiclePaintjobEventArgs
+Events.VehicleResprayedEventArgs
+Events.WeaponShotEventArgs
+LogWriter
+SAMP.Commands.DetectedCommand
+SAMP.PVarCollection
+SAMP.PlayerTextLabel
+World.GangZone
+World.GlobalObject
+World.PlayerObject
+World.TextLabel
+World.Vector
+```
 
 Licence
 ===
