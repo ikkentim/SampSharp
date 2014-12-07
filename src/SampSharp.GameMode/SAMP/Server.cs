@@ -12,6 +12,8 @@
 // For more information, please refer to <http://unlicense.org>
 
 using System;
+using System.Diagnostics;
+using System.Linq;
 using SampSharp.GameMode.Natives;
 
 namespace SampSharp.GameMode.SAMP
@@ -109,6 +111,21 @@ namespace SampSharp.GameMode.SAMP
         public static void SendRconCommand(string command)
         {
             Native.SendRconCommand(command);
+        }
+
+        /// <summary>
+        ///     Toggle debug output in console.
+        /// </summary>
+        /// <param name="toggle">True to log debug output to console, False otherwise.</param>
+        public static void ToggleDebugOutput(bool toggle)
+        {
+            var logger = Debug.Listeners.OfType<ConsoleTraceListener>().FirstOrDefault();
+
+            if (toggle && logger == null)
+                Debug.Listeners.Add(new ConsoleTraceListener());
+                
+            else if (!toggle && logger != null)
+                Debug.Listeners.Remove(logger);
         }
     }
 }
