@@ -34,7 +34,11 @@ struct event_t {
 };
 typedef std::map<std::string, event_t *> EventMap;
 
-typedef std::map<int, uint32_t> TimerMap;
+struct timer_t {
+    uint32_t handle;
+    bool repeating;
+};
+typedef std::map<int, timer_t> TimerMap;
 
 typedef struct gamemodeimage_t {
     MonoImage *image;
