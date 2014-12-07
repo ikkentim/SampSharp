@@ -215,7 +215,7 @@ namespace SampSharp.GameMode
 
         public override void Write(object value)
         {
-            Write(value.ToString());
+            Write(value == null ? string.Empty : value.ToString());
         }
 
         public override void Write(uint value)
