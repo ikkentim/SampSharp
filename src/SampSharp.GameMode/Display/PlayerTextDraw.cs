@@ -71,6 +71,8 @@ namespace SampSharp.GameMode.Display
                 throw new ArgumentNullException("owner");
 
             IsApplyFixes = true;
+            AutoDestroy = true;
+
             Id = -1;
             Owner = owner;
             Text = "_";
@@ -133,6 +135,12 @@ namespace SampSharp.GameMode.Display
         ///     Gets or sets whether SA-MP fixes should be applied.
         /// </summary>
         public bool IsApplyFixes { get; set; }
+
+        /// <summary>
+        ///     Gets or sets whether the textdraw should automatically be destroyed when hidden.
+        /// </summary>
+        /// <remarks>The textdraw will automatically be recreated once .Show is called.</remarks>
+        public bool AutoDestroy { get; set; }
 
         /// <summary>
         ///     Gets or sets the <see cref="TextDrawAlignment" /> of this player-textdraw.
@@ -526,6 +534,12 @@ namespace SampSharp.GameMode.Display
             _visible = false;
 
             Native.PlayerTextDrawHide(Owner.Id, Id);
+
+            if (AutoDestroy)
+            {
+                Native.PlayerTextDrawDestroy(Owner.Id, Id);
+                Id = -1;
+            }
         }
 
         /// <summary>
