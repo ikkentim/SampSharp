@@ -75,10 +75,19 @@ void SAMPGDK_CALL SampSharp::ProcessTimerTick(int timerid, void *data) {
 	void *args[2];
 	args[0] = &timerid;
     args[1] = NULL;
+    timer_t * timer = NULL;
     if (timers.find(timerid) != timers.end()) {
-        args[1] = mono_gchandle_get_target(timers[timerid]);
+        timer = &timers[timerid];
+        args[1] = mono_gchandle_get_target(timer->handle);
     }
 	CallEvent(method, gameModeHandle, args);
+
+    if (timer && !timer->repeating) {
+        if (args[1]) {
+            mono_gchandle_free(timer->handle);
+        }
+        timers.erase(timerid);
+    }
 }
 
 int SampSharp::SetRefTimer(int interval, bool repeat, MonoObject *params) {
@@ -88,7 +97,8 @@ int SampSharp::SetRefTimer(int interval, bool repeat, MonoObject *params) {
 
     uint32_t handle = mono_gchandle_new(params, false);
     int id = SetTimer(interval, repeat, SampSharp::ProcessTimerTick, &handle);
-    timers[id] = handle;
+
+    timers[id] = { handle, repeat };
     return id;
 }
 
@@ -96,8 +106,8 @@ int SampSharp::KillRefTimer(int timerid) {
 
     if (timers.find(timerid) == timers.end())
     {
-        uint32_t handle = timers[timerid];
-        mono_gchandle_free(handle);
+        timer_t timer = timers[timerid];
+        mono_gchandle_free(timer.handle);
 
         timers.erase(timerid);
     }
