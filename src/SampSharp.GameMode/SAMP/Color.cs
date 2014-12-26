@@ -1298,7 +1298,7 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public static Color Transparent
         {
-            get { return new Color(0x00, 0x00, 0x00, 0x00); }
+            get { return new Color(0xff, 0xff, 0xff, 0x00); }
         }
 
         /// <summary>
