@@ -68,7 +68,7 @@ namespace SampSharp.GameMode.Tools
         protected void CheckDisposure()
         {
             if (Disposed)
-                throw new ObjectDisposedException("Cannot access disposed resource.");
+                throw new ObjectDisposedException(GetType().ToString());
         }
 
         /// <summary>
