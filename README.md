@@ -1,3 +1,8 @@
+__Notice__
+On 28-12-2014 I've removed the mono binaries and some old files from the git history. Download the mono binaries from http://deploy.timpotze.nl/packages/mono-portable.zip and store them inside the /environment folder if you are running SampSharp on windows.
+
+----
+
 SampSharp
 -------------
 
