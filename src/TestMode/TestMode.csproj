@@ -59,10 +59,6 @@
       <Project>{ccfb350d-bd04-41ab-a9f8-79767e94727e}</Project>
       <Name>SampSharp.GameMode</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SampSharp.Streamer\SampSharp.Streamer.csproj">
-      <Project>{f3b075c9-82aa-4f06-bc37-457097f65315}</Project>
-      <Name>SampSharp.Streamer</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
