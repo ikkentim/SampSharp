@@ -13,6 +13,10 @@ crashinfo.txt
 SampSharp_errors.log
 server_log.txt
 
+# Mono
+/mono/
+/mono-2.0.dll
+
 # Build directories
 /gamemode/
 /plugins/
