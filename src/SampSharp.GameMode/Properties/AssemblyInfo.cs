@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Framework for SA-MP#")]
 [assembly: AssemblyDescription("Framework for SA-MP#")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Tim Potze")]
 [assembly: AssemblyProduct("Framework for SA-MP#")]
 [assembly: AssemblyCopyright("Copyright © Tim Potze 2014")]
 [assembly: AssemblyTrademark("")]
