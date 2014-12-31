@@ -3,6 +3,8 @@ On 28-12-2014 I've removed the mono binaries and some old files from the git his
 
 ----
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ikkentim/SampSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 SampSharp
 -------------
 
