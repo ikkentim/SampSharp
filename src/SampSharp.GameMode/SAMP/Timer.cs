@@ -144,5 +144,14 @@ namespace SampSharp.GameMode.SAMP
             if (Tick != null)
                 Tick(this, e);
         }
+
+        /// <summary>
+        ///     Restarts this Timer.
+        /// </summary>
+        public void Restart()
+        {
+            IsRunning = false;
+            IsRunning = true;
+        }
     }
 }
