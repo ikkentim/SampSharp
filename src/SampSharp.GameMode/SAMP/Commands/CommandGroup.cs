@@ -115,7 +115,20 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>The new CommandGroup instance.</returns>
         public static CommandGroup Register(string name, string alias = null, CommandGroup parentGroup = null)
         {
-            return new CommandGroup(name, alias, parentGroup);
+            var group =
+                All.FirstOrDefault(
+                    g =>
+                        g.Name == name &&
+                        (g.ParentGroup == parentGroup || (g.ParentGroup == null && parentGroup == null) ||
+                         g.ParentGroup.CommandPath == parentGroup.CommandPath));
+
+            if (group == null)
+                return new CommandGroup(name, alias, parentGroup);
+
+            group.Alias = alias ?? group.Alias;
+            group.ParentGroup = parentGroup ?? group.ParentGroup;
+
+            return group;
         }
     }
 }
