@@ -1404,7 +1404,7 @@ namespace SampSharp.GameMode.World
         /// <param name="type">Type of checkpoint.</param>
         /// <param name="point">The point to set the checkpoint at.</param>
         /// <param name="nextPosition">Coordinates of the next point, for the arrow facing direction.</param>
-        /// <param name="size">Size (diameter) of the checkpoint</param>
+        /// <param name="size">Length (diameter) of the checkpoint</param>
         public virtual void SetRaceCheckpoint(CheckpointType type, Vector point, Vector nextPosition, float size)
         {
             CheckDisposure();

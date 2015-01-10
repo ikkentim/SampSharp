@@ -1252,9 +1252,9 @@ namespace SampSharp.GameMode.Natives
         /// </summary>
         /// <param name="index">The animation index, returned by <see cref="GetPlayerAnimationIndex" />.</param>
         /// <param name="animlib">String variable that stores the animation library.</param>
-        /// <param name="animlibSize">Size of the string that stores the animation library.</param>
+        /// <param name="animlibSize">Length of the string that stores the animation library.</param>
         /// <param name="animname">String variable that stores the animation name.</param>
-        /// <param name="animnameSize">Size of the string that stores the animation name.</param>
+        /// <param name="animnameSize">Length of the string that stores the animation name.</param>
         /// <returns>True on success, False otherwise.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetAnimationName(int index, out string animlib, int animlibSize, out string animname,
@@ -1318,7 +1318,7 @@ namespace SampSharp.GameMode.Natives
         /// <param name="nextx">X-Coordinate of the next point, for the arrow facing direction.</param>
         /// <param name="nexty">X-Coordinate of the next point, for the arrow facing direction.</param>
         /// <param name="nextz">X-Coordinate of the next point, for the arrow facing direction.</param>
-        /// <param name="size">Size (diameter) of the checkpoint</param>
+        /// <param name="size">Length (diameter) of the checkpoint</param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerRaceCheckpoint(int playerid, int type, float x, float y, float z, float nextx,
@@ -2101,7 +2101,7 @@ namespace SampSharp.GameMode.Natives
         /// <param name="type">Type of checkpoint.</param>
         /// <param name="point">Position of the checkpoint.</param>
         /// <param name="nextPosition">Position of the next point, for the arrow facing direction.</param>
-        /// <param name="size">Size (diameter) of the checkpoint</param>
+        /// <param name="size">Length (diameter) of the checkpoint</param>
         /// <returns>This function doesn't return a specific value.</returns>
         public static bool SetPlayerRaceCheckpoint(int playerid, CheckpointType type, Vector point, Vector nextPosition,
             float size)

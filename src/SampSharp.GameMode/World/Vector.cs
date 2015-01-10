@@ -15,10 +15,17 @@ using System;
 
 namespace SampSharp.GameMode.World
 {
+    /// <summary>
+    ///     Represents a 3D vector.
+    /// </summary>
     public struct Vector
     {
-        #region Constructors
-
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Vector" /> struct.
+        /// </summary>
+        /// <param name="x">Value of the x component.</param>
+        /// <param name="y">Value of the y component.</param>
+        /// <param name="z">Value of the z component.</param>
         public Vector(float x, float y, float z) : this()
         {
             X = x;
@@ -26,171 +33,283 @@ namespace SampSharp.GameMode.World
             Z = z;
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Vector" /> struct with the z component set to 0.
+        /// </summary>
+        /// <param name="x">Value of the x component.</param>
+        /// <param name="y">Value of the y component.</param>
         public Vector(float x, float y)
             : this(x, y, 0)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Vector" /> struct.
+        /// </summary>
+        /// <param name="x">Value of the x component.</param>
+        /// <param name="y">Value of the y component.</param>
+        /// <param name="z">Value of the z component.</param>
         public Vector(double x, double y, double z)
             : this((float) x, (float) y, (float) z)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Vector" /> struct with the z component set to 0.
+        /// </summary>
+        /// <param name="x">Value of the x component.</param>
+        /// <param name="y">Value of the y component.</param>
         public Vector(double x, double y)
             : this(x, y, 0)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Vector" /> struct with same values for x, y and z components.
+        /// </summary>
+        /// <param name="xyz">Value of x, y and z components.</param>
         public Vector(float xyz)
             : this(xyz, xyz, xyz)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Vector" /> struct with same values for x, y and z components.
+        /// </summary>
+        /// <param name="xyz">Value of x, y and z components.</param>
         public Vector(double xyz)
             : this((float) xyz)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Vector" /> struct.
+        /// </summary>
+        /// <param name="vector">A <see cref="Vector" /> copy it's components from.</param>
         public Vector(Vector vector)
             : this(vector.X, vector.Y, vector.Z)
         {
         }
 
-        #endregion
-
-        #region Properties
-
+        /// <summary>
+        ///     Gets or sets the X componenent of this <see cref="Vector" />.
+        /// </summary>
         public float X { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Y componenent of this <see cref="Vector" />.
+        /// </summary>
         public float Y { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Z componenent of this <see cref="Vector" />.
+        /// </summary>
         public float Z { get; set; }
 
-        #endregion
-
+        /// <summary>
+        ///     Gets an empty <see cref="Vector" />.
+        /// </summary>
         public static Vector Zero
         {
             get { return new Vector(0); }
         }
 
+        /// <summary>
+        ///     Gets a <see cref="Vector" /> with each component set to 1.
+        /// </summary>
         public static Vector One
         {
             get { return new Vector(1); }
         }
 
-        public static Vector CrossProduct(Vector a, Vector b)
+        /// <summary>
+        ///     Gets the length of this <see cref="Vector" />.
+        /// </summary>
+        public float Length
         {
-            return new Vector(a.Y*b.Z - a.Z*b.Y, a.Z*b.X - a.X*b.Z, a.X*b.Y - a.Y*b.X);
+            get { return DistanceTo(Zero); }
         }
 
-        #region Methods
-
-        public float DotProduct(Vector other)
+        /// <summary>
+        ///     Gets whether this <see cref="Vector" /> is empty.
+        /// </summary>
+        public bool IsEmpty
         {
-            return X*other.X + Y*other.Y + Z*other.Z;
+            get { return X == 0 && Y == 0 && Z == 0; }
         }
 
-        public Vector Add(Vector v)
+        /// <summary>
+        ///     Adds all components of a different <see cref="Vector" /> to this <see cref="Vector" />.
+        /// </summary>
+        /// <param name="other">The <see cref="Vector" /> to add to this <see cref="Vector" />.</param>
+        public void Add(Vector other)
         {
-            X += v.X;
-            Y += v.Y;
-            Z += v.Z;
-            return this;
+            X += other.X;
+            Y += other.Y;
+            Z += other.Z;
         }
 
-        public float DistanceTo(Vector v)
+        /// <summary>
+        ///     Gets the distance to another vector.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public float DistanceTo(Vector other)
         {
-            float dx = X - v.X;
-            float dy = Y - v.Y;
-            float dz = Z - v.Z;
+            float dx = X - other.X;
+            float dy = Y - other.Y;
+            float dz = Z - other.Z;
             return (float) Math.Sqrt(dx*dx + dy*dy + dz*dz);
         }
 
-        public float Size()
+        /// <summary>
+        ///     Normalizes this <see cref="Vector" /> to a single unit.
+        /// </summary>
+        public void Normalize()
         {
-            return DistanceTo(Zero);
+            float length = Length;
+            X /= length;
+            Y /= length;
+            Z /= length;
         }
 
-        public Vector Normalize()
-        {
-            float size = Size();
-            X /= size;
-            Y /= size;
-            Z /= size;
-            return this;
-        }
-
-        #endregion
-
-        #region Operators
-
+        /// <summary>
+        ///     Adds the left <see cref="Vector" />'s components to the right <see cref="Vector" />'s components and stores it in a
+        ///     new <see cref="Vector" />.
+        /// </summary>
+        /// <param name="left">A <see cref="Vector" />.</param>
+        /// <param name="right">A <see cref="Vector" />.</param>
+        /// <returns>A new <see cref="Vector" />.</returns>
         public static Vector operator +(Vector left, Vector right)
         {
             return new Vector(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
         }
 
+        /// <summary>
+        ///     Substracts the right <see cref="Vector" />'s components from the left <see cref="Vector" />'s components and stores
+        ///     it in a new <see cref="Vector" />.
+        /// </summary>
+        /// <param name="left">A <see cref="Vector" />.</param>
+        /// <param name="right">A <see cref="Vector" />.</param>
+        /// <returns>A new <see cref="Vector" />.</returns>
         public static Vector operator -(Vector left, Vector right)
         {
             return new Vector(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
         }
 
+        /// <summary>
+        ///     Creates a <see cref="Vector" /> with the components set to the negative values of the given
+        ///     <paramref name="vector" />'s components.
+        /// </summary>
+        /// <param name="vector">The vector to invert.</param>
+        /// <returns>The new <see cref="Vector" />.</returns>
         public static Vector operator -(Vector vector)
         {
             return new Vector(-vector.X, -vector.Y, -vector.Z);
         }
 
+        /// <summary>
+        ///     Multiplies the components <see cref="Vector" /> by the given scalar and stores them in a new <see cref="Vector" />.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector" />.</param>
+        /// <param name="scalar">The scalar.</param>
+        /// <returns>The new <see cref="Vector" />.</returns>
         public static Vector operator *(Vector vector, float scalar)
         {
             return new Vector(vector.X*scalar, vector.Y*scalar, vector.Z*scalar);
         }
 
+        /// <summary>
+        ///     Multiplies the components <see cref="Vector" /> by the components of the right <see cref="Vector" /> and stores
+        ///     them in a new <see cref="Vector" />.
+        /// </summary>
+        /// <param name="left">A <see cref="Vector" />.</param>
+        /// <param name="right">A <see cref="Vector" />.</param>
+        /// <returns>The new <see cref="Vector" />.</returns>
+        public static Vector operator *(Vector left, Vector right)
+        {
+            return new Vector(left.X*right.X, left.Y*right.Y, left.Z*right.Z);
+        }
+
+        /// <summary>
+        ///     Divides the components <see cref="Vector" /> by the given scalar and stores them in a new <see cref="Vector" />.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector" />.</param>
+        /// <param name="scalar">The scalar.</param>
+        /// <returns>The new <see cref="Vector" />.</returns>
         public static Vector operator /(Vector vector, float scalar)
         {
             return new Vector(vector.X/scalar, vector.Y/scalar, vector.Z/scalar);
         }
 
+        /// <summary>
+        ///     Divides the components <see cref="Vector" /> by the components of the right <see cref="Vector" /> and stores them
+        ///     in a new <see cref="Vector" />.
+        /// </summary>
+        /// <param name="left">The numerator.</param>
+        /// <param name="right">The denominator.</param>
+        /// <returns>The new <see cref="Vector" />.</returns>
+        public static Vector operator /(Vector left, Vector right)
+        {
+            return new Vector(left.X/right.X, left.Y/right.Y, left.Z/right.Z);
+        }
+
+        /// <summary>
+        ///     Tests whether all components of both <see cref="Vector" /> are equivalent.
+        /// </summary>
+        /// <param name="left">Instance of <see cref="Vector" /> to compare.</param>
+        /// <param name="right">Instance of <see cref="Vector" /> to compare.</param>
+        /// <returns>true if all components of both <see cref="Vector" /> are equivalent; otherwise, false.</returns>
         public static bool operator ==(Vector left, Vector right)
         {
-            try
-            {
-                return left.Equals(right);
-            }
-            catch (NullReferenceException)
-            {
-                return false;
-            }
+            return left.Equals(right);
         }
 
+        /// <summary>
+        ///     Tests whether any component of both <see cref="Vector" /> are not equivalent.
+        /// </summary>
+        /// <param name="left">Instance of <see cref="Vector" /> to compare.</param>
+        /// <param name="right">Instance of <see cref="Vector" /> to compare.</param>
+        /// <returns>true if any component of both <see cref="Vector" /> are not equivalent; otherwise, false.</returns>
         public static bool operator !=(Vector left, Vector right)
         {
-            try
-            {
-                return !left.Equals(right);
-            }
-            catch (NullReferenceException)
-            {
-                return false;
-            }
+            return !left.Equals(right);
         }
 
-        #endregion
-
-        #region Object releated methods
-
-        public Vector Clone()
-        {
-            return new Vector(this);
-        }
-
+        /// <summary>
+        ///     Indicates whether this instance and a specified object are equal.
+        /// </summary>
+        /// <param name="other">Another object to compare to.</param>
+        /// <returns>
+        ///     true if <paramref name="other" /> and this instance are the same type and represent the same value; otherwise,
+        ///     false.
+        /// </returns>
         public bool Equals(Vector other)
         {
             return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
         }
 
+        /// <summary>
+        ///     Indicates whether this instance and a specified object are equal.
+        /// </summary>
+        /// <returns>
+        ///     true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false.
+        /// </returns>
+        /// <param name="obj">Another object to compare to. </param>
+        /// <filterpriority>2</filterpriority>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             return obj is Vector && Equals((Vector) obj);
         }
 
+        /// <summary>
+        ///     Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>
+        ///     A 32-bit signed integer that is the hash code for this instance.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
         {
             unchecked
@@ -202,11 +321,16 @@ namespace SampSharp.GameMode.World
             }
         }
 
+        /// <summary>
+        ///     Returns the fully qualified type name of this instance.
+        /// </summary>
+        /// <returns>
+        ///     A <see cref="T:System.String" /> containing a fully qualified type name.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
             return "(" + X + ", " + Y + ", " + Z + ")";
         }
-
-        #endregion
     }
 }
