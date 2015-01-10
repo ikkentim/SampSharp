@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright (C) 2014 Tim Potze
+// Copyright (C) 2015 Tim Potze
 // 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -119,11 +119,11 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="toggle">True to log debug output to console, False otherwise.</param>
         public static void ToggleDebugOutput(bool toggle)
         {
-            var logger = Debug.Listeners.OfType<ConsoleTraceListener>().FirstOrDefault();
+            ConsoleTraceListener logger = Debug.Listeners.OfType<ConsoleTraceListener>().FirstOrDefault();
 
             if (toggle && logger == null)
                 Debug.Listeners.Add(new ConsoleTraceListener());
-                
+
             else if (!toggle && logger != null)
                 Debug.Listeners.Remove(logger);
         }
