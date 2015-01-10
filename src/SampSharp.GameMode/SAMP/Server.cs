@@ -15,6 +15,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP
 {
@@ -23,6 +24,14 @@ namespace SampSharp.GameMode.SAMP
     /// </summary>
     public static class Server
     {
+        /// <summary>
+        ///     Gets the maximum number of players that can join the server, as set by the server var 'maxplayers' in server.cfg.
+        /// </summary>
+        public static int MaxPlayers
+        {
+            get { return Native.GetMaxPlayers(); }
+        }
+
         /// <summary>
         ///     Blocks an IP address from further communication with the server
         ///     for a set amount of time (with wildcards allowed).
@@ -126,6 +135,31 @@ namespace SampSharp.GameMode.SAMP
 
             else if (!toggle && logger != null)
                 Debug.Listeners.Remove(logger);
+        }
+
+        /// <summary>
+        ///     Connect an NPC to the server.
+        /// </summary>
+        /// <param name="name">The name the NPC should connect as. Must follow the same rules as normal player names.</param>
+        /// <param name="script">The NPC script name that is located in the npcmodes folder (without the .amx extension).</param>
+        /// <returns>
+        ///     An instance of <see cref="GtaPlayer" /> based on the first available player slot. If no slots are available,
+        ///     null.
+        /// </returns>
+        public static GtaPlayer ConnectNPC(string name, string script)
+        {
+            int id = -1;
+            int max = MaxPlayers;
+
+            for (int i = 0; i < max; i++)
+                if (!Native.IsPlayerConnected(i))
+                    id = i;
+
+            if (id == -1)
+                return null;
+
+            Native.ConnectNPC(name, script);
+            return GtaPlayer.FindOrCreate(id);
         }
     }
 }
