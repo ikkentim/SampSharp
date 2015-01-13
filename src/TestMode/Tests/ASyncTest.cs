@@ -14,6 +14,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 using Timer = SampSharp.GameMode.SAMP.Timer;
@@ -23,6 +24,7 @@ namespace TestMode.Tests
     public class ASyncTest : ITest
     {
         private Thread _main;
+
         public void Start(GameMode gameMode)
         {
             //Proof timers and C# async can run at the same time
@@ -41,7 +43,7 @@ namespace TestMode.Tests
             gameMode.PlayerConnected += gameMode_PlayerConnected;
         }
 
-        void gameMode_PlayerConnected(object sender, SampSharp.GameMode.Events.PlayerEventArgs e)
+        private void gameMode_PlayerConnected(object sender, PlayerEventArgs e)
         {
             ASyncPlayerConnectedDelayed(e.Player);
         }
@@ -62,6 +64,7 @@ namespace TestMode.Tests
 
             Sync.Run(() => Console.WriteLine("Sync2: Mainthread: {0}", Thread.CurrentThread == _main));
         }
+
         public void ASyncTestMethod()
         {
             Task.Run(() =>

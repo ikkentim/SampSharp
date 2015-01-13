@@ -28,6 +28,7 @@ namespace TestMode
         {
             new CommandsTest(),
             new ASyncTest(),
+            new DelayTest(),
             new MenuTest(),
             new DisposureTest(),
             new DialogTest(),

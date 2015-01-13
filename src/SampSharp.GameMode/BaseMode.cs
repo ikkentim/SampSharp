@@ -93,6 +93,7 @@ namespace SampSharp.GameMode
             controllers.Add(new PlayerTextDrawController());
             controllers.Add(new TextDrawController());
             controllers.Add(new TimerController());
+            controllers.Add(new DelayController());
             controllers.Add(new GtaVehicleController());
             controllers.Add(new SyncController());
             controllers.Add(new PickupController());

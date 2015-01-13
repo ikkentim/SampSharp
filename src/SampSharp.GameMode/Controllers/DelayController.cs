@@ -11,29 +11,27 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
 using SampSharp.GameMode.SAMP;
-using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.Controllers
 {
     /// <summary>
-    ///     A controller processing all timer actions.
+    ///     A controller processing delays.
     /// </summary>
-    public class TimerController : IEventListener
+    public class DelayController : IEventListener
     {
         /// <summary>
-        ///     Registers the events this TimerController wants to listen to.
+        ///     Registers the events this DelayController wants to listen to.
         /// </summary>
         /// <param name="gameMode">The running GameMode.</param>
-        public virtual void RegisterEvents(BaseMode gameMode)
+        public void RegisterEvents(BaseMode gameMode)
         {
             gameMode.TimerTick += (sender, args) =>
             {
-                var timer = sender as Timer;
+                var delay = sender as Delay;
 
-                if (timer != null)
-                    timer.OnTick(args);
+                if (delay != null && delay.Action != null)
+                    delay.Action();
             };
         }
     }
