@@ -14,6 +14,7 @@
 using System;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
+using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP
@@ -21,7 +22,7 @@ namespace SampSharp.GameMode.SAMP
     /// <summary>
     ///     Represents a SA:MP timer.
     /// </summary>
-    public sealed class Timer : IdentifiedPool<Timer>, IIdentifiable
+    public sealed class Timer : Disposable, IIdentifiable
     {
         private const int InvalidId = -1;
 
@@ -122,8 +123,6 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
-
             IsRunning = false;
         }
 
@@ -139,7 +138,10 @@ namespace SampSharp.GameMode.SAMP
         public void OnTick(EventArgs e)
         {
             _hit = true;
-            if (!Repeat) Id = InvalidId;
+            if (!Repeat)
+            {
+                Id = InvalidId;
+            }
 
             if (Tick != null)
                 Tick(this, e);

@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Controllers\CommandController.cs" />
     <Compile Include="Controllers\ControllerCollection.cs" />
+    <Compile Include="Controllers\DelayController.cs" />
     <Compile Include="Controllers\DialogController.cs" />
     <Compile Include="Controllers\GlobalObjectController.cs" />
     <Compile Include="Controllers\IController.cs" />

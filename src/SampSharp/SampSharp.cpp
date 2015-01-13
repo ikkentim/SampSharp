@@ -82,19 +82,28 @@ void SAMPGDK_CALL SampSharp::ProcessTimerTick(int timerid, void *data) {
     }
 	CallEvent(method, gameModeHandle, args);
 
+    /*
+     * After OnTimerTick has been called and the timer is not repeating,
+     * drop the handle and erase the timer from the map.
+     */
     if (timer && !timer->repeating) {
-        if (args[1]) {
             mono_gchandle_free(timer->handle);
-        }
         timers.erase(timerid);
     }
 }
 
 int SampSharp::SetRefTimer(int interval, bool repeat, MonoObject *params) {
     if (!params) {
+        /*
+         * If no params are parsed, there is no need to keep a reference to it,
+         * or the id.
+         */
         return SetTimer(interval, repeat, SampSharp::ProcessTimerTick, NULL);
     }
 
+    /*
+     * Stop the garbage collector from collecting the params.
+     */
     uint32_t handle = mono_gchandle_new(params, false);
     int id = SetTimer(interval, repeat, SampSharp::ProcessTimerTick, &handle);
 
@@ -104,6 +113,9 @@ int SampSharp::SetRefTimer(int interval, bool repeat, MonoObject *params) {
 
 int SampSharp::KillRefTimer(int timerid) {
 
+    /*
+     * Delete the timer from the map.
+     */
     if (timers.find(timerid) == timers.end())
     {
         timer_t timer = timers[timerid];

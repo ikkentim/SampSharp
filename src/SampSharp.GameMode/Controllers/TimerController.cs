@@ -11,6 +11,7 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
+using System;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.Tools;
 
@@ -19,7 +20,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all timer actions.
     /// </summary>
-    public class TimerController : Disposable, IEventListener, ITypeProvider
+    public class TimerController : IEventListener
     {
         /// <summary>
         ///     Registers the events this TimerController wants to listen to.
@@ -29,36 +30,13 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.TimerTick += (sender, args) =>
             {
-                if (sender == null) return;
+                if (!(sender is Timer)) return;
 
                 var timer = sender as Timer;
 
                 if (timer != null)
                     timer.OnTick(args);
             };
-        }
-
-        /// <summary>
-        ///     Registers types this TimerController requires the system to use.
-        /// </summary>
-        public virtual void RegisterTypes()
-        {
-            Timer.Register<Timer>();
-        }
-
-        /// <summary>
-        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <param name="disposing">Whether managed resources should be disposed.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                foreach (Timer t in Timer.All)
-                {
-                    t.Dispose();
-                }
-            }
         }
     }
 }
