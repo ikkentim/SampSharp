@@ -53,7 +53,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets an instance of VehicleModelInfo about this Vehicle.
         /// </summary>
-        public VehicleModelInfo Info
+        public VehicleModelInfo ModelInfo
         {
             get { return VehicleModelInfo.ForVehicle(this); }
         }

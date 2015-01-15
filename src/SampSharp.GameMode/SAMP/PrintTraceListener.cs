@@ -11,18 +11,24 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
-using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.World;
+using System.Diagnostics;
+using SampSharp.GameMode.Natives;
 
-namespace TestMode.Tests
+namespace SampSharp.GameMode.SAMP
 {
-    public class VehicleInfoTest : ITest
+    /// <summary>
+    ///     TraceListener that writes to the console.
+    /// </summary>
+    public class PrintTraceListener : TraceListener
     {
-        public void Start(GameMode gameMode)
+        public override void Write(string message)
         {
-            GtaVehicle veh = GtaVehicle.Create(VehicleModelType.Burrito, new Vector(5), 0, -1, -1);
-            Console.WriteLine("Vehiclesize of {1}: {0}", veh.ModelInfo[VehicleModelInfoType.Size], veh.ModelInfo.Name);
+            Native.Print(message);
+        }
+
+        public override void WriteLine(string message)
+        {
+            Write(message.TrimEnd('\r', '\n'));
         }
     }
 }

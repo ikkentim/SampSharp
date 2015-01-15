@@ -128,10 +128,10 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="toggle">True to log debug output to console, False otherwise.</param>
         public static void ToggleDebugOutput(bool toggle)
         {
-            ConsoleTraceListener logger = Debug.Listeners.OfType<ConsoleTraceListener>().FirstOrDefault();
+            PrintTraceListener logger = Debug.Listeners.OfType<PrintTraceListener>().FirstOrDefault();
 
             if (toggle && logger == null)
-                Debug.Listeners.Add(new ConsoleTraceListener());
+                Debug.Listeners.Add(new PrintTraceListener());
 
             else if (!toggle && logger != null)
                 Debug.Listeners.Remove(logger);
