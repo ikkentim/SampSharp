@@ -13,13 +13,14 @@
 
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Pools;
 
 namespace SampSharp.GameMode.Tools
 {
     /// <summary>
-    ///     Contains methods to run an action on the main VM thread from a different thread.
+    ///     Contains methods to run an action on the main thread from a different thread.
     /// </summary>
     public static class Sync
     {
@@ -28,16 +29,16 @@ namespace SampSharp.GameMode.Tools
         /// </summary>
         public static bool IsRequired
         {
-            get { return SyncController.IsMainThread; }
+            get { return SyncController.MainThread != Thread.CurrentThread; }
         }
 
         /// <summary>
-        ///     Run a function on the main VM thread.
+        ///     Run a function on the main  thread.
         /// </summary>
         /// <param name="action">The action the run</param>
-        public static void Run(Action action)
+        public static async Task Run(Action action)
         {
-            if (SyncController.IsMainThread)
+            if (!IsRequired)
             {
                 action();
                 return;
@@ -48,7 +49,7 @@ namespace SampSharp.GameMode.Tools
 
             while (!task.Done)
             {
-                Thread.Sleep(1);
+                await Task.Delay(1);
             }
         }
 
@@ -58,16 +59,16 @@ namespace SampSharp.GameMode.Tools
         /// <typeparam name="TResult">The type of the return value of the method that the action encapsulates.</typeparam>
         /// <param name="action">The action to run.</param>
         /// <returns>The return value of the method that the action encapsulates.</returns>
-        public static TResult Run<TResult>(Func<TResult> action)
+        public static async Task<TResult> Run<TResult>(Func<TResult> action)
         {
-            if (SyncController.IsMainThread)
+            if (!IsRequired)
             {
                 return action();
             }
 
             TResult result = default(TResult);
 
-            Run(() => { result = action(); });
+            await Run(() => { result = action(); });
 
             return result;
         }

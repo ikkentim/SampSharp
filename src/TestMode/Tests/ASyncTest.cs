@@ -15,6 +15,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using SampSharp.GameMode.Events;
+using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 using Timer = SampSharp.GameMode.SAMP.Timer;
@@ -34,6 +35,7 @@ namespace TestMode.Tests
 
             ASyncTestMethod2();
             ASyncTestMethod();
+            ASyncTestMethod3();
 
             var timer = new Timer(1000, false);
             timer.Tick += (sender, args) => Console.WriteLine("Timer: Mainthread: {0}", _main == Thread.CurrentThread);
@@ -74,6 +76,15 @@ namespace TestMode.Tests
 
                 Sync.Run(() => Console.WriteLine("Sync: Mainthread: {0}", Thread.CurrentThread == _main));
             });
+        }
+
+        public async void ASyncTestMethod3()
+        {
+            await Task.Delay(2500);
+            Console.WriteLine("ASync is fetching tick count from main thread");
+            var ticks = await Sync.Run(() => Server.GetTickCount());
+
+            Console.WriteLine("Tick count is {0}", ticks);
         }
     }
 }

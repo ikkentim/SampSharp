@@ -24,15 +24,10 @@ namespace SampSharp.GameMode.Controllers
     {
         private static BaseMode _gameMode;
         private static bool _waiting;
-        private static Thread _mainThread;
-
         /// <summary>
-        ///     Gets whether the current thread is the main VM thread.
+        ///     Gets the main thread.
         /// </summary>
-        public static bool IsMainThread
-        {
-            get { return Thread.CurrentThread == _mainThread; }
-        }
+        public static Thread MainThread { get; private set; }
 
         /// <summary>
         ///     Registers the events this SyncController wants to listen to.
@@ -41,7 +36,7 @@ namespace SampSharp.GameMode.Controllers
         public void RegisterEvents(BaseMode gameMode)
         {
             _gameMode = gameMode;
-            _mainThread = Thread.CurrentThread;
+            MainThread = Thread.CurrentThread;
         }
 
         /// <summary>
