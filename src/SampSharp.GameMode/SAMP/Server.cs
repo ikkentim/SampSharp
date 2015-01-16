@@ -161,5 +161,14 @@ namespace SampSharp.GameMode.SAMP
             Native.ConnectNPC(name, script);
             return GtaPlayer.FindOrCreate(id);
         }
+
+        /// <summary>
+        ///     Set the world weather for all players.
+        /// </summary>
+        /// <param name="weatherid">The weather to set.</param>
+        public static void SetWeather(int weatherid)
+        {
+            Native.SetWeather(weatherid);
+        }
     }
 }
