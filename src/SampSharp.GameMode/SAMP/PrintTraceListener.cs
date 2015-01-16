@@ -13,6 +13,7 @@
 
 using System.Diagnostics;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.SAMP
 {
@@ -23,7 +24,10 @@ namespace SampSharp.GameMode.SAMP
     {
         public override void Write(string message)
         {
-            Native.Print(message);
+            if (Sync.IsRequired)
+                Sync.Run(() => Native.Print(message));
+            else
+                Native.Print(message);
         }
 
         public override void WriteLine(string message)

@@ -16,6 +16,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode
 {
@@ -138,7 +139,10 @@ namespace SampSharp.GameMode
                      */
                     break;
                 default:
-                    Write(value.ToString(CultureInfo.InvariantCulture));
+                    if (Sync.IsRequired)
+                        Sync.Run(() => Write(value.ToString(CultureInfo.InvariantCulture)));
+                    else
+                        Write(value.ToString(CultureInfo.InvariantCulture));
                     break;
             }
         }

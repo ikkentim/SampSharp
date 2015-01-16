@@ -33,9 +33,10 @@ namespace TestMode.Tests
 
             _main = Thread.CurrentThread;
 
-            ASyncTestMethod2();
             ASyncTestMethod();
+            ASyncTestMethod2();
             ASyncTestMethod3();
+            ASyncTestMethod4();
 
             var timer = new Timer(1000, false);
             timer.Tick += (sender, args) => Console.WriteLine("Timer: Mainthread: {0}", _main == Thread.CurrentThread);
@@ -85,6 +86,11 @@ namespace TestMode.Tests
             var ticks = await Sync.Run(() => Server.GetTickCount());
 
             Console.WriteLine("Tick count is {0}", ticks);
+        }
+        public async void ASyncTestMethod4()
+        {
+            await Task.Delay(2500);
+            Console.WriteLine("Logging synced to main thread.");
         }
     }
 }
