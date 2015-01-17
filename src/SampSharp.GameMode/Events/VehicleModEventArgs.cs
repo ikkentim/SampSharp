@@ -27,7 +27,7 @@ namespace SampSharp.GameMode.Events
         public int ComponentId { get; set; }
 
         /// <summary>
-        /// Gets or sets whether to desync the mod (or an invalid mod) from propagating and / or crashing players.
+        ///     Gets or sets whether to desync the mod (or an invalid mod) from propagating and / or crashing players.
         /// </summary>
         public bool PreventPropagation { get; set; }
     }

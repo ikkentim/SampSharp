@@ -36,9 +36,10 @@ namespace SampSharp.GameMode.Events
         public Vector NewVelocity { get; private set; }
 
         /// <summary>
-        /// Gets or sets whether to stop the vehicle syncing its position to other players.
+        ///     Gets or sets whether to stop the vehicle syncing its position to other players.
         /// </summary>
         public bool PreventPropagation { get; set; }
+
         //@todo Implement IPropagationPreventable interface where possible
     }
 }

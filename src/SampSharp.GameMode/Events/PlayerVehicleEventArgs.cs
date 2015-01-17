@@ -55,7 +55,7 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets or sets whether to stop the vehicle syncing its position to other players.
+        ///     Gets or sets whether to stop the vehicle syncing its position to other players.
         /// </summary>
         public bool PreventPropagation { get; set; }
     }
