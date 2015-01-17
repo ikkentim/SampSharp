@@ -106,7 +106,6 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Benchmark.h" />
     <ClInclude Include="ConfigReader.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="monostring.h" />

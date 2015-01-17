@@ -11,35 +11,24 @@
 // 
 // For more information, please refer to <http://unlicense.org>
 
-using System;
-
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.Initialized" /> or <see cref="BaseMode.Exited" />
-    ///     event.
+    ///     Provides data for the <see cref="BaseMode.PlayerSpawned" /> event.
     /// </summary>
-    public class GameModeEventArgs : EventArgs
+    public class PlayerSpawnEventArgs : PlayerEventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the GameModeEventArgs class.
+        ///     Initializes a new instance of the PlayerSpawnEventArgs class.
         /// </summary>
-        public GameModeEventArgs() : this(true)
+        /// <param name="playerid">The id of the player.</param>
+        public PlayerSpawnEventArgs(int playerid) : base(playerid)
         {
         }
 
         /// <summary>
-        ///     Initializes a new instance of the GameModeEventArgs class.
+        ///     Gets or sets whether the player will be forced back to the class selection when they next spawn.
         /// </summary>
-        /// <param name="success">Whether the event has been handled successfully.</param>
-        public GameModeEventArgs(bool success)
-        {
-            Success = success;
-        }
-
-        /// <summary>
-        ///     Gets or sets whether this event has been handled sucessfully.
-        /// </summary>
-        public bool Success { get; set; }
+        public bool ReturnToClassSelection { get; set; }
     }
 }

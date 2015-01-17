@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.VehicleSpawned" /> event.
     /// </summary>
-    public class VehicleEventArgs : GameModeEventArgs
+    public class VehicleEventArgs
     {
         public VehicleEventArgs(int vehicleid)
         {

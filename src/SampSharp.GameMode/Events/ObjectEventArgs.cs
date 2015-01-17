@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.ObjectMoved" /> event.
     /// </summary>
-    public class ObjectEventArgs : GameModeEventArgs
+    public class ObjectEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the ObjectEventArgs class.

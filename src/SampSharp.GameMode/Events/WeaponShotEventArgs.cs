@@ -34,5 +34,10 @@ namespace SampSharp.GameMode.Events
         public BulletHitType BulletHitType { get; private set; }
 
         public int HitId { get; private set; }
+
+        /// <summary>
+        /// Gets or sets whether the bullets should be prevented from causing damage.
+        /// </summary>
+        public bool PreventDamage { get; set; }
     }
 }

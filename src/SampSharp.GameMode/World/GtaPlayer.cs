@@ -513,7 +513,7 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="BaseMode.OnPlayerCommandText" /> is being called.
         ///     This callback is called when a player enters a command into the client chat window, e.g. /help.
         /// </summary>
-        public event EventHandler<PlayerTextEventArgs> CommandText;
+        public event EventHandler<PlayerCommandTextEventArgs> CommandText;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerRequestClass" /> is being called.
@@ -576,7 +576,7 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="BaseMode.OnPlayerRequestSpawn" /> is being called.
         ///     Called when a player attempts to spawn via class selection.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> RequestSpawn;
+        public event EventHandler<PlayerRequestSpawnEventArgs> RequestSpawn;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerPickUpPickup" /> is being called.
@@ -2051,7 +2051,7 @@ namespace SampSharp.GameMode.World
         ///     Raises the <see cref="CommandText" /> event.
         /// </summary>
         /// <param name="e">An <see cref="PlayerTextEventArgs" /> that contains the event data. </param>
-        public virtual void OnCommandText(PlayerTextEventArgs e)
+        public virtual void OnCommandText(PlayerCommandTextEventArgs e)
         {
             if (CommandText != null)
                 CommandText(this, e);
@@ -2141,7 +2141,7 @@ namespace SampSharp.GameMode.World
         ///     Raises the <see cref="RequestSpawn" /> event.
         /// </summary>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnRequestSpawn(PlayerEventArgs e)
+        public virtual void OnRequestSpawn(PlayerRequestSpawnEventArgs e)
         {
             if (RequestSpawn != null)
                 RequestSpawn(this, e);

@@ -13,7 +13,6 @@
 
 using System;
 using SampSharp.GameMode.Natives;
-using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 

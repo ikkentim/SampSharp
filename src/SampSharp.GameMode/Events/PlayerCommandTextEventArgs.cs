@@ -14,19 +14,25 @@
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.RconCommand" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerCommandText" /> event.
     /// </summary>
-    public class RconEventArgs
+    public class PlayerCommandTextEventArgs : PlayerEventArgs
     {
-        public RconEventArgs(string command)
+        /// <summary>
+        ///     Initializes a new instance of the PlayerTextEventArgs class.
+        /// </summary>
+        /// <param name="playerid">The id of the player.</param>
+        /// <param name="text">The text sent by the player.</param>
+        public PlayerCommandTextEventArgs(int playerid, string text)
+            : base(playerid)
         {
-            Command = command;
+            Text = text;
         }
 
         /// <summary>
-        ///     Gets the command passed trough the rcon interface.
+        ///     Gets the text sent by the player.
         /// </summary>
-        public string Command { get; private set; }
+        public string Text { get; private set; }
 
         /// <summary>
         ///     Gets or sets whether this command has been handled sucessfully.

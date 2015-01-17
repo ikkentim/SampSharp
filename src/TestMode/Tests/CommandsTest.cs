@@ -29,8 +29,6 @@ namespace TestMode.Tests
 
             DetectedCommand cmd = Command.GetAll<DetectedCommand>().FirstOrDefault(c => c.Name == "console");
             Console.WriteLine("Command paths: {0}", string.Join(", ", cmd.CommandPaths));
-
-            gameMode.OnPlayerCommandText(new GtaPlayer(999).Id, "/vehicle list");
         }
 
         [Command("console", Alias = "c", Shortcut = "1", PermissionCheckMethod = "TestCommandPermission")]

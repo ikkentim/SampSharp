@@ -82,7 +82,7 @@ namespace SampSharp.GameMode.Controllers
             return RegisterCommands(Assembly.GetAssembly(typeof (T)));
         }
 
-        private void gameMode_PlayerCommandText(object sender, PlayerTextEventArgs e)
+        private void gameMode_PlayerCommandText(object sender, PlayerCommandTextEventArgs e)
         {
             string text = e.Text.Substring(1);
             GtaPlayer player = e.Player;

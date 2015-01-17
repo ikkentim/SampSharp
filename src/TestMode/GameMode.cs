@@ -38,7 +38,7 @@ namespace TestMode
             new KeyHandlerTest(),
         };
 
-        public override bool OnGameModeInit()
+        protected override void OnInitialized(EventArgs args)
         {
             SetGameModeText("sa-mp# testmode");
             UsePlayerPedAnims();
@@ -54,7 +54,7 @@ namespace TestMode
                 Console.WriteLine();
             }
 
-            return true;
+            base.OnInitialized(args);
         }
 
         protected override void LoadControllers(ControllerCollection controllers)

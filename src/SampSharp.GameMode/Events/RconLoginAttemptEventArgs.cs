@@ -16,7 +16,7 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.RconLoginAttempt" /> event.
     /// </summary>
-    public class RconLoginAttemptEventArgs : GameModeEventArgs
+    public class RconLoginAttemptEventArgs
     {
         public RconLoginAttemptEventArgs(string ip, string password, bool success)
         {

@@ -43,6 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseMode.callbacks.cs">
+      <DependentUpon>BaseMode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BaseMode.events.cs">
+      <DependentUpon>BaseMode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BaseMode.functions.cs">
+      <DependentUpon>BaseMode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\CommandController.cs" />
     <Compile Include="Controllers\ControllerCollection.cs" />
     <Compile Include="Controllers\DelayController.cs" />
@@ -69,6 +78,10 @@
     <Compile Include="Definitions\ShopName.cs" />
     <Compile Include="Definitions\TextDrawAlignment.cs" />
     <Compile Include="Definitions\VehicleModelType.cs" />
+    <Compile Include="Events\PlayerCommandTextEventArgs.cs" />
+    <Compile Include="Events\PlayerRequestSpawnEventArgs.cs" />
+    <Compile Include="Events\PlayerSpawnEventArgs.cs" />
+    <Compile Include="Events\PlayerUpdateEventArgs.cs" />
     <Compile Include="Natives\Native.cs" />
     <Compile Include="SAMP\Commands\CommandGroup.cs" />
     <Compile Include="SAMP\Commands\CommandGroupAttribute.cs" />
@@ -90,7 +103,6 @@
     <Compile Include="Display\MenuColumn.cs" />
     <Compile Include="Display\MenuRow.cs" />
     <Compile Include="Events\DialogResponseEventArgs.cs" />
-    <Compile Include="Events\GameModeEventArgs.cs" />
     <Compile Include="Definitions\BulletHitType.cs" />
     <Compile Include="Definitions\CameraCut.cs" />
     <Compile Include="Definitions\CarModType.cs" />

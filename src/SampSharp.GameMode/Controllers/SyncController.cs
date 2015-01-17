@@ -24,6 +24,7 @@ namespace SampSharp.GameMode.Controllers
     {
         private static BaseMode _gameMode;
         private static bool _waiting;
+
         /// <summary>
         ///     Gets the main thread.
         /// </summary>

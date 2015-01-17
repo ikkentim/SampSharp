@@ -16,7 +16,7 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.IncomingConnection" /> event.
     /// </summary>
-    public class ConnectionEventArgs : GameModeEventArgs
+    public class ConnectionEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the ConnectionEventArgs class.
@@ -25,7 +25,6 @@ namespace SampSharp.GameMode.Events
         /// <param name="ipAddress">Ip of the connection.</param>
         /// <param name="port">Port of the connection.</param>
         public ConnectionEventArgs(int playerid, string ipAddress, int port)
-            : base(true)
         {
             PlayerId = playerid;
             IpAddress = ipAddress;

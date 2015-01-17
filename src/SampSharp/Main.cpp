@@ -13,7 +13,6 @@
 #include "StringUtil.h"
 #include "MonoUtil.h"
 #include "PathUtil.h"
-#include "Benchmark.h"
 #include "unicode.h"
 
 extern void *pAMXFunctions;
@@ -170,12 +169,6 @@ PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name, cell *params, cell *retval) {
-    #ifdef DO_BENCHMARK
-    if(!strcmp(name, "OnGameModeInit")) {
-        Benchmark();
-    }
-    #endif
-
     SampSharp::ProcessPublicCall(amx, name, params, retval);
 
     return true;

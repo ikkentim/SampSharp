@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.UnoccupiedVehicleUpdated" /> event.
     /// </summary>
-    public class UnoccupiedVehicleEventArgs : PlayerVehicleEventArgs
+    public class UnoccupiedVehicleEventArgs : PlayerVehicleEventArgs //@todo: change to inherit VehicleEventArgs only.
     {
         public UnoccupiedVehicleEventArgs(int playerid, int vehicleid, int passengerSeat, Vector newPosition,
             Vector newVelocity)
@@ -34,5 +34,11 @@ namespace SampSharp.GameMode.Events
         public Vector NewPosition { get; private set; }
 
         public Vector NewVelocity { get; private set; }
+
+        /// <summary>
+        /// Gets or sets whether to stop the vehicle syncing its position to other players.
+        /// </summary>
+        public bool PreventPropagation { get; set; }
+        //@todo Implement IPropagationPreventable interface where possible
     }
 }

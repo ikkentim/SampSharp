@@ -115,7 +115,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>The new CommandGroup instance.</returns>
         public static CommandGroup Register(string name, string alias = null, CommandGroup parentGroup = null)
         {
-            var group =
+            CommandGroup group =
                 All.FirstOrDefault(
                     g =>
                         g.Name == name &&

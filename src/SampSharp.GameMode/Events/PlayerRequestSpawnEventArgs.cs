@@ -16,18 +16,15 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerConnected" />, <see cref="BaseMode.PlayerEnterCheckpoint" />,
-    ///     <see cref="BaseMode.PlayerLeaveCheckpoint" />, <see cref="BaseMode.PlayerEnterRaceCheckpoint" />,
-    ///     <see cref="BaseMode.PlayerLeaveRaceCheckpoint" />, <see cref="BaseMode.VehicleDamageStatusUpdated" />,
-    ///     <see cref="BaseMode.PlayerExitedMenu" /> or <see cref="BaseMode.PlayerUpdate" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerRequestSpawn" /> event.
     /// </summary>
-    public class PlayerEventArgs
+    public class PlayerRequestSpawnEventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the PlayerEventArgs class.
+        ///     Initializes a new instance of the PlayerRequestSpawnEventArgs class.
         /// </summary>
         /// <param name="playerid">The id of the player.</param>
-        public PlayerEventArgs(int playerid)
+        public PlayerRequestSpawnEventArgs(int playerid)
         {
             PlayerId = playerid;
         }
@@ -44,5 +41,10 @@ namespace SampSharp.GameMode.Events
         {
             get { return PlayerId == GtaPlayer.InvalidId ? null : GtaPlayer.Find(PlayerId); }
         }
+
+        /// <summary>
+        ///     Gets or sets whether the player is prevented from spawning.
+        /// </summary>
+        public bool PreventSpawning { get; set; }
     }
 }
