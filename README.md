@@ -22,7 +22,7 @@ Some example gamemodes are available here:
 Libraries
 ---------
 Some useful SA-MP# libraries:
--[streamer][Streamer wrapper] - OO wrapper around streamer plugin.
+- [Streamer wrapper][streamer] - OO wrapper around streamer plugin.
 
 _SA-MP# and these packages will soon be available on a dedicated NuGet server_
 
