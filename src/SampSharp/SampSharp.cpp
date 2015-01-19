@@ -1,3 +1,18 @@
+// SampSharp
+// Copyright 2015 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include "SampSharp.h"
 #include <iostream>
 #include <fstream>
@@ -5,9 +20,9 @@
 #include <mono/metadata/threads.h>
 #include <mono/metadata/exception.h>
 #include <sampgdk/sampgdk.h>
-#include "Natives.h"
+#include "natives.h"
 #include "PathUtil.h"
-#include "TimeUtil.h"
+#include "timestamp.h"
 
 using namespace std;
 
@@ -33,7 +48,7 @@ void SampSharp::Load(MonoDomain * domain, MonoImage * image, MonoClass *klass) {
         
 		logfile.open("SampSharp_errors.log", ios::app);
 		cout << "[SampSharp] ERROR: The given gamemode has no parent class." << endl;
-		logfile << TimeUtil::GetTimeStamp() << "ERROR: The given gamemode has no parent class." << endl;
+		logfile << timestamp_create() << "ERROR: The given gamemode has no parent class." << endl;
 		logfile.close();
 
         return;
@@ -43,7 +58,7 @@ void SampSharp::Load(MonoDomain * domain, MonoImage * image, MonoClass *klass) {
         
 		logfile.open("SampSharp_errors.log", ios::app);
 		cout << "[SampSharp] ERROR: The given gamemode's parent class is not of type BaseMode." << endl;
-		logfile << TimeUtil::GetTimeStamp() << "ERROR: The given gamemode's parent class is not of type BaseMode." << endl;
+        logfile << timestamp_create() << "ERROR: The given gamemode's parent class is not of type BaseMode." << endl;
 		logfile.close();
 
         return;
@@ -189,7 +204,7 @@ int SampSharp::GetParamLengthIndex(MonoMethod *method, int idx) {
 		logfile.open("SampSharp_errors.log", ios::app);
 		cout << "[SampSharp] ERROR: No attribute info for " << mono_method_get_name(method)
             << "@" << idx << endl;
-		logfile << TimeUtil::GetTimeStamp() << "ERROR: No attribute info for "
+        logfile << timestamp_create() << "ERROR: No attribute info for "
             << mono_method_get_name(method) << "@" << idx << endl;
 		logfile.close();
 		return -1;
@@ -201,7 +216,7 @@ int SampSharp::GetParamLengthIndex(MonoMethod *method, int idx) {
 		logfile.open("SampSharp_errors.log", ios::app);
 		cout << "[SampSharp] ERROR: Array parameter has no specified size: "
             << mono_method_get_name(method) << "@" << idx << endl;
-		logfile << TimeUtil::GetTimeStamp() << "ERROR: Array parameter has no specified size: "
+        logfile << timestamp_create() << "ERROR: Array parameter has no specified size: "
             << mono_method_get_name(method) << "@" << idx << endl;
 		logfile.close();
 		return -1;
@@ -289,7 +304,7 @@ void SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 				    logfile.open("SampSharp_errors.log", ios::app);
 				    cout << "[SampSharp] ERROR: No parameter length provided: "
                         << type_name << " in " << name << endl;
-				    logfile << TimeUtil::GetTimeStamp() << "ERROR: No parameter length provided: "
+                    logfile << timestamp_create() << "ERROR: No parameter length provided: "
                         << type_name << " in " << name << endl;
 				    logfile.close();
 				    events[name] = NULL;
@@ -306,7 +321,7 @@ void SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 				    logfile.open("SampSharp_errors.log", ios::app);
 				    cout << "[SampSharp] ERROR: No parameter length provided: "
                         << type_name << " in " << name << endl;
-				    logfile << TimeUtil::GetTimeStamp() << "ERROR: No parameter length provided: "
+                    logfile << timestamp_create() << "ERROR: No parameter length provided: "
                         << type_name << " in " << name << endl;
 				    logfile.close();
 				    events[name] = NULL;
@@ -319,7 +334,7 @@ void SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
 				logfile.open("SampSharp_errors.log", ios::app);
 				cout << "[SampSharp] ERROR: Incompatible parameter type: "
                     << type_name << " in " << name << endl;
-				logfile << TimeUtil::GetTimeStamp() << "ERROR: Incompatible parameter type: "
+                logfile << timestamp_create() << "ERROR: Incompatible parameter type: "
                     << type_name << " in " << name << endl;
 				logfile.close();
 				events[name] = NULL;
@@ -357,7 +372,7 @@ void SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
                 ofstream logfile;
                 logfile.open("SampSharp_errors.log", ios::app);
                 cout << "[SampSharp] ERROR: Parameters of callback " << name << " does not match description (called: " << param_count << ", description: " << event_p->params.size() << ")." << endl;
-                logfile << TimeUtil::GetTimeStamp() << "ERROR: Parameters of callback " << name << " does not match description(called: " << param_count << ", description: " << event_p->params.size() << ")." << endl;
+                logfile << timestamp_create() << "ERROR: Parameters of callback " << name << " does not match description(called: " << param_count << ", description: " << event_p->params.size() << ")." << endl;
                 logfile.close();
                 return;
             }
@@ -436,7 +451,7 @@ void SampSharp::ProcessPublicCall(AMX *amx, const char *name, cell *params, cell
                     ofstream logfile;
                     logfile.open("SampSharp_errors.log", ios::app);
                     cout << "[SampSharp] ERROR: Fingerprint of " << name << " contains unsupported parameters." << endl;
-                    logfile << TimeUtil::GetTimeStamp() << "ERROR: Fingerprint of " << name << " contains unsupported parameters." << endl;
+                    logfile << timestamp_create() << "ERROR: Fingerprint of " << name << " contains unsupported parameters." << endl;
                     logfile.close();
                     return;
                 }
@@ -464,7 +479,7 @@ int SampSharp::CallEvent(MonoMethod* method, uint32_t handle, void **params) {
 		ofstream logfile;
 		logfile.open("SampSharp_errors.log", ios::app | ios::binary);
         cout << "[SampSharp] Exception thrown during execution of " << mono_method_get_name(method) << ":" << endl << stacktrace << endl;
-        logfile << TimeUtil::GetTimeStamp() << " Exception thrown" << mono_method_get_name(method) << ":" << "\r\n" << stacktrace << "\r\n";
+        logfile << timestamp_create() << " Exception thrown" << mono_method_get_name(method) << ":" << "\r\n" << stacktrace << "\r\n";
 		logfile.close();
 
 		return -1;

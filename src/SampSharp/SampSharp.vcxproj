@@ -103,19 +103,19 @@
     <ClCompile Include="monostring.cpp" />
     <ClCompile Include="unicode.cpp" />
     <ClCompile Include="SampSharp.cpp" />
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConfigReader.h" />
-    <ClInclude Include="Main.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="monostring.h" />
     <ClInclude Include="MonoUtil.h" />
     <ClInclude Include="unicode.h" />
     <ClInclude Include="SampSharp.h" />
-    <ClInclude Include="Natives.h" />
+    <ClInclude Include="natives.h" />
     <ClInclude Include="PathUtil.h" />
     <ClInclude Include="StringUtil.h" />
-    <ClInclude Include="TimeUtil.h" />
+    <ClInclude Include="timestamp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -12,10 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMode", "TestMode\TestMo
 		{39908193-8E5A-42EC-B71B-5D457CE87823} = {39908193-8E5A-42EC-B71B-5D457CE87823}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{685A353F-FB6A-4D33-80EA-D57F0AA6D703}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{666B51C5-EA54-4BF0-962E-73DD954D3FD8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,10 +55,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{39908193-8E5A-42EC-B71B-5D457CE87823} = {685A353F-FB6A-4D33-80EA-D57F0AA6D703}
-		{CCFB350D-BD04-41AB-A9F8-79767E94727E} = {685A353F-FB6A-4D33-80EA-D57F0AA6D703}
-		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC} = {666B51C5-EA54-4BF0-962E-73DD954D3FD8}
 	EndGlobalSection
 EndGlobal

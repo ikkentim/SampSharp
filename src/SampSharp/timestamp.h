@@ -13,6 +13,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <time.h>
+#include <string.h>
+
 #pragma once
 
-#define PLUGIN_VERSION "0.2"
+/* Creates a timestamp string based on the system time.
+ */
+static char *timestamp_create() {
+    time_t now = time(0);
+    char timestamp[32];
+	
+    strftime(timestamp, sizeof(timestamp), "[%d/%m/%Y %H:%M:%S]", localtime(&now));
+
+    char *timestamp2 = new char[32];
+    strcpy(timestamp2, timestamp);
+    return  timestamp2;
+}
+
