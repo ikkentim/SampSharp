@@ -14,17 +14,15 @@
 // limitations under the License.
 
 using System;
-using System.Dynamic;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
-using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.SAMP
 {
     /// <summary>
-    ///     Contains a set of KeyHandlers
+    ///     Contains a set of KeyHandlers.
     /// </summary>
-    public class KeyHandlerSet
+    public sealed class KeyHandlerSet
     {
         private readonly Func<PlayerKeyStateChangedEventArgs, Keys, bool> _check;
 
@@ -186,44 +184,6 @@ namespace SampSharp.GameMode.SAMP
             if (Yes != null && _check(e, Keys.Yes)) Yes.Handle(sender, e);
             if (No != null && _check(e, Keys.No)) No.Handle(sender, e);
             if (CtrlBack != null && _check(e, Keys.CtrlBack)) CtrlBack.Handle(sender, e);
-        }
-    }
-
-    public class PriorityKeyHandler
-    {
-        public event EventHandler<PlayerCancelableEventArgs> HighPriority;
-        public event EventHandler<PlayerCancelableEventArgs> NormalPriority;
-        public event EventHandler<PlayerCancelableEventArgs> LowPriority;
-
-        public void Handle(object sender, PlayerKeyStateChangedEventArgs e)
-        {
-            var args = new PlayerCancelableEventArgs(e.PlayerId);
-
-            OnHighPriority(args);
-
-            if (!args.Canceled)
-                OnNormalPriority(args);
-
-            if (!args.Canceled)
-                OnLowPriority(args);
-        }
-
-        protected virtual void OnHighPriority(PlayerCancelableEventArgs e)
-        {
-            if (HighPriority != null)
-                HighPriority(this, e);
-        }
-
-        protected virtual void OnNormalPriority(PlayerCancelableEventArgs e)
-        {
-            if (NormalPriority != null)
-                NormalPriority(this, e);
-        }
-
-        protected virtual void OnLowPriority(PlayerCancelableEventArgs e)
-        {
-            if (LowPriority != null)
-                LowPriority(this, e);
         }
     }
 }

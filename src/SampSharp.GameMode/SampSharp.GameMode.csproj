@@ -95,6 +95,7 @@
     <Compile Include="SAMP\KeyChangeHandlerSet.cs" />
     <Compile Include="SAMP\KeyHandlerSet.cs" />
     <Compile Include="SAMP\PrintTraceListener.cs" />
+    <Compile Include="SAMP\PriorityKeyHandler.cs" />
     <Compile Include="SAMP\Server.cs" />
     <Compile Include="Tools\Sync.cs" />
     <Compile Include="World\Pickup.cs" />
