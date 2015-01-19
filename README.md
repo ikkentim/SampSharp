@@ -19,6 +19,13 @@ Some example gamemodes are available here:
 - [RiverShell][RiverShell] - Another SA-MP default gamemode ported to C#
 - [NHibernate test][NHibernateTest] - Since I haven't found a way to get EntityFramework to work, here is a simple example of using NHibernate together with FluentNHibernate.
 
+Libraries
+---------
+Some useful SA-MP# libraries:
+-[streamer][Streamer wrapper] - OO wrapper around streamer plugin.
+
+_SA-MP# and these packages will soon be available on a dedicated NuGet server_
+
 [build status]: https://ci.appveyor.com/api/projects/status/p0jc1f8kbwgaceny/branch/master?svg=true
 [build status page]: https://ci.appveyor.com/project/ikkentim/sampsharp/branch/master
 
@@ -32,5 +39,6 @@ Some example gamemodes are available here:
 [GrandLarc]: https://github.com/ikkentim/SampSharp-grandlarc
 [RiverShell]: https://github.com/ikkentim/SampSharp-rivershell
 [NHibernateTest]: https://github.com/ikkentim/SampSharp/tree/993f44b77356ad0c544ac10ad100919b5d1830cb/src/NHibernateTest
+[streamer]: https://github.com/ikkentim/SampSharp-streamer
 
 [![Analytics](https://ga-beacon.appspot.com/UA-58691640-2/SampSharp/readme?pixel)](https://github.com/igrigorik/ga-beacon)
