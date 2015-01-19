@@ -9,9 +9,6 @@ All feedback is welcome, file an Issue or contact me on the SA-MP forums:<br/>
 [My SA-MP profile]<br/>
 [SA-MP# topic on SA-MP]
 
-Note of Caution
--------------
-
 [mono framework]: http://www.mono-project.com/
 [my sa-mp profile]: http://forum.sa-mp.com/member.php?u=76946
 [sa-mp# topic on sa-mp]: http://forum.sa-mp.com/showthread.php?t=511686
