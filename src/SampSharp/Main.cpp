@@ -33,138 +33,119 @@
 extern void *pAMXFunctions;
 
 using sampgdk::logprintf;
-
+using std::string;
+using std::stringstream;
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
     return sampgdk::Supports() | SUPPORTS_PROCESS_TICK;
 }
 
-bool fexists(const char *filename)
-{
+bool fexists(const char *filename) {
     std::ifstream ifile(filename);
     return !!ifile;
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 
-    /*
-    * Loading sampgdk
-    */
-    if (!sampgdk::Load(ppData)) {
-        return false;
-    }
+
+    int codepage = 1250; /* codepage to use for encoding */
+    string gamemode = "TestMode:GameMode"; /* gamemode to start */
+    string trace_level = "error"; /* mono tracelevel */
+    string symbols; /* string of libraties to convert symbols files for */
+    string mono_assembly_dir; /* path to mono assembly directory */
+    string mono_config_dir; /* path to mono config directory */
+
+
+    if (!sampgdk::Load(ppData)) return false;
 
     pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
-
     logprintf("[SampSharp] Loading SampSharp v%s by ikkentim", PLUGIN_VERSION);
 
-    /*
-    * Reading configuration file
-    */
 
+    /* Read configuration file.
+     */
     ConfigReader server_cfg("server.cfg");
-    int codepage = 1250;
-    std::string gamemode = "TestMode:GameMode";
-    std::string trace_level = "error";
-    std::string 
-        gamemode_path,
-        library_path,
-        config_path,
-        name_space, 
-        klass, 
-        symbols;
 
-    //Read configuration
     server_cfg.GetOptionAsString("gamemode", gamemode);
     server_cfg.GetOptionAsString("symbols", symbols);
     server_cfg.GetOptionAsString("trace_level", trace_level);
+    server_cfg.GetOptionAsString("mono_assembly_dir", mono_assembly_dir);
+    server_cfg.GetOptionAsString("mono_config_dir", mono_config_dir);
     server_cfg.GetOption("codepage", codepage);
 
-    std::stringstream gamemode_stream(gamemode);
-    
-    
-    std::getline(gamemode_stream, name_space, ':');
-    std::getline(gamemode_stream, klass, '\n');
+    stringstream gamemode_stream(gamemode);
 
-    StringUtil::TrimString(library_path);
+    string name_space;
+    std::getline(gamemode_stream, name_space, ':');
     StringUtil::TrimString(name_space);
+
+    string klass;
+    std::getline(gamemode_stream, klass, '\n');
     StringUtil::TrimString(klass);
 
-    gamemode_path = PathUtil::GetPathInBin("gamemode/");
-    library_path = PathUtil::GetPathInBin("gamemode/").append(name_space).append(".dll");
-    config_path = PathUtil::GetPathInBin("gamemode/").append(name_space).append(".dll.config");
 
-    set_codepage(codepage);
+    string gamemode_path = PathUtil::GetPathInBin("gamemode/");
+    string library_path = PathUtil::GetPathInBin("gamemode/").append(name_space).append(".dll");
+    string config_path = PathUtil::GetPathInBin("gamemode/").append(name_space).append(".dll.config");
 
-    /*
-    * Filecheck
-    */
 
-    if (!fexists(library_path.c_str()))
-    {
+    /* Validate gamemode path.
+     */
+
+    if (!fexists(library_path.c_str())) {
         logprintf("[SampSharp] File \"%s\" not found!", library_path.c_str());
         return true;
     }
 
-    /*
-    * Loading mono
-    */
-
+    /* Initialize the mono runtime.
+     */
+    if (!mono_assembly_dir.empty() && !mono_config_dir.empty()) {
+        logprintf("[SampSharp] Loading mono from %s, %s", mono_assembly_dir.c_str(), mono_config_dir.c_str());
+        mono_set_dirs(mono_assembly_dir.c_str(), mono_config_dir.c_str());
+    }
     #ifdef _WIN32
-    mono_set_dirs(PathUtil::GetLibDirectory().c_str(), 
-        PathUtil::GetConfigDirectory().c_str());
+    else {
+        mono_set_dirs(PathUtil::GetLibDirectory().c_str(),
+            PathUtil::GetConfigDirectory().c_str());
+    }
     #endif
 
     mono_trace_set_level_string(trace_level.c_str());
     mono_debug_init(MONO_DEBUG_FORMAT_MONO);
+    set_codepage(codepage);
 
     MonoDomain *root = mono_jit_init(library_path.c_str());
-    /*
-    * Symbol generation
-    */
 
-    #ifdef _WIN32
+    /* Convert symbols files.
+     */
     if(symbols.length() > 0) {
         logprintf("[SampSharp] Generating symbol files...");
         
-        std::stringstream symbols_stream(symbols);
-        std::string file;
+        stringstream symbols_stream(symbols);
+        string file;
         while (std::getline(symbols_stream, file, ' ')) {
-            if(file.length() > 0) {
-                if (fexists(file.c_str()))
-                {
-                    logprintf("[SampSharp] Processing \"%s\"...", file.c_str());
-                    MonoUtil::GenerateSymbols(file.c_str());
-                }
-                else
-                {
+            if(file.empty() || !fexists(file.c_str())) {
                     logprintf("[SampSharp] Processing \"%s\"... File not found!", file.c_str());
+                    continue;
                 }
-            }
+
+                logprintf("[SampSharp] Processing \"%s\"...", file.c_str());
+                MonoUtil::GenerateSymbols(file.c_str());
         }
         sampgdk::logprintf("[SampSharp] Symbol files generated!\n");
     }
-    #endif
 
-    /*
-    * Loading gamemode
-    */
-
-
-    char *namespace_ctr = (char *)name_space.c_str();
-    char *klass_ctr = (char *)klass.c_str();
-    char *path_ctr = (char *)library_path.c_str();
-
-    logprintf("[SampSharp] Loading gamemode: %s::%s.", namespace_ctr, klass_ctr);
+    /* Load gamemode image.
+     */
+    logprintf("[SampSharp] Loading gamemode: %s::%s.", name_space.c_str(), klass.c_str());
 
     mono_domain_set_config(mono_domain_get(), gamemode_path.c_str(), config_path.c_str());
 
     MonoImage *image = mono_assembly_get_image(mono_assembly_open(library_path.c_str(), NULL));
-    MonoClass *class_from_name = mono_class_from_name(image, namespace_ctr, klass_ctr);
+    MonoClass *class_from_name = mono_class_from_name(image, name_space.c_str(), klass.c_str());
 
-    if (!class_from_name)
-    {
-        logprintf("[SampSharp] %s::%s was not found inside \"%s\".", namespace_ctr, klass_ctr, path_ctr);
+    if (!class_from_name) {
+        logprintf("[SampSharp] %s::%s was not found inside image.", name_space.c_str(), klass.c_str());
         return true;
     }
 
@@ -175,7 +156,11 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
     SampSharp::Unload();
+
+    mono_jit_cleanup(mono_domain_get());
+
     sampgdk::Unload();
+
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {

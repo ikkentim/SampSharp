@@ -23,7 +23,6 @@
 
 struct MonoUtil
 {
-    #ifdef _WIN32
     static void GenerateSymbols(const char * path) {
 	    MonoAssembly *mdbconverter = mono_domain_assembly_open(mono_domain_get(), 
             PathUtil::GetLibDirectory().append("mono/4.5/pdb2mdb.exe").c_str());
@@ -37,5 +36,4 @@ struct MonoUtil
 
 		mono_jit_exec(mono_domain_get(), mdbconverter, 2, argv);
     }
-    #endif
 };

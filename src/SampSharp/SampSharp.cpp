@@ -505,18 +505,14 @@ void SampSharp::Unload() {
         method = LoadEvent("Dispose", 0);
     }
 
-    if (method)
-    {
+    if (method) {
         cout << "[SampSharp] Disposing of GameMode... ";
         CallEvent(method, gameModeHandle, NULL);
         cout << "Done!" << endl;
     }
-    else
-    {
+    else {
         cout << "[SampSharp] No dispose event found." << endl;
     }
-
-	mono_jit_cleanup(mono_domain_get());
 
     loaded = false;
 }
