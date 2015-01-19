@@ -78,6 +78,7 @@
     <Compile Include="Definitions\ShopName.cs" />
     <Compile Include="Definitions\TextDrawAlignment.cs" />
     <Compile Include="Definitions\VehicleModelType.cs" />
+    <Compile Include="Events\PlayerCancelableEventArgs.cs" />
     <Compile Include="Events\PlayerCommandTextEventArgs.cs" />
     <Compile Include="Events\PlayerRequestSpawnEventArgs.cs" />
     <Compile Include="Events\PlayerSpawnEventArgs.cs" />

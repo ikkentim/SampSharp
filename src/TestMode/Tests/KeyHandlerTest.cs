@@ -21,9 +21,9 @@ namespace TestMode.Tests
         {
             gameMode.PlayerConnected += (sender, args) =>
             {
-                args.Player.Key.Pressed.Jump +=
+                args.Player.Key.Pressed.Jump.NormalPriority +=
                     (o, eventArgs) => eventArgs.Player.SendClientMessage("You've pressed jump!");
-                args.Player.Key.Released.Jump +=
+                args.Player.Key.Released.Jump.NormalPriority +=
                     (o, eventArgs) => eventArgs.Player.SendClientMessage("You've released jump!");
             };
         }

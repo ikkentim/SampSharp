@@ -14,8 +14,10 @@
 // limitations under the License.
 
 using System;
+using System.Dynamic;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
+using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.SAMP
 {
@@ -33,111 +35,130 @@ namespace SampSharp.GameMode.SAMP
         public KeyHandlerSet(Func<PlayerKeyStateChangedEventArgs, Keys, bool> check)
         {
             _check = check;
+
+            Action = new PriorityKeyHandler();
+            Crouch = new PriorityKeyHandler();
+            Fire = new PriorityKeyHandler();
+            Sprint = new PriorityKeyHandler();
+            SecondaryAttack = new PriorityKeyHandler();
+            Jump = new PriorityKeyHandler();
+            LookRight = new PriorityKeyHandler();
+            Handbrake = new PriorityKeyHandler();
+            Aim = new PriorityKeyHandler();
+            LookLeft = new PriorityKeyHandler();
+            Submission = new PriorityKeyHandler();
+            Walk = new PriorityKeyHandler();
+            AnalogUp = new PriorityKeyHandler();
+            AnalogDown = new PriorityKeyHandler();
+            AnalogLeft = new PriorityKeyHandler();
+            AnalogRight = new PriorityKeyHandler();
+            Yes = new PriorityKeyHandler();
+            No = new PriorityKeyHandler();
+            CtrlBack = new PriorityKeyHandler();
         }
 
         /// <summary>
         ///     Occurs when the Keys.Action key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> Action;
+        public PriorityKeyHandler Action { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Crouch key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> Crouch;
+        public PriorityKeyHandler Crouch { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Fire key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> Fire;
+        public PriorityKeyHandler Fire { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Sprint key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> Sprint;
+        public PriorityKeyHandler Sprint { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Attack key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> SecondaryAttack;
+        public PriorityKeyHandler SecondaryAttack { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Jump key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> Jump;
+        public PriorityKeyHandler Jump { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Right key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> LookRight;
+        public PriorityKeyHandler LookRight { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Handbrake key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> Handbrake;
+        public PriorityKeyHandler Handbrake { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Aim key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> Aim;
+        public PriorityKeyHandler Aim { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Left key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> LookLeft;
+        public PriorityKeyHandler LookLeft { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Submission or Keys.LookBehind key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> Submission;
+        public PriorityKeyHandler Submission { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.LookBehind or Keys.Submission key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> LookBehind
+        public PriorityKeyHandler LookBehind
         {
-            add { Submission += value; }
-            remove { Submission -= value; }
+            get { return Submission; }
         }
 
         /// <summary>
         ///     Occurs when the Keys.Walk key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> Walk;
+        public PriorityKeyHandler Walk { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Up key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> AnalogUp;
+        public PriorityKeyHandler AnalogUp { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Down key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> AnalogDown;
+        public PriorityKeyHandler AnalogDown { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Left key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> AnalogLeft;
+        public PriorityKeyHandler AnalogLeft { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Right key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> AnalogRight;
+        public PriorityKeyHandler AnalogRight { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.Yes key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> Yes;
+        public PriorityKeyHandler Yes { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.No key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> No;
+        public PriorityKeyHandler No { get; private set; }
 
         /// <summary>
         ///     Occurs when the Keys.CtrlBack key has been pressed.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> CtrlBack;
+        public PriorityKeyHandler CtrlBack { get; private set; }
 
         /// <summary>
         ///     Handles a change in PlayerKeyState.
@@ -146,25 +167,63 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="e">Object containing information about the event.</param>
         public void Handle(object sender, PlayerKeyStateChangedEventArgs e)
         {
-            if (Action != null && _check(e, Keys.Action)) Action(sender, e);
-            if (Crouch != null && _check(e, Keys.Crouch)) Crouch(sender, e);
-            if (Fire != null && _check(e, Keys.Fire)) Fire(sender, e);
-            if (Sprint != null && _check(e, Keys.Sprint)) Sprint(sender, e);
-            if (SecondaryAttack != null && _check(e, Keys.SecondaryAttack)) SecondaryAttack(sender, e);
-            if (Jump != null && _check(e, Keys.Jump)) Jump(sender, e);
-            if (LookRight != null && _check(e, Keys.LookRight)) LookRight(sender, e);
-            if (Handbrake != null && _check(e, Keys.Handbrake)) Handbrake(sender, e);
-            if (Aim != null && _check(e, Keys.Aim)) Aim(sender, e);
-            if (LookLeft != null && _check(e, Keys.LookLeft)) LookLeft(sender, e);
-            if (Submission != null && _check(e, Keys.Submission)) Submission(sender, e);
-            if (Walk != null && _check(e, Keys.Walk)) Walk(sender, e);
-            if (AnalogUp != null && _check(e, Keys.AnalogUp)) AnalogUp(sender, e);
-            if (AnalogDown != null && _check(e, Keys.AnalogDown)) AnalogDown(sender, e);
-            if (AnalogLeft != null && _check(e, Keys.AnalogLeft)) AnalogLeft(sender, e);
-            if (AnalogRight != null && _check(e, Keys.AnalogRight)) AnalogRight(sender, e);
-            if (Yes != null && _check(e, Keys.Yes)) Yes(sender, e);
-            if (No != null && _check(e, Keys.No)) No(sender, e);
-            if (CtrlBack != null && _check(e, Keys.CtrlBack)) CtrlBack(sender, e);
+            if (Action != null && _check(e, Keys.Action)) Action.Handle(sender, e);
+            if (Crouch != null && _check(e, Keys.Crouch)) Crouch.Handle(sender, e);
+            if (Fire != null && _check(e, Keys.Fire)) Fire.Handle(sender, e);
+            if (Sprint != null && _check(e, Keys.Sprint)) Sprint.Handle(sender, e);
+            if (SecondaryAttack != null && _check(e, Keys.SecondaryAttack)) SecondaryAttack.Handle(sender, e);
+            if (Jump != null && _check(e, Keys.Jump)) Jump.Handle(sender, e);
+            if (LookRight != null && _check(e, Keys.LookRight)) LookRight.Handle(sender, e);
+            if (Handbrake != null && _check(e, Keys.Handbrake)) Handbrake.Handle(sender, e);
+            if (Aim != null && _check(e, Keys.Aim)) Aim.Handle(sender, e);
+            if (LookLeft != null && _check(e, Keys.LookLeft)) LookLeft.Handle(sender, e);
+            if (Submission != null && _check(e, Keys.Submission)) Submission.Handle(sender, e);
+            if (Walk != null && _check(e, Keys.Walk)) Walk.Handle(sender, e);
+            if (AnalogUp != null && _check(e, Keys.AnalogUp)) AnalogUp.Handle(sender, e);
+            if (AnalogDown != null && _check(e, Keys.AnalogDown)) AnalogDown.Handle(sender, e);
+            if (AnalogLeft != null && _check(e, Keys.AnalogLeft)) AnalogLeft.Handle(sender, e);
+            if (AnalogRight != null && _check(e, Keys.AnalogRight)) AnalogRight.Handle(sender, e);
+            if (Yes != null && _check(e, Keys.Yes)) Yes.Handle(sender, e);
+            if (No != null && _check(e, Keys.No)) No.Handle(sender, e);
+            if (CtrlBack != null && _check(e, Keys.CtrlBack)) CtrlBack.Handle(sender, e);
+        }
+    }
+
+    public class PriorityKeyHandler
+    {
+        public event EventHandler<PlayerCancelableEventArgs> HighPriority;
+        public event EventHandler<PlayerCancelableEventArgs> NormalPriority;
+        public event EventHandler<PlayerCancelableEventArgs> LowPriority;
+
+        public void Handle(object sender, PlayerKeyStateChangedEventArgs e)
+        {
+            var args = new PlayerCancelableEventArgs(e.PlayerId);
+
+            OnHighPriority(args);
+
+            if (!args.Canceled)
+                OnNormalPriority(args);
+
+            if (!args.Canceled)
+                OnLowPriority(args);
+        }
+
+        protected virtual void OnHighPriority(PlayerCancelableEventArgs e)
+        {
+            if (HighPriority != null)
+                HighPriority(this, e);
+        }
+
+        protected virtual void OnNormalPriority(PlayerCancelableEventArgs e)
+        {
+            if (NormalPriority != null)
+                NormalPriority(this, e);
+        }
+
+        protected virtual void OnLowPriority(PlayerCancelableEventArgs e)
+        {
+            if (LowPriority != null)
+                LowPriority(this, e);
         }
     }
 }
