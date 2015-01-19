@@ -33,4 +33,4 @@ Some example gamemodes are available here:
 [RiverShell]: https://github.com/ikkentim/SampSharp-rivershell
 [NHibernateTest]: https://github.com/ikkentim/SampSharp/tree/993f44b77356ad0c544ac10ad100919b5d1830cb/src/NHibernateTest
 
-[![Analytics](https://ga-beacon.appspot.com/UA-58691640-2/SampSharp/readme)](https://github.com/igrigorik/ga-beacon)
+[![Analytics](https://ga-beacon.appspot.com/UA-58691640-2/SampSharp/readme?pixel)](https://github.com/igrigorik/ga-beacon)
