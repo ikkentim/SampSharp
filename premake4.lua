@@ -10,21 +10,20 @@ solution "SampSharp"
       language "C++"
       platforms { "x32" }
       links { "mono-2.0", "rt" }
-      includedirs { "includes", "includes/sdk", "includes/sdk/amx" }
+      includedirs { "src/SampSharp/includes", "src/SampSharp/includes/sdk", "src/SampSharp/includes/sdk/amx" }
       buildoptions { "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-m32" }
       
-      files { "**.cpp", "includes/sampgdk/sampgdk.c" }
+      files { "src/SampSharp**.cpp", "src/SampSharp/includes/sampgdk/sampgdk.c" }
 
       configuration "Debug"
-         objdir "obj/linux/Debug"
-         -- targetdir "bin/linux/Debug"
-         targetdir "../../environment/plugins"
+         objdir "obj/Debug"
+         targetdir "env/plugins"
          defines { "DEBUG", "LINUX", "_GNU_SOURCE", "SAMPGDK_AMALGAMATION" }
          flags { "Symbols" }
 
       configuration "Release"
-         objdir "obj/linux/Release"
-         targetdir "bin/linux/Release"
+         objdir "obj/Release"
+         targetdir "bin"
          defines { "NDEBUG", "LINUX", "_GNU_SOURCE", "SAMPGDK_AMALGAMATION" }
          flags { "Optimize" }
 
