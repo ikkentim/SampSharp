@@ -1,0 +1,26 @@
+echo Executing Server Config...
+lanmode 0
+rcon_password changeme
+maxplayers 50
+port 7777
+hostname SA-MP 0.3 Server
+announce 0
+query 1
+chatlogging 0
+weburl www.sa-mp.com
+onfoot_rate 40
+incar_rate 40
+weapon_rate 40
+stream_distance 300.0
+stream_rate 1000
+maxnpc 0
+logtimeformat [%H:%M:%S]
+
+#
+# SA-MP#
+#
+gamemode0 empty 1
+gamemode YourGameMode:GameMode
+
+plugins SampSharp
+# plugins libSampSharp.so
