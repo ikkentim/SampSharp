@@ -90,7 +90,7 @@ void SAMPGDK_CALL SampSharp::ProcessTimerTick(int timerid, void *data) {
 	void *args[2];
 	args[0] = &timerid;
     args[1] = NULL;
-    timer_t * timer = NULL;
+    samp_timer_t * timer = NULL;
     if (timers.find(timerid) != timers.end()) {
         timer = &timers[timerid];
         args[1] = mono_gchandle_get_target(timer->handle);
@@ -133,7 +133,7 @@ int SampSharp::KillRefTimer(int timerid) {
      */
     if (timers.find(timerid) == timers.end())
     {
-        timer_t timer = timers[timerid];
+        samp_timer_t timer = timers[timerid];
         mono_gchandle_free(timer.handle);
 
         timers.erase(timerid);
