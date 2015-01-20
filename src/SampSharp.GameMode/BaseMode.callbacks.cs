@@ -200,7 +200,7 @@ namespace SampSharp.GameMode
             if (PlayerRequestClass != null)
                 PlayerRequestClass(this, args);
 
-            return true;
+            return !args.PreventSpawning;
         }
 
         /// <summary>

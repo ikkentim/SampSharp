@@ -20,11 +20,24 @@ namespace SampSharp.GameMode.Events
     /// </summary>
     public class PlayerRequestClassEventArgs : PlayerEventArgs
     {
+        /// <summary>
+        ///     Initializes a new instance of the PlayerRequestClassEventArgs class.
+        /// </summary>
+        /// <param name="playerid">The id of the player.</param>
+        /// <param name="classid">The id of the class.</param>
         public PlayerRequestClassEventArgs(int playerid, int classid) : base(playerid)
         {
             ClassId = classid;
         }
 
+        /// <summary>
+        ///     Gets the id of the class.
+        /// </summary>
         public int ClassId { get; private set; }
+
+        /// <summary>
+        ///     Gets or sets whether the player is prevented from spawning.
+        /// </summary>
+        public bool PreventSpawning { get; set; }
     }
 }
