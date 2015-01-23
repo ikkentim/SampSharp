@@ -73,7 +73,7 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the boneid the object was attached to.
         /// </summary>
-        [Obsolete]
+        [Obsolete("Use Bone property")]
         public int BoneId 
         {
             get { return (int) Bone; }
