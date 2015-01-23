@@ -42,6 +42,7 @@ namespace SampSharp.GameMode.Events
             Index = index;
             ModelId = modelid;
             BoneId = boneid;
+            Bone = (Bone) boneid;
             Offset = offset;
             Rotation = rotation;
             Scale = scale;
@@ -66,6 +67,11 @@ namespace SampSharp.GameMode.Events
         ///     Gets the boneid the object was attached to.
         /// </summary>
         public int BoneId { get; private set; }
+
+        /// <summary>
+        ///     Gets the Bone the object was attached to.
+        /// </summary>
+        public Bone Bone { get; private set; }
 
         /// <summary>
         ///     Gets the offset of the attached object.
