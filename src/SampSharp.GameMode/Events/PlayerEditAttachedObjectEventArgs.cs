@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
@@ -41,11 +42,17 @@ namespace SampSharp.GameMode.Events
             EditObjectResponse = response;
             Index = index;
             ModelId = modelid;
-            BoneId = boneid;
             Bone = (Bone) boneid;
             Offset = offset;
             Rotation = rotation;
             Scale = scale;
+        }
+
+        public PlayerEditAttachedObjectEventArgs(int playerid, EditObjectResponse response, int index, int modelid,
+            Bone bone, Vector offset, Vector rotation, Vector scale)
+            : this(playerid, response, index, modelid, (int) bone, offset, rotation, scale)
+        {
+
         }
 
         /// <summary>
@@ -66,7 +73,11 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the boneid the object was attached to.
         /// </summary>
-        public int BoneId { get; private set; }
+        [Obsolete]
+        public int BoneId 
+        {
+            get { return (int) Bone; }
+        }
 
         /// <summary>
         ///     Gets the Bone the object was attached to.
