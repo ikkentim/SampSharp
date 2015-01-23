@@ -106,6 +106,7 @@
     <Compile Include="Display\MenuRow.cs" />
     <Compile Include="Events\DialogResponseEventArgs.cs" />
     <Compile Include="Definitions\BulletHitType.cs" />
+	<Compile Include="Definitions\Bone.cs" />
     <Compile Include="Definitions\CameraCut.cs" />
     <Compile Include="Definitions\CarModType.cs" />
     <Compile Include="Definitions\DialogStyle.cs" />
