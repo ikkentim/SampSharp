@@ -1159,6 +1159,24 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
+        ///     Attach an object to a specific bone on this Player.
+        /// </summary>
+        /// <param name="index">The index (slot) to assign the object to (0-9).</param>
+        /// <param name="modelid">The model to attach.</param>
+        /// <param name="bone">The bone to attach the object to.</param>
+        /// <param name="offset">offset for the object position.</param>
+        /// <param name="rotation">rotation of the object.</param>
+        /// <param name="scale">scale of the object.</param>
+        /// <param name="materialcolor1">The first object color to set.</param>
+        /// <param name="materialcolor2">The second object color to set.</param>
+        /// <returns>True on success, False otherwise.</returns>
+        public virtual bool SetAttachedObject(int index, int modelid, Bone bone, Vector offset, Vector rotation,
+            Vector scale, Color materialcolor1, Color materialcolor2)
+        {
+            return SetAttachedObject(index, modelid, (int) bone, offset, rotation, scale, materialcolor1, materialcolor2);
+        }
+
+        /// <summary>
         ///     Remove an attached object from this Player.
         /// </summary>
         /// <param name="index">The index of the object to remove (set with <see cref="SetAttachedObject" />).</param>
