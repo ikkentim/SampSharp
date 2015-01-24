@@ -13,27 +13,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerClickTextDraw" /> or
-    ///     <see cref="BaseMode.PlayerClickPlayerTextDraw" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerCommandText" /> event.
     /// </summary>
-    public class PlayerClickTextDrawEventArgs : PlayerEventArgs
+    public class CommandTextEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the PlayerClickTextDrawEventArgs class.
+        ///     Initializes a new instance of the <see cref="CommandTextEventArgs"/> class.
         /// </summary>
-        /// <param name="playerid">Id of the player.</param>
-        /// <param name="textdrawid">Id of the textdraw.</param>
-        public PlayerClickTextDrawEventArgs(int playerid, int textdrawid) : base(playerid)
+        /// <param name="text">The text sent by the player.</param>
+        public CommandTextEventArgs(string text)
         {
-            TextDrawId = textdrawid;
+            Text = text;
         }
 
         /// <summary>
-        ///     Gets the id of the textdraw.
+        ///     Gets the text sent by the player.
         /// </summary>
-        public int TextDrawId { get; private set; }
+        public string Text { get; private set; }
+
+        /// <summary>
+        ///     Gets or sets whether this command has been handled successfully.
+        /// </summary>
+        public bool Success { get; set; }
     }
 }

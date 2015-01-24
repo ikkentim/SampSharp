@@ -290,20 +290,20 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="BaseMode.OnVehicleSpawn" /> is being called.
         ///     This callback is called when a vehicle spawns.
         /// </summary>
-        public event EventHandler<VehicleEventArgs> Spawn;
+        public event EventHandler<EventArgs> Spawn;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnVehicleDeath" /> is being called.
         ///     This callback is called when a vehicle is destroyed - either by exploding or becoming submerged in water.
         /// </summary>
-        public event EventHandler<PlayerVehicleEventArgs> Died;
+        public event EventHandler<PlayerEventArgs> Died;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerEnterVehicle" /> is being called.
         ///     This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the
         ///     time this callback is called.
         /// </summary>
-        public event EventHandler<PlayerVehicleEventArgs> PlayerEnter;
+        public event EventHandler<EnterVehicleEventArgs> PlayerEnter;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerExitVehicle" /> is being called.
@@ -334,7 +334,7 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="BaseMode.OnVehicleDamageStatusUpdate" /> is being called.
         ///     This callback is called when a vehicle element such as doors, tires, panels, or lights get damaged.
         /// </summary>
-        public event EventHandler<PlayerVehicleEventArgs> DamageStatusUpdated;
+        public event EventHandler<PlayerEventArgs> DamageStatusUpdated;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnUnoccupiedVehicleUpdate" /> is being called.
@@ -346,19 +346,19 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="BaseMode.OnVehicleStreamIn" /> is being called.
         ///     Called when a vehicle is streamed to a player's client.
         /// </summary>
-        public event EventHandler<PlayerVehicleEventArgs> StreamIn;
+        public event EventHandler<PlayerEventArgs> StreamIn;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnVehicleStreamOut" /> is being called.
         ///     This callback is called when a vehicle is streamed out from some player's client.
         /// </summary>
-        public event EventHandler<PlayerVehicleEventArgs> StreamOut;
+        public event EventHandler<PlayerEventArgs> StreamOut;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnTrailerUpdate" /> is being called.
         ///     This callback is called when a player sent a trailer update.
         /// </summary>
-        public event EventHandler<PlayerTrailerEventArgs> TrailerUpdate;
+        public event EventHandler<TrailerEventArgs> TrailerUpdate;
 
         #endregion
 
@@ -372,7 +372,7 @@ namespace SampSharp.GameMode.World
         /// <returns>A float containing the distance from the point specified in the coordinates.</returns>
         public virtual float GetDistanceFromPoint(Vector point)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.GetVehicleDistanceFromPoint(Id, point.X, point.Y, point.Z);
         }
@@ -467,7 +467,7 @@ namespace SampSharp.GameMode.World
         /// <returns>False: Vehicle is not streamed in for the Player. False: Vehicle is streamed in for the Player.</returns>
         public virtual bool IsStreamedIn(GtaPlayer forplayer)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.IsVehicleStreamedIn(Id, forplayer.Id);
         }
@@ -482,7 +482,7 @@ namespace SampSharp.GameMode.World
         public virtual void GetRotationQuat(out float w, out float x, out float y,
             out float z)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.GetVehicleRotationQuat(Id, out w, out x, out y, out z);
         }
@@ -496,7 +496,7 @@ namespace SampSharp.GameMode.World
         public virtual void SetParamsForPlayer(GtaPlayer player, bool objective,
             bool doorslocked)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -527,7 +527,7 @@ namespace SampSharp.GameMode.World
         public virtual void SetParams(bool engine, bool lights, bool alarm, bool doors, bool bonnet, bool boot,
             bool objective)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetVehicleParamsEx(Id, engine, lights, alarm, doors, bonnet, boot, objective);
         }
@@ -546,7 +546,7 @@ namespace SampSharp.GameMode.World
         public virtual void GetParams(out bool engine, out bool lights, out bool alarm,
             out bool doors, out bool bonnet, out bool boot, out bool objective)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.GetVehicleParamsEx(Id, out engine, out lights, out alarm, out doors, out bonnet, out boot,
                 out objective);
@@ -557,7 +557,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Respawn()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetVehicleToRespawn(Id);
         }
@@ -568,7 +568,7 @@ namespace SampSharp.GameMode.World
         /// <param name="interiorid">Interior ID.</param>
         public virtual void LinkToInterior(int interiorid)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.LinkVehicleToInterior(Id, interiorid);
         }
@@ -579,7 +579,7 @@ namespace SampSharp.GameMode.World
         /// <param name="componentid">The ID of the component to add to the vehicle.</param>
         public virtual void AddComponent(int componentid)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.AddVehicleComponent(Id, componentid);
         }
@@ -590,7 +590,7 @@ namespace SampSharp.GameMode.World
         /// <param name="componentid">ID of the component to remove.</param>
         public virtual void RemoveComponent(int componentid)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.RemoveVehicleComponent(Id, componentid);
         }
@@ -602,7 +602,7 @@ namespace SampSharp.GameMode.World
         /// <param name="color2">The new vehicle's secondary Color ID.</param>
         public virtual void ChangeColor(int color1, int color2)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.ChangeVehicleColor(Id, color1, color2);
         }
@@ -613,7 +613,7 @@ namespace SampSharp.GameMode.World
         /// <param name="paintjobid">The ID of the Paintjob to apply. Use 3 to remove a paintjob.</param>
         public virtual void ChangePaintjob(int paintjobid)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.ChangeVehiclePaintjob(Id, paintjobid);
         }
@@ -624,7 +624,7 @@ namespace SampSharp.GameMode.World
         /// <param name="numberplate">The text that should be displayed on the numberplate. Color Embedding> is supported.</param>
         public virtual void SetNumberPlate(string numberplate)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetVehicleNumberPlate(Id, numberplate);
         }
@@ -636,7 +636,7 @@ namespace SampSharp.GameMode.World
         /// <returns>The ID of the component installed in the specified slot.</returns>
         public virtual int GetComponentInSlot(int slot)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.GetVehicleComponentInSlot(Id, slot);
         }
@@ -656,7 +656,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Repair()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.RepairVehicle(Id);
         }
@@ -667,7 +667,7 @@ namespace SampSharp.GameMode.World
         /// <param name="velocity">The amount of velocity in the angular directions.</param>
         public virtual void SetVehicleAngularVelocity(Vector velocity)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetVehicleAngularVelocity(Id, velocity);
         }
@@ -681,7 +681,7 @@ namespace SampSharp.GameMode.World
         /// <param name="tires">A variable to store the tire damage data in, passed by reference.</param>
         public virtual void GetVehicleDamageStatus(out int panels, out int doors, out int lights, out int tires)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.GetVehicleDamageStatus(Id, out panels, out doors, out lights, out tires);
         }
@@ -695,7 +695,7 @@ namespace SampSharp.GameMode.World
         /// <param name="tires">A set of bits containing the tire damage status.</param>
         public virtual void UpdateVehicleDamageStatus(int panels, int doors, int lights, int tires)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.UpdateVehicleDamageStatus(Id, panels, doors, lights, tires);
         }
@@ -718,7 +718,7 @@ namespace SampSharp.GameMode.World
         /// <returns>The offset vector.</returns>
         public virtual Vector GetVehicleModelInfo(VehicleModelInfoType infotype)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.GetVehicleModelInfo(Model, infotype);
         }
@@ -741,8 +741,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Spawn" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="VehicleEventArgs" /> that contains the event data. </param>
-        public virtual void OnSpawn(VehicleEventArgs e)
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        public virtual void OnSpawn(EventArgs e)
         {
             if (Spawn != null)
                 Spawn(this, e);
@@ -751,8 +751,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Died" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        public virtual void OnDeath(PlayerVehicleEventArgs e)
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        public virtual void OnDeath(PlayerEventArgs e)
         {
             if (Died != null)
                 Died(this, e);
@@ -761,8 +761,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="PlayerEnter" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEnterVehicleEventArgs" /> that contains the event data. </param>
-        public virtual void OnPlayerEnter(PlayerEnterVehicleEventArgs e)
+        /// <param name="e">An <see cref="EnterVehicleEventArgs" /> that contains the event data. </param>
+        public virtual void OnPlayerEnter(EnterVehicleEventArgs e)
         {
             if (PlayerEnter != null)
                 PlayerEnter(this, e);
@@ -811,8 +811,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="DamageStatusUpdated" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="VehicleEventArgs" /> that contains the event data. </param>
-        public virtual void OnDamageStatusUpdated(PlayerVehicleEventArgs e)
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        public virtual void OnDamageStatusUpdated(PlayerEventArgs e)
         {
             if (DamageStatusUpdated != null)
                 DamageStatusUpdated(this, e);
@@ -831,8 +831,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="StreamIn" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        public virtual void OnStreamIn(PlayerVehicleEventArgs e)
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        public virtual void OnStreamIn(PlayerEventArgs e)
         {
             if (StreamIn != null)
                 StreamIn(this, e);
@@ -841,8 +841,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="StreamOut" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        public virtual void OnStreamOut(PlayerVehicleEventArgs e)
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        public virtual void OnStreamOut(PlayerEventArgs e)
         {
             if (StreamOut != null)
                 StreamOut(this, e);
@@ -852,7 +852,7 @@ namespace SampSharp.GameMode.World
         ///     Raises the <see cref="TrailerUpdate" /> event.
         /// </summary>
         /// <param name="args">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        public virtual void OnTrailerUpdate(PlayerTrailerEventArgs args)
+        public virtual void OnTrailerUpdate(TrailerEventArgs args)
         {
             if (TrailerUpdate != null)
             {

@@ -47,7 +47,7 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         /// <param name="sender">Sender of the event.</param>
         /// <param name="e">Object containing information about the event.</param>
-        public void Handle(object sender, PlayerKeyStateChangedEventArgs e)
+        public void Handle(object sender, KeyStateChangedEventArgs e)
         {
             Pressed.Handle(sender, e);
             Released.Handle(sender, e);

@@ -24,13 +24,13 @@ namespace SampSharp.GameMode.SAMP
     /// </summary>
     public sealed class KeyHandlerSet
     {
-        private readonly Func<PlayerKeyStateChangedEventArgs, Keys, bool> _check;
+        private readonly Func<KeyStateChangedEventArgs, Keys, bool> _check;
 
         /// <summary>
         ///     Initializes a new instance of the KeyHandlerSet class.
         /// </summary>
         /// <param name="check">The check to run in Handle before calling an EventHandler.</param>
-        public KeyHandlerSet(Func<PlayerKeyStateChangedEventArgs, Keys, bool> check)
+        public KeyHandlerSet(Func<KeyStateChangedEventArgs, Keys, bool> check)
         {
             _check = check;
 
@@ -163,7 +163,7 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         /// <param name="sender">Sender of the event.</param>
         /// <param name="e">Object containing information about the event.</param>
-        public void Handle(object sender, PlayerKeyStateChangedEventArgs e)
+        public void Handle(object sender, KeyStateChangedEventArgs e)
         {
             if (Action != null && _check(e, Keys.Action)) Action.Handle(sender, e);
             if (Crouch != null && _check(e, Keys.Crouch)) Crouch.Handle(sender, e);

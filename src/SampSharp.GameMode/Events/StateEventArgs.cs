@@ -13,18 +13,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using SampSharp.GameMode.Definitions;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerPickUpPickup" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerStateChanged" /> event.
     /// </summary>
-    public class PlayerPickupEventArgs : PlayerEventArgs
+    public class StateEventArgs : EventArgs
     {
-        public PlayerPickupEventArgs(int playerid, int pickupid) : base(playerid)
+        public StateEventArgs(PlayerState newstate, PlayerState oldstate)
         {
-            PickupId = pickupid;
+            NewState = newstate;
+            OldState = oldstate;
         }
 
-        public int PickupId { get; private set; }
+        /// <summary>
+        /// Gets the new state.
+        /// </summary>
+        public PlayerState NewState { get; private set; }
+
+        /// <summary>
+        /// Gets the old state.
+        /// </summary>
+        public PlayerState OldState { get; private set; }
     }
 }

@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using SampSharp.GameMode.Display;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers
 {
@@ -30,13 +31,18 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.DialogResponse += (sender, args) =>
             {
-                Dialog dialog = Dialog.GetOpenDialog(args.Player);
+                var player = sender as GtaPlayer;
+                Dialog dialog = Dialog.GetOpenDialog(player);
 
                 if (dialog != null)
                     dialog.OnResponse(args);
             };
 
-            gameMode.PlayerDisconnected += (sender, args) => Dialog.Hide(args.Player);
+            gameMode.PlayerDisconnected += (sender, args) =>
+            {
+                var player = sender as GtaPlayer;
+                Dialog.Hide(player);
+            };
         }
     }
 }

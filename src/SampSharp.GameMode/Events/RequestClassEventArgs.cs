@@ -13,36 +13,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.World;
+using System;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerRequestSpawn" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerRequestClass" /> event.
     /// </summary>
-    public class PlayerRequestSpawnEventArgs
+    public class RequestClassEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the PlayerRequestSpawnEventArgs class.
+        ///     Initializes a new instance of the RequestClassEventArgs class.
         /// </summary>
-        /// <param name="playerid">The id of the player.</param>
-        public PlayerRequestSpawnEventArgs(int playerid)
+        /// <param name="classid">The id of the class.</param>
+        public RequestClassEventArgs(int classid)
         {
-            PlayerId = playerid;
+            ClassId = classid;
         }
 
         /// <summary>
-        ///     Gets the id of the player involved in the event.
+        ///     Gets the id of the class.
         /// </summary>
-        public int PlayerId { get; private set; }
-
-        /// <summary>
-        ///     Gets the player involved in the event.
-        /// </summary>
-        public GtaPlayer Player
-        {
-            get { return PlayerId == GtaPlayer.InvalidId ? null : GtaPlayer.Find(PlayerId); }
-        }
+        public int ClassId { get; private set; }
 
         /// <summary>
         ///     Gets or sets whether the player is prevented from spawning.

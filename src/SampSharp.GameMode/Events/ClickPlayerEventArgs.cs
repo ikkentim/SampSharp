@@ -13,32 +13,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.World;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerText" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerClickPlayer" /> event.
     /// </summary>
-    public class PlayerTextEventArgs : PlayerEventArgs
+    public class ClickPlayerEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the PlayerTextEventArgs class.
+        ///     Initializes a new instance of the ClickPlayerEventArgs class.
         /// </summary>
-        /// <param name="playerid">The id of the player.</param>
-        /// <param name="text">The text sent by the player.</param>
-        public PlayerTextEventArgs(int playerid, string text) : base(playerid)
+        /// <param name="clickedPlayer">Id of the clicked player.</param>
+        /// <param name="source">PlayerClickSource of the event.</param>
+        public ClickPlayerEventArgs(GtaPlayer clickedPlayer, PlayerClickSource source)
         {
-            Text = text;
+            ClickedPlayer = clickedPlayer;
+            PlayerClickSource = source;
         }
 
         /// <summary>
-        ///     Gets the text sent by the player.
+        ///     Gets the clicked player.
         /// </summary>
-        public string Text { get; private set; }
+        public GtaPlayer ClickedPlayer { get; private set; }
 
         /// <summary>
-        ///     Gets or sets whether this message should be sent to all players.
-        ///     Returning 0 in this callback will stop the text from being sent to all players
+        ///     Gets the PlayerClickSource of this event.
         /// </summary>
-        public bool SendToPlayers { get; set; }
+        public PlayerClickSource PlayerClickSource { get; private set; }
     }
 }

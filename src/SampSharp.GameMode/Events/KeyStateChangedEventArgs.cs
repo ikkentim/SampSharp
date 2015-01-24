@@ -13,23 +13,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using SampSharp.GameMode.Definitions;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerEnterExitModShop" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerKeyStateChanged" /> event.
     /// </summary>
-    public class PlayerEnterModShopEventArgs : PlayerEventArgs
+    public class KeyStateChangedEventArgs : EventArgs
     {
-        public PlayerEnterModShopEventArgs(int playerid, EnterExit enterExit, int interiorid) : base(playerid)
+        public KeyStateChangedEventArgs(Keys newkeys, Keys oldkeys)
         {
-            EnterExit = enterExit;
-            InteriorId = interiorid;
+            NewKeys = newkeys;
+            OldKeys = oldkeys;
         }
 
-        public EnterExit EnterExit { get; private set; }
+        public Keys NewKeys { get; private set; }
 
-        public int InteriorId { get; private set; }
+        public Keys OldKeys { get; private set; }
     }
 }

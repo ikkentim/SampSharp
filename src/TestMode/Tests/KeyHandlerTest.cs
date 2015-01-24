@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using SampSharp.GameMode.World;
+
 namespace TestMode.Tests
 {
     public class KeyHandlerTest : ITest
@@ -21,10 +23,11 @@ namespace TestMode.Tests
         {
             gameMode.PlayerConnected += (sender, args) =>
             {
-                args.Player.Key.Pressed.Jump.NormalPriority +=
-                    (o, eventArgs) => eventArgs.Player.SendClientMessage("You've pressed jump!");
-                args.Player.Key.Released.Jump.NormalPriority +=
-                    (o, eventArgs) => eventArgs.Player.SendClientMessage("You've released jump!");
+                var player = sender as GtaPlayer;
+                player.Key.Pressed.Jump.NormalPriority +=
+                    (o, eventArgs) => player.SendClientMessage("You've pressed jump!");
+                player.Key.Released.Jump.NormalPriority +=
+                    (o, eventArgs) => player.SendClientMessage("You've released jump!");
             };
         }
     }

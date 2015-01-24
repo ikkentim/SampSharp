@@ -13,31 +13,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using SampSharp.GameMode.Definitions;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerRequestClass" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerDisconnected" /> event.
     /// </summary>
-    public class PlayerRequestClassEventArgs : PlayerEventArgs
+    public class DisconnectEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the PlayerRequestClassEventArgs class.
+        /// Initializes a new instance of the <see cref="DisconnectEventArgs"/> class.
         /// </summary>
-        /// <param name="playerid">The id of the player.</param>
-        /// <param name="classid">The id of the class.</param>
-        public PlayerRequestClassEventArgs(int playerid, int classid) : base(playerid)
+        /// <param name="reason">The reason.</param>
+        public DisconnectEventArgs(DisconnectReason reason)
         {
-            ClassId = classid;
+            Reason = reason;
         }
 
         /// <summary>
-        ///     Gets the id of the class.
+        ///     Gets the reason of the disconnection.
         /// </summary>
-        public int ClassId { get; private set; }
-
-        /// <summary>
-        ///     Gets or sets whether the player is prevented from spawning.
-        /// </summary>
-        public bool PreventSpawning { get; set; }
+        public DisconnectReason Reason { get; private set; }
     }
 }

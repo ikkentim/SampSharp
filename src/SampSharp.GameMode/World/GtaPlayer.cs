@@ -36,7 +36,7 @@ namespace SampSharp.GameMode.World
         public const int InvalidId = Misc.InvalidPlayerId;
 
         /// <summary>
-        ///     Max number of attachedobjects attached to a player.
+        ///     Maximum number of attached objects attached to a player.
         /// </summary>
         public const int MaxAttachedObjects = Misc.MaxPlayerAttachedObjects;
 
@@ -45,9 +45,9 @@ namespace SampSharp.GameMode.World
         #region Constructors
 
         /// <summary>
-        ///     Initalizes a new instance of the GtaPlayer class.
+        /// Initializes a new instance of the <see cref="GtaPlayer"/> class.
         /// </summary>
-        /// <param name="id">The ID of the player to initialize.</param>
+        /// <param name="id">The identifier.</param>
         public GtaPlayer(int id)
         {
             //Fill properties
@@ -66,7 +66,7 @@ namespace SampSharp.GameMode.World
         public PVarCollection PVars { get; private set; }
 
         /// <summary>
-        ///     Gets a set of KeyHandlers for different keystates.
+        ///     Gets a set of KeyHandlers for different key states.
         /// </summary>
         public KeyChangeHandlerSet Key { get; private set; }
 
@@ -125,7 +125,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the armour of this Player.
+        ///     Gets or sets the armor of this Player.
         /// </summary>
         public virtual float Armour
         {
@@ -188,7 +188,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the drunkness level of this Player.
+        ///     Gets or sets the drunkenness level of this Player.
         /// </summary>
         public virtual int DrunkLevel
         {
@@ -309,7 +309,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the position of this Players's camera.
+        ///     Gets or sets the position of the camera of this Players.
         /// </summary>
         public virtual Vector CameraPosition
         {
@@ -479,56 +479,56 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="BaseMode.OnPlayerConnect" /> is being called.
         ///     This callback is called when a player connects to the server.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> Connected;
+        public event EventHandler<EventArgs> Connected;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerDisconnect" /> is being called.
         ///     This callback is called when a player disconnects from the server.
         /// </summary>
-        public event EventHandler<PlayerDisconnectedEventArgs> Disconnected;
+        public event EventHandler<DisconnectEventArgs> Disconnected;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerDisconnect" /> is being called.
         ///     This callback is called after a player disconnects from the server.
         /// </summary>
-        public event EventHandler<PlayerDisconnectedEventArgs> Cleanup;
+        public event EventHandler<DisconnectEventArgs> Cleanup;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerSpawn" /> is being called.
         ///     This callback is called when a player spawns.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> Spawned;
+        public event EventHandler<SpawnEventArgs> Spawned;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnGameModeInit" /> is being called.
         ///     This callback is triggered when the gamemode starts.
         /// </summary>
-        public event EventHandler<PlayerDeathEventArgs> Died;
+        public event EventHandler<DeathEventArgs> Died;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerText" /> is being called.
         ///     Called when a player sends a chat message.
         /// </summary>
-        public event EventHandler<PlayerTextEventArgs> Text;
+        public event EventHandler<TextEventArgs> Text;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerCommandText" /> is being called.
         ///     This callback is called when a player enters a command into the client chat window, e.g. /help.
         /// </summary>
-        public event EventHandler<PlayerCommandTextEventArgs> CommandText;
+        public event EventHandler<CommandTextEventArgs> CommandText;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerRequestClass" /> is being called.
         ///     Called when a player changes class at class selection (and when class selection first appears).
         /// </summary>
-        public event EventHandler<PlayerRequestClassEventArgs> RequestClass;
+        public event EventHandler<RequestClassEventArgs> RequestClass;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerEnterVehicle" /> is being called.
         ///     This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the
         ///     time this callback is called.
         /// </summary>
-        public event EventHandler<PlayerVehicleEventArgs> EnterVehicle;
+        public event EventHandler<EnterVehicleEventArgs> EnterVehicle;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerExitVehicle" /> is being called.
@@ -548,61 +548,55 @@ namespace SampSharp.GameMode.World
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as using
         ///     <see cref="Native.SetPlayerPos(int,Vector)" />.
         /// </remarks>
-        public event EventHandler<PlayerStateEventArgs> StateChanged;
+        public event EventHandler<StateEventArgs> StateChanged;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerEnterCheckpoint" /> is being called.
         ///     This callback is called when a player enters the checkpoint set for that player.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> EnterCheckpoint;
+        public event EventHandler<EventArgs> EnterCheckpoint;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerLeaveCheckpoint" /> is being called.
         ///     This callback is called when a player leaves the checkpoint set for that player.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> LeaveCheckpoint;
+        public event EventHandler<EventArgs> LeaveCheckpoint;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerEnterRaceCheckpoint" /> is being called.
         ///     This callback is called when a player enters a race checkpoint.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> EnterRaceCheckpoint;
+        public event EventHandler<EventArgs> EnterRaceCheckpoint;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerLeaveRaceCheckpoint" /> is being called.
         ///     This callback is called when a player leaves the race checkpoint.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> LeaveRaceCheckpoint;
+        public event EventHandler<EventArgs> LeaveRaceCheckpoint;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerRequestSpawn" /> is being called.
         ///     Called when a player attempts to spawn via class selection.
         /// </summary>
-        public event EventHandler<PlayerRequestSpawnEventArgs> RequestSpawn;
-
-        /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerPickUpPickup" /> is being called.
-        ///     Called when a player picks up a pickup created with <see cref="Native.CreatePickup" />.
-        /// </summary>
-        public event EventHandler<PlayerPickupEventArgs> PickUpPickup;
+        public event EventHandler<RequestSpawnEventArgs> RequestSpawn;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnEnterExitModShop" /> is being called.
         ///     This callback is called when a player enters or exits a mod shop.
         /// </summary>
-        public event EventHandler<PlayerEnterModShopEventArgs> EnterExitModShop;
+        public event EventHandler<EnterModShopEventArgs> EnterExitModShop;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerSelectedMenuRow" /> is being called.
         ///     This callback is called when a player selects an item from a menu.
         /// </summary>
-        public event EventHandler<PlayerSelectedMenuRowEventArgs> SelectedMenuRow;
+        public event EventHandler<MenuRowEventArgs> SelectedMenuRow;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerExitedMenu" /> is being called.
         ///     Called when a player exits a menu.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> ExitedMenu;
+        public event EventHandler<EventArgs> ExitedMenu;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerInteriorChange" /> is being called.
@@ -611,14 +605,14 @@ namespace SampSharp.GameMode.World
         /// <remarks>
         ///     This is also called when <see cref="Native.SetPlayerInterior" /> is used.
         /// </remarks>
-        public event EventHandler<PlayerInteriorChangedEventArgs> InteriorChanged;
+        public event EventHandler<InteriorChangedEventArgs> InteriorChanged;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerKeyStateChange" /> is being called.
         ///     This callback is called when the state of any supported key is changed (pressed/released). Directional keys do not
         ///     trigger this callback.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> KeyStateChanged;
+        public event EventHandler<KeyStateChangedEventArgs> KeyStateChanged;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerUpdate" /> is being called.
@@ -627,19 +621,19 @@ namespace SampSharp.GameMode.World
         /// <remarks>
         ///     This callback is called very frequently per second per player, only use it when you know what it's meant for.
         /// </remarks>
-        public event EventHandler<PlayerEventArgs> Update;
+        public event EventHandler<PlayerUpdateEventArgs> Update;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerStreamIn" /> is being called.
         ///     This callback is called when a player is streamed by some other player's client.
         /// </summary>
-        public event EventHandler<StreamPlayerEventArgs> StreamIn;
+        public event EventHandler<PlayerEventArgs> StreamIn;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerStreamOut" /> is being called.
         ///     This callback is called when a player is streamed out from some other player's client.
         /// </summary>
-        public event EventHandler<StreamPlayerEventArgs> StreamOut;
+        public event EventHandler<PlayerEventArgs> StreamOut;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnDialogResponse" /> is being called.
@@ -652,7 +646,7 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="BaseMode.OnPlayerTakeDamage" /> is being called.
         ///     This callback is called when a player takes damage.
         /// </summary>
-        public event EventHandler<PlayerDamageEventArgs> TakeDamage;
+        public event EventHandler<DamagePlayerEventArgs> TakeDamage;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerGiveDamage" /> is being called.
@@ -670,7 +664,7 @@ namespace SampSharp.GameMode.World
         ///     normally does this. GiveDamage provides some extra information which may be useful when you require a different
         ///     level of trust.
         /// </remarks>
-        public event EventHandler<PlayerDamageEventArgs> GiveDamage;
+        public event EventHandler<DamagePlayerEventArgs> GiveDamage;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickMap" /> is being called.
@@ -680,7 +674,7 @@ namespace SampSharp.GameMode.World
         ///     The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get
         ///     a more accurate Z coordinate (or for teleportation; use <see cref="Native.SetPlayerPosFindZ(int,Vector)" />).
         /// </remarks>
-        public event EventHandler<PlayerClickMapEventArgs> ClickMap;
+        public event EventHandler<PositionEventArgs> ClickMap;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw" /> is being called.
@@ -690,20 +684,20 @@ namespace SampSharp.GameMode.World
         ///     The clickable area is defined by <see cref="Native.TextDrawTextSize" />. The x and y parameters passed to that
         ///     function must not be zero or negative.
         /// </remarks>
-        public event EventHandler<PlayerClickTextDrawEventArgs> ClickTextDraw;
+        public event EventHandler<ClickTextDrawEventArgs> ClickTextDraw;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw" /> is being called.
         ///     This callback is called when a player cancels the textdraw select mode(ESC).
         /// </summary>
-        public event EventHandler<PlayerEventArgs> CancelClickTextDraw;
+        public event EventHandler<EventArgs> CancelClickTextDraw;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw" /> is being called.
         ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
         ///     mode (ESC) - however, <see cref="BaseMode.OnPlayerClickTextDraw" /> is.
         /// </summary>
-        public event EventHandler<PlayerClickTextDrawEventArgs> ClickPlayerTextDraw;
+        public event EventHandler<ClickPlayerTextDrawEventArgs> ClickPlayerTextDraw;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayer" /> is being called.
@@ -713,13 +707,19 @@ namespace SampSharp.GameMode.World
         ///     There is currently only one 'source' (<see cref="PlayerClickSource.Scoreboard" />). The existence of this argument
         ///     suggests that more sources may be supported in the future.
         /// </remarks>
-        public event EventHandler<PlayerClickPlayerEventArgs> ClickPlayer;
+        public event EventHandler<ClickPlayerEventArgs> ClickPlayer;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEditObject" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerEditGlobalObject" /> is being called.
         ///     This callback is called when a player ends object edition mode.
         /// </summary>
-        public event EventHandler<PlayerEditObjectEventArgs> EditObject;
+        public event EventHandler<EditGlobalObjectEventArgs> EditGlobalObject;
+
+        /// <summary>
+        ///     Occurs when the <see cref="BaseMode.OnPlayerEditPlayerObject" /> is being called.
+        ///     This callback is called when a player ends object edition mode.
+        /// </summary>
+        public event EventHandler<EditPlayerObjectEventArgs> EditPlayerObject;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerEditAttachedObject" /> is being called.
@@ -729,13 +729,19 @@ namespace SampSharp.GameMode.World
         ///     Editions should be discarded if response was '0' (cancelled). This must be done by storing the offsets etc. in an
         ///     array BEFORE using EditAttachedObject.
         /// </remarks>
-        public event EventHandler<PlayerEditAttachedObjectEventArgs> EditAttachedObject;
+        public event EventHandler<EditAttachedObjectEventArgs> EditAttachedObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerSelectObject" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerSelectGlobalObject" /> is being called.
         ///     This callback is called when a player selects an object after <see cref="Native.SelectObject" /> has been used.
         /// </summary>
-        public event EventHandler<PlayerSelectObjectEventArgs> SelectObject;
+        public event EventHandler<SelectGlobalObjectEventArgs> SelectGlobalObject;
+
+        /// <summary>
+        ///     Occurs when the <see cref="BaseMode.OnPlayerSelectPlayerObject" /> is being called.
+        ///     This callback is called when a player selects an object after <see cref="Native.SelectObject" /> has been used.
+        /// </summary>
+        public event EventHandler<SelectPlayerObjectEventArgs> SelectPlayerObject;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerWeaponShot" /> is being called.
@@ -772,7 +778,7 @@ namespace SampSharp.GameMode.World
             int weapon1Ammo = 0, Weapon weapon2 = Weapon.None, int weapon2Ammo = 0, Weapon weapon3 = Weapon.None,
             int weapon3Ammo = 0)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetSpawnInfo(Id, team, skin, position, rotation, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
                 weapon3, weapon3Ammo);
@@ -783,7 +789,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Spawn()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SpawnPlayer(Id);
         }
@@ -803,7 +809,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position to move this Player to.</param>
         public virtual void SetPositionFindZ(Vector position)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerPosFindZ(Id, position);
         }
@@ -816,7 +822,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True if this Player is in range of the point, otherwise False.</returns>
         public virtual bool IsInRangeOfPoint(float range, Vector point)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.IsPlayerInRangeOfPoint(Id, range, point);
         }
@@ -828,7 +834,7 @@ namespace SampSharp.GameMode.World
         /// <returns>The distance between the player and the point as a float.</returns>
         public virtual float GetDistanceFromPoint(Vector point)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.GetPlayerDistanceFromPoint(Id, point);
         }
@@ -847,7 +853,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True if the other Player is streamed in for this Player, False if not.</returns>
         public virtual bool IsPlayerStreamedIn(GtaPlayer other)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (other == null)
                 throw new ArgumentNullException("other");
@@ -862,7 +868,7 @@ namespace SampSharp.GameMode.World
         /// <param name="ammo">The amount of ammo to set.</param>
         public virtual void SetAmmo(Weapon weapon, int ammo)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerAmmo(Id, (int) weapon, ammo);
         }
@@ -874,7 +880,7 @@ namespace SampSharp.GameMode.World
         /// <param name="ammo">The amount of ammo to give to this Player.</param>
         public virtual void GiveWeapon(Weapon weapon, int ammo)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.GivePlayerWeapon(Id, (int) weapon, ammo);
         }
@@ -885,7 +891,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void ResetWeapons()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.ResetPlayerWeapons(Id);
         }
@@ -896,7 +902,7 @@ namespace SampSharp.GameMode.World
         /// <param name="weapon">The weapon that the player should be armed with.</param>
         public virtual void SetArmedWeapon(Weapon weapon)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerArmedWeapon(Id, (int) weapon);
         }
@@ -909,7 +915,7 @@ namespace SampSharp.GameMode.World
         /// <param name="ammo">The variable in which to store the ammo, passed by reference.</param>
         public virtual void GetWeaponData(int slot, out Weapon weapon, out int ammo)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             int weaponid;
             Native.GetPlayerWeaponData(Id, slot, out weaponid, out ammo);
@@ -922,7 +928,7 @@ namespace SampSharp.GameMode.World
         /// <param name="money">The amount of money to give this Player. Use a minus value to take money.</param>
         public virtual void GiveMoney(int money)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.GivePlayerMoney(Id, money);
         }
@@ -932,7 +938,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void ResetMoney()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.ResetPlayerMoney(Id);
         }
@@ -949,7 +955,7 @@ namespace SampSharp.GameMode.World
         /// <param name="leftright">Left or Right value, passed by reference.</param>
         public virtual void GetKeys(out Keys keys, out int updown, out int leftright)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             int keysDown;
             Native.GetPlayerKeys(Id, out keysDown, out updown, out leftright);
@@ -963,7 +969,7 @@ namespace SampSharp.GameMode.World
         /// <param name="minutes">Minutes to set (0-59).</param>
         public virtual void SetTime(int hour, int minutes)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerTime(Id, hour, minutes);
         }
@@ -976,7 +982,7 @@ namespace SampSharp.GameMode.World
         /// <param name="minutes">The variable to store the minutes in, passed by reference.</param>
         public virtual void GetTime(out int hour, out int minutes)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.GetPlayerTime(Id, out hour, out minutes);
         }
@@ -990,7 +996,7 @@ namespace SampSharp.GameMode.World
         /// <param name="toggle">True to show, False to hide.</param>
         public virtual void ToggleClock(bool toggle)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.TogglePlayerClock(Id, toggle);
         }
@@ -1002,7 +1008,7 @@ namespace SampSharp.GameMode.World
         /// <param name="weather">The weather to set.</param>
         public virtual void SetWeather(int weather)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerWeather(Id, weather);
         }
@@ -1016,7 +1022,7 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         public virtual void ForceClassSelection()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.ForceClassSelection(Id);
         }
@@ -1027,7 +1033,7 @@ namespace SampSharp.GameMode.World
         /// <param name="hoverColor">The color of the textdraw when hovering over with mouse.</param>
         public virtual void SelectTextDraw(Color hoverColor)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SelectTextDraw(Id, hoverColor);
         }
@@ -1037,7 +1043,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void CancelSelectTextDraw()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.CancelSelectTextDraw(Id);
         }
@@ -1049,7 +1055,7 @@ namespace SampSharp.GameMode.World
         /// <param name="crime">The crime ID, which will be reported as a 10-code (i.e. 10-16 if 16 was passed as the crimeid).</param>
         public virtual void PlayCrimeReport(int suspectid, int crime)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.PlayCrimeReportForPlayer(Id, suspectid, crime);
         }
@@ -1065,7 +1071,7 @@ namespace SampSharp.GameMode.World
         /// <param name="distance">The distance over which the audio will be heard. Has no effect unless usepos is set to True.</param>
         public virtual void PlayAudioStream(string url, Vector position, float distance)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.PlayAudioStreamForPlayer(Id, url, position.X, position.Y, position.Z, distance, true);
         }
@@ -1079,7 +1085,7 @@ namespace SampSharp.GameMode.World
         /// </param>
         public virtual void PlayAudioStream(string url)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.PlayAudioStreamForPlayer(Id, url, 0, 0, 0, 0, false);
         }
@@ -1089,7 +1095,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void StopAudioStream()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.StopAudioStreamForPlayer(Id);
         }
@@ -1100,7 +1106,7 @@ namespace SampSharp.GameMode.World
         /// <param name="shopname"></param>
         public virtual void SetShopName(string shopname)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerShopName(Id, shopname);
         }
@@ -1118,7 +1124,7 @@ namespace SampSharp.GameMode.World
         /// </param>
         public virtual void SetSkillLevel(WeaponSkill skill, int level)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerSkillLevel(Id, (int) skill, level);
         }
@@ -1131,7 +1137,7 @@ namespace SampSharp.GameMode.World
         /// <param name="radius">The radius. Objects within this radius from the coordinates above will be removed.</param>
         public virtual void RemoveBuilding(int modelid, Vector point, float radius)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.RemoveBuildingForPlayer(Id, modelid, point.X, point.Y, point.Z, radius);
         }
@@ -1151,7 +1157,7 @@ namespace SampSharp.GameMode.World
         public virtual bool SetAttachedObject(int index, int modelid, int bone, Vector offset, Vector rotation,
             Vector scale, Color materialcolor1, Color materialcolor2)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.SetPlayerAttachedObject(Id, index, modelid, bone, offset.X, offset.Y, offset.Z,
                 rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z,
@@ -1165,7 +1171,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True on success, False otherwise.</returns>
         public virtual bool RemoveAttachedObject(int index)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.RemovePlayerAttachedObject(Id, index);
         }
@@ -1177,7 +1183,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True if the slot is used, False otherwise.</returns>
         public virtual bool IsAttachedObjectSlotUsed(int index)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.IsPlayerAttachedObjectSlotUsed(Id, index);
         }
@@ -1189,7 +1195,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True on success, False otherwise.</returns>
         public virtual bool DoEditAttachedObject(int index)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.EditAttachedObject(Id, index);
         }
@@ -1204,7 +1210,7 @@ namespace SampSharp.GameMode.World
         public virtual void SetChatBubble(string text, Color color, float drawdistance,
             int expiretime)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerChatBubble(Id, text, color.GetColorValue(ColorFormat.RGBA), drawdistance, expiretime);
         }
@@ -1216,7 +1222,7 @@ namespace SampSharp.GameMode.World
         /// <param name="seatid">The ID of the seat to put the player in.</param>
         public virtual void PutInVehicle(GtaVehicle vehicle, int seatid)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (vehicle == null)
                 throw new ArgumentNullException("vehicle");
@@ -1243,7 +1249,7 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         public virtual void RemoveFromVehicle()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.RemovePlayerFromVehicle(Id);
         }
@@ -1254,7 +1260,7 @@ namespace SampSharp.GameMode.World
         /// <param name="toggle">False to freeze the player or True to unfreeze them.</param>
         public virtual void ToggleControllable(bool toggle)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.TogglePlayerControllable(Id, toggle);
         }
@@ -1266,7 +1272,7 @@ namespace SampSharp.GameMode.World
         /// <param name="point">Point for the sound to play at.</param>
         public virtual void PlaySound(int soundid, Vector point)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.PlayerPlaySound(Id, soundid, point.X, point.Y, point.Z);
         }
@@ -1277,7 +1283,7 @@ namespace SampSharp.GameMode.World
         /// <param name="soundid">The sound to play.</param>
         public virtual void PlaySound(int soundid)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.PlayerPlaySound(Id, soundid, 0, 0, 0);
         }
@@ -1309,7 +1315,7 @@ namespace SampSharp.GameMode.World
         public virtual void ApplyAnimation(string animlib, string animname, float fDelta, bool loop, bool lockx,
             bool locky, bool freeze, int time, bool forcesync)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.ApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync);
         }
@@ -1334,7 +1340,7 @@ namespace SampSharp.GameMode.World
         public virtual void ApplyAnimation(string animlib, string animname, float fDelta, bool loop, bool lockx,
             bool locky, bool freeze, int time)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.ApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, false);
         }
@@ -1345,7 +1351,7 @@ namespace SampSharp.GameMode.World
         /// <param name="forcesync">Specifies whether the animation should be shown to streamed in players.</param>
         public virtual void ClearAnimations(bool forcesync)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.ClearAnimations(Id, forcesync);
         }
@@ -1355,7 +1361,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void ClearAnimations()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.ClearAnimations(Id, false);
         }
@@ -1368,7 +1374,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True on success, False otherwise.</returns>
         public virtual bool GetAnimationName(out string animlib, out string animname)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.GetAnimationName(AnimationIndex, out animlib, 64, out animname, 64);
         }
@@ -1385,7 +1391,7 @@ namespace SampSharp.GameMode.World
         /// <param name="size">The size of the checkpoint.</param>
         public virtual void SetCheckpoint(Vector point, float size)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerCheckpoint(Id, point, size);
         }
@@ -1395,7 +1401,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void DisableCheckpoint()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.DisablePlayerCheckpoint(Id);
         }
@@ -1409,7 +1415,7 @@ namespace SampSharp.GameMode.World
         /// <param name="size">Length (diameter) of the checkpoint</param>
         public virtual void SetRaceCheckpoint(CheckpointType type, Vector point, Vector nextPosition, float size)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerRaceCheckpoint(Id, type, point, nextPosition, size);
         }
@@ -1419,7 +1425,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void DisableRaceCheckpoint()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.DisablePlayerRaceCheckpoint(Id);
         }
@@ -1437,7 +1443,7 @@ namespace SampSharp.GameMode.World
         /// <param name="yMin">The minimum Y coordinate the player can go to.</param>
         public virtual void SetWorldBounds(float xMax, float xMin, float yMax, float yMin)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerWorldBounds(Id, xMax, xMin, yMax, yMin);
         }
@@ -1449,7 +1455,7 @@ namespace SampSharp.GameMode.World
         /// <param name="color">New color.</param>
         public virtual void SetPlayerMarker(GtaPlayer player, Color color)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -1469,7 +1475,7 @@ namespace SampSharp.GameMode.World
         /// <param name="show">True to show name tag, False to hide name tag.</param>
         public virtual void ShowNameTagForPlayer(GtaPlayer player, bool show)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -1492,7 +1498,7 @@ namespace SampSharp.GameMode.World
         public virtual bool SetMapIcon(int iconid, Vector position, PlayerMarkersMode markertype, Color color,
             MapIconType style)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.SetPlayerMapIcon(Id, iconid, position, markertype, color, (int) style);
         }
@@ -1503,7 +1509,7 @@ namespace SampSharp.GameMode.World
         /// <param name="iconid">The ID of the icon to remove. This is the second parameter of <see cref="SetMapIcon" />.</param>
         public virtual void RemovePlayerMapIcon(int iconid)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.RemovePlayerMapIcon(Id, iconid);
         }
@@ -1515,7 +1521,7 @@ namespace SampSharp.GameMode.World
         /// <param name="cut">The style the camera-position changes.</param>
         public virtual void SetCameraLookAt(Vector point, CameraCut cut)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerCameraLookAt(Id, point, cut);
         }
@@ -1526,7 +1532,7 @@ namespace SampSharp.GameMode.World
         /// <param name="point">The coordinates for this Player's camera to look at.</param>
         public virtual void SetCameraLookAt(Vector point)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerCameraLookAt(Id, point, CameraCut.Cut);
         }
@@ -1540,7 +1546,7 @@ namespace SampSharp.GameMode.World
         /// <param name="cut">The jumpcut to use. Defaults to CameraCut.Cut. Set to CameraCut. Move for a smooth movement.</param>
         public virtual void InterpolateCameraPos(Vector from, Vector to, int time, CameraCut cut)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.InterpolateCameraPos(Id, from, to, time, cut);
         }
@@ -1554,7 +1560,7 @@ namespace SampSharp.GameMode.World
         /// <param name="cut">The 'jumpcut' to use. Defaults to CameraCut.Cut (pointless). Set to CameraCut.Move for interpolation.</param>
         public virtual void InterpolateCameraLookAt(Vector from, Vector to, int time, CameraCut cut)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.InterpolateCameraLookAt(Id, from, to, time, cut);
         }
@@ -1566,7 +1572,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True if player is in the vehicle, otherwise False.</returns>
         public virtual bool IsInVehicle(GtaVehicle vehicle)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.IsPlayerInVehicle(Id, vehicle.Id);
         }
@@ -1577,7 +1583,7 @@ namespace SampSharp.GameMode.World
         /// <param name="enable">True to enable stunt bonuses, False to disable them.</param>
         public virtual void EnableStuntBonus(bool enable)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.EnableStuntBonusForPlayer(Id, enable);
         }
@@ -1591,7 +1597,7 @@ namespace SampSharp.GameMode.World
         /// <param name="toggle">True to enable spectating and False to disable.</param>
         public virtual void ToggleSpectating(bool toggle)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.TogglePlayerSpectating(Id, toggle);
         }
@@ -1607,7 +1613,7 @@ namespace SampSharp.GameMode.World
         /// <param name="mode">The mode to spectate with.</param>
         public virtual void SpectatePlayer(GtaPlayer targetPlayer, SpectateMode mode)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (targetPlayer == null)
                 throw new ArgumentNullException("targetPlayer");
@@ -1625,7 +1631,7 @@ namespace SampSharp.GameMode.World
         /// <param name="targetPlayer">The Player that should be spectated.</param>
         public virtual void SpectatePlayer(GtaPlayer targetPlayer)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (targetPlayer == null)
                 throw new ArgumentNullException("targetPlayer");
@@ -1644,7 +1650,7 @@ namespace SampSharp.GameMode.World
         /// <param name="mode">Spectate mode.</param>
         public virtual void SpectateVehicle(GtaVehicle targetVehicle, SpectateMode mode)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (targetVehicle == null)
                 throw new ArgumentNullException("targetVehicle");
@@ -1662,7 +1668,7 @@ namespace SampSharp.GameMode.World
         /// <param name="targetVehicle">The vehicle to spectate.</param>
         public virtual void SpectateVehicle(GtaVehicle targetVehicle)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (targetVehicle == null)
                 throw new ArgumentNullException("targetVehicle");
@@ -1679,7 +1685,7 @@ namespace SampSharp.GameMode.World
         /// </returns>
         public virtual int GetSurfingObjectID()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.GetPlayerSurfingObjectID(Id);
         }
@@ -1694,7 +1700,7 @@ namespace SampSharp.GameMode.World
         /// </param>
         public virtual void StartRecordingPlayerData(PlayerRecordingType recordtype, string recordname)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.StartRecordingPlayerData(Id, (int) recordtype, recordname);
         }
@@ -1704,7 +1710,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void StopRecordingPlayerData()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.StopRecordingPlayerData(Id);
         }
@@ -1721,7 +1727,7 @@ namespace SampSharp.GameMode.World
         /// <param name="message">The text that will be displayed.</param>
         public virtual void SendClientMessage(Color color, string message)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (message.Length > 144)
             {
@@ -1739,7 +1745,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Kick()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.Kick(Id);
         }
@@ -1752,7 +1758,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Ban()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.Ban(Id);
         }
@@ -1763,7 +1769,7 @@ namespace SampSharp.GameMode.World
         /// <param name="reason">The reason for the ban.</param>
         public virtual void Ban(string reason)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.BanEx(Id, reason);
         }
@@ -1858,7 +1864,7 @@ namespace SampSharp.GameMode.World
         /// <param name="message">The message that will be sent.</param>
         public virtual void SendPlayerMessageToPlayer(GtaPlayer receiver, string message)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (receiver == null)
                 throw new ArgumentNullException("receiver");
@@ -1873,7 +1879,7 @@ namespace SampSharp.GameMode.World
         /// <param name="message">The message that will be sent.</param>
         public virtual void SendPlayerMessageToAll(string message)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SendPlayerMessageToAll(Id, message);
         }
@@ -1897,7 +1903,7 @@ namespace SampSharp.GameMode.World
         /// <param name="style">The style of text to be displayed.</param>
         public virtual void GameText(string text, int time, int style)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.GameTextForPlayer(Id, text, time, style);
         }
@@ -1951,7 +1957,7 @@ namespace SampSharp.GameMode.World
         /// <param name="radius">The radius of the explosion.</param>
         public virtual void CreateExplosion(Vector position, int type, float radius)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.CreateExplosionForPlayer(Id, position, type, radius);
         }
@@ -1964,7 +1970,7 @@ namespace SampSharp.GameMode.World
         /// <param name="weapon">The reason for this Player's death.</param>
         public virtual void SendDeathMessage(GtaPlayer killer, GtaPlayer killee, Weapon weapon)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SendDeathMessageToPlayer(Id, killer == null ? InvalidId : killer.Id,
                 killee == null ? InvalidId : killee.Id, (int) weapon);
@@ -1989,8 +1995,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Connected" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnConnected(PlayerEventArgs e)
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        public virtual void OnConnected(EventArgs e)
         {
             if (Connected != null)
                 Connected(this, e);
@@ -1999,8 +2005,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Disconnected" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerDisconnectedEventArgs" /> that contains the event data. </param>
-        public virtual void OnDisconnected(PlayerDisconnectedEventArgs e)
+        /// <param name="e">An <see cref="DisconnectEventArgs" /> that contains the event data. </param>
+        public virtual void OnDisconnected(DisconnectEventArgs e)
         {
             if (Disconnected != null)
                 Disconnected(this, e);
@@ -2009,8 +2015,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Cleanup" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerDisconnectedEventArgs" /> that contains the event data. </param>
-        public virtual void OnCleanup(PlayerDisconnectedEventArgs e)
+        /// <param name="e">An <see cref="DisconnectEventArgs" /> that contains the event data. </param>
+        public virtual void OnCleanup(DisconnectEventArgs e)
         {
             if (Cleanup != null)
                 Cleanup(this, e);
@@ -2022,8 +2028,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Spawned" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnSpawned(PlayerEventArgs e)
+        /// <param name="e">An <see cref="SpawnEventArgs" /> that contains the event data. </param>
+        public virtual void OnSpawned(SpawnEventArgs e)
         {
             if (Spawned != null)
                 Spawned(this, e);
@@ -2032,8 +2038,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Died" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerDeathEventArgs" /> that contains the event data. </param>
-        public virtual void OnDeath(PlayerDeathEventArgs e)
+        /// <param name="e">An <see cref="DeathEventArgs" /> that contains the event data. </param>
+        public virtual void OnDeath(DeathEventArgs e)
         {
             if (Died != null)
                 Died(this, e);
@@ -2042,8 +2048,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Text" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerTextEventArgs" /> that contains the event data. </param>
-        public virtual void OnText(PlayerTextEventArgs e)
+        /// <param name="e">An <see cref="TextEventArgs" /> that contains the event data. </param>
+        public virtual void OnText(TextEventArgs e)
         {
             if (Text != null)
                 Text(this, e);
@@ -2052,8 +2058,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="CommandText" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerTextEventArgs" /> that contains the event data. </param>
-        public virtual void OnCommandText(PlayerCommandTextEventArgs e)
+        /// <param name="e">An <see cref="TextEventArgs" /> that contains the event data. </param>
+        public virtual void OnCommandText(CommandTextEventArgs e)
         {
             if (CommandText != null)
                 CommandText(this, e);
@@ -2062,8 +2068,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="RequestClass" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerRequestClassEventArgs" /> that contains the event data. </param>
-        public virtual void OnRequestClass(PlayerRequestClassEventArgs e)
+        /// <param name="e">An <see cref="RequestClassEventArgs" /> that contains the event data. </param>
+        public virtual void OnRequestClass(RequestClassEventArgs e)
         {
             if (RequestClass != null)
                 RequestClass(this, e);
@@ -2072,8 +2078,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="EnterVehicle" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEnterVehicleEventArgs" /> that contains the event data. </param>
-        public virtual void OnEnterVehicle(PlayerEnterVehicleEventArgs e)
+        /// <param name="e">An <see cref="EnterVehicleEventArgs" /> that contains the event data. </param>
+        public virtual void OnEnterVehicle(EnterVehicleEventArgs e)
         {
             if (EnterVehicle != null)
                 EnterVehicle(this, e);
@@ -2092,8 +2098,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="StateChanged" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerStateEventArgs" /> that contains the event data. </param>
-        public virtual void OnStateChanged(PlayerStateEventArgs e)
+        /// <param name="e">An <see cref="StateEventArgs" /> that contains the event data. </param>
+        public virtual void OnStateChanged(StateEventArgs e)
         {
             if (StateChanged != null)
                 StateChanged(this, e);
@@ -2102,8 +2108,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="EnterCheckpoint" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnEnterCheckpoint(PlayerEventArgs e)
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        public virtual void OnEnterCheckpoint(EventArgs e)
         {
             if (EnterCheckpoint != null)
                 EnterCheckpoint(this, e);
@@ -2112,8 +2118,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="LeaveCheckpoint" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnLeaveCheckpoint(PlayerEventArgs e)
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        public virtual void OnLeaveCheckpoint(EventArgs e)
         {
             if (LeaveCheckpoint != null)
                 LeaveCheckpoint(this, e);
@@ -2122,8 +2128,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="EnterRaceCheckpoint" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnEnterRaceCheckpoint(PlayerEventArgs e)
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        public virtual void OnEnterRaceCheckpoint(EventArgs e)
         {
             if (EnterRaceCheckpoint != null)
                 EnterRaceCheckpoint(this, e);
@@ -2132,8 +2138,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="LeaveRaceCheckpoint" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnLeaveRaceCheckpoint(PlayerEventArgs e)
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        public virtual void OnLeaveRaceCheckpoint(EventArgs e)
         {
             if (LeaveRaceCheckpoint != null)
                 LeaveRaceCheckpoint(this, e);
@@ -2143,27 +2149,17 @@ namespace SampSharp.GameMode.World
         ///     Raises the <see cref="RequestSpawn" /> event.
         /// </summary>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnRequestSpawn(PlayerRequestSpawnEventArgs e)
+        public virtual void OnRequestSpawn(RequestSpawnEventArgs e)
         {
             if (RequestSpawn != null)
                 RequestSpawn(this, e);
         }
 
         /// <summary>
-        ///     Raises the <see cref="PickUpPickup" /> event.
-        /// </summary>
-        /// <param name="e">An <see cref="PlayerPickupEventArgs" /> that contains the event data. </param>
-        public virtual void OnPickUpPickup(PlayerPickupEventArgs e)
-        {
-            if (PickUpPickup != null)
-                PickUpPickup(this, e);
-        }
-
-        /// <summary>
         ///     Raises the <see cref="EnterExitModShop" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEnterModShopEventArgs" /> that contains the event data. </param>
-        public virtual void OnEnterExitModShop(PlayerEnterModShopEventArgs e)
+        /// <param name="e">An <see cref="EnterModShopEventArgs" /> that contains the event data. </param>
+        public virtual void OnEnterExitModShop(EnterModShopEventArgs e)
         {
             if (EnterExitModShop != null)
                 EnterExitModShop(this, e);
@@ -2172,8 +2168,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="SelectedMenuRow" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerSelectedMenuRowEventArgs" /> that contains the event data. </param>
-        public virtual void OnSelectedMenuRow(PlayerSelectedMenuRowEventArgs e)
+        /// <param name="e">An <see cref="MenuRowEventArgs" /> that contains the event data. </param>
+        public virtual void OnSelectedMenuRow(MenuRowEventArgs e)
         {
             if (SelectedMenuRow != null)
                 SelectedMenuRow(this, e);
@@ -2182,8 +2178,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="ExitedMenu" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnExitedMenu(PlayerEventArgs e)
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        public virtual void OnExitedMenu(EventArgs e)
         {
             if (ExitedMenu != null)
                 ExitedMenu(this, e);
@@ -2192,8 +2188,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="InteriorChanged" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerInteriorChangedEventArgs" /> that contains the event data. </param>
-        public virtual void OnInteriorChanged(PlayerInteriorChangedEventArgs e)
+        /// <param name="e">An <see cref="InteriorChangedEventArgs" /> that contains the event data. </param>
+        public virtual void OnInteriorChanged(InteriorChangedEventArgs e)
         {
             if (InteriorChanged != null)
                 InteriorChanged(this, e);
@@ -2202,8 +2198,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="KeyStateChanged" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerKeyStateChangedEventArgs" /> that contains the event data. </param>
-        public virtual void OnKeyStateChanged(PlayerKeyStateChangedEventArgs e)
+        /// <param name="e">An <see cref="KeyStateChangedEventArgs" /> that contains the event data. </param>
+        public virtual void OnKeyStateChanged(KeyStateChangedEventArgs e)
         {
             if (KeyStateChanged != null)
                 KeyStateChanged(this, e);
@@ -2215,7 +2211,7 @@ namespace SampSharp.GameMode.World
         ///     Raises the <see cref="Update" /> event.
         /// </summary>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnUpdate(PlayerEventArgs e)
+        public virtual void OnUpdate(PlayerUpdateEventArgs e)
         {
             if (Update != null)
                 Update(this, e);
@@ -2225,7 +2221,7 @@ namespace SampSharp.GameMode.World
         ///     Raises the <see cref="StreamIn" /> event.
         /// </summary>
         /// <param name="e">An <see cref="StreamPlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnStreamIn(StreamPlayerEventArgs e)
+        public virtual void OnStreamIn(PlayerEventArgs e)
         {
             if (StreamIn != null)
                 StreamIn(this, e);
@@ -2235,7 +2231,7 @@ namespace SampSharp.GameMode.World
         ///     Raises the <see cref="StreamOut" /> event.
         /// </summary>
         /// <param name="e">An <see cref="StreamPlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnStreamOut(StreamPlayerEventArgs e)
+        public virtual void OnStreamOut(PlayerEventArgs e)
         {
             if (StreamOut != null)
                 StreamOut(this, e);
@@ -2254,8 +2250,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="TakeDamage" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerDamageEventArgs" /> that contains the event data. </param>
-        public virtual void OnTakeDamage(PlayerDamageEventArgs e)
+        /// <param name="e">An <see cref="DamagePlayerEventArgs" /> that contains the event data. </param>
+        public virtual void OnTakeDamage(DamagePlayerEventArgs e)
         {
             if (TakeDamage != null)
                 TakeDamage(this, e);
@@ -2264,8 +2260,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="GiveDamage" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerDamageEventArgs" /> that contains the event data. </param>
-        public virtual void OnGiveDamage(PlayerDamageEventArgs e)
+        /// <param name="e">An <see cref="DamagePlayerEventArgs" /> that contains the event data. </param>
+        public virtual void OnGiveDamage(DamagePlayerEventArgs e)
         {
             if (GiveDamage != null)
                 GiveDamage(this, e);
@@ -2274,8 +2270,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="ClickMap" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerClickMapEventArgs" /> that contains the event data. </param>
-        public virtual void OnClickMap(PlayerClickMapEventArgs e)
+        /// <param name="e">An <see cref="PositionEventArgs" /> that contains the event data. </param>
+        public virtual void OnClickMap(PositionEventArgs e)
         {
             if (ClickMap != null)
                 ClickMap(this, e);
@@ -2284,8 +2280,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="ClickTextDraw" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerClickTextDrawEventArgs" /> that contains the event data. </param>
-        public virtual void OnClickTextDraw(PlayerClickTextDrawEventArgs e)
+        /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
+        public virtual void OnClickTextDraw(ClickTextDrawEventArgs e)
         {
             if (ClickTextDraw != null)
                 ClickTextDraw(this, e);
@@ -2295,7 +2291,7 @@ namespace SampSharp.GameMode.World
         ///     Raises the <see cref="CancelClickTextDraw" /> event.
         /// </summary>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnCancelClickTextDraw(PlayerEventArgs e)
+        public virtual void OnCancelClickTextDraw(EventArgs e)
         {
             if (CancelClickTextDraw != null)
                 CancelClickTextDraw(this, e);
@@ -2304,8 +2300,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="ClickPlayerTextDraw" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerClickTextDrawEventArgs" /> that contains the event data. </param>
-        public virtual void OnClickPlayerTextDraw(PlayerClickTextDrawEventArgs e)
+        /// <param name="e">An <see cref="ClickPlayerTextDrawEventArgs" /> that contains the event data. </param>
+        public virtual void OnClickPlayerTextDraw(ClickPlayerTextDrawEventArgs e)
         {
             if (ClickPlayerTextDraw != null)
                 ClickPlayerTextDraw(this, e);
@@ -2314,41 +2310,61 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="ClickPlayer" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerClickPlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnClickPlayer(PlayerClickPlayerEventArgs e)
+        /// <param name="e">An <see cref="ClickPlayerEventArgs" /> that contains the event data. </param>
+        public virtual void OnClickPlayer(ClickPlayerEventArgs e)
         {
             if (ClickPlayer != null)
                 ClickPlayer(this, e);
         }
 
         /// <summary>
-        ///     Raises the <see cref="EditObject" /> event.
+        ///     Raises the <see cref="EditGlobalObject" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEditObjectEventArgs" /> that contains the event data. </param>
-        public virtual void OnEditObject(PlayerEditObjectEventArgs e)
+        /// <param name="e">An <see cref="EditGlobalObjectEventArgs" /> that contains the event data. </param>
+        public virtual void OnEditGlobalObject(EditGlobalObjectEventArgs e)
         {
-            if (EditObject != null)
-                EditObject(this, e);
+            if (EditGlobalObject != null)
+                EditGlobalObject(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="EditPlayerObject" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="EditPlayerObjectEventArgs" /> that contains the event data. </param>
+        public virtual void OnEditPlayerObject(EditPlayerObjectEventArgs e)
+        {
+            if (EditPlayerObject != null)
+                EditPlayerObject(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="EditAttachedObject" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEditAttachedObjectEventArgs" /> that contains the event data. </param>
-        public virtual void OnEditAttachedObject(PlayerEditAttachedObjectEventArgs e)
+        /// <param name="e">An <see cref="EditAttachedObjectEventArgs" /> that contains the event data. </param>
+        public virtual void OnEditAttachedObject(EditAttachedObjectEventArgs e)
         {
             if (EditAttachedObject != null)
                 EditAttachedObject(this, e);
         }
 
         /// <summary>
-        ///     Raises the <see cref="SelectObject" /> event.
+        ///     Raises the <see cref="SelectGlobalObject" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerSelectObjectEventArgs" /> that contains the event data. </param>
-        public virtual void OnSelectObject(PlayerSelectObjectEventArgs e)
+        /// <param name="e">An <see cref="SelectGlobalObjectEventArgs" /> that contains the event data. </param>
+        public virtual void OnSelectGlobalObject(SelectGlobalObjectEventArgs e)
         {
-            if (SelectObject != null)
-                SelectObject(this, e);
+            if (SelectGlobalObject != null)
+                SelectGlobalObject(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="SelectPlayerObject" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="SelectPlayerObjectEventArgs" /> that contains the event data. </param>
+        public virtual void OnSelectPlayerObject(SelectPlayerObjectEventArgs e)
+        {
+            if (SelectPlayerObject != null)
+                SelectPlayerObject(this, e);
         }
 
         /// <summary>

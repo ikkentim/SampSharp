@@ -41,13 +41,13 @@ namespace TestMode.Tests
 
             m.Exit += (o, eventArgs) =>
             {
-                eventArgs.Player.SendClientMessage(Color.Red, "MENU CLOSED");
+                player.SendClientMessage(Color.Red, "MENU CLOSED");
                 m.Dispose();
             };
 
             m.Response += (o, eventArgs) =>
             {
-                eventArgs.Player.SendClientMessage(Color.Green, "SELECTED ROW " + eventArgs.Row);
+                player.SendClientMessage(Color.Green, "SELECTED ROW " + eventArgs.Row);
                 m.Dispose();
             };
 

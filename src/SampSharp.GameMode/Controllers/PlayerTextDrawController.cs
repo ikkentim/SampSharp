@@ -31,10 +31,10 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.PlayerClickPlayerTextDraw += (sender, args) =>
             {
-                PlayerTextDraw obj = PlayerTextDraw.Find(args.Player, args.TextDrawId);
+                var textdraw = args.PlayerTextDraw;
 
-                if (obj != null)
-                    obj.OnClick(args);
+                if (textdraw != null)
+                    textdraw.OnClick(args);
             };
         }
 

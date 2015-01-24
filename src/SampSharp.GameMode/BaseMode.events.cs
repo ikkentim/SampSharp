@@ -21,6 +21,9 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode
 {
+    /// <summary>
+    ///     Base class for a SA-MP game mode.
+    /// </summary>
     public abstract partial class BaseMode
     {
         /// <summary>
@@ -39,13 +42,13 @@ namespace SampSharp.GameMode
         ///     Occurs when the <see cref="OnPlayerConnect" /> callback is being called.
         ///     This callback is called when a player connects to the server.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> PlayerConnected;
+        public event EventHandler<EventArgs> PlayerConnected;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerDisconnect" /> callback is being called.
         ///     This callback is called when a player disconnects from the server.
         /// </summary>
-        public event EventHandler<PlayerDisconnectedEventArgs> PlayerDisconnected;
+        public event EventHandler<DisconnectEventArgs> PlayerDisconnected;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerCleanup" /> callback is being called.
@@ -56,25 +59,25 @@ namespace SampSharp.GameMode
         ///     the <see cref="GtaPlayer" /> object is already disposed before any other listeners are called.
         ///     It is better to either use the <see cref="PlayerDisconnected" /> event or <see cref="GtaPlayer.Cleanup" />
         /// </remarks>
-        public event EventHandler<PlayerDisconnectedEventArgs> PlayerCleanup;
+        public event EventHandler<DisconnectEventArgs> PlayerCleanup;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerSpawn" /> callback is being called.
         ///     This callback is called when a player spawns.
         /// </summary>
-        public event EventHandler<PlayerSpawnEventArgs> PlayerSpawned;
+        public event EventHandler<SpawnEventArgs> PlayerSpawned;
 
         /// <summary>
         ///     Occurs when the <see cref="OnGameModeInit" /> callback is being called.
         ///     This callback is triggered when the gamemode starts.
         /// </summary>
-        public event EventHandler<PlayerDeathEventArgs> PlayerDied;
+        public event EventHandler<DeathEventArgs> PlayerDied;
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehicleSpawn" /> callback is being called.
         ///     This callback is called when a vehicle respawns.
         /// </summary>
-        public event EventHandler<VehicleEventArgs> VehicleSpawned;
+        public event EventHandler<EventArgs> VehicleSpawned;
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehicleDeath" /> callback is being called.
@@ -85,35 +88,35 @@ namespace SampSharp.GameMode
         ///     teleportation or driving out (if only partially submerged). The callback won't be called a second time, and the
         ///     vehicle may disappear when the driver exits, or after a short time.
         /// </remarks>
-        public event EventHandler<PlayerVehicleEventArgs> VehicleDied;
+        public event EventHandler<PlayerEventArgs> VehicleDied;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerText" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerText(GtaPlayer,TextEventArgs)" /> callback is being called.
         ///     Called when a player sends a chat message.
         /// </summary>
-        public event EventHandler<PlayerTextEventArgs> PlayerText;
+        public event EventHandler<TextEventArgs> PlayerText;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerCommandText" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerCommandText(GtaPlayer,CommandTextEventArgs)" /> callback is being called.
         ///     This callback is called when a player enters a command into the client chat window, e.g. /help.
         /// </summary>
-        public event EventHandler<PlayerCommandTextEventArgs> PlayerCommandText;
+        public event EventHandler<CommandTextEventArgs> PlayerCommandText;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerRequestClass" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerRequestClass(GtaPlayer,RequestClassEventArgs)" /> callback is being called.
         ///     Called when a player changes class at class selection (and when class selection first appears).
         /// </summary>
-        public event EventHandler<PlayerRequestClassEventArgs> PlayerRequestClass;
+        public event EventHandler<RequestClassEventArgs> PlayerRequestClass;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEnterVehicle" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerEnterVehicle(GtaPlayer,EnterVehicleEventArgs)" /> callback is being called.
         ///     This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the
         ///     time this callback is called.
         /// </summary>
-        public event EventHandler<PlayerEnterVehicleEventArgs> PlayerEnterVehicle;
+        public event EventHandler<EnterVehicleEventArgs> PlayerEnterVehicle;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerExitVehicle" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerExitVehicle(GtaPlayer,PlayerVehicleEventArgs)" /> callback is being called.
         ///     This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
@@ -130,68 +133,68 @@ namespace SampSharp.GameMode
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as using
         ///     <see cref="Native.SetPlayerPos(int,Vector)" />.
         /// </remarks>
-        public event EventHandler<PlayerStateEventArgs> PlayerStateChanged;
+        public event EventHandler<StateEventArgs> PlayerStateChanged;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEnterCheckpoint" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerEnterCheckpoint(GtaPlayer,EventArgs)" /> callback is being called.
         ///     This callback is called when a player enters the checkpoint set for that player.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> PlayerEnterCheckpoint;
+        public event EventHandler<EventArgs> PlayerEnterCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerLeaveCheckpoint" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerLeaveCheckpoint(GtaPlayer,EventArgs)" /> callback is being called.
         ///     This callback is called when a player leaves the checkpoint set for that player.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> PlayerLeaveCheckpoint;
+        public event EventHandler<EventArgs> PlayerLeaveCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEnterRaceCheckpoint" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerEnterRaceCheckpoint(GtaPlayer,EventArgs)" /> callback is being called.
         ///     This callback is called when a player enters a race checkpoint.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> PlayerEnterRaceCheckpoint;
+        public event EventHandler<EventArgs> PlayerEnterRaceCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerLeaveRaceCheckpoint" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerLeaveRaceCheckpoint(GtaPlayer,EventArgs)" /> callback is being called.
         ///     This callback is called when a player leaves the race checkpoint.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> PlayerLeaveRaceCheckpoint;
+        public event EventHandler<EventArgs> PlayerLeaveRaceCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnRconCommand" /> callback is being called.
+        ///     Occurs when the <see cref="OnRconCommand(RconEventArgs)" /> callback is being called.
         ///     This callback is called when a command is sent through the server console, remote RCON, or via the in-game /rcon
         ///     command.
         /// </summary>
         public event EventHandler<RconEventArgs> RconCommand;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerRequestSpawn" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerRequestSpawn(GtaPlayer,RequestSpawnEventArgs)" /> callback is being called.
         ///     Called when a player attempts to spawn via class selection.
         /// </summary>
-        public event EventHandler<PlayerRequestSpawnEventArgs> PlayerRequestSpawn;
+        public event EventHandler<RequestSpawnEventArgs> PlayerRequestSpawn;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnObjectMoved" /> callback is being called.
+        ///     Occurs when the <see cref="OnObjectMoved(GlobalObject,EventArgs)" /> callback is being called.
         ///     This callback is called when an object is moved after <see cref="Native.MoveObject(int,Vector,float,Vector)" />
         ///     (when it stops moving).
         /// </summary>
-        public event EventHandler<ObjectEventArgs> ObjectMoved;
+        public event EventHandler<EventArgs> ObjectMoved;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerObjectMoved" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerObjectMoved(PlayerObject,EventArgs)" /> callback is being called.
         ///     This callback is called when a player object is moved after
         ///     <see cref="Native.MovePlayerObject(int,int,Vector,float,Vector)" /> (when it stops
         ///     moving).
         /// </summary>
-        public event EventHandler<PlayerObjectEventArgs> PlayerObjectMoved;
+        public event EventHandler<EventArgs> PlayerObjectMoved;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerPickUpPickup" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerPickUpPickup(Pickup,PlayerEventArgs)" /> callback is being called.
         ///     Called when a player picks up a pickup created with <see cref="Native.CreatePickup" />.
         /// </summary>
-        public event EventHandler<PlayerPickupEventArgs> PlayerPickUpPickup;
+        public event EventHandler<PlayerEventArgs> PlayerPickUpPickup;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleMod" /> callback is being called.
+        ///     Occurs when the <see cref="OnVehicleMod(GtaVehicle,VehicleModEventArgs)" /> callback is being called.
         ///     This callback is called when a vehicle is modded.
         /// </summary>
         /// <remarks>
@@ -203,7 +206,7 @@ namespace SampSharp.GameMode
         ///     Occurs when the <see cref="OnEnterExitModShop" /> callback is being called.
         ///     This callback is called when a player enters or exits a mod shop.
         /// </summary>
-        public event EventHandler<PlayerEnterModShopEventArgs> PlayerEnterExitModShop;
+        public event EventHandler<EnterModShopEventArgs> PlayerEnterExitModShop;
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehiclePaintjob" /> callback is being called.
@@ -228,7 +231,7 @@ namespace SampSharp.GameMode
         /// <remarks>
         ///     This does not include vehicle health changes.
         /// </remarks>
-        public event EventHandler<PlayerVehicleEventArgs> VehicleDamageStatusUpdated;
+        public event EventHandler<PlayerEventArgs> VehicleDamageStatusUpdated;
 
         /// <summary>
         ///     Occurs when the <see cref="OnUnoccupiedVehicleUpdate" /> callback is being called.
@@ -241,16 +244,16 @@ namespace SampSharp.GameMode
         public event EventHandler<UnoccupiedVehicleEventArgs> UnoccupiedVehicleUpdated;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerSelectedMenuRow" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerSelectedMenuRow(GtaPlayer,MenuRowEventArgs)" /> callback is being called.
         ///     This callback is called when a player selects an item from a menu.
         /// </summary>
-        public event EventHandler<PlayerSelectedMenuRowEventArgs> PlayerSelectedMenuRow;
+        public event EventHandler<MenuRowEventArgs> PlayerSelectedMenuRow;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerExitedMenu" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerExitedMenu(GtaPlayer,EventArgs)" /> callback is being called.
         ///     Called when a player exits a menu.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> PlayerExitedMenu;
+        public event EventHandler<EventArgs> PlayerExitedMenu;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerInteriorChange" /> callback is being called.
@@ -259,17 +262,17 @@ namespace SampSharp.GameMode
         /// <remarks>
         ///     This is also called when <see cref="Native.SetPlayerInterior" /> is used.
         /// </remarks>
-        public event EventHandler<PlayerInteriorChangedEventArgs> PlayerInteriorChanged;
+        public event EventHandler<InteriorChangedEventArgs> PlayerInteriorChanged;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerKeyStateChange" /> callback is being called.
         ///     This callback is called when the state of any supported key is changed (pressed/released). Directional keys do not
         ///     trigger this callback.
         /// </summary>
-        public event EventHandler<PlayerKeyStateChangedEventArgs> PlayerKeyStateChanged;
+        public event EventHandler<KeyStateChangedEventArgs> PlayerKeyStateChanged;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnRconLoginAttempt" /> callback is being called.
+        ///     Occurs when the <see cref="OnRconLoginAttempt(RconLoginAttemptEventArgs)" /> callback is being called.
         ///     This callback is called when someone tries to login to RCON, succesful or not.
         /// </summary>
         /// <remarks>
@@ -278,59 +281,59 @@ namespace SampSharp.GameMode
         public event EventHandler<RconLoginAttemptEventArgs> RconLoginAttempt;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerUpdate" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerUpdate(GtaPlayer,PlayerUpdateEventArgs)" /> callback is being called.
         ///     This callback is called everytime a client/player updates the server with their status.
         /// </summary>
         /// <remarks>
         ///     This callback is called very frequently per second per player, only use it when you know what it's meant for.
         /// </remarks>
-        public event EventHandler<PlayerEventArgs> PlayerUpdate;
+        public event EventHandler<PlayerUpdateEventArgs> PlayerUpdate;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerStreamIn" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerStreamIn(GtaPlayer,PlayerEventArgs)" /> callback is being called.
         ///     This callback is called when a player is streamed by some other player's client.
         /// </summary>
-        public event EventHandler<StreamPlayerEventArgs> PlayerStreamIn;
+        public event EventHandler<PlayerEventArgs> PlayerStreamIn;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerStreamOut" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerStreamOut(GtaPlayer,PlayerEventArgs)" /> callback is being called.
         ///     This callback is called when a player is streamed out from some other player's client.
         /// </summary>
-        public event EventHandler<StreamPlayerEventArgs> PlayerStreamOut;
+        public event EventHandler<PlayerEventArgs> PlayerStreamOut;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleStreamIn" /> callback is being called.
+        ///     Occurs when the <see cref="OnVehicleStreamIn(GtaVehicle,PlayerEventArgs)" /> callback is being called.
         ///     Called when a vehicle is streamed to a player's client.
         /// </summary>
-        public event EventHandler<PlayerVehicleEventArgs> VehicleStreamIn;
+        public event EventHandler<PlayerEventArgs> VehicleStreamIn;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleStreamOut" /> callback is being called.
+        ///     Occurs when the <see cref="OnVehicleStreamOut(GtaVehicle,PlayerEventArgs)" /> callback is being called.
         ///     This callback is called when a vehicle is streamed out from some player's client.
         /// </summary>
-        public event EventHandler<PlayerVehicleEventArgs> VehicleStreamOut;
+        public event EventHandler<PlayerEventArgs> VehicleStreamOut;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnTrailerUpdate" /> callback is being called.
+        ///     Occurs when the <see cref="OnTrailerUpdate(GtaVehicle,TrailerEventArgs)" /> callback is being called.
         ///     This callback is called when a player sent a trailer update.
         /// </summary>
-        public event EventHandler<PlayerTrailerEventArgs> TrailerUpdate;
+        public event EventHandler<TrailerEventArgs> TrailerUpdate;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnDialogResponse" /> callback is being called.
+        ///     Occurs when the <see cref="OnDialogResponse(GtaPlayer,DialogResponseEventArgs)" /> callback is being called.
         ///     This callback is called when a player responds to a dialog shown using <see cref="Native.ShowPlayerDialog" /> by
         ///     either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
         /// </summary>
         public event EventHandler<DialogResponseEventArgs> DialogResponse;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerTakeDamage" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerTakeDamage(GtaPlayer,DamagePlayerEventArgs)" /> callback is being called.
         ///     This callback is called when a player takes damage.
         /// </summary>
-        public event EventHandler<PlayerDamageEventArgs> PlayerTakeDamage;
+        public event EventHandler<DamagePlayerEventArgs> PlayerTakeDamage;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerGiveDamage" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerGiveDamage(GtaPlayer,DamagePlayerEventArgs)" /> callback is being called.
         ///     This callback is called when a player gives damage to another player.
         /// </summary>
         /// <remarks>
@@ -345,69 +348,85 @@ namespace SampSharp.GameMode
         ///     normally does this. GiveDamage provides some extra information which may be useful when you require a different
         ///     level of trust.
         /// </remarks>
-        public event EventHandler<PlayerDamageEventArgs> PlayerGiveDamage;
+        public event EventHandler<DamagePlayerEventArgs> PlayerGiveDamage;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickMap" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerClickMap(GtaPlayer,PositionEventArgs)" /> callback is being called.
         ///     This callback is called when a player places a target/waypoint on the pause menu map (by right-clicking).
         /// </summary>
         /// <remarks>
         ///     The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get
         ///     a more accurate Z coordinate (or for teleportation; use <see cref="Native.SetPlayerPosFindZ(int,Vector)" />).
         /// </remarks>
-        public event EventHandler<PlayerClickMapEventArgs> PlayerClickMap;
+        public event EventHandler<PositionEventArgs> PlayerClickMap;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickTextDraw" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerClickTextDraw(GtaPlayer,ClickTextDrawEventArgs)" /> callback is being called.
         ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
         /// </summary>
         /// <remarks>
         ///     The clickable area is defined by <see cref="Native.TextDrawTextSize" />. The x and y parameters passed to that
         ///     function must not be zero or negative.
         /// </remarks>
-        public event EventHandler<PlayerClickTextDrawEventArgs> PlayerClickTextDraw;
+        public event EventHandler<ClickTextDrawEventArgs> PlayerClickTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickPlayerTextDraw" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerClickPlayerTextDraw(GtaPlayer,ClickPlayerTextDrawEventArgs)" /> callback is being
+        ///     called.
         ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
-        ///     mode (ESC) - however, <see cref="OnPlayerClickTextDraw" /> is.
+        ///     mode (ESC) - however, <see cref="OnPlayerClickTextDraw(GtaPlayer,ClickTextDrawEventArgs)" /> is.
         /// </summary>
-        public event EventHandler<PlayerClickTextDrawEventArgs> PlayerClickPlayerTextDraw;
+        public event EventHandler<ClickPlayerTextDrawEventArgs> PlayerClickPlayerTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickPlayer" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerClickPlayer(GtaPlayer, ClickPlayerEventArgs)" /> callback is being called.
         ///     Called when a player double-clicks on a player on the scoreboard.
         /// </summary>
         /// <remarks>
         ///     There is currently only one 'source' (<see cref="PlayerClickSource.Scoreboard" />). The existence of this argument
         ///     suggests that more sources may be supported in the future.
         /// </remarks>
-        public event EventHandler<PlayerClickPlayerEventArgs> PlayerClickPlayer;
+        public event EventHandler<ClickPlayerEventArgs> PlayerClickPlayer;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEditObject" /> callback is being called.
-        ///     This callback is called when a player ends object edition mode.
+        ///     Occurs when the <see cref="OnPlayerEditGlobalObject(GtaPlayer,EditGlobalObjectEventArgs)" /> callback is being
+        ///     called.
+        ///     This callback is called when a player ends global object edition mode.
         /// </summary>
-        public event EventHandler<PlayerEditObjectEventArgs> PlayerEditObject;
+        public event EventHandler<EditGlobalObjectEventArgs> PlayerEditGlobalObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEditAttachedObject" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerEditPlayerObject(GtaPlayer,EditPlayerObjectEventArgs)" /> callback is being
+        ///     called.
+        ///     This callback is called when a player ends player object edition mode.
+        /// </summary>
+        public event EventHandler<EditPlayerObjectEventArgs> PlayerEditPlayerObject;
+
+        /// <summary>
+        ///     Occurs when the <see cref="OnPlayerEditAttachedObject(GtaPlayer,EditAttachedObjectEventArgs)" /> callback is being
+        ///     called.
         ///     This callback is called when a player ends attached object edition mode.
         /// </summary>
         /// <remarks>
         ///     Editions should be discarded if response was '0' (cancelled). This must be done by storing the offsets etc. in an
         ///     array BEFORE using EditAttachedObject.
         /// </remarks>
-        public event EventHandler<PlayerEditAttachedObjectEventArgs> PlayerEditAttachedObject;
+        public event EventHandler<EditAttachedObjectEventArgs> PlayerEditAttachedObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerSelectObject" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerSelectGlobalObject" /> callback is being called.
         ///     This callback is called when a player selects an object after <see cref="Native.SelectObject" /> has been used.
         /// </summary>
-        public event EventHandler<PlayerSelectObjectEventArgs> PlayerSelectObject;
+        public event EventHandler<SelectGlobalObjectEventArgs> PlayerSelectGlobalObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerWeaponShot" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerSelectPlayerObject" /> callback is being called.
+        ///     This callback is called when a player selects an object after <see cref="Native.SelectObject" /> has been used.
+        /// </summary>
+        public event EventHandler<SelectPlayerObjectEventArgs> PlayerSelectPlayerObject;
+
+        /// <summary>
+        ///     Occurs when the <see cref="OnPlayerWeaponShot(GtaPlayer,WeaponShotEventArgs)" /> callback is being called.
         ///     This callback is called when a player fires a shot from a weapon.
         /// </summary>
         /// <remarks>
@@ -417,14 +436,14 @@ namespace SampSharp.GameMode
         public event EventHandler<WeaponShotEventArgs> PlayerWeaponShot;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnIncomingConnection" /> callback is being called.
+        ///     Occurs when the <see cref="OnIncomingConnection(ConnectionEventArgs)" /> callback is being called.
         ///     This callback is called when an IP address attempts a connection to the server.
         /// </summary>
         public event EventHandler<ConnectionEventArgs> IncomingConnection;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnTick" /> callback is being called.
-        ///     This callback is called every tick(50 times per second).
+        ///     Occurs when the <see cref="OnTick(EventArgs)" /> callback is being called. This callback is called every
+        ///     tick(50 times per second).
         /// </summary>
         /// <remarks>
         ///     USE WITH CARE!
@@ -461,171 +480,188 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Raises the <see cref="PlayerConnected" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerConnected" /> that contains the event data. </param>
-        protected virtual void OnPlayerConnected(PlayerEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerConnected(GtaPlayer player, EventArgs e)
         {
             if (PlayerConnected != null)
-                PlayerConnected(this, e);
+                PlayerConnected(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerDisconnected" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerDisconnectedEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerDisconnected(PlayerDisconnectedEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="DisconnectEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerDisconnected(GtaPlayer player, DisconnectEventArgs e)
         {
             if (PlayerDisconnected != null)
-                PlayerDisconnected(this, e);
+                PlayerDisconnected(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerCleanup" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerDisconnectedEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerCleanup(PlayerDisconnectedEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="DisconnectEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerCleanup(GtaPlayer player, DisconnectEventArgs e)
         {
             if (PlayerCleanup != null)
-                PlayerCleanup(this, e);
+                PlayerCleanup(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerSpawned" /> event.
         /// </summary>
+        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerSpawned(PlayerSpawnEventArgs e)
+        protected virtual void OnPlayerSpawned(GtaPlayer player, SpawnEventArgs e)
         {
             if (PlayerSpawned != null)
-                PlayerSpawned(this, e);
+                PlayerSpawned(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerDied" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerDeathEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerDied(PlayerDeathEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="DeathEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerDied(GtaPlayer player, DeathEventArgs e)
         {
             if (PlayerDied != null)
-                PlayerDied(this, e);
+                PlayerDied(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehicleSpawned" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="VehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleSpawned(VehicleEventArgs e)
+        /// <param name="vehicle">The vehicle triggering the event.</param>
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        protected virtual void OnVehicleSpawned(GtaVehicle vehicle, EventArgs e)
         {
             if (VehicleSpawned != null)
-                VehicleSpawned(this, e);
+                VehicleSpawned(vehicle, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehicleDied" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleDied(PlayerVehicleEventArgs e)
+        /// <param name="vehicle">The vehicle triggering the event.</param>
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        protected virtual void OnVehicleDied(GtaVehicle vehicle, PlayerEventArgs e)
         {
             if (VehicleDied != null)
-                VehicleDied(this, e);
+                VehicleDied(vehicle, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerText" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerTextEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerText(PlayerTextEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="TextEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerText(GtaPlayer player, TextEventArgs e)
         {
             if (PlayerText != null)
-                PlayerText(this, e);
+                PlayerText(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerCommandText" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerTextEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerCommandText(PlayerCommandTextEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="TextEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerCommandText(GtaPlayer player, CommandTextEventArgs e)
         {
             if (PlayerCommandText != null)
-                PlayerCommandText(this, e);
+                PlayerCommandText(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerRequestClass" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerRequestClassEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerRequestClass(PlayerRequestClassEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="RequestClassEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerRequestClass(GtaPlayer player, RequestClassEventArgs e)
         {
             if (PlayerRequestClass != null)
-                PlayerRequestClass(this, e);
+                PlayerRequestClass(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerEnterVehicle" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEnterVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEnterVehicle(PlayerEnterVehicleEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="EnterVehicleEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerEnterVehicle(GtaPlayer player, EnterVehicleEventArgs e)
         {
             if (PlayerEnterVehicle != null)
-                PlayerEnterVehicle(this, e);
+                PlayerEnterVehicle(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerExitVehicle" /> event.
         /// </summary>
+        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerExitVehicle(PlayerVehicleEventArgs e)
+        protected virtual void OnPlayerExitVehicle(GtaPlayer player, PlayerVehicleEventArgs e)
         {
             if (PlayerExitVehicle != null)
-                PlayerExitVehicle(this, e);
+                PlayerExitVehicle(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerStateChanged" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerStateEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerStateChanged(PlayerStateEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="StateEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerStateChanged(GtaPlayer player, StateEventArgs e)
         {
             if (PlayerStateChanged != null)
-                PlayerStateChanged(this, e);
+                PlayerStateChanged(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerEnterCheckpoint" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEnterCheckpoint(PlayerEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerEnterCheckpoint(GtaPlayer player, EventArgs e)
         {
             if (PlayerEnterCheckpoint != null)
-                PlayerEnterCheckpoint(this, e);
+                PlayerEnterCheckpoint(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerLeaveCheckpoint" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerLeaveCheckpoint(PlayerEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerLeaveCheckpoint(GtaPlayer player, EventArgs e)
         {
             if (PlayerLeaveCheckpoint != null)
-                PlayerLeaveCheckpoint(this, e);
+                PlayerLeaveCheckpoint(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerEnterRaceCheckpoint" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEnterRaceCheckpoint(PlayerEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerEnterRaceCheckpoint(GtaPlayer player, EventArgs e)
         {
             if (PlayerEnterRaceCheckpoint != null)
-                PlayerEnterRaceCheckpoint(this, e);
+                PlayerEnterRaceCheckpoint(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerLeaveRaceCheckpoint" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerLeaveRaceCheckpoint(PlayerEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerLeaveRaceCheckpoint(GtaPlayer player, EventArgs e)
         {
             if (PlayerLeaveRaceCheckpoint != null)
-                PlayerLeaveRaceCheckpoint(this, e);
+                PlayerLeaveRaceCheckpoint(player, e);
         }
 
         /// <summary>
@@ -641,141 +677,155 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Raises the <see cref="PlayerRequestSpawn" /> event.
         /// </summary>
+        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerRequestSpawn(PlayerRequestSpawnEventArgs e)
+        protected virtual void OnPlayerRequestSpawn(GtaPlayer player, RequestSpawnEventArgs e)
         {
             if (PlayerRequestSpawn != null)
-                PlayerRequestSpawn(this, e);
+                PlayerRequestSpawn(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="ObjectMoved" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="ObjectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnObjectMoved(ObjectEventArgs e)
+        /// <param name="globalObject">The global-object triggering the event.</param>
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        protected virtual void OnObjectMoved(GlobalObject globalObject, EventArgs e)
         {
             if (ObjectMoved != null)
-                ObjectMoved(this, e);
+                ObjectMoved(globalObject, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerObjectMoved" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerObjectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerObjectMoved(PlayerObjectEventArgs e)
+        /// <param name="playerObject">The player-object triggering the event.</param>
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerObjectMoved(PlayerObject playerObject, EventArgs e)
         {
             if (PlayerObjectMoved != null)
-                PlayerObjectMoved(this, e);
+                PlayerObjectMoved(playerObject, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerPickUpPickup" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerPickupEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerPickUpPickup(PlayerPickupEventArgs e)
+        /// <param name="pickup">The pickup triggering the event.</param>
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerPickUpPickup(Pickup pickup, PlayerEventArgs e)
         {
             if (PlayerPickUpPickup != null)
-                PlayerPickUpPickup(this, e);
+                PlayerPickUpPickup(pickup, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehicleMod" /> event.
         /// </summary>
+        /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="VehicleModEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleMod(VehicleModEventArgs e)
+        protected virtual void OnVehicleMod(GtaVehicle vehicle, VehicleModEventArgs e)
         {
             if (VehicleMod != null)
-                VehicleMod(this, e);
+                VehicleMod(vehicle, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerEnterExitModShop" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEnterModShopEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEnterExitModShop(PlayerEnterModShopEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="EnterModShopEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerEnterExitModShop(GtaPlayer player, EnterModShopEventArgs e)
         {
             if (PlayerEnterExitModShop != null)
-                PlayerEnterExitModShop(this, e);
+                PlayerEnterExitModShop(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehiclePaintjobApplied" /> event.
         /// </summary>
+        /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="VehiclePaintjobEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehiclePaintjobApplied(VehiclePaintjobEventArgs e)
+        protected virtual void OnVehiclePaintjobApplied(GtaVehicle vehicle, VehiclePaintjobEventArgs e)
         {
             if (VehiclePaintjobApplied != null)
-                VehiclePaintjobApplied(this, e);
+                VehiclePaintjobApplied(vehicle, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehicleResprayed" /> event.
         /// </summary>
+        /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="VehicleResprayedEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleResprayed(VehicleResprayedEventArgs e)
+        protected virtual void OnVehicleResprayed(GtaVehicle vehicle, VehicleResprayedEventArgs e)
         {
             if (VehicleResprayed != null)
-                VehicleResprayed(this, e);
+                VehicleResprayed(vehicle, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehicleDamageStatusUpdated" /> event.
         /// </summary>
+        /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleDamageStatusUpdated(PlayerVehicleEventArgs e)
+        protected virtual void OnVehicleDamageStatusUpdated(GtaVehicle vehicle, PlayerEventArgs e)
         {
             if (VehicleDamageStatusUpdated != null)
-                VehicleDamageStatusUpdated(this, e);
+                VehicleDamageStatusUpdated(vehicle, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="UnoccupiedVehicleUpdated" /> event.
         /// </summary>
+        /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="UnoccupiedVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnUnoccupiedVehicleUpdated(UnoccupiedVehicleEventArgs e)
+        protected virtual void OnUnoccupiedVehicleUpdated(GtaVehicle vehicle, UnoccupiedVehicleEventArgs e)
         {
             if (UnoccupiedVehicleUpdated != null)
-                UnoccupiedVehicleUpdated(this, e);
+                UnoccupiedVehicleUpdated(vehicle, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerSelectedMenuRow" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerSelectedMenuRowEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerSelectedMenuRow(PlayerSelectedMenuRowEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="MenuRowEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerSelectedMenuRow(GtaPlayer player, MenuRowEventArgs e)
         {
             if (PlayerSelectedMenuRow != null)
-                PlayerSelectedMenuRow(this, e);
+                PlayerSelectedMenuRow(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerExitedMenu" /> event.
         /// </summary>
+        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerExitedMenu(PlayerEventArgs e)
+        protected virtual void OnPlayerExitedMenu(GtaPlayer player, EventArgs e)
         {
             if (PlayerExitedMenu != null)
-                PlayerExitedMenu(this, e);
+                PlayerExitedMenu(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerInteriorChanged" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerInteriorChangedEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerInteriorChanged(PlayerInteriorChangedEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="InteriorChangedEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerInteriorChanged(GtaPlayer player, InteriorChangedEventArgs e)
         {
             if (PlayerInteriorChanged != null)
-                PlayerInteriorChanged(this, e);
+                PlayerInteriorChanged(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerKeyStateChanged" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerKeyStateChangedEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerKeyStateChanged(PlayerKeyStateChangedEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="KeyStateChangedEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerKeyStateChanged(GtaPlayer player, KeyStateChangedEventArgs e)
         {
             if (PlayerKeyStateChanged != null)
-                PlayerKeyStateChanged(this, e);
+                PlayerKeyStateChanged(player, e);
         }
 
         /// <summary>
@@ -791,171 +841,210 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Raises the <see cref="PlayerUpdate" /> event.
         /// </summary>
+        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerUpdate(PlayerEventArgs e)
+        protected virtual void OnPlayerUpdate(GtaPlayer player, PlayerUpdateEventArgs e)
         {
             if (PlayerUpdate != null)
-                PlayerUpdate(this, e);
+                PlayerUpdate(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerStreamIn" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="StreamPlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerStreamIn(StreamPlayerEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerStreamIn(GtaPlayer player, PlayerEventArgs e)
         {
             if (PlayerStreamIn != null)
-                PlayerStreamIn(this, e);
+                PlayerStreamIn(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerStreamOut" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="StreamPlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerStreamOut(StreamPlayerEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerStreamOut(GtaPlayer player, PlayerEventArgs e)
         {
             if (PlayerStreamOut != null)
-                PlayerStreamOut(this, e);
+                PlayerStreamOut(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehicleStreamIn" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleStreamIn(PlayerVehicleEventArgs e)
+        /// <param name="vehicle">The vehicle triggering the event.</param>
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        protected virtual void OnVehicleStreamIn(GtaVehicle vehicle, PlayerEventArgs e)
         {
             if (VehicleStreamIn != null)
-                VehicleStreamIn(this, e);
+                VehicleStreamIn(vehicle, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehicleStreamOut" /> event.
         /// </summary>
+        /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleStreamOut(PlayerVehicleEventArgs e)
+        protected virtual void OnVehicleStreamOut(GtaVehicle vehicle, PlayerEventArgs e)
         {
             if (VehicleStreamOut != null)
-                VehicleStreamOut(this, e);
+                VehicleStreamOut(vehicle, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="TrailerUpdate" /> event.
         /// </summary>
+        /// <param name="trailer">The trailer triggering the event.</param>
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnTrailerUpdate(PlayerTrailerEventArgs e)
+        protected virtual void OnTrailerUpdate(GtaVehicle trailer, TrailerEventArgs e)
         {
             if (TrailerUpdate != null)
-                TrailerUpdate(this, e);
+                TrailerUpdate(trailer, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="DialogResponse" /> event.
         /// </summary>
+        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="DialogResponseEventArgs" /> that contains the event data. </param>
-        protected virtual void OnDialogResponse(DialogResponseEventArgs e)
+        protected virtual void OnDialogResponse(GtaPlayer player, DialogResponseEventArgs e)
         {
             if (DialogResponse != null)
-                DialogResponse(this, e);
+                DialogResponse(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerTakeDamage" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerDamageEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerTakeDamage(PlayerDamageEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="DamagePlayerEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerTakeDamage(GtaPlayer player, DamagePlayerEventArgs e)
         {
             if (PlayerTakeDamage != null)
-                PlayerTakeDamage(this, e);
+                PlayerTakeDamage(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerGiveDamage" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerDamageEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerGiveDamage(PlayerDamageEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="DamagePlayerEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerGiveDamage(GtaPlayer player, DamagePlayerEventArgs e)
         {
             if (PlayerGiveDamage != null)
-                PlayerGiveDamage(this, e);
+                PlayerGiveDamage(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerClickMap" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerClickMapEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerClickMap(PlayerClickMapEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="PositionEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerClickMap(GtaPlayer player, PositionEventArgs e)
         {
             if (PlayerClickMap != null)
-                PlayerClickMap(this, e);
+                PlayerClickMap(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerClickTextDraw" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerClickTextDrawEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerClickTextDraw(PlayerClickTextDrawEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerClickTextDraw(GtaPlayer player, ClickTextDrawEventArgs e)
         {
             if (PlayerClickTextDraw != null)
-                PlayerClickTextDraw(this, e);
+                PlayerClickTextDraw(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerClickPlayerTextDraw" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerClickTextDrawEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerClickPlayerTextDraw(PlayerClickTextDrawEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerClickPlayerTextDraw(GtaPlayer player, ClickPlayerTextDrawEventArgs e)
         {
             if (PlayerClickPlayerTextDraw != null)
-                PlayerClickPlayerTextDraw(this, e);
+                PlayerClickPlayerTextDraw(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerClickPlayer" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerClickPlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerClickPlayer(PlayerClickPlayerEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="ClickPlayerEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerClickPlayer(GtaPlayer player, ClickPlayerEventArgs e)
         {
             if (PlayerClickPlayer != null)
-                PlayerClickPlayer(this, e);
+                PlayerClickPlayer(player, e);
         }
 
         /// <summary>
-        ///     Raises the <see cref="PlayerEditObject" /> event.
+        ///     Raises the <see cref="PlayerEditGlobalObject" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEditObjectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEditObject(PlayerEditObjectEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="EditGlobalObjectEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerEditGlobalObject(GtaPlayer player, EditGlobalObjectEventArgs e)
         {
-            if (PlayerEditObject != null)
-                PlayerEditObject(this, e);
+            if (PlayerEditGlobalObject != null)
+                PlayerEditGlobalObject(player, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="PlayerEditPlayerObject" /> event.
+        /// </summary>
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="EditPlayerObjectEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerEditPlayerObject(GtaPlayer player, EditPlayerObjectEventArgs e)
+        {
+            if (PlayerEditPlayerObject != null)
+                PlayerEditPlayerObject(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerEditAttachedObject" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEditAttachedObjectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEditAttachedObject(PlayerEditAttachedObjectEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="EditAttachedObjectEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerEditAttachedObject(GtaPlayer player, EditAttachedObjectEventArgs e)
         {
             if (PlayerEditAttachedObject != null)
-                PlayerEditAttachedObject(this, e);
+                PlayerEditAttachedObject(player, e);
         }
 
         /// <summary>
-        ///     Raises the <see cref="PlayerSelectObject" /> event.
+        ///     Raises the <see cref="PlayerSelectGlobalObject" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerSelectObjectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerSelectObject(PlayerSelectObjectEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="SelectGlobalObjectEventArgs" /> that contains the event data.</param>
+        protected virtual void OnPlayerSelectGlobalObject(GtaPlayer player, SelectGlobalObjectEventArgs e)
         {
-            if (PlayerSelectObject != null)
-                PlayerSelectObject(this, e);
+            if (PlayerSelectGlobalObject != null)
+                PlayerSelectGlobalObject(player, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="PlayerSelectPlayerObject" /> event.
+        /// </summary>
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="SelectPlayerObjectEventArgs" /> that contains the event data.</param>
+        protected virtual void OnPlayerSelectPlayerObject(GtaPlayer player, SelectPlayerObjectEventArgs e)
+        {
+            if (PlayerSelectPlayerObject != null)
+                PlayerSelectPlayerObject(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerWeaponShot" /> event.
         /// </summary>
+        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="WeaponShotEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerWeaponShot(WeaponShotEventArgs e)
+        protected virtual void OnPlayerWeaponShot(GtaPlayer player, WeaponShotEventArgs e)
         {
             if (PlayerWeaponShot != null)
-                PlayerWeaponShot(this, e);
+                PlayerWeaponShot(player, e);
         }
 
         /// <summary>

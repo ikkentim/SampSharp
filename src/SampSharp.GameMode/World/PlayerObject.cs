@@ -100,19 +100,19 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="BaseMode.OnObjectMoved" /> callback is being called.
         ///     This callback is called when an object is moved after <see cref="Move(Vector,float)" /> (when it stops moving).
         /// </summary>
-        public event EventHandler<PlayerObjectEventArgs> Moved;
+        public event EventHandler<EventArgs> Moved;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerSelectObject" /> callback is being called.
         ///     This callback is called when a player selects an object after <see cref="Native.SelectObject" /> has been used.
         /// </summary>
-        public event EventHandler<PlayerSelectObjectEventArgs> Selected;
+        public event EventHandler<SelectPlayerObjectEventArgs> Selected;
 
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerEditObject" /> callback is being called.
         ///     This callback is called when a player ends object edition mode.
         /// </summary>
-        public event EventHandler<PlayerEditObjectEventArgs> Edited;
+        public event EventHandler<EditPlayerObjectEventArgs> Edited;
 
         #endregion
 
@@ -189,7 +189,7 @@ namespace SampSharp.GameMode.World
         /// </returns>
         public virtual int Move(Vector position, float speed, Vector rotation)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.MovePlayerObject(Owner.Id, Id, position, speed, rotation);
         }
@@ -204,7 +204,7 @@ namespace SampSharp.GameMode.World
         /// </returns>
         public virtual int Move(Vector position, float speed)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             return Native.MovePlayerObject(Owner.Id, Id, position.X, position.Y, position.Z, speed, -1000,
                 -1000, -1000);
@@ -215,7 +215,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Stop()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.StopPlayerObject(Owner.Id, Id);
         }
@@ -234,7 +234,7 @@ namespace SampSharp.GameMode.World
         public virtual void SetMaterial(int materialindex, int modelid, string txdname, string texturename,
             Color materialcolor)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerObjectMaterial(Owner.Id, Id, materialindex, modelid, txdname, texturename,
                 materialcolor.GetColorValue(ColorFormat.ARGB));
@@ -256,7 +256,7 @@ namespace SampSharp.GameMode.World
             string fontface, int fontsize, bool bold, Color foreColor, Color backColor,
             ObjectMaterialTextAlign textalignment)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.SetPlayerObjectMaterialText(Owner.Id, Id, text, materialindex, (int) materialsize,
                 fontface, fontsize, bold,
@@ -273,7 +273,7 @@ namespace SampSharp.GameMode.World
         /// <exception cref="System.ArgumentNullException">player</exception>
         public virtual void AttachTo(GtaPlayer player, Vector offset, Vector rotation)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -290,7 +290,7 @@ namespace SampSharp.GameMode.World
         /// <exception cref="System.ArgumentNullException">vehicle</exception>
         public virtual void AttachTo(GtaVehicle vehicle, Vector offset, Vector rotation)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (vehicle == null)
                 throw new ArgumentNullException("vehicle");
@@ -306,7 +306,7 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         public virtual void AttachCameraToObject()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.AttachCameraToPlayerObject(Owner.Id, Id);
         }
@@ -327,7 +327,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Edit()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             Native.EditPlayerObject(Owner.Id, Id);
         }
@@ -353,7 +353,7 @@ namespace SampSharp.GameMode.World
         ///     Raises the <see cref="Moved" /> event.
         /// </summary>
         /// <param name="e">An <see cref="ObjectEventArgs" /> that contains the event data. </param>
-        public virtual void OnMoved(PlayerObjectEventArgs e)
+        public virtual void OnMoved(EventArgs e)
         {
             if (Moved != null)
                 Moved(this, e);
@@ -362,8 +362,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Selected" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerSelectObjectEventArgs" /> that contains the event data. </param>
-        public virtual void OnSelected(PlayerSelectObjectEventArgs e)
+        /// <param name="e">An <see cref="SelectGlobalObjectEventArgs" /> that contains the event data. </param>
+        public virtual void OnSelected(SelectPlayerObjectEventArgs e)
         {
             if (Selected != null)
                 Selected(this, e);
@@ -372,8 +372,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Edited" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEditObjectEventArgs" /> that contains the event data. </param>
-        public virtual void OnEdited(PlayerEditObjectEventArgs e)
+        /// <param name="e">An <see cref="EditObjectEventArgs" /> that contains the event data. </param>
+        public virtual void OnEdited(EditPlayerObjectEventArgs e)
         {
             if (Edited != null)
                 Edited(this, e);

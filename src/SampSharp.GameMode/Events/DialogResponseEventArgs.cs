@@ -13,31 +13,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.DialogResponse" /> event.
     /// </summary>
-    public class DialogResponseEventArgs : PlayerEventArgs
+    public class DialogResponseEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the DialogResponseEventArgs class.
+        /// Initializes a new instance of the DialogResponseEventArgs class.
         /// </summary>
-        /// <param name="playerid">Id of the player.</param>
+        /// <param name="player">The player.</param>
         /// <param name="dialogid">Id of the dialog.</param>
-        /// <param name="response">Response of the dialogresponse.</param>
-        /// <param name="listitem">Listitem of the dialogresponse.</param>
-        /// <param name="inputtext">Inputtext of the dialogresponse.</param>
-        public DialogResponseEventArgs(int playerid, int dialogid, int response, int listitem, string inputtext)
-            : base(playerid)
+        /// <param name="response">Response of the dialog response.</param>
+        /// <param name="listitem">List item of the dialog response.</param>
+        /// <param name="inputtext">Input text of the dialog response.</param>
+        public DialogResponseEventArgs(GtaPlayer player, int dialogid, int response, int listitem, string inputtext)
         {
+            Player = player;
             DialogId = dialogid;
             DialogButton = (DialogButton) response;
             ListItem = listitem;
             InputText = inputtext;
         }
+
+        /// <summary>
+        /// Gets the player sending this response.
+        /// </summary>
+        public GtaPlayer Player { get; private set; }
 
         /// <summary>
         ///     Gets the id of dialog of this response.

@@ -13,25 +13,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.World;
+using System;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerObjectMoved" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerInteriorChanged" /> event.
     /// </summary>
-    public class PlayerObjectEventArgs : PlayerEventArgs
+    public class InteriorChangedEventArgs : EventArgs
     {
-        public PlayerObjectEventArgs(int playerid, int objectid) : base(playerid)
+        public InteriorChangedEventArgs(int newinterior, int oldinterior)
         {
-            ObjectId = objectid;
+            NewInterior = newinterior;
+            OldInterior = oldinterior;
         }
 
-        public int ObjectId { get; private set; }
+        public int NewInterior { get; private set; }
 
-        public PlayerObject PlayerObject
-        {
-            get { return ObjectId == PlayerObject.InvalidId ? null : PlayerObject.FindOrCreate(Player, ObjectId); }
-        }
+        public int OldInterior { get; private set; }
     }
 }

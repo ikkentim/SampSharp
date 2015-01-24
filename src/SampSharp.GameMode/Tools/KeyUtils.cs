@@ -38,10 +38,10 @@ namespace SampSharp.GameMode.Tools
         /// <summary>
         ///     Checks if <see cref="Keys" /> have been pressed.
         /// </summary>
-        /// <param name="e">The <see cref="PlayerKeyStateChangedEventArgs" />.</param>
+        /// <param name="e">The <see cref="KeyStateChangedEventArgs" />.</param>
         /// <param name="keys">The <see cref="Keys" /> to check for.</param>
         /// <returns>Whether the <see cref="Keys" /> have been pressed.</returns>
-        public static bool HasPressed(PlayerKeyStateChangedEventArgs e, Keys keys)
+        public static bool HasPressed(KeyStateChangedEventArgs e, Keys keys)
         {
             return HasPressed(e.NewKeys, e.OldKeys, keys);
         }
@@ -61,10 +61,10 @@ namespace SampSharp.GameMode.Tools
         /// <summary>
         ///     Checks if <see cref="Keys" /> have been released.
         /// </summary>
-        /// <param name="e">The <see cref="PlayerKeyStateChangedEventArgs" />.</param>
+        /// <param name="e">The <see cref="KeyStateChangedEventArgs" />.</param>
         /// <param name="keys">The <see cref="Keys" /> to check for.</param>
         /// <returns>Whether the <see cref="Keys" /> have been released.</returns>
-        public static bool HasReleased(PlayerKeyStateChangedEventArgs e, Keys keys)
+        public static bool HasReleased(KeyStateChangedEventArgs e, Keys keys)
         {
             return HasReleased(e.NewKeys, e.OldKeys, keys);
         }
@@ -84,10 +84,10 @@ namespace SampSharp.GameMode.Tools
         /// <summary>
         ///     Checks if <see cref="Keys" /> are being hold.
         /// </summary>
-        /// <param name="e">The <see cref="PlayerKeyStateChangedEventArgs" />.</param>
+        /// <param name="e">The <see cref="KeyStateChangedEventArgs" />.</param>
         /// <param name="keys">The <see cref="Keys" /> to check for.</param>
         /// <returns>Whether the <see cref="Keys" /> are being hold.</returns>
-        public static bool IsHolding(PlayerKeyStateChangedEventArgs e, Keys keys)
+        public static bool IsHolding(KeyStateChangedEventArgs e, Keys keys)
         {
             return IsHolding(e.NewKeys, e.OldKeys, keys);
         }

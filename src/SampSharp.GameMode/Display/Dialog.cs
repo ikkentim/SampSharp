@@ -226,8 +226,8 @@ namespace SampSharp.GameMode.Display
         /// <param name="e">An <see cref="DialogResponseEventArgs" /> that contains the event data. </param>
         public virtual void OnResponse(DialogResponseEventArgs e)
         {
-            if (OpenDialogs.ContainsKey(e.PlayerId))
-                OpenDialogs.Remove(e.PlayerId);
+            if (OpenDialogs.ContainsKey(e.Player.Id))
+                OpenDialogs.Remove(e.Player.Id);
 
             if (Response != null)
                 Response(this, e);

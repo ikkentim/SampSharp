@@ -107,9 +107,15 @@ namespace SampSharp.GameMode.Display
 
         #region Events
 
-        public event EventHandler<PlayerEventArgs> Exit;
+        /// <summary>
+        /// Occurs when this <see cref="Menu"/> was exited.
+        /// </summary>
+        public event EventHandler<EventArgs> Exit;
 
-        public event EventHandler<PlayerSelectedMenuRowEventArgs> Response;
+        /// <summary>
+        /// Occurs when there has been responded to this <see cref="Menu"/>.
+        /// </summary>
+        public event EventHandler<MenuRowEventArgs> Response;
 
         #endregion
 
@@ -122,7 +128,7 @@ namespace SampSharp.GameMode.Display
         /// <returns>True when successfull, False otherwise.</returns>
         public bool Show(GtaPlayer player)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -149,7 +155,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="player">The player to hide this menu for.</param>
         public void Hide(GtaPlayer player)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (player == null)
             {
@@ -174,7 +180,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public void HideForAll()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             //Clone list and hide for all.
             foreach (GtaPlayer p in _viewers.ToList())
@@ -252,13 +258,21 @@ namespace SampSharp.GameMode.Display
 
         #region Event raisers
 
-        public void OnExit(PlayerEventArgs e)
+        /// <summary>
+        /// Raises the <see cref="Exit" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        public void OnExit(EventArgs e)
         {
             if (Exit != null)
                 Exit(this, e);
         }
 
-        public void OnResponse(PlayerSelectedMenuRowEventArgs e)
+        /// <summary>
+        /// Raises the <see cref="Response" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="MenuRowEventArgs"/> instance containing the event data.</param>
+        public void OnResponse(MenuRowEventArgs e)
         {
             if (Response != null)
                 Response(this, e);

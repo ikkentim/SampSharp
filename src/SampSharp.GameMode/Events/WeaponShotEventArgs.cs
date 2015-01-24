@@ -21,20 +21,36 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.PlayerWeaponShot" /> event.
     /// </summary>
-    public class WeaponShotEventArgs : PlayerClickMapEventArgs
+    public class WeaponShotEventArgs : PositionEventArgs
     {
-        public WeaponShotEventArgs(int playerid, Weapon weapon, BulletHitType hittype, int hitid, Vector position)
-            : base(playerid, position)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WeaponShotEventArgs"/> class.
+        /// </summary>
+        /// <param name="weapon">The weapon.</param>
+        /// <param name="hittype">The hittype.</param>
+        /// <param name="hitid">The hitid.</param>
+        /// <param name="position">The position.</param>
+        public WeaponShotEventArgs(Weapon weapon, BulletHitType hittype, int hitid, Vector position)
+            : base(position)
         {
             Weapon = weapon;
             BulletHitType = hittype;
             HitId = hitid;
         }
 
+        /// <summary>
+        /// Gets the weapon.
+        /// </summary>
         public Weapon Weapon { get; private set; }
 
+        /// <summary>
+        /// Gets the type of the bullet hit.
+        /// </summary>
         public BulletHitType BulletHitType { get; private set; }
 
+        /// <summary>
+        /// Gets the hit identifier.
+        /// </summary>
         public int HitId { get; private set; }
 
         /// <summary>

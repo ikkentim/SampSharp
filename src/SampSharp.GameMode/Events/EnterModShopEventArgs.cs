@@ -13,26 +13,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.World;
+using System;
+using SampSharp.GameMode.Definitions;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerStreamIn" /> or
-    ///     <see cref="BaseMode.PlayerStreamOut" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerEnterExitModShop" /> event.
     /// </summary>
-    public class StreamPlayerEventArgs : PlayerEventArgs
+    public class EnterModShopEventArgs : EventArgs
     {
-        public StreamPlayerEventArgs(int playerid, int forplayerid) : base(playerid)
+        public EnterModShopEventArgs(EnterExit enterExit, int interiorid)
         {
-            ForPlayerId = forplayerid;
+            EnterExit = enterExit;
+            InteriorId = interiorid;
         }
 
-        public int ForPlayerId { get; private set; }
+        public EnterExit EnterExit { get; private set; }
 
-        public GtaPlayer ForPlayer
-        {
-            get { return ForPlayerId == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(ForPlayerId); }
-        }
+        public int InteriorId { get; private set; }
     }
 }

@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.Linq;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 using TestMode.Tests;
 
@@ -42,6 +43,7 @@ namespace TestMode
 
         protected override void OnInitialized(EventArgs args)
         {
+            Server.ToggleDebugOutput(true);
             SetGameModeText("sa-mp# testmode");
             UsePlayerPedAnims();
 

@@ -15,6 +15,7 @@
 
 using System.Linq;
 using SampSharp.GameMode.Display;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers
 {
@@ -31,7 +32,8 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.PlayerExitedMenu += (sender, args) =>
             {
-                Menu menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(args.Player));
+                var player = sender as GtaPlayer;
+                var menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(player));
 
                 if (menu != null)
                     menu.OnExit(args);
@@ -39,7 +41,8 @@ namespace SampSharp.GameMode.Controllers
 
             gameMode.PlayerSelectedMenuRow += (sender, args) =>
             {
-                Menu menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(args.Player));
+                var player = sender as GtaPlayer;
+                Menu menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(player));
 
                 if (menu != null)
                     menu.OnResponse(args);

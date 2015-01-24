@@ -17,48 +17,18 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
-    /// <summary>
-    ///     Provides data for the <see cref="BaseMode.VehicleDied" />,
-    ///     <see cref="BaseMode.PlayerExitVehicle" />, <see cref="BaseMode.VehicleStreamIn" /> or
-    ///     <see cref="BaseMode.VehicleStreamOut" /> event.
-    /// </summary>
     public class PlayerVehicleEventArgs : PlayerEventArgs
     {
-        public PlayerVehicleEventArgs(int playerid, int vehicleid) : base(playerid)
-        {
-            VehicleId = vehicleid;
-        }
-
-        public int VehicleId { get; private set; }
-
-        public GtaVehicle Vehicle
-        {
-            get { return VehicleId == GtaVehicle.InvalidId ? null : GtaVehicle.Find(VehicleId); }
-        }
-    }
-
-
-    /// <summary>
-    ///     Provides data for the <see cref="BaseMode.TrailerUpdate" /> event.
-    /// </summary>
-    public class PlayerTrailerEventArgs : PlayerEventArgs
-    {
-        public PlayerTrailerEventArgs(int playerid, int vehicleid)
-            : base(playerid)
-        {
-            VehicleId = vehicleid;
-        }
-
-        public int VehicleId { get; private set; }
-
-        public GtaVehicle Vehicle
-        {
-            get { return VehicleId == GtaVehicle.InvalidId ? null : GtaVehicle.Find(VehicleId); }
-        }
-
         /// <summary>
-        ///     Gets or sets whether to stop the vehicle syncing its position to other players.
+        /// Initializes a new instance of the <see cref="PlayerVehicleEventArgs"/> class.
         /// </summary>
-        public bool PreventPropagation { get; set; }
+        /// <param name="player">The player.</param>
+        /// <param name="vehicle">The vehicle.</param>
+        public PlayerVehicleEventArgs(GtaPlayer player, GtaVehicle vehicle) : base(player)
+        {
+            Vehicle = vehicle;
+        }
+
+        public GtaVehicle Vehicle { get; private set; }
     }
 }

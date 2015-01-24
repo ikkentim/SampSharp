@@ -13,23 +13,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.Definitions;
+using System;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerKeyStateChanged" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerText" /> event.
     /// </summary>
-    public class PlayerKeyStateChangedEventArgs : PlayerEventArgs
+    public class TextEventArgs : EventArgs
     {
-        public PlayerKeyStateChangedEventArgs(int playerid, Keys newkeys, Keys oldkeys) : base(playerid)
+        /// <summary>
+        ///     Initializes a new instance of the TextEventArgs class.
+        /// </summary>
+        /// <param name="text">The text sent by the player.</param>
+        public TextEventArgs(string text)
         {
-            NewKeys = newkeys;
-            OldKeys = oldkeys;
+            Text = text;
         }
 
-        public Keys NewKeys { get; private set; }
+        /// <summary>
+        ///     Gets the text sent by the player.
+        /// </summary>
+        public string Text { get; private set; }
 
-        public Keys OldKeys { get; private set; }
+        /// <summary>
+        ///     Gets or sets whether this message should be sent to all players.
+        /// </summary>
+        public bool SendToPlayers { get; set; }
     }
 }

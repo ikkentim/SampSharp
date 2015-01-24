@@ -13,46 +13,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
-    /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerTakeDamage" /> or
-    ///     <see cref="BaseMode.PlayerGiveDamage" /> event.
-    /// </summary>
-    public class PlayerDamageEventArgs : PlayerEventArgs
+    public class DamagePlayerEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the PlayerDamageEventArgs class.
+        /// Initializes a new instance of the DamagePlayerEventArgs class.
         /// </summary>
-        /// <param name="playerid">Id of the player.</param>
-        /// <param name="otherplayerid">Id of the other player.</param>
+        /// <param name="otherPlayer">The other player.</param>
         /// <param name="amount">Amount of damage done.</param>
         /// <param name="weapon">Weapon used to damage another.</param>
         /// <param name="bodypart">BodyPart shot at.</param>
-        public PlayerDamageEventArgs(int playerid, int otherplayerid, float amount, Weapon weapon, BodyPart bodypart)
-            : base(playerid)
+        public DamagePlayerEventArgs(GtaPlayer otherPlayer, float amount, Weapon weapon, BodyPart bodypart)
         {
-            OtherPlayerId = otherplayerid;
+            OtherPlayer = otherPlayer;
             Amount = amount;
             Weapon = weapon;
             BodyPart = bodypart;
         }
 
         /// <summary>
-        ///     Gets the id of the other player.
-        /// </summary>
-        public int OtherPlayerId { get; private set; }
-
-        /// <summary>
         ///     Gets the other player.
         /// </summary>
-        public GtaPlayer OtherPlayer
-        {
-            get { return OtherPlayerId == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(OtherPlayerId); }
-        }
+        public GtaPlayer OtherPlayer { get; private set; }
 
         /// <summary>
         ///     Gets the amount of damage done.

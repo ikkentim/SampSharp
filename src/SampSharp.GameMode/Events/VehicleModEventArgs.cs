@@ -13,15 +13,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using SampSharp.GameMode.World;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.VehicleMod" /> event.
     /// </summary>
-    public class VehicleModEventArgs : PlayerVehicleEventArgs
+    public class VehicleModEventArgs : PlayerEventArgs
     {
-        public VehicleModEventArgs(int playerid, int vehicleid, int componentid)
-            : base(playerid, vehicleid)
+        public VehicleModEventArgs(GtaPlayer player, int componentid)
+            : base(player)
         {
             ComponentId = componentid;
         }

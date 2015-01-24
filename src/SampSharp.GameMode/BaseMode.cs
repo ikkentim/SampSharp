@@ -20,7 +20,7 @@ using SampSharp.GameMode.Controllers;
 namespace SampSharp.GameMode
 {
     /// <summary>
-    ///     Represents a SA-MP gamemode.
+    ///     Base class for a SA-MP game mode.
     /// </summary>
     public abstract partial class BaseMode : IDisposable
     {

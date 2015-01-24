@@ -22,16 +22,18 @@ namespace SampSharp.GameMode.Events
     /// </summary>
     public class VehicleEventArgs
     {
-        public VehicleEventArgs(int vehicleid)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VehicleEventArgs"/> class.
+        /// </summary>
+        /// <param name="vehicle">The vehicle.</param>
+        public VehicleEventArgs(GtaVehicle vehicle)
         {
-            VehicleId = vehicleid;
+            Vehicle = vehicle;
         }
 
-        public int VehicleId { get; private set; }
-
-        public GtaVehicle Vehicle
-        {
-            get { return VehicleId == GtaVehicle.InvalidId ? null : GtaVehicle.FindOrCreate(VehicleId); }
-        }
+        /// <summary>
+        /// Gets the vehicle.
+        /// </summary>
+        public GtaVehicle Vehicle { get; private set; }
     }
 }

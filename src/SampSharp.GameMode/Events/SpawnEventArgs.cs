@@ -13,18 +13,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerEnterVehicle" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerSpawned" /> event.
     /// </summary>
-    public class PlayerEnterVehicleEventArgs : PlayerVehicleEventArgs
+    public class SpawnEventArgs : EventArgs
     {
-        public PlayerEnterVehicleEventArgs(int playerid, int vehicleid, bool ispassenger) : base(playerid, vehicleid)
+        /// <summary>
+        ///     Initializes a new instance of the SpawnEventArgs class.
+        /// </summary>
+        public SpawnEventArgs()
         {
-            IsPassenger = ispassenger;
         }
 
-        public bool IsPassenger { get; private set; }
+        /// <summary>
+        ///     Gets or sets whether the player will be forced back to the class selection when they next spawn.
+        /// </summary>
+        public bool ReturnToClassSelection { get; set; }
     }
 }

@@ -13,15 +13,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using SampSharp.GameMode.World;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.VehiclePaintjobApplied" /> event.
     /// </summary>
-    public class VehiclePaintjobEventArgs : PlayerVehicleEventArgs
+    public class VehiclePaintjobEventArgs : PlayerEventArgs
     {
-        public VehiclePaintjobEventArgs(int playerid, int vehicleid, int paintjobid)
-            : base(playerid, vehicleid)
+        public VehiclePaintjobEventArgs(GtaPlayer player, int paintjobid)
+            : base(player)
         {
             PaintjobId = paintjobid;
         }

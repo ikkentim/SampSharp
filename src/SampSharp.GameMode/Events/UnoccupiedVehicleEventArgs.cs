@@ -20,21 +20,37 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.UnoccupiedVehicleUpdated" /> event.
     /// </summary>
-    public class UnoccupiedVehicleEventArgs : PlayerVehicleEventArgs //@todo: change to inherit VehicleEventArgs only.
+    public class UnoccupiedVehicleEventArgs : PlayerEventArgs
     {
-        public UnoccupiedVehicleEventArgs(int playerid, int vehicleid, int passengerSeat, Vector newPosition,
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="UnoccupiedVehicleEventArgs" /> class.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <param name="passengerSeat">The passenger seat.</param>
+        /// <param name="newPosition">The new position.</param>
+        /// <param name="newVelocity">The new velocity.</param>
+        public UnoccupiedVehicleEventArgs(GtaPlayer player, int passengerSeat, Vector newPosition,
             Vector newVelocity)
-            : base(playerid, vehicleid)
+            : base(player)
         {
             PassengerSeat = passengerSeat;
             NewPosition = newPosition;
             NewVelocity = newVelocity;
         }
 
+        /// <summary>
+        ///     Gets the passenger seat.
+        /// </summary>
         public int PassengerSeat { get; private set; }
 
+        /// <summary>
+        ///     Gets the new position.
+        /// </summary>
         public Vector NewPosition { get; private set; }
 
+        /// <summary>
+        ///     Gets the new velocity.
+        /// </summary>
         public Vector NewVelocity { get; private set; }
 
         /// <summary>

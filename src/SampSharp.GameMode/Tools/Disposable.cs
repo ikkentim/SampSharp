@@ -48,7 +48,7 @@ namespace SampSharp.GameMode.Tools
         }
 
         /// <summary>
-        ///     Deintializes this instance of Disposable.
+        /// Finalizes an instance of the <see cref="Disposable"/> class.
         /// </summary>
         ~Disposable()
         {
@@ -67,7 +67,7 @@ namespace SampSharp.GameMode.Tools
         ///     Checks whether this instance has been disposed. If it has, it throws an exception.
         /// </summary>
         /// <exception cref="ObjectDisposedException">Thrown when this instance has been disposed.</exception>
-        protected void CheckDisposure()
+        protected void CheckDisposed()
         {
             if (Disposed)
                 throw new ObjectDisposedException(GetType().ToString());

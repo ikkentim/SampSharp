@@ -13,15 +13,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace SampSharp.GameMode.Events
 {
-    public class PlayerUpdateEventArgs : PlayerEventArgs
+    public class PlayerUpdateEventArgs : EventArgs
     {
-        public PlayerUpdateEventArgs(int playerid) : base(playerid)
-        {
-        }
-
-
         /// <summary>
         ///     Gets or sets whether to stop syncing the update to other players.
         /// </summary>

@@ -203,7 +203,7 @@ namespace SampSharp.GameMode.World
         /// <exception cref="System.ArgumentNullException">player</exception>
         public virtual void AttachTo(GtaPlayer player, Vector offset)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -219,7 +219,7 @@ namespace SampSharp.GameMode.World
         /// <exception cref="System.ArgumentNullException">vehicle</exception>
         public virtual void AttachTo(GtaVehicle vehicle, Vector offset)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (vehicle == null)
                 throw new ArgumentNullException("vehicle");

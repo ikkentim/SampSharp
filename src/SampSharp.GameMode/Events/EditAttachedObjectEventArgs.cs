@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
@@ -21,12 +22,11 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.PlayerEditAttachedObject" /> event.
     /// </summary>
-    public class PlayerEditAttachedObjectEventArgs : PlayerEventArgs
+    public class EditAttachedObjectEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the PlayerEditAttachedObjectEventArgs class.
+        ///     Initializes a new instance of the EditAttachedObjectEventArgs class.
         /// </summary>
-        /// <param name="playerid">Id of the player.</param>
         /// <param name="response">EditObjectResponse.</param>
         /// <param name="index">Index of the attached object.</param>
         /// <param name="modelid">Model of the attached object.</param>
@@ -34,9 +34,8 @@ namespace SampSharp.GameMode.Events
         /// <param name="offset">Offset of the attached object.</param>
         /// <param name="rotation">Rotation of the attached object.</param>
         /// <param name="scale">Scale of the attached object.</param>
-        public PlayerEditAttachedObjectEventArgs(int playerid, EditObjectResponse response, int index, int modelid,
-            int boneid, Vector offset, Vector rotation, Vector scale)
-            : base(playerid)
+        public EditAttachedObjectEventArgs(EditObjectResponse response, int index, int modelid, int boneid,
+            Vector offset, Vector rotation, Vector scale)
         {
             EditObjectResponse = response;
             Index = index;
@@ -53,7 +52,7 @@ namespace SampSharp.GameMode.Events
         public EditObjectResponse EditObjectResponse { get; private set; }
 
         /// <summary>
-        ///     Gets the index of the attachedobject.
+        ///     Gets the index of the attached  object.
         /// </summary>
         public int Index { get; private set; }
 

@@ -13,12 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.IncomingConnection" /> event.
     /// </summary>
-    public class ConnectionEventArgs
+    public class ConnectionEventArgs : EventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the ConnectionEventArgs class.

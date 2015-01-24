@@ -13,21 +13,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerInteriorChanged" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerSelectedMenuRow" /> event.
     /// </summary>
-    public class PlayerInteriorChangedEventArgs : PlayerEventArgs
+    public class MenuRowEventArgs : EventArgs
     {
-        public PlayerInteriorChangedEventArgs(int playerid, int newinterior, int oldinterior) : base(playerid)
+        public MenuRowEventArgs(int row)
         {
-            NewInterior = newinterior;
-            OldInterior = oldinterior;
+            Row = row;
         }
 
-        public int NewInterior { get; private set; }
-
-        public int OldInterior { get; private set; }
+        public int Row { get; private set; }
     }
 }

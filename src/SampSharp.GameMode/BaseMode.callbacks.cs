@@ -15,12 +15,16 @@
 
 using System;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode
 {
+    /// <summary>
+    ///     Base class for a SA-MP game mode.
+    /// </summary>
     public abstract partial class BaseMode
     {
         /// <summary>
@@ -41,7 +45,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     This callback is triggered when the gamemode starts.
+        ///     This callback is triggered when the game mode starts.
         /// </summary>
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnGameModeInit()
@@ -52,7 +56,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     This callback is called when a gamemode ends.
+        ///     This callback is called when a game mode ends.
         /// </summary>
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnGameModeExit()
@@ -69,7 +73,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerConnect(int playerid)
         {
-            OnPlayerConnected(new PlayerEventArgs(playerid));
+            OnPlayerConnected(GtaPlayer.FindOrCreate(playerid), EventArgs.Empty);
 
             return true;
         }
@@ -82,10 +86,10 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerDisconnect(int playerid, int reason)
         {
-            var args = new PlayerDisconnectedEventArgs(playerid, (DisconnectReason) reason);
+            var args = new DisconnectEventArgs((DisconnectReason) reason);
 
-            OnPlayerDisconnected(args);
-            OnPlayerCleanup(args);
+            OnPlayerDisconnected(GtaPlayer.FindOrCreate(playerid), args);
+            OnPlayerCleanup(GtaPlayer.FindOrCreate(playerid), args);
 
             return true;
         }
@@ -97,9 +101,9 @@ namespace SampSharp.GameMode
         /// <returns>Return False in this callback to force the player back to class selection when they next respawn.</returns>
         internal bool OnPlayerSpawn(int playerid)
         {
-            var args = new PlayerSpawnEventArgs(playerid);
+            var args = new SpawnEventArgs();
 
-            OnPlayerSpawned(args);
+            OnPlayerSpawned(GtaPlayer.FindOrCreate(playerid), args);
 
             return !args.ReturnToClassSelection;
         }
@@ -116,7 +120,9 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerDeath(int playerid, int killerid, int reason)
         {
-            OnPlayerDied(new PlayerDeathEventArgs(playerid, killerid, (Weapon) reason));
+            OnPlayerDied(GtaPlayer.FindOrCreate(playerid),
+                new DeathEventArgs(killerid == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(killerid),
+                    (Weapon) reason));
 
             return true;
         }
@@ -128,7 +134,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnVehicleSpawn(int vehicleid)
         {
-            OnVehicleSpawned(new VehicleEventArgs(vehicleid));
+            OnVehicleSpawned(GtaVehicle.FindOrCreate(vehicleid), EventArgs.Empty);
 
             return true;
         }
@@ -149,7 +155,8 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnVehicleDeath(int vehicleid, int killerid)
         {
-            OnVehicleDied(new PlayerVehicleEventArgs(killerid, vehicleid));
+            OnVehicleDied(GtaVehicle.FindOrCreate(vehicleid),
+                new PlayerEventArgs(killerid == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(killerid)));
 
             return true;
         }
@@ -162,9 +169,9 @@ namespace SampSharp.GameMode
         /// <returns>Returning False in this callback will stop the text from being sent.</returns>
         internal bool OnPlayerText(int playerid, string text)
         {
-            var args = new PlayerTextEventArgs(playerid, text);
+            var args = new TextEventArgs(text);
 
-            OnPlayerText(args);
+            OnPlayerText(GtaPlayer.FindOrCreate(playerid), args);
 
             return !args.SendToPlayers;
         }
@@ -177,9 +184,9 @@ namespace SampSharp.GameMode
         /// <returns>False if the command was not processed, otherwise True.</returns>
         internal bool OnPlayerCommandText(int playerid, string cmdtext)
         {
-            var args = new PlayerCommandTextEventArgs(playerid, cmdtext);
+            var args = new CommandTextEventArgs(cmdtext);
 
-            OnPlayerCommandText(args);
+            OnPlayerCommandText(GtaPlayer.FindOrCreate(playerid), args);
 
             return args.Success;
         }
@@ -195,10 +202,9 @@ namespace SampSharp.GameMode
         /// </returns>
         internal bool OnPlayerRequestClass(int playerid, int classid)
         {
-            var args = new PlayerRequestClassEventArgs(playerid, classid);
+            var args = new RequestClassEventArgs(classid);
 
-            if (PlayerRequestClass != null)
-                PlayerRequestClass(this, args);
+            OnPlayerRequestClass(GtaPlayer.FindOrCreate(playerid), args);
 
             return !args.PreventSpawning;
         }
@@ -213,7 +219,9 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerEnterVehicle(int playerid, int vehicleid, bool ispassenger)
         {
-            OnPlayerEnterVehicle(new PlayerEnterVehicleEventArgs(playerid, vehicleid, ispassenger));
+            var player = GtaPlayer.FindOrCreate(playerid);
+            OnPlayerEnterVehicle(player,
+                new EnterVehicleEventArgs(player, GtaVehicle.FindOrCreate(vehicleid), ispassenger));
 
             return true;
         }
@@ -230,7 +238,9 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerExitVehicle(int playerid, int vehicleid)
         {
-            OnPlayerExitVehicle(new PlayerVehicleEventArgs(playerid, vehicleid));
+            var player = GtaPlayer.FindOrCreate(playerid);
+            OnPlayerExitVehicle(player,
+                new PlayerVehicleEventArgs(player, GtaVehicle.FindOrCreate(vehicleid)));
 
             return true;
         }
@@ -248,7 +258,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerStateChange(int playerid, int newstate, int oldstate)
         {
-            OnPlayerStateChanged(new PlayerStateEventArgs(playerid, (PlayerState) newstate, (PlayerState) oldstate));
+            OnPlayerStateChanged(GtaPlayer.FindOrCreate(playerid), new StateEventArgs((PlayerState) newstate, (PlayerState) oldstate));
 
             return true;
         }
@@ -260,7 +270,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerEnterCheckpoint(int playerid)
         {
-            OnPlayerEnterCheckpoint(new PlayerEventArgs(playerid));
+            OnPlayerEnterCheckpoint(GtaPlayer.FindOrCreate(playerid), EventArgs.Empty);
 
             return true;
         }
@@ -272,7 +282,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerLeaveCheckpoint(int playerid)
         {
-            OnPlayerLeaveCheckpoint(new PlayerEventArgs(playerid));
+            OnPlayerLeaveCheckpoint(GtaPlayer.FindOrCreate(playerid), EventArgs.Empty);
 
             return true;
         }
@@ -284,7 +294,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerEnterRaceCheckpoint(int playerid)
         {
-            OnPlayerEnterRaceCheckpoint(new PlayerEventArgs(playerid));
+            OnPlayerEnterRaceCheckpoint(GtaPlayer.FindOrCreate(playerid), EventArgs.Empty);
 
             return true;
         }
@@ -296,7 +306,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerLeaveRaceCheckpoint(int playerid)
         {
-            OnPlayerLeaveRaceCheckpoint(new PlayerEventArgs(playerid));
+            OnPlayerLeaveRaceCheckpoint(GtaPlayer.FindOrCreate(playerid), EventArgs.Empty);
 
             return true;
         }
@@ -325,9 +335,9 @@ namespace SampSharp.GameMode
         /// <returns>Returning False in this callback will prevent the player from spawning.</returns>
         internal bool OnPlayerRequestSpawn(int playerid)
         {
-            var args = new PlayerRequestSpawnEventArgs(playerid);
+            var args = new RequestSpawnEventArgs();
 
-            OnPlayerRequestSpawn(args);
+            OnPlayerRequestSpawn(GtaPlayer.FindOrCreate(playerid), args);
 
             return !args.PreventSpawning;
         }
@@ -343,7 +353,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnObjectMoved(int objectid)
         {
-            OnObjectMoved(new ObjectEventArgs(objectid));
+            OnObjectMoved(GlobalObject.FindOrCreate(objectid), EventArgs.Empty);
 
             return true;
         }
@@ -358,7 +368,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerObjectMoved(int playerid, int objectid)
         {
-            OnPlayerObjectMoved(new PlayerObjectEventArgs(playerid, objectid));
+            OnPlayerObjectMoved(PlayerObject.FindOrCreate(GtaPlayer.FindOrCreate(playerid), objectid), EventArgs.Empty);
 
             return true;
         }
@@ -371,7 +381,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerPickUpPickup(int playerid, int pickupid)
         {
-            OnPlayerPickUpPickup(new PlayerPickupEventArgs(playerid, pickupid));
+            OnPlayerPickUpPickup(Pickup.FindOrCreate(pickupid), new PlayerEventArgs(GtaPlayer.FindOrCreate(playerid)));
 
             return true;
         }
@@ -388,9 +398,9 @@ namespace SampSharp.GameMode
         /// <returns>Return False to desync the mod (or an invalid mod) from propagating and / or crashing players.</returns>
         internal bool OnVehicleMod(int playerid, int vehicleid, int componentid)
         {
-            var args = new VehicleModEventArgs(playerid, vehicleid, componentid);
+            var args = new VehicleModEventArgs(GtaPlayer.FindOrCreate(playerid), componentid);
 
-            OnVehicleMod(args);
+            OnVehicleMod(GtaVehicle.FindOrCreate(vehicleid),args);
 
             return !args.PreventPropagation;
         }
@@ -398,27 +408,30 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     This callback is called when a player enters or exits a mod shop.
         /// </summary>
-        /// <param name="playerid">The ID of the player that entered or exited the modshop.</param>
+        /// <param name="playerid">The ID of the player that entered or exited the mod shop.</param>
         /// <param name="enterexit">1 if the player entered or 0 if they exited.</param>
-        /// <param name="interiorid">The interior ID of the modshop that the player is entering (or 0 if exiting).</param>
+        /// <param name="interiorid">The interior ID of the mod shop that the player is entering (or 0 if exiting).</param>
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnEnterExitModShop(int playerid, int enterexit, int interiorid)
         {
-            OnPlayerEnterExitModShop(new PlayerEnterModShopEventArgs(playerid, (EnterExit) enterexit, interiorid));
+            OnPlayerEnterExitModShop(GtaPlayer.FindOrCreate(playerid),
+                new EnterModShopEventArgs((EnterExit) enterexit, interiorid));
 
             return true;
         }
 
         /// <summary>
-        ///     Called when a player changes the paintjob of their vehicle (in a modshop).
+        ///     Called when a player changes the paintjob of their vehicle (in a mod shop).
         /// </summary>
-        /// <param name="playerid">The ID of the player whos vehicle is modded.</param>
+        /// <param name="playerid">The ID of the player whose vehicle was modded.</param>
         /// <param name="vehicleid">The ID of the vehicle that changed paintjob.</param>
         /// <param name="paintjobid">The ID of the new paintjob.</param>
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnVehiclePaintjob(int playerid, int vehicleid, int paintjobid)
         {
-            OnVehiclePaintjobApplied(new VehiclePaintjobEventArgs(playerid, vehicleid, paintjobid));
+            OnVehiclePaintjobApplied(GtaVehicle.FindOrCreate(vehicleid),
+                new VehiclePaintjobEventArgs(GtaPlayer.FindOrCreate(playerid), paintjobid));
+            
 
             return true;
         }
@@ -428,7 +441,7 @@ namespace SampSharp.GameMode
         ///     vehicle's colors were changed, and is NEVER called for pay 'n' spray garages.
         /// </summary>
         /// <remarks>
-        ///     Misleadingly, this callback is not called for pay 'n' spray (only modshops).
+        ///     Misleadingly, this callback is not called for pay 'n' spray (only mod shops).
         /// </remarks>
         /// <param name="playerid">The ID of the player that is driving the vehicle.</param>
         /// <param name="vehicleid">The ID of the vehicle that was resprayed.</param>
@@ -437,7 +450,8 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnVehicleRespray(int playerid, int vehicleid, int color1, int color2)
         {
-            OnVehicleResprayed(new VehicleResprayedEventArgs(playerid, vehicleid, color1, color2));
+            OnVehicleResprayed(GtaVehicle.FindOrCreate(vehicleid),
+                new VehicleResprayedEventArgs(GtaPlayer.FindOrCreate(playerid), color1, color2));
 
             return true;
         }
@@ -453,13 +467,14 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnVehicleDamageStatusUpdate(int vehicleid, int playerid)
         {
-            OnVehicleDamageStatusUpdated(new PlayerVehicleEventArgs(playerid, vehicleid));
+            OnVehicleDamageStatusUpdated(GtaVehicle.FindOrCreate(vehicleid),
+                new PlayerEventArgs(GtaPlayer.FindOrCreate(playerid)));
 
             return true;
         }
 
         /// <summary>
-        ///     This callback is called everytime an unoccupied vehicle updates the server with their status.
+        ///     This callback is called every time an unoccupied vehicle updates the server with their status.
         /// </summary>
         /// <remarks>
         ///     This callback is called very frequently per second per unoccupied vehicle. You should refrain from implementing
@@ -478,9 +493,9 @@ namespace SampSharp.GameMode
         internal bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX,
             float newY, float newZ, float velX, float velY, float velZ)
         {
-            var args = new UnoccupiedVehicleEventArgs(playerid, vehicleid, passengerSeat, new Vector(newX, newY, newZ),
-                new Vector(velX, velY, velZ));
-            OnUnoccupiedVehicleUpdated(args);
+            var args = new UnoccupiedVehicleEventArgs(GtaPlayer.FindOrCreate(playerid), passengerSeat,
+                new Vector(newX, newY, newZ), new Vector(velX, velY, velZ));
+            OnUnoccupiedVehicleUpdated(GtaVehicle.FindOrCreate(vehicleid), args);
 
             return !args.PreventPropagation;
         }
@@ -493,7 +508,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerSelectedMenuRow(int playerid, int row)
         {
-            OnPlayerSelectedMenuRow(new PlayerSelectedMenuRowEventArgs(playerid, row));
+            OnPlayerSelectedMenuRow(GtaPlayer.FindOrCreate(playerid), new MenuRowEventArgs(row));
 
             return true;
         }
@@ -505,7 +520,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerExitedMenu(int playerid)
         {
-            OnPlayerExitedMenu(new PlayerEventArgs(playerid));
+            OnPlayerExitedMenu(GtaPlayer.FindOrCreate(playerid), EventArgs.Empty);
 
             return true;
         }
@@ -522,7 +537,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerInteriorChange(int playerid, int newinteriorid, int oldinteriorid)
         {
-            OnPlayerInteriorChanged(new PlayerInteriorChangedEventArgs(playerid, newinteriorid, oldinteriorid));
+            OnPlayerInteriorChanged(GtaPlayer.FindOrCreate(playerid), new InteriorChangedEventArgs(newinteriorid, oldinteriorid));
 
             return true;
         }
@@ -536,17 +551,17 @@ namespace SampSharp.GameMode
         /// <param name="oldkeys">A map of the keys held prior to the current change.</param>
         /// <returns>
         ///     True - Allows this callback to be called in other scripts. False - Callback will not be called in other
-        ///     scripts. It is always called first in gamemodes so returning False there blocks filterscripts from seeing it.
+        ///     scripts. It is always called first in game modes so returning False there blocks filter scripts from seeing it.
         /// </returns>
         internal bool OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys)
         {
-            OnPlayerKeyStateChanged(new PlayerKeyStateChangedEventArgs(playerid, (Keys) newkeys, (Keys) oldkeys));
+            OnPlayerKeyStateChanged(GtaPlayer.FindOrCreate(playerid), new KeyStateChangedEventArgs((Keys) newkeys, (Keys) oldkeys));
 
             return true;
         }
 
         /// <summary>
-        ///     This callback is called when someone tries to login to RCON, succesful or not.
+        ///     This callback is called when someone tries to login to RCON, successful or not.
         /// </summary>
         /// <remarks>
         ///     This callback is only called when /rcon login is used.
@@ -563,7 +578,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     This callback is called everytime a client/player updates the server with their status.
+        ///     This callback is called every time a client/player updates the server with their status.
         /// </summary>
         /// <remarks>
         ///     This callback is called very frequently per second per player, only use it when you know what it's meant for.
@@ -572,9 +587,9 @@ namespace SampSharp.GameMode
         /// <returns>False - Update from this player will not be replicated to other clients.</returns>
         internal bool OnPlayerUpdate(int playerid)
         {
-            var args = new PlayerUpdateEventArgs(playerid);
+            var args = new PlayerUpdateEventArgs();
 
-            OnPlayerUpdate(args);
+            OnPlayerUpdate(GtaPlayer.FindOrCreate(playerid),  args);
 
             return !args.PreventPropagation;
         }
@@ -587,7 +602,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerStreamIn(int playerid, int forplayerid)
         {
-            OnPlayerStreamIn(new StreamPlayerEventArgs(playerid, forplayerid));
+            OnPlayerStreamIn(GtaPlayer.FindOrCreate(playerid), new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
@@ -595,12 +610,12 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     This callback is called when a player is streamed out from some other player's client.
         /// </summary>
-        /// <param name="playerid">The player who has been destreamed.</param>
-        /// <param name="forplayerid">The player who has destreamed the other player.</param>
+        /// <param name="playerid">The player who has been streamed out.</param>
+        /// <param name="forplayerid">The player who has streamed out the other player.</param>
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerStreamOut(int playerid, int forplayerid)
         {
-            OnPlayerStreamOut(new StreamPlayerEventArgs(playerid, forplayerid));
+            OnPlayerStreamOut(GtaPlayer.FindOrCreate(playerid), new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
@@ -613,7 +628,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnVehicleStreamIn(int vehicleid, int forplayerid)
         {
-            OnVehicleStreamIn(new PlayerVehicleEventArgs(forplayerid, vehicleid));
+            OnVehicleStreamIn(GtaVehicle.FindOrCreate(vehicleid), new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
@@ -626,7 +641,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnVehicleStreamOut(int vehicleid, int forplayerid)
         {
-            OnVehicleStreamOut(new PlayerVehicleEventArgs(forplayerid, vehicleid));
+            OnVehicleStreamOut(GtaVehicle.FindOrCreate(vehicleid), new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
@@ -645,8 +660,8 @@ namespace SampSharp.GameMode
         /// </remarks>
         internal bool OnTrailerUpdate(int playerId, int vehicleId)
         {
-            var args = new PlayerTrailerEventArgs(playerId, vehicleId);
-            OnTrailerUpdate(args);
+            var args = new TrailerEventArgs(GtaPlayer.FindOrCreate(playerId));
+            OnTrailerUpdate(GtaVehicle.FindOrCreate(vehicleId), args);
 
             return !args.PreventPropagation;
         }
@@ -672,7 +687,7 @@ namespace SampSharp.GameMode
         /// </returns>
         internal bool OnDialogResponse(int playerid, int dialogid, int response, int listitem, string inputtext)
         {
-            OnDialogResponse(new DialogResponseEventArgs(playerid, dialogid, response, listitem, inputtext));
+            OnDialogResponse(GtaPlayer.FindOrCreate(playerid), new DialogResponseEventArgs(GtaPlayer.FindOrCreate(playerid), dialogid, response, listitem, inputtext));
 
             return true;
         }
@@ -682,17 +697,18 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="playerid">The ID of the player that took damage.</param>
         /// <param name="issuerid">The ID of the player that caused the damage. INVALID_PLAYER_ID if self-inflicted.</param>
-        /// <param name="amount">The amount of dagmage the player took (health and armour combined).</param>
+        /// <param name="amount">The amount of damage the player took (health and armor combined).</param>
         /// <param name="weaponid">The ID of the weapon/reason for the damage.</param>
         /// <param name="bodypart">The body part that was hit.</param>
         /// <returns>
         ///     True: Allows this callback to be called in other scripts. False Callback will not be called in other scripts.
-        ///     It is always called first in gamemodes so returning False there blocks filterscripts from seeing it.
+        ///     It is always called first in game modes so returning False there blocks filter scripts from seeing it.
         /// </returns>
         internal bool OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid, int bodypart)
         {
-            OnPlayerTakeDamage(new PlayerDamageEventArgs(playerid, issuerid, amount, (Weapon) weaponid,
-                (BodyPart) bodypart));
+            OnPlayerTakeDamage(GtaPlayer.FindOrCreate(playerid),
+                new DamagePlayerEventArgs(issuerid == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(issuerid),
+                    amount, (Weapon) weaponid, (BodyPart) bodypart));
 
             return true;
         }
@@ -708,20 +724,21 @@ namespace SampSharp.GameMode
         ///     You might have a server where players get a wanted level if they attack Cop players (or some specific class). In
         ///     that case you might trust GiveDamage over TakeDamage.
         ///     There should be a lot you can do with it. You just have to keep in mind the levels of trust between clients. In
-        ///     most cases it's better to trust the client who is being damaged to report their health/armour (TakeDamage). SA-MP
+        ///     most cases it's better to trust the client who is being damaged to report their health/armor (TakeDamage). SA-MP
         ///     normally does this. GiveDamage provides some extra information which may be useful when you require a different
         ///     level of trust.
         /// </remarks>
         /// <param name="playerid">The ID of the player that gave damage.</param>
         /// <param name="damagedid">The ID of the player that received damage.</param>
-        /// <param name="amount">The amount of health/armour damagedid has lost (combined).</param>
+        /// <param name="amount">The amount of health/armor damagedid has lost (combined).</param>
         /// <param name="weaponid">The reason that caused the damage.</param>
         /// <param name="bodypart">The body part that was hit.</param>
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerGiveDamage(int playerid, int damagedid, float amount, int weaponid, int bodypart)
         {
-            OnPlayerGiveDamage(new PlayerDamageEventArgs(playerid, damagedid, amount, (Weapon) weaponid,
-                (BodyPart) bodypart));
+            OnPlayerGiveDamage(GtaPlayer.FindOrCreate(playerid),
+                new DamagePlayerEventArgs(damagedid == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(damagedid),
+                    amount, (Weapon) weaponid, (BodyPart) bodypart));
 
             return true;
         }
@@ -740,13 +757,13 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerClickMap(int playerid, float fX, float fY, float fZ)
         {
-            OnPlayerClickMap(new PlayerClickMapEventArgs(playerid, new Vector(fX, fY, fZ)));
+            OnPlayerClickMap(GtaPlayer.FindOrCreate(playerid), new PositionEventArgs(new Vector(fX, fY, fZ)));
 
             return true;
         }
 
         /// <summary>
-        ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
+        ///     This callback is called when a player clicks on a text draw or cancels the select mode(ESC).
         /// </summary>
         /// <remarks>
         ///     The clickable area is defined by <see cref="Native.TextDrawTextSize" />. The x and y parameters passed to that
@@ -761,14 +778,16 @@ namespace SampSharp.GameMode
         /// </returns>
         internal bool OnPlayerClickTextDraw(int playerid, int clickedid)
         {
-            OnPlayerClickTextDraw(new PlayerClickTextDrawEventArgs(playerid, clickedid));
+            var player = GtaPlayer.FindOrCreate(playerid);
+            OnPlayerClickTextDraw(player,
+                new ClickTextDrawEventArgs(player, clickedid == TextDraw.InvalidId ? null : TextDraw.FindOrCreate(clickedid)));
 
             return true;
         }
 
         /// <summary>
-        ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
-        ///     mode (ESC) - however, <see cref="OnPlayerClickTextDraw" /> is.
+        ///     This callback is called when a player clicks on a player-text draw. It is not called when player cancels the select
+        ///     mode (ESC) - however, <see cref="OnPlayerClickTextDraw(GtaPlayer,ClickTextDrawEventArgs)" /> is.
         /// </summary>
         /// <param name="playerid">The ID of the player that selected a textdraw.</param>
         /// <param name="playertextid">The ID of the player-textdraw that the player selected.</param>
@@ -779,7 +798,11 @@ namespace SampSharp.GameMode
         /// </returns>
         internal bool OnPlayerClickPlayerTextDraw(int playerid, int playertextid)
         {
-            OnPlayerClickPlayerTextDraw(new PlayerClickTextDrawEventArgs(playerid, playertextid));
+            var player = GtaPlayer.FindOrCreate(playerid);
+            OnPlayerClickPlayerTextDraw(player,
+                new ClickPlayerTextDrawEventArgs(player, playertextid == PlayerTextDraw.InvalidId
+                    ? null
+                    : PlayerTextDraw.FindOrCreate(player, playertextid)));
 
             return true;
         }
@@ -787,17 +810,16 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Called when a player double-clicks on a player on the scoreboard.
         /// </summary>
-        /// <remarks>
-        ///     There is currently only one 'source' (0 - CLICK_SOURCE_SCOREBOARD). The existence of this argument suggests that
-        ///     more sources may be supported in the future.
-        /// </remarks>
         /// <param name="playerid">The ID of the player that clicked on a player on the scoreboard.</param>
         /// <param name="clickedplayerid">The ID of the player that was clicked on.</param>
         /// <param name="source">The source of the player's click.</param>
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerClickPlayer(int playerid, int clickedplayerid, int source)
         {
-            OnPlayerClickPlayer(new PlayerClickPlayerEventArgs(playerid, clickedplayerid, (PlayerClickSource) source));
+            OnPlayerClickPlayer(GtaPlayer.FindOrCreate(playerid),
+                new ClickPlayerEventArgs(
+                    clickedplayerid == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(clickedplayerid),
+                    (PlayerClickSource) source));
 
             return true;
         }
@@ -816,13 +838,22 @@ namespace SampSharp.GameMode
         /// <param name="fRotY">The Y rotation for the object that was edited.</param>
         /// <param name="fRotZ">The Z rotation for the object that was edited.</param>
         /// <returns>This callback does not handle returns.</returns>
-        internal bool OnPlayerEditObject(int playerid, bool playerobject, int objectid, int response, float fX,
-            float fY,
+        internal bool OnPlayerEditObject(int playerid, bool playerobject, int objectid, int response, float fX, float fY,
             float fZ, float fRotX, float fRotY, float fRotZ)
         {
-            OnPlayerEditObject(new PlayerEditObjectEventArgs(playerid,
-                playerobject ? ObjectType.PlayerObject : ObjectType.GlobalObject, objectid,
-                (EditObjectResponse) response, new Vector(fX, fY, fZ), new Vector(fRotX, fRotY, fRotZ)));
+            var player = GtaPlayer.FindOrCreate(playerid);
+            if (playerobject)
+            {
+                OnPlayerEditPlayerObject(player,
+                    new EditPlayerObjectEventArgs(player, PlayerObject.FindOrCreate(player, objectid),
+                        (EditObjectResponse) response, new Vector(fX, fY, fZ), new Vector(fRotX, fRotY, fRotZ)));
+            }
+            else
+            {
+                OnPlayerEditGlobalObject(player,
+                    new EditGlobalObjectEventArgs(player, GlobalObject.FindOrCreate(objectid), (EditObjectResponse) response,
+                        new Vector(fX, fY, fZ), new Vector(fRotX, fRotY, fRotZ)));
+            }
 
             return true;
         }
@@ -831,11 +862,11 @@ namespace SampSharp.GameMode
         ///     This callback is called when a player ends attached object edition mode.
         /// </summary>
         /// <remarks>
-        ///     Editions should be discarded if response was '0' (cancelled). This must be done by storing the offsets etc. in an
+        ///     Editions should be discarded if response was '0' (canceled). This must be done by storing the offsets etc. in an
         ///     array BEFORE using EditAttachedObject.
         /// </remarks>
         /// <param name="playerid">The ID of the player that ended edition mode.</param>
-        /// <param name="response">0 if they cancelled (ESC) or 1 if they clicked the save icon.</param>
+        /// <param name="response">0 if they canceled (ESC) or 1 if they clicked the save icon.</param>
         /// <param name="index">Slot ID of the attached object that was edited.</param>
         /// <param name="modelid">The model of the attached object that was edited.</param>
         /// <param name="boneid">The bone of the attached object that was edited.</param>
@@ -853,9 +884,10 @@ namespace SampSharp.GameMode
             float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX,
             float fScaleY, float fScaleZ)
         {
-            OnPlayerEditAttachedObject(new PlayerEditAttachedObjectEventArgs(playerid, (EditObjectResponse) response,
-                index, modelid, boneid, new Vector(fOffsetX, fOffsetY, fOffsetZ), new Vector(fRotX, fRotY, fRotZ),
-                new Vector(fScaleX, fScaleY, fScaleZ)));
+            OnPlayerEditAttachedObject(GtaPlayer.FindOrCreate(playerid),
+                new EditAttachedObjectEventArgs((EditObjectResponse) response, index, modelid, boneid,
+                    new Vector(fOffsetX, fOffsetY, fOffsetZ), new Vector(fRotX, fRotY, fRotZ),
+                    new Vector(fScaleX, fScaleY, fScaleZ)));
 
             return true;
         }
@@ -874,8 +906,23 @@ namespace SampSharp.GameMode
         internal bool OnPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY,
             float fZ)
         {
-            OnPlayerSelectObject(new PlayerSelectObjectEventArgs(playerid, (ObjectType) type, objectid, modelid,
-                new Vector(fX, fY, fZ)));
+            switch ((ObjectType) type)
+            {
+                case ObjectType.GlobalObject:
+                    OnPlayerSelectGlobalObject(GtaPlayer.FindOrCreate(playerid),
+                        new SelectGlobalObjectEventArgs(GtaPlayer.FindOrCreate(playerid), GlobalObject.FindOrCreate(objectid), modelid,
+                            new Vector(fX, fY, fZ)));
+                    break;
+                case ObjectType.PlayerObject:
+                    var player = GtaPlayer.FindOrCreate(playerid);
+
+                    OnPlayerSelectPlayerObject(player, 
+                        new SelectPlayerObjectEventArgs(GtaPlayer.FindOrCreate(playerid), PlayerObject.FindOrCreate(player, objectid), modelid,
+                            new Vector(fX, fY, fZ)));
+                    break;
+            }
+            //OnPlayerSelectObject(GtaPlayer.FindOrCreate(playerid), new SelectGlobalObjectEventArgs((ObjectType) type, objectid, modelid,
+            //    new Vector(fX, fY, fZ)));
 
             return true;
         }
@@ -898,10 +945,9 @@ namespace SampSharp.GameMode
         internal bool OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY,
             float fZ)
         {
-            var args = new WeaponShotEventArgs(playerid, (Weapon) weaponid, (BulletHitType) hittype, hitid,
-                new Vector(fX, fY, fZ));
+            var args = new WeaponShotEventArgs((Weapon) weaponid, (BulletHitType) hittype, hitid, new Vector(fX, fY, fZ));
 
-            OnPlayerWeaponShot(args);
+            OnPlayerWeaponShot(GtaPlayer.FindOrCreate(playerid), args);
 
             return !args.PreventDamage;
         }

@@ -463,7 +463,7 @@ namespace SampSharp.GameMode.Display
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw" /> is being called.
         ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
         /// </summary>
-        public event EventHandler<PlayerClickTextDrawEventArgs> Click;
+        public event EventHandler<ClickTextDrawEventArgs> Click;
 
         #endregion
 
@@ -487,7 +487,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual void Show()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (Id == -1) Refresh();
 
@@ -502,7 +502,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="player">The player to display this textdraw to.</param>
         public virtual void Show(GtaPlayer player)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -520,7 +520,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual void Hide()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (Id == -1) return;
             _playersShownTo.Clear();
@@ -533,7 +533,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="player">The player to hide this textdraw from.</param>
         public virtual void Hide(GtaPlayer player)
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -612,8 +612,8 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Raises the <see cref="Click" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerClickTextDrawEventArgs" /> that contains the event data. </param>
-        public virtual void OnClick(PlayerClickTextDrawEventArgs e)
+        /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
+        public virtual void OnClick(ClickTextDrawEventArgs e)
         {
             if (Click != null)
                 Click(this, e);

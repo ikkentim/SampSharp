@@ -21,8 +21,7 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            //Hide before any dialog is shown
-            gameMode.PlayerConnected += (sender, args) => Dialog.Hide(args.Player);
+            //stub
         }
     }
 }

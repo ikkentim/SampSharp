@@ -13,28 +13,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerClickMap" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerRequestSpawn" /> event.
     /// </summary>
-    public class PlayerClickMapEventArgs : PlayerEventArgs
+    public class RequestSpawnEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the PlayerClickMapEventArgs class.
+        ///     Gets or sets whether the player is prevented from spawning.
         /// </summary>
-        /// <param name="playerid">Id of the player.</param>
-        /// <param name="position">Position the player has clicked at.</param>
-        public PlayerClickMapEventArgs(int playerid, Vector position) : base(playerid)
-        {
-            Position = position;
-        }
-
-        /// <summary>
-        ///     Gets the position the player has clicked at.
-        /// </summary>
-        public Vector Position { get; private set; }
+        public bool PreventSpawning { get; set; }
     }
 }

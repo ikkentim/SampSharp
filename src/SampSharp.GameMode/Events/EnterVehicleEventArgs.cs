@@ -13,27 +13,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
-    public class PlayerEventArgs : EventArgs
+    public class EnterVehicleEventArgs : VehicleEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="EnterVehicleEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
-        public PlayerEventArgs(GtaPlayer player)
+        /// <param name="vehicle">The vehicle.</param>
+        /// <param name="isPassenger">if set to <c>true</c> the player is a passenger.</param>
+        public EnterVehicleEventArgs(GtaPlayer player, GtaVehicle vehicle, bool isPassenger) : base(vehicle)
         {
-            Player = player;
+            IsPassenger = isPassenger;
         }
 
+        /*
+         * Since the BaseMode.OnVehicleEnter can either have a GtaPlayer of GtaVehicle instance as sender,
+         * we add both to the event args so we can access what's not the sender.
+         */
         /// <summary>
-        /// Gets the player involved.
+        /// Gets the player.
         /// </summary>
         public GtaPlayer Player { get; private set; }
 
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="Player"/> is passenger.
+        /// </summary>
+        public bool IsPassenger { get; private set; }
     }
-
 }

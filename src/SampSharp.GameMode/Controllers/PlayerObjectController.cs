@@ -32,29 +32,21 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.PlayerObjectMoved += (sender, args) =>
             {
-                PlayerObject obj = PlayerObject.Find(GtaPlayer.Find(args.PlayerId), args.ObjectId);
+                PlayerObject obj = sender as PlayerObject;
                 if (obj != null)
                     obj.OnMoved(args);
             };
-            gameMode.PlayerEditObject += (sender, args) =>
+            gameMode.PlayerEditPlayerObject += (sender, args) =>
             {
-                if (args.ObjectType == ObjectType.PlayerObject)
-                {
-                    PlayerObject obj = PlayerObject.Find(GtaPlayer.Find(args.PlayerId), args.ObjectId);
-
-                    if (obj != null)
-                        obj.OnEdited(args);
-                }
+                PlayerObject obj = sender as PlayerObject;
+                if (obj != null)
+                    obj.OnEdited(args);
             };
-            gameMode.PlayerSelectObject += (sender, args) =>
+            gameMode.PlayerSelectPlayerObject += (sender, args) =>
             {
-                if (args.ObjectType == ObjectType.PlayerObject)
-                {
-                    PlayerObject obj = PlayerObject.Find(GtaPlayer.Find(args.PlayerId), args.ObjectId);
-
-                    if (obj != null)
-                        obj.OnSelected(args);
-                }
+                PlayerObject obj = sender as PlayerObject;
+                if (obj != null)
+                    obj.OnSelected(args);
             };
         }
 

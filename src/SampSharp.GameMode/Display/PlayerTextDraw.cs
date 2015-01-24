@@ -493,7 +493,7 @@ namespace SampSharp.GameMode.Display
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw" /> is being called.
         ///     This callback is called when a player clicks on a player-textdraw.
         /// </summary>
-        public event EventHandler<PlayerClickTextDrawEventArgs> Click;
+        public event EventHandler<ClickPlayerTextDrawEventArgs> Click;
 
         #endregion
 
@@ -517,7 +517,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual void Show()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (Id == -1) Refresh();
             _visible = true;
@@ -530,7 +530,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual void Hide()
         {
-            CheckDisposure();
+            CheckDisposed();
 
             if (Id == -1 || !_visible) return;
             _visible = false;
@@ -613,8 +613,8 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Raises the <see cref="Click" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerClickTextDrawEventArgs" /> that contains the event data. </param>
-        public virtual void OnClick(PlayerClickTextDrawEventArgs e)
+        /// <param name="e">An <see cref="ClickPlayerTextDrawEventArgs" /> that contains the event data. </param>
+        public virtual void OnClick(ClickPlayerTextDrawEventArgs e)
         {
             if (Click != null)
                 Click(this, e);

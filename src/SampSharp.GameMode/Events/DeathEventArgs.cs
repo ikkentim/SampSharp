@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
@@ -21,32 +22,23 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.PlayerDied" /> event.
     /// </summary>
-    public class PlayerDeathEventArgs : PlayerEventArgs
+    public class DeathEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the PlayerDeathEventArgs class.
+        ///     Initializes a new instance of the DeathEventArgs class.
         /// </summary>
-        /// <param name="playerid">Id of the player.</param>
-        /// <param name="killerid">Id of the killer.</param>
+        /// <param name="killer">The killer.</param>
         /// <param name="reason">Reason of the death.</param>
-        public PlayerDeathEventArgs(int playerid, int killerid, Weapon reason) : base(playerid)
+        public DeathEventArgs(GtaPlayer killer, Weapon reason)
         {
-            KillerId = killerid;
+            Killer = killer;
             DeathReason = reason;
         }
 
         /// <summary>
-        ///     Gets the id of the killer.
-        /// </summary>
-        public int KillerId { get; private set; }
-
-        /// <summary>
         ///     Gets the killer.
         /// </summary>
-        public GtaPlayer Killer
-        {
-            get { return KillerId == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(KillerId); }
-        }
+        public GtaPlayer Killer { get; private set; }
 
         /// <summary>
         ///     Gets the reason of the death.

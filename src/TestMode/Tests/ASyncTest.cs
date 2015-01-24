@@ -48,9 +48,9 @@ namespace TestMode.Tests
             gameMode.PlayerConnected += gameMode_PlayerConnected;
         }
 
-        private void gameMode_PlayerConnected(object sender, PlayerEventArgs e)
+        private void gameMode_PlayerConnected(object sender, EventArgs e)
         {
-            ASyncPlayerConnectedDelayed(e.Player);
+            ASyncPlayerConnectedDelayed(sender as GtaPlayer);
         }
 
         public async void ASyncPlayerConnectedDelayed(GtaPlayer player)

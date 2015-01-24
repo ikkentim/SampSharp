@@ -13,32 +13,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using SampSharp.GameMode.World;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerCommandText" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerClickMap" /> event.
     /// </summary>
-    public class PlayerCommandTextEventArgs : PlayerEventArgs
+    public class PositionEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the PlayerTextEventArgs class.
+        /// Initializes a new instance of the <see cref="PositionEventArgs"/> class.
         /// </summary>
-        /// <param name="playerid">The id of the player.</param>
-        /// <param name="text">The text sent by the player.</param>
-        public PlayerCommandTextEventArgs(int playerid, string text)
-            : base(playerid)
+        /// <param name="position">The position.</param>
+        public PositionEventArgs(Vector position)
         {
-            Text = text;
+            Position = position;
         }
 
         /// <summary>
-        ///     Gets the text sent by the player.
+        ///     Gets the position.
         /// </summary>
-        public string Text { get; private set; }
-
-        /// <summary>
-        ///     Gets or sets whether this command has been handled sucessfully.
-        /// </summary>
-        public bool Success { get; set; }
+        public Vector Position { get; private set; }
     }
 }
