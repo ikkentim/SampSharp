@@ -40,8 +40,9 @@ namespace TestMode.Tests
             ASyncTestMethod3();
             ASyncTestMethod4();
 
-            var timer = new Timer(1000, false);
-            timer.Tick += (sender, args) => Console.WriteLine("Timer: Mainthread: {0}", _main == Thread.CurrentThread);
+            var tstart = DateTime.Now;
+            var timer = new Timer(new TimeSpan(0, 0, 0, 2,500), false);
+            timer.Tick += (sender, args) => Console.WriteLine("Timer: Mainthread: {0}; took {1}", _main == Thread.CurrentThread, DateTime.Now-tstart);
 
             Console.WriteLine("Started async method");
 

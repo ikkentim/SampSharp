@@ -28,38 +28,74 @@ namespace SampSharp.GameMode.SAMP
         private const int InvalidId = -1;
 
         private bool _hit;
-        private int _interval;
-        private bool _repeat;
+        private TimeSpan _interval;
+        private bool _isRepeating;
 
         /// <summary>
         ///     Initializes a new instance of the Timer class.
         /// </summary>
         /// <param name="interval">The interval in miliseconds.</param>
-        /// <param name="repeat">Whether to repeat the timer (True); or stop after the first Tick(False).</param>
-        public Timer(int interval, bool repeat)
+        /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
+        public Timer(double interval, bool isRepeating)
+            : this(interval, isRepeating, true)
         {
-            Id = Native.SetTimer(interval, repeat, this);
-            Interval = interval;
-            Repeat = repeat;
         }
 
         /// <summary>
         ///     Initializes a new instance of the Timer class.
         /// </summary>
         /// <param name="interval">The interval in miliseconds.</param>
-        /// <param name="repeat">Whether to repeat the timer (True); or stop after the first Tick(False).</param>
-        /// <param name="running">Whether the timer is running</param>
-        public Timer(int interval, bool repeat, bool running)
+        /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
+        /// <param name="running">Whether the timer is running.</param>
+        public Timer(double interval, bool isRepeating, bool running)
+            : this(TimeSpan.FromMilliseconds(interval), isRepeating, running)
         {
-            Id = running ? Native.SetTimer(interval, repeat, this) : InvalidId;
-            Interval = interval;
-            Repeat = repeat;
+        }
+        /// <summary>
+        ///     Initializes a new instance of the Timer class and starts the timer.
+        /// </summary>
+        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
+        public Timer(int interval, bool isRepeating) : this(interval, isRepeating, true)
+        {
         }
 
         /// <summary>
-        ///     Gets or sets the interval of this Timer.
+        ///     Initializes a new instance of the Timer class.
         /// </summary>
-        public int Interval
+        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
+        /// <param name="running">Whether the timer is running.</param>
+        public Timer(int interval, bool isRepeating, bool running) : this(TimeSpan.FromMilliseconds(interval), isRepeating, running)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the Timer class.
+        /// </summary>
+        /// <param name="interval">The interval.</param>
+        /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
+        public Timer(TimeSpan interval, bool isRepeating) : this(interval, isRepeating, true)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the Timer class.
+        /// </summary>
+        /// <param name="interval">The interval.</param>
+        /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
+        /// <param name="running">Whether the timer is running.</param>
+        public Timer(TimeSpan interval, bool isRepeating, bool running)
+        {
+            Id = running ? Native.SetTimer((int)interval.TotalMilliseconds, isRepeating, this) : InvalidId;
+            Interval = interval;
+            IsRepeating = isRepeating;
+        }
+
+        /// <summary>
+        ///     Gets or sets the interval of this <see cref="Timer"/>.
+        /// </summary>
+        public TimeSpan Interval
         {
             get { return _interval; }
             set
@@ -72,18 +108,18 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Gets or sets whether this Timer is a repeating timer.
+        ///     Gets or sets whether this Timer is a repeating  <see cref="Timer"/>.
         /// </summary>
-        public bool Repeat
+        public bool IsRepeating
         {
-            get { return _repeat; }
+            get { return _isRepeating; }
             set
             {
-                if (_repeat == value) return;
+                if (_isRepeating == value) return;
 
                 bool wasRunning = IsRunning;
                 IsRunning = false;
-                _repeat = value;
+                _isRepeating = value;
                 IsRunning = wasRunning;
             }
         }
@@ -93,13 +129,13 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public bool IsRunning
         {
-            get { return (!Repeat && !_hit && Id != InvalidId) || (Repeat && Id != InvalidId); }
+            get { return (!IsRepeating && !_hit && Id != InvalidId) || (IsRepeating && Id != InvalidId); }
             set
             {
                 if (value && !IsRunning)
                 {
                     _hit = false;
-                    Id = Native.SetTimer(Interval, Repeat, this);
+                    Id = Native.SetTimer((int)Interval.TotalMilliseconds, IsRepeating, this);
                 }
                 else if (!value && IsRunning)
                 {
@@ -139,7 +175,7 @@ namespace SampSharp.GameMode.SAMP
         public void OnTick(EventArgs e)
         {
             _hit = true;
-            if (!Repeat)
+            if (!IsRepeating)
             {
                 Id = InvalidId;
             }
