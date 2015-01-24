@@ -51,6 +51,7 @@ namespace SampSharp.GameMode.SAMP
             : this(TimeSpan.FromMilliseconds(interval), isRepeating, running)
         {
         }
+
         /// <summary>
         ///     Initializes a new instance of the Timer class and starts the timer.
         /// </summary>
@@ -66,7 +67,8 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="interval">The interval in miliseconds.</param>
         /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
         /// <param name="running">Whether the timer is running.</param>
-        public Timer(int interval, bool isRepeating, bool running) : this(TimeSpan.FromMilliseconds(interval), isRepeating, running)
+        public Timer(int interval, bool isRepeating, bool running)
+            : this(TimeSpan.FromMilliseconds(interval), isRepeating, running)
         {
         }
 
@@ -87,13 +89,13 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="running">Whether the timer is running.</param>
         public Timer(TimeSpan interval, bool isRepeating, bool running)
         {
-            Id = running ? Native.SetTimer((int)interval.TotalMilliseconds, isRepeating, this) : InvalidId;
+            Id = running ? Native.SetTimer((int) interval.TotalMilliseconds, isRepeating, this) : InvalidId;
             Interval = interval;
             IsRepeating = isRepeating;
         }
 
         /// <summary>
-        ///     Gets or sets the interval of this <see cref="Timer"/>.
+        ///     Gets or sets the interval of this <see cref="Timer" />.
         /// </summary>
         public TimeSpan Interval
         {
@@ -108,7 +110,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Gets or sets whether this Timer is a repeating  <see cref="Timer"/>.
+        ///     Gets or sets whether this Timer is a repeating  <see cref="Timer" />.
         /// </summary>
         public bool IsRepeating
         {
@@ -135,7 +137,7 @@ namespace SampSharp.GameMode.SAMP
                 if (value && !IsRunning)
                 {
                     _hit = false;
-                    Id = Native.SetTimer((int)Interval.TotalMilliseconds, IsRepeating, this);
+                    Id = Native.SetTimer((int) Interval.TotalMilliseconds, IsRepeating, this);
                 }
                 else if (!value && IsRunning)
                 {

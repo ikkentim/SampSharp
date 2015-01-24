@@ -16,7 +16,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
@@ -40,9 +39,12 @@ namespace TestMode.Tests
             ASyncTestMethod3();
             ASyncTestMethod4();
 
-            var tstart = DateTime.Now;
-            var timer = new Timer(new TimeSpan(0, 0, 0, 2,500), false);
-            timer.Tick += (sender, args) => Console.WriteLine("Timer: Mainthread: {0}; took {1}", _main == Thread.CurrentThread, DateTime.Now-tstart);
+            DateTime tstart = DateTime.Now;
+            var timer = new Timer(new TimeSpan(0, 0, 0, 2, 500), false);
+            timer.Tick +=
+                (sender, args) =>
+                    Console.WriteLine("Timer: Mainthread: {0}; took {1}", _main == Thread.CurrentThread,
+                        DateTime.Now - tstart);
 
             Console.WriteLine("Started async method");
 
