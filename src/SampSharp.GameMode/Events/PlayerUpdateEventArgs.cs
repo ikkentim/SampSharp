@@ -14,9 +14,13 @@
 // limitations under the License.
 
 using System;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerUpdate"/> or <see cref="GtaPlayer.Update"/> event.
+    /// </summary>
     public class PlayerUpdateEventArgs : EventArgs
     {
         /// <summary>

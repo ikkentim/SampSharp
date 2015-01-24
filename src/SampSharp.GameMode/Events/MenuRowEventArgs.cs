@@ -14,19 +14,28 @@
 // limitations under the License.
 
 using System;
+using SampSharp.GameMode.Display;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerSelectedMenuRow" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerSelectedMenuRow" />, <see cref="GtaPlayer.SelectedMenuRow" /> or <see cref="Menu.Response"/> event.
     /// </summary>
     public class MenuRowEventArgs : EventArgs
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MenuRowEventArgs"/> class.
+        /// </summary>
+        /// <param name="row">The row.</param>
         public MenuRowEventArgs(int row)
         {
             Row = row;
         }
 
+        /// <summary>
+        /// Gets the row.
+        /// </summary>
         public int Row { get; private set; }
     }
 }

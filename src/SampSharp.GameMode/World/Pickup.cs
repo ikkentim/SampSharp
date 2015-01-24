@@ -40,10 +40,10 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerPickUpPickup" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerPickUpPickup(int,int)" /> is being called.
         ///     Called when a player picks up a pickup created with <see cref="Create" />
         /// </summary>
-        public event EventHandler<PlayerEventArgs> PlayerPickup;
+        public event EventHandler<PlayerEventArgs> PickUp;
 
         /// <summary>
         ///     Creates a Pickup.
@@ -123,13 +123,13 @@ namespace SampSharp.GameMode.World
         #region Events
 
         /// <summary>
-        ///     Raises the <see cref="Pickup" /> event.
+        ///     Raises the <see cref="PickUp" /> event.
         /// </summary>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnPickup(PlayerEventArgs e)
+        public virtual void OnPickUp(PlayerEventArgs e)
         {
-            if (PlayerPickup != null)
-                PlayerPickup(this, e);
+            if (PickUp != null)
+                PickUp(this, e);
         }
 
         #endregion

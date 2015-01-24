@@ -18,10 +18,17 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    ///     Provides data for the <see cref="BaseMode.VehicleDied" />, <see cref="BaseMode.PlayerPickUpPickup" />,
+    ///     <see cref="BaseMode.VehicleDamageStatusUpdated" />, <see cref="BaseMode.PlayerStreamIn" />,
+    ///     <see cref="BaseMode.PlayerStreamOut" />, <see cref="BaseMode.VehicleStreamIn" />,
+    ///     <see cref="BaseMode.VehicleStreamOut" />, <see cref="GtaPlayer.StreamIn" />, <see cref="GtaPlayer.StreamOut" />,
+    ///     <see cref="GtaVehicle.StreamIn" />, <see cref="GtaVehicle.StreamOut" /> or <see cref="Pickup.PickUp"/> event.
+    /// </summary>
     public class PlayerEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="PlayerEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
         public PlayerEventArgs(GtaPlayer player)
@@ -30,10 +37,8 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the player involved.
+        ///     Gets the player involved.
         /// </summary>
         public GtaPlayer Player { get; private set; }
-
     }
-
 }

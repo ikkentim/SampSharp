@@ -21,6 +21,9 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP.Commands
 {
+    /// <summary>
+    /// Represents a command detected within an assembly.
+    /// </summary>
     public sealed class DetectedCommand : Command
     {
         private static Func<string, ParameterAttribute[], string> _usageFormat = (name, parameters) =>
@@ -44,6 +47,13 @@ namespace SampSharp.GameMode.SAMP.Commands
 
         private readonly ParameterInfo[] _parameterInfos;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DetectedCommand"/> class.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="ignoreCase">if set to <c>true</c> ignore case of command.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown if command is null.</exception>
+        /// <exception cref="System.ArgumentException"></exception>
         public DetectedCommand(MethodInfo command, bool ignoreCase)
         {
             if (command == null)
@@ -133,13 +143,34 @@ namespace SampSharp.GameMode.SAMP.Commands
 
         #region Properties
 
+        /// <summary>
+        /// Gets the alias.
+        /// </summary>
         public string Alias { get; private set; }
+        /// <summary>
+        /// Gets or sets the shortcut.
+        /// </summary>
         public string Shortcut { get; set; }
+        /// <summary>
+        /// Gets or sets the command group.
+        /// </summary>
         public CommandGroup Group { get; set; }
+        /// <summary>
+        /// Gets the command method.
+        /// </summary>
         public MethodInfo Command { get; private set; }
+        /// <summary>
+        /// Gets the permission check method.
+        /// </summary>
         public MethodInfo PermissionCheck { get; private set; }
+        /// <summary>
+        /// Gets the parameters.
+        /// </summary>
         public ParameterAttribute[] Parameters { get; private set; }
 
+        /// <summary>
+        /// Gets the command paths.
+        /// </summary>
         public IEnumerable<string> CommandPaths
         {
             get
@@ -173,6 +204,9 @@ namespace SampSharp.GameMode.SAMP.Commands
             }
         }
 
+        /// <summary>
+        /// Gets the command path.
+        /// </summary>
         public string CommandPath
         {
             get { return Group == null ? Name : string.Format("{0} {1}", Group.CommandPath, Name); }
@@ -188,7 +222,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         }
 
         /// <summary>
-        ///     Gets or sets the metod the find the parameter type of a parameter when no attribute was
+        ///     Gets or sets the method the find the parameter type of a parameter when no attribute was
         ///     attached to the parameter.
         /// </summary>
         public static Func<Type, string, ParameterAttribute> ResolveParameterType
@@ -199,6 +233,14 @@ namespace SampSharp.GameMode.SAMP.Commands
 
         #endregion
 
+        /// <summary>
+        /// Checks whether the provided <paramref name="commandText" /> starts with the right characters to run this command.
+        /// </summary>
+        /// <param name="commandText">The command the player entered. When the command returns True, the referenced string will
+        /// only contain the command arguments.</param>
+        /// <returns>
+        /// True when successful, False otherwise.
+        /// </returns>
         public override bool CommandTextMatchesCommand(ref string commandText)
         {
             commandText = commandText.Trim(' ');
@@ -222,11 +264,26 @@ namespace SampSharp.GameMode.SAMP.Commands
             return false;
         }
 
+        /// <summary>
+        /// Checks whether the given player has the permission to run this command.
+        /// </summary>
+        /// <param name="player">The player that attempts to run this command.</param>
+        /// <returns>
+        /// True when allowed, False otherwise.
+        /// </returns>
         public override bool HasPlayerPermissionForCommand(GtaPlayer player)
         {
             return PermissionCheck == null || (bool) PermissionCheck.Invoke(null, new object[] {player});
         }
 
+        /// <summary>
+        /// Runs the command.
+        /// </summary>
+        /// <param name="player">The player running the command.</param>
+        /// <param name="args">The arguments the player entered.</param>
+        /// <returns>
+        /// True when the command has been executed, False otherwise.
+        /// </returns>
         public override bool RunCommand(GtaPlayer player, string args)
         {
             var arguments = new List<object>

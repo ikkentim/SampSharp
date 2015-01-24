@@ -20,7 +20,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerEditAttachedObject" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerEditAttachedObject" /> or <see cref="GtaPlayer.EditAttachedObject" /> event.
     /// </summary>
     public class EditAttachedObjectEventArgs : EventArgs
     {

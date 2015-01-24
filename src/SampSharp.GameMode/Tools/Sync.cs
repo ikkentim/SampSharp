@@ -35,10 +35,26 @@ namespace SampSharp.GameMode.Tools
         }
 
         /// <summary>
+        ///     Run a function on the main thread.
+        /// </summary>
+        /// <param name="action">The action the run</param>
+        public static void Run(Action action)
+        {
+            if (!IsRequired)
+            {
+                action();
+                return;
+            }
+
+            new SyncTask { Action = action };
+            SyncController.Start();
+        }
+
+        /// <summary>
         ///     Run a function on the main  thread.
         /// </summary>
         /// <param name="action">The action the run</param>
-        public static async Task Run(Action action)
+        public static async Task RunAsync(Action action)
         {
             if (!IsRequired)
             {
@@ -56,12 +72,12 @@ namespace SampSharp.GameMode.Tools
         }
 
         /// <summary>
-        ///     Run a function on the main VM thread.
+        ///     Run a function on the main thread.
         /// </summary>
         /// <typeparam name="TResult">The type of the return value of the method that the action encapsulates.</typeparam>
         /// <param name="action">The action to run.</param>
         /// <returns>The return value of the method that the action encapsulates.</returns>
-        public static async Task<TResult> Run<TResult>(Func<TResult> action)
+        public static async Task<TResult> RunAsync<TResult>(Func<TResult> action)
         {
             if (!IsRequired)
             {
@@ -70,7 +86,7 @@ namespace SampSharp.GameMode.Tools
 
             TResult result = default(TResult);
 
-            await Run(() => { result = action(); });
+            await RunAsync(() => { result = action(); });
 
             return result;
         }

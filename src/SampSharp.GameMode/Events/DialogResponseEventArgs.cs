@@ -15,12 +15,13 @@
 
 using System;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Display;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.DialogResponse" /> event.
+    ///     Provides data for the <see cref="BaseMode.DialogResponse" />, <see cref="GtaPlayer.DialogResponse" /> or <see cref="Dialog.Response" /> event.
     /// </summary>
     public class DialogResponseEventArgs : EventArgs
     {

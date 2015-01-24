@@ -506,32 +506,32 @@ namespace SampSharp.GameMode.World
         public event EventHandler<DeathEventArgs> Died;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerText" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerText(int,string)" /> is being called.
         ///     Called when a player sends a chat message.
         /// </summary>
         public event EventHandler<TextEventArgs> Text;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerCommandText" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerCommandText(int,string)" /> is being called.
         ///     This callback is called when a player enters a command into the client chat window, e.g. /help.
         /// </summary>
         public event EventHandler<CommandTextEventArgs> CommandText;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerRequestClass" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerRequestClass(int,int)" /> is being called.
         ///     Called when a player changes class at class selection (and when class selection first appears).
         /// </summary>
         public event EventHandler<RequestClassEventArgs> RequestClass;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEnterVehicle" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerEnterVehicle(int,int,bool)" /> is being called.
         ///     This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the
         ///     time this callback is called.
         /// </summary>
         public event EventHandler<EnterVehicleEventArgs> EnterVehicle;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerExitVehicle" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerExitVehicle(int,int)" /> is being called.
         ///     This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
@@ -551,31 +551,31 @@ namespace SampSharp.GameMode.World
         public event EventHandler<StateEventArgs> StateChanged;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEnterCheckpoint" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerEnterCheckpoint(int)" /> is being called.
         ///     This callback is called when a player enters the checkpoint set for that player.
         /// </summary>
         public event EventHandler<EventArgs> EnterCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerLeaveCheckpoint" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerLeaveCheckpoint(int)" /> is being called.
         ///     This callback is called when a player leaves the checkpoint set for that player.
         /// </summary>
         public event EventHandler<EventArgs> LeaveCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEnterRaceCheckpoint" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerEnterRaceCheckpoint(int)" /> is being called.
         ///     This callback is called when a player enters a race checkpoint.
         /// </summary>
         public event EventHandler<EventArgs> EnterRaceCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerLeaveRaceCheckpoint" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerLeaveRaceCheckpoint(int)" /> is being called.
         ///     This callback is called when a player leaves the race checkpoint.
         /// </summary>
         public event EventHandler<EventArgs> LeaveRaceCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerRequestSpawn" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerRequestSpawn(int)" /> is being called.
         ///     Called when a player attempts to spawn via class selection.
         /// </summary>
         public event EventHandler<RequestSpawnEventArgs> RequestSpawn;
@@ -587,13 +587,13 @@ namespace SampSharp.GameMode.World
         public event EventHandler<EnterModShopEventArgs> EnterExitModShop;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerSelectedMenuRow" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerSelectedMenuRow(int,int)" /> is being called.
         ///     This callback is called when a player selects an item from a menu.
         /// </summary>
         public event EventHandler<MenuRowEventArgs> SelectedMenuRow;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerExitedMenu" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerExitedMenu(int)" /> is being called.
         ///     Called when a player exits a menu.
         /// </summary>
         public event EventHandler<EventArgs> ExitedMenu;
@@ -615,7 +615,7 @@ namespace SampSharp.GameMode.World
         public event EventHandler<KeyStateChangedEventArgs> KeyStateChanged;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerUpdate" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerUpdate(int)" /> is being called.
         ///     This callback is called everytime a client/player updates the server with their status.
         /// </summary>
         /// <remarks>
@@ -624,32 +624,32 @@ namespace SampSharp.GameMode.World
         public event EventHandler<PlayerUpdateEventArgs> Update;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerStreamIn" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerStreamIn(int,int)" /> is being called.
         ///     This callback is called when a player is streamed by some other player's client.
         /// </summary>
         public event EventHandler<PlayerEventArgs> StreamIn;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerStreamOut" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerStreamOut(int,int)" /> is being called.
         ///     This callback is called when a player is streamed out from some other player's client.
         /// </summary>
         public event EventHandler<PlayerEventArgs> StreamOut;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnDialogResponse" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnDialogResponse(int,int,int,int,string)" /> is being called.
         ///     This callback is called when a player responds to a dialog shown using <see cref="Native.ShowPlayerDialog" /> by
         ///     either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
         /// </summary>
         public event EventHandler<DialogResponseEventArgs> DialogResponse;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerTakeDamage" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerTakeDamage(int,int,float,int,int)" /> is being called.
         ///     This callback is called when a player takes damage.
         /// </summary>
         public event EventHandler<DamagePlayerEventArgs> TakeDamage;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerGiveDamage" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerGiveDamage(int,int,float,int,int)" /> is being called.
         ///     This callback is called when a player gives damage to another player.
         /// </summary>
         /// <remarks>
@@ -667,7 +667,7 @@ namespace SampSharp.GameMode.World
         public event EventHandler<DamagePlayerEventArgs> GiveDamage;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickMap" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerClickMap(int,float,float,float)" /> is being called.
         ///     This callback is called when a player places a target/waypoint on the pause menu map (by right-clicking).
         /// </summary>
         /// <remarks>
@@ -677,7 +677,7 @@ namespace SampSharp.GameMode.World
         public event EventHandler<PositionEventArgs> ClickMap;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw(int,int)" /> is being called.
         ///     This callback is called when a player clicks on a textdraw.
         /// </summary>
         /// <remarks>
@@ -687,20 +687,20 @@ namespace SampSharp.GameMode.World
         public event EventHandler<ClickTextDrawEventArgs> ClickTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw(int,int)" /> is being called.
         ///     This callback is called when a player cancels the textdraw select mode(ESC).
         /// </summary>
         public event EventHandler<EventArgs> CancelClickTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw(int,int)" /> is being called.
         ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
-        ///     mode (ESC) - however, <see cref="BaseMode.OnPlayerClickTextDraw" /> is.
+        ///     mode (ESC) - however, <see cref="BaseMode.OnPlayerClickTextDraw(int,int)" /> is.
         /// </summary>
         public event EventHandler<ClickPlayerTextDrawEventArgs> ClickPlayerTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayer" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayer(int,int,int)" /> is being called.
         ///     Called when a player double-clicks on a player on the scoreboard.
         /// </summary>
         /// <remarks>
@@ -722,7 +722,7 @@ namespace SampSharp.GameMode.World
         public event EventHandler<EditPlayerObjectEventArgs> EditPlayerObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEditAttachedObject" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerEditAttachedObject(int,int,int,int,int,float,float,float,float,float,float,float,float,float)" /> is being called.
         ///     This callback is called when a player ends attached object edition mode.
         /// </summary>
         /// <remarks>
@@ -744,7 +744,7 @@ namespace SampSharp.GameMode.World
         public event EventHandler<SelectPlayerObjectEventArgs> SelectPlayerObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerWeaponShot" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerWeaponShot(int,int,int,int,float,float,float)" /> is being called.
         ///     This callback is called when a player fires a shot from a weapon.
         /// </summary>
         /// <remarks>
@@ -759,9 +759,9 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     This function can be used to change the spawn information of a specific player. It allows you to automatically set
-        ///     someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn
+        ///     someone's spawn weapons, their team, skin and spawn position, normally used in case of mini games or automatic-spawn
         ///     systems. This function is more crash-safe then using <see cref="Native.SetPlayerSkin" /> in
-        ///     <see cref="BaseMode.OnPlayerSpawn" /> and/or <see cref="BaseMode.OnPlayerRequestClass" />.
+        ///     <see cref="BaseMode.OnPlayerSpawn" /> and/or <see cref="BaseMode.OnPlayerRequestClass(int,int)" />.
         /// </summary>
         /// <param name="team">The Team-ID of the chosen player.</param>
         /// <param name="skin">The skin which the player will spawn with.</param>
@@ -1244,7 +1244,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <remarks>
         ///     The exiting animation is not synced for other players.
-        ///     This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle" />, because the player isn't in
+        ///     This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle(int,int,bool)" />, because the player isn't in
         ///     the vehicle when the callback is called. Use <see cref="BaseMode.OnPlayerStateChange" /> instead.
         /// </remarks>
         public virtual void RemoveFromVehicle()
@@ -2220,7 +2220,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="StreamIn" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="StreamPlayerEventArgs" /> that contains the event data. </param>
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         public virtual void OnStreamIn(PlayerEventArgs e)
         {
             if (StreamIn != null)
@@ -2230,7 +2230,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="StreamOut" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="StreamPlayerEventArgs" /> that contains the event data. </param>
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         public virtual void OnStreamOut(PlayerEventArgs e)
         {
             if (StreamOut != null)

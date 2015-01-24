@@ -13,25 +13,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerSelectGlobalObject"/>, <see cref="GtaPlayer.SelectGlobalObject"/> or <see cref="GlobalObject.Selected"/> event.
+    /// </summary>
     public class SelectGlobalObjectEventArgs : PositionEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SelectGlobalObjectEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="SelectGlobalObjectEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
-        /// <param name="globalObject">The global object.</param>
+        /// <param name="object">The global object.</param>
         /// <param name="modelid">The modelid.</param>
         /// <param name="position">The position.</param>
-        public SelectGlobalObjectEventArgs(GtaPlayer player, GlobalObject globalObject, int modelid, Vector position)
+        public SelectGlobalObjectEventArgs(GtaPlayer player, GlobalObject @object, int modelid, Vector position)
             : base(position)
         {
             Player = player;
-            GlobalObject = globalObject;
+            Object = @object;
             ModelId = modelid;
         }
 
@@ -39,51 +41,55 @@ namespace SampSharp.GameMode.Events
          * Since the BaseMode.OnPlayerSelectGlobalObject can either have a GtaPlayer of GlobalObject instance as sender,
          * we add both to the event args so we can access what's not the sender.
          */
+
         /// <summary>
-        /// Gets the player.
+        ///     Gets the player.
         /// </summary>
         public GtaPlayer Player { get; private set; }
 
         /// <summary>
-        /// Gets the global object.
+        ///     Gets the global object.
         /// </summary>
-        public GlobalObject GlobalObject { get; private set; }
+        public GlobalObject Object { get; private set; }
 
         /// <summary>
-        /// Gets the model identifier.
+        ///     Gets the model identifier.
         /// </summary>
         public int ModelId { get; private set; }
     }
 
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerSelectPlayerObject"/>, <see cref="GtaPlayer.SelectPlayerObject"/> or <see cref="PlayerObject.Selected"/> event.
+    /// </summary>
     public class SelectPlayerObjectEventArgs : PositionEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SelectPlayerObjectEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="SelectPlayerObjectEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
-        /// <param name="playerObject">The player object.</param>
+        /// <param name="object">The player object.</param>
         /// <param name="modelid">The modelid.</param>
         /// <param name="position">The position.</param>
-        public SelectPlayerObjectEventArgs(GtaPlayer player, PlayerObject playerObject, int modelid, Vector position)
+        public SelectPlayerObjectEventArgs(GtaPlayer player, PlayerObject @object, int modelid, Vector position)
             : base(position)
         {
             Player = player;
-            PlayerObject = playerObject;
+            Object = @object;
             ModelId = modelid;
         }
 
         /// <summary>
-        /// Gets the player.
+        ///     Gets the player.
         /// </summary>
         public GtaPlayer Player { get; private set; }
 
         /// <summary>
-        /// Gets the player object.
+        ///     Gets the player object.
         /// </summary>
-        public PlayerObject PlayerObject { get; private set; }
+        public PlayerObject Object { get; private set; }
 
         /// <summary>
-        /// Gets the model identifier.
+        ///     Gets the model identifier.
         /// </summary>
         public int ModelId { get; private set; }
     }

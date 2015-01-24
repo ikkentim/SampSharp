@@ -21,6 +21,9 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP
 {
+    /// <summary>
+    /// Represents a player text label.
+    /// </summary>
     public class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel>, IIdentifiable, IOwnable<GtaPlayer>
     {
         #region Fields
@@ -43,6 +46,9 @@ namespace SampSharp.GameMode.SAMP
 
         #region Properties
 
+        /// <summary>
+        /// Gets or sets the color of this <see cref="PlayerTextLabel"/>.
+        /// </summary>
         public virtual Color Color
         {
             get { return _color; }
@@ -53,6 +59,9 @@ namespace SampSharp.GameMode.SAMP
             }
         }
 
+        /// <summary>
+        /// Gets or sets the text of this <see cref="PlayerTextLabel"/>.
+        /// </summary>
         public virtual string Text
         {
             get { return _text; }
@@ -63,6 +72,9 @@ namespace SampSharp.GameMode.SAMP
             }
         }
 
+        /// <summary>
+        /// Gets or sets the position of this <see cref="PlayerTextLabel"/>.
+        /// </summary>
         public virtual Vector Position
         {
             get { return _position; }
@@ -76,6 +88,9 @@ namespace SampSharp.GameMode.SAMP
             }
         }
 
+        /// <summary>
+        /// Gets or sets the draw distance.
+        /// </summary>
         public virtual float DrawDistance
         {
             get { return _drawDistance; }
@@ -89,6 +104,9 @@ namespace SampSharp.GameMode.SAMP
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to test the line of sight.
+        /// </summary>
         public virtual bool TestLOS
         {
             get { return _testLOS; }
@@ -102,6 +120,9 @@ namespace SampSharp.GameMode.SAMP
             }
         }
 
+        /// <summary>
+        /// Gets or sets the attached player.
+        /// </summary>
         public virtual GtaPlayer AttachedPlayer
         {
             get { return _attachedPlayer; }
@@ -115,6 +136,9 @@ namespace SampSharp.GameMode.SAMP
             }
         }
 
+        /// <summary>
+        /// Gets or sets the attached vehicle.
+        /// </summary>
         public virtual GtaVehicle AttachedVehicle
         {
             get { return _attachedVehicle; }
@@ -128,13 +152,25 @@ namespace SampSharp.GameMode.SAMP
             }
         }
 
+        /// <summary>
+        /// Gets the Identity of this instance.
+        /// </summary>
         public virtual int Id { get; private set; }
+        /// <summary>
+        /// Gets the owner of this IOwnable.
+        /// </summary>
         public virtual GtaPlayer Owner { get; private set; }
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlayerTextLabel"/> class.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="id">The identifier.</param>
+        /// <exception cref="System.ArgumentNullException">owner</exception>
         public PlayerTextLabel(GtaPlayer owner, int id)
         {
             if (owner == null)
@@ -144,6 +180,16 @@ namespace SampSharp.GameMode.SAMP
             Id = id;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlayerTextLabel"/> class.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="drawDistance">The draw distance.</param>
+        /// <param name="testLOS">if set to <c>true</c> [test los].</param>
+        /// <exception cref="System.ArgumentNullException">owner</exception>
         public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector position, float drawDistance,
             bool testLOS)
         {
@@ -160,11 +206,34 @@ namespace SampSharp.GameMode.SAMP
                 GtaPlayer.InvalidId, GtaVehicle.InvalidId, testLOS);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlayerTextLabel"/> class.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="drawDistance">The draw distance.</param>
         public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector position, float drawDistance)
             : this(owner, text, color, position, drawDistance, true)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlayerTextLabel"/> class.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="drawDistance">The draw distance.</param>
+        /// <param name="testLOS">if set to <c>true</c> [test los].</param>
+        /// <param name="attachedPlayer">The attached player.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// owner
+        /// or
+        /// attachedPlayer
+        /// </exception>
         public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector position, float drawDistance,
             bool testLOS, GtaPlayer attachedPlayer)
         {
@@ -184,11 +253,35 @@ namespace SampSharp.GameMode.SAMP
                 attachedPlayer.Id, GtaVehicle.InvalidId, testLOS);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlayerTextLabel"/> class.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="drawDistance">The draw distance.</param>
+        /// <param name="attachedPlayer">The attached player.</param>
         public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector position, float drawDistance,
             GtaPlayer attachedPlayer) : this(owner, text, color, position, drawDistance, true, attachedPlayer)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlayerTextLabel"/> class.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="drawDistance">The draw distance.</param>
+        /// <param name="testLOS">if set to <c>true</c> [test los].</param>
+        /// <param name="attachedVehicle">The attached vehicle.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// owner
+        /// or
+        /// attachedVehicle
+        /// </exception>
         public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector position, float drawDistance,
             bool testLOS, GtaVehicle attachedVehicle)
         {
@@ -208,6 +301,15 @@ namespace SampSharp.GameMode.SAMP
                 GtaPlayer.InvalidId, attachedVehicle.Id, testLOS);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlayerTextLabel"/> class.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="drawDistance">The draw distance.</param>
+        /// <param name="attachedVehicle">The attached vehicle.</param>
         public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector position, float drawDistance,
             GtaVehicle attachedVehicle)
             : this(owner, text, color, position, drawDistance, true, attachedVehicle)

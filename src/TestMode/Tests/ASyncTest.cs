@@ -85,7 +85,7 @@ namespace TestMode.Tests
         {
             await Task.Delay(2500);
             Console.WriteLine("ASync is fetching tick count from main thread");
-            int ticks = await Sync.Run(() => Server.GetTickCount());
+            int ticks = await Sync.RunAsync(() => Server.GetTickCount());
 
             Console.WriteLine("Tick count is {0}", ticks);
         }

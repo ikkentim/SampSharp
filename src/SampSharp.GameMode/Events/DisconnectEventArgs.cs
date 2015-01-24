@@ -15,16 +15,18 @@
 
 using System;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerDisconnected" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerDisconnected" />, <see cref="BaseMode.PlayerCleanup" />,
+    ///     <see cref="GtaPlayer.Disconnected" /> or <see cref="GtaPlayer.Cleanup" /> event.
     /// </summary>
     public class DisconnectEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DisconnectEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="DisconnectEventArgs" /> class.
         /// </summary>
         /// <param name="reason">The reason.</param>
         public DisconnectEventArgs(DisconnectReason reason)

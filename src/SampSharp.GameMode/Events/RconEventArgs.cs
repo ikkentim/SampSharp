@@ -13,13 +13,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.RconCommand" /> event.
     /// </summary>
-    public class RconEventArgs
+    public class RconEventArgs : EventArgs
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RconEventArgs"/> class.
+        /// </summary>
+        /// <param name="command">The command.</param>
         public RconEventArgs(string command)
         {
             Command = command;
@@ -31,7 +37,7 @@ namespace SampSharp.GameMode.Events
         public string Command { get; private set; }
 
         /// <summary>
-        ///     Gets or sets whether this command has been handled sucessfully.
+        ///     Gets or sets whether this command has been handled successfully.
         /// </summary>
         public bool Success { get; set; }
     }

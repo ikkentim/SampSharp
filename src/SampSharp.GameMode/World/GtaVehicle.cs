@@ -299,20 +299,20 @@ namespace SampSharp.GameMode.World
         public event EventHandler<PlayerEventArgs> Died;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEnterVehicle" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerEnterVehicle(int,int,bool)" /> is being called.
         ///     This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the
         ///     time this callback is called.
         /// </summary>
         public event EventHandler<EnterVehicleEventArgs> PlayerEnter;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerExitVehicle" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerExitVehicle(int,int)" /> is being called.
         ///     This callback is called when a player exits a vehicle.
         /// </summary>
         public event EventHandler<PlayerVehicleEventArgs> PlayerExit;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnVehicleMod" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnVehicleMod(int,int,int)" /> is being called.
         ///     This callback is called when a vehicle is modded.
         /// </summary>
         public event EventHandler<VehicleModEventArgs> Mod;
@@ -343,19 +343,19 @@ namespace SampSharp.GameMode.World
         public event EventHandler<UnoccupiedVehicleEventArgs> UnoccupiedUpdate;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnVehicleStreamIn" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnVehicleStreamIn(int,int)" /> is being called.
         ///     Called when a vehicle is streamed to a player's client.
         /// </summary>
         public event EventHandler<PlayerEventArgs> StreamIn;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnVehicleStreamOut" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnVehicleStreamOut(int,int)" /> is being called.
         ///     This callback is called when a vehicle is streamed out from some player's client.
         /// </summary>
         public event EventHandler<PlayerEventArgs> StreamOut;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnTrailerUpdate" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnTrailerUpdate(int,int)" /> is being called.
         ///     This callback is called when a player sent a trailer update.
         /// </summary>
         public event EventHandler<TrailerEventArgs> TrailerUpdate;
@@ -801,7 +801,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Resprayed" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="VehicleEventArgs" /> that contains the event data. </param>
+        /// <param name="e">An <see cref="VehicleResprayedEventArgs" /> that contains the event data. </param>
         public virtual void OnResprayed(VehicleResprayedEventArgs e)
         {
             if (Resprayed != null)
@@ -821,7 +821,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="UnoccupiedUpdate" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="VehicleEventArgs" /> that contains the event data. </param>
+        /// <param name="e">An <see cref="UnoccupiedVehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnUnoccupiedUpdate(UnoccupiedVehicleEventArgs e)
         {
             if (UnoccupiedUpdate != null)

@@ -1168,7 +1168,7 @@ namespace SampSharp.GameMode.Natives
         /// </summary>
         /// <remarks>
         ///     The exiting animation is not synced for other players.
-        ///     This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle" />, because the player isn't in
+        ///     This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle(int,int,bool)" />, because the player isn't in
         ///     the vehicle when the callback is called. Use <see cref="BaseMode.OnPlayerStateChange" /> instead.
         /// </remarks>
         /// <param name="playerid">The ID of the player to remove from their vehicle.</param>
@@ -1709,7 +1709,7 @@ namespace SampSharp.GameMode.Natives
         ///     This function can be used to change the spawn information of a specific player. It allows you to automatically set
         ///     someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn
         ///     systems. This function is more crash-safe then using <see cref="SetPlayerSkin" /> in
-        ///     <see cref="BaseMode.OnPlayerSpawn" /> and/or <see cref="BaseMode.OnPlayerRequestClass" />.
+        ///     <see cref="BaseMode.OnPlayerSpawn" /> and/or <see cref="BaseMode.OnPlayerRequestClass(int,int)" />.
         /// </summary>
         /// <param name="playerid">The PlayerID of who you want to set the spawn information.</param>
         /// <param name="team">The Team-ID of the chosen player.</param>
@@ -1737,7 +1737,7 @@ namespace SampSharp.GameMode.Natives
         ///     This function can be used to change the spawn information of a specific player. It allows you to automatically set
         ///     someone's spawn weapons, their team, skin and spawn position, normally used in case of minigames or automatic-spawn
         ///     systems. This function is more crash-safe then using <see cref="SetPlayerSkin" /> in
-        ///     <see cref="BaseMode.OnPlayerSpawn" /> and/or <see cref="BaseMode.OnPlayerRequestClass" />.
+        ///     <see cref="BaseMode.OnPlayerSpawn" /> and/or <see cref="BaseMode.OnPlayerRequestClass(int,int)" />.
         /// </summary>
         /// <param name="playerid">The PlayerID of who you want to set the spawn information.</param>
         /// <param name="team">The Team-ID of the chosen player.</param>
@@ -2096,7 +2096,7 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
-        ///     Creates a race checkpoint. When the player enters it, the <see cref="BaseMode.OnPlayerEnterRaceCheckpoint" />
+        ///     Creates a race checkpoint. When the player enters it, the <see cref="BaseMode.OnPlayerEnterRaceCheckpoint(int)" />
         ///     callback is called.
         /// </summary>
         /// <param name="playerid">The ID of the player to set the checkpoint for.</param>

@@ -22,10 +22,18 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP
 {
+    /// <summary>
+    /// Represents a collection of player variables.
+    /// </summary>
     public class PVarCollection : IEnumerable<object>
     {
         private readonly GtaPlayer _player;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PVarCollection"/> class.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <exception cref="System.ArgumentNullException">player</exception>
         public PVarCollection(GtaPlayer player)
         {
             if (player == null)
@@ -34,12 +42,18 @@ namespace SampSharp.GameMode.SAMP
             _player = player;
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="System.Object"/> at the specified index.
+        /// </summary>
         public object this[int index]
         {
             get { return this[NameAtIndex(index)]; }
             set { this[NameAtIndex(index)] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="System.Object"/> with the specified varname.
+        /// </summary>
         public object this[string varname]
         {
             get
@@ -83,11 +97,20 @@ namespace SampSharp.GameMode.SAMP
             }
         }
 
+        /// <summary>
+        /// Gets the upper index of the variables list.
+        /// </summary>
         public int UpperIndex
         {
             get { return _player == null ? 0 : Native.GetPVarsUpperIndex(_player.Id); }
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
+        /// </returns>
         public IEnumerator<object> GetEnumerator()
         {
             var vars = new List<object>();
@@ -105,6 +128,12 @@ namespace SampSharp.GameMode.SAMP
             return GetEnumerator();
         }
 
+        /// <summary>
+        /// Gets the variable with the specified varname.
+        /// </summary>
+        /// <typeparam name="T">The type of the variable.</typeparam>
+        /// <param name="varname">The varname.</param>
+        /// <returns>The variable with the specified varname.</returns>
         public T Get<T>(string varname)
         {
             if (_player == null) return default(T);
@@ -121,11 +150,21 @@ namespace SampSharp.GameMode.SAMP
             return (T) Convert.ChangeType(value, typeof (T));
         }
 
+        /// <summary>
+        /// Checks whether a variable with the specified varname exists.
+        /// </summary>
+        /// <param name="varname">The varname.</param>
+        /// <returns>True if the variable exists; False otherwise.</returns>
         public bool Exists(string varname)
         {
             return _player != null && Native.GetPVarType(_player.Id, varname) != (int) PlayerVarType.None;
         }
 
+        /// <summary>
+        /// Gets the type of the variable with the given <paramref name="varname"/>.
+        /// </summary>
+        /// <param name="varname">The varname.</param>
+        /// <returns>The type of the variable.</returns>
         public Type GetType(string varname)
         {
             if (_player == null) return null;
@@ -143,11 +182,21 @@ namespace SampSharp.GameMode.SAMP
             }
         }
 
+        /// <summary>
+        /// Gets the name at the given <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns>The name at the given index.</returns>
         public string NameAtIndex(int index)
         {
             return _player == null ? null : Native.GetPVarNameAtIndex(_player.Id, index);
         }
 
+        /// <summary>
+        /// Deletes the specified varname.
+        /// </summary>
+        /// <param name="varname">The varname.</param>
+        /// <returns>True on success; False otherwise.</returns>
         public bool Delete(string varname)
         {
             return _player != null && Native.DeletePVar(_player.Id, varname);

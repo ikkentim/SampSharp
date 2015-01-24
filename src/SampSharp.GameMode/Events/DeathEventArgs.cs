@@ -20,7 +20,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerDied" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerDied" /> or <see cref="GtaPlayer.Died" /> event.
     /// </summary>
     public class DeathEventArgs : EventArgs
     {

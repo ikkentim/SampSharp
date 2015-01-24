@@ -78,6 +78,7 @@
     <Compile Include="Definitions\ShopName.cs" />
     <Compile Include="Definitions\TextDrawAlignment.cs" />
     <Compile Include="Definitions\VehicleModelType.cs" />
+    <Compile Include="Events\ClickPlayerTextDrawEventArgs.cs" />
     <Compile Include="Events\EditGlobalObjectEventArgs.cs" />
     <Compile Include="Events\CancelableEventArgs.cs" />
     <Compile Include="Events\CommandTextEventArgs.cs" />
@@ -133,7 +134,6 @@
     <Compile Include="Definitions\WeaponSkill.cs" />
     <Compile Include="Definitions\WeaponState.cs" />
     <Compile Include="Events\ConnectionEventArgs.cs" />
-    <Compile Include="Events\ObjectEventArgs.cs" />
     <Compile Include="Events\PlayerVehicleEventArgs.cs" />
     <Compile Include="Events\PositionEventArgs.cs" />
     <Compile Include="Events\ClickPlayerEventArgs.cs" />
@@ -156,7 +156,6 @@
     <Compile Include="Events\RconEventArgs.cs" />
     <Compile Include="Events\RconLoginAttemptEventArgs.cs" />
     <Compile Include="Events\UnoccupiedVehicleEventArgs.cs" />
-    <Compile Include="Events\VehicleEventArgs.cs" />
     <Compile Include="Events\VehicleModEventArgs.cs" />
     <Compile Include="Events\VehiclePaintjobEventArgs.cs" />
     <Compile Include="Events\VehicleResprayedEventArgs.cs" />

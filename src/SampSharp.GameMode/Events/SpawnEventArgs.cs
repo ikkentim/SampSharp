@@ -14,21 +14,15 @@
 // limitations under the License.
 
 using System;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerSpawned" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerSpawned" /> or <see cref="GtaPlayer.Spawned" /> event.
     /// </summary>
     public class SpawnEventArgs : EventArgs
     {
-        /// <summary>
-        ///     Initializes a new instance of the SpawnEventArgs class.
-        /// </summary>
-        public SpawnEventArgs()
-        {
-        }
-
         /// <summary>
         ///     Gets or sets whether the player will be forced back to the class selection when they next spawn.
         /// </summary>

@@ -92,7 +92,7 @@ namespace SampSharp.GameMode.World
         #region Events
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnObjectMoved" /> callback is being called.
+        ///     Occurs when the <see cref="BaseMode.OnObjectMoved(int)" /> callback is being called.
         ///     This callback is called when an object is moved after <see cref="Move(Vector,float)" /> (when it stops moving).
         /// </summary>
         public event EventHandler<EventArgs> Moved;
@@ -368,7 +368,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Edited" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="EditObjectEventArgs" /> that contains the event data. </param>
+        /// <param name="e">An <see cref="EditGlobalObjectEventArgs" /> that contains the event data. </param>
         public virtual void OnEdited(EditGlobalObjectEventArgs e)
         {
             if (Edited != null)

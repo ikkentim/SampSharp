@@ -13,11 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
-    public class EnterVehicleEventArgs : VehicleEventArgs
+    /// <summary>
+    /// Provides data for the <see cref="BaseMode.PlayerEnterVehicle"/>, <see cref="GtaPlayer.EnterVehicle"/> or <see cref="GtaVehicle.PlayerEnter"/> event.
+    /// </summary>
+    public class EnterVehicleEventArgs : EventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EnterVehicleEventArgs" /> class.
@@ -25,8 +29,10 @@ namespace SampSharp.GameMode.Events
         /// <param name="player">The player.</param>
         /// <param name="vehicle">The vehicle.</param>
         /// <param name="isPassenger">if set to <c>true</c> the player is a passenger.</param>
-        public EnterVehicleEventArgs(GtaPlayer player, GtaVehicle vehicle, bool isPassenger) : base(vehicle)
+        public EnterVehicleEventArgs(GtaPlayer player, GtaVehicle vehicle, bool isPassenger)
         {
+            Player = player;
+            Vehicle = vehicle;
             IsPassenger = isPassenger;
         }
 
@@ -38,6 +44,11 @@ namespace SampSharp.GameMode.Events
         /// Gets the player.
         /// </summary>
         public GtaPlayer Player { get; private set; }
+
+        /// <summary>
+        /// Gets the vehicle.
+        /// </summary>
+        public GtaVehicle Vehicle { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="Player"/> is passenger.

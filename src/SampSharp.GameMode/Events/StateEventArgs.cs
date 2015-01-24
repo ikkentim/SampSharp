@@ -15,14 +15,20 @@
 
 using System;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerStateChanged" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerStateChanged" /> or <see cref="GtaPlayer.StateChanged"/> event.
     /// </summary>
     public class StateEventArgs : EventArgs
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StateEventArgs"/> class.
+        /// </summary>
+        /// <param name="newstate">The newstate.</param>
+        /// <param name="oldstate">The oldstate.</param>
         public StateEventArgs(PlayerState newstate, PlayerState oldstate)
         {
             NewState = newstate;

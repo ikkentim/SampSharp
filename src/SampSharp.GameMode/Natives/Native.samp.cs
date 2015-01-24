@@ -242,7 +242,7 @@ namespace SampSharp.GameMode.Natives
 
         /// <summary>
         ///     This function does exactly the same as <see cref="AddStaticPickup" />, except it returns a pickup ID which can be
-        ///     used to destroy it afterwards and be tracked using <see cref="BaseMode.OnPlayerPickUpPickup" />.
+        ///     used to destroy it afterwards and be tracked using <see cref="BaseMode.OnPlayerPickUpPickup(int,int)" />.
         /// </summary>
         /// <param name="model">The model of the pickup.</param>
         /// <param name="type">The pickup spawn type.</param>

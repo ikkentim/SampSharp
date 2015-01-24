@@ -14,11 +14,12 @@
 // limitations under the License.
 
 using System;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerCommandText" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerCommandText" /> or <see cref="GtaPlayer.CommandText"/> event.
     /// </summary>
     public class CommandTextEventArgs : EventArgs
     {

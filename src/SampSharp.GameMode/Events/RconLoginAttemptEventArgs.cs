@@ -13,13 +13,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.RconLoginAttempt" /> event.
     /// </summary>
-    public class RconLoginAttemptEventArgs
+    public class RconLoginAttemptEventArgs : EventArgs
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RconLoginAttemptEventArgs"/> class.
+        /// </summary>
+        /// <param name="ip">The ip.</param>
+        /// <param name="password">The password.</param>
+        /// <param name="success">if set to <c>true</c> this is a successful login.</param>
         public RconLoginAttemptEventArgs(string ip, string password, bool success)
         {
             IP = ip;
@@ -27,10 +35,19 @@ namespace SampSharp.GameMode.Events
             SuccessfulLogin = success;
         }
 
+        /// <summary>
+        /// Gets the IP attempting to connect.
+        /// </summary>
         public string IP { get; private set; }
 
+        /// <summary>
+        /// Gets the password used.
+        /// </summary>
         public string Password { get; private set; }
 
+        /// <summary>
+        /// Gets a value indicating whether this is a successful login.
+        /// </summary>
         public bool SuccessfulLogin { get; private set; }
     }
 }
