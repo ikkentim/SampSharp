@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
@@ -35,8 +34,8 @@ namespace SampSharp.GameMode.Controllers
             {
                 var player = sender as GtaPlayer;
 
-                if(player != null)
-                player.OnConnected(args);
+                if (player != null)
+                    player.OnConnected(args);
             };
             gameMode.PlayerDisconnected += (sender, args) =>
             {

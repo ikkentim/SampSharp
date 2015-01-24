@@ -24,7 +24,7 @@ namespace SampSharp.GameMode.Events
     public class PositionEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PositionEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="PositionEventArgs" /> class.
         /// </summary>
         /// <param name="position">The position.</param>
         public PositionEventArgs(Vector position)

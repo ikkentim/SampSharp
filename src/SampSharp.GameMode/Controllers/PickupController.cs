@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.PlayerPickUpPickup += (sender, args) =>
             {
-                Pickup obj = sender as Pickup;
+                var obj = sender as Pickup;
 
                 if (obj != null)
                     obj.OnPickUp(args);

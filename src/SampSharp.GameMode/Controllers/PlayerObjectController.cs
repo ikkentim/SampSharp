@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
@@ -32,19 +31,19 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.PlayerObjectMoved += (sender, args) =>
             {
-                PlayerObject obj = sender as PlayerObject;
+                var obj = sender as PlayerObject;
                 if (obj != null)
                     obj.OnMoved(args);
             };
             gameMode.PlayerEditPlayerObject += (sender, args) =>
             {
-                PlayerObject obj = sender as PlayerObject;
+                var obj = sender as PlayerObject;
                 if (obj != null)
                     obj.OnEdited(args);
             };
             gameMode.PlayerSelectPlayerObject += (sender, args) =>
             {
-                PlayerObject obj = sender as PlayerObject;
+                var obj = sender as PlayerObject;
                 if (obj != null)
                     obj.OnSelected(args);
             };

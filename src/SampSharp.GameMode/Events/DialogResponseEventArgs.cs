@@ -21,12 +21,13 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.DialogResponse" />, <see cref="GtaPlayer.DialogResponse" /> or <see cref="Dialog.Response" /> event.
+    ///     Provides data for the <see cref="BaseMode.DialogResponse" />, <see cref="GtaPlayer.DialogResponse" /> or
+    ///     <see cref="Dialog.Response" /> event.
     /// </summary>
     public class DialogResponseEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the DialogResponseEventArgs class.
+        ///     Initializes a new instance of the DialogResponseEventArgs class.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="dialogid">Id of the dialog.</param>
@@ -43,7 +44,7 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the player sending this response.
+        ///     Gets the player sending this response.
         /// </summary>
         public GtaPlayer Player { get; private set; }
 

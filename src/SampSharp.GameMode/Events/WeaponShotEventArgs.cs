@@ -19,12 +19,12 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerWeaponShot" /> or <see cref="GtaPlayer.WeaponShot"/> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerWeaponShot" /> or <see cref="GtaPlayer.WeaponShot" /> event.
     /// </summary>
     public class WeaponShotEventArgs : PositionEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WeaponShotEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="WeaponShotEventArgs" /> class.
         /// </summary>
         /// <param name="weapon">The weapon.</param>
         /// <param name="hittype">The hittype.</param>
@@ -39,17 +39,17 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the weapon.
+        ///     Gets the weapon.
         /// </summary>
         public Weapon Weapon { get; private set; }
 
         /// <summary>
-        /// Gets the type of the bullet hit.
+        ///     Gets the type of the bullet hit.
         /// </summary>
         public BulletHitType BulletHitType { get; private set; }
 
         /// <summary>
-        /// Gets the hit identifier.
+        ///     Gets the hit identifier.
         /// </summary>
         public int HitId { get; private set; }
 

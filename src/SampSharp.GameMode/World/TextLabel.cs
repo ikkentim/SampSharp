@@ -22,7 +22,7 @@ using SampSharp.GameMode.SAMP;
 namespace SampSharp.GameMode.World
 {
     /// <summary>
-    /// Represents a 3d text label.
+    ///     Represents a 3d text label.
     /// </summary>
     public class TextLabel : IdentifiedPool<TextLabel>, IIdentifiable
     {
@@ -45,7 +45,7 @@ namespace SampSharp.GameMode.World
         #region Properties
 
         /// <summary>
-        /// Gets or sets the color of this <see cref="TextLabel"/>.
+        ///     Gets or sets the color of this <see cref="TextLabel" />.
         /// </summary>
         public virtual Color Color
         {
@@ -58,7 +58,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Gets or sets the text of this <see cref="TextLabel"/>.
+        ///     Gets or sets the text of this <see cref="TextLabel" />.
         /// </summary>
         public virtual string Text
         {
@@ -71,7 +71,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Gets or sets the position of this <see cref="TextLabel"/>.
+        ///     Gets or sets the position of this <see cref="TextLabel" />.
         /// </summary>
         public virtual Vector Position
         {
@@ -85,7 +85,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Gets or sets the draw distance of this <see cref="TextLabel"/>.
+        ///     Gets or sets the draw distance of this <see cref="TextLabel" />.
         /// </summary>
         public virtual float DrawDistance
         {
@@ -99,7 +99,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Gets or sets the virtual world of this <see cref="TextLabel"/>.
+        ///     Gets or sets the virtual world of this <see cref="TextLabel" />.
         /// </summary>
         public virtual int VirtualWorld
         {
@@ -113,7 +113,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the line of sight should be tested before drawing this <see cref="TextLabel"/>.
+        ///     Gets or sets a value indicating whether the line of sight should be tested before drawing this
+        ///     <see cref="TextLabel" />.
         /// </summary>
         public virtual bool TestLOS
         {
@@ -127,7 +128,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Gets the Identity of this <see cref="TextLabel"/>.
+        ///     Gets the Identity of this <see cref="TextLabel" />.
         /// </summary>
         public virtual int Id { get; private set; }
 
@@ -136,7 +137,7 @@ namespace SampSharp.GameMode.World
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextLabel"/> class.
+        ///     Initializes a new instance of the <see cref="TextLabel" /> class.
         /// </summary>
         /// <param name="text">The text.</param>
         /// <param name="color">The color.</param>
@@ -156,7 +157,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextLabel"/> class.
+        ///     Initializes a new instance of the <see cref="TextLabel" /> class.
         /// </summary>
         /// <param name="text">The text.</param>
         /// <param name="color">The color.</param>
@@ -169,7 +170,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextLabel"/> class.
+        ///     Initializes a new instance of the <see cref="TextLabel" /> class.
         /// </summary>
         /// <param name="text">The text.</param>
         /// <param name="color">The color.</param>
@@ -196,7 +197,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Attaches this <see cref="TextLabel"/> to the specified <paramref name="player"/>.
+        ///     Attaches this <see cref="TextLabel" /> to the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="offset">The offset.</param>
@@ -212,7 +213,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Attaches this <see cref="TextLabel"/> to the specified <paramref name="vehicle"/>.
+        ///     Attaches this <see cref="TextLabel" /> to the specified <paramref name="vehicle" />.
         /// </summary>
         /// <param name="vehicle">The vehicle.</param>
         /// <param name="offset">The offset.</param>

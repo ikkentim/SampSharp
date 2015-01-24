@@ -46,7 +46,7 @@ namespace SampSharp.GameMode.Tools
                 return;
             }
 
-            new SyncTask { Action = action };
+            new SyncTask {Action = action};
             SyncController.Start();
         }
 

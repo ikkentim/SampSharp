@@ -19,12 +19,13 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerInteriorChanged" /> or <see cref="GtaPlayer.InteriorChanged" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerInteriorChanged" /> or <see cref="GtaPlayer.InteriorChanged" />
+    ///     event.
     /// </summary>
     public class InteriorChangedEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InteriorChangedEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="InteriorChangedEventArgs" /> class.
         /// </summary>
         /// <param name="newInterior">The new interior.</param>
         /// <param name="oldInterior">The old interior.</param>
@@ -35,12 +36,12 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the new interior.
+        ///     Gets the new interior.
         /// </summary>
         public int NewInterior { get; private set; }
 
         /// <summary>
-        /// Gets the old interior.
+        ///     Gets the old interior.
         /// </summary>
         public int OldInterior { get; private set; }
     }

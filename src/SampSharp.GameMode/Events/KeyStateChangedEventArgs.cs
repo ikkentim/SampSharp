@@ -20,12 +20,13 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerKeyStateChanged" /> or <see cref="GtaPlayer.KeyStateChanged" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerKeyStateChanged" /> or <see cref="GtaPlayer.KeyStateChanged" />
+    ///     event.
     /// </summary>
     public class KeyStateChangedEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="KeyStateChangedEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="KeyStateChangedEventArgs" /> class.
         /// </summary>
         /// <param name="newKeys">The new keys.</param>
         /// <param name="oldKeys">The old keys.</param>
@@ -36,18 +37,18 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the new keys.
+        ///     Gets the new keys.
         /// </summary>
         /// <value>
-        /// The new keys.
+        ///     The new keys.
         /// </value>
         public Keys NewKeys { get; private set; }
 
         /// <summary>
-        /// Gets the old keys.
+        ///     Gets the old keys.
         /// </summary>
         /// <value>
-        /// The old keys.
+        ///     The old keys.
         /// </value>
         public Keys OldKeys { get; private set; }
     }

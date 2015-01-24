@@ -23,7 +23,7 @@ namespace SampSharp.GameMode.Events
     ///     <see cref="BaseMode.VehicleDamageStatusUpdated" />, <see cref="BaseMode.PlayerStreamIn" />,
     ///     <see cref="BaseMode.PlayerStreamOut" />, <see cref="BaseMode.VehicleStreamIn" />,
     ///     <see cref="BaseMode.VehicleStreamOut" />, <see cref="GtaPlayer.StreamIn" />, <see cref="GtaPlayer.StreamOut" />,
-    ///     <see cref="GtaVehicle.StreamIn" />, <see cref="GtaVehicle.StreamOut" /> or <see cref="Pickup.PickUp"/> event.
+    ///     <see cref="GtaVehicle.StreamIn" />, <see cref="GtaVehicle.StreamOut" /> or <see cref="Pickup.PickUp" /> event.
     /// </summary>
     public class PlayerEventArgs : EventArgs
     {

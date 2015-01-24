@@ -18,7 +18,8 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.UnoccupiedVehicleUpdated" /> or <see cref="GtaVehicle.UnoccupiedUpdate" /> event.
+    ///     Provides data for the <see cref="BaseMode.UnoccupiedVehicleUpdated" /> or
+    ///     <see cref="GtaVehicle.UnoccupiedUpdate" /> event.
     /// </summary>
     public class UnoccupiedVehicleEventArgs : PlayerEventArgs
     {

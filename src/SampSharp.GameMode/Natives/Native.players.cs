@@ -1168,7 +1168,8 @@ namespace SampSharp.GameMode.Natives
         /// </summary>
         /// <remarks>
         ///     The exiting animation is not synced for other players.
-        ///     This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle(int,int,bool)" />, because the player isn't in
+        ///     This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle(int,int,bool)" />, because the
+        ///     player isn't in
         ///     the vehicle when the callback is called. Use <see cref="BaseMode.OnPlayerStateChange" /> instead.
         /// </remarks>
         /// <param name="playerid">The ID of the player to remove from their vehicle.</param>

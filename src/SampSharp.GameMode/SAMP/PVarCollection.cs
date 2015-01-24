@@ -23,14 +23,14 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.SAMP
 {
     /// <summary>
-    /// Represents a collection of player variables.
+    ///     Represents a collection of player variables.
     /// </summary>
     public class PVarCollection : IEnumerable<object>
     {
         private readonly GtaPlayer _player;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PVarCollection"/> class.
+        ///     Initializes a new instance of the <see cref="PVarCollection" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
@@ -43,7 +43,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="System.Object"/> at the specified index.
+        ///     Gets or sets the <see cref="System.Object" /> at the specified index.
         /// </summary>
         public object this[int index]
         {
@@ -52,7 +52,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="System.Object"/> with the specified varname.
+        ///     Gets or sets the <see cref="System.Object" /> with the specified varname.
         /// </summary>
         public object this[string varname]
         {
@@ -98,7 +98,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Gets the upper index of the variables list.
+        ///     Gets the upper index of the variables list.
         /// </summary>
         public int UpperIndex
         {
@@ -106,10 +106,10 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through the collection.
+        ///     Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
+        ///     A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
         /// </returns>
         public IEnumerator<object> GetEnumerator()
         {
@@ -129,7 +129,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Gets the variable with the specified varname.
+        ///     Gets the variable with the specified varname.
         /// </summary>
         /// <typeparam name="T">The type of the variable.</typeparam>
         /// <param name="varname">The varname.</param>
@@ -151,7 +151,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Checks whether a variable with the specified varname exists.
+        ///     Checks whether a variable with the specified varname exists.
         /// </summary>
         /// <param name="varname">The varname.</param>
         /// <returns>True if the variable exists; False otherwise.</returns>
@@ -161,7 +161,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Gets the type of the variable with the given <paramref name="varname"/>.
+        ///     Gets the type of the variable with the given <paramref name="varname" />.
         /// </summary>
         /// <param name="varname">The varname.</param>
         /// <returns>The type of the variable.</returns>
@@ -183,7 +183,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Gets the name at the given <paramref name="index"/>.
+        ///     Gets the name at the given <paramref name="index" />.
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns>The name at the given index.</returns>
@@ -193,7 +193,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Deletes the specified varname.
+        ///     Deletes the specified varname.
         /// </summary>
         /// <param name="varname">The varname.</param>
         /// <returns>True on success; False otherwise.</returns>

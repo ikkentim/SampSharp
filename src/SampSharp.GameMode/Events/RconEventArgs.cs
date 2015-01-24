@@ -23,7 +23,7 @@ namespace SampSharp.GameMode.Events
     public class RconEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RconEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="RconEventArgs" /> class.
         /// </summary>
         /// <param name="command">The command.</param>
         public RconEventArgs(string command)

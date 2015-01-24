@@ -18,7 +18,8 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerSelectGlobalObject"/>, <see cref="GtaPlayer.SelectGlobalObject"/> or <see cref="GlobalObject.Selected"/> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerSelectGlobalObject" />, <see cref="GtaPlayer.SelectGlobalObject" />
+    ///     or <see cref="GlobalObject.Selected" /> event.
     /// </summary>
     public class SelectGlobalObjectEventArgs : PositionEventArgs
     {
@@ -59,7 +60,8 @@ namespace SampSharp.GameMode.Events
     }
 
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerSelectPlayerObject"/>, <see cref="GtaPlayer.SelectPlayerObject"/> or <see cref="PlayerObject.Selected"/> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerSelectPlayerObject" />, <see cref="GtaPlayer.SelectPlayerObject" />
+    ///     or <see cref="PlayerObject.Selected" /> event.
     /// </summary>
     public class SelectPlayerObjectEventArgs : PositionEventArgs
     {

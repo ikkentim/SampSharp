@@ -33,7 +33,7 @@ namespace SampSharp.GameMode.Controllers
             gameMode.PlayerExitedMenu += (sender, args) =>
             {
                 var player = sender as GtaPlayer;
-                var menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(player));
+                Menu menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(player));
 
                 if (menu != null)
                     menu.OnExit(args);

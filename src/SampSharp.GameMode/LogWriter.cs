@@ -28,7 +28,7 @@ namespace SampSharp.GameMode
     public class LogWriter : TextWriter
     {
         /// <summary>
-        /// When overridden in a derived class, returns the character encoding in which the output is written.
+        ///     When overridden in a derived class, returns the character encoding in which the output is written.
         /// </summary>
         public override Encoding Encoding
         {
@@ -38,7 +38,7 @@ namespace SampSharp.GameMode
         #region WriteLine
 
         /// <summary>
-        /// Writes a character followed by a line terminator to the text string or stream.
+        ///     Writes a character followed by a line terminator to the text string or stream.
         /// </summary>
         /// <param name="value">The character to write to the text stream.</param>
         public override void WriteLine(char value)
@@ -47,7 +47,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a string followed by a line terminator to the text string or stream.
+        ///     Writes a string followed by a line terminator to the text string or stream.
         /// </summary>
         /// <param name="value">The string to write. If <paramref name="value" /> is null, only the line terminator is written.</param>
         public override void WriteLine(string value)
@@ -56,7 +56,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a line terminator to the text string or stream.
+        ///     Writes a line terminator to the text string or stream.
         /// </summary>
         public override void WriteLine()
         {
@@ -64,7 +64,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a formatted string and a new line to the text string or stream, using the same semantics as the <see cref="M:System.String.Format(System.String,System.Object)" /> method.
+        ///     Writes a formatted string and a new line to the text string or stream, using the same semantics as the
+        ///     <see cref="M:System.String.Format(System.String,System.Object)" /> method.
         /// </summary>
         /// <param name="format">A composite format string (see Remarks).</param>
         /// <param name="arg0">The object to format and write.</param>
@@ -74,7 +75,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a formatted string and a new line to the text string or stream, using the same semantics as the <see cref="M:System.String.Format(System.String,System.Object,System.Object)" /> method.
+        ///     Writes a formatted string and a new line to the text string or stream, using the same semantics as the
+        ///     <see cref="M:System.String.Format(System.String,System.Object,System.Object)" /> method.
         /// </summary>
         /// <param name="format">A composite format string (see Remarks).</param>
         /// <param name="arg0">The first object to format and write.</param>
@@ -85,7 +87,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes out a formatted string and a new line, using the same semantics as <see cref="M:System.String.Format(System.String,System.Object)" />.
+        ///     Writes out a formatted string and a new line, using the same semantics as
+        ///     <see cref="M:System.String.Format(System.String,System.Object)" />.
         /// </summary>
         /// <param name="format">A composite format string (see Remarks).</param>
         /// <param name="arg0">The first object to format and write.</param>
@@ -97,7 +100,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes out a formatted string and a new line, using the same semantics as <see cref="M:System.String.Format(System.String,System.Object)" />.
+        ///     Writes out a formatted string and a new line, using the same semantics as
+        ///     <see cref="M:System.String.Format(System.String,System.Object)" />.
         /// </summary>
         /// <param name="format">A composite format string (see Remarks).</param>
         /// <param name="arg">An object array that contains zero or more objects to format and write.</param>
@@ -107,7 +111,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of a Boolean value followed by a line terminator to the text string or stream.
+        ///     Writes the text representation of a Boolean value followed by a line terminator to the text string or stream.
         /// </summary>
         /// <param name="value">The Boolean value to write.</param>
         public override void WriteLine(bool value)
@@ -116,7 +120,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes an array of characters followed by a line terminator to the text string or stream.
+        ///     Writes an array of characters followed by a line terminator to the text string or stream.
         /// </summary>
         /// <param name="buffer">The character array from which data is read.</param>
         public override void WriteLine(char[] buffer)
@@ -125,7 +129,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a subarray of characters followed by a line terminator to the text string or stream.
+        ///     Writes a subarray of characters followed by a line terminator to the text string or stream.
         /// </summary>
         /// <param name="buffer">The character array from which data is read.</param>
         /// <param name="index">The character position in <paramref name="buffer" /> at which to start reading data.</param>
@@ -136,7 +140,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of a decimal value followed by a line terminator to the text string or stream.
+        ///     Writes the text representation of a decimal value followed by a line terminator to the text string or stream.
         /// </summary>
         /// <param name="value">The decimal value to write.</param>
         public override void WriteLine(decimal value)
@@ -145,7 +149,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of a 8-byte floating-point value followed by a line terminator to the text string or stream.
+        ///     Writes the text representation of a 8-byte floating-point value followed by a line terminator to the text string or
+        ///     stream.
         /// </summary>
         /// <param name="value">The 8-byte floating-point value to write.</param>
         public override void WriteLine(double value)
@@ -155,7 +160,8 @@ namespace SampSharp.GameMode
 
 
         /// <summary>
-        /// Writes the text representation of a 4-byte floating-point value followed by a line terminator to the text string or stream.
+        ///     Writes the text representation of a 4-byte floating-point value followed by a line terminator to the text string or
+        ///     stream.
         /// </summary>
         /// <param name="value">The 4-byte floating-point value to write.</param>
         public override void WriteLine(float value)
@@ -164,7 +170,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of a 4-byte signed integer followed by a line terminator to the text string or stream.
+        ///     Writes the text representation of a 4-byte signed integer followed by a line terminator to the text string or
+        ///     stream.
         /// </summary>
         /// <param name="value">The 4-byte signed integer to write.</param>
         public override void WriteLine(int value)
@@ -173,7 +180,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of an 8-byte signed integer followed by a line terminator to the text string or stream.
+        ///     Writes the text representation of an 8-byte signed integer followed by a line terminator to the text string or
+        ///     stream.
         /// </summary>
         /// <param name="value">The 8-byte signed integer to write.</param>
         public override void WriteLine(long value)
@@ -182,7 +190,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of an object by calling the ToString method on that object, followed by a line terminator to the text string or stream.
+        ///     Writes the text representation of an object by calling the ToString method on that object, followed by a line
+        ///     terminator to the text string or stream.
         /// </summary>
         /// <param name="value">The object to write. If <paramref name="value" /> is null, only the line terminator is written.</param>
         public override void WriteLine(object value)
@@ -191,7 +200,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of a 4-byte unsigned integer followed by a line terminator to the text string or stream.
+        ///     Writes the text representation of a 4-byte unsigned integer followed by a line terminator to the text string or
+        ///     stream.
         /// </summary>
         /// <param name="value">The 4-byte unsigned integer to write.</param>
         public override void WriteLine(uint value)
@@ -200,7 +210,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of an 8-byte unsigned integer followed by a line terminator to the text string or stream.
+        ///     Writes the text representation of an 8-byte unsigned integer followed by a line terminator to the text string or
+        ///     stream.
         /// </summary>
         /// <param name="value">The 8-byte unsigned integer to write.</param>
         public override void WriteLine(ulong value)
@@ -213,7 +224,7 @@ namespace SampSharp.GameMode
         #region Write
 
         /// <summary>
-        /// Writes a character to the text string or stream.
+        ///     Writes a character to the text string or stream.
         /// </summary>
         /// <param name="value">The character to write to the text stream.</param>
         public override void Write(char value)
@@ -237,7 +248,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a string to the text string or stream.
+        ///     Writes a string to the text string or stream.
         /// </summary>
         /// <param name="value">The string to write.</param>
         public override void Write(string value)
@@ -247,7 +258,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of a Boolean value to the text string or stream.
+        ///     Writes the text representation of a Boolean value to the text string or stream.
         /// </summary>
         /// <param name="value">The Boolean value to write.</param>
         public override void Write(bool value)
@@ -256,7 +267,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a formatted string to the text string or stream, using the same semantics as the <see cref="M:System.String.Format(System.String,System.Object)" /> method.
+        ///     Writes a formatted string to the text string or stream, using the same semantics as the
+        ///     <see cref="M:System.String.Format(System.String,System.Object)" /> method.
         /// </summary>
         /// <param name="format">A composite format string (see Remarks).</param>
         /// <param name="arg0">The object to format and write.</param>
@@ -267,7 +279,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a formatted string to the text string or stream, using the same semantics as the <see cref="M:System.String.Format(System.String,System.Object,System.Object)" /> method.
+        ///     Writes a formatted string to the text string or stream, using the same semantics as the
+        ///     <see cref="M:System.String.Format(System.String,System.Object,System.Object)" /> method.
         /// </summary>
         /// <param name="format">A composite format string (see Remarks).</param>
         /// <param name="arg0">The first object to format and write.</param>
@@ -279,7 +292,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a formatted string to the text string or stream, using the same semantics as the <see cref="M:System.String.Format(System.String,System.Object,System.Object,System.Object)" /> method.
+        ///     Writes a formatted string to the text string or stream, using the same semantics as the
+        ///     <see cref="M:System.String.Format(System.String,System.Object,System.Object,System.Object)" /> method.
         /// </summary>
         /// <param name="format">A composite format string (see Remarks).</param>
         /// <param name="arg0">The first object to format and write.</param>
@@ -292,7 +306,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a formatted string to the text string or stream, using the same semantics as the <see cref="M:System.String.Format(System.String,System.Object[])" /> method.
+        ///     Writes a formatted string to the text string or stream, using the same semantics as the
+        ///     <see cref="M:System.String.Format(System.String,System.Object[])" /> method.
         /// </summary>
         /// <param name="format">A composite format string (see Remarks).</param>
         /// <param name="arg">An object array that contains zero or more objects to format and write.</param>
@@ -303,7 +318,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a character array to the text string or stream.
+        ///     Writes a character array to the text string or stream.
         /// </summary>
         /// <param name="buffer">The character array to write to the text stream.</param>
         public override void Write(char[] buffer)
@@ -312,7 +327,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a subarray of characters to the text string or stream.
+        ///     Writes a subarray of characters to the text string or stream.
         /// </summary>
         /// <param name="buffer">The character array to write data from.</param>
         /// <param name="index">The character position in the buffer at which to start retrieving data.</param>
@@ -323,7 +338,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of a decimal value to the text string or stream.
+        ///     Writes the text representation of a decimal value to the text string or stream.
         /// </summary>
         /// <param name="value">The decimal value to write.</param>
         public override void Write(decimal value)
@@ -332,7 +347,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of an 8-byte floating-point value to the text string or stream.
+        ///     Writes the text representation of an 8-byte floating-point value to the text string or stream.
         /// </summary>
         /// <param name="value">The 8-byte floating-point value to write.</param>
         public override void Write(double value)
@@ -341,7 +356,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of a 4-byte floating-point value to the text string or stream.
+        ///     Writes the text representation of a 4-byte floating-point value to the text string or stream.
         /// </summary>
         /// <param name="value">The 4-byte floating-point value to write.</param>
         public override void Write(float value)
@@ -350,7 +365,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of a 4-byte signed integer to the text string or stream.
+        ///     Writes the text representation of a 4-byte signed integer to the text string or stream.
         /// </summary>
         /// <param name="value">The 4-byte signed integer to write.</param>
         public override void Write(int value)
@@ -359,7 +374,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of an 8-byte signed integer to the text string or stream.
+        ///     Writes the text representation of an 8-byte signed integer to the text string or stream.
         /// </summary>
         /// <param name="value">The 8-byte signed integer to write.</param>
         public override void Write(long value)
@@ -368,7 +383,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of an object to the text string or stream by calling the ToString method on that object.
+        ///     Writes the text representation of an object to the text string or stream by calling the ToString method on that
+        ///     object.
         /// </summary>
         /// <param name="value">The object to write.</param>
         public override void Write(object value)
@@ -377,7 +393,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of a 4-byte unsigned integer to the text string or stream.
+        ///     Writes the text representation of a 4-byte unsigned integer to the text string or stream.
         /// </summary>
         /// <param name="value">The 4-byte unsigned integer to write.</param>
         public override void Write(uint value)
@@ -386,7 +402,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes the text representation of an 8-byte unsigned integer to the text string or stream.
+        ///     Writes the text representation of an 8-byte unsigned integer to the text string or stream.
         /// </summary>
         /// <param name="value">The 8-byte unsigned integer to write.</param>
         public override void Write(ulong value)
@@ -399,11 +415,11 @@ namespace SampSharp.GameMode
         #region Async
 
         /// <summary>
-        /// Writes a character to the text string or stream asynchronously.
+        ///     Writes a character to the text string or stream asynchronously.
         /// </summary>
         /// <param name="value">The character to write to the text stream.</param>
         /// <returns>
-        /// A task that represents the asynchronous write operation.
+        ///     A task that represents the asynchronous write operation.
         /// </returns>
         public override Task WriteAsync(char value)
         {
@@ -411,13 +427,13 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a subarray of characters to the text string or stream asynchronously.
+        ///     Writes a subarray of characters to the text string or stream asynchronously.
         /// </summary>
         /// <param name="buffer">The character array to write data from.</param>
         /// <param name="index">The character position in the buffer at which to start retrieving data.</param>
         /// <param name="count">The number of characters to write.</param>
         /// <returns>
-        /// A task that represents the asynchronous write operation.
+        ///     A task that represents the asynchronous write operation.
         /// </returns>
         public override Task WriteAsync(char[] buffer, int index, int count)
         {
@@ -425,11 +441,11 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a string to the text string or stream asynchronously.
+        ///     Writes a string to the text string or stream asynchronously.
         /// </summary>
         /// <param name="value">The string to write. If <paramref name="value" /> is null, nothing is written to the text stream.</param>
         /// <returns>
-        /// A task that represents the asynchronous write operation.
+        ///     A task that represents the asynchronous write operation.
         /// </returns>
         public override Task WriteAsync(string value)
         {
@@ -437,10 +453,10 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a line terminator asynchronously to the text string or stream.
+        ///     Writes a line terminator asynchronously to the text string or stream.
         /// </summary>
         /// <returns>
-        /// A task that represents the asynchronous write operation.
+        ///     A task that represents the asynchronous write operation.
         /// </returns>
         public override Task WriteLineAsync()
         {
@@ -448,11 +464,11 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a character followed by a line terminator asynchronously to the text string or stream.
+        ///     Writes a character followed by a line terminator asynchronously to the text string or stream.
         /// </summary>
         /// <param name="value">The character to write to the text stream.</param>
         /// <returns>
-        /// A task that represents the asynchronous write operation.
+        ///     A task that represents the asynchronous write operation.
         /// </returns>
         public override Task WriteLineAsync(char value)
         {
@@ -460,13 +476,13 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a subarray of characters followed by a line terminator asynchronously to the text string or stream.
+        ///     Writes a subarray of characters followed by a line terminator asynchronously to the text string or stream.
         /// </summary>
         /// <param name="buffer">The character array to write data from.</param>
         /// <param name="index">The character position in the buffer at which to start retrieving data.</param>
         /// <param name="count">The number of characters to write.</param>
         /// <returns>
-        /// A task that represents the asynchronous write operation.
+        ///     A task that represents the asynchronous write operation.
         /// </returns>
         public override Task WriteLineAsync(char[] buffer, int index, int count)
         {
@@ -474,11 +490,11 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Writes a string followed by a line terminator asynchronously to the text string or stream.
+        ///     Writes a string followed by a line terminator asynchronously to the text string or stream.
         /// </summary>
         /// <param name="value">The string to write. If the value is null, only a line terminator is written.</param>
         /// <returns>
-        /// A task that represents the asynchronous write operation.
+        ///     A task that represents the asynchronous write operation.
         /// </returns>
         public override Task WriteLineAsync(string value)
         {

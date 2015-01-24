@@ -18,12 +18,13 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.VehiclePaintjobApplied" /> or <see cref="GtaVehicle.PaintjobApplied" /> event.
+    ///     Provides data for the <see cref="BaseMode.VehiclePaintjobApplied" /> or <see cref="GtaVehicle.PaintjobApplied" />
+    ///     event.
     /// </summary>
     public class VehiclePaintjobEventArgs : PlayerEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="VehiclePaintjobEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="VehiclePaintjobEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="paintjobId">The paintjob identifier.</param>
@@ -34,7 +35,7 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the paintjob identifier.
+        ///     Gets the paintjob identifier.
         /// </summary>
         public int PaintjobId { get; private set; }
     }

@@ -371,7 +371,8 @@ namespace SampSharp.GameMode
         public event EventHandler<ClickTextDrawEventArgs> PlayerClickTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickPlayerTextDraw(GtaPlayer,ClickPlayerTextDrawEventArgs)" /> callback is being
+        ///     Occurs when the <see cref="OnPlayerClickPlayerTextDraw(GtaPlayer,ClickPlayerTextDrawEventArgs)" /> callback is
+        ///     being
         ///     called.
         ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
         ///     mode (ESC) - however, <see cref="OnPlayerClickTextDraw(GtaPlayer,ClickTextDrawEventArgs)" /> is.

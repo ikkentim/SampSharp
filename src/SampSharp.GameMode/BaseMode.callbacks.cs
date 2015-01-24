@@ -219,7 +219,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerEnterVehicle(int playerid, int vehicleid, bool ispassenger)
         {
-            var player = GtaPlayer.FindOrCreate(playerid);
+            GtaPlayer player = GtaPlayer.FindOrCreate(playerid);
             OnPlayerEnterVehicle(player,
                 new EnterVehicleEventArgs(player, GtaVehicle.FindOrCreate(vehicleid), ispassenger));
 
@@ -238,7 +238,7 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerExitVehicle(int playerid, int vehicleid)
         {
-            var player = GtaPlayer.FindOrCreate(playerid);
+            GtaPlayer player = GtaPlayer.FindOrCreate(playerid);
             OnPlayerExitVehicle(player,
                 new PlayerVehicleEventArgs(player, GtaVehicle.FindOrCreate(vehicleid)));
 
@@ -258,7 +258,8 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerStateChange(int playerid, int newstate, int oldstate)
         {
-            OnPlayerStateChanged(GtaPlayer.FindOrCreate(playerid), new StateEventArgs((PlayerState) newstate, (PlayerState) oldstate));
+            OnPlayerStateChanged(GtaPlayer.FindOrCreate(playerid),
+                new StateEventArgs((PlayerState) newstate, (PlayerState) oldstate));
 
             return true;
         }
@@ -400,7 +401,7 @@ namespace SampSharp.GameMode
         {
             var args = new VehicleModEventArgs(GtaPlayer.FindOrCreate(playerid), componentid);
 
-            OnVehicleMod(GtaVehicle.FindOrCreate(vehicleid),args);
+            OnVehicleMod(GtaVehicle.FindOrCreate(vehicleid), args);
 
             return !args.PreventPropagation;
         }
@@ -431,7 +432,7 @@ namespace SampSharp.GameMode
         {
             OnVehiclePaintjobApplied(GtaVehicle.FindOrCreate(vehicleid),
                 new VehiclePaintjobEventArgs(GtaPlayer.FindOrCreate(playerid), paintjobid));
-            
+
 
             return true;
         }
@@ -537,7 +538,8 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnPlayerInteriorChange(int playerid, int newinteriorid, int oldinteriorid)
         {
-            OnPlayerInteriorChanged(GtaPlayer.FindOrCreate(playerid), new InteriorChangedEventArgs(newinteriorid, oldinteriorid));
+            OnPlayerInteriorChanged(GtaPlayer.FindOrCreate(playerid),
+                new InteriorChangedEventArgs(newinteriorid, oldinteriorid));
 
             return true;
         }
@@ -555,7 +557,8 @@ namespace SampSharp.GameMode
         /// </returns>
         internal bool OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys)
         {
-            OnPlayerKeyStateChanged(GtaPlayer.FindOrCreate(playerid), new KeyStateChangedEventArgs((Keys) newkeys, (Keys) oldkeys));
+            OnPlayerKeyStateChanged(GtaPlayer.FindOrCreate(playerid),
+                new KeyStateChangedEventArgs((Keys) newkeys, (Keys) oldkeys));
 
             return true;
         }
@@ -589,7 +592,7 @@ namespace SampSharp.GameMode
         {
             var args = new PlayerUpdateEventArgs();
 
-            OnPlayerUpdate(GtaPlayer.FindOrCreate(playerid),  args);
+            OnPlayerUpdate(GtaPlayer.FindOrCreate(playerid), args);
 
             return !args.PreventPropagation;
         }
@@ -628,7 +631,8 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnVehicleStreamIn(int vehicleid, int forplayerid)
         {
-            OnVehicleStreamIn(GtaVehicle.FindOrCreate(vehicleid), new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
+            OnVehicleStreamIn(GtaVehicle.FindOrCreate(vehicleid),
+                new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
@@ -641,7 +645,8 @@ namespace SampSharp.GameMode
         /// <returns>This callback does not handle returns.</returns>
         internal bool OnVehicleStreamOut(int vehicleid, int forplayerid)
         {
-            OnVehicleStreamOut(GtaVehicle.FindOrCreate(vehicleid), new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
+            OnVehicleStreamOut(GtaVehicle.FindOrCreate(vehicleid),
+                new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
@@ -687,7 +692,8 @@ namespace SampSharp.GameMode
         /// </returns>
         internal bool OnDialogResponse(int playerid, int dialogid, int response, int listitem, string inputtext)
         {
-            OnDialogResponse(GtaPlayer.FindOrCreate(playerid), new DialogResponseEventArgs(GtaPlayer.FindOrCreate(playerid), dialogid, response, listitem, inputtext));
+            OnDialogResponse(GtaPlayer.FindOrCreate(playerid),
+                new DialogResponseEventArgs(GtaPlayer.FindOrCreate(playerid), dialogid, response, listitem, inputtext));
 
             return true;
         }
@@ -778,9 +784,10 @@ namespace SampSharp.GameMode
         /// </returns>
         internal bool OnPlayerClickTextDraw(int playerid, int clickedid)
         {
-            var player = GtaPlayer.FindOrCreate(playerid);
+            GtaPlayer player = GtaPlayer.FindOrCreate(playerid);
             OnPlayerClickTextDraw(player,
-                new ClickTextDrawEventArgs(player, clickedid == TextDraw.InvalidId ? null : TextDraw.FindOrCreate(clickedid)));
+                new ClickTextDrawEventArgs(player,
+                    clickedid == TextDraw.InvalidId ? null : TextDraw.FindOrCreate(clickedid)));
 
             return true;
         }
@@ -798,7 +805,7 @@ namespace SampSharp.GameMode
         /// </returns>
         internal bool OnPlayerClickPlayerTextDraw(int playerid, int playertextid)
         {
-            var player = GtaPlayer.FindOrCreate(playerid);
+            GtaPlayer player = GtaPlayer.FindOrCreate(playerid);
             OnPlayerClickPlayerTextDraw(player,
                 new ClickPlayerTextDrawEventArgs(player, playertextid == PlayerTextDraw.InvalidId
                     ? null
@@ -841,7 +848,7 @@ namespace SampSharp.GameMode
         internal bool OnPlayerEditObject(int playerid, bool playerobject, int objectid, int response, float fX, float fY,
             float fZ, float fRotX, float fRotY, float fRotZ)
         {
-            var player = GtaPlayer.FindOrCreate(playerid);
+            GtaPlayer player = GtaPlayer.FindOrCreate(playerid);
             if (playerobject)
             {
                 OnPlayerEditPlayerObject(player,
@@ -851,7 +858,8 @@ namespace SampSharp.GameMode
             else
             {
                 OnPlayerEditGlobalObject(player,
-                    new EditGlobalObjectEventArgs(player, GlobalObject.FindOrCreate(objectid), (EditObjectResponse) response,
+                    new EditGlobalObjectEventArgs(player, GlobalObject.FindOrCreate(objectid),
+                        (EditObjectResponse) response,
                         new Vector(fX, fY, fZ), new Vector(fRotX, fRotY, fRotZ)));
             }
 
@@ -910,14 +918,16 @@ namespace SampSharp.GameMode
             {
                 case ObjectType.GlobalObject:
                     OnPlayerSelectGlobalObject(GtaPlayer.FindOrCreate(playerid),
-                        new SelectGlobalObjectEventArgs(GtaPlayer.FindOrCreate(playerid), GlobalObject.FindOrCreate(objectid), modelid,
+                        new SelectGlobalObjectEventArgs(GtaPlayer.FindOrCreate(playerid),
+                            GlobalObject.FindOrCreate(objectid), modelid,
                             new Vector(fX, fY, fZ)));
                     break;
                 case ObjectType.PlayerObject:
-                    var player = GtaPlayer.FindOrCreate(playerid);
+                    GtaPlayer player = GtaPlayer.FindOrCreate(playerid);
 
-                    OnPlayerSelectPlayerObject(player, 
-                        new SelectPlayerObjectEventArgs(GtaPlayer.FindOrCreate(playerid), PlayerObject.FindOrCreate(player, objectid), modelid,
+                    OnPlayerSelectPlayerObject(player,
+                        new SelectPlayerObjectEventArgs(GtaPlayer.FindOrCreate(playerid),
+                            PlayerObject.FindOrCreate(player, objectid), modelid,
                             new Vector(fX, fY, fZ)));
                     break;
             }

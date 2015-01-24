@@ -19,12 +19,13 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerEnterVehicle"/>, <see cref="GtaPlayer.EnterVehicle"/> or <see cref="GtaVehicle.PlayerEnter"/> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerEnterVehicle" />, <see cref="GtaPlayer.EnterVehicle" /> or
+    ///     <see cref="GtaVehicle.PlayerEnter" /> event.
     /// </summary>
     public class EnterVehicleEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnterVehicleEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="EnterVehicleEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="vehicle">The vehicle.</param>
@@ -40,18 +41,19 @@ namespace SampSharp.GameMode.Events
          * Since the BaseMode.OnVehicleEnter can either have a GtaPlayer of GtaVehicle instance as sender,
          * we add both to the event args so we can access what's not the sender.
          */
+
         /// <summary>
-        /// Gets the player.
+        ///     Gets the player.
         /// </summary>
         public GtaPlayer Player { get; private set; }
 
         /// <summary>
-        /// Gets the vehicle.
+        ///     Gets the vehicle.
         /// </summary>
         public GtaVehicle Vehicle { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="Player"/> is passenger.
+        ///     Gets a value indicating whether the <see cref="Player" /> is passenger.
         /// </summary>
         public bool IsPassenger { get; private set; }
     }

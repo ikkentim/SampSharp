@@ -23,7 +23,7 @@ namespace SampSharp.GameMode.Events
     public class VehicleResprayedEventArgs : PlayerEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="VehicleResprayedEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="VehicleResprayedEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="color1">The color1.</param>
@@ -36,12 +36,12 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the color1.
+        ///     Gets the color1.
         /// </summary>
         public int Color1 { get; private set; }
 
         /// <summary>
-        /// Gets the color2.
+        ///     Gets the color2.
         /// </summary>
         public int Color2 { get; private set; }
     }

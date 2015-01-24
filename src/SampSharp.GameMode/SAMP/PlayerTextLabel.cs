@@ -22,7 +22,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.SAMP
 {
     /// <summary>
-    /// Represents a player text label.
+    ///     Represents a player text label.
     /// </summary>
     public class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel>, IIdentifiable, IOwnable<GtaPlayer>
     {
@@ -47,7 +47,7 @@ namespace SampSharp.GameMode.SAMP
         #region Properties
 
         /// <summary>
-        /// Gets or sets the color of this <see cref="PlayerTextLabel"/>.
+        ///     Gets or sets the color of this <see cref="PlayerTextLabel" />.
         /// </summary>
         public virtual Color Color
         {
@@ -60,7 +60,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Gets or sets the text of this <see cref="PlayerTextLabel"/>.
+        ///     Gets or sets the text of this <see cref="PlayerTextLabel" />.
         /// </summary>
         public virtual string Text
         {
@@ -73,7 +73,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Gets or sets the position of this <see cref="PlayerTextLabel"/>.
+        ///     Gets or sets the position of this <see cref="PlayerTextLabel" />.
         /// </summary>
         public virtual Vector Position
         {
@@ -89,7 +89,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Gets or sets the draw distance.
+        ///     Gets or sets the draw distance.
         /// </summary>
         public virtual float DrawDistance
         {
@@ -105,7 +105,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to test the line of sight.
+        ///     Gets or sets a value indicating whether to test the line of sight.
         /// </summary>
         public virtual bool TestLOS
         {
@@ -121,7 +121,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Gets or sets the attached player.
+        ///     Gets or sets the attached player.
         /// </summary>
         public virtual GtaPlayer AttachedPlayer
         {
@@ -137,7 +137,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Gets or sets the attached vehicle.
+        ///     Gets or sets the attached vehicle.
         /// </summary>
         public virtual GtaVehicle AttachedVehicle
         {
@@ -153,11 +153,12 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Gets the Identity of this instance.
+        ///     Gets the Identity of this instance.
         /// </summary>
         public virtual int Id { get; private set; }
+
         /// <summary>
-        /// Gets the owner of this IOwnable.
+        ///     Gets the owner of this IOwnable.
         /// </summary>
         public virtual GtaPlayer Owner { get; private set; }
 
@@ -166,7 +167,7 @@ namespace SampSharp.GameMode.SAMP
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerTextLabel"/> class.
+        ///     Initializes a new instance of the <see cref="PlayerTextLabel" /> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="id">The identifier.</param>
@@ -181,7 +182,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerTextLabel"/> class.
+        ///     Initializes a new instance of the <see cref="PlayerTextLabel" /> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="text">The text.</param>
@@ -207,7 +208,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerTextLabel"/> class.
+        ///     Initializes a new instance of the <see cref="PlayerTextLabel" /> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="text">The text.</param>
@@ -220,7 +221,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerTextLabel"/> class.
+        ///     Initializes a new instance of the <see cref="PlayerTextLabel" /> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="text">The text.</param>
@@ -230,9 +231,9 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="testLOS">if set to <c>true</c> [test los].</param>
         /// <param name="attachedPlayer">The attached player.</param>
         /// <exception cref="System.ArgumentNullException">
-        /// owner
-        /// or
-        /// attachedPlayer
+        ///     owner
+        ///     or
+        ///     attachedPlayer
         /// </exception>
         public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector position, float drawDistance,
             bool testLOS, GtaPlayer attachedPlayer)
@@ -254,7 +255,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerTextLabel"/> class.
+        ///     Initializes a new instance of the <see cref="PlayerTextLabel" /> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="text">The text.</param>
@@ -268,7 +269,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerTextLabel"/> class.
+        ///     Initializes a new instance of the <see cref="PlayerTextLabel" /> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="text">The text.</param>
@@ -278,9 +279,9 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="testLOS">if set to <c>true</c> [test los].</param>
         /// <param name="attachedVehicle">The attached vehicle.</param>
         /// <exception cref="System.ArgumentNullException">
-        /// owner
-        /// or
-        /// attachedVehicle
+        ///     owner
+        ///     or
+        ///     attachedVehicle
         /// </exception>
         public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector position, float drawDistance,
             bool testLOS, GtaVehicle attachedVehicle)
@@ -302,7 +303,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerTextLabel"/> class.
+        ///     Initializes a new instance of the <see cref="PlayerTextLabel" /> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="text">The text.</param>

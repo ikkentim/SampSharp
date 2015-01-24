@@ -108,12 +108,12 @@ namespace SampSharp.GameMode.Display
         #region Events
 
         /// <summary>
-        /// Occurs when this <see cref="Menu"/> was exited.
+        ///     Occurs when this <see cref="Menu" /> was exited.
         /// </summary>
         public event EventHandler<EventArgs> Exit;
 
         /// <summary>
-        /// Occurs when there has been responded to this <see cref="Menu"/>.
+        ///     Occurs when there has been responded to this <see cref="Menu" />.
         /// </summary>
         public event EventHandler<MenuRowEventArgs> Response;
 
@@ -259,9 +259,9 @@ namespace SampSharp.GameMode.Display
         #region Event raisers
 
         /// <summary>
-        /// Raises the <see cref="Exit" /> event.
+        ///     Raises the <see cref="Exit" /> event.
         /// </summary>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         public void OnExit(EventArgs e)
         {
             if (Exit != null)
@@ -269,9 +269,9 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        /// Raises the <see cref="Response" /> event.
+        ///     Raises the <see cref="Response" /> event.
         /// </summary>
-        /// <param name="e">The <see cref="MenuRowEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="MenuRowEventArgs" /> instance containing the event data.</param>
         public void OnResponse(MenuRowEventArgs e)
         {
             if (Response != null)

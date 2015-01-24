@@ -20,12 +20,13 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerEnterExitModShop" /> or <see cref="GtaPlayer.EnterExitModShop" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerEnterExitModShop" /> or <see cref="GtaPlayer.EnterExitModShop" />
+    ///     event.
     /// </summary>
     public class EnterModShopEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnterModShopEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="EnterModShopEventArgs" /> class.
         /// </summary>
         /// <param name="enterExit">The enter exit value.</param>
         /// <param name="interiorid">The interiorid.</param>
@@ -36,12 +37,12 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player is entering or exiting.
+        ///     Gets a value indicating whether the player is entering or exiting.
         /// </summary>
         public EnterExit EnterExit { get; private set; }
 
         /// <summary>
-        /// Gets the interior identifier of the mod shop.
+        ///     Gets the interior identifier of the mod shop.
         /// </summary>
         public int InteriorId { get; private set; }
     }

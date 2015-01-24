@@ -48,7 +48,7 @@ namespace SampSharp.GameMode.Tools
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="Disposable"/> class.
+        ///     Finalizes an instance of the <see cref="Disposable" /> class.
         /// </summary>
         ~Disposable()
         {

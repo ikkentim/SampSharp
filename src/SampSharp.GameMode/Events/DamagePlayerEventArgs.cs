@@ -20,12 +20,13 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerTakeDamage"/>, <see cref="BaseMode.PlayerGiveDamage"/>, <see cref="GtaPlayer.TakeDamage"/> or <see cref="GtaPlayer.GiveDamage"/> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerTakeDamage" />, <see cref="BaseMode.PlayerGiveDamage" />,
+    ///     <see cref="GtaPlayer.TakeDamage" /> or <see cref="GtaPlayer.GiveDamage" /> event.
     /// </summary>
     public class DamagePlayerEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the DamagePlayerEventArgs class.
+        ///     Initializes a new instance of the DamagePlayerEventArgs class.
         /// </summary>
         /// <param name="otherPlayer">The other player.</param>
         /// <param name="amount">Amount of damage done.</param>

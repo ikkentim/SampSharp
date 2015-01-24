@@ -18,12 +18,12 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.VehicleMod" /> or <see cref="GtaVehicle.Mod"/> event.
+    ///     Provides data for the <see cref="BaseMode.VehicleMod" /> or <see cref="GtaVehicle.Mod" /> event.
     /// </summary>
     public class VehicleModEventArgs : PlayerEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="VehicleModEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="VehicleModEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="componentId">The component identifier.</param>
@@ -34,10 +34,10 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets or sets the component identifier.
+        ///     Gets or sets the component identifier.
         /// </summary>
         /// <value>
-        /// The component identifier.
+        ///     The component identifier.
         /// </value>
         public int ComponentId { get; set; }
 

@@ -19,19 +19,21 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.PlayerEditPlayerObject" />, <see cref="GtaPlayer.EditPlayerObject" /> or <see cref="PlayerObject.Edited" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerEditPlayerObject" />, <see cref="GtaPlayer.EditPlayerObject" /> or
+    ///     <see cref="PlayerObject.Edited" /> event.
     /// </summary>
     public class EditPlayerObjectEventArgs : PositionEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EditPlayerObjectEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="EditPlayerObjectEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="object">The global object.</param>
         /// <param name="response">The response.</param>
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
-        public EditPlayerObjectEventArgs(GtaPlayer player, PlayerObject @object, EditObjectResponse response, Vector position, Vector rotation)
+        public EditPlayerObjectEventArgs(GtaPlayer player, PlayerObject @object, EditObjectResponse response,
+            Vector position, Vector rotation)
             : base(position)
         {
             Player = player;
@@ -41,22 +43,22 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        /// Gets the player.
+        ///     Gets the player.
         /// </summary>
         public GtaPlayer Player { get; private set; }
 
         /// <summary>
-        /// Gets the global object.
+        ///     Gets the global object.
         /// </summary>
         public PlayerObject Object { get; private set; }
 
         /// <summary>
-        /// Gets the edit object response.
+        ///     Gets the edit object response.
         /// </summary>
         public EditObjectResponse EditObjectResponse { get; private set; }
 
         /// <summary>
-        /// Gets the rotation.
+        ///     Gets the rotation.
         /// </summary>
         public Vector Rotation { get; private set; }
     }

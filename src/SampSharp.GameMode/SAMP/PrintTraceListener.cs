@@ -25,7 +25,7 @@ namespace SampSharp.GameMode.SAMP
     public class PrintTraceListener : TraceListener
     {
         /// <summary>
-        /// When overridden in a derived class, writes the specified message to the listener you create in the derived class.
+        ///     When overridden in a derived class, writes the specified message to the listener you create in the derived class.
         /// </summary>
         /// <param name="message">A message to write.</param>
         public override void Write(string message)
@@ -37,7 +37,8 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// When overridden in a derived class, writes a message to the listener you create in the derived class, followed by a line terminator.
+        ///     When overridden in a derived class, writes a message to the listener you create in the derived class, followed by a
+        ///     line terminator.
         /// </summary>
         /// <param name="message">A message to write.</param>
         public override void WriteLine(string message)

@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
@@ -40,14 +39,14 @@ namespace SampSharp.GameMode.Controllers
 
             gameMode.PlayerEditGlobalObject += (sender, args) =>
             {
-                var obj = args.Object;
+                GlobalObject obj = args.Object;
 
                 if (obj != null)
                     obj.OnEdited(args);
             };
             gameMode.PlayerSelectGlobalObject += (sender, args) =>
             {
-                var obj = args.Object;
+                GlobalObject obj = args.Object;
 
                 if (obj != null)
                     obj.OnSelected(args);

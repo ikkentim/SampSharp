@@ -45,7 +45,7 @@ namespace SampSharp.GameMode.World
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GtaPlayer"/> class.
+        ///     Initializes a new instance of the <see cref="GtaPlayer" /> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
         public GtaPlayer(int id)
@@ -722,7 +722,10 @@ namespace SampSharp.GameMode.World
         public event EventHandler<EditPlayerObjectEventArgs> EditPlayerObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEditAttachedObject(int,int,int,int,int,float,float,float,float,float,float,float,float,float)" /> is being called.
+        ///     Occurs when the
+        ///     <see
+        ///         cref="BaseMode.OnPlayerEditAttachedObject(int,int,int,int,int,float,float,float,float,float,float,float,float,float)" />
+        ///     is being called.
         ///     This callback is called when a player ends attached object edition mode.
         /// </summary>
         /// <remarks>
@@ -759,7 +762,8 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     This function can be used to change the spawn information of a specific player. It allows you to automatically set
-        ///     someone's spawn weapons, their team, skin and spawn position, normally used in case of mini games or automatic-spawn
+        ///     someone's spawn weapons, their team, skin and spawn position, normally used in case of mini games or
+        ///     automatic-spawn
         ///     systems. This function is more crash-safe then using <see cref="Native.SetPlayerSkin" /> in
         ///     <see cref="BaseMode.OnPlayerSpawn" /> and/or <see cref="BaseMode.OnPlayerRequestClass(int,int)" />.
         /// </summary>
@@ -1244,7 +1248,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <remarks>
         ///     The exiting animation is not synced for other players.
-        ///     This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle(int,int,bool)" />, because the player isn't in
+        ///     This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle(int,int,bool)" />, because the
+        ///     player isn't in
         ///     the vehicle when the callback is called. Use <see cref="BaseMode.OnPlayerStateChange" /> instead.
         /// </remarks>
         public virtual void RemoveFromVehicle()

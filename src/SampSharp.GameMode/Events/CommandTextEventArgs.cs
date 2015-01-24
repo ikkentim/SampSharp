@@ -19,12 +19,12 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerCommandText" /> or <see cref="GtaPlayer.CommandText"/> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerCommandText" /> or <see cref="GtaPlayer.CommandText" /> event.
     /// </summary>
     public class CommandTextEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CommandTextEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="CommandTextEventArgs" /> class.
         /// </summary>
         /// <param name="text">The text sent by the player.</param>
         public CommandTextEventArgs(string text)
