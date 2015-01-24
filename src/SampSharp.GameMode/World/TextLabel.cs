@@ -21,6 +21,9 @@ using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
+    /// <summary>
+    /// Represents a 3d text label.
+    /// </summary>
     public class TextLabel : IdentifiedPool<TextLabel>, IIdentifiable
     {
         #region Fields
@@ -41,6 +44,9 @@ namespace SampSharp.GameMode.World
 
         #region Properties
 
+        /// <summary>
+        /// Gets or sets the color of this <see cref="TextLabel"/>.
+        /// </summary>
         public virtual Color Color
         {
             get { return _color; }
@@ -51,6 +57,9 @@ namespace SampSharp.GameMode.World
             }
         }
 
+        /// <summary>
+        /// Gets or sets the text of this <see cref="TextLabel"/>.
+        /// </summary>
         public virtual string Text
         {
             get { return _text; }
@@ -61,6 +70,9 @@ namespace SampSharp.GameMode.World
             }
         }
 
+        /// <summary>
+        /// Gets or sets the position of this <see cref="TextLabel"/>.
+        /// </summary>
         public virtual Vector Position
         {
             get { return _position; }
@@ -72,6 +84,9 @@ namespace SampSharp.GameMode.World
             }
         }
 
+        /// <summary>
+        /// Gets or sets the draw distance of this <see cref="TextLabel"/>.
+        /// </summary>
         public virtual float DrawDistance
         {
             get { return _drawDistance; }
@@ -83,6 +98,9 @@ namespace SampSharp.GameMode.World
             }
         }
 
+        /// <summary>
+        /// Gets or sets the virtual world of this <see cref="TextLabel"/>.
+        /// </summary>
         public virtual int VirtualWorld
         {
             get { return _virtualWorld; }
@@ -94,6 +112,9 @@ namespace SampSharp.GameMode.World
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the line of sight should be tested before drawing this <see cref="TextLabel"/>.
+        /// </summary>
         public virtual bool TestLOS
         {
             get { return _testLOS; }
@@ -105,12 +126,24 @@ namespace SampSharp.GameMode.World
             }
         }
 
+        /// <summary>
+        /// Gets the Identity of this <see cref="TextLabel"/>.
+        /// </summary>
         public virtual int Id { get; private set; }
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextLabel"/> class.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="drawDistance">The draw distance.</param>
+        /// <param name="virtualWorld">The virtual world.</param>
+        /// <param name="testLOS">if set to <c>true</c> the line of sight should be tested before drawing.</param>
         public TextLabel(string text, Color color, Vector position, float drawDistance, int virtualWorld, bool testLOS)
         {
             _text = text;
@@ -122,11 +155,26 @@ namespace SampSharp.GameMode.World
             Id = Native.Create3DTextLabel(text, color, position, drawDistance, virtualWorld, testLOS);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextLabel"/> class.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="drawDistance">The draw distance.</param>
+        /// <param name="virtualWorld">The virtual world.</param>
         public TextLabel(string text, Color color, Vector position, float drawDistance, int virtualWorld)
             : this(text, color, position, drawDistance, virtualWorld, true)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextLabel"/> class.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="drawDistance">The draw distance.</param>
         public TextLabel(string text, Color color, Vector position, float drawDistance)
             : this(text, color, position, drawDistance, -1, true)
         {
@@ -147,6 +195,12 @@ namespace SampSharp.GameMode.World
             Native.Delete3DTextLabel(Id);
         }
 
+        /// <summary>
+        /// Attaches this <see cref="TextLabel"/> to the specified <paramref name="player"/>.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <param name="offset">The offset.</param>
+        /// <exception cref="System.ArgumentNullException">player</exception>
         public virtual void AttachTo(GtaPlayer player, Vector offset)
         {
             CheckDisposure();
@@ -157,6 +211,12 @@ namespace SampSharp.GameMode.World
             Native.Attach3DTextLabelToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z);
         }
 
+        /// <summary>
+        /// Attaches this <see cref="TextLabel"/> to the specified <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">The vehicle.</param>
+        /// <param name="offset">The offset.</param>
+        /// <exception cref="System.ArgumentNullException">vehicle</exception>
         public virtual void AttachTo(GtaVehicle vehicle, Vector offset)
         {
             CheckDisposure();

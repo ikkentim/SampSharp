@@ -21,6 +21,9 @@ using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
+    /// <summary>
+    ///     Represents a gang zone.
+    /// </summary>
     public class GangZone : IdentifiedPool<GangZone>, IIdentifiable
     {
         /// <summary>
@@ -28,6 +31,13 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public const int InvalidId = Misc.InvalidGangZone;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="GangZone" /> class.
+        /// </summary>
+        /// <param name="minX">The minimum x.</param>
+        /// <param name="minY">The minimum y.</param>
+        /// <param name="maxX">The maximum x.</param>
+        /// <param name="maxY">The maximum y.</param>
         public GangZone(float minX, float minY, float maxX, float maxY)
         {
             Id = Native.GangZoneCreate(minX, minY, maxX, maxY);
@@ -38,16 +48,34 @@ namespace SampSharp.GameMode.World
             MaxY = maxY;
         }
 
+        /// <summary>
+        ///     Gets the minimum x value for this <see cref="GangZone" />.
+        /// </summary>
         public virtual float MinX { get; private set; }
 
+        /// <summary>
+        ///     Gets the minimum y value for this <see cref="GangZone" />.
+        /// </summary>
         public virtual float MinY { get; private set; }
 
+        /// <summary>
+        ///     Gets the maximum x value for this <see cref="GangZone" />.
+        /// </summary>
         public virtual float MaxX { get; private set; }
 
+        /// <summary>
+        ///     Gets the maximum y value for this <see cref="GangZone" />.
+        /// </summary>
         public virtual float MaxY { get; private set; }
 
+        /// <summary>
+        ///     Gets or sets the color of this <see cref="GangZone" />.
+        /// </summary>
         public virtual Color Color { get; set; }
 
+        /// <summary>
+        ///     Gets the Identity of this <see cref="GangZone" />.
+        /// </summary>
         public virtual int Id { get; private set; }
 
         /// <summary>
@@ -61,6 +89,9 @@ namespace SampSharp.GameMode.World
             Native.GangZoneDestroy(Id);
         }
 
+        /// <summary>
+        ///     Shows this <see cref="GangZone" />.
+        /// </summary>
         public virtual void Show()
         {
             CheckDisposure();
@@ -68,30 +99,22 @@ namespace SampSharp.GameMode.World
             Native.GangZoneShowForAll(Id, Color);
         }
 
+        /// <summary>
+        ///     Shows this <see cref="GangZone" /> to the specified <paramref name="player" />.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <exception cref="System.ArgumentNullException">player</exception>
         public virtual void Show(GtaPlayer player)
         {
+            if (player == null) throw new ArgumentNullException("player");
             CheckDisposure();
 
-            Show(player, Color);
+            Native.GangZoneShowForPlayer(player.Id, Id, Color);
         }
 
-        public virtual void Show(Color color)
-        {
-            CheckDisposure();
-
-            Native.GangZoneShowForAll(Id, color);
-        }
-
-        public virtual void Show(GtaPlayer player, Color color)
-        {
-            CheckDisposure();
-
-            if (player == null)
-                throw new ArgumentNullException("player");
-
-            Native.GangZoneShowForPlayer(player.Id, Id, color);
-        }
-
+        /// <summary>
+        ///     Hides this <see cref="GangZone" />.
+        /// </summary>
         public virtual void Hide()
         {
             CheckDisposure();
@@ -99,20 +122,23 @@ namespace SampSharp.GameMode.World
             Native.GangZoneHideForAll(Id);
         }
 
+        /// <summary>
+        ///     Hides this <see cref="GangZone" /> for the specified <paramref name="player" />.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <exception cref="System.ArgumentNullException">player</exception>
         public virtual void Hide(GtaPlayer player)
         {
+            if (player == null) throw new ArgumentNullException("player");
             CheckDisposure();
 
             Native.GangZoneHideForPlayer(player.Id, Id);
         }
 
-        public virtual void Flash()
-        {
-            CheckDisposure();
-
-            Native.GangZoneFlashForAll(Id, Color);
-        }
-
+        /// <summary>
+        ///     Flashes this <see cref="GangZone" />.
+        /// </summary>
+        /// <param name="color">The color.</param>
         public virtual void Flash(Color color)
         {
             CheckDisposure();
@@ -120,23 +146,34 @@ namespace SampSharp.GameMode.World
             Native.GangZoneFlashForAll(Id, color);
         }
 
+        /// <summary>
+        ///     Flashes this <see cref="GangZone" /> for the specified <paramref name="player" />.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <exception cref="System.ArgumentNullException">player</exception>
         public virtual void Flash(GtaPlayer player)
         {
-            CheckDisposure();
-
-            Flash(player, Color);
+            if (player == null) throw new ArgumentNullException("player");
+            Flash(player, new Color());
         }
 
+        /// <summary>
+        ///     Flashes this <see cref="GangZone" /> for the specified <paramref name="player" />.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <param name="color">The color.</param>
+        /// <exception cref="System.ArgumentNullException">player</exception>
         public virtual void Flash(GtaPlayer player, Color color)
         {
+            if (player == null) throw new ArgumentNullException("player");
             CheckDisposure();
-
-            if (player == null)
-                throw new ArgumentNullException("player");
 
             Native.GangZoneFlashForPlayer(player.Id, Id, color);
         }
 
+        /// <summary>
+        ///     Stops this <see cref="GangZone" /> from flash.
+        /// </summary>
         public virtual void StopFlash()
         {
             CheckDisposure();
@@ -144,6 +181,11 @@ namespace SampSharp.GameMode.World
             Native.GangZoneStopFlashForAll(Id);
         }
 
+        /// <summary>
+        ///     Stops this <see cref="GangZone" /> from flash for the specified player.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <exception cref="System.ArgumentNullException">player</exception>
         public virtual void StopFlash(GtaPlayer player)
         {
             CheckDisposure();
