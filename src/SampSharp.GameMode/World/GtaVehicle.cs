@@ -157,7 +157,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets this Vehicle's engine status. If True, the engine is running.
+        ///     Gets or tests this Vehicle's engine status. If True, the engine is running.
         /// </summary>
         public virtual bool Engine
         {
@@ -167,10 +167,16 @@ namespace SampSharp.GameMode.World
                 GetParams(out value, out misc, out misc, out misc, out misc, out misc, out misc);
                 return value;
             }
+            set
+            {
+                bool a, b, c, d, e, f, g;
+                GetParams(out a, out b, out c, out d, out e, out f, out g);
+                SetParams(value, b, c, d, e, f, g);
+            }
         }
 
         /// <summary>
-        ///     Gets this Vehicle's lights' state. If True the lights are on.
+        ///     Gets or sets this Vehicle's lights' state. If True the lights are on.
         /// </summary>
         public virtual bool Lights
         {
@@ -180,10 +186,16 @@ namespace SampSharp.GameMode.World
                 GetParams(out misc, out value, out misc, out misc, out misc, out misc, out misc);
                 return value;
             }
+            set
+            {
+                bool a, b, c, d, e, f, g;
+                GetParams(out a, out b, out c, out d, out e, out f, out g);
+                SetParams(a, value, c, d, e, f, g);
+            }
         }
 
         /// <summary>
-        ///     Gets this Vehicle's alarm state. If True the alarm is (or was) sounding.
+        ///     Gets or sets this Vehicle's alarm state. If True the alarm is (or was) sounding.
         /// </summary>
         public virtual bool Alarm
         {
@@ -193,10 +205,16 @@ namespace SampSharp.GameMode.World
                 GetParams(out misc, out misc, out value, out misc, out misc, out misc, out misc);
                 return value;
             }
+            set
+            {
+                bool a, b, c, d, e, f, g;
+                GetParams(out a, out b, out c, out d, out e, out f, out g);
+                SetParams(a, b, value, d, e, f, g);
+            }
         }
 
         /// <summary>
-        ///     Gets the lock status of the doors of this Vehicle. If True the doors are locked.
+        ///     Gets or sets the lock status of the doors of this Vehicle. If True the doors are locked.
         /// </summary>
         public virtual bool Doors
         {
@@ -206,10 +224,16 @@ namespace SampSharp.GameMode.World
                 GetParams(out misc, out misc, out misc, out value, out misc, out misc, out misc);
                 return value;
             }
+            set
+            {
+                bool a, b, c, d, e, f, g;
+                GetParams(out a, out b, out c, out d, out e, out f, out g);
+                SetParams(a, b, c, value, e, f, g);
+            }
         }
 
         /// <summary>
-        ///     Gets the bonnet/hood status of this Vehicle. If True, it's open.
+        ///     Gets or sets the bonnet/hood status of this Vehicle. If True, it's open.
         /// </summary>
         public virtual bool Bonnet
         {
@@ -219,10 +243,16 @@ namespace SampSharp.GameMode.World
                 GetParams(out misc, out value, out misc, out misc, out value, out misc, out misc);
                 return value;
             }
+            set
+            {
+                bool a, b, c, d, e, f, g;
+                GetParams(out a, out b, out c, out d, out e, out f, out g);
+                SetParams(a, b, c, d, value, f, g);
+            }
         }
 
         /// <summary>
-        ///     Gets the boot/trunk status of this Vehicle. True means it is open.
+        ///     Gets or sets the boot/trunk status of this Vehicle. True means it is open.
         /// </summary>
         public virtual bool Boot
         {
@@ -232,10 +262,16 @@ namespace SampSharp.GameMode.World
                 GetParams(out misc, out value, out misc, out misc, out misc, out value, out misc);
                 return value;
             }
+            set
+            {
+                bool a, b, c, d, e, f, g;
+                GetParams(out a, out b, out c, out d, out e, out f, out g);
+                SetParams(a, b, c, d, e, value, g);
+            }
         }
 
         /// <summary>
-        ///     Gets the objective status of this Vehicle. True means the objective is on.
+        ///     Gets or sets the objective status of this Vehicle. True means the objective is on.
         /// </summary>
         public virtual bool Objective
         {
@@ -244,6 +280,12 @@ namespace SampSharp.GameMode.World
                 bool value, misc;
                 GetParams(out misc, out value, out misc, out misc, out misc, out misc, out value);
                 return value;
+            }
+            set
+            {
+                bool a, b, c, d, e, f, g;
+                GetParams(out a, out b, out c, out d, out e, out f, out g);
+                SetParams(a, b, c, d, e, f, value);
             }
         }
 
