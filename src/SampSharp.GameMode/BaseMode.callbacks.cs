@@ -877,7 +877,7 @@ namespace SampSharp.GameMode
         /// <param name="response">0 if they canceled (ESC) or 1 if they clicked the save icon.</param>
         /// <param name="index">Slot ID of the attached object that was edited.</param>
         /// <param name="modelid">The model of the attached object that was edited.</param>
-        /// <param name="boneid">The bone of the attached object that was edited.</param>
+        /// <param name="boneid">The id of the bone the attached object that was edited.</param>
         /// <param name="fOffsetX">The X offset for the attached object that was edited.</param>
         /// <param name="fOffsetY">The Y offset for the attached object that was edited.</param>
         /// <param name="fOffsetZ">The Z offset for the attached object that was edited.</param>
@@ -893,7 +893,7 @@ namespace SampSharp.GameMode
             float fScaleY, float fScaleZ)
         {
             OnPlayerEditAttachedObject(GtaPlayer.FindOrCreate(playerid),
-                new EditAttachedObjectEventArgs((EditObjectResponse) response, index, modelid, boneid,
+                new EditAttachedObjectEventArgs((EditObjectResponse) response, index, modelid, (Bone) boneid,
                     new Vector(fOffsetX, fOffsetY, fOffsetZ), new Vector(fRotX, fRotY, fRotZ),
                     new Vector(fScaleX, fScaleY, fScaleZ)));
 
