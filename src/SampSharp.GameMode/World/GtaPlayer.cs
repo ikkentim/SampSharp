@@ -1148,32 +1148,14 @@ namespace SampSharp.GameMode.World
         /// <param name="materialcolor1">The first object color to set.</param>
         /// <param name="materialcolor2">The second object color to set.</param>
         /// <returns>True on success, False otherwise.</returns>
-        public virtual bool SetAttachedObject(int index, int modelid, int bone, Vector offset, Vector rotation,
+        public virtual bool SetAttachedObject(int index, int modelid, Bone bone, Vector offset, Vector rotation,
             Vector scale, Color materialcolor1, Color materialcolor2)
         {
             CheckDisposure();
 
-            return Native.SetPlayerAttachedObject(Id, index, modelid, bone, offset.X, offset.Y, offset.Z,
+            return Native.SetPlayerAttachedObject(Id, index, modelid, (int) bone, offset.X, offset.Y, offset.Z,
                 rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z,
                 materialcolor1.GetColorValue(ColorFormat.ARGB), materialcolor2.GetColorValue(ColorFormat.ARGB));
-        }
-
-        /// <summary>
-        ///     Attach an object to a specific bone on this Player.
-        /// </summary>
-        /// <param name="index">The index (slot) to assign the object to (0-9).</param>
-        /// <param name="modelid">The model to attach.</param>
-        /// <param name="bone">The bone to attach the object to.</param>
-        /// <param name="offset">offset for the object position.</param>
-        /// <param name="rotation">rotation of the object.</param>
-        /// <param name="scale">scale of the object.</param>
-        /// <param name="materialcolor1">The first object color to set.</param>
-        /// <param name="materialcolor2">The second object color to set.</param>
-        /// <returns>True on success, False otherwise.</returns>
-        public virtual bool SetAttachedObject(int index, int modelid, Bone bone, Vector offset, Vector rotation,
-            Vector scale, Color materialcolor1, Color materialcolor2)
-        {
-            return SetAttachedObject(index, modelid, (int) bone, offset, rotation, scale, materialcolor1, materialcolor2);
         }
 
         /// <summary>

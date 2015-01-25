@@ -849,12 +849,12 @@ namespace SampSharp.GameMode
         /// <param name="fScaleY">The Y scale for the attached object that was edited.</param>
         /// <param name="fScaleZ">The Z scale for the attached object that was edited.</param>
         /// <returns>This callback does not handle returns.</returns>
-        internal bool OnPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid,
+        internal bool OnPlayerEditAttachedObject(int playerid, int response, int index, int modelid, Bone bone,
             float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX,
             float fScaleY, float fScaleZ)
         {
             OnPlayerEditAttachedObject(new PlayerEditAttachedObjectEventArgs(playerid, (EditObjectResponse) response,
-                index, modelid, boneid, new Vector(fOffsetX, fOffsetY, fOffsetZ), new Vector(fRotX, fRotY, fRotZ),
+                index, modelid, bone, new Vector(fOffsetX, fOffsetY, fOffsetZ), new Vector(fRotX, fRotY, fRotZ),
                 new Vector(fScaleX, fScaleY, fScaleZ)));
 
             return true;
