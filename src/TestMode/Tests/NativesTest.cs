@@ -16,6 +16,7 @@
 using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.World;
 
 namespace TestMode.Tests
 {
@@ -43,8 +44,9 @@ namespace TestMode.Tests
 
             Console.WriteLine("CALLING CreateVehicle");
             int vid = Native.CallNative("CreateVehicle", __arglist(400, 50.50f, 60.60f, 70.70f, 0.0f, -1, -1, -1));
-            Console.WriteLine("pos: {0}",
-                Native.GetVehiclePos(vid));
+            float xx, yy, zz;
+            Native.GetVehiclePos(vid, out xx, out yy, out zz);
+            Console.WriteLine("pos: {0}", new Vector(xx,yy,zz));
             Native.DestroyVehicle(vid);
 
             Console.WriteLine("CALLING GetVehicleModelInfo");

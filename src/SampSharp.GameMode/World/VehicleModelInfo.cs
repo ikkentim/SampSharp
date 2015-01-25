@@ -275,7 +275,12 @@ namespace SampSharp.GameMode.World
         /// <param name="infotype">The type of information to retrieve.</param>
         public Vector this[VehicleModelInfoType infotype]
         {
-            get { return Native.GetVehicleModelInfo(Type, infotype); }
+            get
+            {
+                float x, y, z;
+                Native.GetVehicleModelInfo((int)Type, (int)infotype, out x, out y, out z);
+                return new Vector(x, y, z);
+            }
         }
 
         /// <summary>

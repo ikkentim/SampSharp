@@ -80,7 +80,9 @@ namespace SampSharp.GameMode.SAMP
         {
             if (typeof (T) == typeof (string))
             {
-                return (T) Convert.ChangeType(Native.GetServerVarAsString(varName), TypeCode.String);
+                string value;
+                Native.GetServerVarAsString(varName, out value, 64);
+                return (T) Convert.ChangeType(value, TypeCode.String);
             }
 
             if (typeof (T) == typeof (bool))

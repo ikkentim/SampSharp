@@ -84,7 +84,12 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual string Name
         {
-            get { return Native.GetPlayerName(Id); }
+            get
+            {
+                string name;
+                Native.GetPlayerName(Id, out name, Limits.MaxPlayerName);
+                return name;
+            }
             set { Native.SetPlayerName(Id, value); }
         }
 
@@ -93,7 +98,12 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual float Angle
         {
-            get { return Native.GetPlayerFacingAngle(Id); }
+            get
+            {
+                float angle;
+                Native.GetPlayerFacingAngle(Id, out angle);
+                return angle;
+            }
             set { Native.SetPlayerFacingAngle(Id, value); }
         }
 
@@ -120,7 +130,12 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual float Health
         {
-            get { return Native.GetPlayerHealth(Id); }
+            get
+            {
+                float health;
+                Native.GetPlayerHealth(Id, out health);
+                return health;
+            }
             set { Native.SetPlayerHealth(Id, value); }
         }
 
@@ -129,7 +144,12 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual float Armour
         {
-            get { return Native.GetPlayerArmour(Id); }
+            get
+            {
+                float armour;
+                Native.GetPlayerArmour(Id, out armour);
+                return armour;
+            }
             set { Native.SetPlayerArmour(Id, value); }
         }
 
@@ -240,7 +260,12 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual string IP
         {
-            get { return Native.GetPlayerIp(Id); }
+            get
+            {
+                string ip;
+                Native.GetPlayerIp(Id, out ip, 16);
+                return ip;
+            }
         }
 
         /// <summary>
@@ -305,7 +330,7 @@ namespace SampSharp.GameMode.World
         public virtual SpecialAction SpecialAction
         {
             get { return (SpecialAction) Native.GetPlayerSpecialAction(Id); }
-            set { Native.SetPlayerSpecialAction(Id, value); }
+            set { Native.SetPlayerSpecialAction(Id, (int)value); }
         }
 
         /// <summary>
@@ -313,8 +338,14 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual Vector CameraPosition
         {
-            get { return Native.GetPlayerCameraPos(Id); }
-            set { Native.SetPlayerCameraPos(Id, value); }
+            get
+            {
+                float x, y, z;
+
+                Native.GetPlayerCameraPos(Id, out x, out y, out z);
+                return new Vector(x, y, z);
+            }
+            set { Native.SetPlayerCameraPos(Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
@@ -322,7 +353,12 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual Vector CameraFrontVector
         {
-            get { return Native.GetPlayerCameraFrontVector(Id); }
+            get
+            {
+                float x, y, z;
+                Native.GetPlayerCameraFrontVector(Id, out x, out y, out z);
+                return new Vector(x, y, z);
+            }
         }
 
         /// <summary>
@@ -407,8 +443,13 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual Vector Position
         {
-            get { return Native.GetPlayerPos(Id); }
-            set { Native.SetPlayerPos(Id, value); }
+            get
+            {
+                float x, y, z;
+                Native.GetPlayerPos(Id, out x, out y, out z);
+                return new Vector(x, y, z);
+            }
+            set { Native.SetPlayerPos(Id, value.X, value.Y, value.Z); }
         }
 
         #endregion
@@ -444,7 +485,12 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual string NetworkStats
         {
-            get { return Native.GetPlayerNetworkStats(Id); }
+            get
+            {
+                string stats;
+                Native.GetPlayerNetworkStats(Id, out stats, 256);
+                return stats;
+            }
         }
 
         /// <summary>
@@ -452,7 +498,12 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual string Version
         {
-            get { return Native.GetPlayerVersion(Id); }
+            get
+            {
+                string version;
+                Native.GetPlayerVersion(Id, out version, 64);
+                return version;
+            }
         }
 
         /// <summary>
@@ -460,7 +511,12 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual string GPCI
         {
-            get { return Native.gpci(Id); }
+            get
+            {
+                string gpci;
+                Native.gpci(Id, out gpci, 64);
+                return gpci;
+            }
         }
 
         /// <summary>
@@ -784,8 +840,8 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.SetSpawnInfo(Id, team, skin, position, rotation, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
-                weapon3, weapon3Ammo);
+            Native.SetSpawnInfo(Id, team, skin, position.X,position.Y,position.Z, rotation, (int)weapon1, weapon1Ammo, (int)weapon2, weapon2Ammo,
+                (int)weapon3, weapon3Ammo);
         }
 
         /// <summary>
@@ -815,7 +871,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.SetPlayerPosFindZ(Id, position);
+            Native.SetPlayerPosFindZ(Id, position.X, position.Y, position.Z);
         }
 
         /// <summary>
@@ -828,7 +884,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            return Native.IsPlayerInRangeOfPoint(Id, range, point);
+            return Native.IsPlayerInRangeOfPoint(Id, range, point.X, point.Y, point.Z);
         }
 
         /// <summary>
@@ -840,7 +896,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            return Native.GetPlayerDistanceFromPoint(Id, point);
+            return Native.GetPlayerDistanceFromPoint(Id, point.X, point.Y, point.Z);
         }
 
         /// <summary>
@@ -1398,7 +1454,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.SetPlayerCheckpoint(Id, point, size);
+            Native.SetPlayerCheckpoint(Id, point.X, point.Y, point.Z, size);
         }
 
         /// <summary>
@@ -1422,7 +1478,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.SetPlayerRaceCheckpoint(Id, type, point, nextPosition, size);
+            Native.SetPlayerRaceCheckpoint(Id, (int)type, point.X, point.Y, point.Z, nextPosition.X, nextPosition.Y, nextPosition.Z, size);
         }
 
         /// <summary>
@@ -1505,7 +1561,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            return Native.SetPlayerMapIcon(Id, iconid, position, markertype, color, (int) style);
+            return Native.SetPlayerMapIcon(Id, iconid, position.X, position.Y, position.Z, (int)markertype, color, (int)style);
         }
 
         /// <summary>
@@ -1528,7 +1584,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.SetPlayerCameraLookAt(Id, point, cut);
+            Native.SetPlayerCameraLookAt(Id, point.X, point.Y, point.Z, (int)cut);
         }
 
         /// <summary>
@@ -1539,7 +1595,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.SetPlayerCameraLookAt(Id, point, CameraCut.Cut);
+            SetCameraLookAt(point, CameraCut.Cut);
         }
 
         /// <summary>
@@ -1553,7 +1609,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.InterpolateCameraPos(Id, from, to, time, cut);
+            Native.InterpolateCameraPos(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int)cut);
         }
 
         /// <summary>
@@ -1567,7 +1623,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.InterpolateCameraLookAt(Id, from, to, time, cut);
+            Native.InterpolateCameraLookAt(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int)cut);
         }
 
         /// <summary>
@@ -1921,7 +1977,7 @@ namespace SampSharp.GameMode.World
         /// <param name="radius">The explosion radius.</param>
         public static void CreateExplosionForAll(Vector position, int type, float radius)
         {
-            Native.CreateExplosion(position, type, radius);
+            Native.CreateExplosion(position.X, position.Y, position.Z, type, radius);
         }
 
         /// <summary>
@@ -1931,7 +1987,7 @@ namespace SampSharp.GameMode.World
         /// <param name="type">The type of explosion.</param>
         /// <param name="radius">The explosion radius.</param>
         /// <param name="interior">The interior of the explosion.</param>
-        public static void CreateExposionForAll(Vector position, int type, float radius, int interior)
+        public static void CreateExplosionForAll(Vector position, int type, float radius, int interior)
         {
             foreach (GtaPlayer p in All.Where(p => p.Interior == interior))
                 p.CreateExplosion(position, type, radius);
@@ -1945,7 +2001,7 @@ namespace SampSharp.GameMode.World
         /// <param name="radius">The explosion radius.</param>
         /// <param name="interior">The interior of the explosion.</param>
         /// <param name="virtualworld">The virtualworld of the explosion.</param>
-        public static void CreateExposionForAll(Vector position, int type, float radius, int interior, int virtualworld)
+        public static void CreateExplosionForAll(Vector position, int type, float radius, int interior, int virtualworld)
         {
             foreach (GtaPlayer p in All.Where(p => p.Interior == interior && p.VirtualWorld == virtualworld))
                 p.CreateExplosion(position, type, radius);
@@ -1964,7 +2020,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.CreateExplosionForPlayer(Id, position, type, radius);
+            Native.CreateExplosionForPlayer(Id, position.X, position.Y, position.Z, type, radius);
         }
 
         /// <summary>

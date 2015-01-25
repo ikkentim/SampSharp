@@ -82,7 +82,7 @@ namespace SampSharp.GameMode.SAMP
             {
                 _position = value;
                 Dispose();
-                Id = Native.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position, DrawDistance,
+                Id = Native.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
                     AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
@@ -98,7 +98,7 @@ namespace SampSharp.GameMode.SAMP
             {
                 _drawDistance = value;
                 Dispose();
-                Id = Native.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position, DrawDistance,
+                Id = Native.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
                     AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
@@ -114,7 +114,7 @@ namespace SampSharp.GameMode.SAMP
             {
                 _testLOS = value;
                 Dispose();
-                Id = Native.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position, DrawDistance,
+                Id = Native.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
                     AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
@@ -130,7 +130,7 @@ namespace SampSharp.GameMode.SAMP
             {
                 _attachedPlayer = value;
                 Dispose();
-                Id = Native.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position, DrawDistance,
+                Id = Native.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
                     AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
@@ -146,7 +146,7 @@ namespace SampSharp.GameMode.SAMP
             {
                 _attachedVehicle = value;
                 Dispose();
-                Id = Native.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position, DrawDistance,
+                Id = Native.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
                     AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
@@ -203,7 +203,7 @@ namespace SampSharp.GameMode.SAMP
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            Id = Native.CreatePlayer3DTextLabel(owner.Id, text, color, position, drawDistance,
+            Id = Native.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z, drawDistance,
                 GtaPlayer.InvalidId, GtaVehicle.InvalidId, testLOS);
         }
 
@@ -250,7 +250,7 @@ namespace SampSharp.GameMode.SAMP
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            Id = Native.CreatePlayer3DTextLabel(owner.Id, text, color, position, drawDistance,
+            Id = Native.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z, drawDistance,
                 attachedPlayer.Id, GtaVehicle.InvalidId, testLOS);
         }
 
@@ -298,7 +298,7 @@ namespace SampSharp.GameMode.SAMP
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            Id = Native.CreatePlayer3DTextLabel(owner.Id, text, color, position, drawDistance,
+            Id = Native.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z, drawDistance,
                 GtaPlayer.InvalidId, attachedVehicle.Id, testLOS);
         }
 

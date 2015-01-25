@@ -139,8 +139,7 @@ namespace SampSharp.GameMode
         public virtual int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon1, int weapon1Ammo,
             Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
-            return Native.AddPlayerClass(modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo, weapon3,
-                weapon3Ammo);
+            return Native.AddPlayerClass(modelid, position.X, position.Y, position.Z, zAngle, (int)weapon1, weapon1Ammo, (int)weapon2, weapon2Ammo, (int)weapon3, weapon3Ammo);
         }
 
         /// <summary>
@@ -160,7 +159,7 @@ namespace SampSharp.GameMode
         public virtual int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon1, int weapon1Ammo,
             Weapon weapon2, int weapon2Ammo)
         {
-            return Native.AddPlayerClass(modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo, 0, 0);
+            return AddPlayerClass(modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo, Weapon.None, 0);
         }
 
 
@@ -178,7 +177,7 @@ namespace SampSharp.GameMode
         /// </returns>
         public virtual int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon, int weaponAmmo)
         {
-            return Native.AddPlayerClass(modelid, position, zAngle, weapon, weaponAmmo, 0, 0, 0, 0);
+            return AddPlayerClass(modelid, position, zAngle, weapon, weaponAmmo, Weapon.None, 0, Weapon.None, 0);
         }
 
 
@@ -194,7 +193,7 @@ namespace SampSharp.GameMode
         /// </returns>
         public virtual int AddPlayerClass(int modelid, Vector position, float zAngle)
         {
-            return Native.AddPlayerClass(modelid, position, zAngle, 0, 0, 0, 0, 0, 0);
+            return AddPlayerClass(modelid, position, zAngle, Weapon.None, 0, Weapon.None, 0, Weapon.None, 0);
         }
 
         /// <summary>
@@ -214,8 +213,7 @@ namespace SampSharp.GameMode
         public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon1,
             int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
-            return Native.AddPlayerClassEx(teamid, modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
-                weapon3, weapon3Ammo);
+            return Native.AddPlayerClassEx(teamid, modelid, position.X, position.Y, position.Z, zAngle, (int)weapon1, weapon1Ammo, (int)weapon2, weapon2Ammo, (int) weapon3, weapon3Ammo);
         }
 
         /// <summary>
@@ -233,8 +231,7 @@ namespace SampSharp.GameMode
         public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon1,
             int weapon1Ammo, Weapon weapon2, int weapon2Ammo)
         {
-            return Native.AddPlayerClassEx(teamid, modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
-                0, 0);
+            return AddPlayerClass(teamid, modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo, Weapon.None, 0);
         }
 
         /// <summary>
@@ -250,7 +247,7 @@ namespace SampSharp.GameMode
         public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon,
             int weaponAmmo)
         {
-            return Native.AddPlayerClassEx(teamid, modelid, position, zAngle, weapon, weaponAmmo, 0, 0, 0, 0);
+            return AddPlayerClass(teamid, modelid, position, zAngle, weapon, weaponAmmo, Weapon.None, 0, Weapon.None, 0);
         }
 
         /// <summary>
@@ -263,7 +260,7 @@ namespace SampSharp.GameMode
         /// <returns>The ID of the class that was just created.</returns>
         public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle)
         {
-            return Native.AddPlayerClassEx(teamid, modelid, position, zAngle, 0, 0, 0, 0, 0, 0);
+            return AddPlayerClass(teamid, modelid, position, zAngle, Weapon.None, 0, Weapon.None, 0, Weapon.None, 0);;
         }
 
         /// <summary>

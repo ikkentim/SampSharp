@@ -98,7 +98,12 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual float Angle
         {
-            get { return Native.GetVehicleZAngle(Id); }
+            get
+            {
+                float angle;
+                Native.GetVehicleZAngle(Id, out angle);
+                return angle;
+            }
             set { Native.SetVehicleZAngle(Id, value); }
         }
 
@@ -143,8 +148,13 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual Vector Velocity
         {
-            get { return Native.GetVehicleVelocity(Id); }
-            set { Native.SetVehicleVelocity(Id, value); }
+            get
+            {
+                float x, y, z;
+                Native.GetVehicleVelocity(Id, out x, out y, out z);
+                return new Vector(x, y, z);
+            }
+            set { Native.SetVehicleVelocity(Id, value.X,value.Y,value.Z); }
         }
 
         /// <summary>
@@ -320,8 +330,13 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual Vector Position
         {
-            get { return Native.GetVehiclePos(Id); }
-            set { Native.SetVehiclePos(Id, value); }
+            get
+            {
+                float x, y, z;
+                Native.GetVehiclePos(Id, out x, out y, out z);
+                return new Vector(x, y, z);
+            }
+            set { Native.SetVehiclePos(Id, value.X, value.Y, value.Z); }
         }
 
         #endregion
@@ -711,7 +726,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.SetVehicleAngularVelocity(Id, velocity);
+            Native.SetVehicleAngularVelocity(Id, velocity.X, velocity.Y, velocity.Z);
         }
 
         /// <summary>
@@ -750,19 +765,9 @@ namespace SampSharp.GameMode.World
         /// <returns>The offset vector.</returns>
         public static Vector GetVehicleModelInfo(VehicleModelType model, VehicleModelInfoType infotype)
         {
-            return Native.GetVehicleModelInfo(model, infotype);
-        }
-
-        /// <summary>
-        ///     Retrieve information about this Vehicle's model such as the size or position of seats.
-        /// </summary>
-        /// <param name="infotype">The type of information to retrieve.</param>
-        /// <returns>The offset vector.</returns>
-        public virtual Vector GetVehicleModelInfo(VehicleModelInfoType infotype)
-        {
-            CheckDisposed();
-
-            return Native.GetVehicleModelInfo(Model, infotype);
+            float x, y, z;
+            Native.GetVehicleModelInfo((int)model, (int)infotype, out x, out y, out z);
+            return new Vector(x, y, z);
         }
 
         /// <summary>

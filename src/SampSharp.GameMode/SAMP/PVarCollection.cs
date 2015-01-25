@@ -144,7 +144,11 @@ namespace SampSharp.GameMode.SAMP
             else if (typeof (T) == typeof (float))
                 value = Native.GetPVarFloat(_player.Id, varname);
             else if (typeof (T) == typeof (string))
-                value = Native.GetPVarString(_player.Id, varname);
+            {
+                string output;
+                Native.GetPVarString(_player.Id, varname, out output, 64);
+                value = output;
+            }
             else if (typeof (T) == typeof (bool))
                 value = Native.GetPVarInt(_player.Id, varname) > 0;
             return (T) Convert.ChangeType(value, typeof (T));
@@ -189,7 +193,11 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>The name at the given index.</returns>
         public string NameAtIndex(int index)
         {
-            return _player == null ? null : Native.GetPVarNameAtIndex(_player.Id, index);
+            if (_player == null) return null;
+
+            string name;
+            Native.GetPVarNameAtIndex(_player.Id, index, out name, 64);
+            return name;
         }
 
         /// <summary>

@@ -80,7 +80,7 @@ namespace SampSharp.GameMode.World
             {
                 _position = value;
                 Dispose();
-                Id = Native.Create3DTextLabel(Text, Color, Position, DrawDistance, VirtualWorld, TestLOS);
+                Id = Native.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance, VirtualWorld, TestLOS);
             }
         }
 
@@ -94,7 +94,7 @@ namespace SampSharp.GameMode.World
             {
                 _drawDistance = value;
                 Dispose();
-                Id = Native.Create3DTextLabel(Text, Color, Position, DrawDistance, VirtualWorld, TestLOS);
+                Id = Native.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance, VirtualWorld, TestLOS);
             }
         }
 
@@ -108,7 +108,7 @@ namespace SampSharp.GameMode.World
             {
                 _virtualWorld = value;
                 Dispose();
-                Id = Native.Create3DTextLabel(Text, Color, Position, DrawDistance, VirtualWorld, TestLOS);
+                Id = Native.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance, VirtualWorld, TestLOS);
             }
         }
 
@@ -123,7 +123,7 @@ namespace SampSharp.GameMode.World
             {
                 _testLOS = value;
                 Dispose();
-                Id = Native.Create3DTextLabel(Text, Color, Position, DrawDistance, VirtualWorld, TestLOS);
+                Id = Native.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance, VirtualWorld, TestLOS);
             }
         }
 
@@ -153,7 +153,7 @@ namespace SampSharp.GameMode.World
             _drawDistance = drawDistance;
             _virtualWorld = virtualWorld;
             _testLOS = testLOS;
-            Id = Native.Create3DTextLabel(text, color, position, drawDistance, virtualWorld, testLOS);
+            Id = Native.Create3DTextLabel(text, color, position.X, position.Y, position.Z, drawDistance, virtualWorld, testLOS);
         }
 
         /// <summary>
