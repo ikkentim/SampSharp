@@ -144,7 +144,8 @@ namespace SampSharp.GameMode.World
             ModelId = modelid;
             DrawDistance = drawDistance;
 
-            Id = Native.CreateObject(modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z, drawDistance);
+            Id = Native.CreateObject(modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z,
+                drawDistance);
         }
 
         /// <summary>
@@ -172,7 +173,7 @@ namespace SampSharp.GameMode.World
         /// </returns>
         public virtual int Move(Vector position, float speed, Vector rotation)
         {
-            return Native.MoveObject(Id, position.X,position.Y,position.Z, speed, rotation.X, rotation.Y, rotation.Z);
+            return Native.MoveObject(Id, position.X, position.Y, position.Z, speed, rotation.X, rotation.Y, rotation.Z);
         }
 
         /// <summary>
@@ -262,7 +263,8 @@ namespace SampSharp.GameMode.World
             if (vehicle == null)
                 throw new ArgumentNullException("vehicle");
 
-            Native.AttachObjectToVehicle(Id, vehicle.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z);
+            Native.AttachObjectToVehicle(Id, vehicle.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
+                rotation.Z);
         }
 
         /// <summary>
@@ -322,7 +324,8 @@ namespace SampSharp.GameMode.World
             if (globalObject == null)
                 throw new ArgumentNullException("globalObject");
 
-            Native.AttachObjectToObject(Id, globalObject.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, syncRotation);
+            Native.AttachObjectToObject(Id, globalObject.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
+                rotation.Z, syncRotation);
         }
 
         /// <summary>

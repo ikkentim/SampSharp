@@ -181,7 +181,8 @@ namespace SampSharp.GameMode.World
             ModelId = modelid;
             DrawDistance = drawDistance;
 
-            Id = Native.CreatePlayerObject(owner.Id, modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z, drawDistance);
+            Id = Native.CreatePlayerObject(owner.Id, modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y,
+                rotation.Z, drawDistance);
         }
 
         #endregion
@@ -201,7 +202,8 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            return Native.MovePlayerObject(Owner.Id, Id, position.X, position.Y, position.Z, speed, rotation.X, rotation.Y, rotation.Z);
+            return Native.MovePlayerObject(Owner.Id, Id, position.X, position.Y, position.Z, speed, rotation.X,
+                rotation.Y, rotation.Z);
         }
 
         /// <summary>
@@ -288,7 +290,8 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            Native.AttachPlayerObjectToPlayer(Owner.Id, Id, player.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z);
+            Native.AttachPlayerObjectToPlayer(Owner.Id, Id, player.Id, offset.X, offset.Y, offset.Z, rotation.X,
+                rotation.Y, rotation.Z);
         }
 
         /// <summary>
@@ -305,7 +308,8 @@ namespace SampSharp.GameMode.World
             if (vehicle == null)
                 throw new ArgumentNullException("vehicle");
 
-            Native.AttachPlayerObjectToVehicle(Owner.Id, Id, vehicle.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z);
+            Native.AttachPlayerObjectToVehicle(Owner.Id, Id, vehicle.Id, offset.X, offset.Y, offset.Z, rotation.X,
+                rotation.Y, rotation.Z);
         }
 
         /// <summary>

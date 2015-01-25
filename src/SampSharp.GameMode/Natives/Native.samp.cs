@@ -16,7 +16,6 @@
 using System;
 using System.Runtime.CompilerServices;
 using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Natives

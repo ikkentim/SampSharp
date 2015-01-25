@@ -154,7 +154,7 @@ namespace SampSharp.GameMode.World
                 Native.GetVehicleVelocity(Id, out x, out y, out z);
                 return new Vector(x, y, z);
             }
-            set { Native.SetVehicleVelocity(Id, value.X,value.Y,value.Z); }
+            set { Native.SetVehicleVelocity(Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
@@ -766,7 +766,7 @@ namespace SampSharp.GameMode.World
         public static Vector GetVehicleModelInfo(VehicleModelType model, VehicleModelInfoType infotype)
         {
             float x, y, z;
-            Native.GetVehicleModelInfo((int)model, (int)infotype, out x, out y, out z);
+            Native.GetVehicleModelInfo((int) model, (int) infotype, out x, out y, out z);
             return new Vector(x, y, z);
         }
 

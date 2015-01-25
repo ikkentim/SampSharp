@@ -330,7 +330,7 @@ namespace SampSharp.GameMode.World
         public virtual SpecialAction SpecialAction
         {
             get { return (SpecialAction) Native.GetPlayerSpecialAction(Id); }
-            set { Native.SetPlayerSpecialAction(Id, (int)value); }
+            set { Native.SetPlayerSpecialAction(Id, (int) value); }
         }
 
         /// <summary>
@@ -402,6 +402,18 @@ namespace SampSharp.GameMode.World
             {
                 int vehicleid = Native.GetPlayerSurfingVehicleID(Id);
                 return vehicleid == GtaVehicle.InvalidId ? null : GtaVehicle.Find(vehicleid);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the <see cref="GlobalObject"/> that this Player is surfing.
+        /// </summary>
+        public virtual GlobalObject SurfingObject
+        {
+            get
+            {
+                int objectid = Native.GetPlayerSurfingObjectID(Id);
+                return objectid == GlobalObject.InvalidId ? null : GlobalObject.Find(objectid);
             }
         }
 
@@ -840,8 +852,9 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.SetSpawnInfo(Id, team, skin, position.X,position.Y,position.Z, rotation, (int)weapon1, weapon1Ammo, (int)weapon2, weapon2Ammo,
-                (int)weapon3, weapon3Ammo);
+            Native.SetSpawnInfo(Id, team, skin, position.X, position.Y, position.Z, rotation, (int) weapon1, weapon1Ammo,
+                (int) weapon2, weapon2Ammo,
+                (int) weapon3, weapon3Ammo);
         }
 
         /// <summary>
@@ -1111,13 +1124,14 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     This function plays a crime report for this Player - just like in single-player when CJ commits a crime.
         /// </summary>
-        /// <param name="suspectid">The ID of the suspect player which will be described in the crime report.</param>
+        /// <param name="suspect">The suspect player which will be described in the crime report.</param>
         /// <param name="crime">The crime ID, which will be reported as a 10-code (i.e. 10-16 if 16 was passed as the crimeid).</param>
-        public virtual void PlayCrimeReport(int suspectid, int crime)
+        public virtual void PlayCrimeReport(GtaPlayer suspect, int crime)
         {
+            if (suspect == null) throw new ArgumentNullException("suspect");
             CheckDisposed();
 
-            Native.PlayCrimeReportForPlayer(Id, suspectid, crime);
+            Native.PlayCrimeReportForPlayer(Id, suspect.Id, crime);
         }
 
         /// <summary>
@@ -1478,7 +1492,8 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.SetPlayerRaceCheckpoint(Id, (int)type, point.X, point.Y, point.Z, nextPosition.X, nextPosition.Y, nextPosition.Z, size);
+            Native.SetPlayerRaceCheckpoint(Id, (int) type, point.X, point.Y, point.Z, nextPosition.X, nextPosition.Y,
+                nextPosition.Z, size);
         }
 
         /// <summary>
@@ -1561,7 +1576,8 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            return Native.SetPlayerMapIcon(Id, iconid, position.X, position.Y, position.Z, (int)markertype, color, (int)style);
+            return Native.SetPlayerMapIcon(Id, iconid, position.X, position.Y, position.Z, (int) markertype, color,
+                (int) style);
         }
 
         /// <summary>
@@ -1584,7 +1600,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.SetPlayerCameraLookAt(Id, point.X, point.Y, point.Z, (int)cut);
+            Native.SetPlayerCameraLookAt(Id, point.X, point.Y, point.Z, (int) cut);
         }
 
         /// <summary>
@@ -1609,7 +1625,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.InterpolateCameraPos(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int)cut);
+            Native.InterpolateCameraPos(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
         }
 
         /// <summary>
@@ -1623,7 +1639,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.InterpolateCameraLookAt(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int)cut);
+            Native.InterpolateCameraLookAt(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
         }
 
         /// <summary>
@@ -1735,20 +1751,6 @@ namespace SampSharp.GameMode.World
                 throw new ArgumentNullException("targetVehicle");
 
             SpectateVehicle(targetVehicle, SpectateMode.Normal);
-        }
-
-        /// <summary>
-        ///     Returns the ID of the object this Player is surfing on.
-        /// </summary>
-        /// <returns>
-        ///     The ID of the moving object the player is surfing. If the player isn't surfing a moving object, it will return
-        ///     <see cref="Misc.InvalidObjectId" />
-        /// </returns>
-        public virtual int GetSurfingObjectID()
-        {
-            CheckDisposed();
-
-            return Native.GetPlayerSurfingObjectID(Id);
         }
 
         /// <summary>
