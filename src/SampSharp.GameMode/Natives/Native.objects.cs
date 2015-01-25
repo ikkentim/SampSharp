@@ -169,7 +169,7 @@ namespace SampSharp.GameMode.Natives
             float rotZ);
 
         /// <summary>
-        ///     Stop a moving object after <see cref="MoveObject(int,Vector,float,Vector)" /> has been used.
+        ///     Stop a moving object after <see cref="MoveObject" /> has been used.
         /// </summary>
         /// <param name="objectid">The ID of the object to stop moving.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -240,7 +240,7 @@ namespace SampSharp.GameMode.Natives
             float rY, float rZ, float drawDistance);
 
         /// <summary>
-        ///     The same as <see cref="AttachObjectToPlayer(int,int,Vector,Vector)" /> but for objects which were created for
+        ///     The same as <see cref="AttachObjectToPlayer" /> but for objects which were created for
         ///     player.
         /// </summary>
         /// <param name="objectplayer">The id of the player which is linked with the object.</param>
@@ -280,7 +280,7 @@ namespace SampSharp.GameMode.Natives
         /// <param name="playerid">The ID of the player whose player-object to set the position of.</param>
         /// <param name="objectid">
         ///     The ID of the player-object to set the position of. Returned by
-        ///     <see cref="CreatePlayerObject(int,int,Vector,Vector,float)" />.
+        ///     <see cref="CreatePlayerObject" />.
         /// </param>
         /// <param name="x">The X coordinate to put the object at.</param>
         /// <param name="y">The Y coordinate to put the object at.</param>
@@ -343,7 +343,7 @@ namespace SampSharp.GameMode.Natives
         /// <param name="playerid">The ID of the player the object is associated to.</param>
         /// <param name="objectid">
         ///     The ID of the player-object to delete (returned by
-        ///     <see cref="CreatePlayerObject(int,int,Vector,Vector,float)" />).
+        ///     <see cref="CreatePlayerObject" />).
         /// </param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
@@ -367,7 +367,7 @@ namespace SampSharp.GameMode.Natives
             float rotX, float rotY, float rotZ);
 
         /// <summary>
-        ///     Stop a moving player-object after <see cref="MovePlayerObject(int,int,Vector,float,Vector)" /> has been used.
+        ///     Stop a moving player-object after <see cref="MovePlayerObject" /> has been used.
         /// </summary>
         /// <param name="playerid">The ID of the player whose player-object to stop.</param>
         /// <param name="objectid">The ID of the player-object to stop.</param>

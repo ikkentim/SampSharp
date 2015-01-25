@@ -162,7 +162,7 @@ namespace SampSharp.GameMode.Natives
 
         /// <summary>
         ///     This function is exactly the same as the
-        ///     <see cref="AddPlayerClass(int,Vector,float,Weapon,int,Weapon,int,Weapon,int)" /> function, with the addition of a
+        ///     <see cref="AddPlayerClass" /> function, with the addition of a
         ///     team
         ///     parameter.
         /// </summary>

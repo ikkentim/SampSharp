@@ -121,7 +121,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <remarks>
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as using
-        ///     <see cref="Native.SetPlayerPos(int,Vector)" />.
+        ///     <see cref="Native.SetPlayerPos" />.
         /// </remarks>
         public event EventHandler<PlayerVehicleEventArgs> PlayerExitVehicle;
 
@@ -131,7 +131,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <remarks>
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as using
-        ///     <see cref="Native.SetPlayerPos(int,Vector)" />.
+        ///     <see cref="Native.SetPlayerPos" />.
         /// </remarks>
         public event EventHandler<StateEventArgs> PlayerStateChanged;
 
@@ -174,7 +174,7 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     Occurs when the <see cref="OnObjectMoved(GlobalObject,EventArgs)" /> callback is being called.
-        ///     This callback is called when an object is moved after <see cref="Native.MoveObject(int,Vector,float,Vector)" />
+        ///     This callback is called when an object is moved after <see cref="Native.MoveObject" />
         ///     (when it stops moving).
         /// </summary>
         public event EventHandler<EventArgs> ObjectMoved;
@@ -182,7 +182,7 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerObjectMoved(PlayerObject,EventArgs)" /> callback is being called.
         ///     This callback is called when a player object is moved after
-        ///     <see cref="Native.MovePlayerObject(int,int,Vector,float,Vector)" /> (when it stops
+        ///     <see cref="Native.MovePlayerObject" /> (when it stops
         ///     moving).
         /// </summary>
         public event EventHandler<EventArgs> PlayerObjectMoved;
@@ -356,7 +356,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <remarks>
         ///     The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get
-        ///     a more accurate Z coordinate (or for teleportation; use <see cref="Native.SetPlayerPosFindZ(int,Vector)" />).
+        ///     a more accurate Z coordinate (or for teleportation; use <see cref="Native.SetPlayerPosFindZ" />).
         /// </remarks>
         public event EventHandler<PositionEventArgs> PlayerClickMap;
 

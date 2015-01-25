@@ -231,7 +231,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <remarks>
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as using
-        ///     <see cref="Native.SetPlayerPos(int,Vector)" />.
+        ///     <see cref="Native.SetPlayerPos" />.
         /// </remarks>
         /// <param name="playerid">The ID of the player who exited the vehicle.</param>
         /// <param name="vehicleid">The ID of the vehicle the player is exiting.</param>
@@ -250,7 +250,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <remarks>
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as using
-        ///     <see cref="Native.SetPlayerPos(int,Vector)" />.
+        ///     <see cref="Native.SetPlayerPos" />.
         /// </remarks>
         /// <param name="playerid">The ID of the player that changed state.</param>
         /// <param name="newstate">The player's new state.</param>
@@ -344,7 +344,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     This callback is called when an object is moved after <see cref="Native.MoveObject(int,Vector,float,Vector)" />
+        ///     This callback is called when an object is moved after <see cref="Native.MoveObject" />
         ///     (when it stops moving).
         /// </summary>
         /// <remarks>
@@ -361,8 +361,7 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     This callback is called when a player object is moved after
-        ///     <see cref="Native.MovePlayerObject(int,int,Vector,float,Vector)" /> (when it stops
-        ///     moving).
+        ///     <see cref="Native.MovePlayerObject" /> (when it stops moving).
         /// </summary>
         /// <param name="playerid">The playerid the object is assigned to.</param>
         /// <param name="objectid">The ID of the player-object that was moved.</param>
@@ -754,7 +753,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <remarks>
         ///     The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get
-        ///     a more accurate Z coordinate (or for teleportation; use <see cref="Native.SetPlayerPosFindZ(int,Vector)" />).
+        ///     a more accurate Z coordinate (or for teleportation; use <see cref="Native.SetPlayerPosFindZ" />).
         /// </remarks>
         /// <param name="playerid">The ID of the player that placed a target/waypoint.</param>
         /// <param name="fX">The X float coordinate where the player clicked.</param>

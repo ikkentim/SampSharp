@@ -287,10 +287,10 @@ namespace SampSharp.GameMode.Natives
         ///     Checks the player's level of drunkenness.
         /// </summary>
         /// <remarks>
-        ///     If the level is less than 2000, the player is sober. The player's level of drunkness goes down slowly automatically
+        ///     If the level is less than 2000, the player is sober. The player's level of drunkenness goes down slowly automatically
         ///     (26 levels per second) but will always reach zero at the end. The higher drunkenness levels affect the player's
         ///     camera, and the car driving handling. The level of drunkenness increases when the player drinks from a bottle (You
-        ///     can use <see cref="SetPlayerSpecialAction(int,SpecialAction)" /> to give them bottles).
+        ///     can use <see cref="SetPlayerSpecialAction" /> to give them bottles).
         /// </remarks>
         /// <param name="playerid">The player you want to check the drunkenness level of.</param>
         /// <returns>An integer with the level of drunkenness of the player.</returns>
@@ -746,7 +746,7 @@ namespace SampSharp.GameMode.Natives
         /// <param name="playerid">The ID of the player to remove the object from.</param>
         /// <param name="index">
         ///     The index of the object to remove (set with
-        ///     <see cref="SetPlayerAttachedObject(int,int,int,int,Vector,Vector,Vector,Color,Color)" />).
+        ///     <see cref="SetPlayerAttachedObject" />).
         /// </param>
         /// <returns>True on success, False otherwise.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
@@ -806,7 +806,7 @@ namespace SampSharp.GameMode.Natives
         ///     for use with <see cref="PlayerTextDrawSetSelectable" />).
         /// </summary>
         /// <remarks>
-        ///     When used with <see cref="PlayerTextDrawAlignment(int,int,TextDrawAlignment)" /> of alignment 3 (right), the x and
+        ///     When used with <see cref="PlayerTextDrawAlignment" /> of alignment 3 (right), the x and
         ///     y are the coordinates of the left most corner of the box. For alignment 2 (center) the x and y values need to
         ///     inverted (switch the two) and the x value is the overall width of the box. For all other alignments the x and y
         ///     coordinates are for the right most corner of the box.
@@ -1285,8 +1285,7 @@ namespace SampSharp.GameMode.Natives
         ///     Sets a checkpoint (red circle) for a player. Also shows a red blip on the radar.
         /// </summary>
         /// <remarks>
-        ///     Checkpoints created on server-created objects (<see cref="CreateObject(int,Vector,Vector,float)" />/
-        ///     <see cref="CreatePlayerObject(int,int,Vector,Vector,float)" />) will
+        ///     Checkpoints created on server-created objects (<see cref="CreateObject" />/<see cref="CreatePlayerObject" />) will
         ///     appear down on the 'real' ground, but will still function correctly. There is no fix available for this issue. A
         ///     pickup can be used instead.
         /// </remarks>
@@ -1401,7 +1400,7 @@ namespace SampSharp.GameMode.Natives
         /// <param name="playerid">The ID of the player whose icon to remove.</param>
         /// <param name="iconid">
         ///     The ID of the icon to remove. This is the second parameter of
-        ///     <see cref="SetPlayerMapIcon(int,int,Vector,PlayerMarkersMode,int,int)" />.
+        ///     <see cref="SetPlayerMapIcon" />.
         /// </param>
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
@@ -1467,7 +1466,7 @@ namespace SampSharp.GameMode.Natives
 
         /// <summary>
         ///     This function will return the current direction of player's aiming in 3-D space, the coords are relative to the
-        ///     camera position, see <see cref="GetPlayerCameraPos(int)" />.
+        ///     camera position, see <see cref="GetPlayerCameraPos" />.
         /// </summary>
         /// <param name="playerid">The ID of the player you want to obtain the camera front vector of.</param>
         /// <param name="x">A float to store the X coordinate, passed by reference.</param>
@@ -1500,8 +1499,7 @@ namespace SampSharp.GameMode.Natives
 
         /// <summary>
         ///     Attaches a player's camera to a player-object. They are able to move their camera while it is attached to an
-        ///     object. Can be used with <see cref="MovePlayerObject(int,int,Vector,float,Vector)" /> and
-        ///     <see cref="AttachPlayerObjectToVehicle(int,int,int,Vector,Vector)" />.
+        ///     object. Can be used with <see cref="MovePlayerObject" /> and <see cref="AttachPlayerObjectToVehicle" />.
         /// </summary>
         /// <param name="playerid">The ID of the player which will have their camera attached to a player-object.</param>
         /// <param name="playerobjectid">	The ID of the player-object to which the player's camera will be attached.</param>
@@ -1528,7 +1526,7 @@ namespace SampSharp.GameMode.Natives
 
         /// <summary>
         ///     Interpolate a player's camera's 'look at' point between two coordinates with a set speed. Can be be used with
-        ///     <see cref="InterpolateCameraPos(int,Vector,Vector,int,CameraCut)" />.
+        ///     <see cref="InterpolateCameraPos" />.
         /// </summary>
         /// <param name="playerid">The ID of the player the camera should be moved for.</param>
         /// <param name="fromX">The X position the camera should start to move from.</param>
@@ -1584,7 +1582,7 @@ namespace SampSharp.GameMode.Natives
 
         /// <summary>
         ///     Check if the player is inside their current set race checkpoint (
-        ///     <see cref="SetPlayerRaceCheckpoint(int,CheckpointType,Vector,Vector,float)" />).
+        ///     <see cref="SetPlayerRaceCheckpoint" />).
         /// </summary>
         /// <param name="playerid">The ID of the player to check.</param>
         /// <returns>True if player is in his checkpoint, otherwise False.</returns>

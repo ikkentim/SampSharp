@@ -604,7 +604,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <remarks>
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as using
-        ///     <see cref="Native.SetPlayerPos(int,Vector)" />.
+        ///     <see cref="Native.SetPlayerPos" />.
         /// </remarks>
         public event EventHandler<PlayerVehicleEventArgs> ExitVehicle;
 
@@ -614,7 +614,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <remarks>
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as using
-        ///     <see cref="Native.SetPlayerPos(int,Vector)" />.
+        ///     <see cref="Native.SetPlayerPos" />.
         /// </remarks>
         public event EventHandler<StateEventArgs> StateChanged;
 
@@ -740,7 +740,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <remarks>
         ///     The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get
-        ///     a more accurate Z coordinate (or for teleportation; use <see cref="Native.SetPlayerPosFindZ(int,Vector)" />).
+        ///     a more accurate Z coordinate (or for teleportation; use <see cref="Native.SetPlayerPosFindZ" />).
         /// </remarks>
         public event EventHandler<PositionEventArgs> ClickMap;
 
