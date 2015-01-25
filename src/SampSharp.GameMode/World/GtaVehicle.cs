@@ -634,11 +634,11 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="slot">The component slot to check for components.</param>
         /// <returns>The ID of the component installed in the specified slot.</returns>
-        public virtual int GetComponentInSlot(int slot)
+        public virtual int GetComponentInSlot(CarModType slot)
         {
             CheckDisposure();
 
-            return Native.GetVehicleComponentInSlot(Id, slot);
+            return Native.GetVehicleComponentInSlot(Id, (int) slot);
         }
 
         /// <summary>
