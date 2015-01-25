@@ -20,7 +20,8 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerClickPlayerTextDraw" />, <see cref="Display.PlayerTextDraw.Click" /> or
+    ///     Provides data for the <see cref="BaseMode.PlayerClickPlayerTextDraw" />,
+    ///     <see cref="Display.PlayerTextDraw.Click" /> or
     ///     <see cref="GtaPlayer.ClickPlayerTextDraw" /> event.
     /// </summary>
     public class ClickPlayerTextDrawEventArgs : EventArgs
