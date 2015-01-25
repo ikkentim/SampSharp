@@ -38,6 +38,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             }
 
             Type = type;
+            TestForValue = true;// default to true
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
         /// <summary>
         ///     Gets or sets whether input should be matches against the enum values.
-        ///     When False, the input will only be matches agains the names.
+        ///     When False, the input will only be matches against the names.
         /// </summary>
         public bool TestForValue { get; set; }
 

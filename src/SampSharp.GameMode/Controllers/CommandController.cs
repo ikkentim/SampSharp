@@ -43,6 +43,16 @@ namespace SampSharp.GameMode.Controllers
         /// <summary>
         ///     Loads all commands from the given assembly.
         /// </summary>
+        /// <param name="typeInAssembly">A type inside the assembly of who to load the commands from.</param>
+        /// <returns>The number of commands loaded.</returns>
+        public int RegisterCommands(Type typeInAssembly)
+        {
+            return RegisterCommands(Assembly.GetAssembly(typeInAssembly));
+        }
+
+        /// <summary>
+        ///     Loads all commands from the given assembly.
+        /// </summary>
         /// <param name="assembly">The assembly of who to load the commands from.</param>
         /// <returns>The number of commands loaded.</returns>
         public int RegisterCommands(Assembly assembly)
@@ -56,7 +66,7 @@ namespace SampSharp.GameMode.Controllers
                 foreach (MethodInfo method in assembly.GetTypes().SelectMany(t => t.GetMethods())
                     .Where(m => m.IsStatic && m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0))
                 {
-                    new DetectedCommand(method, method.GetCustomAttribute<CommandAttribute>().IgnoreCase);
+                    new DetectedCommand(method);
                     commandsCount++;
                 }
 
@@ -77,11 +87,11 @@ namespace SampSharp.GameMode.Controllers
         /// <summary>
         ///     Loads all commands from the assembly of the given type.
         /// </summary>
-        /// <typeparam name="T">A type of whose assembly to load.</typeparam>
+        /// <typeparam name="T">A type inside the assembly of who to load the commands from.</typeparam>
         /// <returns>The number of commands loaded.</returns>
         public int RegisterCommands<T>() where T : class
         {
-            return RegisterCommands(Assembly.GetAssembly(typeof (T)));
+            return RegisterCommands(typeof (T));
         }
 
         private void gameMode_PlayerCommandText(object sender, CommandTextEventArgs e)

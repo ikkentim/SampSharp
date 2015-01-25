@@ -26,57 +26,54 @@ namespace SampSharp.GameMode.SAMP.Commands
     /// </summary>
     public sealed class DetectedCommand : Command
     {
-        private static Func<string, ParameterAttribute[], string> _usageFormat = (name, parameters) =>
-            string.Format("Usage: /{0}{1}{2}", name, parameters.Any() ? ": " : string.Empty,
-                string.Join(" ", parameters.Select(
-                    p => p.Optional
-                        ? string.Format("({0})", p.DisplayName)
-                        : string.Format("[{0}]", p.DisplayName)
-                    ))
-                );
-
-        private static Func<Type, string, ParameterAttribute> _resolveParameterType = (type, name) =>
-        {
-            if (type == typeof (int)) return new IntegerAttribute(name);
-            if (type == typeof (string)) return new WordAttribute(name);
-            if (type == typeof (float)) return new FloatAttribute(name);
-            if (typeof (GtaPlayer).IsAssignableFrom(type)) return new PlayerAttribute(name);
-
-            return type.IsEnum ? new EnumAttribute(name, type) : null;
-        };
-
         private readonly ParameterInfo[] _parameterInfos;
 
+        static DetectedCommand()
+        {
+            UsageFormat = (name, parameters) =>
+                string.Format("Usage: /{0}{1}{2}", name, parameters.Any() ? ": " : string.Empty,
+                    string.Join(" ", parameters.Select(
+                        p => p.Optional
+                            ? string.Format("({0})", p.DisplayName)
+                            : string.Format("[{0}]", p.DisplayName)
+                        ))
+                    );
+
+            ResolveParameterType = (type, name) =>
+            {
+                if (type == typeof (int)) return new IntegerAttribute(name);
+                if (type == typeof (string)) return new WordAttribute(name);
+                if (type == typeof (float)) return new FloatAttribute(name);
+                if (typeof (GtaPlayer).IsAssignableFrom(type)) return new PlayerAttribute(name);
+
+                return type.IsEnum ? new EnumAttribute(name, type) : null;
+            };
+        }
         /// <summary>
         ///     Initializes a new instance of the <see cref="DetectedCommand" /> class.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <param name="ignoreCase">if set to <c>true</c> ignore case of command.</param>
         /// <exception cref="System.ArgumentNullException">Thrown if command is null.</exception>
         /// <exception cref="System.ArgumentException"></exception>
-        public DetectedCommand(MethodInfo command, bool ignoreCase)
+        public DetectedCommand(MethodInfo command)
         {
-            if (command == null)
-            {
-                throw new ArgumentNullException("command");
-            }
+            if (command == null) throw new ArgumentNullException("command");
+            
 
             _parameterInfos = command.GetParameters();
 
             var commandAttribute = command.GetCustomAttribute<CommandAttribute>();
             var groupAttribute = command.GetCustomAttribute<CommandGroupAttribute>();
-            if (commandAttribute == null)
-            {
-                throw new ArgumentException("method does not have CommandAttribute attached");
-            }
+
+            if (commandAttribute == null) throw new ArgumentException("method does not have CommandAttribute attached");
+
 
             if (groupAttribute != null)
-            {
                 Group = CommandGroup.All.FirstOrDefault(g => g.CommandPath == groupAttribute.Group);
-            }
+            
 
             Name = commandAttribute.Name;
-            IgnoreCase = ignoreCase;
+            IgnoreCase = commandAttribute.IgnoreCase;
             Alias = commandAttribute.Alias;
             Shortcut = commandAttribute.Shortcut;
             Command = command;
@@ -125,9 +122,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                                 .FirstOrDefault(a => a.Name == parameter.Name);
 
                             if (attribute != null)
-                            {
                                 attribute.Optional = parameter.HasDefaultValue;
-                            }
 
                             return attribute ?? ResolveParameterType(parameter.ParameterType, parameter.Name);
                         }).
@@ -220,21 +215,13 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <summary>
         ///     Gets or sets the usage message send when a wrongly formatted command is being processed.
         /// </summary>
-        public static Func<string, ParameterAttribute[], string> UsageFormat
-        {
-            get { return _usageFormat; }
-            set { _usageFormat = value; }
-        }
+        public static Func<string, ParameterAttribute[], string> UsageFormat { get; set; }
 
         /// <summary>
         ///     Gets or sets the method the find the parameter type of a parameter when no attribute was
         ///     attached to the parameter.
         /// </summary>
-        public static Func<Type, string, ParameterAttribute> ResolveParameterType
-        {
-            get { return _resolveParameterType; }
-            set { _resolveParameterType = value; }
-        }
+        public static Func<Type, string, ParameterAttribute> ResolveParameterType { get; set; }
 
         #endregion
 
@@ -254,18 +241,11 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             foreach (string str in CommandPaths)
             {
-                if (commandText == str || (IgnoreCase && commandText.ToLower() == str.ToLower()))
-                {
-                    commandText = string.Empty;
-                    return true;
-                }
+                if (!commandText.StartsWith(str) && (!IgnoreCase || !commandText.ToLower().StartsWith(str.ToLower())))
+                    continue;
 
-                if (commandText.StartsWith(str + " ") ||
-                    (IgnoreCase && commandText.ToLower().StartsWith(str.ToLower() + " ")))
-                {
-                    commandText = commandText.Substring(str.Length);
-                    return true;
-                }
+                commandText = commandText.Substring(str.Length);
+                return true;
             }
 
             return false;
@@ -297,24 +277,25 @@ namespace SampSharp.GameMode.SAMP.Commands
             {
                 player
             };
-            for (int idx = 0; idx < Command.GetParameters().Length - 1; idx++)
+
+            for (int paramIndex = 0; paramIndex < Command.GetParameters().Length - 1; paramIndex++)
             {
-                ParameterInfo parameterInfo = _parameterInfos[idx + 1];
-                ParameterAttribute parameter = Parameters[idx];
+                ParameterInfo parameterInfo = _parameterInfos[paramIndex + 1];
+                ParameterAttribute parameterAttribute = Parameters[paramIndex];
 
                 args = args.Trim();
-                object argument;
 
                 /*
                  * Check for missing optional parameters. This is obviously allowed.
                  */
-                if (args.Length == 0 && parameter.Optional)
+                if (args.Length == 0 && parameterAttribute.Optional)
                 {
                     arguments.Add(parameterInfo.DefaultValue);
                     continue;
                 }
 
-                if (args.Length == 0 || !parameter.Check(ref args, out argument))
+                object argument;
+                if (args.Length == 0 || !parameterAttribute.Check(ref args, out argument))
                 {
                     if (UsageFormat != null)
                     {
