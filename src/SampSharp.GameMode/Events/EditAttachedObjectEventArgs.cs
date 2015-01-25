@@ -31,17 +31,17 @@ namespace SampSharp.GameMode.Events
         /// <param name="response">EditObjectResponse.</param>
         /// <param name="index">Index of the attached object.</param>
         /// <param name="modelid">Model of the attached object.</param>
-        /// <param name="boneid">Id of the bone the object was attached to.</param>
+        /// <param name="bone">The bone the object was attached to.</param>
         /// <param name="offset">Offset of the attached object.</param>
         /// <param name="rotation">Rotation of the attached object.</param>
         /// <param name="scale">Scale of the attached object.</param>
-        public EditAttachedObjectEventArgs(EditObjectResponse response, int index, int modelid, int boneid,
+        public EditAttachedObjectEventArgs(EditObjectResponse response, int index, int modelid, Bone bone,
             Vector offset, Vector rotation, Vector scale)
         {
             EditObjectResponse = response;
             Index = index;
             ModelId = modelid;
-            BoneId = boneid;
+            Bone = bone;
             Offset = offset;
             Rotation = rotation;
             Scale = scale;
@@ -63,9 +63,9 @@ namespace SampSharp.GameMode.Events
         public int ModelId { get; private set; }
 
         /// <summary>
-        ///     Gets the boneid the object was attached to.
+        ///     Gets the Bone the object was attached to.
         /// </summary>
-        public int BoneId { get; private set; }
+        public Bone Bone { get; private set; }
 
         /// <summary>
         ///     Gets the offset of the attached object.
