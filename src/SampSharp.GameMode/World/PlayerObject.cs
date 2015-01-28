@@ -249,7 +249,7 @@ namespace SampSharp.GameMode.World
             CheckDisposed();
 
             Native.SetPlayerObjectMaterial(Owner.Id, Id, materialindex, modelid, txdname, texturename,
-                materialcolor.GetColorValue(ColorFormat.ARGB));
+                materialcolor.ToInteger(ColorFormat.ARGB));
         }
 
         /// <summary>
@@ -272,7 +272,7 @@ namespace SampSharp.GameMode.World
 
             Native.SetPlayerObjectMaterialText(Owner.Id, Id, text, materialindex, (int) materialsize,
                 fontface, fontsize, bold,
-                foreColor.GetColorValue(ColorFormat.ARGB), backColor.GetColorValue(ColorFormat.ARGB),
+                foreColor.ToInteger(ColorFormat.ARGB), backColor.ToInteger(ColorFormat.ARGB),
                 (int) textalignment);
         }
 

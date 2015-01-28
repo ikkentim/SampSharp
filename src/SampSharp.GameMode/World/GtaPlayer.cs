@@ -1235,7 +1235,7 @@ namespace SampSharp.GameMode.World
 
             return Native.SetPlayerAttachedObject(Id, index, modelid, (int) bone, offset.X, offset.Y, offset.Z,
                 rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z,
-                materialcolor1.GetColorValue(ColorFormat.ARGB), materialcolor2.GetColorValue(ColorFormat.ARGB));
+                materialcolor1.ToInteger(ColorFormat.ARGB), materialcolor2.ToInteger(ColorFormat.ARGB));
         }
 
         /// <summary>
@@ -1286,7 +1286,7 @@ namespace SampSharp.GameMode.World
         {
             CheckDisposed();
 
-            Native.SetPlayerChatBubble(Id, text, color.GetColorValue(ColorFormat.RGBA), drawdistance, expiretime);
+            Native.SetPlayerChatBubble(Id, text, color.ToInteger(ColorFormat.RGBA), drawdistance, expiretime);
         }
 
         /// <summary>
@@ -1536,7 +1536,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            Native.SetPlayerMarkerForPlayer(Id, player.Id, color.GetColorValue(ColorFormat.RGBA));
+            Native.SetPlayerMarkerForPlayer(Id, player.Id, color.ToInteger(ColorFormat.RGBA));
         }
 
         /// <summary>
@@ -1794,12 +1794,12 @@ namespace SampSharp.GameMode.World
 
             if (message.Length > 144)
             {
-                Native.SendClientMessage(Id, color.GetColorValue(ColorFormat.RGBA), message.Substring(0, 144));
+                Native.SendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message.Substring(0, 144));
                 SendClientMessage(color, message.Substring(144));
             }
             else
             {
-                Native.SendClientMessage(Id, color.GetColorValue(ColorFormat.RGBA), message);
+                Native.SendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message);
             }
         }
 
@@ -1879,12 +1879,12 @@ namespace SampSharp.GameMode.World
         {
             if (message.Length > 144)
             {
-                Native.SendClientMessageToAll(color.GetColorValue(ColorFormat.RGBA), message.Substring(0, 144));
+                Native.SendClientMessageToAll(color.ToInteger(ColorFormat.RGBA), message.Substring(0, 144));
                 SendClientMessageToAll(color, message.Substring(144));
             }
             else
             {
-                Native.SendClientMessageToAll(color.GetColorValue(ColorFormat.RGBA), message);
+                Native.SendClientMessageToAll(color.ToInteger(ColorFormat.RGBA), message);
             }
         }
 
