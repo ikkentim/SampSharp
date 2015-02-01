@@ -5,7 +5,7 @@ before_install:
  - sudo apt-get -qq --yes install premake4
  - sudo apt-get -qq --yes install mono
 
-# before_script:
+before_script:
   - premake4 gmake
 
 script:
