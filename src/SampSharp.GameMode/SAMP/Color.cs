@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace SampSharp.GameMode.SAMP
 {
     /// <summary>
@@ -74,7 +76,7 @@ namespace SampSharp.GameMode.SAMP
         public Color(int color)
             : this()
         {
-            Color c = GetColorFromValue(color, ColorFormat.RGBA); //Default format
+            Color c = FromInteger(color, ColorFormat.RGBA); //Default format
             R = c.R;
             G = c.G;
             B = c.B;
@@ -88,7 +90,7 @@ namespace SampSharp.GameMode.SAMP
         public Color(uint color)
             : this()
         {
-            Color c = GetColorFromValue(color, ColorFormat.RGBA); //Default format
+            Color c = FromInteger(color, ColorFormat.RGBA); //Default format
             R = c.R;
             G = c.G;
             B = c.B;
@@ -1398,7 +1400,7 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         /// <param name="colorFormat">The ColorFormat to use in the conversion.</param>
         /// <returns>An Integer representation of this Color.</returns>
-        public int GetColorValue(ColorFormat colorFormat)
+        public int ToInteger(ColorFormat colorFormat)
         {
             unchecked
             {
@@ -1422,7 +1424,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="color">The color to convert.</param>
         /// <param name="colorFormat">The ColorFormat to use in the conversion.</param>
         /// <returns>An Color representation of this Integer.</returns>
-        public static Color GetColorFromValue(uint color, ColorFormat colorFormat)
+        public static Color FromInteger(uint color, ColorFormat colorFormat)
         {
             byte r = 0,
                 g = 0,
@@ -1453,14 +1455,27 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Returns an Color representation of this Integer.
+        ///     Returns an Color representation of the specified integer.
         /// </summary>
         /// <param name="color">The color to convert.</param>
         /// <param name="colorFormat">The ColorFormat to use in the conversion.</param>
-        /// <returns>An Color representation of this Integer.</returns>
-        public static Color GetColorFromValue(int color, ColorFormat colorFormat)
+        /// <returns>A Color representation of the input.</returns>
+        public static Color FromInteger(int color, ColorFormat colorFormat)
         {
-            return GetColorFromValue(unchecked((uint) color), colorFormat);
+            return FromInteger(unchecked((uint) color), colorFormat);
+        }
+
+        /// <summary>
+        ///     Returns an Color representation of the specified string.
+        /// </summary>
+        /// <param name="input">The color to convert.</param>
+        /// <param name="colorFormat">The ColorFormat to use in the conversion.</param>
+        /// <returns>A Color representation of the input.</returns>
+        public static Color FromString(string input, ColorFormat colorFormat)
+        {
+            uint output;
+            UInt32.TryParse(input.Trim('0', 'x'), out output);
+            return FromInteger(output, colorFormat);
         }
 
         /// <summary>
@@ -1470,7 +1485,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>The resulting integer.</returns>
         public static implicit operator int(Color color)
         {
-            return color.GetColorValue(ColorFormat.RGBA); //Default format
+            return color.ToInteger(ColorFormat.RGBA); //Default format
         }
 
         /// <summary>
@@ -1503,9 +1518,9 @@ namespace SampSharp.GameMode.SAMP
             switch (colorFormat)
             {
                 case ColorFormat.RGB:
-                    return "{" + GetColorValue(colorFormat).ToString("X6") + "}";
+                    return "{" + ToInteger(colorFormat).ToString("X6") + "}";
                 default:
-                    return "{" + GetColorValue(colorFormat).ToString("X8") + "}";
+                    return "{" + ToInteger(colorFormat).ToString("X8") + "}";
             }
         }
 
