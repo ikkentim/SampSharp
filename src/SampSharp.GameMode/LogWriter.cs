@@ -23,7 +23,7 @@ using SampSharp.GameMode.Tools;
 namespace SampSharp.GameMode
 {
     /// <summary>
-    ///     A TextWriter that writes all input to the serverlog.
+    ///     A TextWriter that writes all input to the server log.
     /// </summary>
     public class LogWriter : TextWriter
     {

@@ -32,7 +32,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     A function that can be used in <see cref="BaseMode.OnGameModeInit" /> to enable or disable the players markers,
+        ///     A function that can be used in <see cref="OnInitialized" /> to enable or disable the players markers,
         ///     which would normally be shown on the radar. If you want to change the marker settings at some other point in the
         ///     gamemode, have a look at <see cref="GtaPlayer.SetPlayerMarker" /> which does exactly that.
         /// </summary>
@@ -43,7 +43,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Toggle the drawing of player nametags, healthbars and armor bars above players.
+        ///     Toggle the drawing of player name tags, health bars and armor bars above players.
         /// </summary>
         /// <param name="show">False to disable, True to enable.</param>
         public virtual void ShowNameTags(bool show)
@@ -73,7 +73,7 @@ namespace SampSharp.GameMode
         ///     Uses standard player walking animation (animation of CJ) instead of custom animations for every skin (e.g. skating
         ///     for skater skins).
         /// </summary>
-        public virtual void UsePlayerPedAnims()
+        public virtual void UsePlayerPedAnimations()
         {
             Native.UsePlayerPedAnims();
         }
@@ -107,9 +107,9 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     This function is used to change the amount of teams used in the gamemode. It has no obvious way of being used, but
+        ///     This function is used to change the amount of teams used in the game mode. It has no obvious way of being used, but
         ///     can help to indicate the number of teams used for better (more effective) internal handling. This function should
-        ///     only be used in the <see cref="OnGameModeInit" /> callback.
+        ///     only be used in the <see cref="OnInitialized" /> callback.
         /// </summary>
         /// <remarks>
         ///     You can pass 2 billion here if you like, this function has no effect at all.
@@ -124,14 +124,14 @@ namespace SampSharp.GameMode
         ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
         /// </summary>
         /// <param name="modelid">The skin which the player will spawn with.</param>
-        /// <param name="position">The coordinate of the spawnpoint of this class.</param>
+        /// <param name="position">The coordinate of the spawn point of this class.</param>
         /// <param name="zAngle">The direction in which the player should face after spawning.</param>
         /// <param name="weapon1">The first spawn-weapon for the player.</param>
-        /// <param name="weapon1Ammo">The amount of ammunition for the primary spawnweapon.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the primary spawn weapon.</param>
         /// <param name="weapon2">The second spawn-weapon for the player.</param>
-        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawn weapon.</param>
         /// <param name="weapon3">The third spawn-weapon for the player.</param>
-        /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
+        /// <param name="weapon3Ammo">The amount of ammunition for the third spawn weapon.</param>
         /// <returns>
         ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
         ///     ID is 299.
@@ -147,12 +147,12 @@ namespace SampSharp.GameMode
         ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
         /// </summary>
         /// <param name="modelid">The skin which the player will spawn with.</param>
-        /// <param name="position">The coordinate of the spawnpoint of this class.</param>
+        /// <param name="position">The coordinate of the spawn point of this class.</param>
         /// <param name="zAngle">The direction in which the player should face after spawning.</param>
         /// <param name="weapon1">The first spawn-weapon for the player.</param>
-        /// <param name="weapon1Ammo">The amount of ammunition for the primary spawnweapon.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the primary spawn weapon.</param>
         /// <param name="weapon2">The second spawn-weapon for the player.</param>
-        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawn weapon.</param>
         /// <returns>
         ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
         ///     ID is 299.
@@ -168,10 +168,10 @@ namespace SampSharp.GameMode
         ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
         /// </summary>
         /// <param name="modelid">The skin which the player will spawn with.</param>
-        /// <param name="position">The coordinate of the spawnpoint of this class.</param>
+        /// <param name="position">The coordinate of the spawn point of this class.</param>
         /// <param name="zAngle">The direction in which the player should face after spawning.</param>
         /// <param name="weapon">The spawn-weapon for the player.</param>
-        /// <param name="weaponAmmo">The amount of ammunition for the spawnweapon.</param>
+        /// <param name="weaponAmmo">The amount of ammunition for the spawn weapon.</param>
         /// <returns>
         ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
         ///     ID is 299.
@@ -186,7 +186,7 @@ namespace SampSharp.GameMode
         ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
         /// </summary>
         /// <param name="modelid">The skin which the player will spawn with.</param>
-        /// <param name="position">The coordinate of the spawnpoint of this class.</param>
+        /// <param name="position">The coordinate of the spawn point of this class.</param>
         /// <param name="zAngle">The direction in which the player should face after spawning.</param>
         /// <returns>
         ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
@@ -205,11 +205,11 @@ namespace SampSharp.GameMode
         /// <param name="position">The coordinate of the class' spawn position.</param>
         /// <param name="zAngle">The direction in which the player will face after spawning.</param>
         /// <param name="weapon1">The first spawn-weapon for the player.</param>
-        /// <param name="weapon1Ammo">The amount of ammunition for the first spawnweapon.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the first spawn weapon.</param>
         /// <param name="weapon2">The second spawn-weapon for the player.</param>
-        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawn weapon.</param>
         /// <param name="weapon3">The third spawn-weapon for the player.</param>
-        /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
+        /// <param name="weapon3Ammo">The amount of ammunition for the third spawn weapon.</param>
         /// <returns>The ID of the class that was just created.</returns>
         public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon1,
             int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
@@ -226,9 +226,9 @@ namespace SampSharp.GameMode
         /// <param name="position">The coordinate of the class' spawn position.</param>
         /// <param name="zAngle">The direction in which the player will face after spawning.</param>
         /// <param name="weapon1">The first spawn-weapon for the player.</param>
-        /// <param name="weapon1Ammo">The amount of ammunition for the first spawnweapon.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the first spawn weapon.</param>
         /// <param name="weapon2">The second spawn-weapon for the player.</param>
-        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawn weapon.</param>
         /// <returns>The ID of the class that was just created.</returns>
         public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon1,
             int weapon1Ammo, Weapon weapon2, int weapon2Ammo)
@@ -245,7 +245,7 @@ namespace SampSharp.GameMode
         /// <param name="position">The coordinate of the class' spawn position.</param>
         /// <param name="zAngle">The direction in which the player will face after spawning.</param>
         /// <param name="weapon">The spawn-weapon for the player.</param>
-        /// <param name="weaponAmmo">The amount of ammunition for the spawnweapon.</param>
+        /// <param name="weaponAmmo">The amount of ammunition for the spawn weapon.</param>
         /// <returns>The ID of the class that was just created.</returns>
         public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon,
             int weaponAmmo)
@@ -264,7 +264,6 @@ namespace SampSharp.GameMode
         public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle)
         {
             return AddPlayerClass(teamid, modelid, position, zAngle, Weapon.None, 0, Weapon.None, 0, Weapon.None, 0);
-            ;
         }
 
         /// <summary>
@@ -296,7 +295,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Use this function before any player connects (<see cref="BaseMode.OnGameModeInit" />) to tell all clients that the
+        ///     Use this function before any player connects (<see cref="OnInitialized" />) to tell all clients that the
         ///     script will control vehicle engines and lights. This prevents the game automatically turning the engine on/off when
         ///     players enter/exit vehicles and headlights automatically coming on when it is dark.
         /// </summary>
@@ -306,7 +305,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Ends and restarts the gamemode.
+        ///     Ends and restarts the game mode.
         /// </summary>
         public virtual void Exit()
         {

@@ -31,22 +31,22 @@ namespace SampSharp.GameMode.World
         public const int InvalidId = -1;
 
         /// <summary>
-        ///     Initializes a new instance of the Pickup class.
+        ///     Initializes a new instance of the <see cref="Pickup" /> class.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">The identity of the pickup.</param>
         public Pickup(int id)
         {
             Id = id;
         }
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerPickUpPickup(int,int)" /> is being called.
+        ///     Occurs when the <see cref="OnPickUp" /> is being called.
         ///     Called when a player picks up a pickup created with <see cref="Create" />
         /// </summary>
         public event EventHandler<PlayerEventArgs> PickUp;
 
         /// <summary>
-        ///     Creates a Pickup.
+        ///     Creates a <see cref="Pickup" />.
         /// </summary>
         /// <param name="model">The model of the pickup.</param>
         /// <param name="type">The pickup spawn type.</param>
@@ -69,7 +69,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Creates a static pickup in the game.
+        ///     Creates a static <see cref="Pickup" /> in the game.
         /// </summary>
         /// <param name="model">The model of the pickup.</param>
         /// <param name="type">The pickup spawn type.</param>
@@ -137,27 +137,27 @@ namespace SampSharp.GameMode.World
         #region Properties
 
         /// <summary>
-        ///     Gets the virtual world assigned to this Pickup.
+        ///     Gets the virtual world assigned to this <see cref="Pickup" />.
         /// </summary>
         public int VirtualWorld { get; private set; }
 
         /// <summary>
-        ///     Gets the model of this Pickup.
+        ///     Gets the model of this <see cref="Pickup" />.
         /// </summary>
         public int Model { get; private set; }
 
         /// <summary>
-        ///     Gets the type of this Pickup.
+        ///     Gets the type of this <see cref="Pickup" />.
         /// </summary>
         public int SpawnType { get; private set; }
 
         /// <summary>
-        ///     Gets the id of this Pickup.
+        ///     Gets the id of this <see cref="Pickup" />.
         /// </summary>
         public int Id { get; private set; }
 
         /// <summary>
-        ///     Gets the position of this Pickup.
+        ///     Gets the position of this <see cref="Pickup" />.
         /// </summary>
         public Vector Position { get; private set; }
 

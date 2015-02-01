@@ -33,7 +33,7 @@ namespace SampSharp.GameMode.Pools
         /// <summary>
         ///     Registers the type to use when initializing new instances.
         /// </summary>
-        /// <typeparam name="T2">The Type to use when initializing new instances.</typeparam>
+        /// <typeparam name="T2">The <see cref="Type" /> to use when initializing new instances.</typeparam>
         public static void Register<T2>() where T2 : T
         {
             InstanceType = typeof (T2);

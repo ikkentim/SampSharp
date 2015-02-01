@@ -102,19 +102,19 @@ namespace SampSharp.GameMode.World
         #region Events
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnObjectMoved(int)" /> callback is being called.
+        ///     Occurs when the <see cref="OnMoved" /> callback is being called.
         ///     This callback is called when an object is moved after <see cref="Move(Vector,float)" /> (when it stops moving).
         /// </summary>
         public event EventHandler<EventArgs> Moved;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerSelectObject" /> callback is being called.
+        ///     Occurs when the <see cref="OnSelected" /> callback is being called.
         ///     This callback is called when a player selects an object after <see cref="Native.SelectObject" /> has been used.
         /// </summary>
         public event EventHandler<SelectGlobalObjectEventArgs> Selected;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEditObject" /> callback is being called.
+        ///     Occurs when the <see cref="OnEdited" /> callback is being called.
         ///     This callback is called when a player ends object edition mode.
         /// </summary>
         public event EventHandler<EditGlobalObjectEventArgs> Edited;

@@ -165,7 +165,7 @@ namespace SampSharp.GameMode.Display
         #region Events
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnDialogResponse(int,int,int,int,string)" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnDialogResponse(GtaPlayer,DialogResponseEventArgs)" /> is being called.
         ///     This callback is called when a player responds to a dialog by either clicking a button, pressing ENTER/ESC or
         ///     double-clicking a list item (if using a <see cref="DialogStyle.List" />).
         ///     This callback is called when a player connects to the server.

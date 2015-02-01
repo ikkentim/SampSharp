@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -95,8 +96,10 @@ namespace SampSharp.GameMode.Pools
         /// <summary>
         ///     Gets a <see cref="ReadOnlyCollection{T}" /> containing all instances of type
         ///     <typeparam name="T2" />
-        ///     within this pool.
+        ///     within this <see cref="Pool{T}" />.
         /// </summary>
+        /// <typeparam name="T2">The <see cref="Type" /> of instances to get.</typeparam>
+        /// <returns>All instances of type <typeparam name="T2" /> within this <see cref="Pool{T}" />.</returns>
         public static ReadOnlyCollection<T2> GetAll<T2>()
         {
             lock (Lock)

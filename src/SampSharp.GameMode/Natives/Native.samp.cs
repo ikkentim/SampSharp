@@ -16,6 +16,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Events;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Natives
@@ -128,7 +129,7 @@ namespace SampSharp.GameMode.Natives
         /// <summary>
         ///     This function is used to change the amount of teams used in the gamemode. It has no obvious way of being used, but
         ///     can help to indicate the number of teams used for better (more effective) internal handling. This function should
-        ///     only be used in the <see cref="BaseMode.OnGameModeInit" /> callback.
+        ///     only be used in the <see cref="BaseMode.OnInitialized" /> callback.
         /// </summary>
         /// <remarks>
         ///     You can pass 2 billion here if you like, this function has no effect at all.
@@ -185,7 +186,7 @@ namespace SampSharp.GameMode.Natives
 
         /// <summary>
         ///     Adds a 'static' vehicle (models are pre-loaded for players)to the gamemode. Can only be used when the server first
-        ///     starts (in <see cref="BaseMode.OnGameModeInit" />).
+        ///     starts (in <see cref="BaseMode.OnInitialized" />).
         /// </summary>
         /// <param name="modelid">The Model ID for the vehicle.</param>
         /// <param name="spawnX">The X-coordinate for the vehicle.</param>
@@ -205,7 +206,7 @@ namespace SampSharp.GameMode.Natives
 
         /// <summary>
         ///     Adds a 'static' vehicle (models are pre-loaded for players)to the gamemode. Can only be used when the server first
-        ///     starts (under <see cref="BaseMode.OnGameModeInit" />). Differs from <see cref="AddStaticVehicle" /> in only one
+        ///     starts (under <see cref="BaseMode.OnInitialized" />). Differs from <see cref="AddStaticVehicle" /> in only one
         ///     way: allows a respawn time to be set for when the vehicle is left unoccupied by the driver.
         /// </summary>
         /// <param name="modelid">The Model ID for the vehicle.</param>
@@ -241,7 +242,7 @@ namespace SampSharp.GameMode.Natives
 
         /// <summary>
         ///     This function does exactly the same as <see cref="AddStaticPickup" />, except it returns a pickup ID which can be
-        ///     used to destroy it afterwards and be tracked using <see cref="BaseMode.OnPlayerPickUpPickup(int,int)" />.
+        ///     used to destroy it afterwards and be tracked using <see cref="BaseMode.OnPlayerPickUpPickup(Pickup,PlayerEventArgs)" />.
         /// </summary>
         /// <param name="model">The model of the pickup.</param>
         /// <param name="type">The pickup spawn type.</param>
@@ -270,7 +271,7 @@ namespace SampSharp.GameMode.Natives
         public static extern bool ShowNameTags(bool show);
 
         /// <summary>
-        ///     A function that can be used in <see cref="BaseMode.OnGameModeInit" /> to enable or disable the players markers,
+        ///     A function that can be used in <see cref="BaseMode.OnInitialized" /> to enable or disable the players markers,
         ///     which would normally be shown on the radar. If you want to change the marker settings at some other point in the
         ///     gamemode, have a look at <see cref="SetPlayerMarkerForPlayer" /> which does exactly that.
         /// </summary>
@@ -382,7 +383,7 @@ namespace SampSharp.GameMode.Natives
         /// <summary>
         ///     This function allows to turn on zone / area names such as the "Vinewood" or "Doherty" text at the bottom-right of
         ///     the screen as they enter the area. This is a gamemode option and should be set in the callback
-        ///     <see cref="BaseMode.OnGameModeInit" />.
+        ///     <see cref="BaseMode.OnInitialized" />.
         /// </summary>
         /// <param name="enable">A toggle option for whether or not you'd like zone names on or off. False is off and True is on.</param>
         /// <returns>This function doesn't return a specific value.</returns>

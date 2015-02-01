@@ -203,7 +203,7 @@ namespace SampSharp.GameMode.Natives
         public static extern bool EditPlayerObject(int playerid, int objectid);
 
         /// <summary>
-        ///     Display the cursor and allow the player to select an object. <see cref="BaseMode.OnPlayerSelectObject" /> is called
+        ///     Display the cursor and allow the player to select an object. <see cref="BaseMode.OnPlayerSelectGlobalObject" /> is called
         ///     when the player selects an object.
         /// </summary>
         /// <param name="playerid">The ID of the player that should be able to select the object.</param>

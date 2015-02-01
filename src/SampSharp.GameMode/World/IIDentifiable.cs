@@ -21,7 +21,7 @@ namespace SampSharp.GameMode.World
     public interface IIdentifiable
     {
         /// <summary>
-        ///     Gets the Identity of this instance.
+        ///     Gets the Identity of this <see cref="IIdentifiable" />.
         /// </summary>
         int Id { get; }
     }

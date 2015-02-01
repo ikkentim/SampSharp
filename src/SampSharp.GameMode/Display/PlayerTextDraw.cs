@@ -490,7 +490,7 @@ namespace SampSharp.GameMode.Display
         #region Events
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw(int,int)" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw(GtaPlayer,ClickPlayerTextDrawEventArgs)" /> is being called.
         ///     This callback is called when a player clicks on a player-textdraw.
         /// </summary>
         public event EventHandler<ClickPlayerTextDrawEventArgs> Click;

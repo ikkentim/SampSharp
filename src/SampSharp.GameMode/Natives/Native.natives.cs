@@ -89,28 +89,34 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
-        ///     Registers an extension to the plugin.
+        /// Registers an extension to the plugin.
         /// </summary>
         /// <param name="extension">The extension to register.</param>
-        /// <returns>True on success, False otherwise.</returns>
+        /// <returns>
+        /// True on success, False otherwise.
+        /// </returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool RegisterExtension(object extension);
 
         /// <summary>
-        ///     Call a native.
+        /// Call a native.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
-        /// <returns>The returned integer.</returns>
+        /// <returns>
+        /// The returned integer.
+        /// </returns>
         public static int CallNative(string name)
         {
             return CallNativeArray(name, "", null, null);
         }
 
         /// <summary>
-        ///     Call a native with the given arguments.
+        /// Call a native with the given arguments.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
-        /// <returns>The returned integer.</returns>
+        /// <returns>
+        /// The returned integer.
+        /// </returns>
         public static int CallNative(string name, __arglist)
         {
             object[] args;
@@ -121,11 +127,13 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
-        ///     Call a native with the given arguments.
+        /// Call a native with the given arguments.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
-        /// <param name="lengths"></param>
-        /// <returns>The returned integer.</returns>
+        /// <param name="lengths">The lengths of arrays and referenced strings.</param>
+        /// <returns>
+        /// The returned integer.
+        /// </returns>
         public static int CallNative(string name, int[] lengths, __arglist)
         {
             object[] args;
@@ -136,20 +144,24 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
-        ///     Call a native.
+        /// Call a native.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
-        /// <returns>The returned boolean.</returns>
+        /// <returns>
+        /// The returned boolean.
+        /// </returns>
         public static bool CallNativeAsBool(string name)
         {
             return CallNativeArray(name, "", null, null) > 0;
         }
 
         /// <summary>
-        ///     Call a native with the given arguments.
+        /// Call a native with the given arguments.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
-        /// <returns>The returned boolean.</returns>
+        /// <returns>
+        /// The returned boolean.
+        /// </returns>
         public static bool CallNativeAsBool(string name, __arglist)
         {
             object[] args;
@@ -160,11 +172,13 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
-        ///     Call a native with the given arguments.
+        /// Call a native with the given arguments.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
-        /// <param name="lengths"></param>
-        /// <returns>The returned boolean.</returns>
+        /// <param name="lengths">The lengths of arrays and referenced strings.</param>
+        /// <returns>
+        /// The returned boolean.
+        /// </returns>
         public static bool CallNativeAsBool(string name, int[] lengths, __arglist)
         {
             object[] args;

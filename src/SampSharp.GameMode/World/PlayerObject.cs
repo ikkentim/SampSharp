@@ -39,7 +39,7 @@ namespace SampSharp.GameMode.World
         #region Properties
 
         /// <summary>
-        ///     Gets the rotation of this IGameObject.
+        ///     Gets the rotation of this <see cref="IGameObject" />.
         /// </summary>
         public virtual Vector Rotation
         {
@@ -53,7 +53,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets the position of this IWorldObject.
+        ///     Gets the position of this <see cref="IWorldObject" />.
         /// </summary>
         public virtual Vector Position
         {
@@ -67,7 +67,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets whether this IGameObject is moving.
+        ///     Gets whether this <see cref="IGameObject" /> is moving.
         /// </summary>
         public virtual bool IsMoving
         {
@@ -75,7 +75,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets whether this IGameObject is valid.
+        ///     Gets whether this <see cref="IGameObject" /> is valid.
         /// </summary>
         public virtual bool IsValid
         {
@@ -83,22 +83,22 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets the model of this IGameObject.
+        ///     Gets the model of this <see cref="IGameObject" />.
         /// </summary>
         public virtual int ModelId { get; private set; }
 
         /// <summary>
-        ///     Gets the draw distance of this IGameObject.
+        ///     Gets the draw distance of this <see cref="IGameObject" />.
         /// </summary>
         public virtual float DrawDistance { get; private set; }
 
         /// <summary>
-        ///     Gets the Identity of this instance.
+        /// Gets the Identity of this <see cref="IIdentifiable" />.
         /// </summary>
         public virtual int Id { get; private set; }
 
         /// <summary>
-        ///     Gets the owner of this IOwnable.
+        /// Gets the owner of this <see cref="PlayerObject" />.
         /// </summary>
         public virtual GtaPlayer Owner { get; private set; }
 
@@ -107,19 +107,19 @@ namespace SampSharp.GameMode.World
         #region Events
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnObjectMoved(int)" /> callback is being called.
+        ///     Occurs when the <see cref="OnMoved" /> callback is being called.
         ///     This callback is called when an object is moved after <see cref="Move(Vector,float)" /> (when it stops moving).
         /// </summary>
         public event EventHandler<EventArgs> Moved;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerSelectObject" /> callback is being called.
+        ///     Occurs when the <see cref="OnSelected" /> callback is being called.
         ///     This callback is called when a player selects an object after <see cref="Native.SelectObject" /> has been used.
         /// </summary>
         public event EventHandler<SelectPlayerObjectEventArgs> Selected;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEditObject" /> callback is being called.
+        ///     Occurs when the <see cref="OnEdited" /> callback is being called.
         ///     This callback is called when a player ends object edition mode.
         /// </summary>
         public event EventHandler<EditPlayerObjectEventArgs> Edited;
@@ -190,13 +190,13 @@ namespace SampSharp.GameMode.World
         #region Methods
 
         /// <summary>
-        ///     Moves this IGameObject to the given position and rotation with the given speed.
+        /// Moves this <see cref="IGameObject" /> to the given position and rotation with the given speed.
         /// </summary>
-        /// <param name="position">The position to which to move this IGameObject.</param>
-        /// <param name="speed">The speed at which to move this IGameObject.</param>
-        /// <param name="rotation">The rotation to which to move this IGameObject.</param>
+        /// <param name="position">The position to which to move this <see cref="IGameObject" />.</param>
+        /// <param name="speed">The speed at which to move this <see cref="IGameObject" />.</param>
+        /// <param name="rotation">The rotation to which to move this <see cref="IGameObject" />.</param>
         /// <returns>
-        ///     The time it will take for the object to move in milliseconds.
+        /// The time it will take for the object to move in milliseconds.
         /// </returns>
         public virtual int Move(Vector position, float speed, Vector rotation)
         {
@@ -207,12 +207,12 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Moves this IGameObject to the given position with the given speed.
+        /// Moves this <see cref="IGameObject" /> to the given position with the given speed.
         /// </summary>
-        /// <param name="position">The position to which to move this IGameObject.</param>
-        /// <param name="speed">The speed at which to move this IGameObject.</param>
+        /// <param name="position">The position to which to move this <see cref="IGameObject" />.</param>
+        /// <param name="speed">The speed at which to move this <see cref="IGameObject" />.</param>
         /// <returns>
-        ///     The time it will take for the object to move in milliseconds.
+        /// The time it will take for the object to move in milliseconds.
         /// </returns>
         public virtual int Move(Vector position, float speed)
         {
@@ -223,7 +223,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Stop this IGameObject from moving any further.
+        /// Stop this <see cref="IGameObject" /> from moving any further.
         /// </summary>
         public virtual void Stop()
         {
@@ -233,13 +233,11 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets the material of this IGameObject.
+        /// Sets the material of this <see cref="IGameObject" />.
         /// </summary>
         /// <param name="materialindex">The material index on the object to change.</param>
-        /// <param name="modelid">
-        ///     The modelid on which the replacement texture is located. Use 0 for alpha. Use -1 to change the
-        ///     material color without altering the texture.
-        /// </param>
+        /// <param name="modelid">The modelid on which the replacement texture is located. Use 0 for alpha. Use -1 to change the
+        /// material color without altering the texture.</param>
         /// <param name="txdname">The name of the txd file which contains the replacement texture (use "none" if not required).</param>
         /// <param name="texturename">The name of the texture to use as the replacement (use "none" if not required).</param>
         /// <param name="materialcolor">The object color to set (use default(Color) to keep the existing material color).</param>
@@ -253,7 +251,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets the material text of this IGameObject.
+        /// Sets the material text of this <see cref="IGameObject" />.
         /// </summary>
         /// <param name="materialindex">The material index on the object to change.</param>
         /// <param name="text">The text to show on the object. (MAX 2048 characters)</param>
@@ -313,7 +311,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Attaches the player's camera to this PlayerObject.
+        ///     Attaches the player's camera to this <see cref="PlayerObject" />.
         /// </summary>
         /// <remarks>
         ///     This will attach the camera of the player whose object this is to this object.

@@ -45,7 +45,7 @@ namespace TestMode
         {
             Server.ToggleDebugOutput(true);
             SetGameModeText("sa-mp# testmode");
-            UsePlayerPedAnims();
+            UsePlayerPedAnimations();
 
             Debug.WriteLine("Loading player classes...");
             AddPlayerClass(65, new Vector(5), 0);

@@ -255,17 +255,17 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets the id of this vehiclemodel.
+        ///     Gets the type of this <see cref="VehicleModelInfo" />.
         /// </summary>
         public VehicleModelType Type { get; private set; }
 
         /// <summary>
-        ///     Gets the name of this vehiclemodel.
+        ///     Gets the name of this <see cref="VehicleModelInfo" />.
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        ///     Gets the category of this vehiclemodel.
+        ///     Gets the category of this <see cref="VehicleModelInfo" />.
         /// </summary>
         public VehicleCategory Category { get; private set; }
 
@@ -284,10 +284,10 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Returns an instance of VehicleModelInfo containing information about the given Vehicle.
+        ///     Returns an instance of <see cref="VehicleModelInfo" /> containing information about the given Vehicle.
         /// </summary>
         /// <param name="vehicle">The vehicle to find information about.</param>
-        /// <returns>An instance of VehicleModelInfo containing information about the given Vehicle.</returns>
+        /// <returns>An instance of <see cref="VehicleModelInfo" /> containing information about the given Vehicle.</returns>
         public static VehicleModelInfo ForVehicle(GtaVehicle vehicle)
         {
             if (vehicle == null)
@@ -306,10 +306,10 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Returns an instance of VehicleModelInfo containing information about the given VehicleModelType.
+        ///     Returns an instance of <see cref="VehicleModelInfo" /> containing information about the given <see cref="VehicleModelType" />.
         /// </summary>
-        /// <param name="model">The VehicleModelType to find information about.</param>
-        /// <returns>An instance of VehicleModelInfo containing information about the given VehicleModelType.</returns>
+        /// <param name="model">The <see cref="VehicleModelType" /> to find information about.</param>
+        /// <returns>An instance of <see cref="VehicleModelInfo" /> containing information about the given VehicleModelType.</returns>
         public static VehicleModelInfo ForVehicle(VehicleModelType model)
         {
             if ((int) model < 400 || (int) model > 611)

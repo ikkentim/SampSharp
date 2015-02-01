@@ -22,9 +22,10 @@ namespace SampSharp.GameMode.Helpers
     /// <summary>
     ///     Contains helper methods for LINQ queries.
     /// </summary>
-    public static class LinqExtention
+    public static class LinqHelper
     {
         /// <summary>Finds the index of the first item matching an expression in an enumerable.</summary>
+        /// <typeparam name="T">The <see cref="Type" /> of the collection.</typeparam>
         /// <param name="items">The enumerable to search.</param>
         /// <param name="predicate">The expression to test the items against.</param>
         /// <returns>The index of the first matching item, or -1 if no items match.</returns>
@@ -43,6 +44,7 @@ namespace SampSharp.GameMode.Helpers
         }
 
         /// <summary>Finds the index of the last item matching an expression in an enumerable.</summary>
+        /// <typeparam name="T">The <see cref="Type" /> of the collection.</typeparam>
         /// <param name="items">The enumerable to search.</param>
         /// <param name="predicate">The expression to test the items against.</param>
         /// <returns>The index of the last matching item, or -1 if no items match.</returns>
@@ -59,7 +61,8 @@ namespace SampSharp.GameMode.Helpers
             return -1;
         }
 
-        /// <summary>Finds the index of the first occurence of an item in an enumerable.</summary>
+        /// <summary>Finds the index of the first occurrence of an item in an enumerable.</summary>
+        /// <typeparam name="T">The <see cref="Type" /> of the collection.</typeparam>
         /// <param name="items">The enumerable to search.</param>
         /// <param name="item">The item to find.</param>
         /// <returns>The index of the first matching item, or -1 if the item was not found.</returns>
@@ -68,7 +71,8 @@ namespace SampSharp.GameMode.Helpers
             return items.FindIndex(i => EqualityComparer<T>.Default.Equals(item, i));
         }
 
-        /// <summary>Finds the index of the last occurence of an item in an enumerable.</summary>
+        /// <summary>Finds the index of the last occurrence of an item in an enumerable.</summary>
+        /// <typeparam name="T">The <see cref="Type" /> of the collection.</typeparam>
         /// <param name="items">The enumerable to search.</param>
         /// <param name="item">The item to find.</param>
         /// <returns>The index of the last matching item, or -1 if the item was not found.</returns>

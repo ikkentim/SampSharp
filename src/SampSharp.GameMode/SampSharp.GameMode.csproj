@@ -109,7 +109,7 @@
     <Compile Include="Display\MenuRow.cs" />
     <Compile Include="Events\DialogResponseEventArgs.cs" />
     <Compile Include="Definitions\BulletHitType.cs" />
-	<Compile Include="Definitions\Bone.cs" />
+    <Compile Include="Definitions\Bone.cs" />
     <Compile Include="Definitions\CameraCut.cs" />
     <Compile Include="Definitions\CarModType.cs" />
     <Compile Include="Definitions\DialogStyle.cs" />
@@ -161,7 +161,7 @@
     <Compile Include="Events\VehiclePaintjobEventArgs.cs" />
     <Compile Include="Events\VehicleResprayedEventArgs.cs" />
     <Compile Include="Events\WeaponShotEventArgs.cs" />
-    <Compile Include="Helpers\LinqExtention.cs" />
+    <Compile Include="Helpers\LinqHelper.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="Natives\Native.logging.cs">
       <DependentUpon>Native.cs</DependentUpon>

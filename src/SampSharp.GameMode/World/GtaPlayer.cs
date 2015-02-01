@@ -16,6 +16,7 @@
 using System;
 using System.Linq;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
@@ -531,75 +532,67 @@ namespace SampSharp.GameMode.World
             }
         }
 
-        /// <summary>
-        ///     Gets the maximum number of players that can join the server, as set by the server var 'maxplayers' in server.cfg.
-        /// </summary>
-        public static int MaxPlayers
-        {
-            get { return Native.GetMaxPlayers(); }
-        }
-
         #endregion
 
         #region Events
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerConnect" /> is being called.
+        ///     Occurs when the <see cref="OnConnected" /> is being called.
         ///     This callback is called when a player connects to the server.
         /// </summary>
         public event EventHandler<EventArgs> Connected;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerDisconnect" /> is being called.
+        ///     Occurs when the <see cref="OnDisconnected" /> is being called.
         ///     This callback is called when a player disconnects from the server.
         /// </summary>
         public event EventHandler<DisconnectEventArgs> Disconnected;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerDisconnect" /> is being called.
+        ///     Occurs when the <see cref="OnCleanup" /> is being called.
         ///     This callback is called after a player disconnects from the server.
         /// </summary>
         public event EventHandler<DisconnectEventArgs> Cleanup;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerSpawn" /> is being called.
+        ///     Occurs when the <see cref="OnSpawned" /> is being called.
         ///     This callback is called when a player spawns.
         /// </summary>
         public event EventHandler<SpawnEventArgs> Spawned;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnGameModeInit" /> is being called.
+        ///     Occurs when the <see cref="OnDeath" /> is being called.
         ///     This callback is triggered when the gamemode starts.
         /// </summary>
         public event EventHandler<DeathEventArgs> Died;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerText(int,string)" /> is being called.
+        ///     Occurs when the <see cref="OnText" /> is being called.
         ///     Called when a player sends a chat message.
         /// </summary>
         public event EventHandler<TextEventArgs> Text;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerCommandText(int,string)" /> is being called.
+        ///     Occurs when the <see cref="OnCommandText" /> is being called.
         ///     This callback is called when a player enters a command into the client chat window, e.g. /help.
         /// </summary>
         public event EventHandler<CommandTextEventArgs> CommandText;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerRequestClass(int,int)" /> is being called.
+        ///     Occurs when the <see cref="OnRequestClass" /> is being called.
         ///     Called when a player changes class at class selection (and when class selection first appears).
         /// </summary>
         public event EventHandler<RequestClassEventArgs> RequestClass;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEnterVehicle(int,int,bool)" /> is being called.
+        ///     Occurs when the <see cref="OnEnterVehicle" /> is being called.
         ///     This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the
         ///     time this callback is called.
         /// </summary>
         public event EventHandler<EnterVehicleEventArgs> EnterVehicle;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerExitVehicle(int,int)" /> is being called.
+        ///     Occurs when the <see cref="OnExitVehicle" /> is being called.
         ///     This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
@@ -609,7 +602,7 @@ namespace SampSharp.GameMode.World
         public event EventHandler<PlayerVehicleEventArgs> ExitVehicle;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerStateChange" /> is being called.
+        ///     Occurs when the <see cref="OnStateChanged" /> is being called.
         ///     This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
@@ -619,71 +612,71 @@ namespace SampSharp.GameMode.World
         public event EventHandler<StateEventArgs> StateChanged;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEnterCheckpoint(int)" /> is being called.
+        ///     Occurs when the <see cref="OnEnterCheckpoint" /> is being called.
         ///     This callback is called when a player enters the checkpoint set for that player.
         /// </summary>
         public event EventHandler<EventArgs> EnterCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerLeaveCheckpoint(int)" /> is being called.
+        ///     Occurs when the <see cref="OnLeaveCheckpoint" /> is being called.
         ///     This callback is called when a player leaves the checkpoint set for that player.
         /// </summary>
         public event EventHandler<EventArgs> LeaveCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEnterRaceCheckpoint(int)" /> is being called.
+        ///     Occurs when the <see cref="OnEnterRaceCheckpoint" /> is being called.
         ///     This callback is called when a player enters a race checkpoint.
         /// </summary>
         public event EventHandler<EventArgs> EnterRaceCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerLeaveRaceCheckpoint(int)" /> is being called.
+        ///     Occurs when the <see cref="OnLeaveRaceCheckpoint" /> is being called.
         ///     This callback is called when a player leaves the race checkpoint.
         /// </summary>
         public event EventHandler<EventArgs> LeaveRaceCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerRequestSpawn(int)" /> is being called.
+        ///     Occurs when the <see cref="OnRequestSpawn" /> is being called.
         ///     Called when a player attempts to spawn via class selection.
         /// </summary>
         public event EventHandler<RequestSpawnEventArgs> RequestSpawn;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnEnterExitModShop" /> is being called.
+        ///     Occurs when the <see cref="OnEnterExitModShop" /> is being called.
         ///     This callback is called when a player enters or exits a mod shop.
         /// </summary>
         public event EventHandler<EnterModShopEventArgs> EnterExitModShop;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerSelectedMenuRow(int,int)" /> is being called.
+        ///     Occurs when the <see cref="OnSelectedMenuRow" /> is being called.
         ///     This callback is called when a player selects an item from a menu.
         /// </summary>
         public event EventHandler<MenuRowEventArgs> SelectedMenuRow;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerExitedMenu(int)" /> is being called.
+        ///     Occurs when the <see cref="OnExitedMenu" /> is being called.
         ///     Called when a player exits a menu.
         /// </summary>
         public event EventHandler<EventArgs> ExitedMenu;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerInteriorChange" /> is being called.
+        ///     Occurs when the <see cref="OnInteriorChanged" /> is being called.
         ///     Called when a player changes interior.
         /// </summary>
         /// <remarks>
-        ///     This is also called when <see cref="Native.SetPlayerInterior" /> is used.
+        ///     This is also called when <see cref="Interior" /> is set.
         /// </remarks>
         public event EventHandler<InteriorChangedEventArgs> InteriorChanged;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerKeyStateChange" /> is being called.
+        ///     Occurs when the <see cref="OnKeyStateChanged" /> is being called.
         ///     This callback is called when the state of any supported key is changed (pressed/released). Directional keys do not
         ///     trigger this callback.
         /// </summary>
         public event EventHandler<KeyStateChangedEventArgs> KeyStateChanged;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerUpdate(int)" /> is being called.
+        ///     Occurs when the <see cref="OnUpdate" /> is being called.
         ///     This callback is called everytime a client/player updates the server with their status.
         /// </summary>
         /// <remarks>
@@ -692,32 +685,32 @@ namespace SampSharp.GameMode.World
         public event EventHandler<PlayerUpdateEventArgs> Update;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerStreamIn(int,int)" /> is being called.
+        ///     Occurs when the <see cref="OnStreamIn" /> is being called.
         ///     This callback is called when a player is streamed by some other player's client.
         /// </summary>
         public event EventHandler<PlayerEventArgs> StreamIn;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerStreamOut(int,int)" /> is being called.
+        ///     Occurs when the <see cref="OnStreamOut" /> is being called.
         ///     This callback is called when a player is streamed out from some other player's client.
         /// </summary>
         public event EventHandler<PlayerEventArgs> StreamOut;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnDialogResponse(int,int,int,int,string)" /> is being called.
-        ///     This callback is called when a player responds to a dialog shown using <see cref="Native.ShowPlayerDialog" /> by
+        ///     Occurs when the <see cref="OnDialogResponse" /> is being called.
+        ///     This callback is called when a player responds to a dialog shown using <see cref="Dialog" /> by
         ///     either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
         /// </summary>
         public event EventHandler<DialogResponseEventArgs> DialogResponse;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerTakeDamage(int,int,float,int,int)" /> is being called.
+        ///     Occurs when the <see cref="OnTakeDamage" /> is being called.
         ///     This callback is called when a player takes damage.
         /// </summary>
         public event EventHandler<DamagePlayerEventArgs> TakeDamage;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerGiveDamage(int,int,float,int,int)" /> is being called.
+        ///     Occurs when the <see cref="OnGiveDamage" /> is being called.
         ///     This callback is called when a player gives damage to another player.
         /// </summary>
         /// <remarks>
@@ -735,40 +728,40 @@ namespace SampSharp.GameMode.World
         public event EventHandler<DamagePlayerEventArgs> GiveDamage;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickMap(int,float,float,float)" /> is being called.
+        ///     Occurs when the <see cref="OnClickMap" /> is being called.
         ///     This callback is called when a player places a target/waypoint on the pause menu map (by right-clicking).
         /// </summary>
         /// <remarks>
         ///     The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get
-        ///     a more accurate Z coordinate (or for teleportation; use <see cref="Native.SetPlayerPosFindZ" />).
+        ///     a more accurate Z coordinate (or for teleportation; use <see cref="SetPositionFindZ" />).
         /// </remarks>
         public event EventHandler<PositionEventArgs> ClickMap;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw(int,int)" /> is being called.
+        ///     Occurs when the <see cref="OnClickTextDraw" /> is being called.
         ///     This callback is called when a player clicks on a textdraw.
         /// </summary>
         /// <remarks>
-        ///     The clickable area is defined by <see cref="Native.TextDrawTextSize" />. The x and y parameters passed to that
+        ///     The clickable area is defined by <see cref="TextDraw.Width" /> and <see cref="TextDraw.Width" />. The x and y parameters passed to that
         ///     function must not be zero or negative.
         /// </remarks>
         public event EventHandler<ClickTextDrawEventArgs> ClickTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw(int,int)" /> is being called.
+        ///     Occurs when the <see cref="OnCancelClickTextDraw" /> is being called.
         ///     This callback is called when a player cancels the textdraw select mode(ESC).
         /// </summary>
         public event EventHandler<EventArgs> CancelClickTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw(int,int)" /> is being called.
+        ///     Occurs when the <see cref="OnClickPlayerTextDraw" /> is being called.
         ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
-        ///     mode (ESC) - however, <see cref="BaseMode.OnPlayerClickTextDraw(int,int)" /> is.
+        ///     mode (ESC) - however, <see cref="OnClickTextDraw" /> is.
         /// </summary>
         public event EventHandler<ClickPlayerTextDrawEventArgs> ClickPlayerTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayer(int,int,int)" /> is being called.
+        ///     Occurs when the <see cref="OnClickPlayer" /> is being called.
         ///     Called when a player double-clicks on a player on the scoreboard.
         /// </summary>
         /// <remarks>
@@ -778,22 +771,19 @@ namespace SampSharp.GameMode.World
         public event EventHandler<ClickPlayerEventArgs> ClickPlayer;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEditGlobalObject" /> is being called.
+        ///     Occurs when the <see cref="OnEditGlobalObject" /> is being called.
         ///     This callback is called when a player ends object edition mode.
         /// </summary>
         public event EventHandler<EditGlobalObjectEventArgs> EditGlobalObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerEditPlayerObject" /> is being called.
+        ///     Occurs when the <see cref="OnEditPlayerObject" /> is being called.
         ///     This callback is called when a player ends object edition mode.
         /// </summary>
         public event EventHandler<EditPlayerObjectEventArgs> EditPlayerObject;
 
         /// <summary>
-        ///     Occurs when the
-        ///     <see
-        ///         cref="BaseMode.OnPlayerEditAttachedObject(int,int,int,int,int,float,float,float,float,float,float,float,float,float)" />
-        ///     is being called.
+        ///     Occurs when the <see cref="OnEditAttachedObject" /> is being called.
         ///     This callback is called when a player ends attached object edition mode.
         /// </summary>
         /// <remarks>
@@ -803,19 +793,19 @@ namespace SampSharp.GameMode.World
         public event EventHandler<EditAttachedObjectEventArgs> EditAttachedObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerSelectGlobalObject" /> is being called.
-        ///     This callback is called when a player selects an object after <see cref="Native.SelectObject" /> has been used.
+        ///     Occurs when the <see cref="OnSelectGlobalObject" /> is being called.
+        ///     This callback is called when a player selects an object after <see cref="GlobalObject.Select" /> has been used.
         /// </summary>
         public event EventHandler<SelectGlobalObjectEventArgs> SelectGlobalObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerSelectPlayerObject" /> is being called.
-        ///     This callback is called when a player selects an object after <see cref="Native.SelectObject" /> has been used.
+        ///     Occurs when the <see cref="OnSelectPlayerObject" /> is being called.
+        ///     This callback is called when a player selects an object after <see cref="PlayerObject.Select" /> has been used.
         /// </summary>
         public event EventHandler<SelectPlayerObjectEventArgs> SelectPlayerObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerWeaponShot(int,int,int,int,float,float,float)" /> is being called.
+        ///     Occurs when the <see cref="OnWeaponShot" /> is being called.
         ///     This callback is called when a player fires a shot from a weapon.
         /// </summary>
         /// <remarks>
@@ -833,7 +823,7 @@ namespace SampSharp.GameMode.World
         ///     someone's spawn weapons, their team, skin and spawn position, normally used in case of mini games or
         ///     automatic-spawn
         ///     systems. This function is more crash-safe then using <see cref="Native.SetPlayerSkin" /> in
-        ///     <see cref="BaseMode.OnPlayerSpawn" /> and/or <see cref="BaseMode.OnPlayerRequestClass(int,int)" />.
+        ///     <see cref="OnSpawned" /> and/or <see cref="OnRequestClass" />.
         /// </summary>
         /// <param name="team">The Team-ID of the chosen player.</param>
         /// <param name="skin">The skin which the player will spawn with.</param>
@@ -868,7 +858,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Restore the camera to a place behind the player, after using a function like SetPlayerCameraPos.
+        ///     Restore the camera to a place behind the player, after using a function like <see cref="CameraPosition" />.
         /// </summary>
         public virtual void PutCameraBehindPlayer()
         {
@@ -876,7 +866,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This sets this Player's position then adjusts the Player's z-coordinate to the nearest solid ground under the
+        ///     This sets this <see cref="GtaPlayer" />'s position then adjusts the Player's z-coordinate to the nearest solid ground under the
         ///     position.
         /// </summary>
         /// <param name="position">The position to move this Player to.</param>
@@ -888,7 +878,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Check if this Player is in range of a point.
+        ///     Check if this <see cref="GtaPlayer" /> is in range of a point.
         /// </summary>
         /// <param name="range">The furthest distance the player can be from the point to be in range.</param>
         /// <param name="point">The point to check the range to.</param>
@@ -901,7 +891,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Calculate the distance between this Player and a map coordinate.
+        ///     Calculate the distance between this <see cref="GtaPlayer" /> and a map coordinate.
         /// </summary>
         /// <param name="point">The point to calculate the distance from.</param>
         /// <returns>The distance between the player and the point as a float.</returns>
@@ -913,7 +903,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Checks if a Player is streamed in this Player's client.
+        ///     Checks if a <see cref="GtaPlayer" /> is streamed in this <see cref="GtaPlayer" />'s client.
         /// </summary>
         /// <remarks>
         ///     Players aren't streamed in on their own client, so if this Player is the same as the other Player, it will return
@@ -935,7 +925,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Set the ammo of this Player's weapon.
+        ///     Set the ammo of this <see cref="GtaPlayer" />'s weapon.
         /// </summary>
         /// <param name="weapon">The weapon to set the ammo of.</param>
         /// <param name="ammo">The amount of ammo to set.</param>
@@ -947,7 +937,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Give this Player a Weapon with a specified amount of ammo.
+        ///     Give this <see cref="GtaPlayer" /> a <see cref="Weapon" /> with a specified amount of ammo.
         /// </summary>
         /// <param name="weapon">The Weapon to give to this Player.</param>
         /// <param name="ammo">The amount of ammo to give to this Player.</param>
@@ -960,7 +950,7 @@ namespace SampSharp.GameMode.World
 
 
         /// <summary>
-        ///     Removes all weapons from this Player.
+        ///     Removes all weapons from this <see cref="GtaPlayer" />.
         /// </summary>
         public virtual void ResetWeapons()
         {
@@ -970,7 +960,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets the armed weapon of this Player.
+        ///     Sets the armed weapon of this <see cref="GtaPlayer" />.
         /// </summary>
         /// <param name="weapon">The weapon that the player should be armed with.</param>
         public virtual void SetArmedWeapon(Weapon weapon)
@@ -981,7 +971,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Get the Weapon and ammo in this Player's weapon slot.
+        ///     Get the <see cref="Weapon" /> and ammo in this <see cref="GtaPlayer" />'s weapon slot.
         /// </summary>
         /// <param name="slot">The weapon slot to get data for (0-12).</param>
         /// <param name="weapon">The variable in which to store the weapon, passed by reference.</param>
@@ -996,9 +986,9 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Give money to this Player.
+        ///     Give money to this <see cref="GtaPlayer" />.
         /// </summary>
-        /// <param name="money">The amount of money to give this Player. Use a minus value to take money.</param>
+        /// <param name="money">The amount of money to give this <see cref="GtaPlayer" />. Use a minus value to take money.</param>
         public virtual void GiveMoney(int money)
         {
             CheckDisposed();
@@ -1007,7 +997,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Reset this Player's money to $0.
+        ///     Reset this <see cref="GtaPlayer" />'s money to $0.
         /// </summary>
         public virtual void ResetMoney()
         {
@@ -1017,7 +1007,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Check which keys this Player is pressing.
+        ///     Check which keys this <see cref="GtaPlayer" /> is pressing.
         /// </summary>
         /// <remarks>
         ///     Only the FUNCTION of keys can be detected; not actual keys. You can not detect if the player presses space, but you
@@ -1036,7 +1026,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets the clock of this Player to a specific value. This also changes the daytime. (night/day etc.)
+        ///     Sets the clock of this <see cref="GtaPlayer" /> to a specific value. This also changes the daytime. (night/day etc.)
         /// </summary>
         /// <param name="hour">Hour to set (0-23).</param>
         /// <param name="minutes">Minutes to set (0-59).</param>
@@ -1048,7 +1038,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Get this Player's current game time. Set by <see cref="Native.SetWorldTime" />, <see cref="Native.SetWorldTime" />,
+        ///     Get this <see cref="GtaPlayer" />'s current game time. Set by <see cref="Native.SetWorldTime" />, <see cref="Native.SetWorldTime" />,
         ///     or by <see cref="ToggleClock" />.
         /// </summary>
         /// <param name="hour">The variable to store the hour in, passed by reference.</param>
@@ -1061,7 +1051,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Show/Hide the in-game clock (top right corner) for this Player.
+        ///     Show/Hide the in-game clock (top right corner) for this <see cref="GtaPlayer" />.
         /// </summary>
         /// <remarks>
         ///     Time is not synced with other players!
@@ -1075,7 +1065,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Set this Player's weather. If <see cref="ToggleClock" /> has been used to enable the clock, weather changes will
+        ///     Set this <see cref="GtaPlayer" />'s weather. If <see cref="ToggleClock" /> has been used to enable the clock, weather changes will
         ///     interpolate (gradually change), otherwise will change instantly.
         /// </summary>
         /// <param name="weather">The weather to set.</param>
@@ -1087,7 +1077,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Forces this Player to go back to class selection.
+        ///     Forces this <see cref="GtaPlayer" /> to go back to class selection.
         /// </summary>
         /// <remarks>
         ///     The player will not return to class selection until they re-spawn. This can be achieved with
@@ -1101,9 +1091,9 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Display the cursor and allow this Player to select a textdraw.
+        ///     Display the cursor and allow this <see cref="GtaPlayer" /> to select a text draw.
         /// </summary>
-        /// <param name="hoverColor">The color of the textdraw when hovering over with mouse.</param>
+        /// <param name="hoverColor">The color of the text draw when hovering over with mouse.</param>
         public virtual void SelectTextDraw(Color hoverColor)
         {
             CheckDisposed();
@@ -1112,7 +1102,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Cancel textdraw selection with the mouse.
+        ///     Cancel text draw selection with the mouse for this <see cref="GtaPlayer" />.
         /// </summary>
         public virtual void CancelSelectTextDraw()
         {
@@ -1122,7 +1112,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This function plays a crime report for this Player - just like in single-player when CJ commits a crime.
+        ///     This function plays a crime report for this <see cref="GtaPlayer" /> - just like in single-player when CJ commits a crime.
         /// </summary>
         /// <param name="suspect">The suspect player which will be described in the crime report.</param>
         /// <param name="crime">The crime ID, which will be reported as a 10-code (i.e. 10-16 if 16 was passed as the crimeid).</param>
@@ -1135,7 +1125,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Play an 'audio stream' for this Player. Normal audio files also work (e.g. MP3).
+        ///     Play an 'audio stream' for this <see cref="GtaPlayer" />. Normal audio files also work (e.g. MP3).
         /// </summary>
         /// <param name="url">
         ///     The url to play. Valid formats are mp3 and ogg/vorbis. A link to a .pls (playlist) file will play
@@ -1151,7 +1141,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Play an 'audio stream' for this Player. Normal audio files also work (e.g. MP3).
+        ///     Play an 'audio stream' for this <see cref="GtaPlayer" />. Normal audio files also work (e.g. MP3).
         /// </summary>
         /// <param name="url">
         ///     The url to play. Valid formats are mp3 and ogg/vorbis. A link to a .pls (playlist) file will play
@@ -1165,7 +1155,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Stops the current audio stream for this Player.
+        ///     Stops the current audio stream for this <see cref="GtaPlayer" />.
         /// </summary>
         public virtual void StopAudioStream()
         {
@@ -1175,9 +1165,9 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Loads or unloads an interior script for this Player. (for example the ammunation menu)
+        ///     Loads or unloads an interior script for this <see cref="GtaPlayer" />. (for example the ammunation menu)
         /// </summary>
-        /// <param name="shopname"></param>
+        /// <param name="shopname">The name of the shop.</param>
         public virtual void SetShopName(string shopname)
         {
             CheckDisposed();
@@ -1186,12 +1176,12 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Set the skill level of a certain weapon type for this Player.
+        ///     Set the skill level of a certain weapon type for this <see cref="GtaPlayer" />.
         /// </summary>
         /// <remarks>
         ///     The skill parameter is NOT the weapon ID, it is the skill type.
         /// </remarks>
-        /// <param name="skill">The weapon type you want to set the skill of.</param>
+        /// <param name="skill">The <see cref="WeaponSkill" /> you want to set the skill of.</param>
         /// <param name="level">
         ///     The skill level to set for that weapon, ranging from 0 to 999. (A level out of range will max it
         ///     out)
@@ -1204,7 +1194,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Removes a standard San Andreas model for this Player within a specified range.
+        ///     Removes a standard San Andreas model for this <see cref="GtaPlayer" /> within a specified range.
         /// </summary>
         /// <param name="modelid">The model to remove.</param>
         /// <param name="point">The point around which the objects will be removed.</param>
@@ -1217,7 +1207,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Attach an object to a specific bone on this Player.
+        ///     Attach an object to a specific bone on this <see cref="GtaPlayer" />.
         /// </summary>
         /// <param name="index">The index (slot) to assign the object to (0-9).</param>
         /// <param name="modelid">The model to attach.</param>
@@ -1239,7 +1229,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Remove an attached object from this Player.
+        ///     Remove an attached object from this <see cref="GtaPlayer" />.
         /// </summary>
         /// <param name="index">The index of the object to remove (set with <see cref="SetAttachedObject" />).</param>
         /// <returns>True on success, False otherwise.</returns>
@@ -1251,7 +1241,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Check if this Player has an object attached in the specified index (slot).
+        ///     Check if this <see cref="GtaPlayer" /> has an object attached in the specified index (slot).
         /// </summary>
         /// <param name="index">The index (slot) to check.</param>
         /// <returns>True if the slot is used, False otherwise.</returns>
@@ -1275,7 +1265,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Creates a chat bubble above this Player's name tag.
+        ///     Creates a chat bubble above this <see cref="GtaPlayer" />'s name tag.
         /// </summary>
         /// <param name="text">The text to display.</param>
         /// <param name="color">The text color.</param>
@@ -1290,7 +1280,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Puts this Player in a vehicle.
+        ///     Puts this <see cref="GtaPlayer" /> in a <see cref="GtaVehicle" />.
         /// </summary>
         /// <param name="vehicle">The vehicle for the player to be put in.</param>
         /// <param name="seatid">The ID of the seat to put the player in.</param>
@@ -1305,7 +1295,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Puts this Player in a vehicle as driver.
+        ///     Puts this <see cref="GtaPlayer" /> in a vehicle as driver.
         /// </summary>
         /// <param name="vehicle">The vehicle for the player to be put in.</param>
         public virtual void PutInVehicle(GtaVehicle vehicle)
@@ -1314,13 +1304,13 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Removes/ejects this Player from his vehicle.
+        ///     Removes/ejects this <see cref="GtaPlayer" /> from his vehicle.
         /// </summary>
         /// <remarks>
         ///     The exiting animation is not synced for other players.
-        ///     This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle(int,int,bool)" />, because the
+        ///     This function will not work when used in <see cref="OnEnterVehicle" />, because the
         ///     player isn't in
-        ///     the vehicle when the callback is called. Use <see cref="BaseMode.OnPlayerStateChange" /> instead.
+        ///     the vehicle when the callback is called. Use <see cref="OnStateChanged" /> instead.
         /// </remarks>
         public virtual void RemoveFromVehicle()
         {
@@ -1330,7 +1320,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Toggles whether this Player can control themselves, basically freezes them.
+        ///     Toggles whether this <see cref="GtaPlayer" /> can control themselves, basically freezes them.
         /// </summary>
         /// <param name="toggle">False to freeze the player or True to unfreeze them.</param>
         public virtual void ToggleControllable(bool toggle)
@@ -1341,7 +1331,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Plays the specified sound for this Player at a specific point.
+        ///     Plays the specified sound for this <see cref="GtaPlayer" /> at a specific point.
         /// </summary>
         /// <param name="soundid">The sound to play.</param>
         /// <param name="point">Point for the sound to play at.</param>
@@ -1353,7 +1343,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Plays the specified sound for this Player.
+        ///     Plays the specified sound for this <see cref="GtaPlayer" />.
         /// </summary>
         /// <param name="soundid">The sound to play.</param>
         public virtual void PlaySound(int soundid)
@@ -1364,7 +1354,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Apply an animation to this Player.
+        ///     Apply an animation to this <see cref="GtaPlayer" />.
         /// </summary>
         /// <remarks>
         ///     The <paramref name="forcesync" /> parameter, in most cases is not needed since players sync animations themselves.
@@ -1396,7 +1386,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Apply an animation to this Player.
+        ///     Apply an animation to this <see cref="GtaPlayer" />.
         /// </summary>
         /// <param name="animlib">The name of the animation library in which the animation to apply is in.</param>
         /// <param name="animname">The name of the animation, within the library specified.</param>
@@ -1421,7 +1411,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Clears all animations for this Player.
+        ///     Clears all animations for this <see cref="GtaPlayer" />.
         /// </summary>
         /// <param name="forcesync">Specifies whether the animation should be shown to streamed in players.</param>
         public virtual void ClearAnimations(bool forcesync)
@@ -1432,7 +1422,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Clears all animations for this Player.
+        ///     Clears all animations for this <see cref="GtaPlayer" />.
         /// </summary>
         public virtual void ClearAnimations()
         {
@@ -1442,7 +1432,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Get the animation library/name this Player is playing.
+        ///     Get the animation library/name this <see cref="GtaPlayer" /> is playing.
         /// </summary>
         /// <param name="animlib">String variable that stores the animation library.</param>
         /// <param name="animname">String variable that stores the animation name.</param>
@@ -1455,7 +1445,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets a checkpoint (red circle) for this Player. Also shows a red blip on the radar.
+        ///     Sets a checkpoint (red circle) for this <see cref="GtaPlayer" />. Also shows a red blip on the radar.
         /// </summary>
         /// <remarks>
         ///     Checkpoints created on server-created objects will appear down on the 'real' ground, but will still function
@@ -1472,7 +1462,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Disable any initialized checkpoints for this Player.
+        ///     Disable any initialized checkpoints for this <see cref="GtaPlayer" />.
         /// </summary>
         public virtual void DisableCheckpoint()
         {
@@ -1482,7 +1472,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Creates a race checkpoint. When this Player enters it, the <see cref="EnterRaceCheckpoint" /> callback is called.
+        ///     Creates a race checkpoint. When this <see cref="GtaPlayer" /> enters it, the <see cref="EnterRaceCheckpoint" /> callback is called.
         /// </summary>
         /// <param name="type">Type of checkpoint.</param>
         /// <param name="point">The point to set the checkpoint at.</param>
@@ -1497,7 +1487,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Disable any initialized race checkpoints for this Player.
+        ///     Disable any initialized race checkpoints for this <see cref="GtaPlayer" />.
         /// </summary>
         public virtual void DisableRaceCheckpoint()
         {
@@ -1507,7 +1497,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Set the world boundaries for this Player - players can not go out of the boundaries.
+        ///     Set the world boundaries for this <see cref="GtaPlayer" /> - players can not go out of the boundaries.
         /// </summary>
         /// <remarks>
         ///     You can reset the player world bounds by setting the parameters to 20000.0000, -20000.0000, 20000.0000,
@@ -1525,7 +1515,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Change the colour of this Player's nametag and radar blip for another Player.
+        ///     Change the color of this <see cref="GtaPlayer" />'s name tag and radar blip for another Player.
         /// </summary>
         /// <param name="player">The player whose color will be changed.</param>
         /// <param name="color">New color.</param>
@@ -1540,14 +1530,14 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This functions allows you to toggle the drawing of player nametags, healthbars and armor bars which display above
+        ///     This functions allows you to toggle the drawing of player name tags, health bars and armor bars which display above
         ///     their head. For use of a similar function like this on a global level, <see cref="Native.ShowNameTags" /> function.
         /// </summary>
         /// <remarks>
-        ///     <see cref="Native.ShowNameTags" /> must be set to True to be able to show name tags with
+        ///     <see cref="BaseMode.ShowNameTags" /> must be set to <c>true</c> to be able to show name tags with
         ///     <see cref="ShowNameTagForPlayer" />.
         /// </remarks>
-        /// <param name="player">Player whose name tag will be shown or hidden.</param>
+        /// <param name="player">The <see cref="GtaPlayer" /> whose name tag will be shown or hidden.</param>
         /// <param name="show">True to show name tag, False to hide name tag.</param>
         public virtual void ShowNameTagForPlayer(GtaPlayer player, bool show)
         {
@@ -1560,12 +1550,12 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This function allows you to place your own icons on the map, enabling you to emphasise the locations of banks,
+        ///     This function allows you to place your own icons on the map, enabling you to emphasize the locations of banks,
         ///     airports or whatever else you want. A total of 63 icons are available in GTA: San Andreas, all of which can be used
         ///     using this function. You can also specify the color of the icon, which allows you to change the square icon (ID:
         ///     0).
         /// </summary>
-        /// <param name="iconid">The player's icon ID, ranging from 0 to 99, to be used in RemovePlayerMapIcon.</param>
+        /// <param name="iconid">The player's icon ID, ranging from 0 to 99, to be used in <see cref="RemoveMapIcon" />.</param>
         /// <param name="position">The coordinates of the place where you want the icon to be.</param>
         /// <param name="markertype">The icon to set.</param>
         /// <param name="color">The color of the icon, this should only be used with the square icon (ID: 0).</param>
@@ -1581,10 +1571,10 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Removes a map icon that was set earlier for this Player.
+        ///     Removes a map icon that was set earlier for this <see cref="GtaPlayer" />.
         /// </summary>
         /// <param name="iconid">The ID of the icon to remove. This is the second parameter of <see cref="SetMapIcon" />.</param>
-        public virtual void RemovePlayerMapIcon(int iconid)
+        public virtual void RemoveMapIcon(int iconid)
         {
             CheckDisposed();
 
@@ -1592,7 +1582,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Set the direction this Player's camera looks at. To be used in combination with SetPlayerCameraPos.
+        ///     Set the direction this <see cref="GtaPlayer" />'s camera looks at. To be used in combination with <see cref="CameraPosition" />.
         /// </summary>
         /// <param name="point">The coordinates for this Player's camera to look at.</param>
         /// <param name="cut">The style the camera-position changes.</param>
@@ -1604,7 +1594,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Set the direction this Player's camera looks at. To be used in combination with SetPlayerCameraPos.
+        ///     Set the direction this <see cref="GtaPlayer" />'s camera looks at. To be used in combination with <see cref="CameraPosition" />.
         /// </summary>
         /// <param name="point">The coordinates for this Player's camera to look at.</param>
         public virtual void SetCameraLookAt(Vector point)
@@ -1615,13 +1605,13 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Move this Player's camera from one position to another, within the set time.
+        ///     Move this <see cref="GtaPlayer" />'s camera from one position to another, within the set time.
         /// </summary>
         /// <param name="from">The position the camera should start to move from.</param>
         /// <param name="to">The position the camera should move to.</param>
         /// <param name="time">Time in milliseconds.</param>
-        /// <param name="cut">The jumpcut to use. Defaults to CameraCut.Cut. Set to CameraCut. Move for a smooth movement.</param>
-        public virtual void InterpolateCameraPos(Vector from, Vector to, int time, CameraCut cut)
+        /// <param name="cut">The jump cut to use. Defaults to CameraCut.Cut. Set to CameraCut. Move for a smooth movement.</param>
+        public virtual void InterpolateCameraPosition(Vector from, Vector to, int time, CameraCut cut)
         {
             CheckDisposed();
 
@@ -1629,12 +1619,12 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Interpolate this Player's camera's 'look at' point between two coordinates with a set speed.
+        ///     Interpolate this <see cref="GtaPlayer" />'s camera's 'look at' point between two coordinates with a set speed.
         /// </summary>
         /// <param name="from">The position the camera should start to move from.</param>
         /// <param name="to">The position the camera should move to.</param>
         /// <param name="time">Time in milliseconds to complete interpolation.</param>
-        /// <param name="cut">The 'jumpcut' to use. Defaults to CameraCut.Cut (pointless). Set to CameraCut.Move for interpolation.</param>
+        /// <param name="cut">The jump cut to use. Defaults to CameraCut.Cut (pointless). Set to CameraCut.Move for interpolation.</param>
         public virtual void InterpolateCameraLookAt(Vector from, Vector to, int time, CameraCut cut)
         {
             CheckDisposed();
@@ -1643,10 +1633,10 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Checks if this Player is in a specific vehicle.
+        ///     Checks if this <see cref="GtaPlayer" /> is in a specific <see cref="GtaVehicle" />.
         /// </summary>
         /// <param name="vehicle">The vehicle.</param>
-        /// <returns>True if player is in the vehicle, otherwise False.</returns>
+        /// <returns>True if player is in the vehicle; False otherwise.</returns>
         public virtual bool IsInVehicle(GtaVehicle vehicle)
         {
             CheckDisposed();
@@ -1655,7 +1645,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Toggle stunt bonuses for this Player.
+        ///     Toggle stunt bonuses for this <see cref="GtaPlayer" />.
         /// </summary>
         /// <param name="enable">True to enable stunt bonuses, False to disable them.</param>
         public virtual void EnableStuntBonus(bool enable)
@@ -1666,7 +1656,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Toggle this Player's spectate mode.
+        ///     Toggle this <see cref="GtaPlayer" />'s spectate mode.
         /// </summary>
         /// <remarks>
         ///     When the spectating is turned off, OnPlayerSpawn will automatically be called.
@@ -1680,7 +1670,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Makes this Player spectate (watch) another player.
+        ///     Makes this <see cref="GtaPlayer" /> spectate (watch) another player.
         /// </summary>
         /// <remarks>
         ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before
@@ -1699,7 +1689,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Makes this Player spectate (watch) another player.
+        ///     Makes this <see cref="GtaPlayer" /> spectate (watch) another player.
         /// </summary>
         /// <remarks>
         ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before
@@ -1717,7 +1707,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets this Player to spectate another vehicle, i.e. see what its driver sees.
+        ///     Sets this <see cref="GtaPlayer" /> to spectate another vehicle, i.e. see what its driver sees.
         /// </summary>
         /// <remarks>
         ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before
@@ -1736,7 +1726,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets this Player to spectate another vehicle, i.e. see what its driver sees.
+        ///     Sets this <see cref="GtaPlayer" /> to spectate another vehicle, i.e. see what its driver sees.
         /// </summary>
         /// <remarks>
         ///     Order is CRITICAL! Ensure that you use <see cref="ToggleSpectating" /> before
@@ -1754,7 +1744,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Starts recording this Player's movements to a file, which can then be reproduced by an NPC.
+        ///     Starts recording this <see cref="GtaPlayer" />'s movements to a file, which can then be reproduced by an NPC.
         /// </summary>
         /// <param name="recordtype">The type of recording.</param>
         /// <param name="recordname">
@@ -1769,7 +1759,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Stops all the recordings that had been started with <see cref="StartRecordingPlayerData" /> for this Player.
+        ///     Stops all the recordings that had been started with <see cref="StartRecordingPlayerData" /> for this <see cref="GtaPlayer" />.
         /// </summary>
         public virtual void StopRecordingPlayerData()
         {
@@ -1783,7 +1773,7 @@ namespace SampSharp.GameMode.World
         #region SAMP natives
 
         /// <summary>
-        ///     This function sends a message to this Player with a chosen color in the chat. The whole line in the chatbox will be
+        ///     This function sends a message to this <see cref="GtaPlayer" /> with a chosen color in the chat. The whole line in the chat box will be
         ///     in the set color unless colour embedding is used.
         /// </summary>
         /// <param name="color">The color of the message.</param>
@@ -1804,7 +1794,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Kicks this Player from the server. They will have to quit the game and re-connect if they wish to continue playing.
+        ///     Kicks this <see cref="GtaPlayer" /> from the server. They will have to quit the game and re-connect if they wish to continue playing.
         /// </summary>
         public virtual void Kick()
         {
@@ -1814,7 +1804,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Ban this Player. The ban will be IP-based, and be saved in the samp.ban file in the
+        ///     Ban this <see cref="GtaPlayer" />. The ban will be IP-based, and be saved in the samp.ban file in the
         ///     server's root directory. <see cref="Ban(string)" /> allows you to ban with a reason, while you can ban and unban
         ///     IPs
         ///     using the RCON banip and unbanip commands.
@@ -1827,7 +1817,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Ban this Player with a reason.
+        ///     Ban this <see cref="GtaPlayer" /> with a reason.
         /// </summary>
         /// <param name="reason">The reason for the ban.</param>
         public virtual void Ban(string reason)
@@ -1838,8 +1828,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This function sends a message to this Player with a chosen color in the chat. The whole line in the chatbox will be
-        ///     in the set color unless colour embedding is used.
+        ///     This function sends a message to this <see cref="GtaPlayer" /> with a chosen color in the chat. The whole line in the chatbox will be
+        ///     in the set color unless color embedding is used.
         /// </summary>
         /// <param name="color">The color of the message.</param>
         /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
@@ -1850,8 +1840,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This function sends a message to this Player in white in the chat. The whole line in the chatbox will be
-        ///     in the set color unless colour embedding is used.
+        ///     This function sends a message to this <see cref="GtaPlayer" /> in white in the chat. The whole line in the chat box will be
+        ///     in the set color unless color embedding is used.
         /// </summary>
         /// <param name="message">The text that will be displayed.</param>
         public virtual void SendClientMessage(string message)
@@ -1860,8 +1850,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This function sends a message to this Player in white in the chat. The whole line in the chatbox will be
-        ///     in the set color unless colour embedding is used.
+        ///     This function sends a message to this <see cref="GtaPlayer" /> in white in the chat. The whole line in the chat box will be
+        ///     in the set color unless color embedding is used.
         /// </summary>
         /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
@@ -1909,7 +1899,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Displays a message in white in chat to all players..
+        ///     Displays a message in white in chat to all players.
         /// </summary>
         /// <param name="messageFormat">The composite format string of the text that will be displayed.</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
@@ -1919,11 +1909,11 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sends a message in the name this Player to another player on the server. The message will appear in the chat box
+        ///     Sends a message in the name this <see cref="GtaPlayer" /> to another player on the server. The message will appear in the chat box
         ///     but can only be seen by <paramref name="receiver" />. The line will start with the this Player's name in his color,
         ///     followed by the <paramref name="message" /> in white.
         /// </summary>
-        /// <param name="receiver">The Player who will recieve the message</param>
+        /// <param name="receiver">The <see cref="GtaPlayer" /> who will recieve the message</param>
         /// <param name="message">The message that will be sent.</param>
         public virtual void SendPlayerMessageToPlayer(GtaPlayer receiver, string message)
         {
@@ -1936,8 +1926,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sends a message in the name of this Player to all other players on the server. The line will start with the this
-        ///     Player's name in their color, followed by the <paramref name="message" /> in white.
+        ///     Sends a message in the name of this <see cref="GtaPlayer" /> to all other players on the server. The line will start with the this
+        ///     <see cref="GtaPlayer" />'s name in their color, followed by the <paramref name="message" /> in white.
         /// </summary>
         /// <param name="message">The message that will be sent.</param>
         public virtual void SendPlayerMessageToAll(string message)
@@ -1959,7 +1949,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Shows 'game text' (on-screen text) for a certain length of time for this Player.
+        ///     Shows 'game text' (on-screen text) for a certain length of time for this <see cref="GtaPlayer" />.
         /// </summary>
         /// <param name="text">The text to be displayed.</param>
         /// <param name="time">The duration of the text being shown in milliseconds.</param>
@@ -2010,7 +2000,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Creates an explosion for a player.
+        ///     Creates an explosion for a <see cref="GtaPlayer" />.
         ///     Only the specific player will see explosion and feel its effects.
         ///     This is useful when you want to isolate explosions from other players or to make them only appear in specific
         ///     virtual worlds.
@@ -2026,11 +2016,11 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Adds a death to the 'killfeed' on the right-hand side of the screen of this Player.
+        ///     Adds a death to the kill feed on the right-hand side of the screen of this <see cref="GtaPlayer" />.
         /// </summary>
-        /// <param name="killer">The Player that killer the <paramref name="killee" />.</param>
-        /// <param name="killee">The player that has been killed.</param>
-        /// <param name="weapon">The reason for this Player's death.</param>
+        /// <param name="killer">The <see cref="GtaPlayer" /> that killer the <paramref name="killee" />.</param>
+        /// <param name="killee">The <see cref="GtaPlayer" /> that has been killed.</param>
+        /// <param name="weapon">The reason for this <see cref="GtaPlayer" />'s death.</param>
         public virtual void SendDeathMessage(GtaPlayer killer, GtaPlayer killee, Weapon weapon)
         {
             CheckDisposed();
@@ -2040,7 +2030,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Adds a death to the 'killfeed' on the right-hand side of the screen.
+        ///     Adds a death to the kill feed on the right-hand side of the screen.
         /// </summary>
         /// <param name="killer">The Player that killer the <paramref name="killee" />.</param>
         /// <param name="killee">The player that has been killed.</param>

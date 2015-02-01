@@ -54,7 +54,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// </summary>
         /// <param name="command">The command.</param>
         /// <exception cref="System.ArgumentNullException">Thrown if command is null.</exception>
-        /// <exception cref="System.ArgumentException"></exception>
+        /// <exception cref="System.ArgumentException">The given <paramref name="command"/> is not valid.</exception>
         public DetectedCommand(MethodInfo command)
         {
             if (command == null) throw new ArgumentNullException("command");

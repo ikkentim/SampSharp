@@ -29,7 +29,7 @@ namespace SampSharp.GameMode
         #region Constructor
 
         /// <summary>
-        ///     Initalizes a new instance of the BaseMode class.
+        ///     Initializes a new instance of the <see cref="BaseMode" /> class.
         /// </summary>
         protected BaseMode()
         {

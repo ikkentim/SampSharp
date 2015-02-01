@@ -16,6 +16,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 
@@ -416,7 +417,7 @@ namespace SampSharp.GameMode.Natives
         /// </summary>
         /// <remarks>
         ///     If you set the player's name to the same name except different cased letters (i.e. "heLLO" to "hello"), it will not
-        ///     work. If used in <see cref="BaseMode.OnPlayerConnect" />, the new name will not be shown for the connecting player.
+        ///     work. If used in <see cref="BaseMode.OnPlayerConnected" />, the new name will not be shown for the connecting player.
         /// </remarks>
         /// <param name="playerid">The ID of the player to set the name of.</param>
         /// <param name="name">The name to set.</param>
@@ -447,9 +448,9 @@ namespace SampSharp.GameMode.Natives
         ///     Get the specified player's IP and store it in a string.
         /// </summary>
         /// <remarks>
-        ///     This function does not work when used in <see cref="BaseMode.OnPlayerDisconnect" /> because the player is already
+        ///     This function does not work when used in <see cref="BaseMode.OnPlayerDisconnected" /> because the player is already
         ///     disconnected. It will return an invalid IP (255.255.255.255). Save players' IPs under
-        ///     <see cref="BaseMode.OnPlayerConnect" /> if they need to be used under <see cref="BaseMode.OnPlayerConnect" />.
+        ///     <see cref="BaseMode.OnPlayerConnected" /> if they need to be used under <see cref="BaseMode.OnPlayerDisconnected" />.
         /// </remarks>
         /// <param name="playerid">The ID of the player to get the IP of.</param>
         /// <param name="ip">The string to store the player's IP in, passed by reference</param>
@@ -659,8 +660,8 @@ namespace SampSharp.GameMode.Natives
         ///     Loads or unloads an interior script for a player. (for example the ammunation menu)
         /// </summary>
         /// <param name="playerid">The ID of the player to load the interior script for.</param>
-        /// <param name="shopname"></param>
-        /// <returns></returns>
+        /// <param name="shopname">The name of the shop.</param>
+        /// <returns>This function does not return any specific values.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerShopName(int playerid, string shopname);
 
@@ -1019,8 +1020,8 @@ namespace SampSharp.GameMode.Natives
         ///     Sets an integer to a player variable.
         /// </summary>
         /// <remarks>
-        ///     Variables aren't reset until after <see cref="BaseMode.OnPlayerDisconnect" /> is called, so the values are still
-        ///     accessible in <see cref="BaseMode.OnPlayerDisconnect" />.
+        ///     Variables aren't reset until after <see cref="BaseMode.OnPlayerDisconnected" /> is called, so the values are still
+        ///     accessible in <see cref="BaseMode.OnPlayerDisconnected" />.
         /// </remarks>
         /// <param name="playerid">The ID of the player whose player variable will be set.</param>
         /// <param name="varname">The name of the player variable.</param>
@@ -1168,9 +1169,9 @@ namespace SampSharp.GameMode.Natives
         /// </summary>
         /// <remarks>
         ///     The exiting animation is not synced for other players.
-        ///     This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle(int,int,bool)" />, because the
+        ///     This function will not work when used in <see cref="BaseMode.OnPlayerEnterVehicle(GtaPlayer,EnterVehicleEventArgs)" />, because the
         ///     player isn't in
-        ///     the vehicle when the callback is called. Use <see cref="BaseMode.OnPlayerStateChange" /> instead.
+        ///     the vehicle when the callback is called. Use <see cref="BaseMode.OnPlayerStateChanged" /> instead.
         /// </remarks>
         /// <param name="playerid">The ID of the player to remove from their vehicle.</param>
         /// <returns>This function doesn't return a specific value.</returns>
@@ -1382,7 +1383,7 @@ namespace SampSharp.GameMode.Natives
         ///     0).
         /// </summary>
         /// <param name="playerid">The ID of the player to set the map icon for.</param>
-        /// <param name="iconid">The player's icon ID, ranging from 0 to 99, to be used in RemovePlayerMapIcon.</param>
+        /// <param name="iconid">The player's icon ID, ranging from 0 to 99, to be used in RemoveMapIcon.</param>
         /// <param name="x">The X coordinate of the place where you want the icon to be.</param>
         /// <param name="y">The Y coordinate of the place where you want the icon to be.</param>
         /// <param name="z">The Z coordinate of the place where you want the icon to be.</param>

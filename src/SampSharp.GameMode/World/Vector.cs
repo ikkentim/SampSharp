@@ -152,10 +152,10 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets the distance to another vector.
+        ///     Gets the distance to another <see cref="Vector" />.
         /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
+        /// <param name="other">The <see cref="Vector" /> to calculate the distance to.</param>
+        /// <returns>The distance between the vectors.</returns>
         public float DistanceTo(Vector other)
         {
             float dx = X - other.X;
