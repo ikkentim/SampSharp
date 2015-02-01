@@ -12,6 +12,10 @@ All feedback is welcome, file an Issue or contact me on the SA-MP forums:
 
 [SA-MP# topic on SA-MP]
 
+Documation
+----------
+The SampSharp.GameMode library provided by the NuGet repository contains all available documentation. You can also view the documentation on the web via http://sampsharp.timpotze.nl/
+
 Examples
 --------
 Some example gamemodes are available here:
