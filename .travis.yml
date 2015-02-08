@@ -1,9 +1,9 @@
 language: cpp
 
 before_install:
- - sudo apt-get update -qq
- - sudo apt-get -qq --yes install premake4
- - sudo apt-get -qq --yes install mono-complete
+ - sudo add-apt-repository --yes "ppa:codegear/release"
+ - sudo apt-get update
+ - sudo apt-get --yes install premake4 mono-complete
 
 before_script:
   - premake4 gmake
