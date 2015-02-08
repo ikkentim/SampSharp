@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SampSharp.GameMode.Events;
@@ -76,7 +77,7 @@ namespace SampSharp.GameMode.Controllers
             {
                 /*
                  * If there are no non-static types in the given assembly,
-                 * in some cases this statement throws an exception.
+                 * this statement might throw an exception.
                  * We dismiss it and assume no commands were registered.
                  */
 
@@ -101,18 +102,44 @@ namespace SampSharp.GameMode.Controllers
 
             string text = e.Text.Substring(1);
 
+            List<Tuple<Tuple<int, string>, Command>> candidates = new List<Tuple<Tuple<int, string>, Command>>();
+            
+            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (Command cmd in Command.All.Where(c => c.HasPlayerPermissionForCommand(player)))
             {
                 string args = text;
-                if (cmd.CommandTextMatchesCommand(ref args))
+                int count = cmd.CommandTextMatchesCommand(ref args);
+                if (count > 0)
                 {
-                    if (cmd.RunCommand(player, args))
-                    {
-                        e.Success = true;
-                        break;
-                    }
+                    candidates.Add(new Tuple<Tuple<int, string>, Command>(new Tuple<int, string>(count, args), cmd));
                 }
+
             }
+
+            var orderedCandidates = candidates.OrderByDescending(c => c.Item1.Item1);
+
+            /*
+             * 1) Find every command for which the arguments are valid.
+             * 2) Try to run each found command until one has run successfully.
+             */
+            var firstSuitable =
+                orderedCandidates.FirstOrDefault(candidate => candidate.Item2.AreArgumentsValid(candidate.Item1.Item2) && 
+                    candidate.Item2.RunCommand(player, candidate.Item1.Item2));
+
+            if (firstSuitable != null)
+            {
+                e.Success = true;
+                return;
+            }
+
+            /*
+             * If no command ran successfully, run the first command anyways.
+             */
+            var command = orderedCandidates.FirstOrDefault();
+
+            if (command != null && 
+                command.Item2.RunCommand(player, command.Item1.Item2))
+                e.Success = true;
         }
 
         /// <summary>

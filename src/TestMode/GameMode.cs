@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.Linq;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
@@ -30,20 +31,22 @@ namespace TestMode
     {
         private readonly List<ITest> _tests = new List<ITest>
         {
-            //new CommandsTest(),
-            //new ASyncTest(),
-            //new DelayTest(),
-            //new MenuTest(),
-            //new DisposureTest(),
-            //new DialogTest(),
-            //new CharsetTest(),
-            //new VehicleInfoTest(),
+            new CommandsTest(),
+            new ASyncTest(),
+            new DelayTest(),
+            new MenuTest(),
+            new DisposureTest(),
+            new DialogTest(),
+            new CharsetTest(),
+            new VehicleInfoTest(),
             new NativesTest(),
-            //new KeyHandlerTest(),
+            new KeyHandlerTest(),
         };
 
         protected override void OnInitialized(EventArgs args)
         {
+            Array values = typeof (VehicleModelType).GetEnumValues();
+
             Console.WriteLine("Booting version 2");
             Server.ToggleDebugOutput(true);
             SetGameModeText("sa-mp# testmode");

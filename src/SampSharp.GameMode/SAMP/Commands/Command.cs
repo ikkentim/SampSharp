@@ -58,15 +58,22 @@ namespace SampSharp.GameMode.SAMP.Commands
         ///     The command the player entered. When the command returns True, the referenced string will
         ///     only contain the command arguments.
         /// </param>
-        /// <returns>True when successful, False otherwise.</returns>
-        public virtual bool CommandTextMatchesCommand(ref string commandText)
+        /// <returns>0 if the command text does not match, otherwise the number of matching words.</returns>
+        public virtual int CommandTextMatchesCommand(ref string commandText)
         {
-            if (commandText.StartsWith(Name))
+            if (commandText == Name || commandText.StartsWith(Name + " "))
             {
                 commandText = Name == commandText ? string.Empty : commandText.Substring(Name.Length);
-                return true;
+                return 1;
             }
-            return false;
+            return 0;
         }
+
+        /// <summary>
+        ///     Checks whether the <paramref name="commandText" /> contains all required arguments.
+        /// </summary>
+        /// <param name="commandText">The text to check.</param>
+        /// <returns>True if all required arguments are present; False otherwise.</returns>
+        public abstract bool AreArgumentsValid(string commandText);
     }
 }

@@ -119,12 +119,11 @@ namespace SampSharp.GameMode.SAMP.Commands
                              */
 
                             ParameterAttribute attribute = Command.GetCustomAttributes<ParameterAttribute>()
-                                .FirstOrDefault(a => a.Name == parameter.Name);
+                                .FirstOrDefault(a => a.Name == parameter.Name) ?? ResolveParameterType(parameter.ParameterType, parameter.Name);
 
-                            if (attribute != null)
-                                attribute.Optional = parameter.HasDefaultValue;
+                            attribute.Optional = attribute.Optional || parameter.HasDefaultValue;
 
-                            return attribute ?? ResolveParameterType(parameter.ParameterType, parameter.Name);
+                            return attribute;
                         }).
                     ToArray();
 
@@ -235,20 +234,54 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>
         ///     True when successful, False otherwise.
         /// </returns>
-        public override bool CommandTextMatchesCommand(ref string commandText)
+        public override int CommandTextMatchesCommand(ref string commandText)
         {
             commandText = commandText.Trim(' ');
 
-            foreach (string str in CommandPaths)
+            foreach (string str in CommandPaths.OrderByDescending(c => c.Count(h => h == ' ')))
             {
-                if (!commandText.StartsWith(str) && (!IgnoreCase || !commandText.ToLower().StartsWith(str.ToLower())))
-                    continue;
+                if ((IgnoreCase && (commandText.ToLower() == str.ToLower() ||
+                                    commandText.ToLower().StartsWith(str.ToLower() + " "))) ||
+                    (commandText == str || commandText.StartsWith(str + " ")))
+                {
+                    commandText = commandText.Substring(str.Length);
+                    return str.Split(' ').Length;
 
-                commandText = commandText.Substring(str.Length);
-                return true;
+                }
             }
 
-            return false;
+            return 0;
+        }
+
+        /// <summary>
+        ///     Checks whether the <paramref name="commandText" /> contains all required arguments.
+        /// </summary>
+        /// <param name="commandText">The text to check.</param>
+        /// <returns>True if all required arguments are present; False otherwise.</returns>
+        public override bool AreArgumentsValid(string commandText)
+        {
+            for (int paramIndex = 0; paramIndex < Command.GetParameters().Length - 1; paramIndex++)
+            {
+                ParameterAttribute parameterAttribute = Parameters[paramIndex];
+
+                commandText = commandText.Trim();
+
+                /*
+                 * Check for missing optional parameters. This is obviously allowed.
+                 */
+                if (commandText.Length == 0 && parameterAttribute.Optional)
+                {
+                    continue;
+                }
+
+                object argument;
+                if (commandText.Length == 0 || !parameterAttribute.Check(ref commandText, out argument))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         /// <summary>

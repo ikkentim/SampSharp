@@ -1,17 +1,31 @@
+// SampSharp
+// Copyright 2015 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include "GameMode.h"
 #include <fstream>
 #include <assert.h>
-
+#include <iostream>
+#include <fstream>
+#include <time.h>
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/threads.h>
 #include <mono/metadata/exception.h>
 #include <mono/metadata/debug-helpers.h>
 #include "natives.h"
-
 #include "MonoRuntime.h"
 #include "PathUtil.h"
-
-
 #include "monohelper.h"
 
 using std::string;
@@ -571,9 +585,19 @@ int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params) {
         char *stacktrace = mono_string_to_utf8(
             mono_object_to_string(exception, NULL));
 
-        logprintf("[SampSharp] EXCEPTION: Exception thrown "
-            "during execution of %s:", mono_method_get_name(method));
-        logprintf("%s", stacktrace);
+        /* Cannot print the exception to logprintf; the buffer is too small. */
+        std::cout << "[SampSharp] Exception thrown during execution of " 
+            << mono_method_get_name(method) << ":" << std::endl 
+            << stacktrace << std::endl;
+
+        time_t now = time(0);
+        char timestamp[32];
+        strftime(timestamp, sizeof(timestamp), "[%d/%m/%Y %H:%M:%S]", localtime(&now));
+
+        std::ofstream logfile;
+        logfile.open("SampSharp_errors.log", std::ios::app | std::ios::binary);
+        logfile << timestamp << " Exception thrown" << mono_method_get_name(method) << ":" << "\r\n" << stacktrace << "\r\n";
+        logfile.close();
         return -1;
     }
 

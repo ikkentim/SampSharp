@@ -33,6 +33,7 @@ namespace TestMode.Tests
             Console.WriteLine("Command paths: {0}", string.Join(", ", cmd.CommandPaths));
         }
 
+
         [Command("console", Alias = "c", Shortcut = "1", PermissionCheckMethod = "TestCommandPermission")]
         [CommandGroup("tools")]
         [Text("text")]
@@ -84,6 +85,12 @@ namespace TestMode.Tests
             player.PutInVehicle(vehicle);
         }
 
+        [Command("vehicle")]
+        public static void VehicleOverloadCommand(GtaPlayer player)
+        {
+            player.SendClientMessage("This is the 'vehicle' overload. 'v', 'vehicle spawn' and 'vehicle list' is also available.");
+        }
+
         [Command("tell")]
         [Text("message")]
         public static void TellCommand(GtaPlayer player, GtaPlayer to, string message)
@@ -92,7 +99,6 @@ namespace TestMode.Tests
         }
 
         [Command("put")]
-        [Integer("seat")]
         public static void PutCommand(GtaPlayer player, int vehicleid, int seat = 0)
         {
             GtaVehicle v = GtaVehicle.Find(vehicleid);

@@ -68,19 +68,27 @@ namespace SampSharp.GameMode.SAMP.Commands
             /*
              * Find an enum value that contains the given word and select its index.
              */
-            string[] names = Type.GetEnumNames();
-            Array values = Type.GetEnumValues();
-            IEnumerable<string> results =
-                names.Where(
-                    (e, i) => e.ToLower().Contains(word) || (TestForValue && values.GetValue(i).ToString() == word));
+            var options = Type.GetEnumValues().OfType<object>()
+                .Select(v => new Tuple<string, object>(Type.GetEnumName(v), v));
 
-            if (results.Count() > 1)
+            var candidates =
+                options.Where(
+                    t =>
+                        t.Item1.ToLower().Contains(word) ||
+                        (TestForValue && Convert.ChangeType(t.Item2, Enum.GetUnderlyingType(Type)).ToString() == word));
+
+            if (candidates.Count() > 1)
             {
-                results = results.Where(e => e.ToLower() == word);
+                candidates =
+                    candidates.Where(
+                        t =>
+                            (TestForValue &&
+                             Convert.ChangeType(t.Item2, Enum.GetUnderlyingType(Type)).ToString() == word) ||
+                            t.Item2.ToString() == word);
             }
-            if (results.Count() == 1)
+            if (candidates.Count() == 1)
             {
-                output = values.GetValue(Type.GetEnumNames().IndexOf(results.First()));
+                output = candidates.First().Item2;
                 return true;
             }
 
