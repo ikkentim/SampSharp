@@ -40,7 +40,7 @@ namespace SampSharp.GameMode
             {
                 MethodInfo displayName = type.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
                 if (displayName != null)
-                    Console.WriteLine("[SampSharp] Detected mono version: {0}", displayName.Invoke(null, null));
+                    Console.WriteLine("Detected mono version: {0}", displayName.Invoke(null, null));
             }
 
             RegisterControllers();
@@ -105,6 +105,9 @@ namespace SampSharp.GameMode
         public void Dispose()
         {
             _controllers.Dispose();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers(); 
         }
     }
 }

@@ -31,7 +31,6 @@ MonoClass *GameMode::paramLengthClass_;
 MonoMethod *GameMode::paramLengthGetMethod_;
 
 bool GameMode::Load(std::string namespaceName, std::string className) {
-
     assert(MonoRuntime::IsLoaded());
 
     /* Build paths */
@@ -41,14 +40,10 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     string configPath = PathUtil::GetPathInBin("gamemode/")
         .append(namespaceName).append(".dll.config");
 
-    /* Load gamemode */
-    logprintf("[SampSharp] Loading game mode %s::%s", 
-        namespaceName.c_str(), className.c_str());
-
     /* Check for existance of gamemode */
     std::ifstream ifile(libraryPath.c_str());
     if (!ifile) {
-        logprintf("[SampSharp] ERROR: Game mode library does not exist!");
+        logprintf("ERROR: library does not exist!");
         isLoaded_ = false;
         return false;
     }
@@ -61,7 +56,7 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
         mono_assembly_open(libraryPath.c_str(), NULL));
 
     if (!gameMode_.image) {
-        logprintf("[SampSharp] ERROR: Couldn't open game mode image!");
+        logprintf("ERROR: Couldn't open image!");
         isLoaded_ = false;
         return false;
     }
@@ -70,7 +65,7 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
         namespaceName.c_str(), className.c_str());
 
     if (!gameMode_.klass) {
-        logprintf("[SampSharp] ERROR: Couldn't find class %s::%s!",
+        logprintf("ERROR: Couldn't find class %s:%s!",
             namespaceName.c_str(), className.c_str());
         isLoaded_ = false;
         return false;
@@ -80,15 +75,15 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
 
     if (!baseMode_.klass || strcmp("BaseMode",
         mono_class_get_name(baseMode_.klass)) != 0) {
-        logprintf("[SampSharp] ERROR: Base class of %s::%s is not BaseMode!",
+        logprintf("ERROR: Parent type of %s::%s is not BaseMode!",
             namespaceName.c_str(), className.c_str());
         isLoaded_ = false;
         return false;
     }
 
-        baseMode_.image = mono_class_get_image(baseMode_.klass);
+    baseMode_.image = mono_class_get_image(baseMode_.klass);
     
-
+    /* Add all internal calls. */
     LoadNatives();
     mono_add_internal_call(
         "SampSharp.GameMode.Natives.Native::RegisterExtension", 
@@ -114,8 +109,11 @@ bool GameMode::Unload() {
 
     /* Clear found methods. */
     tickMethod_ = NULL;
+    paramLengthClass_ = NULL;
+    paramLengthGetMethod_ = NULL;
 
     /* Clear timers. */
+    logprintf("Stopping timers...");
     for (TimerMap::iterator iter = timers_.begin(); 
         iter != timers_.end(); iter++) {
         int id = iter->first;
@@ -127,6 +125,7 @@ bool GameMode::Unload() {
     timers_.clear();
 
     /* Clear extensions. */
+    logprintf("Unloading extensions...");
     for (ExtensionList::iterator iter = extensions_.begin(); 
         iter != extensions_.end(); iter++) {
         mono_gchandle_free(*iter);
@@ -134,12 +133,44 @@ bool GameMode::Unload() {
     extensions_.clear();
 
     /* Clear callbacks. */
+    logprintf("Clearing callbacks table...");
     for (CallbackMap::iterator iter = callbacks_.begin(); 
         iter != callbacks_.end(); iter++) {
         iter->second->params.clear();
         delete iter->second;
     }
     callbacks_.clear();
+
+    /* Dispose of game mode. */
+    mono_thread_attach(domain_);
+
+    MonoMethod *method = LoadEvent("Dispose", 0);
+ 
+    if (method) {
+        logprintf("Disposing gamemode...");
+        CallEvent(method, gameModeHandle_, NULL);
+    }
+
+    /* Release game mode. */
+    mono_gchandle_free(gameModeHandle_);
+
+    gameModeHandle_ = NULL;
+
+    /* For now, I see no way of unloading and reloading images without problems.
+     * Best to look at this again in the future.
+     */
+    //mono_image_close(gameMode_.image);
+    //mono_image_close(baseMode_.image);
+
+    //mono_images_cleanup();
+
+    gameMode_.image = NULL;
+    gameMode_.klass = NULL;
+
+    baseMode_.image = NULL;
+    baseMode_.klass = NULL;
+
+    domain_ = NULL;
 
     isLoaded_ = false;
     return true;

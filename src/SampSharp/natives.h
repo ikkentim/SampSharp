@@ -773,7 +773,6 @@ int call_native_array(MonoString *name_string, MonoString *format_string,
 
     }
 
-    sampgdk_logprintf("Invoke %s(%d :: %s) :: %d", name, args_count, amx_format, native);
     int return_value = sampgdk::InvokeNativeArray(native, amx_format, params);
 
     for (int i = 0; i < args_count; i++) {

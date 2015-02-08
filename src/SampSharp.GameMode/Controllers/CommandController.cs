@@ -34,7 +34,7 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="gameMode">The running GameMode.</param>
         public virtual void RegisterEvents(BaseMode gameMode)
         {
-            Console.WriteLine("[SampSharp] Loaded {0} commands.",
+            Console.WriteLine("Loaded {0} commands.",
                 RegisterCommands(Assembly.GetAssembly(gameMode.GetType())));
 
             gameMode.PlayerCommandText += gameMode_PlayerCommandText;

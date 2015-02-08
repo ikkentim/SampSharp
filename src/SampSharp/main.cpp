@@ -29,6 +29,8 @@ using std::string;
 using std::stringstream;
 using sampgdk::logprintf;
 
+bool filterscript_loaded = false;
+
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
     return sampgdk::Supports() | SUPPORTS_PROCESS_TICK;
 }
@@ -37,7 +39,11 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     if (!sampgdk::Load(ppData)) return false;
 
     pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
-    logprintf("[SampSharp] Loading SampSharp v%s by ikkentim", PLUGIN_VERSION);
+    logprintf("");
+    logprintf("SampSharp Plugin");
+    logprintf("----------------");
+    logprintf("v%s, (c)2014-2015 Tim Potze", PLUGIN_VERSION);
+    logprintf("");
 
     Config::Read();
     return true;
@@ -58,26 +64,38 @@ void convertSymbols() {
     string symbols = Config::GetSymbolFiles();
 
     if (symbols.length() > 0) {
-        logprintf("[SampSharp] Generating symbol files...");
+
+        logprintf("----------");
+        logprintf("Generating symbol files...");
 
         stringstream symbols_stream(symbols);
         string file;
         while (std::getline(symbols_stream, file, ' ')) {
             std::ifstream ifile(file.c_str());
             if (file.empty() || !ifile) {
-                logprintf("[SampSharp] Processing \"%s\"... File not found!", file.c_str());
+                logprintf("Processing \"%s\"... File not found!", file.c_str());
                 continue;
             }
 
-            logprintf("[SampSharp] Processing \"%s\"...", file.c_str());
+            logprintf("Processing \"%s\"...", file.c_str());
             mono_convert_symbols(file.c_str());
         }
-        sampgdk::logprintf("[SampSharp] Symbol files generated!\n");
+        sampgdk::logprintf("Symbol files generated!\n");
+
+        logprintf("----------");
+        logprintf("");
     }
 }
 
-PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name, cell *params, cell *retval) {
+PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name, 
+    cell *params, cell *retval) {
     if (!GameMode::IsLoaded() && !strcmp(name, "OnGameModeInit")) {
+        /* Load empty filterscript */
+        if (filterscript_loaded) {
+            SendRconCommand("loadfs empty");
+            filterscript_loaded = true;
+        }
+
         /* Load mono */
         if (!MonoRuntime::IsLoaded()) {
             MonoRuntime::Load(Config::GetMonoAssemblyDir(),
@@ -93,14 +111,38 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name, cell *pa
         convertSymbols();
 
         /* Load game mode */
-        if(!GameMode::Load(Config::GetGameModeNameSpace(), 
-            Config::GetGameModeClass())) {
-            logprintf("[SampSharp] Failed to load game mode.");
-        }
+        string namespaceName = Config::GetGameModeNameSpace();
+        string className = Config::GetGameModeClass();
+
+        logprintf("");
+        logprintf("Gamemode");
+        logprintf("---------------");
+        logprintf("Loading gamemode: %s:%s", namespaceName.c_str(), 
+            className.c_str());
+
+        if(GameMode::Load(Config::GetGameModeNameSpace(), 
+            Config::GetGameModeClass()))
+            logprintf("  Loaded.");
+        else
+            logprintf("  Failed.");
+
+        logprintf("");
     }
     else if (GameMode::IsLoaded() && !strcmp(name, "OnGameModeExit")) {
         GameMode::ProcessPublicCall(amx, name, params, retval);
+
+        string namespaceName = Config::GetGameModeNameSpace();
+        string className = Config::GetGameModeClass();
+
+        logprintf("");
+        logprintf("---------------");
+        logprintf("Unloading gamemode: %s:%s", namespaceName.c_str(), 
+            className.c_str());
+
         GameMode::Unload();
+
+        logprintf("  Unloaded.");
+        logprintf("");
     }
 
     if (GameMode::IsLoaded()) {

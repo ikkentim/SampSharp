@@ -23,7 +23,7 @@ void MonoRuntime::Load(std::string assemblyDir, std::string configDir,
 #endif
 
     mono_trace_set_level_string(traceLevel.c_str());
-    mono_jit_init(file.c_str());
+    MonoDomain *dom = mono_jit_init(file.c_str());
 
     isLoaded_ = true;
 }
@@ -32,7 +32,11 @@ void MonoRuntime::Unload() {
     if (!isLoaded_) {
         return;
     }
-    mono_jit_cleanup(mono_domain_get());
+
+    /* For some reason, the process crashes when trying to cleanup mono.
+     * For now, lets just not cleanup.
+     */
+    // mono_jit_cleanup(mono_domain_get());
 
     isLoaded_ = false;
 }

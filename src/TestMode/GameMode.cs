@@ -44,6 +44,7 @@ namespace TestMode
 
         protected override void OnInitialized(EventArgs args)
         {
+            Console.WriteLine("Booting version 2");
             Server.ToggleDebugOutput(true);
             SetGameModeText("sa-mp# testmode");
             UsePlayerPedAnimations();
