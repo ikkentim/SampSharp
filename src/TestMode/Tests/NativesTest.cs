@@ -26,9 +26,10 @@ namespace TestMode.Tests
         {
             Console.WriteLine("CALLING GetNetworkStats");
             string str = "";
-            Native.CallNative("GetNetworkStats", __arglist(ref str, 330));
+            Native.CallNative("GetNetworkStats", __arglist(ref str, (int)512));
             Console.WriteLine(str);
 
+            return;
             Console.WriteLine("CALLING SetWeather");
             Native.CallNative("SetWeather", __arglist(10));
 
@@ -39,8 +40,8 @@ namespace TestMode.Tests
             Console.WriteLine("CALLING SetGameModeText");
             Native.CallNative("SetGameModeText", __arglist("Blablab"));
 
-            //Console.WriteLine("CALLING SetGravity");
-            //Native.CallNative("SetGravity", __arglist(0.008));
+            Console.WriteLine("CALLING SetGravity");
+            Native.CallNative("SetGravity", __arglist(0.008f));
 
             Console.WriteLine("CALLING CreateVehicle");
             int vid = Native.CallNative("CreateVehicle", __arglist(400, 50.50f, 60.60f, 70.70f, 0.0f, -1, -1, -1));

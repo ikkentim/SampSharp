@@ -17,5 +17,7 @@
 
 #pragma once
 
-char *monostring_to_string(MonoString *string_obj);
-MonoString *string_to_monostring(char *str, int len);
+char * monostring_to_string(MonoString * string_obj);
+MonoString * string_to_monostring(char * str, int len);
+
+void mono_convert_symbols(const char * path);

@@ -15,262 +15,601 @@
 
 #include <sampgdk/sampgdk.h>
 #include <string>
-#include <cstring>
+#include <mono/metadata/exception.h>
 
-#include "monostring.h"
+#include "monohelper.h"
 #include "unicode.h"
 
 #pragma once
 
-#define MAX_NATIVE_ARGS 32
-#define ERR_EXCEPTION -1
+#define MAX_NATIVE_ARGS				(32)
+#define MAX_NATIVE_ARG_FORMAT_LEN	(8)
+#define ERR_EXCEPTION				(-1)
 
 using std::string;
 
 //
 //a_players string converters
 inline int p_SetPlayerName(int playerid, MonoString *name) {
-	return sampgdk_SetPlayerName(playerid, monostring_to_string(name));
+    char *buffer = monostring_to_string(name);
+
+	int retval = sampgdk_SetPlayerName(playerid, buffer);
+
+    delete[] buffer;
+    return retval;
 }
-inline bool p_PlayAudioStreamForPlayer(int playerid, MonoString *url, float posX, float posY, float posZ, float distance, bool usepos) {
-	return sampgdk_PlayAudioStreamForPlayer(playerid, monostring_to_string(url), posX, posY, posZ, distance, usepos);
+inline bool p_PlayAudioStreamForPlayer(int playerid, MonoString *url,
+    float posX, float posY, float posZ, float distance, bool usepos) {
+    char *buffer = monostring_to_string(url);
+
+	bool retval = sampgdk_PlayAudioStreamForPlayer(playerid, buffer, posX, posY,
+        posZ, distance, usepos);
+
+    delete[] buffer;
+    return retval;
 }
 inline bool p_SetPlayerShopName(int playerid, MonoString *shopname) {
-	return sampgdk_SetPlayerShopName(playerid, monostring_to_string(shopname));
+    char *buffer = monostring_to_string(shopname);
+
+	bool retval = sampgdk_SetPlayerShopName(playerid, buffer);
+
+    delete[] buffer;
+    return retval;
 }
-inline int p_CreatePlayerTextDraw(int playerid, float x, float y, MonoString *text) {
-	return sampgdk_CreatePlayerTextDraw(playerid, x, y, monostring_to_string(text));
+inline int p_CreatePlayerTextDraw(int playerid, float x, float y,
+    MonoString *text) {
+    char *buffer = monostring_to_string(text);
+
+	int retval = sampgdk_CreatePlayerTextDraw(playerid, x, y,  buffer);
+
+    delete[] buffer;
+    return retval;
 }
-inline bool p_PlayerTextDrawSetString(int playerid, int text, MonoString *string) {
-	return sampgdk_PlayerTextDrawSetString(playerid, text, monostring_to_string(string));
+inline bool p_PlayerTextDrawSetString(int playerid, int text, 
+    MonoString *string) {
+    char *buffer = monostring_to_string(string);
+
+	bool retval = sampgdk_PlayerTextDrawSetString(playerid, text, buffer);
+
+    delete[] buffer;
+    return retval;
 }
 inline bool p_SetPVarInt(int playerid, MonoString *varname, int value) {
-	return sampgdk_SetPVarInt(playerid, monostring_to_string(varname), value);
+    char *buffer = monostring_to_string(varname);
+
+	bool retval = sampgdk_SetPVarInt(playerid, buffer, value);
+
+    delete[] buffer;
+    return retval;
 }
 inline int p_GetPVarInt(int playerid, MonoString *varname) {
-	return sampgdk_GetPVarInt(playerid, monostring_to_string(varname));
+    char *buffer = monostring_to_string(varname);
+
+	int retval = sampgdk_GetPVarInt(playerid, buffer);
+
+    delete[] buffer;
+    return retval;
 }
-inline bool p_SetPVarString(int playerid, MonoString *varname, MonoString *value) {
-	return sampgdk_SetPVarString(playerid, monostring_to_string(varname), monostring_to_string(value));
+inline bool p_SetPVarString(int playerid, MonoString *varname, 
+    MonoString *value) {
+    char *varname_buffer = monostring_to_string(varname);
+    char *value_buffer = monostring_to_string(value);
+
+    bool retval = sampgdk_SetPVarString(playerid, varname_buffer, value_buffer);
+
+    delete[] varname_buffer;
+    delete[] value_buffer;
+    return retval;
 }
-inline bool p_GetPVarString(int playerid, MonoString *varname, MonoString ** value, int size) {
-	char *buffer = new char[size];
-	bool retbool = sampgdk_GetPVarString(playerid, monostring_to_string(varname), buffer, size);
-    *value = string_to_monostring(buffer, size);
-	return retbool;
+inline bool p_GetPVarString(int playerid, MonoString *varname, 
+	MonoString ** value, int size) {
+    char *varname_buffer = monostring_to_string(varname);
+	char *value_buffer = new char[size];
+
+    bool retval = sampgdk_GetPVarString(playerid, varname_buffer, value_buffer,
+        size);
+
+    *value = string_to_monostring(value_buffer, size);
+
+    delete[] varname_buffer;
+    delete[] value_buffer;
+	return retval;
 }
 inline bool p_SetPVarFloat(int playerid, MonoString *varname, float value) {
-	return sampgdk_SetPVarFloat(playerid, monostring_to_string(varname), value);
+    char *buffer = monostring_to_string(varname);
+
+    bool retval = sampgdk_SetPVarFloat(playerid, buffer, value);
+
+    delete[] buffer;
+    return retval;
 }
 inline float p_GetPVarFloat(int playerid, MonoString *varname) {
-	return sampgdk_GetPVarFloat(playerid, monostring_to_string(varname));
+    char *buffer = monostring_to_string(varname);
+
+    float retval = sampgdk_GetPVarFloat(playerid, buffer);
+
+    delete[] buffer;
+    return retval;
 }
 inline bool p_DeletePVar(int playerid, MonoString *varname) {
-	return sampgdk_DeletePVar(playerid, monostring_to_string(varname));
+    char *buffer = monostring_to_string(varname);
+
+	bool retval = sampgdk_DeletePVar(playerid, buffer);
+
+    delete[] buffer;
+    return retval;
 }
 inline int p_GetPVarType(int playerid, MonoString *varname) {
-	return sampgdk_GetPVarType(playerid, monostring_to_string(varname));
+    char *buffer = monostring_to_string(varname);
+
+    int retval = sampgdk_GetPVarType(playerid, buffer);
+
+    delete[] buffer;
+    return retval;
 }
-inline bool p_SetPlayerChatBubble(int playerid, MonoString *text, int color, float drawdistance, int expiretime) {
-	return sampgdk_SetPlayerChatBubble(playerid, monostring_to_string(text), color, drawdistance, expiretime);
+inline bool p_SetPlayerChatBubble(int playerid, MonoString *text, int color,
+    float drawdistance, int expiretime) {
+    char *buffer = monostring_to_string(text);
+
+	bool retval = sampgdk_SetPlayerChatBubble(playerid, buffer, color, 
+        drawdistance, expiretime);
+
+    delete[] buffer;
+    return retval;
 }
-inline bool p_ApplyAnimation(int playerid, MonoString *animlib, MonoString *animname, float fDelta, bool loop, bool lockx, bool locky, bool freeze, int time, bool forcesync) {
-	return sampgdk_ApplyAnimation(playerid, monostring_to_string(animlib), monostring_to_string(animname), fDelta, loop, lockx, locky, freeze, time, forcesync);
+inline bool p_ApplyAnimation(int playerid, MonoString *animlib,
+	MonoString *animname, float fDelta, bool loop, bool lockx, bool locky,
+    bool freeze, int time, bool forcesync) {
+    char *animlib_buffer = monostring_to_string(animlib);
+    char *animname_buffer = monostring_to_string(animname);
+
+    bool retval = sampgdk_ApplyAnimation(playerid, animlib_buffer, 
+        animname_buffer, fDelta, loop, lockx, locky, freeze, time, forcesync);
+
+    delete[] animlib_buffer;
+    delete[] animname_buffer;
+    return retval;
 }
-inline bool p_StartRecordingPlayerData(int playerid, int recordtype, MonoString *recordname) {
-	return sampgdk_StartRecordingPlayerData(playerid, recordtype, monostring_to_string(recordname));
+inline bool p_StartRecordingPlayerData(int playerid, int recordtype,
+    MonoString *recordname) {
+    char *buffer = monostring_to_string(recordname);
+
+	bool retval = sampgdk_StartRecordingPlayerData(playerid, recordtype, 
+        buffer);
+
+    delete[] buffer;
+    return retval;
 }
 inline bool p_GetPlayerIp(int playerid, MonoString ** ip, int size) {
 	char *buffer = new char[size];
-	bool retbool = sampgdk_GetPlayerIp(playerid, buffer, size);
+
+	bool retval = sampgdk_GetPlayerIp(playerid, buffer, size);
+
     *ip = string_to_monostring(buffer, size);
-	return retbool;
+
+    delete[] buffer;
+	return retval;
 }
 inline int p_GetPlayerName(int playerid, MonoString ** name, int size) {
 	char *buffer = new char[size];
-	int retint = sampgdk_GetPlayerName(playerid, buffer, size);
+
+	int retval = sampgdk_GetPlayerName(playerid, buffer, size);
+
     *name = string_to_monostring(buffer, size);
-	return retint;
+
+    delete[] buffer;
+    return retval;
 }
-inline bool p_GetPVarNameAtIndex(int playerid, int index, MonoString ** varname, int size) {
+inline bool p_GetPVarNameAtIndex(int playerid, int index, MonoString ** varname,
+	int size) {
 	char *buffer = new char[size];
-	bool retbool = sampgdk_GetPVarNameAtIndex(playerid, index, buffer, size);
+
+	bool retval = sampgdk_GetPVarNameAtIndex(playerid, index, buffer, size);
     *varname = string_to_monostring(buffer, size);
-	return retbool;
+
+    delete[] buffer;
+	return retval;
 }
-inline bool p_GetAnimationName(int index, MonoString ** animlib, int animlib_size, MonoString ** animname, int animname_size) {
-	char *libbuffer = new char[animlib_size];
+inline bool p_GetAnimationName(int index, MonoString ** animlib,
+	int animlib_size, MonoString ** animname, int animname_size) {
+    char *libbuffer = new char[animlib_size];
 	char *namebuffer = new char[animname_size];
 
-	bool retbool = sampgdk_GetAnimationName(index, libbuffer, animlib_size, namebuffer, animname_size);
+	bool retval = sampgdk_GetAnimationName(index, libbuffer, animlib_size,
+		namebuffer, animname_size);
+
     *animlib = string_to_monostring(libbuffer, animlib_size);
     *animname = string_to_monostring(namebuffer, animname_size);
-	return retbool;
+
+    delete[] libbuffer;
+    delete[] namebuffer;
+	return retval;
 }
 
 //
 //a_samp string converters
 inline bool p_SendClientMessage(int playerid, int color, MonoString *message) {
-	return sampgdk_SendClientMessage(playerid, color, monostring_to_string(message));
+    char *buffer = monostring_to_string(message);
+
+	bool retval = sampgdk_SendClientMessage(playerid, color, buffer);
+
+    delete[] buffer;
+    return retval;
 }
 inline bool p_SendClientMessageToAll(int color, MonoString *message) {
-	return sampgdk_SendClientMessageToAll(color, monostring_to_string(message));
+    char *buffer = monostring_to_string(message);
+
+	bool retval = sampgdk_SendClientMessageToAll(color, buffer);
+
+    delete[] buffer;
+    return retval;
 }
-inline bool p_SendPlayerMessageToPlayer(int playerid, int senderid, MonoString *message) {
-	return sampgdk_SendPlayerMessageToPlayer(playerid, senderid, monostring_to_string(message));
+inline bool p_SendPlayerMessageToPlayer(int playerid, int senderid,
+    MonoString *message) {
+    char *buffer = monostring_to_string(message);
+
+	bool retval = sampgdk_SendPlayerMessageToPlayer(playerid, senderid, buffer);
+
+    delete[] buffer;
+    return retval;
 }
 inline bool p_SendPlayerMessageToAll(int senderid, MonoString *message) {
-	return sampgdk_SendPlayerMessageToAll(senderid, monostring_to_string(message));
+    char *buffer = monostring_to_string(message);
+
+	bool retval = sampgdk_SendPlayerMessageToAll(senderid, buffer);
+
+    delete[] buffer;
+    return retval;
 }
 inline bool p_GameTextForAll(MonoString *text, int time, int style) {
-	return sampgdk_GameTextForAll(monostring_to_string(text), time, style);
+    char *buffer = monostring_to_string(text);
+
+	bool retval = sampgdk_GameTextForAll(buffer, time, style);
+
+    delete[] buffer;
+    return retval;
 }
-inline bool p_GameTextForPlayer(int playerid, MonoString *text, int time, int style) {
-	return sampgdk_GameTextForPlayer(playerid, monostring_to_string(text), time, style);
+inline bool p_GameTextForPlayer(int playerid, MonoString *text, int time,
+    int style) {
+    char *buffer = monostring_to_string(text);
+
+	bool retval = sampgdk_GameTextForPlayer(playerid, buffer, time, style);
+
+    delete[] buffer;
+    return retval;
 }
 inline bool p_SetGameModeText(MonoString *text) {
-	return sampgdk_SetGameModeText(monostring_to_string(text));
+    char *buffer = monostring_to_string(text);
+
+	bool retval = sampgdk_SetGameModeText(buffer);
+
+    delete[] buffer;
+    return retval;
 }
 inline bool p_ConnectNPC(MonoString *name, MonoString *script) {
-	return sampgdk_ConnectNPC(monostring_to_string(name), monostring_to_string(script));
+    char *name_buffer = monostring_to_string(name);
+    char *script_buffer = monostring_to_string(script);
+
+	bool retval = sampgdk_ConnectNPC(name_buffer, script_buffer);
+
+    delete[] name_buffer;
+    delete[] script_buffer;
+    return retval;
 }
 inline bool p_BanEx(int playerid, MonoString *reason) {
-	return sampgdk_BanEx(playerid, monostring_to_string(reason));
+    char *buffer = monostring_to_string(reason);
+
+	bool retval = sampgdk_BanEx(playerid, buffer);
+
+    delete[] buffer;
+    return retval;
 }
 inline bool p_SendRconCommand(MonoString *command) {
-	return sampgdk_SendRconCommand(monostring_to_string(command));
+    char *buffer = monostring_to_string(command);
+
+	bool retval = sampgdk_SendRconCommand(buffer);
+
+    delete[] buffer;
+    return retval;
 }
-inline bool p_GetServerVarAsString(MonoString *varname, MonoString ** value, int size) {
-	char *buffer = new char[size];
-	bool retbool = sampgdk_GetServerVarAsString(monostring_to_string(varname), buffer, size);
-    *value = string_to_monostring(buffer, size);
-	return retbool;
+inline bool p_GetServerVarAsString(MonoString *varname, MonoString ** value,
+    int size) {
+    char *varname_buffer = monostring_to_string(varname);
+	char *value_buffer = new char[size];
+
+    bool retval = sampgdk_GetServerVarAsString(varname_buffer, value_buffer, 
+        size);
+
+    *value = string_to_monostring(value_buffer, size);
+
+    delete[] varname_buffer;
+    delete[] value_buffer;
+	return retval;
 }
 inline int p_GetServerVarAsInt(MonoString *varname) {
-	return sampgdk_GetServerVarAsInt(monostring_to_string(varname));
+    char *buffer = monostring_to_string(varname);
+
+	int retval = sampgdk_GetServerVarAsInt(buffer);
+
+    delete[] buffer;
+    return retval;
 }
 inline bool p_GetServerVarAsBool(MonoString *varname) {
-	return sampgdk_GetServerVarAsBool(monostring_to_string(varname));
+    char *buffer = monostring_to_string(varname);
+
+	bool retval = sampgdk_GetServerVarAsBool(buffer);
+
+    delete[] buffer;
+    return retval;
 }
-inline int p_CreateMenu(MonoString *title, int columns, float x, float y, float col1width, float col2width) {
-	return sampgdk_CreateMenu(monostring_to_string(title), columns, x, y, col1width, col2width);
+inline int p_CreateMenu(MonoString *title, int columns, float x, float y,
+    float col1width, float col2width) {
+    char *buffer = monostring_to_string(title);
+
+	int retval = sampgdk_CreateMenu(buffer, columns, x, y, col1width, 
+        col2width);
+
+    delete[] buffer;
+    return retval;
 }
 inline int p_AddMenuItem(int menuid, int column, MonoString *menutext) {
-	return sampgdk_AddMenuItem(menuid, column, monostring_to_string(menutext));
+    char *buffer = monostring_to_string(menutext);
+
+	int retval = sampgdk_AddMenuItem(menuid, column, buffer);
+
+    delete[] buffer;
+    return retval;
 }
-inline bool p_SetMenuColumnHeader(int menuid, int column, MonoString *columnheader) {
-	return sampgdk_SetMenuColumnHeader(menuid, column, monostring_to_string(columnheader));
+inline bool p_SetMenuColumnHeader(int menuid, int column,
+    MonoString *columnheader) {
+    char *buffer = monostring_to_string(columnheader);
+
+	bool retval = sampgdk_SetMenuColumnHeader(menuid, column, buffer);
+
+    delete[] buffer;
+    return retval;
 }
 inline int p_TextDrawCreate(float x, float y, MonoString *text) {
-	return sampgdk_TextDrawCreate(x, y, monostring_to_string(text));
+    char *buffer = monostring_to_string(text);
+
+	int retval = sampgdk_TextDrawCreate(x, y, buffer);
+
+    delete[] buffer;
+    return retval;
 }
 inline bool p_TextDrawSetString(int text, MonoString *string) {
-	return sampgdk_TextDrawSetString(text, monostring_to_string(string));
+    char *buffer = monostring_to_string(string);
+
+	bool retval = sampgdk_TextDrawSetString(text, buffer);
+
+    delete[] buffer;
+    return retval;
 }
-inline int p_Create3DTextLabel(MonoString *text, int color, float x, float y, float z, float DrawDistance, int virtualworld, bool testLOS) {
-	return sampgdk_Create3DTextLabel(monostring_to_string(text), color, x, y, z, DrawDistance, virtualworld, testLOS);
+inline int p_Create3DTextLabel(MonoString *text, int color, float x, float y,
+    float z, float drawDistance, int virtualworld, bool testLOS) {
+    char *buffer = monostring_to_string(text);
+
+	int retval = sampgdk_Create3DTextLabel(buffer, color, x, y, z, 
+        drawDistance,  virtualworld, testLOS);
+
+    delete[] buffer;
+    return retval;
 }
 inline bool p_Update3DTextLabelText(int id, int color, MonoString *text) {
-	return sampgdk_Update3DTextLabelText(id, color, monostring_to_string(text));
+    char *buffer = monostring_to_string(text);
+
+	bool retval = sampgdk_Update3DTextLabelText(id, color, buffer);
+
+    delete[] buffer;
+    return retval;
 }
-inline int p_CreatePlayer3DTextLabel(int playerid, MonoString *text, int color, float x, float y, float z, float DrawDistance, int attachedplayer, int attachedvehicle, bool testLOS) {
-	return sampgdk_CreatePlayer3DTextLabel(playerid, monostring_to_string(text), color, x, y, z, DrawDistance, attachedplayer, attachedvehicle, testLOS);
+inline int p_CreatePlayer3DTextLabel(int playerid, MonoString *text, int color,
+	float x, float y, float z, float drawDistance, int attachedplayer,
+    int attachedvehicle, bool testLOS) {
+    char *buffer = monostring_to_string(text);
+
+	int retval = sampgdk_CreatePlayer3DTextLabel(playerid, buffer, color, x, y, 
+        z, drawDistance, attachedplayer, attachedvehicle, testLOS);
+
+    delete[] buffer;
+    return retval;
 }
-inline bool p_UpdatePlayer3DTextLabelText(int playerid, int id, int color, MonoString *text) {
-	return sampgdk_UpdatePlayer3DTextLabelText(playerid, id, color, monostring_to_string(text));
+inline bool p_UpdatePlayer3DTextLabelText(int playerid, int id, int color,
+    MonoString *text) {
+    char *buffer = monostring_to_string(text);
+
+	bool retval = sampgdk_UpdatePlayer3DTextLabelText(playerid, id, color, 
+        buffer);
+
+    delete[] buffer;
+    return retval;
 }
-inline bool p_ShowPlayerDialog(int playerid, int dialogid, int style, MonoString *caption, MonoString *info, MonoString *button1, MonoString *button2) {
-	return sampgdk_ShowPlayerDialog(playerid, dialogid, style, monostring_to_string(caption), monostring_to_string(info), monostring_to_string(button1), monostring_to_string(button2));
+inline bool p_ShowPlayerDialog(int playerid, int dialogid, int style,
+	MonoString *caption, MonoString *info, MonoString *button1,
+    MonoString *button2) {
+    char *caption_buffer = monostring_to_string(caption);
+    char *info_buffer = monostring_to_string(info);
+    char *button1_buffer = monostring_to_string(button1);
+    char *button2_buffer = monostring_to_string(button2);
+
+	bool retval = sampgdk_ShowPlayerDialog(playerid, dialogid, style, 
+        caption_buffer, info_buffer, button1_buffer, button2_buffer);
+
+    delete[] caption_buffer;
+    delete[] info_buffer;
+    delete[] button1_buffer;
+    delete[] button2_buffer;
+    return retval;
 }
 inline bool p_GetWeaponName(int weaponid, MonoString ** name, int size) {
 	char *buffer = new char[size];
-	bool retbool = sampgdk_GetWeaponName(weaponid, buffer, size);
+
+	bool retval = sampgdk_GetWeaponName(weaponid, buffer, size);
+
     *name = string_to_monostring(buffer, size);
-	return retbool;
+
+    delete[] buffer;
+	return retval;
 }
-inline bool p_GetPlayerNetworkStats(int playerid, MonoString ** retstr, int size) {
+inline bool p_GetPlayerNetworkStats(int playerid, MonoString ** retstr,
+	int size) {
 	char *buffer = new char[size];
-	bool retbool = sampgdk_GetPlayerNetworkStats(playerid, buffer, size);
+
+	bool retval = sampgdk_GetPlayerNetworkStats(playerid, buffer, size);
+
     *retstr = string_to_monostring(buffer, size);
-	return retbool;
+
+    delete[] buffer;
+	return retval;
 }
 inline bool p_GetPlayerVersion(int playerid, MonoString ** version, int len) {
 	char *buffer = new char[len];
-	bool retbool = sampgdk_GetPlayerVersion(playerid, buffer, len);
+
+	bool retval = sampgdk_GetPlayerVersion(playerid, buffer, len);
+
     *version = string_to_monostring(buffer, len);
-	return retbool;
+
+    delete[] buffer;
+	return retval;
 }
 inline bool p_gpci(int playerid, MonoString ** buffer, int size) {
-	char *b_buffer = new char[size];
-	bool retbool = sampgdk_gpci(playerid, b_buffer, size);
-    *buffer = string_to_monostring(b_buffer, size);
-	return retbool;
+	char *buffer_buffer = new char[size];
+
+	bool retval = sampgdk_gpci(playerid, buffer_buffer, size);
+
+    *buffer = string_to_monostring(buffer_buffer, size);
+
+    delete[] buffer_buffer;
+	return retval;
 }
 inline bool p_GetNetworkStats(MonoString ** retstr, int size) {
 	char *buffer = new char[size];
-	bool retbool = sampgdk_GetNetworkStats(buffer, size);
+
+	bool retval = sampgdk_GetNetworkStats(buffer, size);
+
 	*retstr = string_to_monostring(buffer, size);
-	return retbool;
+
+    delete[] buffer;
+	return retval;
 }
 
 inline bool p_BlockIpAddress(MonoString *ip_address, int timems) {
-	return sampgdk_BlockIpAddress(monostring_to_string(ip_address), timems);
+    char *buffer = monostring_to_string(ip_address);
+
+	bool retval = sampgdk_BlockIpAddress(buffer, timems);
+
+    delete[] buffer;
+    return retval;
 }
 inline bool p_UnBlockIpAddress(MonoString *ip_address) {
-	return sampgdk_UnBlockIpAddress(monostring_to_string(ip_address));
+    char *buffer = monostring_to_string(ip_address);
+
+    bool retval = sampgdk_UnBlockIpAddress(buffer);
+
+    delete[] buffer;
+    return retval;
 }
 
 //
 // a_objects string converters
-inline bool p_SetObjectMaterial(int objectid, int materialindex, int modelid, MonoString *txdname, MonoString *texturename, int materialcolor) {
-	return sampgdk_SetObjectMaterial(objectid, materialindex, modelid, monostring_to_string(txdname), monostring_to_string(texturename), materialcolor);
+inline bool p_SetObjectMaterial(int objectid, int materialindex, int modelid,
+    MonoString *txdname, MonoString *texturename, int materialcolor) {
+    char *txdname_buffer = monostring_to_string(txdname);
+    char *texturename_buffer = monostring_to_string(texturename);
+
+	bool retval = sampgdk_SetObjectMaterial(objectid, materialindex, modelid,
+        txdname_buffer, texturename_buffer, materialcolor);
+
+    delete[] txdname_buffer;
+    delete[] texturename_buffer;
+    return retval;
 }
-inline bool p_SetPlayerObjectMaterial(int playerid, int objectid, int materialindex, int modelid, MonoString *txdname, MonoString *texturename, int materialcolor) {
-	return sampgdk_SetPlayerObjectMaterial(playerid, objectid, materialindex, modelid, monostring_to_string(txdname), monostring_to_string(texturename), materialcolor);
+inline bool p_SetPlayerObjectMaterial(int playerid, int objectid,
+	int materialindex, int modelid, MonoString *txdname,
+    MonoString *texturename, int materialcolor) {
+    char *txdname_buffer = monostring_to_string(txdname);
+    char *texturename_buffer = monostring_to_string(texturename);
+
+	bool retval = sampgdk_SetPlayerObjectMaterial(playerid, objectid, 
+        materialindex, modelid, txdname_buffer, texturename_buffer,
+        materialcolor);
+
+    delete[] txdname_buffer;
+    delete[] texturename_buffer;
+    return retval;
 }
-inline bool p_SetObjectMaterialText(int objectid, MonoString *text, int materialindex, int materialsize, MonoString *fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment) {
-	return sampgdk_SetObjectMaterialText(objectid, monostring_to_string(text), materialindex, materialsize, monostring_to_string(fontface), fontsize, bold, fontcolor, backcolor, textalignment);
+inline bool p_SetObjectMaterialText(int objectid, MonoString *text,
+	int materialindex, int materialsize, MonoString *fontface, int fontsize,
+    bool bold, int fontcolor, int backcolor, int textalignment) {
+    char *text_buffer = monostring_to_string(text);
+    char *fontface_buffer = monostring_to_string(fontface);
+
+    bool retval = sampgdk_SetObjectMaterialText(objectid, text_buffer, 
+        materialindex, materialsize, fontface_buffer, fontsize, bold, fontcolor,
+        backcolor, textalignment);
+
+    delete[] text_buffer;
+    delete[] fontface_buffer;
+    return retval;
 }
-inline bool p_SetPlayerObjectMaterialText(int playerid, int objectid, MonoString *text, int materialindex, int materialsize, MonoString *fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment) {
-	return sampgdk_SetPlayerObjectMaterialText(playerid, objectid, monostring_to_string(text), materialindex, materialsize, monostring_to_string(fontface), fontsize, bold, fontcolor, backcolor, textalignment);
+inline bool p_SetPlayerObjectMaterialText(int playerid, int objectid,
+	MonoString *text, int materialindex, int materialsize, MonoString *fontface,
+    int fontsize, bool bold, int fontcolor, int backcolor, int textalignment) {
+    char *text_buffer = monostring_to_string(text);
+    char *fontface_buffer = monostring_to_string(fontface);
+
+	bool retval = sampgdk_SetPlayerObjectMaterialText(playerid, objectid, 
+        text_buffer, materialindex, materialsize, fontface_buffer, fontsize, 
+        bold, fontcolor, backcolor, textalignment);
+
+    delete[] text_buffer;
+    delete[] fontface_buffer;
+    return retval;
 }
 
 //
 // a_vehicles string converters
 inline bool p_SetVehicleNumberPlate(int vehicleid, MonoString *numberplate) {
-	return sampgdk_SetVehicleNumberPlate(vehicleid, monostring_to_string(numberplate));
+    char *buffer = monostring_to_string(numberplate);
+
+    bool retval = sampgdk_SetVehicleNumberPlate(vehicleid, buffer);
+
+    delete[] buffer;
+    return retval;
 }
 
 //
 // serverlog string converters 
 inline void p_Print(MonoString *str) {
-	sampgdk_logprintf("%s", monostring_to_string(str));
+    char *buffer = monostring_to_string(str);
+
+	sampgdk_logprintf("%s", buffer);
+
+    delete[] buffer;
 }
 
 //
 // native functions
-int call_native_array(MonoString *name_string, MonoString *format_string, 
+int call_native_array(MonoString *name_string, MonoString *format_string,
     MonoArray *args_array, MonoArray *sizes_array) {
+    char *name;
+    char *format;
+    char amx_format[MAX_NATIVE_ARGS * MAX_NATIVE_ARG_FORMAT_LEN] = "";
+    void *params[MAX_NATIVE_ARGS];
+    int param_size[MAX_NATIVE_ARGS];
+    int args_count = 0;
+    int size_idx = 0;
 
-    /*
-    * Test arguments
-    */
     if (!name_string) {
         mono_raise_exception(mono_get_exception_invalid_operation(
             "name cannot be null"));
         return ERR_EXCEPTION;
     }
 
-    if (!format_string) {
-        mono_raise_exception(mono_get_exception_invalid_operation(
-            "format cannot be null"));
-        return ERR_EXCEPTION;
-    }
+    name = mono_string_to_utf8(name_string);
+    format = !format_string ? "" : mono_string_to_utf8(format_string);
 
-    char *name = mono_string_to_utf8(name_string);
-    char *format = mono_string_to_utf8(format_string);
-
-    int args_count = !args_array ? 0 : mono_array_length(args_array);
+    args_count = !args_array ? 0 : mono_array_length(args_array);
 
     if (args_count > MAX_NATIVE_ARGS) {
         mono_raise_exception(mono_get_exception_invalid_operation(
@@ -278,129 +617,39 @@ int call_native_array(MonoString *name_string, MonoString *format_string,
         return ERR_EXCEPTION;
     }
 
-    /*
-    * Prepare amx parameters
-    */
+    AMX_NATIVE native = sampgdk::FindNative(name);
+    if (!native) {
+        mono_raise_exception(mono_get_exception_invalid_operation(
+            "native not found"));
+        return ERR_EXCEPTION;
+    }
 
-    void *params[MAX_NATIVE_ARGS];
-    int param_size[MAX_NATIVE_ARGS];
-    int size_idx = 0;
-    string amx_format;
-
-    for (int i = 0; i < args_count; i++)
-    {
-        switch (format[i])
-        {
-            case 'd': /* integer */
-            case 'b': /* boolean */
-                params[i] = mono_object_unbox(
-                    mono_array_get(args_array, MonoObject *, i));
-                amx_format += format[i];
-                break;
-            case 'f': /* floating-point */
-                params[i] = &amx_ftoc(*(float *)mono_object_unbox(
-                    mono_array_get(args_array, MonoObject *, i)));
-                amx_format += format[i];
-                break;
-            case 's': /* const string */ {
-                MonoString *value_string = 
-                    mono_array_get(args_array, MonoString *, i);
-                string value_std_string = 
-                    monostring_to_string(value_string);
-                char *value = new char[value_std_string.length() + 1];
-                strcpy(value, value_std_string.c_str());
-                params[i] = value;
-                amx_format += format[i];
-                break;
-            }
-            case 'a': { /* array of integers */
-                MonoArray *values_array = 
-                    mono_array_get(args_array, MonoArray *, i);
-
-                if (!sizes_array) {
-                    mono_raise_exception(mono_get_exception_invalid_operation(
-                        "sizes cannot be null when an array or string " \
-                        "reference type is passed as parameter."));
-                    return ERR_EXCEPTION;
-                }
-
-                int size_info = mono_array_get(sizes_array, int, size_idx++);
-                param_size[i] = size_info < 0 ? -size_info
-                    : *(int *)mono_object_unbox(
-                    mono_array_get(args_array, MonoObject *, size_info));
-
-                cell *value = new cell[param_size[i]];
-                for (int j = 0; j<param_size[i]; j++) {
-                    value[j] = mono_array_get(values_array, int, j);
-                }
-                params[i] = value;
-
-                char *format_arr = new char[10];
-                sprintf(format_arr, "a[%d]", param_size[i]);
-                amx_format += format_arr;
-                break;
-            }
-            case 'v': { /* array of floats */
-                MonoArray *values_array =
-                    mono_array_get(args_array, MonoArray *, i);
-
-                if (!sizes_array) {
-                    mono_raise_exception(mono_get_exception_invalid_operation(
-                        "sizes cannot be null when an array or string " \
-                        "reference type is passed as parameter."));
-                    return ERR_EXCEPTION;
-                }
-
-                int size_info = mono_array_get(sizes_array, int, size_idx++);
-                param_size[i] = size_info < 0 ? -size_info
-                    : *(int *)mono_object_unbox(
-                    mono_array_get(args_array, MonoObject *, size_info));
-
-                cell *value = new cell[param_size[i]];
-                for (int j = 0; j<param_size[i]; j++) {
-                    value[j] = amx_ftoc(mono_array_get(values_array, float, j));
-                }
-                params[i] = value;
-
-                char *format_arr = new char[10];
-                sprintf(format_arr, "a[%d]", param_size[i]);
-                amx_format += format_arr;
-                break;
-            }
-        case 'D': /* integer reference */
-                params[i] = *(int **)mono_object_unbox(
-                    mono_array_get(args_array, MonoObject *, i));
-                amx_format += 'R';
-                break;
-        case 'F': /* floating-point reference */
-            params[i] = &amx_ftoc(**(float **)mono_object_unbox(
+    for (int i = 0; i < args_count; i++) {
+        switch (format[i]) {
+        case 'd': /* integer */
+        case 'b': /* boolean */
+            params[i] = mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, i));
+            sprintf(amx_format, "%sd", amx_format);
+            break;
+        case 'f': /* floating-point */
+            params[i] = &amx_ftoc(*(float *)mono_object_unbox(
                 mono_array_get(args_array, MonoObject *, i)));
-			amx_format += 'R';
-            break; 
-        case 'S': /* non-const string (writeable) */ {
-            if (!sizes_array) {
-                mono_raise_exception(mono_get_exception_invalid_operation(
-                    "sizes cannot be null when an array or string " \
-                    "reference type is passed as parameter."));
-                return ERR_EXCEPTION;
-            }
-
-            int size_info = mono_array_get(sizes_array, int, size_idx++);
-            param_size[i] = size_info < 0 ? -size_info
-                : *(int *)mono_object_unbox(
-                mono_array_get(args_array, MonoObject *, size_info));
-
-            params[i] = new char[param_size[i] + 1];
-
-            char *format_arr = new char[10];
-            sprintf(format_arr, "S[%d]", param_size[i]);
-            amx_format += format_arr;
+            sprintf(amx_format, "%sf", amx_format);
+            break;
+        case 's': { /* const string */
+            params[i] = monostring_to_string(
+                mono_array_get(args_array, MonoString *, i));
+            sprintf(amx_format, "%ss", amx_format);
             break;
         }
-        case 'A': { /* array of integers reference */
+        case 'a': { /* array of integers */
+            MonoArray *values_array =
+                mono_array_get(args_array, MonoArray *, i);
+
             if (!sizes_array) {
                 mono_raise_exception(mono_get_exception_invalid_operation(
-                    "sizes cannot be null when an array or string " \
+                    "sizes cannot be null when an array or string "
                     "reference type is passed as parameter."));
                 return ERR_EXCEPTION;
             }
@@ -412,22 +661,95 @@ int call_native_array(MonoString *name_string, MonoString *format_string,
 
             cell *value = new cell[param_size[i]];
             for (int j = 0; j < param_size[i]; j++) {
-                /*
-                * Set default value to int.MinValue
-                */
+                value[j] = mono_array_get(values_array, int, j);
+            }
+            params[i] = value;
+
+            sprintf(amx_format, "%sa[%d]", amx_format, param_size[i]);
+            break;
+        }
+        case 'v': { /* array of floats */
+            MonoArray *values_array =
+                mono_array_get(args_array, MonoArray *, i);
+
+            if (!sizes_array) {
+                mono_raise_exception(mono_get_exception_invalid_operation(
+                    "sizes cannot be null when an array or string "
+                    "reference type is passed as parameter."));
+                return ERR_EXCEPTION;
+            }
+
+            int size_info = mono_array_get(sizes_array, int, size_idx++);
+            param_size[i] = size_info < 0 ? -size_info
+                : *(int *)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, size_info));
+
+            cell *value = new cell[param_size[i]];
+            for (int j = 0; j<param_size[i]; j++) {
+                value[j] = amx_ftoc(mono_array_get(values_array, float, j));
+            }
+            params[i] = value;
+
+            sprintf(amx_format, "%sa[%d]", amx_format, param_size[i]);
+            break;
+        }
+        case 'D': /* integer reference */
+            params[i] = *(int **)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, i));
+            sprintf(amx_format, "%sR", amx_format);
+            break;
+        case 'F': /* floating-point reference */
+            params[i] = &amx_ftoc(**(float **)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, i)));
+            sprintf(amx_format, "%sR", amx_format);
+            break;
+        case 'S': /* non-const string (writeable) */ {
+            if (!sizes_array) {
+                mono_raise_exception(mono_get_exception_invalid_operation(
+                    "sizes cannot be null when an array or string "
+                    "reference type is passed as parameter."));
+                return ERR_EXCEPTION;
+            }
+
+            int size_info = mono_array_get(sizes_array, int, size_idx++);
+            param_size[i] = size_info < 0 ? -size_info
+                : *(int *)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, size_info));
+
+            params[i] = new cell[param_size[i] + 1] {'\0'};
+
+            assert(params[i]);
+
+            sprintf(amx_format, "%sS[%d]", amx_format, param_size[i]);
+            break;
+        }
+        case 'A': { /* array of integers reference */
+            if (!sizes_array) {
+                mono_raise_exception(mono_get_exception_invalid_operation(
+                    "sizes cannot be null when an array or string "
+                    "reference type is passed as parameter."));
+                return ERR_EXCEPTION;
+            }
+
+            int size_info = mono_array_get(sizes_array, int, size_idx++);
+            param_size[i] = size_info < 0 ? -size_info
+                : *(int *)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, size_info));
+
+            cell *value = new cell[param_size[i]];
+            for (int j = 0; j < param_size[i]; j++) {
+                /* Set default value to int.MinValue */
                 value[j] = -2147483648;
             }
             params[i] = value;
 
-            char *format_arr = new char[10];
-            sprintf(format_arr, "A[%d]", param_size[i]);
-            amx_format += format_arr;
+            sprintf(amx_format, "%sA[%d]", amx_format, param_size[i]);
             break;
         }
         case 'V': { /* array of floating-points reference */
             if (!sizes_array) {
                 mono_raise_exception(mono_get_exception_invalid_operation(
-                    "sizes cannot be null when an array or string " \
+                    "sizes cannot be null when an array or string "
                     "reference type is passed as parameter."));
                 return ERR_EXCEPTION;
             }
@@ -439,9 +761,7 @@ int call_native_array(MonoString *name_string, MonoString *format_string,
 
             params[i] = new cell[param_size[i]];
 
-            char *format_arr = new char[10];
-            sprintf(format_arr, "R[%d]", param_size[i]);
-            amx_format += format_arr;
+            sprintf(amx_format, "%sR[%d]", amx_format, param_size[i]);
             break;
         }
         default:
@@ -450,65 +770,60 @@ int call_native_array(MonoString *name_string, MonoString *format_string,
             return ERR_EXCEPTION;
             break;
         }
+
     }
 
-    /*
-    * Calling native
-    */
-    AMX_NATIVE native = sampgdk::FindNative(name);
-
-    if (!native)
-    {
-        mono_raise_exception(mono_get_exception_invalid_operation(
-            "native not found"));
-        return ERR_EXCEPTION;
-    }
-
-    int return_value = sampgdk::InvokeNativeArray(native, 
-        amx_format.c_str(), params);
-
-    /*
-    * Processing reference types
-    */
+    sampgdk_logprintf("Invoke %s(%d :: %s) :: %d", name, args_count, amx_format, native);
+    int return_value = sampgdk::InvokeNativeArray(native, amx_format, params);
 
     for (int i = 0; i < args_count; i++) {
         switch (format[i]) {
-            case 'D':
-                **(int **)mono_object_unbox(
-                    mono_array_get(args_array, MonoObject *, i)) = 
-                    *(int *)params[i];
-                break;
-            case 'S':
-                *mono_array_get(args_array, MonoString **, i) = 
-                    string_to_monostring((char *)params[i], param_size[i]);
-                    //mono_string_new(mono_domain_get(), (char *)params[i]);
-                break;
-            case 'F':
-                **(float **)mono_object_unbox(
-                    mono_array_get(args_array, MonoObject *, i)) = 
-                    amx_ctof(*(cell *)params[i]);
-                break;
-            case 'A': {
-                cell *param_array = (cell *)params[i];
-                MonoArray *arr = mono_array_new(mono_domain_get(), 
-                    mono_get_int32_class(), param_size[i]);
-                for (int j = 0; j<param_size[i]; j++) {
-                    mono_array_set(arr, int, j, param_array[j]);
-                }
-                *mono_array_get(args_array, MonoArray **, i) = arr;
-                break;
-            }
-            case 'V': {
-                cell *param_array = (cell *)params[i];
+        case 's': /* const string */
+        case 'a': /* array of integers */
+        case 'v': /* array of floats */
+            delete[] params[i];
+            break;
+        case 'D': /* integer reference */
+            **(int **)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, i)) =
+                *(int *)params[i];
+            break;
+        case 'F': /* floating-point reference */
+            **(float **)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, i)) =
+                amx_ctof(*(cell *)params[i]);
+            break;
+        case 'S': /* non-const string (writeable) */
+            *mono_array_get(args_array, MonoString **, i) =
+                string_to_monostring((char *)params[i], param_size[i]);
 
-                MonoArray *arr = mono_array_new(mono_domain_get(), 
-                    mono_get_single_class(), param_size[i]);
-                for (int j = 0; j<param_size[i]; j++) {
-                    mono_array_set(arr, float, j, amx_ctof(param_array[j]));
-                }
-                *mono_array_get(args_array, MonoArray **, i) = arr;
-                break;
+            delete[] params[i];
+            break;
+        case 'A': { /* array of integers reference */
+            cell *param_array = (cell *)params[i];
+            MonoArray *arr = mono_array_new(mono_domain_get(),
+                mono_get_int32_class(), param_size[i]);
+            for (int j = 0; j < param_size[i]; j++) {
+                mono_array_set(arr, int, j, param_array[j]);
             }
+            *mono_array_get(args_array, MonoArray **, i) = arr;
+
+            delete[] params[i];
+            break;
+        }
+        case 'V': { /* array of floating-points reference */
+            cell *param_array = (cell *)params[i];
+
+            MonoArray *arr = mono_array_new(mono_domain_get(),
+                mono_get_single_class(), param_size[i]);
+            for (int j = 0; j<param_size[i]; j++) {
+                mono_array_set(arr, float, j, amx_ctof(param_array[j]));
+            }
+            *mono_array_get(args_array, MonoArray **, i) = arr;
+
+            delete[] params[i];
+            break;
+        }
         }
     }
 
@@ -771,8 +1086,6 @@ void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::DeletePlayer3DTextLabel", (void *)sampgdk_DeletePlayer3DTextLabel);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::UpdatePlayer3DTextLabelText", (void *)p_UpdatePlayer3DTextLabelText);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::ShowPlayerDialog", (void *)p_ShowPlayerDialog);
-	//mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetTimer", (void *)p_SetTimer);
-	//mono_add_internal_call("SampSharp.GameMode.Natives.Native::KillTimer", (void *)sampgdk_KillTimer);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::gpci", (void *)p_gpci);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SendDeathMessageToPlayer", (void *)sampgdk_SendDeathMessageToPlayer);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::BlockIpAddress", (void *)p_BlockIpAddress);
@@ -864,6 +1177,5 @@ void LoadNatives()
 	//
 	// natives
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::CallNativeArray", (void *)call_native_array);
-	//mono_add_internal_call("SampSharp.GameMode.Natives.Native::CallNativeArrayFloat", (void *)call_native_array_float);
 
 }

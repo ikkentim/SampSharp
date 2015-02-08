@@ -38,5 +38,10 @@ struct PathUtil
 	static std::string GetConfigDirectory()
 	{
 		return GetMonoDirectory().append("etc/");
-	}
+    }
+
+    static std::string GetGameModeDirectory()
+    {
+        return GetPathInBin("gamemode/");
+    }
 };

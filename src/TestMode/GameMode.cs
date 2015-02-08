@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.Linq;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 using TestMode.Tests;
@@ -29,16 +30,16 @@ namespace TestMode
     {
         private readonly List<ITest> _tests = new List<ITest>
         {
-            new CommandsTest(),
-            new ASyncTest(),
-            new DelayTest(),
-            new MenuTest(),
-            new DisposureTest(),
-            new DialogTest(),
-            new CharsetTest(),
-            new VehicleInfoTest(),
+            //new CommandsTest(),
+            //new ASyncTest(),
+            //new DelayTest(),
+            //new MenuTest(),
+            //new DisposureTest(),
+            //new DialogTest(),
+            //new CharsetTest(),
+            //new VehicleInfoTest(),
             new NativesTest(),
-            new KeyHandlerTest(),
+            //new KeyHandlerTest(),
         };
 
         protected override void OnInitialized(EventArgs args)
@@ -60,6 +61,20 @@ namespace TestMode
 
             base.OnInitialized(args);
         }
+
+        #region Overrides of BaseMode
+
+        /// <summary>
+        ///     Raises the <see cref="BaseMode.RconCommand" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="RconEventArgs" /> that contains the event data. </param>
+        protected override void OnRconCommand(RconEventArgs e)
+        {
+            Console.WriteLine("[RCON] {0}", e.Command);
+            base.OnRconCommand(e);
+        }
+
+        #endregion
 
         protected override void LoadControllers(ControllerCollection controllers)
         {

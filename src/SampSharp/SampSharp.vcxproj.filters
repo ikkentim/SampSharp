@@ -9,16 +9,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConfigReader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SampSharp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="includes\sdk\amxplugin.cpp">
@@ -27,13 +20,22 @@
     <ClCompile Include="includes\sampgdk\sampgdk.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="monostring.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="unicode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="monohelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MonoRuntime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,16 +46,7 @@
     <ClInclude Include="ConfigReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SampSharp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MonoUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StringUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="monostring.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="unicode.h">
@@ -65,7 +58,16 @@
     <ClInclude Include="natives.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="timestamp.h">
+    <ClInclude Include="monohelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MonoRuntime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
