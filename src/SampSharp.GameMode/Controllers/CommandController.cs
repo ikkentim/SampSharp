@@ -30,7 +30,7 @@ namespace SampSharp.GameMode.Controllers
     public class CommandController : Disposable, IEventListener
     {
         /// <summary>
-        ///     Registers the events this GlobalObjectController wants to listen to.
+        ///     Registers the events this <see cref="GlobalObjectController"/> wants to listen to.
         /// </summary>
         /// <param name="gameMode">The running GameMode.</param>
         public virtual void RegisterEvents(BaseMode gameMode)
@@ -52,7 +52,7 @@ namespace SampSharp.GameMode.Controllers
         }
 
         /// <summary>
-        ///     Loads all commands from the given assembly.
+        ///     Loads all commands from the given <paramref name="assembly"/>.
         /// </summary>
         /// <param name="assembly">The assembly of who to load the commands from.</param>
         /// <returns>The number of commands loaded.</returns>

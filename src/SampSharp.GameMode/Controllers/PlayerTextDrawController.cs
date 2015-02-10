@@ -13,8 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Linq;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Tools;
+using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers
 {
@@ -35,6 +37,12 @@ namespace SampSharp.GameMode.Controllers
 
                 if (textdraw != null)
                     textdraw.OnClick(args);
+            };
+            gameMode.PlayerCleanup += (sender, args) =>
+            {
+                var player = sender as GtaPlayer;
+                foreach (var textdraw in PlayerTextDraw.All.Where(o => o.Owner == player))
+                    textdraw.Dispose();
             };
         }
 
