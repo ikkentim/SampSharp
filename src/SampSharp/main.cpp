@@ -42,7 +42,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     logprintf("");
     logprintf("SampSharp Plugin");
     logprintf("----------------");
-    logprintf("v%s, (c)2014-2015 Tim Potze", PLUGIN_VERSION);
+    logprintf("v%s, (C)2014-2015 Tim Potze", PLUGIN_VERSION);
     logprintf("");
 
     Config::Read();

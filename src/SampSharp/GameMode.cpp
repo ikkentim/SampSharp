@@ -245,7 +245,40 @@ bool GameMode::RegisterExtension(MonoObject *extension) {
 }
 
 void GameMode::ProcessTimerTick(int timerid, void *data) {
+    if (!isLoaded_) {
+        return;
+    }
 
+    static MonoMethod *method;
+
+    if (method == NULL) {
+        method = LoadEvent("OnTimerTick", 2);
+    }
+
+    void *args[2];
+    args[0] = &timerid;
+    args[1] = NULL;
+    RefTimer *timer = NULL;
+    if (timers_.find(timerid) != timers_.end()) {
+        timer = &timers_[timerid];
+        args[1] = mono_gchandle_get_target(timer->handle);
+    }
+
+    CallEvent(method, gameModeHandle_, args);
+
+    /*
+    * After OnTimerTick has been called and the timer is not repeating,
+    * drop the handle and erase the timer from the map.
+    */
+    if (timer && !timer->repeating) {
+        if (args[1]) {
+            /*
+             * Only free the handle, if it was asociated with an object.
+             */
+            mono_gchandle_free(timer->handle);
+        }
+        timers_.erase(timerid);
+    }
 }
 
 void GameMode::ProcessTick() {

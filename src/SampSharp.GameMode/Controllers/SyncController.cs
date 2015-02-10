@@ -40,10 +40,18 @@ namespace SampSharp.GameMode.Controllers
         {
             _gameMode = gameMode;
             MainThread = Thread.CurrentThread;
+
+            gameMode.Exited += (sender, args) =>
+            {
+                foreach (Sync.SyncTask t in Sync.SyncTask.All)
+                {
+                    t.Dispose();
+                }
+            };
         }
 
         /// <summary>
-        ///     Start waiting for a gamemode tick to sync all resync requests.
+        ///     Start waiting for a tick to sync all resync requests.
         /// </summary>
         public static void Start()
         {
