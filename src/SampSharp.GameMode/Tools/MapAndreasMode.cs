@@ -16,23 +16,28 @@
 namespace SampSharp.GameMode.Tools
 {
     /// <summary>
-    ///     Contains methods of reading SA heightmap files.
+    ///     Contains methods of reading SA height map files.
     /// </summary>
     public enum MapAndreasMode
     {
         /// <summary>
         ///     Read no file.
         /// </summary>
-        None,
+        None = 0,
 
         /// <summary>
         ///     Read the minimal file.
         /// </summary>
-        Minimal,
+        Minimal = 1,
 
         /// <summary>
         ///     Read the full file.
         /// </summary>
-        Full
+        Full = 3,
+
+        /// <summary>
+        ///     Does not buffer the map data in memory.
+        /// </summary>
+        NoBuffer = 4
     }
 }

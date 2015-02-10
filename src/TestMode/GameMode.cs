@@ -41,13 +41,14 @@ namespace TestMode
             new VehicleInfoTest(),
             new NativesTest(),
             new KeyHandlerTest(),
+            new MapAndreasTest(),
         };
 
         protected override void OnInitialized(EventArgs args)
         {
-            Array values = typeof (VehicleModelType).GetEnumValues();
+            Console.WriteLine("TestMode for SampSharp");
+            Console.WriteLine("----------------------");
 
-            Console.WriteLine("Booting version 2");
             Server.ToggleDebugOutput(true);
             SetGameModeText("sa-mp# testmode");
             UsePlayerPedAnimations();

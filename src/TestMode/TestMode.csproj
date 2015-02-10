@@ -50,6 +50,7 @@
     <Compile Include="Tests\IControllerTest.cs" />
     <Compile Include="Tests\ITest.cs" />
     <Compile Include="Tests\KeyHandlerTest.cs" />
+    <Compile Include="Tests\MapAndreasTest.cs" />
     <Compile Include="Tests\MenuTest.cs" />
     <Compile Include="Tests\NativesTest.cs" />
     <Compile Include="Tests\VehicleInfoTest.cs" />

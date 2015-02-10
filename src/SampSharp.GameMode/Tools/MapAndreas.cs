@@ -14,30 +14,62 @@
 // limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.IO;
+using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Tools
 {
     /// <summary>
-    ///     Contains methods for reading SA heightmap files.
+    ///     Contains methods for reading SA height map files.
     /// </summary>
+    /// <remarks>
+    ///     If MapAndreas 1.2(.1) is loaded, the plugin will be used instead of
+    ///     the managed logic. This is to save your precious resources. Most of
+    ///     this logic has been copied from MapAndreas v1.2 released at
+    ///     http://forum.sa-mp.com/showthread.php?t=275492
+    /// </remarks>
     public static class MapAndreas
     {
         private const string FullFile = "scriptfiles/SAfull.hmap";
         private const string MinimalFile = "scriptfiles/SAmin.hmap";
 
         private static MapAndreasMode _mode;
+        private static bool _usePlugin;
+        private static FileStream _fileStream;
         private static ushort[] _data;
 
+        private static bool IsPluginLoaded()
+        {
+            /*
+             * Require version 1.2 or newer
+             */
+            return Native.NativeExists("MapAndreas_SaveCurrentHMap");
+        }
+
         /// <summary>
-        ///     Loads the mapdata in to the memory.
+        ///     Loads the map data into the memory.
         /// </summary>
-        /// <param name="mode">The mode to load with</param>
-        /// <exception cref="FileLoadException">Thrown when the file couldn't be loaded</exception>
+        /// <param name="mode">The <see cref="MapAndreasMode"/> to load with.
+        /// </param>
+        /// <exception cref="FileLoadException">Thrown if the file couldn't be
+        /// loaded.</exception>
         public static void Load(MapAndreasMode mode)
         {
+            if (_mode != MapAndreasMode.None) return;
             _mode = mode;
+
+            if (IsPluginLoaded())
+            {
+                Native.CallNative("MapAndreas_Init", __arglist((int) mode, string.Empty));
+
+                Debug.WriteLine("> Loaded MapAndreas from plugin.");
+                _usePlugin = true;
+                return;
+            }
+
+            Debug.WriteLine("> Loaded MapAndreas from files.");
 
             switch (mode)
             {
@@ -55,6 +87,7 @@ namespace SampSharp.GameMode.Tools
                     }
                     catch (Exception e)
                     {
+                        _mode = MapAndreasMode.None;
                         throw new FileLoadException("Couldn't load " + FullFile, e);
                     }
                     break;
@@ -72,22 +105,55 @@ namespace SampSharp.GameMode.Tools
                     }
                     catch (Exception e)
                     {
+                        _mode = MapAndreasMode.None;
                         throw new FileLoadException("Couldn't load " + MinimalFile, e);
                     }
                     break;
-            }
+                    case MapAndreasMode.NoBuffer:
+                    try
+                    {
+                        _fileStream = new FileStream(FullFile, FileMode.Open);
+                    }
+                    catch (Exception e)
+                    {
+                        _mode = MapAndreasMode.None;
+                        throw new FileLoadException("Couldn't load " + MinimalFile, e);
+                    }
+                    break;
 
-            Console.WriteLine("[MapAndreas] Successfully loaded using mode: " + mode);
+            }
         }
 
         /// <summary>
-        ///     Unloads the mapdate from the memory.
+        ///     Unloads the map data from the memory.
         /// </summary>
         public static void Unload()
         {
+            if (_usePlugin)
+            {
+                Native.CallNative("MapAndreas_Unload");
+
+                Debug.WriteLine("> Unloaded MapAndreas from plugin.");
+
+                _usePlugin = false;
+                _mode = MapAndreasMode.None;
+                return;
+            }
+
+            Debug.WriteLine("> Unloaded MapAndreas from files.");
+
+            switch (_mode)
+            {
+                case MapAndreasMode.NoBuffer:
+                    _fileStream.Dispose();
+                    break;
+                default:
+                    _data = null;
+                    break;
+            }
+
             _data = null;
             _mode = MapAndreasMode.None;
-            Console.WriteLine("[MapAndreas] Successfully unloaded");
         }
 
         /// <summary>
@@ -98,6 +164,14 @@ namespace SampSharp.GameMode.Tools
         /// <returns>Ground level at the given point.</returns>
         public static float Find(float x, float y)
         {
+            if (_mode == MapAndreasMode.None) return 0;
+
+            if (_usePlugin)
+            {
+                float result;
+                Native.CallNative("MapAndreas_FindZ_For2DCoord", __arglist(x, y, out result));
+                return result;
+            }
             // check for a co-ord outside the map
             if (x < -3000.0f || x > 3000.0f || y > 3000.0f || y < -3000.0f) return 0.0f;
 
@@ -141,6 +215,13 @@ namespace SampSharp.GameMode.Tools
         {
             if (_mode == MapAndreasMode.None) return 0;
 
+            if (_usePlugin)
+            {
+                float result;
+                Native.CallNative("MapAndreas_FindAverageZ", __arglist(x, y, out result));
+                return result;
+            }
+
             float gridsize = _mode == MapAndreasMode.Full ? 1 : 3;
 
             // Get the Z value of 2 neighbor grids
@@ -166,6 +247,85 @@ namespace SampSharp.GameMode.Tools
         public static Vector FindAverage(Vector point)
         {
             return new Vector(point.X, point.Y, FindAverage(point.X, point.Y));
+        }
+
+        /// <summary>
+        /// Set the highest Z point at the provided point.
+        /// </summary>
+        /// <param name="x">X-coordinate of the point.</param>
+        /// <param name="y">Y-coordinate of the point.</param>
+        /// <param name="z">Z-coordinate of the hight at the provided point.</param>
+        /// <returns>True on success; False otherwise.</returns>
+        public static bool SetZ(float x, float y, float z)
+        {
+            if (_usePlugin)
+            {
+                return Native.CallNativeAsBool("MapAndreas_SetZ_For2DCoord", __arglist(x, y, z));
+            }
+
+            if (x < -3000.0f || x > 3000.0f || y > 3000.0f || y < -3000.0f) return false;
+            if (z < 0 || z > 655.35) return false;
+
+            // get row/col on 6000x6000 grid
+            int iGridX = ((int)x) + 3000;
+            int iGridY = -(((int)y) - 3000);
+            int iDataPos;
+
+            if (_mode == MapAndreasMode.Full)
+            {
+                iDataPos = (iGridY * 6000) + iGridX;
+                _data[iDataPos] = (ushort)(z * 100.0f + 0.5); // Add 0.5 to round it properly
+                return true;
+            }
+            if (_mode == MapAndreasMode.Minimal)
+            {
+                iDataPos = ((iGridY/3)*2000) + iGridX/3; // skip every 2nd and 3rd line
+                _data[iDataPos] = (ushort) (z*100.0f + 0.5); // Add 0.5 to round it properly
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Set the highest Z point at the provided point.
+        /// </summary>
+        /// <param name="point">The point with the new Z-coordinate.</param>
+        /// <returns>True on success; False otherwise.</returns>
+        public static bool SetZ(Vector point)
+        {
+            return SetZ(point.X, point.Y, point.Z);
+        }
+
+        /// <summary>
+        /// Saves the current height map to the provided file.
+        /// </summary>
+        /// <param name="file"></param>
+        public static bool Save(string file)
+        {
+            if (_usePlugin)
+            {
+                Debug.WriteLine("> Saving MapAndreas using plugin.");
+
+                return Native.CallNativeAsBool("MapAndreas_SaveCurrentHMap", __arglist(file));
+            }
+
+            Debug.WriteLine("> Saving MapAndreas using files.");
+
+            try
+            {
+                using (FileStream stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+                {
+                    foreach (var v in _data)
+                        stream.Write(BitConverter.GetBytes(v), 0, 2);
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
