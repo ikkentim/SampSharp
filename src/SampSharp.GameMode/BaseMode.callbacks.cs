@@ -49,12 +49,6 @@ namespace SampSharp.GameMode
             return true;
         }
 
-        internal bool OnPlayerConnect(GtaPlayer player)
-        {
-            //Test
-            return true;
-        }
-
         internal bool OnPlayerConnect(int playerid)
         {
             OnPlayerConnected(GtaPlayer.FindOrCreate(playerid), EventArgs.Empty);
