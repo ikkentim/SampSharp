@@ -200,7 +200,7 @@ namespace SampSharp.GameMode.World
         /// </returns>
         public virtual int Move(Vector position, float speed, Vector rotation)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             return Native.MovePlayerObject(Owner.Id, Id, position.X, position.Y, position.Z, speed, rotation.X,
                 rotation.Y, rotation.Z);
@@ -216,7 +216,7 @@ namespace SampSharp.GameMode.World
         /// </returns>
         public virtual int Move(Vector position, float speed)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             return Native.MovePlayerObject(Owner.Id, Id, position.X, position.Y, position.Z, speed, -1000,
                 -1000, -1000);
@@ -227,7 +227,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Stop()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.StopPlayerObject(Owner.Id, Id);
         }
@@ -244,7 +244,7 @@ namespace SampSharp.GameMode.World
         public virtual void SetMaterial(int materialindex, int modelid, string txdname, string texturename,
             Color materialcolor)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetPlayerObjectMaterial(Owner.Id, Id, materialindex, modelid, txdname, texturename,
                 materialcolor.ToInteger(ColorFormat.ARGB));
@@ -266,7 +266,7 @@ namespace SampSharp.GameMode.World
             string fontface, int fontsize, bool bold, Color foreColor, Color backColor,
             ObjectMaterialTextAlign textalignment)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetPlayerObjectMaterialText(Owner.Id, Id, text, materialindex, (int) materialsize,
                 fontface, fontsize, bold,
@@ -283,7 +283,7 @@ namespace SampSharp.GameMode.World
         /// <exception cref="System.ArgumentNullException">player</exception>
         public virtual void AttachTo(GtaPlayer player, Vector offset, Vector rotation)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -301,7 +301,7 @@ namespace SampSharp.GameMode.World
         /// <exception cref="System.ArgumentNullException">vehicle</exception>
         public virtual void AttachTo(GtaVehicle vehicle, Vector offset, Vector rotation)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (vehicle == null)
                 throw new ArgumentNullException("vehicle");
@@ -318,7 +318,7 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         public virtual void AttachCameraToObject()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.AttachCameraToPlayerObject(Owner.Id, Id);
         }
@@ -339,7 +339,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Edit()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.EditPlayerObject(Owner.Id, Id);
         }

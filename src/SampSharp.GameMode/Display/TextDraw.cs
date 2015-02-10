@@ -487,7 +487,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual void Show()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (Id == -1) Refresh();
 
@@ -502,7 +502,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="player">The player to display this textdraw to.</param>
         public virtual void Show(GtaPlayer player)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -520,7 +520,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual void Hide()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (Id == -1) return;
             _playersShownTo.Clear();
@@ -533,7 +533,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="player">The player to hide this textdraw from.</param>
         public virtual void Hide(GtaPlayer player)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");

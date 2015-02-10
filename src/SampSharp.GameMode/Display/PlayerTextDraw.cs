@@ -517,7 +517,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual void Show()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (Id == -1) Refresh();
             _visible = true;
@@ -530,7 +530,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual void Hide()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (Id == -1 || !_visible) return;
             _visible = false;

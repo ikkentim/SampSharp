@@ -94,7 +94,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Show()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.GangZoneShowForAll(Id, Color);
         }
@@ -107,7 +107,7 @@ namespace SampSharp.GameMode.World
         public virtual void Show(GtaPlayer player)
         {
             if (player == null) throw new ArgumentNullException("player");
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.GangZoneShowForPlayer(player.Id, Id, Color);
         }
@@ -117,7 +117,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Hide()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.GangZoneHideForAll(Id);
         }
@@ -130,7 +130,7 @@ namespace SampSharp.GameMode.World
         public virtual void Hide(GtaPlayer player)
         {
             if (player == null) throw new ArgumentNullException("player");
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.GangZoneHideForPlayer(player.Id, Id);
         }
@@ -141,7 +141,7 @@ namespace SampSharp.GameMode.World
         /// <param name="color">The color.</param>
         public virtual void Flash(Color color)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.GangZoneFlashForAll(Id, color);
         }
@@ -166,7 +166,7 @@ namespace SampSharp.GameMode.World
         public virtual void Flash(GtaPlayer player, Color color)
         {
             if (player == null) throw new ArgumentNullException("player");
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.GangZoneFlashForPlayer(player.Id, Id, color);
         }
@@ -176,7 +176,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void StopFlash()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.GangZoneStopFlashForAll(Id);
         }
@@ -188,7 +188,7 @@ namespace SampSharp.GameMode.World
         /// <exception cref="System.ArgumentNullException">player</exception>
         public virtual void StopFlash(GtaPlayer player)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");

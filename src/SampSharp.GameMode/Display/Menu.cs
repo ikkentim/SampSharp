@@ -128,7 +128,7 @@ namespace SampSharp.GameMode.Display
         /// <returns>True when successfull, False otherwise.</returns>
         public bool Show(GtaPlayer player)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -155,7 +155,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="player">The player to hide this menu for.</param>
         public void Hide(GtaPlayer player)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (player == null)
             {
@@ -180,7 +180,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public void HideForAll()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             //Clone list and hide for all.
             foreach (GtaPlayer p in _viewers.ToList())

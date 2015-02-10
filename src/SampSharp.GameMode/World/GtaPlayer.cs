@@ -840,7 +840,7 @@ namespace SampSharp.GameMode.World
             int weapon1Ammo = 0, Weapon weapon2 = Weapon.None, int weapon2Ammo = 0, Weapon weapon3 = Weapon.None,
             int weapon3Ammo = 0)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetSpawnInfo(Id, team, skin, position.X, position.Y, position.Z, rotation, (int) weapon1, weapon1Ammo,
                 (int) weapon2, weapon2Ammo,
@@ -852,7 +852,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Spawn()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SpawnPlayer(Id);
         }
@@ -872,7 +872,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position to move this Player to.</param>
         public virtual void SetPositionFindZ(Vector position)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetPlayerPosFindZ(Id, position.X, position.Y, position.Z);
         }
@@ -885,7 +885,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True if this Player is in range of the point, otherwise False.</returns>
         public virtual bool IsInRangeOfPoint(float range, Vector point)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             return Native.IsPlayerInRangeOfPoint(Id, range, point.X, point.Y, point.Z);
         }
@@ -897,7 +897,7 @@ namespace SampSharp.GameMode.World
         /// <returns>The distance between the player and the point as a float.</returns>
         public virtual float GetDistanceFromPoint(Vector point)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             return Native.GetPlayerDistanceFromPoint(Id, point.X, point.Y, point.Z);
         }
@@ -916,7 +916,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True if the other Player is streamed in for this Player, False if not.</returns>
         public virtual bool IsPlayerStreamedIn(GtaPlayer other)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (other == null)
                 throw new ArgumentNullException("other");
@@ -931,7 +931,7 @@ namespace SampSharp.GameMode.World
         /// <param name="ammo">The amount of ammo to set.</param>
         public virtual void SetAmmo(Weapon weapon, int ammo)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetPlayerAmmo(Id, (int) weapon, ammo);
         }
@@ -943,7 +943,7 @@ namespace SampSharp.GameMode.World
         /// <param name="ammo">The amount of ammo to give to this Player.</param>
         public virtual void GiveWeapon(Weapon weapon, int ammo)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.GivePlayerWeapon(Id, (int) weapon, ammo);
         }
@@ -954,7 +954,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void ResetWeapons()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.ResetPlayerWeapons(Id);
         }
@@ -965,7 +965,7 @@ namespace SampSharp.GameMode.World
         /// <param name="weapon">The weapon that the player should be armed with.</param>
         public virtual void SetArmedWeapon(Weapon weapon)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetPlayerArmedWeapon(Id, (int) weapon);
         }
@@ -978,7 +978,7 @@ namespace SampSharp.GameMode.World
         /// <param name="ammo">The variable in which to store the ammo, passed by reference.</param>
         public virtual void GetWeaponData(int slot, out Weapon weapon, out int ammo)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             int weaponid;
             Native.GetPlayerWeaponData(Id, slot, out weaponid, out ammo);
@@ -991,7 +991,7 @@ namespace SampSharp.GameMode.World
         /// <param name="money">The amount of money to give this <see cref="GtaPlayer" />. Use a minus value to take money.</param>
         public virtual void GiveMoney(int money)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.GivePlayerMoney(Id, money);
         }
@@ -1001,7 +1001,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void ResetMoney()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.ResetPlayerMoney(Id);
         }
@@ -1018,7 +1018,7 @@ namespace SampSharp.GameMode.World
         /// <param name="leftright">Left or Right value, passed by reference.</param>
         public virtual void GetKeys(out Keys keys, out int updown, out int leftright)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             int keysDown;
             Native.GetPlayerKeys(Id, out keysDown, out updown, out leftright);
@@ -1032,7 +1032,7 @@ namespace SampSharp.GameMode.World
         /// <param name="minutes">Minutes to set (0-59).</param>
         public virtual void SetTime(int hour, int minutes)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetPlayerTime(Id, hour, minutes);
         }
@@ -1045,7 +1045,7 @@ namespace SampSharp.GameMode.World
         /// <param name="minutes">The variable to store the minutes in, passed by reference.</param>
         public virtual void GetTime(out int hour, out int minutes)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.GetPlayerTime(Id, out hour, out minutes);
         }
@@ -1059,7 +1059,7 @@ namespace SampSharp.GameMode.World
         /// <param name="toggle">True to show, False to hide.</param>
         public virtual void ToggleClock(bool toggle)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.TogglePlayerClock(Id, toggle);
         }
@@ -1071,7 +1071,7 @@ namespace SampSharp.GameMode.World
         /// <param name="weather">The weather to set.</param>
         public virtual void SetWeather(int weather)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetPlayerWeather(Id, weather);
         }
@@ -1085,7 +1085,7 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         public virtual void ForceClassSelection()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.ForceClassSelection(Id);
         }
@@ -1096,7 +1096,7 @@ namespace SampSharp.GameMode.World
         /// <param name="hoverColor">The color of the text draw when hovering over with mouse.</param>
         public virtual void SelectTextDraw(Color hoverColor)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SelectTextDraw(Id, hoverColor);
         }
@@ -1106,7 +1106,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void CancelSelectTextDraw()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.CancelSelectTextDraw(Id);
         }
@@ -1119,7 +1119,7 @@ namespace SampSharp.GameMode.World
         public virtual void PlayCrimeReport(GtaPlayer suspect, int crime)
         {
             if (suspect == null) throw new ArgumentNullException("suspect");
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.PlayCrimeReportForPlayer(Id, suspect.Id, crime);
         }
@@ -1135,7 +1135,7 @@ namespace SampSharp.GameMode.World
         /// <param name="distance">The distance over which the audio will be heard. Has no effect unless usepos is set to True.</param>
         public virtual void PlayAudioStream(string url, Vector position, float distance)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.PlayAudioStreamForPlayer(Id, url, position.X, position.Y, position.Z, distance, true);
         }
@@ -1149,7 +1149,7 @@ namespace SampSharp.GameMode.World
         /// </param>
         public virtual void PlayAudioStream(string url)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.PlayAudioStreamForPlayer(Id, url, 0, 0, 0, 0, false);
         }
@@ -1159,7 +1159,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void StopAudioStream()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.StopAudioStreamForPlayer(Id);
         }
@@ -1170,7 +1170,7 @@ namespace SampSharp.GameMode.World
         /// <param name="shopname">The name of the shop.</param>
         public virtual void SetShopName(string shopname)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetPlayerShopName(Id, shopname);
         }
@@ -1188,7 +1188,7 @@ namespace SampSharp.GameMode.World
         /// </param>
         public virtual void SetSkillLevel(WeaponSkill skill, int level)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetPlayerSkillLevel(Id, (int) skill, level);
         }
@@ -1201,7 +1201,7 @@ namespace SampSharp.GameMode.World
         /// <param name="radius">The radius. Objects within this radius from the coordinates above will be removed.</param>
         public virtual void RemoveBuilding(int modelid, Vector point, float radius)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.RemoveBuildingForPlayer(Id, modelid, point.X, point.Y, point.Z, radius);
         }
@@ -1221,7 +1221,7 @@ namespace SampSharp.GameMode.World
         public virtual bool SetAttachedObject(int index, int modelid, Bone bone, Vector offset, Vector rotation,
             Vector scale, Color materialcolor1, Color materialcolor2)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             return Native.SetPlayerAttachedObject(Id, index, modelid, (int) bone, offset.X, offset.Y, offset.Z,
                 rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z,
@@ -1235,7 +1235,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True on success, False otherwise.</returns>
         public virtual bool RemoveAttachedObject(int index)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             return Native.RemovePlayerAttachedObject(Id, index);
         }
@@ -1247,7 +1247,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True if the slot is used, False otherwise.</returns>
         public virtual bool IsAttachedObjectSlotUsed(int index)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             return Native.IsPlayerAttachedObjectSlotUsed(Id, index);
         }
@@ -1259,7 +1259,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True on success, False otherwise.</returns>
         public virtual bool DoEditAttachedObject(int index)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             return Native.EditAttachedObject(Id, index);
         }
@@ -1274,7 +1274,7 @@ namespace SampSharp.GameMode.World
         public virtual void SetChatBubble(string text, Color color, float drawdistance,
             int expiretime)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetPlayerChatBubble(Id, text, color.ToInteger(ColorFormat.RGBA), drawdistance, expiretime);
         }
@@ -1286,7 +1286,7 @@ namespace SampSharp.GameMode.World
         /// <param name="seatid">The ID of the seat to put the player in.</param>
         public virtual void PutInVehicle(GtaVehicle vehicle, int seatid)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (vehicle == null)
                 throw new ArgumentNullException("vehicle");
@@ -1314,7 +1314,7 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         public virtual void RemoveFromVehicle()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.RemovePlayerFromVehicle(Id);
         }
@@ -1325,7 +1325,7 @@ namespace SampSharp.GameMode.World
         /// <param name="toggle">False to freeze the player or True to unfreeze them.</param>
         public virtual void ToggleControllable(bool toggle)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.TogglePlayerControllable(Id, toggle);
         }
@@ -1337,7 +1337,7 @@ namespace SampSharp.GameMode.World
         /// <param name="point">Point for the sound to play at.</param>
         public virtual void PlaySound(int soundid, Vector point)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.PlayerPlaySound(Id, soundid, point.X, point.Y, point.Z);
         }
@@ -1348,7 +1348,7 @@ namespace SampSharp.GameMode.World
         /// <param name="soundid">The sound to play.</param>
         public virtual void PlaySound(int soundid)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.PlayerPlaySound(Id, soundid, 0, 0, 0);
         }
@@ -1380,7 +1380,7 @@ namespace SampSharp.GameMode.World
         public virtual void ApplyAnimation(string animlib, string animname, float fDelta, bool loop, bool lockx,
             bool locky, bool freeze, int time, bool forcesync)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.ApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync);
         }
@@ -1405,7 +1405,7 @@ namespace SampSharp.GameMode.World
         public virtual void ApplyAnimation(string animlib, string animname, float fDelta, bool loop, bool lockx,
             bool locky, bool freeze, int time)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.ApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, false);
         }
@@ -1416,7 +1416,7 @@ namespace SampSharp.GameMode.World
         /// <param name="forcesync">Specifies whether the animation should be shown to streamed in players.</param>
         public virtual void ClearAnimations(bool forcesync)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.ClearAnimations(Id, forcesync);
         }
@@ -1426,7 +1426,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void ClearAnimations()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.ClearAnimations(Id, false);
         }
@@ -1439,7 +1439,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True on success, False otherwise.</returns>
         public virtual bool GetAnimationName(out string animlib, out string animname)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             return Native.GetAnimationName(AnimationIndex, out animlib, 64, out animname, 64);
         }
@@ -1456,7 +1456,7 @@ namespace SampSharp.GameMode.World
         /// <param name="size">The size of the checkpoint.</param>
         public virtual void SetCheckpoint(Vector point, float size)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetPlayerCheckpoint(Id, point.X, point.Y, point.Z, size);
         }
@@ -1466,7 +1466,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void DisableCheckpoint()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.DisablePlayerCheckpoint(Id);
         }
@@ -1480,7 +1480,7 @@ namespace SampSharp.GameMode.World
         /// <param name="size">Length (diameter) of the checkpoint</param>
         public virtual void SetRaceCheckpoint(CheckpointType type, Vector point, Vector nextPosition, float size)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetPlayerRaceCheckpoint(Id, (int) type, point.X, point.Y, point.Z, nextPosition.X, nextPosition.Y,
                 nextPosition.Z, size);
@@ -1491,7 +1491,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void DisableRaceCheckpoint()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.DisablePlayerRaceCheckpoint(Id);
         }
@@ -1509,7 +1509,7 @@ namespace SampSharp.GameMode.World
         /// <param name="yMin">The minimum Y coordinate the player can go to.</param>
         public virtual void SetWorldBounds(float xMax, float xMin, float yMax, float yMin)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetPlayerWorldBounds(Id, xMax, xMin, yMax, yMin);
         }
@@ -1521,7 +1521,7 @@ namespace SampSharp.GameMode.World
         /// <param name="color">New color.</param>
         public virtual void SetPlayerMarker(GtaPlayer player, Color color)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -1541,7 +1541,7 @@ namespace SampSharp.GameMode.World
         /// <param name="show">True to show name tag, False to hide name tag.</param>
         public virtual void ShowNameTagForPlayer(GtaPlayer player, bool show)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -1564,7 +1564,7 @@ namespace SampSharp.GameMode.World
         public virtual bool SetMapIcon(int iconid, Vector position, PlayerMarkersMode markertype, Color color,
             MapIconType style)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             return Native.SetPlayerMapIcon(Id, iconid, position.X, position.Y, position.Z, (int) markertype, color,
                 (int) style);
@@ -1576,7 +1576,7 @@ namespace SampSharp.GameMode.World
         /// <param name="iconid">The ID of the icon to remove. This is the second parameter of <see cref="SetMapIcon" />.</param>
         public virtual void RemoveMapIcon(int iconid)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.RemovePlayerMapIcon(Id, iconid);
         }
@@ -1588,7 +1588,7 @@ namespace SampSharp.GameMode.World
         /// <param name="cut">The style the camera-position changes.</param>
         public virtual void SetCameraLookAt(Vector point, CameraCut cut)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetPlayerCameraLookAt(Id, point.X, point.Y, point.Z, (int) cut);
         }
@@ -1599,7 +1599,7 @@ namespace SampSharp.GameMode.World
         /// <param name="point">The coordinates for this Player's camera to look at.</param>
         public virtual void SetCameraLookAt(Vector point)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             SetCameraLookAt(point, CameraCut.Cut);
         }
@@ -1613,7 +1613,7 @@ namespace SampSharp.GameMode.World
         /// <param name="cut">The jump cut to use. Defaults to CameraCut.Cut. Set to CameraCut. Move for a smooth movement.</param>
         public virtual void InterpolateCameraPosition(Vector from, Vector to, int time, CameraCut cut)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.InterpolateCameraPos(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
         }
@@ -1627,7 +1627,7 @@ namespace SampSharp.GameMode.World
         /// <param name="cut">The jump cut to use. Defaults to CameraCut.Cut (pointless). Set to CameraCut.Move for interpolation.</param>
         public virtual void InterpolateCameraLookAt(Vector from, Vector to, int time, CameraCut cut)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.InterpolateCameraLookAt(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
         }
@@ -1639,7 +1639,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True if player is in the vehicle; False otherwise.</returns>
         public virtual bool IsInVehicle(GtaVehicle vehicle)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             return Native.IsPlayerInVehicle(Id, vehicle.Id);
         }
@@ -1650,7 +1650,7 @@ namespace SampSharp.GameMode.World
         /// <param name="enable">True to enable stunt bonuses, False to disable them.</param>
         public virtual void EnableStuntBonus(bool enable)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.EnableStuntBonusForPlayer(Id, enable);
         }
@@ -1664,7 +1664,7 @@ namespace SampSharp.GameMode.World
         /// <param name="toggle">True to enable spectating and False to disable.</param>
         public virtual void ToggleSpectating(bool toggle)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.TogglePlayerSpectating(Id, toggle);
         }
@@ -1680,7 +1680,7 @@ namespace SampSharp.GameMode.World
         /// <param name="mode">The mode to spectate with.</param>
         public virtual void SpectatePlayer(GtaPlayer targetPlayer, SpectateMode mode)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (targetPlayer == null)
                 throw new ArgumentNullException("targetPlayer");
@@ -1698,7 +1698,7 @@ namespace SampSharp.GameMode.World
         /// <param name="targetPlayer">The Player that should be spectated.</param>
         public virtual void SpectatePlayer(GtaPlayer targetPlayer)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (targetPlayer == null)
                 throw new ArgumentNullException("targetPlayer");
@@ -1717,7 +1717,7 @@ namespace SampSharp.GameMode.World
         /// <param name="mode">Spectate mode.</param>
         public virtual void SpectateVehicle(GtaVehicle targetVehicle, SpectateMode mode)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (targetVehicle == null)
                 throw new ArgumentNullException("targetVehicle");
@@ -1735,7 +1735,7 @@ namespace SampSharp.GameMode.World
         /// <param name="targetVehicle">The vehicle to spectate.</param>
         public virtual void SpectateVehicle(GtaVehicle targetVehicle)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (targetVehicle == null)
                 throw new ArgumentNullException("targetVehicle");
@@ -1753,7 +1753,7 @@ namespace SampSharp.GameMode.World
         /// </param>
         public virtual void StartRecordingPlayerData(PlayerRecordingType recordtype, string recordname)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.StartRecordingPlayerData(Id, (int) recordtype, recordname);
         }
@@ -1763,7 +1763,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void StopRecordingPlayerData()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.StopRecordingPlayerData(Id);
         }
@@ -1780,7 +1780,7 @@ namespace SampSharp.GameMode.World
         /// <param name="message">The text that will be displayed.</param>
         public virtual void SendClientMessage(Color color, string message)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (message.Length > 144)
             {
@@ -1798,7 +1798,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Kick()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.Kick(Id);
         }
@@ -1811,7 +1811,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Ban()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.Ban(Id);
         }
@@ -1822,7 +1822,7 @@ namespace SampSharp.GameMode.World
         /// <param name="reason">The reason for the ban.</param>
         public virtual void Ban(string reason)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.BanEx(Id, reason);
         }
@@ -1917,7 +1917,7 @@ namespace SampSharp.GameMode.World
         /// <param name="message">The message that will be sent.</param>
         public virtual void SendPlayerMessageToPlayer(GtaPlayer receiver, string message)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (receiver == null)
                 throw new ArgumentNullException("receiver");
@@ -1932,7 +1932,7 @@ namespace SampSharp.GameMode.World
         /// <param name="message">The message that will be sent.</param>
         public virtual void SendPlayerMessageToAll(string message)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SendPlayerMessageToAll(Id, message);
         }
@@ -1956,7 +1956,7 @@ namespace SampSharp.GameMode.World
         /// <param name="style">The style of text to be displayed.</param>
         public virtual void GameText(string text, int time, int style)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.GameTextForPlayer(Id, text, time, style);
         }
@@ -2010,7 +2010,7 @@ namespace SampSharp.GameMode.World
         /// <param name="radius">The radius of the explosion.</param>
         public virtual void CreateExplosion(Vector position, int type, float radius)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.CreateExplosionForPlayer(Id, position.X, position.Y, position.Z, type, radius);
         }
@@ -2023,7 +2023,7 @@ namespace SampSharp.GameMode.World
         /// <param name="weapon">The reason for this <see cref="GtaPlayer" />'s death.</param>
         public virtual void SendDeathMessage(GtaPlayer killer, GtaPlayer killee, Weapon weapon)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SendDeathMessageToPlayer(Id, killer == null ? InvalidId : killer.Id,
                 killee == null ? InvalidId : killee.Id, (int) weapon);

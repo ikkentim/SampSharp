@@ -429,7 +429,7 @@ namespace SampSharp.GameMode.World
         /// <returns>A float containing the distance from the point specified in the coordinates.</returns>
         public virtual float GetDistanceFromPoint(Vector point)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             return Native.GetVehicleDistanceFromPoint(Id, point.X, point.Y, point.Z);
         }
@@ -524,7 +524,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True if this vehicle is streamed in for the specified vehicle; False otherwise.</returns>
         public virtual bool IsStreamedIn(GtaPlayer forPlayer)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             return Native.IsVehicleStreamedIn(Id, forPlayer.Id);
         }
@@ -539,7 +539,7 @@ namespace SampSharp.GameMode.World
         public virtual void GetRotationQuat(out float w, out float x, out float y,
             out float z)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.GetVehicleRotationQuat(Id, out w, out x, out y, out z);
         }
@@ -553,7 +553,7 @@ namespace SampSharp.GameMode.World
         public virtual void SetParamsForPlayer(GtaPlayer player, bool objective,
             bool doorslocked)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -584,7 +584,7 @@ namespace SampSharp.GameMode.World
         public virtual void SetParams(bool engine, bool lights, bool alarm, bool doors, bool bonnet, bool boot,
             bool objective)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetVehicleParamsEx(Id, engine, lights, alarm, doors, bonnet, boot, objective);
         }
@@ -603,7 +603,7 @@ namespace SampSharp.GameMode.World
         public virtual void GetParams(out bool engine, out bool lights, out bool alarm,
             out bool doors, out bool bonnet, out bool boot, out bool objective)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.GetVehicleParamsEx(Id, out engine, out lights, out alarm, out doors, out bonnet, out boot,
                 out objective);
@@ -614,7 +614,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Respawn()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetVehicleToRespawn(Id);
         }
@@ -625,7 +625,7 @@ namespace SampSharp.GameMode.World
         /// <param name="interiorid">Interior ID.</param>
         public virtual void LinkToInterior(int interiorid)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.LinkVehicleToInterior(Id, interiorid);
         }
@@ -636,7 +636,7 @@ namespace SampSharp.GameMode.World
         /// <param name="componentid">The ID of the component to add to the vehicle.</param>
         public virtual void AddComponent(int componentid)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.AddVehicleComponent(Id, componentid);
         }
@@ -647,7 +647,7 @@ namespace SampSharp.GameMode.World
         /// <param name="componentid">ID of the component to remove.</param>
         public virtual void RemoveComponent(int componentid)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.RemoveVehicleComponent(Id, componentid);
         }
@@ -659,7 +659,7 @@ namespace SampSharp.GameMode.World
         /// <param name="color2">The new vehicle's secondary Color ID.</param>
         public virtual void ChangeColor(int color1, int color2)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.ChangeVehicleColor(Id, color1, color2);
         }
@@ -670,7 +670,7 @@ namespace SampSharp.GameMode.World
         /// <param name="paintjobid">The ID of the Paintjob to apply. Use 3 to remove a paintjob.</param>
         public virtual void ChangePaintjob(int paintjobid)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.ChangeVehiclePaintjob(Id, paintjobid);
         }
@@ -681,7 +681,7 @@ namespace SampSharp.GameMode.World
         /// <param name="numberplate">The text that should be displayed on the numberplate. Color Embedding> is supported.</param>
         public virtual void SetNumberPlate(string numberplate)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetVehicleNumberPlate(Id, numberplate);
         }
@@ -693,7 +693,7 @@ namespace SampSharp.GameMode.World
         /// <returns>The ID of the component installed in the specified slot.</returns>
         public virtual int GetComponentInSlot(CarModType slot)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             return Native.GetVehicleComponentInSlot(Id, (int) slot);
         }
@@ -713,7 +713,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Repair()
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.RepairVehicle(Id);
         }
@@ -724,7 +724,7 @@ namespace SampSharp.GameMode.World
         /// <param name="velocity">The amount of velocity in the angular directions.</param>
         public virtual void SetVehicleAngularVelocity(Vector velocity)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.SetVehicleAngularVelocity(Id, velocity.X, velocity.Y, velocity.Z);
         }
@@ -738,7 +738,7 @@ namespace SampSharp.GameMode.World
         /// <param name="tires">A variable to store the tire damage data in, passed by reference.</param>
         public virtual void GetVehicleDamageStatus(out int panels, out int doors, out int lights, out int tires)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.GetVehicleDamageStatus(Id, out panels, out doors, out lights, out tires);
         }
@@ -752,7 +752,7 @@ namespace SampSharp.GameMode.World
         /// <param name="tires">A set of bits containing the tire damage status.</param>
         public virtual void UpdateVehicleDamageStatus(int panels, int doors, int lights, int tires)
         {
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.UpdateVehicleDamageStatus(Id, panels, doors, lights, tires);
         }

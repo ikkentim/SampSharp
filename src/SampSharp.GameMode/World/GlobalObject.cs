@@ -278,7 +278,7 @@ namespace SampSharp.GameMode.World
                 throw new ArgumentNullException("player");
             }
 
-            CheckDisposed();
+            AssertNotDisposed();
 
             Native.AttachCameraToObject(player.Id, Id);
         }
