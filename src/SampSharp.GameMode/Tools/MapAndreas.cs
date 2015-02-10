@@ -64,12 +64,9 @@ namespace SampSharp.GameMode.Tools
             {
                 Native.CallNative("MapAndreas_Init", __arglist((int) mode, string.Empty));
 
-                Debug.WriteLine("> Loaded MapAndreas from plugin.");
                 _usePlugin = true;
                 return;
             }
-
-            Debug.WriteLine("> Loaded MapAndreas from files.");
 
             switch (mode)
             {
@@ -133,14 +130,10 @@ namespace SampSharp.GameMode.Tools
             {
                 Native.CallNative("MapAndreas_Unload");
 
-                Debug.WriteLine("> Unloaded MapAndreas from plugin.");
-
                 _usePlugin = false;
                 _mode = MapAndreasMode.None;
                 return;
             }
-
-            Debug.WriteLine("> Unloaded MapAndreas from files.");
 
             switch (_mode)
             {
@@ -305,12 +298,8 @@ namespace SampSharp.GameMode.Tools
         {
             if (_usePlugin)
             {
-                Debug.WriteLine("> Saving MapAndreas using plugin.");
-
                 return Native.CallNativeAsBool("MapAndreas_SaveCurrentHMap", __arglist(file));
             }
-
-            Debug.WriteLine("> Saving MapAndreas using files.");
 
             try
             {
