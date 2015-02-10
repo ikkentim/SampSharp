@@ -590,6 +590,21 @@ inline void p_Print(MonoString *str) {
 
 //
 // native functions
+bool native_exists(MonoString *name_string) {
+    char *name;
+
+    if (!name_string) {
+        mono_raise_exception(mono_get_exception_invalid_operation(
+            "name cannot be null"));
+        return ERR_EXCEPTION;
+    }
+
+    name = mono_string_to_utf8(name_string);
+
+    AMX_NATIVE native = sampgdk::FindNative(name);
+    
+    return !!native;
+}
 int call_native_array(MonoString *name_string, MonoString *format_string,
     MonoArray *args_array, MonoArray *sizes_array) {
     char *name;
@@ -1176,5 +1191,6 @@ void LoadNatives()
 	//
 	// natives
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::CallNativeArray", (void *)call_native_array);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::NativeExists", (void *)native_exists);
 
 }

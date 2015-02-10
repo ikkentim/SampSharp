@@ -24,12 +24,17 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
+            Console.WriteLine("Does 'DoesNotExist' exist? {0}", Native.NativeExists("DoesNotExist"));
+            Console.WriteLine("Does 'MapAndreas_GetAddress' exist? {0}", Native.NativeExists("MapAndreas_GetAddress"));
+            Console.WriteLine("Does 'MapAndreas_Init' exist? {0}", Native.NativeExists("MapAndreas_Init"));
+            Console.WriteLine("Does 'Streamer_GetTickRate' exist? {0}", Native.NativeExists("Streamer_GetTickRate"));
+            Console.WriteLine("Does 'GetNetworkStats' exist? {0}", Native.NativeExists("GetNetworkStats"));
+
             Console.WriteLine("CALLING GetNetworkStats");
             string str = "";
             Native.CallNative("GetNetworkStats", __arglist(ref str, (int)512));
             Console.WriteLine(str);
 
-            return;
             Console.WriteLine("CALLING SetWeather");
             Native.CallNative("SetWeather", __arglist(10));
 

@@ -24,6 +24,9 @@ namespace SampSharp.GameMode.Natives
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern int CallNativeArray(string name, string format, object[] args, int[] sizes);
 
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool NativeExists(string name);
+
         private static string FormatNativeList(out object[] args, out int[] lengths, RuntimeArgumentHandle handle)
         {
             var iterator = new ArgIterator(handle);
