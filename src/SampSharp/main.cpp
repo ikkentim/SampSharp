@@ -64,25 +64,26 @@ void convertSymbols() {
     string symbols = Config::GetSymbolFiles();
 
     if (symbols.length() > 0) {
-
-        logprintf("----------");
-        logprintf("Generating symbol files...");
+        logprintf("Symbol file generation");
+        logprintf("----------------------");
 
         stringstream symbols_stream(symbols);
         string file;
+        int successes = 0;
         while (std::getline(symbols_stream, file, ' ')) {
+            logprintf("Converting: %s", file.c_str());
+
             std::ifstream ifile(file.c_str());
             if (file.empty() || !ifile) {
-                logprintf("Processing \"%s\"... File not found!", file.c_str());
+                logprintf("  Failed.");
                 continue;
             }
-
-            logprintf("Processing \"%s\"...", file.c_str());
             mono_convert_symbols(file.c_str());
-        }
-        sampgdk::logprintf("Symbol files generated!\n");
 
-        logprintf("----------");
+            successes++;
+            logprintf("  Converted.");
+        }
+        logprintf(" Converted %d files.", successes);
         logprintf("");
     }
 }
@@ -114,7 +115,6 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
         string namespaceName = Config::GetGameModeNameSpace();
         string className = Config::GetGameModeClass();
 
-        logprintf("");
         logprintf("Gamemode");
         logprintf("---------------");
         logprintf("Loading gamemode: %s:%s", namespaceName.c_str(), 

@@ -40,8 +40,8 @@ namespace TestMode
             new CharsetTest(),
             new VehicleInfoTest(),
             new NativesTest(),
-            new KeyHandlerTest(),
             new MapAndreasTest(),
+            new KeyHandlerTest(),
         };
 
         protected override void OnInitialized(EventArgs args)

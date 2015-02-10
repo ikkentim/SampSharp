@@ -33,7 +33,7 @@ namespace TestMode.Tests
             Console.WriteLine("Save hmap as test.hmap");
             MapAndreas.Save("scriptfiles/test.hmap");
 
-            Console.WriteLine("Set -2500 -25-- to 100");
+            Console.WriteLine("Set (-2500, -2500) to 100");
             MapAndreas.SetZ(-2500, -2500, 100);
 
             Console.WriteLine("Save hmap as test.hmap");
