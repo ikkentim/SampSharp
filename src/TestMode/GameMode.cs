@@ -19,7 +19,6 @@ using System.Diagnostics;
 using System.Linq;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
-using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
@@ -42,6 +41,7 @@ namespace TestMode
             new NativesTest(),
             new MapAndreasTest(),
             new KeyHandlerTest(),
+            new ExtensionTest(),
         };
 
         protected override void OnInitialized(EventArgs args)
@@ -53,7 +53,6 @@ namespace TestMode
             SetGameModeText("sa-mp# testmode");
             UsePlayerPedAnimations();
 
-            Debug.WriteLine("Loading player classes...");
             AddPlayerClass(65, new Vector(5), 0);
 
             foreach (ITest test in _tests)
