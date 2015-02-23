@@ -107,12 +107,13 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     mono_add_internal_call(
         "SampSharp.GameMode.Natives.Native::KillTimer", (void *)KillRefTimer);
 
+    isLoaded_ = true;
+
     MonoObject *gamemode_obj = mono_object_new
         (mono_domain_get(), gameMode_.klass);
     gameModeHandle_ = mono_gchandle_new(gamemode_obj, false);
     mono_runtime_object_init(gamemode_obj);
 
-    isLoaded_ = true;
     return true;
 }
 
@@ -374,7 +375,6 @@ MonoMethod *GameMode::FindMethodForCallbackInClass(const char *name,
                 }
             }
         }
-
         klass = mono_class_get_parent(klass);
     }
 
@@ -395,10 +395,10 @@ MonoMethod *GameMode::FindMethodForCallback(const char *name,
 
     /* Look in the extensions. */
     for (ExtensionList::iterator iter = extensions_.begin(); 
-        !method && iter != extensions_.end(); iter++) {
+        iter != extensions_.end(); iter++) {
         MonoClass *klass = mono_object_get_class(
             mono_gchandle_get_target(handle = *iter));
-
+        
         method = FindMethodForCallbackInClass(name, param_count, klass);
 
         if (method) {
