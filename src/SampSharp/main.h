@@ -15,4 +15,4 @@
 
 #pragma once
 
-#define PLUGIN_VERSION "0.4.0"
+#define PLUGIN_VERSION "0.4.1"
