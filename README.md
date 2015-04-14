@@ -12,6 +12,11 @@ All feedback is welcome, file an Issue or contact me on the SA-MP forums:
 
 [SA-MP# topic on SA-MP]
 
+NuGet
+-----
+SA-MP# hosts it's own [NuGet Package Repository][nuget repository]. SampSharp.GameMode and all useful SA-MP# libraries are available from this repository. Instructions on adding the repository to Visual Studio are available [here][nuget repository].
+Feel free to contribute your useful SA-MP# libraries to this repository!
+
 Documation
 ----------
 The SampSharp.GameMode library provided by the NuGet repository contains all available documentation. You can also view the documentation on the web via http://sampsharp.timpotze.nl/
@@ -27,10 +32,6 @@ Libraries
 ---------
 Some useful SA-MP# libraries:
 - [Streamer wrapper][streamer] - OO wrapper around streamer plugin.
-
-NuGet
------
-SA-MP# hosts it's own [NuGet Package Repository][nuget repository]. SampSharp.GameMode and all useful SA-MP# libraries are available from this repository. Instructions on adding the repository to Visual Studio are available [here][nuget repository].
 
 [travis_status]: https://travis-ci.org/ikkentim/SampSharp.svg?branch=master
 [travis_page]: https://travis-ci.org/ikkentim/SampSharp
