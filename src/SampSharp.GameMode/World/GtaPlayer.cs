@@ -46,6 +46,14 @@ namespace SampSharp.GameMode.World
         #region Constructors
 
         /// <summary>
+        /// Initializes the <see cref="GtaPlayer"/> class.
+        /// </summary>
+        static GtaPlayer()
+        {
+            DefaultClientMessageColor = Color.White;
+        }
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="GtaPlayer" /> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
@@ -60,6 +68,11 @@ namespace SampSharp.GameMode.World
         #endregion
 
         #region Properties
+
+        /// <summary>
+        ///     Gets or sets the default color of a client message.
+        /// </summary>
+        public static Color DefaultClientMessageColor { get; set; }
 
         /// <summary>
         ///     Gets a collections of Player Variables of this Player.
@@ -1846,7 +1859,7 @@ namespace SampSharp.GameMode.World
         /// <param name="message">The text that will be displayed.</param>
         public virtual void SendClientMessage(string message)
         {
-            SendClientMessage(Color.White, message);
+            SendClientMessage(DefaultClientMessageColor, message);
         }
 
         /// <summary>
@@ -1857,7 +1870,7 @@ namespace SampSharp.GameMode.World
         /// <param name="args">An object array that contains zero or more objects to format.</param>
         public virtual void SendClientMessage(string messageFormat, params object[] args)
         {
-            SendClientMessage(Color.White, string.Format(messageFormat, args));
+            SendClientMessage(DefaultClientMessageColor, string.Format(messageFormat, args));
         }
 
         /// <summary>
@@ -1895,7 +1908,7 @@ namespace SampSharp.GameMode.World
         /// <param name="message">The message to show.</param>
         public static void SendClientMessageToAll(string message)
         {
-            SendClientMessageToAll(Color.White, message);
+            SendClientMessageToAll(DefaultClientMessageColor, message);
         }
 
         /// <summary>
@@ -1905,7 +1918,7 @@ namespace SampSharp.GameMode.World
         /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void SendClientMessageToAll(string messageFormat, params object[] args)
         {
-            SendClientMessageToAll(Color.White, string.Format(messageFormat, args));
+            SendClientMessageToAll(DefaultClientMessageColor, string.Format(messageFormat, args));
         }
 
         /// <summary>
