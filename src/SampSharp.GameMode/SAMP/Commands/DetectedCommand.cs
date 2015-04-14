@@ -58,7 +58,9 @@ namespace SampSharp.GameMode.SAMP.Commands
         public DetectedCommand(MethodInfo command)
         {
             if (command == null) throw new ArgumentNullException("command");
-            
+
+            if (!command.IsStatic && !typeof (GtaPlayer).IsAssignableFrom(command.DeclaringType))
+                throw new ArgumentException("command must be static or member of GtaPlayer");
 
             _parameterInfos = command.GetParameters();
 
@@ -66,7 +68,6 @@ namespace SampSharp.GameMode.SAMP.Commands
             var groupAttribute = command.GetCustomAttribute<CommandGroupAttribute>();
 
             if (commandAttribute == null) throw new ArgumentException("method does not have CommandAttribute attached");
-
 
             if (groupAttribute != null)
                 Group = CommandGroup.All.FirstOrDefault(g => g.CommandPath == groupAttribute.Group);
@@ -77,18 +78,24 @@ namespace SampSharp.GameMode.SAMP.Commands
             Alias = commandAttribute.Alias;
             Shortcut = commandAttribute.Shortcut;
             Command = command;
+
             PermissionCheck = commandAttribute.PermissionCheckMethod == null
                 ? null
                 : command.DeclaringType.GetMethods()
-                    .FirstOrDefault(m => m.IsStatic && m.Name == commandAttribute.PermissionCheckMethod);
+                    .FirstOrDefault(m => (m.IsStatic || !command.IsStatic) && m.Name == commandAttribute.PermissionCheckMethod);
 
             if (PermissionCheck != null)
             {
                 ParameterInfo[] permParams = PermissionCheck.GetParameters();
-                if (permParams.Length != 1 || !typeof (GtaPlayer).IsAssignableFrom(permParams[0].ParameterType))
+                if (PermissionCheck.IsStatic && (permParams.Length != 1 || !typeof (GtaPlayer).IsAssignableFrom(permParams[0].ParameterType)))
                 {
                     throw new ArgumentException("PermissionCheckMethod of " + Name +
                                                 " does not take a Player as parameter");
+                }
+
+                if (!PermissionCheck.IsStatic && permParams.Length != 0)
+                {
+                    throw new ArgumentException("PermissionCheckMethod of " + Name + " has parameters");
                 }
 
                 if (PermissionCheck.ReturnType != typeof (bool))
@@ -99,14 +106,14 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             ParameterInfo[] cmdParams = Command.GetParameters();
 
-            if (cmdParams.Length == 0 || !typeof (GtaPlayer).IsAssignableFrom(cmdParams[0].ParameterType))
+            if (Command.IsStatic && (cmdParams.Length == 0 || !typeof (GtaPlayer).IsAssignableFrom(cmdParams[0].ParameterType)))
             {
                 throw new ArgumentException("command " + Name + " does not accept a player as first parameter");
             }
 
             Parameters =
                 Command.GetParameters()
-                    .Skip(1)
+                .Skip(Command.IsStatic ? 1 : 0)
                     .Select(
                         parameter =>
                         {
@@ -260,7 +267,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>True if all required arguments are present; False otherwise.</returns>
         public override bool AreArgumentsValid(string commandText)
         {
-            for (int paramIndex = 0; paramIndex < Command.GetParameters().Length - 1; paramIndex++)
+            for (int paramIndex = 0; paramIndex < Parameters.Length; paramIndex++)
             {
                 ParameterAttribute parameterAttribute = Parameters[paramIndex];
 
@@ -293,7 +300,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// </returns>
         public override bool HasPlayerPermissionForCommand(GtaPlayer player)
         {
-            return PermissionCheck == null || (bool) PermissionCheck.Invoke(null, new object[] {player});
+            return PermissionCheck == null || (bool) PermissionCheck.Invoke(null, (PermissionCheck.IsStatic ? new object[] {player} : null));
         }
 
         /// <summary>
@@ -306,14 +313,13 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// </returns>
         public override bool RunCommand(GtaPlayer player, string args)
         {
-            var arguments = new List<object>
-            {
-                player
-            };
+            var arguments = new List<object>();
 
-            for (int paramIndex = 0; paramIndex < Command.GetParameters().Length - 1; paramIndex++)
+            if (Command.IsStatic) arguments.Add(player);
+
+            for (int paramIndex = 0; paramIndex < Parameters.Length; paramIndex++)
             {
-                ParameterInfo parameterInfo = _parameterInfos[paramIndex + 1];
+                ParameterInfo parameterInfo = _parameterInfos[paramIndex + (Command.IsStatic ? 1 : 0)];
                 ParameterAttribute parameterAttribute = Parameters[paramIndex];
 
                 args = args.Trim();
@@ -332,7 +338,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 {
                     if (UsageFormat != null)
                     {
-                        player.SendClientMessage(Color.White, UsageFormat(CommandPath, Parameters));
+                        player.SendClientMessage(UsageFormat(CommandPath, Parameters));
                         return true;
                     }
 
@@ -342,7 +348,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 arguments.Add(argument);
             }
 
-            object result = Command.Invoke(null, arguments.ToArray());
+            object result = Command.Invoke(Command.IsStatic ? null : player, arguments.ToArray());
 
             return Command.ReturnType == typeof (void) || (bool) result;
         }

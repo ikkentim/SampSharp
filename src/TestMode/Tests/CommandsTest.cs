@@ -15,6 +15,8 @@
 
 using System;
 using System.Linq;
+using SampSharp.GameMode;
+using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
@@ -22,8 +24,10 @@ using SampSharp.GameMode.World;
 
 namespace TestMode.Tests
 {
-    public class CommandsTest : ITest
+    public class CommandsTest : ITest, IControllerTest
     {
+        #region Implementation of ITest
+
         public void Start(GameMode gameMode)
         {
             CommandGroup.Register("tools", "t", CommandGroup.Register("test", "t"));
@@ -33,6 +37,53 @@ namespace TestMode.Tests
             Console.WriteLine("Command paths: {0}", string.Join(", ", cmd.CommandPaths));
         }
 
+        #endregion
+
+        #region Implementation of IControllerTest
+
+        public void LoadControllers(ControllerCollection controllers)
+        {
+            controllers.Remove<GtaPlayerController>();
+            controllers.Add(new PlayerTestController());
+        }
+
+        #endregion
+
+        public class PlayerTest :GtaPlayer
+        {
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="GtaPlayer" /> class.
+            /// </summary>
+            /// <param name="id">The identifier.</param>
+            public PlayerTest(int id)
+                : base(id)
+            {
+            }
+
+            [Command("player")]
+            [Text("text")]
+            public void PlayerCommand(string text)
+            {
+                SendClientMessage(text);
+                SendClientMessage("It works!!!");
+            }
+        }
+
+        class PlayerTestController : GtaPlayerController
+        {
+            #region Overrides of GtaPlayerController
+
+            /// <summary>
+            ///     Registers types this PlayerController requires the system to use.
+            /// </summary>
+            public override void RegisterTypes()
+            {
+                PlayerTest.Register<PlayerTest>();
+            }
+
+            #endregion
+
+        }
 
         [Command("console", Alias = "c", Shortcut = "1", PermissionCheckMethod = "TestCommandPermission")]
         [CommandGroup("tools")]
@@ -134,5 +185,6 @@ namespace TestMode.Tests
         {
             player.Interior = interior;
         }
+
     }
 }

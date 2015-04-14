@@ -65,15 +65,18 @@ namespace SampSharp.GameMode.Controllers
                 int commandsCount = 0;
                 //Detect commands in assembly containing the gamemode
                 foreach (MethodInfo method in assembly.GetTypes().SelectMany(t => t.GetMethods())
-                    .Where(m => m.IsStatic && m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0))
+                    .Where(m => m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0))
                 {
+                    if (!method.IsStatic && !typeof (GtaPlayer).IsAssignableFrom(method.DeclaringType))
+                        continue;
+
                     new DetectedCommand(method);
                     commandsCount++;
                 }
 
                 return commandsCount;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 /*
                  * If there are no non-static types in the given assembly,
