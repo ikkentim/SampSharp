@@ -18,7 +18,7 @@ using System;
 namespace SampSharp.GameMode.SAMP.Commands
 {
     /// <summary>
-    ///     Indicates that a method is a player-comammand and specifies information about the command.
+    ///     Indicates that a method is a player-command and specifies information about the command.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
     public class CommandAttribute : Attribute
