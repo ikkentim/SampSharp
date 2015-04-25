@@ -35,10 +35,10 @@ namespace SampSharp.GameMode.Tools
         }
 
         /// <summary>
-        ///     Run a function on the main thread.
+        ///     Run a function asynchronously.
         /// </summary>
         /// <param name="action">The action the run</param>
-        public static void Run(Action action)
+        public static void RunAsync(Action action)
         {
             if (!IsRequired)
             {
@@ -54,7 +54,7 @@ namespace SampSharp.GameMode.Tools
         ///     Run a function on the main  thread.
         /// </summary>
         /// <param name="action">The action the run</param>
-        public static async Task RunAsync(Action action)
+        public static async Task Run(Action action)
         {
             if (!IsRequired)
             {

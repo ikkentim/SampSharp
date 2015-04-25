@@ -240,7 +240,7 @@ namespace SampSharp.GameMode
                     break;
                 default:
                     if (Sync.IsRequired)
-                        Sync.Run(() => Write(value.ToString(CultureInfo.InvariantCulture)));
+                        Sync.RunAsync(() => Write(value.ToString(CultureInfo.InvariantCulture)));
                     else
                         Write(value.ToString(CultureInfo.InvariantCulture));
                     break;
