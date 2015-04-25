@@ -35,7 +35,28 @@ namespace SampSharp.GameMode.Tools
         }
 
         /// <summary>
-        ///     Run a function on the main thread.
+        ///     Run a function asynchronously.
+        /// </summary>
+        /// <param name="action">The action the run</param>
+        public static async Task RunAsync(Action action)
+        {
+            if (!IsRequired)
+            {
+                action();
+                return;
+            }
+
+            var task = new SyncTask { Action = action };
+            SyncController.Start();
+
+            while (!task.Done)
+            {
+                await Task.Delay(1);
+            }
+        }
+
+        /// <summary>
+        ///     Run a function on the main  thread.
         /// </summary>
         /// <param name="action">The action the run</param>
         public static void Run(Action action)
@@ -48,27 +69,8 @@ namespace SampSharp.GameMode.Tools
 
             new SyncTask {Action = action};
             SyncController.Start();
-        }
 
-        /// <summary>
-        ///     Run a function on the main  thread.
-        /// </summary>
-        /// <param name="action">The action the run</param>
-        public static async Task RunAsync(Action action)
-        {
-            if (!IsRequired)
-            {
-                action();
-                return;
-            }
-
-            var task = new SyncTask {Action = action};
-            SyncController.Start();
-
-            while (!task.Done)
-            {
-                await Task.Delay(1);
-            }
+            
         }
 
         /// <summary>
