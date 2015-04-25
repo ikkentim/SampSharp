@@ -967,7 +967,6 @@ void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::ShowPlayerNameTagForPlayer", (void *)sampgdk_ShowPlayerNameTagForPlayer);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetPlayerMapIcon", (void *)sampgdk_SetPlayerMapIcon);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::RemovePlayerMapIcon", (void *)sampgdk_RemovePlayerMapIcon);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::AllowPlayerTeleport", (void *)sampgdk_AllowPlayerTeleport);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetPlayerCameraPos", (void *)sampgdk_SetPlayerCameraPos);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetPlayerCameraLookAt", (void *)sampgdk_SetPlayerCameraLookAt);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetCameraBehindPlayer", (void *)sampgdk_SetCameraBehindPlayer);
@@ -1019,15 +1018,11 @@ void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GameModeExit", (void *)sampgdk_GameModeExit);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetWorldTime", (void *)sampgdk_SetWorldTime);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetWeaponName", (void *)p_GetWeaponName);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::EnableTirePopping", (void *)sampgdk_EnableTirePopping);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::EnableVehicleFriendlyFire", (void *)sampgdk_EnableVehicleFriendlyFire);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::AllowInteriorWeapons", (void *)sampgdk_AllowInteriorWeapons);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetWeather", (void *)sampgdk_SetWeather);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetGravity", (void *)sampgdk_SetGravity);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::AllowAdminTeleport", (void *)sampgdk_AllowAdminTeleport);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetDeathDropAmount", (void *)sampgdk_SetDeathDropAmount);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::CreateExplosion", (void *)sampgdk_CreateExplosion);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::EnableZoneNames", (void *)sampgdk_EnableZoneNames);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::UsePlayerPedAnims", (void *)sampgdk_UsePlayerPedAnims);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::DisableInteriorEnterExits", (void *)sampgdk_DisableInteriorEnterExits);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetNameTagDrawDistance", (void *)sampgdk_SetNameTagDrawDistance);

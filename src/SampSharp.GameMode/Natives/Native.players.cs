@@ -1408,19 +1408,6 @@ namespace SampSharp.GameMode.Natives
         public static extern bool RemovePlayerMapIcon(int playerid, int iconid);
 
         /// <summary>
-        ///     Enable/Disable the teleporting ability for a player by right-clicking on the map.
-        /// </summary>
-        /// <remarks>
-        ///     This function will work only if <see cref="AllowAdminTeleport" /> is working, and you have to be an admin.
-        /// </remarks>
-        /// <param name="playerid">playerid</param>
-        /// <param name="allow">True-allow, False-disallow</param>
-        /// <returns>This function doesn't return a specific value.</returns>
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        [Obsolete("This function is deprecated. Use the OnPlayerClickMap callback instead.")]
-        public static extern bool AllowPlayerTeleport(int playerid, bool allow);
-
-        /// <summary>
         ///     Sets the camera to a specific position for a player.
         /// </summary>
         /// <param name="playerid">ID of the player.</param>
