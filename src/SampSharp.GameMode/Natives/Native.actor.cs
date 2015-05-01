@@ -17,6 +17,9 @@ using System.Runtime.CompilerServices;
 
 namespace SampSharp.GameMode.Natives
 {
+    /// <summary>
+    ///     Contains all native methods.
+    /// </summary>
     public static partial class Native
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
