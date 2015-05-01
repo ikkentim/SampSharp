@@ -38,6 +38,7 @@ inline int p_SetPlayerName(int playerid, MonoString *name) {
     delete[] buffer;
     return retval;
 }
+
 inline bool p_PlayAudioStreamForPlayer(int playerid, MonoString *url,
     float posX, float posY, float posZ, float distance, bool usepos) {
     char *buffer = monostring_to_string(url);
@@ -48,6 +49,7 @@ inline bool p_PlayAudioStreamForPlayer(int playerid, MonoString *url,
     delete[] buffer;
     return retval;
 }
+
 inline bool p_SetPlayerShopName(int playerid, MonoString *shopname) {
     char *buffer = monostring_to_string(shopname);
 
@@ -56,6 +58,7 @@ inline bool p_SetPlayerShopName(int playerid, MonoString *shopname) {
     delete[] buffer;
     return retval;
 }
+
 inline int p_CreatePlayerTextDraw(int playerid, float x, float y,
     MonoString *text) {
     char *buffer = monostring_to_string(text);
@@ -65,6 +68,7 @@ inline int p_CreatePlayerTextDraw(int playerid, float x, float y,
     delete[] buffer;
     return retval;
 }
+
 inline bool p_PlayerTextDrawSetString(int playerid, int text, 
     MonoString *string) {
     char *buffer = monostring_to_string(string);
@@ -74,6 +78,7 @@ inline bool p_PlayerTextDrawSetString(int playerid, int text,
     delete[] buffer;
     return retval;
 }
+
 inline bool p_SetPVarInt(int playerid, MonoString *varname, int value) {
     char *buffer = monostring_to_string(varname);
 
@@ -82,6 +87,7 @@ inline bool p_SetPVarInt(int playerid, MonoString *varname, int value) {
     delete[] buffer;
     return retval;
 }
+
 inline int p_GetPVarInt(int playerid, MonoString *varname) {
     char *buffer = monostring_to_string(varname);
 
@@ -90,6 +96,7 @@ inline int p_GetPVarInt(int playerid, MonoString *varname) {
     delete[] buffer;
     return retval;
 }
+
 inline bool p_SetPVarString(int playerid, MonoString *varname, 
     MonoString *value) {
     char *varname_buffer = monostring_to_string(varname);
@@ -101,6 +108,7 @@ inline bool p_SetPVarString(int playerid, MonoString *varname,
     delete[] value_buffer;
     return retval;
 }
+
 inline bool p_GetPVarString(int playerid, MonoString *varname, 
 	MonoString ** value, int size) {
     char *varname_buffer = monostring_to_string(varname);
@@ -115,6 +123,7 @@ inline bool p_GetPVarString(int playerid, MonoString *varname,
     delete[] value_buffer;
 	return retval;
 }
+
 inline bool p_SetPVarFloat(int playerid, MonoString *varname, float value) {
     char *buffer = monostring_to_string(varname);
 
@@ -123,6 +132,7 @@ inline bool p_SetPVarFloat(int playerid, MonoString *varname, float value) {
     delete[] buffer;
     return retval;
 }
+
 inline float p_GetPVarFloat(int playerid, MonoString *varname) {
     char *buffer = monostring_to_string(varname);
 
@@ -131,6 +141,7 @@ inline float p_GetPVarFloat(int playerid, MonoString *varname) {
     delete[] buffer;
     return retval;
 }
+
 inline bool p_DeletePVar(int playerid, MonoString *varname) {
     char *buffer = monostring_to_string(varname);
 
@@ -139,6 +150,7 @@ inline bool p_DeletePVar(int playerid, MonoString *varname) {
     delete[] buffer;
     return retval;
 }
+
 inline int p_GetPVarType(int playerid, MonoString *varname) {
     char *buffer = monostring_to_string(varname);
 
@@ -147,6 +159,7 @@ inline int p_GetPVarType(int playerid, MonoString *varname) {
     delete[] buffer;
     return retval;
 }
+
 inline bool p_SetPlayerChatBubble(int playerid, MonoString *text, int color,
     float drawdistance, int expiretime) {
     char *buffer = monostring_to_string(text);
@@ -157,6 +170,7 @@ inline bool p_SetPlayerChatBubble(int playerid, MonoString *text, int color,
     delete[] buffer;
     return retval;
 }
+
 inline bool p_ApplyAnimation(int playerid, MonoString *animlib,
 	MonoString *animname, float fDelta, bool loop, bool lockx, bool locky,
     bool freeze, int time, bool forcesync) {
@@ -170,6 +184,7 @@ inline bool p_ApplyAnimation(int playerid, MonoString *animlib,
     delete[] animname_buffer;
     return retval;
 }
+
 inline bool p_StartRecordingPlayerData(int playerid, int recordtype,
     MonoString *recordname) {
     char *buffer = monostring_to_string(recordname);
@@ -180,6 +195,7 @@ inline bool p_StartRecordingPlayerData(int playerid, int recordtype,
     delete[] buffer;
     return retval;
 }
+
 inline bool p_GetPlayerIp(int playerid, MonoString ** ip, int size) {
 	char *buffer = new char[size];
 
@@ -190,6 +206,7 @@ inline bool p_GetPlayerIp(int playerid, MonoString ** ip, int size) {
     delete[] buffer;
 	return retval;
 }
+
 inline int p_GetPlayerName(int playerid, MonoString ** name, int size) {
 	char *buffer = new char[size];
 
@@ -200,6 +217,7 @@ inline int p_GetPlayerName(int playerid, MonoString ** name, int size) {
     delete[] buffer;
     return retval;
 }
+
 inline bool p_GetPVarNameAtIndex(int playerid, int index, MonoString ** varname,
 	int size) {
 	char *buffer = new char[size];
@@ -210,6 +228,7 @@ inline bool p_GetPVarNameAtIndex(int playerid, int index, MonoString ** varname,
     delete[] buffer;
 	return retval;
 }
+
 inline bool p_GetAnimationName(int index, MonoString ** animlib,
 	int animlib_size, MonoString ** animname, int animname_size) {
     char *libbuffer = new char[animlib_size];
@@ -224,6 +243,20 @@ inline bool p_GetAnimationName(int index, MonoString ** animlib,
     delete[] libbuffer;
     delete[] namebuffer;
 	return retval;
+}
+
+inline bool p_ApplyActorAnimation(int actorid, MonoString *animlib,
+    MonoString *animname, float fDelta, bool loop, bool lockx, bool locky,
+    bool freeze, int time) {
+    char *animlib_buffer = monostring_to_string(animlib);
+    char *animname_buffer = monostring_to_string(animname);
+
+    bool retval = sampgdk_ApplyActorAnimation(actorid, animlib_buffer,
+        animname_buffer, fDelta, loop, lockx, locky, freeze, time);
+
+    delete[] animlib_buffer;
+    delete[] animname_buffer;
+    return retval;
 }
 
 //
@@ -867,7 +900,8 @@ void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetPlayerAmmo", (void *)sampgdk_SetPlayerAmmo);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerAmmo", (void *)sampgdk_GetPlayerAmmo);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerWeaponState", (void *)sampgdk_GetPlayerWeaponState);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerTargetPlayer", (void *)sampgdk_GetPlayerTargetPlayer);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerTargetPlayer", (void *)sampgdk_GetPlayerTargetPlayer);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerTargetActor", (void *)sampgdk_GetPlayerTargetActor);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetPlayerTeam", (void *)sampgdk_SetPlayerTeam);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerTeam", (void *)sampgdk_GetPlayerTeam);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetPlayerScore", (void *)sampgdk_SetPlayerScore);
@@ -957,7 +991,8 @@ void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerAnimationIndex", (void *)sampgdk_GetPlayerAnimationIndex);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetAnimationName", (void *)p_GetAnimationName);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerSpecialAction", (void *)sampgdk_GetPlayerSpecialAction);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetPlayerSpecialAction", (void *)sampgdk_SetPlayerSpecialAction);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetPlayerSpecialAction", (void *)sampgdk_SetPlayerSpecialAction);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::DisableRemoteVehicleCollisions", (void *)sampgdk_DisableRemoteVehicleCollisions);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetPlayerCheckpoint", (void *)sampgdk_SetPlayerCheckpoint);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::DisablePlayerCheckpoint", (void *)sampgdk_DisablePlayerCheckpoint);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetPlayerRaceCheckpoint", (void *)sampgdk_SetPlayerRaceCheckpoint);
@@ -972,7 +1007,12 @@ void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetCameraBehindPlayer", (void *)sampgdk_SetCameraBehindPlayer);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerCameraPos", (void *)sampgdk_GetPlayerCameraPos);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerCameraFrontVector", (void *)sampgdk_GetPlayerCameraFrontVector);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerCameraMode", (void *)sampgdk_GetPlayerCameraMode);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::EnablePlayerCameraTarget", (void *)sampgdk_EnablePlayerCameraTarget);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerCameraMode", (void *)sampgdk_GetPlayerCameraMode);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerCameraTargetObject", (void *)sampgdk_GetPlayerCameraTargetObject);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerCameraTargetVehicle", (void *)sampgdk_GetPlayerCameraTargetVehicle);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerCameraTargetPlayer", (void *)sampgdk_GetPlayerCameraTargetPlayer);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerCameraTargetActor", (void *)sampgdk_GetPlayerCameraTargetActor);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::AttachCameraToObject", (void *)sampgdk_AttachCameraToObject);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::AttachCameraToPlayerObject", (void *)sampgdk_AttachCameraToPlayerObject);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::InterpolateCameraPos", (void *)sampgdk_InterpolateCameraPos);
@@ -1003,7 +1043,10 @@ void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GameTextForAll", (void *)p_GameTextForAll);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GameTextForPlayer", (void *)p_GameTextForPlayer);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetTickCount", (void *)sampgdk_GetTickCount);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetMaxPlayers", (void *)sampgdk_GetMaxPlayers);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerPoolSize", (void *)sampgdk_GetPlayerPoolSize);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetVehiclePoolSize", (void *)sampgdk_GetVehiclePoolSize);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetActorPoolSize", (void *)sampgdk_GetActorPoolSize);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::VectorSize", (void *)sampgdk_VectorSize);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetGameModeText", (void *)p_SetGameModeText);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetTeamCount", (void *)sampgdk_SetTeamCount);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::AddPlayerClass", (void *)sampgdk_AddPlayerClass);
@@ -1021,7 +1064,8 @@ void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::EnableVehicleFriendlyFire", (void *)sampgdk_EnableVehicleFriendlyFire);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::AllowInteriorWeapons", (void *)sampgdk_AllowInteriorWeapons);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetWeather", (void *)sampgdk_SetWeather);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetGravity", (void *)sampgdk_SetGravity);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetGravity", (void *)sampgdk_SetGravity);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetGravity", (void *)sampgdk_GetGravity);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::CreateExplosion", (void *)sampgdk_CreateExplosion);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::UsePlayerPedAnims", (void *)sampgdk_UsePlayerPedAnims);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::DisableInteriorEnterExits", (void *)sampgdk_DisableInteriorEnterExits);
@@ -1109,7 +1153,9 @@ void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetObjectPos", (void *)sampgdk_SetObjectPos);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetObjectPos", (void *)sampgdk_GetObjectPos);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetObjectRot", (void *)sampgdk_SetObjectRot);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetObjectRot", (void *)sampgdk_GetObjectRot);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetObjectRot", (void *)sampgdk_GetObjectRot);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetObjectModel", (void *)sampgdk_GetObjectModel);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetObjectNoCameraCol", (void *)sampgdk_SetObjectNoCameraCol);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::IsValidObject", (void *)sampgdk_IsValidObject);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::DestroyObject", (void *)sampgdk_DestroyObject);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::MoveObject", (void *)sampgdk_MoveObject);
@@ -1125,12 +1171,15 @@ void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetPlayerObjectPos", (void *)sampgdk_SetPlayerObjectPos);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerObjectPos", (void *)sampgdk_GetPlayerObjectPos);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetPlayerObjectRot", (void *)sampgdk_SetPlayerObjectRot);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerObjectRot", (void *)sampgdk_GetPlayerObjectRot);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerObjectRot", (void *)sampgdk_GetPlayerObjectRot);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerObjectModel", (void *)sampgdk_GetPlayerObjectModel);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetPlayerObjectNoCameraCol", (void *)sampgdk_SetPlayerObjectNoCameraCol);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::IsValidPlayerObject", (void *)sampgdk_IsValidPlayerObject);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::DestroyPlayerObject", (void *)sampgdk_DestroyPlayerObject);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::MovePlayerObject", (void *)sampgdk_MovePlayerObject);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::StopPlayerObject", (void *)sampgdk_StopPlayerObject);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::IsPlayerObjectMoving", (void *)sampgdk_IsPlayerObjectMoving);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::IsPlayerObjectMoving", (void *)sampgdk_IsPlayerObjectMoving);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetObjectsDefaultCameraCol", (void *)sampgdk_SetObjectsDefaultCameraCol);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetObjectMaterial", (void *)p_SetObjectMaterial);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetPlayerObjectMaterial", (void *)p_SetPlayerObjectMaterial);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetObjectMaterialText", (void *)p_SetObjectMaterialText);
@@ -1151,7 +1200,12 @@ void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetVehicleParamsForPlayer", (void *)sampgdk_SetVehicleParamsForPlayer);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::ManualVehicleEngineAndLights", (void *)sampgdk_ManualVehicleEngineAndLights);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetVehicleParamsEx", (void *)sampgdk_SetVehicleParamsEx);
-	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetVehicleParamsEx", (void *)sampgdk_GetVehicleParamsEx);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetVehicleParamsEx", (void *)sampgdk_GetVehicleParamsEx);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetVehicleParamsSirenState", (void *)sampgdk_GetVehicleParamsSirenState);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetVehicleParamsCarDoors", (void *)sampgdk_SetVehicleParamsCarDoors);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetVehicleParamsCarDoors", (void *)sampgdk_GetVehicleParamsCarDoors);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetVehicleParamsCarWindows", (void *)sampgdk_SetVehicleParamsCarWindows);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetVehicleParamsCarWindows", (void *)sampgdk_GetVehicleParamsCarWindows);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetVehicleToRespawn", (void *)sampgdk_SetVehicleToRespawn);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::LinkVehicleToInterior", (void *)sampgdk_LinkVehicleToInterior);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::AddVehicleComponent", (void *)sampgdk_AddVehicleComponent);
@@ -1177,6 +1231,25 @@ void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetVehicleVirtualWorld", (void *)sampgdk_SetVehicleVirtualWorld);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetVehicleVirtualWorld", (void *)sampgdk_GetVehicleVirtualWorld);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetVehicleModelInfo", (void *)sampgdk_GetVehicleModelInfo);
+
+    //
+    // a_actor natives
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::CreateActor", (void *)sampgdk_CreateActor);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::DestroyActor", (void *)sampgdk_DestroyActor);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::IsActorStreamedIn", (void *)sampgdk_IsActorStreamedIn);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetActorVirtualWorld", (void *)sampgdk_SetActorVirtualWorld);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetActorVirtualWorld", (void *)sampgdk_GetActorVirtualWorld);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::ApplyActorAnimation", (void *)p_ApplyActorAnimation);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::ClearActorAnimations", (void *)sampgdk_ClearActorAnimations);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetActorPos", (void *)sampgdk_SetActorPos);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetActorPos", (void *)sampgdk_GetActorPos);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetActorFacingAngle", (void *)sampgdk_SetActorFacingAngle);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetActorFacingAngle", (void *)sampgdk_GetActorFacingAngle);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetActorHealth", (void *)sampgdk_SetActorHealth);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetActorHealth", (void *)sampgdk_GetActorHealth);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::SetActorInvulnerable", (void *)sampgdk_SetActorInvulnerable);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::IsActorInvulnerable", (void *)sampgdk_IsActorInvulnerable);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::IsValidActor", (void *)sampgdk_IsValidActor);
 
 	//
 	// logging
