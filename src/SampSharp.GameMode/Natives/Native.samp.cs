@@ -348,27 +348,6 @@ namespace SampSharp.GameMode.Natives
         public static extern bool SetGravity(float gravity);
 
         /// <summary>
-        ///     This function will determine whether RCON admins will be teleported to their waypoint when they set one.
-        /// </summary>
-        /// <param name="allow">False to disable and True to enable.</param>
-        /// <returns>This function doesn't return a specific value.</returns>
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        [Obsolete("This function is deprecated. Use the OnPlayerClickMap callback instead.")]
-        public static extern bool AllowAdminTeleport(bool allow);
-
-        /// <summary>
-        ///     Set the amount of money dropped when a player dies.
-        /// </summary>
-        /// <remarks>
-        ///     This function does not work in the current SA:MP version.
-        /// </remarks>
-        /// <param name="amount">Tthe amount of money dropped when a player dies.</param>
-        /// <returns>This function doesn't return a specific value.</returns>
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        [Obsolete("This function is deprecated. Use the OnPlayerDeath callback and CreatePickup method instead.")]
-        public static extern bool SetDeathDropAmount(int amount);
-
-        /// <summary>
         ///     Create an explosion at the specified coordinates.
         /// </summary>
         /// <param name="x">The X coordinate of the explosion.</param>
@@ -379,17 +358,6 @@ namespace SampSharp.GameMode.Natives
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool CreateExplosion(float x, float y, float z, int type, float radius);
-
-        /// <summary>
-        ///     This function allows to turn on zone / area names such as the "Vinewood" or "Doherty" text at the bottom-right of
-        ///     the screen as they enter the area. This is a gamemode option and should be set in the callback
-        ///     <see cref="BaseMode.OnInitialized" />.
-        /// </summary>
-        /// <param name="enable">A toggle option for whether or not you'd like zone names on or off. False is off and True is on.</param>
-        /// <returns>This function doesn't return a specific value.</returns>
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        [Obsolete("This function is deprecated. You must create your own textdraws to show zone names.")]
-        public static extern bool EnableZoneNames(bool enable);
 
         /// <summary>
         ///     Uses standard player walking animation (animation of CJ) instead of custom animations for every skin (e.g. skating
