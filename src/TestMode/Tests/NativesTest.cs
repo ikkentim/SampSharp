@@ -32,7 +32,7 @@ namespace TestMode.Tests
 
             Console.WriteLine("CALLING GetNetworkStats");
             string str = "";
-            Native.CallNative("GetNetworkStats", __arglist(ref str, (int)512));
+            Native.CallNative("GetNetworkStats", __arglist(ref str, 512));
             Console.WriteLine(str);
 
             Console.WriteLine("CALLING SetWeather");
@@ -52,7 +52,7 @@ namespace TestMode.Tests
             int vid = Native.CallNative("CreateVehicle", __arglist(400, 50.50f, 60.60f, 70.70f, 0.0f, -1, -1, -1));
             float xx, yy, zz;
             Native.GetVehiclePos(vid, out xx, out yy, out zz);
-            Console.WriteLine("pos: {0}", new Vector(xx,yy,zz));
+            Console.WriteLine("pos: {0}", new Vector(xx, yy, zz));
             Native.DestroyVehicle(vid);
 
             Console.WriteLine("CALLING GetVehicleModelInfo");

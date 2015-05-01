@@ -15,7 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
@@ -41,7 +40,7 @@ namespace TestMode
             new NativesTest(),
             new MapAndreasTest(),
             new KeyHandlerTest(),
-            new ExtensionTest(),
+            new ExtensionTest()
         };
 
         protected override void OnInitialized(EventArgs args)
