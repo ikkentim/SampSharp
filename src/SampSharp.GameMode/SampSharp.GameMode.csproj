@@ -86,6 +86,9 @@
     <Compile Include="Events\SpawnEventArgs.cs" />
     <Compile Include="Events\PlayerUpdateEventArgs.cs" />
     <Compile Include="Events\TrailerEventArgs.cs" />
+    <Compile Include="Natives\Native.actor.cs">
+      <DependentUpon>Native.cs</DependentUpon>
+    </Compile>
     <Compile Include="Natives\Native.cs" />
     <Compile Include="SAMP\Commands\CommandGroup.cs" />
     <Compile Include="SAMP\Commands\CommandGroupAttribute.cs" />
