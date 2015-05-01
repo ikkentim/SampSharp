@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -85,7 +85,14 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the model of this <see cref="IGameObject" />.
         /// </summary>
-        public virtual int ModelId { get; private set; }
+        public virtual int ModelId
+        {
+            get
+            {
+                AssertNotDisposed();
+                return Native.GetPlayerObjectModel(Owner.Id, Id);
+            }
+        }
 
         /// <summary>
         ///     Gets the draw distance of this <see cref="IGameObject" />.
@@ -178,7 +185,6 @@ namespace SampSharp.GameMode.World
                 throw new ArgumentNullException("owner");
 
             Owner = owner;
-            ModelId = modelid;
             DrawDistance = drawDistance;
 
             Id = Native.CreatePlayerObject(owner.Id, modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y,
@@ -188,6 +194,15 @@ namespace SampSharp.GameMode.World
         #endregion
 
         #region Methods
+
+        /// <summary>
+        ///     Disable collisions between players' cameras and this <see cref="PlayerObject" />.
+        /// </summary>
+        public virtual void DisableCameraCollisions()
+        {
+            AssertNotDisposed();
+            Native.SetPlayerObjectNoCameraCol(Owner.Id, Id);
+        }
 
         /// <summary>
         ///     Moves this <see cref="IGameObject" /> to the given position and rotation with the given speed.

@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -66,23 +66,23 @@ namespace SampSharp.GameMode.Natives
             bool bonnet, bool boot, bool objective);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetVehicleParamsEx(int vehicleid, out bool engine, out bool lights, out bool alarm,
-            out bool doors, out bool bonnet, out bool boot, out bool objective);
+        public static extern bool GetVehicleParamsEx(int vehicleid, out int engine, out int lights, out int alarm,
+            out int doors, out int bonnet, out int boot, out int objective);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetVehicleParamsSirenState(int vehicleid);
+        public static extern int GetVehicleParamsSirenState(int vehicleid);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetVehicleParamsCarDoors(int vehicleid, int driver, int passenger, int backleft,
-            int backright);
+        public static extern bool SetVehicleParamsCarDoors(int vehicleid, bool driver, bool passenger, bool backleft,
+            bool backright);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleParamsCarDoors(int vehicleid, out int driver, out int passenger,
             out int backleft, out int backright);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetVehicleParamsCarWindows(int vehicleid, int driver, int passenger, int backleft,
-            int backright);
+        public static extern bool SetVehicleParamsCarWindows(int vehicleid, bool driver, bool passenger, bool backleft,
+            bool backright);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleParamsCarWindows(int vehicleid, out int driver, out int passenger,

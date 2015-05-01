@@ -182,14 +182,14 @@ namespace SampSharp.GameMode.World
             get
             {
                 bool value, misc;
-                GetParams(out value, out misc, out misc, out misc, out misc, out misc, out misc);
+                GetParameters(out value, out misc, out misc, out misc, out misc, out misc, out misc);
                 return value;
             }
             set
             {
                 bool a, b, c, d, e, f, g;
-                GetParams(out a, out b, out c, out d, out e, out f, out g);
-                SetParams(value, b, c, d, e, f, g);
+                GetParameters(out a, out b, out c, out d, out e, out f, out g);
+                SetParameters(value, b, c, d, e, f, g);
             }
         }
 
@@ -201,14 +201,14 @@ namespace SampSharp.GameMode.World
             get
             {
                 bool value, misc;
-                GetParams(out misc, out value, out misc, out misc, out misc, out misc, out misc);
+                GetParameters(out misc, out value, out misc, out misc, out misc, out misc, out misc);
                 return value;
             }
             set
             {
                 bool a, b, c, d, e, f, g;
-                GetParams(out a, out b, out c, out d, out e, out f, out g);
-                SetParams(a, value, c, d, e, f, g);
+                GetParameters(out a, out b, out c, out d, out e, out f, out g);
+                SetParameters(a, value, c, d, e, f, g);
             }
         }
 
@@ -220,14 +220,14 @@ namespace SampSharp.GameMode.World
             get
             {
                 bool value, misc;
-                GetParams(out misc, out misc, out value, out misc, out misc, out misc, out misc);
+                GetParameters(out misc, out misc, out value, out misc, out misc, out misc, out misc);
                 return value;
             }
             set
             {
                 bool a, b, c, d, e, f, g;
-                GetParams(out a, out b, out c, out d, out e, out f, out g);
-                SetParams(a, b, value, d, e, f, g);
+                GetParameters(out a, out b, out c, out d, out e, out f, out g);
+                SetParameters(a, b, value, d, e, f, g);
             }
         }
 
@@ -239,14 +239,14 @@ namespace SampSharp.GameMode.World
             get
             {
                 bool value, misc;
-                GetParams(out misc, out misc, out misc, out value, out misc, out misc, out misc);
+                GetParameters(out misc, out misc, out misc, out value, out misc, out misc, out misc);
                 return value;
             }
             set
             {
                 bool a, b, c, d, e, f, g;
-                GetParams(out a, out b, out c, out d, out e, out f, out g);
-                SetParams(a, b, c, value, e, f, g);
+                GetParameters(out a, out b, out c, out d, out e, out f, out g);
+                SetParameters(a, b, c, value, e, f, g);
             }
         }
 
@@ -258,14 +258,14 @@ namespace SampSharp.GameMode.World
             get
             {
                 bool value, misc;
-                GetParams(out misc, out value, out misc, out misc, out value, out misc, out misc);
+                GetParameters(out misc, out value, out misc, out misc, out value, out misc, out misc);
                 return value;
             }
             set
             {
                 bool a, b, c, d, e, f, g;
-                GetParams(out a, out b, out c, out d, out e, out f, out g);
-                SetParams(a, b, c, d, value, f, g);
+                GetParameters(out a, out b, out c, out d, out e, out f, out g);
+                SetParameters(a, b, c, d, value, f, g);
             }
         }
 
@@ -277,14 +277,14 @@ namespace SampSharp.GameMode.World
             get
             {
                 bool value, misc;
-                GetParams(out misc, out value, out misc, out misc, out misc, out value, out misc);
+                GetParameters(out misc, out value, out misc, out misc, out misc, out value, out misc);
                 return value;
             }
             set
             {
                 bool a, b, c, d, e, f, g;
-                GetParams(out a, out b, out c, out d, out e, out f, out g);
-                SetParams(a, b, c, d, e, value, g);
+                GetParameters(out a, out b, out c, out d, out e, out f, out g);
+                SetParameters(a, b, c, d, e, value, g);
             }
         }
 
@@ -296,14 +296,178 @@ namespace SampSharp.GameMode.World
             get
             {
                 bool value, misc;
-                GetParams(out misc, out value, out misc, out misc, out misc, out misc, out value);
+                GetParameters(out misc, out value, out misc, out misc, out misc, out misc, out value);
                 return value;
             }
             set
             {
                 bool a, b, c, d, e, f, g;
-                GetParams(out a, out b, out c, out d, out e, out f, out g);
-                SetParams(a, b, c, d, e, f, value);
+                GetParameters(out a, out b, out c, out d, out e, out f, out g);
+                SetParameters(a, b, c, d, e, f, value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the driver door is open.
+        /// </summary>
+        public virtual bool IsDriverDoorOpen
+        {
+            get
+            {
+                bool value, misc;
+                GetDoorsParameters(out value, out misc, out misc, out misc);
+                return value;
+            }
+            set
+            {
+                bool a, b, c, d;
+                GetDoorsParameters(out a, out b, out c, out d);
+                SetDoorsParameters(value, b, c, d);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the passenger door is open.
+        /// </summary>
+        public virtual bool IsPassengerDoorOpen
+        {
+            get
+            {
+                bool value, misc;
+                GetDoorsParameters(out misc, out value, out misc, out misc);
+                return value;
+            }
+            set
+            {
+                bool a, b, c, d;
+                GetDoorsParameters(out a, out b, out c, out d);
+                SetDoorsParameters(a, value, c, d);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the driver door is open.
+        /// </summary>
+        public virtual bool IsBackLeftDoorOpen
+        {
+            get
+            {
+                bool value, misc;
+                GetDoorsParameters(out misc, out misc, out value, out misc);
+                return value;
+            }
+            set
+            {
+                bool a, b, c, d;
+                GetDoorsParameters(out a, out b, out c, out d);
+                SetDoorsParameters(a, b, value, d);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the driver door is open.
+        /// </summary>
+        public virtual bool IsBackRightDoorOpen
+        {
+            get
+            {
+                bool value, misc;
+                GetDoorsParameters(out misc, out misc, out misc, out value);
+                return value;
+            }
+            set
+            {
+                bool a, b, c, d;
+                GetDoorsParameters(out a, out b, out c, out d);
+                SetDoorsParameters(a, b, c, value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the driver window is closed.
+        /// </summary>
+        public virtual bool IsDriverWindowClosed
+        {
+            get
+            {
+                bool value, misc;
+                GetWindowsParameters(out value, out misc, out misc, out misc);
+                return value;
+            }
+            set
+            {
+                bool a, b, c, d;
+                GetWindowsParameters(out a, out b, out c, out d);
+                SetWindowsParameters(value, b, c, d);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the passenger window is closed.
+        /// </summary>
+        public virtual bool IsPassengerWindowClosed
+        {
+            get
+            {
+                bool value, misc;
+                GetWindowsParameters(out misc, out value, out misc, out misc);
+                return value;
+            }
+            set
+            {
+                bool a, b, c, d;
+                GetWindowsParameters(out a, out b, out c, out d);
+                SetWindowsParameters(a, value, c, d);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the driver window is closed.
+        /// </summary>
+        public virtual bool IsBackLeftWindowClosed
+        {
+            get
+            {
+                bool value, misc;
+                GetWindowsParameters(out misc, out misc, out value, out misc);
+                return value;
+            }
+            set
+            {
+                bool a, b, c, d;
+                GetWindowsParameters(out a, out b, out c, out d);
+                SetWindowsParameters(a, b, value, d);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the driver window is closed.
+        /// </summary>
+        public virtual bool IsBackRightWindowClosed
+        {
+            get
+            {
+                bool value, misc;
+                GetWindowsParameters(out misc, out misc, out misc, out value);
+                return value;
+            }
+            set
+            {
+                bool a, b, c, d;
+                GetWindowsParameters(out a, out b, out c, out d);
+                SetWindowsParameters(a, b, c, value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets a value indicating whether this Vehicle's siren is on.
+        /// </summary>
+        public virtual bool IsSirenOn
+        {
+            get
+            {
+                AssertNotDisposed();
+                return Native.GetVehicleParamsSirenState(Id) == 1;
             }
         }
 
@@ -564,7 +728,7 @@ namespace SampSharp.GameMode.World
         /// <param name="player">The <see cref="GtaPlayer" /> to set this vehicles's parameters for.</param>
         /// <param name="objective">False to disable the objective or True to show it.</param>
         /// <param name="doorslocked">False to unlock the doors or True to lock them.</param>
-        public virtual void SetParamsForPlayer(GtaPlayer player, bool objective,
+        public virtual void SetParametersForPlayer(GtaPlayer player, bool objective,
             bool doorslocked)
         {
             AssertNotDisposed();
@@ -595,7 +759,7 @@ namespace SampSharp.GameMode.World
         /// <param name="bonnet">Toggle the bonnet to be open or closed.</param>
         /// <param name="boot">Toggle the boot to be open or closed.</param>
         /// <param name="objective">Toggle the objective status for the vehicle on or off.</param>
-        public virtual void SetParams(bool engine, bool lights, bool alarm, bool doors, bool bonnet, bool boot,
+        public virtual void SetParameters(bool engine, bool lights, bool alarm, bool doors, bool bonnet, bool boot,
             bool objective)
         {
             AssertNotDisposed();
@@ -607,20 +771,167 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets this <see cref="GtaVehicle" />'s parameters.
         /// </summary>
-        /// <param name="engine">Get the engine status. If True, the engine is running.</param>
-        /// <param name="lights">Get the vehicle's lights' state. If True the lights are on.</param>
-        /// <param name="alarm">Get the vehicle's alarm state. If True the alarm is (or was) sounding.</param>
-        /// <param name="doors">Get the lock status of the doors. If True the doors are locked.</param>
-        /// <param name="bonnet">Get the bonnet/hood status. If True, it's open.</param>
-        /// <param name="boot">Get the boot/trunk status. True means it is open.</param>
-        /// <param name="objective">Get the objective status. True means the objective is on.</param>
-        public virtual void GetParams(out bool engine, out bool lights, out bool alarm,
-            out bool doors, out bool bonnet, out bool boot, out bool objective)
+        /// <param name="engine">Get the engine status. If on the engine is running.</param>
+        /// <param name="lights">Get the vehicle's lights' state. If on the lights are on.</param>
+        /// <param name="alarm">Get the vehicle's alarm state. If on the alarm is (or was) sounding.</param>
+        /// <param name="doors">Get the lock status of the doors. If on the doors are locked.</param>
+        /// <param name="bonnet">Get the bonnet/hood status. If on it is open.</param>
+        /// <param name="boot">Get the boot/trunk status. If on it is open.</param>
+        /// <param name="objective">Get the objective status. If on the objective is on.</param>
+        public virtual void GetParameters(out ParameterValue engine, out ParameterValue lights, out ParameterValue alarm,
+            out ParameterValue doors, out ParameterValue bonnet, out ParameterValue boot, out ParameterValue objective)
         {
             AssertNotDisposed();
 
-            Native.GetVehicleParamsEx(Id, out engine, out lights, out alarm, out doors, out bonnet, out boot,
-                out objective);
+            int tmpEngine, tmpLights, tmpAlarm, tmpDoors, tmpBonnet, tmpBoot, tmpObjective;
+            Native.GetVehicleParamsEx(Id, out tmpEngine, out tmpLights, out tmpAlarm, out tmpDoors, out tmpBonnet,
+                out tmpBoot, out tmpObjective);
+
+            engine = (ParameterValue) tmpEngine;
+            lights = (ParameterValue) tmpLights;
+            alarm = (ParameterValue) tmpAlarm;
+            doors = (ParameterValue) tmpDoors;
+            bonnet = (ParameterValue) tmpBonnet;
+            boot = (ParameterValue) tmpBoot;
+            objective = (ParameterValue) tmpObjective;
+        }
+
+        /// <summary>
+        ///     Gets this <see cref="GtaVehicle" />'s parameters.
+        /// </summary>
+        /// <param name="engine">Get the engine status. If true the engine is running.</param>
+        /// <param name="lights">Get the vehicle's lights' state. If true the lights are on.</param>
+        /// <param name="alarm">Get the vehicle's alarm state. If true the alarm is (or was) sounding.</param>
+        /// <param name="doors">Get the lock status of the doors. If true the doors are locked.</param>
+        /// <param name="bonnet">Get the bonnet/hood status. If true it is open.</param>
+        /// <param name="boot">Get the boot/trunk status. If true it is open.</param>
+        /// <param name="objective">Get the objective status. If true the objective is on.</param>
+        public virtual void GetParameters(out bool engine, out bool lights, out bool alarm,
+            out bool doors, out bool bonnet, out bool boot, out bool objective)
+        {
+            ParameterValue tmpEngine, tmpLights, tmpAlarm, tmpDoors, tmpBonnet, tmpBoot, tmpObjective;
+            GetParameters(out tmpEngine, out tmpLights, out tmpAlarm, out tmpDoors, out tmpBonnet, out tmpBoot,
+                out tmpObjective);
+
+            engine = tmpEngine == ParameterValue.On;
+            lights = tmpLights == ParameterValue.On;
+            alarm = tmpAlarm == ParameterValue.On;
+            doors = tmpDoors == ParameterValue.On;
+            bonnet = tmpBonnet == ParameterValue.On;
+            boot = tmpBoot == ParameterValue.On;
+            objective = tmpObjective == ParameterValue.On;
+        }
+
+        /// <summary>
+        ///     Sets the doors parameters.
+        /// </summary>
+        /// <param name="driver">if set to <c>true</c> the driver side door is open.</param>
+        /// <param name="passenger">if set to <c>true</c> the passenger side door is open.</param>
+        /// <param name="backleft">if set to <c>true</c> the backleft door is open.</param>
+        /// <param name="backright">if set to <c>true</c> the backright door is open.</param>
+        public virtual void SetDoorsParameters(bool driver, bool passenger, bool backleft, bool backright)
+        {
+            AssertNotDisposed();
+
+            Native.SetVehicleParamsCarDoors(Id, driver, passenger, backleft, backright);
+        }
+
+        /// <summary>
+        ///     Gets the doors parameters.
+        /// </summary>
+        /// <param name="driver">if on the driver side door is open.</param>
+        /// <param name="passenger">if on the passenger side door is open.</param>
+        /// <param name="backleft">if on the backleft door is open.</param>
+        /// <param name="backright">if on the backright door is open.</param>
+        public virtual void GetDoorsParameters(out ParameterValue driver, out ParameterValue passenger,
+            out ParameterValue backleft, out ParameterValue backright)
+        {
+            AssertNotDisposed();
+
+            int tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
+            Native.GetVehicleParamsCarDoors(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
+
+            driver = (ParameterValue) tmpDriver;
+            passenger = (ParameterValue) tmpPassenger;
+            backleft = (ParameterValue) tmpBackleft;
+            backright = (ParameterValue) tmpBackright;
+        }
+
+        /// <summary>
+        ///     Gets the doors parameters.
+        /// </summary>
+        /// <param name="driver">if true the driver side door is open.</param>
+        /// <param name="passenger">if true the passenger side door is open.</param>
+        /// <param name="backleft">if true the backleft door is open.</param>
+        /// <param name="backright">if true the backright door is open.</param>
+        public virtual void GetDoorsParameters(out bool driver, out bool passenger, out bool backleft,
+            out bool backright)
+        {
+            AssertNotDisposed();
+
+            ParameterValue tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
+            GetDoorsParameters(out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
+
+            driver = tmpDriver == ParameterValue.On;
+            passenger = tmpPassenger == ParameterValue.On;
+            backleft = tmpBackleft == ParameterValue.On;
+            backright = tmpBackright == ParameterValue.On;
+        }
+
+        /// <summary>
+        ///     Sets the windows parameters.
+        /// </summary>
+        /// <param name="driver">if set to <c>true</c> the driver side window is closed.</param>
+        /// <param name="passenger">if set to <c>true</c> the passenger side window is closed.</param>
+        /// <param name="backleft">if set to <c>true</c> the backleft window is closed.</param>
+        /// <param name="backright">if set to <c>true</c> the backright window is closed.</param>
+        public virtual void SetWindowsParameters(bool driver, bool passenger, bool backleft, bool backright)
+        {
+            AssertNotDisposed();
+
+            Native.SetVehicleParamsCarWindows(Id, driver, passenger, backleft, backright);
+        }
+
+        /// <summary>
+        ///     Gets the windows parameters.
+        /// </summary>
+        /// <param name="driver">if on the driver side window is closed.</param>
+        /// <param name="passenger">if on the passenger side window is closed.</param>
+        /// <param name="backleft">if on the backleft window is closed.</param>
+        /// <param name="backright">if on the backright window is closed.</param>
+        public virtual void GetWindowsParameters(out ParameterValue driver, out ParameterValue passenger,
+            out ParameterValue backleft, out ParameterValue backright)
+        {
+            AssertNotDisposed();
+
+            int tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
+            Native.GetVehicleParamsCarWindows(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
+
+            driver = (ParameterValue) tmpDriver;
+            passenger = (ParameterValue) tmpPassenger;
+            backleft = (ParameterValue) tmpBackleft;
+            backright = (ParameterValue) tmpBackright;
+        }
+
+        /// <summary>
+        ///     Gets the windows parameters.
+        /// </summary>
+        /// <param name="driver">if true the driver side window is closed.</param>
+        /// <param name="passenger">if true the passenger side window is closed.</param>
+        /// <param name="backleft">if true the backleft window is closed.</param>
+        /// <param name="backright">if true the backright window is closed.</param>
+        public virtual void GetWindowsParameters(out bool driver, out bool passenger, out bool backleft,
+            out bool backright)
+        {
+            AssertNotDisposed();
+
+            ParameterValue tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
+            GetWindowsParameters(out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
+
+            driver = tmpDriver != ParameterValue.Off; // unset is most commonly also closed
+            passenger = tmpPassenger != ParameterValue.Off;
+            backleft = tmpBackleft != ParameterValue.Off;
+            backright = tmpBackright != ParameterValue.Off;
         }
 
         /// <summary>

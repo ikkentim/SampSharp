@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -85,7 +85,14 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the model of this IGameObject.
         /// </summary>
-        public virtual int ModelId { get; private set; }
+        public virtual int ModelId
+        {
+            get
+            {
+                AssertNotDisposed();
+                return Native.GetObjectModel(Id);
+            }
+        }
 
         /// <summary>
         ///     Gets the draw distance of this IGameObject.
@@ -141,7 +148,6 @@ namespace SampSharp.GameMode.World
         /// <param name="drawDistance">The draw distance.</param>
         public GlobalObject(int modelid, Vector position, Vector rotation, float drawDistance)
         {
-            ModelId = modelid;
             DrawDistance = drawDistance;
 
             Id = Native.CreateObject(modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z,
@@ -161,6 +167,24 @@ namespace SampSharp.GameMode.World
         #endregion
 
         #region Methods
+
+        /// <summary>
+        ///     Disable collisions between players' cameras and this <see cref="GlobalObject" />.
+        /// </summary>
+        public virtual void DisableCameraCollisions()
+        {
+            AssertNotDisposed();
+            Native.SetObjectNoCameraCol(Id);
+        }
+
+        /// <summary>
+        ///     Toggles the default camera collisions.
+        /// </summary>
+        /// <param name="toggle">If set to <c>true</c> the camera will be able to collide with objects by default.</param>
+        public static void ToggleDefaultCameraCollisions(bool toggle)
+        {
+            Native.SetObjectsDefaultCameraCol(!toggle);
+        }
 
         /// <summary>
         ///     Moves this IGameObject to the given position and rotation with the given speed.

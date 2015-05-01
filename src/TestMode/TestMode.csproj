@@ -54,6 +54,7 @@
     <Compile Include="Tests\MapAndreasTest.cs" />
     <Compile Include="Tests\MenuTest.cs" />
     <Compile Include="Tests\NativesTest.cs" />
+    <Compile Include="Tests\ParamsTest.cs" />
     <Compile Include="Tests\VehicleInfoTest.cs" />
   </ItemGroup>
   <ItemGroup>

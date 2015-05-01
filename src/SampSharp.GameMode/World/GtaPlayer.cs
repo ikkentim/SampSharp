@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 //     http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -389,6 +389,76 @@ namespace SampSharp.GameMode.World
         public virtual CameraMode CameraMode
         {
             get { return (CameraMode) Native.GetPlayerCameraMode(Id); }
+        }
+
+        /// <summary>
+        ///     Gets the Actor this Player is aiming at.
+        /// </summary>
+        public virtual Actor TargetActor
+        {
+            get
+            {
+                AssertNotDisposed();
+
+                var id = Native.GetPlayerTargetActor(Id);
+                return id == Actor.InvalidId ? null : Actor.Find(id);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the GlobalObject the camera of this player is pointing at.
+        /// </summary>
+        public virtual GlobalObject CameraTargetObject
+        {
+            get
+            {
+                AssertNotDisposed();
+
+                var id = Native.GetPlayerCameraTargetObject(Id);
+                return id == GlobalObject.InvalidId ? null : GlobalObject.Find(id);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the GtaVehicle the camera of this player is pointing at.
+        /// </summary>
+        public virtual GtaVehicle CameraTargetVehicle
+        {
+            get
+            {
+                AssertNotDisposed();
+
+                var id = Native.GetPlayerCameraTargetVehicle(Id);
+                return id == GtaVehicle.InvalidId ? null : GtaVehicle.Find(id);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the GtaPlayer the camera of this player is pointing at.
+        /// </summary>
+        public virtual GtaPlayer CameraTargetPlayer
+        {
+            get
+            {
+                AssertNotDisposed();
+
+                var id = Native.GetPlayerCameraTargetPlayer(Id);
+                return id == InvalidId ? null : Find(id);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the GtaPlayer the camera of this player is pointing at.
+        /// </summary>
+        public virtual Actor CameraTargetActor
+        {
+            get
+            {
+                AssertNotDisposed();
+
+                var id = Native.GetPlayerCameraTargetActor(Id);
+                return id == Actor.InvalidId ? null : Actor.Find(id);
+            }
         }
 
         /// <summary>
@@ -1179,6 +1249,28 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             Native.PlayAudioStreamForPlayer(Id, url, 0, 0, 0, 0, false);
+        }
+
+        /// <summary>
+        ///     Allows you to disable collisions between vehicles for a player.
+        /// </summary>
+        /// <param name="disable">if set to <c>true</c> disables the collision between vehicles.</param>
+        public virtual void DisableRemoteVehicleCollisions(bool disable)
+        {
+            AssertNotDisposed();
+
+            Native.DisableRemoteVehicleCollisions(Id, disable);
+        }
+
+        /// <summary>
+        ///     Toggles camera targeting functions for a player.
+        /// </summary>
+        /// <param name="enable">if set to <c>true</c> the functionality is enabled.</param>
+        public virtual void EnablePlayerCameraTarget(bool enable)
+        {
+            AssertNotDisposed();
+
+            Native.EnablePlayerCameraTarget(Id, enable);
         }
 
         /// <summary>
@@ -2114,7 +2206,6 @@ namespace SampSharp.GameMode.World
 
             Dispose();
         }
-
 
         /// <summary>
         ///     Raises the <see cref="Spawned" /> event.
