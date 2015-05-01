@@ -55,6 +55,7 @@ namespace SampSharp.GameMode.Natives
         ///     The delay until the car is respawned without a driver in seconds. Using -1 will prevent the
         ///     vehicle from respawning.
         /// </param>
+        /// <param name="addsiren"></param>
         /// <returns>
         ///     The vehicle ID of the vehicle created (1 - <see cref="Limits.MaxVehicles" />).
         ///     <see cref="Misc.InvalidVehicleId" /> (65535) if vehicle was not created (vehicle limit reached or invalid vehicle
@@ -62,7 +63,7 @@ namespace SampSharp.GameMode.Natives
         /// </returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int CreateVehicle(int vehicletype, float x, float y, float z, float rotation, int color1,
-            int color2, int respawnDelay);
+            int color2, int respawnDelay, bool addsiren = false);
 
         /// <summary>
         ///     Destroys a vehicle which was previously created.
@@ -190,6 +191,21 @@ namespace SampSharp.GameMode.Natives
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleParamsEx(int vehicleid, out bool engine, out bool lights, out bool alarm,
             out bool doors, out bool bonnet, out bool boot, out bool objective);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetVehicleParamsSirenState(int vehicleid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetVehicleParamsCarDoors(int vehicleid, int driver, int passenger, int backleft, int backright);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetVehicleParamsCarDoors(int vehicleid, out int driver, out int passenger, out int backleft, out int backright);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetVehicleParamsCarWindows(int vehicleid, int driver, int passenger, int backleft, int backright);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool GetVehicleParamsCarWindows(int vehicleid, out int driver, out int passenger, out int backleft, out int backright);
 
         /// <summary>
         ///     Sets a vehicle back to the position at where it was created.

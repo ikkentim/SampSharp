@@ -242,6 +242,14 @@ namespace SampSharp.GameMode.Natives
         public static extern int GetPlayerTargetPlayer(int playerid);
 
         /// <summary>
+        ///     Gets id of an actor which is aimed by certain player.
+        /// </summary>
+        /// <param name="playerid">The ID of the player to get the target of.</param>
+        /// <returns>The ID of the targeted actor, or <see cref="Misc.InvalidActorId" /> if none.</returns>
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetPlayerTargetActor(int playerid);
+
+        /// <summary>
         ///     Set the team of a player.
         /// </summary>
         /// <remarks>
@@ -1282,6 +1290,9 @@ namespace SampSharp.GameMode.Natives
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetPlayerSpecialAction(int playerid, int actionid);
 
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool DisableRemoteVehicleCollisions(int playerid, bool disable);
+
         /// <summary>
         ///     Sets a checkpoint (red circle) for a player. Also shows a red blip on the radar.
         /// </summary>
@@ -1472,6 +1483,22 @@ namespace SampSharp.GameMode.Natives
         /// <returns>The camera mode as an integer (or -1 if player is not connected)</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetPlayerCameraMode(int playerid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool EnablePlayerCameraTarget(int playerid, bool enable);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetPlayerCameraTargetObject(int playerid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetPlayerCameraTargetVehicle(int playerid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetPlayerCameraTargetPlayer(int playerid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetPlayerCameraTargetActor(int playerid);
+
 
         /// <summary>
         ///     You can use this function to attach the player camera to objects.

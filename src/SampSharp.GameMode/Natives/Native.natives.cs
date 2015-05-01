@@ -24,6 +24,11 @@ namespace SampSharp.GameMode.Natives
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern int CallNativeArray(string name, string format, object[] args, int[] sizes);
 
+        /// <summary>
+        /// Checks whether a native with the specified <paramref name="name"/> exists. 
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>True if a native with the specified name exists; False otherwise.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool NativeExists(string name);
 

@@ -118,6 +118,15 @@ namespace SampSharp.GameMode.Natives
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int GetMaxPlayers();
 
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetPlayerPoolSize();
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetVehiclePoolSize();
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetActorPoolSize();
+
         /// <summary>
         ///     Set the name of the game mode, which appears in the server browser.
         /// </summary>
@@ -217,6 +226,7 @@ namespace SampSharp.GameMode.Natives
         /// <param name="color1">The primary color ID.</param>
         /// <param name="color2">The secondary color ID.</param>
         /// <param name="respawnDelay">The delay until the car is respawned without a driver, in seconds.</param>
+        /// <param name="addsiren">Enables the vehicle to have a siren, providing the vehicle has a horn.</param>
         /// <returns>
         ///     The vehicle ID of the vehicle created (1 - <see cref="Limits.MaxVehicles" />).
         ///     <see cref="Misc.InvalidVehicleId" /> (65535) if vehicle was not created (vehicle limit reached or invalid vehicle
@@ -224,7 +234,7 @@ namespace SampSharp.GameMode.Natives
         /// </returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int AddStaticVehicleEx(int modelid, float spawnX, float spawnY, float spawnZ,
-            float zAngle, int color1, int color2, int respawnDelay);
+            float zAngle, int color1, int color2, int respawnDelay, bool addsiren = false);
 
         /// <summary>
         ///     This function adds a 'static' pickup to the game. These pickups support weapons, health, armor etc., with the
@@ -346,6 +356,9 @@ namespace SampSharp.GameMode.Natives
         /// <returns>This function doesn't return a specific value.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetGravity(float gravity);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern float GetGravity();
 
         /// <summary>
         ///     Create an explosion at the specified coordinates.

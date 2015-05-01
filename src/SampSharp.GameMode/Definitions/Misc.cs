@@ -26,6 +26,11 @@ namespace SampSharp.GameMode.Definitions
         public const int InvalidPlayerId = 0xFFFF;
 
         /// <summary>
+        ///     Invalid actor id.
+        /// </summary>
+        public const int InvalidActorId = 0xFFFF;
+
+        /// <summary>
         ///     Invalid vehicle id.
         /// </summary>
         public const int InvalidVehicleId = 0xFFFF;

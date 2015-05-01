@@ -38,6 +38,17 @@ namespace SampSharp.GameMode.Definitions
         /// <summary>
         ///     A box with a caption, text, an password-inputbox and one or two buttons.
         /// </summary>
-        Password = 3
+        Password = 3,
+
+        /// <summary>
+        ///     A box with a caption, a bunch of selectable rows which contain a number of columns and one or two buttons.
+        /// </summary>
+        Tablist = 4,
+
+        /// <summary>
+        ///     A box with a caption, a bunch of selectable rows which contain a number of columns with a header and one or two
+        ///     buttons.
+        /// </summary>
+        TablistHeaders = 5
     }
 }

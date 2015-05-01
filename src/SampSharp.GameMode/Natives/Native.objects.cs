@@ -136,6 +136,12 @@ namespace SampSharp.GameMode.Natives
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetObjectRot(int objectid, out float rotX, out float rotY, out float rotZ);
 
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetObjectModel(int objectid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetObjectNoCameraCol(int objectid);
+
         /// <summary>
         ///     Check if the given objectid is valid.
         /// </summary>
@@ -328,6 +334,12 @@ namespace SampSharp.GameMode.Natives
         public static extern bool GetPlayerObjectRot(int playerid, int objectid, out float rotX, out float rotY,
             out float rotZ);
 
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetPlayerObjectModel(int playerid, int objectid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetPlayerObjectNoCameraCol(int playerid, int objectid);
+
         /// <summary>
         ///     Checks if the given objectid is valid for the given player.
         /// </summary>
@@ -383,6 +395,9 @@ namespace SampSharp.GameMode.Natives
         /// <returns>True if the player object is moving, otherwise False.</returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool IsPlayerObjectMoving(int playerid, int objectid);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool SetObjectsDefaultCameraCol(bool disable);
 
         /// <summary>
         ///     Replace the texture of an object with the texture from another model in the game.
