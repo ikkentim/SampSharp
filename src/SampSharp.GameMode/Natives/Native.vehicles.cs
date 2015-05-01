@@ -65,7 +65,6 @@ namespace SampSharp.GameMode.Natives
         public static extern bool SetVehicleParamsEx(int vehicleid, bool engine, bool lights, bool alarm, bool doors,
             bool bonnet, bool boot, bool objective);
 
-
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleParamsEx(int vehicleid, out bool engine, out bool lights, out bool alarm,
             out bool doors, out bool bonnet, out bool boot, out bool objective);
@@ -74,16 +73,20 @@ namespace SampSharp.GameMode.Natives
         public static extern bool GetVehicleParamsSirenState(int vehicleid);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetVehicleParamsCarDoors(int vehicleid, int driver, int passenger, int backleft, int backright);
+        public static extern bool SetVehicleParamsCarDoors(int vehicleid, int driver, int passenger, int backleft,
+            int backright);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetVehicleParamsCarDoors(int vehicleid, out int driver, out int passenger, out int backleft, out int backright);
+        public static extern bool GetVehicleParamsCarDoors(int vehicleid, out int driver, out int passenger,
+            out int backleft, out int backright);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetVehicleParamsCarWindows(int vehicleid, int driver, int passenger, int backleft, int backright);
+        public static extern bool SetVehicleParamsCarWindows(int vehicleid, int driver, int passenger, int backleft,
+            int backright);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetVehicleParamsCarWindows(int vehicleid, out int driver, out int passenger, out int backleft, out int backright);
+        public static extern bool GetVehicleParamsCarWindows(int vehicleid, out int driver, out int passenger,
+            out int backleft, out int backright);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool SetVehicleToRespawn(int vehicleid);

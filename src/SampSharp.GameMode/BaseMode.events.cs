@@ -445,7 +445,6 @@ namespace SampSharp.GameMode
         /// </summary>
         public event EventHandler<EventArgs> TimerTick;
 
-
         /// <summary>
         ///     Raises the <see cref="Initialized" /> event.
         /// </summary>

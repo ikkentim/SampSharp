@@ -26,7 +26,6 @@ namespace SampSharp.GameMode.SAMP
     public sealed class Timer : Disposable, IIdentifiable
     {
         private const int InvalidId = -1;
-
         private bool _hit;
         private TimeSpan _interval;
         private bool _isRepeating;

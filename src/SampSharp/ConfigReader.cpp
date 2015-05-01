@@ -41,38 +41,38 @@ ConfigReader::ConfigReader()
 ConfigReader::ConfigReader(const std::string &filename)
 : loaded_(false)
 {
-	LoadFile(filename);
+    LoadFile(filename);
 }
 
 bool ConfigReader::LoadFile(const std::string &filename) {
-	std::ifstream cfg(filename.c_str());
+    std::ifstream cfg(filename.c_str());
 
-	if (cfg.is_open()) {
-		std::string line, name, value;
+    if (cfg.is_open()) {
+        std::string line, name, value;
 
-		while (std::getline(cfg, line, '\n')) {
-			std::stringstream stream(line);
+        while (std::getline(cfg, line, '\n')) {
+            std::stringstream stream(line);
 
-			std::getline(stream, name, ' ');
-			StringUtil::TrimString(name);
+            std::getline(stream, name, ' ');
+            StringUtil::TrimString(name);
 
-			std::getline(stream, value, '\n');
-			StringUtil::TrimString(value);
+            std::getline(stream, value, '\n');
+            StringUtil::TrimString(value);
 
-			options_.insert(std::make_pair(name, value));
-		}
+            options_.insert(std::make_pair(name, value));
+        }
 
-		loaded_ = true;
-	}
+        loaded_ = true;
+    }
 
-	return loaded_;
+    return loaded_;
 }
 
 void ConfigReader::GetOptionAsString(const std::string &name, std::string &value) const {
-	value = GetOptionAsStringDefault(name, value);
+    value = GetOptionAsStringDefault(name, value);
 }
 
 std::string ConfigReader::GetOptionAsStringDefault(const std::string &name, const std::string &default_) const {
     OptionMap::const_iterator iterator = options_.find(name);
-	return iterator != options_.end() ? iterator->second : default_;
+    return iterator != options_.end() ? iterator->second : default_;
 }

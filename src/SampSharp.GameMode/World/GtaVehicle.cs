@@ -351,13 +351,14 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnDeath" /> is being called.
-        ///     This callback is called when this <see cref="GtaVehicle" /> is destroyed - either by exploding or becoming submerged in water.
+        ///     This callback is called when this <see cref="GtaVehicle" /> is destroyed - either by exploding or becoming
+        ///     submerged in water.
         /// </summary>
         public event EventHandler<PlayerEventArgs> Died;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerEnter" /> is being called.
-        ///     This callback is called when a <see cref="GtaPlayer" /> starts to enter this <see cref="GtaVehicle" />, 
+        ///     This callback is called when a <see cref="GtaPlayer" /> starts to enter this <see cref="GtaVehicle" />,
         ///     meaning the player is not in vehicle yet at the time this callback is called.
         /// </summary>
         public event EventHandler<EnterVehicleEventArgs> PlayerEnter;
@@ -382,20 +383,23 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnResprayed" /> is being called.
-        ///     The callback name is deceptive, this callback is called when a <see cref="GtaPlayer" /> exits a mod shop with this <see cref="GtaVehicle" />, 
+        ///     The callback name is deceptive, this callback is called when a <see cref="GtaPlayer" /> exits a mod shop with this
+        ///     <see cref="GtaVehicle" />,
         ///     regardless of whether the vehicle's colors were changed, and is NEVER called for pay 'n' spray garages.
         /// </summary>
         public event EventHandler<VehicleResprayedEventArgs> Resprayed;
 
         /// <summary>
         ///     Occurs when the <see cref="OnDamageStatusUpdated" /> is being called.
-        ///     This callback is called when a element of this <see cref="GtaVehicle" /> such as doors, tires, panels, or lights get damaged.
+        ///     This callback is called when a element of this <see cref="GtaVehicle" /> such as doors, tires, panels, or lights
+        ///     get damaged.
         /// </summary>
         public event EventHandler<PlayerEventArgs> DamageStatusUpdated;
 
         /// <summary>
         ///     Occurs when the <see cref="OnUnoccupiedUpdate" /> is being called.
-        ///     This callback is called everytime this <see cref="GtaVehicle" /> updates the server with their status while it is unoccupied.
+        ///     This callback is called everytime this <see cref="GtaVehicle" /> updates the server with their status while it is
+        ///     unoccupied.
         /// </summary>
         public event EventHandler<UnoccupiedVehicleEventArgs> UnoccupiedUpdate;
 
@@ -407,7 +411,8 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnStreamOut" /> is being called.
-        ///     This callback is called when a <see cref="GtaVehicle" /> is streamed out from some <see cref="GtaPlayer" />'s client.
+        ///     This callback is called when a <see cref="GtaVehicle" /> is streamed out from some <see cref="GtaPlayer" />'s
+        ///     client.
         /// </summary>
         public event EventHandler<PlayerEventArgs> StreamOut;
 
@@ -422,7 +427,8 @@ namespace SampSharp.GameMode.World
         #region Vehicles natives
 
         /// <summary>
-        ///     This function can be used to calculate the distance (as a float) between this <see cref="GtaVehicle" /> and another map coordinate.
+        ///     This function can be used to calculate the distance (as a float) between this <see cref="GtaVehicle" /> and another
+        ///     map coordinate.
         ///     This can be useful to detect how far a vehicle away is from a location.
         /// </summary>
         /// <param name="point">The point.</param>
@@ -744,7 +750,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets the various visual damage statuses of this <see cref="GtaVehicle" />, such as popped tires, broken lights and damaged panels.
+        ///     Sets the various visual damage statuses of this <see cref="GtaVehicle" />, such as popped tires, broken lights and
+        ///     damaged panels.
         /// </summary>
         /// <param name="panels">A set of bits containing the panel damage status.</param>
         /// <param name="doors">A set of bits containing the door damage status.</param>

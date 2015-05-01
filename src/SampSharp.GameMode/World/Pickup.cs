@@ -92,6 +92,20 @@ namespace SampSharp.GameMode.World
             Native.DestroyPickup(Id);
         }
 
+        #region Events
+
+        /// <summary>
+        ///     Raises the <see cref="PickUp" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        public virtual void OnPickUp(PlayerEventArgs e)
+        {
+            if (PickUp != null)
+                PickUp(this, e);
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -116,20 +130,6 @@ namespace SampSharp.GameMode.World
         public override string ToString()
         {
             return string.Format("Pickup(Id: {0}, Model: {1})", Id, Model);
-        }
-
-        #endregion
-
-        #region Events
-
-        /// <summary>
-        ///     Raises the <see cref="PickUp" /> event.
-        /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnPickUp(PlayerEventArgs e)
-        {
-            if (PickUp != null)
-                PickUp(this, e);
         }
 
         #endregion

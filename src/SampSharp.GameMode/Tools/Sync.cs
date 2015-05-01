@@ -94,7 +94,6 @@ namespace SampSharp.GameMode.Tools
         internal sealed class SyncTask : Pool<SyncTask>
         {
             public Action Action { get; set; }
-
             public bool Done { get; private set; }
 
             public void Run()

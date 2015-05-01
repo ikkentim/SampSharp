@@ -28,6 +28,31 @@ namespace SampSharp.GameMode.Display
     /// </summary>
     public class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw>, IIdentifiable, IOwnable<GtaPlayer>
     {
+        #region Events
+
+        /// <summary>
+        ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw(GtaPlayer,ClickPlayerTextDrawEventArgs)" /> is
+        ///     being called.
+        ///     This callback is called when a player clicks on a player-textdraw.
+        /// </summary>
+        public event EventHandler<ClickPlayerTextDrawEventArgs> Click;
+
+        #endregion
+
+        #region Event raisers
+
+        /// <summary>
+        ///     Raises the <see cref="Click" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="ClickPlayerTextDrawEventArgs" /> that contains the event data. </param>
+        public virtual void OnClick(ClickPlayerTextDrawEventArgs e)
+        {
+            if (Click != null)
+                Click(this, e);
+        }
+
+        #endregion
+
         #region Fields
 
         /// <summary>
@@ -487,16 +512,6 @@ namespace SampSharp.GameMode.Display
 
         #endregion
 
-        #region Events
-
-        /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw(GtaPlayer,ClickPlayerTextDrawEventArgs)" /> is being called.
-        ///     This callback is called when a player clicks on a player-textdraw.
-        /// </summary>
-        public event EventHandler<ClickPlayerTextDrawEventArgs> Click;
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -604,20 +619,6 @@ namespace SampSharp.GameMode.Display
         protected virtual void Update()
         {
             if (_visible) Show();
-        }
-
-        #endregion
-
-        #region Event raisers
-
-        /// <summary>
-        ///     Raises the <see cref="Click" /> event.
-        /// </summary>
-        /// <param name="e">An <see cref="ClickPlayerTextDrawEventArgs" /> that contains the event data. </param>
-        public virtual void OnClick(ClickPlayerTextDrawEventArgs e)
-        {
-            if (Click != null)
-                Click(this, e);
         }
 
         #endregion

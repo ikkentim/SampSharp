@@ -1,12 +1,12 @@
 // SampSharp
 // Copyright 2015 Tim Potze
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -62,7 +62,7 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
         return false;
     }
 
-    mono_domain_set_config(mono_domain_get(), dirPath.c_str(), 
+    mono_domain_set_config(mono_domain_get(), dirPath.c_str(),
         configPath.c_str());
 
     domain_ = mono_domain_get();
@@ -75,7 +75,7 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
         return false;
     }
 
-    gameMode_.klass = mono_class_from_name(gameMode_.image, 
+    gameMode_.klass = mono_class_from_name(gameMode_.image,
         namespaceName.c_str(), className.c_str());
 
     if (!gameMode_.klass) {
@@ -96,11 +96,11 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     }
 
     baseMode_.image = mono_class_get_image(baseMode_.klass);
-    
+
     /* Add all internal calls. */
     LoadNatives();
     mono_add_internal_call(
-        "SampSharp.GameMode.Natives.Native::RegisterExtension", 
+        "SampSharp.GameMode.Natives.Native::RegisterExtension",
         (void *)RegisterExtension);
     mono_add_internal_call(
         "SampSharp.GameMode.Natives.Native::SetTimer", (void *)SetRefTimer);
@@ -129,7 +129,7 @@ bool GameMode::Unload() {
 
     /* Clear timers. */
     logprintf("Stopping timers...");
-    for (TimerMap::iterator iter = timers_.begin(); 
+    for (TimerMap::iterator iter = timers_.begin();
         iter != timers_.end(); iter++) {
         int id = iter->first;
         RefTimer timer = (iter->second);
@@ -141,7 +141,7 @@ bool GameMode::Unload() {
 
     /* Clear extensions. */
     logprintf("Unloading extensions...");
-    for (ExtensionList::iterator iter = extensions_.begin(); 
+    for (ExtensionList::iterator iter = extensions_.begin();
         iter != extensions_.end(); iter++) {
         mono_gchandle_free(*iter);
     }
@@ -149,7 +149,7 @@ bool GameMode::Unload() {
 
     /* Clear callbacks. */
     logprintf("Clearing callbacks table...");
-    for (CallbackMap::iterator iter = callbacks_.begin(); 
+    for (CallbackMap::iterator iter = callbacks_.begin();
         iter != callbacks_.end(); iter++) {
         iter->second->params.clear();
         delete iter->second;
@@ -160,7 +160,7 @@ bool GameMode::Unload() {
     mono_thread_attach(domain_);
 
     MonoMethod *method = LoadEvent("Dispose", 0);
- 
+
     if (method) {
         logprintf("Disposing gamemode...");
         CallEvent(method, gameModeHandle_, NULL);
@@ -233,7 +233,7 @@ bool GameMode::RegisterExtension(MonoObject *extension) {
         return false;
     }
 
-    for (ExtensionList::iterator iter = extensions_.begin(); 
+    for (ExtensionList::iterator iter = extensions_.begin();
         iter != extensions_.end(); iter++) {
         if (mono_gchandle_get_target(*iter) == extension) {
             return false;
@@ -353,7 +353,7 @@ MonoMethod *GameMode::FindMethodForCallbackInClass(const char *name,
     MonoImage *image;
 
     /* Find the first occurance of the callback name in the given class and
-     * it's base classes. If a method was found, but it's signature contains 
+     * it's base classes. If a method was found, but it's signature contains
      * unsupported types, look for other overloads in this class.
      */
 
@@ -381,7 +381,7 @@ MonoMethod *GameMode::FindMethodForCallbackInClass(const char *name,
     return NULL;
 }
 
-MonoMethod *GameMode::FindMethodForCallback(const char *name, 
+MonoMethod *GameMode::FindMethodForCallback(const char *name,
     int param_count, uint32_t &handle) {
     MonoMethod *method;
 
@@ -394,11 +394,11 @@ MonoMethod *GameMode::FindMethodForCallback(const char *name,
     }
 
     /* Look in the extensions. */
-    for (ExtensionList::iterator iter = extensions_.begin(); 
+    for (ExtensionList::iterator iter = extensions_.begin();
         iter != extensions_.end(); iter++) {
         MonoClass *klass = mono_object_get_class(
             mono_gchandle_get_target(handle = *iter));
-        
+
         method = FindMethodForCallbackInClass(name, param_count, klass);
 
         if (method) {
@@ -408,7 +408,7 @@ MonoMethod *GameMode::FindMethodForCallback(const char *name,
 
     return NULL;
 }
-void GameMode::ProcessPublicCall(AMX *amx, const char *name, cell *params, 
+void GameMode::ProcessPublicCall(AMX *amx, const char *name, cell *params,
     cell *retval) {
 
     CallbackSignature *signature;
@@ -424,8 +424,8 @@ void GameMode::ProcessPublicCall(AMX *amx, const char *name, cell *params,
         return;
     }
 
-    /* OnRconCommand can sometimes end up on different theads? 
-     * Just to make sure, attach the current thread to the domain. 
+    /* OnRconCommand can sometimes end up on different theads?
+     * Just to make sure, attach the current thread to the domain.
      */
     mono_thread_attach(domain_);
 
@@ -434,21 +434,21 @@ void GameMode::ProcessPublicCall(AMX *amx, const char *name, cell *params,
      */
     if (callbacks_.find(name) == callbacks_.end()) {
         signature = new CallbackSignature;
-        signature->method = FindMethodForCallback(name, param_count, 
+        signature->method = FindMethodForCallback(name, param_count,
             signature->handle);
 
         if (!signature->method) {
             callbacks_[name] = NULL;
             return;
         }
-        
+
         MonoImage *image = mono_class_get_image(
             mono_method_get_class(signature->method));
-        
+
         void *iter = NULL;
         int iter_idx = 0;
 
-        MonoMethodSignature *sig = mono_method_get_signature(signature->method, 
+        MonoMethodSignature *sig = mono_method_get_signature(signature->method,
             image, mono_method_get_token(signature->method));
 
         MonoType* type = NULL;
@@ -480,9 +480,9 @@ void GameMode::ProcessPublicCall(AMX *amx, const char *name, cell *params,
         if (!param_count) {
             int retint = CallEvent(signature->method, signature->handle, NULL);
 
-            /* If there's a cell allocated for the return value and 
-             * the callback was executed successfuly, fill the cell with 
-             * the returned value. 
+            /* If there's a cell allocated for the return value and
+             * the callback was executed successfuly, fill the cell with
+             * the returned value.
              */
             if (retval != NULL && retint != -1) {
                 *retval = retint;
@@ -611,7 +611,7 @@ int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params) {
     assert(handle);
 
     MonoObject *exception;
-    MonoObject *response = mono_runtime_invoke(method, 
+    MonoObject *response = mono_runtime_invoke(method,
         mono_gchandle_get_target(handle), params, &exception);
 
     if (exception) {
@@ -619,8 +619,8 @@ int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params) {
             mono_object_to_string(exception, NULL));
 
         /* Cannot print the exception to logprintf; the buffer is too small. */
-        std::cout << "[SampSharp] Exception thrown during execution of " 
-            << mono_method_get_name(method) << ":" << std::endl 
+        std::cout << "[SampSharp] Exception thrown during execution of "
+            << mono_method_get_name(method) << ":" << std::endl
             << stacktrace << std::endl;
 
         time_t now = time(0);
@@ -656,7 +656,7 @@ int GameMode::GetParamLengthIndex(MonoMethod *method, int idx) {
 
     MonoCustomAttrInfo *attr = mono_custom_attrs_from_param(method, idx + 1);
     if (!attr) {
-        logprintf("[SampSharp] ERROR: No callback parameter info for %s @ %d", 
+        logprintf("[SampSharp] ERROR: No callback parameter info for %s @ %d",
             mono_method_get_name(method), idx);
         return -1;
     }
@@ -669,6 +669,6 @@ int GameMode::GetParamLengthIndex(MonoMethod *method, int idx) {
         return -1;
     }
 
-    return *(int*)mono_object_unbox(mono_runtime_invoke(paramLengthGetMethod_, 
+    return *(int*)mono_object_unbox(mono_runtime_invoke(paramLengthGetMethod_,
         attrObj, NULL, NULL));
 }

@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using System.Diagnostics;
 using System.IO;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;
@@ -34,7 +33,6 @@ namespace SampSharp.GameMode.Tools
     {
         private const string FullFile = "scriptfiles/SAfull.hmap";
         private const string MinimalFile = "scriptfiles/SAmin.hmap";
-
         private static MapAndreasMode _mode;
         private static bool _usePlugin;
         private static FileStream _fileStream;
@@ -51,10 +49,13 @@ namespace SampSharp.GameMode.Tools
         /// <summary>
         ///     Loads the map data into the memory.
         /// </summary>
-        /// <param name="mode">The <see cref="MapAndreasMode"/> to load with.
+        /// <param name="mode">
+        ///     The <see cref="MapAndreasMode" /> to load with.
         /// </param>
-        /// <exception cref="FileLoadException">Thrown if the file couldn't be
-        /// loaded.</exception>
+        /// <exception cref="FileLoadException">
+        ///     Thrown if the file couldn't be
+        ///     loaded.
+        /// </exception>
         public static void Load(MapAndreasMode mode)
         {
             if (_mode != MapAndreasMode.None) return;
@@ -106,7 +107,7 @@ namespace SampSharp.GameMode.Tools
                         throw new FileLoadException("Couldn't load " + MinimalFile, e);
                     }
                     break;
-                    case MapAndreasMode.NoBuffer:
+                case MapAndreasMode.NoBuffer:
                     try
                     {
                         _fileStream = new FileStream(FullFile, FileMode.Open);
@@ -117,7 +118,6 @@ namespace SampSharp.GameMode.Tools
                         throw new FileLoadException("Couldn't load " + MinimalFile, e);
                     }
                     break;
-
             }
         }
 
@@ -243,7 +243,7 @@ namespace SampSharp.GameMode.Tools
         }
 
         /// <summary>
-        /// Set the highest Z point at the provided point.
+        ///     Set the highest Z point at the provided point.
         /// </summary>
         /// <param name="x">X-coordinate of the point.</param>
         /// <param name="y">Y-coordinate of the point.</param>
@@ -260,14 +260,14 @@ namespace SampSharp.GameMode.Tools
             if (z < 0 || z > 655.35) return false;
 
             // get row/col on 6000x6000 grid
-            int iGridX = ((int)x) + 3000;
-            int iGridY = -(((int)y) - 3000);
+            int iGridX = ((int) x) + 3000;
+            int iGridY = -(((int) y) - 3000);
             int iDataPos;
 
             if (_mode == MapAndreasMode.Full)
             {
-                iDataPos = (iGridY * 6000) + iGridX;
-                _data[iDataPos] = (ushort)(z * 100.0f + 0.5); // Add 0.5 to round it properly
+                iDataPos = (iGridY*6000) + iGridX;
+                _data[iDataPos] = (ushort) (z*100.0f + 0.5); // Add 0.5 to round it properly
                 return true;
             }
             if (_mode == MapAndreasMode.Minimal)
@@ -281,7 +281,7 @@ namespace SampSharp.GameMode.Tools
         }
 
         /// <summary>
-        /// Set the highest Z point at the provided point.
+        ///     Set the highest Z point at the provided point.
         /// </summary>
         /// <param name="point">The point with the new Z-coordinate.</param>
         /// <returns>True on success; False otherwise.</returns>
@@ -291,7 +291,7 @@ namespace SampSharp.GameMode.Tools
         }
 
         /// <summary>
-        /// Saves the current height map to the provided file.
+        ///     Saves the current height map to the provided file.
         /// </summary>
         /// <param name="file"></param>
         public static bool Save(string file)

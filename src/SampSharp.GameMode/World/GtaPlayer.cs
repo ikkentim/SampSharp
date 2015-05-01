@@ -46,7 +46,7 @@ namespace SampSharp.GameMode.World
         #region Constructors
 
         /// <summary>
-        /// Initializes the <see cref="GtaPlayer"/> class.
+        ///     Initializes the <see cref="GtaPlayer" /> class.
         /// </summary>
         static GtaPlayer()
         {
@@ -420,7 +420,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets the <see cref="GlobalObject"/> that this Player is surfing.
+        ///     Gets the <see cref="GlobalObject" /> that this Player is surfing.
         /// </summary>
         public virtual GlobalObject SurfingObject
         {
@@ -755,7 +755,8 @@ namespace SampSharp.GameMode.World
         ///     This callback is called when a player clicks on a textdraw.
         /// </summary>
         /// <remarks>
-        ///     The clickable area is defined by <see cref="TextDraw.Width" /> and <see cref="TextDraw.Width" />. The x and y parameters passed to that
+        ///     The clickable area is defined by <see cref="TextDraw.Width" /> and <see cref="TextDraw.Width" />. The x and y
+        ///     parameters passed to that
         ///     function must not be zero or negative.
         /// </remarks>
         public event EventHandler<ClickTextDrawEventArgs> ClickTextDraw;
@@ -879,7 +880,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This sets this <see cref="GtaPlayer" />'s position then adjusts the Player's z-coordinate to the nearest solid ground under the
+        ///     This sets this <see cref="GtaPlayer" />'s position then adjusts the Player's z-coordinate to the nearest solid
+        ///     ground under the
         ///     position.
         /// </summary>
         /// <param name="position">The position to move this Player to.</param>
@@ -1039,7 +1041,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets the clock of this <see cref="GtaPlayer" /> to a specific value. This also changes the daytime. (night/day etc.)
+        ///     Sets the clock of this <see cref="GtaPlayer" /> to a specific value. This also changes the daytime. (night/day
+        ///     etc.)
         /// </summary>
         /// <param name="hour">Hour to set (0-23).</param>
         /// <param name="minutes">Minutes to set (0-59).</param>
@@ -1051,7 +1054,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Get this <see cref="GtaPlayer" />'s current game time. Set by <see cref="Native.SetWorldTime" />, <see cref="Native.SetWorldTime" />,
+        ///     Get this <see cref="GtaPlayer" />'s current game time. Set by <see cref="Native.SetWorldTime" />,
+        ///     <see cref="Native.SetWorldTime" />,
         ///     or by <see cref="ToggleClock" />.
         /// </summary>
         /// <param name="hour">The variable to store the hour in, passed by reference.</param>
@@ -1078,7 +1082,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Set this <see cref="GtaPlayer" />'s weather. If <see cref="ToggleClock" /> has been used to enable the clock, weather changes will
+        ///     Set this <see cref="GtaPlayer" />'s weather. If <see cref="ToggleClock" /> has been used to enable the clock,
+        ///     weather changes will
         ///     interpolate (gradually change), otherwise will change instantly.
         /// </summary>
         /// <param name="weather">The weather to set.</param>
@@ -1125,7 +1130,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This function plays a crime report for this <see cref="GtaPlayer" /> - just like in single-player when CJ commits a crime.
+        ///     This function plays a crime report for this <see cref="GtaPlayer" /> - just like in single-player when CJ commits a
+        ///     crime.
         /// </summary>
         /// <param name="suspect">The suspect player which will be described in the crime report.</param>
         /// <param name="crime">The crime ID, which will be reported as a 10-code (i.e. 10-16 if 16 was passed as the crimeid).</param>
@@ -1485,7 +1491,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Creates a race checkpoint. When this <see cref="GtaPlayer" /> enters it, the <see cref="EnterRaceCheckpoint" /> callback is called.
+        ///     Creates a race checkpoint. When this <see cref="GtaPlayer" /> enters it, the <see cref="EnterRaceCheckpoint" />
+        ///     callback is called.
         /// </summary>
         /// <param name="type">Type of checkpoint.</param>
         /// <param name="point">The point to set the checkpoint at.</param>
@@ -1595,7 +1602,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Set the direction this <see cref="GtaPlayer" />'s camera looks at. To be used in combination with <see cref="CameraPosition" />.
+        ///     Set the direction this <see cref="GtaPlayer" />'s camera looks at. To be used in combination with
+        ///     <see cref="CameraPosition" />.
         /// </summary>
         /// <param name="point">The coordinates for this Player's camera to look at.</param>
         /// <param name="cut">The style the camera-position changes.</param>
@@ -1607,7 +1615,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Set the direction this <see cref="GtaPlayer" />'s camera looks at. To be used in combination with <see cref="CameraPosition" />.
+        ///     Set the direction this <see cref="GtaPlayer" />'s camera looks at. To be used in combination with
+        ///     <see cref="CameraPosition" />.
         /// </summary>
         /// <param name="point">The coordinates for this Player's camera to look at.</param>
         public virtual void SetCameraLookAt(Vector point)
@@ -1772,7 +1781,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Stops all the recordings that had been started with <see cref="StartRecordingPlayerData" /> for this <see cref="GtaPlayer" />.
+        ///     Stops all the recordings that had been started with <see cref="StartRecordingPlayerData" /> for this
+        ///     <see cref="GtaPlayer" />.
         /// </summary>
         public virtual void StopRecordingPlayerData()
         {
@@ -1786,7 +1796,8 @@ namespace SampSharp.GameMode.World
         #region SAMP natives
 
         /// <summary>
-        ///     This function sends a message to this <see cref="GtaPlayer" /> with a chosen color in the chat. The whole line in the chat box will be
+        ///     This function sends a message to this <see cref="GtaPlayer" /> with a chosen color in the chat. The whole line in
+        ///     the chat box will be
         ///     in the set color unless colour embedding is used.
         /// </summary>
         /// <param name="color">The color of the message.</param>
@@ -1807,7 +1818,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Kicks this <see cref="GtaPlayer" /> from the server. They will have to quit the game and re-connect if they wish to continue playing.
+        ///     Kicks this <see cref="GtaPlayer" /> from the server. They will have to quit the game and re-connect if they wish to
+        ///     continue playing.
         /// </summary>
         public virtual void Kick()
         {
@@ -1841,7 +1853,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This function sends a message to this <see cref="GtaPlayer" /> with a chosen color in the chat. The whole line in the chatbox will be
+        ///     This function sends a message to this <see cref="GtaPlayer" /> with a chosen color in the chat. The whole line in
+        ///     the chatbox will be
         ///     in the set color unless color embedding is used.
         /// </summary>
         /// <param name="color">The color of the message.</param>
@@ -1853,7 +1866,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This function sends a message to this <see cref="GtaPlayer" /> in white in the chat. The whole line in the chat box will be
+        ///     This function sends a message to this <see cref="GtaPlayer" /> in white in the chat. The whole line in the chat box
+        ///     will be
         ///     in the set color unless color embedding is used.
         /// </summary>
         /// <param name="message">The text that will be displayed.</param>
@@ -1863,7 +1877,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This function sends a message to this <see cref="GtaPlayer" /> in white in the chat. The whole line in the chat box will be
+        ///     This function sends a message to this <see cref="GtaPlayer" /> in white in the chat. The whole line in the chat box
+        ///     will be
         ///     in the set color unless color embedding is used.
         /// </summary>
         /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
@@ -1922,7 +1937,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sends a message in the name this <see cref="GtaPlayer" /> to another player on the server. The message will appear in the chat box
+        ///     Sends a message in the name this <see cref="GtaPlayer" /> to another player on the server. The message will appear
+        ///     in the chat box
         ///     but can only be seen by <paramref name="receiver" />. The line will start with the this Player's name in his color,
         ///     followed by the <paramref name="message" /> in white.
         /// </summary>
@@ -1939,7 +1955,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sends a message in the name of this <see cref="GtaPlayer" /> to all other players on the server. The line will start with the this
+        ///     Sends a message in the name of this <see cref="GtaPlayer" /> to all other players on the server. The line will
+        ///     start with the this
         ///     <see cref="GtaPlayer" />'s name in their color, followed by the <paramref name="message" /> in white.
         /// </summary>
         /// <param name="message">The message that will be sent.</param>

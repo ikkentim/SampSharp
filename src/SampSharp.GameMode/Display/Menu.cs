@@ -30,17 +30,6 @@ namespace SampSharp.GameMode.Display
     /// </summary>
     public class Menu : Pool<Menu>
     {
-        #region Fields
-
-        /// <summary>
-        ///     Gets the ID commonly returned by methods to point to no menu.
-        /// </summary>
-        public const int InvalidId = Misc.InvalidMenu;
-
-        private readonly List<GtaPlayer> _viewers = new List<GtaPlayer>();
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -60,6 +49,17 @@ namespace SampSharp.GameMode.Display
             Columns = columns ?? new List<MenuColumn>();
             Rows = rows ?? new List<MenuRow>();
         }
+
+        #endregion
+
+        #region Fields
+
+        /// <summary>
+        ///     Gets the ID commonly returned by methods to point to no menu.
+        /// </summary>
+        public const int InvalidId = Misc.InvalidMenu;
+
+        private readonly List<GtaPlayer> _viewers = new List<GtaPlayer>();
 
         #endregion
 

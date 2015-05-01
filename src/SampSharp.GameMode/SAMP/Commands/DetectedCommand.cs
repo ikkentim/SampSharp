@@ -49,12 +49,13 @@ namespace SampSharp.GameMode.SAMP.Commands
                 return type.IsEnum ? new EnumAttribute(name, type) : null;
             };
         }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="DetectedCommand" /> class.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <exception cref="System.ArgumentNullException">Thrown if command is null.</exception>
-        /// <exception cref="System.ArgumentException">The given <paramref name="command"/> is not valid.</exception>
+        /// <exception cref="System.ArgumentException">The given <paramref name="command" /> is not valid.</exception>
         public DetectedCommand(MethodInfo command)
         {
             if (command == null) throw new ArgumentNullException("command");
@@ -71,7 +72,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             if (groupAttribute != null)
                 Group = CommandGroup.All.FirstOrDefault(g => g.CommandPath == groupAttribute.Group);
-            
+
 
             Name = commandAttribute.Name;
             IgnoreCase = commandAttribute.IgnoreCase;
@@ -82,12 +83,14 @@ namespace SampSharp.GameMode.SAMP.Commands
             PermissionCheck = commandAttribute.PermissionCheckMethod == null
                 ? null
                 : command.DeclaringType.GetMethods()
-                    .FirstOrDefault(m => (m.IsStatic || !command.IsStatic) && m.Name == commandAttribute.PermissionCheckMethod);
+                    .FirstOrDefault(
+                        m => (m.IsStatic || !command.IsStatic) && m.Name == commandAttribute.PermissionCheckMethod);
 
             if (PermissionCheck != null)
             {
                 ParameterInfo[] permParams = PermissionCheck.GetParameters();
-                if (PermissionCheck.IsStatic && (permParams.Length != 1 || !typeof (GtaPlayer).IsAssignableFrom(permParams[0].ParameterType)))
+                if (PermissionCheck.IsStatic &&
+                    (permParams.Length != 1 || !typeof (GtaPlayer).IsAssignableFrom(permParams[0].ParameterType)))
                 {
                     throw new ArgumentException("PermissionCheckMethod of " + Name +
                                                 " does not take a Player as parameter");
@@ -106,14 +109,15 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             ParameterInfo[] cmdParams = Command.GetParameters();
 
-            if (Command.IsStatic && (cmdParams.Length == 0 || !typeof (GtaPlayer).IsAssignableFrom(cmdParams[0].ParameterType)))
+            if (Command.IsStatic &&
+                (cmdParams.Length == 0 || !typeof (GtaPlayer).IsAssignableFrom(cmdParams[0].ParameterType)))
             {
                 throw new ArgumentException("command " + Name + " does not accept a player as first parameter");
             }
 
             Parameters =
                 Command.GetParameters()
-                .Skip(Command.IsStatic ? 1 : 0)
+                    .Skip(Command.IsStatic ? 1 : 0)
                     .Select(
                         parameter =>
                         {
@@ -126,7 +130,8 @@ namespace SampSharp.GameMode.SAMP.Commands
                              */
 
                             ParameterAttribute attribute = Command.GetCustomAttributes<ParameterAttribute>()
-                                .FirstOrDefault(a => a.Name == parameter.Name) ?? ResolveParameterType(parameter.ParameterType, parameter.Name);
+                                .FirstOrDefault(a => a.Name == parameter.Name) ??
+                                                           ResolveParameterType(parameter.ParameterType, parameter.Name);
 
                             attribute.Optional = attribute.Optional || parameter.HasDefaultValue;
 
@@ -140,6 +145,128 @@ namespace SampSharp.GameMode.SAMP.Commands
                 throw new ArgumentException("command " + Name +
                                             " has a parameter of a unknown type without an attached attrubute");
             }
+        }
+
+        /// <summary>
+        ///     Checks whether the provided <paramref name="commandText" /> starts with the right characters to run this command.
+        /// </summary>
+        /// <param name="commandText">
+        ///     The command the player entered. When the command returns True, the referenced string will
+        ///     only contain the command arguments.
+        /// </param>
+        /// <returns>
+        ///     True when successful, False otherwise.
+        /// </returns>
+        public override int CommandTextMatchesCommand(ref string commandText)
+        {
+            commandText = commandText.Trim(' ');
+
+            foreach (string str in CommandPaths.OrderByDescending(c => c.Count(h => h == ' ')))
+            {
+                if ((IgnoreCase && (commandText.ToLower() == str.ToLower() ||
+                                    commandText.ToLower().StartsWith(str.ToLower() + " "))) ||
+                    (commandText == str || commandText.StartsWith(str + " ")))
+                {
+                    commandText = commandText.Substring(str.Length);
+                    return str.Split(' ').Length;
+                }
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        ///     Checks whether the <paramref name="commandText" /> contains all required arguments.
+        /// </summary>
+        /// <param name="commandText">The text to check.</param>
+        /// <returns>True if all required arguments are present; False otherwise.</returns>
+        public override bool AreArgumentsValid(string commandText)
+        {
+            for (int paramIndex = 0; paramIndex < Parameters.Length; paramIndex++)
+            {
+                ParameterAttribute parameterAttribute = Parameters[paramIndex];
+
+                commandText = commandText.Trim();
+
+                /*
+                 * Check for missing optional parameters. This is obviously allowed.
+                 */
+                if (commandText.Length == 0 && parameterAttribute.Optional)
+                {
+                    continue;
+                }
+
+                object argument;
+                if (commandText.Length == 0 || !parameterAttribute.Check(ref commandText, out argument))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        ///     Checks whether the given player has the permission to run this command.
+        /// </summary>
+        /// <param name="player">The player that attempts to run this command.</param>
+        /// <returns>
+        ///     True when allowed, False otherwise.
+        /// </returns>
+        public override bool HasPlayerPermissionForCommand(GtaPlayer player)
+        {
+            return PermissionCheck == null ||
+                   (bool) PermissionCheck.Invoke(null, (PermissionCheck.IsStatic ? new object[] {player} : null));
+        }
+
+        /// <summary>
+        ///     Runs the command.
+        /// </summary>
+        /// <param name="player">The player running the command.</param>
+        /// <param name="args">The arguments the player entered.</param>
+        /// <returns>
+        ///     True when the command has been executed, False otherwise.
+        /// </returns>
+        public override bool RunCommand(GtaPlayer player, string args)
+        {
+            var arguments = new List<object>();
+
+            if (Command.IsStatic) arguments.Add(player);
+
+            for (int paramIndex = 0; paramIndex < Parameters.Length; paramIndex++)
+            {
+                ParameterInfo parameterInfo = _parameterInfos[paramIndex + (Command.IsStatic ? 1 : 0)];
+                ParameterAttribute parameterAttribute = Parameters[paramIndex];
+
+                args = args.Trim();
+
+                /*
+                 * Check for missing optional parameters. This is obviously allowed.
+                 */
+                if (args.Length == 0 && parameterAttribute.Optional)
+                {
+                    arguments.Add(parameterInfo.DefaultValue);
+                    continue;
+                }
+
+                object argument;
+                if (args.Length == 0 || !parameterAttribute.Check(ref args, out argument))
+                {
+                    if (UsageFormat != null)
+                    {
+                        player.SendClientMessage(UsageFormat(CommandPath, Parameters));
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                arguments.Add(argument);
+            }
+
+            object result = Command.Invoke(Command.IsStatic ? null : player, arguments.ToArray());
+
+            return Command.ReturnType == typeof (void) || (bool) result;
         }
 
         #region Properties
@@ -230,127 +357,5 @@ namespace SampSharp.GameMode.SAMP.Commands
         public static Func<Type, string, ParameterAttribute> ResolveParameterType { get; set; }
 
         #endregion
-
-        /// <summary>
-        ///     Checks whether the provided <paramref name="commandText" /> starts with the right characters to run this command.
-        /// </summary>
-        /// <param name="commandText">
-        ///     The command the player entered. When the command returns True, the referenced string will
-        ///     only contain the command arguments.
-        /// </param>
-        /// <returns>
-        ///     True when successful, False otherwise.
-        /// </returns>
-        public override int CommandTextMatchesCommand(ref string commandText)
-        {
-            commandText = commandText.Trim(' ');
-
-            foreach (string str in CommandPaths.OrderByDescending(c => c.Count(h => h == ' ')))
-            {
-                if ((IgnoreCase && (commandText.ToLower() == str.ToLower() ||
-                                    commandText.ToLower().StartsWith(str.ToLower() + " "))) ||
-                    (commandText == str || commandText.StartsWith(str + " ")))
-                {
-                    commandText = commandText.Substring(str.Length);
-                    return str.Split(' ').Length;
-
-                }
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        ///     Checks whether the <paramref name="commandText" /> contains all required arguments.
-        /// </summary>
-        /// <param name="commandText">The text to check.</param>
-        /// <returns>True if all required arguments are present; False otherwise.</returns>
-        public override bool AreArgumentsValid(string commandText)
-        {
-            for (int paramIndex = 0; paramIndex < Parameters.Length; paramIndex++)
-            {
-                ParameterAttribute parameterAttribute = Parameters[paramIndex];
-
-                commandText = commandText.Trim();
-
-                /*
-                 * Check for missing optional parameters. This is obviously allowed.
-                 */
-                if (commandText.Length == 0 && parameterAttribute.Optional)
-                {
-                    continue;
-                }
-
-                object argument;
-                if (commandText.Length == 0 || !parameterAttribute.Check(ref commandText, out argument))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        ///     Checks whether the given player has the permission to run this command.
-        /// </summary>
-        /// <param name="player">The player that attempts to run this command.</param>
-        /// <returns>
-        ///     True when allowed, False otherwise.
-        /// </returns>
-        public override bool HasPlayerPermissionForCommand(GtaPlayer player)
-        {
-            return PermissionCheck == null || (bool) PermissionCheck.Invoke(null, (PermissionCheck.IsStatic ? new object[] {player} : null));
-        }
-
-        /// <summary>
-        ///     Runs the command.
-        /// </summary>
-        /// <param name="player">The player running the command.</param>
-        /// <param name="args">The arguments the player entered.</param>
-        /// <returns>
-        ///     True when the command has been executed, False otherwise.
-        /// </returns>
-        public override bool RunCommand(GtaPlayer player, string args)
-        {
-            var arguments = new List<object>();
-
-            if (Command.IsStatic) arguments.Add(player);
-
-            for (int paramIndex = 0; paramIndex < Parameters.Length; paramIndex++)
-            {
-                ParameterInfo parameterInfo = _parameterInfos[paramIndex + (Command.IsStatic ? 1 : 0)];
-                ParameterAttribute parameterAttribute = Parameters[paramIndex];
-
-                args = args.Trim();
-
-                /*
-                 * Check for missing optional parameters. This is obviously allowed.
-                 */
-                if (args.Length == 0 && parameterAttribute.Optional)
-                {
-                    arguments.Add(parameterInfo.DefaultValue);
-                    continue;
-                }
-
-                object argument;
-                if (args.Length == 0 || !parameterAttribute.Check(ref args, out argument))
-                {
-                    if (UsageFormat != null)
-                    {
-                        player.SendClientMessage(UsageFormat(CommandPath, Parameters));
-                        return true;
-                    }
-
-                    return false;
-                }
-
-                arguments.Add(argument);
-            }
-
-            object result = Command.Invoke(Command.IsStatic ? null : player, arguments.ToArray());
-
-            return Command.ReturnType == typeof (void) || (bool) result;
-        }
     }
 }

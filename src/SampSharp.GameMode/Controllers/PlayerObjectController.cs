@@ -51,7 +51,7 @@ namespace SampSharp.GameMode.Controllers
             gameMode.PlayerCleanup += (sender, args) =>
             {
                 var player = sender as GtaPlayer;
-                foreach(var obj in PlayerObject.All.Where(o => o.Owner == player))
+                foreach (var obj in PlayerObject.All.Where(o => o.Owner == player))
                     obj.Dispose();
             };
         }

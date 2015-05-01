@@ -26,6 +26,21 @@ namespace SampSharp.GameMode.SAMP
     /// </summary>
     public class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel>, IIdentifiable, IOwnable<GtaPlayer>
     {
+        #region Methods
+
+        /// <summary>
+        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">Whether managed resources should be disposed.</param>
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            Native.DeletePlayer3DTextLabel(Owner.Id, Id);
+        }
+
+        #endregion
+
         #region Fields
 
         /// <summary>
@@ -320,21 +335,6 @@ namespace SampSharp.GameMode.SAMP
             GtaVehicle attachedVehicle)
             : this(owner, text, color, position, drawDistance, true, attachedVehicle)
         {
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <param name="disposing">Whether managed resources should be disposed.</param>
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-
-            Native.DeletePlayer3DTextLabel(Owner.Id, Id);
         }
 
         #endregion

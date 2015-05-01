@@ -29,6 +29,30 @@ namespace SampSharp.GameMode.Display
     /// </summary>
     public class TextDraw : IdentifiedPool<TextDraw>, IIdentifiable
     {
+        #region Events
+
+        /// <summary>
+        ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw(GtaPlayer,ClickTextDrawEventArgs)" /> is being called.
+        ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
+        /// </summary>
+        public event EventHandler<ClickTextDrawEventArgs> Click;
+
+        #endregion
+
+        #region Event raisers
+
+        /// <summary>
+        ///     Raises the <see cref="Click" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
+        public virtual void OnClick(ClickTextDrawEventArgs e)
+        {
+            if (Click != null)
+                Click(this, e);
+        }
+
+        #endregion
+
         #region Fields
 
         /// <summary>
@@ -457,16 +481,6 @@ namespace SampSharp.GameMode.Display
 
         #endregion
 
-        #region Events
-
-        /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw(GtaPlayer,ClickTextDrawEventArgs)" /> is being called.
-        ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
-        /// </summary>
-        public event EventHandler<ClickTextDrawEventArgs> Click;
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -603,20 +617,6 @@ namespace SampSharp.GameMode.Display
         {
             foreach (GtaPlayer p in _playersShownTo.AsReadOnly())
                 Show(p);
-        }
-
-        #endregion
-
-        #region Event raisers
-
-        /// <summary>
-        ///     Raises the <see cref="Click" /> event.
-        /// </summary>
-        /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
-        public virtual void OnClick(ClickTextDrawEventArgs e)
-        {
-            if (Click != null)
-                Click(this, e);
         }
 
         #endregion

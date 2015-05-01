@@ -98,6 +98,6 @@ namespace SampSharp.GameMode.Definitions
         /// <summary>
         ///     Train trailers.
         /// </summary>
-        TrainTrailer = 16,
+        TrainTrailer = 16
     }
 }

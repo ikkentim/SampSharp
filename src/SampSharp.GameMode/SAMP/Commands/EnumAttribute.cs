@@ -14,9 +14,7 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using SampSharp.GameMode.Helpers;
 
 namespace SampSharp.GameMode.SAMP.Commands
 {
@@ -38,7 +36,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             }
 
             Type = type;
-            TestForValue = true;// default to true
+            TestForValue = true; // default to true
         }
 
         /// <summary>

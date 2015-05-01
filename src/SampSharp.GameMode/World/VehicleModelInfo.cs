@@ -306,7 +306,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Returns an instance of <see cref="VehicleModelInfo" /> containing information about the given <see cref="VehicleModelType" />.
+        ///     Returns an instance of <see cref="VehicleModelInfo" /> containing information about the given
+        ///     <see cref="VehicleModelType" />.
         /// </summary>
         /// <param name="model">The <see cref="VehicleModelType" /> to find information about.</param>
         /// <returns>An instance of <see cref="VehicleModelInfo" /> containing information about the given VehicleModelType.</returns>

@@ -175,7 +175,6 @@ namespace SampSharp.GameMode.SAMP
             Native.SetWeather(weatherid);
         }
 
-
         /// <summary>
         ///     Sets the world time to a specific hour.
         /// </summary>

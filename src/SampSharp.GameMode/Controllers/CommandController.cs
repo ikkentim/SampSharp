@@ -30,7 +30,7 @@ namespace SampSharp.GameMode.Controllers
     public class CommandController : Disposable, IEventListener
     {
         /// <summary>
-        ///     Registers the events this <see cref="GlobalObjectController"/> wants to listen to.
+        ///     Registers the events this <see cref="GlobalObjectController" /> wants to listen to.
         /// </summary>
         /// <param name="gameMode">The running GameMode.</param>
         public virtual void RegisterEvents(BaseMode gameMode)
@@ -52,7 +52,7 @@ namespace SampSharp.GameMode.Controllers
         }
 
         /// <summary>
-        ///     Loads all commands from the given <paramref name="assembly"/>.
+        ///     Loads all commands from the given <paramref name="assembly" />.
         /// </summary>
         /// <param name="assembly">The assembly of who to load the commands from.</param>
         /// <returns>The number of commands loaded.</returns>
@@ -106,7 +106,7 @@ namespace SampSharp.GameMode.Controllers
             string text = e.Text.Substring(1);
 
             List<Tuple<Tuple<int, string>, Command>> candidates = new List<Tuple<Tuple<int, string>, Command>>();
-            
+
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (Command cmd in Command.All.Where(c => c.HasPlayerPermissionForCommand(player)))
             {
@@ -116,7 +116,6 @@ namespace SampSharp.GameMode.Controllers
                 {
                     candidates.Add(new Tuple<Tuple<int, string>, Command>(new Tuple<int, string>(count, args), cmd));
                 }
-
             }
 
             var orderedCandidates = candidates.OrderByDescending(c => c.Item1.Item1);
@@ -126,8 +125,9 @@ namespace SampSharp.GameMode.Controllers
              * 2) Try to run each found command until one has run successfully.
              */
             var firstSuitable =
-                orderedCandidates.FirstOrDefault(candidate => candidate.Item2.AreArgumentsValid(candidate.Item1.Item2) && 
-                    candidate.Item2.RunCommand(player, candidate.Item1.Item2));
+                orderedCandidates.FirstOrDefault(
+                    candidate => candidate.Item2.AreArgumentsValid(candidate.Item1.Item2) &&
+                                 candidate.Item2.RunCommand(player, candidate.Item1.Item2));
 
             if (firstSuitable != null)
             {
@@ -140,7 +140,7 @@ namespace SampSharp.GameMode.Controllers
              */
             var command = orderedCandidates.FirstOrDefault();
 
-            if (command != null && 
+            if (command != null &&
                 command.Item2.RunCommand(player, command.Item1.Item2))
                 e.Success = true;
         }

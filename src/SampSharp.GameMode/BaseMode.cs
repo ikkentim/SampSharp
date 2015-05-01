@@ -56,6 +56,18 @@ namespace SampSharp.GameMode
             get { return _controllers; }
         }
 
+        /// <summary>
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            _controllers.Dispose();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+
         #region Methods
 
         private void RegisterControllers()
@@ -97,17 +109,5 @@ namespace SampSharp.GameMode
         }
 
         #endregion
-
-        /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            _controllers.Dispose();
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers(); 
-        }
     }
 }

@@ -30,22 +30,22 @@
 struct StringUtil
 {
     struct is_not_space {
-	    bool operator()(char c) {
-		    return !(c == ' ' || c == '\r' || c == '\n' || c == '\t');
-	    }
+        bool operator()(char c) {
+            return !(c == ' ' || c == '\r' || c == '\n' || c == '\t');
+        }
     };
 
     static inline std::string &TrimStringLeft(std::string &s) {
-	    s.erase(s.begin(), std::find_if(s.begin(), s.end(), is_not_space()));
-	    return s;
+        s.erase(s.begin(), std::find_if(s.begin(), s.end(), is_not_space()));
+        return s;
     }
 
     static inline std::string &TrimStringRight(std::string &s) {
-	    s.erase(std::find_if(s.rbegin(), s.rend(), is_not_space()).base(), s.end());
-	    return s;
+        s.erase(std::find_if(s.rbegin(), s.rend(), is_not_space()).base(), s.end());
+        return s;
     }
 
     static inline std::string &TrimString(std::string &s) {
-	    return TrimStringLeft(TrimStringRight(s));
+        return TrimStringLeft(TrimStringRight(s));
     }
 };

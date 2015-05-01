@@ -121,6 +121,6 @@ namespace SampSharp.GameMode.Definitions
         /// <summary>
         ///     Controll back key. (Default: H)
         /// </summary>
-        CtrlBack = 262144,
+        CtrlBack = 262144
     }
 }

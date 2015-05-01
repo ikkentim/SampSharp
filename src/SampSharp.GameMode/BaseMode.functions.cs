@@ -163,7 +163,6 @@ namespace SampSharp.GameMode
             return AddPlayerClass(modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo, Weapon.None, 0);
         }
 
-
         /// <summary>
         ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
         /// </summary>
@@ -180,7 +179,6 @@ namespace SampSharp.GameMode
         {
             return AddPlayerClass(modelid, position, zAngle, weapon, weaponAmmo, Weapon.None, 0, Weapon.None, 0);
         }
-
 
         /// <summary>
         ///     Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.

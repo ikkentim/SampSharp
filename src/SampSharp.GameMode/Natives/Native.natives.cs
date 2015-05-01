@@ -28,7 +28,7 @@ namespace SampSharp.GameMode.Natives
         private static extern int CallNativeArray(string name, string format, object[] args, int[] sizes);
 
         /// <summary>
-        /// Checks whether a native with the specified <paramref name="name"/> exists. 
+        ///     Checks whether a native with the specified <paramref name="name" /> exists.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns>True if a native with the specified name exists; False otherwise.</returns>
@@ -100,21 +100,21 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
-        /// Registers an extension to the plugin.
+        ///     Registers an extension to the plugin.
         /// </summary>
         /// <param name="extension">The extension to register.</param>
         /// <returns>
-        /// True on success, False otherwise.
+        ///     True on success, False otherwise.
         /// </returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool RegisterExtension(object extension);
 
         /// <summary>
-        /// Call a native.
+        ///     Call a native.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
         /// <returns>
-        /// The returned integer.
+        ///     The returned integer.
         /// </returns>
         public static int CallNative(string name)
         {
@@ -122,11 +122,11 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
-        /// Call a native with the given arguments.
+        ///     Call a native with the given arguments.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
         /// <returns>
-        /// The returned integer.
+        ///     The returned integer.
         /// </returns>
         public static int CallNative(string name, __arglist)
         {
@@ -138,12 +138,12 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
-        /// Call a native with the given arguments.
+        ///     Call a native with the given arguments.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
         /// <param name="lengths">The lengths of arrays and referenced strings.</param>
         /// <returns>
-        /// The returned integer.
+        ///     The returned integer.
         /// </returns>
         public static int CallNative(string name, int[] lengths, __arglist)
         {
@@ -155,11 +155,11 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
-        /// Call a native.
+        ///     Call a native.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
         /// <returns>
-        /// The returned boolean.
+        ///     The returned boolean.
         /// </returns>
         public static bool CallNativeAsBool(string name)
         {
@@ -167,11 +167,11 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
-        /// Call a native with the given arguments.
+        ///     Call a native with the given arguments.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
         /// <returns>
-        /// The returned boolean.
+        ///     The returned boolean.
         /// </returns>
         public static bool CallNativeAsBool(string name, __arglist)
         {
@@ -183,12 +183,12 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
-        /// Call a native with the given arguments.
+        ///     Call a native with the given arguments.
         /// </summary>
         /// <param name="name">The name of the native to call.</param>
         /// <param name="lengths">The lengths of arrays and referenced strings.</param>
         /// <returns>
-        /// The returned boolean.
+        ///     The returned boolean.
         /// </returns>
         public static bool CallNativeAsBool(string name, int[] lengths, __arglist)
         {

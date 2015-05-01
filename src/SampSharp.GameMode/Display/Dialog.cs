@@ -27,6 +27,18 @@ namespace SampSharp.GameMode.Display
     /// </summary>
     public class Dialog
     {
+        #region Events
+
+        /// <summary>
+        ///     Occurs when the <see cref="BaseMode.OnDialogResponse(GtaPlayer,DialogResponseEventArgs)" /> is being called.
+        ///     This callback is called when a player responds to a dialog by either clicking a button, pressing ENTER/ESC or
+        ///     double-clicking a list item (if using a <see cref="DialogStyle.List" />).
+        ///     This callback is called when a player connects to the server.
+        /// </summary>
+        public event EventHandler<DialogResponseEventArgs> Response;
+
+        #endregion
+
         #region Fields
 
         /// <summary>
@@ -159,18 +171,6 @@ namespace SampSharp.GameMode.Display
         ///     The text on the right button. Leave it blank to hide it.
         /// </summary>
         public string Button2 { get; set; }
-
-        #endregion
-
-        #region Events
-
-        /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnDialogResponse(GtaPlayer,DialogResponseEventArgs)" /> is being called.
-        ///     This callback is called when a player responds to a dialog by either clicking a button, pressing ENTER/ESC or
-        ///     double-clicking a list item (if using a <see cref="DialogStyle.List" />).
-        ///     This callback is called when a player connects to the server.
-        /// </summary>
-        public event EventHandler<DialogResponseEventArgs> Response;
 
         #endregion
 
