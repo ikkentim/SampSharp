@@ -104,6 +104,7 @@
     <Compile Include="SAMP\PriorityKeyHandler.cs" />
     <Compile Include="SAMP\Server.cs" />
     <Compile Include="Tools\Sync.cs" />
+    <Compile Include="World\Actor.cs" />
     <Compile Include="World\Pickup.cs" />
     <Compile Include="World\VehicleModelInfo.cs" />
     <Compile Include="Definitions\VehicleCategory.cs" />
