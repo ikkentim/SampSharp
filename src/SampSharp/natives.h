@@ -1043,6 +1043,7 @@ void LoadNatives()
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GameTextForAll", (void *)p_GameTextForAll);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GameTextForPlayer", (void *)p_GameTextForPlayer);
 	mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetTickCount", (void *)sampgdk_GetTickCount);
+    mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetMaxPlayers", (void *)sampgdk_GetMaxPlayers);
     mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetPlayerPoolSize", (void *)sampgdk_GetPlayerPoolSize);
     mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetVehiclePoolSize", (void *)sampgdk_GetVehiclePoolSize);
     mono_add_internal_call("SampSharp.GameMode.Natives.Native::GetActorPoolSize", (void *)sampgdk_GetActorPoolSize);
