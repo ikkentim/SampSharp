@@ -75,7 +75,6 @@
     <Compile Include="Definitions\EnterExit.cs" />
     <Compile Include="Definitions\ObjectType.cs" />
     <Compile Include="Definitions\DisconnectReason.cs" />
-    <Compile Include="Definitions\ParameterValue.cs" />
     <Compile Include="Definitions\ShopName.cs" />
     <Compile Include="Definitions\TextDrawAlignment.cs" />
     <Compile Include="Definitions\VehicleModelType.cs" />

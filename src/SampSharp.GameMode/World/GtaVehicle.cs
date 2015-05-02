@@ -778,8 +778,9 @@ namespace SampSharp.GameMode.World
         /// <param name="bonnet">Get the bonnet/hood status. If on it is open.</param>
         /// <param name="boot">Get the boot/trunk status. If on it is open.</param>
         /// <param name="objective">Get the objective status. If on the objective is on.</param>
-        public virtual void GetParameters(out ParameterValue engine, out ParameterValue lights, out ParameterValue alarm,
-            out ParameterValue doors, out ParameterValue bonnet, out ParameterValue boot, out ParameterValue objective)
+        public virtual void GetParameters(out VehicleParameterValue engine, out VehicleParameterValue lights,
+            out VehicleParameterValue alarm, out VehicleParameterValue doors, out VehicleParameterValue bonnet,
+            out VehicleParameterValue boot, out VehicleParameterValue objective)
         {
             AssertNotDisposed();
 
@@ -787,13 +788,13 @@ namespace SampSharp.GameMode.World
             Native.GetVehicleParamsEx(Id, out tmpEngine, out tmpLights, out tmpAlarm, out tmpDoors, out tmpBonnet,
                 out tmpBoot, out tmpObjective);
 
-            engine = (ParameterValue) tmpEngine;
-            lights = (ParameterValue) tmpLights;
-            alarm = (ParameterValue) tmpAlarm;
-            doors = (ParameterValue) tmpDoors;
-            bonnet = (ParameterValue) tmpBonnet;
-            boot = (ParameterValue) tmpBoot;
-            objective = (ParameterValue) tmpObjective;
+            engine = (VehicleParameterValue)tmpEngine;
+            lights = (VehicleParameterValue)tmpLights;
+            alarm = (VehicleParameterValue)tmpAlarm;
+            doors = (VehicleParameterValue)tmpDoors;
+            bonnet = (VehicleParameterValue)tmpBonnet;
+            boot = (VehicleParameterValue)tmpBoot;
+            objective = (VehicleParameterValue)tmpObjective;
         }
 
         /// <summary>
@@ -809,17 +810,17 @@ namespace SampSharp.GameMode.World
         public virtual void GetParameters(out bool engine, out bool lights, out bool alarm,
             out bool doors, out bool bonnet, out bool boot, out bool objective)
         {
-            ParameterValue tmpEngine, tmpLights, tmpAlarm, tmpDoors, tmpBonnet, tmpBoot, tmpObjective;
+            VehicleParameterValue tmpEngine, tmpLights, tmpAlarm, tmpDoors, tmpBonnet, tmpBoot, tmpObjective;
             GetParameters(out tmpEngine, out tmpLights, out tmpAlarm, out tmpDoors, out tmpBonnet, out tmpBoot,
                 out tmpObjective);
 
-            engine = tmpEngine == ParameterValue.On;
-            lights = tmpLights == ParameterValue.On;
-            alarm = tmpAlarm == ParameterValue.On;
-            doors = tmpDoors == ParameterValue.On;
-            bonnet = tmpBonnet == ParameterValue.On;
-            boot = tmpBoot == ParameterValue.On;
-            objective = tmpObjective == ParameterValue.On;
+            engine = tmpEngine == VehicleParameterValue.On;
+            lights = tmpLights == VehicleParameterValue.On;
+            alarm = tmpAlarm == VehicleParameterValue.On;
+            doors = tmpDoors == VehicleParameterValue.On;
+            bonnet = tmpBonnet == VehicleParameterValue.On;
+            boot = tmpBoot == VehicleParameterValue.On;
+            objective = tmpObjective == VehicleParameterValue.On;
         }
 
         /// <summary>
@@ -843,18 +844,18 @@ namespace SampSharp.GameMode.World
         /// <param name="passenger">if on the passenger side door is open.</param>
         /// <param name="backleft">if on the backleft door is open.</param>
         /// <param name="backright">if on the backright door is open.</param>
-        public virtual void GetDoorsParameters(out ParameterValue driver, out ParameterValue passenger,
-            out ParameterValue backleft, out ParameterValue backright)
+        public virtual void GetDoorsParameters(out VehicleParameterValue driver, out VehicleParameterValue passenger,
+            out VehicleParameterValue backleft, out VehicleParameterValue backright)
         {
             AssertNotDisposed();
 
             int tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
             Native.GetVehicleParamsCarDoors(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
 
-            driver = (ParameterValue) tmpDriver;
-            passenger = (ParameterValue) tmpPassenger;
-            backleft = (ParameterValue) tmpBackleft;
-            backright = (ParameterValue) tmpBackright;
+            driver = (VehicleParameterValue)tmpDriver;
+            passenger = (VehicleParameterValue)tmpPassenger;
+            backleft = (VehicleParameterValue)tmpBackleft;
+            backright = (VehicleParameterValue)tmpBackright;
         }
 
         /// <summary>
@@ -869,13 +870,13 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            ParameterValue tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
+            VehicleParameterValue tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
             GetDoorsParameters(out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
 
-            driver = tmpDriver == ParameterValue.On;
-            passenger = tmpPassenger == ParameterValue.On;
-            backleft = tmpBackleft == ParameterValue.On;
-            backright = tmpBackright == ParameterValue.On;
+            driver = tmpDriver == VehicleParameterValue.On;
+            passenger = tmpPassenger == VehicleParameterValue.On;
+            backleft = tmpBackleft == VehicleParameterValue.On;
+            backright = tmpBackright == VehicleParameterValue.On;
         }
 
         /// <summary>
@@ -899,18 +900,18 @@ namespace SampSharp.GameMode.World
         /// <param name="passenger">if on the passenger side window is closed.</param>
         /// <param name="backleft">if on the backleft window is closed.</param>
         /// <param name="backright">if on the backright window is closed.</param>
-        public virtual void GetWindowsParameters(out ParameterValue driver, out ParameterValue passenger,
-            out ParameterValue backleft, out ParameterValue backright)
+        public virtual void GetWindowsParameters(out VehicleParameterValue driver, out VehicleParameterValue passenger,
+            out VehicleParameterValue backleft, out VehicleParameterValue backright)
         {
             AssertNotDisposed();
 
             int tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
             Native.GetVehicleParamsCarWindows(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
 
-            driver = (ParameterValue) tmpDriver;
-            passenger = (ParameterValue) tmpPassenger;
-            backleft = (ParameterValue) tmpBackleft;
-            backright = (ParameterValue) tmpBackright;
+            driver = (VehicleParameterValue)tmpDriver;
+            passenger = (VehicleParameterValue)tmpPassenger;
+            backleft = (VehicleParameterValue)tmpBackleft;
+            backright = (VehicleParameterValue)tmpBackright;
         }
 
         /// <summary>
@@ -925,13 +926,13 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            ParameterValue tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
+            VehicleParameterValue tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
             GetWindowsParameters(out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
 
-            driver = tmpDriver != ParameterValue.Off; // unset is most commonly also closed
-            passenger = tmpPassenger != ParameterValue.Off;
-            backleft = tmpBackleft != ParameterValue.Off;
-            backright = tmpBackright != ParameterValue.Off;
+            driver = tmpDriver != VehicleParameterValue.Off; // unset is most commonly also closed
+            passenger = tmpPassenger != VehicleParameterValue.Off;
+            backleft = tmpBackleft != VehicleParameterValue.Off;
+            backright = tmpBackright != VehicleParameterValue.Off;
         }
 
         /// <summary>
