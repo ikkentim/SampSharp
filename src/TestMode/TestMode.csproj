@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="GameMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\ActorTest.cs" />
     <Compile Include="Tests\ASyncTest.cs" />
     <Compile Include="Tests\CharsetTest.cs" />
     <Compile Include="Tests\CommandsTest.cs" />

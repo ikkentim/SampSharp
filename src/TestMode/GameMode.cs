@@ -41,7 +41,8 @@ namespace TestMode
             new MapAndreasTest(),
             new KeyHandlerTest(),
             new ExtensionTest(),
-            new ParamsTest()
+            new ParamsTest(),
+            new ActorTest()
         };
 
         protected override void OnInitialized(EventArgs args)

@@ -1077,7 +1077,7 @@ namespace SampSharp.GameMode
         protected void OnVehicleSirenStateChange(GtaVehicle vehicle, SirenStateEventArgs e)
         {
             if (VehicleSirenStateChange != null)
-                VehicleSirenStateChange(this, e);
+                VehicleSirenStateChange(vehicle, e);
         }
 
         /// <summary>
@@ -1088,7 +1088,7 @@ namespace SampSharp.GameMode
         protected void OnActorStreamIn(Actor actor, PlayerEventArgs e)
         {
             if (ActorStreamIn != null)
-                ActorStreamIn(this, e);
+                ActorStreamIn(actor, e);
         }
 
         /// <summary>
@@ -1099,7 +1099,7 @@ namespace SampSharp.GameMode
         protected void OnActorStreamOut(Actor actor, PlayerEventArgs e)
         {
             if (ActorStreamOut != null)
-                ActorStreamOut(this, e);
+                ActorStreamOut(actor, e);
         }
 
         /// <summary>
