@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <!-- The configuration and platform will be used to determine which assemblies to include from solution and
+				 project documentation sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{583d34c5-10c3-4687-9612-96c673e19173}</ProjectGuid>
+    <SHFBSchemaVersion>1.9.9.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual Studio adds them anyway -->
+    <AssemblyName>Documentation</AssemblyName>
+    <RootNamespace>Documentation</RootNamespace>
+    <Name>Documentation</Name>
+    <!-- SHFB properties -->
+    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
+    <OutputPath>.\Help\</OutputPath>
+    <HtmlHelpName>Documentation</HtmlHelpName>
+    <Language>en-US</Language>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <HelpFileFormat>Website</HelpFileFormat>
+    <IndentHtml>False</IndentHtml>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <CleanIntermediates>True</CleanIntermediates>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="bin\SampSharp.GameMode.dll" />
+<DocumentationSource sourceFile="bin\SampSharp.GameMode.XML" /></DocumentationSources>
+    <MaximumGroupParts>2</MaximumGroupParts>
+    <NamespaceGrouping>False</NamespaceGrouping>
+    <SyntaxFilters>C#, Visual Basic</SyntaxFilters>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <PresentationStyle>VS2013</PresentationStyle>
+    <Preliminary>False</Preliminary>
+    <NamingMethod>Guid</NamingMethod>
+    <HelpTitle>SampSharp.GameMode library</HelpTitle>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="(global)" isDocumented="True" xmlns="" />
+      <NamespaceSummaryItem name="SampSharp.GameMode" isDocumented="True" xmlns="">Contains the whole API/scripting wrapper.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SampSharp.GameMode.Controllers" isDocumented="True" xmlns="">Contains all basic controllers.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SampSharp.GameMode.Definitions" isDocumented="True" xmlns="">Contains all definitions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SampSharp.GameMode.Display" isDocumented="True" xmlns="">Contains classes that can draw things on the client's display.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SampSharp.GameMode.Events" isDocumented="True" xmlns="">Contains all default EventArgs.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SampSharp.GameMode.Helpers" isDocumented="True" xmlns="">Contains helper classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SampSharp.GameMode.Natives" isDocumented="True" xmlns="">Contains all external functions to the SA-MP natives and API functions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SampSharp.GameMode.Pools" isDocumented="True" xmlns="">Contains pooling classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SampSharp.GameMode.SAMP" isDocumented="True" xmlns="">Contains classes related to the SA-MP server.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SampSharp.GameMode.SAMP.Commands" isDocumented="True" xmlns="">Contains classes related to the command mechanism.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SampSharp.GameMode.Tools" isDocumented="True" xmlns="">Contains helper methods related to SA-MP.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SampSharp.GameMode.World" isDocumented="True" xmlns="">Contains classes of things that are visible within the GTA-SA world.</NamespaceSummaryItem>
+    </NamespaceSummaries>
+    <ProjectSummary>Contains the whole API/scripting wrapper.</ProjectSummary>
+    <BuildLogFile />
+    <HtmlHelp1xCompilerPath />
+    <HtmlHelp2xCompilerPath />
+    <WorkingPath />
+    <ComponentPath />
+  </PropertyGroup>
+  <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
+			 the build.  The others are optional common platform types that may appear. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
+  </PropertyGroup>
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+</Project>

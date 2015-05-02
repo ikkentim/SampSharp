@@ -198,3 +198,6 @@ FakesAssemblies/
 # Make files
 Makefile
 *.make
+
+# Sandcastle build files
+/Help
