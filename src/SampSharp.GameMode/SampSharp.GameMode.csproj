@@ -134,7 +134,7 @@
     <Compile Include="Definitions\SpectateMode.cs" />
     <Compile Include="Definitions\TextDrawFont.cs" />
     <Compile Include="Definitions\VehicleModelInfoType.cs" />
-    <Compile Include="Definitions\VehicleParams.cs" />
+    <Compile Include="Definitions\VehicleParameterValue.cs" />
     <Compile Include="Definitions\Weapon.cs" />
     <Compile Include="Definitions\WeaponSkill.cs" />
     <Compile Include="Definitions\WeaponState.cs" />
