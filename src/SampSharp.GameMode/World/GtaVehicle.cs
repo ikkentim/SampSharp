@@ -624,15 +624,16 @@ namespace SampSharp.GameMode.World
         ///     The delay until the car is respawned without a driver in seconds. Using -1 will prevent the
         ///     vehicle from respawning.
         /// </param>
+        /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
         /// <returns> The <see cref="GtaVehicle" /> created.</returns>
         public static GtaVehicle Create(int vehicletype, Vector position, float rotation, int color1, int color2,
-            int respawnDelay = -1)
+            int respawnDelay = -1, bool addAlarm = false)
         {
             int id = new[] {449, 537, 538, 569, 570, 590}.Contains(vehicletype)
                 ? Native.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
-                    respawnDelay)
+                    respawnDelay, addAlarm)
                 : Native.CreateVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
-                    respawnDelay);
+                    respawnDelay, addAlarm);
 
             return id == InvalidId ? null : FindOrCreate(id);
         }
@@ -649,12 +650,13 @@ namespace SampSharp.GameMode.World
         ///     The delay until the car is respawned without a driver in seconds. Using -1 will prevent the
         ///     vehicle from respawning.
         /// </param>
+        /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
         /// <returns> The <see cref="GtaVehicle" /> created.</returns>
         public static GtaVehicle Create(VehicleModelType vehicletype, Vector position, float rotation, int color1,
             int color2,
-            int respawnDelay = -1)
+            int respawnDelay = -1, bool addAlarm = false)
         {
-            return Create((int) vehicletype, position, rotation, color1, color2, respawnDelay);
+            return Create((int) vehicletype, position, rotation, color1, color2, respawnDelay, addAlarm);
         }
 
         /// <summary>
@@ -669,12 +671,13 @@ namespace SampSharp.GameMode.World
         ///     The delay until the car is respawned without a driver in seconds. Using -1 will prevent the
         ///     vehicle from respawning.
         /// </param>
+        /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
         /// <returns> The <see cref="GtaVehicle" /> created.</returns>
         public static GtaVehicle CreateStatic(int vehicletype, Vector position, float rotation, int color1, int color2,
-            int respawnDelay)
+            int respawnDelay, bool addAlarm = false)
         {
             int id = Native.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
-                respawnDelay);
+                respawnDelay, addAlarm);
 
             return id == InvalidId ? null : FindOrCreate(id);
         }
