@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,6 +15,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
@@ -77,28 +79,14 @@ namespace SampSharp.GameMode.Display
         ///     characters before it starts to cut off.
         /// </param>
         /// <param name="message">The text to display in the main dialog. Use \n to start a new line and \t to tabulate.</param>
-        /// <param name="button">The text on the left button.</param>
-        public Dialog(DialogStyle style, string caption, string message, string button)
-        {
-            Style = style;
-            Caption = caption;
-            Message = message;
-            Button1 = button;
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the Dialog class.
-        /// </summary>
-        /// <param name="style">The style of the dialog.</param>
-        /// <param name="caption">
-        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
-        ///     characters before it starts to cut off.
-        /// </param>
-        /// <param name="message">The text to display in the main dialog. Use \n to start a new line and \t to tabulate.</param>
         /// <param name="button1">The text on the left button.</param>
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-        public Dialog(DialogStyle style, string caption, string message, string button1, string button2)
+        public Dialog(DialogStyle style, string caption, string message, string button1, string button2 = null)
         {
+            if (caption == null) throw new ArgumentNullException("caption");
+            if (message == null) throw new ArgumentNullException("message");
+            if (button1 == null) throw new ArgumentNullException("button1");
+
             Style = style;
             Caption = caption;
             Message = message;
@@ -107,41 +95,151 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Initializes a new instance of the Dialog class with the <see cref="DialogStyle.List" />.
+        ///     Initializes a new instance of the Dialog class with the <see cref="DialogStyle.List" /> with a list style.
         /// </summary>
         /// <param name="caption">
         ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
         ///     characters before it starts to cut off.
         /// </param>
-        /// <param name="lines">The lines to display in the list dialog.</param>
-        /// <param name="button">The text on the button.</param>
-        public Dialog(string caption, string[] lines, string button)
-        {
-            Style = DialogStyle.List;
-            Caption = caption;
-            Message = string.Join("\n", lines);
-            Button1 = button;
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the Dialog class with the <see cref="DialogStyle.List" />.
-        /// </summary>
-        /// <param name="caption">
-        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
-        ///     characters before it starts to cut off.
-        /// </param>
-        /// <param name="lines">The lines to display in the list dialog.</param>
+        /// <param name="listItems">The items to display in the list dialog.</param>
         /// <param name="button1">The text on the left button.</param>
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-        public Dialog(string caption, string[] lines, string button1, string button2)
+        public Dialog(string caption, IEnumerable<string> listItems, string button1, string button2 = null)
         {
+            if (caption == null) throw new ArgumentNullException("caption");
+            if (listItems == null) throw new ArgumentNullException("message");
+            if (button1 == null) throw new ArgumentNullException("button1");
+
             Style = DialogStyle.List;
             Caption = caption;
-            Message = string.Join("\n", lines);
+            Message = string.Join("\n", listItems.Select(i => i ?? string.Empty));
             Button1 = button1;
             Button2 = button2;
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the Dialog class with the <see cref="DialogStyle.List" /> with a tablist style.
+        /// </summary>
+        /// <param name="caption">
+        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
+        ///     characters before it starts to cut off.
+        /// </param>
+        /// <param name="listItems">The items to display in the list dialog.</param>
+        /// <param name="button1">The text on the left button.</param>
+        /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
+        public Dialog(string caption, IEnumerable<IEnumerable<string>> listItems, string button1, string button2 = null)
+        {
+            if (caption == null) throw new ArgumentNullException("caption");
+            if (listItems == null) throw new ArgumentNullException("message");
+            if (button1 == null) throw new ArgumentNullException("button1");
+
+            if (listItems.Any(i => i != null && i.Count() > 4))
+                throw new ArgumentException("Can not display more than 4 columns in dialog");
+
+            Style = DialogStyle.Tablist;
+            Caption = caption;
+            Message = string.Join("\n",
+                listItems.Select(i => i == null ? string.Empty : string.Join("\t", i.Select(j => j ?? string.Empty))));
+            Button1 = button1;
+            Button2 = button2;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the Dialog class with the <see cref="DialogStyle.List" /> with a tablist style.
+        /// </summary>
+        /// <param name="caption">
+        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
+        ///     characters before it starts to cut off.
+        /// </param>
+        /// <param name="listItems">The items to display in the list dialog.</param>
+        /// <param name="button1">The text on the left button.</param>
+        /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
+        public Dialog(string caption, string[,] listItems, string button1, string button2 = null)
+        {
+            if (caption == null) throw new ArgumentNullException("caption");
+            if (listItems == null) throw new ArgumentNullException("message");
+            if (button1 == null) throw new ArgumentNullException("button1");
+
+            Style = DialogStyle.Tablist;
+            Caption = caption;
+            Message = string.Empty;
+            for (var x = 0; x < listItems.GetLength(0); x += 1)
+            {
+                var length = listItems.GetLength(1);
+                if (length > 4) throw new ArgumentException("Can not display more than 4 columns in dialog");
+                Message +=
+                    string.Join("\t",
+                        Enumerable.Range(0, length).Select(y => listItems[x, y] ?? string.Empty)) + "\n";
+            }
+            Button1 = button1;
+            Button2 = button2;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the Dialog class with the <see cref="DialogStyle.List" /> with a tablist style with headers.
+        /// </summary>
+        /// <param name="caption">
+        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
+        ///     characters before it starts to cut off.
+        /// </param>
+        /// <param name="header">The column headers.</param>
+        /// <param name="listItems">The items to display in the list dialog.</param>
+        /// <param name="button1">The text on the left button.</param>
+        /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
+        public Dialog(string caption, IEnumerable<string> header, IEnumerable<IEnumerable<string>> listItems, string button1, string button2 = null)
+        {
+            if (caption == null) throw new ArgumentNullException("caption");
+            if (header == null) throw new ArgumentNullException("header");
+            if (listItems == null) throw new ArgumentNullException("message");
+            if (button1 == null) throw new ArgumentNullException("button1");
+
+            if (listItems.Any(i => i != null && i.Count() > 4))
+                throw new ArgumentException("Can not display more than 4 columns in dialog");
+
+            Style = DialogStyle.TablistHeaders;
+            Caption = caption;
+            Message = string.Join("\t", header.Select(i => i ?? string.Empty)) + "\n" +
+                      string.Join("\n",
+                          listItems.Select(
+                              i => i == null ? string.Empty : string.Join("\t", i.Select(j => j ?? string.Empty))));
+            Button1 = button1;
+            Button2 = button2;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the Dialog class with the <see cref="DialogStyle.List" /> with a tablist style with headers.
+        /// </summary>
+        /// <param name="caption">
+        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
+        ///     characters before it starts to cut off.
+        /// </param>
+        /// <param name="header">The column headers.</param>
+        /// <param name="listItems">The items to display in the list dialog.</param>
+        /// <param name="button1">The text on the left button.</param>
+        /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
+        public Dialog(string caption, string[] header, string[,] listItems, string button1, string button2 = null)
+        {
+            if (caption == null) throw new ArgumentNullException("caption");
+            if (header == null) throw new ArgumentNullException("header");
+            if (listItems == null) throw new ArgumentNullException("message");
+            if (button1 == null) throw new ArgumentNullException("button1");
+
+            Style = DialogStyle.TablistHeaders;
+            Caption = caption;
+            Message = string.Join("\t", header.Select(i => i ?? string.Empty)) + "\n";
+
+            for (var x = 0; x < listItems.GetLength(0); x += 1)
+            {
+                int length = listItems.GetLength(1);
+                if (length > 4) throw new ArgumentException("Can not display more than 4 columns in dialog");
+                Message +=
+                    string.Join("\t",
+                        Enumerable.Range(0, length).Select(y => listItems[x, y] ?? string.Empty)) + "\n";
+            }
+
+            Button1 = button1;
+            Button2 = button2;
+        }
         #endregion
 
         #region Properties
