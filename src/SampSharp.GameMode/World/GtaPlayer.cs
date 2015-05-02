@@ -798,7 +798,7 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="OnTakeDamage" /> is being called.
         ///     This callback is called when a player takes damage.
         /// </summary>
-        public event EventHandler<DamagePlayerEventArgs> TakeDamage;
+        public event EventHandler<DamageEventArgs> TakeDamage;
 
         /// <summary>
         ///     Occurs when the <see cref="OnGiveDamage" /> is being called.
@@ -816,7 +816,7 @@ namespace SampSharp.GameMode.World
         ///     normally does this. GiveDamage provides some extra information which may be useful when you require a different
         ///     level of trust.
         /// </remarks>
-        public event EventHandler<DamagePlayerEventArgs> GiveDamage;
+        public event EventHandler<DamageEventArgs> GiveDamage;
 
         /// <summary>
         ///     Occurs when the <see cref="OnClickMap" /> is being called.
@@ -2432,8 +2432,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="TakeDamage" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="DamagePlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnTakeDamage(DamagePlayerEventArgs e)
+        /// <param name="e">An <see cref="DamageEventArgs" /> that contains the event data. </param>
+        public virtual void OnTakeDamage(DamageEventArgs e)
         {
             if (TakeDamage != null)
                 TakeDamage(this, e);
@@ -2442,8 +2442,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="GiveDamage" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="DamagePlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnGiveDamage(DamagePlayerEventArgs e)
+        /// <param name="e">An <see cref="DamageEventArgs" /> that contains the event data. </param>
+        public virtual void OnGiveDamage(DamageEventArgs e)
         {
             if (GiveDamage != null)
                 GiveDamage(this, e);

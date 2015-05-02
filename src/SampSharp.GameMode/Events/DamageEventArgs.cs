@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,16 +23,16 @@ namespace SampSharp.GameMode.Events
     ///     Provides data for the <see cref="BaseMode.PlayerTakeDamage" />, <see cref="BaseMode.PlayerGiveDamage" />,
     ///     <see cref="GtaPlayer.TakeDamage" /> or <see cref="GtaPlayer.GiveDamage" /> event.
     /// </summary>
-    public class DamagePlayerEventArgs : EventArgs
+    public class DamageEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the DamagePlayerEventArgs class.
+        ///     Initializes a new instance of the DamageEventArgs class.
         /// </summary>
         /// <param name="otherPlayer">The other player.</param>
         /// <param name="amount">Amount of damage done.</param>
         /// <param name="weapon">Weapon used to damage another.</param>
         /// <param name="bodypart">BodyPart shot at.</param>
-        public DamagePlayerEventArgs(GtaPlayer otherPlayer, float amount, Weapon weapon, BodyPart bodypart)
+        public DamageEventArgs(GtaPlayer otherPlayer, float amount, Weapon weapon, BodyPart bodypart)
         {
             OtherPlayer = otherPlayer;
             Amount = amount;

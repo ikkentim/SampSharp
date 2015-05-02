@@ -83,6 +83,7 @@
     <Compile Include="Events\CancelableEventArgs.cs" />
     <Compile Include="Events\CommandTextEventArgs.cs" />
     <Compile Include="Events\RequestSpawnEventArgs.cs" />
+    <Compile Include="Events\SirenStateEventArgs.cs" />
     <Compile Include="Events\SpawnEventArgs.cs" />
     <Compile Include="Events\PlayerUpdateEventArgs.cs" />
     <Compile Include="Events\TrailerEventArgs.cs" />
@@ -143,7 +144,7 @@
     <Compile Include="Events\PositionEventArgs.cs" />
     <Compile Include="Events\ClickPlayerEventArgs.cs" />
     <Compile Include="Events\ClickTextDrawEventArgs.cs" />
-    <Compile Include="Events\DamagePlayerEventArgs.cs" />
+    <Compile Include="Events\DamageEventArgs.cs" />
     <Compile Include="Events\DeathEventArgs.cs" />
     <Compile Include="Events\DisconnectEventArgs.cs" />
     <Compile Include="Events\EditAttachedObjectEventArgs.cs" />

@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -323,13 +323,13 @@ namespace SampSharp.GameMode
         public event EventHandler<DialogResponseEventArgs> DialogResponse;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerTakeDamage(GtaPlayer,DamagePlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerTakeDamage(GtaPlayer,DamageEventArgs)" /> callback is being called.
         ///     This callback is called when a player takes damage.
         /// </summary>
-        public event EventHandler<DamagePlayerEventArgs> PlayerTakeDamage;
+        public event EventHandler<DamageEventArgs> PlayerTakeDamage;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerGiveDamage(GtaPlayer,DamagePlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerGiveDamage(GtaPlayer,DamageEventArgs)" /> callback is being called.
         ///     This callback is called when a player gives damage to another player.
         /// </summary>
         /// <remarks>
@@ -344,7 +344,7 @@ namespace SampSharp.GameMode
         ///     normally does this. GiveDamage provides some extra information which may be useful when you require a different
         ///     level of trust.
         /// </remarks>
-        public event EventHandler<DamagePlayerEventArgs> PlayerGiveDamage;
+        public event EventHandler<DamageEventArgs> PlayerGiveDamage;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerClickMap(GtaPlayer,PositionEventArgs)" /> callback is being called.
@@ -432,6 +432,30 @@ namespace SampSharp.GameMode
         ///     This callback is called when an IP address attempts a connection to the server.
         /// </summary>
         public event EventHandler<ConnectionEventArgs> IncomingConnection;
+
+        /// <summary>
+        ///     Occurs when the <see cref="OnPlayerGiveDamageActor(Actor,DamageEventArgs)" /> callback is being called.
+        ///     This callback is called when a player gives damage to an actor.
+        /// </summary>
+        public event EventHandler<DamageEventArgs> PlayerGiveDamageActor;
+
+        /// <summary>
+        ///     Occurs when the <see cref="OnVehicleSirenStateChange(GtaVehicle,SirenStateEventArgs)" /> callback is being called.
+        ///     This callback is called when a vehicle's siren is toggled.
+        /// </summary>
+        public event EventHandler<SirenStateEventArgs> VehicleSirenStateChange;
+
+        /// <summary>
+        ///     Occurs when the <see cref="OnActorStreamIn(Actor, PlayerEventArgs)" /> callback is being called.
+        ///     This callback is called when an actor is streamed in by a player's client.
+        /// </summary>
+        public event EventHandler<PlayerEventArgs> ActorStreamIn;
+
+        /// <summary>
+        ///     Occurs when the <see cref="OnActorStreamOut(Actor, PlayerEventArgs)" /> callback is being called.
+        ///     This callback is called when an actor is streamed out by a player's client.
+        /// </summary>
+        public event EventHandler<PlayerEventArgs> ActorStreamOut;
 
         /// <summary>
         ///     Occurs when the <see cref="OnTick(EventArgs)" /> callback is being called. This callback is called every
@@ -907,8 +931,8 @@ namespace SampSharp.GameMode
         ///     Raises the <see cref="PlayerTakeDamage" /> event.
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
-        /// <param name="e">An <see cref="DamagePlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerTakeDamage(GtaPlayer player, DamagePlayerEventArgs e)
+        /// <param name="e">An <see cref="DamageEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerTakeDamage(GtaPlayer player, DamageEventArgs e)
         {
             if (PlayerTakeDamage != null)
                 PlayerTakeDamage(player, e);
@@ -918,8 +942,8 @@ namespace SampSharp.GameMode
         ///     Raises the <see cref="PlayerGiveDamage" /> event.
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
-        /// <param name="e">An <see cref="DamagePlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerGiveDamage(GtaPlayer player, DamagePlayerEventArgs e)
+        /// <param name="e">An <see cref="DamageEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerGiveDamage(GtaPlayer player, DamageEventArgs e)
         {
             if (PlayerGiveDamage != null)
                 PlayerGiveDamage(player, e);
@@ -1043,6 +1067,50 @@ namespace SampSharp.GameMode
         {
             if (IncomingConnection != null)
                 IncomingConnection(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="VehicleSirenStateChange" /> event.
+        /// </summary>
+        /// <param name="vehicle">The vehicle.</param>
+        /// <param name="e">The <see cref="SirenStateEventArgs" /> instance containing the event data.</param>
+        protected void OnVehicleSirenStateChange(GtaVehicle vehicle, SirenStateEventArgs e)
+        {
+            if (VehicleSirenStateChange != null)
+                VehicleSirenStateChange(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="ActorStreamIn" /> event.
+        /// </summary>
+        /// <param name="actor">The actor.</param>
+        /// <param name="e">The <see cref="PlayerEventArgs" /> instance containing the event data.</param>
+        protected void OnActorStreamIn(Actor actor, PlayerEventArgs e)
+        {
+            if (ActorStreamIn != null)
+                ActorStreamIn(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="ActorStreamOut" /> event.
+        /// </summary>
+        /// <param name="actor">The actor.</param>
+        /// <param name="e">The <see cref="PlayerEventArgs" /> instance containing the event data.</param>
+        protected void OnActorStreamOut(Actor actor, PlayerEventArgs e)
+        {
+            if (ActorStreamOut != null)
+                ActorStreamOut(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="PlayerGiveDamageActor" /> event.
+        /// </summary>
+        /// <param name="actor">The actor.</param>
+        /// <param name="e">The <see cref="DamageEventArgs" /> instance containing the event data.</param>
+        protected void OnPlayerGiveDamageActor(Actor actor, DamageEventArgs e)
+        {
+            if (PlayerGiveDamageActor != null)
+                PlayerGiveDamageActor(actor, e);
         }
 
         /// <summary>

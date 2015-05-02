@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -364,7 +364,7 @@ namespace SampSharp.GameMode
         internal bool OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid, int bodypart)
         {
             OnPlayerTakeDamage(GtaPlayer.FindOrCreate(playerid),
-                new DamagePlayerEventArgs(issuerid == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(issuerid),
+                new DamageEventArgs(issuerid == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(issuerid),
                     amount, (Weapon) weaponid, (BodyPart) bodypart));
 
             return true;
@@ -373,7 +373,7 @@ namespace SampSharp.GameMode
         internal bool OnPlayerGiveDamage(int playerid, int damagedid, float amount, int weaponid, int bodypart)
         {
             OnPlayerGiveDamage(GtaPlayer.FindOrCreate(playerid),
-                new DamagePlayerEventArgs(damagedid == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(damagedid),
+                new DamageEventArgs(damagedid == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(damagedid),
                     amount, (Weapon) weaponid, (BodyPart) bodypart));
 
             return true;
@@ -487,6 +487,35 @@ namespace SampSharp.GameMode
         internal bool OnIncomingConnection(int playerid, string ipAddress, int port)
         {
             OnIncomingConnection(new ConnectionEventArgs(playerid, ipAddress, port));
+
+            return true;
+        }
+
+        internal bool OnVehicleSirenStateChange(int playerid, int vehicleid, bool newstate)
+        {
+            OnVehicleSirenStateChange(GtaVehicle.FindOrCreate(vehicleid),
+                new SirenStateEventArgs(GtaPlayer.FindOrCreate(playerid), newstate));
+            return true;
+        }
+
+        internal bool OnActorStreamIn(int actorid, int forplayerid)
+        {
+            OnActorStreamIn(Actor.FindOrCreate(actorid), new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
+
+            return true;
+        }
+
+        internal bool OnActorStreamOut(int actorid, int forplayerid)
+        {
+            OnActorStreamOut(Actor.FindOrCreate(actorid), new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
+
+            return true;
+        }
+
+        internal bool OnPlayerGiveDamageActor(int playerid, int damagedActorid, float amount, int weaponid, int bodypart)
+        {
+            OnPlayerGiveDamageActor(Actor.FindOrCreate(damagedActorid),
+                new DamageEventArgs(GtaPlayer.FindOrCreate(playerid), amount, (Weapon) weaponid, (BodyPart) bodypart));
 
             return true;
         }
