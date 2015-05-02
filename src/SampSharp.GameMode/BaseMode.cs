@@ -43,6 +43,8 @@ namespace SampSharp.GameMode
                     Console.WriteLine("Detected mono version: {0}", displayName.Invoke(null, null));
             }
 
+            Services = new ServiceContainer();
+
             RegisterControllers();
         }
 
@@ -55,6 +57,8 @@ namespace SampSharp.GameMode
         {
             get { return _controllers; }
         }
+
+        public virtual ServiceContainer Services { get; private set; }
 
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

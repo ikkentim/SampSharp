@@ -42,7 +42,8 @@ namespace TestMode
             new KeyHandlerTest(),
             new ExtensionTest(),
             new ParamsTest(),
-            new ActorTest()
+            new ActorTest(),
+            new ServicesTest()
         };
 
         protected override void OnInitialized(EventArgs args)

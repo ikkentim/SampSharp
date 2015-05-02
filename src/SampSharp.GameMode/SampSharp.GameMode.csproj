@@ -88,6 +88,7 @@
     <Compile Include="Events\SpawnEventArgs.cs" />
     <Compile Include="Events\PlayerUpdateEventArgs.cs" />
     <Compile Include="Events\TrailerEventArgs.cs" />
+    <Compile Include="IService.cs" />
     <Compile Include="Natives\Native.actor.cs">
       <DependentUpon>Native.cs</DependentUpon>
     </Compile>
@@ -105,6 +106,8 @@
     <Compile Include="SAMP\PrintTraceListener.cs" />
     <Compile Include="SAMP\PriorityKeyHandler.cs" />
     <Compile Include="SAMP\Server.cs" />
+    <Compile Include="Service.cs" />
+    <Compile Include="ServiceContainer.cs" />
     <Compile Include="Tools\Sync.cs" />
     <Compile Include="World\Actor.cs" />
     <Compile Include="World\Pickup.cs" />
