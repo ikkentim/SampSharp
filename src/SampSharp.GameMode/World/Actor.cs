@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,6 +15,7 @@
 
 using System;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 
@@ -170,6 +171,21 @@ namespace SampSharp.GameMode.World
         #endregion
 
         /// <summary>
+        ///     Occurs when this <see cref="Actor" /> is being streamed in for a player.
+        /// </summary>
+        public event EventHandler<PlayerEventArgs> StreamIn;
+
+        /// <summary>
+        ///     Occurs when this <see cref="Actor" /> is being streamed out for a player.
+        /// </summary>
+        public event EventHandler<PlayerEventArgs> StreamOut;
+
+        /// <summary>
+        /// Occurs when a player harms this <see cref="Actor"/>.
+        /// </summary>
+        public event EventHandler<DamageEventArgs> PlayerGiveDamage;
+
+        /// <summary>
         ///     Creates a new <see cref="Actor" />.
         /// </summary>
         /// <param name="modelid">The modelid.</param>
@@ -247,5 +263,35 @@ namespace SampSharp.GameMode.World
         }
 
         #endregion
+
+        /// <summary>
+        ///     Raises the <see cref="E:StreamIn" /> event.
+        /// </summary>
+        /// <param name="args">The <see cref="PlayerEventArgs" /> instance containing the event data.</param>
+        public void OnStreamIn(PlayerEventArgs args)
+        {
+            if (StreamIn != null)
+                StreamIn(this, args);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="E:StreamOut" /> event.
+        /// </summary>
+        /// <param name="args">The <see cref="PlayerEventArgs" /> instance containing the event data.</param>
+        public void OnStreamOut(PlayerEventArgs args)
+        {
+            if (StreamOut != null)
+                StreamOut(this, args);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:PlayerGiveDamage" /> event.
+        /// </summary>
+        /// <param name="args">The <see cref="DamageEventArgs"/> instance containing the event data.</param>
+        public void OnPlayerGiveDamage(DamageEventArgs args)
+        {
+            if (PlayerGiveDamage != null)
+                PlayerGiveDamage(this, args);
+        }
     }
 }

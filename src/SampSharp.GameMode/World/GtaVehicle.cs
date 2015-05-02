@@ -594,6 +594,12 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public event EventHandler<TrailerEventArgs> TrailerUpdate;
 
+        /// <summary>
+        ///     Occurs when the <see cref="OnSirenStateChanged" /> is being called.
+        ///     This callback is called when this <see cref="GtaVehicle" />'s siren is toggled.
+        /// </summary>
+        public event EventHandler<SirenStateEventArgs> SirenStateChanged;
+
         #endregion
 
         #region Vehicles natives
@@ -1232,9 +1238,17 @@ namespace SampSharp.GameMode.World
         public virtual void OnTrailerUpdate(TrailerEventArgs args)
         {
             if (TrailerUpdate != null)
-            {
                 TrailerUpdate(this, args);
-            }
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="SirenStateChanged" /> event.
+        /// </summary>
+        /// <param name="args">The <see cref="SirenStateEventArgs"/> instance containing the event data.</param>
+        public virtual void OnSirenStateChanged(SirenStateEventArgs args)
+        {
+            if (SirenStateChanged != null)
+                SirenStateChanged(this, args);
         }
 
         #endregion
@@ -1242,12 +1256,11 @@ namespace SampSharp.GameMode.World
         #region Methods
 
         /// <summary>
-        ///     Serves as a hash function for a particular type.
+        /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        ///     A hash code for the current <see cref="T:System.Object" />.
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
         /// </returns>
-        /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
         {
             return Id;
