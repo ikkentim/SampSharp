@@ -322,6 +322,14 @@ namespace SampSharp.GameMode.Display
             if (OpenDialogs.ContainsKey(player.Id))
                 OpenDialogs.Remove(player.Id);
 
+            if (asyncTasksCompletation.ContainsKey(player.Id))
+            {
+                var task = asyncTasksCompletation[player.Id];
+
+                task.SetCanceled();
+                asyncTasksCompletation.Remove(player.Id);
+            }
+
             Native.ShowPlayerDialog(player.Id, DialogHideId, (int) DialogStyle.MessageBox, string.Empty,
                 string.Empty, string.Empty, string.Empty);
         }
