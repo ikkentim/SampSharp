@@ -292,6 +292,10 @@ namespace SampSharp.GameMode.Display
                 Button2 ?? string.Empty);
         }
 
+        /// <summary>
+        ///     Shows the dialog box to a Player asynchronously.
+        /// </summary>
+        /// <param name="player">The Player to show the dialog to.</param>
         public virtual async Task<DialogResponseEventArgs> ShowAsync(GtaPlayer player)
         {
             Show(player);

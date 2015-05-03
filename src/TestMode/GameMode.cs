@@ -77,6 +77,9 @@ namespace TestMode
         protected override void OnRconCommand(RconEventArgs e)
         {
             Console.WriteLine("[RCON] {0}", e.Command);
+            GtaPlayer.SendClientMessageToAll("Rcon message: {0}", e.Command);
+
+            e.Success = false;
             base.OnRconCommand(e);
         }
 
