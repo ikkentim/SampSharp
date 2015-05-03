@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
@@ -67,7 +66,7 @@ namespace SampSharp.GameMode.Display
             get { return OpenDialogs.Values; }
         }
 
-        private static Dictionary<int, TaskCompletionSource<DialogResponseEventArgs>> asyncTasksCompletation = new Dictionary<int, TaskCompletionSource<DialogResponseEventArgs>>();
+        private readonly Dictionary<int, TaskCompletionSource<DialogResponseEventArgs>> _awaitedResponses = new Dictionary<int, TaskCompletionSource<DialogResponseEventArgs>>();
 
         #endregion
 
@@ -233,7 +232,7 @@ namespace SampSharp.GameMode.Display
 
             for (var x = 0; x < listItems.GetLength(0); x += 1)
             {
-                int length = listItems.GetLength(1);
+                var length = listItems.GetLength(1);
                 if (length > 4) throw new ArgumentException("Can not display more than 4 columns in dialog");
                 Message +=
                     string.Join("\t",
@@ -286,6 +285,9 @@ namespace SampSharp.GameMode.Display
             if (player == null)
                 throw new ArgumentNullException("player");
 
+            // Hide previously opened dialogs
+            Hide(player);
+
             OpenDialogs[player.Id] = this;
 
             Native.ShowPlayerDialog(player.Id, DialogId, (int) Style, Caption, Message, Button1,
@@ -301,7 +303,7 @@ namespace SampSharp.GameMode.Display
             Show(player);
 
             var taskControl = new TaskCompletionSource<DialogResponseEventArgs>();
-            asyncTasksCompletation[player.Id] = taskControl;
+            _awaitedResponses[player.Id] = taskControl;
 
             var response = await taskControl.Task;
             return response;
@@ -316,15 +318,18 @@ namespace SampSharp.GameMode.Display
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            if (OpenDialogs.ContainsKey(player.Id))
-                OpenDialogs.Remove(player.Id);
+            var openDialog = GetOpenDialog(player);
 
-            if (asyncTasksCompletation.ContainsKey(player.Id))
+            if (openDialog == null) return;
+
+            OpenDialogs.Remove(player.Id);
+
+            if (openDialog._awaitedResponses.ContainsKey(player.Id))
             {
-                var task = asyncTasksCompletation[player.Id];
+                var task = openDialog._awaitedResponses[player.Id];
 
                 task.SetCanceled();
-                asyncTasksCompletation.Remove(player.Id);
+                openDialog._awaitedResponses.Remove(player.Id);
             }
 
             Native.ShowPlayerDialog(player.Id, DialogHideId, (int) DialogStyle.MessageBox, string.Empty,
@@ -353,12 +358,12 @@ namespace SampSharp.GameMode.Display
             if (OpenDialogs.ContainsKey(e.Player.Id))
                 OpenDialogs.Remove(e.Player.Id);
 
-            if (asyncTasksCompletation.ContainsKey(e.Player.Id))
+            if (_awaitedResponses.ContainsKey(e.Player.Id))
             {
-                var task = asyncTasksCompletation[e.Player.Id];
+                var task = _awaitedResponses[e.Player.Id];
 
                 task.SetResult(e);
-                asyncTasksCompletation.Remove(e.Player.Id);
+                _awaitedResponses.Remove(e.Player.Id);
             }
 
             if (Response != null)
