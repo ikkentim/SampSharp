@@ -14,7 +14,9 @@
 // limitations under the License.
 
 using System;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
+using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
 namespace TestMode.Tests
@@ -23,12 +25,16 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            gameMode.PlayerConnected += (sender, args) =>
-            {
-                var dialog = new Dialog("Captions", new []
+
+        }
+
+        [Command("dialogcols")]
+        public static void DialogaCommand(GtaPlayer player)
+        {
+            var dialog = new Dialog("Captions", new[]
                 {
                     "Col1", "Col2", "Col3", "Col4"
-                }, new [,]
+                }, new[,]
                 {
                     {"11","12","13","14"},
                     {"21","22","23","24"},
@@ -37,10 +43,22 @@ namespace TestMode.Tests
                     {"51","52","53","54"},
                     {"61","62","63","64"},
                     {"71","72","73","74"}
-                }, "OK!");
+                }, "OK!", "Cancel");
 
-                dialog.Show(sender as GtaPlayer);
+            dialog.Show(player);
+
+            dialog.Response += (sender, args) =>
+            {
+                player.SendClientMessage("Response: " + args.DialogButton);
             };
+        }
+        [Command("dialogasync")]
+        public static async void DialogaAyncCommand(GtaPlayer player)
+        {
+            var dialog = new Dialog(DialogStyle.Input, "Hello", "Insert something", "Confirm", "NO");
+            var response = await dialog.ShowAsync(player);
+
+            player.SendClientMessage("Response: " + response.InputText);
         }
     }
 }

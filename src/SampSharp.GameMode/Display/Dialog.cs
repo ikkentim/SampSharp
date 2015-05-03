@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
@@ -65,6 +66,8 @@ namespace SampSharp.GameMode.Display
         {
             get { return OpenDialogs.Values; }
         }
+
+        private static Dictionary<int, TaskCompletionSource<DialogResponseEventArgs>> asyncTasksCompletation = new Dictionary<int, TaskCompletionSource<DialogResponseEventArgs>>();
 
         #endregion
 
@@ -290,6 +293,21 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
+        ///     Shows the dialog box to a Player asynchronously.
+        /// </summary>
+        /// <param name="player">The Player to show the dialog to.</param>
+        public virtual async Task<DialogResponseEventArgs> ShowAsync(GtaPlayer player)
+        {
+            Show(player);
+
+            var taskControl = new TaskCompletionSource<DialogResponseEventArgs>();
+            asyncTasksCompletation[player.Id] = taskControl;
+
+            var response = await taskControl.Task;
+            return response;
+        }
+
+        /// <summary>
         ///     Hides all dialogs for a Player.
         /// </summary>
         /// <param name="player">The Player to hide all dialogs from.</param>
@@ -300,6 +318,14 @@ namespace SampSharp.GameMode.Display
 
             if (OpenDialogs.ContainsKey(player.Id))
                 OpenDialogs.Remove(player.Id);
+
+            if (asyncTasksCompletation.ContainsKey(player.Id))
+            {
+                var task = asyncTasksCompletation[player.Id];
+
+                task.SetCanceled();
+                asyncTasksCompletation.Remove(player.Id);
+            }
 
             Native.ShowPlayerDialog(player.Id, DialogHideId, (int) DialogStyle.MessageBox, string.Empty,
                 string.Empty, string.Empty, string.Empty);
@@ -326,6 +352,14 @@ namespace SampSharp.GameMode.Display
         {
             if (OpenDialogs.ContainsKey(e.Player.Id))
                 OpenDialogs.Remove(e.Player.Id);
+
+            if (asyncTasksCompletation.ContainsKey(e.Player.Id))
+            {
+                var task = asyncTasksCompletation[e.Player.Id];
+
+                task.SetResult(e);
+                asyncTasksCompletation.Remove(e.Player.Id);
+            }
 
             if (Response != null)
                 Response(this, e);
