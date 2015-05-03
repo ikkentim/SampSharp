@@ -1,12 +1,12 @@
 // SampSharp
 // Copyright 2015 Tim Potze
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -88,11 +88,11 @@ void convertSymbols() {
     }
 }
 
-PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name, 
+PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     cell *params, cell *retval) {
     if (!GameMode::IsLoaded() && !strcmp(name, "OnGameModeInit")) {
         /* Load empty filterscript */
-        if (filterscript_loaded) {
+        if (!filterscript_loaded) {
             SendRconCommand("loadfs empty");
             filterscript_loaded = true;
         }
@@ -117,10 +117,10 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
 
         logprintf("Gamemode");
         logprintf("---------------");
-        logprintf("Loading gamemode: %s:%s", namespaceName.c_str(), 
+        logprintf("Loading gamemode: %s:%s", namespaceName.c_str(),
             className.c_str());
 
-        if(GameMode::Load(Config::GetGameModeNameSpace(), 
+        if(GameMode::Load(Config::GetGameModeNameSpace(),
             Config::GetGameModeClass()))
             logprintf("  Loaded.");
         else
@@ -136,7 +136,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
 
         logprintf("");
         logprintf("---------------");
-        logprintf("Unloading gamemode: %s:%s", namespaceName.c_str(), 
+        logprintf("Unloading gamemode: %s:%s", namespaceName.c_str(),
             className.c_str());
 
         GameMode::Unload();
