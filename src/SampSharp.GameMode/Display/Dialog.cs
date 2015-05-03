@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
@@ -65,6 +66,8 @@ namespace SampSharp.GameMode.Display
         {
             get { return OpenDialogs.Values; }
         }
+
+        private static Dictionary<int, TaskCompletionSource<DialogResponseEventArgs>> asyncTasksCompletation = new Dictionary<int, TaskCompletionSource<DialogResponseEventArgs>>();
 
         #endregion
 
@@ -289,6 +292,24 @@ namespace SampSharp.GameMode.Display
                 Button2 ?? string.Empty);
         }
 
+        public virtual async Task<DialogResponseEventArgs> ShowAsync(GtaPlayer player)
+        {
+            if (player == null)
+                throw new ArgumentNullException("player");
+
+            var taskControl = new TaskCompletionSource<DialogResponseEventArgs>();
+
+            OpenDialogs[player.Id] = this;
+            asyncTasksCompletation[player.Id] = taskControl;
+
+            Native.ShowPlayerDialog(player.Id, DialogId, (int)Style, Caption, Message, Button1,
+                Button2 ?? string.Empty);
+
+            var response = await taskControl.Task;
+
+            return response;
+        }
+
         /// <summary>
         ///     Hides all dialogs for a Player.
         /// </summary>
@@ -326,6 +347,14 @@ namespace SampSharp.GameMode.Display
         {
             if (OpenDialogs.ContainsKey(e.Player.Id))
                 OpenDialogs.Remove(e.Player.Id);
+
+            if (asyncTasksCompletation.ContainsKey(e.Player.Id))
+            {
+                var task = asyncTasksCompletation[e.Player.Id];
+
+                task.SetResult(e);
+                asyncTasksCompletation.Remove(e.Player.Id);
+            }
 
             if (Response != null)
                 Response(this, e);
