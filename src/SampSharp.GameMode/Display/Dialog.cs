@@ -294,6 +294,9 @@ namespace SampSharp.GameMode.Display
 
         public virtual async Task<DialogResponseEventArgs> ShowAsync(GtaPlayer player)
         {
+            if (player == null)
+                throw new ArgumentNullException("player");
+
             var taskControl = new TaskCompletionSource<DialogResponseEventArgs>();
             asyncTasksCompletation[player.Id] = taskControl;
 
