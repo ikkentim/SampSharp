@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.SAMP
         public override void Write(string message)
         {
             if (Sync.IsRequired)
-                Sync.Run(() => Native.Print(message));
+                Sync.RunAsync(() => Native.Print(message));
             else
                 Native.Print(message);
         }
