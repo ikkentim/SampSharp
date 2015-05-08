@@ -46,7 +46,7 @@ Some useful SA-MP# libraries:
 [my sa-mp profile]: http://forum.sa-mp.com/member.php?u=76946
 [sa-mp# topic on sa-mp]: http://forum.sa-mp.com/showthread.php?t=511686
 
-[nuget repository]: https://github.com/ikkentim/SampSharp/wiki/NuGet-repository
+[nuget repository]: http://sampsharp.timpotze.nl/NuGet-repository
 
 [GrandLarc]: https://github.com/ikkentim/SampSharp-grandlarc
 [RiverShell]: https://github.com/ikkentim/SampSharp-rivershell
@@ -54,5 +54,3 @@ Some useful SA-MP# libraries:
 [nhibernate]: http://nhibernate.info/
 
 [streamer]: https://github.com/ikkentim/SampSharp-streamer
-
-[![Analytics](https://ga-beacon.appspot.com/UA-58691640-2/SampSharp/readme?pixel)](https://github.com/igrigorik/ga-beacon)
