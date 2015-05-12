@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 //     http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
+using SampSharp.GameMode.Helpers;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 
@@ -46,6 +47,22 @@ namespace SampSharp.GameMode.World
         public GtaVehicle(int id)
         {
             Id = id;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///     Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        ///     A string that represents the current object.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override string ToString()
+        {
+            return string.Format("Vehicle(Id:{0}, Model: {1})", Id, Model);
         }
 
         #endregion
@@ -187,9 +204,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d, e, f, g;
+                VehicleParameterValue a, b, c, d, e, f, g;
                 GetParameters(out a, out b, out c, out d, out e, out f, out g);
-                SetParameters(value, b, c, d, e, f, g);
+                SetParameters(value ? VehicleParameterValue.On : VehicleParameterValue.Off, b, c, d, e, f, g);
             }
         }
 
@@ -206,9 +223,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d, e, f, g;
+                VehicleParameterValue a, b, c, d, e, f, g;
                 GetParameters(out a, out b, out c, out d, out e, out f, out g);
-                SetParameters(a, value, c, d, e, f, g);
+                SetParameters(a, value ? VehicleParameterValue.On : VehicleParameterValue.Off, c, d, e, f, g);
             }
         }
 
@@ -225,9 +242,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d, e, f, g;
+                VehicleParameterValue a, b, c, d, e, f, g;
                 GetParameters(out a, out b, out c, out d, out e, out f, out g);
-                SetParameters(a, b, value, d, e, f, g);
+                SetParameters(a, b, value ? VehicleParameterValue.On : VehicleParameterValue.Off, d, e, f, g);
             }
         }
 
@@ -244,9 +261,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d, e, f, g;
+                VehicleParameterValue a, b, c, d, e, f, g;
                 GetParameters(out a, out b, out c, out d, out e, out f, out g);
-                SetParameters(a, b, c, value, e, f, g);
+                SetParameters(a, b, c, value ? VehicleParameterValue.On : VehicleParameterValue.Off, e, f, g);
             }
         }
 
@@ -263,9 +280,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d, e, f, g;
+                VehicleParameterValue a, b, c, d, e, f, g;
                 GetParameters(out a, out b, out c, out d, out e, out f, out g);
-                SetParameters(a, b, c, d, value, f, g);
+                SetParameters(a, b, c, d, value ? VehicleParameterValue.On : VehicleParameterValue.Off, f, g);
             }
         }
 
@@ -282,9 +299,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d, e, f, g;
+                VehicleParameterValue a, b, c, d, e, f, g;
                 GetParameters(out a, out b, out c, out d, out e, out f, out g);
-                SetParameters(a, b, c, d, e, value, g);
+                SetParameters(a, b, c, d, e, value ? VehicleParameterValue.On : VehicleParameterValue.Off, g);
             }
         }
 
@@ -301,9 +318,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d, e, f, g;
+                VehicleParameterValue a, b, c, d, e, f, g;
                 GetParameters(out a, out b, out c, out d, out e, out f, out g);
-                SetParameters(a, b, c, d, e, f, value);
+                SetParameters(a, b, c, d, e, f, value ? VehicleParameterValue.On : VehicleParameterValue.Off);
             }
         }
 
@@ -320,9 +337,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d;
+                VehicleParameterValue a, b, c, d;
                 GetDoorsParameters(out a, out b, out c, out d);
-                SetDoorsParameters(value, b, c, d);
+                SetDoorsParameters(value ? VehicleParameterValue.On : VehicleParameterValue.Off, b, c, d);
             }
         }
 
@@ -339,9 +356,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d;
+                VehicleParameterValue a, b, c, d;
                 GetDoorsParameters(out a, out b, out c, out d);
-                SetDoorsParameters(a, value, c, d);
+                SetDoorsParameters(a, value ? VehicleParameterValue.On : VehicleParameterValue.Off, c, d);
             }
         }
 
@@ -358,9 +375,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d;
+                VehicleParameterValue a, b, c, d;
                 GetDoorsParameters(out a, out b, out c, out d);
-                SetDoorsParameters(a, b, value, d);
+                SetDoorsParameters(a, b, value ? VehicleParameterValue.On : VehicleParameterValue.Off, d);
             }
         }
 
@@ -377,9 +394,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d;
+                VehicleParameterValue a, b, c, d;
                 GetDoorsParameters(out a, out b, out c, out d);
-                SetDoorsParameters(a, b, c, value);
+                SetDoorsParameters(a, b, c, value ? VehicleParameterValue.On : VehicleParameterValue.Off);
             }
         }
 
@@ -396,9 +413,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d;
+                VehicleParameterValue a, b, c, d;
                 GetWindowsParameters(out a, out b, out c, out d);
-                SetWindowsParameters(value, b, c, d);
+                SetWindowsParameters(value ? VehicleParameterValue.On : VehicleParameterValue.Off, b, c, d);
             }
         }
 
@@ -415,9 +432,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d;
+                VehicleParameterValue a, b, c, d;
                 GetWindowsParameters(out a, out b, out c, out d);
-                SetWindowsParameters(a, value, c, d);
+                SetWindowsParameters(a, value ? VehicleParameterValue.On : VehicleParameterValue.Off, c, d);
             }
         }
 
@@ -434,9 +451,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d;
+                VehicleParameterValue a, b, c, d;
                 GetWindowsParameters(out a, out b, out c, out d);
-                SetWindowsParameters(a, b, value, d);
+                SetWindowsParameters(a, b, value ? VehicleParameterValue.On : VehicleParameterValue.Off, d);
             }
         }
 
@@ -453,9 +470,9 @@ namespace SampSharp.GameMode.World
             }
             set
             {
-                bool a, b, c, d;
+                VehicleParameterValue a, b, c, d;
                 GetWindowsParameters(out a, out b, out c, out d);
-                SetWindowsParameters(a, b, c, value);
+                SetWindowsParameters(a, b, c, value ? VehicleParameterValue.On : VehicleParameterValue.Off);
             }
         }
 
@@ -773,9 +790,30 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.SetVehicleParamsEx(Id, engine, lights, alarm, doors, bonnet, boot, objective);
+            Native.SetVehicleParamsEx(Id, engine ? 1 : 0, lights ? 1 : 0, alarm ? 1 : 0, doors ? 1 : 0, bonnet ? 1 : 0,
+                boot ? 1 : 0, objective ? 1 : 0);
         }
 
+        /// <summary>
+        ///     Sets this <see cref="GtaVehicle" />'s parameters for all players.
+        /// </summary>
+        /// <param name="engine">Toggle the engine status on or off.</param>
+        /// <param name="lights">Toggle the lights on or off.</param>
+        /// <param name="alarm">Toggle the vehicle alarm on or off.</param>
+        /// <param name="doors">Toggle the lock status of the doors.</param>
+        /// <param name="bonnet">Toggle the bonnet to be open or closed.</param>
+        /// <param name="boot">Toggle the boot to be open or closed.</param>
+        /// <param name="objective">Toggle the objective status for the vehicle on or off.</param>
+        public virtual void SetParameters(VehicleParameterValue engine, VehicleParameterValue lights,
+            VehicleParameterValue alarm, VehicleParameterValue doors, VehicleParameterValue bonnet,
+            VehicleParameterValue boot,
+            VehicleParameterValue objective)
+        {
+            AssertNotDisposed();
+
+            Native.SetVehicleParamsEx(Id, (int) engine, (int) lights, (int) alarm, (int) doors, (int) bonnet, (int) boot,
+                (int) objective);
+        }
 
         /// <summary>
         ///     Gets this <see cref="GtaVehicle" />'s parameters.
@@ -797,13 +835,13 @@ namespace SampSharp.GameMode.World
             Native.GetVehicleParamsEx(Id, out tmpEngine, out tmpLights, out tmpAlarm, out tmpDoors, out tmpBonnet,
                 out tmpBoot, out tmpObjective);
 
-            engine = (VehicleParameterValue)tmpEngine;
-            lights = (VehicleParameterValue)tmpLights;
-            alarm = (VehicleParameterValue)tmpAlarm;
-            doors = (VehicleParameterValue)tmpDoors;
-            bonnet = (VehicleParameterValue)tmpBonnet;
-            boot = (VehicleParameterValue)tmpBoot;
-            objective = (VehicleParameterValue)tmpObjective;
+            engine = (VehicleParameterValue) tmpEngine;
+            lights = (VehicleParameterValue) tmpLights;
+            alarm = (VehicleParameterValue) tmpAlarm;
+            doors = (VehicleParameterValue) tmpDoors;
+            bonnet = (VehicleParameterValue) tmpBonnet;
+            boot = (VehicleParameterValue) tmpBoot;
+            objective = (VehicleParameterValue) tmpObjective;
         }
 
         /// <summary>
@@ -823,13 +861,13 @@ namespace SampSharp.GameMode.World
             GetParameters(out tmpEngine, out tmpLights, out tmpAlarm, out tmpDoors, out tmpBonnet, out tmpBoot,
                 out tmpObjective);
 
-            engine = tmpEngine == VehicleParameterValue.On;
-            lights = tmpLights == VehicleParameterValue.On;
-            alarm = tmpAlarm == VehicleParameterValue.On;
-            doors = tmpDoors == VehicleParameterValue.On;
-            bonnet = tmpBonnet == VehicleParameterValue.On;
-            boot = tmpBoot == VehicleParameterValue.On;
-            objective = tmpObjective == VehicleParameterValue.On;
+            engine = tmpEngine.ToBool();
+            lights = tmpLights.ToBool();
+            alarm = tmpAlarm.ToBool();
+            doors = tmpDoors.ToBool();
+            bonnet = tmpBonnet.ToBool();
+            boot = tmpBoot.ToBool();
+            objective = tmpObjective.ToBool();
         }
 
         /// <summary>
@@ -843,7 +881,22 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.SetVehicleParamsCarDoors(Id, driver, passenger, backleft, backright);
+            Native.SetVehicleParamsCarDoors(Id, driver ? 1 : 0, passenger ? 1 : 0, backleft ? 1 : 0, backright ? 1 : 0);
+        }
+
+        /// <summary>
+        ///     Sets the doors parameters.
+        /// </summary>
+        /// <param name="driver">if on the driver side door is open.</param>
+        /// <param name="passenger">if on the passenger side door is open.</param>
+        /// <param name="backleft">if on the backleft door is open.</param>
+        /// <param name="backright">if on the backright door is open.</param>
+        public virtual void SetDoorsParameters(VehicleParameterValue driver, VehicleParameterValue passenger,
+            VehicleParameterValue backleft, VehicleParameterValue backright)
+        {
+            AssertNotDisposed();
+
+            Native.SetVehicleParamsCarDoors(Id, (int) driver, (int) passenger, (int) backleft, (int) backright);
         }
 
         /// <summary>
@@ -861,10 +914,10 @@ namespace SampSharp.GameMode.World
             int tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
             Native.GetVehicleParamsCarDoors(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
 
-            driver = (VehicleParameterValue)tmpDriver;
-            passenger = (VehicleParameterValue)tmpPassenger;
-            backleft = (VehicleParameterValue)tmpBackleft;
-            backright = (VehicleParameterValue)tmpBackright;
+            driver = (VehicleParameterValue) tmpDriver;
+            passenger = (VehicleParameterValue) tmpPassenger;
+            backleft = (VehicleParameterValue) tmpBackleft;
+            backright = (VehicleParameterValue) tmpBackright;
         }
 
         /// <summary>
@@ -882,10 +935,10 @@ namespace SampSharp.GameMode.World
             VehicleParameterValue tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
             GetDoorsParameters(out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
 
-            driver = tmpDriver == VehicleParameterValue.On;
-            passenger = tmpPassenger == VehicleParameterValue.On;
-            backleft = tmpBackleft == VehicleParameterValue.On;
-            backright = tmpBackright == VehicleParameterValue.On;
+            driver = tmpDriver.ToBool();
+            passenger = tmpPassenger.ToBool();
+            backleft = tmpBackleft.ToBool();
+            backright = tmpBackright.ToBool();
         }
 
         /// <summary>
@@ -899,7 +952,22 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.SetVehicleParamsCarWindows(Id, driver, passenger, backleft, backright);
+            Native.SetVehicleParamsCarWindows(Id, driver ? 1 : 0, passenger ? 1 : 0, backleft ? 1 : 0, backright ? 1 : 0);
+        }
+
+        /// <summary>
+        ///     Sets the windows parameters.
+        /// </summary>
+        /// <param name="driver">if on the driver side window is closed.</param>
+        /// <param name="passenger">if on the passenger side window is closed.</param>
+        /// <param name="backleft">if on the backleft window is closed.</param>
+        /// <param name="backright">if on the backright window is closed.</param>
+        public virtual void SetWindowsParameters(VehicleParameterValue driver, VehicleParameterValue passenger,
+            VehicleParameterValue backleft, VehicleParameterValue backright)
+        {
+            AssertNotDisposed();
+
+            Native.SetVehicleParamsCarWindows(Id, (int) driver, (int) passenger, (int) backleft, (int) backright);
         }
 
         /// <summary>
@@ -917,10 +985,10 @@ namespace SampSharp.GameMode.World
             int tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
             Native.GetVehicleParamsCarWindows(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
 
-            driver = (VehicleParameterValue)tmpDriver;
-            passenger = (VehicleParameterValue)tmpPassenger;
-            backleft = (VehicleParameterValue)tmpBackleft;
-            backright = (VehicleParameterValue)tmpBackright;
+            driver = (VehicleParameterValue) tmpDriver;
+            passenger = (VehicleParameterValue) tmpPassenger;
+            backleft = (VehicleParameterValue) tmpBackleft;
+            backright = (VehicleParameterValue) tmpBackright;
         }
 
         /// <summary>
@@ -938,10 +1006,10 @@ namespace SampSharp.GameMode.World
             VehicleParameterValue tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
             GetWindowsParameters(out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
 
-            driver = tmpDriver != VehicleParameterValue.Off; // unset is most commonly also closed
-            passenger = tmpPassenger != VehicleParameterValue.Off;
-            backleft = tmpBackleft != VehicleParameterValue.Off;
-            backright = tmpBackright != VehicleParameterValue.Off;
+            driver = tmpDriver.ToBool(true); // unset is most commonly also closed
+            passenger = tmpPassenger.ToBool(true);
+            backleft = tmpBackleft.ToBool(true);
+            backright = tmpBackright.ToBool(true);
         }
 
         /// <summary>
@@ -1244,27 +1312,11 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="SirenStateChanged" /> event.
         /// </summary>
-        /// <param name="args">The <see cref="SirenStateEventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="SirenStateEventArgs" /> instance containing the event data.</param>
         public virtual void OnSirenStateChanged(SirenStateEventArgs args)
         {
             if (SirenStateChanged != null)
                 SirenStateChanged(this, args);
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        ///     Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        ///     A string that represents the current object.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        public override string ToString()
-        {
-            return string.Format("Vehicle(Id:{0}, Model: {1})", Id, Model);
         }
 
         #endregion

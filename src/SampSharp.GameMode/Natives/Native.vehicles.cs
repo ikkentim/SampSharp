@@ -62,8 +62,8 @@ namespace SampSharp.GameMode.Natives
         public static extern bool ManualVehicleEngineAndLights();
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetVehicleParamsEx(int vehicleid, bool engine, bool lights, bool alarm, bool doors,
-            bool bonnet, bool boot, bool objective);
+        public static extern bool SetVehicleParamsEx(int vehicleid, int engine, int lights, int alarm, int doors,
+            int bonnet, int boot, int objective);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleParamsEx(int vehicleid, out int engine, out int lights, out int alarm,
@@ -73,16 +73,16 @@ namespace SampSharp.GameMode.Natives
         public static extern int GetVehicleParamsSirenState(int vehicleid);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetVehicleParamsCarDoors(int vehicleid, bool driver, bool passenger, bool backleft,
-            bool backright);
+        public static extern bool SetVehicleParamsCarDoors(int vehicleid, int driver, int passenger, int backleft,
+            int backright);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleParamsCarDoors(int vehicleid, out int driver, out int passenger,
             out int backleft, out int backright);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetVehicleParamsCarWindows(int vehicleid, bool driver, bool passenger, bool backleft,
-            bool backright);
+        public static extern bool SetVehicleParamsCarWindows(int vehicleid, int driver, int passenger, int backleft,
+            int backright);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool GetVehicleParamsCarWindows(int vehicleid, out int driver, out int passenger,
