@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Display
@@ -66,7 +67,8 @@ namespace SampSharp.GameMode.Display
             get { return OpenDialogs.Values; }
         }
 
-        private readonly Dictionary<int, TaskCompletionSource<DialogResponseEventArgs>> _awaitedResponses = new Dictionary<int, TaskCompletionSource<DialogResponseEventArgs>>();
+        private readonly ASyncWaiter<GtaPlayer, DialogResponseEventArgs> _aSyncWaiter =
+            new ASyncWaiter<GtaPlayer, DialogResponseEventArgs>();
 
         #endregion
 
@@ -302,11 +304,7 @@ namespace SampSharp.GameMode.Display
         {
             Show(player);
 
-            var taskControl = new TaskCompletionSource<DialogResponseEventArgs>();
-            _awaitedResponses[player.Id] = taskControl;
-
-            var response = await taskControl.Task;
-            return response;
+            return await _aSyncWaiter.Result(player);
         }
 
         /// <summary>
@@ -324,13 +322,7 @@ namespace SampSharp.GameMode.Display
 
             OpenDialogs.Remove(player.Id);
 
-            if (openDialog._awaitedResponses.ContainsKey(player.Id))
-            {
-                var task = openDialog._awaitedResponses[player.Id];
-
-                task.SetCanceled();
-                openDialog._awaitedResponses.Remove(player.Id);
-            }
+            openDialog._aSyncWaiter.Cancel(player);
 
             Native.ShowPlayerDialog(player.Id, DialogHideId, (int) DialogStyle.MessageBox, string.Empty,
                 string.Empty, string.Empty, string.Empty);
@@ -358,13 +350,7 @@ namespace SampSharp.GameMode.Display
             if (OpenDialogs.ContainsKey(e.Player.Id))
                 OpenDialogs.Remove(e.Player.Id);
 
-            if (_awaitedResponses.ContainsKey(e.Player.Id))
-            {
-                var task = _awaitedResponses[e.Player.Id];
-
-                task.SetResult(e);
-                _awaitedResponses.Remove(e.Player.Id);
-            }
+            _aSyncWaiter.Fire(e.Player, e);
 
             if (Response != null)
                 Response(this, e);

@@ -108,6 +108,7 @@
     <Compile Include="SAMP\Server.cs" />
     <Compile Include="Service.cs" />
     <Compile Include="ServiceContainer.cs" />
+    <Compile Include="Tools\ASyncWaiter`2.cs" />
     <Compile Include="Tools\Sync.cs" />
     <Compile Include="World\Actor.cs" />
     <Compile Include="World\Pickup.cs" />

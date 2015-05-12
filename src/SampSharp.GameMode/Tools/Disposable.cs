@@ -25,23 +25,23 @@ namespace SampSharp.GameMode.Tools
         /// <summary>
         ///     Gets whether this resource has been disposed.
         /// </summary>
-        public bool Disposed { get; private set; }
+        public bool IsDisposed { get; private set; }
 
         /// <summary>
         ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
-            if (Disposed)
+            if (IsDisposed)
             {
                 //We've been desposed already. Abort further disposure.
                 return;
             }
             //Dispose all native and managed resources.
-            Dispose(true);
+            OnDisposed(true);
 
             //Remember we've been disposed.
-            Disposed = true;
+            IsDisposed = true;
 
             //Suppress finalisation; We already disposed our  resources.
             GC.SuppressFinalize(this);
@@ -52,25 +52,31 @@ namespace SampSharp.GameMode.Tools
         /// </summary>
         ~Disposable()
         {
-            if (Disposed)
+            if (IsDisposed)
             {
                 //We've been desposed already. Abort further disposure.
                 return;
             }
 
-            Dispose(false);
+            OnDisposed(false);
 
-            //We don't care to set Disposed value; Resource is being collected by GC anyways.
+            //We don't care to set IsDisposed value; Resource is being collected by GC anyways.
         }
 
+        private event EventHandler _disposed;
+        public event EventHandler Disposed
+        {
+            add { AssertNotDisposed(); _disposed += value; }
+            remove { _disposed -= value; }
+        }
         /// <summary>
         ///     Checks whether this instance has been disposed. If it has, it throws an exception.
         /// </summary>
         /// <exception cref="ObjectDisposedException">Thrown when this instance has been disposed.</exception>
         protected void AssertNotDisposed()
         {
-            if (Disposed)
-                throw new ObjectDisposedException(GetType().ToString());
+            if (IsDisposed)
+                throw new ObjectDisposedException(GetType().FullName);
         }
 
         /// <summary>
@@ -78,5 +84,14 @@ namespace SampSharp.GameMode.Tools
         /// </summary>
         /// <param name="disposing">Whether managed resources should be disposed.</param>
         protected abstract void Dispose(bool disposing);
+
+        private void OnDisposed(bool disposing)
+        {
+            Dispose(disposing);
+
+            var handler = _disposed;
+            if (handler != null) 
+                handler(this, EventArgs.Empty);
+        }
     }
 }
