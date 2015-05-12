@@ -74,6 +74,8 @@ private:
     typedef std::vector<uint32_t> ExtensionList;
 
     static bool isLoaded_;
+    static unsigned long threadId_;
+
     static TimerMap timers_;
     static ExtensionList extensions_;
     static CallbackMap callbacks_;
@@ -87,6 +89,7 @@ private:
     static MonoMethod *paramLengthGetMethod_;
 
     static bool RegisterExtension(MonoObject *extension);
+    static bool IsMainThread();
     static int SetRefTimer(int interval, bool repeat, MonoObject *params);
     static bool KillRefTimer(int id);
     static void SAMPGDK_CALL ProcessTimerTick(int timerid, void *data);

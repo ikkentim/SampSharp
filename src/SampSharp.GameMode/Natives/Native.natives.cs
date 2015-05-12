@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace SampSharp.GameMode.Natives
 {
@@ -26,6 +27,19 @@ namespace SampSharp.GameMode.Natives
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern int CallNativeArray(string name, string format, object[] args, int[] sizes);
+
+        /// <summary>
+        ///     Utility method. Checks whether current thread is main thread.
+        /// </summary>
+        /// <returns>
+        ///     True if current thread is main thread; False otherwise.
+        /// </returns>
+        /// <remarks>
+        ///     This method can be used for debugging purposes. In general,
+        ///     comparing <see cref="Thread.CurrentThread" /> works just as well.
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool IsMainThread();
 
         /// <summary>
         ///     Checks whether a native with the specified <paramref name="name" /> exists.

@@ -18,6 +18,7 @@
 #include <assert.h>
 #include <iostream>
 #include <fstream>
+#include <stdio.h>
 #include <time.h>
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/threads.h>
@@ -32,6 +33,7 @@ using std::string;
 using sampgdk::logprintf;
 
 bool GameMode::isLoaded_;
+unsigned long GameMode::threadId_;
 MonoDomain *GameMode::domain_;
 GameMode::GameModeImage GameMode::gameMode_;
 GameMode::GameModeImage GameMode::baseMode_;
@@ -46,7 +48,7 @@ MonoMethod *GameMode::paramLengthGetMethod_;
 
 bool GameMode::Load(std::string namespaceName, std::string className) {
     assert(MonoRuntime::IsLoaded());
-
+    threadId_ = __threadid();
     /* Build paths */
     string dirPath = PathUtil::GetPathInBin("gamemode/");
     string libraryPath = PathUtil::GetPathInBin("gamemode/")
@@ -106,6 +108,8 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
         "SampSharp.GameMode.Natives.Native::SetTimer", (void *)SetRefTimer);
     mono_add_internal_call(
         "SampSharp.GameMode.Natives.Native::KillTimer", (void *)KillRefTimer);
+    mono_add_internal_call(
+        "SampSharp.GameMode.Natives.Native::IsMainThread", (void *)IsMainThread);
 
     isLoaded_ = true;
 
@@ -189,6 +193,10 @@ bool GameMode::Unload() {
 
     isLoaded_ = false;
     return true;
+}
+
+bool GameMode::IsMainThread() {
+    return threadId_ == __threadid();
 }
 
 int GameMode::SetRefTimer(int interval, bool repeat, MonoObject *params) {
