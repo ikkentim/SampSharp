@@ -1,8 +1,13 @@
+
+| Plugin | Framework |
+|:------:|:---------:|
+|[![Travis](https://img.shields.io/travis/ikkentim/SampSharp.svg)](https://travis-ci.org/ikkentim/SampSharp)|[![AppVeyor](https://img.shields.io/appveyor/ci/ikkentim/sampsharp.svg)](https://ci.appveyor.com/project/ikkentim/sampsharp/)|
+
+[![GitHub release](https://img.shields.io/github/release/ikkentim/sampsharp.svg)](https://github.com/ikkentim/sampsharp/releases)
+[![GitHub issues](https://img.shields.io/github/issues/ikkentim/sampsharp.svg)](https://github.com/ikkentim/sampsharp/issues)
+
 SampSharp
 =========
-[![Plugin Build Status][travis_status]][travis_page]
-[![Library build status][appveyor_status]][appveyor_page]
-[![Gitter]][gitter page]
 
 SA-MP# is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. SA-MP#'s aim is to allow you to enjoy all features of OO-programming and .NET. SA-MP# uses the [Mono Framework] to allow linux servers to run this plugin as well. For information about installing and building SA-MP#, check the wiki.
 
@@ -32,12 +37,6 @@ Libraries
 ---------
 Some useful SA-MP# libraries:
 - [Streamer wrapper][streamer] - OO wrapper around streamer plugin.
-
-[travis_status]: https://travis-ci.org/ikkentim/SampSharp.svg?branch=master
-[travis_page]: https://travis-ci.org/ikkentim/SampSharp
-
-[appveyor_status]: https://ci.appveyor.com/api/projects/status/p0jc1f8kbwgaceny/branch/master?svg=true
-[appveyor_page]: https://ci.appveyor.com/project/ikkentim/sampsharp/branch/master
 
 [gitter]: https://badges.gitter.im/Join%20Chat.svg
 [gitter page]: https://gitter.im/ikkentim/SampSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
