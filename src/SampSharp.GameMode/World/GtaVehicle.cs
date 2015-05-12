@@ -1256,17 +1256,6 @@ namespace SampSharp.GameMode.World
         #region Methods
 
         /// <summary>
-        /// Returns a hash code for this instance.
-        /// </summary>
-        /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
-        /// </returns>
-        public override int GetHashCode()
-        {
-            return Id;
-        }
-
-        /// <summary>
         ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
