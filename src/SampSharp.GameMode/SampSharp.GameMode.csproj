@@ -88,6 +88,7 @@
     <Compile Include="Events\SpawnEventArgs.cs" />
     <Compile Include="Events\PlayerUpdateEventArgs.cs" />
     <Compile Include="Events\TrailerEventArgs.cs" />
+    <Compile Include="Helpers\VehicleParameterValueHelper.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="Natives\Native.actor.cs">
       <DependentUpon>Native.cs</DependentUpon>
