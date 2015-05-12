@@ -13,10 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.SAMP.Commands;
+using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
 namespace TestMode.Tests
@@ -53,12 +53,12 @@ namespace TestMode.Tests
             };
         }
         [Command("dialogasync")]
-        public static async void DialogaAyncCommand(GtaPlayer player)
+        public static async void DialogASyncCommand(GtaPlayer player)
         {
             var dialog = new Dialog(DialogStyle.Input, "Hello", "Insert something", "Confirm", "NO");
             var response = await dialog.ShowAsync(player);
 
-            player.SendClientMessage("Response: " + response.InputText);
+            Sync.Run(() => { player.SendClientMessage("Response: " + response.InputText); });
         }
     }
 }
