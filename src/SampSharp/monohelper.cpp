@@ -39,6 +39,8 @@ void mono_convert_symbols(const char * path) {
     argv[0] = (char *)converter_path;
     argv[1] = (char *)path;
     mono_jit_exec(mono_domain_get(), converter_assembly, 2, argv);
+
+    delete[] converter_path;
 }
 
 char *monostring_to_string(MonoString *string_obj)
