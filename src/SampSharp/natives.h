@@ -15,4 +15,4 @@
 
 #pragma once
 
-void LoadNatives();
+void LoadNatives(void(add_call(const char * name, const void * method)));

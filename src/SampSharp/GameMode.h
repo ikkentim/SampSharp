@@ -94,6 +94,7 @@ private:
     static bool KillRefTimer(int id);
     static void SAMPGDK_CALL ProcessTimerTick(int timerid, void *data);
 
+    static void AddInternalCall(const char * name, const void * method);
     static MonoMethod *LoadEvent(const char *name, int param_count);
     static int GetParamLengthIndex(MonoMethod *method, int idx);
     static int CallEvent(MonoMethod *method, uint32_t handle, void **params);

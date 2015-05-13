@@ -100,16 +100,11 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     baseMode_.image = mono_class_get_image(baseMode_.klass);
 
     /* Add all internal calls. */
-    LoadNatives();
-    mono_add_internal_call(
-        "SampSharp.GameMode.Natives.Native::RegisterExtension",
-        (void *)RegisterExtension);
-    mono_add_internal_call(
-        "SampSharp.GameMode.Natives.Native::SetTimer", (void *)SetRefTimer);
-    mono_add_internal_call(
-        "SampSharp.GameMode.Natives.Native::KillTimer", (void *)KillRefTimer);
-    mono_add_internal_call(
-        "SampSharp.GameMode.Natives.Native::IsMainThread", (void *)IsMainThread);
+    LoadNatives(AddInternalCall);
+    AddInternalCall("RegisterExtension", (void *)RegisterExtension);
+    AddInternalCall("SetTimer", (void *)SetRefTimer);
+    AddInternalCall("KillTimer", (void *)KillRefTimer);
+    AddInternalCall("IsMainThread", (void *)IsMainThread);
 
     isLoaded_ = true;
 
@@ -302,8 +297,20 @@ void GameMode::ProcessTick() {
     CallEvent(tickMethod_, gameModeHandle_, NULL);
 }
 
-GameMode::ParameterType GameMode::GetParameterType(MonoType *type)
-{
+void GameMode::AddInternalCall(const char * name, const void * method) {
+    /* Namespace to which every internal call is registered. */
+    static const char * namespase = "SampSharp.GameMode.Natives.Native";
+
+    /* Construct combination of 'namespace::method'. */
+    char * call = new char[strlen(namespase) + 2 /* :: */ + strlen(name) + 1];
+    sprintf(call, "%s::%s", namespase, name);
+
+    mono_add_internal_call(call, method);
+
+    delete[] call;
+}
+
+GameMode::ParameterType GameMode::GetParameterType(MonoType *type) {
     char *type_name = mono_type_get_name(type);
     if (!strcmp(type_name, "System.Int32")) {
         return PARAM_INT;
