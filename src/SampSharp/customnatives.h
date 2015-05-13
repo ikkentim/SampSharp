@@ -13,6 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <mono/metadata/object.h>
+
 #pragma once
 
-void LoadNatives();
+bool native_exists(MonoString *name_string);
+int call_native_array(MonoString *name_string, MonoString *format_string,
+    MonoArray *args_array, MonoArray *sizes_array);

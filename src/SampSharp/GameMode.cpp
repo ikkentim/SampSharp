@@ -175,7 +175,7 @@ bool GameMode::Unload() {
 
     gameModeHandle_ = NULL;
 
-    /* For now, I see no way of unloading and reloading images without problems.
+    /* TODO: For now, I see no way of unloading and reloading images without problems.
      * Best to look at this again in the future.
      */
     //mono_image_close(gameMode_.image);
