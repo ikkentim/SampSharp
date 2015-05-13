@@ -53,5 +53,5 @@ void MonoRuntime::Unload() {
      */
     // mono_jit_cleanup(mono_domain_get());
 
-    isLoaded_ = false;
+    // isLoaded_ = false;
 }
