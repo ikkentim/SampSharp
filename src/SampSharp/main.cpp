@@ -73,12 +73,14 @@ void convertSymbols() {
         while (std::getline(symbols_stream, file, ' ')) {
             logprintf("Converting: %s", file.c_str());
 
-            std::ifstream ifile(file.c_str());
+            std::string path = PathUtil::GetGameModeDirectory().append(file);
+
+            std::ifstream ifile(path.c_str());
             if (file.empty() || !ifile) {
                 logprintf("  Failed.");
                 continue;
             }
-            mono_convert_symbols(file.c_str());
+            mono_convert_symbols(path.c_str());
 
             successes++;
             logprintf("  Converted.");
