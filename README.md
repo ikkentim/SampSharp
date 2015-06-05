@@ -8,7 +8,7 @@ SampSharp
 |[![Travis](https://img.shields.io/travis/ikkentim/SampSharp.svg)](https://travis-ci.org/ikkentim/SampSharp)|[![AppVeyor](https://img.shields.io/appveyor/ci/ikkentim/sampsharp.svg)](https://ci.appveyor.com/project/ikkentim/sampsharp/)|
 
 [![GitHub release](https://img.shields.io/github/release/ikkentim/sampsharp.svg)](https://github.com/ikkentim/sampsharp/releases)
-[![GitHub issues](https://img.shields.io/github/issues/ikkentim/sampsharp.svg)](https://github.com/ikkentim/sampsharp/issues)
+[![GitHub issues](https://img.shields.io/github/issues/ikkentim/sampsharp.svg)](https://github.com/ikkentim/sampsharp/issues) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ikkentim/SampSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 SA-MP# is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. SA-MP#'s aim is to allow you to enjoy all features of OO-programming and .NET. SA-MP# uses the [Mono Framework] to allow linux servers to run this plugin as well. For information about installing and building SA-MP#, check the wiki.
 
