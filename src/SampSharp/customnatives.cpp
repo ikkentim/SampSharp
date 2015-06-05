@@ -212,7 +212,7 @@ int call_native_array(MonoString *name_string, MonoString *format_string,
 
             params[i] = new cell[param_size[i]];
 
-            sprintf(amx_format, "%sR[%d]", amx_format, param_size[i]);
+            sprintf(amx_format, "%sA[%d]", amx_format, param_size[i]);
             break;
         }
         default:
