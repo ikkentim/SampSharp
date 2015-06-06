@@ -104,7 +104,7 @@ namespace SampSharp.GameMode
 
             OnPlayerText(GtaPlayer.FindOrCreate(playerid), args);
 
-            return !args.SendToPlayers;
+            return args.SendToPlayers;
         }
 
         internal bool OnPlayerCommandText(int playerid, string cmdtext)

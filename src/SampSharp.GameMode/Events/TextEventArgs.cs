@@ -30,6 +30,7 @@ namespace SampSharp.GameMode.Events
         public TextEventArgs(string text)
         {
             Text = text;
+            SendToPlayers = true;
         }
 
         /// <summary>
