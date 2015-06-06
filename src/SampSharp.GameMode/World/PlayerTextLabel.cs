@@ -14,18 +14,27 @@
 // limitations under the License.
 
 using System;
-using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
-using SampSharp.GameMode.World;
+using SampSharp.GameMode.SAMP;
 
-namespace SampSharp.GameMode.SAMP
+namespace SampSharp.GameMode.World
 {
     /// <summary>
     ///     Represents a player text label.
     /// </summary>
     public class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel>, IIdentifiable, IOwnable<GtaPlayer>
     {
+        /// <summary>
+        ///     Identifier indicating the handle is invalid.
+        /// </summary>
+        public const int InvalidId = 0xFFFF;
+
+        /// <summary>
+        ///     Maximum number of per-player text labels which can exist.
+        /// </summary>
+        public const int Max = 1024;
+
         #region Methods
 
         /// <summary>
@@ -42,11 +51,6 @@ namespace SampSharp.GameMode.SAMP
         #endregion
 
         #region Fields
-
-        /// <summary>
-        ///     Gets an ID commonly returned by methods to point out that no PlayerTextLabel matched the requirements.
-        /// </summary>
-        public const int InvalidId = Misc.Invalid_3DTextId;
 
         private GtaPlayer _attachedPlayer;
         private GtaVehicle _attachedVehicle;

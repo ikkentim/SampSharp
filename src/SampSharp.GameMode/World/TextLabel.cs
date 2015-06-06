@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
@@ -26,12 +25,17 @@ namespace SampSharp.GameMode.World
     /// </summary>
     public class TextLabel : IdentifiedPool<TextLabel>, IIdentifiable
     {
-        #region Fields
+        /// <summary>
+        ///     Identifier indicating the handle is invalid.
+        /// </summary>
+        public const int InvalidId = 0xFFFF;
 
         /// <summary>
-        ///     Gets an ID commonly returned by methods to point out that no TextLabel matched the requirements.
+        ///     Maximum number of per-player text labels which can exist.
         /// </summary>
-        public const int InvalidId = Misc.Invalid_3DTextId;
+        public const int Max = 1024;
+
+        #region Fields
 
         private Color _color;
         private float _drawDistance;

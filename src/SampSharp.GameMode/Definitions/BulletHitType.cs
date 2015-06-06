@@ -16,8 +16,11 @@
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Contains all things bullets can hit.
+    ///     Contains all types of things bullets can hit.
     /// </summary>
+    /// <remarks>
+    ///     See <see href="http://wiki.sa-mp.com/wiki/BulletHitTypes">http://wiki.sa-mp.com/wiki/BulletHitTypes</see>.
+    /// </remarks>
     public enum BulletHitType
     {
         /// <summary>

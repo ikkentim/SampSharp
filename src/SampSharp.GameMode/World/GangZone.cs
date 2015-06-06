@@ -27,9 +27,14 @@ namespace SampSharp.GameMode.World
     public class GangZone : IdentifiedPool<GangZone>, IIdentifiable
     {
         /// <summary>
-        ///     Gets an ID commonly returned by methods to point out that no GangZone matched the requirements.
+        ///     Identifier indicating the handle is invalid.
         /// </summary>
-        public const int InvalidId = Misc.InvalidGangZone;
+        public const int InvalidId = -1;
+
+        /// <summary>
+        ///     Maximum number of gang zones which can exist.
+        /// </summary>
+        public const int Max = 1024;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GangZone" /> class.

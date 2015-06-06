@@ -29,6 +29,16 @@ namespace SampSharp.GameMode.Display
     /// </summary>
     public class TextDraw : IdentifiedPool<TextDraw>, IIdentifiable
     {
+        /// <summary>
+        ///    Identifier indicating the handle is invalid.
+        /// </summary>
+        public const int InvalidId = 0xFFFF;
+
+        /// <summary>
+        ///     Maximum number of text draws which can exist.
+        /// </summary>
+        public const int Max = 2048;
+
         #region Events
 
         /// <summary>
@@ -54,11 +64,6 @@ namespace SampSharp.GameMode.Display
         #endregion
 
         #region Fields
-
-        /// <summary>
-        ///     Gets an ID commonly returned by methods to point out that no textdraw matched the requirements.
-        /// </summary>
-        public const int InvalidId = Misc.InvalidTextDraw;
 
         private readonly List<GtaPlayer> _playersShownTo = new List<GtaPlayer>();
 

@@ -26,9 +26,14 @@ namespace SampSharp.GameMode.World
     public class Pickup : IdentifiedPool<Pickup>, IIdentifiable, IWorldObject
     {
         /// <summary>
-        ///     Gets an ID commonly returned by methods to point out that no pickup matched the requirements.
+        ///     Identifier indicating the handle is invalid.
         /// </summary>
         public const int InvalidId = -1;
+
+        /// <summary>
+        ///     Maximum number of pickups which can exist.
+        /// </summary>
+        public const int Max = 4096;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Pickup" /> class.

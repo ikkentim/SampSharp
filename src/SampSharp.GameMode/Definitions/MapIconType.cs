@@ -16,8 +16,11 @@
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Contains all mapicon styles.
+    ///     Contains all map icon styles.
     /// </summary>
+    /// <remarks>
+    ///     See <see href="http://wiki.sa-mp.com/wiki/MapIconStyle">http://wiki.sa-mp.com/wiki/MapIconStyle</see>.
+    /// </remarks>
     public enum MapIconType
     {
         /// <summary>

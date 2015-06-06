@@ -27,14 +27,15 @@ namespace SampSharp.GameMode.World
     /// </summary>
     public class GlobalObject : IdentifiedPool<GlobalObject>, IGameObject, IIdentifiable
     {
-        #region Fields
+        /// <summary>
+        ///     Identifier indicating the handle is invalid.
+        /// </summary>
+        public const int InvalidId = 0xFFFF;
 
         /// <summary>
-        ///     The invalid identifier.
+        ///     Maximum number of objects which can exist.
         /// </summary>
-        public const int InvalidId = Misc.InvalidObjectId;
-
-        #endregion
+        public const int Max = 1000;
 
         #region Properties
 

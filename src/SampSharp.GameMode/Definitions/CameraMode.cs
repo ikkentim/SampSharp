@@ -20,6 +20,9 @@ namespace SampSharp.GameMode.Definitions
     /// <summary>
     ///     Contains all camera modes.
     /// </summary>
+    /// <remarks>
+    ///     See <see href="http://wiki.sa-mp.com/wiki/CameraModes">http://wiki.sa-mp.com/wiki/CameraModes</see>.
+    /// </remarks>
     public enum CameraMode
     {
         /// <summary>

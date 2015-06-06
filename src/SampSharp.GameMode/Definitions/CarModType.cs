@@ -18,6 +18,9 @@ namespace SampSharp.GameMode.Definitions
     /// <summary>
     ///     Contains all modification types of vehicles.
     /// </summary>
+    /// <remarks>
+    ///     See <see href="http://wiki.sa-mp.com/wiki/Componentslots">http://wiki.sa-mp.com/wiki/Componentslots</see>.
+    /// </remarks>
     public enum CarModType
     {
         /// <summary>

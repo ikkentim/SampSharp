@@ -16,7 +16,7 @@
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Contains all dialogstyles.
+    ///     Contains all dialog styles.
     /// </summary>
     public enum DialogStyle
     {

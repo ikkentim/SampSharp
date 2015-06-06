@@ -108,7 +108,7 @@
     <Compile Include="SAMP\PriorityKeyHandler.cs" />
     <Compile Include="SAMP\Server.cs" />
     <Compile Include="Service.cs" />
-    <Compile Include="ServiceContainer.cs" />
+    <Compile Include="GameModeServiceContainer.cs" />
     <Compile Include="Tools\ASyncWaiter`2.cs" />
     <Compile Include="Tools\Sync.cs" />
     <Compile Include="World\Actor.cs" />
@@ -127,9 +127,7 @@
     <Compile Include="Definitions\EditObjectResponse.cs" />
     <Compile Include="Definitions\FightStyle.cs" />
     <Compile Include="Definitions\Keys.cs" />
-    <Compile Include="Definitions\Limits.cs" />
     <Compile Include="Definitions\MapIconType.cs" />
-    <Compile Include="Definitions\Misc.cs" />
     <Compile Include="Definitions\ObjectMaterialSize.cs" />
     <Compile Include="Definitions\ObjectMaterialTextAlign.cs" />
     <Compile Include="Definitions\PlayerClickSource.cs" />
@@ -218,7 +216,7 @@
     <Compile Include="World\GtaPlayer.cs" />
     <Compile Include="World\PlayerObject.cs" />
     <Compile Include="Display\PlayerTextDraw.cs" />
-    <Compile Include="SAMP\PlayerTextLabel.cs" />
+    <Compile Include="World\PlayerTextLabel.cs" />
     <Compile Include="Display\TextDraw.cs" />
     <Compile Include="World\TextLabel.cs" />
     <Compile Include="SAMP\Timer.cs" />

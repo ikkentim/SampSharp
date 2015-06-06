@@ -26,7 +26,7 @@ namespace SampSharp.GameMode
     {
         private readonly ControllerCollection _controllers = new ControllerCollection();
 
-        #region Constructor
+        #region Constructors
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BaseMode" /> class.
@@ -43,12 +43,14 @@ namespace SampSharp.GameMode
                     Console.WriteLine("Detected mono version: {0}", displayName.Invoke(null, null));
             }
 
-            Services = new ServiceContainer();
+            Services = new GameModeServiceContainer();
 
             RegisterControllers();
         }
 
         #endregion
+
+        #region Properties of BaseMode
 
         /// <summary>
         ///     Gets the collection of controllers loaded.
@@ -58,21 +60,17 @@ namespace SampSharp.GameMode
             get { return _controllers; }
         }
 
-        public virtual ServiceContainer Services { get; private set; }
-
         /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Gets the <see cref="GameModeServiceContainer"/> holding all the service providers attached to the game mode.
         /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            _controllers.Dispose();
+        /// <value>
+        /// The services.
+        /// </value>
+        public virtual GameModeServiceContainer Services { get; private set; }
 
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-        }
+        #endregion
 
-        #region Methods
+        #region Methods of BaseMode
 
         private void RegisterControllers()
         {
@@ -92,7 +90,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Loads all default controllers into the given ControllerCollection.
+        ///     Loads all controllers into the given ControllerCollection.
         /// </summary>
         /// <param name="controllers">The collection to load the default controllers into.</param>
         protected virtual void LoadControllers(ControllerCollection controllers)
@@ -114,5 +112,22 @@ namespace SampSharp.GameMode
         }
 
         #endregion
+
+        #region Implementation of IDisposable
+
+        /// <summary>
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            _controllers.Dispose();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+
+        #endregion
+
     }
 }

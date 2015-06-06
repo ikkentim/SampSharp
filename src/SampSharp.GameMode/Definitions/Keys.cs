@@ -18,8 +18,11 @@ using System;
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Contains all actionkeys.
+    ///     Contains all detectable keys.
     /// </summary>
+    /// <remarks>
+    ///     See <see href="http://wiki.sa-mp.com/wiki/Keys">http://wiki.sa-mp.com/wiki/Keys</see>.
+    /// </remarks>
     [Flags]
     public enum Keys
     {

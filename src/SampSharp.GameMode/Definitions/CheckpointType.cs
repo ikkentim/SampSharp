@@ -16,8 +16,11 @@
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Contains all racecheckpoint types.
+    ///     Contains all race checkpoint types.
     /// </summary>
+    /// <remarks>
+    ///     See <see href="http://wiki.sa-mp.com/wiki/SetPlayerRaceCheckpoint">http://wiki.sa-mp.com/wiki/SetPlayerRaceCheckpoint</see>.
+    /// </remarks>
     public enum CheckpointType
     {
         /// <summary>

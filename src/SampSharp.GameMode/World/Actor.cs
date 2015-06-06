@@ -27,9 +27,14 @@ namespace SampSharp.GameMode.World
     public class Actor : IdentifiedPool<Actor>, IIdentifiable, IWorldObject
     {
         /// <summary>
-        ///     Gets an ID commonly returned by methods to point out that no player matched the requirements.
+        ///     Identifier indicating the handle is invalid.
         /// </summary>
-        public const int InvalidId = Misc.InvalidActorId;
+        public const int InvalidId = 0xFFFF;
+
+        /// <summary>
+        ///     Maximum number of actors which can exist.
+        /// </summary>
+        public const int Max = 1000;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Actor" /> class.
@@ -196,7 +201,7 @@ namespace SampSharp.GameMode.World
         {
             var id = Native.CreateActor(modelid, position.X, position.Y, position.Z, rotation);
 
-            return id == Misc.InvalidActorId ? null : new Actor(id);
+            return id == InvalidId ? null : new Actor(id);
         }
 
         /// <summary>

@@ -29,19 +29,35 @@ namespace SampSharp.GameMode.World
     /// </summary>
     public class GtaPlayer : IdentifiedPool<GtaPlayer>, IIdentifiable, IWorldObject
     {
-        #region Fields
+        /// <summary>
+        ///     Identifier indicating the handle is invalid.
+        /// </summary>
+        public const int InvalidId = 0xFFFF;
 
         /// <summary>
-        ///     Gets an ID commonly returned by methods to point out that no player matched the requirements.
+        ///     Maximum number of players which can exist.
         /// </summary>
-        public const int InvalidId = Misc.InvalidPlayerId;
+        public const int Max = 1000;
 
         /// <summary>
         ///     Maximum number of attached objects attached to a player.
         /// </summary>
-        public const int MaxAttachedObjects = Misc.MaxPlayerAttachedObjects;
+        public const int MaxAttachedObjects = 10;
 
-        #endregion
+        /// <summary>
+        ///     Identifier indicating a player is not a member of any team.
+        /// </summary>
+        public const int NoTeam = 0xFF;
+
+        /// <summary>
+        ///     Maximum length of a player's name.
+        /// </summary>
+        public const int MaxNameLength = 24;
+
+        /// <summary>
+        ///     Maximum length of the text in a chatbubble.
+        /// </summary>
+        public const int MaxChatbubbleLength = 144;
 
         #region Constructors
 
@@ -109,7 +125,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 string name;
-                Native.GetPlayerName(Id, out name, Limits.MaxPlayerName);
+                Native.GetPlayerName(Id, out name, MaxNameLength);
                 return name;
             }
             set { Native.SetPlayerName(Id, value); }

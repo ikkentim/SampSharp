@@ -29,14 +29,15 @@ namespace SampSharp.GameMode.World
     /// </summary>
     public class GtaVehicle : IdentifiedPool<GtaVehicle>, IIdentifiable, IWorldObject
     {
-        #region Fields
+        /// <summary>
+        ///     Identifier indicating the handle is invalid.
+        /// </summary>
+        public const int InvalidId = 0xFFFF;
 
         /// <summary>
-        ///     Gets an ID commonly returned by methods to point out that no vehicle matched the requirements.
+        ///     Maximum number of vehicles which can exist.
         /// </summary>
-        public const int InvalidId = Misc.InvalidVehicleId;
-
-        #endregion
+        public const int Max = 2000;
 
         #region Constructors
 

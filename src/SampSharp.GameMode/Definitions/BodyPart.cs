@@ -18,41 +18,43 @@ namespace SampSharp.GameMode.Definitions
     /// <summary>
     ///     Contains all available body parts.
     /// </summary>
+    /// <remarks>
+    ///     See <see href="http://wiki.sa-mp.com/wiki/BodyParts">http://wiki.sa-mp.com/wiki/BodyParts</see>.
+    /// </remarks>
     public enum BodyPart
     {
-        //TODO: Check what the other IDs (1-2) are
         /// <summary>
-        ///     The Chest of the player.
+        ///     The chest.
         /// </summary>
         Chest = 3,
 
         /// <summary>
-        ///     The crotch of the player.
+        ///     The crotch.
         /// </summary>
         Crotch = 4,
 
         /// <summary>
-        ///     The left arm of the player.
+        ///     The left arm.
         /// </summary>
         LeftArm = 5,
 
         /// <summary>
-        ///     The right arm of the player.
+        ///     The right arm.
         /// </summary>
         RightArm = 6,
 
         /// <summary>
-        ///     The left leg of the player.
+        ///     The left leg.
         /// </summary>
         LeftLeg = 7,
 
         /// <summary>
-        ///     The right leg of the player.
+        ///     The right leg.
         /// </summary>
         RightLeg = 8,
 
         /// <summary>
-        ///     The head of the the player.
+        ///     The head.
         /// </summary>
         Head = 9
     }

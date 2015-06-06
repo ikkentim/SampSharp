@@ -16,7 +16,7 @@
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Contains all edit object responses.
+    ///     Contains all object editing responses.
     /// </summary>
     public enum EditObjectResponse
     {

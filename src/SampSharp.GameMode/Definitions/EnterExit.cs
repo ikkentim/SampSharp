@@ -16,7 +16,7 @@
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Contains enter/exit garage states.
+    ///     Contains all enter/exit garage states.
     /// </summary>
     public enum EnterExit
     {

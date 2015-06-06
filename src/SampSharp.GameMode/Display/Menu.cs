@@ -30,6 +30,17 @@ namespace SampSharp.GameMode.Display
     /// </summary>
     public class Menu : Pool<Menu>
     {
+        /// <summary>
+        ///     Identifier indicating the handle is invalid.
+        /// </summary>
+        public const int InvalidId = 0xFF;
+
+        /// <summary>
+        ///     Maximum number of menus which can exist.
+        /// </summary>
+        public const int Max = 128;
+
+
         #region Constructors
 
         /// <summary>
@@ -53,11 +64,6 @@ namespace SampSharp.GameMode.Display
         #endregion
 
         #region Fields
-
-        /// <summary>
-        ///     Gets the ID commonly returned by methods to point to no menu.
-        /// </summary>
-        public const int InvalidId = Misc.InvalidMenu;
 
         private readonly List<GtaPlayer> _viewers = new List<GtaPlayer>();
 

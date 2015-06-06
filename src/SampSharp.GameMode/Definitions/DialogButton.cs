@@ -16,7 +16,7 @@
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Contains all dialogbuttons.
+    ///     Contains all dialog buttons.
     /// </summary>
     public enum DialogButton
     {

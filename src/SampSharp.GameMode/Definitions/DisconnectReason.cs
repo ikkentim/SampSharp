@@ -16,7 +16,7 @@
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Contains all reasons for a Player to disconnect.
+    ///     Contains all reasons for a player to disconnect.
     /// </summary>
     public enum DisconnectReason
     {

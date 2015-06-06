@@ -27,14 +27,15 @@ namespace SampSharp.GameMode.World
     /// </summary>
     public class PlayerObject : IdentifiedOwnedPool<PlayerObject>, IGameObject, IOwnable<GtaPlayer>, IIdentifiable
     {
-        #region Fields
+        /// <summary>
+        ///     Identifier indicating the handle is invalid.
+        /// </summary>
+        public const int InvalidId = 0xFFFF;
 
         /// <summary>
-        ///     The invalid identifier.
+        ///     Maximum number of objects which can exist.
         /// </summary>
-        public const int InvalidId = Misc.InvalidObjectId;
-
-        #endregion
+        public const int Max = 1000;
 
         #region Properties
 
@@ -139,7 +140,7 @@ namespace SampSharp.GameMode.World
         ///     Initializes a new instance of the <see cref="PlayerObject" /> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        public PlayerObject(int id) : this(GtaPlayer.Find(id/(Limits.MaxObjects + 1)), id%(Limits.MaxObjects + 1))
+        public PlayerObject(int id) : this(GtaPlayer.Find(id/(Max + 1)), id%(Max + 1))
         {
         }
 

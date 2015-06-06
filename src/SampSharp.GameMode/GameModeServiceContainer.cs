@@ -19,9 +19,9 @@ using System.Collections.Generic;
 namespace SampSharp.GameMode
 {
     /// <summary>
-    ///     Contains a collection of services.
+    ///     A collection of game mode services.
     /// </summary>
-    public class ServiceContainer : IServiceProvider
+    public class GameModeServiceContainer : IServiceProvider
     {
         private readonly Dictionary<Type, IService> _services = new Dictionary<Type, IService>();
 
