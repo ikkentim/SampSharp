@@ -64,11 +64,17 @@ namespace SampSharp.GameMode.Tools
         }
 
         private event EventHandler _disposed;
+
         public event EventHandler Disposed
         {
-            add { AssertNotDisposed(); _disposed += value; }
+            add
+            {
+                AssertNotDisposed();
+                _disposed += value;
+            }
             remove { _disposed -= value; }
         }
+
         /// <summary>
         ///     Checks whether this instance has been disposed. If it has, it throws an exception.
         /// </summary>
@@ -90,7 +96,7 @@ namespace SampSharp.GameMode.Tools
             Dispose(disposing);
 
             var handler = _disposed;
-            if (handler != null) 
+            if (handler != null)
                 handler(this, EventArgs.Empty);
         }
     }

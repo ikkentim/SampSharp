@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 //     http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
@@ -186,7 +185,7 @@ namespace SampSharp.GameMode.World
         public event EventHandler<PlayerEventArgs> StreamOut;
 
         /// <summary>
-        /// Occurs when a player harms this <see cref="Actor"/>.
+        ///     Occurs when a player harms this <see cref="Actor" />.
         /// </summary>
         public event EventHandler<DamageEventArgs> PlayerGiveDamage;
 
@@ -290,9 +289,9 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Raises the <see cref="E:PlayerGiveDamage" /> event.
+        ///     Raises the <see cref="E:PlayerGiveDamage" /> event.
         /// </summary>
-        /// <param name="args">The <see cref="DamageEventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="DamageEventArgs" /> instance containing the event data.</param>
         public void OnPlayerGiveDamage(DamageEventArgs args)
         {
             if (PlayerGiveDamage != null)

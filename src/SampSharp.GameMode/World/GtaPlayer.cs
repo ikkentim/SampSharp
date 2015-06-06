@@ -59,6 +59,22 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public const int MaxChatbubbleLength = 144;
 
+        #region Methods
+
+        /// <summary>
+        ///     Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        ///     A string that represents the current object.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override string ToString()
+        {
+            return string.Format("Player(Id:{0}, Name:{1})", Id, Name);
+        }
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -2573,22 +2589,6 @@ namespace SampSharp.GameMode.World
         {
             if (WeaponShot != null)
                 WeaponShot(this, e);
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        ///     Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        ///     A string that represents the current object.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        public override string ToString()
-        {
-            return string.Format("Player(Id:{0}, Name:{1})", Id, Name);
         }
 
         #endregion

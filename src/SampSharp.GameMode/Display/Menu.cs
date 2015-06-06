@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
@@ -40,6 +39,11 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public const int Max = 128;
 
+        #region Fields
+
+        private readonly List<GtaPlayer> _viewers = new List<GtaPlayer>();
+
+        #endregion
 
         #region Constructors
 
@@ -60,12 +64,6 @@ namespace SampSharp.GameMode.Display
             Columns = columns ?? new List<MenuColumn>();
             Rows = rows ?? new List<MenuRow>();
         }
-
-        #endregion
-
-        #region Fields
-
-        private readonly List<GtaPlayer> _viewers = new List<GtaPlayer>();
 
         #endregion
 

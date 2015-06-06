@@ -23,6 +23,7 @@ namespace SampSharp.GameMode.Helpers
         {
             return value == VehicleParameterValue.Unset ? defaultValue : (value == VehicleParameterValue.On);
         }
+
         public static VehicleParameterValue FromBool(bool value)
         {
             return value ? VehicleParameterValue.On : VehicleParameterValue.Off;

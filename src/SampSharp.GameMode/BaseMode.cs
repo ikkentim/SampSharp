@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 //     http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,6 +50,22 @@ namespace SampSharp.GameMode
 
         #endregion
 
+        #region Implementation of IDisposable
+
+        /// <summary>
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            _controllers.Dispose();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+
+        #endregion
+
         #region Properties of BaseMode
 
         /// <summary>
@@ -61,10 +77,10 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        /// Gets the <see cref="GameModeServiceContainer"/> holding all the service providers attached to the game mode.
+        ///     Gets the <see cref="GameModeServiceContainer" /> holding all the service providers attached to the game mode.
         /// </summary>
         /// <value>
-        /// The services.
+        ///     The services.
         /// </value>
         public virtual GameModeServiceContainer Services { get; private set; }
 
@@ -112,22 +128,5 @@ namespace SampSharp.GameMode
         }
 
         #endregion
-
-        #region Implementation of IDisposable
-
-        /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            _controllers.Dispose();
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-        }
-
-        #endregion
-
     }
 }

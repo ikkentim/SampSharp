@@ -30,7 +30,7 @@ namespace SampSharp.GameMode.Display
     public class TextDraw : IdentifiedPool<TextDraw>, IIdentifiable
     {
         /// <summary>
-        ///    Identifier indicating the handle is invalid.
+        ///     Identifier indicating the handle is invalid.
         /// </summary>
         public const int InvalidId = 0xFFFF;
 

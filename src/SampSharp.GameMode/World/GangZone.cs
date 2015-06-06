@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
