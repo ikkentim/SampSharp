@@ -28,36 +28,16 @@ namespace SampSharp.GameMode.Display
     /// <summary>
     ///     Represents a SA:MP dialog.
     /// </summary>
-    public class Dialog
+    public class Dialog : IDialog
     {
-        #region Events
+        private const int DialogId = 10000;
+        private const int DialogHideId = -1;
+        private static readonly Dictionary<int, Dialog> OpenDialogs = new Dictionary<int, Dialog>();
 
-        /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnDialogResponse(GtaPlayer,DialogResponseEventArgs)" /> is being called.
-        ///     This callback is called when a player responds to a dialog by either clicking a button, pressing ENTER/ESC or
-        ///     double-clicking a list item (if using a <see cref="DialogStyle.List" />).
-        ///     This callback is called when a player connects to the server.
-        /// </summary>
-        public event EventHandler<DialogResponseEventArgs> Response;
+        private readonly ASyncWaiter<GtaPlayer, DialogResponseEventArgs> _aSyncWaiter =
+            new ASyncWaiter<GtaPlayer, DialogResponseEventArgs>();
 
-        #endregion
-
-        #region Fields
-
-        /// <summary>
-        ///     Gets the ID this system will use.
-        /// </summary>
-        protected const int DialogId = 10000;
-
-        /// <summary>
-        ///     Gets the ID this system will use to hide Dialogs.
-        /// </summary>
-        protected const int DialogHideId = -1;
-
-        /// <summary>
-        ///     Contains all instances of Dialogs that are being shown to Players.
-        /// </summary>
-        protected static Dictionary<int, Dialog> OpenDialogs = new Dictionary<int, Dialog>();
+        #region Properties of Dialog
 
         /// <summary>
         ///     Gets all opened dialogs.
@@ -66,9 +46,6 @@ namespace SampSharp.GameMode.Display
         {
             get { return OpenDialogs.Values; }
         }
-
-        private readonly ASyncWaiter<GtaPlayer, DialogResponseEventArgs> _aSyncWaiter =
-            new ASyncWaiter<GtaPlayer, DialogResponseEventArgs>();
 
         #endregion
 
@@ -250,69 +227,10 @@ namespace SampSharp.GameMode.Display
 
         #endregion
 
-        #region Properties
+        #region Methods of Dialog
 
         /// <summary>
-        ///     The style of the dialog.
-        /// </summary>
-        public DialogStyle Style { get; set; }
-
-        /// <summary>
-        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64 characters before it
-        ///     starts to cut off.
-        /// </summary>
-        public string Caption { get; set; }
-
-        /// <summary>
-        ///     The text to display in the main dialog. Use \n to start a new line and \t to tabulate.
-        /// </summary>
-        public string Message { get; set; }
-
-        /// <summary>
-        ///     The text on the left button.
-        /// </summary>
-        public string Button1 { get; set; }
-
-        /// <summary>
-        ///     The text on the right button. Leave it blank to hide it.
-        /// </summary>
-        public string Button2 { get; set; }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        ///     Shows the dialog box to a Player.
-        /// </summary>
-        /// <param name="player">The Player to show the dialog to.</param>
-        public virtual void Show(GtaPlayer player)
-        {
-            if (player == null)
-                throw new ArgumentNullException("player");
-
-            // Hide previously opened dialogs
-            Hide(player);
-
-            OpenDialogs[player.Id] = this;
-
-            Native.ShowPlayerDialog(player.Id, DialogId, (int) Style, Caption, Message, Button1,
-                Button2 ?? string.Empty);
-        }
-
-        /// <summary>
-        ///     Shows the dialog box to a Player asynchronously.
-        /// </summary>
-        /// <param name="player">The Player to show the dialog to.</param>
-        public virtual async Task<DialogResponseEventArgs> ShowAsync(GtaPlayer player)
-        {
-            Show(player);
-
-            return await _aSyncWaiter.Result(player);
-        }
-
-        /// <summary>
-        ///     Hides all dialogs for a Player.
+        ///     Hides all dialogs for the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The Player to hide all dialogs from.</param>
         public static void Hide(GtaPlayer player)
@@ -333,10 +251,10 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets the dialog currently being shown to a Player.
+        ///     Gets the dialog currently being shown to the specified <paramref name="player" />.
         /// </summary>
-        /// <param name="player">The Player whose Dialog you want.</param>
-        /// <returns>The Dialog currently being shown to the Player.</returns>
+        /// <param name="player">The player whose dialog to get.</param>
+        /// <returns>The dialog currently being shown to the specified <paramref name="player" />.</returns>
         public static Dialog GetOpenDialog(GtaPlayer player)
         {
             if (player == null)
@@ -345,11 +263,79 @@ namespace SampSharp.GameMode.Display
             return OpenDialogs.ContainsKey(player.Id) ? OpenDialogs[player.Id] : null;
         }
 
+        #endregion
+
+        #region Implementation of IDialog
+
         /// <summary>
-        ///     Raises the <see cref="Response" /> event.
+        ///     The style of the dialog.
+        /// </summary>
+        public DialogStyle Style { get; private set; }
+
+        /// <summary>
+        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64 characters before it
+        ///     starts to cut off.
+        /// </summary>
+        public string Caption { get; private set; }
+
+        /// <summary>
+        ///     The text to display in the main dialog. Use \n to start a new line and \t to tabulate.
+        /// </summary>
+        public string Message { get; private set; }
+
+        /// <summary>
+        ///     The text on the left button.
+        /// </summary>
+        public string Button1 { get; private set; }
+
+        /// <summary>
+        ///     The text on the right button. Leave it blank to hide it.
+        /// </summary>
+        public string Button2 { get; private set; }
+
+        /// <summary>
+        ///     Occurs when a player responds to a dialog by either clicking a button, pressing ENTER/ESC or double-clicking a list
+        ///     item.
+        /// </summary>
+        public event EventHandler<DialogResponseEventArgs> Response;
+
+        /// <summary>
+        ///     Shows the dialog box to a Player.
+        /// </summary>
+        /// <param name="player">The Player to show the dialog to.</param>
+        public void Show(GtaPlayer player)
+        {
+            if (player == null)
+                throw new ArgumentNullException("player");
+
+            // Hide previously opened dialogs.
+            Hide(player);
+
+            // Store this dialog as the opened dialog.
+            OpenDialogs[player.Id] = this;
+
+
+            // Show the dialog to the player.
+            Native.ShowPlayerDialog(player.Id, DialogId, (int) Style, Caption, Message, Button1,
+                Button2 ?? string.Empty);
+        }
+
+        /// <summary>
+        ///     Shows the dialog box to a Player asynchronously.
+        /// </summary>
+        /// <param name="player">The Player to show the dialog to.</param>
+        public async Task<DialogResponseEventArgs> ShowAsync(GtaPlayer player)
+        {
+            Show(player);
+
+            return await _aSyncWaiter.Result(player);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="IDialog.Response" /> event.
         /// </summary>
         /// <param name="e">An <see cref="DialogResponseEventArgs" /> that contains the event data. </param>
-        public virtual void OnResponse(DialogResponseEventArgs e)
+        public void OnResponse(DialogResponseEventArgs e)
         {
             if (OpenDialogs.ContainsKey(e.Player.Id))
                 OpenDialogs.Remove(e.Player.Id);
