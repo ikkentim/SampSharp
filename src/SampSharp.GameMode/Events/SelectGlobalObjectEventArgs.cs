@@ -30,7 +30,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="object">The global object.</param>
         /// <param name="modelid">The modelid.</param>
         /// <param name="position">The position.</param>
-        public SelectGlobalObjectEventArgs(GtaPlayer player, GlobalObject @object, int modelid, Vector position)
+        public SelectGlobalObjectEventArgs(GtaPlayer player, GlobalObject @object, int modelid, Vector3 position)
             : base(position)
         {
             Player = player;
@@ -72,7 +72,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="object">The player object.</param>
         /// <param name="modelid">The modelid.</param>
         /// <param name="position">The position.</param>
-        public SelectPlayerObjectEventArgs(GtaPlayer player, PlayerObject @object, int modelid, Vector position)
+        public SelectPlayerObjectEventArgs(GtaPlayer player, PlayerObject @object, int modelid, Vector3 position)
             : base(position)
         {
             Player = player;

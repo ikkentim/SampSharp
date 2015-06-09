@@ -351,13 +351,13 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets or sets the velocity of this Player.
         /// </summary>
-        public virtual Vector Velocity
+        public virtual Vector3 Velocity
         {
             get
             {
                 float x, y, z;
                 Native.GetPlayerVelocity(Id, out x, out y, out z);
-                return new Vector(x, y, z);
+                return new Vector3(x, y, z);
             }
             set { Native.SetPlayerVelocity(Id, value.X, value.Y, value.Z); }
         }
@@ -390,28 +390,28 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets or sets the position of the camera of this Players.
         /// </summary>
-        public virtual Vector CameraPosition
+        public virtual Vector3 CameraPosition
         {
             get
             {
                 float x, y, z;
 
                 Native.GetPlayerCameraPos(Id, out x, out y, out z);
-                return new Vector(x, y, z);
+                return new Vector3(x, y, z);
             }
             set { Native.SetPlayerCameraPos(Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
-        ///     Gets the front vector of this Player's camera.
+        ///     Gets the front Vector3 of this Player's camera.
         /// </summary>
-        public virtual Vector CameraFrontVector
+        public virtual Vector3 CameraFrontVector
         {
             get
             {
                 float x, y, z;
                 Native.GetPlayerCameraFrontVector(Id, out x, out y, out z);
-                return new Vector(x, y, z);
+                return new Vector3(x, y, z);
             }
         }
 
@@ -568,22 +568,22 @@ namespace SampSharp.GameMode.World
         /// <remarks>
         ///     Only the Z angle can be set!
         /// </remarks>
-        public virtual Vector Rotation
+        public virtual Vector3 Rotation
         {
-            get { return new Vector(0, 0, Angle); }
+            get { return new Vector3(0, 0, Angle); }
             set { Angle = value.Z; }
         }
 
         /// <summary>
         ///     Gets or sets the position of this Player.
         /// </summary>
-        public virtual Vector Position
+        public virtual Vector3 Position
         {
             get
             {
                 float x, y, z;
                 Native.GetPlayerPos(Id, out x, out y, out z);
-                return new Vector(x, y, z);
+                return new Vector3(x, y, z);
             }
             set { Native.SetPlayerPos(Id, value.X, value.Y, value.Z); }
         }
@@ -959,7 +959,7 @@ namespace SampSharp.GameMode.World
         /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
         /// <param name="weapon3">The third spawn-weapon for the player.</param>
         /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
-        public virtual void SetSpawnInfo(int team, int skin, Vector position, float rotation,
+        public virtual void SetSpawnInfo(int team, int skin, Vector3 position, float rotation,
             Weapon weapon1 = Weapon.None,
             int weapon1Ammo = 0, Weapon weapon2 = Weapon.None, int weapon2Ammo = 0, Weapon weapon3 = Weapon.None,
             int weapon3Ammo = 0)
@@ -995,7 +995,7 @@ namespace SampSharp.GameMode.World
         ///     position.
         /// </summary>
         /// <param name="position">The position to move this Player to.</param>
-        public virtual void SetPositionFindZ(Vector position)
+        public virtual void SetPositionFindZ(Vector3 position)
         {
             AssertNotDisposed();
 
@@ -1008,7 +1008,7 @@ namespace SampSharp.GameMode.World
         /// <param name="range">The furthest distance the player can be from the point to be in range.</param>
         /// <param name="point">The point to check the range to.</param>
         /// <returns>True if this Player is in range of the point, otherwise False.</returns>
-        public virtual bool IsInRangeOfPoint(float range, Vector point)
+        public virtual bool IsInRangeOfPoint(float range, Vector3 point)
         {
             AssertNotDisposed();
 
@@ -1020,7 +1020,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="point">The point to calculate the distance from.</param>
         /// <returns>The distance between the player and the point as a float.</returns>
-        public virtual float GetDistanceFromPoint(Vector point)
+        public virtual float GetDistanceFromPoint(Vector3 point)
         {
             AssertNotDisposed();
 
@@ -1262,7 +1262,7 @@ namespace SampSharp.GameMode.World
         /// </param>
         /// <param name="position">The position at which to play the audio. Has no effect unless usepos is set to True.</param>
         /// <param name="distance">The distance over which the audio will be heard. Has no effect unless usepos is set to True.</param>
-        public virtual void PlayAudioStream(string url, Vector position, float distance)
+        public virtual void PlayAudioStream(string url, Vector3 position, float distance)
         {
             AssertNotDisposed();
 
@@ -1350,7 +1350,7 @@ namespace SampSharp.GameMode.World
         /// <param name="modelid">The model to remove.</param>
         /// <param name="point">The point around which the objects will be removed.</param>
         /// <param name="radius">The radius. Objects within this radius from the coordinates above will be removed.</param>
-        public virtual void RemoveBuilding(int modelid, Vector point, float radius)
+        public virtual void RemoveBuilding(int modelid, Vector3 point, float radius)
         {
             AssertNotDisposed();
 
@@ -1369,8 +1369,8 @@ namespace SampSharp.GameMode.World
         /// <param name="materialcolor1">The first object color to set.</param>
         /// <param name="materialcolor2">The second object color to set.</param>
         /// <returns>True on success, False otherwise.</returns>
-        public virtual bool SetAttachedObject(int index, int modelid, Bone bone, Vector offset, Vector rotation,
-            Vector scale, Color materialcolor1, Color materialcolor2)
+        public virtual bool SetAttachedObject(int index, int modelid, Bone bone, Vector3 offset, Vector3 rotation,
+            Vector3 scale, Color materialcolor1, Color materialcolor2)
         {
             AssertNotDisposed();
 
@@ -1486,7 +1486,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="soundid">The sound to play.</param>
         /// <param name="point">Point for the sound to play at.</param>
-        public virtual void PlaySound(int soundid, Vector point)
+        public virtual void PlaySound(int soundid, Vector3 point)
         {
             AssertNotDisposed();
 
@@ -1605,7 +1605,7 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         /// <param name="point">The point to set the checkpoint at.</param>
         /// <param name="size">The size of the checkpoint.</param>
-        public virtual void SetCheckpoint(Vector point, float size)
+        public virtual void SetCheckpoint(Vector3 point, float size)
         {
             AssertNotDisposed();
 
@@ -1630,7 +1630,7 @@ namespace SampSharp.GameMode.World
         /// <param name="point">The point to set the checkpoint at.</param>
         /// <param name="nextPosition">Coordinates of the next point, for the arrow facing direction.</param>
         /// <param name="size">Length (diameter) of the checkpoint</param>
-        public virtual void SetRaceCheckpoint(CheckpointType type, Vector point, Vector nextPosition, float size)
+        public virtual void SetRaceCheckpoint(CheckpointType type, Vector3 point, Vector3 nextPosition, float size)
         {
             AssertNotDisposed();
 
@@ -1713,7 +1713,7 @@ namespace SampSharp.GameMode.World
         /// <param name="color">The color of the icon, this should only be used with the square icon (ID: 0).</param>
         /// <param name="style">The style of icon.</param>
         /// <returns>True if it was successful, False otherwise (e.g. the player isn't connected).</returns>
-        public virtual bool SetMapIcon(int iconid, Vector position, PlayerMarkersMode markertype, Color color,
+        public virtual bool SetMapIcon(int iconid, Vector3 position, PlayerMarkersMode markertype, Color color,
             MapIconType style)
         {
             AssertNotDisposed();
@@ -1739,7 +1739,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="point">The coordinates for this Player's camera to look at.</param>
         /// <param name="cut">The style the camera-position changes.</param>
-        public virtual void SetCameraLookAt(Vector point, CameraCut cut)
+        public virtual void SetCameraLookAt(Vector3 point, CameraCut cut)
         {
             AssertNotDisposed();
 
@@ -1751,7 +1751,7 @@ namespace SampSharp.GameMode.World
         ///     <see cref="CameraPosition" />.
         /// </summary>
         /// <param name="point">The coordinates for this Player's camera to look at.</param>
-        public virtual void SetCameraLookAt(Vector point)
+        public virtual void SetCameraLookAt(Vector3 point)
         {
             AssertNotDisposed();
 
@@ -1765,7 +1765,7 @@ namespace SampSharp.GameMode.World
         /// <param name="to">The position the camera should move to.</param>
         /// <param name="time">Time in milliseconds.</param>
         /// <param name="cut">The jump cut to use. Defaults to CameraCut.Cut. Set to CameraCut. Move for a smooth movement.</param>
-        public virtual void InterpolateCameraPosition(Vector from, Vector to, int time, CameraCut cut)
+        public virtual void InterpolateCameraPosition(Vector3 from, Vector3 to, int time, CameraCut cut)
         {
             AssertNotDisposed();
 
@@ -1779,7 +1779,7 @@ namespace SampSharp.GameMode.World
         /// <param name="to">The position the camera should move to.</param>
         /// <param name="time">Time in milliseconds to complete interpolation.</param>
         /// <param name="cut">The jump cut to use. Defaults to CameraCut.Cut (pointless). Set to CameraCut.Move for interpolation.</param>
-        public virtual void InterpolateCameraLookAt(Vector from, Vector to, int time, CameraCut cut)
+        public virtual void InterpolateCameraLookAt(Vector3 from, Vector3 to, int time, CameraCut cut)
         {
             AssertNotDisposed();
 
@@ -2129,7 +2129,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position of the explosion.</param>
         /// <param name="type">The type of explosion.</param>
         /// <param name="radius">The explosion radius.</param>
-        public static void CreateExplosionForAll(Vector position, int type, float radius)
+        public static void CreateExplosionForAll(Vector3 position, int type, float radius)
         {
             Native.CreateExplosion(position.X, position.Y, position.Z, type, radius);
         }
@@ -2141,7 +2141,7 @@ namespace SampSharp.GameMode.World
         /// <param name="type">The type of explosion.</param>
         /// <param name="radius">The explosion radius.</param>
         /// <param name="interior">The interior of the explosion.</param>
-        public static void CreateExplosionForAll(Vector position, int type, float radius, int interior)
+        public static void CreateExplosionForAll(Vector3 position, int type, float radius, int interior)
         {
             foreach (GtaPlayer p in All.Where(p => p.Interior == interior))
                 p.CreateExplosion(position, type, radius);
@@ -2155,7 +2155,7 @@ namespace SampSharp.GameMode.World
         /// <param name="radius">The explosion radius.</param>
         /// <param name="interior">The interior of the explosion.</param>
         /// <param name="virtualworld">The virtualworld of the explosion.</param>
-        public static void CreateExplosionForAll(Vector position, int type, float radius, int interior, int virtualworld)
+        public static void CreateExplosionForAll(Vector3 position, int type, float radius, int interior, int virtualworld)
         {
             foreach (GtaPlayer p in All.Where(p => p.Interior == interior && p.VirtualWorld == virtualworld))
                 p.CreateExplosion(position, type, radius);
@@ -2170,7 +2170,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position of the explosion.</param>
         /// <param name="type">The explosion type.</param>
         /// <param name="radius">The radius of the explosion.</param>
-        public virtual void CreateExplosion(Vector position, int type, float radius)
+        public virtual void CreateExplosion(Vector3 position, int type, float radius)
         {
             AssertNotDisposed();
 

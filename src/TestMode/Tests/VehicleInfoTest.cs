@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
@@ -23,7 +24,7 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            GtaVehicle veh = GtaVehicle.Create(VehicleModelType.Burrito, new Vector(5), 0, -1, -1, -1, true);
+            GtaVehicle veh = GtaVehicle.Create(VehicleModelType.Burrito, new Vector3(5), 0, -1, -1, -1, true);
             Console.WriteLine("Vehiclesize of {1}: {0}", veh.ModelInfo[VehicleModelInfoType.Size], veh.ModelInfo.Name);
         }
     }

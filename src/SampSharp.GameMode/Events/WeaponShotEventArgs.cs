@@ -30,7 +30,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="hittype">The hittype.</param>
         /// <param name="hitid">The hitid.</param>
         /// <param name="position">The position.</param>
-        public WeaponShotEventArgs(Weapon weapon, BulletHitType hittype, int hitid, Vector position)
+        public WeaponShotEventArgs(Weapon weapon, BulletHitType hittype, int hitid, Vector3 position)
             : base(position)
         {
             Weapon = weapon;

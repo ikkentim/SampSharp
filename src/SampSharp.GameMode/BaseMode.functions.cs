@@ -136,7 +136,7 @@ namespace SampSharp.GameMode
         ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
         ///     ID is 299.
         /// </returns>
-        public virtual int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon1, int weapon1Ammo,
+        public virtual int AddPlayerClass(int modelid, Vector3 position, float zAngle, Weapon weapon1, int weapon1Ammo,
             Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
             return Native.AddPlayerClass(modelid, position.X, position.Y, position.Z, zAngle, (int) weapon1, weapon1Ammo,
@@ -157,7 +157,7 @@ namespace SampSharp.GameMode
         ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
         ///     ID is 299.
         /// </returns>
-        public virtual int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon1, int weapon1Ammo,
+        public virtual int AddPlayerClass(int modelid, Vector3 position, float zAngle, Weapon weapon1, int weapon1Ammo,
             Weapon weapon2, int weapon2Ammo)
         {
             return AddPlayerClass(modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo, Weapon.None, 0);
@@ -175,7 +175,7 @@ namespace SampSharp.GameMode
         ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
         ///     ID is 299.
         /// </returns>
-        public virtual int AddPlayerClass(int modelid, Vector position, float zAngle, Weapon weapon, int weaponAmmo)
+        public virtual int AddPlayerClass(int modelid, Vector3 position, float zAngle, Weapon weapon, int weaponAmmo)
         {
             return AddPlayerClass(modelid, position, zAngle, weapon, weaponAmmo, Weapon.None, 0, Weapon.None, 0);
         }
@@ -190,7 +190,7 @@ namespace SampSharp.GameMode
         ///     The ID of the class which was just added. 300 if the class limit (300) was reached. The highest possible class
         ///     ID is 299.
         /// </returns>
-        public virtual int AddPlayerClass(int modelid, Vector position, float zAngle)
+        public virtual int AddPlayerClass(int modelid, Vector3 position, float zAngle)
         {
             return AddPlayerClass(modelid, position, zAngle, Weapon.None, 0, Weapon.None, 0, Weapon.None, 0);
         }
@@ -209,7 +209,7 @@ namespace SampSharp.GameMode
         /// <param name="weapon3">The third spawn-weapon for the player.</param>
         /// <param name="weapon3Ammo">The amount of ammunition for the third spawn weapon.</param>
         /// <returns>The ID of the class that was just created.</returns>
-        public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon1,
+        public virtual int AddPlayerClass(int teamid, int modelid, Vector3 position, float zAngle, Weapon weapon1,
             int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
             return Native.AddPlayerClassEx(teamid, modelid, position.X, position.Y, position.Z, zAngle, (int) weapon1,
@@ -228,7 +228,7 @@ namespace SampSharp.GameMode
         /// <param name="weapon2">The second spawn-weapon for the player.</param>
         /// <param name="weapon2Ammo">The amount of ammunition for the second spawn weapon.</param>
         /// <returns>The ID of the class that was just created.</returns>
-        public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon1,
+        public virtual int AddPlayerClass(int teamid, int modelid, Vector3 position, float zAngle, Weapon weapon1,
             int weapon1Ammo, Weapon weapon2, int weapon2Ammo)
         {
             return AddPlayerClass(teamid, modelid, position, zAngle, weapon1, weapon1Ammo, weapon2, weapon2Ammo,
@@ -245,7 +245,7 @@ namespace SampSharp.GameMode
         /// <param name="weapon">The spawn-weapon for the player.</param>
         /// <param name="weaponAmmo">The amount of ammunition for the spawn weapon.</param>
         /// <returns>The ID of the class that was just created.</returns>
-        public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle, Weapon weapon,
+        public virtual int AddPlayerClass(int teamid, int modelid, Vector3 position, float zAngle, Weapon weapon,
             int weaponAmmo)
         {
             return AddPlayerClass(teamid, modelid, position, zAngle, weapon, weaponAmmo, Weapon.None, 0, Weapon.None, 0);
@@ -259,7 +259,7 @@ namespace SampSharp.GameMode
         /// <param name="position">The coordinate of the class' spawn position.</param>
         /// <param name="zAngle">The direction in which the player will face after spawning.</param>
         /// <returns>The ID of the class that was just created.</returns>
-        public virtual int AddPlayerClass(int teamid, int modelid, Vector position, float zAngle)
+        public virtual int AddPlayerClass(int teamid, int modelid, Vector3 position, float zAngle)
         {
             return AddPlayerClass(teamid, modelid, position, zAngle, Weapon.None, 0, Weapon.None, 0, Weapon.None, 0);
         }

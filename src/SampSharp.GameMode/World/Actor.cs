@@ -154,7 +154,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the position of this <see cref="Actor" />.
         /// </summary>
-        public Vector Position
+        public Vector3 Position
         {
             get
             {
@@ -163,7 +163,7 @@ namespace SampSharp.GameMode.World
                 AssertNotDisposed();
 
                 Native.GetActorPos(Id, out x, out y, out z);
-                return new Vector(x, y, z);
+                return new Vector3(x, y, z);
             }
             set
             {
@@ -196,7 +196,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
         /// <returns>The instance of the actor.</returns>
-        public static Actor Create(int modelid, Vector position, float rotation)
+        public static Actor Create(int modelid, Vector3 position, float rotation)
         {
             var id = Native.CreateActor(modelid, position.X, position.Y, position.Z, rotation);
 

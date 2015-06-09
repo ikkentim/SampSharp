@@ -42,13 +42,13 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the rotation of this IGameObject.
         /// </summary>
-        public virtual Vector Rotation
+        public virtual Vector3 Rotation
         {
             get
             {
                 float x, y, z;
                 Native.GetObjectRot(Id, out x, out y, out z);
-                return new Vector(x, y, z);
+                return new Vector3(x, y, z);
             }
             set { Native.SetObjectRot(Id, value.X, value.Y, value.Z); }
         }
@@ -56,13 +56,13 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the position of this IWorldObject.
         /// </summary>
-        public virtual Vector Position
+        public virtual Vector3 Position
         {
             get
             {
                 float x, y, z;
                 Native.GetObjectPos(Id, out x, out y, out z);
-                return new Vector(x, y, z);
+                return new Vector3(x, y, z);
             }
             set { Native.SetObjectPos(Id, value.X, value.Y, value.Z); }
         }
@@ -111,7 +111,7 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnMoved" /> callback is being called.
-        ///     This callback is called when an object is moved after <see cref="Move(Vector,float)" /> (when it stops moving).
+        ///     This callback is called when an object is moved after <see cref="Move(Vector3,float)" /> (when it stops moving).
         /// </summary>
         public event EventHandler<EventArgs> Moved;
 
@@ -147,7 +147,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
         /// <param name="drawDistance">The draw distance.</param>
-        public GlobalObject(int modelid, Vector position, Vector rotation, float drawDistance)
+        public GlobalObject(int modelid, Vector3 position, Vector3 rotation, float drawDistance)
         {
             DrawDistance = drawDistance;
 
@@ -161,7 +161,7 @@ namespace SampSharp.GameMode.World
         /// <param name="modelid">The modelid.</param>
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
-        public GlobalObject(int modelid, Vector position, Vector rotation) : this(modelid, position, rotation, 0)
+        public GlobalObject(int modelid, Vector3 position, Vector3 rotation) : this(modelid, position, rotation, 0)
         {
         }
 
@@ -196,7 +196,7 @@ namespace SampSharp.GameMode.World
         /// <returns>
         ///     The time it will take for the object to move in milliseconds.
         /// </returns>
-        public virtual int Move(Vector position, float speed, Vector rotation)
+        public virtual int Move(Vector3 position, float speed, Vector3 rotation)
         {
             return Native.MoveObject(Id, position.X, position.Y, position.Z, speed, rotation.X, rotation.Y, rotation.Z);
         }
@@ -209,7 +209,7 @@ namespace SampSharp.GameMode.World
         /// <returns>
         ///     The time it will take for the object to move in milliseconds.
         /// </returns>
-        public virtual int Move(Vector position, float speed)
+        public virtual int Move(Vector3 position, float speed)
         {
             return Native.MoveObject(Id, position.X, position.Y, position.Z, speed, -1000, -1000, -1000);
         }
@@ -268,7 +268,7 @@ namespace SampSharp.GameMode.World
         /// <param name="offset">The offset.</param>
         /// <param name="rotation">The rotation.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void AttachTo(GtaPlayer player, Vector offset, Vector rotation)
+        public virtual void AttachTo(GtaPlayer player, Vector3 offset, Vector3 rotation)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -283,7 +283,7 @@ namespace SampSharp.GameMode.World
         /// <param name="offset">The offset.</param>
         /// <param name="rotation">The rotation.</param>
         /// <exception cref="System.ArgumentNullException">vehicle</exception>
-        public virtual void AttachTo(GtaVehicle vehicle, Vector offset, Vector rotation)
+        public virtual void AttachTo(GtaVehicle vehicle, Vector3 offset, Vector3 rotation)
         {
             if (vehicle == null)
                 throw new ArgumentNullException("vehicle");
@@ -316,7 +316,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position.</param>
         /// <param name="radius">The radius.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public static void Remove(GtaPlayer player, int modelid, Vector position, float radius)
+        public static void Remove(GtaPlayer player, int modelid, Vector3 position, float radius)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -343,7 +343,7 @@ namespace SampSharp.GameMode.World
         /// <param name="rotation">The rotation.</param>
         /// <param name="syncRotation">if set to <c>true</c> synchronize rotation.</param>
         /// <exception cref="System.ArgumentNullException">globalObject</exception>
-        public virtual void AttachTo(GlobalObject globalObject, Vector offset, Vector rotation,
+        public virtual void AttachTo(GlobalObject globalObject, Vector3 offset, Vector3 rotation,
             bool syncRotation = false)
         {
             if (globalObject == null)

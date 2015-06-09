@@ -46,7 +46,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the rotation of this <see cref="IGameObject" />.
         /// </summary>
-        Vector Rotation { get; set; }
+        Vector3 Rotation { get; set; }
 
         /// <summary>
         ///     Moves this <see cref="IGameObject" /> to the given position and rotation with the given speed.
@@ -55,7 +55,7 @@ namespace SampSharp.GameMode.World
         /// <param name="speed">The speed at which to move this <see cref="IGameObject" />.</param>
         /// <param name="rotation">The rotation to which to move this <see cref="IGameObject" />.</param>
         /// <returns>The time it will take for the object to move in milliseconds.</returns>
-        int Move(Vector position, float speed, Vector rotation);
+        int Move(Vector3 position, float speed, Vector3 rotation);
 
         /// <summary>
         ///     Moves this <see cref="IGameObject" /> to the given position with the given speed.
@@ -63,7 +63,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position to which to move this <see cref="IGameObject" />.</param>
         /// <param name="speed">The speed at which to move this <see cref="IGameObject" />.</param>
         /// <returns>The time it will take for the object to move in milliseconds.</returns>
-        int Move(Vector position, float speed);
+        int Move(Vector3 position, float speed);
 
         /// <summary>
         ///     Stop this <see cref="IGameObject" /> from moving any further.

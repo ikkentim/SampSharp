@@ -15,6 +15,7 @@
 
 using System;
 using System.Linq;
+using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.SAMP;
@@ -94,7 +95,7 @@ namespace TestMode.Tests
         {
             player.SendClientMessage(Color.GreenYellow, "You have spawned a {0}", model);
             Console.WriteLine("Spawning a {0} {2} for {1}", model, player, (int) model);
-            GtaVehicle vehicle = GtaVehicle.Create(model, player.Position + new Vector(0, 0, 0.5), player.Rotation.Z, -1,
+            GtaVehicle vehicle = GtaVehicle.Create(model, player.Position + new Vector3(0, 0, 0.5), player.Rotation.Z, -1,
                 -1);
             player.PutInVehicle(vehicle);
         }
@@ -134,7 +135,7 @@ namespace TestMode.Tests
         [Command("teleport", Alias = "tp")]
         public static void TpCommand(GtaPlayer player, int x, int y, int z = 4)
         {
-            player.Position = new Vector(x, y, z);
+            player.Position = new Vector3(x, y, z);
             Console.WriteLine("Teleporting {0} to {1}, {2}, {3}", player, x, y, z);
         }
 

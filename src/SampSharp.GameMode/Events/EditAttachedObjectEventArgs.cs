@@ -36,7 +36,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="rotation">Rotation of the attached object.</param>
         /// <param name="scale">Scale of the attached object.</param>
         public EditAttachedObjectEventArgs(EditObjectResponse response, int index, int modelid, Bone bone,
-            Vector offset, Vector rotation, Vector scale)
+            Vector3 offset, Vector3 rotation, Vector3 scale)
         {
             EditObjectResponse = response;
             Index = index;
@@ -70,16 +70,16 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the offset of the attached object.
         /// </summary>
-        public Vector Offset { get; private set; }
+        public Vector3 Offset { get; private set; }
 
         /// <summary>
         ///     Gets the rotation of the attached object.
         /// </summary>
-        public Vector Rotation { get; private set; }
+        public Vector3 Rotation { get; private set; }
 
         /// <summary>
         ///     Gets the scale of the attached object.
         /// </summary>
-        public Vector Scale { get; private set; }
+        public Vector3 Scale { get; private set; }
     }
 }

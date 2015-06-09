@@ -263,7 +263,7 @@ namespace SampSharp.GameMode
             float newY, float newZ, float velX, float velY, float velZ)
         {
             var args = new UnoccupiedVehicleEventArgs(GtaPlayer.FindOrCreate(playerid), passengerSeat,
-                new Vector(newX, newY, newZ), new Vector(velX, velY, velZ));
+                new Vector3(newX, newY, newZ), new Vector3(velX, velY, velZ));
             OnUnoccupiedVehicleUpdated(GtaVehicle.FindOrCreate(vehicleid), args);
 
             return !args.PreventPropagation;
@@ -381,7 +381,7 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerClickMap(int playerid, float fX, float fY, float fZ)
         {
-            OnPlayerClickMap(GtaPlayer.FindOrCreate(playerid), new PositionEventArgs(new Vector(fX, fY, fZ)));
+            OnPlayerClickMap(GtaPlayer.FindOrCreate(playerid), new PositionEventArgs(new Vector3(fX, fY, fZ)));
 
             return true;
         }
@@ -425,14 +425,14 @@ namespace SampSharp.GameMode
             {
                 OnPlayerEditPlayerObject(player,
                     new EditPlayerObjectEventArgs(player, PlayerObject.FindOrCreate(player, objectid),
-                        (EditObjectResponse) response, new Vector(fX, fY, fZ), new Vector(fRotX, fRotY, fRotZ)));
+                        (EditObjectResponse) response, new Vector3(fX, fY, fZ), new Vector3(fRotX, fRotY, fRotZ)));
             }
             else
             {
                 OnPlayerEditGlobalObject(player,
                     new EditGlobalObjectEventArgs(player, GlobalObject.FindOrCreate(objectid),
                         (EditObjectResponse) response,
-                        new Vector(fX, fY, fZ), new Vector(fRotX, fRotY, fRotZ)));
+                        new Vector3(fX, fY, fZ), new Vector3(fRotX, fRotY, fRotZ)));
             }
 
             return true;
@@ -444,8 +444,8 @@ namespace SampSharp.GameMode
         {
             OnPlayerEditAttachedObject(GtaPlayer.FindOrCreate(playerid),
                 new EditAttachedObjectEventArgs((EditObjectResponse) response, index, modelid, (Bone) boneid,
-                    new Vector(fOffsetX, fOffsetY, fOffsetZ), new Vector(fRotX, fRotY, fRotZ),
-                    new Vector(fScaleX, fScaleY, fScaleZ)));
+                    new Vector3(fOffsetX, fOffsetY, fOffsetZ), new Vector3(fRotX, fRotY, fRotZ),
+                    new Vector3(fScaleX, fScaleY, fScaleZ)));
 
             return true;
         }
@@ -459,7 +459,7 @@ namespace SampSharp.GameMode
                     OnPlayerSelectGlobalObject(GtaPlayer.FindOrCreate(playerid),
                         new SelectGlobalObjectEventArgs(GtaPlayer.FindOrCreate(playerid),
                             GlobalObject.FindOrCreate(objectid), modelid,
-                            new Vector(fX, fY, fZ)));
+                            new Vector3(fX, fY, fZ)));
                     break;
                 case ObjectType.PlayerObject:
                     GtaPlayer player = GtaPlayer.FindOrCreate(playerid);
@@ -467,7 +467,7 @@ namespace SampSharp.GameMode
                     OnPlayerSelectPlayerObject(player,
                         new SelectPlayerObjectEventArgs(GtaPlayer.FindOrCreate(playerid),
                             PlayerObject.FindOrCreate(player, objectid), modelid,
-                            new Vector(fX, fY, fZ)));
+                            new Vector3(fX, fY, fZ)));
                     break;
             }
 
@@ -477,7 +477,7 @@ namespace SampSharp.GameMode
         internal bool OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY,
             float fZ)
         {
-            var args = new WeaponShotEventArgs((Weapon) weaponid, (BulletHitType) hittype, hitid, new Vector(fX, fY, fZ));
+            var args = new WeaponShotEventArgs((Weapon) weaponid, (BulletHitType) hittype, hitid, new Vector3(fX, fY, fZ));
 
             OnPlayerWeaponShot(GtaPlayer.FindOrCreate(playerid), args);
 

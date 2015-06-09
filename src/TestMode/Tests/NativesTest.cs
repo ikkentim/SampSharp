@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;
@@ -52,7 +53,7 @@ namespace TestMode.Tests
             int vid = Native.CallNative("CreateVehicle", __arglist(400, 50.50f, 60.60f, 70.70f, 0.0f, -1, -1, -1));
             float xx, yy, zz;
             Native.GetVehiclePos(vid, out xx, out yy, out zz);
-            Console.WriteLine("pos: {0}", new Vector(xx, yy, zz));
+            Console.WriteLine("pos: {0}", new Vector3(xx, yy, zz));
             Native.DestroyVehicle(vid);
 
             Console.WriteLine("CALLING GetVehicleModelInfo");

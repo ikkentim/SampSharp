@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
@@ -14,7 +15,7 @@ namespace TestMode.Tests
 
         public void Start(GameMode gameMode)
         {
-            var actor = Actor.Create(0, new Vector(10, 10, 2), 0);
+            var actor = Actor.Create(0, new Vector3(10, 10, 2), 0);
             actor.Health = 100;
 
             gameMode.PlayerSpawned += (sender, args) =>

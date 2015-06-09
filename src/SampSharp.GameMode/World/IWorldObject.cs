@@ -23,6 +23,6 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the position of this IWorldObject.
         /// </summary>
-        Vector Position { get; }
+        Vector3 Position { get; }
     }
 }

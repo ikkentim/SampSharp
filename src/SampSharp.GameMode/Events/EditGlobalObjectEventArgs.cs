@@ -33,7 +33,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
         public EditGlobalObjectEventArgs(GtaPlayer player, GlobalObject @object, EditObjectResponse response,
-            Vector position, Vector rotation) : base(position)
+            Vector3 position, Vector3 rotation) : base(position)
         {
             Player = player;
             Object = @object;
@@ -64,6 +64,6 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the rotation.
         /// </summary>
-        public Vector Rotation { get; private set; }
+        public Vector3 Rotation { get; private set; }
     }
 }

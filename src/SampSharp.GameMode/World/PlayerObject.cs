@@ -42,13 +42,13 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the rotation of this <see cref="IGameObject" />.
         /// </summary>
-        public virtual Vector Rotation
+        public virtual Vector3 Rotation
         {
             get
             {
                 float x, y, z;
                 Native.GetPlayerObjectRot(Owner.Id, Id, out x, out y, out z);
-                return new Vector(x, y, z);
+                return new Vector3(x, y, z);
             }
             set { Native.SetPlayerObjectRot(Owner.Id, Id, value.X, value.Y, value.Z); }
         }
@@ -56,13 +56,13 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the position of this <see cref="IWorldObject" />.
         /// </summary>
-        public virtual Vector Position
+        public virtual Vector3 Position
         {
             get
             {
                 float x, y, z;
                 Native.GetPlayerObjectPos(Owner.Id, Id, out x, out y, out z);
-                return new Vector(x, y, z);
+                return new Vector3(x, y, z);
             }
             set { Native.SetPlayerObjectPos(Owner.Id, Id, value.X, value.Y, value.Z); }
         }
@@ -116,7 +116,7 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnMoved" /> callback is being called.
-        ///     This callback is called when an object is moved after <see cref="Move(Vector,float)" /> (when it stops moving).
+        ///     This callback is called when an object is moved after <see cref="Move(Vector3,float)" /> (when it stops moving).
         /// </summary>
         public event EventHandler<EventArgs> Moved;
 
@@ -166,7 +166,7 @@ namespace SampSharp.GameMode.World
         /// <param name="modelid">The modelid.</param>
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
-        public PlayerObject(GtaPlayer owner, int modelid, Vector position, Vector rotation)
+        public PlayerObject(GtaPlayer owner, int modelid, Vector3 position, Vector3 rotation)
             : this(owner, modelid, position, rotation, 0)
         {
         }
@@ -180,7 +180,7 @@ namespace SampSharp.GameMode.World
         /// <param name="rotation">The rotation.</param>
         /// <param name="drawDistance">The draw distance.</param>
         /// <exception cref="System.ArgumentNullException">owner</exception>
-        public PlayerObject(GtaPlayer owner, int modelid, Vector position, Vector rotation, float drawDistance)
+        public PlayerObject(GtaPlayer owner, int modelid, Vector3 position, Vector3 rotation, float drawDistance)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
@@ -214,7 +214,7 @@ namespace SampSharp.GameMode.World
         /// <returns>
         ///     The time it will take for the object to move in milliseconds.
         /// </returns>
-        public virtual int Move(Vector position, float speed, Vector rotation)
+        public virtual int Move(Vector3 position, float speed, Vector3 rotation)
         {
             AssertNotDisposed();
 
@@ -230,7 +230,7 @@ namespace SampSharp.GameMode.World
         /// <returns>
         ///     The time it will take for the object to move in milliseconds.
         /// </returns>
-        public virtual int Move(Vector position, float speed)
+        public virtual int Move(Vector3 position, float speed)
         {
             AssertNotDisposed();
 
@@ -299,7 +299,7 @@ namespace SampSharp.GameMode.World
         /// <param name="offset">The offset.</param>
         /// <param name="rotation">The rotation.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void AttachTo(GtaPlayer player, Vector offset, Vector rotation)
+        public virtual void AttachTo(GtaPlayer player, Vector3 offset, Vector3 rotation)
         {
             AssertNotDisposed();
 
@@ -317,7 +317,7 @@ namespace SampSharp.GameMode.World
         /// <param name="offset">The offset.</param>
         /// <param name="rotation">The rotation.</param>
         /// <exception cref="System.ArgumentNullException">vehicle</exception>
-        public virtual void AttachTo(GtaVehicle vehicle, Vector offset, Vector rotation)
+        public virtual void AttachTo(GtaVehicle vehicle, Vector3 offset, Vector3 rotation)
         {
             AssertNotDisposed();
 

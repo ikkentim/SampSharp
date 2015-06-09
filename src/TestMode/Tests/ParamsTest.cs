@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using SampSharp.GameMode;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;
 
@@ -25,7 +26,7 @@ namespace TestMode.Tests
 
         public void Start(GameMode gameMode)
         {
-            var test = GtaVehicle.Create(400, Vector.Zero, 0, 0, 0);
+            var test = GtaVehicle.Create(400, Vector3.Zero, 0, 0, 0);
 
             int a, b, c, d, e, f, g;
             Native.GetVehicleParamsEx(test.Id, out a, out b, out c, out d, out e, out f, out g);

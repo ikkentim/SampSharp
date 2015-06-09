@@ -193,9 +193,9 @@ namespace SampSharp.GameMode.Tools
         /// </summary>
         /// <param name="point">The point to look at.</param>
         /// <returns>Ground level at the given point.</returns>
-        public static Vector Find(Vector point)
+        public static Vector3 Find(Vector3 point)
         {
-            return new Vector(point.X, point.Y, Find(point.X, point.Y));
+            return new Vector3(point.X, point.Y, Find(point.X, point.Y));
         }
 
         /// <summary>
@@ -237,9 +237,9 @@ namespace SampSharp.GameMode.Tools
         /// </summary>
         /// <param name="point">The point to look at.</param>
         /// <returns>A approximation of the ground level at the given point.</returns>
-        public static Vector FindAverage(Vector point)
+        public static Vector3 FindAverage(Vector3 point)
         {
-            return new Vector(point.X, point.Y, FindAverage(point.X, point.Y));
+            return new Vector3(point.X, point.Y, FindAverage(point.X, point.Y));
         }
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace SampSharp.GameMode.Tools
         /// </summary>
         /// <param name="point">The point with the new Z-coordinate.</param>
         /// <returns>True on success; False otherwise.</returns>
-        public static bool SetZ(Vector point)
+        public static bool SetZ(Vector3 point)
         {
             return SetZ(point.X, point.Y, point.Z);
         }

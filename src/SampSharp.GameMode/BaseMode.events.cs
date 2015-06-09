@@ -171,15 +171,15 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     Occurs when the <see cref="OnObjectMoved(GlobalObject,EventArgs)" /> callback is being called.
-        ///     This callback is called when an object is moved using <see cref="GlobalObject.Move(Vector,float)" /> or
-        ///     <see cref="GlobalObject.Move(Vector,float, Vector)" /> (when it stops moving).
+        ///     This callback is called when an object is moved using <see cref="GlobalObject.Move(Vector3,float)" /> or
+        ///     <see cref="GlobalObject.Move(Vector3,float, Vector3)" /> (when it stops moving).
         /// </summary>
         public event EventHandler<EventArgs> ObjectMoved;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerObjectMoved(PlayerObject,EventArgs)" /> callback is being called.
-        ///     This callback is called when an object is moved using <see cref="PlayerObject.Move(Vector,float)" /> or
-        ///     <see cref="PlayerObject.Move(Vector,float, Vector)" /> (when it stops moving).
+        ///     This callback is called when an object is moved using <see cref="PlayerObject.Move(Vector3,float)" /> or
+        ///     <see cref="PlayerObject.Move(Vector3,float, Vector3)" /> (when it stops moving).
         /// </summary>
         public event EventHandler<EventArgs> PlayerObjectMoved;
 

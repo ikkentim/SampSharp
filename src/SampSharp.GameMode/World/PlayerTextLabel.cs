@@ -57,7 +57,7 @@ namespace SampSharp.GameMode.World
 
         private Color _color;
         private float _drawDistance;
-        private Vector _position;
+        private Vector3 _position;
         private bool _testLOS;
         private string _text;
 
@@ -94,7 +94,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets or sets the position of this <see cref="PlayerTextLabel" />.
         /// </summary>
-        public virtual Vector Position
+        public virtual Vector3 Position
         {
             get { return _position; }
             set
@@ -215,7 +215,7 @@ namespace SampSharp.GameMode.World
         /// <param name="drawDistance">The draw distance.</param>
         /// <param name="testLOS">if set to <c>true</c> [test los].</param>
         /// <exception cref="System.ArgumentNullException">owner</exception>
-        public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector position, float drawDistance,
+        public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector3 position, float drawDistance,
             bool testLOS)
         {
             if (owner == null)
@@ -239,7 +239,7 @@ namespace SampSharp.GameMode.World
         /// <param name="color">The color.</param>
         /// <param name="position">The position.</param>
         /// <param name="drawDistance">The draw distance.</param>
-        public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector position, float drawDistance)
+        public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector3 position, float drawDistance)
             : this(owner, text, color, position, drawDistance, true)
         {
         }
@@ -259,7 +259,7 @@ namespace SampSharp.GameMode.World
         ///     or
         ///     attachedPlayer
         /// </exception>
-        public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector position, float drawDistance,
+        public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector3 position, float drawDistance,
             bool testLOS, GtaPlayer attachedPlayer)
         {
             if (owner == null)
@@ -287,7 +287,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position.</param>
         /// <param name="drawDistance">The draw distance.</param>
         /// <param name="attachedPlayer">The attached player.</param>
-        public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector position, float drawDistance,
+        public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector3 position, float drawDistance,
             GtaPlayer attachedPlayer) : this(owner, text, color, position, drawDistance, true, attachedPlayer)
         {
         }
@@ -307,7 +307,7 @@ namespace SampSharp.GameMode.World
         ///     or
         ///     attachedVehicle
         /// </exception>
-        public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector position, float drawDistance,
+        public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector3 position, float drawDistance,
             bool testLOS, GtaVehicle attachedVehicle)
         {
             if (owner == null)
@@ -335,7 +335,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position.</param>
         /// <param name="drawDistance">The draw distance.</param>
         /// <param name="attachedVehicle">The attached vehicle.</param>
-        public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector position, float drawDistance,
+        public PlayerTextLabel(GtaPlayer owner, string text, Color color, Vector3 position, float drawDistance,
             GtaVehicle attachedVehicle)
             : this(owner, text, color, position, drawDistance, true, attachedVehicle)
         {

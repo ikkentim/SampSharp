@@ -39,7 +39,7 @@ namespace SampSharp.GameMode.World
 
         private Color _color;
         private float _drawDistance;
-        private Vector _position;
+        private Vector3 _position;
         private bool _testLOS;
         private string _text;
         private int _virtualWorld;
@@ -77,7 +77,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets or sets the position of this <see cref="TextLabel" />.
         /// </summary>
-        public virtual Vector Position
+        public virtual Vector3 Position
         {
             get { return _position; }
             set
@@ -153,7 +153,7 @@ namespace SampSharp.GameMode.World
         /// <param name="drawDistance">The draw distance.</param>
         /// <param name="virtualWorld">The virtual world.</param>
         /// <param name="testLOS">if set to <c>true</c> the line of sight should be tested before drawing.</param>
-        public TextLabel(string text, Color color, Vector position, float drawDistance, int virtualWorld, bool testLOS)
+        public TextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld, bool testLOS)
         {
             _text = text;
             _color = color;
@@ -173,7 +173,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position.</param>
         /// <param name="drawDistance">The draw distance.</param>
         /// <param name="virtualWorld">The virtual world.</param>
-        public TextLabel(string text, Color color, Vector position, float drawDistance, int virtualWorld)
+        public TextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld)
             : this(text, color, position, drawDistance, virtualWorld, true)
         {
         }
@@ -185,7 +185,7 @@ namespace SampSharp.GameMode.World
         /// <param name="color">The color.</param>
         /// <param name="position">The position.</param>
         /// <param name="drawDistance">The draw distance.</param>
-        public TextLabel(string text, Color color, Vector position, float drawDistance)
+        public TextLabel(string text, Color color, Vector3 position, float drawDistance)
             : this(text, color, position, drawDistance, -1, true)
         {
         }
@@ -211,7 +211,7 @@ namespace SampSharp.GameMode.World
         /// <param name="player">The player.</param>
         /// <param name="offset">The offset.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void AttachTo(GtaPlayer player, Vector offset)
+        public virtual void AttachTo(GtaPlayer player, Vector3 offset)
         {
             AssertNotDisposed();
 
@@ -227,7 +227,7 @@ namespace SampSharp.GameMode.World
         /// <param name="vehicle">The vehicle.</param>
         /// <param name="offset">The offset.</param>
         /// <exception cref="System.ArgumentNullException">vehicle</exception>
-        public virtual void AttachTo(GtaVehicle vehicle, Vector offset)
+        public virtual void AttachTo(GtaVehicle vehicle, Vector3 offset)
         {
             AssertNotDisposed();
 

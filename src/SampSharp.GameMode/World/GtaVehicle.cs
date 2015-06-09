@@ -172,13 +172,13 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets or sets the velocity at which this <see cref="GtaVehicle" /> is moving.
         /// </summary>
-        public virtual Vector Velocity
+        public virtual Vector3 Velocity
         {
             get
             {
                 float x, y, z;
                 Native.GetVehicleVelocity(Id, out x, out y, out z);
-                return new Vector(x, y, z);
+                return new Vector3(x, y, z);
             }
             set { Native.SetVehicleVelocity(Id, value.X, value.Y, value.Z); }
         }
@@ -495,9 +495,9 @@ namespace SampSharp.GameMode.World
         /// <remarks>
         ///     Only the Z angle can be set!
         /// </remarks>
-        public virtual Vector Rotation
+        public virtual Vector3 Rotation
         {
-            get { return new Vector(0, 0, Angle); }
+            get { return new Vector3(0, 0, Angle); }
             set { Native.SetVehicleZAngle(Id, value.Z); }
         }
 
@@ -518,13 +518,13 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets or sets the position of this <see cref="GtaVehicle" />.
         /// </summary>
-        public virtual Vector Position
+        public virtual Vector3 Position
         {
             get
             {
                 float x, y, z;
                 Native.GetVehiclePos(Id, out x, out y, out z);
-                return new Vector(x, y, z);
+                return new Vector3(x, y, z);
             }
             set { Native.SetVehiclePos(Id, value.X, value.Y, value.Z); }
         }
@@ -629,7 +629,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns>A float containing the distance from the point specified in the coordinates.</returns>
-        public virtual float GetDistanceFromPoint(Vector point)
+        public virtual float GetDistanceFromPoint(Vector3 point)
         {
             AssertNotDisposed();
 
@@ -650,7 +650,7 @@ namespace SampSharp.GameMode.World
         /// </param>
         /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
         /// <returns> The <see cref="GtaVehicle" /> created.</returns>
-        public static GtaVehicle Create(int vehicletype, Vector position, float rotation, int color1, int color2,
+        public static GtaVehicle Create(int vehicletype, Vector3 position, float rotation, int color1, int color2,
             int respawnDelay = -1, bool addAlarm = false)
         {
             int id = new[] {449, 537, 538, 569, 570, 590}.Contains(vehicletype)
@@ -676,7 +676,7 @@ namespace SampSharp.GameMode.World
         /// </param>
         /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
         /// <returns> The <see cref="GtaVehicle" /> created.</returns>
-        public static GtaVehicle Create(VehicleModelType vehicletype, Vector position, float rotation, int color1,
+        public static GtaVehicle Create(VehicleModelType vehicletype, Vector3 position, float rotation, int color1,
             int color2,
             int respawnDelay = -1, bool addAlarm = false)
         {
@@ -697,7 +697,7 @@ namespace SampSharp.GameMode.World
         /// </param>
         /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
         /// <returns> The <see cref="GtaVehicle" /> created.</returns>
-        public static GtaVehicle CreateStatic(int vehicletype, Vector position, float rotation, int color1, int color2,
+        public static GtaVehicle CreateStatic(int vehicletype, Vector3 position, float rotation, int color1, int color2,
             int respawnDelay, bool addAlarm = false)
         {
             int id = Native.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
@@ -715,7 +715,7 @@ namespace SampSharp.GameMode.World
         /// <param name="color1">The primary color ID.</param>
         /// <param name="color2">The secondary color ID.</param>
         /// <returns> The <see cref="GtaVehicle" /> created.</returns>
-        public static GtaVehicle CreateStatic(int vehicletype, Vector position, float rotation, int color1, int color2)
+        public static GtaVehicle CreateStatic(int vehicletype, Vector3 position, float rotation, int color1, int color2)
         {
             int id = Native.AddStaticVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2);
 
@@ -1126,7 +1126,7 @@ namespace SampSharp.GameMode.World
         ///     Sets the angular velocity of this <see cref="GtaVehicle" />.
         /// </summary>
         /// <param name="velocity">The amount of velocity in the angular directions.</param>
-        public virtual void SetVehicleAngularVelocity(Vector velocity)
+        public virtual void SetVehicleAngularVelocity(Vector3 velocity)
         {
             AssertNotDisposed();
 
@@ -1168,11 +1168,11 @@ namespace SampSharp.GameMode.World
         /// <param name="model">The vehicle model to get info of.</param>
         /// <param name="infotype">The type of information to retrieve.</param>
         /// <returns>The offset vector.</returns>
-        public static Vector GetVehicleModelInfo(VehicleModelType model, VehicleModelInfoType infotype)
+        public static Vector3 GetVehicleModelInfo(VehicleModelType model, VehicleModelInfoType infotype)
         {
             float x, y, z;
             Native.GetVehicleModelInfo((int) model, (int) infotype, out x, out y, out z);
-            return new Vector(x, y, z);
+            return new Vector3(x, y, z);
         }
 
         /// <summary>

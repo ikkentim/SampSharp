@@ -58,7 +58,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position where the pickup should be spawned.</param>
         /// <param name="virtualWorld">The virtual world ID of the pickup. Use -1 for all worlds.</param>
         /// <returns>The created pickup or null if it cannot be created.</returns>
-        public static Pickup Create(int model, int type, Vector position, int virtualWorld = -1)
+        public static Pickup Create(int model, int type, Vector3 position, int virtualWorld = -1)
         {
             int id = Native.CreatePickup(model, type, position.X, position.Y, position.Z, virtualWorld);
 
@@ -81,7 +81,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position where the pickup should be spawned.</param>
         /// <param name="virtualWorld">The virtual world ID of the pickup. Use -1 for all worlds.</param>
         /// <returns>True if the pickup has been created, otherwise False.</returns>
-        public static bool CreateStatic(int model, int type, Vector position, int virtualWorld = -1)
+        public static bool CreateStatic(int model, int type, Vector3 position, int virtualWorld = -1)
         {
             return Native.AddStaticPickup(model, type, position.X, position.Y, position.Z, virtualWorld) == 1;
         }
@@ -152,7 +152,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the position of this <see cref="Pickup" />.
         /// </summary>
-        public Vector Position { get; private set; }
+        public Vector3 Position { get; private set; }
 
         #endregion
     }

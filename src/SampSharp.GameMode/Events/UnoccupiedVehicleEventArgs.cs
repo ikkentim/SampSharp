@@ -30,8 +30,8 @@ namespace SampSharp.GameMode.Events
         /// <param name="passengerSeat">The passenger seat.</param>
         /// <param name="newPosition">The new position.</param>
         /// <param name="newVelocity">The new velocity.</param>
-        public UnoccupiedVehicleEventArgs(GtaPlayer player, int passengerSeat, Vector newPosition,
-            Vector newVelocity)
+        public UnoccupiedVehicleEventArgs(GtaPlayer player, int passengerSeat, Vector3 newPosition,
+            Vector3 newVelocity)
             : base(player)
         {
             PassengerSeat = passengerSeat;
@@ -47,12 +47,12 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the new position.
         /// </summary>
-        public Vector NewPosition { get; private set; }
+        public Vector3 NewPosition { get; private set; }
 
         /// <summary>
         ///     Gets the new velocity.
         /// </summary>
-        public Vector NewVelocity { get; private set; }
+        public Vector3 NewVelocity { get; private set; }
 
         /// <summary>
         ///     Gets or sets whether to stop the vehicle syncing its position to other players.

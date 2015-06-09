@@ -78,7 +78,7 @@ namespace SampSharp.GameMode.Display
         private int _outline;
         private int _previewModel;
         private int _previewPrimaryColor = -1;
-        private Vector _previewRotation;
+        private Vector3 _previewRotation;
         private int _previewSecondaryColor = -1;
         private float _previewZoom = 1;
         private bool _proportional;
@@ -422,7 +422,7 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Gets or sets the rotation of this textdraw's previewmodel.
         /// </summary>
-        public virtual Vector PreviewRotation
+        public virtual Vector3 PreviewRotation
         {
             get { return _previewRotation; }
             set
@@ -587,7 +587,7 @@ namespace SampSharp.GameMode.Display
             if (UseBox) UseBox = UseBox;
             if (Selectable) Selectable = Selectable;
             if (PreviewModel != 0) PreviewModel = PreviewModel;
-            if (PreviewRotation != Vector.Zero) PreviewRotation = PreviewRotation;
+            if (PreviewRotation != Vector3.Zero) PreviewRotation = PreviewRotation;
             if (PreviewZoom != 1) PreviewZoom = PreviewZoom;
             if (PreviewPrimaryColor != -1) PreviewPrimaryColor = PreviewPrimaryColor;
             if (PreviewSecondaryColor != -1) PreviewSecondaryColor = PreviewSecondaryColor;
