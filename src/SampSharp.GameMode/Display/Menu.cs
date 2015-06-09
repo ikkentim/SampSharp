@@ -15,7 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
@@ -25,25 +24,11 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Display
 {
     /// <summary>
-    ///     Represents a menu
+    ///     Represents a SA:MP menu.
     /// </summary>
-    public class Menu : Pool<Menu>
+    public class Menu : Pool<Menu>, IMenu
     {
-        /// <summary>
-        ///     Identifier indicating the handle is invalid.
-        /// </summary>
-        public const int InvalidId = 0xFF;
-
-        /// <summary>
-        ///     Maximum number of menus which can exist.
-        /// </summary>
-        public const int Max = 128;
-
-        #region Fields
-
         private readonly List<GtaPlayer> _viewers = new List<GtaPlayer>();
-
-        #endregion
 
         #region Constructors
 
@@ -55,7 +40,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="y">The y-position of the menu on the screen.</param>
         /// <param name="columns">The columns to display in the menu.</param>
         /// <param name="rows">The rows to display in the menu.</param>
-        public Menu(string title, float x, float y, List<MenuColumn> columns = null, List<MenuRow> rows = null)
+        public Menu(string title, float x, float y, IList<MenuColumn> columns = null, IList<MenuRow> rows = null)
         {
             Id = InvalidId;
             Title = title;
@@ -63,53 +48,81 @@ namespace SampSharp.GameMode.Display
             Y = y;
             Columns = columns ?? new List<MenuColumn>();
             Rows = rows ?? new List<MenuRow>();
+            Viewers = _viewers.AsReadOnly();
         }
 
         #endregion
 
-        #region Properties
+        #region Implementation of IIdentifiable
 
         /// <summary>
-        ///     Gets the id of this menu.
+        ///     Gets the Identity of this <see cref="IIdentifiable" />.
         /// </summary>
         public int Id { get; private set; }
 
-        /// <summary>
-        ///     Gets or sets the title of this menu.
-        /// </summary>
-        public string Title { get; set; }
+        #endregion
+
+        #region Implementation of IDisposable
 
         /// <summary>
-        ///     Gets or sets the x-position of this menu on the screen.
+        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public float X { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the y-position of this menu on the screen.
-        /// </summary>
-        public float Y { get; set; }
-
-        /// <summary>
-        ///     Gets a list of viewers of this menu.
-        /// </summary>
-        public ReadOnlyCollection<GtaPlayer> Viewers
+        /// <param name="disposing">Whether managed resources should be disposed.</param>
+        protected override void Dispose(bool disposing)
         {
-            get { return _viewers.AsReadOnly(); }
+            Destroy();
+
+            base.Dispose(disposing);
         }
-
-        /// <summary>
-        ///     Gets a collection of columns in this menu.
-        /// </summary>
-        public List<MenuColumn> Columns { get; private set; }
-
-        /// <summary>
-        ///     Gets a collection of rows in this menu.
-        /// </summary>
-        public List<MenuRow> Rows { get; private set; }
 
         #endregion
 
-        #region Events
+        #region Constants of Menu
+
+        /// <summary>
+        ///     Identifier indicating the handle is invalid.
+        /// </summary>
+        public const int InvalidId = 0xFF;
+
+        /// <summary>
+        ///     Maximum number of menus which can exist.
+        /// </summary>
+        public const int Max = 128;
+
+        #endregion
+
+        #region Implementation of IMenu
+
+        /// <summary>
+        ///     Gets the title.
+        /// </summary>
+        public string Title { get; private set; }
+
+        /// <summary>
+        ///     Gets or sets the X-coordinate.
+        /// </summary>
+        public float X { get; private set; }
+
+        /// <summary>
+        ///     Gets or sets the Y-coordinate.
+        /// </summary>
+        public float Y { get; private set; }
+
+        /// <summary>
+        ///     Gets an <see cref="IReadOnlyCollection{T}" /> of <see cref="GtaPlayer" /> instances which are viewing this
+        ///     instance.
+        /// </summary>
+        public IReadOnlyCollection<GtaPlayer> Viewers { get; private set; }
+
+        /// <summary>
+        ///     Gets a collection of columns.
+        /// </summary>
+        public IList<MenuColumn> Columns { get; private set; }
+
+        /// <summary>
+        ///     Gets a collection of rows.
+        /// </summary>
+        public IList<MenuRow> Rows { get; private set; }
 
         /// <summary>
         ///     Occurs when this <see cref="Menu" /> was exited.
@@ -121,15 +134,11 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public event EventHandler<MenuRowEventArgs> Response;
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
-        ///     Show this menu for the specified player.
+        ///     Show this <see cref="IMenu" /> to the specified <paramref name="player" />.
         /// </summary>
-        /// <param name="player">The player to show this menu for.</param>
-        /// <returns>True when successfull, False otherwise.</returns>
+        /// <param name="player">The player to show this menu to.</param>
+        /// <returns>True when successful; False otherwise.</returns>
         public bool Show(GtaPlayer player)
         {
             AssertNotDisposed();
@@ -154,7 +163,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Hides this menu for the specified player.
+        ///     Hides this <see cref="IMenu" /> for the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player to hide this menu for.</param>
         public void Hide(GtaPlayer player)
@@ -180,7 +189,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Hides this menu for all players that are viewing this menu.
+        ///     Hides this <see cref="IMenu" /> for all viewers.
         /// </summary>
         public void HideForAll()
         {
@@ -190,6 +199,30 @@ namespace SampSharp.GameMode.Display
             foreach (GtaPlayer p in _viewers.ToList())
                 Hide(p);
         }
+
+        /// <summary>
+        ///     Raises the <see cref="IMenu.Exit" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+        public void OnExit(EventArgs e)
+        {
+            if (Exit != null)
+                Exit(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="IMenu.Response" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="MenuRowEventArgs" /> instance containing the event data.</param>
+        public void OnResponse(MenuRowEventArgs e)
+        {
+            if (Response != null)
+                Response(this, e);
+        }
+
+        #endregion
+
+        #region Methods of Menu
 
         private void Create()
         {
@@ -213,7 +246,7 @@ namespace SampSharp.GameMode.Display
                 return;
             }
 
-            for (int i = 0; i < Math.Min(Columns.Count, 2); i++)
+            for (var i = 0; i < Math.Min(Columns.Count, 2); i++)
             {
                 if (Columns[i].Caption != null)
                 {
@@ -221,13 +254,11 @@ namespace SampSharp.GameMode.Display
                 }
             }
 
-            for (int i = 0; i < Rows.Count; i++)
+            for (var i = 0; i < Rows.Count; i++)
             {
-                for (int j = 0; j < Math.Min(Columns.Count, 2); j++)
-                {
-                    if (Rows[i].Text.Length > j)
-                        Native.AddMenuItem(Id, j, Rows[i].Text[j]);
-                }
+                Native.AddMenuItem(Id, 0, Rows[i].Column1Text ?? string.Empty);
+                if (!string.IsNullOrEmpty(Rows[i].Column2Text))
+                    Native.AddMenuItem(Id, 1, Rows[i].Column2Text);
 
                 if (Rows[i].Disabled)
                 {
@@ -245,41 +276,6 @@ namespace SampSharp.GameMode.Display
                 Native.DestroyMenu(Id);
                 Id = InvalidId;
             }
-        }
-
-        /// <summary>
-        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <param name="disposing">Whether managed resources should be disposed.</param>
-        protected override void Dispose(bool disposing)
-        {
-            Destroy();
-
-            base.Dispose(disposing);
-        }
-
-        #endregion
-
-        #region Event raisers
-
-        /// <summary>
-        ///     Raises the <see cref="Exit" /> event.
-        /// </summary>
-        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        public void OnExit(EventArgs e)
-        {
-            if (Exit != null)
-                Exit(this, e);
-        }
-
-        /// <summary>
-        ///     Raises the <see cref="Response" /> event.
-        /// </summary>
-        /// <param name="e">The <see cref="MenuRowEventArgs" /> instance containing the event data.</param>
-        public void OnResponse(MenuRowEventArgs e)
-        {
-            if (Response != null)
-                Response(this, e);
         }
 
         #endregion

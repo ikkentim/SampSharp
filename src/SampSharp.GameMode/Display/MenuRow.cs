@@ -18,39 +18,47 @@ namespace SampSharp.GameMode.Display
     /// <summary>
     ///     Represents a row in a <see cref="Menu" />.
     /// </summary>
-    public class MenuRow
+    public struct MenuRow
     {
         /// <summary>
-        ///     Initializes a new instance of the MenuRow class.
+        ///     Initializes a new instance of the <see cref="MenuRow"/> class.
         /// </summary>
-        /// <param name="col1Text">The text in the first column.</param>
-        /// <param name="disabled">Whether this row should be disabled.</param>
-        public MenuRow(string col1Text, bool disabled = false)
+        /// <param name="column1Text">The text in the first column.</param>
+        /// <param name="disabled">Whether this row is disabled.</param>
+        public MenuRow(string column1Text, bool disabled = false) : this()
         {
-            Text = new[] {col1Text};
+            Column1Text = column1Text;
+            Column2Text = null;
             Disabled = disabled;
         }
 
         /// <summary>
-        ///     Initializes a new instance of the MenuRow class.
+        ///     Initializes a new instance of the <see cref="MenuRow"/> class.
         /// </summary>
-        /// <param name="col1Text">The text in the first column.</param>
-        /// <param name="col2Text">The text in the second column.</param>
-        /// <param name="disabled">Whether this row should be disabled.</param>
-        public MenuRow(string col1Text, string col2Text, bool disabled = false)
+        /// <param name="column1Text">The text in the text displayed in the first column.</param>
+        /// <param name="column2Text">The text in the text displayed in the second column.</param>
+        /// <param name="disabled">Whether this row is disabled.</param>
+        public MenuRow(string column1Text, string column2Text, bool disabled = false)
+            : this()
         {
-            Text = new[] {col1Text, col2Text};
+            Column1Text = column1Text;
+            Column2Text = column2Text;
             Disabled = disabled;
         }
 
         /// <summary>
-        ///     Gets or sets the text displayed in this row on each column.
+        ///     Gets the text displayed in the first column.
         /// </summary>
-        public string[] Text { get; set; }
+        public string Column1Text { get; private set; }
 
         /// <summary>
-        ///     Gets or sets whether this row is disabled.
+        ///     Gets the text displayed in the second column.
         /// </summary>
-        public bool Disabled { get; set; }
+        public string Column2Text { get; private set; }
+
+        /// <summary>
+        ///     Gets whether this row is disabled.
+        /// </summary>
+        public bool Disabled { get; private set; }
     }
 }

@@ -18,14 +18,14 @@ namespace SampSharp.GameMode.Display
     /// <summary>
     ///     Represents a column in a <see cref="Menu" />.
     /// </summary>
-    public class MenuColumn
+    public struct MenuColumn
     {
         /// <summary>
         ///     Initializes a new instance of the MenuColumn class.
         /// </summary>
         /// <param name="caption">The caption of the column.</param>
         /// <param name="width">The width of the column.</param>
-        public MenuColumn(string caption, float width)
+        public MenuColumn(string caption, float width) : this()
         {
             Caption = caption;
             Width = width;
@@ -35,7 +35,7 @@ namespace SampSharp.GameMode.Display
         ///     Initializes a new instance of the menuColumn structure.
         /// </summary>
         /// <param name="width">The width of the column.</param>
-        public MenuColumn(float width)
+        public MenuColumn(float width) : this()
         {
             Width = width;
         }
@@ -43,11 +43,11 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Gets or sets the caption of this column.
         /// </summary>
-        public string Caption { get; set; }
+        public string Caption { get; private set; }
 
         /// <summary>
-        ///     Gets ro sets the width if this column.
+        ///     Gets or sets the width if this column.
         /// </summary>
-        public float Width { get; set; }
+        public float Width { get; private set; }
     }
 }

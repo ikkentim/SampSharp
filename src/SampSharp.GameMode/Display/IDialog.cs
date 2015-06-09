@@ -27,29 +27,33 @@ namespace SampSharp.GameMode.Display
     public interface IDialog
     {
         /// <summary>
-        ///     The style of the dialog.
+        ///     Gets the style.
         /// </summary>
         DialogStyle Style { get; }
 
         /// <summary>
-        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64 characters before it
-        ///     starts to cut off.
+        ///     Gets the caption.
         /// </summary>
+        /// <remarks>
+        ///     The length of the caption can not exceed more than 64 characters before it
+        ///     starts to cut off.
+        /// </remarks>
         string Caption { get; }
 
         /// <summary>
-        ///     The text to display in the main dialog. Use \n to start a new line and \t to tabulate.
+        ///     Gets the message displayed.
         /// </summary>
         string Message { get; }
 
         /// <summary>
-        ///     The text on the left button.
+        ///     Gets the text on the left button.
         /// </summary>
         string Button1 { get; }
 
         /// <summary>
-        ///     The text on the right button. Leave it blank to hide it.
+        ///     Gets the text on the right button.
         /// </summary>
+        /// <remarks>Leave it blank to hide it.</remarks>
         string Button2 { get; }
 
         /// <summary>

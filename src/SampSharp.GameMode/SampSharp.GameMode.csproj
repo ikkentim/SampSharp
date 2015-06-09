@@ -80,6 +80,7 @@
     <Compile Include="Definitions\TextDrawAlignment.cs" />
     <Compile Include="Definitions\VehicleModelType.cs" />
     <Compile Include="Display\IDialog.cs" />
+    <Compile Include="Display\IMenu.cs" />
     <Compile Include="Events\ClickPlayerTextDrawEventArgs.cs" />
     <Compile Include="Events\EditGlobalObjectEventArgs.cs" />
     <Compile Include="Events\CancelableEventArgs.cs" />
