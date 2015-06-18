@@ -87,8 +87,7 @@ namespace SampSharp.GameMode.Display
         private string _text;
         private bool _useBox;
         private float _width;
-        private float _x;
-        private float _y;
+        private Vector2 _position;
 
         #endregion
 
@@ -107,24 +106,22 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Initializes a new instance of the <see cref="TextDraw" /> class.
         /// </summary>
-        /// <param name="x">The x-position of the textdraw on the screen.</param>
+        /// <param name="position">The position of the textdraw on the screen.</param>
         /// <param name="y">The y-position of the textdraw on the screen.</param>
         /// <param name="text">The text of the textdraw.</param>
-        public TextDraw(float x, float y, string text) : this()
+        public TextDraw(Vector2 position, string text) : this()
         {
-            X = x;
-            Y = y;
+            Position = position;
             Text = text;
         }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="TextDraw" /> class.
         /// </summary>
-        /// <param name="x">The x-position of the textdraw on the screen.</param>
-        /// <param name="y">The y-position of the textdraw on the screen.</param>
+        /// <param name="position">The position of the textdraw on the screen.</param>
         /// <param name="text">The text of the textdraw.</param>
         /// <param name="font">The <see cref="TextDrawFont" /> of the textdraw.</param>
-        public TextDraw(float x, float y, string text, TextDrawFont font) : this(x, y, text)
+        public TextDraw(Vector2 position, string text, TextDrawFont font) : this(position, text)
         {
             Font = font;
         }
@@ -132,12 +129,11 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Initializes a new instance of the <see cref="TextDraw" /> class.
         /// </summary>
-        /// <param name="x">The x-position of the textdraw on the screen.</param>
-        /// <param name="y">The y-position of the textdraw on the screen.</param>
+        /// <param name="position">The position of the textdraw on the screen.</param>
         /// <param name="text">The text of the textdraw.</param>
         /// <param name="font">The <see cref="TextDrawFont" /> of the textdraw.</param>
         /// <param name="foreColor">The foreground <see cref="Color" /> of the textdraw.</param>
-        public TextDraw(float x, float y, string text, TextDrawFont font, Color foreColor) : this(x, y, text, font)
+        public TextDraw(Vector2 position, string text, TextDrawFont font, Color foreColor) : this(position, text, font)
         {
             ForeColor = foreColor;
         }
@@ -317,28 +313,14 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the x-position of this textdraw on the screen.
+        ///     Gets or sets the position of this textdraw on the screen.
         /// </summary>
-        public virtual float X
+        public virtual Vector2 Position
         {
-            get { return _x; }
+            get { return _position; }
             set
             {
-                _x = value;
-                if (Id == -1) return;
-                Refresh();
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets the y-position of this textdraw on the screen.
-        /// </summary>
-        public virtual float Y
-        {
-            get { return _y; }
-            set
-            {
-                _y = value;
+                _position = value;
                 if (Id == -1) return;
                 Refresh();
             }
@@ -569,7 +551,7 @@ namespace SampSharp.GameMode.Display
         protected virtual void Refresh()
         {
             if (Id != -1) Native.TextDrawDestroy(Id);
-            Id = Native.TextDrawCreate(X, Y, FixString(Text));
+            Id = Native.TextDrawCreate(Position.X, Position.Y, FixString(Text));
 
             //Reset properties
             if (Alignment != default(TextDrawAlignment)) Alignment = Alignment;

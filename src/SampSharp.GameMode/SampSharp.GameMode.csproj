@@ -113,6 +113,7 @@
     <Compile Include="GameModeServiceContainer.cs" />
     <Compile Include="Tools\ASyncWaiter`2.cs" />
     <Compile Include="Tools\Sync.cs" />
+    <Compile Include="Vector2.cs" />
     <Compile Include="World\Actor.cs" />
     <Compile Include="World\Pickup.cs" />
     <Compile Include="World\VehicleModelInfo.cs" />

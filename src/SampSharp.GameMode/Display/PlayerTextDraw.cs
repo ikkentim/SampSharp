@@ -86,8 +86,7 @@ namespace SampSharp.GameMode.Display
         private bool _useBox;
         private bool _visible;
         private float _width;
-        private float _x;
-        private float _y;
+        private Vector2 _position;
 
         #endregion
 
@@ -114,10 +113,9 @@ namespace SampSharp.GameMode.Display
         ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
         /// </summary>
         /// <param name="owner">The owner of the player-textdraw.</param>
-        /// <param name="x">The x-position of the player-textdraw on the screen.</param>
-        /// <param name="y">The y-position of the player-textdraw on the screen.</param>
+        /// <param name="position">The position of the player-textdraw on the screen.</param>
         /// <param name="text">The text of the player-textdraw.</param>
-        public PlayerTextDraw(GtaPlayer owner, float x, float y, string text)
+        public PlayerTextDraw(GtaPlayer owner, Vector2 position, string text)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
@@ -125,8 +123,7 @@ namespace SampSharp.GameMode.Display
             IsApplyFixes = true;
             Id = -1;
             Owner = owner;
-            X = x;
-            Y = y;
+            Position = position;
             Text = text;
         }
 
@@ -134,12 +131,11 @@ namespace SampSharp.GameMode.Display
         ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
         /// </summary>
         /// <param name="owner">The owner of the player-textdraw.</param>
-        /// <param name="x">The x-position of the player-textdraw on the screen.</param>
-        /// <param name="y">The y-position of the player-textdraw on the screen.</param>
+        /// <param name="position">The position of the player-textdraw on the screen.</param>
         /// <param name="text">The text of the player-textdraw.</param>
         /// <param name="font">The <see cref="TextDrawFont" /> of this textdraw.</param>
-        public PlayerTextDraw(GtaPlayer owner, float x, float y, string text, TextDrawFont font)
-            : this(owner, x, y, text)
+        public PlayerTextDraw(GtaPlayer owner, Vector2 position, string text, TextDrawFont font)
+            : this(owner, position, text)
         {
             Font = font;
         }
@@ -148,13 +144,12 @@ namespace SampSharp.GameMode.Display
         ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
         /// </summary>
         /// <param name="owner">The owner of the player-textdraw.</param>
-        /// <param name="x">The x-position of the player-textdraw on the screen.</param>
-        /// <param name="y">The y-position of the player-textdraw on the screen.</param>
+        /// <param name="position">The position of the player-textdraw on the screen.</param>
         /// <param name="text">The text of the player-textdraw.</param>
         /// <param name="font">The <see cref="TextDrawFont" /> of the player-textdraw.</param>
         /// <param name="foreColor">The foreground <see cref="Color" /> of the player-textdraw.</param>
-        public PlayerTextDraw(GtaPlayer owner, float x, float y, string text, TextDrawFont font, Color foreColor)
-            : this(owner, x, y, text, font)
+        public PlayerTextDraw(GtaPlayer owner, Vector2 position, string text, TextDrawFont font, Color foreColor)
+            : this(owner, position, text, font)
         {
             ForeColor = foreColor;
         }
@@ -340,28 +335,14 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the x-position of this player-textdraw on the screen.
+        ///     Gets or sets the position of this player-textdraw on the screen.
         /// </summary>
-        public virtual float X
+        public virtual Vector2 Position
         {
-            get { return _x; }
+            get { return _position; }
             set
             {
-                _x = value;
-                if (Id == -1) return;
-                Refresh();
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets the y-position of this player-textdraw on the screen.
-        /// </summary>
-        public virtual float Y
-        {
-            get { return _y; }
-            set
-            {
-                _y = value;
+                _position = value;
                 if (Id == -1) return;
                 Refresh();
             }
@@ -572,7 +553,7 @@ namespace SampSharp.GameMode.Display
             Hide();
 
             if (Id != -1) Native.PlayerTextDrawDestroy(Owner.Id, Id);
-            Id = Native.CreatePlayerTextDraw(Owner.Id, X, Y, FixString(Text));
+            Id = Native.CreatePlayerTextDraw(Owner.Id, Position.X, Position.Y, FixString(Text));
 
             //Reset properties
             if (Alignment != default(TextDrawAlignment)) Alignment = Alignment;

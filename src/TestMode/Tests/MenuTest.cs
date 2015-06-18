@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using SampSharp.GameMode;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
@@ -29,7 +30,7 @@ namespace TestMode.Tests
         [Command("menu")]
         public static bool MenuCommand(GtaPlayer player)
         {
-            var m = new Menu("Test menu", 0, 0);
+            var m = new Menu("Test menu", Vector2.Zero);
 
             m.Columns.Add(new MenuColumn(100));
 

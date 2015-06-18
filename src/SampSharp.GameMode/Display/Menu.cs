@@ -36,16 +36,14 @@ namespace SampSharp.GameMode.Display
         ///     Initializes a new instance of the Menu class.
         /// </summary>
         /// <param name="title">The title of the menu.</param>
-        /// <param name="x">The x-position of the menu on the screen.</param>
-        /// <param name="y">The y-position of the menu on the screen.</param>
+        /// <param name="position">The position of the menu on the screen.</param>
         /// <param name="columns">The columns to display in the menu.</param>
         /// <param name="rows">The rows to display in the menu.</param>
-        public Menu(string title, float x, float y, IList<MenuColumn> columns = null, IList<MenuRow> rows = null)
+        public Menu(string title, Vector2 position, IList<MenuColumn> columns = null, IList<MenuRow> rows = null)
         {
             Id = InvalidId;
             Title = title;
-            X = x;
-            Y = y;
+            Position = position;
             Columns = columns ?? new List<MenuColumn>();
             Rows = rows ?? new List<MenuRow>();
             Viewers = _viewers.AsReadOnly();
@@ -99,14 +97,9 @@ namespace SampSharp.GameMode.Display
         public string Title { get; private set; }
 
         /// <summary>
-        ///     Gets or sets the X-coordinate.
+        ///     Gets the position.
         /// </summary>
-        public float X { get; private set; }
-
-        /// <summary>
-        ///     Gets or sets the Y-coordinate.
-        /// </summary>
-        public float Y { get; private set; }
+        public Vector2 Position { get; private set; }
 
         /// <summary>
         ///     Gets an <see cref="IReadOnlyCollection{T}" /> of <see cref="GtaPlayer" /> instances which are viewing this
@@ -238,7 +231,7 @@ namespace SampSharp.GameMode.Display
                 throw new Exception("This menu contains no rows");
             }
 
-            Id = Native.CreateMenu(Title, Columns.Count, X, Y,
+            Id = Native.CreateMenu(Title, Columns.Count, Position.X, Position.Y,
                 Columns[0].Width, Columns.Count == 2 ? Columns[1].Width : 0);
 
             if (Id == InvalidId)

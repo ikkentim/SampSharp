@@ -31,14 +31,9 @@ namespace SampSharp.GameMode.Display
         string Title { get; }
 
         /// <summary>
-        ///     Gets or sets the X-coordinate.
+        ///     Gets the position.
         /// </summary>
-        float X { get; }
-
-        /// <summary>
-        ///     Gets or sets the Y-coordinate.
-        /// </summary>
-        float Y { get; }
+        Vector2 Position { get; }
 
         /// <summary>
         ///     Gets an <see cref="IReadOnlyCollection{T}" /> of <see cref="GtaPlayer" /> instances which are viewing this

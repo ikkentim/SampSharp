@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Xml.Linq;
 
 namespace SampSharp.GameMode
 {
@@ -48,21 +49,10 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Initializes a new instance of the <see cref="Vector3" /> struct.
         /// </summary>
-        /// <param name="x">Value of the x component.</param>
-        /// <param name="y">Value of the y component.</param>
+        /// <param name="xy">Values of the x and y components.</param>
         /// <param name="z">Value of the z component.</param>
-        public Vector3(double x, double y, double z)
-            : this((float) x, (float) y, (float) z)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Vector3" /> struct with the z component set to 0.
-        /// </summary>
-        /// <param name="x">Value of the x component.</param>
-        /// <param name="y">Value of the y component.</param>
-        public Vector3(double x, double y)
-            : this(x, y, 0)
+        public Vector3(Vector2 xy, float z)
+            : this(xy.X, xy.Y, z)
         {
         }
 
@@ -76,35 +66,17 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Vector3" /> struct with same values for x, y and z components.
-        /// </summary>
-        /// <param name="xyz">Value of x, y and z components.</param>
-        public Vector3(double xyz)
-            : this((float) xyz)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Vector3" /> struct.
-        /// </summary>
-        /// <param name="vector">A <see cref="Vector3" /> copy it's components from.</param>
-        public Vector3(Vector3 vector)
-            : this(vector.X, vector.Y, vector.Z)
-        {
-        }
-
-        /// <summary>
-        ///     Gets or sets the X componenent of this <see cref="Vector3" />.
+        ///     Gets or sets the X component of this <see cref="Vector3" />.
         /// </summary>
         public float X { get; set; }
 
         /// <summary>
-        ///     Gets or sets the Y componenent of this <see cref="Vector3" />.
+        ///     Gets or sets the Y component of this <see cref="Vector3" />.
         /// </summary>
         public float Y { get; set; }
 
         /// <summary>
-        ///     Gets or sets the Z componenent of this <see cref="Vector3" />.
+        ///     Gets or sets the Z component of this <see cref="Vector3" />.
         /// </summary>
         public float Z { get; set; }
 
@@ -188,7 +160,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Substracts the right <see cref="Vector3" />'s components from the left <see cref="Vector3" />'s components and stores
+        ///     Subtracts the right <see cref="Vector3" />'s components from the left <see cref="Vector3" />'s components and stores
         ///     it in a new <see cref="Vector3" />.
         /// </summary>
         /// <param name="left">A <see cref="Vector3" />.</param>
