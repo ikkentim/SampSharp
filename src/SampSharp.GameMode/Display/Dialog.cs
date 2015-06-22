@@ -15,7 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
@@ -36,18 +35,6 @@ namespace SampSharp.GameMode.Display
 
         private readonly ASyncWaiter<GtaPlayer, DialogResponseEventArgs> _aSyncWaiter =
             new ASyncWaiter<GtaPlayer, DialogResponseEventArgs>();
-
-        #region Properties of Dialog
-
-        /// <summary>
-        ///     Gets all opened dialogs.
-        /// </summary>
-        public static IEnumerable<Dialog> All
-        {
-            get { return OpenDialogs.Values; }
-        }
-
-        #endregion
 
         #region Constructors
 
@@ -75,154 +62,16 @@ namespace SampSharp.GameMode.Display
             Button2 = button2;
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the Dialog class with the <see cref="DialogStyle.List" /> with a list style.
-        /// </summary>
-        /// <param name="caption">
-        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
-        ///     characters before it starts to cut off.
-        /// </param>
-        /// <param name="listItems">The items to display in the list dialog.</param>
-        /// <param name="button1">The text on the left button.</param>
-        /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-        public Dialog(string caption, IEnumerable<string> listItems, string button1, string button2 = null)
-        {
-            if (caption == null) throw new ArgumentNullException("caption");
-            if (listItems == null) throw new ArgumentNullException("message");
-            if (button1 == null) throw new ArgumentNullException("button1");
+        #endregion
 
-            Style = DialogStyle.List;
-            Caption = caption;
-            Message = string.Join("\n", listItems.Select(i => i ?? string.Empty));
-            Button1 = button1;
-            Button2 = button2;
-        }
+        #region Properties of Dialog
 
         /// <summary>
-        ///     Initializes a new instance of the Dialog class with the <see cref="DialogStyle.List" /> with a tablist style.
+        ///     Gets all opened dialogs.
         /// </summary>
-        /// <param name="caption">
-        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
-        ///     characters before it starts to cut off.
-        /// </param>
-        /// <param name="listItems">The items to display in the list dialog.</param>
-        /// <param name="button1">The text on the left button.</param>
-        /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-        public Dialog(string caption, IEnumerable<IEnumerable<string>> listItems, string button1, string button2 = null)
+        public static IEnumerable<Dialog> All
         {
-            if (caption == null) throw new ArgumentNullException("caption");
-            if (listItems == null) throw new ArgumentNullException("message");
-            if (button1 == null) throw new ArgumentNullException("button1");
-
-            if (listItems.Any(i => i != null && i.Count() > 4))
-                throw new ArgumentException("Can not display more than 4 columns in dialog");
-
-            Style = DialogStyle.Tablist;
-            Caption = caption;
-            Message = string.Join("\n",
-                listItems.Select(i => i == null ? string.Empty : string.Join("\t", i.Select(j => j ?? string.Empty))));
-            Button1 = button1;
-            Button2 = button2;
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the Dialog class with the <see cref="DialogStyle.List" /> with a tablist style.
-        /// </summary>
-        /// <param name="caption">
-        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
-        ///     characters before it starts to cut off.
-        /// </param>
-        /// <param name="listItems">The items to display in the list dialog.</param>
-        /// <param name="button1">The text on the left button.</param>
-        /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-        public Dialog(string caption, string[,] listItems, string button1, string button2 = null)
-        {
-            if (caption == null) throw new ArgumentNullException("caption");
-            if (listItems == null) throw new ArgumentNullException("message");
-            if (button1 == null) throw new ArgumentNullException("button1");
-
-            Style = DialogStyle.Tablist;
-            Caption = caption;
-            Message = string.Empty;
-            for (var x = 0; x < listItems.GetLength(0); x += 1)
-            {
-                var length = listItems.GetLength(1);
-                if (length > 4) throw new ArgumentException("Can not display more than 4 columns in dialog");
-                Message +=
-                    string.Join("\t",
-                        Enumerable.Range(0, length).Select(y => listItems[x, y] ?? string.Empty)) + "\n";
-            }
-            Button1 = button1;
-            Button2 = button2;
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the Dialog class with the <see cref="DialogStyle.List" /> with a tablist style with
-        ///     headers.
-        /// </summary>
-        /// <param name="caption">
-        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
-        ///     characters before it starts to cut off.
-        /// </param>
-        /// <param name="header">The column headers.</param>
-        /// <param name="listItems">The items to display in the list dialog.</param>
-        /// <param name="button1">The text on the left button.</param>
-        /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-        public Dialog(string caption, IEnumerable<string> header, IEnumerable<IEnumerable<string>> listItems,
-            string button1, string button2 = null)
-        {
-            if (caption == null) throw new ArgumentNullException("caption");
-            if (header == null) throw new ArgumentNullException("header");
-            if (listItems == null) throw new ArgumentNullException("message");
-            if (button1 == null) throw new ArgumentNullException("button1");
-
-            if (listItems.Any(i => i != null && i.Count() > 4))
-                throw new ArgumentException("Can not display more than 4 columns in dialog");
-
-            Style = DialogStyle.TablistHeaders;
-            Caption = caption;
-            Message = string.Join("\t", header.Select(i => i ?? string.Empty)) + "\n" +
-                      string.Join("\n",
-                          listItems.Select(
-                              i => i == null ? string.Empty : string.Join("\t", i.Select(j => j ?? string.Empty))));
-            Button1 = button1;
-            Button2 = button2;
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the Dialog class with the <see cref="DialogStyle.List" /> with a tablist style with
-        ///     headers.
-        /// </summary>
-        /// <param name="caption">
-        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
-        ///     characters before it starts to cut off.
-        /// </param>
-        /// <param name="header">The column headers.</param>
-        /// <param name="listItems">The items to display in the list dialog.</param>
-        /// <param name="button1">The text on the left button.</param>
-        /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-        public Dialog(string caption, string[] header, string[,] listItems, string button1, string button2 = null)
-        {
-            if (caption == null) throw new ArgumentNullException("caption");
-            if (header == null) throw new ArgumentNullException("header");
-            if (listItems == null) throw new ArgumentNullException("message");
-            if (button1 == null) throw new ArgumentNullException("button1");
-
-            Style = DialogStyle.TablistHeaders;
-            Caption = caption;
-            Message = string.Join("\t", header.Select(i => i ?? string.Empty)) + "\n";
-
-            for (var x = 0; x < listItems.GetLength(0); x += 1)
-            {
-                var length = listItems.GetLength(1);
-                if (length > 4) throw new ArgumentException("Can not display more than 4 columns in dialog");
-                Message +=
-                    string.Join("\t",
-                        Enumerable.Range(0, length).Select(y => listItems[x, y] ?? string.Empty)) + "\n";
-            }
-
-            Button1 = button1;
-            Button2 = button2;
+            get { return OpenDialogs.Values; }
         }
 
         #endregion
@@ -268,36 +117,36 @@ namespace SampSharp.GameMode.Display
         #region Implementation of IDialog
 
         /// <summary>
-        /// Gets the style.
+        ///     Gets or sets the style.
         /// </summary>
-        public DialogStyle Style { get; set; }
+        public virtual DialogStyle Style { get; set; }
 
         /// <summary>
-        /// Gets or sets the caption.
+        ///     Gets or sets the caption.
         /// </summary>
         /// <remarks>
-        /// The length of the caption can not exceed more than 64 characters before it
-        /// starts to cut off.
+        ///     The length of the caption can not exceed more than 64 characters before it
+        ///     starts to cut off.
         /// </remarks>
-        public string Caption { get; set; }
+        public virtual string Caption { get; set; }
 
         /// <summary>
-        /// Gets or sets the message displayed.
+        ///     Gets the message displayed.
         /// </summary>
-        public string Message { get; set; }
+        public virtual string Message { get; private set; }
 
         /// <summary>
-        /// Gets or sets the text on the left button.
+        ///     Gets or sets the text on the left button.
         /// </summary>
-        public string Button1 { get; set; }
+        public virtual string Button1 { get; set; }
 
         /// <summary>
-        /// Gets or sets the text on the right button.
+        ///     Gets or sets the text on the right button.
         /// </summary>
         /// <remarks>
-        /// Leave it blank to hide it.
+        ///     Leave it blank to hide it.
         /// </remarks>
-        public string Button2 { get;  set; }
+        public virtual string Button2 { get; set; }
 
         /// <summary>
         ///     Occurs when a player responds to a dialog by either clicking a button, pressing ENTER/ESC or double-clicking a list

@@ -81,6 +81,10 @@
     <Compile Include="Definitions\VehicleModelType.cs" />
     <Compile Include="Display\IDialog.cs" />
     <Compile Include="Display\IMenu.cs" />
+    <Compile Include="Display\InputDialog.cs" />
+    <Compile Include="Display\ListDialog.cs" />
+    <Compile Include="Display\MessageDialog.cs" />
+    <Compile Include="Display\TablistDialog.cs" />
     <Compile Include="Events\ClickPlayerTextDrawEventArgs.cs" />
     <Compile Include="Events\EditGlobalObjectEventArgs.cs" />
     <Compile Include="Events\CancelableEventArgs.cs" />

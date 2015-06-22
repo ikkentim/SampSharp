@@ -31,19 +31,7 @@ namespace TestMode.Tests
         [Command("dialogcols")]
         public static void DialogaCommand(GtaPlayer player)
         {
-            var dialog = new Dialog("Captions", new[]
-                {
-                    "Col1", "Col2", "Col3", "Col4"
-                }, new[,]
-                {
-                    {"11","12","13","14"},
-                    {"21","22","23","24"},
-                    {"31","32","33","34"},
-                    {"41","42","43","44"},
-                    {"51","52","53","54"},
-                    {"61","62","63","64"},
-                    {"71","72","73","74"}
-                }, "OK!", "Cancel");
+            var dialog = new MessageDialog("Captions", "abc", "OK!", "Cancel");
 
             dialog.Show(player);
 
