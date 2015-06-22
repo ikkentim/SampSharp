@@ -17,7 +17,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="button1">The text on the left button.</param>
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
         public ListDialog(string caption, string button1, string button2 = null)
-            : base(DialogStyle.List, caption, button1, button2)
+            : base(DialogStyle.List, caption, string.Empty, button1, button2)
         {
         }
 
