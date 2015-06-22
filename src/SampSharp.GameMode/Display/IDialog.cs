@@ -27,34 +27,34 @@ namespace SampSharp.GameMode.Display
     public interface IDialog
     {
         /// <summary>
-        ///     Gets the style.
+        ///     Gets or sets the style.
         /// </summary>
-        DialogStyle Style { get; }
+        DialogStyle Style { get; set; }
 
         /// <summary>
-        ///     Gets the caption.
+        ///     Gets or sets the caption.
         /// </summary>
         /// <remarks>
         ///     The length of the caption can not exceed more than 64 characters before it
         ///     starts to cut off.
         /// </remarks>
-        string Caption { get; }
+        string Caption { get; set; }
 
         /// <summary>
-        ///     Gets the message displayed.
+        ///     Gets or sets the message displayed.
         /// </summary>
-        string Message { get; }
+        string Message { get; set; }
 
         /// <summary>
-        ///     Gets the text on the left button.
+        ///     Gets or sets the text on the left button.
         /// </summary>
-        string Button1 { get; }
+        string Button1 { get; set; }
 
         /// <summary>
-        ///     Gets the text on the right button.
+        ///     Gets or sets the text on the right button.
         /// </summary>
         /// <remarks>Leave it blank to hide it.</remarks>
-        string Button2 { get; }
+        string Button2 { get; set; }
 
         /// <summary>
         ///     Occurs when a player responds to a dialog by either clicking a button, pressing ENTER/ESC or double-clicking a list

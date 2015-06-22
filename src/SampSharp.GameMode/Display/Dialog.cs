@@ -268,30 +268,36 @@ namespace SampSharp.GameMode.Display
         #region Implementation of IDialog
 
         /// <summary>
-        ///     The style of the dialog.
+        /// Gets the style.
         /// </summary>
-        public DialogStyle Style { get; private set; }
+        public DialogStyle Style { get; set; }
 
         /// <summary>
-        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64 characters before it
-        ///     starts to cut off.
+        /// Gets or sets the caption.
         /// </summary>
-        public string Caption { get; private set; }
+        /// <remarks>
+        /// The length of the caption can not exceed more than 64 characters before it
+        /// starts to cut off.
+        /// </remarks>
+        public string Caption { get; set; }
 
         /// <summary>
-        ///     The text to display in the main dialog. Use \n to start a new line and \t to tabulate.
+        /// Gets or sets the message displayed.
         /// </summary>
-        public string Message { get; private set; }
+        public string Message { get; set; }
 
         /// <summary>
-        ///     The text on the left button.
+        /// Gets or sets the text on the left button.
         /// </summary>
-        public string Button1 { get; private set; }
+        public string Button1 { get; set; }
 
         /// <summary>
-        ///     The text on the right button. Leave it blank to hide it.
+        /// Gets or sets the text on the right button.
         /// </summary>
-        public string Button2 { get; private set; }
+        /// <remarks>
+        /// Leave it blank to hide it.
+        /// </remarks>
+        public string Button2 { get;  set; }
 
         /// <summary>
         ///     Occurs when a player responds to a dialog by either clicking a button, pressing ENTER/ESC or double-clicking a list
