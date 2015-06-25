@@ -423,6 +423,7 @@ MonoMethod *GameMode::FindMethodForCallback(const char *name,
 
     return NULL;
 }
+
 void GameMode::ProcessPublicCall(AMX *amx, const char *name, cell *params,
     cell *retval) {
 
@@ -653,7 +654,11 @@ int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params) {
         return -1;
     }
 
-    return *(int *)mono_object_unbox(response);
+    if (mono_type_get_type(mono_signature_get_return_type(mono_method_signature(method))) ==
+        mono_type_get_type(mono_class_get_type(mono_get_boolean_class())))
+        return *(bool *)mono_object_unbox(response) ? 1 : 0;
+    else
+        return *(int *)mono_object_unbox(response);
 }
 
 int GameMode::GetParamLengthIndex(MonoMethod *method, int idx) {
