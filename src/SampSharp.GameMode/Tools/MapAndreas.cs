@@ -63,8 +63,7 @@ namespace SampSharp.GameMode.Tools
 
             if (IsPluginLoaded())
             {
-                Native.CallNative("MapAndreas_Init", __arglist((int) mode, string.Empty));
-
+                Native.CallNative("MapAndreas_Init", __arglist((int) mode, string.Empty, 1));
                 _usePlugin = true;
                 return;
             }
