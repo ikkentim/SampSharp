@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Linq;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.SAMP.Commands;
@@ -28,8 +29,8 @@ namespace TestMode.Tests
 
         }
 
-        [Command("dialogcols")]
-        public static void DialogaCommand(GtaPlayer player)
+        [Command("dialog")]
+        public static void DialogCommand(GtaPlayer player)
         {
             var dialog = new MessageDialog("Captions", "abc", "OK!", "Cancel");
 
@@ -38,6 +39,23 @@ namespace TestMode.Tests
             dialog.Response += (sender, args) =>
             {
                 player.SendClientMessage("Response: " + args.DialogButton);
+            };
+        }
+
+        [Command("dialoglist")]
+        [Text("items")]
+        public static void DialogListCommand(GtaPlayer player, string items)
+        {
+            var dialog = new ListDialog("Captions", "OK!");
+
+            foreach (var i in items.Split(' ').Where(s => !string.IsNullOrWhiteSpace(s)))
+                dialog.Items.Add(i);
+
+            dialog.Show(player);
+
+            dialog.Response += (sender, args) =>
+            {
+                player.SendClientMessage("Response: " + args.ListItem);
             };
         }
         [Command("dialogasync")]
