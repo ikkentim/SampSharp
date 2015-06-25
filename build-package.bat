@@ -132,17 +132,17 @@ call buildtools\nuget pack src\SampSharp.GameMode\SampSharp.GameMode.csproj -Pro
 for %%f in (%bin_path%*.nupkg) do set packagepath=%%~ff
     
 echo Pushing nuget package...   
-call nuget push "%packagepath%" "%nugetkey%" -Source %nugetsource%
+call buildtools\nuget push "%packagepath%" "%nugetkey%" -Source %nugetsource%
 echo.
 echo Done^^!
 
 pause
+goto :eof
 
 :: ***********************************
 :: FUNCTIONS
 :: ***********************************
 
-goto :eof
 :strlen <resultVar> <stringVar>
 (   
     set "s=!%~2!#"
