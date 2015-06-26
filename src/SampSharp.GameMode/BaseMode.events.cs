@@ -470,6 +470,11 @@ namespace SampSharp.GameMode
         public event EventHandler<EventArgs> TimerTick;
 
         /// <summary>
+        ///     Occurs when a callback throws an exception.
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs> CallbackException;
+
+        /// <summary>
         ///     Raises the <see cref="Initialized" /> event.
         /// </summary>
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
@@ -1121,6 +1126,16 @@ namespace SampSharp.GameMode
         {
             if (Tick != null)
                 Tick(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="E:CallbackException" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="ExceptionEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnCallbackException(ExceptionEventArgs e)
+        {
+            if (CallbackException != null)
+                CallbackException(this, e);
         }
     }
 }

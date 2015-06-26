@@ -526,5 +526,13 @@ namespace SampSharp.GameMode
 
             return true;
         }
+
+        internal bool OnCallbackException(Exception exception)
+        {
+            var args = new ExceptionEventArgs(exception);
+            OnCallbackException(args);
+
+            return args.Handled;
+        }
     }
 }

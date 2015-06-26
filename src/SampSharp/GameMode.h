@@ -84,6 +84,7 @@ private:
     static GameModeImage baseMode_;
     static uint32_t gameModeHandle_;
 
+    static MonoMethod *onCallbackException_;
     static MonoMethod *tickMethod_;
     static MonoClass *paramLengthClass_;
     static MonoMethod *paramLengthGetMethod_;
@@ -105,4 +106,5 @@ private:
         int param_count, MonoClass *klass);
     static MonoMethod *FindMethodForCallback(const char *name,
         int param_count, uint32_t &handle);
+    static void PrintException(const char *methodname, MonoObject *exception);
 };

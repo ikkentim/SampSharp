@@ -42,6 +42,7 @@ uint32_t GameMode::gameModeHandle_;
 GameMode::TimerMap GameMode::timers_;
 GameMode::ExtensionList GameMode::extensions_;
 
+MonoMethod *GameMode::onCallbackException_;
 MonoMethod *GameMode::tickMethod_;
 MonoClass *GameMode::paramLengthClass_;
 MonoMethod *GameMode::paramLengthGetMethod_;
@@ -125,6 +126,7 @@ bool GameMode::Unload() {
     tickMethod_ = NULL;
     paramLengthClass_ = NULL;
     paramLengthGetMethod_ = NULL;
+    onCallbackException_ = NULL;
 
     /* Clear timers. */
     logprintf("Stopping timers...");
@@ -622,6 +624,29 @@ MonoMethod *GameMode::LoadEvent(const char *name, int param_count) {
     return method;
 }
 
+void GameMode::PrintException(const char *methodname, MonoObject *exception) {
+    char *stacktrace = mono_string_to_utf8(
+        mono_object_to_string(exception, NULL));
+
+    /* Print error to console. */
+    /* Cannot print the exception to logprintf; the buffer is too small. */
+    std::cout << "[SampSharp] Exception thrown during execution of "
+        << methodname << ":" << std::endl
+        << stacktrace << std::endl;
+
+    /* Append error to log file. */
+    time_t now = time(0);
+    char timestamp[32];
+    strftime(timestamp, sizeof(timestamp), "[%d/%m/%Y %H:%M:%S]",
+        localtime(&now));
+
+    std::ofstream logfile;
+    logfile.open("SampSharp_errors.log", std::ios::app | std::ios::binary);
+    logfile << timestamp << " Exception thrown" << methodname << ":"
+        << "\r\n" << stacktrace << "\r\n";
+    logfile.close();
+}
+
 int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params) {
     assert(method);
     assert(handle);
@@ -631,22 +656,45 @@ int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params) {
         mono_gchandle_get_target(handle), params, &exception);
 
     if (exception) {
-        char *stacktrace = mono_string_to_utf8(
-            mono_object_to_string(exception, NULL));
+        /* Find callback handler if it has not been found previously. */
+        if (!onCallbackException_ && mono_class_get_method_from_name(
+            baseMode_.klass, "OnCallbackException", 1)) {
 
-        /* Cannot print the exception to logprintf; the buffer is too small. */
-        std::cout << "[SampSharp] Exception thrown during execution of "
-            << mono_method_get_name(method) << ":" << std::endl
-            << stacktrace << std::endl;
+            void *method_iter = NULL;
+            while ((onCallbackException_ = mono_class_get_methods(
+                baseMode_.klass, &method_iter))) {
+                if (!strcmp(mono_method_get_name(onCallbackException_),
+                    "OnCallbackException")) {
+                    MonoMethodSignature *sig = mono_method_get_signature(
+                        onCallbackException_, baseMode_.image,
+                        mono_method_get_token(onCallbackException_));
 
-        time_t now = time(0);
-        char timestamp[32];
-        strftime(timestamp, sizeof(timestamp), "[%d/%m/%Y %H:%M:%S]", localtime(&now));
+                    void *type_iter = NULL;
+                    MonoType *type = mono_signature_get_params(sig, &type_iter);
 
-        std::ofstream logfile;
-        logfile.open("SampSharp_errors.log", std::ios::app | std::ios::binary);
-        logfile << timestamp << " Exception thrown" << mono_method_get_name(method) << ":" << "\r\n" << stacktrace << "\r\n";
-        logfile.close();
+                    if (!strcmp(mono_type_get_name(type), "System.Exception")) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        /* Invoke the callback handler if it exists. */
+        if (onCallbackException_) {
+            MonoObject *exception2;
+            MonoObject *response2 = mono_runtime_invoke(onCallbackException_,
+                mono_gchandle_get_target(gameModeHandle_), (void **)&exception,
+                &exception2);
+
+            if (exception2) {
+                PrintException("OnCallbackException", exception2);
+            }
+            else if (response2 && *(bool *)mono_object_unbox(response2)) {
+                return -1;
+            }
+        }
+
+        PrintException(mono_method_get_name(method), exception);
         return -1;
     }
 
@@ -654,7 +702,8 @@ int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params) {
         return -1;
     }
 
-    if (mono_type_get_type(mono_signature_get_return_type(mono_method_signature(method))) ==
+    if (mono_type_get_type(mono_signature_get_return_type(
+        mono_method_signature(method))) ==
         mono_type_get_type(mono_class_get_type(mono_get_boolean_class())))
         return *(bool *)mono_object_unbox(response) ? 1 : 0;
     else

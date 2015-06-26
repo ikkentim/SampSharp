@@ -46,6 +46,9 @@ namespace TestMode
             new ServicesTest()
         };
 
+        #region Overrides of BaseMode
+
+
         protected override void OnInitialized(EventArgs args)
         {
             Console.WriteLine("TestMode for SampSharp");
@@ -68,22 +71,25 @@ namespace TestMode
             base.OnInitialized(args);
         }
 
-        #region Overrides of BaseMode
-
-        /// <summary>
-        ///     Raises the <see cref="BaseMode.RconCommand" /> event.
-        /// </summary>
-        /// <param name="e">An <see cref="RconEventArgs" /> that contains the event data. </param>
         protected override void OnRconCommand(RconEventArgs e)
         {
             Console.WriteLine("[RCON] {0}", e.Command);
             GtaPlayer.SendClientMessageToAll("Rcon message: {0}", e.Command);
 
+            Console.WriteLine("Throwing exception after a stack fillter...");
+            StackFiller(1);
+
             e.Success = false;
             base.OnRconCommand(e);
         }
 
-        #endregion
+        private void StackFiller(int c)
+        {
+            if (c <= 0)
+                throw new Exception();
+            StackFiller(c - 1);
+
+        }
 
         protected override void LoadControllers(ControllerCollection controllers)
         {
@@ -92,5 +98,26 @@ namespace TestMode
             foreach (IControllerTest test in _tests.OfType<IControllerTest>())
                 test.LoadControllers(controllers);
         }
+
+        #region Overrides of BaseMode
+
+        /// <summary>
+        ///     Raises the <see cref="E:CallbackException" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="ExceptionEventArgs"/> instance containing the event data.</param>
+        protected override void OnCallbackException(ExceptionEventArgs e)
+        {
+            Console.WriteLine("[SampSharp] Exception thrown during execution of {0}:", e.Exception.TargetSite.Name);
+
+            Console.WriteLine("{0}: {1}",e.Exception.GetType().FullName, e.Exception.Message);
+            Console.WriteLine(e.Exception.StackTrace);
+            e.Handled = true;
+            base.OnCallbackException(e);
+        }
+
+        #endregion
+
+        #endregion
+
     }
 }

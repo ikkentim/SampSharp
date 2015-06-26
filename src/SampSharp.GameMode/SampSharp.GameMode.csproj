@@ -89,6 +89,7 @@
     <Compile Include="Events\EditGlobalObjectEventArgs.cs" />
     <Compile Include="Events\CancelableEventArgs.cs" />
     <Compile Include="Events\CommandTextEventArgs.cs" />
+    <Compile Include="Events\ExceptionEventArgs.cs" />
     <Compile Include="Events\RequestSpawnEventArgs.cs" />
     <Compile Include="Events\SirenStateEventArgs.cs" />
     <Compile Include="Events\SpawnEventArgs.cs" />
