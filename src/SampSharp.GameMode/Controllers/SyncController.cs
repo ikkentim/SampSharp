@@ -48,6 +48,11 @@ namespace SampSharp.GameMode.Controllers
                     t.Dispose();
                 }
             };
+
+            if (_waiting)
+            {
+                _gameMode.Tick += _gameMode_Tick;
+            }
         }
 
         /// <summary>
@@ -58,7 +63,9 @@ namespace SampSharp.GameMode.Controllers
             if (!_waiting)
             {
                 _waiting = true;
-                _gameMode.Tick += _gameMode_Tick;
+
+                if (_gameMode != null)
+                    _gameMode.Tick += _gameMode_Tick;
             }
         }
 
