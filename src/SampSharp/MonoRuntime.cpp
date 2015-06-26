@@ -16,6 +16,7 @@
 #include "MonoRuntime.h"
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
+#include <mono/metadata/mono-debug.h>
 #include <mono/utils/mono-logger.h>
 #include <sampgdk/sampgdk.h>
 
@@ -37,6 +38,7 @@ void MonoRuntime::Load(std::string assemblyDir, std::string configDir,
     }
 #endif
 
+    mono_debug_init(MONO_DEBUG_FORMAT_MONO);
     mono_trace_set_level_string(traceLevel.c_str());
     MonoDomain *dom = mono_jit_init(file.c_str());
 
