@@ -83,6 +83,7 @@ echo Tagging Repository
 echo --------------------
 
 call git tag -a %version% -m "%version%"
+call git push --tags
 
 :: ***********************************
 :: BUILD PLUGIN PACKAGE
@@ -110,10 +111,10 @@ echo Copy binaries...
 copy %bin_path%SampSharp.dll %package_path%plugins\ /Y >NUL
 
 echo Zipping...
-del %bin_path%sampsharp-%gittag%.zip
-call buildtools\zipjs.bat zipDirItems -source bin/package -destination "%bin_path%sampsharp-%gittag%.zip" -keep yes -force no
-echo Archive saved in %bin_path%sampsharp-%gittag%.zip
-
+del %bin_path%sampsharp-%version%.zip
+call buildtools\zipjs.bat zipDirItems -source bin/package -destination "%bin_path%sampsharp-%version%.zip" -keep yes -force no
+echo Archive saved in %bin_path%sampsharp-%version%.zip
+pause
 :: ***********************************
 :: BUILD NUGET PACKAGE
 :: ***********************************
