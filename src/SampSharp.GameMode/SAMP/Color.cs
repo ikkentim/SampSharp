@@ -23,6 +23,19 @@ namespace SampSharp.GameMode.SAMP
     /// </summary>
     public struct Color
     {
+        #region Overrides of ValueType
+
+        /// <summary>
+        ///     Returns a <see cref="string" /> representation of this Color.
+        /// </summary>
+        /// <returns>A <see cref="string" /> representation of this Color.</returns>
+        public override string ToString()
+        {
+            return ToString(ColorFormat.RGB);
+        }
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -91,10 +104,10 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="a">The alpha value of this Color.</param>
         public Color(float r, float g, float b, float a)
             : this(
-                (byte)MathHelper.Clamp(r * byte.MaxValue, byte.MinValue, byte.MaxValue),
-                (byte)MathHelper.Clamp(g * byte.MaxValue, byte.MinValue, byte.MaxValue),
-                (byte)MathHelper.Clamp(b * byte.MaxValue, byte.MinValue, byte.MaxValue),
-                (byte)MathHelper.Clamp(a * byte.MaxValue, byte.MinValue, byte.MaxValue))
+                (byte) MathHelper.Clamp(r*byte.MaxValue, byte.MinValue, byte.MaxValue),
+                (byte) MathHelper.Clamp(g*byte.MaxValue, byte.MinValue, byte.MaxValue),
+                (byte) MathHelper.Clamp(b*byte.MaxValue, byte.MinValue, byte.MaxValue),
+                (byte) MathHelper.Clamp(a*byte.MaxValue, byte.MinValue, byte.MaxValue))
         {
         }
 
@@ -1519,10 +1532,10 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Returns a <see cref="String"/> representation of this Color.
+        ///     Returns a <see cref="string" /> representation of this Color.
         /// </summary>
         /// <param name="colorFormat">The format to use to convert the color to a string.</param>
-        /// <returns>A <see cref="String"/> representation of this Color.</returns>
+        /// <returns>A <see cref="string" /> representation of this Color.</returns>
         public string ToString(ColorFormat colorFormat)
         {
             switch (colorFormat)
@@ -1535,22 +1548,42 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Performs linear interpolation of <see cref="Color"/>.
+        ///     Performs linear interpolation of <see cref="Color" />.
         /// </summary>
-        /// <param name="value1">Source <see cref="Color"/>.</param>
-        /// <param name="value2">Destination <see cref="Color"/>.</param>
+        /// <param name="value1">Source <see cref="Color" />.</param>
+        /// <param name="value2">Destination <see cref="Color" />.</param>
         /// <param name="amount">Interpolation factor.</param>
-        /// <returns>Interpolated <see cref="Color"/>.</returns>
+        /// <returns>Interpolated <see cref="Color" />.</returns>
         public static Color Lerp(Color value1, Color value2, float amount)
         {
             amount = MathHelper.Clamp(amount, 0, 1);
             return new Color(
-                (int)MathHelper.Lerp(value1.R, value2.R, amount),
-                (int)MathHelper.Lerp(value1.G, value2.G, amount),
-                (int)MathHelper.Lerp(value1.B, value2.B, amount),
-                (int)MathHelper.Lerp(value1.A, value2.A, amount));
+                (int) MathHelper.Lerp(value1.R, value2.R, amount),
+                (int) MathHelper.Lerp(value1.G, value2.G, amount),
+                (int) MathHelper.Lerp(value1.B, value2.B, amount),
+                (int) MathHelper.Lerp(value1.A, value2.A, amount));
         }
-		
+
+        /// <summary>
+        ///     Returns this color darkened specified <paramref name="amount" />.
+        /// </summary>
+        /// <param name="amount">The amount.</param>
+        /// <returns>The darkened color.</returns>
+        public Color Darken(float amount)
+        {
+            return Lerp(this, Black, amount);
+        }
+
+        /// <summary>
+        ///     Returns this color lightened specified <paramref name="amount" />.
+        /// </summary>
+        /// <param name="amount">The amount.</param>
+        /// <returns>The lightened color.</returns>
+        public Color Lighten(float amount)
+        {
+            return Lerp(this, White, amount);
+        }
+
         #endregion
 
         #region Operators
@@ -1586,12 +1619,12 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Implements the operator ==.
+        ///     Implements the operator ==.
         /// </summary>
         /// <param name="a">The left color.</param>
         /// <param name="b">The right color.</param>
         /// <returns>
-        /// The result of the operator.
+        ///     The result of the operator.
         /// </returns>
         public static bool operator ==(Color a, Color b)
         {
@@ -1599,12 +1632,12 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Implements the operator !=.
+        ///     Implements the operator !=.
         /// </summary>
         /// <param name="a">The left color.</param>
         /// <param name="b">The right color.</param>
         /// <returns>
-        /// The result of the operator.
+        ///     The result of the operator.
         /// </returns>
         public static bool operator !=(Color a, Color b)
         {
@@ -1612,12 +1645,12 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Implements the operator *.
+        ///     Implements the operator *.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="scale">The scale.</param>
         /// <returns>
-        /// The result of the operator.
+        ///     The result of the operator.
         /// </returns>
         public static Color operator *(Color value, float scale)
         {
@@ -1625,28 +1658,15 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="Color"/> to <see cref="Vector3"/>.
+        ///     Performs an explicit conversion from <see cref="Color" /> to <see cref="Vector3" />.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>
-        /// The result of the conversion.
+        ///     The result of the conversion.
         /// </returns>
         public static explicit operator Vector3(Color value)
         {
             return new Vector3(value.R/byte.MaxValue, value.G/byte.MaxValue, value.B/byte.MaxValue);
-        }
-
-        #endregion
-
-        #region Overrides of ValueType
-
-        /// <summary>
-        ///  Returns a <see cref="String"/> representation of this Color.
-        /// </summary>
-        /// <returns>A <see cref="String"/> representation of this Color.</returns>
-        public override string ToString()
-        {
-            return ToString(ColorFormat.RGB);
         }
 
         #endregion
@@ -1659,10 +1679,10 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Indicates whether this instance and a specified object are equal.
+        ///     Indicates whether this instance and a specified object are equal.
         /// </summary>
         /// <returns>
-        /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+        ///     true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
         /// <param name="obj">Another object to compare to. </param>
         public override bool Equals(object obj)
@@ -1672,10 +1692,10 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Returns the hash code for this instance.
+        ///     Returns the hash code for this instance.
         /// </summary>
         /// <returns>
-        /// A 32-bit signed integer that is the hash code for this instance.
+        ///     A 32-bit signed integer that is the hash code for this instance.
         /// </returns>
         public override int GetHashCode()
         {
