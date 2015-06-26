@@ -107,7 +107,6 @@ namespace SampSharp.GameMode.Display
         ///     Initializes a new instance of the <see cref="TextDraw" /> class.
         /// </summary>
         /// <param name="position">The position of the textdraw on the screen.</param>
-        /// <param name="y">The y-position of the textdraw on the screen.</param>
         /// <param name="text">The text of the textdraw.</param>
         public TextDraw(Vector2 position, string text) : this()
         {

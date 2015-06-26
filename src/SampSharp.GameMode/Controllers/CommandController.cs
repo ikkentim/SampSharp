@@ -76,7 +76,7 @@ namespace SampSharp.GameMode.Controllers
 
                 return commandsCount;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 /*
                  * If there are no non-static types in the given assembly,

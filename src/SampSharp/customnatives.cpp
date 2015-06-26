@@ -15,10 +15,15 @@
 
 #include "customnatives.h"
 #include <assert.h>
+#include <limits>
 #include <sampgdk/sampgdk.h>
 #include <mono/metadata/appdomain.h>
 #include <mono/metadata/exception.h>
 #include "monohelper.h"
+
+#ifdef _WINDOWS
+#define sprintf sprintf_s
+#endif
 
 #define MAX_NATIVE_ARGS                 (32)
 #define MAX_NATIVE_ARG_FORMAT_LEN       (8)
@@ -32,7 +37,7 @@ bool native_exists(MonoString *name_string) {
     if (!name_string) {
         mono_raise_exception(mono_get_exception_invalid_operation(
             "name cannot be null"));
-        return ERR_EXCEPTION;
+        return false;
     }
 
     name = mono_string_to_utf8(name_string);
@@ -190,7 +195,7 @@ int call_native_array(MonoString *name_string, MonoString *format_string,
             cell *value = new cell[param_size[i]];
             for (int j = 0; j < param_size[i]; j++) {
                 /* Set default value to int.MinValue */
-                value[j] = -2147483648;
+                value[j] = std::numeric_limits<int>::min();
             }
             params[i] = value;
 
