@@ -1,0 +1,259 @@
+﻿// SampSharp
+// Copyright 2015 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
+
+namespace SampSharp.GameMode.Helpers
+{
+    /// <summary>
+    ///     Contains commonly used precalculated values and mathematical operations.
+    /// </summary>
+    public static class MathHelper
+    {
+        /// <summary>
+        ///     Represents the value of pi(3.14159274).
+        /// </summary>
+        public const float Pi = (float) Math.PI;
+
+        /// <summary>
+        ///     Represents the value of pi divided by two(1.57079637).
+        /// </summary>
+        public const float PiOver2 = (float) (Math.PI/2.0);
+
+        /// <summary>
+        ///     Represents the value of pi divided by four(0.7853982).
+        /// </summary>
+        public const float PiOver4 = (float) (Math.PI/4.0);
+
+        /// <summary>
+        ///     Represents the value of pi times two(6.28318548).
+        /// </summary>
+        public const float TwoPi = (float) (Math.PI*2.0);
+
+        /// <summary>
+        ///     Restricts a value to be within a specified range.
+        /// </summary>
+        /// <param name="value">The value to clamp.</param>
+        /// <param name="min">The minimum value. If <c>value</c> is less than <c>min</c>, <c>min</c> will be returned.</param>
+        /// <param name="max">The maximum value. If <c>value</c> is greater than <c>max</c>, <c>max</c> will be returned.</param>
+        /// <returns>The clamped value.</returns>
+        public static float Clamp(float value, float min, float max)
+        {
+            // First we check to see if we're greater than the max
+            value = (value > max) ? max : value;
+
+            // Then we check to see if we're less than the min.
+            value = (value < min) ? min : value;
+
+            // There's no check to see if min > max.
+            return value;
+        }
+
+        /// <summary>
+        ///     Restricts a value to be within a specified range.
+        /// </summary>
+        /// <param name="value">The value to clamp.</param>
+        /// <param name="min">The minimum value. If <c>value</c> is less than <c>min</c>, <c>min</c> will be returned.</param>
+        /// <param name="max">The maximum value. If <c>value</c> is greater than <c>max</c>, <c>max</c> will be returned.</param>
+        /// <returns>The clamped value.</returns>
+        public static int Clamp(int value, int min, int max)
+        {
+            value = (value > max) ? max : value;
+            value = (value < min) ? min : value;
+            return value;
+        }
+
+        /// <summary>
+        ///     Calculates the absolute value of the difference of two values.
+        /// </summary>
+        /// <param name="value1">Source value.</param>
+        /// <param name="value2">Source value.</param>
+        /// <returns>Distance between the two values.</returns>
+        public static float Distance(float value1, float value2)
+        {
+            return Math.Abs(value1 - value2);
+        }
+
+        /// <summary>
+        ///     Performs a Hermite spline interpolation.
+        /// </summary>
+        /// <param name="value1">Source position.</param>
+        /// <param name="tangent1">Source tangent.</param>
+        /// <param name="value2">Source position.</param>
+        /// <param name="tangent2">Source tangent.</param>
+        /// <param name="amount">Weighting factor.</param>
+        /// <returns>The result of the Hermite spline interpolation.</returns>
+        public static float Hermite(float value1, float tangent1, float value2, float tangent2, float amount)
+        {
+            // All transformed to double not to lose precission
+            // Otherwise, for high numbers of param:amount the result is NaN instead of Infinity
+            double v1 = value1, v2 = value2, t1 = tangent1, t2 = tangent2, s = amount, result;
+            double sCubed = s*s*s;
+            double sSquared = s*s;
+
+            if (amount == 0f)
+                result = value1;
+            else if (amount == 1f)
+                result = value2;
+            else
+                result = (2*v1 - 2*v2 + t2 + t1)*sCubed +
+                         (3*v2 - 3*v1 - 2*t1 - t2)*sSquared +
+                         t1*s +
+                         v1;
+            return (float) result;
+        }
+
+        /// <summary>
+        ///     Linearly interpolates between two values.
+        /// </summary>
+        /// <param name="value1">Source value.</param>
+        /// <param name="value2">Source value.</param>
+        /// <param name="amount">Value between 0 and 1 indicating the weight of value2.</param>
+        /// <returns>Interpolated value.</returns>
+        /// <remarks>
+        ///     This method performs the linear interpolation based on the following formula.
+        ///     <c>value1 + (value2 - value1) * amount</c>
+        ///     Passing amount a value of 0 will cause value1 to be returned, a value of 1 will cause value2 to be returned.
+        /// </remarks>
+        public static float Lerp(float value1, float value2, float amount)
+        {
+            return value1 + (value2 - value1)*amount;
+        }
+
+        /// <summary>
+        ///     Returns the greater of two values.
+        /// </summary>
+        /// <param name="value1">Source value.</param>
+        /// <param name="value2">Source value.</param>
+        /// <returns>The greater value.</returns>
+        public static float Max(float value1, float value2)
+        {
+            return value1 > value2 ? value1 : value2;
+        }
+
+        /// <summary>
+        ///     Returns the greater of two values.
+        /// </summary>
+        /// <param name="value1">Source value.</param>
+        /// <param name="value2">Source value.</param>
+        /// <returns>The greater value.</returns>
+        public static int Max(int value1, int value2)
+        {
+            return value1 > value2 ? value1 : value2;
+        }
+
+        /// <summary>
+        ///     Returns the lesser of two values.
+        /// </summary>
+        /// <param name="value1">Source value.</param>
+        /// <param name="value2">Source value.</param>
+        /// <returns>The lesser value.</returns>
+        public static float Min(float value1, float value2)
+        {
+            return value1 < value2 ? value1 : value2;
+        }
+
+        /// <summary>
+        ///     Returns the lesser of two values.
+        /// </summary>
+        /// <param name="value1">Source value.</param>
+        /// <param name="value2">Source value.</param>
+        /// <returns>The lesser value.</returns>
+        public static int Min(int value1, int value2)
+        {
+            return value1 < value2 ? value1 : value2;
+        }
+
+        /// <summary>
+        ///     Interpolates between two values using a cubic equation.
+        /// </summary>
+        /// <param name="value1">Source value.</param>
+        /// <param name="value2">Source value.</param>
+        /// <param name="amount">Weighting value.</param>
+        /// <returns>Interpolated value.</returns>
+        public static float SmoothStep(float value1, float value2, float amount)
+        {
+            // It is expected that 0 < amount < 1
+            // If amount < 0, return value1
+            // If amount > 1, return value2
+            float result = Clamp(amount, 0f, 1f);
+            result = Hermite(value1, 0f, value2, 0f, result);
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Converts radians to degrees.
+        /// </summary>
+        /// <param name="radians">The angle in radians.</param>
+        /// <returns>The angle in degrees.</returns>
+        /// <remarks>
+        ///     This method uses double precision internally,
+        ///     though it returns single float
+        ///     Factor = 180 / pi
+        /// </remarks>
+        public static float ToDegrees(float radians)
+        {
+            return (float) (radians*57.295779513082320876798154814105);
+        }
+
+        /// <summary>
+        ///     Converts degrees to radians.
+        /// </summary>
+        /// <param name="degrees">The angle in degrees.</param>
+        /// <returns>The angle in radians.</returns>
+        /// <remarks>
+        ///     This method uses double precision internally,
+        ///     though it returns single float
+        ///     Factor = pi / 180
+        /// </remarks>
+        public static float ToRadians(float degrees)
+        {
+            return (float) (degrees*0.017453292519943295769236907684886);
+        }
+
+        /// <summary>
+        ///     Reduces a given angle to a value between π and -π.
+        /// </summary>
+        /// <param name="angle">The angle to reduce, in radians.</param>
+        /// <returns>The new angle, in radians.</returns>
+        public static float WrapAngle(float angle)
+        {
+            angle = (float) Math.IEEERemainder(angle, 6.2831854820251465);
+            if (angle <= -3.14159274f)
+            {
+                angle += 6.28318548f;
+            }
+            else
+            {
+                if (angle > 3.14159274f)
+                {
+                    angle -= 6.28318548f;
+                }
+            }
+            return angle;
+        }
+
+        /// <summary>
+        ///     Determines if value is powered by two.
+        /// </summary>
+        /// <param name="value">A value.</param>
+        /// <returns><c>true</c> if <c>value</c> is powered by two; otherwise <c>false</c>.</returns>
+        public static bool IsPowerOfTwo(int value)
+        {
+            return (value > 0) && ((value & (value - 1)) == 0);
+        }
+    }
+}

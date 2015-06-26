@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using SampSharp.GameMode.Helpers;
 
 namespace SampSharp.GameMode.SAMP
 {
@@ -44,8 +45,8 @@ namespace SampSharp.GameMode.SAMP
         ///     Initializes a new instance of the Color struct.
         /// </summary>
         /// <param name="r">The red value of this Color.</param>
-        /// <param name="g">The red value of this Color.</param>
-        /// <param name="b">The red value of this Color.</param>
+        /// <param name="g">The green value of this Color.</param>
+        /// <param name="b">The blue value of this Color.</param>
         public Color(byte r, byte g, byte b)
             : this()
         {
@@ -55,18 +56,57 @@ namespace SampSharp.GameMode.SAMP
             A = 255;
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the Color struct.
+        /// </summary>
+        /// <param name="r">The red value of this Color.</param>
+        /// <param name="g">The green value of this Color.</param>
+        /// <param name="b">The blue value of this Color.</param>
+        /// <param name="a">The alpha value of this Color.</param>
+        public Color(int r, int g, int b, int a)
+            : this(
+                (byte) MathHelper.Clamp(r, byte.MinValue, byte.MaxValue),
+                (byte) MathHelper.Clamp(g, byte.MinValue, byte.MaxValue),
+                (byte) MathHelper.Clamp(b, byte.MinValue, byte.MaxValue),
+                (byte) MathHelper.Clamp(a, byte.MinValue, byte.MaxValue))
+        {
+        }
 
         /// <summary>
         ///     Initializes a new instance of the Color struct.
         /// </summary>
-        /// <param name="color">The Color values to use for this Color.</param>
-        public Color(Color color)
-            : this()
+        /// <param name="r">The red value of this Color.</param>
+        /// <param name="g">The green value of this Color.</param>
+        /// <param name="b">The blue value of this Color.</param>
+        public Color(int r, int g, int b) : this(r, g, b, 255)
         {
-            R = color.R;
-            G = color.G;
-            B = color.B;
-            A = color.A;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the Color struct.
+        /// </summary>
+        /// <param name="r">The red value of this Color.</param>
+        /// <param name="g">The green value of this Color.</param>
+        /// <param name="b">The blue value of this Color.</param>
+        /// <param name="a">The alpha value of this Color.</param>
+        public Color(float r, float g, float b, float a)
+            : this(
+                (byte)MathHelper.Clamp(r * byte.MaxValue, byte.MinValue, byte.MaxValue),
+                (byte)MathHelper.Clamp(g * byte.MaxValue, byte.MinValue, byte.MaxValue),
+                (byte)MathHelper.Clamp(b * byte.MaxValue, byte.MinValue, byte.MaxValue),
+                (byte)MathHelper.Clamp(a * byte.MaxValue, byte.MinValue, byte.MaxValue))
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the Color struct.
+        /// </summary>
+        /// <param name="r">The red value of this Color.</param>
+        /// <param name="g">The green value of this Color.</param>
+        /// <param name="b">The blue value of this Color.</param>
+        public Color(float r, float g, float b)
+            : this(r, g, b, 1.0f)
+        {
         }
 
         /// <summary>
@@ -1479,40 +1519,10 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Cast a Color to an integer.
-        /// </summary>
-        /// <param name="color">The Color to cast to an integer.</param>
-        /// <returns>The resulting integer.</returns>
-        public static implicit operator int(Color color)
-        {
-            return color.ToInteger(ColorFormat.RGBA); //Default format
-        }
-
-        /// <summary>
-        ///     Cast an integer to a Color.
-        /// </summary>
-        /// <param name="color">The integer to cast to a Color.</param>
-        /// <returns>The resulting Color.</returns>
-        public static implicit operator Color(int color)
-        {
-            return new Color(color);
-        }
-
-        /// <summary>
-        ///     Cast an unsigned integer to a Color.
-        /// </summary>
-        /// <param name="color">The unsigned integer to cast to a Color.</param>
-        /// <returns>The resulting Color.</returns>
-        public static implicit operator Color(uint color)
-        {
-            return new Color(color);
-        }
-
-        /// <summary>
-        ///     Returns a String representation of this Color.
+        ///     Returns a <see cref="String"/> representation of this Color.
         /// </summary>
         /// <param name="colorFormat">The format to use to convert the color to a string.</param>
-        /// <returns>A String representation of this Color.</returns>
+        /// <returns>A <see cref="String"/> representation of this Color.</returns>
         public string ToString(ColorFormat colorFormat)
         {
             switch (colorFormat)
@@ -1525,12 +1535,158 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Returns a String representation of this Color.
+        /// Performs linear interpolation of <see cref="Color"/>.
         /// </summary>
-        /// <returns>A String representation of this Color.</returns>
+        /// <param name="value1">Source <see cref="Color"/>.</param>
+        /// <param name="value2">Destination <see cref="Color"/>.</param>
+        /// <param name="amount">Interpolation factor.</param>
+        /// <returns>Interpolated <see cref="Color"/>.</returns>
+        public static Color Lerp(Color value1, Color value2, float amount)
+        {
+            amount = MathHelper.Clamp(amount, 0, 1);
+            return new Color(
+                (int)MathHelper.Lerp(value1.R, value2.R, amount),
+                (int)MathHelper.Lerp(value1.G, value2.G, amount),
+                (int)MathHelper.Lerp(value1.B, value2.B, amount),
+                (int)MathHelper.Lerp(value1.A, value2.A, amount));
+        }
+		
+        #endregion
+
+        #region Operators
+
+        /// <summary>
+        ///     Cast a Color to an integer.
+        /// </summary>
+        /// <param name="value">The Color to cast to an integer.</param>
+        /// <returns>The resulting integer.</returns>
+        public static implicit operator int(Color value)
+        {
+            return value.ToInteger(ColorFormat.RGBA); //Default format
+        }
+
+        /// <summary>
+        ///     Cast an integer to a Color.
+        /// </summary>
+        /// <param name="value">The integer to cast to a Color.</param>
+        /// <returns>The resulting Color.</returns>
+        public static implicit operator Color(int value)
+        {
+            return new Color(value);
+        }
+
+        /// <summary>
+        ///     Cast an unsigned integer to a Color.
+        /// </summary>
+        /// <param name="value">The unsigned integer to cast to a Color.</param>
+        /// <returns>The resulting Color.</returns>
+        public static implicit operator Color(uint value)
+        {
+            return new Color(value);
+        }
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="a">The left color.</param>
+        /// <param name="b">The right color.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static bool operator ==(Color a, Color b)
+        {
+            return a.Equals(b);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="a">The left color.</param>
+        /// <param name="b">The right color.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static bool operator !=(Color a, Color b)
+        {
+            return !(a == b);
+        }
+
+        /// <summary>
+        /// Implements the operator *.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="scale">The scale.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static Color operator *(Color value, float scale)
+        {
+            return new Color((int) (value.R*scale), (int) (value.G*scale), (int) (value.B*scale), (int) (value.A*scale));
+        }
+
+        /// <summary>
+        /// Performs an explicit conversion from <see cref="Color"/> to <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
+        public static explicit operator Vector3(Color value)
+        {
+            return new Vector3(value.R/byte.MaxValue, value.G/byte.MaxValue, value.B/byte.MaxValue);
+        }
+
+        #endregion
+
+        #region Overrides of ValueType
+
+        /// <summary>
+        ///  Returns a <see cref="String"/> representation of this Color.
+        /// </summary>
+        /// <returns>A <see cref="String"/> representation of this Color.</returns>
         public override string ToString()
         {
             return ToString(ColorFormat.RGB);
+        }
+
+        #endregion
+
+        #region Equality members
+
+        public bool Equals(Color other)
+        {
+            return R == other.R && G == other.G && B == other.B && A == other.A;
+        }
+
+        /// <summary>
+        /// Indicates whether this instance and a specified object are equal.
+        /// </summary>
+        /// <returns>
+        /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+        /// </returns>
+        /// <param name="obj">Another object to compare to. </param>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is Color && Equals((Color) obj);
+        }
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer that is the hash code for this instance.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = R.GetHashCode();
+                hashCode = (hashCode*397) ^ G.GetHashCode();
+                hashCode = (hashCode*397) ^ B.GetHashCode();
+                hashCode = (hashCode*397) ^ A.GetHashCode();
+                return hashCode;
+            }
         }
 
         #endregion
