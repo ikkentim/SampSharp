@@ -36,7 +36,7 @@ namespace SampSharp.GameMode.Controllers
                 Menu menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(player));
 
                 if (menu != null)
-                    menu.OnExit(args);
+                    menu.OnExit(player, args);
             };
 
             gameMode.PlayerSelectedMenuRow += (sender, args) =>
@@ -45,7 +45,7 @@ namespace SampSharp.GameMode.Controllers
                 Menu menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(player));
 
                 if (menu != null)
-                    menu.OnResponse(args);
+                    menu.OnResponse(player, args);
             };
         }
     }

@@ -196,21 +196,23 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Raises the <see cref="IMenu.Exit" /> event.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        public void OnExit(EventArgs e)
+        public void OnExit(GtaPlayer player, EventArgs e)
         {
             if (Exit != null)
-                Exit(this, e);
+                Exit(player, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="IMenu.Response" /> event.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="e">The <see cref="MenuRowEventArgs" /> instance containing the event data.</param>
-        public void OnResponse(MenuRowEventArgs e)
+        public void OnResponse(GtaPlayer player, MenuRowEventArgs e)
         {
             if (Response != null)
-                Response(this, e);
+                Response(player, e);
         }
 
         #endregion

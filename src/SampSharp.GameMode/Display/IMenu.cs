@@ -82,13 +82,15 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Raises the <see cref="Exit" /> event.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        void OnExit(EventArgs e);
+        void OnExit(GtaPlayer player, EventArgs e);
 
         /// <summary>
         ///     Raises the <see cref="Response" /> event.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="e">The <see cref="MenuRowEventArgs" /> instance containing the event data.</param>
-        void OnResponse(MenuRowEventArgs e);
+        void OnResponse(GtaPlayer player, MenuRowEventArgs e);
     }
 }
