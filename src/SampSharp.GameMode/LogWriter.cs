@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -239,10 +240,7 @@ namespace SampSharp.GameMode
                      */
                     break;
                 default:
-                    if (Sync.IsRequired)
-                        Sync.Run(() => Write(value.ToString(CultureInfo.InvariantCulture)));
-                    else
-                        Write(value.ToString(CultureInfo.InvariantCulture));
+                    Write(value.ToString(CultureInfo.InvariantCulture));
                     break;
             }
         }
@@ -253,8 +251,29 @@ namespace SampSharp.GameMode
         /// <param name="value">The string to write.</param>
         public override void Write(string value)
         {
-            if (value != null)
-                Native.Print(value);
+            if (Sync.IsRequired)
+            {
+                Sync.Run(() => Write(value));
+                return;
+            }
+
+            if (value == null)
+            {
+                Native.Print(string.Empty);
+                return;
+            }
+            
+            foreach (var ln in value.Split('\n'))
+            {
+                var line = ln.Trim('\r');
+                while (line.Length > 512)
+                {
+                    var block = line.Substring(0, 512);
+                    line = line.Substring(512);
+                    Native.Print(block);
+                }
+                Native.Print(line);
+            }
         }
 
         /// <summary>
