@@ -57,8 +57,8 @@ namespace SampSharp.GameMode.SAMP.Commands
         public string Shortcut { get; set; }
 
         /// <summary>
-        ///     Gets or sets the method run to check whether a player has the permissions the run the command.
+        ///     Gets or sets the class to run to check whether a player has the permissions the run the command.
         /// </summary>
-        public string PermissionCheckMethod { get; set; }
+        public Type PermissionChecker { get; set; }
     }
 }

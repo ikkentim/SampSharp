@@ -21,6 +21,7 @@ using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
+using TestMode.Checkers;
 
 namespace TestMode.Tests
 {
@@ -49,7 +50,7 @@ namespace TestMode.Tests
 
         #endregion
 
-        [Command("console", Alias = "c", Shortcut = "1", PermissionCheckMethod = "TestCommandPermission")]
+        [Command("console", Alias = "c", Shortcut = "1", PermissionChecker = typeof(AdminChecker))]
         [CommandGroup("tools")]
         [Text("text")]
         public static void TestCommand(GtaPlayer player, string word, int num, string text)
@@ -61,10 +62,18 @@ namespace TestMode.Tests
             player.SendClientMessage(Color.Green, "Formattest {0} -- {1} ,, {2}", 123, "xyz", "::DD");
         }
 
-        public static bool TestCommandPermission(GtaPlayer player)
+        [Command("adminwomessage", PermissionChecker = typeof(AdminWithoutMessageChecker))]
+        public static void TestAdminOnlyCommandWithoutMessage(GtaPlayer player)
         {
-            return player.IsAdmin;
+            player.SendClientMessage("You are admin, congratz.");
         }
+
+        //[Command("wrongcommandshouldnotcompile", PermissionChecker = typeof(GtaPlayer))]
+        //public static void TestCommandWithAWrongPermissionChecker(GtaPlayer player)
+        //{
+        //    // This method should throw let the commands loading fail
+        //    player.SendClientMessage("wtf?");
+        //}
 
         [Command("list", Alias = "l")]
         [CommandGroup("vehicle")]

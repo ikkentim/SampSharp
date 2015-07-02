@@ -108,7 +108,7 @@ namespace SampSharp.GameMode.Controllers
             List<Tuple<Tuple<int, string>, Command>> candidates = new List<Tuple<Tuple<int, string>, Command>>();
 
             // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (Command cmd in Command.All.Where(c => c.HasPlayerPermissionForCommand(player)))
+            foreach (Command cmd in Command.All)
             {
                 string args = text;
                 int count = cmd.CommandTextMatchesCommand(ref args);
