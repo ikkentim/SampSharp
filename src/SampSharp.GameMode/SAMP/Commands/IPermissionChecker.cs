@@ -8,7 +8,7 @@ namespace SampSharp.GameMode.SAMP.Commands
     ///     is allowed to use a specific command.
     /// 
     ///     Every class that implement this interface
-    ///     should create parameter-less constructor or let
+    ///     should have a parameter-less constructor or let
     ///     the compiler create one
     /// </summary>
     public interface IPermissionChecker
