@@ -108,6 +108,7 @@
     <Compile Include="SAMP\Commands\Command.cs" />
     <Compile Include="SAMP\Commands\EnumAttribute.cs" />
     <Compile Include="SAMP\Commands\FloatAttribute.cs" />
+    <Compile Include="SAMP\Commands\IPermissionChecker.cs" />
     <Compile Include="SAMP\Commands\PlayerAttribute.cs" />
     <Compile Include="SAMP\Delay.cs" />
     <Compile Include="SAMP\KeyChangeHandlerSet.cs" />

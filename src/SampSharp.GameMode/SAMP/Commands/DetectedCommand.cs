@@ -80,31 +80,14 @@ namespace SampSharp.GameMode.SAMP.Commands
             Shortcut = commandAttribute.Shortcut;
             Command = command;
 
-            PermissionCheck = commandAttribute.PermissionCheckMethod == null
-                ? null
-                : command.DeclaringType.GetMethods()
-                    .FirstOrDefault(
-                        m => (m.IsStatic || !command.IsStatic) && m.Name == commandAttribute.PermissionCheckMethod);
-
-            if (PermissionCheck != null)
+            if (commandAttribute.PermissionChecker != null)
             {
-                ParameterInfo[] permParams = PermissionCheck.GetParameters();
-                if (PermissionCheck.IsStatic &&
-                    (permParams.Length != 1 || !typeof (GtaPlayer).IsAssignableFrom(permParams[0].ParameterType)))
+                if (!typeof(IPermissionChecker).IsAssignableFrom(commandAttribute.PermissionChecker))
                 {
-                    throw new ArgumentException("PermissionCheckMethod of " + Name +
-                                                " does not take a Player as parameter");
+                    throw new ArgumentException(commandAttribute.PermissionChecker + " should implement IPermissionChecker interface");
                 }
 
-                if (!PermissionCheck.IsStatic && permParams.Length != 0)
-                {
-                    throw new ArgumentException("PermissionCheckMethod of " + Name + " has parameters");
-                }
-
-                if (PermissionCheck.ReturnType != typeof (bool))
-                {
-                    throw new ArgumentException("PermissionCheckMethod of " + Name + " does not return a boolean");
-                }
+                PermissionCheck = (IPermissionChecker) Activator.CreateInstance(commandAttribute.PermissionChecker);
             }
 
             ParameterInfo[] cmdParams = Command.GetParameters();
@@ -215,8 +198,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// </returns>
         public override bool HasPlayerPermissionForCommand(GtaPlayer player)
         {
-            return PermissionCheck == null ||
-                   (bool) PermissionCheck.Invoke(null, (PermissionCheck.IsStatic ? new object[] {player} : null));
+            return PermissionCheck == null || PermissionCheck.Check(player);
         }
 
         /// <summary>
@@ -229,6 +211,19 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// </returns>
         public override bool RunCommand(GtaPlayer player, string args)
         {
+            if (!HasPlayerPermissionForCommand(player))
+            {
+                if (PermissionCheck.Message == null)
+                {
+                    // If the message is null, we return false so samp will think that this method doesn't exists
+                    // and will print the default message
+                    return false;
+                }
+
+                player.SendClientMessage(PermissionCheck.Message);
+                return true;
+            }
+
             var arguments = new List<object>();
 
             if (Command.IsStatic) arguments.Add(player);
@@ -294,7 +289,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <summary>
         ///     Gets the permission check method.
         /// </summary>
-        public MethodInfo PermissionCheck { get; private set; }
+        public IPermissionChecker PermissionCheck { get; private set; }
 
         /// <summary>
         ///     Gets the parameters.
