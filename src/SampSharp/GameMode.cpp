@@ -513,11 +513,9 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
      * the signature matches the specified format and return it's handle.*/
     for (int i = 0; i < natives_.size(); i++) {
         if (!strcmp(natives_[i].name, sig.name)) {
-            if (natives_[i].param_count != sig.param_count) {
-                mono_raise_exception(mono_get_exception_invalid_operation(
-                    "native was already loaded with different signature"));
+            if (natives_[i].param_count == sig.param_count) {
+                return i;
             }
-            return i;
         }
     }
 
