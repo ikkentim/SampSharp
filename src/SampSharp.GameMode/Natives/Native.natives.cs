@@ -54,7 +54,12 @@ namespace SampSharp.GameMode.Natives
 
         [MethodImpl((MethodImplOptions.InternalCall))]
         public static extern float InvokeNativeFloat(int handle, object[] args);
-        
+
+        public static bool InvokeNativeBool(int handle, object[] args)
+        {
+            return InvokeNative(handle, args) != 0;
+        }
+
         /// <summary>
         ///     Utility method. Checks whether current thread is main thread.
         /// </summary>
@@ -144,7 +149,9 @@ namespace SampSharp.GameMode.Natives
             // Pick the right invoker.
             MethodInfo invokeMethodInfo;
             if (returnType == typeof (int))
-                invokeMethodInfo = typeof (Native).GetMethod("InvokeNative");
+                invokeMethodInfo = typeof(Native).GetMethod("InvokeNative");
+            else if (returnType == typeof(bool))
+                invokeMethodInfo = typeof(Native).GetMethod("InvokeNativeBool");
             else if (returnType == typeof (float))
                 invokeMethodInfo = typeof(Native).GetMethod("InvokeNativeFloat");
             else
