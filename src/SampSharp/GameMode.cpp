@@ -281,6 +281,7 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array)
 
     /* Unbox all mono arguments and store them in the params array. */
     void *params[MAX_NATIVE_ARGS];
+    cell param_value[MAX_NATIVE_ARGS];
     int param_size[MAX_NATIVE_ARGS];
     for (int i = 0; i < sig->param_count; i++) {
         switch (sig->parameters[i]) {
@@ -330,14 +331,26 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array)
             params[i] = value;
             break;
         }
-        case 'D': /* integer reference */
-            params[i] = *(int **)mono_object_unbox(
-                mono_array_get(args_array, MonoObject *, i));
+        case 'D': { /* integer reference */
+            MonoObject *object = mono_array_get(args_array, MonoObject *, i);
+            if (object) {
+                params[i] = *(int **)mono_object_unbox(object);
+            }
+            else {
+                params[i] = &param_value[i];
+            }
             break;
-        case 'F': /* floating-point reference */
-            params[i] = &amx_ftoc(**(float **)mono_object_unbox(
-                mono_array_get(args_array, MonoObject *, i)));
+        }
+        case 'F': { /* floating-point reference */
+            MonoObject *object = mono_array_get(args_array, MonoObject *, i);
+            if (object) {
+                params[i] = &amx_ftoc(**(float **)mono_object_unbox(object));
+            }
+            else {
+                params[i] = &param_value[i];
+            }
             break;
+        }
         case 'S': /* non-const string (writeable) */ {
             int size_info = sig->sizes[i];
             param_size[i] = size_info < 0 ? -size_info
@@ -369,7 +382,13 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array)
                 : *(int *)mono_object_unbox(
                 mono_array_get(args_array, MonoObject *, size_info));
 
-            params[i] = new cell[param_size[i]];
+            cell *value = new cell[param_size[i]];
+            float minfloat = std::numeric_limits<float>::min();
+            for (int j = 0; j < param_size[i]; j++) {
+                /* Set default value to int.MinValue */
+                value[j] = amx_ftoc(minfloat);
+            }
+            params[i] = value;
             break;
         }
         default:
@@ -394,14 +413,25 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array)
             delete[] params[i];
             break;
         case 'D': /* integer reference */
-            **(int **)mono_object_unbox(
-                mono_array_get(args_array, MonoObject *, i)) =
-                *(int *)params[i];
+            if (mono_array_get(args_array, MonoObject *, i)) {
+                **(int **)mono_object_unbox(
+                    mono_array_get(args_array, MonoObject *, i)) =
+                    *(int *)params[i];
+            }
+            else {
+                mono_array_set(args_array, int, i, *(int *)params[i]);
+            }
             break;
         case 'F': /* floating-point reference */
-            **(float **)mono_object_unbox(
-                mono_array_get(args_array, MonoObject *, i)) =
-                amx_ctof(*(cell *)params[i]);
+            if (mono_array_get(args_array, MonoObject *, i)) {
+                **(float **)mono_object_unbox(
+                    mono_array_get(args_array, MonoObject *, i)) =
+                    amx_ctof(*(cell *)params[i]);
+            }
+            else {
+                mono_array_set(args_array, float, i, 
+                    amx_ctof(*(cell *)params[i]));
+            }
             break;
         case 'S': /* non-const string (writeable) */
             if (mono_array_get(args_array, MonoObject *, i)) {
@@ -421,7 +451,13 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array)
             for (int j = 0; j < param_size[i]; j++) {
                 mono_array_set(arr, int, j, param_array[j]);
             }
-            *mono_array_get(args_array, MonoArray **, i) = arr;
+
+            if (mono_array_get(args_array, MonoObject *, i)) {
+                *mono_array_get(args_array, MonoArray **, i) = arr;
+            }
+            else {
+                mono_array_set(args_array, MonoArray *, i, arr);
+            }
 
             delete[] params[i];
             break;
@@ -434,7 +470,13 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array)
             for (int j = 0; j<param_size[i]; j++) {
                 mono_array_set(arr, float, j, amx_ctof(param_array[j]));
             }
-            *mono_array_get(args_array, MonoArray **, i) = arr;
+
+            if (mono_array_get(args_array, MonoObject *, i)) {
+                *mono_array_get(args_array, MonoArray **, i) = arr;
+            }
+            else {
+                mono_array_set(args_array, MonoArray *, i, arr);
+            }
 
             delete[] params[i];
             break;
@@ -583,7 +625,7 @@ bool GameMode::NativeExists(MonoString *name_string) {
     if (!name_string) {
         mono_raise_exception(mono_get_exception_invalid_operation(
             "name cannot be null"));
-        return ERR_EXCEPTION;
+        return false;
     }
 
     return !!sampgdk::FindNative(mono_string_to_utf8(name_string));
