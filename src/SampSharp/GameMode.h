@@ -34,15 +34,6 @@
 #define MAX_NATIVE_ARG_FORMAT_LEN           (8)
 
 class GameMode {
-public:
-    static bool Load(std::string namespaceName, std::string className);
-    static bool Unload();
-    static void ProcessTick();
-    static void ProcessPublicCall(AMX *amx, const char *name, cell *params,
-        cell *retval);
-    static bool IsLoaded() {
-        return isLoaded_;
-    }
 private:
     enum ParameterType {
         PARAM_INVALID,
@@ -85,6 +76,17 @@ private:
     typedef std::map<int, RefTimer> TimerMap;
     typedef std::vector<uint32_t> ExtensionList;
 
+public:
+    static bool Load(std::string namespaceName, std::string className);
+    static bool Unload();
+    static void ProcessTick();
+    static void ProcessPublicCall(AMX *amx, const char *name, cell *params,
+        cell *retval);
+    static bool IsLoaded() {
+        return isLoaded_;
+    }
+
+private:
     static bool isLoaded_;
     static unsigned long threadId_;
 
@@ -92,6 +94,7 @@ private:
     static ExtensionList extensions_;
     static CallbackMap callbacks_;
     static NativeList natives_;
+
     static MonoDomain *domain_;
     static GameModeImage gameMode_;
     static GameModeImage baseMode_;
@@ -102,16 +105,8 @@ private:
     static MonoClass *paramLengthClass_;
     static MonoMethod *paramLengthGetMethod_;
 
-    static bool RegisterExtension(MonoObject *extension);
-    static bool IsMainThread();
-    static int SetRefTimer(int interval, bool repeat, MonoObject *params);
-    static bool KillRefTimer(int id);
+private:
     static void SAMPGDK_CALL ProcessTimerTick(int timerid, void *data);
-    static int LoadNative(MonoString *name, MonoString *format, 
-        MonoArray *sizes_array);
-    static int InvokeNative(int handle, MonoArray *arguments);
-    static float InvokeNativeFloat(int handle, MonoArray *arguments);
-    static bool NativeExists(MonoString *name);
     static void AddInternalCall(const char * name, const void * method);
     static MonoMethod *LoadEvent(const char *name, int param_count);
     static int GetParamLengthIndex(MonoMethod *method, int idx);
@@ -124,4 +119,19 @@ private:
     static MonoMethod *FindMethodForCallback(const char *name,
         int param_count, uint32_t &handle);
     static void PrintException(const char *methodname, MonoObject *exception);
+
+private:
+    /* API functions. */
+    static bool RegisterExtension(MonoObject *extension);
+    static bool IsMainThread();
+
+    static int SetRefTimer(int interval, bool repeat, MonoObject *params);
+    static bool KillRefTimer(int id);
+
+    static int LoadNative(MonoString *name, MonoString *format,
+        MonoArray *sizes_array);
+    static int InvokeNative(int handle, MonoArray *arguments);
+    static float InvokeNativeFloat(int handle, MonoArray *arguments);
+    static bool NativeExists(MonoString *name);
+
 };
