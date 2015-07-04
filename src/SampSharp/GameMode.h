@@ -111,6 +111,7 @@ private:
         MonoArray *sizes_array);
     static int InvokeNative(int handle, MonoArray *arguments);
     static float InvokeNativeFloat(int handle, MonoArray *arguments);
+    static bool NativeExists(MonoString *name);
     static void AddInternalCall(const char * name, const void * method);
     static MonoMethod *LoadEvent(const char *name, int param_count);
     static int GetParamLengthIndex(MonoMethod *method, int idx);

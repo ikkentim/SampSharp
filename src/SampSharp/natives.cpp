@@ -17,7 +17,6 @@
 #include <sampgdk/sampgdk.h>
 #include "monohelper.h"
 #include "unicode.h"
-#include "customnatives.h"
 
 //
 //a_players string converters
@@ -992,9 +991,4 @@ void LoadNatives(void (add_call(const char * name, const void * method)))
     // logging
     add_call("Print", (void *)p_Print);
     add_call("SetCodepage", (void *)set_codepage);
-
-    //
-    // natives
-    add_call("CallNativeArray", (void *)call_native_array);
-    add_call("NativeExists", (void *)native_exists);
 }

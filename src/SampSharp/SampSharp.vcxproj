@@ -99,7 +99,6 @@
   <ItemGroup>
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="ConfigReader.cpp" />
-    <ClCompile Include="customnatives.cpp" />
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="includes\sampgdk\sampgdk.c" />
     <ClCompile Include="includes\sdk\amxplugin.cpp" />
@@ -112,7 +111,6 @@
   <ItemGroup>
     <ClInclude Include="Config.h" />
     <ClInclude Include="ConfigReader.h" />
-    <ClInclude Include="customnatives.h" />
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="monohelper.h" />

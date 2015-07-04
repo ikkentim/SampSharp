@@ -109,6 +109,7 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     AddInternalCall("SetTimer", (void *)SetRefTimer);
     AddInternalCall("KillTimer", (void *)KillRefTimer);
     AddInternalCall("IsMainThread", (void *)IsMainThread);
+    AddInternalCall("NativeExists", (void *)NativeExists);
     AddInternalCall("LoadNative", (void *)LoadNative);
     AddInternalCall("InvokeNative", (void *)InvokeNative);
     AddInternalCall("InvokeNativeFloat", (void *)InvokeNativeFloat);
@@ -573,6 +574,15 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
     return result;
 }
 
+bool GameMode::NativeExists(MonoString *name_string) {
+    if (!name_string) {
+        mono_raise_exception(mono_get_exception_invalid_operation(
+            "name cannot be null"));
+        return ERR_EXCEPTION;
+    }
+
+    return !!sampgdk::FindNative(mono_string_to_utf8(name_string));
+}
 void GameMode::ProcessTimerTick(int timerid, void *data) {
     if (!isLoaded_) {
         return;
