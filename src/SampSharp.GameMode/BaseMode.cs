@@ -16,6 +16,7 @@
 using System;
 using System.Reflection;
 using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.Natives;
 
 namespace SampSharp.GameMode
 {
@@ -46,6 +47,10 @@ namespace SampSharp.GameMode
             Services = new GameModeServiceContainer();
 
             RegisterControllers();
+
+            Native.LoadNatives<BaseMode>();
+            Native.LoadNatives(GetType());
+
         }
 
         #endregion

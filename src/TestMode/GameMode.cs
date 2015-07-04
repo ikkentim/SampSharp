@@ -19,6 +19,7 @@ using System.Linq;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Events;
+using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 using TestMode.Tests;
@@ -50,10 +51,27 @@ namespace TestMode
 
         #endregion
 
+        // Test code below....
+        private delegate int SetGameModeTextImpl(string text);
+        [Native("SetGameModeText")]
+        private static SetGameModeTextImpl SetGameModeText;
+
+        private delegate int GetNetworkStatsImpl(out string text, int len);
+        [Native("GetNetworkStats")]
+        private static GetNetworkStatsImpl GetNetworkStats;
+
+        // End test code.
+
         #region Overrides of BaseMode
 
         protected override void OnInitialized(EventArgs args)
         {
+            SetGameModeText("ABCDE");
+
+            string outp;
+            GetNetworkStats(out outp, 500);
+            Console.WriteLine(outp);
+            return;
             Console.WriteLine("TestMode for SampSharp");
             Console.WriteLine("----------------------");
 

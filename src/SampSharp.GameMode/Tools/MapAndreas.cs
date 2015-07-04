@@ -71,8 +71,8 @@ namespace SampSharp.GameMode.Tools
             {
                 _nativeInit = new NativeFunction("MapAndreas_Init", typeof(int), typeof(string), typeof(int));
                 _nativeUnload = new NativeFunction("MapAndreas_Unload");
-                _nativeFindZ = new NativeFunction("MapAndreas_FindZ_For2DCoord", typeof(float), typeof(float), typeof(Out<float>));
-                _nativeFindAvgZ = new NativeFunction("MapAndreas_FindAverageZ", typeof(float), typeof(float), typeof(Out<float>));
+                _nativeFindZ = new NativeFunction("MapAndreas_FindZ_For2DCoord", typeof(float), typeof(float), typeof(float).MakeByRefType());
+                _nativeFindAvgZ = new NativeFunction("MapAndreas_FindAverageZ", typeof(float), typeof(float), typeof(float).MakeByRefType());
                 _nativeSetZ = new NativeFunction("MapAndreas_SetZ_For2DCoord", typeof(float), typeof(float), typeof(float));
                 _native_SaveCurrentHMap = new NativeFunction("MapAndreas_SaveCurrentHMap", typeof(string));
 

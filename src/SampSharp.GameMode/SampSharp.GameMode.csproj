@@ -103,7 +103,6 @@
     </Compile>
     <Compile Include="Natives\Native.cs" />
     <Compile Include="Natives\NativeFunction.cs" />
-    <Compile Include="Natives\Out`1.cs" />
     <Compile Include="SAMP\Commands\CommandGroup.cs" />
     <Compile Include="SAMP\Commands\CommandGroupAttribute.cs" />
     <Compile Include="SAMP\Commands\DetectedCommand.cs" />

@@ -79,28 +79,29 @@ namespace SampSharp.GameMode.Natives
                     lengthList.Add(i + 1);
                     _format += "v";
                 }
-                else if (param == typeof(Out<int>))
+                else if (param == typeof(int).MakeByRefType())
                     _format += "D";
-                else if (param == typeof(Out<string>))
+                else if (param == typeof(string).MakeByRefType())
                 {
                     lengthList.Add(i + 1);
                     _format += "S";
                 }
-                else if (param == typeof(Out<float>))
+                else if (param == typeof(float).MakeByRefType())
                     _format += "F";
-                else if (param == typeof(Out<int[]>))
+                else if (param == typeof(int[]).MakeByRefType())
                 {
                     lengthList.Add(i + 1);
                     _format += "A";
                 }
-                else if (param == typeof(Out<float[]>))
+                else if (param == typeof(float[]).MakeByRefType())
                 {
                     lengthList.Add(i + 1);
                     _format += "V";
                 }
             }
 
-            _handle = Native.LoadNative(name, _format, sizes ?? (lengthList.Count > 0 ? lengthList.ToArray() : null));
+            _handle = Native.LoadNative(name, _format,
+                sizes == null || sizes.Length == 0 ? (lengthList.Count > 0 ? lengthList.ToArray() : null) : sizes);
         }
 
         /// <summary>
@@ -111,6 +112,13 @@ namespace SampSharp.GameMode.Natives
             get { return _name; }
         }
 
+        /// <summary>
+        /// Gets the handle of the native function.
+        /// </summary>
+        public int Handle
+        {
+            get { return _handle; }
+        }
         private object[] CreateRefArray(RuntimeArgumentHandle handle)
         {
             var iterator = new ArgIterator(handle);

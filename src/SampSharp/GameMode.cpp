@@ -404,9 +404,14 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array)
                 amx_ctof(*(cell *)params[i]);
             break;
         case 'S': /* non-const string (writeable) */
-            *mono_array_get(args_array, MonoString **, i) =
-                string_to_monostring((char *)params[i], param_size[i]);
-
+            if (mono_array_get(args_array, MonoObject *, i)) {
+                *mono_array_get(args_array, MonoString **, i) =
+                    string_to_monostring((char *)params[i], param_size[i]);
+            }
+            else {
+                mono_array_set(args_array, MonoString *, i, 
+                    string_to_monostring((char *)params[i], param_size[i]));
+            }
             delete[] params[i];
             break;
         case 'A': { /* array of integers reference */
