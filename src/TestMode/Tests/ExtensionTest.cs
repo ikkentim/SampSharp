@@ -27,7 +27,7 @@ namespace TestMode.Tests
             Native.RegisterExtension(new TestExtension());
 
             Console.WriteLine("Call OnTest183()");
-            Native.CallNative("CallLocalFunction", __arglist("OnTest183", ""));
+            new NativeFunction("CallLocalFunction", typeof (string), typeof (string)).Invoke("OnTest183", "");
         }
 
         #endregion
