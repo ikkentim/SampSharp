@@ -29,6 +29,8 @@
 #include "PathUtil.h"
 #include "monohelper.h"
 
+#define ERR_EXCEPTION                   (-1)
+
 using std::string;
 using sampgdk::logprintf;
 
@@ -41,6 +43,7 @@ GameMode::CallbackMap GameMode::callbacks_;
 uint32_t GameMode::gameModeHandle_;
 GameMode::TimerMap GameMode::timers_;
 GameMode::ExtensionList GameMode::extensions_;
+GameMode::NativeList GameMode::natives_;
 
 MonoMethod *GameMode::onCallbackException_;
 MonoMethod *GameMode::tickMethod_;
@@ -106,6 +109,9 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     AddInternalCall("SetTimer", (void *)SetRefTimer);
     AddInternalCall("KillTimer", (void *)KillRefTimer);
     AddInternalCall("IsMainThread", (void *)IsMainThread);
+    AddInternalCall("LoadNative", (void *)LoadNative);
+    AddInternalCall("InvokeNative", (void *)InvokeNative);
+    AddInternalCall("InvokeNativeFloat", (void *)InvokeNativeFloat);
 
     isLoaded_ = true;
 
@@ -248,6 +254,323 @@ bool GameMode::RegisterExtension(MonoObject *extension) {
     uint32_t handle = mono_gchandle_new(extension, false);
     extensions_.push_back(handle);
     return true;
+}
+
+float GameMode::InvokeNativeFloat(int handle, MonoArray * args_array) {
+    cell r = (cell)InvokeNative(handle, args_array);
+    return amx_ctof(r);
+}
+
+int GameMode::InvokeNative(int handle, MonoArray *args_array)
+{
+    if (handle < 0 || handle >= natives_.size()) {
+        mono_raise_exception(mono_get_exception_invalid_operation(
+            "invalid handle"));
+    }
+
+    /* Get the pointer to the native signature in the pool and check whether the
+     * arguments count matches the signature. */
+    NativeSignature *sig = &natives_[handle];
+
+    if (!((!args_array && sig->param_count == 0) ||
+        (args_array && sig->param_count == mono_array_length(args_array)))) {
+        mono_raise_exception(mono_get_exception_invalid_operation(
+            "invalid argument count"));
+    }
+
+    /* Unbox all mono arguments and store them in the params array. */
+    void *params[MAX_NATIVE_ARGS];
+    int param_size[MAX_NATIVE_ARGS];
+    for (int i = 0; i < sig->param_count; i++) {
+        switch (sig->parameters[i]) {
+        case 'd': /* integer */
+        case 'b': /* boolean */
+            params[i] = mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, i));
+            break;
+        case 'f': /* floating-point */
+            params[i] = &amx_ftoc(*(float *)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, i)));
+            break;
+        case 's': { /* const string */
+            params[i] = monostring_to_string(
+                mono_array_get(args_array, MonoString *, i));
+            break;
+        }
+        case 'a': { /* array of integers */
+            MonoArray *values_array =
+                mono_array_get(args_array, MonoArray *, i);
+
+            int size_info = sig->sizes[i];
+            param_size[i] = size_info < 0 ? -size_info
+                : *(int *)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, size_info));
+
+            cell *value = new cell[param_size[i]];
+            for (int j = 0; j < param_size[i]; j++) {
+                value[j] = mono_array_get(values_array, int, j);
+            }
+            params[i] = value;
+            break;
+        }
+        case 'v': { /* array of floats */
+            MonoArray *values_array =
+                mono_array_get(args_array, MonoArray *, i);
+
+            int size_info = sig->sizes[i];
+            param_size[i] = size_info < 0 ? -size_info
+                : *(int *)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, size_info));
+
+            cell *value = new cell[param_size[i]];
+            for (int j = 0; j<param_size[i]; j++) {
+                value[j] = amx_ftoc(mono_array_get(values_array, float, j));
+            }
+            params[i] = value;
+            break;
+        }
+        case 'D': /* integer reference */
+            params[i] = *(int **)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, i));
+            break;
+        case 'F': /* floating-point reference */
+            params[i] = &amx_ftoc(**(float **)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, i)));
+            break;
+        case 'S': /* non-const string (writeable) */ {
+            int size_info = sig->sizes[i];
+            param_size[i] = size_info < 0 ? -size_info
+                : *(int *)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, size_info));
+
+            params[i] = new cell[param_size[i] + 1] {'\0'};
+
+            assert(params[i]);
+            break;
+        }
+        case 'A': { /* array of integers reference */
+            int size_info = sig->sizes[i];
+            param_size[i] = size_info < 0 ? -size_info
+                : *(int *)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, size_info));
+
+            cell *value = new cell[param_size[i]];
+            for (int j = 0; j < param_size[i]; j++) {
+                /* Set default value to int.MinValue */
+                value[j] = std::numeric_limits<int>::min();
+            }
+            params[i] = value;
+            break;
+        }
+        case 'V': { /* array of floating-points reference */
+            int size_info = sig->sizes[i];
+            param_size[i] = size_info < 0 ? -size_info
+                : *(int *)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, size_info));
+
+            params[i] = new cell[param_size[i]];
+            break;
+        }
+        default:
+            mono_raise_exception(mono_get_exception_invalid_operation(
+                "invalid format type"));
+            return ERR_EXCEPTION;
+            break;
+        }
+
+    }
+    
+    int return_value = sampgdk::InvokeNativeArray(sig->native, sig->format, 
+        params);
+
+    /* Delete buffers and write reference types back to the mono arguments 
+     * array. */
+    for (int i = 0; i < sig->param_count; i++) {
+        switch (sig->parameters[i]) {
+        case 's': /* const string */
+        case 'a': /* array of integers */
+        case 'v': /* array of floats */
+            delete[] params[i];
+            break;
+        case 'D': /* integer reference */
+            **(int **)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, i)) =
+                *(int *)params[i];
+            break;
+        case 'F': /* floating-point reference */
+            **(float **)mono_object_unbox(
+                mono_array_get(args_array, MonoObject *, i)) =
+                amx_ctof(*(cell *)params[i]);
+            break;
+        case 'S': /* non-const string (writeable) */
+            *mono_array_get(args_array, MonoString **, i) =
+                string_to_monostring((char *)params[i], param_size[i]);
+
+            delete[] params[i];
+            break;
+        case 'A': { /* array of integers reference */
+            cell *param_array = (cell *)params[i];
+            MonoArray *arr = mono_array_new(mono_domain_get(),
+                mono_get_int32_class(), param_size[i]);
+            for (int j = 0; j < param_size[i]; j++) {
+                mono_array_set(arr, int, j, param_array[j]);
+            }
+            *mono_array_get(args_array, MonoArray **, i) = arr;
+
+            delete[] params[i];
+            break;
+        }
+        case 'V': { /* array of floating-points reference */
+            cell *param_array = (cell *)params[i];
+
+            MonoArray *arr = mono_array_new(mono_domain_get(),
+                mono_get_single_class(), param_size[i]);
+            for (int j = 0; j<param_size[i]; j++) {
+                mono_array_set(arr, float, j, amx_ctof(param_array[j]));
+            }
+            *mono_array_get(args_array, MonoArray **, i) = arr;
+
+            delete[] params[i];
+            break;
+        }
+        }
+    }
+
+    return return_value;
+}
+
+int GameMode::LoadNative(MonoString *name_string, MonoString *format_string, 
+    MonoArray *sizes_array)
+{
+    int size_idx = 0;
+    NativeSignature sig;
+
+    if (!name_string) {
+        mono_raise_exception(mono_get_exception_invalid_operation(
+            "name cannot be null"));
+        return ERR_EXCEPTION;
+    }
+
+    /* Check whether the parameters count is less than MAX_NATIVE_ARGS. */
+    sig.param_count = !format_string ? 0 : mono_string_length(format_string);
+    if (sig.param_count >= MAX_NATIVE_ARGS) {
+        mono_raise_exception(mono_get_exception_invalid_operation(
+            "too many arguments"));
+        return ERR_EXCEPTION;
+    }
+
+    sprintf(sig.name, "%s", mono_string_to_utf8(name_string));
+
+    /* Check whether the native has already been loaded. If it has check whether
+     * the signature matches the specified format and return it's handle.*/
+    for (int i = 0; i < natives_.size(); i++) {
+        if (!strcmp(natives_[i].name, sig.name)) {
+            if (natives_[i].param_count != sig.param_count) {
+                mono_raise_exception(mono_get_exception_invalid_operation(
+                    "native was already loaded with different signature"));
+            }
+            return i;
+        }
+    }
+
+    sprintf(sig.format, "");
+    sprintf(sig.parameters, "%s", !format_string ? "" :
+        mono_string_to_utf8(format_string));
+    
+    /* Find the specified native. If it wasn't found throw an exception. */
+    sig.native = sampgdk::FindNative(sig.name);
+    if (!sig.native) {
+        mono_raise_exception(mono_get_exception_invalid_operation(
+            "native not found"));
+        return ERR_EXCEPTION;
+    }
+
+    /* Validate the passed format and create the amx format string. */
+    for (int i = 0; i < sig.param_count; i++) {
+        switch (sig.parameters[i]) {
+        case 'd': /* integer */
+        case 'b': /* boolean */
+            sprintf(sig.format, "%sd", sig.format);
+            break;
+        case 'f': /* floating-point */
+            sprintf(sig.format, "%sf", sig.format);
+            break;
+        case 's': { /* const string */
+            sprintf(sig.format, "%ss", sig.format);
+            break;
+        }
+        case 'D': /* integer reference */
+        case 'F': /* floating-point reference */
+            sprintf(sig.format, "%sR", sig.format);
+            break;
+        case 'a':
+        case 'v':{ /* array of integers or array of floats */
+            if (!sizes_array) {
+                mono_raise_exception(mono_get_exception_invalid_operation(
+                    "sizes cannot be null when an array or string "
+                    "reference type is passed as parameter.a/v"));
+                return ERR_EXCEPTION;
+            }
+
+            sig.sizes[i] = mono_array_get(sizes_array, int, size_idx++);
+            
+            if (sig.sizes[i] < 0) {
+                sprintf(sig.format, "%sa[%d]", sig.format, -sig.sizes[i]);
+            }
+            else {
+                sprintf(sig.format, "%sa[*%d]", sig.format, sig.sizes[i]);
+            }
+            break;
+        }
+        case 'S': /* non-const string (writeable) */ {
+            if (!sizes_array) {
+                mono_raise_exception(mono_get_exception_invalid_operation(
+                    "sizes cannot be null when an array or string "
+                    "reference type is passed as parameter.S"));
+                return ERR_EXCEPTION;
+            }
+
+            sig.sizes[i] = mono_array_get(sizes_array, int, size_idx++);
+
+            if (sig.sizes[i] < 0) {
+                sprintf(sig.format, "%sS[%d]", sig.format, -sig.sizes[i]);
+            }
+            else {
+                sprintf(sig.format, "%sS[*%d]", sig.format, sig.sizes[i]);
+            }
+            break;
+        }
+        case 'A':
+        case 'V': { /* array of integers reference */
+            if (!sizes_array) {
+                mono_raise_exception(mono_get_exception_invalid_operation(
+                    "sizes cannot be null when an array or string "
+                    "reference type is passed as parameter.A/V"));
+                return ERR_EXCEPTION;
+            }
+
+            sig.sizes[i] = mono_array_get(sizes_array, int, size_idx++);
+
+            if (sig.sizes[i] < 0) {
+                sprintf(sig.format, "%sA[%d]", sig.format, -sig.sizes[i]);
+            }
+            else {
+                sprintf(sig.format, "%sA[*%d]", sig.format, sig.sizes[i]);
+            }
+            break;
+        }
+        default:
+            mono_raise_exception(mono_get_exception_invalid_operation(
+                "invalid format type"));
+            return ERR_EXCEPTION;
+            break;
+        }
+
+    }
+
+    int result = natives_.size();
+    natives_.push_back(sig);
+    return result;
 }
 
 void GameMode::ProcessTimerTick(int timerid, void *data) {

@@ -29,6 +29,9 @@
 #define PARAM_LENGTH_ATTRIBUTE_CLASS        "ParameterLengthAttribute"
 
 #define MAX_CALLBACK_PARAM_COUNT            (16)
+#define MAX_NATIVE_NAME_LEN                 (32)
+#define MAX_NATIVE_ARGS                     (32)
+#define MAX_NATIVE_ARG_FORMAT_LEN           (8)
 
 class GameMode {
 public:
@@ -62,6 +65,15 @@ private:
         uint32_t handle;
     };
     typedef std::map<std::string, CallbackSignature *> CallbackMap;
+    struct NativeSignature {
+        char name[MAX_NATIVE_NAME_LEN];
+        char format[MAX_NATIVE_ARGS * MAX_NATIVE_ARG_FORMAT_LEN];
+        char parameters[MAX_NATIVE_ARGS];
+        int sizes[MAX_NATIVE_ARGS];
+        int param_count;
+        AMX_NATIVE native;
+    };
+    typedef std::vector<NativeSignature> NativeList;
     struct GameModeImage {
         MonoImage *image;
         MonoClass *klass;
@@ -79,6 +91,7 @@ private:
     static TimerMap timers_;
     static ExtensionList extensions_;
     static CallbackMap callbacks_;
+    static NativeList natives_;
     static MonoDomain *domain_;
     static GameModeImage gameMode_;
     static GameModeImage baseMode_;
@@ -94,7 +107,10 @@ private:
     static int SetRefTimer(int interval, bool repeat, MonoObject *params);
     static bool KillRefTimer(int id);
     static void SAMPGDK_CALL ProcessTimerTick(int timerid, void *data);
-
+    static int LoadNative(MonoString *name, MonoString *format, 
+        MonoArray *sizes_array);
+    static int InvokeNative(int handle, MonoArray *arguments);
+    static float InvokeNativeFloat(int handle, MonoArray *arguments);
     static void AddInternalCall(const char * name, const void * method);
     static MonoMethod *LoadEvent(const char *name, int param_count);
     static int GetParamLengthIndex(MonoMethod *method, int idx);

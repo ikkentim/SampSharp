@@ -27,6 +27,8 @@ namespace TestMode
 {
     public class GameMode : BaseMode
     {
+        #region Tests
+
         private readonly List<ITest> _tests = new List<ITest>
         {
             new CommandsTest(),
@@ -46,8 +48,9 @@ namespace TestMode
             new ServicesTest()
         };
 
-        #region Overrides of BaseMode
+        #endregion
 
+        #region Overrides of BaseMode
 
         protected override void OnInitialized(EventArgs args)
         {
@@ -76,7 +79,7 @@ namespace TestMode
             Console.WriteLine("[RCON] {0}", e.Command);
             GtaPlayer.SendClientMessageToAll("Rcon message: {0}", e.Command);
 
-            Console.WriteLine("Throwing exception after a stack fillter...");
+            Console.WriteLine("Throwing exception after a stack filter...");
             StackFiller(1);
 
             e.Success = false;

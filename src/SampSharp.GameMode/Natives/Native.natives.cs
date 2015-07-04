@@ -25,6 +25,16 @@ namespace SampSharp.GameMode.Natives
     /// </summary>
     public static partial class Native
     {
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal static extern int LoadNative(string name, string format, int[] sizes);
+
+        [MethodImpl((MethodImplOptions.InternalCall))]
+        public static extern int InvokeNative(int handle, object[] args);
+
+        [MethodImpl((MethodImplOptions.InternalCall))]
+        public static extern float InvokeNativeFloat(int handle, object[] args);
+        
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern int CallNativeArray(string name, string format, object[] args, int[] sizes);
 
