@@ -103,9 +103,6 @@
     <Compile Include="Helpers\MathHelper.cs" />
     <Compile Include="Helpers\VehicleParameterValueHelper.cs" />
     <Compile Include="IService.cs" />
-    <Compile Include="API\Native.actor.cs">
-      <DependentUpon>Native.cs</DependentUpon>
-    </Compile>
     <Compile Include="API\Native.cs" />
     <Compile Include="API\NativeAttribute.cs" />
     <Compile Include="SAMP\Commands\CommandGroup.cs" />

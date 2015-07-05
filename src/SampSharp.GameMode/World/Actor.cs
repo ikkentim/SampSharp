@@ -56,13 +56,13 @@ namespace SampSharp.GameMode.World
 
                 AssertNotDisposed();
 
-                Native.GetActorFacingAngle(Id, out angle);
+                GetActorFacingAngle(Id, out angle);
                 return angle;
             }
             set
             {
                 AssertNotDisposed();
-                Native.SetActorFacingAngle(Id, value);
+                SetActorFacingAngle(Id, value);
             }
         }
 
@@ -77,13 +77,13 @@ namespace SampSharp.GameMode.World
 
                 AssertNotDisposed();
 
-                Native.GetActorHealth(Id, out health);
+                GetActorHealth(Id, out health);
                 return health;
             }
             set
             {
                 AssertNotDisposed();
-                Native.SetActorHealth(Id, value);
+                SetActorHealth(Id, value);
             }
         }
 
@@ -95,12 +95,12 @@ namespace SampSharp.GameMode.World
             get
             {
                 AssertNotDisposed();
-                return Native.IsActorInvulnerable(Id);
+                return IsActorInvulnerable(Id);
             }
             set
             {
                 AssertNotDisposed();
-                Native.SetActorInvulnerable(Id, value);
+                SetActorInvulnerable(Id, value);
             }
         }
 
@@ -112,7 +112,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 AssertNotDisposed();
-                return Native.IsValidActor(Id);
+                return IsValidActor(Id);
             }
         }
 
@@ -124,12 +124,12 @@ namespace SampSharp.GameMode.World
             get
             {
                 AssertNotDisposed();
-                return Native.GetActorVirtualWorld(Id);
+                return GetActorVirtualWorld(Id);
             }
             set
             {
                 AssertNotDisposed();
-                Native.SetActorVirtualWorld(Id, value);
+                SetActorVirtualWorld(Id, value);
             }
         }
 
@@ -163,13 +163,13 @@ namespace SampSharp.GameMode.World
 
                 AssertNotDisposed();
 
-                Native.GetActorPos(Id, out x, out y, out z);
+                GetActorPos(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
             set
             {
                 AssertNotDisposed();
-                Native.SetActorPos(Id, value.X, value.Y, value.Z);
+                SetActorPos(Id, value.X, value.Y, value.Z);
             }
         }
 
@@ -190,6 +190,76 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public event EventHandler<DamageEventArgs> PlayerGiveDamage;
 
+        #region Native functions
+
+        private delegate bool ApplyActorAnimationImpl(int actorid, string animlib, string animname, float fDelta,
+    bool loop, bool lockx, bool locky, bool freeze, int time);
+
+        private delegate bool ClearActorAnimationsImpl(int actorid);
+
+        private delegate int CreateActorImpl(int modelid, float x, float y, float z, float rotattion);
+
+        private delegate bool DestroyActorImpl(int actorid);
+
+        private delegate bool GetActorFacingAngleImpl(int actorid, out float angle);
+
+        private delegate bool GetActorHealthImpl(int actorid, out float health);
+
+        private delegate bool GetActorPosImpl(int actorid, out float x, out float y, out float z);
+
+        private delegate int GetActorVirtualWorldImpl(int actorid);
+
+        private delegate bool IsActorInvulnerableImpl(int actorid);
+
+        private delegate bool IsActorStreamedInImpl(int actorid, int forplayerid);
+
+        private delegate bool IsValidActorImpl(int actorid);
+
+        private delegate bool SetActorFacingAngleImpl(int actorid, float angle);
+
+        private delegate bool SetActorHealthImpl(int actorid, float health);
+
+        private delegate bool SetActorInvulnerableImpl(int actorid, bool invulnerable = true);
+
+        private delegate bool SetActorPosImpl(int actorid, float x, float y, float z);
+
+        private delegate bool SetActorVirtualWorldImpl(int actorid, int vworld);
+
+        [Native("CreateActor")]
+        private static readonly CreateActorImpl CreateActor = null;
+        [Native("DestroyActor")]
+        private static readonly DestroyActorImpl DestroyActor = null;
+        [Native("IsActorStreamedIn")]
+        private static readonly IsActorStreamedInImpl IsActorStreamedIn = null;
+        [Native("SetActorVirtualWorld")]
+        private static readonly SetActorVirtualWorldImpl SetActorVirtualWorld = null;
+        [Native("GetActorVirtualWorld")]
+        private static readonly GetActorVirtualWorldImpl GetActorVirtualWorld = null;
+        [Native("ClearActorAnimations")]
+        private static readonly ClearActorAnimationsImpl ClearActorAnimations = null;
+        [Native("SetActorPos")]
+        private static readonly SetActorPosImpl SetActorPos = null;
+        [Native("GetActorPos")]
+        private static readonly GetActorPosImpl GetActorPos = null;
+        [Native("SetActorFacingAngle")]
+        private static readonly SetActorFacingAngleImpl SetActorFacingAngle = null;
+        [Native("GetActorFacingAngle")]
+        private static readonly GetActorFacingAngleImpl GetActorFacingAngle = null;
+        [Native("SetActorHealth")]
+        private static readonly SetActorHealthImpl SetActorHealth = null;
+        [Native("GetActorHealth")]
+        private static readonly GetActorHealthImpl GetActorHealth = null;
+        [Native("SetActorInvulnerable")]
+        private static readonly SetActorInvulnerableImpl SetActorInvulnerable = null;
+        [Native("IsActorInvulnerable")]
+        private static readonly IsActorInvulnerableImpl IsActorInvulnerable = null;
+        [Native("IsValidActor")]
+        private static readonly IsValidActorImpl IsValidActor = null;
+        [Native("ApplyActorAnimation")]
+        private static readonly ApplyActorAnimationImpl ApplyActorAnimation = null;
+
+        #endregion
+
         /// <summary>
         ///     Creates a new <see cref="Actor" />.
         /// </summary>
@@ -199,7 +269,7 @@ namespace SampSharp.GameMode.World
         /// <returns>The instance of the actor.</returns>
         public static Actor Create(int modelid, Vector3 position, float rotation)
         {
-            var id = Native.CreateActor(modelid, position.X, position.Y, position.Z, rotation);
+            var id = CreateActor(modelid, position.X, position.Y, position.Z, rotation);
 
             return id == InvalidId ? null : new Actor(id);
         }
@@ -216,7 +286,7 @@ namespace SampSharp.GameMode.World
 
             AssertNotDisposed();
 
-            return Native.IsActorStreamedIn(Id, player.Id);
+            return IsActorStreamedIn(Id, player.Id);
         }
 
         /// <summary>
@@ -243,7 +313,7 @@ namespace SampSharp.GameMode.World
 
             AssertNotDisposed();
 
-            Native.ApplyActorAnimation(Id, library, name, fDelta, loop, lockx, locky, freeze, time);
+            ApplyActorAnimation(Id, library, name, fDelta, loop, lockx, locky, freeze, time);
         }
 
         /// <summary>
@@ -253,7 +323,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.ClearActorAnimations(Id);
+            ClearActorAnimations(Id);
         }
 
         #region Overrides of Pool<GtaPlayer>
@@ -263,7 +333,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         protected override void Dispose(bool disposing)
         {
-            Native.DestroyActor(Id);
+            DestroyActor(Id);
             base.Dispose(disposing);
         }
 
