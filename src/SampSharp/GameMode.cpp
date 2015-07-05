@@ -523,12 +523,10 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
 
 	sprintf(sig.format, "");
 
-	if (!format_string)
-	{
+	if (!format_string) {
 		sprintf(sig.parameters, "");
 	}
-	else
-	{
+	else {
 		char* utf8_format_string = mono_string_to_utf8(format_string);
 		sprintf(sig.parameters, "%s", utf8_format_string);
 		mono_free(utf8_format_string);
