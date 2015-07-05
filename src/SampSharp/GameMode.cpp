@@ -521,10 +521,18 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
         }
     }
 
-	char* utf8_format_string = mono_string_to_utf8(format_string);
 	sprintf(sig.format, "");
-	sprintf(sig.parameters, "%s", !format_string ? "" : utf8_format_string);
-	mono_free(utf8_format_string);
+
+	if (!format_string)
+	{
+		sprintf(sig.parameters, "");
+	}
+	else
+	{
+		char* utf8_format_string = mono_string_to_utf8(format_string);
+		sprintf(sig.parameters, "%s", utf8_format_string);
+		mono_free(utf8_format_string);
+	}
 
     /* Find the specified native. If it wasn't found throw an exception. */
     sig.native = sampgdk::FindNative(sig.name);
