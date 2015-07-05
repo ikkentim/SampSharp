@@ -25,12 +25,13 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            Console.WriteLine("Does 'DoesNotExist' exist? {0}", Native.NativeExists("DoesNotExist"));
-            Console.WriteLine("Does 'MapAndreas_GetAddress' exist? {0}", Native.NativeExists("MapAndreas_GetAddress"));
-            Console.WriteLine("Does 'MapAndreas_Init' exist? {0}", Native.NativeExists("MapAndreas_Init"));
-            Console.WriteLine("Does 'Streamer_GetTickRate' exist? {0}", Native.NativeExists("Streamer_GetTickRate"));
-            Console.WriteLine("Does 'GetNetworkStats' exist? {0}", Native.NativeExists("GetNetworkStats"));
+            Console.WriteLine("Does 'DoesNotExist' exist? {0}", Native.Exists("DoesNotExist"));
+            Console.WriteLine("Does 'MapAndreas_GetAddress' exist? {0}", Native.Exists("MapAndreas_GetAddress"));
+            Console.WriteLine("Does 'MapAndreas_Init' exist? {0}", Native.Exists("MapAndreas_Init"));
+            Console.WriteLine("Does 'Streamer_GetTickRate' exist? {0}", Native.Exists("Streamer_GetTickRate"));
+            Console.WriteLine("Does 'GetNetworkStats' exist? {0}", Native.Exists("GetNetworkStats"));
 
+            Console.WriteLine("Current gravity: {0}", Native.GetGravity());
 //            Console.WriteLine("CALLING GetNetworkStats");
 //            string str = "";
 //            Native.CallNative("GetNetworkStats", __arglist(ref str, 512));

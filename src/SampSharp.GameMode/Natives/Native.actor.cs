@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Natives
     /// <summary>
     ///     Contains all native methods.
     /// </summary>
-    public static partial class Native
+    public partial class Native
     {
         public delegate bool ApplyActorAnimationImpl(int actorid, string animlib, string animname, float fDelta,
             bool loop, bool lockx, bool locky, bool freeze, int time);

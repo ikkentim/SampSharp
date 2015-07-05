@@ -18,7 +18,9 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using SampSharp.GameMode.API;
 using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode
@@ -259,7 +261,7 @@ namespace SampSharp.GameMode
 
             if (value == null)
             {
-                Native.Print(string.Empty);
+                Server.Print(string.Empty);
                 return;
             }
             
@@ -270,9 +272,9 @@ namespace SampSharp.GameMode
                 {
                     var block = line.Substring(0, 512);
                     line = line.Substring(512);
-                    Native.Print(block);
+                    Server.Print(block);
                 }
-                Native.Print(line);
+                Server.Print(line);
             }
         }
 

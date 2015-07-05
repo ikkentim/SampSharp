@@ -49,7 +49,7 @@ namespace SampSharp.GameMode.Tools
             /*
              * Require version 1.2 or newer
              */
-            return Native.NativeExists("MapAndreas_SaveCurrentHMap");
+            return Native.Exists("MapAndreas_SaveCurrentHMap");
         }
 
         /// <summary>

@@ -108,7 +108,6 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     AddInternalCall("NativeExists", (void *)NativeExists);
     AddInternalCall("LoadNative", (void *)LoadNative);
     AddInternalCall("InvokeNative", (void *)InvokeNative);
-    AddInternalCall("InvokeNativeFloat", (void *)InvokeNativeFloat);
     AddInternalCall("Print", (void *)Print);
     AddInternalCall("SetCodepage", (void *)set_codepage);
 
@@ -693,7 +692,7 @@ void GameMode::ProcessTick() {
 
 void GameMode::AddInternalCall(const char * name, const void * method) {
     /* Namespace to which every internal call is registered. */
-    static const char * namespase = "SampSharp.GameMode.Natives.Native";
+    static const char * namespase = "SampSharp.GameMode.API.Interop";
 
     /* Construct combination of 'namespace::method'. */
     char * call = new char[strlen(namespase) + 2 /* :: */ + strlen(name) + 1];

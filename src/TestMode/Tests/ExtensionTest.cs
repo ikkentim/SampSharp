@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using SampSharp.GameMode.API;
 using SampSharp.GameMode.Natives;
 
 namespace TestMode.Tests
@@ -24,7 +25,7 @@ namespace TestMode.Tests
 
         public void Start(GameMode gameMode)
         {
-            Native.RegisterExtension(new TestExtension());
+            Extension.Register(new TestExtension());
 
             Console.WriteLine("Call OnTest183()");
             new NativeFunction("CallLocalFunction", typeof (string), typeof (string)).Invoke("OnTest183", "");

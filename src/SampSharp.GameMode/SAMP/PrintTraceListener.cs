@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System.Diagnostics;
+using SampSharp.GameMode.API;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Tools;
 
@@ -31,9 +32,9 @@ namespace SampSharp.GameMode.SAMP
         public override void Write(string message)
         {
             if (Sync.IsRequired)
-                Sync.Run(() => Native.Print(message));
+                Sync.Run(() => Server.Print(message));
             else
-                Native.Print(message);
+                Server.Print(message);
         }
 
         /// <summary>

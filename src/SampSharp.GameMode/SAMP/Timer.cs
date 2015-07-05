@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using SampSharp.GameMode.API;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
@@ -88,7 +89,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="running">Whether the timer is running.</param>
         public Timer(TimeSpan interval, bool isRepeating, bool running)
         {
-            Id = running ? Native.SetTimer((int) interval.TotalMilliseconds, isRepeating, this) : InvalidId;
+            Id = running ? Interop.SetTimer((int)interval.TotalMilliseconds, isRepeating, this) : InvalidId;
             Interval = interval;
             IsRepeating = isRepeating;
         }
@@ -136,11 +137,11 @@ namespace SampSharp.GameMode.SAMP
                 if (value && !IsRunning)
                 {
                     _hit = false;
-                    Id = Native.SetTimer((int) Interval.TotalMilliseconds, IsRepeating, this);
+                    Id = Interop.SetTimer((int) Interval.TotalMilliseconds, IsRepeating, this);
                 }
                 else if (!value && IsRunning)
                 {
-                    Native.KillTimer(Id);
+                    Interop.KillTimer(Id);
                     Id = InvalidId;
                 }
             }

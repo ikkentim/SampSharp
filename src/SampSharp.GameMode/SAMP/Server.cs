@@ -16,6 +16,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using SampSharp.GameMode.API;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;
 
@@ -110,10 +111,19 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Sets the currently active codepage.
         /// </summary>
-        /// <param name="codepage">Codepage to use.</param>
+        /// <param name="codepage">The identifier of the codepage to use.</param>
         public static void SetCodepage(int codepage)
         {
-            Native.SetCodepage(codepage);
+            Interop.SetCodepage(codepage);
+        }
+
+        /// <summary>
+        ///     Prints the specified message to the console.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public static void Print(string message)
+        {
+            Interop.Print(message);
         }
 
         /// <summary>

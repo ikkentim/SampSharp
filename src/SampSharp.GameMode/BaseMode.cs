@@ -48,8 +48,8 @@ namespace SampSharp.GameMode
 
             RegisterControllers();
 
-            Native.LoadNatives<BaseMode>();
-            Native.LoadNatives(GetType());
+            Native.Load<BaseMode>();
+            Native.Load(GetType());
 
         }
 

@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using SampSharp.GameMode.API;
 using SampSharp.GameMode.Natives;
 
 namespace SampSharp.GameMode.SAMP
@@ -42,7 +43,7 @@ namespace SampSharp.GameMode.SAMP
         {
             var instance = new Delay(action);
 
-            int id = Native.SetTimer(delay, false, instance);
+            int id = Interop.SetTimer(delay, false, instance);
         }
     }
 }

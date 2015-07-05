@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Extension.cs" />
+    <Compile Include="API\Interop.cs" />
     <Compile Include="BaseMode.callbacks.cs">
       <DependentUpon>BaseMode.cs</DependentUpon>
     </Compile>
@@ -184,9 +186,6 @@
     <Compile Include="Events\WeaponShotEventArgs.cs" />
     <Compile Include="Helpers\LinqHelper.cs" />
     <Compile Include="LogWriter.cs" />
-    <Compile Include="Natives\Native.logging.cs">
-      <DependentUpon>Native.cs</DependentUpon>
-    </Compile>
     <Compile Include="Natives\Native.objects.cs">
       <DependentUpon>Native.cs</DependentUpon>
     </Compile>
@@ -235,11 +234,7 @@
     <Compile Include="Vector3.cs" />
     <Compile Include="World\GtaVehicle.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Natives\Native.natives.cs">
-      <DependentUpon>Native.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

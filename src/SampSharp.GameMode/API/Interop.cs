@@ -15,24 +15,31 @@
 
 using System.Runtime.CompilerServices;
 
-namespace SampSharp.GameMode.Natives
+namespace SampSharp.GameMode.API
 {
-    /// <summary>
-    ///     Contains all native methods.
-    /// </summary>
-    public static partial class Native
+    internal class Interop
     {
-        /// <summary>
-        ///     Prints a message to the serverlog.
-        /// </summary>
-        /// <param name="msg">The message to print to the serverlog.</param>
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int LoadNative(string name, string format, int[] sizes);
+
+        [MethodImpl((MethodImplOptions.InternalCall))]
+        public static extern int InvokeNative(int handle, object[] args);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool NativeExists(string name);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool RegisterExtension(object extension);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int SetTimer(int interval, bool repeat, object args);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool KillTimer(int timerid);
+
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern void Print(string msg);
 
-        /// <summary>
-        ///     Sets the currently active codepage.
-        /// </summary>
-        /// <param name="codepage">Codepage to use.</param>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern void SetCodepage(int codepage);
     }

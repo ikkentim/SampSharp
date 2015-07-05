@@ -13,12 +13,174 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using SampSharp.GameMode.API;
+
 namespace SampSharp.GameMode.Natives
 {
     /// <summary>
     ///     Contains all native methods.
     /// </summary>
-    public static partial class Native
+    public partial class Native
     {
+        public static int Load(string name, string format, int[] sizes)
+        {
+            return Interop.LoadNative(name, format, sizes);
+        }
+
+        public static float InvokeNativeFloat(int handle, object[] args)
+        {
+            return BitConverter.ToSingle(BitConverter.GetBytes(InvokeNative(handle, args)), 0);
+        }
+
+        public static int InvokeNative(int handle, object[] args)
+        {
+            return Interop.InvokeNative(handle, args);
+        }
+
+        public static bool InvokeNativeBool(int handle, object[] args)
+        {
+            return InvokeNative(handle, args) != 0;
+        }
+
+        /// <summary>
+        ///     Checks whether a native with the specified <paramref name="name" /> exists.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>True if a native with the specified name exists; False otherwise.</returns>
+        public static bool Exists(string name)
+        {
+            return Interop.NativeExists(name);
+        }
+
+        public static void Load(Type type)
+        {
+            if (type == null) throw new ArgumentNullException("type");
+            Load(type.Assembly);
+        }
+
+        public static void Load<T>()
+        {
+            Load(typeof(T));
+        }
+
+        public static void Load(Assembly assembly)
+        {
+            if (assembly == null) throw new ArgumentNullException("assembly");
+
+            foreach (var type in assembly.GetTypes())
+            {
+                if (type.IsInterface)
+                    continue;
+
+                foreach (var field in type.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
+                    )
+                {
+                    if (!field.IsStatic || !typeof(Delegate).IsAssignableFrom(field.FieldType))
+                        continue;
+
+                    var @delegate = field.FieldType;
+                    var attribute = field.GetCustomAttribute<NativeAttribute>();
+
+                    if (attribute == null)
+                        continue;
+
+
+                    if (field.GetValue(null) == null)
+                    {
+                        var nativeFunction = new NativeFunction(attribute.Name, attribute.Sizes,
+                            @delegate.GetMethod("Invoke").GetParameters().Select(p => p.ParameterType).ToArray());
+
+                        field.SetValue(null, CreateCallDelegate(nativeFunction.Handle, @delegate));
+                    }
+                }
+            }
+        }
+
+        private static Delegate CreateCallDelegate(int handle, Type type)
+        {
+            var invokeMethod = type.GetMethod("Invoke");
+
+            if (invokeMethod == null)
+                throw new ArgumentException("type is not a delegate", "type");
+
+            var parameters = invokeMethod.GetParameters();
+            var parameterTypes = parameters.Select(p => p.ParameterType).ToArray();
+            var returnType = invokeMethod.ReturnType;
+
+            // Pick the right invoker.
+            MethodInfo invokeMethodInfo;
+            if (returnType == typeof(int))
+                invokeMethodInfo = typeof(Native).GetMethod("InvokeNative");
+            else if (returnType == typeof(bool))
+                invokeMethodInfo = typeof(Native).GetMethod("InvokeNativeBool");
+            else if (returnType == typeof(float))
+                invokeMethodInfo = typeof(Native).GetMethod("InvokeNativeFloat");
+            else
+                throw new Exception("Unsupported return type of delegate");
+
+            if (invokeMethodInfo == null)
+                throw new Exception("Native invoker is missing");
+
+            // Generate the handler method.
+            var dynamicMethod = new DynamicMethod("DynamicCall", returnType, parameterTypes,
+                invokeMethod.DeclaringType ?? typeof(Native));
+            ILGenerator ilGenerator = dynamicMethod.GetILGenerator();
+
+            // Create an array of objects and store it in a local
+            LocalBuilder args = ilGenerator.DeclareLocal(typeof(object[]));
+            ilGenerator.Emit(OpCodes.Ldc_I4_S, parameterTypes.Length);
+            ilGenerator.Emit(OpCodes.Newarr, typeof(object));
+            ilGenerator.Emit(OpCodes.Stloc, args);
+
+            if (parameterTypes.Length > 0)
+            {
+                ilGenerator.Emit(OpCodes.Ldloc, args);
+
+                for (var index = 0; index < parameterTypes.Length; index++)
+                {
+                    if (parameters[index].IsOut)
+                        continue;
+                    ilGenerator.Emit(OpCodes.Ldloc, args);
+                    ilGenerator.Emit(OpCodes.Ldc_I4, index);
+                    ilGenerator.Emit(OpCodes.Ldarg, index);
+                    if (parameterTypes[index].IsValueType)
+                        ilGenerator.Emit(OpCodes.Box, parameterTypes[index]);
+                    ilGenerator.Emit(OpCodes.Stelem_Ref);
+                }
+
+                ilGenerator.Emit(OpCodes.Stloc, args);
+            }
+
+            ilGenerator.Emit(OpCodes.Ldc_I4, handle);
+            ilGenerator.Emit(OpCodes.Ldloc, args);
+
+            if (invokeMethodInfo.IsFinal || !invokeMethodInfo.IsVirtual)
+                ilGenerator.Emit(OpCodes.Call, invokeMethodInfo);
+            else
+                ilGenerator.Emit(OpCodes.Callvirt, invokeMethodInfo);
+
+            for (var index = 0; index < parameterTypes.Length; index++)
+            {
+                if (!parameterTypes[index].IsByRef)
+                    continue;
+
+                if (parameters[index].IsOut || parameters[index].ParameterType.IsByRef)
+                {
+                    ilGenerator.Emit(OpCodes.Ldarg, index);
+                    ilGenerator.Emit(OpCodes.Ldloc, args);
+                    ilGenerator.Emit(OpCodes.Ldc_I4, index);
+                    ilGenerator.Emit(OpCodes.Ldelem_Ref);
+                    ilGenerator.Emit(OpCodes.Stind_Ref);
+                }
+            }
+
+            ilGenerator.Emit(OpCodes.Ret);
+
+            return dynamicMethod.CreateDelegate(type);
+        }
     }
 }

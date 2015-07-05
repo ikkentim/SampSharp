@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Natives
     /// <summary>
     ///     Contains all native methods.
     /// </summary>
-    public static partial class Native
+    public partial class Native
     {
         public delegate bool AttachObjectToObjectImpl(int objectid, int attachtoid, float offsetX, float offsetY,
             float offsetZ, float rotX, float rotY, float rotZ, bool syncRotation);

@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Natives
     /// <summary>
     ///     Contains all native methods.
     /// </summary>
-    public static partial class Native
+    public partial class Native
     {
         public delegate int AddMenuItemImpl(int menuid, int column, string menutext);
 

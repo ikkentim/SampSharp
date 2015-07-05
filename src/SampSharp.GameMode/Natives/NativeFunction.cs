@@ -53,7 +53,7 @@ namespace SampSharp.GameMode.Natives
 
             if (parameterTypes == null || parameterTypes.Length == 0)
             {
-                _handle = Native.LoadNative(name, string.Empty, null);
+                _handle = Native.Load(name, string.Empty, null);
                 return;
             }
 
@@ -100,7 +100,7 @@ namespace SampSharp.GameMode.Natives
                 }
             }
 
-            _handle = Native.LoadNative(name, _format,
+            _handle = Native.Load(name, _format,
                 sizes == null || sizes.Length == 0 ? (lengthList.Count > 0 ? lengthList.ToArray() : null) : sizes);
         }
 
@@ -119,6 +119,7 @@ namespace SampSharp.GameMode.Natives
         {
             get { return _handle; }
         }
+
         private object[] CreateRefArray(RuntimeArgumentHandle handle)
         {
             var iterator = new ArgIterator(handle);
