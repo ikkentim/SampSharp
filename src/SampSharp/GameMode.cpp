@@ -507,7 +507,9 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
         return ERR_EXCEPTION;
     }
 
-    sprintf(sig.name, "%s", mono_string_to_utf8(name_string));
+	char* utf8_name_string = mono_string_to_utf8(name_string);
+	sprintf(sig.name, "%s", utf8_name_string);
+	mono_free(utf8_name_string);
 
     /* Check whether the native has already been loaded. If it has check whether
      * the signature matches the specified format and return it's handle.*/
@@ -519,10 +521,17 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
         }
     }
 
-    sprintf(sig.format, "");
-    sprintf(sig.parameters, "%s", !format_string ? "" :
-        mono_string_to_utf8(format_string));
-    
+	sprintf(sig.format, "");
+
+	if (!format_string) {
+		sprintf(sig.parameters, "");
+	}
+	else {
+		char* utf8_format_string = mono_string_to_utf8(format_string);
+		sprintf(sig.parameters, "%s", utf8_format_string);
+		mono_free(utf8_format_string);
+	}
+
     /* Find the specified native. If it wasn't found throw an exception. */
     sig.native = sampgdk::FindNative(sig.name);
     if (!sig.native) {
@@ -626,7 +635,11 @@ bool GameMode::NativeExists(MonoString *name_string) {
         return false;
     }
 
-    return !!sampgdk::FindNative(mono_string_to_utf8(name_string));
+	char* utf8_name_string = mono_string_to_utf8(name_string);
+	bool find_native_result = !!sampgdk::FindNative(utf8_name_string);
+	mono_free(utf8_name_string);
+
+	return find_native_result;
 }
 void GameMode::ProcessTimerTick(int timerid, void *data) {
     if (!isLoaded_) {
@@ -1022,7 +1035,8 @@ void GameMode::PrintException(const char *methodname, MonoObject *exception) {
     logfile.open("SampSharp_errors.log", std::ios::app | std::ios::binary);
     logfile << timestamp << " Exception thrown" << methodname << ":"
         << "\r\n" << stacktrace << "\r\n";
-    logfile.close();
+	logfile.close();
+	mono_free(stacktrace);
 }
 
 int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params) {
