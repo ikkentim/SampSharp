@@ -13,7 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.GameMode.Natives
+using SampSharp.GameMode.Natives;
+
+namespace SampSharp.GameMode.API
 {
     /// <summary>
     ///     Contains all native methods.

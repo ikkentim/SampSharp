@@ -15,6 +15,7 @@
 
 using System;
 using SampSharp.GameMode;
+using SampSharp.GameMode.API;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;

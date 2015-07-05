@@ -15,6 +15,7 @@
 
 using System;
 using System.IO;
+using SampSharp.GameMode.API;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;
 
@@ -38,12 +39,12 @@ namespace SampSharp.GameMode.Tools
         private static FileStream _fileStream;
         private static ushort[] _data;
 
-        private static NativeFunction _nativeInit;
-        private static NativeFunction _nativeUnload;
-        private static NativeFunction _nativeFindZ;
-        private static NativeFunction _nativeFindAvgZ;
-        private static NativeFunction _nativeSetZ;
-        private static NativeFunction _native_SaveCurrentHMap;
+        private static Native _nativeInit;
+        private static Native _nativeUnload;
+        private static Native _nativeFindZ;
+        private static Native _nativeFindAvgZ;
+        private static Native _nativeSetZ;
+        private static Native _native_SaveCurrentHMap;
         private static bool IsPluginLoaded()
         {
             /*
@@ -69,12 +70,12 @@ namespace SampSharp.GameMode.Tools
 
             if (IsPluginLoaded())
             {
-                _nativeInit = new NativeFunction("MapAndreas_Init", typeof(int), typeof(string), typeof(int));
-                _nativeUnload = new NativeFunction("MapAndreas_Unload");
-                _nativeFindZ = new NativeFunction("MapAndreas_FindZ_For2DCoord", typeof(float), typeof(float), typeof(float).MakeByRefType());
-                _nativeFindAvgZ = new NativeFunction("MapAndreas_FindAverageZ", typeof(float), typeof(float), typeof(float).MakeByRefType());
-                _nativeSetZ = new NativeFunction("MapAndreas_SetZ_For2DCoord", typeof(float), typeof(float), typeof(float));
-                _native_SaveCurrentHMap = new NativeFunction("MapAndreas_SaveCurrentHMap", typeof(string));
+                _nativeInit = new Native("MapAndreas_Init", typeof(int), typeof(string), typeof(int));
+                _nativeUnload = new Native("MapAndreas_Unload");
+                _nativeFindZ = new Native("MapAndreas_FindZ_For2DCoord", typeof(float), typeof(float), typeof(float).MakeByRefType());
+                _nativeFindAvgZ = new Native("MapAndreas_FindAverageZ", typeof(float), typeof(float), typeof(float).MakeByRefType());
+                _nativeSetZ = new Native("MapAndreas_SetZ_For2DCoord", typeof(float), typeof(float), typeof(float));
+                _native_SaveCurrentHMap = new Native("MapAndreas_SaveCurrentHMap", typeof(string));
 
                 _nativeInit.Invoke((int) mode, string.Empty, 1);
                 _usePlugin = true;

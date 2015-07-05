@@ -100,12 +100,11 @@
     <Compile Include="Helpers\MathHelper.cs" />
     <Compile Include="Helpers\VehicleParameterValueHelper.cs" />
     <Compile Include="IService.cs" />
-    <Compile Include="Natives\Native.actor.cs">
+    <Compile Include="API\Native.actor.cs">
       <DependentUpon>Native.cs</DependentUpon>
     </Compile>
-    <Compile Include="Natives\Native.cs" />
-    <Compile Include="Natives\NativeAttribute.cs" />
-    <Compile Include="Natives\NativeFunction.cs" />
+    <Compile Include="API\Native.cs" />
+    <Compile Include="API\NativeAttribute.cs" />
     <Compile Include="SAMP\Commands\CommandGroup.cs" />
     <Compile Include="SAMP\Commands\CommandGroupAttribute.cs" />
     <Compile Include="SAMP\Commands\DetectedCommand.cs" />
@@ -186,16 +185,16 @@
     <Compile Include="Events\WeaponShotEventArgs.cs" />
     <Compile Include="Helpers\LinqHelper.cs" />
     <Compile Include="LogWriter.cs" />
-    <Compile Include="Natives\Native.objects.cs">
+    <Compile Include="API\Native.objects.cs">
       <DependentUpon>Native.cs</DependentUpon>
     </Compile>
-    <Compile Include="Natives\Native.samp.cs">
+    <Compile Include="API\Native.samp.cs">
       <DependentUpon>Native.cs</DependentUpon>
     </Compile>
-    <Compile Include="Natives\Native.players.cs">
+    <Compile Include="API\Native.players.cs">
       <DependentUpon>Native.cs</DependentUpon>
     </Compile>
-    <Compile Include="Natives\Native.vehicles.cs">
+    <Compile Include="API\Native.vehicles.cs">
       <DependentUpon>Native.cs</DependentUpon>
     </Compile>
     <Compile Include="BaseMode.cs" />

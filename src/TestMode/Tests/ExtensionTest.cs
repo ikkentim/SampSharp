@@ -28,14 +28,14 @@ namespace TestMode.Tests
             Extension.Register(new TestExtension());
 
             Console.WriteLine("Call OnTest183()");
-            new NativeFunction("CallLocalFunction", typeof (string), typeof (string)).Invoke("OnTest183", "");
+            new Native("CallLocalFunction", typeof(string), typeof(string)).Invoke("OnTest183", "");
         }
 
         #endregion
 
         private class TestExtension
         {
-            public void OnTest183()
+            internal void OnTest183()
             {
                 Console.WriteLine("OnTest183() called");
             }
