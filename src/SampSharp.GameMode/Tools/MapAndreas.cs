@@ -39,12 +39,12 @@ namespace SampSharp.GameMode.Tools
         private static FileStream _fileStream;
         private static ushort[] _data;
 
-        private static Native _nativeInit;
-        private static Native _nativeUnload;
-        private static Native _nativeFindZ;
-        private static Native _nativeFindAvgZ;
-        private static Native _nativeSetZ;
-        private static Native _native_SaveCurrentHMap;
+        private static INative _nativeInit;
+        private static INative _nativeUnload;
+        private static INative _nativeFindZ;
+        private static INative _nativeFindAvgZ;
+        private static INative _nativeSetZ;
+        private static INative _native_SaveCurrentHMap;
         private static bool IsPluginLoaded()
         {
             /*
@@ -70,12 +70,12 @@ namespace SampSharp.GameMode.Tools
 
             if (IsPluginLoaded())
             {
-                _nativeInit = new Native("MapAndreas_Init", typeof(int), typeof(string), typeof(int));
-                _nativeUnload = new Native("MapAndreas_Unload");
-                _nativeFindZ = new Native("MapAndreas_FindZ_For2DCoord", typeof(float), typeof(float), typeof(float).MakeByRefType());
-                _nativeFindAvgZ = new Native("MapAndreas_FindAverageZ", typeof(float), typeof(float), typeof(float).MakeByRefType());
-                _nativeSetZ = new Native("MapAndreas_SetZ_For2DCoord", typeof(float), typeof(float), typeof(float));
-                _native_SaveCurrentHMap = new Native("MapAndreas_SaveCurrentHMap", typeof(string));
+                _nativeInit = Native.Load("MapAndreas_Init", typeof(int), typeof(string), typeof(int));
+                _nativeUnload = Native.Load("MapAndreas_Unload");
+                _nativeFindZ = Native.Load("MapAndreas_FindZ_For2DCoord", typeof(float), typeof(float), typeof(float).MakeByRefType());
+                _nativeFindAvgZ = Native.Load("MapAndreas_FindAverageZ", typeof(float), typeof(float), typeof(float).MakeByRefType());
+                _nativeSetZ = Native.Load("MapAndreas_SetZ_For2DCoord", typeof(float), typeof(float), typeof(float));
+                _native_SaveCurrentHMap = Native.Load("MapAndreas_SaveCurrentHMap", typeof(string));
 
                 _nativeInit.Invoke((int) mode, string.Empty, 1);
                 _usePlugin = true;

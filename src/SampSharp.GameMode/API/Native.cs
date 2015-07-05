@@ -24,35 +24,18 @@ using SampSharp.GameMode.Natives;
 namespace SampSharp.GameMode.API
 {
     /// <summary>
-    ///     Contains all native methods.
+    ///     Represents a native function.
     /// </summary>
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    public partial class Native
+    public partial class Native : INative
     {
+        private static INativeLoader _nativeLoader = new DefaultNativeLoader();
+
         private readonly string _format;
         private readonly int _handle;
         private readonly string _name;
 
-        #region Constructors of Native
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Native" /> class.
-        /// </summary>
-        /// <param name="name">The name of the native.</param>
-        /// <param name="parameterTypes">The parameter types of the native.</param>
-        public Native(string name, params Type[] parameterTypes)
-            : this(name, null, parameterTypes)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Native" /> class.
-        /// </summary>
-        /// <param name="name">The name of the native.</param>
-        /// <param name="sizes">The sizes of the parameters which require size information.</param>
-        /// <param name="parameterTypes">The parameter types of the native.</param>
-        /// <exception cref="System.ArgumentNullException">name</exception>
-        public Native(string name, int[] sizes, params Type[] parameterTypes)
+        internal Native(string name, int[] sizes, params Type[] parameterTypes)
         {
             if (name == null) throw new ArgumentNullException("name");
 
@@ -61,7 +44,7 @@ namespace SampSharp.GameMode.API
 
             if (parameterTypes == null || parameterTypes.Length == 0)
             {
-                _handle = Native.Load(name, string.Empty, null);
+                _handle = Interop.LoadNative(name, string.Empty, null);
                 return;
             }
 
@@ -73,84 +56,74 @@ namespace SampSharp.GameMode.API
                     _format += "d";
                 else if (param == typeof (bool))
                     _format += "b";
-                else if (param == typeof(string))
+                else if (param == typeof (string))
                     _format += "s";
-                else if (param == typeof(float))
+                else if (param == typeof (float))
                     _format += "f";
-                else if (param == typeof(int[]))
+                else if (param == typeof (int[]))
                 {
                     lengthList.Add(i + 1);
                     _format += "a";
                 }
-                else if (param == typeof(float[]))
+                else if (param == typeof (float[]))
                 {
                     lengthList.Add(i + 1);
                     _format += "v";
                 }
-                else if (param == typeof(int).MakeByRefType())
+                else if (param == typeof (int).MakeByRefType())
                     _format += "D";
-                else if (param == typeof(string).MakeByRefType())
+                else if (param == typeof (string).MakeByRefType())
                 {
                     lengthList.Add(i + 1);
                     _format += "S";
                 }
-                else if (param == typeof(float).MakeByRefType())
+                else if (param == typeof (float).MakeByRefType())
                     _format += "F";
-                else if (param == typeof(int[]).MakeByRefType())
+                else if (param == typeof (int[]).MakeByRefType())
                 {
                     lengthList.Add(i + 1);
                     _format += "A";
                 }
-                else if (param == typeof(float[]).MakeByRefType())
+                else if (param == typeof (float[]).MakeByRefType())
                 {
                     lengthList.Add(i + 1);
                     _format += "V";
                 }
             }
 
-            _handle = Native.Load(name, _format,
+            _handle = Interop.LoadNative(name, _format,
                 sizes == null || sizes.Length == 0 ? (lengthList.Count > 0 ? lengthList.ToArray() : null) : sizes);
         }
-
-        #endregion
-
-        #region Properties of Native
 
         /// <summary>
         ///     Gets the name of the native function.
         /// </summary>
-        public string Name
+        public virtual string Name
         {
             get { return _name; }
         }
 
-        /// <summary>
-        ///     Gets the handle of the native function.
-        /// </summary>
-        public int Handle
+        public static INativeLoader NativeLoader
         {
-            get { return _handle; }
+            get { return _nativeLoader; }
+            set { if (value != null) _nativeLoader = value; }
         }
-
-        #endregion
-
-        #region Native Invoke Methods
 
         /// <summary>
         ///     Invokes the native with the specified arguments.
         /// </summary>
-        /// <param name="args">The arguments.</param>
+        /// <param name="arguments">The arguments.</param>
         /// <returns>The return value of the native.</returns>
-        public int Invoke(params object[] args)
+        public virtual int Invoke(params object[] arguments)
         {
-            return InvokeHandle(_handle, args);
+            return InvokeHandle(_handle, arguments);
         }
 
         /// <summary>
         ///     Invokes the native with the specified arguments.
         /// </summary>
         /// <returns>The return value of the native.</returns>
-        public int Invoke(__arglist)
+        public virtual int Invoke(__arglist)
         {
             return Invoke(CreateRefArray(__arglist));
         }
@@ -158,18 +131,18 @@ namespace SampSharp.GameMode.API
         /// <summary>
         ///     Invokes the native with the specified arguments and returns the return value as a float.
         /// </summary>
-        /// <param name="args">The arguments.</param>
+        /// <param name="arguments">The arguments.</param>
         /// <returns>The return value of the native as a float.</returns>
-        public float InvokeFloat(params object[] args)
+        public virtual float InvokeFloat(params object[] arguments)
         {
-            return InvokeHandleAsFloat(_handle, args);
+            return InvokeHandleAsFloat(_handle, arguments);
         }
 
         /// <summary>
         ///     Invokes the native with the specified arguments and returns the return value as a float.
         /// </summary>
         /// <returns>The return value of the native as a float.</returns>
-        public float InvokeFloat(__arglist)
+        public virtual float InvokeFloat(__arglist)
         {
             return InvokeFloat(CreateRefArray(__arglist));
         }
@@ -177,140 +150,37 @@ namespace SampSharp.GameMode.API
         /// <summary>
         ///     Invokes the native with the specified arguments and returns the return value as a bool.
         /// </summary>
-        /// <param name="args">The arguments.</param>
+        /// <param name="arguments">The arguments.</param>
         /// <returns>The return value of the native as a bool.</returns>
-        public bool InvokeBool(params object[] args)
+        public virtual bool InvokeBool(params object[] arguments)
         {
-            return InvokeHandleAsBool(_handle, args);
+            return InvokeHandleAsBool(_handle, arguments);
         }
 
         /// <summary>
         ///     Invokes the native with the specified arguments and returns the return value as a bool.
         /// </summary>
         /// <returns>The return value of the native as a bool.</returns>
-        public bool InvokeBool(__arglist)
+        public virtual bool InvokeBool(__arglist)
         {
             return InvokeBool(CreateRefArray(__arglist));
         }
 
-        #endregion
-
-        #region Overrides of Object
-
         /// <summary>
-        ///     Returns a <see cref="System.String" /> that represents this instance.
+        /// Generates an invoker delegate for the function this instance represents.
         /// </summary>
-        /// <returns>
-        ///     A <see cref="System.String" /> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return string.Format("{0}#{1}", _name, _handle);
-        }
-
-        #endregion
-
-        private object[] CreateRefArray(RuntimeArgumentHandle handle)
-        {
-            var iterator = new ArgIterator(handle);
-            var len = iterator.GetRemainingCount();
-
-            if ((_format != null && _format.Length != len) || (_format == null && len != 0))
-                throw new ArgumentException("Invalid arguments");
-
-            var args = new object[len];
-            for (var idx = 0; idx < len; idx++)
-                args[idx] = TypedReference.ToObject(iterator.GetNextArg());
-
-            return args;
-        }
-
-        /// <summary>
-        ///     Checks whether a native with the specified <paramref name="name" /> exists.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns>True if a native with the specified name exists; False otherwise.</returns>
-        public static bool Exists(string name)
-        {
-            return Interop.NativeExists(name);
-        }
-
-
-        private static int Load(string name, string format, int[] sizes)
-        {
-            return Interop.LoadNative(name, format, sizes);
-        }
-
-        #region Native Handle Invokers
-
-        private static float InvokeHandleAsFloat(int handle, object[] args)
-        {
-            return BitConverter.ToSingle(BitConverter.GetBytes(InvokeHandle(handle, args)), 0);
-        }
-
-        private static int InvokeHandle(int handle, object[] args)
-        {
-            return Interop.InvokeNative(handle, args);
-        }
-
-        private static bool InvokeHandleAsBool(int handle, object[] args)
-        {
-            return InvokeHandle(handle, args) != 0;
-        }
-
-        #endregion
-
-        #region Native Autoloader Methods
-
-        public static void Load(Type type)
-        {
-            if (type == null) throw new ArgumentNullException("type");
-            Load(type.Assembly);
-        }
-
-        public static void Load<T>()
-        {
-            Load(typeof(T));
-        }
-
-        public static void Load(Assembly assembly)
-        {
-            if (assembly == null) throw new ArgumentNullException("assembly");
-
-            foreach (var type in assembly.GetTypes())
-            {
-                if (type.IsInterface)
-                    continue;
-
-                foreach (var field in type.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
-                    )
-                {
-                    if (!field.IsStatic || !typeof(Delegate).IsAssignableFrom(field.FieldType))
-                        continue;
-
-                    var @delegate = field.FieldType;
-                    var attribute = field.GetCustomAttribute<NativeAttribute>();
-
-                    if (attribute == null)
-                        continue;
-
-                    if (field.GetValue(null) == null)
-                    {
-                        var nativeFunction = new Native(attribute.Name, attribute.Sizes,
-                            @delegate.GetMethod("Invoke").GetParameters().Select(p => p.ParameterType).ToArray());
-
-                        field.SetValue(null, nativeFunction.GenerateInvoker(@delegate));
-                    }
-                }
-            }
-        }
-
-        private Delegate GenerateInvoker(Type delegateType)
+        /// <param name="delegateType">Type of the delegate.</param>
+        /// <returns>The generated invoker delegate.</returns>
+        /// <exception cref="System.ArgumentException">type is not a delegate;type.</exception>
+        /// <exception cref="System.Exception">Unsupported return type of delegate or Native invoker is missing.</exception>
+        public virtual Delegate GenerateInvoker(Type delegateType)
         {
             var invokeMethod = delegateType.GetMethod("Invoke");
 
             if (invokeMethod == null)
                 throw new ArgumentException("type is not a delegate", "type");
+
+            // TODO: Verify format.
 
             var parameters = invokeMethod.GetParameters();
             var parameterTypes = parameters.Select(p => p.ParameterType).ToArray();
@@ -318,12 +188,15 @@ namespace SampSharp.GameMode.API
 
             // Pick the right invoker.
             MethodInfo invokeMethodInfo;
-            if (returnType == typeof(int))
-                invokeMethodInfo = typeof(Native).GetMethod("InvokeHandle", BindingFlags.NonPublic | BindingFlags.Static);
-            else if (returnType == typeof(bool))
-                invokeMethodInfo = typeof(Native).GetMethod("InvokeHandleAsBool", BindingFlags.NonPublic | BindingFlags.Static);
-            else if (returnType == typeof(float))
-                invokeMethodInfo = typeof(Native).GetMethod("InvokeHandleAsFloat", BindingFlags.NonPublic | BindingFlags.Static);
+            if (returnType == typeof (int))
+                invokeMethodInfo = typeof (Native).GetMethod("InvokeHandle",
+                    BindingFlags.NonPublic | BindingFlags.Static);
+            else if (returnType == typeof (bool))
+                invokeMethodInfo = typeof (Native).GetMethod("InvokeHandleAsBool",
+                    BindingFlags.NonPublic | BindingFlags.Static);
+            else if (returnType == typeof (float))
+                invokeMethodInfo = typeof (Native).GetMethod("InvokeHandleAsFloat",
+                    BindingFlags.NonPublic | BindingFlags.Static);
             else
                 throw new Exception("Unsupported return type of delegate");
 
@@ -331,13 +204,13 @@ namespace SampSharp.GameMode.API
                 throw new Exception("Native invoker is missing");
 
             // Generate the handler method.
-            var dynamicMethod = new DynamicMethod("DynamicCall", returnType, parameterTypes, typeof(Native));
+            var dynamicMethod = new DynamicMethod("DynamicCall", returnType, parameterTypes, typeof (Native));
             ILGenerator ilGenerator = dynamicMethod.GetILGenerator();
 
             // Create an array of objects and store it in a local
-            LocalBuilder args = ilGenerator.DeclareLocal(typeof(object[]));
+            LocalBuilder args = ilGenerator.DeclareLocal(typeof (object[]));
             ilGenerator.Emit(OpCodes.Ldc_I4_S, parameterTypes.Length);
-            ilGenerator.Emit(OpCodes.Newarr, typeof(object));
+            ilGenerator.Emit(OpCodes.Newarr, typeof (object));
             ilGenerator.Emit(OpCodes.Stloc, args);
 
             if (parameterTypes.Length > 0)
@@ -385,6 +258,141 @@ namespace SampSharp.GameMode.API
             ilGenerator.Emit(OpCodes.Ret);
 
             return dynamicMethod.CreateDelegate(delegateType);
+        }
+
+        /// <summary>
+        ///     Checks whether a native with the specified <paramref name="name" /> exists.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>True if a native with the specified name exists; False otherwise.</returns>
+        public static bool Exists(string name)
+        {
+            return _nativeLoader.Exists(name);
+        }
+
+        /// <summary>
+        /// Loads a native with the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="parameterTypes">The parameter types.</param>
+        /// <returns>The loaded native.</returns>
+        public static INative Load(string name, params Type[] parameterTypes)
+        {
+            return Load(name, null, parameterTypes);
+        }
+
+        /// <summary>
+        /// Loads a native with the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="sizes">The references to the parameter which contains the size of array parameters.</param>
+        /// <param name="parameterTypes">The parameter types.</param>
+        /// <returns>The loaded native.</returns>
+        public static INative Load(string name, int[] sizes, params Type[] parameterTypes)
+        {
+            return _nativeLoader.Load(name, sizes, parameterTypes);
+
+        }
+
+        private object[] CreateRefArray(RuntimeArgumentHandle handle)
+        {
+            var iterator = new ArgIterator(handle);
+            var len = iterator.GetRemainingCount();
+
+            if ((_format != null && _format.Length != len) || (_format == null && len != 0))
+                throw new ArgumentException("Invalid arguments");
+
+            var args = new object[len];
+            for (var idx = 0; idx < len; idx++)
+                args[idx] = TypedReference.ToObject(iterator.GetNextArg());
+
+            return args;
+        }
+
+        /// <summary>
+        ///     Loads the delegate fields annotated with a <see cref="NativeAttribute" /> attribute within the assembly of the
+        ///     specified type <typeparamref name="T" /> with calls to the desired native function.
+        /// </summary>
+        /// <typeparam name="T">A type within the assembly of which to load the delegate fields.</typeparam>
+        public static void LoadDelegates<T>()
+        {
+            LoadDelegates(typeof (T));
+        }
+
+        /// <summary>
+        ///     Loads the delegate fields annotated with a <see cref="NativeAttribute" /> attribute within the assembly of the
+        ///     specified <paramref name="type" /> with calls to the desired native function.
+        /// </summary>
+        /// <param name="type">A type within the assembly of which to load the delegate fields.</param>
+        public static void LoadDelegates(Type type)
+        {
+            if (type == null) throw new ArgumentNullException("type");
+            LoadDelegates(type.Assembly);
+        }
+
+        /// <summary>
+        ///     Loads the delegate fields annotated with a <see cref="NativeAttribute" /> attribute within the specified <paramref name="assembly" /> with calls to the desired native function.
+        /// </summary>
+        /// <param name="assembly">The assembly of which to load the delegate fields.</param>
+        public static void LoadDelegates(Assembly assembly)
+        {
+            if (assembly == null) throw new ArgumentNullException("assembly");
+
+            foreach (var type in assembly.GetTypes())
+            {
+                if (type.IsInterface)
+                    continue;
+
+                foreach (var field in type.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
+                    )
+                {
+                    if (!field.IsStatic || !typeof (Delegate).IsAssignableFrom(field.FieldType))
+                        continue;
+
+                    var @delegate = field.FieldType;
+                    var attribute = field.GetCustomAttribute<NativeAttribute>();
+
+                    if (attribute == null)
+                        continue;
+
+                    if (field.GetValue(null) == null)
+                    {
+                        var nativeFunction = Load(attribute.Name, attribute.Sizes,
+                            @delegate.GetMethod("Invoke").GetParameters().Select(p => p.ParameterType).ToArray());
+
+                        if (nativeFunction != null)
+                            field.SetValue(null, nativeFunction.GenerateInvoker(@delegate));
+                    }
+                }
+            }
+        }
+
+        private static float InvokeHandleAsFloat(int handle, object[] args)
+        {
+            return BitConverter.ToSingle(BitConverter.GetBytes(InvokeHandle(handle, args)), 0);
+        }
+
+        private static int InvokeHandle(int handle, object[] args)
+        {
+            return Interop.InvokeNative(handle, args);
+        }
+
+        private static bool InvokeHandleAsBool(int handle, object[] args)
+        {
+            return InvokeHandle(handle, args) != 0;
+        }
+
+        #region Overrides of Object
+
+        /// <summary>
+        ///     Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        ///     A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format("{0}#{1}", _name, _handle);
         }
 
         #endregion
