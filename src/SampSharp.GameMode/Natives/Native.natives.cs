@@ -43,19 +43,6 @@ namespace SampSharp.GameMode.Natives
         }
 
         /// <summary>
-        ///     Utility method. Checks whether current thread is main thread.
-        /// </summary>
-        /// <returns>
-        ///     True if current thread is main thread; False otherwise.
-        /// </returns>
-        /// <remarks>
-        ///     This method can be used for debugging purposes. In general,
-        ///     comparing <see cref="Thread.CurrentThread" /> works just as well.
-        /// </remarks>
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool IsMainThread();
-
-        /// <summary>
         ///     Checks whether a native with the specified <paramref name="name" /> exists.
         /// </summary>
         /// <param name="name">The name.</param>
@@ -73,13 +60,11 @@ namespace SampSharp.GameMode.Natives
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool RegisterExtension(object extension);
 
-
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern int SetTimer(int interval, bool repeat, object args);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool KillTimer(int timerid);
-
 
         public static void LoadNatives(Type type)
         {

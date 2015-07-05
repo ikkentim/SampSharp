@@ -88,7 +88,6 @@ public:
 
 private:
     static bool isLoaded_;
-    static unsigned long threadId_;
 
     static TimerMap timers_;
     static ExtensionList extensions_;
@@ -124,7 +123,6 @@ private:
     /* API functions. */
     static bool RegisterExtension(MonoObject *extension);
     static void Print(MonoString *str);
-    static bool IsMainThread();
 
     static int SetRefTimer(int interval, bool repeat, MonoObject *params);
     static bool KillRefTimer(int id);

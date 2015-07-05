@@ -35,7 +35,6 @@ using std::string;
 using sampgdk::logprintf;
 
 bool GameMode::isLoaded_;
-unsigned long GameMode::threadId_;
 MonoDomain *GameMode::domain_;
 GameMode::GameModeImage GameMode::gameMode_;
 GameMode::GameModeImage GameMode::baseMode_;
@@ -52,7 +51,6 @@ MonoMethod *GameMode::paramLengthGetMethod_;
 
 bool GameMode::Load(std::string namespaceName, std::string className) {
     assert(MonoRuntime::IsLoaded());
-    threadId_ = __threadid();
     /* Build paths */
     string dirPath = PathUtil::GetPathInBin("gamemode/");
     string libraryPath = PathUtil::GetPathInBin("gamemode/")
@@ -107,7 +105,6 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     AddInternalCall("RegisterExtension", (void *)RegisterExtension);
     AddInternalCall("SetTimer", (void *)SetRefTimer);
     AddInternalCall("KillTimer", (void *)KillRefTimer);
-    AddInternalCall("IsMainThread", (void *)IsMainThread);
     AddInternalCall("NativeExists", (void *)NativeExists);
     AddInternalCall("LoadNative", (void *)LoadNative);
     AddInternalCall("InvokeNative", (void *)InvokeNative);
@@ -198,10 +195,6 @@ bool GameMode::Unload() {
 
     isLoaded_ = false;
     return true;
-}
-
-bool GameMode::IsMainThread() {
-    return threadId_ == __threadid();
 }
 
 int GameMode::SetRefTimer(int interval, bool repeat, MonoObject *params) {

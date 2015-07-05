@@ -44,10 +44,10 @@ namespace TestMode.Tests
             var timer = new Timer(new TimeSpan(0, 0, 0, 2, 500), false);
             timer.Tick +=
                 (sender, args) =>
-                    Console.WriteLine("Timer: Mainthread: {0} !{2}!; took {1}", _main == Thread.CurrentThread,
-                        DateTime.Now - tstart, Native.IsMainThread());
+                    Console.WriteLine("Timer: Mainthread: {0}; took {1}", _main == Thread.CurrentThread,
+                        DateTime.Now - tstart);
 
-            Console.WriteLine("Started async methods !{0}!", Native.IsMainThread());
+            Console.WriteLine("Started async methods {0}", Thread.CurrentThread == _main);
 
             gameMode.PlayerConnected += gameMode_PlayerConnected;
         }
@@ -61,17 +61,17 @@ namespace TestMode.Tests
         {
             await Task.Delay(2000);
             Console.WriteLine("in ASyncPlayerConnectedDelayed");
-            player.SendClientMessage("ASync message! !{0}!", Native.IsMainThread());
+            player.SendClientMessage("ASync message! !{0}!", Thread.CurrentThread == _main);
 
-            Sync.Run(() => player.SendClientMessage("Sync message! !{0}!", Native.IsMainThread()));
+            Sync.Run(() => player.SendClientMessage("Sync message! !{0}!", Thread.CurrentThread == _main));
         }
 
         public async void ASyncTestMethod2()
         {
             await Task.Delay(2000);
-            Console.WriteLine("ASync2: Mainthread: {0} !{1}!", Thread.CurrentThread == _main, Native.IsMainThread());
+            Console.WriteLine("ASync2: Mainthread: {0}", Thread.CurrentThread == _main);
 
-            Sync.Run(() => Console.WriteLine("Sync2: Mainthread: {0} !{1}!", Thread.CurrentThread == _main, Native.IsMainThread()));
+            Sync.Run(() => Console.WriteLine("Sync2: Mainthread: {0}", Thread.CurrentThread == _main));
         }
 
         public void ASyncTestMethod()
@@ -80,19 +80,19 @@ namespace TestMode.Tests
             {
                 await Task.Delay(1000);
 
-                Console.WriteLine("ASync: Mainthread: {0} !{1}!", Thread.CurrentThread == _main, Native.IsMainThread());
+                Console.WriteLine("ASync: Mainthread: {0} !{1}!", Thread.CurrentThread == _main);
 
-                Sync.Run(() => Console.WriteLine("Sync: Mainthread: {0} !{1}!", Thread.CurrentThread == _main, Native.IsMainThread()));
+                Sync.Run(() => Console.WriteLine("Sync: Mainthread: {0}", Thread.CurrentThread == _main));
             });
         }
 
         public async void ASyncTestMethod3()
         {
             await Task.Delay(2500);
-            Console.WriteLine("ASync is fetching tick count from main thread !{0}!", Native.IsMainThread());
+            Console.WriteLine("ASync is fetching tick count from main thread ({0})", Thread.CurrentThread == _main);
             int ticks = await Sync.RunAsync(() => Server.GetTickCount());
 
-            Console.WriteLine("Tick count is {0}", ticks);
+            Console.WriteLine("Tick count is {0} Main thread: {1}!", ticks, Thread.CurrentThread == _main);
         }
 
         public async void ASyncTestMethod4()
