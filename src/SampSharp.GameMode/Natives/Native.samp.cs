@@ -13,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Runtime.CompilerServices;
-
 namespace SampSharp.GameMode.Natives
 {
     /// <summary>
@@ -22,348 +20,399 @@ namespace SampSharp.GameMode.Natives
     /// </summary>
     public static partial class Native
     {
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SendClientMessage(int playerid, int color, string message);
+        public delegate int AddMenuItemImpl(int menuid, int column, string menutext);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SendClientMessageToAll(int color, string message);
+        public delegate int AddPlayerClassExImpl(
+            int teamid, int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int weapon1,
+            int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SendPlayerMessageToPlayer(int playerid, int senderid, string message);
+        public delegate int AddPlayerClassImpl(
+            int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int weapon1, int weapon1Ammo,
+            int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SendPlayerMessageToAll(int senderid, string message);
+        public delegate int AddStaticPickupImpl(int model, int type, float x, float y, float z, int virtualworld);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SendDeathMessage(int killer, int killee, int weapon);
+        public delegate int AddStaticVehicleExImpl(
+            int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int color1, int color2,
+            int respawnDelay, bool addsiren = false);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GameTextForAll(string text, int time, int style);
+        public delegate int AddStaticVehicleImpl(
+            int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int color1, int color2);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GameTextForPlayer(int playerid, string text, int time, int style);
+        public delegate bool AllowInteriorWeaponsImpl(bool allow);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetTickCount();
+        public delegate bool Attach3DTextLabelToPlayerImpl(
+            int id, int playerid, float offsetX, float offsetY, float offsetZ);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetMaxPlayers();
+        public delegate bool Attach3DTextLabelToVehicleImpl(
+            int id, int vehicleid, float offsetX, float offsetY, float offsetZ);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerPoolSize();
+        public delegate bool BanExImpl(int playerid, string reason);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetVehiclePoolSize();
+        public delegate bool BanImpl(int playerid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetActorPoolSize();
+        public delegate bool BlockIpAddressImpl(string ipAddress, int timems);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetGameModeText(string text);
+        public delegate bool CancelSelectTextDrawImpl(int playerid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetTeamCount(int count);
+        public delegate bool ConnectNPCImpl(string name, string script);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int AddPlayerClass(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle,
-            int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
+        public delegate int Create3DTextLabelImpl(
+            string text, int color, float x, float y, float z, float drawDistance, int virtualWorld, bool testLOS);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int AddPlayerClassEx(int teamid, int modelid, float spawnX, float spawnY, float spawnZ,
-            float zAngle, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
+        public delegate bool CreateExplosionImpl(float x, float y, float z, int type, float radius);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int AddStaticVehicle(int modelid, float spawnX, float spawnY, float spawnZ,
-            float zAngle, int color1, int color2);
+        public delegate int CreateMenuImpl(string title, int columns, float x, float y, float col1Width, float col2Width
+            );
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int AddStaticVehicleEx(int modelid, float spawnX, float spawnY, float spawnZ,
-            float zAngle, int color1, int color2, int respawnDelay, bool addsiren = false);
+        public delegate int CreatePickupImpl(int model, int type, float x, float y, float z, int virtualworld);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int AddStaticPickup(int model, int type, float x, float y, float z, int virtualworld);
+        public delegate int CreatePlayer3DTextLabelImpl(
+            int playerid, string text, int color, float x, float y, float z, float drawDistance, int attachedplayer,
+            int attachedvehicle, bool testLOS);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int CreatePickup(int model, int type, float x, float y, float z, int virtualworld);
+        public delegate bool Delete3DTextLabelImpl(int id);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool DestroyPickup(int pickupid);
+        public delegate bool DeletePlayer3DTextLabelImpl(int playerid, int id);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool ShowNameTags(bool show);
+        public delegate bool DestroyMenuImpl(int menuid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool ShowPlayerMarkers(int mode);
+        public delegate bool DestroyPickupImpl(int pickupid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GameModeExit();
+        public delegate bool DisableInteriorEnterExitsImpl();
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetWorldTime(int hour);
+        public delegate bool DisableMenuImpl(int menuid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetWeaponName(int weaponid, out string name, int size);
+        public delegate bool DisableMenuRowImpl(int menuid, int row);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool EnableTirePopping(bool enable);
+        public delegate bool DisableNameTagLOSImpl();
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool EnableVehicleFriendlyFire();
+        public delegate bool EnableTirePoppingImpl(bool enable);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool AllowInteriorWeapons(bool allow);
+        public delegate bool EnableVehicleFriendlyFireImpl();
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetWeather(int weatherid);
+        public delegate bool GameModeExitImpl();
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetGravity(float gravity);
+        public delegate bool GameTextForAllImpl(string text, int time, int style);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern float GetGravity();
+        public delegate bool GameTextForPlayerImpl(int playerid, string text, int time, int style);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool CreateExplosion(float x, float y, float z, int type, float radius);
+        public delegate int GangZoneCreateImpl(float minx, float miny, float maxx, float maxy);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool UsePlayerPedAnims();
+        public delegate bool GangZoneDestroyImpl(int zone);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool DisableInteriorEnterExits();
+        public delegate bool GangZoneFlashForAllImpl(int zone, int flashcolor);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetNameTagDrawDistance(float distance);
+        public delegate bool GangZoneFlashForPlayerImpl(int playerid, int zone, int flashcolor);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool DisableNameTagLOS();
+        public delegate bool GangZoneHideForAllImpl(int zone);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool LimitGlobalChatRadius(float chatRadius);
+        public delegate bool GangZoneHideForPlayerImpl(int playerid, int zone);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool LimitPlayerMarkerRadius(float markerRadius);
+        public delegate bool GangZoneShowForAllImpl(int zone, int color);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool ConnectNPC(string name, string script);
+        public delegate bool GangZoneShowForPlayerImpl(int playerid, int zone, int color);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool IsPlayerNPC(int playerid);
+        public delegate bool GangZoneStopFlashForAllImpl(int zone);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool IsPlayerAdmin(int playerid);
+        public delegate bool GangZoneStopFlashForPlayerImpl(int playerid, int zone);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool Kick(int playerid);
+        public delegate int GetActorPoolSizeImpl();
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool Ban(int playerid);
+        public delegate float GetGravityImpl();
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool BanEx(int playerid, string reason);
+        public delegate int GetMaxPlayersImpl();
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SendRconCommand(string command);
+        public delegate bool GetNetworkStatsImpl(out string retstr, int size);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetServerVarAsString(string varname, out string value, int size);
+        public delegate int GetPlayerMenuImpl(int playerid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetServerVarAsInt(string varname);
+        public delegate bool GetPlayerNetworkStatsImpl(int playerid, out string retstr, int size);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetServerVarAsBool(string varname);
+        public delegate int GetPlayerPoolSizeImpl();
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPlayerNetworkStats(int playerid, out string retstr, int size);
+        public delegate bool GetPlayerVersionImpl(int playerid, out string version, int len);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetNetworkStats(out string retstr, int size);
+        public delegate bool GetServerVarAsBoolImpl(string varname);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPlayerVersion(int playerid, out string version, int len);
+        public delegate int GetServerVarAsIntImpl(string varname);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int CreateMenu(string title, int columns, float x, float y, float col1Width,
-            float col2Width);
+        public delegate bool GetServerVarAsStringImpl(string varname, out string value, int size);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool DestroyMenu(int menuid);
+        public delegate int GetTickCountImpl();
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int AddMenuItem(int menuid, int column, string menutext);
+        public delegate int GetVehiclePoolSizeImpl();
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetMenuColumnHeader(int menuid, int column, string columnheader);
+        public delegate bool GetWeaponNameImpl(int weaponid, out string name, int size);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool ShowMenuForPlayer(int menuid, int playerid);
+        public delegate bool gpciImpl(int playerid, out string buffer, int size);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool HideMenuForPlayer(int menuid, int playerid);
+        public delegate bool HideMenuForPlayerImpl(int menuid, int playerid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool IsValidMenu(int menuid);
+        public delegate bool IsPlayerAdminImpl(int playerid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool DisableMenu(int menuid);
+        public delegate bool IsPlayerNPCImpl(int playerid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool DisableMenuRow(int menuid, int row);
+        public delegate bool IsValidMenuImpl(int menuid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerMenu(int playerid);
+        public delegate bool KickImpl(int playerid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int TextDrawCreate(float x, float y, string text);
+        public delegate bool LimitGlobalChatRadiusImpl(float chatRadius);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawDestroy(int text);
+        public delegate bool LimitPlayerMarkerRadiusImpl(float markerRadius);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawLetterSize(int text, float x, float y);
+        public delegate bool SelectTextDrawImpl(int playerid, int hovercolor);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawTextSize(int text, float x, float y);
+        public delegate bool SendClientMessageImpl(int playerid, int color, string message);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawAlignment(int text, int alignment);
+        public delegate bool SendClientMessageToAllImpl(int color, string message);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawColor(int text, int color);
+        public delegate bool SendDeathMessageImpl(int killer, int killee, int weapon);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawUseBox(int text, bool use);
+        public delegate bool SendDeathMessageToPlayerImpl(int playerid, int killer, int killee, int weapon);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawBoxColor(int text, int color);
+        public delegate bool SendPlayerMessageToAllImpl(int senderid, string message);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawSetShadow(int text, int size);
+        public delegate bool SendPlayerMessageToPlayerImpl(int playerid, int senderid, string message);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawSetOutline(int text, int size);
+        public delegate bool SendRconCommandImpl(string command);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawBackgroundColor(int text, int color);
+        public delegate bool SetGameModeTextImpl(string text);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawFont(int text, int font);
+        public delegate bool SetGravityImpl(float gravity);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawSetProportional(int text, bool set);
+        public delegate bool SetMenuColumnHeaderImpl(int menuid, int column, string columnheader);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawSetSelectable(int text, bool set);
+        public delegate bool SetNameTagDrawDistanceImpl(float distance);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawShowForPlayer(int playerid, int text);
+        public delegate bool SetTeamCountImpl(int count);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawHideForPlayer(int playerid, int text);
+        public delegate bool SetWeatherImpl(int weatherid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawShowForAll(int text);
+        public delegate bool SetWorldTimeImpl(int hour);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawHideForAll(int text);
+        public delegate bool ShowMenuForPlayerImpl(int menuid, int playerid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawSetString(int text, string str);
+        public delegate bool ShowNameTagsImpl(bool show);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawSetPreviewModel(int text, int modelindex);
+        public delegate bool ShowPlayerDialogImpl(
+            int playerid, int dialogid, int style, string caption, string info, string button1, string button2);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawSetPreviewRot(int text, float rotX, float rotY, float rotZ, float zoom);
+        public delegate bool ShowPlayerMarkersImpl(int mode);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TextDrawSetPreviewVehCol(int text, int color1, int color2);
+        public delegate bool TextDrawAlignmentImpl(int text, int alignment);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SelectTextDraw(int playerid, int hovercolor);
+        public delegate bool TextDrawBackgroundColorImpl(int text, int color);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool CancelSelectTextDraw(int playerid);
+        public delegate bool TextDrawBoxColorImpl(int text, int color);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GangZoneCreate(float minx, float miny, float maxx, float maxy);
+        public delegate bool TextDrawColorImpl(int text, int color);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GangZoneDestroy(int zone);
+        public delegate int TextDrawCreateImpl(float x, float y, string text);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GangZoneShowForPlayer(int playerid, int zone, int color);
+        public delegate bool TextDrawDestroyImpl(int text);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GangZoneShowForAll(int zone, int color);
+        public delegate bool TextDrawFontImpl(int text, int font);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GangZoneHideForPlayer(int playerid, int zone);
+        public delegate bool TextDrawHideForAllImpl(int text);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GangZoneHideForAll(int zone);
+        public delegate bool TextDrawHideForPlayerImpl(int playerid, int text);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GangZoneFlashForPlayer(int playerid, int zone, int flashcolor);
+        public delegate bool TextDrawLetterSizeImpl(int text, float x, float y);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GangZoneFlashForAll(int zone, int flashcolor);
+        public delegate bool TextDrawSetOutlineImpl(int text, int size);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GangZoneStopFlashForPlayer(int playerid, int zone);
+        public delegate bool TextDrawSetPreviewModelImpl(int text, int modelindex);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GangZoneStopFlashForAll(int zone);
+        public delegate bool TextDrawSetPreviewRotImpl(int text, float rotX, float rotY, float rotZ, float zoom);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int Create3DTextLabel(string text, int color, float x, float y, float z, float drawDistance,
-            int virtualWorld, bool testLOS);
+        public delegate bool TextDrawSetPreviewVehColImpl(int text, int color1, int color2);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool Delete3DTextLabel(int id);
+        public delegate bool TextDrawSetProportionalImpl(int text, bool set);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool Attach3DTextLabelToPlayer(int id, int playerid, float offsetX, float offsetY,
-            float offsetZ);
+        public delegate bool TextDrawSetSelectableImpl(int text, bool set);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool Attach3DTextLabelToVehicle(int id, int vehicleid, float offsetX, float offsetY,
-            float offsetZ);
+        public delegate bool TextDrawSetShadowImpl(int text, int size);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool Update3DTextLabelText(int id, int color, string text);
+        public delegate bool TextDrawSetStringImpl(int text, string str);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int CreatePlayer3DTextLabel(int playerid, string text, int color, float x, float y, float z,
-            float drawDistance, int attachedplayer, int attachedvehicle, bool testLOS);
+        public delegate bool TextDrawShowForAllImpl(int text);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool DeletePlayer3DTextLabel(int playerid, int id);
+        public delegate bool TextDrawShowForPlayerImpl(int playerid, int text);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool UpdatePlayer3DTextLabelText(int playerid, int id, int color, string text);
+        public delegate bool TextDrawTextSizeImpl(int text, float x, float y);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool ShowPlayerDialog(int playerid, int dialogid, int style, string caption, string info,
-            string button1, string button2);
+        public delegate bool TextDrawUseBoxImpl(int text, bool use);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int SetTimer(int interval, bool repeat, object args);
+        public delegate bool UnBlockIpAddressImpl(string ipAddress);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool KillTimer(int timerid);
+        public delegate bool Update3DTextLabelTextImpl(int id, int color, string text);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        // ReSharper disable once InconsistentNaming
-        public static extern bool gpci(int playerid, out string buffer, int size);
+        public delegate bool UpdatePlayer3DTextLabelTextImpl(int playerid, int id, int color, string text);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SendDeathMessageToPlayer(int playerid, int killer, int killee, int weapon);
+        public delegate bool UsePlayerPedAnimsImpl();
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool BlockIpAddress(string ipAddress, int timems);
+        [Native("SendClientMessage")] public static readonly SendClientMessageImpl SendClientMessage = null;
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool UnBlockIpAddress(string ipAddress);
+        [Native("SendClientMessageToAll")] public static readonly SendClientMessageToAllImpl SendClientMessageToAll =
+            null;
+
+        [Native("SendPlayerMessageToPlayer")] public static readonly SendPlayerMessageToPlayerImpl
+            SendPlayerMessageToPlayer = null;
+
+        [Native("SendPlayerMessageToAll")] public static readonly SendPlayerMessageToAllImpl SendPlayerMessageToAll =
+            null;
+
+        [Native("SendDeathMessage")] public static readonly SendDeathMessageImpl SendDeathMessage = null;
+        [Native("GameTextForAll")] public static readonly GameTextForAllImpl GameTextForAll = null;
+        [Native("GameTextForPlayer")] public static readonly GameTextForPlayerImpl GameTextForPlayer = null;
+        [Native("GetTickCount")] public static readonly GetTickCountImpl GetTickCount = null;
+        [Native("GetMaxPlayers")] public static readonly GetMaxPlayersImpl GetMaxPlayers = null;
+        [Native("GetPlayerPoolSize")] public static readonly GetPlayerPoolSizeImpl GetPlayerPoolSize = null;
+        [Native("GetVehiclePoolSize")] public static readonly GetVehiclePoolSizeImpl GetVehiclePoolSize = null;
+        [Native("GetActorPoolSize")] public static readonly GetActorPoolSizeImpl GetActorPoolSize = null;
+        [Native("SetGameModeText")] public static readonly SetGameModeTextImpl SetGameModeText = null;
+        [Native("SetTeamCount")] public static readonly SetTeamCountImpl SetTeamCount = null;
+        [Native("AddPlayerClass")] public static readonly AddPlayerClassImpl AddPlayerClass = null;
+        [Native("AddPlayerClassEx")] public static readonly AddPlayerClassExImpl AddPlayerClassEx = null;
+        [Native("AddStaticVehicle")] public static readonly AddStaticVehicleImpl AddStaticVehicle = null;
+        [Native("AddStaticVehicleEx")] public static readonly AddStaticVehicleExImpl AddStaticVehicleEx = null;
+        [Native("AddStaticPickup")] public static readonly AddStaticPickupImpl AddStaticPickup = null;
+        [Native("CreatePickup")] public static readonly CreatePickupImpl CreatePickup = null;
+        [Native("DestroyPickup")] public static readonly DestroyPickupImpl DestroyPickup = null;
+        [Native("ShowNameTags")] public static readonly ShowNameTagsImpl ShowNameTags = null;
+        [Native("ShowPlayerMarkers")] public static readonly ShowPlayerMarkersImpl ShowPlayerMarkers = null;
+        [Native("GameModeExit")] public static readonly GameModeExitImpl GameModeExit = null;
+        [Native("SetWorldTime")] public static readonly SetWorldTimeImpl SetWorldTime = null;
+        [Native("GetWeaponName")] public static readonly GetWeaponNameImpl GetWeaponName = null;
+        [Native("EnableTirePopping")] public static readonly EnableTirePoppingImpl EnableTirePopping = null;
+
+        [Native("EnableVehicleFriendlyFire")] public static readonly EnableVehicleFriendlyFireImpl
+            EnableVehicleFriendlyFire = null;
+
+        [Native("AllowInteriorWeapons")] public static readonly AllowInteriorWeaponsImpl AllowInteriorWeapons = null;
+        [Native("SetWeather")] public static readonly SetWeatherImpl SetWeather = null;
+        [Native("SetGravity")] public static readonly SetGravityImpl SetGravity = null;
+        [Native("GetGravity")] public static readonly GetGravityImpl GetGravity = null;
+        [Native("CreateExplosion")] public static readonly CreateExplosionImpl CreateExplosion = null;
+        [Native("UsePlayerPedAnims")] public static readonly UsePlayerPedAnimsImpl UsePlayerPedAnims = null;
+
+        [Native("DisableInteriorEnterExits")] public static readonly DisableInteriorEnterExitsImpl
+            DisableInteriorEnterExits = null;
+
+        [Native("SetNameTagDrawDistance")] public static readonly SetNameTagDrawDistanceImpl SetNameTagDrawDistance =
+            null;
+
+        [Native("DisableNameTagLOS")] public static readonly DisableNameTagLOSImpl DisableNameTagLOS = null;
+        [Native("LimitGlobalChatRadius")] public static readonly LimitGlobalChatRadiusImpl LimitGlobalChatRadius = null;
+
+        [Native("LimitPlayerMarkerRadius")] public static readonly LimitPlayerMarkerRadiusImpl LimitPlayerMarkerRadius =
+            null;
+
+        [Native("ConnectNPC")] public static readonly ConnectNPCImpl ConnectNPC = null;
+        [Native("IsPlayerNPC")] public static readonly IsPlayerNPCImpl IsPlayerNPC = null;
+        [Native("IsPlayerAdmin")] public static readonly IsPlayerAdminImpl IsPlayerAdmin = null;
+        [Native("Kick")] public static readonly KickImpl Kick = null;
+        [Native("Ban")] public static readonly BanImpl Ban = null;
+        [Native("BanEx")] public static readonly BanExImpl BanEx = null;
+        [Native("SendRconCommand")] public static readonly SendRconCommandImpl SendRconCommand = null;
+        [Native("GetServerVarAsString")] public static readonly GetServerVarAsStringImpl GetServerVarAsString = null;
+        [Native("GetServerVarAsInt")] public static readonly GetServerVarAsIntImpl GetServerVarAsInt = null;
+        [Native("GetServerVarAsBool")] public static readonly GetServerVarAsBoolImpl GetServerVarAsBool = null;
+        [Native("GetPlayerNetworkStats")] public static readonly GetPlayerNetworkStatsImpl GetPlayerNetworkStats = null;
+        [Native("GetNetworkStats")] public static readonly GetNetworkStatsImpl GetNetworkStats = null;
+        [Native("GetPlayerVersion")] public static readonly GetPlayerVersionImpl GetPlayerVersion = null;
+        [Native("CreateMenu")] public static readonly CreateMenuImpl CreateMenu = null;
+        [Native("DestroyMenu")] public static readonly DestroyMenuImpl DestroyMenu = null;
+        [Native("AddMenuItem")] public static readonly AddMenuItemImpl AddMenuItem = null;
+        [Native("SetMenuColumnHeader")] public static readonly SetMenuColumnHeaderImpl SetMenuColumnHeader = null;
+        [Native("ShowMenuForPlayer")] public static readonly ShowMenuForPlayerImpl ShowMenuForPlayer = null;
+        [Native("HideMenuForPlayer")] public static readonly HideMenuForPlayerImpl HideMenuForPlayer = null;
+        [Native("IsValidMenu")] public static readonly IsValidMenuImpl IsValidMenu = null;
+        [Native("DisableMenu")] public static readonly DisableMenuImpl DisableMenu = null;
+        [Native("DisableMenuRow")] public static readonly DisableMenuRowImpl DisableMenuRow = null;
+        [Native("GetPlayerMenu")] public static readonly GetPlayerMenuImpl GetPlayerMenu = null;
+        [Native("TextDrawCreate")] public static readonly TextDrawCreateImpl TextDrawCreate = null;
+        [Native("TextDrawDestroy")] public static readonly TextDrawDestroyImpl TextDrawDestroy = null;
+        [Native("TextDrawLetterSize")] public static readonly TextDrawLetterSizeImpl TextDrawLetterSize = null;
+        [Native("TextDrawTextSize")] public static readonly TextDrawTextSizeImpl TextDrawTextSize = null;
+        [Native("TextDrawAlignment")] public static readonly TextDrawAlignmentImpl TextDrawAlignment = null;
+        [Native("TextDrawColor")] public static readonly TextDrawColorImpl TextDrawColor = null;
+        [Native("TextDrawUseBox")] public static readonly TextDrawUseBoxImpl TextDrawUseBox = null;
+        [Native("TextDrawBoxColor")] public static readonly TextDrawBoxColorImpl TextDrawBoxColor = null;
+        [Native("TextDrawSetShadow")] public static readonly TextDrawSetShadowImpl TextDrawSetShadow = null;
+        [Native("TextDrawSetOutline")] public static readonly TextDrawSetOutlineImpl TextDrawSetOutline = null;
+
+        [Native("TextDrawBackgroundColor")] public static readonly TextDrawBackgroundColorImpl TextDrawBackgroundColor =
+            null;
+
+        [Native("TextDrawFont")] public static readonly TextDrawFontImpl TextDrawFont = null;
+
+        [Native("TextDrawSetProportional")] public static readonly TextDrawSetProportionalImpl TextDrawSetProportional =
+            null;
+
+        [Native("TextDrawSetSelectable")] public static readonly TextDrawSetSelectableImpl TextDrawSetSelectable = null;
+        [Native("TextDrawShowForPlayer")] public static readonly TextDrawShowForPlayerImpl TextDrawShowForPlayer = null;
+        [Native("TextDrawHideForPlayer")] public static readonly TextDrawHideForPlayerImpl TextDrawHideForPlayer = null;
+        [Native("TextDrawShowForAll")] public static readonly TextDrawShowForAllImpl TextDrawShowForAll = null;
+        [Native("TextDrawHideForAll")] public static readonly TextDrawHideForAllImpl TextDrawHideForAll = null;
+        [Native("TextDrawSetString")] public static readonly TextDrawSetStringImpl TextDrawSetString = null;
+
+        [Native("TextDrawSetPreviewModel")] public static readonly TextDrawSetPreviewModelImpl TextDrawSetPreviewModel =
+            null;
+
+        [Native("TextDrawSetPreviewRot")] public static readonly TextDrawSetPreviewRotImpl TextDrawSetPreviewRot = null;
+
+        [Native("TextDrawSetPreviewVehCol")] public static readonly TextDrawSetPreviewVehColImpl
+            TextDrawSetPreviewVehCol = null;
+
+        [Native("SelectTextDraw")] public static readonly SelectTextDrawImpl SelectTextDraw = null;
+        [Native("CancelSelectTextDraw")] public static readonly CancelSelectTextDrawImpl CancelSelectTextDraw = null;
+        [Native("GangZoneCreate")] public static readonly GangZoneCreateImpl GangZoneCreate = null;
+        [Native("GangZoneDestroy")] public static readonly GangZoneDestroyImpl GangZoneDestroy = null;
+        [Native("GangZoneShowForPlayer")] public static readonly GangZoneShowForPlayerImpl GangZoneShowForPlayer = null;
+        [Native("GangZoneShowForAll")] public static readonly GangZoneShowForAllImpl GangZoneShowForAll = null;
+        [Native("GangZoneHideForPlayer")] public static readonly GangZoneHideForPlayerImpl GangZoneHideForPlayer = null;
+        [Native("GangZoneHideForAll")] public static readonly GangZoneHideForAllImpl GangZoneHideForAll = null;
+
+        [Native("GangZoneFlashForPlayer")] public static readonly GangZoneFlashForPlayerImpl GangZoneFlashForPlayer =
+            null;
+
+        [Native("GangZoneFlashForAll")] public static readonly GangZoneFlashForAllImpl GangZoneFlashForAll = null;
+
+        [Native("GangZoneStopFlashForPlayer")] public static readonly GangZoneStopFlashForPlayerImpl
+            GangZoneStopFlashForPlayer = null;
+
+        [Native("GangZoneStopFlashForAll")] public static readonly GangZoneStopFlashForAllImpl GangZoneStopFlashForAll =
+            null;
+
+        [Native("Create3DTextLabel")] public static readonly Create3DTextLabelImpl Create3DTextLabel = null;
+        [Native("Delete3DTextLabel")] public static readonly Delete3DTextLabelImpl Delete3DTextLabel = null;
+
+        [Native("Attach3DTextLabelToPlayer")] public static readonly Attach3DTextLabelToPlayerImpl
+            Attach3DTextLabelToPlayer = null;
+
+        [Native("Attach3DTextLabelToVehicle")] public static readonly Attach3DTextLabelToVehicleImpl
+            Attach3DTextLabelToVehicle = null;
+
+        [Native("Update3DTextLabelText")] public static readonly Update3DTextLabelTextImpl Update3DTextLabelText = null;
+
+        [Native("CreatePlayer3DTextLabel")] public static readonly CreatePlayer3DTextLabelImpl CreatePlayer3DTextLabel =
+            null;
+
+        [Native("DeletePlayer3DTextLabel")] public static readonly DeletePlayer3DTextLabelImpl DeletePlayer3DTextLabel =
+            null;
+
+        [Native("UpdatePlayer3DTextLabelText")] public static readonly UpdatePlayer3DTextLabelTextImpl
+            UpdatePlayer3DTextLabelText = null;
+
+        [Native("ShowPlayerDialog")] public static readonly ShowPlayerDialogImpl ShowPlayerDialog = null;
+        [Native("gpci")] public static readonly gpciImpl gpci = null;
+
+        [Native("SendDeathMessageToPlayer")] public static readonly SendDeathMessageToPlayerImpl
+            SendDeathMessageToPlayer = null;
+
+        [Native("BlockIpAddress")] public static readonly BlockIpAddressImpl BlockIpAddress = null;
+        [Native("UnBlockIpAddress")] public static readonly UnBlockIpAddressImpl UnBlockIpAddress = null;
     }
 }

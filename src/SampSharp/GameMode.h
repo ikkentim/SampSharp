@@ -123,6 +123,7 @@ private:
 private:
     /* API functions. */
     static bool RegisterExtension(MonoObject *extension);
+    static void Print(MonoString *str);
     static bool IsMainThread();
 
     static int SetRefTimer(int interval, bool repeat, MonoObject *params);

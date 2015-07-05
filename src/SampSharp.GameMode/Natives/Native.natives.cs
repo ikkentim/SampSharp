@@ -22,24 +22,6 @@ using System.Threading;
 
 namespace SampSharp.GameMode.Natives
 {
-    [AttributeUsage(AttributeTargets.Field)]
-    public class NativeAttribute : Attribute
-    {
-        public NativeAttribute(string name) : this(name, null)
-        {
-        }
-
-        public NativeAttribute(string name, params int[] sizes)
-        {
-            if (name == null) throw new ArgumentNullException("name");
-            Name = name;
-            Sizes = sizes;
-        }
-
-        public string Name { get; private set; }
-        public int[] Sizes { get; private set; }
-    }
-
     /// <summary>
     ///     Contains all native methods.
     /// </summary>
@@ -90,6 +72,14 @@ namespace SampSharp.GameMode.Natives
         /// </returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern bool RegisterExtension(object extension);
+
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int SetTimer(int interval, bool repeat, object args);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern bool KillTimer(int timerid);
+
 
         public static void LoadNatives(Type type)
         {

@@ -104,7 +104,6 @@
     <ClCompile Include="includes\sdk\amxplugin.cpp" />
     <ClCompile Include="monohelper.cpp" />
     <ClCompile Include="MonoRuntime.cpp" />
-    <ClCompile Include="natives.cpp" />
     <ClCompile Include="unicode.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -116,7 +115,6 @@
     <ClInclude Include="monohelper.h" />
     <ClInclude Include="MonoRuntime.h" />
     <ClInclude Include="unicode.h" />
-    <ClInclude Include="natives.h" />
     <ClInclude Include="PathUtil.h" />
     <ClInclude Include="StringUtil.h" />
   </ItemGroup>

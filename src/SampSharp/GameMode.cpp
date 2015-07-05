@@ -24,7 +24,7 @@
 #include <mono/metadata/threads.h>
 #include <mono/metadata/exception.h>
 #include <mono/metadata/debug-helpers.h>
-#include "natives.h"
+#include "unicode.h"
 #include "MonoRuntime.h"
 #include "PathUtil.h"
 #include "monohelper.h"
@@ -104,7 +104,6 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     baseMode_.image = mono_class_get_image(baseMode_.klass);
 
     /* Add all internal calls. */
-    LoadNatives(AddInternalCall);
     AddInternalCall("RegisterExtension", (void *)RegisterExtension);
     AddInternalCall("SetTimer", (void *)SetRefTimer);
     AddInternalCall("KillTimer", (void *)KillRefTimer);
@@ -113,6 +112,8 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     AddInternalCall("LoadNative", (void *)LoadNative);
     AddInternalCall("InvokeNative", (void *)InvokeNative);
     AddInternalCall("InvokeNativeFloat", (void *)InvokeNativeFloat);
+    AddInternalCall("Print", (void *)Print);
+    AddInternalCall("SetCodepage", (void *)set_codepage);
 
     isLoaded_ = true;
 
@@ -257,6 +258,12 @@ bool GameMode::RegisterExtension(MonoObject *extension) {
     return true;
 }
 
+void GameMode::Print(MonoString *str) {
+    char *buffer = monostring_to_string(str);
+    sampgdk_logprintf("%s", buffer);
+    delete[] buffer;
+}
+
 float GameMode::InvokeNativeFloat(int handle, MonoArray * args_array) {
     cell r = (cell)InvokeNative(handle, args_array);
     return amx_ctof(r);
@@ -399,11 +406,11 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array)
         }
 
     }
-    
-    int return_value = sampgdk::InvokeNativeArray(sig->native, sig->format, 
+
+    int return_value = sampgdk::InvokeNativeArray(sig->native, sig->format,
         params);
 
-    /* Delete buffers and write reference types back to the mono arguments 
+    /* Delete buffers and write reference types back to the mono arguments
      * array. */
     for (int i = 0; i < sig->param_count; i++) {
         switch (sig->parameters[i]) {
@@ -429,7 +436,7 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array)
                     amx_ctof(*(cell *)params[i]);
             }
             else {
-                mono_array_set(args_array, float, i, 
+                mono_array_set(args_array, float, i,
                     amx_ctof(*(cell *)params[i]));
             }
             break;
@@ -439,7 +446,7 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array)
                     string_to_monostring((char *)params[i], param_size[i]);
             }
             else {
-                mono_array_set(args_array, MonoString *, i, 
+                mono_array_set(args_array, MonoString *, i,
                     string_to_monostring((char *)params[i], param_size[i]));
             }
             delete[] params[i];
@@ -487,7 +494,7 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array)
     return return_value;
 }
 
-int GameMode::LoadNative(MonoString *name_string, MonoString *format_string, 
+int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
     MonoArray *sizes_array)
 {
     int size_idx = 0;
@@ -568,7 +575,7 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
             }
 
             sig.sizes[i] = mono_array_get(sizes_array, int, size_idx++);
-            
+
             if (sig.sizes[i] < 0) {
                 sprintf(sig.format, "%sa[%d]", sig.format, -sig.sizes[i]);
             }
@@ -641,6 +648,7 @@ bool GameMode::NativeExists(MonoString *name_string) {
 
 	return find_native_result;
 }
+
 void GameMode::ProcessTimerTick(int timerid, void *data) {
     if (!isLoaded_) {
         return;

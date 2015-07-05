@@ -13,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Runtime.CompilerServices;
-
 namespace SampSharp.GameMode.Natives
 {
     /// <summary>
@@ -22,471 +20,595 @@ namespace SampSharp.GameMode.Natives
     /// </summary>
     public static partial class Native
     {
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetSpawnInfo(int playerid, int team, int skin, float x, float y, float z,
-            float rotation, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
+        public delegate bool ApplyAnimationImpl(int playerid, string animlib, string animname, float fDelta, bool loop,
+            bool lockx, bool locky, bool freeze, int time, bool forcesync);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SpawnPlayer(int playerid);
+        public delegate bool AttachCameraToObjectImpl(int playerid, int objectid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerPos(int playerid, float x, float y, float z);
+        public delegate bool AttachCameraToPlayerObjectImpl(int playerid, int playerobjectid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerPosFindZ(int playerid, float x, float y, float z);
+        public delegate bool ClearAnimationsImpl(int playerid, bool forcesync);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPlayerPos(int playerid, out float x, out float y, out float z);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerFacingAngle(int playerid, float angle);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPlayerFacingAngle(int playerid, out float angle);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool IsPlayerInRangeOfPoint(int playerid, float range, float x, float y, float z);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern float GetPlayerDistanceFromPoint(int playerid, float x, float y, float z);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool IsPlayerStreamedIn(int playerid, int forplayerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerInterior(int playerid, int interiorid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerInterior(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerHealth(int playerid, float health);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPlayerHealth(int playerid, out float health);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerArmour(int playerid, float armour);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPlayerArmour(int playerid, out float armour);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerAmmo(int playerid, int weaponid, int ammo);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerAmmo(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerWeaponState(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerTargetPlayer(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerTargetActor(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerTeam(int playerid, int teamid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerTeam(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerScore(int playerid, int score);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerScore(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerDrunkLevel(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerDrunkLevel(int playerid, int level);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerColor(int playerid, int color);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerColor(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerSkin(int playerid, int skinid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerSkin(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GivePlayerWeapon(int playerid, int weaponid, int ammo);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool ResetPlayerWeapons(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerArmedWeapon(int playerid, int weaponid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPlayerWeaponData(int playerid, int slot, out int weapon, out int ammo);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GivePlayerMoney(int playerid, int money);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool ResetPlayerMoney(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int SetPlayerName(int playerid, string name);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerMoney(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerState(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPlayerIp(int playerid, out string ip, int size);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerPing(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerWeapon(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPlayerKeys(int playerid, out int keys, out int updown, out int leftright);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerName(int playerid, out string name, int size);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerTime(int playerid, int hour, int minute);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPlayerTime(int playerid, out int hour, out int minute);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TogglePlayerClock(int playerid, bool toggle);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerWeather(int playerid, int weather);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool ForceClassSelection(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerWantedLevel(int playerid, int level);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerWantedLevel(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerFightingStyle(int playerid, int style);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerFightingStyle(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerVelocity(int playerid, float x, float y, float z);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPlayerVelocity(int playerid, out float x, out float y, out float z);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayCrimeReportForPlayer(int playerid, int suspectid, int crime);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayAudioStreamForPlayer(int playerid, string url, float posX, float posY, float posZ,
-            float distance, bool usepos);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool StopAudioStreamForPlayer(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerShopName(int playerid, string shopname);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerSkillLevel(int playerid, int skill, int level);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerSurfingVehicleID(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerSurfingObjectID(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool RemoveBuildingForPlayer(int playerid, int modelid, float x, float y, float z,
+        public delegate bool CreateExplosionForPlayerImpl(int playerid, float x, float y, float z, int type,
             float radius);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerAttachedObject(int playerid, int index, int modelid, int bone, float offsetX,
+        public delegate int CreatePlayerTextDrawImpl(int playerid, float x, float y, string text);
+
+        public delegate bool DeletePVarImpl(int playerid, string varname);
+
+        public delegate bool DisablePlayerCheckpointImpl(int playerid);
+
+        public delegate bool DisablePlayerRaceCheckpointImpl(int playerid);
+
+        public delegate bool DisableRemoteVehicleCollisionsImpl(int playerid, bool disable);
+
+        public delegate bool EditAttachedObjectImpl(int playerid, int index);
+
+        public delegate bool EnablePlayerCameraTargetImpl(int playerid, bool enable);
+
+        public delegate bool EnableStuntBonusForAllImpl(bool enable);
+
+        public delegate bool EnableStuntBonusForPlayerImpl(int playerid, bool enable);
+
+        public delegate bool ForceClassSelectionImpl(int playerid);
+
+        public delegate bool GetAnimationNameImpl(int index, out string animlib, int animlibSize, out string animname,
+            int animnameSize);
+
+        public delegate int GetPlayerAmmoImpl(int playerid);
+
+        public delegate int GetPlayerAnimationIndexImpl(int playerid);
+
+        public delegate bool GetPlayerArmourImpl(int playerid, out float armour);
+
+        public delegate bool GetPlayerCameraFrontVectorImpl(int playerid, out float x, out float y, out float z);
+
+        public delegate int GetPlayerCameraModeImpl(int playerid);
+
+        public delegate bool GetPlayerCameraPosImpl(int playerid, out float x, out float y, out float z);
+
+        public delegate int GetPlayerCameraTargetActorImpl(int playerid);
+
+        public delegate int GetPlayerCameraTargetObjectImpl(int playerid);
+
+        public delegate int GetPlayerCameraTargetPlayerImpl(int playerid);
+
+        public delegate int GetPlayerCameraTargetVehicleImpl(int playerid);
+
+        public delegate int GetPlayerColorImpl(int playerid);
+
+        public delegate float GetPlayerDistanceFromPointImpl(int playerid, float x, float y, float z);
+
+        public delegate int GetPlayerDrunkLevelImpl(int playerid);
+
+        public delegate bool GetPlayerFacingAngleImpl(int playerid, out float angle);
+
+        public delegate int GetPlayerFightingStyleImpl(int playerid);
+
+        public delegate bool GetPlayerHealthImpl(int playerid, out float health);
+
+        public delegate int GetPlayerInteriorImpl(int playerid);
+
+        public delegate bool GetPlayerIpImpl(int playerid, out string ip, int size);
+
+        public delegate bool GetPlayerKeysImpl(int playerid, out int keys, out int updown, out int leftright);
+
+        public delegate int GetPlayerMoneyImpl(int playerid);
+
+        public delegate int GetPlayerNameImpl(int playerid, out string name, int size);
+
+        public delegate int GetPlayerPingImpl(int playerid);
+
+        public delegate bool GetPlayerPosImpl(int playerid, out float x, out float y, out float z);
+
+        public delegate int GetPlayerScoreImpl(int playerid);
+
+        public delegate int GetPlayerSkinImpl(int playerid);
+
+        public delegate int GetPlayerSpecialActionImpl(int playerid);
+
+        public delegate int GetPlayerStateImpl(int playerid);
+
+        public delegate int GetPlayerSurfingObjectIDImpl(int playerid);
+
+        public delegate int GetPlayerSurfingVehicleIDImpl(int playerid);
+
+        public delegate int GetPlayerTargetActorImpl(int playerid);
+
+        public delegate int GetPlayerTargetPlayerImpl(int playerid);
+
+        public delegate int GetPlayerTeamImpl(int playerid);
+
+        public delegate bool GetPlayerTimeImpl(int playerid, out int hour, out int minute);
+
+        public delegate int GetPlayerVehicleIDImpl(int playerid);
+
+        public delegate int GetPlayerVehicleSeatImpl(int playerid);
+
+        public delegate bool GetPlayerVelocityImpl(int playerid, out float x, out float y, out float z);
+
+        public delegate int GetPlayerVirtualWorldImpl(int playerid);
+
+        public delegate int GetPlayerWantedLevelImpl(int playerid);
+
+        public delegate bool GetPlayerWeaponDataImpl(int playerid, int slot, out int weapon, out int ammo);
+
+        public delegate int GetPlayerWeaponImpl(int playerid);
+
+        public delegate int GetPlayerWeaponStateImpl(int playerid);
+
+        public delegate float GetPVarFloatImpl(int playerid, string varname);
+
+        public delegate int GetPVarIntImpl(int playerid, string varname);
+
+        public delegate bool GetPVarNameAtIndexImpl(int playerid, int index, out string varname, int size);
+
+        public delegate bool GetPVarStringImpl(int playerid, string varname, out string value, int size);
+
+        public delegate int GetPVarsUpperIndexImpl(int playerid);
+
+        public delegate int GetPVarTypeImpl(int playerid, string varname);
+
+        public delegate bool GivePlayerMoneyImpl(int playerid, int money);
+
+        public delegate bool GivePlayerWeaponImpl(int playerid, int weaponid, int ammo);
+
+        public delegate bool InterpolateCameraLookAtImpl(int playerid, float fromX, float fromY, float fromZ, float toX,
+            float toY, float toZ, int time, int cut);
+
+        public delegate bool InterpolateCameraPosImpl(int playerid, float fromX, float fromY, float fromZ, float toX,
+            float toY, float toZ, int time, int cut);
+
+        public delegate bool IsPlayerAttachedObjectSlotUsedImpl(int playerid, int index);
+
+        public delegate bool IsPlayerConnectedImpl(int playerid);
+
+        public delegate bool IsPlayerInAnyVehicleImpl(int playerid);
+
+        public delegate bool IsPlayerInCheckpointImpl(int playerid);
+
+        public delegate bool IsPlayerInRaceCheckpointImpl(int playerid);
+
+        public delegate bool IsPlayerInRangeOfPointImpl(int playerid, float range, float x, float y, float z);
+
+        public delegate bool IsPlayerInVehicleImpl(int playerid, int vehicleid);
+
+        public delegate bool IsPlayerStreamedInImpl(int playerid, int forplayerid);
+
+        public delegate bool PlayAudioStreamForPlayerImpl(int playerid, string url, float posX, float posY, float posZ,
+            float distance, bool usepos);
+
+        public delegate bool PlayCrimeReportForPlayerImpl(int playerid, int suspectid, int crime);
+
+        public delegate bool PlayerPlaySoundImpl(int playerid, int soundid, float x, float y, float z);
+
+        public delegate bool PlayerSpectatePlayerImpl(int playerid, int targetplayerid, int mode);
+
+        public delegate bool PlayerSpectateVehicleImpl(int playerid, int targetvehicleid, int mode);
+
+        public delegate bool PlayerTextDrawAlignmentImpl(int playerid, int text, int alignment);
+
+        public delegate bool PlayerTextDrawBackgroundColorImpl(int playerid, int text, int color);
+
+        public delegate bool PlayerTextDrawBoxColorImpl(int playerid, int text, int color);
+
+        public delegate bool PlayerTextDrawColorImpl(int playerid, int text, int color);
+
+        public delegate bool PlayerTextDrawDestroyImpl(int playerid, int text);
+
+        public delegate bool PlayerTextDrawFontImpl(int playerid, int text, int font);
+
+        public delegate bool PlayerTextDrawHideImpl(int playerid, int text);
+
+        public delegate bool PlayerTextDrawLetterSizeImpl(int playerid, int text, float x, float y);
+
+        public delegate bool PlayerTextDrawSetOutlineImpl(int playerid, int text, int size);
+
+        public delegate bool PlayerTextDrawSetPreviewModelImpl(int playerid, int text, int modelindex);
+
+        public delegate bool PlayerTextDrawSetPreviewRotImpl(int playerid, int text, float rotX, float rotY,
+            float rotZ, float zoom);
+
+        public delegate bool PlayerTextDrawSetPreviewVehColImpl(int playerid, int text, int color1, int color2);
+
+        public delegate bool PlayerTextDrawSetProportionalImpl(int playerid, int text, bool set);
+
+        public delegate bool PlayerTextDrawSetSelectableImpl(int playerid, int text, bool set);
+
+        public delegate bool PlayerTextDrawSetShadowImpl(int playerid, int text, int size);
+
+        public delegate bool PlayerTextDrawSetStringImpl(int playerid, int text, string str);
+
+        public delegate bool PlayerTextDrawShowImpl(int playerid, int text);
+
+        public delegate bool PlayerTextDrawTextSizeImpl(int playerid, int text, float x, float y);
+
+        public delegate bool PlayerTextDrawUseBoxImpl(int playerid, int text, bool use);
+
+        public delegate bool PutPlayerInVehicleImpl(int playerid, int vehicleid, int seatid);
+
+        public delegate bool RemoveBuildingForPlayerImpl(int playerid, int modelid, float x, float y, float z,
+            float radius);
+
+        public delegate bool RemovePlayerAttachedObjectImpl(int playerid, int index);
+
+        public delegate bool RemovePlayerFromVehicleImpl(int playerid);
+
+        public delegate bool RemovePlayerMapIconImpl(int playerid, int iconid);
+
+        public delegate bool ResetPlayerMoneyImpl(int playerid);
+
+        public delegate bool ResetPlayerWeaponsImpl(int playerid);
+
+        public delegate bool SetCameraBehindPlayerImpl(int playerid);
+
+        public delegate bool SetPlayerAmmoImpl(int playerid, int weaponid, int ammo);
+
+        public delegate bool SetPlayerArmedWeaponImpl(int playerid, int weaponid);
+
+        public delegate bool SetPlayerArmourImpl(int playerid, float armour);
+
+        public delegate bool SetPlayerAttachedObjectImpl(int playerid, int index, int modelid, int bone, float offsetX,
             float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY,
             float scaleZ, int materialcolor1, int materialcolor2);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool RemovePlayerAttachedObject(int playerid, int index);
+        public delegate bool SetPlayerCameraLookAtImpl(int playerid, float x, float y, float z, int cut);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool IsPlayerAttachedObjectSlotUsed(int playerid, int index);
+        public delegate bool SetPlayerCameraPosImpl(int playerid, float x, float y, float z);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool EditAttachedObject(int playerid, int index);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int CreatePlayerTextDraw(int playerid, float x, float y, string text);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawDestroy(int playerid, int text);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawLetterSize(int playerid, int text, float x, float y);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawTextSize(int playerid, int text, float x, float y);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawAlignment(int playerid, int text, int alignment);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawColor(int playerid, int text, int color);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawUseBox(int playerid, int text, bool use);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawBoxColor(int playerid, int text, int color);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawSetShadow(int playerid, int text, int size);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawSetOutline(int playerid, int text, int size);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawBackgroundColor(int playerid, int text, int color);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawFont(int playerid, int text, int font);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawSetProportional(int playerid, int text, bool set);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawSetSelectable(int playerid, int text, bool set);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawShow(int playerid, int text);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawHide(int playerid, int text);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawSetString(int playerid, int text, string str);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawSetPreviewModel(int playerid, int text, int modelindex);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawSetPreviewRot(int playerid, int text, float rotX, float rotY,
-            float rotZ, float zoom);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerTextDrawSetPreviewVehCol(int playerid, int text, int color1, int color2);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPVarInt(int playerid, string varname, int value);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPVarInt(int playerid, string varname);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPVarString(int playerid, string varname, string value);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPVarString(int playerid, string varname, out string value, int size);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPVarFloat(int playerid, string varname, float value);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern float GetPVarFloat(int playerid, string varname);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool DeletePVar(int playerid, string varname);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPVarsUpperIndex(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPVarNameAtIndex(int playerid, int index, out string varname, int size);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPVarType(int playerid, string varname);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerChatBubble(int playerid, string text, int color, float drawdistance,
+        public delegate bool SetPlayerChatBubbleImpl(int playerid, string text, int color, float drawdistance,
             int expiretime);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PutPlayerInVehicle(int playerid, int vehicleid, int seatid);
+        public delegate bool SetPlayerCheckpointImpl(int playerid, float x, float y, float z, float size);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerVehicleID(int playerid);
+        public delegate bool SetPlayerColorImpl(int playerid, int color);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerVehicleSeat(int playerid);
+        public delegate bool SetPlayerDrunkLevelImpl(int playerid, int level);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool RemovePlayerFromVehicle(int playerid);
+        public delegate bool SetPlayerFacingAngleImpl(int playerid, float angle);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TogglePlayerControllable(int playerid, bool toggle);
+        public delegate bool SetPlayerFightingStyleImpl(int playerid, int style);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerPlaySound(int playerid, int soundid, float x, float y, float z);
+        public delegate bool SetPlayerHealthImpl(int playerid, float health);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool ApplyAnimation(int playerid, string animlib, string animname, float fDelta, bool loop,
-            bool lockx, bool locky, bool freeze, int time, bool forcesync);
+        public delegate bool SetPlayerInteriorImpl(int playerid, int interiorid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool ClearAnimations(int playerid, bool forcesync);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerAnimationIndex(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetAnimationName(int index, out string animlib, int animlibSize, out string animname,
-            int animnameSize);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerSpecialAction(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerSpecialAction(int playerid, int actionid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool DisableRemoteVehicleCollisions(int playerid, bool disable);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerCheckpoint(int playerid, float x, float y, float z, float size);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool DisablePlayerCheckpoint(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerRaceCheckpoint(int playerid, int type, float x, float y, float z, float nextx,
-            float nexty, float nextz, float size);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool DisablePlayerRaceCheckpoint(int playerid);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerWorldBounds(int playerid, float xMax, float xMin, float yMax, float yMin);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerMarkerForPlayer(int playerid, int showplayerid, int color);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool ShowPlayerNameTagForPlayer(int playerid, int showplayerid, bool show);
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerMapIcon(int playerid, int iconid, float x, float y, float z, int markertype,
+        public delegate bool SetPlayerMapIconImpl(int playerid, int iconid, float x, float y, float z, int markertype,
             int color, int style);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool RemovePlayerMapIcon(int playerid, int iconid);
+        public delegate bool SetPlayerMarkerForPlayerImpl(int playerid, int showplayerid, int color);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerCameraPos(int playerid, float x, float y, float z);
+        public delegate int SetPlayerNameImpl(int playerid, string name);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerCameraLookAt(int playerid, float x, float y, float z, int cut);
+        public delegate bool SetPlayerPosFindZImpl(int playerid, float x, float y, float z);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetCameraBehindPlayer(int playerid);
+        public delegate bool SetPlayerPosImpl(int playerid, float x, float y, float z);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPlayerCameraPos(int playerid, out float x, out float y, out float z);
+        public delegate bool SetPlayerRaceCheckpointImpl(int playerid, int type, float x, float y, float z, float nextx,
+            float nexty, float nextz, float size);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool GetPlayerCameraFrontVector(int playerid, out float x, out float y, out float z);
+        public delegate bool SetPlayerScoreImpl(int playerid, int score);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerCameraMode(int playerid);
+        public delegate bool SetPlayerShopNameImpl(int playerid, string shopname);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool EnablePlayerCameraTarget(int playerid, bool enable);
+        public delegate bool SetPlayerSkillLevelImpl(int playerid, int skill, int level);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerCameraTargetObject(int playerid);
+        public delegate bool SetPlayerSkinImpl(int playerid, int skinid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerCameraTargetVehicle(int playerid);
+        public delegate bool SetPlayerSpecialActionImpl(int playerid, int actionid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerCameraTargetPlayer(int playerid);
+        public delegate bool SetPlayerTeamImpl(int playerid, int teamid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerCameraTargetActor(int playerid);
+        public delegate bool SetPlayerTimeImpl(int playerid, int hour, int minute);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool AttachCameraToObject(int playerid, int objectid);
+        public delegate bool SetPlayerVelocityImpl(int playerid, float x, float y, float z);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool AttachCameraToPlayerObject(int playerid, int playerobjectid);
+        public delegate bool SetPlayerVirtualWorldImpl(int playerid, int worldid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool InterpolateCameraPos(int playerid, float fromX, float fromY, float fromZ, float toX,
-            float toY, float toZ, int time, int cut);
+        public delegate bool SetPlayerWantedLevelImpl(int playerid, int level);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool InterpolateCameraLookAt(int playerid, float fromX, float fromY, float fromZ, float toX,
-            float toY, float toZ, int time, int cut);
+        public delegate bool SetPlayerWeatherImpl(int playerid, int weather);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool IsPlayerConnected(int playerid);
+        public delegate bool SetPlayerWorldBoundsImpl(int playerid, float xMax, float xMin, float yMax, float yMin);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool IsPlayerInVehicle(int playerid, int vehicleid);
+        public delegate bool SetPVarFloatImpl(int playerid, string varname, float value);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool IsPlayerInAnyVehicle(int playerid);
+        public delegate bool SetPVarIntImpl(int playerid, string varname, int value);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool IsPlayerInCheckpoint(int playerid);
+        public delegate bool SetPVarStringImpl(int playerid, string varname, string value);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool IsPlayerInRaceCheckpoint(int playerid);
+        public delegate bool SetSpawnInfoImpl(int playerid, int team, int skin, float x, float y, float z,
+            float rotation, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool SetPlayerVirtualWorld(int playerid, int worldid);
+        public delegate bool ShowPlayerNameTagForPlayerImpl(int playerid, int showplayerid, bool show);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern int GetPlayerVirtualWorld(int playerid);
+        public delegate bool SpawnPlayerImpl(int playerid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool EnableStuntBonusForPlayer(int playerid, bool enable);
+        public delegate bool StartRecordingPlayerDataImpl(int playerid, int recordtype, string recordname);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool EnableStuntBonusForAll(bool enable);
+        public delegate bool StopAudioStreamForPlayerImpl(int playerid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool TogglePlayerSpectating(int playerid, bool toggle);
+        public delegate bool StopRecordingPlayerDataImpl(int playerid);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerSpectatePlayer(int playerid, int targetplayerid, int mode);
+        public delegate bool TogglePlayerClockImpl(int playerid, bool toggle);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool PlayerSpectateVehicle(int playerid, int targetvehicleid, int mode);
+        public delegate bool TogglePlayerControllableImpl(int playerid, bool toggle);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool StartRecordingPlayerData(int playerid, int recordtype, string recordname);
+        public delegate bool TogglePlayerSpectatingImpl(int playerid, bool toggle);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool StopRecordingPlayerData(int playerid);
+        [Native("SetSpawnInfo")] public static readonly SetSpawnInfoImpl SetSpawnInfo = null;
+        [Native("SpawnPlayer")] public static readonly SpawnPlayerImpl SpawnPlayer = null;
+        [Native("SetPlayerPos")] public static readonly SetPlayerPosImpl SetPlayerPos = null;
+        [Native("SetPlayerPosFindZ")] public static readonly SetPlayerPosFindZImpl SetPlayerPosFindZ = null;
+        [Native("GetPlayerPos")] public static readonly GetPlayerPosImpl GetPlayerPos = null;
+        [Native("SetPlayerFacingAngle")] public static readonly SetPlayerFacingAngleImpl SetPlayerFacingAngle = null;
+        [Native("GetPlayerFacingAngle")] public static readonly GetPlayerFacingAngleImpl GetPlayerFacingAngle = null;
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern bool CreateExplosionForPlayer(int playerid, float x, float y, float z, int type,
-            float radius);
+        [Native("IsPlayerInRangeOfPoint")] public static readonly IsPlayerInRangeOfPointImpl IsPlayerInRangeOfPoint =
+            null;
+
+        [Native("GetPlayerDistanceFromPoint")] public static readonly GetPlayerDistanceFromPointImpl
+            GetPlayerDistanceFromPoint = null;
+
+        [Native("IsPlayerStreamedIn")] public static readonly IsPlayerStreamedInImpl IsPlayerStreamedIn = null;
+        [Native("SetPlayerInterior")] public static readonly SetPlayerInteriorImpl SetPlayerInterior = null;
+        [Native("GetPlayerInterior")] public static readonly GetPlayerInteriorImpl GetPlayerInterior = null;
+        [Native("SetPlayerHealth")] public static readonly SetPlayerHealthImpl SetPlayerHealth = null;
+        [Native("GetPlayerHealth")] public static readonly GetPlayerHealthImpl GetPlayerHealth = null;
+        [Native("SetPlayerArmour")] public static readonly SetPlayerArmourImpl SetPlayerArmour = null;
+        [Native("GetPlayerArmour")] public static readonly GetPlayerArmourImpl GetPlayerArmour = null;
+        [Native("SetPlayerAmmo")] public static readonly SetPlayerAmmoImpl SetPlayerAmmo = null;
+        [Native("GetPlayerAmmo")] public static readonly GetPlayerAmmoImpl GetPlayerAmmo = null;
+        [Native("GetPlayerWeaponState")] public static readonly GetPlayerWeaponStateImpl GetPlayerWeaponState = null;
+        [Native("GetPlayerTargetPlayer")] public static readonly GetPlayerTargetPlayerImpl GetPlayerTargetPlayer = null;
+        [Native("GetPlayerTargetActor")] public static readonly GetPlayerTargetActorImpl GetPlayerTargetActor = null;
+        [Native("SetPlayerTeam")] public static readonly SetPlayerTeamImpl SetPlayerTeam = null;
+        [Native("GetPlayerTeam")] public static readonly GetPlayerTeamImpl GetPlayerTeam = null;
+        [Native("SetPlayerScore")] public static readonly SetPlayerScoreImpl SetPlayerScore = null;
+        [Native("GetPlayerScore")] public static readonly GetPlayerScoreImpl GetPlayerScore = null;
+        [Native("GetPlayerDrunkLevel")] public static readonly GetPlayerDrunkLevelImpl GetPlayerDrunkLevel = null;
+        [Native("SetPlayerDrunkLevel")] public static readonly SetPlayerDrunkLevelImpl SetPlayerDrunkLevel = null;
+        [Native("SetPlayerColor")] public static readonly SetPlayerColorImpl SetPlayerColor = null;
+        [Native("GetPlayerColor")] public static readonly GetPlayerColorImpl GetPlayerColor = null;
+        [Native("SetPlayerSkin")] public static readonly SetPlayerSkinImpl SetPlayerSkin = null;
+        [Native("GetPlayerSkin")] public static readonly GetPlayerSkinImpl GetPlayerSkin = null;
+        [Native("GivePlayerWeapon")] public static readonly GivePlayerWeaponImpl GivePlayerWeapon = null;
+        [Native("ResetPlayerWeapons")] public static readonly ResetPlayerWeaponsImpl ResetPlayerWeapons = null;
+        [Native("SetPlayerArmedWeapon")] public static readonly SetPlayerArmedWeaponImpl SetPlayerArmedWeapon = null;
+        [Native("GetPlayerWeaponData")] public static readonly GetPlayerWeaponDataImpl GetPlayerWeaponData = null;
+        [Native("GivePlayerMoney")] public static readonly GivePlayerMoneyImpl GivePlayerMoney = null;
+        [Native("ResetPlayerMoney")] public static readonly ResetPlayerMoneyImpl ResetPlayerMoney = null;
+        [Native("SetPlayerName")] public static readonly SetPlayerNameImpl SetPlayerName = null;
+        [Native("GetPlayerMoney")] public static readonly GetPlayerMoneyImpl GetPlayerMoney = null;
+        [Native("GetPlayerState")] public static readonly GetPlayerStateImpl GetPlayerState = null;
+        [Native("GetPlayerIp")] public static readonly GetPlayerIpImpl GetPlayerIp = null;
+        [Native("GetPlayerPing")] public static readonly GetPlayerPingImpl GetPlayerPing = null;
+        [Native("GetPlayerWeapon")] public static readonly GetPlayerWeaponImpl GetPlayerWeapon = null;
+        [Native("GetPlayerKeys")] public static readonly GetPlayerKeysImpl GetPlayerKeys = null;
+        [Native("GetPlayerName")] public static readonly GetPlayerNameImpl GetPlayerName = null;
+        [Native("SetPlayerTime")] public static readonly SetPlayerTimeImpl SetPlayerTime = null;
+        [Native("GetPlayerTime")] public static readonly GetPlayerTimeImpl GetPlayerTime = null;
+        [Native("TogglePlayerClock")] public static readonly TogglePlayerClockImpl TogglePlayerClock = null;
+        [Native("SetPlayerWeather")] public static readonly SetPlayerWeatherImpl SetPlayerWeather = null;
+        [Native("ForceClassSelection")] public static readonly ForceClassSelectionImpl ForceClassSelection = null;
+        [Native("SetPlayerWantedLevel")] public static readonly SetPlayerWantedLevelImpl SetPlayerWantedLevel = null;
+        [Native("GetPlayerWantedLevel")] public static readonly GetPlayerWantedLevelImpl GetPlayerWantedLevel = null;
+
+        [Native("SetPlayerFightingStyle")] public static readonly SetPlayerFightingStyleImpl SetPlayerFightingStyle =
+            null;
+
+        [Native("GetPlayerFightingStyle")] public static readonly GetPlayerFightingStyleImpl GetPlayerFightingStyle =
+            null;
+
+        [Native("SetPlayerVelocity")] public static readonly SetPlayerVelocityImpl SetPlayerVelocity = null;
+        [Native("GetPlayerVelocity")] public static readonly GetPlayerVelocityImpl GetPlayerVelocity = null;
+
+        [Native("PlayCrimeReportForPlayer")] public static readonly PlayCrimeReportForPlayerImpl
+            PlayCrimeReportForPlayer = null;
+
+        [Native("PlayAudioStreamForPlayer")] public static readonly PlayAudioStreamForPlayerImpl
+            PlayAudioStreamForPlayer = null;
+
+        [Native("StopAudioStreamForPlayer")] public static readonly StopAudioStreamForPlayerImpl
+            StopAudioStreamForPlayer = null;
+
+        [Native("SetPlayerShopName")] public static readonly SetPlayerShopNameImpl SetPlayerShopName = null;
+        [Native("SetPlayerSkillLevel")] public static readonly SetPlayerSkillLevelImpl SetPlayerSkillLevel = null;
+
+        [Native("GetPlayerSurfingVehicleID")] public static readonly GetPlayerSurfingVehicleIDImpl
+            GetPlayerSurfingVehicleID = null;
+
+        [Native("GetPlayerSurfingObjectID")] public static readonly GetPlayerSurfingObjectIDImpl
+            GetPlayerSurfingObjectID = null;
+
+        [Native("RemoveBuildingForPlayer")] public static readonly RemoveBuildingForPlayerImpl RemoveBuildingForPlayer =
+            null;
+
+        [Native("SetPlayerAttachedObject")] public static readonly SetPlayerAttachedObjectImpl SetPlayerAttachedObject =
+            null;
+
+        [Native("RemovePlayerAttachedObject")] public static readonly RemovePlayerAttachedObjectImpl
+            RemovePlayerAttachedObject = null;
+
+        [Native("IsPlayerAttachedObjectSlotUsed")] public static readonly IsPlayerAttachedObjectSlotUsedImpl
+            IsPlayerAttachedObjectSlotUsed = null;
+
+        [Native("EditAttachedObject")] public static readonly EditAttachedObjectImpl EditAttachedObject = null;
+        [Native("CreatePlayerTextDraw")] public static readonly CreatePlayerTextDrawImpl CreatePlayerTextDraw = null;
+        [Native("PlayerTextDrawDestroy")] public static readonly PlayerTextDrawDestroyImpl PlayerTextDrawDestroy = null;
+
+        [Native("PlayerTextDrawLetterSize")] public static readonly PlayerTextDrawLetterSizeImpl
+            PlayerTextDrawLetterSize = null;
+
+        [Native("PlayerTextDrawTextSize")] public static readonly PlayerTextDrawTextSizeImpl PlayerTextDrawTextSize =
+            null;
+
+        [Native("PlayerTextDrawAlignment")] public static readonly PlayerTextDrawAlignmentImpl PlayerTextDrawAlignment =
+            null;
+
+        [Native("PlayerTextDrawColor")] public static readonly PlayerTextDrawColorImpl PlayerTextDrawColor = null;
+        [Native("PlayerTextDrawUseBox")] public static readonly PlayerTextDrawUseBoxImpl PlayerTextDrawUseBox = null;
+
+        [Native("PlayerTextDrawBoxColor")] public static readonly PlayerTextDrawBoxColorImpl PlayerTextDrawBoxColor =
+            null;
+
+        [Native("PlayerTextDrawSetShadow")] public static readonly PlayerTextDrawSetShadowImpl PlayerTextDrawSetShadow =
+            null;
+
+        [Native("PlayerTextDrawSetOutline")] public static readonly PlayerTextDrawSetOutlineImpl
+            PlayerTextDrawSetOutline = null;
+
+        [Native("PlayerTextDrawBackgroundColor")] public static readonly PlayerTextDrawBackgroundColorImpl
+            PlayerTextDrawBackgroundColor = null;
+
+        [Native("PlayerTextDrawFont")] public static readonly PlayerTextDrawFontImpl PlayerTextDrawFont = null;
+
+        [Native("PlayerTextDrawSetProportional")] public static readonly PlayerTextDrawSetProportionalImpl
+            PlayerTextDrawSetProportional = null;
+
+        [Native("PlayerTextDrawSetSelectable")] public static readonly PlayerTextDrawSetSelectableImpl
+            PlayerTextDrawSetSelectable = null;
+
+        [Native("PlayerTextDrawShow")] public static readonly PlayerTextDrawShowImpl PlayerTextDrawShow = null;
+        [Native("PlayerTextDrawHide")] public static readonly PlayerTextDrawHideImpl PlayerTextDrawHide = null;
+
+        [Native("PlayerTextDrawSetString")] public static readonly PlayerTextDrawSetStringImpl PlayerTextDrawSetString =
+            null;
+
+        [Native("PlayerTextDrawSetPreviewModel")] public static readonly PlayerTextDrawSetPreviewModelImpl
+            PlayerTextDrawSetPreviewModel = null;
+
+        [Native("PlayerTextDrawSetPreviewRot")] public static readonly PlayerTextDrawSetPreviewRotImpl
+            PlayerTextDrawSetPreviewRot = null;
+
+        [Native("PlayerTextDrawSetPreviewVehCol")] public static readonly PlayerTextDrawSetPreviewVehColImpl
+            PlayerTextDrawSetPreviewVehCol = null;
+
+        [Native("SetPVarInt")] public static readonly SetPVarIntImpl SetPVarInt = null;
+        [Native("GetPVarInt")] public static readonly GetPVarIntImpl GetPVarInt = null;
+        [Native("SetPVarString")] public static readonly SetPVarStringImpl SetPVarString = null;
+        [Native("GetPVarString")] public static readonly GetPVarStringImpl GetPVarString = null;
+        [Native("SetPVarFloat")] public static readonly SetPVarFloatImpl SetPVarFloat = null;
+        [Native("GetPVarFloat")] public static readonly GetPVarFloatImpl GetPVarFloat = null;
+        [Native("DeletePVar")] public static readonly DeletePVarImpl DeletePVar = null;
+        [Native("GetPVarsUpperIndex")] public static readonly GetPVarsUpperIndexImpl GetPVarsUpperIndex = null;
+        [Native("GetPVarNameAtIndex")] public static readonly GetPVarNameAtIndexImpl GetPVarNameAtIndex = null;
+        [Native("GetPVarType")] public static readonly GetPVarTypeImpl GetPVarType = null;
+        [Native("SetPlayerChatBubble")] public static readonly SetPlayerChatBubbleImpl SetPlayerChatBubble = null;
+        [Native("PutPlayerInVehicle")] public static readonly PutPlayerInVehicleImpl PutPlayerInVehicle = null;
+        [Native("GetPlayerVehicleID")] public static readonly GetPlayerVehicleIDImpl GetPlayerVehicleID = null;
+        [Native("GetPlayerVehicleSeat")] public static readonly GetPlayerVehicleSeatImpl GetPlayerVehicleSeat = null;
+
+        [Native("RemovePlayerFromVehicle")] public static readonly RemovePlayerFromVehicleImpl RemovePlayerFromVehicle =
+            null;
+
+        [Native("TogglePlayerControllable")] public static readonly TogglePlayerControllableImpl
+            TogglePlayerControllable = null;
+
+        [Native("PlayerPlaySound")] public static readonly PlayerPlaySoundImpl PlayerPlaySound = null;
+        [Native("ApplyAnimation")] public static readonly ApplyAnimationImpl ApplyAnimation = null;
+        [Native("ClearAnimations")] public static readonly ClearAnimationsImpl ClearAnimations = null;
+
+        [Native("GetPlayerAnimationIndex")] public static readonly GetPlayerAnimationIndexImpl GetPlayerAnimationIndex =
+            null;
+
+        [Native("GetAnimationName")] public static readonly GetAnimationNameImpl GetAnimationName = null;
+
+        [Native("GetPlayerSpecialAction")] public static readonly GetPlayerSpecialActionImpl GetPlayerSpecialAction =
+            null;
+
+        [Native("SetPlayerSpecialAction")] public static readonly SetPlayerSpecialActionImpl SetPlayerSpecialAction =
+            null;
+
+        [Native("DisableRemoteVehicleCollisions")] public static readonly DisableRemoteVehicleCollisionsImpl
+            DisableRemoteVehicleCollisions = null;
+
+        [Native("SetPlayerCheckpoint")] public static readonly SetPlayerCheckpointImpl SetPlayerCheckpoint = null;
+
+        [Native("DisablePlayerCheckpoint")] public static readonly DisablePlayerCheckpointImpl DisablePlayerCheckpoint =
+            null;
+
+        [Native("SetPlayerRaceCheckpoint")] public static readonly SetPlayerRaceCheckpointImpl SetPlayerRaceCheckpoint =
+            null;
+
+        [Native("DisablePlayerRaceCheckpoint")] public static readonly DisablePlayerRaceCheckpointImpl
+            DisablePlayerRaceCheckpoint = null;
+
+        [Native("SetPlayerWorldBounds")] public static readonly SetPlayerWorldBoundsImpl SetPlayerWorldBounds = null;
+
+        [Native("SetPlayerMarkerForPlayer")] public static readonly SetPlayerMarkerForPlayerImpl
+            SetPlayerMarkerForPlayer = null;
+
+        [Native("ShowPlayerNameTagForPlayer")] public static readonly ShowPlayerNameTagForPlayerImpl
+            ShowPlayerNameTagForPlayer = null;
+
+        [Native("SetPlayerMapIcon")] public static readonly SetPlayerMapIconImpl SetPlayerMapIcon = null;
+        [Native("RemovePlayerMapIcon")] public static readonly RemovePlayerMapIconImpl RemovePlayerMapIcon = null;
+        [Native("SetPlayerCameraPos")] public static readonly SetPlayerCameraPosImpl SetPlayerCameraPos = null;
+        [Native("SetPlayerCameraLookAt")] public static readonly SetPlayerCameraLookAtImpl SetPlayerCameraLookAt = null;
+        [Native("SetCameraBehindPlayer")] public static readonly SetCameraBehindPlayerImpl SetCameraBehindPlayer = null;
+        [Native("GetPlayerCameraPos")] public static readonly GetPlayerCameraPosImpl GetPlayerCameraPos = null;
+
+        [Native("GetPlayerCameraFrontVector")] public static readonly GetPlayerCameraFrontVectorImpl
+            GetPlayerCameraFrontVector = null;
+
+        [Native("GetPlayerCameraMode")] public static readonly GetPlayerCameraModeImpl GetPlayerCameraMode = null;
+
+        [Native("EnablePlayerCameraTarget")] public static readonly EnablePlayerCameraTargetImpl
+            EnablePlayerCameraTarget = null;
+
+        [Native("GetPlayerCameraTargetObject")] public static readonly GetPlayerCameraTargetObjectImpl
+            GetPlayerCameraTargetObject = null;
+
+        [Native("GetPlayerCameraTargetVehicle")] public static readonly GetPlayerCameraTargetVehicleImpl
+            GetPlayerCameraTargetVehicle = null;
+
+        [Native("GetPlayerCameraTargetPlayer")] public static readonly GetPlayerCameraTargetPlayerImpl
+            GetPlayerCameraTargetPlayer = null;
+
+        [Native("GetPlayerCameraTargetActor")] public static readonly GetPlayerCameraTargetActorImpl
+            GetPlayerCameraTargetActor = null;
+
+        [Native("AttachCameraToObject")] public static readonly AttachCameraToObjectImpl AttachCameraToObject = null;
+
+        [Native("AttachCameraToPlayerObject")] public static readonly AttachCameraToPlayerObjectImpl
+            AttachCameraToPlayerObject = null;
+
+        [Native("InterpolateCameraPos")] public static readonly InterpolateCameraPosImpl InterpolateCameraPos = null;
+
+        [Native("InterpolateCameraLookAt")] public static readonly InterpolateCameraLookAtImpl InterpolateCameraLookAt =
+            null;
+
+        [Native("IsPlayerConnected")] public static readonly IsPlayerConnectedImpl IsPlayerConnected = null;
+        [Native("IsPlayerInVehicle")] public static readonly IsPlayerInVehicleImpl IsPlayerInVehicle = null;
+        [Native("IsPlayerInAnyVehicle")] public static readonly IsPlayerInAnyVehicleImpl IsPlayerInAnyVehicle = null;
+        [Native("IsPlayerInCheckpoint")] public static readonly IsPlayerInCheckpointImpl IsPlayerInCheckpoint = null;
+
+        [Native("IsPlayerInRaceCheckpoint")] public static readonly IsPlayerInRaceCheckpointImpl
+            IsPlayerInRaceCheckpoint = null;
+
+        [Native("SetPlayerVirtualWorld")] public static readonly SetPlayerVirtualWorldImpl SetPlayerVirtualWorld = null;
+        [Native("GetPlayerVirtualWorld")] public static readonly GetPlayerVirtualWorldImpl GetPlayerVirtualWorld = null;
+
+        [Native("EnableStuntBonusForPlayer")] public static readonly EnableStuntBonusForPlayerImpl
+            EnableStuntBonusForPlayer = null;
+
+        [Native("EnableStuntBonusForAll")] public static readonly EnableStuntBonusForAllImpl EnableStuntBonusForAll =
+            null;
+
+        [Native("TogglePlayerSpectating")] public static readonly TogglePlayerSpectatingImpl TogglePlayerSpectating =
+            null;
+
+        [Native("PlayerSpectatePlayer")] public static readonly PlayerSpectatePlayerImpl PlayerSpectatePlayer = null;
+        [Native("PlayerSpectateVehicle")] public static readonly PlayerSpectateVehicleImpl PlayerSpectateVehicle = null;
+
+        [Native("StartRecordingPlayerData")] public static readonly StartRecordingPlayerDataImpl
+            StartRecordingPlayerData = null;
+
+        [Native("StopRecordingPlayerData")] public static readonly StopRecordingPlayerDataImpl StopRecordingPlayerData =
+            null;
+
+        [Native("CreateExplosionForPlayer")] public static readonly CreateExplosionForPlayerImpl
+            CreateExplosionForPlayer = null;
     }
 }

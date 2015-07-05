@@ -53,42 +53,10 @@ namespace TestMode
 
         #endregion
 
-        // Test code below....
-        private delegate int SetGameModeTextImpl(string text);
-        [Native("SetGameModeText")]
-        private readonly static SetGameModeTextImpl SetGameModeText = null;
-
-        private delegate int GetNetworkStatsImpl(out string text, int len);
-        [Native("GetNetworkStats")]
-        private readonly static GetNetworkStatsImpl GetNetworkStats = null;
-
-        private delegate int GetVehiclePosImpl(int vehicleid, out float x, out float y, out float z);
-        [Native("GetVehiclePos")]
-        private readonly static GetVehiclePosImpl GetVehiclePos = null;
-
-        
-        // End test code.
-
         #region Overrides of BaseMode
 
         protected override void OnInitialized(EventArgs args)
         {
-            float x, y, z;
-            SetGameModeText("ABCDE");
-            int id = Native.CreateVehicle(400, 10f, 20f, 30f, 40f, -1, -1, 30);
-
-            var func = new NativeFunction("GetVehiclePos", typeof (int), typeof (float).MakeByRefType(),
-                typeof (float).MakeByRefType(), typeof (float).MakeByRefType());
-
-            func.Invoke(__arglist(id, out x, out y, out z));
-            Console.WriteLine("Invoke NativeFunction: {0}, {1}, {2}", x, y, z);
-
-            GetVehiclePos(id, out x, out y, out z);
-            Console.WriteLine("Delegate: {0}, {1}, {2}", x, y, z);
-            string outp;
-            GetNetworkStats(out outp, 500);
-            //Console.WriteLine(outp);
-            return;
             Console.WriteLine("TestMode for SampSharp");
             Console.WriteLine("----------------------");
 
