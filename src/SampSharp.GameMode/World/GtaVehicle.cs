@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SampSharp.GameMode.API;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Helpers;
@@ -105,7 +104,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public static int PoolSize
         {
-            get { return Native.GetVehiclePoolSize(); }
+            get { return GetVehiclePoolSize(); }
         }
 
         #endregion
@@ -117,7 +116,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual bool IsValid
         {
-            get { return Native.IsValidVehicle(Id); }
+            get { return IsValidVehicle(Id); }
         }
 
         /// <summary>
@@ -128,10 +127,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float angle;
-                Native.GetVehicleZAngle(Id, out angle);
+                GetVehicleZAngle(Id, out angle);
                 return angle;
             }
-            set { Native.SetVehicleZAngle(Id, value); }
+            set { SetVehicleZAngle(Id, value); }
         }
 
         /// <summary>
@@ -139,7 +138,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual VehicleModelType Model
         {
-            get { return (VehicleModelType) Native.GetVehicleModel(Id); }
+            get { return (VehicleModelType) GetVehicleModel(Id); }
         }
 
         /// <summary>
@@ -147,7 +146,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual bool HasTrailer
         {
-            get { return Native.IsTrailerAttachedToVehicle(Id); }
+            get { return IsTrailerAttachedToVehicle(Id); }
         }
 
         /// <summary>
@@ -158,15 +157,15 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                int id = Native.GetVehicleTrailer(Id);
+                int id = GetVehicleTrailer(Id);
                 return id == 0 ? null : Find(id);
             }
             set
             {
                 if (value == null)
-                    Native.DetachTrailerFromVehicle(Id);
+                    DetachTrailerFromVehicle(Id);
                 else
-                    Native.AttachTrailerToVehicle(value.Id, Id);
+                    AttachTrailerToVehicle(value.Id, Id);
             }
         }
 
@@ -178,10 +177,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                Native.GetVehicleVelocity(Id, out x, out y, out z);
+                GetVehicleVelocity(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { Native.SetVehicleVelocity(Id, value.X, value.Y, value.Z); }
+            set { SetVehicleVelocity(Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
@@ -189,8 +188,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int VirtualWorld
         {
-            get { return Native.GetVehicleVirtualWorld(Id); }
-            set { Native.SetVehicleVirtualWorld(Id, value); }
+            get { return GetVehicleVirtualWorld(Id); }
+            set { SetVehicleVirtualWorld(Id, value); }
         }
 
         /// <summary>
@@ -486,7 +485,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 AssertNotDisposed();
-                return Native.GetVehicleParamsSirenState(Id) == 1;
+                return GetVehicleParamsSirenState(Id) == 1;
             }
         }
 
@@ -499,7 +498,7 @@ namespace SampSharp.GameMode.World
         public virtual Vector3 Rotation
         {
             get { return new Vector3(0, 0, Angle); }
-            set { Native.SetVehicleZAngle(Id, value.Z); }
+            set { SetVehicleZAngle(Id, value.Z); }
         }
 
         /// <summary>
@@ -510,10 +509,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float value;
-                Native.GetVehicleHealth(Id, out value);
+                GetVehicleHealth(Id, out value);
                 return value;
             }
-            set { Native.SetVehicleHealth(Id, value); }
+            set { SetVehicleHealth(Id, value); }
         }
 
         /// <summary>
@@ -524,10 +523,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                Native.GetVehiclePos(Id, out x, out y, out z);
+                GetVehiclePos(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { Native.SetVehiclePos(Id, value.X, value.Y, value.Z); }
+            set { SetVehiclePos(Id, value.X, value.Y, value.Z); }
         }
 
         #endregion
@@ -621,6 +620,256 @@ namespace SampSharp.GameMode.World
 
         #endregion
 
+        #region Natives
+
+        private delegate bool AddVehicleComponentImpl(int vehicleid, int componentid);
+
+        private delegate bool AttachTrailerToVehicleImpl(int trailerid, int vehicleid);
+
+        private delegate bool ChangeVehicleColorImpl(int vehicleid, int color1, int color2);
+
+        private delegate bool ChangeVehiclePaintjobImpl(int vehicleid, int paintjobid);
+
+        private delegate int CreateVehicleImpl(int vehicletype, float x, float y, float z, float rotation, int color1,
+            int color2, int respawnDelay, bool addsiren = false);
+
+        private delegate bool DestroyVehicleImpl(int vehicleid);
+
+        private delegate bool DetachTrailerFromVehicleImpl(int vehicleid);
+
+        private delegate int GetVehicleComponentInSlotImpl(int vehicleid, int slot);
+
+        private delegate int GetVehicleComponentTypeImpl(int component);
+
+        private delegate bool GetVehicleDamageStatusImpl(int vehicleid, out int panels, out int doors, out int lights,
+            out int tires);
+
+        private delegate float GetVehicleDistanceFromPointImpl(int vehicleid, float x, float y, float z);
+
+        private delegate bool GetVehicleHealthImpl(int vehicleid, out float health);
+
+        private delegate int GetVehicleModelImpl(int vehicleid);
+
+        private delegate bool GetVehicleModelInfoImpl(int model, int infotype, out float x, out float y, out float z);
+
+        private delegate bool GetVehicleParamsCarDoorsImpl(int vehicleid, out int driver, out int passenger,
+            out int backleft, out int backright);
+
+        private delegate bool GetVehicleParamsCarWindowsImpl(int vehicleid, out int driver, out int passenger,
+            out int backleft, out int backright);
+
+        private delegate bool GetVehicleParamsExImpl(int vehicleid, out int engine, out int lights, out int alarm,
+            out int doors, out int bonnet, out int boot, out int objective);
+
+        private delegate int GetVehicleParamsSirenStateImpl(int vehicleid);
+
+        private delegate bool GetVehiclePosImpl(int vehicleid, out float x, out float y, out float z);
+
+        private delegate bool GetVehicleRotationQuatImpl(int vehicleid, out float w, out float x, out float y,
+            out float z);
+
+        private delegate int GetVehicleTrailerImpl(int vehicleid);
+
+        private delegate bool GetVehicleVelocityImpl(int vehicleid, out float x, out float y, out float z);
+
+        private delegate int GetVehicleVirtualWorldImpl(int vehicleid);
+
+        private delegate bool GetVehicleZAngleImpl(int vehicleid, out float zAngle);
+
+        private delegate bool IsTrailerAttachedToVehicleImpl(int vehicleid);
+
+        private delegate bool IsValidVehicleImpl(int vehicleid);
+
+        private delegate bool IsVehicleStreamedInImpl(int vehicleid, int forplayerid);
+
+        private delegate bool LinkVehicleToInteriorImpl(int vehicleid, int interiorid);
+
+        private delegate bool RemoveVehicleComponentImpl(int vehicleid, int componentid);
+
+        private delegate bool RepairVehicleImpl(int vehicleid);
+
+        private delegate bool SetVehicleAngularVelocityImpl(int vehicleid, float x, float y, float z);
+
+        private delegate bool SetVehicleHealthImpl(int vehicleid, float health);
+
+        private delegate bool SetVehicleNumberPlateImpl(int vehicleid, string numberplate);
+
+        private delegate bool SetVehicleParamsCarDoorsImpl(int vehicleid, int driver, int passenger, int backleft,
+            int backright);
+
+        private delegate bool SetVehicleParamsCarWindowsImpl(int vehicleid, int driver, int passenger, int backleft,
+            int backright);
+
+        private delegate bool SetVehicleParamsExImpl(int vehicleid, int engine, int lights, int alarm, int doors,
+            int bonnet, int boot, int objective);
+
+        private delegate bool SetVehicleParamsForPlayerImpl(int vehicleid, int playerid, bool objective,
+            bool doorslocked);
+
+        private delegate bool SetVehiclePosImpl(int vehicleid, float x, float y, float z);
+
+        private delegate bool SetVehicleToRespawnImpl(int vehicleid);
+
+        private delegate bool SetVehicleVelocityImpl(int vehicleid, float x, float y, float z);
+
+        private delegate bool SetVehicleVirtualWorldImpl(int vehicleid, int worldid);
+
+        private delegate bool SetVehicleZAngleImpl(int vehicleid, float zAngle);
+
+        private delegate bool UpdateVehicleDamageStatusImpl(int vehicleid, int panels, int doors, int lights, int tires);
+
+        private delegate int AddStaticVehicleExImpl(
+            int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int color1, int color2,
+            int respawnDelay, bool addsiren = false);
+
+        private delegate int AddStaticVehicleImpl(
+            int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int color1, int color2);
+
+        private delegate int GetVehiclePoolSizeImpl();
+
+        [Native("IsValidVehicle")]
+        private static readonly IsValidVehicleImpl IsValidVehicle = null;
+
+        [Native("GetVehicleDistanceFromPoint")]
+        private static readonly GetVehicleDistanceFromPointImpl
+            GetVehicleDistanceFromPoint = null;
+
+        [Native("CreateVehicle")]
+        private static readonly CreateVehicleImpl CreateVehicle = null;
+        [Native("DestroyVehicle")]
+        private static readonly DestroyVehicleImpl DestroyVehicle = null;
+        [Native("IsVehicleStreamedIn")]
+        private static readonly IsVehicleStreamedInImpl IsVehicleStreamedIn = null;
+        [Native("GetVehiclePos")]
+        private static readonly GetVehiclePosImpl GetVehiclePos = null;
+        [Native("SetVehiclePos")]
+        private static readonly SetVehiclePosImpl SetVehiclePos = null;
+        [Native("GetVehicleZAngle")]
+        private static readonly GetVehicleZAngleImpl GetVehicleZAngle = null;
+
+        [Native("GetVehicleRotationQuat")]
+        private static readonly GetVehicleRotationQuatImpl GetVehicleRotationQuat =
+            null;
+
+        [Native("SetVehicleZAngle")]
+        private static readonly SetVehicleZAngleImpl SetVehicleZAngle = null;
+
+        [Native("SetVehicleParamsForPlayer")]
+        private static readonly SetVehicleParamsForPlayerImpl
+            SetVehicleParamsForPlayer = null;
+
+        [Native("SetVehicleParamsEx")]
+        private static readonly SetVehicleParamsExImpl SetVehicleParamsEx = null;
+        [Native("GetVehicleParamsEx")]
+        private static readonly GetVehicleParamsExImpl GetVehicleParamsEx = null;
+
+        [Native("GetVehicleParamsSirenState")]
+        private static readonly GetVehicleParamsSirenStateImpl
+            GetVehicleParamsSirenState = null;
+
+        [Native("SetVehicleParamsCarDoors")]
+        private static readonly SetVehicleParamsCarDoorsImpl
+            SetVehicleParamsCarDoors = null;
+
+        [Native("GetVehicleParamsCarDoors")]
+        private static readonly GetVehicleParamsCarDoorsImpl
+            GetVehicleParamsCarDoors = null;
+
+        [Native("SetVehicleParamsCarWindows")]
+        private static readonly SetVehicleParamsCarWindowsImpl
+            SetVehicleParamsCarWindows = null;
+
+        [Native("GetVehicleParamsCarWindows")]
+        private static readonly GetVehicleParamsCarWindowsImpl
+            GetVehicleParamsCarWindows = null;
+
+        [Native("SetVehicleToRespawn")]
+        private static readonly SetVehicleToRespawnImpl SetVehicleToRespawn = null;
+        [Native("LinkVehicleToInterior")]
+        private static readonly LinkVehicleToInteriorImpl LinkVehicleToInterior = null;
+        [Native("AddVehicleComponent")]
+        private static readonly AddVehicleComponentImpl AddVehicleComponent = null;
+
+        [Native("RemoveVehicleComponent")]
+        private static readonly RemoveVehicleComponentImpl RemoveVehicleComponent =
+            null;
+
+        [Native("ChangeVehicleColor")]
+        private static readonly ChangeVehicleColorImpl ChangeVehicleColor = null;
+        [Native("ChangeVehiclePaintjob")]
+        private static readonly ChangeVehiclePaintjobImpl ChangeVehiclePaintjob = null;
+        [Native("SetVehicleHealth")]
+        private static readonly SetVehicleHealthImpl SetVehicleHealth = null;
+        [Native("GetVehicleHealth")]
+        private static readonly GetVehicleHealthImpl GetVehicleHealth = null;
+
+        [Native("AttachTrailerToVehicle")]
+        private static readonly AttachTrailerToVehicleImpl AttachTrailerToVehicle =
+            null;
+
+        [Native("DetachTrailerFromVehicle")]
+        private static readonly DetachTrailerFromVehicleImpl
+            DetachTrailerFromVehicle = null;
+
+        [Native("IsTrailerAttachedToVehicle")]
+        private static readonly IsTrailerAttachedToVehicleImpl
+            IsTrailerAttachedToVehicle = null;
+
+        [Native("GetVehicleTrailer")]
+        private static readonly GetVehicleTrailerImpl GetVehicleTrailer = null;
+        [Native("SetVehicleNumberPlate")]
+        private static readonly SetVehicleNumberPlateImpl SetVehicleNumberPlate = null;
+        [Native("GetVehicleModel")]
+        private static readonly GetVehicleModelImpl GetVehicleModel = null;
+
+        [Native("GetVehicleComponentInSlot")]
+        private static readonly GetVehicleComponentInSlotImpl
+            GetVehicleComponentInSlot = null;
+
+        [Native("GetVehicleComponentType")]
+        private static readonly GetVehicleComponentTypeImpl GetVehicleComponentType =
+            null;
+
+        [Native("RepairVehicle")]
+        private static readonly RepairVehicleImpl RepairVehicle = null;
+        [Native("GetVehicleVelocity")]
+        private static readonly GetVehicleVelocityImpl GetVehicleVelocity = null;
+        [Native("SetVehicleVelocity")]
+        private static readonly SetVehicleVelocityImpl SetVehicleVelocity = null;
+
+        [Native("SetVehicleAngularVelocity")]
+        private static readonly SetVehicleAngularVelocityImpl
+            SetVehicleAngularVelocity = null;
+
+        [Native("GetVehicleDamageStatus")]
+        private static readonly GetVehicleDamageStatusImpl GetVehicleDamageStatus =
+            null;
+
+        [Native("UpdateVehicleDamageStatus")]
+        private static readonly UpdateVehicleDamageStatusImpl
+            UpdateVehicleDamageStatus = null;
+
+        [Native("SetVehicleVirtualWorld")]
+        private static readonly SetVehicleVirtualWorldImpl SetVehicleVirtualWorld =
+            null;
+
+        [Native("GetVehicleVirtualWorld")]
+        private static readonly GetVehicleVirtualWorldImpl GetVehicleVirtualWorld =
+            null;
+
+        [Native("GetVehicleModelInfo")]
+        private static readonly GetVehicleModelInfoImpl GetVehicleModelInfo = null;
+
+        [Native("AddStaticVehicle")]
+        private static readonly AddStaticVehicleImpl AddStaticVehicle = null;
+        [Native("AddStaticVehicleEx")]
+        private static readonly AddStaticVehicleExImpl AddStaticVehicleEx = null;
+
+        [Native("GetVehiclePoolSize")]
+        private static readonly GetVehiclePoolSizeImpl GetVehiclePoolSize = null;
+
+        #endregion
+
         #region Vehicles natives
 
         /// <summary>
@@ -634,7 +883,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Native.GetVehicleDistanceFromPoint(Id, point.X, point.Y, point.Z);
+            return GetVehicleDistanceFromPoint(Id, point.X, point.Y, point.Z);
         }
 
         /// <summary>
@@ -655,9 +904,9 @@ namespace SampSharp.GameMode.World
             int respawnDelay = -1, bool addAlarm = false)
         {
             int id = new[] {449, 537, 538, 569, 570, 590}.Contains(vehicletype)
-                ? Native.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
+                ? AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
                     respawnDelay, addAlarm)
-                : Native.CreateVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
+                : CreateVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
                     respawnDelay, addAlarm);
 
             return id == InvalidId ? null : FindOrCreate(id);
@@ -701,7 +950,7 @@ namespace SampSharp.GameMode.World
         public static GtaVehicle CreateStatic(int vehicletype, Vector3 position, float rotation, int color1, int color2,
             int respawnDelay, bool addAlarm = false)
         {
-            int id = Native.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
+            int id = AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
                 respawnDelay, addAlarm);
 
             return id == InvalidId ? null : FindOrCreate(id);
@@ -718,7 +967,7 @@ namespace SampSharp.GameMode.World
         /// <returns> The <see cref="GtaVehicle" /> created.</returns>
         public static GtaVehicle CreateStatic(int vehicletype, Vector3 position, float rotation, int color1, int color2)
         {
-            int id = Native.AddStaticVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2);
+            int id = AddStaticVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2);
 
             return id == InvalidId ? null : FindOrCreate(id);
         }
@@ -732,7 +981,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Native.IsVehicleStreamedIn(Id, forPlayer.Id);
+            return IsVehicleStreamedIn(Id, forPlayer.Id);
         }
 
         /// <summary>
@@ -747,7 +996,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.GetVehicleRotationQuat(Id, out w, out x, out y, out z);
+            GetVehicleRotationQuat(Id, out w, out x, out y, out z);
         }
 
         /// <summary>
@@ -764,17 +1013,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            Native.SetVehicleParamsForPlayer(Id, player.Id, objective, doorslocked);
-        }
-
-        /// <summary>
-        ///     Use this function before any player connects (<see cref="BaseMode.OnInitialized" />) to tell all clients that the
-        ///     script will control vehicle engines and lights. This prevents the game automatically turning the engine on/off when
-        ///     players enter/exit vehicles and headlights automatically coming on when it is dark.
-        /// </summary>
-        public static void ManualEngineAndLights()
-        {
-            Native.ManualVehicleEngineAndLights();
+            SetVehicleParamsForPlayer(Id, player.Id, objective, doorslocked);
         }
 
         /// <summary>
@@ -792,7 +1031,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.SetVehicleParamsEx(Id, engine ? 1 : 0, lights ? 1 : 0, alarm ? 1 : 0, doors ? 1 : 0, bonnet ? 1 : 0,
+            SetVehicleParamsEx(Id, engine ? 1 : 0, lights ? 1 : 0, alarm ? 1 : 0, doors ? 1 : 0, bonnet ? 1 : 0,
                 boot ? 1 : 0, objective ? 1 : 0);
         }
 
@@ -813,7 +1052,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.SetVehicleParamsEx(Id, (int) engine, (int) lights, (int) alarm, (int) doors, (int) bonnet, (int) boot,
+            SetVehicleParamsEx(Id, (int) engine, (int) lights, (int) alarm, (int) doors, (int) bonnet, (int) boot,
                 (int) objective);
         }
 
@@ -834,7 +1073,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             int tmpEngine, tmpLights, tmpAlarm, tmpDoors, tmpBonnet, tmpBoot, tmpObjective;
-            Native.GetVehicleParamsEx(Id, out tmpEngine, out tmpLights, out tmpAlarm, out tmpDoors, out tmpBonnet,
+            GetVehicleParamsEx(Id, out tmpEngine, out tmpLights, out tmpAlarm, out tmpDoors, out tmpBonnet,
                 out tmpBoot, out tmpObjective);
 
             engine = (VehicleParameterValue) tmpEngine;
@@ -883,7 +1122,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.SetVehicleParamsCarDoors(Id, driver ? 1 : 0, passenger ? 1 : 0, backleft ? 1 : 0, backright ? 1 : 0);
+            SetVehicleParamsCarDoors(Id, driver ? 1 : 0, passenger ? 1 : 0, backleft ? 1 : 0, backright ? 1 : 0);
         }
 
         /// <summary>
@@ -898,7 +1137,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.SetVehicleParamsCarDoors(Id, (int) driver, (int) passenger, (int) backleft, (int) backright);
+            SetVehicleParamsCarDoors(Id, (int) driver, (int) passenger, (int) backleft, (int) backright);
         }
 
         /// <summary>
@@ -914,7 +1153,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             int tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
-            Native.GetVehicleParamsCarDoors(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
+            GetVehicleParamsCarDoors(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
 
             driver = (VehicleParameterValue) tmpDriver;
             passenger = (VehicleParameterValue) tmpPassenger;
@@ -954,7 +1193,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.SetVehicleParamsCarWindows(Id, driver ? 1 : 0, passenger ? 1 : 0, backleft ? 1 : 0, backright ? 1 : 0);
+            SetVehicleParamsCarWindows(Id, driver ? 1 : 0, passenger ? 1 : 0, backleft ? 1 : 0, backright ? 1 : 0);
         }
 
         /// <summary>
@@ -969,7 +1208,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.SetVehicleParamsCarWindows(Id, (int) driver, (int) passenger, (int) backleft, (int) backright);
+            SetVehicleParamsCarWindows(Id, (int) driver, (int) passenger, (int) backleft, (int) backright);
         }
 
         /// <summary>
@@ -985,7 +1224,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             int tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
-            Native.GetVehicleParamsCarWindows(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
+            GetVehicleParamsCarWindows(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
 
             driver = (VehicleParameterValue) tmpDriver;
             passenger = (VehicleParameterValue) tmpPassenger;
@@ -1021,7 +1260,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.SetVehicleToRespawn(Id);
+            SetVehicleToRespawn(Id);
         }
 
         /// <summary>
@@ -1032,7 +1271,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.LinkVehicleToInterior(Id, interiorid);
+            LinkVehicleToInterior(Id, interiorid);
         }
 
         /// <summary>
@@ -1043,7 +1282,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.AddVehicleComponent(Id, componentid);
+            AddVehicleComponent(Id, componentid);
         }
 
         /// <summary>
@@ -1054,7 +1293,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.RemoveVehicleComponent(Id, componentid);
+            RemoveVehicleComponent(Id, componentid);
         }
 
         /// <summary>
@@ -1066,7 +1305,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.ChangeVehicleColor(Id, color1, color2);
+            ChangeVehicleColor(Id, color1, color2);
         }
 
         /// <summary>
@@ -1077,7 +1316,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.ChangeVehiclePaintjob(Id, paintjobid);
+            ChangeVehiclePaintjob(Id, paintjobid);
         }
 
         /// <summary>
@@ -1088,7 +1327,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.SetVehicleNumberPlate(Id, numberplate);
+            SetVehicleNumberPlate(Id, numberplate);
         }
 
         /// <summary>
@@ -1100,7 +1339,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Native.GetVehicleComponentInSlot(Id, (int) slot);
+            return GetVehicleComponentInSlot(Id, (int) slot);
         }
 
         /// <summary>
@@ -1110,7 +1349,7 @@ namespace SampSharp.GameMode.World
         /// <returns>The component slot ID of the specified component.</returns>
         public static int GetComponentType(int componentid)
         {
-            return Native.GetVehicleComponentType(componentid);
+            return GetVehicleComponentType(componentid);
         }
 
         /// <summary>
@@ -1120,18 +1359,18 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Native.RepairVehicle(Id);
+            RepairVehicle(Id);
         }
 
         /// <summary>
         ///     Sets the angular velocity of this <see cref="GtaVehicle" />.
         /// </summary>
         /// <param name="velocity">The amount of velocity in the angular directions.</param>
-        public virtual void SetVehicleAngularVelocity(Vector3 velocity)
+        public virtual void SetAngularVelocity(Vector3 velocity)
         {
             AssertNotDisposed();
 
-            Native.SetVehicleAngularVelocity(Id, velocity.X, velocity.Y, velocity.Z);
+            SetVehicleAngularVelocity(Id, velocity.X, velocity.Y, velocity.Z);
         }
 
         /// <summary>
@@ -1141,11 +1380,11 @@ namespace SampSharp.GameMode.World
         /// <param name="doors">A variable to store the door damage data in, passed by reference.</param>
         /// <param name="lights">A variable to store the light damage data in, passed by reference.</param>
         /// <param name="tires">A variable to store the tire damage data in, passed by reference.</param>
-        public virtual void GetVehicleDamageStatus(out int panels, out int doors, out int lights, out int tires)
+        public virtual void GetDamageStatus(out int panels, out int doors, out int lights, out int tires)
         {
             AssertNotDisposed();
 
-            Native.GetVehicleDamageStatus(Id, out panels, out doors, out lights, out tires);
+            GetVehicleDamageStatus(Id, out panels, out doors, out lights, out tires);
         }
 
         /// <summary>
@@ -1156,11 +1395,11 @@ namespace SampSharp.GameMode.World
         /// <param name="doors">A set of bits containing the door damage status.</param>
         /// <param name="lights">A set of bits containing the light damage status.</param>
         /// <param name="tires">A set of bits containing the tire damage status.</param>
-        public virtual void UpdateVehicleDamageStatus(int panels, int doors, int lights, int tires)
+        public virtual void UpdateDamageStatus(int panels, int doors, int lights, int tires)
         {
             AssertNotDisposed();
 
-            Native.UpdateVehicleDamageStatus(Id, panels, doors, lights, tires);
+            UpdateVehicleDamageStatus(Id, panels, doors, lights, tires);
         }
 
         /// <summary>
@@ -1169,10 +1408,10 @@ namespace SampSharp.GameMode.World
         /// <param name="model">The vehicle model to get info of.</param>
         /// <param name="infotype">The type of information to retrieve.</param>
         /// <returns>The offset vector.</returns>
-        public static Vector3 GetVehicleModelInfo(VehicleModelType model, VehicleModelInfoType infotype)
+        public static Vector3 GetModelInfo(VehicleModelType model, VehicleModelInfoType infotype)
         {
             float x, y, z;
-            Native.GetVehicleModelInfo((int) model, (int) infotype, out x, out y, out z);
+            GetVehicleModelInfo((int) model, (int) infotype, out x, out y, out z);
             return new Vector3(x, y, z);
         }
 
@@ -1184,7 +1423,7 @@ namespace SampSharp.GameMode.World
             base.Dispose(disposing);
 
             if (IsValid)
-                Native.DestroyVehicle(Id);
+                DestroyVehicle(Id);
         }
 
         #endregion

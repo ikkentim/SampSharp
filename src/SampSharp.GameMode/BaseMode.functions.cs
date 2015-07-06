@@ -23,13 +23,141 @@ namespace SampSharp.GameMode
 {
     public abstract partial class BaseMode
     {
+        #region Natives
+
+        private delegate bool ManualVehicleEngineAndLightsImpl();
+
+        private delegate bool EnableStuntBonusForAllImpl(bool enable);
+
+        private delegate bool UsePlayerPedAnimsImpl();
+
+        private delegate bool ShowPlayerMarkersImpl(int mode);
+
+        private delegate int AddPlayerClassExImpl(
+            int teamid, int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int weapon1,
+            int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
+
+        private delegate int AddPlayerClassImpl(
+            int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int weapon1, int weapon1Ammo,
+            int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
+
+        private delegate bool LimitGlobalChatRadiusImpl(float chatRadius);
+
+        private delegate bool LimitPlayerMarkerRadiusImpl(float markerRadius);
+
+        private delegate bool GameModeExitImpl();
+
+        private delegate bool SetTeamCountImpl(int count);
+
+        private delegate bool ShowNameTagsImpl(bool show);
+
+        [Native("ManualVehicleEngineAndLights")]
+        private static readonly ManualVehicleEngineAndLightsImpl NativeManualVehicleEngineAndLights = null;
+
+        [Native("EnableStuntBonusForAll")]
+        private static readonly EnableStuntBonusForAllImpl NativeEnableStuntBonusForAll =
+            null;
+
+        [Native("UsePlayerPedAnims")]
+        private static readonly UsePlayerPedAnimsImpl UsePlayerPedAnims = null;
+
+        [Native("ShowPlayerMarkers")]
+        private static readonly ShowPlayerMarkersImpl NativeShowPlayerMarkers = null;
+
+        [Native("AddPlayerClass")]
+        private static readonly AddPlayerClassImpl NativeAddPlayerClass = null;
+        [Native("AddPlayerClassEx")]
+        private static readonly AddPlayerClassExImpl NativeAddPlayerClassEx = null;
+
+        [Native("LimitGlobalChatRadius")]
+        private static readonly LimitGlobalChatRadiusImpl NativeLimitGlobalChatRadius = null;
+
+        [Native("LimitPlayerMarkerRadius")]
+        private static readonly LimitPlayerMarkerRadiusImpl NativeLimitPlayerMarkerRadius =
+            null;
+
+        [Native("GameModeExit")]
+        private static readonly GameModeExitImpl GameModeExit = null;
+
+        [Native("ShowNameTags")]
+        private static readonly ShowNameTagsImpl NativeShowNameTags = null;
+
+        [Native("SetTeamCount")]
+        private static readonly SetTeamCountImpl NativeSetTeamCount = null;
+
+        private delegate bool SetGameModeTextImpl(string text);
+        [Native("SetGameModeText")]
+        private static readonly SetGameModeTextImpl NativeSetGameModeText = null;
+
+        private delegate bool EnableTirePoppingImpl(bool enable);
+
+        private delegate bool EnableVehicleFriendlyFireImpl();
+
+        [Native("EnableTirePopping")]
+        private static readonly EnableTirePoppingImpl NativeEnableTirePopping = null;
+
+        [Native("EnableVehicleFriendlyFire")]
+        private static readonly EnableVehicleFriendlyFireImpl
+            NativeEnableVehicleFriendlyFire = null;
+
+        [Native("AllowInteriorWeapons")]
+        private static readonly AllowInteriorWeaponsImpl NativeAllowInteriorWeapons = null;
+
+        private delegate bool AllowInteriorWeaponsImpl(bool allow);
+
+        private delegate float GetGravityImpl();
+
+        private delegate bool SetGravityImpl(float gravity);
+
+        [Native("SetGravity")]
+        private static readonly SetGravityImpl NativeSetGravity = null;
+        [Native("GetGravity")]
+        private static readonly GetGravityImpl NativeGetGravity = null;
+
+        private delegate bool DisableInteriorEnterExitsImpl();
+
+        private delegate bool DisableNameTagLOSImpl();
+
+        private delegate bool SetNameTagDrawDistanceImpl(float distance);
+
+        [Native("DisableInteriorEnterExits")]
+        private static readonly DisableInteriorEnterExitsImpl
+            NativeDisableInteriorEnterExits = null;
+
+        [Native("SetNameTagDrawDistance")]
+        private static readonly SetNameTagDrawDistanceImpl NativeSetNameTagDrawDistance =
+            null;
+
+        [Native("DisableNameTagLOS")]
+        private static readonly DisableNameTagLOSImpl NativeDisableNameTagLOS = null;
+
+        #endregion
+
+
+        /// <summary>
+        ///     Gets or sets the gravity.
+        /// </summary>
+        public static float Gravity
+        {
+            get { return NativeGetGravity(); }
+            set { NativeSetGravity(value); }
+        }
+
+        /// <summary>
+        ///     Disables the name tag line of sight test.
+        /// </summary>
+        public virtual void DisableNameTagLOS()
+        {
+            NativeDisableNameTagLOS();
+        }
+
         /// <summary>
         ///     Set the name of the game mode, which appears in the server browser.
         /// </summary>
         /// <param name="text">GameMode name.</param>
         public virtual void SetGameModeText(string text)
         {
-            Native.SetGameModeText(text);
+            NativeSetGameModeText(text);
         }
 
         /// <summary>
@@ -40,7 +168,7 @@ namespace SampSharp.GameMode
         /// <param name="mode">The mode you want to use.</param>
         public virtual void ShowPlayerMarkers(PlayerMarkersMode mode)
         {
-            Native.ShowPlayerMarkers((int) mode);
+            NativeShowPlayerMarkers((int)mode);
         }
 
         /// <summary>
@@ -49,25 +177,7 @@ namespace SampSharp.GameMode
         /// <param name="show">False to disable, True to enable.</param>
         public virtual void ShowNameTags(bool show)
         {
-            Native.ShowNameTags(show);
-        }
-
-        /// <summary>
-        ///     Sets the world time to a specific hour.
-        /// </summary>
-        /// <param name="hour">Which time to set.</param>
-        public virtual void SetWorldTime(int hour)
-        {
-            Native.SetWorldTime(hour);
-        }
-
-        /// <summary>
-        ///     Set the world weather for all players.
-        /// </summary>
-        /// <param name="weatherid">The weather to set.</param>
-        public virtual void SetWeather(int weatherid)
-        {
-            Native.SetWeather(weatherid);
+            NativeShowNameTags(show);
         }
 
         /// <summary>
@@ -76,7 +186,7 @@ namespace SampSharp.GameMode
         /// </summary>
         public virtual void UsePlayerPedAnimations()
         {
-            Native.UsePlayerPedAnims();
+            UsePlayerPedAnims();
         }
 
         /// <summary>
@@ -87,7 +197,7 @@ namespace SampSharp.GameMode
         /// </remarks>
         public virtual void EnableVehicleFriendlyFire()
         {
-            Native.EnableVehicleFriendlyFire();
+            NativeEnableVehicleFriendlyFire();
         }
 
         /// <summary>
@@ -96,7 +206,7 @@ namespace SampSharp.GameMode
         /// <param name="distance">The distance to set.</param>
         public virtual void SetNameTagDrawDistance(float distance)
         {
-            Native.SetNameTagDrawDistance(distance);
+            NativeSetNameTagDrawDistance(distance);
         }
 
         /// <summary>
@@ -104,7 +214,7 @@ namespace SampSharp.GameMode
         /// </summary>
         public virtual void DisableInteriorEnterExits()
         {
-            Native.DisableInteriorEnterExits();
+            NativeDisableInteriorEnterExits();
         }
 
         /// <summary>
@@ -118,7 +228,7 @@ namespace SampSharp.GameMode
         /// <param name="count">Number of teams the gamemode knows.</param>
         public virtual void SetTeamCount(int count)
         {
-            Native.SetTeamCount(count);
+            NativeSetTeamCount(count);
         }
 
         /// <summary>
@@ -140,7 +250,7 @@ namespace SampSharp.GameMode
         public virtual int AddPlayerClass(int modelid, Vector3 position, float zAngle, Weapon weapon1, int weapon1Ammo,
             Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
-            return Native.AddPlayerClass(modelid, position.X, position.Y, position.Z, zAngle, (int) weapon1, weapon1Ammo,
+            return NativeAddPlayerClass(modelid, position.X, position.Y, position.Z, zAngle, (int) weapon1, weapon1Ammo,
                 (int) weapon2, weapon2Ammo, (int) weapon3, weapon3Ammo);
         }
 
@@ -213,7 +323,7 @@ namespace SampSharp.GameMode
         public virtual int AddPlayerClass(int teamid, int modelid, Vector3 position, float zAngle, Weapon weapon1,
             int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
-            return Native.AddPlayerClassEx(teamid, modelid, position.X, position.Y, position.Z, zAngle, (int) weapon1,
+            return NativeAddPlayerClassEx(teamid, modelid, position.X, position.Y, position.Z, zAngle, (int) weapon1,
                 weapon1Ammo, (int) weapon2, weapon2Ammo, (int) weapon3, weapon3Ammo);
         }
 
@@ -271,7 +381,7 @@ namespace SampSharp.GameMode
         /// <param name="enable">True to enable stunt bonuses, False to disable.</param>
         public virtual void EnableStuntBonusForAll(bool enable)
         {
-            Native.EnableStuntBonusForAll(enable);
+            NativeEnableStuntBonusForAll(enable);
         }
 
         /// <summary>
@@ -281,7 +391,7 @@ namespace SampSharp.GameMode
         /// <param name="chatRadius">Radius limit.</param>
         public virtual void LimitGlobalChatRadius(float chatRadius)
         {
-            Native.LimitGlobalChatRadius(chatRadius);
+            NativeLimitGlobalChatRadius(chatRadius);
         }
 
         /// <summary>
@@ -290,7 +400,7 @@ namespace SampSharp.GameMode
         /// <param name="markerRadius">The radius that markers will show at.</param>
         public virtual void LimitPlayerMarkerRadius(float markerRadius)
         {
-            Native.LimitPlayerMarkerRadius(markerRadius);
+            NativeLimitPlayerMarkerRadius(markerRadius);
         }
 
         /// <summary>
@@ -300,7 +410,7 @@ namespace SampSharp.GameMode
         /// </summary>
         public virtual void ManualVehicleEngineAndLights()
         {
-            Native.ManualVehicleEngineAndLights();
+            NativeManualVehicleEngineAndLights();
         }
 
         /// <summary>
@@ -308,7 +418,7 @@ namespace SampSharp.GameMode
         /// </summary>
         public virtual void Exit()
         {
-            Native.GameModeExit();
+            GameModeExit();
         }
 
         /// <summary>
@@ -317,7 +427,7 @@ namespace SampSharp.GameMode
         /// <param name="allow">True to enable weapons in interiors (enabled by default), False to disable weapons in interiors.</param>
         public virtual void AllowInteriorWeapons(bool allow)
         {
-            Native.AllowInteriorWeapons(allow);
+            NativeAllowInteriorWeapons(allow);
         }
 
         /// <summary>
@@ -326,7 +436,7 @@ namespace SampSharp.GameMode
         /// <param name="enable">True to enable, False to disable tire popping.</param>
         public virtual void EnableTirePopping(bool enable)
         {
-            Native.EnableTirePopping(enable);
+            NativeEnableTirePopping(enable);
         }
 
         /// <summary>

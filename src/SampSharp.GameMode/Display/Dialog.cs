@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SampSharp.GameMode.API;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
@@ -77,6 +76,16 @@ namespace SampSharp.GameMode.Display
 
         #endregion
 
+        #region Natives
+
+        private delegate bool ShowPlayerDialogImpl(
+            int playerid, int dialogid, int style, string caption, string info, string button1, string button2);
+
+        [Native("ShowPlayerDialog")]
+        private static readonly ShowPlayerDialogImpl ShowPlayerDialog = null;
+
+        #endregion
+
         #region Methods of Dialog
 
         /// <summary>
@@ -96,7 +105,7 @@ namespace SampSharp.GameMode.Display
 
             openDialog._aSyncWaiter.Cancel(player);
 
-            Native.ShowPlayerDialog(player.Id, DialogHideId, (int) DialogStyle.MessageBox, string.Empty,
+            ShowPlayerDialog(player.Id, DialogHideId, (int) DialogStyle.MessageBox, string.Empty,
                 string.Empty, string.Empty, string.Empty);
         }
 
@@ -172,7 +181,7 @@ namespace SampSharp.GameMode.Display
 
 
             // Show the dialog to the player.
-            Native.ShowPlayerDialog(player.Id, DialogId, (int) Style, Caption, Message, Button1,
+            ShowPlayerDialog(player.Id, DialogId, (int) Style, Caption, Message, Button1,
                 Button2 ?? string.Empty);
         }
 

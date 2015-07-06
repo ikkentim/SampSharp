@@ -47,7 +47,6 @@ namespace TestMode
             new MapAndreasTest(),
             new KeyHandlerTest(),
             new ExtensionTest(),
-            new ParamsTest(),
             new ActorTest(),
             new ServicesTest()
         };

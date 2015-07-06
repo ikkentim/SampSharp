@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SampSharp.GameMode.API;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
@@ -90,6 +89,52 @@ namespace SampSharp.GameMode.Display
 
         #endregion
 
+        #region Natives
+
+        private delegate int AddMenuItemImpl(int menuid, int column, string menutext);
+
+        private delegate int CreateMenuImpl(string title, int columns, float x, float y, float col1Width, float col2Width
+            );
+
+        private delegate bool DestroyMenuImpl(int menuid);
+
+//        private delegate bool DisableMenuImpl(int menuid);
+
+        private delegate bool DisableMenuRowImpl(int menuid, int row);
+
+//        private delegate int GetPlayerMenuImpl(int playerid);
+
+        private delegate bool HideMenuForPlayerImpl(int menuid, int playerid);
+
+//        private delegate bool IsValidMenuImpl(int menuid);
+
+        private delegate bool SetMenuColumnHeaderImpl(int menuid, int column, string columnheader);
+
+        private delegate bool ShowMenuForPlayerImpl(int menuid, int playerid);
+
+        [Native("CreateMenu")]
+        private static readonly CreateMenuImpl CreateMenu = null;
+        [Native("DestroyMenu")]
+        private static readonly DestroyMenuImpl DestroyMenu = null;
+        [Native("AddMenuItem")]
+        private static readonly AddMenuItemImpl AddMenuItem = null;
+        [Native("SetMenuColumnHeader")]
+        private static readonly SetMenuColumnHeaderImpl SetMenuColumnHeader = null;
+        [Native("ShowMenuForPlayer")]
+        private static readonly ShowMenuForPlayerImpl ShowMenuForPlayer = null;
+        [Native("HideMenuForPlayer")]
+        private static readonly HideMenuForPlayerImpl HideMenuForPlayer = null;
+//        [Native("IsValidMenu")]
+//        private static readonly IsValidMenuImpl IsValidMenu = null;
+//        [Native("DisableMenu")]
+//        private static readonly DisableMenuImpl DisableMenu = null;
+        [Native("DisableMenuRow")]
+        private static readonly DisableMenuRowImpl DisableMenuRow = null;
+//        [Native("GetPlayerMenu")]
+//        private static readonly GetPlayerMenuImpl GetPlayerMenu = null;
+
+        #endregion
+
         #region Implementation of IMenu
 
         /// <summary>
@@ -151,7 +196,7 @@ namespace SampSharp.GameMode.Display
             }
 
             _viewers.Add(player);
-            Native.ShowMenuForPlayer(Id, player.Id);
+            ShowMenuForPlayer(Id, player.Id);
 
             return true;
         }
@@ -173,7 +218,7 @@ namespace SampSharp.GameMode.Display
 
             if (Id != InvalidId)
             {
-                Native.HideMenuForPlayer(Id, player.Id);
+                HideMenuForPlayer(Id, player.Id);
             }
 
             if (_viewers.Count == 0)
@@ -234,7 +279,7 @@ namespace SampSharp.GameMode.Display
                 throw new Exception("This menu contains no rows");
             }
 
-            Id = Native.CreateMenu(Title, Columns.Count, Position.X, Position.Y,
+            Id = CreateMenu(Title, Columns.Count, Position.X, Position.Y,
                 Columns[0].Width, Columns.Count == 2 ? Columns[1].Width : 0);
 
             if (Id == InvalidId)
@@ -246,19 +291,19 @@ namespace SampSharp.GameMode.Display
             {
                 if (Columns[i].Caption != null)
                 {
-                    Native.SetMenuColumnHeader(Id, i, Columns[i].Caption);
+                    SetMenuColumnHeader(Id, i, Columns[i].Caption);
                 }
             }
 
             for (var i = 0; i < Rows.Count; i++)
             {
-                Native.AddMenuItem(Id, 0, Rows[i].Column1Text ?? string.Empty);
+                AddMenuItem(Id, 0, Rows[i].Column1Text ?? string.Empty);
                 if (!string.IsNullOrEmpty(Rows[i].Column2Text))
-                    Native.AddMenuItem(Id, 1, Rows[i].Column2Text);
+                    AddMenuItem(Id, 1, Rows[i].Column2Text);
 
                 if (Rows[i].Disabled)
                 {
-                    Native.DisableMenuRow(Id, i);
+                    DisableMenuRow(Id, i);
                 }
             }
         }
@@ -269,7 +314,7 @@ namespace SampSharp.GameMode.Display
             {
                 HideForAll();
 
-                Native.DestroyMenu(Id);
+                DestroyMenu(Id);
                 Id = InvalidId;
             }
         }

@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using SampSharp.GameMode.API;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
@@ -51,6 +50,23 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public event EventHandler<PlayerEventArgs> PickUp;
 
+        #region Natives
+
+        private delegate int AddStaticPickupImpl(int model, int type, float x, float y, float z, int virtualworld);
+
+        private delegate int CreatePickupImpl(int model, int type, float x, float y, float z, int virtualworld);
+
+        private delegate bool DestroyPickupImpl(int pickupid);
+
+        [Native("AddStaticPickup")]
+        private static readonly AddStaticPickupImpl AddStaticPickup = null;
+        [Native("CreatePickup")]
+        private static readonly CreatePickupImpl CreatePickup = null;
+        [Native("DestroyPickup")]
+        private static readonly DestroyPickupImpl DestroyPickup = null;
+
+        #endregion
+
         /// <summary>
         ///     Creates a <see cref="Pickup" />.
         /// </summary>
@@ -61,7 +77,7 @@ namespace SampSharp.GameMode.World
         /// <returns>The created pickup or null if it cannot be created.</returns>
         public static Pickup Create(int model, int type, Vector3 position, int virtualWorld = -1)
         {
-            int id = Native.CreatePickup(model, type, position.X, position.Y, position.Z, virtualWorld);
+            int id = CreatePickup(model, type, position.X, position.Y, position.Z, virtualWorld);
 
             if (id == InvalidId) return null;
 
@@ -84,7 +100,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True if the pickup has been created, otherwise False.</returns>
         public static bool CreateStatic(int model, int type, Vector3 position, int virtualWorld = -1)
         {
-            return Native.AddStaticPickup(model, type, position.X, position.Y, position.Z, virtualWorld) == 1;
+            return AddStaticPickup(model, type, position.X, position.Y, position.Z, virtualWorld) == 1;
         }
 
         /// <summary>
@@ -95,7 +111,7 @@ namespace SampSharp.GameMode.World
         {
             base.Dispose(disposing);
 
-            Native.DestroyPickup(Id);
+            DestroyPickup(Id);
         }
 
         #region Events

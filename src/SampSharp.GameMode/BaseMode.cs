@@ -17,7 +17,6 @@ using System;
 using System.Reflection;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
-using SampSharp.GameMode.Natives;
 
 namespace SampSharp.GameMode
 {

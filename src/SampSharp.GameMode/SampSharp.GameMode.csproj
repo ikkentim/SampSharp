@@ -185,16 +185,7 @@
     <Compile Include="Events\WeaponShotEventArgs.cs" />
     <Compile Include="Helpers\LinqHelper.cs" />
     <Compile Include="LogWriter.cs" />
-    <Compile Include="API\Native.objects.cs">
-      <DependentUpon>Native.cs</DependentUpon>
-    </Compile>
     <Compile Include="API\Native.samp.cs">
-      <DependentUpon>Native.cs</DependentUpon>
-    </Compile>
-    <Compile Include="API\Native.players.cs">
-      <DependentUpon>Native.cs</DependentUpon>
-    </Compile>
-    <Compile Include="API\Native.vehicles.cs">
       <DependentUpon>Native.cs</DependentUpon>
     </Compile>
     <Compile Include="BaseMode.cs" />

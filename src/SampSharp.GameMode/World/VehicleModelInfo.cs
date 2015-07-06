@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using SampSharp.GameMode.API;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Natives;
 
@@ -279,10 +278,19 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                Native.GetVehicleModelInfo((int) Type, (int) infotype, out x, out y, out z);
+                GetVehicleModelInfo((int) Type, (int) infotype, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
         }
+
+        #region Natives
+
+        private delegate bool GetVehicleModelInfoImpl(int model, int infotype, out float x, out float y, out float z);
+
+        [Native("GetVehicleModelInfo")]
+        private static readonly GetVehicleModelInfoImpl GetVehicleModelInfo = null;
+
+        #endregion
 
         /// <summary>
         ///     Returns an instance of <see cref="VehicleModelInfo" /> containing information about the given Vehicle.

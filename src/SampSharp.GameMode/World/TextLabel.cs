@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using SampSharp.GameMode.API;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
@@ -58,7 +57,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _color = value;
-                Native.Update3DTextLabelText(Id, Color, Text);
+                Update3DTextLabelText(Id, Color, Text);
             }
         }
 
@@ -71,7 +70,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _text = value;
-                Native.Update3DTextLabelText(Id, Color, Text);
+                Update3DTextLabelText(Id, Color, Text);
             }
         }
 
@@ -85,7 +84,7 @@ namespace SampSharp.GameMode.World
             {
                 _position = value;
                 Dispose();
-                Id = Native.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
+                Id = Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     VirtualWorld, TestLOS);
             }
         }
@@ -100,7 +99,7 @@ namespace SampSharp.GameMode.World
             {
                 _drawDistance = value;
                 Dispose();
-                Id = Native.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
+                Id = Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     VirtualWorld, TestLOS);
             }
         }
@@ -115,7 +114,7 @@ namespace SampSharp.GameMode.World
             {
                 _virtualWorld = value;
                 Dispose();
-                Id = Native.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
+                Id = Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     VirtualWorld, TestLOS);
             }
         }
@@ -131,7 +130,7 @@ namespace SampSharp.GameMode.World
             {
                 _testLOS = value;
                 Dispose();
-                Id = Native.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
+                Id = Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     VirtualWorld, TestLOS);
             }
         }
@@ -162,7 +161,7 @@ namespace SampSharp.GameMode.World
             _drawDistance = drawDistance;
             _virtualWorld = virtualWorld;
             _testLOS = testLOS;
-            Id = Native.Create3DTextLabel(text, color, position.X, position.Y, position.Z, drawDistance, virtualWorld,
+            Id = Create3DTextLabel(text, color, position.X, position.Y, position.Z, drawDistance, virtualWorld,
                 testLOS);
         }
 
@@ -193,6 +192,39 @@ namespace SampSharp.GameMode.World
 
         #endregion
 
+        #region Natives
+
+        private delegate bool Attach3DTextLabelToPlayerImpl(
+            int id, int playerid, float offsetX, float offsetY, float offsetZ);
+
+        private delegate bool Attach3DTextLabelToVehicleImpl(
+            int id, int vehicleid, float offsetX, float offsetY, float offsetZ);
+
+        private delegate int Create3DTextLabelImpl(
+            string text, int color, float x, float y, float z, float drawDistance, int virtualWorld, bool testLOS);
+
+        private delegate bool Update3DTextLabelTextImpl(int id, int color, string text);
+
+        private delegate bool Delete3DTextLabelImpl(int id);
+
+        [Native("Create3DTextLabel")]
+        private static readonly Create3DTextLabelImpl Create3DTextLabel = null;
+        [Native("Delete3DTextLabel")]
+        private static readonly Delete3DTextLabelImpl Delete3DTextLabel = null;
+
+        [Native("Attach3DTextLabelToPlayer")]
+        private static readonly Attach3DTextLabelToPlayerImpl
+            Attach3DTextLabelToPlayer = null;
+
+        [Native("Attach3DTextLabelToVehicle")]
+        private static readonly Attach3DTextLabelToVehicleImpl
+            Attach3DTextLabelToVehicle = null;
+
+        [Native("Update3DTextLabelText")]
+        private static readonly Update3DTextLabelTextImpl Update3DTextLabelText = null;
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -203,7 +235,7 @@ namespace SampSharp.GameMode.World
         {
             base.Dispose(disposing);
 
-            Native.Delete3DTextLabel(Id);
+            Delete3DTextLabel(Id);
         }
 
         /// <summary>
@@ -219,7 +251,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            Native.Attach3DTextLabelToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z);
+            Attach3DTextLabelToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z);
         }
 
         /// <summary>
@@ -235,7 +267,7 @@ namespace SampSharp.GameMode.World
             if (vehicle == null)
                 throw new ArgumentNullException("vehicle");
 
-            Native.Attach3DTextLabelToVehicle(Id, vehicle.Id, offset.X, offset.Y, offset.Z);
+            Attach3DTextLabelToVehicle(Id, vehicle.Id, offset.X, offset.Y, offset.Z);
         }
 
         #endregion

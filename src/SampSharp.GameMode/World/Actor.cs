@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using SampSharp.GameMode.API;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
@@ -138,7 +137,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public static int PoolSize
         {
-            get { return Native.GetActorPoolSize(); }
+            get { return GetActorPoolSize(); }
         }
 
         #region Implementation of IIdentifiable
@@ -225,6 +224,8 @@ namespace SampSharp.GameMode.World
 
         private delegate bool SetActorVirtualWorldImpl(int actorid, int vworld);
 
+        public delegate int GetActorPoolSizeImpl();
+
         [Native("CreateActor")]
         private static readonly CreateActorImpl CreateActor = null;
         [Native("DestroyActor")]
@@ -258,6 +259,8 @@ namespace SampSharp.GameMode.World
         [Native("ApplyActorAnimation")]
         private static readonly ApplyActorAnimationImpl ApplyActorAnimation = null;
 
+        [Native("GetActorPoolSize")]
+        public static readonly GetActorPoolSizeImpl GetActorPoolSize = null;
         #endregion
 
         /// <summary>

@@ -32,8 +32,81 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public static int MaxPlayers
         {
-            get { return Native.GetMaxPlayers(); }
+            get { return GetMaxPlayers(); }
         }
+
+        public static string NetworkStats
+        {
+            get { 
+                string result;
+                GetNetworkStats(out result, 500);
+                return result;
+            }
+        }
+        #region Natives
+
+        private delegate bool IsPlayerConnectedImpl(int playerid);
+
+        private delegate int GetMaxPlayersImpl();
+
+        private delegate bool BlockIpAddressImpl(string ipAddress, int timems);
+
+        private delegate bool UnBlockIpAddressImpl(string ipAddress);
+
+        private delegate bool GetServerVarAsBoolImpl(string varname);
+
+        private delegate int GetServerVarAsIntImpl(string varname);
+
+        private delegate bool GetServerVarAsStringImpl(string varname, out string value, int size);
+
+        private delegate bool ConnectNPCImpl(string name, string script);
+
+        private delegate int GetTickCountImpl();
+
+        private delegate bool SendRconCommandImpl(string command);
+
+        private delegate bool SetWorldTimeImpl(int hour);
+
+        private delegate bool SetWeatherImpl(int weatherid);
+
+        private delegate bool GetNetworkStatsImpl(out string retstr, int size);
+        [Native("BlockIpAddress")]
+        private static readonly BlockIpAddressImpl BlockIpAddress = null;
+        [Native("UnBlockIpAddress")]
+        private static readonly UnBlockIpAddressImpl UnBlockIpAddress = null;
+        [Native("IsPlayerConnected")]
+        private static readonly IsPlayerConnectedImpl IsPlayerConnected = null;
+
+        [Native("GetMaxPlayers")]
+        private static readonly GetMaxPlayersImpl GetMaxPlayers = null;
+
+        [Native("GetServerVarAsString")]
+        private static readonly GetServerVarAsStringImpl GetServerVarAsString = null;
+
+        [Native("GetServerVarAsInt")]
+        private static readonly GetServerVarAsIntImpl GetServerVarAsInt = null;
+
+        [Native("GetServerVarAsBool")]
+        private static readonly GetServerVarAsBoolImpl GetServerVarAsBool = null;
+
+        [Native("GetTickCount")]
+        private static readonly GetTickCountImpl NativeGetTickCount = null;
+
+        [Native("ConnectNPC")]
+        private static readonly ConnectNPCImpl NativeConnectNPC = null;
+
+        [Native("SendRconCommand")]
+        private static readonly SendRconCommandImpl NativeSendRconCommand = null;
+
+        [Native("SetWorldTime")]
+        private static readonly SetWorldTimeImpl NativeSetWorldTime = null;
+
+        [Native("SetWeather")]
+        private static readonly SetWeatherImpl NativeSetWeather = null;
+
+        [Native("GetNetworkStats")]
+        private static readonly GetNetworkStatsImpl GetNetworkStats = null;
+        #endregion
 
         /// <summary>
         ///     Blocks an IP address from further communication with the server
@@ -55,7 +128,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="time">The time that the connection will be blocked for. 0 can be used for an indefinite block.</param>
         public static void BlockIPAddress(string ip, TimeSpan time)
         {
-            Native.BlockIpAddress(ip, (int) time.TotalMilliseconds);
+            BlockIpAddress(ip, (int) time.TotalMilliseconds);
         }
 
         /// <summary>
@@ -64,7 +137,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="ip">The IP address to unblock</param>
         public static void UnBlockIPAddress(string ip)
         {
-            Native.UnBlockIpAddress(ip);
+            UnBlockIpAddress(ip);
         }
 
         /// <summary>
@@ -82,18 +155,18 @@ namespace SampSharp.GameMode.SAMP
             if (typeof (T) == typeof (string))
             {
                 string value;
-                Native.GetServerVarAsString(varName, out value, 64);
+                GetServerVarAsString(varName, out value, 64);
                 return (T) Convert.ChangeType(value, TypeCode.String);
             }
 
             if (typeof (T) == typeof (bool))
             {
-                return (T) Convert.ChangeType(Native.GetServerVarAsBool(varName), TypeCode.Boolean);
+                return (T) Convert.ChangeType(GetServerVarAsBool(varName), TypeCode.Boolean);
             }
 
             if (typeof (T) == typeof (int))
             {
-                return (T) Convert.ChangeType(Native.GetServerVarAsInt(varName), TypeCode.Int32);
+                return (T) Convert.ChangeType(GetServerVarAsInt(varName), TypeCode.Int32);
             }
 
             throw new NotSupportedException("Type " + typeof (T) + " is not supported by SA:MP");
@@ -105,7 +178,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>Uptime of the SA:MP server(NOT the physical box).</returns>
         public static int GetTickCount()
         {
-            return Native.GetTickCount();
+            return NativeGetTickCount();
         }
 
         /// <summary>
@@ -133,7 +206,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>This function doesn't return a specific value.</returns>
         public static void SendRconCommand(string command)
         {
-            Native.SendRconCommand(command);
+            NativeSendRconCommand(command);
         }
 
         /// <summary>
@@ -166,13 +239,13 @@ namespace SampSharp.GameMode.SAMP
             int max = MaxPlayers;
 
             for (int i = 0; i < max; i++)
-                if (!Native.IsPlayerConnected(i))
+                if (!IsPlayerConnected(i))
                     id = i;
 
             if (id == -1)
                 return null;
 
-            Native.ConnectNPC(name, script);
+            NativeConnectNPC(name, script);
             return GtaPlayer.FindOrCreate(id);
         }
 
@@ -182,7 +255,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="weatherid">The weather to set.</param>
         public static void SetWeather(int weatherid)
         {
-            Native.SetWeather(weatherid);
+            NativeSetWeather(weatherid);
         }
 
         /// <summary>
@@ -191,7 +264,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="hour">Which time to set.</param>
         public static void SetWorldTime(int hour)
         {
-            Native.SetWorldTime(hour);
+            NativeSetWorldTime(hour);
         }
     }
 }

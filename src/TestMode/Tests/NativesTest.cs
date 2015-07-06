@@ -32,7 +32,6 @@ namespace TestMode.Tests
             Console.WriteLine("Does 'Streamer_GetTickRate' exist? {0}", Native.Exists("Streamer_GetTickRate"));
             Console.WriteLine("Does 'GetNetworkStats' exist? {0}", Native.Exists("GetNetworkStats"));
 
-            Console.WriteLine("Current gravity: {0}", Native.GetGravity());
 //            Console.WriteLine("CALLING GetNetworkStats");
 //            string str = "";
 //            Native.CallNative("GetNetworkStats", __arglist(ref str, 512));
