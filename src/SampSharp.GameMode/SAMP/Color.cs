@@ -129,7 +129,7 @@ namespace SampSharp.GameMode.SAMP
         public Color(int color)
             : this()
         {
-            Color c = FromInteger(color, ColorFormat.RGBA); //Default format
+            var c = FromInteger(color, ColorFormat.RGBA); //Default format
             R = c.R;
             G = c.G;
             B = c.B;
@@ -143,7 +143,7 @@ namespace SampSharp.GameMode.SAMP
         public Color(uint color)
             : this()
         {
-            Color c = FromInteger(color, ColorFormat.RGBA); //Default format
+            var c = FromInteger(color, ColorFormat.RGBA); //Default format
             R = c.R;
             G = c.G;
             B = c.B;

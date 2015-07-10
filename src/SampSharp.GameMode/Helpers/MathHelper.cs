@@ -100,8 +100,8 @@ namespace SampSharp.GameMode.Helpers
             // All transformed to double not to lose precission
             // Otherwise, for high numbers of param:amount the result is NaN instead of Infinity
             double v1 = value1, v2 = value2, t1 = tangent1, t2 = tangent2, s = amount, result;
-            double sCubed = s*s*s;
-            double sSquared = s*s;
+            var sCubed = s*s*s;
+            var sSquared = s*s;
 
             if (amount == 0f)
                 result = value1;
@@ -188,7 +188,7 @@ namespace SampSharp.GameMode.Helpers
             // It is expected that 0 < amount < 1
             // If amount < 0, return value1
             // If amount > 1, return value2
-            float result = Clamp(amount, 0f, 1f);
+            var result = Clamp(amount, 0f, 1f);
             result = Hermite(value1, 0f, value2, 0f, result);
 
             return result;

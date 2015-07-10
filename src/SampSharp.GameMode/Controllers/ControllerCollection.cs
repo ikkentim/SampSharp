@@ -95,7 +95,7 @@ namespace SampSharp.GameMode.Controllers
         {
             if (disposing)
             {
-                foreach (IDisposable controller in this.OfType<IDisposable>())
+                foreach (var controller in this.OfType<IDisposable>())
                 {
                     controller.Dispose();
                 }

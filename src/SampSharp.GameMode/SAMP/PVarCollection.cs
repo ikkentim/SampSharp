@@ -16,9 +16,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using SampSharp.GameMode.API;
 using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP
@@ -84,11 +82,11 @@ namespace SampSharp.GameMode.SAMP
                 }
 
                 if (value is int)
-                    Internal.SetPVarInt(_player.Id, varname, (int)value);
+                    Internal.SetPVarInt(_player.Id, varname, (int) value);
                 else if (value is float)
-                    Internal.SetPVarFloat(_player.Id, varname, (float)value);
+                    Internal.SetPVarFloat(_player.Id, varname, (float) value);
                 else if (value is bool)
-                    Internal.SetPVarInt(_player.Id, varname, (bool)value ? 1 : 0);
+                    Internal.SetPVarInt(_player.Id, varname, (bool) value ? 1 : 0);
                 else
                 {
                     var s = value as string;
@@ -115,9 +113,9 @@ namespace SampSharp.GameMode.SAMP
         public IEnumerator<object> GetEnumerator()
         {
             var vars = new List<object>();
-            for (int i = 0; i <= UpperIndex; i++)
+            for (var i = 0; i <= UpperIndex; i++)
             {
-                object v = this[i];
+                var v = this[i];
                 if (v != null) vars.Add(v);
             }
 
@@ -162,7 +160,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>True if the variable exists; False otherwise.</returns>
         public bool Exists(string varname)
         {
-            return _player != null && Internal.GetPVarType(_player.Id, varname) != (int)PlayerVarType.None;
+            return _player != null && Internal.GetPVarType(_player.Id, varname) != (int) PlayerVarType.None;
         }
 
         /// <summary>
@@ -174,7 +172,7 @@ namespace SampSharp.GameMode.SAMP
         {
             if (_player == null) return null;
 
-            switch ((PlayerVarType)Internal.GetPVarType(_player.Id, varname))
+            switch ((PlayerVarType) Internal.GetPVarType(_player.Id, varname))
             {
                 case PlayerVarType.Float:
                     return typeof (float);

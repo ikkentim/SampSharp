@@ -18,7 +18,6 @@ using System.Linq;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 
@@ -117,17 +116,17 @@ namespace SampSharp.GameMode.World
         public KeyChangeHandlerSet Key { get; private set; }
 
         /// <summary>
-        ///     Gets the ID of this Player.
-        /// </summary>
-        public int Id { get; private set; }
-
-        /// <summary>
         ///     Gets the size of the players pool.
         /// </summary>
         public static int PoolSize
         {
             get { return Internal.GetPlayerPoolSize(); }
         }
+
+        /// <summary>
+        ///     Gets the ID of this Player.
+        /// </summary>
+        public int Id { get; private set; }
 
         #endregion
 
@@ -220,7 +219,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual WeaponState WeaponState
         {
-            get { return (WeaponState)Internal.GetPlayerWeaponState(Id); }
+            get { return (WeaponState) Internal.GetPlayerWeaponState(Id); }
         }
 
         /// <summary>
@@ -228,7 +227,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual Weapon Weapon
         {
-            get { return (Weapon)Internal.GetPlayerWeapon(Id); }
+            get { return (Weapon) Internal.GetPlayerWeapon(Id); }
         }
 
         /// <summary>
@@ -238,7 +237,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                int target = Internal.GetPlayerTargetPlayer(Id);
+                var target = Internal.GetPlayerTargetPlayer(Id);
                 return target == InvalidId ? null : Find(target);
             }
         }
@@ -306,7 +305,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual PlayerState State
         {
-            get { return (PlayerState)Internal.GetPlayerState(Id); }
+            get { return (PlayerState) Internal.GetPlayerState(Id); }
         }
 
         /// <summary>
@@ -344,8 +343,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual FightStyle FightStyle
         {
-            get { return (FightStyle)Internal.GetPlayerFightingStyle(Id); }
-            set { Internal.SetPlayerFightingStyle(Id, (int)value); }
+            get { return (FightStyle) Internal.GetPlayerFightingStyle(Id); }
+            set { Internal.SetPlayerFightingStyle(Id, (int) value); }
         }
 
         /// <summary>
@@ -383,8 +382,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual SpecialAction SpecialAction
         {
-            get { return (SpecialAction)Internal.GetPlayerSpecialAction(Id); }
-            set { Internal.SetPlayerSpecialAction(Id, (int)value); }
+            get { return (SpecialAction) Internal.GetPlayerSpecialAction(Id); }
+            set { Internal.SetPlayerSpecialAction(Id, (int) value); }
         }
 
         /// <summary>
@@ -420,7 +419,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual CameraMode CameraMode
         {
-            get { return (CameraMode)Internal.GetPlayerCameraMode(Id); }
+            get { return (CameraMode) Internal.GetPlayerCameraMode(Id); }
         }
 
         /// <summary>
@@ -524,7 +523,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                int vehicleid = Internal.GetPlayerSurfingVehicleID(Id);
+                var vehicleid = Internal.GetPlayerSurfingVehicleID(Id);
                 return vehicleid == GtaVehicle.InvalidId ? null : GtaVehicle.Find(vehicleid);
             }
         }
@@ -536,7 +535,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                int objectid = Internal.GetPlayerSurfingObjectID(Id);
+                var objectid = Internal.GetPlayerSurfingObjectID(Id);
                 return objectid == GlobalObject.InvalidId ? null : GlobalObject.Find(objectid);
             }
         }
@@ -548,7 +547,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                int vehicleid = Internal.GetPlayerVehicleID(Id); //Returns 0, not Vehicle.InvalidId!
+                var vehicleid = Internal.GetPlayerVehicleID(Id); //Returns 0, not Vehicle.InvalidId!
                 return vehicleid == 0 ? null : GtaVehicle.Find(vehicleid);
             }
         }
@@ -966,7 +965,8 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeSetSpawnInfo(Id, team, skin, position.X, position.Y, position.Z, rotation, (int)weapon1, weapon1Ammo,
+            Internal.NativeSetSpawnInfo(Id, team, skin, position.X, position.Y, position.Z, rotation, (int) weapon1,
+                weapon1Ammo,
                 (int) weapon2, weapon2Ammo,
                 (int) weapon3, weapon3Ammo);
         }
@@ -1058,7 +1058,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerAmmo(Id, (int)weapon, ammo);
+            Internal.SetPlayerAmmo(Id, (int) weapon, ammo);
         }
 
         /// <summary>
@@ -1070,7 +1070,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.GivePlayerWeapon(Id, (int)weapon, ammo);
+            Internal.GivePlayerWeapon(Id, (int) weapon, ammo);
         }
 
 
@@ -1092,7 +1092,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerArmedWeapon(Id, (int)weapon);
+            Internal.SetPlayerArmedWeapon(Id, (int) weapon);
         }
 
         /// <summary>
@@ -1341,7 +1341,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerSkillLevel(Id, (int)skill, level);
+            Internal.SetPlayerSkillLevel(Id, (int) skill, level);
         }
 
         /// <summary>
@@ -1361,7 +1361,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.SetPlayerAttachedObject(Id, index, modelid, (int)bone, offset.X, offset.Y, offset.Z,
+            return Internal.SetPlayerAttachedObject(Id, index, modelid, (int) bone, offset.X, offset.Y, offset.Z,
                 rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z,
                 materialcolor1.ToInteger(ColorFormat.ARGB), materialcolor2.ToInteger(ColorFormat.ARGB));
         }
@@ -1621,7 +1621,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerRaceCheckpoint(Id, (int)type, point.X, point.Y, point.Z, nextPosition.X, nextPosition.Y,
+            Internal.SetPlayerRaceCheckpoint(Id, (int) type, point.X, point.Y, point.Z, nextPosition.X, nextPosition.Y,
                 nextPosition.Z, size);
         }
 
@@ -1652,6 +1652,7 @@ namespace SampSharp.GameMode.World
 
             Internal.SetPlayerWorldBounds(Id, xMax, xMin, yMax, yMin);
         }
+
         /// <summary>
         ///     Change the color of this <see cref="GtaPlayer" />'s name tag and radar blip for another Player.
         /// </summary>
@@ -1669,7 +1670,8 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     This functions allows you to toggle the drawing of player name tags, health bars and armor bars which display above
-        ///     their head. For use of a similar function like this on a global level, <see cref="BaseMode.ShowNameTags" /> function.
+        ///     their head. For use of a similar function like this on a global level, <see cref="BaseMode.ShowNameTags" />
+        ///     function.
         /// </summary>
         /// <remarks>
         ///     <see cref="BaseMode.ShowNameTags" /> must be set to <c>true</c> to be able to show name tags with
@@ -2129,7 +2131,7 @@ namespace SampSharp.GameMode.World
         /// <param name="interior">The interior of the explosion.</param>
         public static void CreateExplosionForAll(Vector3 position, int type, float radius, int interior)
         {
-            foreach (GtaPlayer p in All.Where(p => p.Interior == interior))
+            foreach (var p in All.Where(p => p.Interior == interior))
                 p.CreateExplosion(position, type, radius);
         }
 
@@ -2141,9 +2143,10 @@ namespace SampSharp.GameMode.World
         /// <param name="radius">The explosion radius.</param>
         /// <param name="interior">The interior of the explosion.</param>
         /// <param name="virtualworld">The virtualworld of the explosion.</param>
-        public static void CreateExplosionForAll(Vector3 position, int type, float radius, int interior, int virtualworld)
+        public static void CreateExplosionForAll(Vector3 position, int type, float radius, int interior,
+            int virtualworld)
         {
-            foreach (GtaPlayer p in All.Where(p => p.Interior == interior && p.VirtualWorld == virtualworld))
+            foreach (var p in All.Where(p => p.Interior == interior && p.VirtualWorld == virtualworld))
                 p.CreateExplosion(position, type, radius);
         }
 
@@ -2185,7 +2188,8 @@ namespace SampSharp.GameMode.World
         /// <param name="weapon">The reason for this Player's death.</param>
         public static void SendDeathMessageToAll(GtaPlayer killer, GtaPlayer killee, Weapon weapon)
         {
-            Internal.NativeSendDeathMessage(killer == null ? InvalidId : killer.Id, killee == null ? InvalidId : killee.Id,
+            Internal.NativeSendDeathMessage(killer == null ? InvalidId : killer.Id,
+                killee == null ? InvalidId : killee.Id,
                 (int) weapon);
         }
 

@@ -61,7 +61,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             if (!base.Check(ref command, out output))
                 return false;
 
-            string word = (output as string).ToLower();
+            var word = (output as string).ToLower();
 
             /*
              * Find an enum value that contains the given word and select its index.

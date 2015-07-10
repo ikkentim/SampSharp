@@ -15,7 +15,6 @@
 
 using System;
 using SampSharp.GameMode.Events;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 
 namespace SampSharp.GameMode.World
@@ -60,11 +59,11 @@ namespace SampSharp.GameMode.World
         /// <returns>The created pickup or null if it cannot be created.</returns>
         public static Pickup Create(int model, int type, Vector3 position, int virtualWorld = -1)
         {
-            int id = Internal.CreatePickup(model, type, position.X, position.Y, position.Z, virtualWorld);
+            var id = Internal.CreatePickup(model, type, position.X, position.Y, position.Z, virtualWorld);
 
             if (id == InvalidId) return null;
 
-            Pickup pickup = FindOrCreate(id);
+            var pickup = FindOrCreate(id);
 
             pickup.Position = position;
             pickup.VirtualWorld = virtualWorld;

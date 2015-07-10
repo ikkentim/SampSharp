@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 //     http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,7 +16,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
@@ -40,7 +39,7 @@ namespace TestMode.Tests
             ASyncTestMethod3();
             ASyncTestMethod4();
 
-            DateTime tstart = DateTime.Now;
+            var tstart = DateTime.Now;
             var timer = new Timer(new TimeSpan(0, 0, 0, 2, 500), false);
             timer.Tick +=
                 (sender, args) =>
@@ -90,7 +89,7 @@ namespace TestMode.Tests
         {
             await Task.Delay(2500);
             Console.WriteLine("ASync is fetching tick count from main thread ({0})", Thread.CurrentThread == _main);
-            int ticks = await Sync.RunAsync(() => Server.GetTickCount());
+            var ticks = await Sync.RunAsync(() => Server.GetTickCount());
 
             Console.WriteLine("Tick count is {0} Main thread: {1}!", ticks, Thread.CurrentThread == _main);
         }

@@ -41,7 +41,7 @@ namespace SampSharp.GameMode.Display
             Message = message;
             Button1 = button1;
             Button2 = button2;
-            Style=DialogStyle.MessageBox;
+            Style = DialogStyle.MessageBox;
         }
 
         #region Overrides of Dialog

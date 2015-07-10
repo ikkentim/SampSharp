@@ -95,18 +95,18 @@ namespace SampSharp.GameMode.API
                 sizes == null || sizes.Length == 0 ? (lengthList.Count > 0 ? lengthList.ToArray() : null) : sizes);
         }
 
+        public static INativeLoader NativeLoader
+        {
+            get { return _nativeLoader; }
+            set { if (value != null) _nativeLoader = value; }
+        }
+
         /// <summary>
         ///     Gets the name of the native function.
         /// </summary>
         public virtual string Name
         {
             get { return _name; }
-        }
-
-        public static INativeLoader NativeLoader
-        {
-            get { return _nativeLoader; }
-            set { if (value != null) _nativeLoader = value; }
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace SampSharp.GameMode.API
         }
 
         /// <summary>
-        /// Generates an invoker delegate for the function this instance represents.
+        ///     Generates an invoker delegate for the function this instance represents.
         /// </summary>
         /// <param name="delegateType">Type of the delegate.</param>
         /// <returns>The generated invoker delegate.</returns>
@@ -205,10 +205,10 @@ namespace SampSharp.GameMode.API
 
             // Generate the handler method.
             var dynamicMethod = new DynamicMethod("DynamicCall", returnType, parameterTypes, typeof (Native));
-            ILGenerator ilGenerator = dynamicMethod.GetILGenerator();
+            var ilGenerator = dynamicMethod.GetILGenerator();
 
             // Create an array of objects and store it in a local
-            LocalBuilder args = ilGenerator.DeclareLocal(typeof (object[]));
+            var args = ilGenerator.DeclareLocal(typeof (object[]));
             ilGenerator.Emit(OpCodes.Ldc_I4_S, parameterTypes.Length);
             ilGenerator.Emit(OpCodes.Newarr, typeof (object));
             ilGenerator.Emit(OpCodes.Stloc, args);
@@ -271,7 +271,7 @@ namespace SampSharp.GameMode.API
         }
 
         /// <summary>
-        /// Loads a native with the specified name.
+        ///     Loads a native with the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="parameterTypes">The parameter types.</param>
@@ -282,7 +282,7 @@ namespace SampSharp.GameMode.API
         }
 
         /// <summary>
-        /// Loads a native with the specified name.
+        ///     Loads a native with the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="sizes">The references to the parameter which contains the size of array parameters.</param>
@@ -291,7 +291,6 @@ namespace SampSharp.GameMode.API
         public static INative Load(string name, int[] sizes, params Type[] parameterTypes)
         {
             return _nativeLoader.Load(name, sizes, parameterTypes);
-
         }
 
         private object[] CreateRefArray(RuntimeArgumentHandle handle)
@@ -331,7 +330,8 @@ namespace SampSharp.GameMode.API
         }
 
         /// <summary>
-        ///     Loads the delegate fields annotated with a <see cref="NativeAttribute" /> attribute within the specified <paramref name="assembly" /> with calls to the desired native function.
+        ///     Loads the delegate fields annotated with a <see cref="NativeAttribute" /> attribute within the specified
+        ///     <paramref name="assembly" /> with calls to the desired native function.
         /// </summary>
         /// <param name="assembly">The assembly of which to load the delegate fields.</param>
         public static void LoadDelegates(Assembly assembly)

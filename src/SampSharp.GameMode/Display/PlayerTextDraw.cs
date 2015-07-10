@@ -16,7 +16,6 @@
 using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
@@ -26,7 +25,8 @@ namespace SampSharp.GameMode.Display
     /// <summary>
     ///     Represents a player-textdraw.
     /// </summary>
-    public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, GtaPlayer>, IIdentifiable, IOwnable<GtaPlayer>
+    public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, GtaPlayer>, IIdentifiable,
+        IOwnable<GtaPlayer>
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -239,7 +239,7 @@ namespace SampSharp.GameMode.Display
             {
                 _font = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawFont(Owner.Id, Id, (int)value);
+                Internal.PlayerTextDrawFont(Owner.Id, Id, (int) value);
                 Update();
             }
         }

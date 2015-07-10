@@ -32,7 +32,7 @@ namespace SampSharp.GameMode.Controllers
             gameMode.DialogResponse += (sender, args) =>
             {
                 var player = sender as GtaPlayer;
-                Dialog dialog = Dialog.GetOpenDialog(player);
+                var dialog = Dialog.GetOpenDialog(player);
 
                 if (dialog != null)
                     dialog.OnResponse(args);

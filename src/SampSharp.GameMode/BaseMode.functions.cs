@@ -13,9 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
 using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 
@@ -57,7 +55,7 @@ namespace SampSharp.GameMode
         /// <param name="mode">The mode you want to use.</param>
         public virtual void ShowPlayerMarkers(PlayerMarkersMode mode)
         {
-            Internal.NativeShowPlayerMarkers((int)mode);
+            Internal.NativeShowPlayerMarkers((int) mode);
         }
 
         /// <summary>
@@ -139,7 +137,8 @@ namespace SampSharp.GameMode
         public virtual int AddPlayerClass(int modelid, Vector3 position, float zAngle, Weapon weapon1, int weapon1Ammo,
             Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
-            return Internal.NativeAddPlayerClass(modelid, position.X, position.Y, position.Z, zAngle, (int)weapon1, weapon1Ammo,
+            return Internal.NativeAddPlayerClass(modelid, position.X, position.Y, position.Z, zAngle, (int) weapon1,
+                weapon1Ammo,
                 (int) weapon2, weapon2Ammo, (int) weapon3, weapon3Ammo);
         }
 
@@ -212,7 +211,8 @@ namespace SampSharp.GameMode
         public virtual int AddPlayerClass(int teamid, int modelid, Vector3 position, float zAngle, Weapon weapon1,
             int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
-            return Internal.NativeAddPlayerClassEx(teamid, modelid, position.X, position.Y, position.Z, zAngle, (int)weapon1,
+            return Internal.NativeAddPlayerClassEx(teamid, modelid, position.X, position.Y, position.Z, zAngle,
+                (int) weapon1,
                 weapon1Ammo, (int) weapon2, weapon2Ammo, (int) weapon3, weapon3Ammo);
         }
 

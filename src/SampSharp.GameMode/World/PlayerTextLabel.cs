@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 
@@ -23,7 +22,8 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a player text label.
     /// </summary>
-    public partial class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel, GtaPlayer>, IIdentifiable, IOwnable<GtaPlayer>
+    public partial class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel, GtaPlayer>, IIdentifiable,
+        IOwnable<GtaPlayer>
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -227,7 +227,8 @@ namespace SampSharp.GameMode.World
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            Id = Internal.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z, drawDistance,
+            Id = Internal.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z,
+                drawDistance,
                 GtaPlayer.InvalidId, GtaVehicle.InvalidId, testLOS);
         }
 
@@ -274,7 +275,8 @@ namespace SampSharp.GameMode.World
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            Id = Internal.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z, drawDistance,
+            Id = Internal.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z,
+                drawDistance,
                 attachedPlayer.Id, GtaVehicle.InvalidId, testLOS);
         }
 
@@ -322,7 +324,8 @@ namespace SampSharp.GameMode.World
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            Id = Internal.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z, drawDistance,
+            Id = Internal.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z,
+                drawDistance,
                 GtaPlayer.InvalidId, attachedVehicle.Id, testLOS);
         }
 

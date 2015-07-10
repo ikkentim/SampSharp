@@ -35,7 +35,8 @@ namespace SampSharp.GameMode.Pools
         /// <summary>
         ///     A readonly collection of the instances in this pool.
         /// </summary>
-        protected static ReadOnlyCollection<TInstance> ReadOnly = new ReadOnlyCollection<TInstance>(new List<TInstance>());
+        protected static ReadOnlyCollection<TInstance> ReadOnly =
+            new ReadOnlyCollection<TInstance>(new List<TInstance>());
 
         /// <summary>
         ///     A Locker for tread-saving this pool.

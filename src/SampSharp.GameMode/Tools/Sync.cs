@@ -84,7 +84,7 @@ namespace SampSharp.GameMode.Tools
                 return action();
             }
 
-            TResult result = default(TResult);
+            var result = default(TResult);
 
             await RunAsync(() => { result = action(); });
 

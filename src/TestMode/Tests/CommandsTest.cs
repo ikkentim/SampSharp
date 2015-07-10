@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 //     http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,13 +44,13 @@ namespace TestMode.Tests
             CommandGroup.Register("tools", "t", CommandGroup.Register("test", "t"));
             CommandGroup.Register("vehicle", "v");
 
-            DetectedCommand cmd = Command.GetAll<DetectedCommand>().FirstOrDefault(c => c.Name == "console");
+            var cmd = Command.GetAll<DetectedCommand>().FirstOrDefault(c => c.Name == "console");
             Console.WriteLine("Command paths: {0}", string.Join(", ", cmd.CommandPaths));
         }
 
         #endregion
 
-        [Command("console", Alias = "c", Shortcut = "1", PermissionChecker = typeof(AdminChecker))]
+        [Command("console", Alias = "c", Shortcut = "1", PermissionChecker = typeof (AdminChecker))]
         [CommandGroup("tools")]
         [Text("text")]
         public static void TestCommand(GtaPlayer player, string word, int num, string text)
@@ -62,7 +62,7 @@ namespace TestMode.Tests
             player.SendClientMessage(Color.Green, "Formattest {0} -- {1} ,, {2}", 123, "xyz", "::DD");
         }
 
-        [Command("adminwomessage", PermissionChecker = typeof(AdminWithoutMessageChecker))]
+        [Command("adminwomessage", PermissionChecker = typeof (AdminWithoutMessageChecker))]
         public static void TestAdminOnlyCommandWithoutMessage(GtaPlayer player)
         {
             player.SendClientMessage("You are admin, congratz.");
@@ -88,7 +88,7 @@ namespace TestMode.Tests
         {
             player.SendClientMessage(Color.Green, "Commands:");
             foreach (
-                DetectedCommand cmd in
+                var cmd in
                     Command.GetAll<DetectedCommand>()
                         .Where(c => c.HasPlayerPermissionForCommand(player))
                         .OrderBy( /* category??? */c => c.CommandPath))
@@ -104,7 +104,7 @@ namespace TestMode.Tests
         {
             player.SendClientMessage(Color.GreenYellow, "You have spawned a {0}", model);
             Console.WriteLine("Spawning a {0} {2} for {1}", model, player, (int) model);
-            GtaVehicle vehicle = GtaVehicle.Create(model, player.Position + new Vector3(0, 0, 0.5f), player.Rotation.Z, -1,
+            var vehicle = GtaVehicle.Create(model, player.Position + new Vector3(0, 0, 0.5f), player.Rotation.Z, -1,
                 -1);
             player.PutInVehicle(vehicle);
         }
@@ -126,7 +126,7 @@ namespace TestMode.Tests
         [Command("put")]
         public static void PutCommand(GtaPlayer player, int vehicleid, int seat = 0)
         {
-            GtaVehicle v = GtaVehicle.Find(vehicleid);
+            var v = GtaVehicle.Find(vehicleid);
             if (v == null)
             {
                 player.SendClientMessage(Color.Red, "This vehicle does not exist!");

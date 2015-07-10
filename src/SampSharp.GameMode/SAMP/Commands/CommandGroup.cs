@@ -43,7 +43,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             Alias = alias;
             ParentGroup = parentGroup;
 
-            foreach (DetectedCommand cmd in Command.GetAll<DetectedCommand>().Where(c => c.Group == null))
+            foreach (var cmd in Command.GetAll<DetectedCommand>().Where(c => c.Group == null))
             {
                 var groupAttribute = cmd.Command.GetCustomAttribute<CommandGroupAttribute>();
 
@@ -87,7 +87,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 }
                 else
                 {
-                    foreach (string str in ParentGroup.CommandPaths)
+                    foreach (var str in ParentGroup.CommandPaths)
                     {
                         yield return string.Format("{0} {1}", str, Name);
 
@@ -117,7 +117,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>The new CommandGroup instance.</returns>
         public static CommandGroup Register(string name, string alias = null, CommandGroup parentGroup = null)
         {
-            CommandGroup group =
+            var group =
                 All.FirstOrDefault(
                     g =>
                         g.Name == name &&

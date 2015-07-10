@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using System.Xml.Linq;
 
 namespace SampSharp.GameMode
 {
@@ -130,9 +129,9 @@ namespace SampSharp.GameMode
         /// <returns>The distance between the vectors.</returns>
         public float DistanceTo(Vector3 other)
         {
-            float dx = X - other.X;
-            float dy = Y - other.Y;
-            float dz = Z - other.Z;
+            var dx = X - other.X;
+            var dy = Y - other.Y;
+            var dz = Z - other.Z;
             return (float) Math.Sqrt(dx*dx + dy*dy + dz*dz);
         }
 
@@ -141,14 +140,15 @@ namespace SampSharp.GameMode
         /// </summary>
         public void Normalize()
         {
-            float length = Length;
+            var length = Length;
             X /= length;
             Y /= length;
             Z /= length;
         }
 
         /// <summary>
-        ///     Adds the left <see cref="Vector3" />'s components to the right <see cref="Vector3" />'s components and stores it in a
+        ///     Adds the left <see cref="Vector3" />'s components to the right <see cref="Vector3" />'s components and stores it in
+        ///     a
         ///     new <see cref="Vector3" />.
         /// </summary>
         /// <param name="left">A <see cref="Vector3" />.</param>
@@ -160,7 +160,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Subtracts the right <see cref="Vector3" />'s components from the left <see cref="Vector3" />'s components and stores
+        ///     Subtracts the right <see cref="Vector3" />'s components from the left <see cref="Vector3" />'s components and
+        ///     stores
         ///     it in a new <see cref="Vector3" />.
         /// </summary>
         /// <param name="left">A <see cref="Vector3" />.</param>
@@ -183,7 +184,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Multiplies the components <see cref="Vector3" /> by the given scalar and stores them in a new <see cref="Vector3" />.
+        ///     Multiplies the components <see cref="Vector3" /> by the given scalar and stores them in a new
+        ///     <see cref="Vector3" />.
         /// </summary>
         /// <param name="vector">The <see cref="Vector3" />.</param>
         /// <param name="scalar">The scalar.</param>
@@ -288,7 +290,7 @@ namespace SampSharp.GameMode
         {
             unchecked
             {
-                int hashCode = X.GetHashCode();
+                var hashCode = X.GetHashCode();
                 hashCode = (hashCode*397) ^ Y.GetHashCode();
                 hashCode = (hashCode*397) ^ Z.GetHashCode();
                 return hashCode;

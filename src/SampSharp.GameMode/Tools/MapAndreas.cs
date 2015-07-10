@@ -15,9 +15,6 @@
 
 using System;
 using System.IO;
-using SampSharp.GameMode.API;
-using SampSharp.GameMode.Natives;
-using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Tools
 {
@@ -78,7 +75,7 @@ namespace SampSharp.GameMode.Tools
                         {
                             _data = new ushort[memstream.Length/2];
                             var buffer = new byte[2];
-                            int loc = 0;
+                            var loc = 0;
                             while ((memstream.Read(buffer, 0, 2)) == 2)
                                 _data[loc++] = BitConverter.ToUInt16(buffer, 0);
                         }
@@ -96,7 +93,7 @@ namespace SampSharp.GameMode.Tools
                         {
                             _data = new ushort[memstream.Length/2];
                             var buffer = new byte[2];
-                            int loc = 0;
+                            var loc = 0;
                             while ((memstream.Read(buffer, 0, 2)) == 2)
                                 _data[loc++] = BitConverter.ToUInt16(buffer, 0);
                         }
@@ -169,8 +166,8 @@ namespace SampSharp.GameMode.Tools
             if (x < -3000.0f || x > 3000.0f || y > 3000.0f || y < -3000.0f) return 0.0f;
 
             // get row/col on 6000x6000 grid
-            int iGridX = ((int) x) + 3000;
-            int iGridY = (((int) y) - 3000)*-1;
+            var iGridX = ((int) x) + 3000;
+            var iGridY = (((int) y) - 3000)*-1;
             int iDataPos;
 
             switch (_mode)
@@ -218,13 +215,13 @@ namespace SampSharp.GameMode.Tools
             float gridsize = _mode == MapAndreasMode.Full ? 1 : 3;
 
             // Get the Z value of 2 neighbor grids
-            float p1 = Find(x, y);
-            float p2 = x < 0.0f ? Find(x + gridsize, y) : Find(x - gridsize, y);
-            float p3 = y < 0.0f ? Find(x, y + gridsize) : Find(x, y - gridsize);
+            var p1 = Find(x, y);
+            var p2 = x < 0.0f ? Find(x + gridsize, y) : Find(x - gridsize, y);
+            var p3 = y < 0.0f ? Find(x, y + gridsize) : Find(x, y - gridsize);
 
             // Filter the decimal part only
-            float xx = x%1;
-            float yy = y%1;
+            var xx = x%1;
+            var yy = y%1;
             if (xx < 0) x = -xx; //Pointless? shouldn't it be xx = -xx? TODO: figure that out
             if (yy < 0) y = -yy;
 
@@ -260,8 +257,8 @@ namespace SampSharp.GameMode.Tools
             if (z < 0 || z > 655.35) return false;
 
             // get row/col on 6000x6000 grid
-            int iGridX = ((int) x) + 3000;
-            int iGridY = -(((int) y) - 3000);
+            var iGridX = ((int) x) + 3000;
+            var iGridY = -(((int) y) - 3000);
             int iDataPos;
 
             if (_mode == MapAndreasMode.Full)
@@ -303,7 +300,7 @@ namespace SampSharp.GameMode.Tools
 
             try
             {
-                using (FileStream stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+                using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
                 {
                     foreach (var v in _data)
                         stream.Write(BitConverter.GetBytes(v), 0, 2);

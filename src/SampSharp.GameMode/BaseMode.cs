@@ -36,10 +36,10 @@ namespace SampSharp.GameMode
         {
             Console.SetOut(new LogWriter());
 
-            Type type = Type.GetType("Mono.Runtime");
+            var type = Type.GetType("Mono.Runtime");
             if (type != null)
             {
-                MethodInfo displayName = type.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
+                var displayName = type.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
                 if (displayName != null)
                     Console.WriteLine("Detected mono version: {0}", displayName.Invoke(null, null));
             }
@@ -50,7 +50,6 @@ namespace SampSharp.GameMode
 
             Native.LoadDelegates<BaseMode>();
             Native.LoadDelegates(GetType());
-
         }
 
         #endregion
@@ -97,7 +96,7 @@ namespace SampSharp.GameMode
         {
             LoadControllers(_controllers);
 
-            foreach (IController controller in _controllers)
+            foreach (var controller in _controllers)
             {
                 var typeProvider = controller as ITypeProvider;
                 var eventListener = controller as IEventListener;

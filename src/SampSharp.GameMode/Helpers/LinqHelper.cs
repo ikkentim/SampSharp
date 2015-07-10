@@ -34,8 +34,8 @@ namespace SampSharp.GameMode.Helpers
             if (items == null) throw new ArgumentNullException("items");
             if (predicate == null) throw new ArgumentNullException("predicate");
 
-            int retVal = 0;
-            foreach (T item in items)
+            var retVal = 0;
+            foreach (var item in items)
             {
                 if (predicate(item)) return retVal;
                 retVal++;
@@ -53,7 +53,7 @@ namespace SampSharp.GameMode.Helpers
             if (items == null) throw new ArgumentNullException("items");
             if (predicate == null) throw new ArgumentNullException("predicate");
 
-            for (int i = items.Count() - 1; i >= 0; i--)
+            for (var i = items.Count() - 1; i >= 0; i--)
             {
                 if (predicate(items.ElementAt(i)))
                     return i;

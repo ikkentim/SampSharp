@@ -15,7 +15,6 @@
 
 using System;
 using SampSharp.GameMode.API;
-using SampSharp.GameMode.Natives;
 
 namespace TestMode.Tests
 {
@@ -27,7 +26,8 @@ namespace TestMode.Tests
         {
             Extension.Register(new TestExtension());
 
-            Console.WriteLine("Call OnTest183()"); Native.Load("CallLocalFunction", typeof(string), typeof(string)).Invoke("OnTest183", "");
+            Console.WriteLine("Call OnTest183()");
+            Native.Load("CallLocalFunction", typeof (string), typeof (string)).Invoke("OnTest183", "");
         }
 
         #endregion

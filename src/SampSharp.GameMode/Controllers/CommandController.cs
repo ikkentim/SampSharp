@@ -62,9 +62,9 @@ namespace SampSharp.GameMode.Controllers
 
             try
             {
-                int commandsCount = 0;
+                var commandsCount = 0;
                 //Detect commands in assembly containing the gamemode
-                foreach (MethodInfo method in assembly.GetTypes().SelectMany(t => t.GetMethods())
+                foreach (var method in assembly.GetTypes().SelectMany(t => t.GetMethods())
                     .Where(m => m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0))
                 {
                     if (!method.IsStatic && !typeof (GtaPlayer).IsAssignableFrom(method.DeclaringType))
@@ -103,15 +103,15 @@ namespace SampSharp.GameMode.Controllers
             var player = sender as GtaPlayer;
             if (player == null) return;
 
-            string text = e.Text.Substring(1);
+            var text = e.Text.Substring(1);
 
-            List<Tuple<Tuple<int, string>, Command>> candidates = new List<Tuple<Tuple<int, string>, Command>>();
+            var candidates = new List<Tuple<Tuple<int, string>, Command>>();
 
             // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (Command cmd in Command.All)
+            foreach (var cmd in Command.All)
             {
-                string args = text;
-                int count = cmd.CommandTextMatchesCommand(ref args);
+                var args = text;
+                var count = cmd.CommandTextMatchesCommand(ref args);
                 if (count > 0)
                 {
                     candidates.Add(new Tuple<Tuple<int, string>, Command>(new Tuple<int, string>(count, args), cmd));
@@ -153,7 +153,7 @@ namespace SampSharp.GameMode.Controllers
         {
             if (disposing)
             {
-                foreach (Command cmd in Command.All)
+                foreach (var cmd in Command.All)
                 {
                     cmd.Dispose();
                 }

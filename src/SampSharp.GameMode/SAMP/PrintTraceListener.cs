@@ -15,9 +15,6 @@
 
 using System;
 using System.Diagnostics;
-using SampSharp.GameMode.API;
-using SampSharp.GameMode.Natives;
-using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.SAMP
 {

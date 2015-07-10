@@ -24,7 +24,8 @@ namespace SampSharp.GameMode.Pools
     /// </summary>
     /// <typeparam name="TInstance">Base type of instances to keep track of.</typeparam>
     /// <typeparam name="TOwner">Base type of the owner</typeparam>
-    public abstract class IdentifiedOwnedPool<TInstance, TOwner> : Pool<TInstance> where TInstance : class, IIdentifiable, IOwnable<TOwner> where TOwner : IdentifiedPool<TOwner>, IIdentifiable
+    public abstract class IdentifiedOwnedPool<TInstance, TOwner> : Pool<TInstance>
+        where TInstance : class, IIdentifiable, IOwnable<TOwner> where TOwner : IdentifiedPool<TOwner>, IIdentifiable
     {
         /// <summary>
         ///     The type to initialize when adding an instance to this pool by id.

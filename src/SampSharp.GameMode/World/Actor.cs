@@ -15,7 +15,6 @@
 
 using System;
 using SampSharp.GameMode.Events;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 
 namespace SampSharp.GameMode.World
@@ -255,19 +254,6 @@ namespace SampSharp.GameMode.World
             Internal.ClearActorAnimations(Id);
         }
 
-        #region Overrides of Pool<GtaPlayer>
-
-        /// <summary>
-        ///     Removes this instance from the pool.
-        /// </summary>
-        protected override void Dispose(bool disposing)
-        {
-            Internal.DestroyActor(Id);
-            base.Dispose(disposing);
-        }
-
-        #endregion
-
         /// <summary>
         ///     Raises the <see cref="E:StreamIn" /> event.
         /// </summary>
@@ -297,5 +283,18 @@ namespace SampSharp.GameMode.World
             if (PlayerGiveDamage != null)
                 PlayerGiveDamage(this, args);
         }
+
+        #region Overrides of Pool<GtaPlayer>
+
+        /// <summary>
+        ///     Removes this instance from the pool.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            Internal.DestroyActor(Id);
+            base.Dispose(disposing);
+        }
+
+        #endregion
     }
 }

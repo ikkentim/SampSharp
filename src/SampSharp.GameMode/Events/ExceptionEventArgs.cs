@@ -18,7 +18,7 @@ using System;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    /// Provides data for the <see cref="BaseMode.CallbackException"/> event.
+    ///     Provides data for the <see cref="BaseMode.CallbackException" /> event.
     /// </summary>
     public class ExceptionEventArgs : EventArgs
     {

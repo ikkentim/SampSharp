@@ -43,7 +43,7 @@ namespace SampSharp.GameMode.Controllers
 
             gameMode.Exited += (sender, args) =>
             {
-                foreach (Sync.SyncTask t in Sync.SyncTask.All)
+                foreach (var t in Sync.SyncTask.All)
                 {
                     t.Dispose();
                 }
@@ -71,7 +71,7 @@ namespace SampSharp.GameMode.Controllers
 
         private static void _gameMode_Tick(object sender, EventArgs e)
         {
-            foreach (Sync.SyncTask t in Sync.SyncTask.All)
+            foreach (var t in Sync.SyncTask.All)
             {
                 t.Run();
                 t.Dispose();

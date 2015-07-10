@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
 using System.Linq;
 using SampSharp.GameMode.World;
 
@@ -46,7 +45,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             int id;
             GtaPlayer player = null;
-            string word = (output as string).ToLower();
+            var word = (output as string).ToLower();
 
             /*
              * Check whether the word is not a number.
@@ -54,7 +53,7 @@ namespace SampSharp.GameMode.SAMP.Commands
              */
             if (!int.TryParse(word, out id))
             {
-                IEnumerable<GtaPlayer> players = GtaPlayer.All.Where(p => p.Name.ToLower().Contains(word.ToLower()));
+                var players = GtaPlayer.All.Where(p => p.Name.ToLower().Contains(word.ToLower()));
                 if (players.Count() == 1)
                 {
                     player = players.First();

@@ -127,7 +127,7 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerEnterVehicle(int playerid, int vehicleid, bool ispassenger)
         {
-            GtaPlayer player = GtaPlayer.FindOrCreate(playerid);
+            var player = GtaPlayer.FindOrCreate(playerid);
             OnPlayerEnterVehicle(player,
                 new EnterVehicleEventArgs(player, GtaVehicle.FindOrCreate(vehicleid), ispassenger));
 
@@ -136,7 +136,7 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerExitVehicle(int playerid, int vehicleid)
         {
-            GtaPlayer player = GtaPlayer.FindOrCreate(playerid);
+            var player = GtaPlayer.FindOrCreate(playerid);
             OnPlayerExitVehicle(player,
                 new PlayerVehicleEventArgs(player, GtaVehicle.FindOrCreate(vehicleid)));
 
@@ -388,7 +388,7 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerClickTextDraw(int playerid, int clickedid)
         {
-            GtaPlayer player = GtaPlayer.FindOrCreate(playerid);
+            var player = GtaPlayer.FindOrCreate(playerid);
             OnPlayerClickTextDraw(player,
                 new ClickTextDrawEventArgs(player,
                     clickedid == TextDraw.InvalidId ? null : TextDraw.FindOrCreate(clickedid)));
@@ -398,7 +398,7 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerClickPlayerTextDraw(int playerid, int playertextid)
         {
-            GtaPlayer player = GtaPlayer.FindOrCreate(playerid);
+            var player = GtaPlayer.FindOrCreate(playerid);
             OnPlayerClickPlayerTextDraw(player,
                 new ClickPlayerTextDrawEventArgs(player, playertextid == PlayerTextDraw.InvalidId
                     ? null
@@ -420,7 +420,7 @@ namespace SampSharp.GameMode
         internal bool OnPlayerEditObject(int playerid, bool playerobject, int objectid, int response, float fX, float fY,
             float fZ, float fRotX, float fRotY, float fRotZ)
         {
-            GtaPlayer player = GtaPlayer.FindOrCreate(playerid);
+            var player = GtaPlayer.FindOrCreate(playerid);
             if (playerobject)
             {
                 OnPlayerEditPlayerObject(player,
@@ -462,7 +462,7 @@ namespace SampSharp.GameMode
                             new Vector3(fX, fY, fZ)));
                     break;
                 case ObjectType.PlayerObject:
-                    GtaPlayer player = GtaPlayer.FindOrCreate(playerid);
+                    var player = GtaPlayer.FindOrCreate(playerid);
 
                     OnPlayerSelectPlayerObject(player,
                         new SelectPlayerObjectEventArgs(GtaPlayer.FindOrCreate(playerid),
@@ -477,7 +477,8 @@ namespace SampSharp.GameMode
         internal bool OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY,
             float fZ)
         {
-            var args = new WeaponShotEventArgs((Weapon) weaponid, (BulletHitType) hittype, hitid, new Vector3(fX, fY, fZ));
+            var args = new WeaponShotEventArgs((Weapon) weaponid, (BulletHitType) hittype, hitid,
+                new Vector3(fX, fY, fZ));
 
             OnPlayerWeaponShot(GtaPlayer.FindOrCreate(playerid), args);
 

@@ -1,12 +1,12 @@
 ﻿// SampSharp
 // Copyright 2015 Tim Potze
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 //     http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,13 +16,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
 using SampSharp.GameMode;
-using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Events;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 using TestMode.Tests;
@@ -66,7 +62,7 @@ namespace TestMode
 
             AddPlayerClass(65, new Vector3(5), 0);
 
-            foreach (ITest test in _tests)
+            foreach (var test in _tests)
             {
                 Console.WriteLine("=========");
                 Console.WriteLine("Starting test: {0}", test);
@@ -94,14 +90,13 @@ namespace TestMode
             if (c <= 0)
                 throw new Exception();
             StackFiller(c - 1);
-
         }
 
         protected override void LoadControllers(ControllerCollection controllers)
         {
             base.LoadControllers(controllers);
 
-            foreach (IControllerTest test in _tests.OfType<IControllerTest>())
+            foreach (var test in _tests.OfType<IControllerTest>())
                 test.LoadControllers(controllers);
         }
 
@@ -110,12 +105,12 @@ namespace TestMode
         /// <summary>
         ///     Raises the <see cref="E:CallbackException" /> event.
         /// </summary>
-        /// <param name="e">The <see cref="ExceptionEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="ExceptionEventArgs" /> instance containing the event data.</param>
         protected override void OnCallbackException(ExceptionEventArgs e)
         {
             Console.WriteLine("[SampSharp] Exception thrown during execution of {0}:", e.Exception.TargetSite.Name);
 
-            Console.WriteLine("{0}: {1}",e.Exception.GetType().FullName, e.Exception.Message);
+            Console.WriteLine("{0}: {1}", e.Exception.GetType().FullName, e.Exception.Message);
             Console.WriteLine(e.Exception.StackTrace);
             e.Handled = true;
             base.OnCallbackException(e);
@@ -124,6 +119,5 @@ namespace TestMode
         #endregion
 
         #endregion
-
     }
 }

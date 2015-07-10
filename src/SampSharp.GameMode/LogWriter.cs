@@ -13,13 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using SampSharp.GameMode.API;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.Tools;
 
@@ -264,7 +261,7 @@ namespace SampSharp.GameMode
                 Server.Print(string.Empty);
                 return;
             }
-            
+
             foreach (var ln in value.Split('\n'))
             {
                 var line = ln.Trim('\r');

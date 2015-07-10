@@ -16,7 +16,6 @@
 using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 
@@ -25,7 +24,8 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a player-object.
     /// </summary>
-    public partial class PlayerObject : IdentifiedOwnedPool<PlayerObject, GtaPlayer>, IGameObject, IOwnable<GtaPlayer>, IIdentifiable
+    public partial class PlayerObject : IdentifiedOwnedPool<PlayerObject, GtaPlayer>, IGameObject, IOwnable<GtaPlayer>,
+        IIdentifiable
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -180,22 +180,14 @@ namespace SampSharp.GameMode.World
             Owner = owner;
             DrawDistance = drawDistance;
 
-            Id = Internal.CreatePlayerObject(owner.Id, modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y,
+            Id = Internal.CreatePlayerObject(owner.Id, modelid, position.X, position.Y, position.Z, rotation.X,
+                rotation.Y,
                 rotation.Z, drawDistance);
         }
 
         #endregion
 
         #region Methods
-
-        /// <summary>
-        ///     Disable collisions between players' cameras and this <see cref="PlayerObject" />.
-        /// </summary>
-        public virtual void DisableCameraCollisions()
-        {
-            AssertNotDisposed();
-            Internal.SetPlayerObjectNoCameraCol(Owner.Id, Id);
-        }
 
         /// <summary>
         ///     Moves this <see cref="IGameObject" /> to the given position and rotation with the given speed.
@@ -278,10 +270,19 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerObjectMaterialText(Owner.Id, Id, text, materialindex, (int)materialsize,
+            Internal.SetPlayerObjectMaterialText(Owner.Id, Id, text, materialindex, (int) materialsize,
                 fontface, fontsize, bold,
                 foreColor.ToInteger(ColorFormat.ARGB), backColor.ToInteger(ColorFormat.ARGB),
                 (int) textalignment);
+        }
+
+        /// <summary>
+        ///     Disable collisions between players' cameras and this <see cref="PlayerObject" />.
+        /// </summary>
+        public virtual void DisableCameraCollisions()
+        {
+            AssertNotDisposed();
+            Internal.SetPlayerObjectNoCameraCol(Owner.Id, Id);
         }
 
         /// <summary>
@@ -331,7 +332,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             Internal.NativeAttachCameraToPlayerObject(Owner.Id, Id);
-        }        
+        }
 
         /// <summary>
         ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.

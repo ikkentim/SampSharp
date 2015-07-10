@@ -41,14 +41,14 @@ namespace SampSharp.GameMode.Display
         {
             if (caption == null) throw new ArgumentNullException("caption");
             if (button1 == null) throw new ArgumentNullException("button1");
-            if(columnCount <= 0)
+            if (columnCount <= 0)
                 throw new ArgumentOutOfRangeException("columnCount", "must be greater than 0");
 
             Caption = caption;
             Button1 = button1;
             Button2 = button2;
             _columnCount = columnCount;
-            Style=DialogStyle.Tablist;
+            Style = DialogStyle.Tablist;
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace SampSharp.GameMode.Display
             Button2 = button2;
             if (columns == null) throw new ArgumentNullException("columns");
             Style = DialogStyle.TablistHeaders;
-            
+
             _columns = columns.ToArray();
             _columnCount = _columns.Length;
         }

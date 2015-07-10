@@ -315,7 +315,7 @@ namespace SampSharp.GameMode.Controllers
         {
             if (disposing)
             {
-                foreach (GtaPlayer player in GtaPlayer.All)
+                foreach (var player in GtaPlayer.All)
                 {
                     player.Dispose();
                 }

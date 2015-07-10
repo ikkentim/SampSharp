@@ -23,7 +23,7 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            Thread main = Thread.CurrentThread;
+            var main = Thread.CurrentThread;
 
             Console.WriteLine("Starting delay on main thread");
 

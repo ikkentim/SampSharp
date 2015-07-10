@@ -16,7 +16,6 @@
 using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 
@@ -170,24 +169,6 @@ namespace SampSharp.GameMode.World
         #region Methods
 
         /// <summary>
-        ///     Disable collisions between players' cameras and this <see cref="GlobalObject" />.
-        /// </summary>
-        public virtual void DisableCameraCollisions()
-        {
-            AssertNotDisposed();
-            Internal.SetObjectNoCameraCol(Id);
-        }
-
-        /// <summary>
-        ///     Toggles the default camera collisions.
-        /// </summary>
-        /// <param name="toggle">If set to <c>true</c> the camera will be able to collide with objects by default.</param>
-        public static void ToggleDefaultCameraCollisions(bool toggle)
-        {
-            Internal.SetObjectsDefaultCameraCol(!toggle);
-        }
-
-        /// <summary>
         ///     Moves this IGameObject to the given position and rotation with the given speed.
         /// </summary>
         /// <param name="position">The position to which to move this IGameObject.</param>
@@ -256,9 +237,27 @@ namespace SampSharp.GameMode.World
             string fontface, int fontsize, bool bold, Color foreColor, Color backColor,
             ObjectMaterialTextAlign textalignment)
         {
-            Internal.SetObjectMaterialText(Id, text, materialindex, (int)materialsize, fontface, fontsize, bold,
+            Internal.SetObjectMaterialText(Id, text, materialindex, (int) materialsize, fontface, fontsize, bold,
                 foreColor.ToInteger(ColorFormat.ARGB), backColor.ToInteger(ColorFormat.ARGB),
                 (int) textalignment);
+        }
+
+        /// <summary>
+        ///     Disable collisions between players' cameras and this <see cref="GlobalObject" />.
+        /// </summary>
+        public virtual void DisableCameraCollisions()
+        {
+            AssertNotDisposed();
+            Internal.SetObjectNoCameraCol(Id);
+        }
+
+        /// <summary>
+        ///     Toggles the default camera collisions.
+        /// </summary>
+        /// <param name="toggle">If set to <c>true</c> the camera will be able to collide with objects by default.</param>
+        public static void ToggleDefaultCameraCollisions(bool toggle)
+        {
+            Internal.SetObjectsDefaultCameraCol(!toggle);
         }
 
         /// <summary>
@@ -273,7 +272,8 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            Internal.AttachObjectToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z);
+            Internal.AttachObjectToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
+                rotation.Z);
         }
 
         /// <summary>

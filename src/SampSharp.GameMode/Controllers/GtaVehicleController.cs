@@ -124,7 +124,7 @@ namespace SampSharp.GameMode.Controllers
         {
             if (disposing)
             {
-                foreach (GtaVehicle vehicle in GtaVehicle.All)
+                foreach (var vehicle in GtaVehicle.All)
                 {
                     vehicle.Dispose();
                 }

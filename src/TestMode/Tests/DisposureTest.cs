@@ -23,10 +23,10 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            int playercount = GtaPlayer.All.Count;
-            bool success = true;
+            var playercount = GtaPlayer.All.Count;
+            var success = true;
 
-            GtaPlayer player = GtaPlayer.Create(499);
+            var player = GtaPlayer.Create(499);
 
             if (GtaPlayer.All.Count - 1 != playercount)
             {

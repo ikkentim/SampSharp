@@ -33,7 +33,7 @@ namespace SampSharp.GameMode.Controllers
             gameMode.PlayerExitedMenu += (sender, args) =>
             {
                 var player = sender as GtaPlayer;
-                Menu menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(player));
+                var menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(player));
 
                 if (menu != null)
                     menu.OnExit(player, args);
@@ -42,7 +42,7 @@ namespace SampSharp.GameMode.Controllers
             gameMode.PlayerSelectedMenuRow += (sender, args) =>
             {
                 var player = sender as GtaPlayer;
-                Menu menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(player));
+                var menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(player));
 
                 if (menu != null)
                     menu.OnResponse(player, args);

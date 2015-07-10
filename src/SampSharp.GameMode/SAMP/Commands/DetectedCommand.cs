@@ -82,15 +82,16 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             if (commandAttribute.PermissionChecker != null)
             {
-                if (!typeof(IPermissionChecker).IsAssignableFrom(commandAttribute.PermissionChecker))
+                if (!typeof (IPermissionChecker).IsAssignableFrom(commandAttribute.PermissionChecker))
                 {
-                    throw new ArgumentException(commandAttribute.PermissionChecker + " should implement IPermissionChecker interface");
+                    throw new ArgumentException(commandAttribute.PermissionChecker +
+                                                " should implement IPermissionChecker interface");
                 }
 
                 PermissionCheck = (IPermissionChecker) Activator.CreateInstance(commandAttribute.PermissionChecker);
             }
 
-            ParameterInfo[] cmdParams = Command.GetParameters();
+            var cmdParams = Command.GetParameters();
 
             if (Command.IsStatic &&
                 (cmdParams.Length == 0 || !typeof (GtaPlayer).IsAssignableFrom(cmdParams[0].ParameterType)))
@@ -112,9 +113,9 @@ namespace SampSharp.GameMode.SAMP.Commands
                              * At the moment these attributes are attached to the method instead of the parameter.
                              */
 
-                            ParameterAttribute attribute = Command.GetCustomAttributes<ParameterAttribute>()
+                            var attribute = Command.GetCustomAttributes<ParameterAttribute>()
                                 .FirstOrDefault(a => a.Name == parameter.Name) ??
-                                                           ResolveParameterType(parameter.ParameterType, parameter.Name);
+                                            ResolveParameterType(parameter.ParameterType, parameter.Name);
 
                             attribute.Optional = attribute.Optional || parameter.HasDefaultValue;
 
@@ -144,7 +145,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         {
             commandText = commandText.Trim(' ');
 
-            foreach (string str in CommandPaths.OrderByDescending(c => c.Count(h => h == ' ')))
+            foreach (var str in CommandPaths.OrderByDescending(c => c.Count(h => h == ' ')))
             {
                 if ((IgnoreCase && (commandText.ToLower() == str.ToLower() ||
                                     commandText.ToLower().StartsWith(str.ToLower() + " "))) ||
@@ -165,9 +166,9 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>True if all required arguments are present; False otherwise.</returns>
         public override bool AreArgumentsValid(string commandText)
         {
-            for (int paramIndex = 0; paramIndex < Parameters.Length; paramIndex++)
+            for (var paramIndex = 0; paramIndex < Parameters.Length; paramIndex++)
             {
-                ParameterAttribute parameterAttribute = Parameters[paramIndex];
+                var parameterAttribute = Parameters[paramIndex];
 
                 commandText = commandText.Trim();
 
@@ -228,10 +229,10 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             if (Command.IsStatic) arguments.Add(player);
 
-            for (int paramIndex = 0; paramIndex < Parameters.Length; paramIndex++)
+            for (var paramIndex = 0; paramIndex < Parameters.Length; paramIndex++)
             {
-                ParameterInfo parameterInfo = _parameterInfos[paramIndex + (Command.IsStatic ? 1 : 0)];
-                ParameterAttribute parameterAttribute = Parameters[paramIndex];
+                var parameterInfo = _parameterInfos[paramIndex + (Command.IsStatic ? 1 : 0)];
+                var parameterAttribute = Parameters[paramIndex];
 
                 args = args.Trim();
 
@@ -259,7 +260,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 arguments.Add(argument);
             }
 
-            object result = Command.Invoke(Command.IsStatic ? null : player, arguments.ToArray());
+            var result = Command.Invoke(Command.IsStatic ? null : player, arguments.ToArray());
 
             return Command.ReturnType == typeof (void) || (bool) result;
         }
@@ -319,7 +320,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 }
                 else
                 {
-                    foreach (string str in Group.CommandPaths)
+                    foreach (var str in Group.CommandPaths)
                     {
                         yield return string.Format("{0} {1}", str, Name);
 

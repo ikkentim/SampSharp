@@ -16,7 +16,7 @@
 namespace SampSharp.GameMode
 {
     /// <summary>
-    ///     Defines the base implementation for the <see cref="IService"/>.
+    ///     Defines the base implementation for the <see cref="IService" />.
     /// </summary>
     public abstract class Service : IService
     {

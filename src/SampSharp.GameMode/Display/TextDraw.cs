@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
@@ -156,7 +155,7 @@ namespace SampSharp.GameMode.Display
             {
                 _alignment = value;
                 if (Id == -1) return;
-                Internal.TextDrawAlignment(Id, (int)value);
+                Internal.TextDrawAlignment(Id, (int) value);
                 UpdateClients();
             }
         }
@@ -216,7 +215,7 @@ namespace SampSharp.GameMode.Display
             {
                 _font = value;
                 if (Id == -1) return;
-                Internal.TextDrawFont(Id, (int)value);
+                Internal.TextDrawFont(Id, (int) value);
                 UpdateClients();
             }
         }

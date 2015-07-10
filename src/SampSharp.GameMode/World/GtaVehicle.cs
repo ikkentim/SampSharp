@@ -19,7 +19,6 @@ using System.Linq;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Helpers;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.Pools;
 
 namespace SampSharp.GameMode.World
@@ -95,17 +94,17 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets the ID of this <see cref="GtaVehicle" />.
-        /// </summary>
-        public int Id { get; private set; }
-
-        /// <summary>
         ///     Gets the size of the vehicles pool.
         /// </summary>
         public static int PoolSize
         {
             get { return Internal.GetVehiclePoolSize(); }
         }
+
+        /// <summary>
+        ///     Gets the ID of this <see cref="GtaVehicle" />.
+        /// </summary>
+        public int Id { get; private set; }
 
         #endregion
 
@@ -138,7 +137,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual VehicleModelType Model
         {
-            get { return (VehicleModelType)Internal.GetVehicleModel(Id); }
+            get { return (VehicleModelType) Internal.GetVehicleModel(Id); }
         }
 
         /// <summary>
@@ -157,7 +156,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                int id = Internal.GetVehicleTrailer(Id);
+                var id = Internal.GetVehicleTrailer(Id);
                 return id == 0 ? null : Find(id);
             }
             set
@@ -653,7 +652,7 @@ namespace SampSharp.GameMode.World
         public static GtaVehicle Create(int vehicletype, Vector3 position, float rotation, int color1, int color2,
             int respawnDelay = -1, bool addAlarm = false)
         {
-            int id = new[] {449, 537, 538, 569, 570, 590}.Contains(vehicletype)
+            var id = new[] {449, 537, 538, 569, 570, 590}.Contains(vehicletype)
                 ? Internal.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
                     respawnDelay, addAlarm)
                 : Internal.CreateVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
@@ -700,7 +699,8 @@ namespace SampSharp.GameMode.World
         public static GtaVehicle CreateStatic(int vehicletype, Vector3 position, float rotation, int color1, int color2,
             int respawnDelay, bool addAlarm = false)
         {
-            int id = Internal.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
+            var id = Internal.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1,
+                color2,
                 respawnDelay, addAlarm);
 
             return id == InvalidId ? null : FindOrCreate(id);
@@ -717,7 +717,7 @@ namespace SampSharp.GameMode.World
         /// <returns> The <see cref="GtaVehicle" /> created.</returns>
         public static GtaVehicle CreateStatic(int vehicletype, Vector3 position, float rotation, int color1, int color2)
         {
-            int id = Internal.AddStaticVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2);
+            var id = Internal.AddStaticVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2);
 
             return id == InvalidId ? null : FindOrCreate(id);
         }
@@ -802,7 +802,8 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetVehicleParamsEx(Id, (int)engine, (int)lights, (int)alarm, (int)doors, (int)bonnet, (int)boot,
+            Internal.SetVehicleParamsEx(Id, (int) engine, (int) lights, (int) alarm, (int) doors, (int) bonnet,
+                (int) boot,
                 (int) objective);
         }
 
@@ -887,7 +888,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetVehicleParamsCarDoors(Id, (int)driver, (int)passenger, (int)backleft, (int)backright);
+            Internal.SetVehicleParamsCarDoors(Id, (int) driver, (int) passenger, (int) backleft, (int) backright);
         }
 
         /// <summary>
@@ -943,7 +944,8 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetVehicleParamsCarWindows(Id, driver ? 1 : 0, passenger ? 1 : 0, backleft ? 1 : 0, backright ? 1 : 0);
+            Internal.SetVehicleParamsCarWindows(Id, driver ? 1 : 0, passenger ? 1 : 0, backleft ? 1 : 0,
+                backright ? 1 : 0);
         }
 
         /// <summary>
@@ -958,7 +960,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetVehicleParamsCarWindows(Id, (int)driver, (int)passenger, (int)backleft, (int)backright);
+            Internal.SetVehicleParamsCarWindows(Id, (int) driver, (int) passenger, (int) backleft, (int) backright);
         }
 
         /// <summary>
@@ -1089,7 +1091,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.GetVehicleComponentInSlot(Id, (int)slot);
+            return Internal.GetVehicleComponentInSlot(Id, (int) slot);
         }
 
         /// <summary>
@@ -1161,7 +1163,7 @@ namespace SampSharp.GameMode.World
         public static Vector3 GetModelInfo(VehicleModelType model, VehicleModelInfoType infotype)
         {
             float x, y, z;
-            Internal.GetVehicleModelInfo((int)model, (int)infotype, out x, out y, out z);
+            Internal.GetVehicleModelInfo((int) model, (int) infotype, out x, out y, out z);
             return new Vector3(x, y, z);
         }
 

@@ -17,7 +17,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using SampSharp.GameMode.API;
-using SampSharp.GameMode.Natives;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP
@@ -25,7 +24,7 @@ namespace SampSharp.GameMode.SAMP
     /// <summary>
     ///     Contains methods affecting the SA-MP server.
     /// </summary>
-    public static  partial class Server
+    public static partial class Server
     {
         /// <summary>
         ///     Gets the maximum number of players that can join the server, as set by the server var 'maxplayers' in server.cfg.
@@ -37,7 +36,8 @@ namespace SampSharp.GameMode.SAMP
 
         public static string NetworkStats
         {
-            get { 
+            get
+            {
                 string result;
                 Internal.GetNetworkStats(out result, 500);
                 return result;
@@ -64,7 +64,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="time">The time that the connection will be blocked for. 0 can be used for an indefinite block.</param>
         public static void BlockIPAddress(string ip, TimeSpan time)
         {
-            Internal.BlockIpAddress(ip, (int)time.TotalMilliseconds);
+            Internal.BlockIpAddress(ip, (int) time.TotalMilliseconds);
         }
 
         /// <summary>
@@ -97,12 +97,12 @@ namespace SampSharp.GameMode.SAMP
 
             if (typeof (T) == typeof (bool))
             {
-                return (T)Convert.ChangeType(Internal.GetServerVarAsBool(varName), TypeCode.Boolean);
+                return (T) Convert.ChangeType(Internal.GetServerVarAsBool(varName), TypeCode.Boolean);
             }
 
             if (typeof (T) == typeof (int))
             {
-                return (T)Convert.ChangeType(Internal.GetServerVarAsInt(varName), TypeCode.Int32);
+                return (T) Convert.ChangeType(Internal.GetServerVarAsInt(varName), TypeCode.Int32);
             }
 
             throw new NotSupportedException("Type " + typeof (T) + " is not supported by SA:MP");
@@ -151,7 +151,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="toggle">True to log debug output to console, False otherwise.</param>
         public static void ToggleDebugOutput(bool toggle)
         {
-            PrintTraceListener logger = Debug.Listeners.OfType<PrintTraceListener>().FirstOrDefault();
+            var logger = Debug.Listeners.OfType<PrintTraceListener>().FirstOrDefault();
 
             if (toggle && logger == null)
                 Debug.Listeners.Add(new PrintTraceListener());
@@ -171,10 +171,10 @@ namespace SampSharp.GameMode.SAMP
         /// </returns>
         public static GtaPlayer ConnectNPC(string name, string script)
         {
-            int id = -1;
-            int max = MaxPlayers;
+            var id = -1;
+            var max = MaxPlayers;
 
-            for (int i = 0; i < max; i++)
+            for (var i = 0; i < max; i++)
                 if (!Internal.IsPlayerConnected(i))
                     id = i;
 

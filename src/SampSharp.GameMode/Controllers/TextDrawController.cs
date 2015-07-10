@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.PlayerClickTextDraw += (sender, args) =>
             {
-                TextDraw textdraw = args.TextDraw;
+                var textdraw = args.TextDraw;
 
                 if (textdraw != null)
                     textdraw.OnClick(args);
@@ -54,7 +54,7 @@ namespace SampSharp.GameMode.Controllers
         {
             if (disposing)
             {
-                foreach (PlayerTextDraw td in PlayerTextDraw.All)
+                foreach (var td in PlayerTextDraw.All)
                 {
                     td.Dispose();
                 }

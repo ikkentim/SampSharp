@@ -39,14 +39,14 @@ namespace SampSharp.GameMode.Controllers
 
             gameMode.PlayerEditGlobalObject += (sender, args) =>
             {
-                GlobalObject obj = args.Object;
+                var obj = args.Object;
 
                 if (obj != null)
                     obj.OnEdited(args);
             };
             gameMode.PlayerSelectGlobalObject += (sender, args) =>
             {
-                GlobalObject obj = args.Object;
+                var obj = args.Object;
 
                 if (obj != null)
                     obj.OnSelected(args);
@@ -69,7 +69,7 @@ namespace SampSharp.GameMode.Controllers
         {
             if (disposing)
             {
-                foreach (GlobalObject o in GlobalObject.All)
+                foreach (var o in GlobalObject.All)
                 {
                     o.Dispose();
                 }

@@ -1,8 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// SampSharp
+// Copyright 2015 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 using SampSharp.GameMode.Natives;
 
 namespace SampSharp.GameMode.Display
@@ -11,65 +21,6 @@ namespace SampSharp.GameMode.Display
     {
         private static class Internal
         {
-            [Native("TextDrawCreate")]
-            public static readonly TextDrawCreateImpl TextDrawCreate = null;
-            [Native("TextDrawDestroy")]
-            public static readonly TextDrawDestroyImpl TextDrawDestroy = null;
-            [Native("TextDrawLetterSize")]
-            public static readonly TextDrawLetterSizeImpl TextDrawLetterSize = null;
-            [Native("TextDrawTextSize")]
-            public static readonly TextDrawTextSizeImpl TextDrawTextSize = null;
-            [Native("TextDrawAlignment")]
-            public static readonly TextDrawAlignmentImpl TextDrawAlignment = null;
-            [Native("TextDrawColor")]
-            public static readonly TextDrawColorImpl TextDrawColor = null;
-            [Native("TextDrawUseBox")]
-            public static readonly TextDrawUseBoxImpl TextDrawUseBox = null;
-            [Native("TextDrawBoxColor")]
-            public static readonly TextDrawBoxColorImpl TextDrawBoxColor = null;
-            [Native("TextDrawSetShadow")]
-            public static readonly TextDrawSetShadowImpl TextDrawSetShadow = null;
-            [Native("TextDrawSetOutline")]
-            public static readonly TextDrawSetOutlineImpl TextDrawSetOutline = null;
-
-            [Native("TextDrawBackgroundColor")]
-            public static readonly TextDrawBackgroundColorImpl TextDrawBackgroundColor
-                =
-                null;
-
-            [Native("TextDrawFont")]
-            public static readonly TextDrawFontImpl TextDrawFont = null;
-
-            [Native("TextDrawSetProportional")]
-            public static readonly TextDrawSetProportionalImpl TextDrawSetProportional
-                =
-                null;
-
-            [Native("TextDrawSetSelectable")]
-            public static readonly TextDrawSetSelectableImpl TextDrawSetSelectable = null;
-            [Native("TextDrawShowForPlayer")]
-            public static readonly TextDrawShowForPlayerImpl TextDrawShowForPlayer = null;
-            [Native("TextDrawHideForPlayer")]
-            public static readonly TextDrawHideForPlayerImpl TextDrawHideForPlayer = null;
-            [Native("TextDrawShowForAll")]
-            public static readonly TextDrawShowForAllImpl TextDrawShowForAll = null;
-            [Native("TextDrawHideForAll")]
-            public static readonly TextDrawHideForAllImpl TextDrawHideForAll = null;
-            [Native("TextDrawSetString")]
-            public static readonly TextDrawSetStringImpl TextDrawSetString = null;
-
-            [Native("TextDrawSetPreviewModel")]
-            public static readonly TextDrawSetPreviewModelImpl TextDrawSetPreviewModel
-                =
-                null;
-
-            [Native("TextDrawSetPreviewRot")]
-            public static readonly TextDrawSetPreviewRotImpl TextDrawSetPreviewRot = null;
-
-            [Native("TextDrawSetPreviewVehCol")]
-            public static readonly TextDrawSetPreviewVehColImpl
-                TextDrawSetPreviewVehCol = null;
-
             public delegate bool TextDrawAlignmentImpl(int text, int alignment);
 
             public delegate bool TextDrawBackgroundColorImpl(int text, int color);
@@ -114,7 +65,52 @@ namespace SampSharp.GameMode.Display
 
             public delegate bool TextDrawUseBoxImpl(int text, bool use);
 
+            [Native("TextDrawCreate")] public static readonly TextDrawCreateImpl TextDrawCreate = null;
+            [Native("TextDrawDestroy")] public static readonly TextDrawDestroyImpl TextDrawDestroy = null;
+            [Native("TextDrawLetterSize")] public static readonly TextDrawLetterSizeImpl TextDrawLetterSize = null;
+            [Native("TextDrawTextSize")] public static readonly TextDrawTextSizeImpl TextDrawTextSize = null;
+            [Native("TextDrawAlignment")] public static readonly TextDrawAlignmentImpl TextDrawAlignment = null;
+            [Native("TextDrawColor")] public static readonly TextDrawColorImpl TextDrawColor = null;
+            [Native("TextDrawUseBox")] public static readonly TextDrawUseBoxImpl TextDrawUseBox = null;
+            [Native("TextDrawBoxColor")] public static readonly TextDrawBoxColorImpl TextDrawBoxColor = null;
+            [Native("TextDrawSetShadow")] public static readonly TextDrawSetShadowImpl TextDrawSetShadow = null;
+            [Native("TextDrawSetOutline")] public static readonly TextDrawSetOutlineImpl TextDrawSetOutline = null;
 
+            [Native("TextDrawBackgroundColor")] public static readonly TextDrawBackgroundColorImpl
+                TextDrawBackgroundColor
+                    =
+                    null;
+
+            [Native("TextDrawFont")] public static readonly TextDrawFontImpl TextDrawFont = null;
+
+            [Native("TextDrawSetProportional")] public static readonly TextDrawSetProportionalImpl
+                TextDrawSetProportional
+                    =
+                    null;
+
+            [Native("TextDrawSetSelectable")] public static readonly TextDrawSetSelectableImpl TextDrawSetSelectable =
+                null;
+
+            [Native("TextDrawShowForPlayer")] public static readonly TextDrawShowForPlayerImpl TextDrawShowForPlayer =
+                null;
+
+            [Native("TextDrawHideForPlayer")] public static readonly TextDrawHideForPlayerImpl TextDrawHideForPlayer =
+                null;
+
+            [Native("TextDrawShowForAll")] public static readonly TextDrawShowForAllImpl TextDrawShowForAll = null;
+            [Native("TextDrawHideForAll")] public static readonly TextDrawHideForAllImpl TextDrawHideForAll = null;
+            [Native("TextDrawSetString")] public static readonly TextDrawSetStringImpl TextDrawSetString = null;
+
+            [Native("TextDrawSetPreviewModel")] public static readonly TextDrawSetPreviewModelImpl
+                TextDrawSetPreviewModel
+                    =
+                    null;
+
+            [Native("TextDrawSetPreviewRot")] public static readonly TextDrawSetPreviewRotImpl TextDrawSetPreviewRot =
+                null;
+
+            [Native("TextDrawSetPreviewVehCol")] public static readonly TextDrawSetPreviewVehColImpl
+                TextDrawSetPreviewVehCol = null;
         }
     }
 }

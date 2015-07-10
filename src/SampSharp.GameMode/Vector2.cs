@@ -1,3 +1,18 @@
+// SampSharp
+// Copyright 2015 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 using System;
 
 namespace SampSharp.GameMode
@@ -87,9 +102,9 @@ namespace SampSharp.GameMode
         /// <returns>The distance between the vectors.</returns>
         public float DistanceTo(Vector2 other)
         {
-            float dx = X - other.X;
-            float dy = Y - other.Y;
-            return (float)Math.Sqrt(dx * dx + dy * dy);
+            var dx = X - other.X;
+            var dy = Y - other.Y;
+            return (float) Math.Sqrt(dx*dx + dy*dy);
         }
 
         /// <summary>
@@ -97,13 +112,14 @@ namespace SampSharp.GameMode
         /// </summary>
         public void Normalize()
         {
-            float length = Length;
+            var length = Length;
             X /= length;
             Y /= length;
         }
 
         /// <summary>
-        ///     Adds the left <see cref="Vector2" />'s components to the right <see cref="Vector2" />'s components and stores it in a
+        ///     Adds the left <see cref="Vector2" />'s components to the right <see cref="Vector2" />'s components and stores it in
+        ///     a
         ///     new <see cref="Vector2" />.
         /// </summary>
         /// <param name="left">A <see cref="Vector2" />.</param>
@@ -115,7 +131,8 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Subtracts the right <see cref="Vector2" />'s components from the left <see cref="Vector2" />'s components and stores
+        ///     Subtracts the right <see cref="Vector2" />'s components from the left <see cref="Vector2" />'s components and
+        ///     stores
         ///     it in a new <see cref="Vector2" />.
         /// </summary>
         /// <param name="left">A <see cref="Vector2" />.</param>
@@ -138,14 +155,15 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Multiplies the components <see cref="Vector2" /> by the given scalar and stores them in a new <see cref="Vector2" />.
+        ///     Multiplies the components <see cref="Vector2" /> by the given scalar and stores them in a new
+        ///     <see cref="Vector2" />.
         /// </summary>
         /// <param name="vector">The <see cref="Vector2" />.</param>
         /// <param name="scalar">The scalar.</param>
         /// <returns>The new <see cref="Vector2" />.</returns>
         public static Vector2 operator *(Vector2 vector, float scalar)
         {
-            return new Vector2(vector.X * scalar, vector.Y * scalar);
+            return new Vector2(vector.X*scalar, vector.Y*scalar);
         }
 
         /// <summary>
@@ -157,7 +175,7 @@ namespace SampSharp.GameMode
         /// <returns>The new <see cref="Vector2" />.</returns>
         public static Vector2 operator *(Vector2 left, Vector2 right)
         {
-            return new Vector2(left.X * right.X, left.Y * right.Y);
+            return new Vector2(left.X*right.X, left.Y*right.Y);
         }
 
         /// <summary>
@@ -168,7 +186,7 @@ namespace SampSharp.GameMode
         /// <returns>The new <see cref="Vector2" />.</returns>
         public static Vector2 operator /(Vector2 vector, float scalar)
         {
-            return new Vector2(vector.X / scalar, vector.Y / scalar);
+            return new Vector2(vector.X/scalar, vector.Y/scalar);
         }
 
         /// <summary>
@@ -180,7 +198,7 @@ namespace SampSharp.GameMode
         /// <returns>The new <see cref="Vector2" />.</returns>
         public static Vector2 operator /(Vector2 left, Vector2 right)
         {
-            return new Vector2(left.X / right.X, left.Y / right.Y);
+            return new Vector2(left.X/right.X, left.Y/right.Y);
         }
 
         /// <summary>
@@ -229,7 +247,7 @@ namespace SampSharp.GameMode
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Vector2 && Equals((Vector2)obj);
+            return obj is Vector2 && Equals((Vector2) obj);
         }
 
         /// <summary>
@@ -243,8 +261,8 @@ namespace SampSharp.GameMode
         {
             unchecked
             {
-                int hashCode = X.GetHashCode();
-                hashCode = (hashCode * 397) ^ Y.GetHashCode();
+                var hashCode = X.GetHashCode();
+                hashCode = (hashCode*397) ^ Y.GetHashCode();
                 return hashCode;
             }
         }
