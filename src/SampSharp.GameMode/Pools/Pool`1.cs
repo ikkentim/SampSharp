@@ -24,8 +24,8 @@ namespace SampSharp.GameMode.Pools
     /// <summary>
     ///     Keeps track of a pool of instances.
     /// </summary>
-    /// <typeparam name="T">Base type of instances to keep track of.</typeparam>
-    public abstract class Pool<T> : Disposable
+    /// <typeparam name="TInstance">Base type of instances to keep track of.</typeparam>
+    public abstract class Pool<TInstance> : Disposable
     {
         /// <summary>
         ///     The instances alive in this pool.
@@ -35,7 +35,7 @@ namespace SampSharp.GameMode.Pools
         /// <summary>
         ///     A readonly collection of the instances in this pool.
         /// </summary>
-        protected static ReadOnlyCollection<T> ReadOnly = new ReadOnlyCollection<T>(new List<T>());
+        protected static ReadOnlyCollection<TInstance> ReadOnly = new ReadOnlyCollection<TInstance>(new List<TInstance>());
 
         /// <summary>
         ///     A Locker for tread-saving this pool.
@@ -50,14 +50,14 @@ namespace SampSharp.GameMode.Pools
             lock (Lock)
             {
                 Instances.Add(this);
-                ReadOnly = Instances.OfType<T>().ToList().AsReadOnly();
+                ReadOnly = Instances.OfType<TInstance>().ToList().AsReadOnly();
             }
         }
 
         /// <summary>
         ///     Gets a <see cref="ReadOnlyCollection{T}" /> containing all instances of type.
         /// </summary>
-        public static ReadOnlyCollection<T> All
+        public static ReadOnlyCollection<TInstance> All
         {
             get
             {
@@ -76,7 +76,7 @@ namespace SampSharp.GameMode.Pools
             lock (Lock)
             {
                 Instances.Remove(this);
-                ReadOnly = Instances.OfType<T>().ToList().AsReadOnly();
+                ReadOnly = Instances.OfType<TInstance>().ToList().AsReadOnly();
             }
         }
 
@@ -85,7 +85,7 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         /// <param name="item">The instance to check the presence of.</param>
         /// <returns>Whether the given instance is present in the pool.</returns>
-        public static bool Contains(T item)
+        public static bool Contains(TInstance item)
         {
             lock (Lock)
             {

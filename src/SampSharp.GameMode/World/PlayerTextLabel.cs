@@ -23,7 +23,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a player text label.
     /// </summary>
-    public partial class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel>, IIdentifiable, IOwnable<GtaPlayer>
+    public partial class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel, GtaPlayer>, IIdentifiable, IOwnable<GtaPlayer>
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.

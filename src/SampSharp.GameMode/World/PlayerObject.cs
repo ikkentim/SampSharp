@@ -25,7 +25,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a player-object.
     /// </summary>
-    public partial class PlayerObject : IdentifiedOwnedPool<PlayerObject>, IGameObject, IOwnable<GtaPlayer>, IIdentifiable
+    public partial class PlayerObject : IdentifiedOwnedPool<PlayerObject, GtaPlayer>, IGameObject, IOwnable<GtaPlayer>, IIdentifiable
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -135,14 +135,6 @@ namespace SampSharp.GameMode.World
         #endregion
 
         #region Constructor
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PlayerObject" /> class.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        public PlayerObject(int id) : this(GtaPlayer.Find(id/(Max + 1)), id%(Max + 1))
-        {
-        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlayerObject" /> class.

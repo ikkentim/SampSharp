@@ -22,8 +22,9 @@ namespace SampSharp.GameMode.Pools
     /// <summary>
     ///     Keeps track of a pool of owned and identified instances.
     /// </summary>
-    /// <typeparam name="T">Base type of instances to keep track of.</typeparam>
-    public abstract class IdentifiedOwnedPool<T> : Pool<T> where T : class, IIdentifiable, IOwnable<GtaPlayer>
+    /// <typeparam name="TInstance">Base type of instances to keep track of.</typeparam>
+    /// <typeparam name="TOwner">Base type of the owner</typeparam>
+    public abstract class IdentifiedOwnedPool<TInstance, TOwner> : Pool<TInstance> where TInstance : class, IIdentifiable, IOwnable<TOwner> where TOwner : IdentifiedPool<TOwner>, IIdentifiable
     {
         /// <summary>
         ///     The type to initialize when adding an instance to this pool by id.
@@ -45,7 +46,7 @@ namespace SampSharp.GameMode.Pools
         /// <param name="owner">The owner of the instance to find.</param>
         /// <param name="id">The identity of the instance to find.</param>
         /// <returns>The found instance.</returns>
-        public static T Find(GtaPlayer owner, int id)
+        public static TInstance Find(TOwner owner, int id)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
@@ -59,12 +60,12 @@ namespace SampSharp.GameMode.Pools
         /// <param name="owner">The owner of the instance to create.</param>
         /// <param name="id">The identity of the instance to create.</param>
         /// <returns>The initialized instance.</returns>
-        public static T Add(GtaPlayer owner, int id)
+        public static TInstance Add(TOwner owner, int id)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
 
-            return (T) Activator.CreateInstance(InstanceType, owner, id);
+            return (TInstance) Activator.CreateInstance(InstanceType, owner, id);
         }
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace SampSharp.GameMode.Pools
         /// <param name="owner">The owner of the instance to find or create.</param>
         /// <param name="id">The identity of the instance to find or create.</param>
         /// <returns>The found instance.</returns>
-        public static T FindOrCreate(GtaPlayer owner, int id)
+        public static TInstance FindOrCreate(TOwner owner, int id)
         {
             return Find(owner, id) ?? Add(owner, id);
         }

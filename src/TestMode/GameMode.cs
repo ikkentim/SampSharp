@@ -44,7 +44,7 @@ namespace TestMode
             new CharsetTest(),
             new VehicleInfoTest(),
             new NativesTest(),
-            new MapAndreasTest(),
+//            new MapAndreasTest(),
             new KeyHandlerTest(),
             new ExtensionTest(),
             new ActorTest(),
@@ -83,7 +83,7 @@ namespace TestMode
             GtaPlayer.SendClientMessageToAll("Rcon message: {0}", e.Command);
 
             Console.WriteLine("Throwing exception after a stack filter...");
-            StackFiller(1);
+            StackFiller(20);
 
             e.Success = false;
             base.OnRconCommand(e);
