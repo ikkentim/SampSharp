@@ -57,6 +57,9 @@
     <Compile Include="BaseMode.functions.cs">
       <DependentUpon>BaseMode.cs</DependentUpon>
     </Compile>
+    <Compile Include="BaseMode.Internal.cs">
+      <DependentUpon>BaseMode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\ActorController.cs" />
     <Compile Include="Controllers\CommandController.cs" />
     <Compile Include="Controllers\ControllerCollection.cs" />
@@ -84,12 +87,24 @@
     <Compile Include="Definitions\ShopName.cs" />
     <Compile Include="Definitions\TextDrawAlignment.cs" />
     <Compile Include="Definitions\VehicleModelType.cs" />
+    <Compile Include="Display\Dialog.Internal.cs">
+      <DependentUpon>Dialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Display\IDialog.cs" />
     <Compile Include="Display\IMenu.cs" />
     <Compile Include="Display\InputDialog.cs" />
     <Compile Include="Display\ListDialog.cs" />
+    <Compile Include="Display\Menu.Internal.cs">
+      <DependentUpon>Menu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Display\MessageDialog.cs" />
+    <Compile Include="Display\PlayerTextDraw.Internal.cs">
+      <DependentUpon>PlayerTextDraw.cs</DependentUpon>
+    </Compile>
     <Compile Include="Display\TablistDialog.cs" />
+    <Compile Include="Display\TextDraw.Internal.cs">
+      <DependentUpon>TextDraw.cs</DependentUpon>
+    </Compile>
     <Compile Include="Events\ClickPlayerTextDrawEventArgs.cs" />
     <Compile Include="Events\EditGlobalObjectEventArgs.cs" />
     <Compile Include="Events\CancelableEventArgs.cs" />
@@ -118,14 +133,48 @@
     <Compile Include="SAMP\KeyHandlerSet.cs" />
     <Compile Include="SAMP\PrintTraceListener.cs" />
     <Compile Include="SAMP\PriorityKeyHandler.cs" />
+    <Compile Include="SAMP\PVarCollection.Internal.cs">
+      <DependentUpon>PVarCollection.cs</DependentUpon>
+    </Compile>
     <Compile Include="SAMP\Server.cs" />
+    <Compile Include="SAMP\Server.Internal.cs">
+      <DependentUpon>Server.cs</DependentUpon>
+    </Compile>
     <Compile Include="Service.cs" />
     <Compile Include="GameModeServiceContainer.cs" />
     <Compile Include="Tools\ASyncWaiter`2.cs" />
+    <Compile Include="Tools\MapAndreas.Internal.cs">
+      <DependentUpon>MapAndreas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Sync.cs" />
     <Compile Include="Vector2.cs" />
     <Compile Include="World\Actor.cs" />
+    <Compile Include="World\Actor.Internal.cs">
+      <DependentUpon>Actor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="World\GangZone.Internal.cs">
+      <DependentUpon>GangZone.cs</DependentUpon>
+    </Compile>
+    <Compile Include="World\GlobalObject.Internal.cs">
+      <DependentUpon>GlobalObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="World\GtaPlayer.Internal.cs">
+      <DependentUpon>GtaPlayer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="World\GtaVehicle.Internal.cs">
+      <DependentUpon>GtaVehicle.cs</DependentUpon>
+    </Compile>
     <Compile Include="World\Pickup.cs" />
+    <Compile Include="World\Pickup.Internal.cs">
+      <DependentUpon>Pickup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="World\PlayerObject.Internal.cs">
+      <DependentUpon>PlayerObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="World\PlayerTextLabel.Internal.cs">
+      <DependentUpon>PlayerTextLabel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="World\TextLabel.Internal.cs" />
     <Compile Include="World\VehicleModelInfo.cs" />
     <Compile Include="Definitions\VehicleCategory.cs" />
     <Compile Include="Display\Menu.cs" />
@@ -223,6 +272,9 @@
     <Compile Include="SAMP\Timer.cs" />
     <Compile Include="Vector3.cs" />
     <Compile Include="World\GtaVehicle.cs" />
+    <Compile Include="World\VehicleModelInfo.Internal.cs">
+      <DependentUpon>VehicleModelInfo.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

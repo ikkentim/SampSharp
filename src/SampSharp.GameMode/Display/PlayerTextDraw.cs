@@ -26,7 +26,7 @@ namespace SampSharp.GameMode.Display
     /// <summary>
     ///     Represents a player-textdraw.
     /// </summary>
-    public class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw>, IIdentifiable, IOwnable<GtaPlayer>
+    public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw>, IIdentifiable, IOwnable<GtaPlayer>
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -74,6 +74,7 @@ namespace SampSharp.GameMode.Display
         private float _letterHeight;
         private float _letterWidth;
         private int _outline;
+        private Vector2 _position;
         private int _previewModel;
         private int _previewPrimaryColor = -1;
         private Vector3 _previewRotation;
@@ -86,7 +87,6 @@ namespace SampSharp.GameMode.Display
         private bool _useBox;
         private bool _visible;
         private float _width;
-        private Vector2 _position;
 
         #endregion
 
@@ -179,7 +179,7 @@ namespace SampSharp.GameMode.Display
             {
                 _alignment = value;
                 if (Id == -1) return;
-                PlayerTextDrawAlignment(Owner.Id, Id, (int) value);
+                Internal.PlayerTextDrawAlignment(Owner.Id, Id, (int) value);
                 Update();
             }
         }
@@ -194,7 +194,7 @@ namespace SampSharp.GameMode.Display
             {
                 _backColor = value;
                 if (Id == -1) return;
-                PlayerTextDrawBackgroundColor(Owner.Id, Id, value);
+                Internal.PlayerTextDrawBackgroundColor(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -209,7 +209,7 @@ namespace SampSharp.GameMode.Display
             {
                 _foreColor = value;
                 if (Id == -1) return;
-                PlayerTextDrawColor(Owner.Id, Id, value);
+                Internal.PlayerTextDrawColor(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -224,7 +224,7 @@ namespace SampSharp.GameMode.Display
             {
                 _boxColor = value;
                 if (Id == -1) return;
-                PlayerTextDrawBoxColor(Owner.Id, Id, value);
+                Internal.PlayerTextDrawBoxColor(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -239,7 +239,7 @@ namespace SampSharp.GameMode.Display
             {
                 _font = value;
                 if (Id == -1) return;
-                PlayerTextDrawFont(Owner.Id, Id, (int) value);
+                Internal.PlayerTextDrawFont(Owner.Id, Id, (int)value);
                 Update();
             }
         }
@@ -254,7 +254,7 @@ namespace SampSharp.GameMode.Display
             {
                 _letterWidth = value;
                 if (Id == -1) return;
-                PlayerTextDrawLetterSize(Owner.Id, Id, _letterWidth, _letterHeight);
+                Internal.PlayerTextDrawLetterSize(Owner.Id, Id, _letterWidth, _letterHeight);
                 Update();
             }
         }
@@ -269,7 +269,7 @@ namespace SampSharp.GameMode.Display
             {
                 _letterHeight = value;
                 if (Id == -1) return;
-                PlayerTextDrawLetterSize(Owner.Id, Id, _letterWidth, _letterHeight);
+                Internal.PlayerTextDrawLetterSize(Owner.Id, Id, _letterWidth, _letterHeight);
                 Update();
             }
         }
@@ -284,7 +284,7 @@ namespace SampSharp.GameMode.Display
             {
                 _outline = value;
                 if (Id == -1) return;
-                PlayerTextDrawSetOutline(Owner.Id, Id, value);
+                Internal.PlayerTextDrawSetOutline(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -299,7 +299,7 @@ namespace SampSharp.GameMode.Display
             {
                 _proportional = value;
                 if (Id == -1) return;
-                PlayerTextDrawSetProportional(Owner.Id, Id, value);
+                Internal.PlayerTextDrawSetProportional(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -314,7 +314,7 @@ namespace SampSharp.GameMode.Display
             {
                 _shadow = value;
                 if (Id == -1) return;
-                PlayerTextDrawSetShadow(Owner.Id, Id, value);
+                Internal.PlayerTextDrawSetShadow(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -329,7 +329,7 @@ namespace SampSharp.GameMode.Display
             {
                 _text = value;
                 if (Id == -1) return;
-                PlayerTextDrawSetString(Owner.Id, Id, value);
+                Internal.PlayerTextDrawSetString(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -358,7 +358,7 @@ namespace SampSharp.GameMode.Display
             {
                 _width = value;
                 if (Id == -1) return;
-                PlayerTextDrawTextSize(Owner.Id, Id, _width, _height);
+                Internal.PlayerTextDrawTextSize(Owner.Id, Id, _width, _height);
                 Update();
             }
         }
@@ -373,7 +373,7 @@ namespace SampSharp.GameMode.Display
             {
                 _height = value;
                 if (Id == -1) return;
-                PlayerTextDrawTextSize(Owner.Id, Id, _width, _height);
+                Internal.PlayerTextDrawTextSize(Owner.Id, Id, _width, _height);
                 Update();
             }
         }
@@ -388,7 +388,7 @@ namespace SampSharp.GameMode.Display
             {
                 _useBox = value;
                 if (Id == -1) return;
-                PlayerTextDrawUseBox(Owner.Id, Id, value);
+                Internal.PlayerTextDrawUseBox(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -403,7 +403,7 @@ namespace SampSharp.GameMode.Display
             {
                 _selectable = value;
                 if (Id == -1) return;
-                PlayerTextDrawSetSelectable(Owner.Id, Id, value);
+                Internal.PlayerTextDrawSetSelectable(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -418,7 +418,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewModel = value;
                 if (Id == -1) return;
-                PlayerTextDrawSetPreviewModel(Owner.Id, Id, value);
+                Internal.PlayerTextDrawSetPreviewModel(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -433,7 +433,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewRotation = value;
                 if (Id == -1) return;
-                PlayerTextDrawSetPreviewRot(Owner.Id, Id, value.X, value.Y, value.Z, PreviewZoom);
+                Internal.PlayerTextDrawSetPreviewRot(Owner.Id, Id, value.X, value.Y, value.Z, PreviewZoom);
                 Update();
             }
         }
@@ -448,7 +448,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewZoom = value;
                 if (Id == -1) return;
-                PlayerTextDrawSetPreviewRot(Owner.Id, Id, PreviewRotation.X, PreviewRotation.Y,
+                Internal.PlayerTextDrawSetPreviewRot(Owner.Id, Id, PreviewRotation.X, PreviewRotation.Y,
                     PreviewRotation.Z, value);
                 Update();
             }
@@ -464,7 +464,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewPrimaryColor = value;
                 if (Id == -1) return;
-                PlayerTextDrawSetPreviewVehCol(Owner.Id, Id, _previewPrimaryColor,
+                Internal.PlayerTextDrawSetPreviewVehCol(Owner.Id, Id, _previewPrimaryColor,
                     _previewSecondaryColor);
                 Update();
             }
@@ -480,7 +480,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewSecondaryColor = value;
                 if (Id == -1) return;
-                PlayerTextDrawSetPreviewVehCol(Owner.Id, Id, _previewPrimaryColor,
+                Internal.PlayerTextDrawSetPreviewVehCol(Owner.Id, Id, _previewPrimaryColor,
                     _previewSecondaryColor);
                 Update();
             }
@@ -498,122 +498,6 @@ namespace SampSharp.GameMode.Display
 
         #endregion
 
-        #region Natives
-
-        private delegate int CreatePlayerTextDrawImpl(int playerid, float x, float y, string text);
-
-        private delegate bool PlayerTextDrawAlignmentImpl(int playerid, int text, int alignment);
-
-        private delegate bool PlayerTextDrawBackgroundColorImpl(int playerid, int text, int color);
-
-        private delegate bool PlayerTextDrawBoxColorImpl(int playerid, int text, int color);
-
-        private delegate bool PlayerTextDrawColorImpl(int playerid, int text, int color);
-
-        private delegate bool PlayerTextDrawDestroyImpl(int playerid, int text);
-
-        private delegate bool PlayerTextDrawFontImpl(int playerid, int text, int font);
-
-        private delegate bool PlayerTextDrawHideImpl(int playerid, int text);
-
-        private delegate bool PlayerTextDrawLetterSizeImpl(int playerid, int text, float x, float y);
-
-        private delegate bool PlayerTextDrawSetOutlineImpl(int playerid, int text, int size);
-
-        private delegate bool PlayerTextDrawSetPreviewModelImpl(int playerid, int text, int modelindex);
-
-        private delegate bool PlayerTextDrawSetPreviewRotImpl(int playerid, int text, float rotX, float rotY,
-            float rotZ, float zoom);
-
-        private delegate bool PlayerTextDrawSetPreviewVehColImpl(int playerid, int text, int color1, int color2);
-
-        private delegate bool PlayerTextDrawSetProportionalImpl(int playerid, int text, bool set);
-
-        private delegate bool PlayerTextDrawSetSelectableImpl(int playerid, int text, bool set);
-
-        private delegate bool PlayerTextDrawSetShadowImpl(int playerid, int text, int size);
-
-        private delegate bool PlayerTextDrawSetStringImpl(int playerid, int text, string str);
-
-        private delegate bool PlayerTextDrawShowImpl(int playerid, int text);
-
-        private delegate bool PlayerTextDrawTextSizeImpl(int playerid, int text, float x, float y);
-
-        private delegate bool PlayerTextDrawUseBoxImpl(int playerid, int text, bool use);
-
-        [Native("CreatePlayerTextDraw")]
-        private static readonly CreatePlayerTextDrawImpl CreatePlayerTextDraw = null;
-        [Native("PlayerTextDrawDestroy")]
-        private static readonly PlayerTextDrawDestroyImpl PlayerTextDrawDestroy = null;
-
-        [Native("PlayerTextDrawLetterSize")]
-        private static readonly PlayerTextDrawLetterSizeImpl
-            PlayerTextDrawLetterSize = null;
-
-        [Native("PlayerTextDrawTextSize")]
-        private static readonly PlayerTextDrawTextSizeImpl PlayerTextDrawTextSize =
-            null;
-
-        [Native("PlayerTextDrawAlignment")]
-        private static readonly PlayerTextDrawAlignmentImpl PlayerTextDrawAlignment =
-            null;
-
-        [Native("PlayerTextDrawColor")]
-        private static readonly PlayerTextDrawColorImpl PlayerTextDrawColor = null;
-        [Native("PlayerTextDrawUseBox")]
-        private static readonly PlayerTextDrawUseBoxImpl PlayerTextDrawUseBox = null;
-
-        [Native("PlayerTextDrawBoxColor")]
-        private static readonly PlayerTextDrawBoxColorImpl PlayerTextDrawBoxColor =
-            null;
-
-        [Native("PlayerTextDrawSetShadow")]
-        private static readonly PlayerTextDrawSetShadowImpl PlayerTextDrawSetShadow =
-            null;
-
-        [Native("PlayerTextDrawSetOutline")]
-        private static readonly PlayerTextDrawSetOutlineImpl
-            PlayerTextDrawSetOutline = null;
-
-        [Native("PlayerTextDrawBackgroundColor")]
-        private static readonly PlayerTextDrawBackgroundColorImpl
-            PlayerTextDrawBackgroundColor = null;
-
-        [Native("PlayerTextDrawFont")]
-        private static readonly PlayerTextDrawFontImpl PlayerTextDrawFont = null;
-
-        [Native("PlayerTextDrawSetProportional")]
-        private static readonly PlayerTextDrawSetProportionalImpl
-            PlayerTextDrawSetProportional = null;
-
-        [Native("PlayerTextDrawSetSelectable")]
-        private static readonly PlayerTextDrawSetSelectableImpl
-            PlayerTextDrawSetSelectable = null;
-
-        [Native("PlayerTextDrawShow")]
-        private static readonly PlayerTextDrawShowImpl PlayerTextDrawShow = null;
-        [Native("PlayerTextDrawHide")]
-        private static readonly PlayerTextDrawHideImpl PlayerTextDrawHide = null;
-
-        [Native("PlayerTextDrawSetString")]
-        private static readonly PlayerTextDrawSetStringImpl PlayerTextDrawSetString =
-            null;
-
-        [Native("PlayerTextDrawSetPreviewModel")]
-        private static readonly PlayerTextDrawSetPreviewModelImpl
-            PlayerTextDrawSetPreviewModel = null;
-
-        [Native("PlayerTextDrawSetPreviewRot")]
-        private static readonly PlayerTextDrawSetPreviewRotImpl
-            PlayerTextDrawSetPreviewRot = null;
-
-        [Native("PlayerTextDrawSetPreviewVehCol")]
-        private static readonly PlayerTextDrawSetPreviewVehColImpl
-            PlayerTextDrawSetPreviewVehCol = null;
-
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -626,7 +510,7 @@ namespace SampSharp.GameMode.Display
 
             if (Id == -1) return;
 
-            PlayerTextDrawDestroy(Owner.Id, Id);
+            Internal.PlayerTextDrawDestroy(Owner.Id, Id);
         }
 
         /// <summary>
@@ -639,7 +523,7 @@ namespace SampSharp.GameMode.Display
             if (Id == -1) Refresh();
             _visible = true;
 
-            PlayerTextDrawShow(Owner.Id, Id);
+            Internal.PlayerTextDrawShow(Owner.Id, Id);
         }
 
         /// <summary>
@@ -652,11 +536,11 @@ namespace SampSharp.GameMode.Display
             if (Id == -1 || !_visible) return;
             _visible = false;
 
-            PlayerTextDrawHide(Owner.Id, Id);
+            Internal.PlayerTextDrawHide(Owner.Id, Id);
 
             if (AutoDestroy)
             {
-                PlayerTextDrawDestroy(Owner.Id, Id);
+                Internal.PlayerTextDrawDestroy(Owner.Id, Id);
                 Id = -1;
             }
         }
@@ -668,8 +552,8 @@ namespace SampSharp.GameMode.Display
         {
             Hide();
 
-            if (Id != -1) PlayerTextDrawDestroy(Owner.Id, Id);
-            Id = CreatePlayerTextDraw(Owner.Id, Position.X, Position.Y, FixString(Text));
+            if (Id != -1) Internal.PlayerTextDrawDestroy(Owner.Id, Id);
+            Id = Internal.CreatePlayerTextDraw(Owner.Id, Position.X, Position.Y, FixString(Text));
 
             //Reset properties
             if (Alignment != default(TextDrawAlignment)) Alignment = Alignment;

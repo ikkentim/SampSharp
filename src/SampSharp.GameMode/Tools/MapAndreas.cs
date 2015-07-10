@@ -30,7 +30,7 @@ namespace SampSharp.GameMode.Tools
     ///     this logic has been copied from MapAndreas v1.2 released at
     ///     http://forum.sa-mp.com/showthread.php?t=275492
     /// </remarks>
-    public static class MapAndreas
+    public static partial class MapAndreas
     {
         private const string FullFile = "scriptfiles/SAfull.hmap";
         private const string MinimalFile = "scriptfiles/SAmin.hmap";
@@ -39,18 +39,12 @@ namespace SampSharp.GameMode.Tools
         private static FileStream _fileStream;
         private static ushort[] _data;
 
-        private static INative _nativeInit;
-        private static INative _nativeUnload;
-        private static INative _nativeFindZ;
-        private static INative _nativeFindAvgZ;
-        private static INative _nativeSetZ;
-        private static INative _native_SaveCurrentHMap;
         private static bool IsPluginLoaded()
         {
             /*
              * Require version 1.2 or newer
              */
-            return Native.Exists("MapAndreas_SaveCurrentHMap");
+            return Internal.SaveCurrentHMap != null;
         }
 
         /// <summary>
@@ -70,14 +64,7 @@ namespace SampSharp.GameMode.Tools
 
             if (IsPluginLoaded())
             {
-                _nativeInit = Native.Load("MapAndreas_Init", typeof(int), typeof(string), typeof(int));
-                _nativeUnload = Native.Load("MapAndreas_Unload");
-                _nativeFindZ = Native.Load("MapAndreas_FindZ_For2DCoord", typeof(float), typeof(float), typeof(float).MakeByRefType());
-                _nativeFindAvgZ = Native.Load("MapAndreas_FindAverageZ", typeof(float), typeof(float), typeof(float).MakeByRefType());
-                _nativeSetZ = Native.Load("MapAndreas_SetZ_For2DCoord", typeof(float), typeof(float), typeof(float));
-                _native_SaveCurrentHMap = Native.Load("MapAndreas_SaveCurrentHMap", typeof(string));
-
-                _nativeInit.Invoke((int) mode, string.Empty, 1);
+                Internal.Init((int) mode, string.Empty, 1);
                 _usePlugin = true;
                 return;
             }
@@ -141,7 +128,7 @@ namespace SampSharp.GameMode.Tools
         {
             if (_usePlugin)
             {
-                _nativeUnload.Invoke();
+                Internal.Unload();
 
                 _usePlugin = false;
                 _mode = MapAndreasMode.None;
@@ -175,7 +162,7 @@ namespace SampSharp.GameMode.Tools
             if (_usePlugin)
             {
                 float result;
-                _nativeFindZ.Invoke(__arglist(x, y, out result));
+                Internal.FindZ(x, y, out result);
                 return result;
             }
             // check for a co-ord outside the map
@@ -224,7 +211,7 @@ namespace SampSharp.GameMode.Tools
             if (_usePlugin)
             {
                 float result;
-                _nativeFindAvgZ.Invoke(__arglist(x, y, out result));
+                Internal.FindAverageZ(x, y, out result);
                 return result;
             }
 
@@ -266,7 +253,7 @@ namespace SampSharp.GameMode.Tools
         {
             if (_usePlugin)
             {
-                return _nativeSetZ.InvokeBool(x, y, z);
+                return Internal.SetZ(x, y, z);
             }
 
             if (x < -3000.0f || x > 3000.0f || y > 3000.0f || y < -3000.0f) return false;
@@ -311,7 +298,7 @@ namespace SampSharp.GameMode.Tools
         {
             if (_usePlugin)
             {
-                return _native_SaveCurrentHMap.InvokeBool(file);
+                return Internal.SaveCurrentHMap(file);
             }
 
             try

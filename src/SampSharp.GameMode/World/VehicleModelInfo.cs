@@ -15,14 +15,13 @@
 
 using System;
 using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.Natives;
 
 namespace SampSharp.GameMode.World
 {
     /// <summary>
     ///     Contains vehicle category infos.
     /// </summary>
-    public struct VehicleModelInfo
+    public partial struct VehicleModelInfo
     {
         #region Fields
 
@@ -278,19 +277,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                GetVehicleModelInfo((int) Type, (int) infotype, out x, out y, out z);
+                Internal.GetVehicleModelInfo((int) Type, (int) infotype, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
         }
-
-        #region Natives
-
-        private delegate bool GetVehicleModelInfoImpl(int model, int infotype, out float x, out float y, out float z);
-
-        [Native("GetVehicleModelInfo")]
-        private static readonly GetVehicleModelInfoImpl GetVehicleModelInfo = null;
-
-        #endregion
 
         /// <summary>
         ///     Returns an instance of <see cref="VehicleModelInfo" /> containing information about the given Vehicle.
@@ -308,7 +298,7 @@ namespace SampSharp.GameMode.World
 
             if (model < 400 || model > 611)
             {
-                throw new ArgumentOutOfRangeException("vehicle's model is non-existant");
+                throw new ArgumentOutOfRangeException("vehicle", "vehicle's model is non-existant");
             }
 
             return VehicleModelInfos[model - 400];
@@ -324,7 +314,7 @@ namespace SampSharp.GameMode.World
         {
             if ((int) model < 400 || (int) model > 611)
             {
-                throw new ArgumentOutOfRangeException("vehicle's model is non-existant");
+                throw new ArgumentOutOfRangeException("model", "model is non-existant");
             }
 
             return VehicleModelInfos[(int) model - 400];

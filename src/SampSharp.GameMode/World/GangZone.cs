@@ -23,7 +23,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a gang zone.
     /// </summary>
-    public class GangZone : IdentifiedPool<GangZone>, IIdentifiable
+    public partial class GangZone : IdentifiedPool<GangZone>, IIdentifiable
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -44,7 +44,7 @@ namespace SampSharp.GameMode.World
         /// <param name="maxY">The maximum y.</param>
         public GangZone(float minX, float minY, float maxX, float maxY)
         {
-            Id = GangZoneCreate(minX, minY, maxX, maxY);
+            Id = Internal.GangZoneCreate(minX, minY, maxX, maxY);
 
             MinX = minX;
             MaxX = maxX;
@@ -82,58 +82,6 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Id { get; private set; }
 
-        #region Natives
-
-        private delegate int GangZoneCreateImpl(float minx, float miny, float maxx, float maxy);
-
-        private delegate bool GangZoneDestroyImpl(int zone);
-
-        private delegate bool GangZoneFlashForAllImpl(int zone, int flashcolor);
-
-        private delegate bool GangZoneFlashForPlayerImpl(int playerid, int zone, int flashcolor);
-
-        private delegate bool GangZoneHideForAllImpl(int zone);
-
-        private delegate bool GangZoneHideForPlayerImpl(int playerid, int zone);
-
-        private delegate bool GangZoneShowForAllImpl(int zone, int color);
-
-        private delegate bool GangZoneShowForPlayerImpl(int playerid, int zone, int color);
-
-        private delegate bool GangZoneStopFlashForAllImpl(int zone);
-
-        private delegate bool GangZoneStopFlashForPlayerImpl(int playerid, int zone);
-
-        [Native("GangZoneCreate")]
-        private static readonly GangZoneCreateImpl GangZoneCreate = null;
-        [Native("GangZoneDestroy")]
-        private static readonly GangZoneDestroyImpl GangZoneDestroy = null;
-        [Native("GangZoneShowForPlayer")]
-        private static readonly GangZoneShowForPlayerImpl GangZoneShowForPlayer = null;
-        [Native("GangZoneShowForAll")]
-        private static readonly GangZoneShowForAllImpl GangZoneShowForAll = null;
-        [Native("GangZoneHideForPlayer")]
-        private static readonly GangZoneHideForPlayerImpl GangZoneHideForPlayer = null;
-        [Native("GangZoneHideForAll")]
-        private static readonly GangZoneHideForAllImpl GangZoneHideForAll = null;
-
-        [Native("GangZoneFlashForPlayer")]
-        private static readonly GangZoneFlashForPlayerImpl GangZoneFlashForPlayer =
-            null;
-
-        [Native("GangZoneFlashForAll")]
-        private static readonly GangZoneFlashForAllImpl GangZoneFlashForAll = null;
-
-        [Native("GangZoneStopFlashForPlayer")]
-        private static readonly GangZoneStopFlashForPlayerImpl
-            GangZoneStopFlashForPlayer = null;
-
-        [Native("GangZoneStopFlashForAll")]
-        private static readonly GangZoneStopFlashForAllImpl GangZoneStopFlashForAll =
-            null;
-
-        #endregion
-
         /// <summary>
         ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -142,7 +90,7 @@ namespace SampSharp.GameMode.World
         {
             base.Dispose(disposing);
 
-            GangZoneDestroy(Id);
+            Internal.GangZoneDestroy(Id);
         }
 
         /// <summary>
@@ -152,7 +100,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            GangZoneShowForAll(Id, Color);
+            Internal.GangZoneShowForAll(Id, Color);
         }
 
         /// <summary>
@@ -165,7 +113,7 @@ namespace SampSharp.GameMode.World
             if (player == null) throw new ArgumentNullException("player");
             AssertNotDisposed();
 
-            GangZoneShowForPlayer(player.Id, Id, Color);
+            Internal.GangZoneShowForPlayer(player.Id, Id, Color);
         }
 
         /// <summary>
@@ -175,7 +123,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            GangZoneHideForAll(Id);
+            Internal.GangZoneHideForAll(Id);
         }
 
         /// <summary>
@@ -188,7 +136,7 @@ namespace SampSharp.GameMode.World
             if (player == null) throw new ArgumentNullException("player");
             AssertNotDisposed();
 
-            GangZoneHideForPlayer(player.Id, Id);
+            Internal.GangZoneHideForPlayer(player.Id, Id);
         }
 
         /// <summary>
@@ -199,7 +147,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            GangZoneFlashForAll(Id, color);
+            Internal.GangZoneFlashForAll(Id, color);
         }
 
         /// <summary>
@@ -224,7 +172,7 @@ namespace SampSharp.GameMode.World
             if (player == null) throw new ArgumentNullException("player");
             AssertNotDisposed();
 
-            GangZoneFlashForPlayer(player.Id, Id, color);
+            Internal.GangZoneFlashForPlayer(player.Id, Id, color);
         }
 
         /// <summary>
@@ -234,7 +182,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            GangZoneStopFlashForAll(Id);
+            Internal.GangZoneStopFlashForAll(Id);
         }
 
         /// <summary>
@@ -249,7 +197,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            GangZoneStopFlashForPlayer(player.Id, Id);
+            Internal.GangZoneStopFlashForPlayer(player.Id, Id);
         }
     }
 }

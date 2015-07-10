@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.Diagnostics;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Natives;
@@ -31,10 +32,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="message">A message to write.</param>
         public override void Write(string message)
         {
-            if (Sync.IsRequired)
-                Sync.Run(() => Server.Print(message));
-            else
-                Server.Print(message);
+            Console.WriteLine(message);
         }
 
         /// <summary>

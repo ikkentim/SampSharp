@@ -25,7 +25,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a player-object.
     /// </summary>
-    public class PlayerObject : IdentifiedOwnedPool<PlayerObject>, IGameObject, IOwnable<GtaPlayer>, IIdentifiable
+    public partial class PlayerObject : IdentifiedOwnedPool<PlayerObject>, IGameObject, IOwnable<GtaPlayer>, IIdentifiable
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -47,10 +47,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                GetPlayerObjectRot(Owner.Id, Id, out x, out y, out z);
+                Internal.GetPlayerObjectRot(Owner.Id, Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { SetPlayerObjectRot(Owner.Id, Id, value.X, value.Y, value.Z); }
+            set { Internal.SetPlayerObjectRot(Owner.Id, Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
@@ -61,10 +61,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                GetPlayerObjectPos(Owner.Id, Id, out x, out y, out z);
+                Internal.GetPlayerObjectPos(Owner.Id, Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { SetPlayerObjectPos(Owner.Id, Id, value.X, value.Y, value.Z); }
+            set { Internal.SetPlayerObjectPos(Owner.Id, Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual bool IsMoving
         {
-            get { return IsPlayerObjectMoving(Owner.Id, Id); }
+            get { return Internal.IsPlayerObjectMoving(Owner.Id, Id); }
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual bool IsValid
         {
-            get { return IsValidPlayerObject(Owner.Id, Id); }
+            get { return Internal.IsValidPlayerObject(Owner.Id, Id); }
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 AssertNotDisposed();
-                return GetPlayerObjectModel(Owner.Id, Id);
+                return Internal.GetPlayerObjectModel(Owner.Id, Id);
             }
         }
 
@@ -188,115 +188,9 @@ namespace SampSharp.GameMode.World
             Owner = owner;
             DrawDistance = drawDistance;
 
-            Id = CreatePlayerObject(owner.Id, modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y,
+            Id = Internal.CreatePlayerObject(owner.Id, modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y,
                 rotation.Z, drawDistance);
         }
-
-        #endregion
-
-        #region Natives
-
-        private delegate bool AttachCameraToPlayerObjectImpl(int playerid, int playerobjectid);
-
-        private delegate bool AttachPlayerObjectToPlayerImpl(int objectplayer, int objectid, int attachplayerid,
-            float offsetX, float offsetY, float offsetZ, float rX, float rY, float rZ);
-
-        private delegate bool AttachPlayerObjectToVehicleImpl(int playerid, int objectid, int vehicleid, float offsetX,
-            float offsetY, float offsetZ, float rotX, float rotY, float rotZ);
-
-        private delegate int CreatePlayerObjectImpl(int playerid, int modelid, float x, float y, float z, float rX,
-            float rY, float rZ, float drawDistance);
-
-        private delegate bool DestroyPlayerObjectImpl(int playerid, int objectid);
-
-        private delegate bool EditPlayerObjectImpl(int playerid, int objectid);
-
-        private delegate int GetPlayerObjectModelImpl(int playerid, int objectid);
-
-        private delegate bool GetPlayerObjectPosImpl(int playerid, int objectid, out float x, out float y, out float z);
-
-        private delegate bool GetPlayerObjectRotImpl(int playerid, int objectid, out float rotX, out float rotY,
-            out float rotZ);
-
-        private delegate bool IsPlayerObjectMovingImpl(int playerid, int objectid);
-
-        private delegate bool IsValidPlayerObjectImpl(int playerid, int objectid);
-
-        private delegate int MovePlayerObjectImpl(int playerid, int objectid, float x, float y, float z, float speed,
-            float rotX, float rotY, float rotZ);
-
-        private delegate bool SetPlayerObjectMaterialImpl(int playerid, int objectid, int materialindex, int modelid,
-            string txdname, string texturename, int materialcolor);
-
-        private delegate bool SetPlayerObjectMaterialTextImpl(int playerid, int objectid, string text, int materialindex,
-            int materialsize, string fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment);
-
-        private delegate bool SetPlayerObjectNoCameraColImpl(int playerid, int objectid);
-
-        private delegate bool SetPlayerObjectPosImpl(int playerid, int objectid, float x, float y, float z);
-
-        private delegate bool SetPlayerObjectRotImpl(int playerid, int objectid, float rotX, float rotY, float rotZ);
-
-        private delegate bool StopPlayerObjectImpl(int playerid, int objectid);
-
-        private delegate bool SelectObjectImpl(int playerid);
-
-
-        [Native("AttachCameraToPlayerObject")]
-        private static readonly AttachCameraToPlayerObjectImpl
-            NativeAttachCameraToPlayerObject = null;
-
-        [Native("EditPlayerObject")]
-        private static readonly EditPlayerObjectImpl EditPlayerObject = null;
-
-        [Native("CreatePlayerObject")]
-        private static readonly CreatePlayerObjectImpl CreatePlayerObject = null;
-
-
-        [Native("AttachPlayerObjectToPlayer")]
-        private static readonly AttachPlayerObjectToPlayerImpl
-            AttachPlayerObjectToPlayer = null;
-
-        [Native("AttachPlayerObjectToVehicle")]
-        private static readonly AttachPlayerObjectToVehicleImpl
-            AttachPlayerObjectToVehicle = null;
-
-        [Native("SetPlayerObjectPos")]
-        private static readonly SetPlayerObjectPosImpl SetPlayerObjectPos = null;
-        [Native("GetPlayerObjectPos")]
-        private static readonly GetPlayerObjectPosImpl GetPlayerObjectPos = null;
-        [Native("SetPlayerObjectRot")]
-        private static readonly SetPlayerObjectRotImpl SetPlayerObjectRot = null;
-        [Native("GetPlayerObjectRot")]
-        private static readonly GetPlayerObjectRotImpl GetPlayerObjectRot = null;
-        [Native("GetPlayerObjectModel")]
-        private static readonly GetPlayerObjectModelImpl GetPlayerObjectModel = null;
-
-        [Native("SetPlayerObjectNoCameraCol")]
-        private static readonly SetPlayerObjectNoCameraColImpl
-            SetPlayerObjectNoCameraCol = null;
-
-        [Native("IsValidPlayerObject")]
-        private static readonly IsValidPlayerObjectImpl IsValidPlayerObject = null;
-        [Native("DestroyPlayerObject")]
-        private static readonly DestroyPlayerObjectImpl DestroyPlayerObject = null;
-        [Native("MovePlayerObject")]
-        private static readonly MovePlayerObjectImpl MovePlayerObject = null;
-        [Native("StopPlayerObject")]
-        private static readonly StopPlayerObjectImpl StopPlayerObject = null;
-        [Native("IsPlayerObjectMoving")]
-        private static readonly IsPlayerObjectMovingImpl IsPlayerObjectMoving = null;
-
-        [Native("SetPlayerObjectMaterial")]
-        private static readonly SetPlayerObjectMaterialImpl SetPlayerObjectMaterial =
-            null;
-
-        [Native("SetPlayerObjectMaterialText")]
-        private static readonly SetPlayerObjectMaterialTextImpl
-            SetPlayerObjectMaterialText = null;
-
-        [Native("SelectObject")]
-        private static readonly SelectObjectImpl SelectObject = null;
 
         #endregion
 
@@ -308,7 +202,7 @@ namespace SampSharp.GameMode.World
         public virtual void DisableCameraCollisions()
         {
             AssertNotDisposed();
-            SetPlayerObjectNoCameraCol(Owner.Id, Id);
+            Internal.SetPlayerObjectNoCameraCol(Owner.Id, Id);
         }
 
         /// <summary>
@@ -324,7 +218,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return MovePlayerObject(Owner.Id, Id, position.X, position.Y, position.Z, speed, rotation.X,
+            return Internal.MovePlayerObject(Owner.Id, Id, position.X, position.Y, position.Z, speed, rotation.X,
                 rotation.Y, rotation.Z);
         }
 
@@ -340,7 +234,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return MovePlayerObject(Owner.Id, Id, position.X, position.Y, position.Z, speed, -1000,
+            return Internal.MovePlayerObject(Owner.Id, Id, position.X, position.Y, position.Z, speed, -1000,
                 -1000, -1000);
         }
 
@@ -351,7 +245,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            StopPlayerObject(Owner.Id, Id);
+            Internal.StopPlayerObject(Owner.Id, Id);
         }
 
         /// <summary>
@@ -370,7 +264,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SetPlayerObjectMaterial(Owner.Id, Id, materialindex, modelid, txdname, texturename,
+            Internal.SetPlayerObjectMaterial(Owner.Id, Id, materialindex, modelid, txdname, texturename,
                 materialcolor.ToInteger(ColorFormat.ARGB));
         }
 
@@ -392,7 +286,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SetPlayerObjectMaterialText(Owner.Id, Id, text, materialindex, (int) materialsize,
+            Internal.SetPlayerObjectMaterialText(Owner.Id, Id, text, materialindex, (int)materialsize,
                 fontface, fontsize, bold,
                 foreColor.ToInteger(ColorFormat.ARGB), backColor.ToInteger(ColorFormat.ARGB),
                 (int) textalignment);
@@ -412,7 +306,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            AttachPlayerObjectToPlayer(Owner.Id, Id, player.Id, offset.X, offset.Y, offset.Z, rotation.X,
+            Internal.AttachPlayerObjectToPlayer(Owner.Id, Id, player.Id, offset.X, offset.Y, offset.Z, rotation.X,
                 rotation.Y, rotation.Z);
         }
 
@@ -430,7 +324,7 @@ namespace SampSharp.GameMode.World
             if (vehicle == null)
                 throw new ArgumentNullException("vehicle");
 
-            AttachPlayerObjectToVehicle(Owner.Id, Id, vehicle.Id, offset.X, offset.Y, offset.Z, rotation.X,
+            Internal.AttachPlayerObjectToVehicle(Owner.Id, Id, vehicle.Id, offset.X, offset.Y, offset.Z, rotation.X,
                 rotation.Y, rotation.Z);
         }
 
@@ -444,8 +338,8 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeAttachCameraToPlayerObject(Owner.Id, Id);
-        }
+            Internal.NativeAttachCameraToPlayerObject(Owner.Id, Id);
+        }        
 
         /// <summary>
         ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -455,7 +349,7 @@ namespace SampSharp.GameMode.World
         {
             base.Dispose(disposing);
 
-            DestroyPlayerObject(Owner.Id, Id);
+            Internal.DestroyPlayerObject(Owner.Id, Id);
         }
 
         /// <summary>
@@ -465,7 +359,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            EditPlayerObject(Owner.Id, Id);
+            Internal.EditPlayerObject(Owner.Id, Id);
         }
 
         /// <summary>
@@ -478,7 +372,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            SelectObject(player.Id);
+            Internal.SelectObject(player.Id);
         }
 
         #endregion

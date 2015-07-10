@@ -27,7 +27,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a SA-MP player.
     /// </summary>
-    public class GtaPlayer : IdentifiedPool<GtaPlayer>, IIdentifiable, IWorldObject
+    public partial class GtaPlayer : IdentifiedPool<GtaPlayer>, IIdentifiable, IWorldObject
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -126,7 +126,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public static int PoolSize
         {
-            get { return GetPlayerPoolSize(); }
+            get { return Internal.GetPlayerPoolSize(); }
         }
 
         #endregion
@@ -141,10 +141,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 string name;
-                GetPlayerName(Id, out name, MaxNameLength);
+                Internal.GetPlayerName(Id, out name, MaxNameLength);
                 return name;
             }
-            set { SetPlayerName(Id, value); }
+            set { Internal.SetPlayerName(Id, value); }
         }
 
         /// <summary>
@@ -155,10 +155,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float angle;
-                GetPlayerFacingAngle(Id, out angle);
+                Internal.GetPlayerFacingAngle(Id, out angle);
                 return angle;
             }
-            set { SetPlayerFacingAngle(Id, value); }
+            set { Internal.SetPlayerFacingAngle(Id, value); }
         }
 
         /// <summary>
@@ -166,8 +166,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Interior
         {
-            get { return GetPlayerInterior(Id); }
-            set { SetPlayerInterior(Id, value); }
+            get { return Internal.GetPlayerInterior(Id); }
+            set { Internal.SetPlayerInterior(Id, value); }
         }
 
         /// <summary>
@@ -175,8 +175,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int VirtualWorld
         {
-            get { return GetPlayerVirtualWorld(Id); }
-            set { SetPlayerVirtualWorld(Id, value); }
+            get { return Internal.GetPlayerVirtualWorld(Id); }
+            set { Internal.SetPlayerVirtualWorld(Id, value); }
         }
 
         /// <summary>
@@ -187,10 +187,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float health;
-                GetPlayerHealth(Id, out health);
+                Internal.GetPlayerHealth(Id, out health);
                 return health;
             }
-            set { SetPlayerHealth(Id, value); }
+            set { Internal.SetPlayerHealth(Id, value); }
         }
 
         /// <summary>
@@ -201,10 +201,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float armour;
-                GetPlayerArmour(Id, out armour);
+                Internal.GetPlayerArmour(Id, out armour);
                 return armour;
             }
-            set { SetPlayerArmour(Id, value); }
+            set { Internal.SetPlayerArmour(Id, value); }
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int WeaponAmmo
         {
-            get { return GetPlayerAmmo(Id); }
+            get { return Internal.GetPlayerAmmo(Id); }
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual WeaponState WeaponState
         {
-            get { return (WeaponState) GetPlayerWeaponState(Id); }
+            get { return (WeaponState)Internal.GetPlayerWeaponState(Id); }
         }
 
         /// <summary>
@@ -228,7 +228,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual Weapon Weapon
         {
-            get { return (Weapon) GetPlayerWeapon(Id); }
+            get { return (Weapon)Internal.GetPlayerWeapon(Id); }
         }
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                int target = GetPlayerTargetPlayer(Id);
+                int target = Internal.GetPlayerTargetPlayer(Id);
                 return target == InvalidId ? null : Find(target);
             }
         }
@@ -248,8 +248,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Team
         {
-            get { return GetPlayerTeam(Id); }
-            set { SetPlayerTeam(Id, value); }
+            get { return Internal.GetPlayerTeam(Id); }
+            set { Internal.SetPlayerTeam(Id, value); }
         }
 
         /// <summary>
@@ -257,8 +257,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Score
         {
-            get { return GetPlayerScore(Id); }
-            set { SetPlayerScore(Id, value); }
+            get { return Internal.GetPlayerScore(Id); }
+            set { Internal.SetPlayerScore(Id, value); }
         }
 
         /// <summary>
@@ -266,8 +266,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int DrunkLevel
         {
-            get { return GetPlayerDrunkLevel(Id); }
-            set { SetPlayerDrunkLevel(Id, value); }
+            get { return Internal.GetPlayerDrunkLevel(Id); }
+            set { Internal.SetPlayerDrunkLevel(Id, value); }
         }
 
         /// <summary>
@@ -275,8 +275,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual Color Color
         {
-            get { return new Color(GetPlayerColor(Id)); }
-            set { SetPlayerColor(Id, value); }
+            get { return new Color(Internal.GetPlayerColor(Id)); }
+            set { Internal.SetPlayerColor(Id, value); }
         }
 
         /// <summary>
@@ -284,8 +284,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Skin
         {
-            get { return GetPlayerSkin(Id); }
-            set { SetPlayerSkin(Id, value); }
+            get { return Internal.GetPlayerSkin(Id); }
+            set { Internal.SetPlayerSkin(Id, value); }
         }
 
         /// <summary>
@@ -293,11 +293,11 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Money
         {
-            get { return GetPlayerMoney(Id); }
+            get { return Internal.GetPlayerMoney(Id); }
             set
             {
-                ResetPlayerMoney(Id);
-                GivePlayerMoney(Id, value);
+                Internal.ResetPlayerMoney(Id);
+                Internal.GivePlayerMoney(Id, value);
             }
         }
 
@@ -306,7 +306,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual PlayerState State
         {
-            get { return (PlayerState) GetPlayerState(Id); }
+            get { return (PlayerState)Internal.GetPlayerState(Id); }
         }
 
         /// <summary>
@@ -317,7 +317,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 string ip;
-                GetPlayerIp(Id, out ip, 16);
+                Internal.GetPlayerIp(Id, out ip, 16);
                 return ip;
             }
         }
@@ -327,7 +327,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Ping
         {
-            get { return GetPlayerPing(Id); }
+            get { return Internal.GetPlayerPing(Id); }
         }
 
         /// <summary>
@@ -335,8 +335,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int WantedLevel
         {
-            get { return GetPlayerWantedLevel(Id); }
-            set { SetPlayerWantedLevel(Id, value); }
+            get { return Internal.GetPlayerWantedLevel(Id); }
+            set { Internal.SetPlayerWantedLevel(Id, value); }
         }
 
         /// <summary>
@@ -344,8 +344,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual FightStyle FightStyle
         {
-            get { return (FightStyle) GetPlayerFightingStyle(Id); }
-            set { SetPlayerFightingStyle(Id, (int) value); }
+            get { return (FightStyle)Internal.GetPlayerFightingStyle(Id); }
+            set { Internal.SetPlayerFightingStyle(Id, (int)value); }
         }
 
         /// <summary>
@@ -356,10 +356,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                GetPlayerVelocity(Id, out x, out y, out z);
+                Internal.GetPlayerVelocity(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { SetPlayerVelocity(Id, value.X, value.Y, value.Z); }
+            set { Internal.SetPlayerVelocity(Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
@@ -367,7 +367,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int VehicleSeat
         {
-            get { return GetPlayerVehicleSeat(Id); }
+            get { return Internal.GetPlayerVehicleSeat(Id); }
         }
 
         /// <summary>
@@ -375,7 +375,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int AnimationIndex
         {
-            get { return GetPlayerAnimationIndex(Id); }
+            get { return Internal.GetPlayerAnimationIndex(Id); }
         }
 
         /// <summary>
@@ -383,8 +383,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual SpecialAction SpecialAction
         {
-            get { return (SpecialAction) GetPlayerSpecialAction(Id); }
-            set { SetPlayerSpecialAction(Id, (int) value); }
+            get { return (SpecialAction)Internal.GetPlayerSpecialAction(Id); }
+            set { Internal.SetPlayerSpecialAction(Id, (int)value); }
         }
 
         /// <summary>
@@ -396,10 +396,10 @@ namespace SampSharp.GameMode.World
             {
                 float x, y, z;
 
-                GetPlayerCameraPos(Id, out x, out y, out z);
+                Internal.GetPlayerCameraPos(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { SetPlayerCameraPos(Id, value.X, value.Y, value.Z); }
+            set { Internal.SetPlayerCameraPos(Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
@@ -410,7 +410,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                GetPlayerCameraFrontVector(Id, out x, out y, out z);
+                Internal.GetPlayerCameraFrontVector(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
         }
@@ -420,7 +420,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual CameraMode CameraMode
         {
-            get { return (CameraMode) GetPlayerCameraMode(Id); }
+            get { return (CameraMode)Internal.GetPlayerCameraMode(Id); }
         }
 
         /// <summary>
@@ -432,7 +432,7 @@ namespace SampSharp.GameMode.World
             {
                 AssertNotDisposed();
 
-                var id = GetPlayerTargetActor(Id);
+                var id = Internal.GetPlayerTargetActor(Id);
                 return id == Actor.InvalidId ? null : Actor.Find(id);
             }
         }
@@ -446,7 +446,7 @@ namespace SampSharp.GameMode.World
             {
                 AssertNotDisposed();
 
-                var id = GetPlayerCameraTargetObject(Id);
+                var id = Internal.GetPlayerCameraTargetObject(Id);
                 return id == GlobalObject.InvalidId ? null : GlobalObject.Find(id);
             }
         }
@@ -460,7 +460,7 @@ namespace SampSharp.GameMode.World
             {
                 AssertNotDisposed();
 
-                var id = GetPlayerCameraTargetVehicle(Id);
+                var id = Internal.GetPlayerCameraTargetVehicle(Id);
                 return id == GtaVehicle.InvalidId ? null : GtaVehicle.Find(id);
             }
         }
@@ -474,7 +474,7 @@ namespace SampSharp.GameMode.World
             {
                 AssertNotDisposed();
 
-                var id = GetPlayerCameraTargetPlayer(Id);
+                var id = Internal.GetPlayerCameraTargetPlayer(Id);
                 return id == InvalidId ? null : Find(id);
             }
         }
@@ -488,7 +488,7 @@ namespace SampSharp.GameMode.World
             {
                 AssertNotDisposed();
 
-                var id = GetPlayerCameraTargetActor(Id);
+                var id = Internal.GetPlayerCameraTargetActor(Id);
                 return id == Actor.InvalidId ? null : Actor.Find(id);
             }
         }
@@ -498,7 +498,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual bool InAnyVehicle
         {
-            get { return IsPlayerInAnyVehicle(Id); }
+            get { return Internal.IsPlayerInAnyVehicle(Id); }
         }
 
         /// <summary>
@@ -506,7 +506,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual bool InCheckpoint
         {
-            get { return IsPlayerInCheckpoint(Id); }
+            get { return Internal.IsPlayerInCheckpoint(Id); }
         }
 
         /// <summary>
@@ -514,7 +514,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual bool InRaceCheckpoint
         {
-            get { return IsPlayerInRaceCheckpoint(Id); }
+            get { return Internal.IsPlayerInRaceCheckpoint(Id); }
         }
 
         /// <summary>
@@ -524,7 +524,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                int vehicleid = GetPlayerSurfingVehicleID(Id);
+                int vehicleid = Internal.GetPlayerSurfingVehicleID(Id);
                 return vehicleid == GtaVehicle.InvalidId ? null : GtaVehicle.Find(vehicleid);
             }
         }
@@ -536,7 +536,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                int objectid = GetPlayerSurfingObjectID(Id);
+                int objectid = Internal.GetPlayerSurfingObjectID(Id);
                 return objectid == GlobalObject.InvalidId ? null : GlobalObject.Find(objectid);
             }
         }
@@ -548,7 +548,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                int vehicleid = GetPlayerVehicleID(Id); //Returns 0, not Vehicle.InvalidId!
+                int vehicleid = Internal.GetPlayerVehicleID(Id); //Returns 0, not Vehicle.InvalidId!
                 return vehicleid == 0 ? null : GtaVehicle.Find(vehicleid);
             }
         }
@@ -558,7 +558,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual bool IsConnected
         {
-            get { return IsPlayerConnected(Id); }
+            get { return Internal.IsPlayerConnected(Id); }
         }
 
 
@@ -582,10 +582,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                GetPlayerPos(Id, out x, out y, out z);
+                Internal.GetPlayerPos(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { SetPlayerPos(Id, value.X, value.Y, value.Z); }
+            set { Internal.SetPlayerPos(Id, value.X, value.Y, value.Z); }
         }
 
         #endregion
@@ -597,7 +597,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual bool IsNPC
         {
-            get { return IsPlayerNPC(Id); }
+            get { return Internal.IsPlayerNPC(Id); }
         }
 
         /// <summary>
@@ -605,7 +605,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual bool IsAdmin
         {
-            get { return IsPlayerAdmin(Id); }
+            get { return Internal.IsPlayerAdmin(Id); }
         }
 
         /// <summary>
@@ -624,7 +624,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 string stats;
-                GetPlayerNetworkStats(Id, out stats, 256);
+                Internal.GetPlayerNetworkStats(Id, out stats, 256);
                 return stats;
             }
         }
@@ -637,7 +637,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 string version;
-                GetPlayerVersion(Id, out version, 64);
+                Internal.GetPlayerVersion(Id, out version, 64);
                 return version;
             }
         }
@@ -650,7 +650,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 string result;
-                gpci(Id, out result, 64);
+                Internal.gpci(Id, out result, 64);
                 return result;
             }
         }
@@ -940,677 +940,6 @@ namespace SampSharp.GameMode.World
 
         #endregion
 
-        #region Natives
-
-        private delegate bool ApplyAnimationImpl(int playerid, string animlib, string animname, float fDelta, bool loop,
-    bool lockx, bool locky, bool freeze, int time, bool forcesync);
-
-        private delegate bool ClearAnimationsImpl(int playerid, bool forcesync);
-
-        private delegate bool CreateExplosionForPlayerImpl(int playerid, float x, float y, float z, int type,
-            float radius);
-
-        private delegate bool DisablePlayerCheckpointImpl(int playerid);
-
-        private delegate bool DisablePlayerRaceCheckpointImpl(int playerid);
-
-        private delegate bool DisableRemoteVehicleCollisionsImpl(int playerid, bool disable);
-
-        private delegate bool EditAttachedObjectImpl(int playerid, int index);
-
-        private delegate bool EnablePlayerCameraTargetImpl(int playerid, bool enable);
-
-        private delegate bool EnableStuntBonusForPlayerImpl(int playerid, bool enable);
-
-        private delegate bool ForceClassSelectionImpl(int playerid);
-
-        private delegate bool GetAnimationNameImpl(int index, out string animlib, int animlibSize, out string animname,
-            int animnameSize);
-
-        private delegate int GetPlayerAmmoImpl(int playerid);
-
-        private delegate int GetPlayerAnimationIndexImpl(int playerid);
-
-        private delegate bool GetPlayerArmourImpl(int playerid, out float armour);
-
-        private delegate bool GetPlayerCameraFrontVectorImpl(int playerid, out float x, out float y, out float z);
-
-        private delegate int GetPlayerCameraModeImpl(int playerid);
-
-        private delegate bool GetPlayerCameraPosImpl(int playerid, out float x, out float y, out float z);
-
-        private delegate int GetPlayerCameraTargetActorImpl(int playerid);
-
-        private delegate int GetPlayerCameraTargetObjectImpl(int playerid);
-
-        private delegate int GetPlayerCameraTargetPlayerImpl(int playerid);
-
-        private delegate int GetPlayerCameraTargetVehicleImpl(int playerid);
-
-        private delegate int GetPlayerColorImpl(int playerid);
-
-        private delegate float GetPlayerDistanceFromPointImpl(int playerid, float x, float y, float z);
-
-        private delegate int GetPlayerDrunkLevelImpl(int playerid);
-
-        private delegate bool GetPlayerFacingAngleImpl(int playerid, out float angle);
-
-        private delegate int GetPlayerFightingStyleImpl(int playerid);
-
-        private delegate bool GetPlayerHealthImpl(int playerid, out float health);
-
-        private delegate int GetPlayerInteriorImpl(int playerid);
-
-        private delegate bool GetPlayerIpImpl(int playerid, out string ip, int size);
-
-        private delegate bool GetPlayerKeysImpl(int playerid, out int keys, out int updown, out int leftright);
-
-        private delegate int GetPlayerMoneyImpl(int playerid);
-
-        private delegate int GetPlayerNameImpl(int playerid, out string name, int size);
-
-        private delegate int GetPlayerPingImpl(int playerid);
-
-        private delegate bool GetPlayerPosImpl(int playerid, out float x, out float y, out float z);
-
-        private delegate int GetPlayerScoreImpl(int playerid);
-
-        private delegate int GetPlayerSkinImpl(int playerid);
-
-        private delegate int GetPlayerSpecialActionImpl(int playerid);
-
-        private delegate int GetPlayerStateImpl(int playerid);
-
-        private delegate int GetPlayerSurfingObjectIDImpl(int playerid);
-
-        private delegate int GetPlayerSurfingVehicleIDImpl(int playerid);
-
-        private delegate int GetPlayerTargetActorImpl(int playerid);
-
-        private delegate int GetPlayerTargetPlayerImpl(int playerid);
-
-        private delegate int GetPlayerTeamImpl(int playerid);
-
-        private delegate bool GetPlayerTimeImpl(int playerid, out int hour, out int minute);
-
-        private delegate int GetPlayerVehicleIDImpl(int playerid);
-
-        private delegate int GetPlayerVehicleSeatImpl(int playerid);
-
-        private delegate bool GetPlayerVelocityImpl(int playerid, out float x, out float y, out float z);
-
-        private delegate int GetPlayerVirtualWorldImpl(int playerid);
-
-        private delegate int GetPlayerWantedLevelImpl(int playerid);
-
-        private delegate bool GetPlayerWeaponDataImpl(int playerid, int slot, out int weapon, out int ammo);
-
-        private delegate int GetPlayerWeaponImpl(int playerid);
-
-        private delegate int GetPlayerWeaponStateImpl(int playerid);
-
-        private delegate bool GivePlayerMoneyImpl(int playerid, int money);
-
-        private delegate bool GivePlayerWeaponImpl(int playerid, int weaponid, int ammo);
-
-        private delegate bool InterpolateCameraLookAtImpl(int playerid, float fromX, float fromY, float fromZ, float toX,
-            float toY, float toZ, int time, int cut);
-
-        private delegate bool InterpolateCameraPosImpl(int playerid, float fromX, float fromY, float fromZ, float toX,
-            float toY, float toZ, int time, int cut);
-
-        private delegate bool IsPlayerAttachedObjectSlotUsedImpl(int playerid, int index);
-
-        private delegate bool IsPlayerConnectedImpl(int playerid);
-
-        private delegate bool IsPlayerInAnyVehicleImpl(int playerid);
-
-        private delegate bool IsPlayerInCheckpointImpl(int playerid);
-
-        private delegate bool IsPlayerInRaceCheckpointImpl(int playerid);
-
-        private delegate bool IsPlayerInRangeOfPointImpl(int playerid, float range, float x, float y, float z);
-
-        private delegate bool IsPlayerInVehicleImpl(int playerid, int vehicleid);
-
-        private delegate bool IsPlayerStreamedInImpl(int playerid, int forplayerid);
-
-        private delegate bool PlayAudioStreamForPlayerImpl(int playerid, string url, float posX, float posY, float posZ,
-            float distance, bool usepos);
-
-        private delegate bool PlayCrimeReportForPlayerImpl(int playerid, int suspectid, int crime);
-
-        private delegate bool PlayerPlaySoundImpl(int playerid, int soundid, float x, float y, float z);
-
-        private delegate bool PlayerSpectatePlayerImpl(int playerid, int targetplayerid, int mode);
-
-        private delegate bool PlayerSpectateVehicleImpl(int playerid, int targetvehicleid, int mode);
-
-        private delegate bool PutPlayerInVehicleImpl(int playerid, int vehicleid, int seatid);
-
-        private delegate bool RemovePlayerAttachedObjectImpl(int playerid, int index);
-
-        private delegate bool RemovePlayerFromVehicleImpl(int playerid);
-
-        private delegate bool RemovePlayerMapIconImpl(int playerid, int iconid);
-
-        private delegate bool ResetPlayerMoneyImpl(int playerid);
-
-        private delegate bool ResetPlayerWeaponsImpl(int playerid);
-
-        private delegate bool SetCameraBehindPlayerImpl(int playerid);
-
-        private delegate bool SetPlayerAmmoImpl(int playerid, int weaponid, int ammo);
-
-        private delegate bool SetPlayerArmedWeaponImpl(int playerid, int weaponid);
-
-        private delegate bool SetPlayerArmourImpl(int playerid, float armour);
-
-        private delegate bool SetPlayerAttachedObjectImpl(int playerid, int index, int modelid, int bone, float offsetX,
-            float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY,
-            float scaleZ, int materialcolor1, int materialcolor2);
-
-        private delegate bool SetPlayerCameraLookAtImpl(int playerid, float x, float y, float z, int cut);
-
-        private delegate bool SetPlayerCameraPosImpl(int playerid, float x, float y, float z);
-
-        private delegate bool SetPlayerChatBubbleImpl(int playerid, string text, int color, float drawdistance,
-            int expiretime);
-
-        private delegate bool SetPlayerCheckpointImpl(int playerid, float x, float y, float z, float size);
-
-        private delegate bool SetPlayerColorImpl(int playerid, int color);
-
-        private delegate bool SetPlayerDrunkLevelImpl(int playerid, int level);
-
-        private delegate bool SetPlayerFacingAngleImpl(int playerid, float angle);
-
-        private delegate bool SetPlayerFightingStyleImpl(int playerid, int style);
-
-        private delegate bool SetPlayerHealthImpl(int playerid, float health);
-
-        private delegate bool SetPlayerInteriorImpl(int playerid, int interiorid);
-
-        private delegate bool SetPlayerMapIconImpl(int playerid, int iconid, float x, float y, float z, int markertype,
-            int color, int style);
-
-        private delegate bool SetPlayerMarkerForPlayerImpl(int playerid, int showplayerid, int color);
-
-        private delegate int SetPlayerNameImpl(int playerid, string name);
-
-        private delegate bool SetPlayerPosFindZImpl(int playerid, float x, float y, float z);
-
-        private delegate bool SetPlayerPosImpl(int playerid, float x, float y, float z);
-
-        private delegate bool SetPlayerRaceCheckpointImpl(int playerid, int type, float x, float y, float z, float nextx,
-            float nexty, float nextz, float size);
-
-        private delegate bool SetPlayerScoreImpl(int playerid, int score);
-
-        private delegate bool SetPlayerShopNameImpl(int playerid, string shopname);
-
-        private delegate bool SetPlayerSkillLevelImpl(int playerid, int skill, int level);
-
-        private delegate bool SetPlayerSkinImpl(int playerid, int skinid);
-
-        private delegate bool SetPlayerSpecialActionImpl(int playerid, int actionid);
-
-        private delegate bool SetPlayerTeamImpl(int playerid, int teamid);
-
-        private delegate bool SetPlayerTimeImpl(int playerid, int hour, int minute);
-
-        private delegate bool SetPlayerVelocityImpl(int playerid, float x, float y, float z);
-
-        private delegate bool SetPlayerVirtualWorldImpl(int playerid, int worldid);
-
-        private delegate bool SetPlayerWantedLevelImpl(int playerid, int level);
-
-        private delegate bool SetPlayerWeatherImpl(int playerid, int weather);
-
-        private delegate bool SetPlayerWorldBoundsImpl(int playerid, float xMax, float xMin, float yMax, float yMin);
-
-        private delegate bool SetSpawnInfoImpl(int playerid, int team, int skin, float x, float y, float z,
-            float rotation, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
-
-        private delegate bool ShowPlayerNameTagForPlayerImpl(int playerid, int showplayerid, bool show);
-
-        private delegate bool SpawnPlayerImpl(int playerid);
-
-        private delegate bool StartRecordingPlayerDataImpl(int playerid, int recordtype, string recordname);
-
-        private delegate bool StopAudioStreamForPlayerImpl(int playerid);
-
-        private delegate bool StopRecordingPlayerDataImpl(int playerid);
-
-        private delegate bool TogglePlayerClockImpl(int playerid, bool toggle);
-
-        private delegate bool TogglePlayerControllableImpl(int playerid, bool toggle);
-
-        private delegate bool TogglePlayerSpectatingImpl(int playerid, bool toggle);
-
-        private delegate bool CancelSelectTextDrawImpl(int playerid);
-
-        private delegate bool SelectTextDrawImpl(int playerid, int hovercolor);
-
-        private delegate bool SendClientMessageImpl(int playerid, int color, string message);
-
-        private delegate bool SendClientMessageToAllImpl(int color, string message);
-
-        private delegate bool SendDeathMessageImpl(int killer, int killee, int weapon);
-
-        private delegate bool SendDeathMessageToPlayerImpl(int playerid, int killer, int killee, int weapon);
-
-        private delegate bool SendPlayerMessageToAllImpl(int senderid, string message);
-
-        private delegate bool SendPlayerMessageToPlayerImpl(int playerid, int senderid, string message);
-
-        private delegate bool GameTextForPlayerImpl(int playerid, string text, int time, int style);
-
-        private delegate bool KickImpl(int playerid);
-
-        private delegate bool BanExImpl(int playerid, string reason);
-
-        private delegate bool BanImpl(int playerid);
-
-        private delegate bool GameTextForAllImpl(string text, int time, int style);
-
-        private delegate bool CreateExplosionImpl(float x, float y, float z, int type, float radius);
-
-        private delegate bool IsPlayerAdminImpl(int playerid);
-
-        private delegate bool IsPlayerNPCImpl(int playerid);
-
-        private delegate int GetPlayerPoolSizeImpl();
-
-        private delegate bool GetPlayerVersionImpl(int playerid, out string version, int len);
-
-        private delegate bool GetPlayerNetworkStatsImpl(int playerid, out string retstr, int size);
-
-        private delegate bool gpciImpl(int playerid, out string buffer, int size);
-
-
-        [Native("SetSpawnInfo")]
-        private static readonly SetSpawnInfoImpl NativeSetSpawnInfo = null;
-        [Native("SpawnPlayer")]
-        private static readonly SpawnPlayerImpl SpawnPlayer = null;
-        [Native("SetPlayerPos")]
-        private static readonly SetPlayerPosImpl SetPlayerPos = null;
-        [Native("SetPlayerPosFindZ")]
-        private static readonly SetPlayerPosFindZImpl SetPlayerPosFindZ = null;
-        [Native("GetPlayerPos")]
-        private static readonly GetPlayerPosImpl GetPlayerPos = null;
-        [Native("SetPlayerFacingAngle")]
-        private static readonly SetPlayerFacingAngleImpl SetPlayerFacingAngle = null;
-        [Native("GetPlayerFacingAngle")]
-        private static readonly GetPlayerFacingAngleImpl GetPlayerFacingAngle = null;
-
-        [Native("IsPlayerInRangeOfPoint")]
-        private static readonly IsPlayerInRangeOfPointImpl IsPlayerInRangeOfPoint =
-            null;
-
-        [Native("GetPlayerDistanceFromPoint")]
-        private static readonly GetPlayerDistanceFromPointImpl
-            GetPlayerDistanceFromPoint = null;
-
-        [Native("IsPlayerStreamedIn")]
-        private static readonly IsPlayerStreamedInImpl NativeIsPlayerStreamedIn = null;
-        [Native("SetPlayerInterior")]
-        private static readonly SetPlayerInteriorImpl SetPlayerInterior = null;
-        [Native("GetPlayerInterior")]
-        private static readonly GetPlayerInteriorImpl GetPlayerInterior = null;
-        [Native("SetPlayerHealth")]
-        private static readonly SetPlayerHealthImpl SetPlayerHealth = null;
-        [Native("GetPlayerHealth")]
-        private static readonly GetPlayerHealthImpl GetPlayerHealth = null;
-        [Native("SetPlayerArmour")]
-        private static readonly SetPlayerArmourImpl SetPlayerArmour = null;
-        [Native("GetPlayerArmour")]
-        private static readonly GetPlayerArmourImpl GetPlayerArmour = null;
-        [Native("SetPlayerAmmo")]
-        private static readonly SetPlayerAmmoImpl SetPlayerAmmo = null;
-        [Native("GetPlayerAmmo")]
-        private static readonly GetPlayerAmmoImpl GetPlayerAmmo = null;
-        [Native("GetPlayerWeaponState")]
-        private static readonly GetPlayerWeaponStateImpl GetPlayerWeaponState = null;
-        [Native("GetPlayerTargetPlayer")]
-        private static readonly GetPlayerTargetPlayerImpl GetPlayerTargetPlayer = null;
-        [Native("GetPlayerTargetActor")]
-        private static readonly GetPlayerTargetActorImpl GetPlayerTargetActor = null;
-        [Native("SetPlayerTeam")]
-        private static readonly SetPlayerTeamImpl SetPlayerTeam = null;
-        [Native("GetPlayerTeam")]
-        private static readonly GetPlayerTeamImpl GetPlayerTeam = null;
-        [Native("SetPlayerScore")]
-        private static readonly SetPlayerScoreImpl SetPlayerScore = null;
-        [Native("GetPlayerScore")]
-        private static readonly GetPlayerScoreImpl GetPlayerScore = null;
-        [Native("GetPlayerDrunkLevel")]
-        private static readonly GetPlayerDrunkLevelImpl GetPlayerDrunkLevel = null;
-        [Native("SetPlayerDrunkLevel")]
-        private static readonly SetPlayerDrunkLevelImpl SetPlayerDrunkLevel = null;
-        [Native("SetPlayerColor")]
-        private static readonly SetPlayerColorImpl SetPlayerColor = null;
-        [Native("GetPlayerColor")]
-        private static readonly GetPlayerColorImpl GetPlayerColor = null;
-        [Native("SetPlayerSkin")]
-        private static readonly SetPlayerSkinImpl SetPlayerSkin = null;
-        [Native("GetPlayerSkin")]
-        private static readonly GetPlayerSkinImpl GetPlayerSkin = null;
-        [Native("GivePlayerWeapon")]
-        private static readonly GivePlayerWeaponImpl GivePlayerWeapon = null;
-        [Native("ResetPlayerWeapons")]
-        private static readonly ResetPlayerWeaponsImpl ResetPlayerWeapons = null;
-        [Native("SetPlayerArmedWeapon")]
-        private static readonly SetPlayerArmedWeaponImpl SetPlayerArmedWeapon = null;
-        [Native("GetPlayerWeaponData")]
-        private static readonly GetPlayerWeaponDataImpl GetPlayerWeaponData = null;
-        [Native("GivePlayerMoney")]
-        private static readonly GivePlayerMoneyImpl GivePlayerMoney = null;
-        [Native("ResetPlayerMoney")]
-        private static readonly ResetPlayerMoneyImpl ResetPlayerMoney = null;
-        [Native("SetPlayerName")]
-        private static readonly SetPlayerNameImpl SetPlayerName = null;
-        [Native("GetPlayerMoney")]
-        private static readonly GetPlayerMoneyImpl GetPlayerMoney = null;
-        [Native("GetPlayerState")]
-        private static readonly GetPlayerStateImpl GetPlayerState = null;
-        [Native("GetPlayerIp")]
-        private static readonly GetPlayerIpImpl GetPlayerIp = null;
-        [Native("GetPlayerPing")]
-        private static readonly GetPlayerPingImpl GetPlayerPing = null;
-        [Native("GetPlayerWeapon")]
-        private static readonly GetPlayerWeaponImpl GetPlayerWeapon = null;
-        [Native("GetPlayerKeys")]
-        private static readonly GetPlayerKeysImpl GetPlayerKeys = null;
-        [Native("GetPlayerName")]
-        private static readonly GetPlayerNameImpl GetPlayerName = null;
-        [Native("SetPlayerTime")]
-        private static readonly SetPlayerTimeImpl SetPlayerTime = null;
-        [Native("GetPlayerTime")]
-        private static readonly GetPlayerTimeImpl GetPlayerTime = null;
-        [Native("TogglePlayerClock")]
-        private static readonly TogglePlayerClockImpl TogglePlayerClock = null;
-        [Native("SetPlayerWeather")]
-        private static readonly SetPlayerWeatherImpl SetPlayerWeather = null;
-        [Native("ForceClassSelection")]
-        private static readonly ForceClassSelectionImpl NativeForceClassSelection = null;
-        [Native("SetPlayerWantedLevel")]
-        private static readonly SetPlayerWantedLevelImpl SetPlayerWantedLevel = null;
-        [Native("GetPlayerWantedLevel")]
-        private static readonly GetPlayerWantedLevelImpl GetPlayerWantedLevel = null;
-
-        [Native("SetPlayerFightingStyle")]
-        private static readonly SetPlayerFightingStyleImpl SetPlayerFightingStyle =
-            null;
-
-        [Native("GetPlayerFightingStyle")]
-        private static readonly GetPlayerFightingStyleImpl GetPlayerFightingStyle =
-            null;
-
-        [Native("SetPlayerVelocity")]
-        private static readonly SetPlayerVelocityImpl SetPlayerVelocity = null;
-        [Native("GetPlayerVelocity")]
-        private static readonly GetPlayerVelocityImpl GetPlayerVelocity = null;
-
-        [Native("PlayCrimeReportForPlayer")]
-        private static readonly PlayCrimeReportForPlayerImpl
-            PlayCrimeReportForPlayer = null;
-
-        [Native("PlayAudioStreamForPlayer")]
-        private static readonly PlayAudioStreamForPlayerImpl
-            PlayAudioStreamForPlayer = null;
-
-        [Native("StopAudioStreamForPlayer")]
-        private static readonly StopAudioStreamForPlayerImpl
-            StopAudioStreamForPlayer = null;
-
-        [Native("SetPlayerShopName")]
-        private static readonly SetPlayerShopNameImpl SetPlayerShopName = null;
-        [Native("SetPlayerSkillLevel")]
-        private static readonly SetPlayerSkillLevelImpl SetPlayerSkillLevel = null;
-
-        [Native("GetPlayerSurfingVehicleID")]
-        private static readonly GetPlayerSurfingVehicleIDImpl
-            GetPlayerSurfingVehicleID = null;
-
-        [Native("GetPlayerSurfingObjectID")]
-        private static readonly GetPlayerSurfingObjectIDImpl
-            GetPlayerSurfingObjectID = null;
-
-        [Native("SetPlayerAttachedObject")]
-        private static readonly SetPlayerAttachedObjectImpl SetPlayerAttachedObject =
-            null;
-
-        [Native("RemovePlayerAttachedObject")]
-        private static readonly RemovePlayerAttachedObjectImpl
-            RemovePlayerAttachedObject = null;
-
-        [Native("IsPlayerAttachedObjectSlotUsed")]
-        private static readonly IsPlayerAttachedObjectSlotUsedImpl
-            IsPlayerAttachedObjectSlotUsed = null;
-
-        [Native("EditAttachedObject")]
-        private static readonly EditAttachedObjectImpl NativeEditAttachedObject = null;
-
-        [Native("SetPlayerChatBubble")]
-        private static readonly SetPlayerChatBubbleImpl SetPlayerChatBubble = null;
-        [Native("PutPlayerInVehicle")]
-        private static readonly PutPlayerInVehicleImpl PutPlayerInVehicle = null;
-        [Native("GetPlayerVehicleID")]
-        private static readonly GetPlayerVehicleIDImpl GetPlayerVehicleID = null;
-        [Native("GetPlayerVehicleSeat")]
-        private static readonly GetPlayerVehicleSeatImpl GetPlayerVehicleSeat = null;
-
-        [Native("RemovePlayerFromVehicle")]
-        private static readonly RemovePlayerFromVehicleImpl RemovePlayerFromVehicle =
-            null;
-
-        [Native("TogglePlayerControllable")]
-        private static readonly TogglePlayerControllableImpl
-            TogglePlayerControllable = null;
-
-        [Native("PlayerPlaySound")]
-        private static readonly PlayerPlaySoundImpl PlayerPlaySound = null;
-        [Native("ApplyAnimation")]
-        private static readonly ApplyAnimationImpl NativeApplyAnimation = null;
-        [Native("ClearAnimations")]
-        private static readonly ClearAnimationsImpl NativeClearAnimations = null;
-
-        [Native("GetPlayerAnimationIndex")]
-        private static readonly GetPlayerAnimationIndexImpl GetPlayerAnimationIndex =
-            null;
-
-        [Native("GetAnimationName")]
-        private static readonly GetAnimationNameImpl NativeGetAnimationName = null;
-
-        [Native("GetPlayerSpecialAction")]
-        private static readonly GetPlayerSpecialActionImpl GetPlayerSpecialAction =
-            null;
-
-        [Native("SetPlayerSpecialAction")]
-        private static readonly SetPlayerSpecialActionImpl SetPlayerSpecialAction =
-            null;
-
-        [Native("DisableRemoteVehicleCollisions")]
-        private static readonly DisableRemoteVehicleCollisionsImpl
-            NativeDisableRemoteVehicleCollisions = null;
-
-        [Native("SetPlayerCheckpoint")]
-        private static readonly SetPlayerCheckpointImpl SetPlayerCheckpoint = null;
-
-        [Native("DisablePlayerCheckpoint")]
-        private static readonly DisablePlayerCheckpointImpl DisablePlayerCheckpoint =
-            null;
-
-        [Native("SetPlayerRaceCheckpoint")]
-        private static readonly SetPlayerRaceCheckpointImpl SetPlayerRaceCheckpoint =
-            null;
-
-        [Native("DisablePlayerRaceCheckpoint")]
-        private static readonly DisablePlayerRaceCheckpointImpl
-            DisablePlayerRaceCheckpoint = null;
-
-        [Native("SetPlayerWorldBounds")]
-        private static readonly SetPlayerWorldBoundsImpl SetPlayerWorldBounds = null;
-
-        [Native("SetPlayerMarkerForPlayer")]
-        private static readonly SetPlayerMarkerForPlayerImpl
-            SetPlayerMarkerForPlayer = null;
-
-        [Native("ShowPlayerNameTagForPlayer")]
-        private static readonly ShowPlayerNameTagForPlayerImpl
-            ShowPlayerNameTagForPlayer = null;
-
-        [Native("SetPlayerMapIcon")]
-        private static readonly SetPlayerMapIconImpl SetPlayerMapIcon = null;
-        [Native("RemovePlayerMapIcon")]
-        private static readonly RemovePlayerMapIconImpl RemovePlayerMapIcon = null;
-        [Native("SetPlayerCameraPos")]
-        private static readonly SetPlayerCameraPosImpl SetPlayerCameraPos = null;
-        [Native("SetPlayerCameraLookAt")]
-        private static readonly SetPlayerCameraLookAtImpl SetPlayerCameraLookAt = null;
-        [Native("SetCameraBehindPlayer")]
-        private static readonly SetCameraBehindPlayerImpl SetCameraBehindPlayer = null;
-        [Native("GetPlayerCameraPos")]
-        private static readonly GetPlayerCameraPosImpl GetPlayerCameraPos = null;
-
-        [Native("GetPlayerCameraFrontVector")]
-        private static readonly GetPlayerCameraFrontVectorImpl
-            GetPlayerCameraFrontVector = null;
-
-        [Native("GetPlayerCameraMode")]
-        private static readonly GetPlayerCameraModeImpl GetPlayerCameraMode = null;
-
-        [Native("EnablePlayerCameraTarget")]
-        private static readonly EnablePlayerCameraTargetImpl
-            NativeEnablePlayerCameraTarget = null;
-
-        [Native("GetPlayerCameraTargetObject")]
-        private static readonly GetPlayerCameraTargetObjectImpl
-            GetPlayerCameraTargetObject = null;
-
-        [Native("GetPlayerCameraTargetVehicle")]
-        private static readonly GetPlayerCameraTargetVehicleImpl
-            GetPlayerCameraTargetVehicle = null;
-
-        [Native("GetPlayerCameraTargetPlayer")]
-        private static readonly GetPlayerCameraTargetPlayerImpl
-            GetPlayerCameraTargetPlayer = null;
-
-        [Native("GetPlayerCameraTargetActor")]
-        private static readonly GetPlayerCameraTargetActorImpl
-            GetPlayerCameraTargetActor = null;
-
-        [Native("InterpolateCameraPos")]
-        private static readonly InterpolateCameraPosImpl InterpolateCameraPos = null;
-
-        [Native("InterpolateCameraLookAt")]
-        private static readonly InterpolateCameraLookAtImpl NativeInterpolateCameraLookAt =
-            null;
-
-        [Native("IsPlayerConnected")]
-        private static readonly IsPlayerConnectedImpl IsPlayerConnected = null;
-        [Native("IsPlayerInVehicle")]
-        private static readonly IsPlayerInVehicleImpl IsPlayerInVehicle = null;
-        [Native("IsPlayerInAnyVehicle")]
-        private static readonly IsPlayerInAnyVehicleImpl IsPlayerInAnyVehicle = null;
-        [Native("IsPlayerInCheckpoint")]
-        private static readonly IsPlayerInCheckpointImpl IsPlayerInCheckpoint = null;
-
-        [Native("IsPlayerInRaceCheckpoint")]
-        private static readonly IsPlayerInRaceCheckpointImpl
-            IsPlayerInRaceCheckpoint = null;
-
-        [Native("SetPlayerVirtualWorld")]
-        private static readonly SetPlayerVirtualWorldImpl SetPlayerVirtualWorld = null;
-        [Native("GetPlayerVirtualWorld")]
-        private static readonly GetPlayerVirtualWorldImpl GetPlayerVirtualWorld = null;
-
-        [Native("EnableStuntBonusForPlayer")]
-        private static readonly EnableStuntBonusForPlayerImpl
-            EnableStuntBonusForPlayer = null;
-
-        [Native("TogglePlayerSpectating")]
-        private static readonly TogglePlayerSpectatingImpl TogglePlayerSpectating =
-            null;
-
-        [Native("PlayerSpectatePlayer")]
-        private static readonly PlayerSpectatePlayerImpl PlayerSpectatePlayer = null;
-        [Native("PlayerSpectateVehicle")]
-        private static readonly PlayerSpectateVehicleImpl PlayerSpectateVehicle = null;
-
-        [Native("StartRecordingPlayerData")]
-        private static readonly StartRecordingPlayerDataImpl
-            NativeStartRecordingPlayerData = null;
-
-        [Native("StopRecordingPlayerData")]
-        private static readonly StopRecordingPlayerDataImpl NativeStopRecordingPlayerData =
-            null;
-
-        [Native("CreateExplosionForPlayer")]
-        private static readonly CreateExplosionForPlayerImpl
-            CreateExplosionForPlayer = null;
-
-        [Native("SelectTextDraw")]
-        private static readonly SelectTextDrawImpl NativeSelectTextDraw = null;
-        [Native("CancelSelectTextDraw")]
-        private static readonly CancelSelectTextDrawImpl NativeCancelSelectTextDraw = null;
-
-        [Native("SendClientMessage")]
-        private static readonly SendClientMessageImpl NativeSendClientMessage = null;
-
-        [Native("SendClientMessageToAll")]
-        private static readonly SendClientMessageToAllImpl NativeSendClientMessageToAll =
-            null;
-
-        [Native("SendPlayerMessageToPlayer")]
-        private static readonly SendPlayerMessageToPlayerImpl
-            NativeSendPlayerMessageToPlayer = null;
-
-        [Native("SendPlayerMessageToAll")]
-        private static readonly SendPlayerMessageToAllImpl NativeSendPlayerMessageToAll =
-            null;
-
-        [Native("SendDeathMessage")]
-        private static readonly SendDeathMessageImpl NativeSendDeathMessage = null;
-
-        [Native("SendDeathMessageToPlayer")]
-        private static readonly SendDeathMessageToPlayerImpl
-            SendDeathMessageToPlayer = null;
-
-        [Native("GameTextForAll")]
-        private static readonly GameTextForAllImpl NativeGameTextForAll = null;
-
-        [Native("GameTextForPlayer")]
-        private static readonly GameTextForPlayerImpl GameTextForPlayer = null;
-        [Native("Kick")]
-        private static readonly KickImpl NativeKick = null;
-        [Native("Ban")]
-        private static readonly BanImpl NativeBan = null;
-        [Native("BanEx")]
-        private static readonly BanExImpl BanEx = null;
-
-        [Native("CreateExplosion")]
-        private static readonly CreateExplosionImpl NativeCreateExplosion = null;
-
-        [Native("IsPlayerNPC")]
-        private static readonly IsPlayerNPCImpl IsPlayerNPC = null;
-        [Native("IsPlayerAdmin")]
-        private static readonly IsPlayerAdminImpl IsPlayerAdmin = null;
-
-        [Native("GetPlayerPoolSize")]
-        private static readonly GetPlayerPoolSizeImpl GetPlayerPoolSize = null;
-
-        [Native("GetPlayerVersion")]
-        private static readonly GetPlayerVersionImpl GetPlayerVersion = null;
-
-        [Native("GetPlayerNetworkStats")]
-        private static readonly GetPlayerNetworkStatsImpl GetPlayerNetworkStats = null;
-        [Native("gpci")]
-        private static readonly gpciImpl gpci = null;
-    
-        #endregion
-
         #region Players natives
 
         /// <summary>
@@ -1637,7 +966,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeSetSpawnInfo(Id, team, skin, position.X, position.Y, position.Z, rotation, (int)weapon1, weapon1Ammo,
+            Internal.NativeSetSpawnInfo(Id, team, skin, position.X, position.Y, position.Z, rotation, (int)weapon1, weapon1Ammo,
                 (int) weapon2, weapon2Ammo,
                 (int) weapon3, weapon3Ammo);
         }
@@ -1649,7 +978,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SpawnPlayer(Id);
+            Internal.SpawnPlayer(Id);
         }
 
         /// <summary>
@@ -1657,7 +986,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void PutCameraBehindPlayer()
         {
-            SetCameraBehindPlayer(Id);
+            Internal.SetCameraBehindPlayer(Id);
         }
 
         /// <summary>
@@ -1670,7 +999,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SetPlayerPosFindZ(Id, position.X, position.Y, position.Z);
+            Internal.SetPlayerPosFindZ(Id, position.X, position.Y, position.Z);
         }
 
         /// <summary>
@@ -1683,7 +1012,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return IsPlayerInRangeOfPoint(Id, range, point.X, point.Y, point.Z);
+            return Internal.IsPlayerInRangeOfPoint(Id, range, point.X, point.Y, point.Z);
         }
 
         /// <summary>
@@ -1695,7 +1024,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return GetPlayerDistanceFromPoint(Id, point.X, point.Y, point.Z);
+            return Internal.GetPlayerDistanceFromPoint(Id, point.X, point.Y, point.Z);
         }
 
         /// <summary>
@@ -1717,7 +1046,7 @@ namespace SampSharp.GameMode.World
             if (other == null)
                 throw new ArgumentNullException("other");
 
-            return NativeIsPlayerStreamedIn(other.Id, Id);
+            return Internal.NativeIsPlayerStreamedIn(other.Id, Id);
         }
 
         /// <summary>
@@ -1729,7 +1058,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SetPlayerAmmo(Id, (int) weapon, ammo);
+            Internal.SetPlayerAmmo(Id, (int)weapon, ammo);
         }
 
         /// <summary>
@@ -1741,7 +1070,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            GivePlayerWeapon(Id, (int) weapon, ammo);
+            Internal.GivePlayerWeapon(Id, (int)weapon, ammo);
         }
 
 
@@ -1752,7 +1081,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            ResetPlayerWeapons(Id);
+            Internal.ResetPlayerWeapons(Id);
         }
 
         /// <summary>
@@ -1763,7 +1092,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SetPlayerArmedWeapon(Id, (int) weapon);
+            Internal.SetPlayerArmedWeapon(Id, (int)weapon);
         }
 
         /// <summary>
@@ -1777,7 +1106,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             int weaponid;
-            GetPlayerWeaponData(Id, slot, out weaponid, out ammo);
+            Internal.GetPlayerWeaponData(Id, slot, out weaponid, out ammo);
             weapon = (Weapon) weaponid;
         }
 
@@ -1789,7 +1118,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            GivePlayerMoney(Id, money);
+            Internal.GivePlayerMoney(Id, money);
         }
 
         /// <summary>
@@ -1799,7 +1128,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            ResetPlayerMoney(Id);
+            Internal.ResetPlayerMoney(Id);
         }
 
         /// <summary>
@@ -1817,7 +1146,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             int keysDown;
-            GetPlayerKeys(Id, out keysDown, out updown, out leftright);
+            Internal.GetPlayerKeys(Id, out keysDown, out updown, out leftright);
             keys = (Keys) keysDown;
         }
 
@@ -1831,7 +1160,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SetPlayerTime(Id, hour, minutes);
+            Internal.SetPlayerTime(Id, hour, minutes);
         }
 
         /// <summary>
@@ -1845,7 +1174,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            GetPlayerTime(Id, out hour, out minutes);
+            Internal.GetPlayerTime(Id, out hour, out minutes);
         }
 
         /// <summary>
@@ -1859,7 +1188,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            TogglePlayerClock(Id, toggle);
+            Internal.TogglePlayerClock(Id, toggle);
         }
 
         /// <summary>
@@ -1872,7 +1201,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SetPlayerWeather(Id, weather);
+            Internal.SetPlayerWeather(Id, weather);
         }
 
         /// <summary>
@@ -1886,7 +1215,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeForceClassSelection(Id);
+            Internal.NativeForceClassSelection(Id);
         }
 
         /// <summary>
@@ -1897,7 +1226,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeSelectTextDraw(Id, hoverColor);
+            Internal.NativeSelectTextDraw(Id, hoverColor);
         }
 
         /// <summary>
@@ -1907,7 +1236,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeCancelSelectTextDraw(Id);
+            Internal.NativeCancelSelectTextDraw(Id);
         }
 
         /// <summary>
@@ -1921,7 +1250,7 @@ namespace SampSharp.GameMode.World
             if (suspect == null) throw new ArgumentNullException("suspect");
             AssertNotDisposed();
 
-            PlayCrimeReportForPlayer(Id, suspect.Id, crime);
+            Internal.PlayCrimeReportForPlayer(Id, suspect.Id, crime);
         }
 
         /// <summary>
@@ -1937,7 +1266,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            PlayAudioStreamForPlayer(Id, url, position.X, position.Y, position.Z, distance, true);
+            Internal.PlayAudioStreamForPlayer(Id, url, position.X, position.Y, position.Z, distance, true);
         }
 
         /// <summary>
@@ -1951,7 +1280,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            PlayAudioStreamForPlayer(Id, url, 0, 0, 0, 0, false);
+            Internal.PlayAudioStreamForPlayer(Id, url, 0, 0, 0, 0, false);
         }
 
         /// <summary>
@@ -1962,7 +1291,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeDisableRemoteVehicleCollisions(Id, disable);
+            Internal.NativeDisableRemoteVehicleCollisions(Id, disable);
         }
 
         /// <summary>
@@ -1973,7 +1302,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeEnablePlayerCameraTarget(Id, enable);
+            Internal.NativeEnablePlayerCameraTarget(Id, enable);
         }
 
         /// <summary>
@@ -1983,7 +1312,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            StopAudioStreamForPlayer(Id);
+            Internal.StopAudioStreamForPlayer(Id);
         }
 
         /// <summary>
@@ -1994,7 +1323,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SetPlayerShopName(Id, shopname);
+            Internal.SetPlayerShopName(Id, shopname);
         }
 
         /// <summary>
@@ -2012,7 +1341,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SetPlayerSkillLevel(Id, (int) skill, level);
+            Internal.SetPlayerSkillLevel(Id, (int)skill, level);
         }
 
         /// <summary>
@@ -2032,7 +1361,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return SetPlayerAttachedObject(Id, index, modelid, (int) bone, offset.X, offset.Y, offset.Z,
+            return Internal.SetPlayerAttachedObject(Id, index, modelid, (int)bone, offset.X, offset.Y, offset.Z,
                 rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z,
                 materialcolor1.ToInteger(ColorFormat.ARGB), materialcolor2.ToInteger(ColorFormat.ARGB));
         }
@@ -2046,7 +1375,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return RemovePlayerAttachedObject(Id, index);
+            return Internal.RemovePlayerAttachedObject(Id, index);
         }
 
         /// <summary>
@@ -2058,7 +1387,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return IsPlayerAttachedObjectSlotUsed(Id, index);
+            return Internal.IsPlayerAttachedObjectSlotUsed(Id, index);
         }
 
         /// <summary>
@@ -2070,7 +1399,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return NativeEditAttachedObject(Id, index);
+            return Internal.NativeEditAttachedObject(Id, index);
         }
 
         /// <summary>
@@ -2085,7 +1414,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SetPlayerChatBubble(Id, text, color.ToInteger(ColorFormat.RGBA), drawdistance, expiretime);
+            Internal.SetPlayerChatBubble(Id, text, color.ToInteger(ColorFormat.RGBA), drawdistance, expiretime);
         }
 
         /// <summary>
@@ -2100,7 +1429,7 @@ namespace SampSharp.GameMode.World
             if (vehicle == null)
                 throw new ArgumentNullException("vehicle");
 
-            PutPlayerInVehicle(Id, vehicle.Id, seatid);
+            Internal.PutPlayerInVehicle(Id, vehicle.Id, seatid);
         }
 
         /// <summary>
@@ -2125,7 +1454,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            RemovePlayerFromVehicle(Id);
+            Internal.RemovePlayerFromVehicle(Id);
         }
 
         /// <summary>
@@ -2136,7 +1465,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            TogglePlayerControllable(Id, toggle);
+            Internal.TogglePlayerControllable(Id, toggle);
         }
 
         /// <summary>
@@ -2148,7 +1477,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            PlayerPlaySound(Id, soundid, point.X, point.Y, point.Z);
+            Internal.PlayerPlaySound(Id, soundid, point.X, point.Y, point.Z);
         }
 
         /// <summary>
@@ -2159,7 +1488,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            PlayerPlaySound(Id, soundid, 0, 0, 0);
+            Internal.PlayerPlaySound(Id, soundid, 0, 0, 0);
         }
 
         /// <summary>
@@ -2191,7 +1520,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync);
+            Internal.NativeApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync);
         }
 
         /// <summary>
@@ -2216,7 +1545,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, false);
+            Internal.NativeApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, false);
         }
 
         /// <summary>
@@ -2227,7 +1556,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeClearAnimations(Id, forcesync);
+            Internal.NativeClearAnimations(Id, forcesync);
         }
 
         /// <summary>
@@ -2237,7 +1566,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeClearAnimations(Id, false);
+            Internal.NativeClearAnimations(Id, false);
         }
 
         /// <summary>
@@ -2250,7 +1579,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return NativeGetAnimationName(AnimationIndex, out animlib, 64, out animname, 64);
+            return Internal.NativeGetAnimationName(AnimationIndex, out animlib, 64, out animname, 64);
         }
 
         /// <summary>
@@ -2267,7 +1596,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SetPlayerCheckpoint(Id, point.X, point.Y, point.Z, size);
+            Internal.SetPlayerCheckpoint(Id, point.X, point.Y, point.Z, size);
         }
 
         /// <summary>
@@ -2277,7 +1606,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            DisablePlayerCheckpoint(Id);
+            Internal.DisablePlayerCheckpoint(Id);
         }
 
         /// <summary>
@@ -2292,7 +1621,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SetPlayerRaceCheckpoint(Id, (int) type, point.X, point.Y, point.Z, nextPosition.X, nextPosition.Y,
+            Internal.SetPlayerRaceCheckpoint(Id, (int)type, point.X, point.Y, point.Z, nextPosition.X, nextPosition.Y,
                 nextPosition.Z, size);
         }
 
@@ -2303,7 +1632,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            DisablePlayerRaceCheckpoint(Id);
+            Internal.DisablePlayerRaceCheckpoint(Id);
         }
 
         /// <summary>
@@ -2321,9 +1650,8 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SetPlayerWorldBounds(Id, xMax, xMin, yMax, yMin);
+            Internal.SetPlayerWorldBounds(Id, xMax, xMin, yMax, yMin);
         }
-
         /// <summary>
         ///     Change the color of this <see cref="GtaPlayer" />'s name tag and radar blip for another Player.
         /// </summary>
@@ -2336,7 +1664,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            SetPlayerMarkerForPlayer(Id, player.Id, color.ToInteger(ColorFormat.RGBA));
+            Internal.SetPlayerMarkerForPlayer(Id, player.Id, color.ToInteger(ColorFormat.RGBA));
         }
 
         /// <summary>
@@ -2356,7 +1684,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            ShowPlayerNameTagForPlayer(Id, player.Id, show);
+            Internal.ShowPlayerNameTagForPlayer(Id, player.Id, show);
         }
 
         /// <summary>
@@ -2376,7 +1704,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return SetPlayerMapIcon(Id, iconid, position.X, position.Y, position.Z, (int) markertype, color,
+            return Internal.SetPlayerMapIcon(Id, iconid, position.X, position.Y, position.Z, (int) markertype, color,
                 (int) style);
         }
 
@@ -2388,7 +1716,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            RemovePlayerMapIcon(Id, iconid);
+            Internal.RemovePlayerMapIcon(Id, iconid);
         }
 
         /// <summary>
@@ -2401,7 +1729,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SetPlayerCameraLookAt(Id, point.X, point.Y, point.Z, (int) cut);
+            Internal.SetPlayerCameraLookAt(Id, point.X, point.Y, point.Z, (int) cut);
         }
 
         /// <summary>
@@ -2427,7 +1755,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            InterpolateCameraPos(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
+            Internal.InterpolateCameraPos(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
         }
 
         /// <summary>
@@ -2441,7 +1769,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeInterpolateCameraLookAt(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
+            Internal.NativeInterpolateCameraLookAt(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
         }
 
         /// <summary>
@@ -2453,7 +1781,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return IsPlayerInVehicle(Id, vehicle.Id);
+            return Internal.IsPlayerInVehicle(Id, vehicle.Id);
         }
 
         /// <summary>
@@ -2464,7 +1792,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            EnableStuntBonusForPlayer(Id, enable);
+            Internal.EnableStuntBonusForPlayer(Id, enable);
         }
 
         /// <summary>
@@ -2478,7 +1806,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            TogglePlayerSpectating(Id, toggle);
+            Internal.TogglePlayerSpectating(Id, toggle);
         }
 
         /// <summary>
@@ -2497,7 +1825,7 @@ namespace SampSharp.GameMode.World
             if (targetPlayer == null)
                 throw new ArgumentNullException("targetPlayer");
 
-            PlayerSpectatePlayer(Id, targetPlayer.Id, (int) mode);
+            Internal.PlayerSpectatePlayer(Id, targetPlayer.Id, (int) mode);
         }
 
         /// <summary>
@@ -2534,7 +1862,7 @@ namespace SampSharp.GameMode.World
             if (targetVehicle == null)
                 throw new ArgumentNullException("targetVehicle");
 
-            PlayerSpectateVehicle(Id, targetVehicle.Id, (int) mode);
+            Internal.PlayerSpectateVehicle(Id, targetVehicle.Id, (int) mode);
         }
 
         /// <summary>
@@ -2567,7 +1895,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeStartRecordingPlayerData(Id, (int) recordtype, recordname);
+            Internal.NativeStartRecordingPlayerData(Id, (int) recordtype, recordname);
         }
 
         /// <summary>
@@ -2578,7 +1906,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeStopRecordingPlayerData(Id);
+            Internal.NativeStopRecordingPlayerData(Id);
         }
 
         #endregion
@@ -2598,12 +1926,12 @@ namespace SampSharp.GameMode.World
 
             if (message.Length > 144)
             {
-                NativeSendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message.Substring(0, 144));
+                Internal.NativeSendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message.Substring(0, 144));
                 SendClientMessage(color, message.Substring(144));
             }
             else
             {
-                NativeSendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message);
+                Internal.NativeSendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message);
             }
         }
 
@@ -2615,7 +1943,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeKick(Id);
+            Internal.NativeKick(Id);
         }
 
         /// <summary>
@@ -2628,7 +1956,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeBan(Id);
+            Internal.NativeBan(Id);
         }
 
         /// <summary>
@@ -2639,7 +1967,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            BanEx(Id, reason);
+            Internal.BanEx(Id, reason);
         }
 
         /// <summary>
@@ -2687,12 +2015,12 @@ namespace SampSharp.GameMode.World
         {
             if (message.Length > 144)
             {
-                NativeSendClientMessageToAll(color.ToInteger(ColorFormat.RGBA), message.Substring(0, 144));
+                Internal.NativeSendClientMessageToAll(color.ToInteger(ColorFormat.RGBA), message.Substring(0, 144));
                 SendClientMessageToAll(color, message.Substring(144));
             }
             else
             {
-                NativeSendClientMessageToAll(color.ToInteger(ColorFormat.RGBA), message);
+                Internal.NativeSendClientMessageToAll(color.ToInteger(ColorFormat.RGBA), message);
             }
         }
 
@@ -2741,7 +2069,7 @@ namespace SampSharp.GameMode.World
             if (receiver == null)
                 throw new ArgumentNullException("receiver");
 
-            NativeSendPlayerMessageToPlayer(receiver.Id, Id, message);
+            Internal.NativeSendPlayerMessageToPlayer(receiver.Id, Id, message);
         }
 
         /// <summary>
@@ -2754,7 +2082,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            NativeSendPlayerMessageToAll(Id, message);
+            Internal.NativeSendPlayerMessageToAll(Id, message);
         }
 
         /// <summary>
@@ -2765,7 +2093,7 @@ namespace SampSharp.GameMode.World
         /// <param name="style">The style of text to be displayed.</param>
         public static void GameTextForAll(string text, int time, int style)
         {
-            NativeGameTextForAll(text, time, style);
+            Internal.NativeGameTextForAll(text, time, style);
         }
 
         /// <summary>
@@ -2778,7 +2106,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            GameTextForPlayer(Id, text, time, style);
+            Internal.GameTextForPlayer(Id, text, time, style);
         }
 
         /// <summary>
@@ -2789,7 +2117,7 @@ namespace SampSharp.GameMode.World
         /// <param name="radius">The explosion radius.</param>
         public static void CreateExplosionForAll(Vector3 position, int type, float radius)
         {
-            NativeCreateExplosion(position.X, position.Y, position.Z, type, radius);
+            Internal.NativeCreateExplosion(position.X, position.Y, position.Z, type, radius);
         }
 
         /// <summary>
@@ -2832,7 +2160,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            CreateExplosionForPlayer(Id, position.X, position.Y, position.Z, type, radius);
+            Internal.CreateExplosionForPlayer(Id, position.X, position.Y, position.Z, type, radius);
         }
 
         /// <summary>
@@ -2845,7 +2173,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            SendDeathMessageToPlayer(Id, killer == null ? InvalidId : killer.Id,
+            Internal.SendDeathMessageToPlayer(Id, killer == null ? InvalidId : killer.Id,
                 killee == null ? InvalidId : killee.Id, (int) weapon);
         }
 
@@ -2857,7 +2185,7 @@ namespace SampSharp.GameMode.World
         /// <param name="weapon">The reason for this Player's death.</param>
         public static void SendDeathMessageToAll(GtaPlayer killer, GtaPlayer killee, Weapon weapon)
         {
-            NativeSendDeathMessage(killer == null ? InvalidId : killer.Id, killee == null ? InvalidId : killee.Id,
+            Internal.NativeSendDeathMessage(killer == null ? InvalidId : killer.Id, killee == null ? InvalidId : killee.Id,
                 (int) weapon);
         }
 

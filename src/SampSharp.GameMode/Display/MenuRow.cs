@@ -21,7 +21,7 @@ namespace SampSharp.GameMode.Display
     public struct MenuRow
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MenuRow"/> class.
+        ///     Initializes a new instance of the <see cref="MenuRow" /> class.
         /// </summary>
         /// <param name="column1Text">The text in the first column.</param>
         /// <param name="disabled">Whether this row is disabled.</param>
@@ -33,7 +33,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MenuRow"/> class.
+        ///     Initializes a new instance of the <see cref="MenuRow" /> class.
         /// </summary>
         /// <param name="column1Text">The text in the text displayed in the first column.</param>
         /// <param name="column2Text">The text in the text displayed in the second column.</param>

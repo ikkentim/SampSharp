@@ -26,7 +26,7 @@ namespace SampSharp.GameMode.SAMP
     /// <summary>
     ///     Represents a collection of player variables.
     /// </summary>
-    public class PVarCollection : IEnumerable<object>
+    public partial class PVarCollection : IEnumerable<object>
     {
         private readonly GtaPlayer _player;
 
@@ -61,7 +61,7 @@ namespace SampSharp.GameMode.SAMP
             {
                 if (varname == null || _player == null) return null;
 
-                switch ((PlayerVarType) GetPVarType(_player.Id, varname))
+                switch ((PlayerVarType) Internal.GetPVarType(_player.Id, varname))
                 {
                     case PlayerVarType.Int:
                         return Get<int>(varname);
@@ -84,16 +84,16 @@ namespace SampSharp.GameMode.SAMP
                 }
 
                 if (value is int)
-                    SetPVarInt(_player.Id, varname, (int) value);
+                    Internal.SetPVarInt(_player.Id, varname, (int)value);
                 else if (value is float)
-                    SetPVarFloat(_player.Id, varname, (float) value);
+                    Internal.SetPVarFloat(_player.Id, varname, (float)value);
                 else if (value is bool)
-                    SetPVarInt(_player.Id, varname, (bool) value ? 1 : 0);
+                    Internal.SetPVarInt(_player.Id, varname, (bool)value ? 1 : 0);
                 else
                 {
                     var s = value as string;
                     if (s != null)
-                        SetPVarString(_player.Id, varname, s);
+                        Internal.SetPVarString(_player.Id, varname, s);
                 }
             }
         }
@@ -103,53 +103,8 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public int UpperIndex
         {
-            get { return _player == null ? 0 : GetPVarsUpperIndex(_player.Id); }
+            get { return _player == null ? 0 : Internal.GetPVarsUpperIndex(_player.Id); }
         }
-
-        #region Natives
-
-        private delegate bool SetPVarIntImpl(int playerid, string varname, int value);
-
-        private delegate bool SetPVarStringImpl(int playerid, string varname, string value);
-
-        private delegate bool DeletePVarImpl(int playerid, string varname);
-
-        private delegate float GetPVarFloatImpl(int playerid, string varname);
-
-        private delegate int GetPVarIntImpl(int playerid, string varname);
-
-        private delegate bool GetPVarNameAtIndexImpl(int playerid, int index, out string varname, int size);
-
-        private delegate bool GetPVarStringImpl(int playerid, string varname, out string value, int size);
-
-        private delegate int GetPVarsUpperIndexImpl(int playerid);
-
-        private delegate int GetPVarTypeImpl(int playerid, string varname);
-
-        private delegate bool SetPVarFloatImpl(int playerid, string varname, float value);
-
-        [Native("SetPVarInt")]
-        private static readonly SetPVarIntImpl SetPVarInt = null;
-        [Native("GetPVarInt")]
-        private static readonly GetPVarIntImpl GetPVarInt = null;
-        [Native("SetPVarString")]
-        private static readonly SetPVarStringImpl SetPVarString = null;
-        [Native("GetPVarString")]
-        private static readonly GetPVarStringImpl GetPVarString = null;
-        [Native("SetPVarFloat")]
-        private static readonly SetPVarFloatImpl SetPVarFloat = null;
-        [Native("GetPVarFloat")]
-        private static readonly GetPVarFloatImpl GetPVarFloat = null;
-        [Native("DeletePVar")]
-        private static readonly DeletePVarImpl DeletePVar = null;
-        [Native("GetPVarsUpperIndex")]
-        private static readonly GetPVarsUpperIndexImpl GetPVarsUpperIndex = null;
-        [Native("GetPVarNameAtIndex")]
-        private static readonly GetPVarNameAtIndexImpl GetPVarNameAtIndex = null;
-        [Native("GetPVarType")]
-        private static readonly GetPVarTypeImpl GetPVarType = null;
-
-        #endregion
 
         /// <summary>
         ///     Returns an enumerator that iterates through the collection.
@@ -186,17 +141,17 @@ namespace SampSharp.GameMode.SAMP
 
             object value = default(T);
             if (typeof (T) == typeof (int))
-                value = GetPVarInt(_player.Id, varname);
+                value = Internal.GetPVarInt(_player.Id, varname);
             else if (typeof (T) == typeof (float))
-                value = GetPVarFloat(_player.Id, varname);
+                value = Internal.GetPVarFloat(_player.Id, varname);
             else if (typeof (T) == typeof (string))
             {
                 string output;
-                GetPVarString(_player.Id, varname, out output, 64);
+                Internal.GetPVarString(_player.Id, varname, out output, 64);
                 value = output;
             }
             else if (typeof (T) == typeof (bool))
-                value = GetPVarInt(_player.Id, varname) > 0;
+                value = Internal.GetPVarInt(_player.Id, varname) > 0;
             return (T) Convert.ChangeType(value, typeof (T));
         }
 
@@ -207,7 +162,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>True if the variable exists; False otherwise.</returns>
         public bool Exists(string varname)
         {
-            return _player != null && GetPVarType(_player.Id, varname) != (int) PlayerVarType.None;
+            return _player != null && Internal.GetPVarType(_player.Id, varname) != (int)PlayerVarType.None;
         }
 
         /// <summary>
@@ -219,7 +174,7 @@ namespace SampSharp.GameMode.SAMP
         {
             if (_player == null) return null;
 
-            switch ((PlayerVarType) GetPVarType(_player.Id, varname))
+            switch ((PlayerVarType)Internal.GetPVarType(_player.Id, varname))
             {
                 case PlayerVarType.Float:
                     return typeof (float);
@@ -242,7 +197,7 @@ namespace SampSharp.GameMode.SAMP
             if (_player == null) return null;
 
             string name;
-            GetPVarNameAtIndex(_player.Id, index, out name, 64);
+            Internal.GetPVarNameAtIndex(_player.Id, index, out name, 64);
             return name;
         }
 
@@ -253,7 +208,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>True on success; False otherwise.</returns>
         public bool Delete(string varname)
         {
-            return _player != null && DeletePVar(_player.Id, varname);
+            return _player != null && Internal.DeletePVar(_player.Id, varname);
         }
     }
 }

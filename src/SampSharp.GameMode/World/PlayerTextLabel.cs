@@ -23,7 +23,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a player text label.
     /// </summary>
-    public class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel>, IIdentifiable, IOwnable<GtaPlayer>
+    public partial class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel>, IIdentifiable, IOwnable<GtaPlayer>
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -45,7 +45,7 @@ namespace SampSharp.GameMode.World
         {
             base.Dispose(disposing);
 
-            DeletePlayer3DTextLabel(Owner.Id, Id);
+            Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
         }
 
         #endregion
@@ -74,7 +74,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _color = value;
-                UpdatePlayer3DTextLabelText(Owner.Id, Id, Color, Text);
+                Internal.UpdatePlayer3DTextLabelText(Owner.Id, Id, Color, Text);
             }
         }
 
@@ -87,7 +87,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _text = value;
-                UpdatePlayer3DTextLabelText(Owner.Id, Id, Color, Text);
+                Internal.UpdatePlayer3DTextLabelText(Owner.Id, Id, Color, Text);
             }
         }
 
@@ -101,7 +101,7 @@ namespace SampSharp.GameMode.World
             {
                 _position = value;
                 Dispose();
-                Id = CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
+                Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
                     AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
@@ -118,7 +118,7 @@ namespace SampSharp.GameMode.World
             {
                 _drawDistance = value;
                 Dispose();
-                Id = CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
+                Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
                     AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
@@ -135,7 +135,7 @@ namespace SampSharp.GameMode.World
             {
                 _testLOS = value;
                 Dispose();
-                Id = CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
+                Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
                     AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
@@ -152,7 +152,7 @@ namespace SampSharp.GameMode.World
             {
                 _attachedPlayer = value;
                 Dispose();
-                Id = CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
+                Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
                     AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
@@ -169,7 +169,7 @@ namespace SampSharp.GameMode.World
             {
                 _attachedVehicle = value;
                 Dispose();
-                Id = CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
+                Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
                     AttachedVehicle == null ? GtaVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
@@ -185,30 +185,6 @@ namespace SampSharp.GameMode.World
         ///     Gets the owner of this IOwnable.
         /// </summary>
         public virtual GtaPlayer Owner { get; private set; }
-
-        #endregion
-
-        #region Natives
-
-        private delegate bool UpdatePlayer3DTextLabelTextImpl(int playerid, int id, int color, string text);
-
-        private delegate int CreatePlayer3DTextLabelImpl(
-            int playerid, string text, int color, float x, float y, float z, float drawDistance, int attachedplayer,
-            int attachedvehicle, bool testLOS);
-
-        private delegate bool DeletePlayer3DTextLabelImpl(int playerid, int id);
-
-        [Native("CreatePlayer3DTextLabel")]
-        private static readonly CreatePlayer3DTextLabelImpl CreatePlayer3DTextLabel =
-            null;
-
-        [Native("DeletePlayer3DTextLabel")]
-        private static readonly DeletePlayer3DTextLabelImpl DeletePlayer3DTextLabel =
-            null;
-
-        [Native("UpdatePlayer3DTextLabelText")]
-        private static readonly UpdatePlayer3DTextLabelTextImpl
-            UpdatePlayer3DTextLabelText = null;
 
         #endregion
 
@@ -251,7 +227,7 @@ namespace SampSharp.GameMode.World
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            Id = CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z, drawDistance,
+            Id = Internal.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z, drawDistance,
                 GtaPlayer.InvalidId, GtaVehicle.InvalidId, testLOS);
         }
 
@@ -298,7 +274,7 @@ namespace SampSharp.GameMode.World
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            Id = CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z, drawDistance,
+            Id = Internal.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z, drawDistance,
                 attachedPlayer.Id, GtaVehicle.InvalidId, testLOS);
         }
 
@@ -346,7 +322,7 @@ namespace SampSharp.GameMode.World
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            Id = CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z, drawDistance,
+            Id = Internal.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z, drawDistance,
                 GtaPlayer.InvalidId, attachedVehicle.Id, testLOS);
         }
 
