@@ -26,7 +26,7 @@ namespace SampSharp.GameMode.Display
     /// <summary>
     ///     Represents a SA:MP dialog.
     /// </summary>
-    public partial class Dialog : IDialog
+    public abstract partial class Dialog
     {
         private const int DialogId = 10000;
         private const int DialogHideId = -1;
@@ -34,34 +34,6 @@ namespace SampSharp.GameMode.Display
 
         private readonly ASyncWaiter<GtaPlayer, DialogResponseEventArgs> _aSyncWaiter =
             new ASyncWaiter<GtaPlayer, DialogResponseEventArgs>();
-
-        #region Constructors
-
-        /// <summary>
-        ///     Initializes a new instance of the Dialog class.
-        /// </summary>
-        /// <param name="style">The style of the dialog.</param>
-        /// <param name="caption">
-        ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
-        ///     characters before it starts to cut off.
-        /// </param>
-        /// <param name="message">The text to display in the main dialog. Use \n to start a new line and \t to tabulate.</param>
-        /// <param name="button1">The text on the left button.</param>
-        /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-        public Dialog(DialogStyle style, string caption, string message, string button1, string button2 = null)
-        {
-            if (caption == null) throw new ArgumentNullException("caption");
-            if (message == null) throw new ArgumentNullException("message");
-            if (button1 == null) throw new ArgumentNullException("button1");
-
-            Style = style;
-            Caption = caption;
-            Message = message;
-            Button1 = button1;
-            Button2 = button2;
-        }
-
-        #endregion
 
         #region Properties of Dialog
 
@@ -130,9 +102,9 @@ namespace SampSharp.GameMode.Display
         public virtual string Caption { get; set; }
 
         /// <summary>
-        ///     Gets the message displayed.
+        ///     Gets the info displayed in the box.
         /// </summary>
-        public virtual string Message { get; private set; }
+        protected abstract string Info { get; }
 
         /// <summary>
         ///     Gets or sets the text on the left button.
@@ -170,7 +142,7 @@ namespace SampSharp.GameMode.Display
 
 
             // Show the dialog to the player.
-            Internal.ShowPlayerDialog(player.Id, DialogId, (int) Style, Caption, Message, Button1,
+            Internal.ShowPlayerDialog(player.Id, DialogId, (int) Style, Caption, Info, Button1,
                 Button2 ?? string.Empty);
         }
 

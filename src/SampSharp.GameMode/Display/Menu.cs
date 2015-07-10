@@ -26,7 +26,7 @@ namespace SampSharp.GameMode.Display
     /// <summary>
     ///     Represents a SA:MP menu.
     /// </summary>
-    public partial class Menu : Pool<Menu>, IMenu
+    public partial class Menu : Pool<Menu>
     {
         private readonly List<GtaPlayer> _viewers = new List<GtaPlayer>();
 

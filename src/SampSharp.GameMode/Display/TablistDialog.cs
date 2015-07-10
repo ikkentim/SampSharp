@@ -38,9 +38,17 @@ namespace SampSharp.GameMode.Display
         /// <param name="button1">The text on the left button.</param>
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
         public TablistDialog(string caption, int columnCount, string button1, string button2 = null)
-            : base(DialogStyle.Tablist, caption, string.Empty, button1, button2)
         {
+            if (caption == null) throw new ArgumentNullException("caption");
+            if (button1 == null) throw new ArgumentNullException("button1");
+            if(columnCount <= 0)
+                throw new ArgumentOutOfRangeException("columnCount", "must be greater than 0");
+
+            Caption = caption;
+            Button1 = button1;
+            Button2 = button2;
             _columnCount = columnCount;
+            Style=DialogStyle.Tablist;
         }
 
         /// <summary>
@@ -54,9 +62,16 @@ namespace SampSharp.GameMode.Display
         /// <param name="button1">The text on the left button.</param>
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
         public TablistDialog(string caption, IEnumerable<string> columns, string button1, string button2 = null)
-            : base(DialogStyle.TablistHeaders, caption, string.Empty, button1, button2)
         {
+            if (caption == null) throw new ArgumentNullException("caption");
+            if (button1 == null) throw new ArgumentNullException("button1");
+
+            Caption = caption;
+            Button1 = button1;
+            Button2 = button2;
             if (columns == null) throw new ArgumentNullException("columns");
+            Style = DialogStyle.TablistHeaders;
+            
             _columns = columns.ToArray();
             _columnCount = _columns.Length;
         }
@@ -64,9 +79,9 @@ namespace SampSharp.GameMode.Display
         #region Overrides of Dialog
 
         /// <summary>
-        ///     Gets the message displayed.
+        ///     Gets the info displayed in the box.
         /// </summary>
-        public override string Message
+        protected override string Info
         {
             get
             {

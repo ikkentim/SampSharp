@@ -34,27 +34,36 @@ namespace SampSharp.GameMode.Display
         /// <param name="button1">The text on the left button.</param>
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
         public InputDialog(string caption, string message, bool isPassword, string button1, string button2 = null)
-            : base(isPassword ? DialogStyle.Password : DialogStyle.Input, caption, message, button1, button2)
         {
-            _message = message;
+            if (caption == null) throw new ArgumentNullException("caption");
+            if (message == null) throw new ArgumentNullException("message");
+            if (button1 == null) throw new ArgumentNullException("button1");
+            Caption = caption;
+            Message = message;
+            Button1 = button1;
+            Button2 = button2;
+            Style = isPassword ? DialogStyle.Password : DialogStyle.Input;
         }
 
         #region Overrides of Dialog
 
         /// <summary>
-        ///     Gets the message displayed.
+        ///     Gets the Info displayed.
         /// </summary>
-        public override string Message
+        protected override string Info
         {
             get { return _message; }
         }
 
         #endregion
 
-        public void SetMessage(string value)
+        /// <summary>
+        ///     Gets or sets the message in the dialog.
+        /// </summary>
+        public string Message
         {
-            if (value == null) throw new ArgumentNullException("value");
-            _message = value;
+            get { return _message; }
+            set { _message = value; }
         }
     }
 }

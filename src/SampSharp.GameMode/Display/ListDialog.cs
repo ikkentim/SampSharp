@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using SampSharp.GameMode.Definitions;
 
@@ -32,8 +33,13 @@ namespace SampSharp.GameMode.Display
         /// <param name="button1">The text on the left button.</param>
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
         public ListDialog(string caption, string button1, string button2 = null)
-            : base(DialogStyle.List, caption, string.Empty, button1, button2)
         {
+            if (caption == null) throw new ArgumentNullException("caption");
+            if (button1 == null) throw new ArgumentNullException("button1");
+            Button1 = button1;
+            Button2 = button2;
+            Caption = caption;
+            Style = DialogStyle.List;
         }
 
         public IList<string> Items
@@ -44,9 +50,9 @@ namespace SampSharp.GameMode.Display
         #region Overrides of Dialog
 
         /// <summary>
-        ///     Gets the message displayed.
+        ///     Gets the info displayed in the box.
         /// </summary>
-        public override string Message
+        protected override string Info
         {
             get { return string.Join("\n", Items); }
         }

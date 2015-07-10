@@ -90,8 +90,6 @@
     <Compile Include="Display\Dialog.Internal.cs">
       <DependentUpon>Dialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Display\IDialog.cs" />
-    <Compile Include="Display\IMenu.cs" />
     <Compile Include="Display\InputDialog.cs" />
     <Compile Include="Display\ListDialog.cs" />
     <Compile Include="Display\Menu.Internal.cs">

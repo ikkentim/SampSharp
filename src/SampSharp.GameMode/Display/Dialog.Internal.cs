@@ -17,7 +17,7 @@ using SampSharp.GameMode.Natives;
 
 namespace SampSharp.GameMode.Display
 {
-    public partial class Dialog
+    public abstract partial class Dialog
     {
         private static class Internal
         {
