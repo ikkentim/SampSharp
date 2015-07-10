@@ -174,7 +174,9 @@
     <Compile Include="World\PlayerTextLabel.Internal.cs">
       <DependentUpon>PlayerTextLabel.cs</DependentUpon>
     </Compile>
-    <Compile Include="World\TextLabel.Internal.cs" />
+    <Compile Include="World\TextLabel.Internal.cs">
+      <DependentUpon>TextLabel.cs</DependentUpon>
+    </Compile>
     <Compile Include="World\VehicleModelInfo.cs" />
     <Compile Include="Definitions\VehicleCategory.cs" />
     <Compile Include="Display\Menu.cs" />

@@ -100,7 +100,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _position = value;
-                Dispose();
+                Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
                 Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
@@ -117,7 +117,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _drawDistance = value;
-                Dispose();
+                Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
                 Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
@@ -134,7 +134,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _testLOS = value;
-                Dispose();
+                Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
                 Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
@@ -151,7 +151,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _attachedPlayer = value;
-                Dispose();
+                Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
                 Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,
@@ -168,7 +168,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _attachedVehicle = value;
-                Dispose();
+                Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
                 Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer == null ? GtaPlayer.InvalidId : AttachedPlayer.Id,

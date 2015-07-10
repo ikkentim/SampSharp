@@ -83,7 +83,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _position = value;
-                Dispose();
+                Internal.Delete3DTextLabel(Id);
                 Id = Internal.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     VirtualWorld, TestLOS);
             }
@@ -98,7 +98,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _drawDistance = value;
-                Dispose();
+                Internal.Delete3DTextLabel(Id);
                 Id = Internal.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     VirtualWorld, TestLOS);
             }
@@ -113,7 +113,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _virtualWorld = value;
-                Dispose();
+                Internal.Delete3DTextLabel(Id);
                 Id = Internal.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     VirtualWorld, TestLOS);
             }
@@ -129,7 +129,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _testLOS = value;
-                Dispose();
+                Internal.Delete3DTextLabel(Id);
                 Id = Internal.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     VirtualWorld, TestLOS);
             }
