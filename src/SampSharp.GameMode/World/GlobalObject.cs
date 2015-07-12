@@ -131,14 +131,12 @@ namespace SampSharp.GameMode.World
         #region Constructor
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GlobalObject" /> class.
+        ///     Initializes a new instance of the <see cref="GlobalObject"/> class.
         /// </summary>
-        /// <param name="id">The identifier.</param>
-        public GlobalObject(int id)
+        public GlobalObject()
         {
-            Id = id;
+            Id = InvalidId;
         }
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="GlobalObject" /> class.
         /// </summary>

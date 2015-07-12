@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.SAMP
         private bool _isRepeating;
 
         /// <summary>
-        ///     Initializes a new instance of the Timer class.
+        ///     Initializes a new instance of the Timer class and starts the timer.
         /// </summary>
         /// <param name="interval">The interval in miliseconds.</param>
         /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
@@ -72,7 +72,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Initializes a new instance of the Timer class.
+        ///     Initializes a new instance of the Timer class and starts the timer.
         /// </summary>
         /// <param name="interval">The interval.</param>
         /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>

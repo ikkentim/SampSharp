@@ -139,16 +139,10 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlayerObject" /> class.
         /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="id">The identifier.</param>
-        /// <exception cref="System.ArgumentNullException">owner</exception>
-        public PlayerObject(GtaPlayer owner, int id)
+        public PlayerObject()
         {
-            if (owner == null)
-                throw new ArgumentNullException("owner");
-
-            Owner = owner;
-            Id = id;
+            Owner = null;
+            Id = InvalidId;
         }
 
         /// <summary>

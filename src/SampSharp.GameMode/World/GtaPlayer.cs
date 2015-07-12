@@ -87,11 +87,10 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Initializes a new instance of the <see cref="GtaPlayer" /> class.
         /// </summary>
-        /// <param name="id">The identifier.</param>
-        public GtaPlayer(int id)
+        public GtaPlayer()
         {
             //Fill properties
-            Id = id;
+            Id = InvalidId;
             PVars = new PVarCollection(this);
             Key = new KeyChangeHandlerSet();
         }

@@ -15,6 +15,7 @@
 
 using System;
 using System.Linq;
+using System.Reflection;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Pools
@@ -28,15 +29,24 @@ namespace SampSharp.GameMode.Pools
         /// <summary>
         ///     The type to initialize when adding an instance to this pool by id.
         /// </summary>
-        protected static Type InstanceType;
+        protected static Type InstanceType { get; private set; }
+
+        private static PropertyInfo _idProperty;
 
         /// <summary>
         ///     Registers the type to use when initializing new instances.
         /// </summary>
-        /// <typeparam name="T2">The <see cref="Type" /> to use when initializing new instances.</typeparam>
-        public static void Register<T2>() where T2 : TInstance
+        /// <typeparam name="TRegister">The <see cref="Type" /> to use when initializing new instances.</typeparam>
+        public static void Register<TRegister>() where TRegister : TInstance
         {
-            InstanceType = typeof (T2);
+            InstanceType = typeof (TRegister);
+
+            var idProperty = InstanceType.GetProperty("Id");
+
+            if(idProperty == null)
+                throw new Exception("The specified type has no Id property");
+
+            _idProperty = idProperty;
         }
 
         /// <summary>
@@ -56,7 +66,9 @@ namespace SampSharp.GameMode.Pools
         /// <returns>The initialized instance.</returns>
         public static TInstance Create(int id)
         {
-            return (TInstance) Activator.CreateInstance(InstanceType, id);
+            var instance = (TInstance) Activator.CreateInstance(InstanceType);
+            _idProperty.SetValue(instance, id);
+            return instance;
         }
 
         /// <summary>

@@ -194,21 +194,6 @@ namespace SampSharp.GameMode.World
         ///     Initializes a new instance of the <see cref="PlayerTextLabel" /> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
-        /// <param name="id">The identifier.</param>
-        /// <exception cref="System.ArgumentNullException">owner</exception>
-        public PlayerTextLabel(GtaPlayer owner, int id)
-        {
-            if (owner == null)
-                throw new ArgumentNullException("owner");
-
-            Owner = owner;
-            Id = id;
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PlayerTextLabel" /> class.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
         /// <param name="text">The text.</param>
         /// <param name="color">The color.</param>
         /// <param name="position">The position.</param>

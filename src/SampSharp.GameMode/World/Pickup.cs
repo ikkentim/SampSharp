@@ -37,10 +37,9 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Initializes a new instance of the <see cref="Pickup" /> class.
         /// </summary>
-        /// <param name="id">The identity of the pickup.</param>
-        public Pickup(int id)
+        public Pickup()
         {
-            Id = id;
+            Id = InvalidId;
         }
 
         /// <summary>

@@ -43,10 +43,9 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Initializes a new instance of the <see cref="GtaVehicle" /> class.
         /// </summary>
-        /// <param name="id">The ID of the vehicle to initialize.</param>
-        public GtaVehicle(int id)
+        public GtaVehicle()
         {
-            Id = id;
+            Id = InvalidId;
         }
 
         #endregion

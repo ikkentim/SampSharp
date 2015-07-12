@@ -18,13 +18,49 @@ using System.Collections.Generic;
 using System.Linq;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
+using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 using TestMode.Tests;
 
 namespace TestMode
 {
+    public class Vehicle : GtaVehicle
+    {
+        public override void OnPlayerEnter(EnterVehicleEventArgs e)
+        {
+            e.Player.SendClientMessage("You entered {0} ID {1}", this, Id);
+        }
+    }
+
+    public class VehicleController : GtaVehicleController
+    {
+        public override void RegisterTypes()
+        {
+            Vehicle.Register<Vehicle>();
+        }
+    }
+
+    public class Player : GtaPlayer
+    {
+        [Command("spawn")]
+        public void SpawnVehicle()
+        {
+            var v = GtaVehicle.Create(VehicleModelType.BMX, Position + new Vector3(0, 0.5f, 0), 0, -1, -1);
+            PutInVehicle(v);
+        }
+    }
+
+    public class PlayerController : GtaPlayerController
+    {
+        public override void RegisterTypes()
+        {
+            Player.Register<Player>();
+        }
+    }
+
     public class GameMode : BaseMode
     {
         #region Tests
@@ -48,6 +84,13 @@ namespace TestMode
         };
 
         #endregion
+
+        private void StackFiller(int c)
+        {
+            if (c <= 0)
+                throw new Exception();
+            StackFiller(c - 1);
+        }
 
         #region Overrides of BaseMode
 
@@ -85,22 +128,18 @@ namespace TestMode
             base.OnRconCommand(e);
         }
 
-        private void StackFiller(int c)
-        {
-            if (c <= 0)
-                throw new Exception();
-            StackFiller(c - 1);
-        }
-
         protected override void LoadControllers(ControllerCollection controllers)
         {
             base.LoadControllers(controllers);
 
+            controllers.Remove<GtaPlayerController>();
+            controllers.Add(new PlayerController());
+            controllers.Remove<GtaVehicleController>();
+            controllers.Add(new VehicleController());
+
             foreach (var test in _tests.OfType<IControllerTest>())
                 test.LoadControllers(controllers);
         }
-
-        #region Overrides of BaseMode
 
         /// <summary>
         ///     Raises the <see cref="E:CallbackException" /> event.
@@ -115,8 +154,6 @@ namespace TestMode
             e.Handled = true;
             base.OnCallbackException(e);
         }
-
-        #endregion
 
         #endregion
     }

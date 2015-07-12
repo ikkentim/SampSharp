@@ -25,18 +25,8 @@ using TestMode.Checkers;
 
 namespace TestMode.Tests
 {
-    public class CommandsTest : ITest, IControllerTest
+    public class CommandsTest : ITest
     {
-        #region Implementation of IControllerTest
-
-        public void LoadControllers(ControllerCollection controllers)
-        {
-            controllers.Remove<GtaPlayerController>();
-            controllers.Add(new PlayerTestController());
-        }
-
-        #endregion
-
         #region Implementation of ITest
 
         public void Start(GameMode gameMode)
@@ -158,41 +148,6 @@ namespace TestMode.Tests
         public static void Interior(GtaPlayer player, int interior)
         {
             player.Interior = interior;
-        }
-
-        public class PlayerTest : GtaPlayer
-        {
-            /// <summary>
-            ///     Initializes a new instance of the <see cref="GtaPlayer" /> class.
-            /// </summary>
-            /// <param name="id">The identifier.</param>
-            public PlayerTest(int id)
-                : base(id)
-            {
-            }
-
-            [Command("player")]
-            [Text("text")]
-            public void PlayerCommand(string text)
-            {
-                SendClientMessage(text);
-                SendClientMessage("It works!!!");
-            }
-        }
-
-        private class PlayerTestController : GtaPlayerController
-        {
-            #region Overrides of GtaPlayerController
-
-            /// <summary>
-            ///     Registers types this PlayerController requires the system to use.
-            /// </summary>
-            public override void RegisterTypes()
-            {
-                PlayerTest.Register<PlayerTest>();
-            }
-
-            #endregion
         }
     }
 }

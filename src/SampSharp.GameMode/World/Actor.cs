@@ -37,10 +37,9 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Initializes a new instance of the <see cref="Actor" /> class.
         /// </summary>
-        /// <param name="id">The identifier.</param>
-        public Actor(int id)
+        public Actor()
         {
-            Id = id;
+            Id = InvalidId;
         }
 
         /// <summary>
@@ -199,7 +198,7 @@ namespace SampSharp.GameMode.World
         {
             var id = Internal.CreateActor(modelid, position.X, position.Y, position.Z, rotation);
 
-            return id == InvalidId ? null : new Actor(id);
+            return id == InvalidId ? null : FindOrCreate(id);
         }
 
         /// <summary>
