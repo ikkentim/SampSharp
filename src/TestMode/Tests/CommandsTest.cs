@@ -31,6 +31,7 @@ namespace TestMode.Tests
 
         public void Start(GameMode gameMode)
         {
+            Console.WriteLine("Reg groups>>>>>");
             CommandGroup.Register("tools", "t", CommandGroup.Register("test", "t"));
             CommandGroup.Register("vehicle", "v");
 
@@ -64,13 +65,32 @@ namespace TestMode.Tests
         //    // This method should throw let the commands loading fail
         //    player.SendClientMessage("wtf?");
         //}
-
-        [Command("list", Alias = "l")]
         [CommandGroup("vehicle")]
-        public static void VehicleListCommand(GtaPlayer player)
+        private static class VehicleCommandGroup
         {
-            player.SendClientMessage(Color.Green, "Available vehicles:");
-            player.SendClientMessage(Color.GreenYellow, string.Join(", ", typeof (VehicleModelType).GetEnumNames()));
+            [Command("list", Alias = "l")]
+            public static void VehicleListCommand(GtaPlayer player)
+            {
+                player.SendClientMessage(Color.Green, "Available vehicles:");
+                player.SendClientMessage(Color.GreenYellow, string.Join(", ", typeof (VehicleModelType).GetEnumNames()));
+            }
+
+            [Command("spawn", Alias = "s", Shortcut = "v")]
+            public static void VehicleCommand(GtaPlayer player, VehicleModelType model)
+            {
+                player.SendClientMessage(Color.GreenYellow, "You have spawned a {0}", model);
+                Console.WriteLine("Spawning a {0} {2} for {1}", model, player, (int) model);
+                var vehicle = GtaVehicle.Create(model, player.Position + new Vector3(0, 0, 0.5f), player.Rotation.Z, -1,
+                    -1);
+                player.PutInVehicle(vehicle);
+            }
+
+            [Command("c")]
+            [CommandGroup("a", "b")]
+            public static void TestCommand(GtaPlayer player)
+            {
+                player.SendClientMessage("Success!!!");
+            }
         }
 
         [Command("commands", Alias = "help")]
@@ -88,22 +108,11 @@ namespace TestMode.Tests
             }
         }
 
-        [Command("spawn", Alias = "s", Shortcut = "v")]
-        [CommandGroup("vehicle")]
-        public static void VehicleCommand(GtaPlayer player, VehicleModelType model)
-        {
-            player.SendClientMessage(Color.GreenYellow, "You have spawned a {0}", model);
-            Console.WriteLine("Spawning a {0} {2} for {1}", model, player, (int) model);
-            var vehicle = GtaVehicle.Create(model, player.Position + new Vector3(0, 0, 0.5f), player.Rotation.Z, -1,
-                -1);
-            player.PutInVehicle(vehicle);
-        }
-
         [Command("vehicle")]
         public static void VehicleOverloadCommand(GtaPlayer player)
         {
             player.SendClientMessage(
-                "This is the 'vehicle' overload. 'v', 'vehicle spawn' and 'vehicle list' is also available.");
+                "This is the 'vehicle' overload. 'v', 'vehicle spawn' and 'vehicle list' are also available.");
         }
 
         [Command("tell")]

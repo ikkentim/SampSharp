@@ -66,13 +66,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             _parameterInfos = command.GetParameters();
 
             var commandAttribute = command.GetCustomAttribute<CommandAttribute>();
-            var groupAttribute = command.GetCustomAttribute<CommandGroupAttribute>();
-
             if (commandAttribute == null) throw new ArgumentException("method does not have CommandAttribute attached");
-
-            if (groupAttribute != null)
-                Group = CommandGroup.All.FirstOrDefault(g => g.CommandPath == groupAttribute.Group);
-
 
             Name = commandAttribute.Name;
             IgnoreCase = commandAttribute.IgnoreCase;
@@ -129,8 +123,37 @@ namespace SampSharp.GameMode.SAMP.Commands
                 throw new ArgumentException("command " + Name +
                                             " has a parameter of a unknown type without an attached attrubute");
             }
+
+            DetectGroup();
         }
 
+        private static string GetCommandGroupString(Type type)
+        {
+            if (type == null)
+                return string.Empty;
+
+            var attr = type.GetCustomAttribute<CommandGroupAttribute>();
+
+            if (attr == null)
+                return GetCommandGroupString(type.DeclaringType);
+
+            return GetCommandGroupString(type.DeclaringType) + " " + attr.Group;
+        }
+
+        public void DetectGroup()
+        {
+
+            var groupAttribute = Command.GetCustomAttribute<CommandGroupAttribute>();
+
+            var group = GetCommandGroupString(Command.DeclaringType);
+
+            if (groupAttribute != null)
+                group += " " + groupAttribute.Group;
+
+            group = group.Trim(' ');
+            if (group.Length > 0)
+                Group = CommandGroup.All.FirstOrDefault(g => g.CommandPath == group);
+        }
         /// <summary>
         ///     Checks whether the provided <paramref name="commandText" /> starts with the right characters to run this command.
         /// </summary>

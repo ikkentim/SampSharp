@@ -45,12 +45,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             foreach (var cmd in Command.GetAll<DetectedCommand>().Where(c => c.Group == null))
             {
-                var groupAttribute = cmd.Command.GetCustomAttribute<CommandGroupAttribute>();
-
-                if (groupAttribute != null && groupAttribute.Group == CommandPath)
-                {
-                    cmd.Group = this;
-                }
+                cmd.DetectGroup();
             }
         }
 

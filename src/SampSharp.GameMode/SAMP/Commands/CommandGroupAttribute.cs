@@ -20,7 +20,7 @@ namespace SampSharp.GameMode.SAMP.Commands
     /// <summary>
     ///     Contains a Group property to group a command.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
     public class CommandGroupAttribute : Attribute
     {
         /// <summary>
