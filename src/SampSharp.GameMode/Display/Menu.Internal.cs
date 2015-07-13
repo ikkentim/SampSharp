@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.Natives;
+using SampSharp.GameMode.API;
 
 namespace SampSharp.GameMode.Display
 {

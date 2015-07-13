@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.GameMode.Natives
+namespace SampSharp.GameMode.API
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class NativeAttribute : Attribute
