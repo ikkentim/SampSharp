@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
@@ -361,6 +362,10 @@ namespace SampSharp.GameMode.API
 
                         if (nativeFunction != null)
                             field.SetValue(null, nativeFunction.GenerateInvoker(@delegate));
+                        else
+                        {
+                            Console.WriteLine("[SampSharp] Warning: Could not load native '{0}'", attribute.Name);
+                        }
                     }
                 }
             }
