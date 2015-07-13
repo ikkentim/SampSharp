@@ -510,16 +510,6 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
 	sprintf(sig.name, "%s", utf8_name_string);
 	mono_free(utf8_name_string);
 
-    /* Check whether the native has already been loaded. If it has check whether
-     * the signature matches the specified format and return it's handle.*/
-    for (int i = 0; i < natives_.size(); i++) {
-        if (!strcmp(natives_[i].name, sig.name)) {
-            if (natives_[i].param_count == sig.param_count) {
-                return i;
-            }
-        }
-    }
-
 	sprintf(sig.format, "");
 
 	if (!format_string) {
@@ -620,6 +610,17 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
             break;
         }
 
+    }
+
+    /* Check whether the native has already been loaded. If it has check whether
+    * the signature matches the specified format and return it's handle.*/
+    for (int i = 0; i < natives_.size(); i++) {
+        if (!strcmp(natives_[i].name, sig.name)) {
+            if (natives_[i].param_count == sig.param_count &&
+                !strcmp(natives_[i].format, sig.format)) {
+                return i;
+            }
+        }
     }
 
     int result = natives_.size();
