@@ -343,6 +343,9 @@ namespace SampSharp.GameMode.API
                 if (type.IsInterface)
                     continue;
 
+                if (type.ContainsGenericParameters)
+                    continue;
+
                 foreach (var field in type.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
                     )
                 {
