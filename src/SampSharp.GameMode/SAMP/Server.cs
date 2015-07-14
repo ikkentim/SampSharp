@@ -26,6 +26,7 @@ namespace SampSharp.GameMode.SAMP
     /// </summary>
     public static partial class Server
     {
+        private static ServerConfig _serverConfig;
         /// <summary>
         ///     Gets the maximum number of players that can join the server, as set by the server var 'maxplayers' in server.cfg.
         /// </summary>
@@ -42,6 +43,14 @@ namespace SampSharp.GameMode.SAMP
                 Internal.GetNetworkStats(out result, 500);
                 return result;
             }
+        }
+
+        /// <summary>
+        /// Gets the server configuration.
+        /// </summary>
+        public static ServerConfig Config
+        {
+            get { return _serverConfig ?? (_serverConfig = new ServerConfig()); }
         }
 
         /// <summary>

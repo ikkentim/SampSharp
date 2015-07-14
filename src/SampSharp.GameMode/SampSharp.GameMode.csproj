@@ -138,6 +138,7 @@
     <Compile Include="SAMP\Server.Internal.cs">
       <DependentUpon>Server.cs</DependentUpon>
     </Compile>
+    <Compile Include="SAMP\ServerConfig.cs" />
     <Compile Include="Service.cs" />
     <Compile Include="GameModeServiceContainer.cs" />
     <Compile Include="Tools\ASyncWaiter`2.cs" />
