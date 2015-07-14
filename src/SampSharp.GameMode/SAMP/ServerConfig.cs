@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,6 +32,9 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public ServerConfig()
         {
+            if (!File.Exists("server.cfg"))
+                return;
+
             foreach (
                 var parts in
                     File.ReadAllLines("server.cfg")
@@ -40,10 +44,10 @@ namespace SampSharp.GameMode.SAMP
                 switch (parts.Length)
                 {
                     case 1:
-                        _values[parts[0]] = string.Empty;
+                        _values[parts[0].Trim()] = string.Empty;
                         break;
                     case 2:
-                        _values[parts[0]] = parts[1];
+                        _values[parts[0].Trim()] = parts[1];
                         break;
                 }
             }
@@ -54,30 +58,46 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public string this[string key]
         {
-            get { return Read(key); }
+            get { return Get(key); }
         }
 
         /// <summary>
-        ///     Reads the configuration value with the specified key.
+        ///     Gets the configuration value with the specified key.
         /// </summary>
         /// <param name="key">The key.</param>
-        /// <returns>The value.</returns>
-        public string Read(string key)
-        {
-            return _values.ContainsKey(key) ? _values[key] : null;
-        }
-
-        /// <summary>
-        ///     Reads the configuration value with the specified key.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="defaultValue">The default value.</param>
+        /// <param name="trimSpaces">If set to <c>true</c> trim white-space characters.</param>
         /// <returns>
         ///     The value.
         /// </returns>
-        public string Read(string key, string defaultValue)
+        public string Get(string key, bool trimSpaces = true)
         {
-            return Read(key) ?? defaultValue;
+            return _values.ContainsKey(key) ? (trimSpaces ? _values[key].Trim() : _values[key]) : null;
+        }
+
+        /// <summary>
+        ///     Gets the configuration value with the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="trimSpaces">If set to <c>true</c> trim white-space characters.</param>
+        /// <returns>
+        ///     The value.
+        /// </returns>
+        public string Get(string key, string defaultValue, bool trimSpaces = true)
+        {
+            return Get(key, trimSpaces) ?? (trimSpaces ? defaultValue.Trim() : defaultValue);
+        }
+
+        /// <summary>
+        /// Sets the configuration value with the specified key to the specified value for the current session.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="ArgumentNullException">key</exception>
+        public void Set(string key, string value)
+        {
+            if (key == null) throw new ArgumentNullException("key");
+            _values[key] = value;
         }
     }
 }

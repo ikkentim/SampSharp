@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode
@@ -21,7 +22,7 @@ namespace SampSharp.GameMode
     {
         static FrameworkConfiguration()
         {
-            switch (Server.Config.Read("loglevel", "warning").ToLower())
+            switch (Server.Config.Get("loglevel", "warning").ToLower())
             {
                 case "none":
                     MessageLevel = FrameworkMessageLevel.None;
