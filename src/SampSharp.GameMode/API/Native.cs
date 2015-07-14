@@ -367,7 +367,7 @@ namespace SampSharp.GameMode.API
                             field.SetValue(null, nativeFunction.GenerateInvoker(@delegate));
                         else
                         {
-                            Console.WriteLine("[SampSharp] Warning: Could not load native '{0}'", attribute.Name);
+                            FrameworkLog.WriteLine(FrameworkMessageLevel.Warning, "Could not load native '{0}'", attribute.Name);
                         }
                     }
                 }

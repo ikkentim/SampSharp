@@ -40,8 +40,10 @@ namespace SampSharp.GameMode
             if (type != null)
             {
                 var displayName = type.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
+
                 if (displayName != null)
-                    Console.WriteLine("Detected mono version: {0}", displayName.Invoke(null, null));
+                    FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, "Detected mono version: {0}",
+                        displayName.Invoke(null, null));
             }
 
             Services = new GameModeServiceContainer();
