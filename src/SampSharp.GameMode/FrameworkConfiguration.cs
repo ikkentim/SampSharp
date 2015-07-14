@@ -13,30 +13,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode
 {
     internal static class FrameworkConfiguration
     {
-        static FrameworkConfiguration()
+        public static FrameworkMessageLevel MessageLevel
         {
-            switch (Server.Config.Get("loglevel", "warning").ToLower())
+            get
             {
-                case "none":
-                    MessageLevel = FrameworkMessageLevel.None;
-                    break;
-                default:
-                case "warning":
-                    MessageLevel = FrameworkMessageLevel.Warning;
-                    break;
-                case "debug":
-                    MessageLevel = FrameworkMessageLevel.Debug;
-                    break;
+                switch (Server.Config.Get("loglevel", "warning").ToLower())
+                {
+                    case "none":
+                        return FrameworkMessageLevel.None;
+                    case "debug":
+                        return FrameworkMessageLevel.Debug;
+                    default:
+                        return FrameworkMessageLevel.Warning;
+                }
             }
         }
-
-        public static FrameworkMessageLevel MessageLevel { get; private set; }
     }
 }
