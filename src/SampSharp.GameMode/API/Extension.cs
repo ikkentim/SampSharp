@@ -26,6 +26,8 @@ namespace SampSharp.GameMode.API
         /// </returns>
         public static bool Register<T>(T extension) where T : class
         {
+            Native.LoadDelegates<T>();
+
             return Interop.RegisterExtension(extension);
         }
     }
