@@ -15,7 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
@@ -30,6 +29,7 @@ namespace SampSharp.GameMode.API
     public partial class Native : INative
     {
         private static INativeLoader _nativeLoader = new DefaultNativeLoader();
+        private static readonly List<string> LoadedAssemblies = new List<string>();
 
         private readonly string _format;
         private readonly int _handle;
@@ -338,6 +338,19 @@ namespace SampSharp.GameMode.API
         {
             if (assembly == null) throw new ArgumentNullException("assembly");
 
+            if (LoadedAssemblies.Contains(assembly.FullName))
+            {
+                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug,
+                    "Native delegates in {0} have already been loaded. Skipping...", assembly.FullName);
+
+                return;
+            }
+
+            FrameworkLog.WriteLine(FrameworkMessageLevel.Debug,
+                "Loading native delegates in {0}...", assembly.FullName);
+
+            LoadedAssemblies.Add(assembly.FullName);
+
             foreach (var type in assembly.GetTypes())
             {
                 if (type.IsInterface)
@@ -367,7 +380,8 @@ namespace SampSharp.GameMode.API
                             field.SetValue(null, nativeFunction.GenerateInvoker(@delegate));
                         else
                         {
-                            FrameworkLog.WriteLine(FrameworkMessageLevel.Warning, "Could not load native '{0}'", attribute.Name);
+                            FrameworkLog.WriteLine(FrameworkMessageLevel.Warning, "Could not load native '{0}'",
+                                attribute.Name);
                         }
                     }
                 }
