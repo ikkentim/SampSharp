@@ -118,6 +118,12 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     gameModeHandle_ = mono_gchandle_new(gamemode_obj, false);
     mono_runtime_object_init(gamemode_obj);
 
+    MonoMethod *method = LoadEvent("Initialize", 0);
+
+    if (method) {
+        CallEvent(method, gameModeHandle_, NULL);
+    }
+
     return true;
 }
 

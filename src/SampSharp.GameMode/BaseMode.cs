@@ -47,14 +47,17 @@ namespace SampSharp.GameMode
             }
 
             Services = new GameModeServiceContainer();
-
-            RegisterControllers();
-
-            Native.LoadDelegates<BaseMode>();
-            Native.LoadDelegates(GetType());
         }
 
         #endregion
+
+        internal void Initialize()
+        {
+            Native.LoadDelegates<BaseMode>();
+            Native.LoadDelegates(GetType()); 
+
+            RegisterControllers();
+        }
 
         #region Implementation of IDisposable
 

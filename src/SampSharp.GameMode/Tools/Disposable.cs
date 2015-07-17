@@ -65,6 +65,9 @@ namespace SampSharp.GameMode.Tools
 
         private event EventHandler _disposed;
 
+        /// <summary>
+        /// Occurs when this isntance has been disposed.
+        /// </summary>
         public event EventHandler Disposed
         {
             add

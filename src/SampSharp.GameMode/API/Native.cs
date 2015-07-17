@@ -89,6 +89,10 @@ namespace SampSharp.GameMode.API
                     lengthList.Add(i + 1);
                     _format += "V";
                 }
+                else
+                {
+                    throw new ApplicationException("Invalid native delegate argument type");
+                }
             }
 
             _handle = Interop.LoadNative(name, _format,
