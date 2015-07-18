@@ -346,6 +346,16 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array)
             }
             break;
         }
+        case 'B': { /* boolean reference */
+            MonoObject *object = mono_array_get(args_array, MonoObject *, i);
+            if (object) {
+                params[i] = *(bool **)mono_object_unbox(object);
+            }
+            else {
+                params[i] = &param_value[i];
+            }
+            break;
+        }
         case 'F': { /* floating-point reference */
             MonoObject *object = mono_array_get(args_array, MonoObject *, i);
             if (object) {
@@ -425,6 +435,16 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array)
             }
             else {
                 mono_array_set(args_array, int, i, *(int *)params[i]);
+            }
+            break;
+        case 'B': /* integer reference */
+            if (mono_array_get(args_array, MonoObject *, i)) {
+                **(int **)mono_object_unbox(
+                    mono_array_get(args_array, MonoObject *, i)) =
+                    *(bool *)params[i];
+            }
+            else {
+                mono_array_set(args_array, bool, i, *(bool *)params[i]);
             }
             break;
         case 'F': /* floating-point reference */
@@ -550,6 +570,7 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
             break;
         }
         case 'D': /* integer reference */
+        case 'B': /* boolean reference */
         case 'F': /* floating-point reference */
             sprintf(sig.format, "%sR", sig.format);
             break;

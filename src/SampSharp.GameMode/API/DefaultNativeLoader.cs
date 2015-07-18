@@ -39,8 +39,9 @@ namespace SampSharp.GameMode.API
             {
                 return new Native(name, sizes, parameterTypes);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, "Native load failure ({0}): \n{1}", name, e);
                 return null;
             }
         }

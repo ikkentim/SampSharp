@@ -72,6 +72,8 @@ namespace SampSharp.GameMode.API
                 }
                 else if (param == typeof (int).MakeByRefType())
                     _format += "D";
+                else if (param == typeof(bool).MakeByRefType())
+                    _format += "B";
                 else if (param == typeof (string).MakeByRefType())
                 {
                     lengthList.Add(i + 1);
