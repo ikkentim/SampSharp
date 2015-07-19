@@ -16,8 +16,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SampSharp.GameMode.API;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
+using SampSharp.GameMode.Factories;
 using SampSharp.GameMode.Helpers;
 using SampSharp.GameMode.Pools;
 
@@ -50,7 +52,7 @@ namespace SampSharp.GameMode.World
 
         #endregion
 
-        #region Methods
+        #region Overrides of Object
 
         /// <summary>
         ///     Returns a string that represents the current object.
@@ -100,8 +102,12 @@ namespace SampSharp.GameMode.World
             get { return Internal.GetVehiclePoolSize(); }
         }
 
+        #endregion
+
+        #region Implementation of IIdentifiable
+
         /// <summary>
-        ///     Gets the ID of this <see cref="GtaVehicle" />.
+        /// Gets the identity of this instance.
         /// </summary>
         public int Id { get; private set; }
 
@@ -648,43 +654,21 @@ namespace SampSharp.GameMode.World
         /// </param>
         /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
         /// <returns> The <see cref="GtaVehicle" /> created.</returns>
-        public static GtaVehicle Create(int vehicletype, Vector3 position, float rotation, int color1, int color2,
-            int respawnDelay = -1, bool addAlarm = false)
-        {
-            var id = new[] {449, 537, 538, 569, 570, 590}.Contains(vehicletype)
-                ? Internal.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
-                    respawnDelay, addAlarm)
-                : Internal.CreateVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
-                    respawnDelay, addAlarm);
-
-            return id == InvalidId ? null : FindOrCreate(id);
-        }
-
-        /// <summary>
-        ///     Creates a <see cref="GtaVehicle" /> in the world.
-        /// </summary>
-        /// <param name="vehicletype">The model for the vehicle.</param>
-        /// <param name="position">The coordinates for the vehicle.</param>
-        /// <param name="rotation">The facing angle for the vehicle.</param>
-        /// <param name="color1">The primary color ID.</param>
-        /// <param name="color2">The secondary color ID.</param>
-        /// <param name="respawnDelay">
-        ///     The delay until the car is respawned without a driver in seconds. Using -1 will prevent the
-        ///     vehicle from respawning.
-        /// </param>
-        /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
-        /// <returns> The <see cref="GtaVehicle" /> created.</returns>
         public static GtaVehicle Create(VehicleModelType vehicletype, Vector3 position, float rotation, int color1,
             int color2,
             int respawnDelay = -1, bool addAlarm = false)
         {
-            return Create((int) vehicletype, position, rotation, color1, color2, respawnDelay, addAlarm);
+            var service = BaseMode.Instance.Services.GetService<IVehicleFactory>();
+
+            return service == null
+                ? null
+                : service.Create(vehicletype, position, rotation, color1, color2, respawnDelay, addAlarm);
         }
 
         /// <summary>
         ///     Creates a static <see cref="GtaVehicle" /> in the world.
         /// </summary>
-        /// <param name="vehicletype">The model for the vehicle.</param>
+        /// <param name="vehicleType">The model for the vehicle.</param>
         /// <param name="position">The coordinates for the vehicle.</param>
         /// <param name="rotation">The facing angle for the vehicle.</param>
         /// <param name="color1">The primary color ID.</param>
@@ -695,30 +679,32 @@ namespace SampSharp.GameMode.World
         /// </param>
         /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
         /// <returns> The <see cref="GtaVehicle" /> created.</returns>
-        public static GtaVehicle CreateStatic(int vehicletype, Vector3 position, float rotation, int color1, int color2,
+        public static GtaVehicle CreateStatic(VehicleModelType vehicleType, Vector3 position, float rotation, int color1, int color2,
             int respawnDelay, bool addAlarm = false)
         {
-            var id = Internal.AddStaticVehicleEx(vehicletype, position.X, position.Y, position.Z, rotation, color1,
-                color2,
-                respawnDelay, addAlarm);
+            var service = BaseMode.Instance.Services.GetService<IVehicleFactory>();
 
-            return id == InvalidId ? null : FindOrCreate(id);
+            return service == null
+                ? null
+                : service.CreateStatic(vehicleType, position, rotation, color1, color2, respawnDelay, addAlarm);
         }
 
         /// <summary>
         ///     Creates a static <see cref="GtaVehicle" /> in the world.
         /// </summary>
-        /// <param name="vehicletype">The model for the vehicle.</param>
+        /// <param name="vehicleType">The model for the vehicle.</param>
         /// <param name="position">The coordinates for the vehicle.</param>
         /// <param name="rotation">The facing angle for the vehicle.</param>
         /// <param name="color1">The primary color ID.</param>
         /// <param name="color2">The secondary color ID.</param>
         /// <returns> The <see cref="GtaVehicle" /> created.</returns>
-        public static GtaVehicle CreateStatic(int vehicletype, Vector3 position, float rotation, int color1, int color2)
+        public static GtaVehicle CreateStatic(VehicleModelType vehicleType, Vector3 position, float rotation, int color1, int color2)
         {
-            var id = Internal.AddStaticVehicle(vehicletype, position.X, position.Y, position.Z, rotation, color1, color2);
+            var service = BaseMode.Instance.Services.GetService<IVehicleFactory>();
 
-            return id == InvalidId ? null : FindOrCreate(id);
+            return service == null
+                ? null
+                : service.Create(vehicleType, position, rotation, color1, color2);
         }
 
         /// <summary>

@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using SampSharp.GameMode.Factories;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
@@ -21,7 +22,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all vehicle actions.
     /// </summary>
-    public class GtaVehicleController : Disposable, IEventListener, ITypeProvider
+    public class GtaVehicleController : Disposable, IEventListener, ITypeProvider, IGameServiceProvider
     {
         /// <summary>
         ///     Registers the events this VehicleController wants to listen to.
@@ -106,6 +107,16 @@ namespace SampSharp.GameMode.Controllers
                 if (vehicle != null)
                     vehicle.OnSirenStateChanged(args);
             };
+        }
+
+        /// <summary>
+        ///     Registers the services this controller provides.
+        /// </summary>
+        /// <param name="gameMode">The game mode.</param>
+        /// <param name="serviceContainer">The service container.</param>
+        public virtual void RegisterServices(BaseMode gameMode, GameModeServiceContainer serviceContainer)
+        {
+            serviceContainer.AddService<IVehicleFactory>(new GtaVehicleFactory(gameMode));
         }
 
         /// <summary>

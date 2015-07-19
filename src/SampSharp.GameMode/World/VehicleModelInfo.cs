@@ -283,10 +283,10 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Returns an instance of <see cref="VehicleModelInfo" /> containing information about the given Vehicle.
+        ///     Returns an instance of <see cref="VehicleModelInfo" /> containing information about the specified vehicle.
         /// </summary>
         /// <param name="vehicle">The vehicle to find information about.</param>
-        /// <returns>An instance of <see cref="VehicleModelInfo" /> containing information about the given Vehicle.</returns>
+        /// <returns>An instance of <see cref="VehicleModelInfo" /> containing information about the specified vehicle.</returns>
         public static VehicleModelInfo ForVehicle(GtaVehicle vehicle)
         {
             if (vehicle == null)

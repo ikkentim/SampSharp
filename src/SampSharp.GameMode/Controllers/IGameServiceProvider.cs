@@ -1,4 +1,4 @@
-﻿// SampSharp
+// SampSharp
 // Copyright 2015 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,16 +13,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.GameMode.World
+namespace SampSharp.GameMode.Controllers
 {
     /// <summary>
-    ///     Contains an Identity property.
+    ///     Contains the definition of a service provider.
     /// </summary>
-    public interface IIdentifiable
+    public interface IGameServiceProvider : IController
     {
         /// <summary>
-        /// Gets the identifier of this instance.
+        ///     Registers the services this controller provides.
         /// </summary>
-        int Id { get; }
+        /// <param name="gameMode">The game mode.</param>
+        /// <param name="serviceContainer">The service container.</param>
+        void RegisterServices(BaseMode gameMode, GameModeServiceContainer serviceContainer);
     }
 }

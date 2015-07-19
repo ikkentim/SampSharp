@@ -47,9 +47,16 @@ namespace SampSharp.GameMode
             }
 
             Services = new GameModeServiceContainer();
+
+            Instance = this;
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets the instance.
+        /// </summary>
+        public static BaseMode Instance { get; private set; }
 
         internal void Initialize()
         {
@@ -105,6 +112,10 @@ namespace SampSharp.GameMode
             {
                 var typeProvider = controller as ITypeProvider;
                 var eventListener = controller as IEventListener;
+                var serviceProvider = controller as IGameServiceProvider;
+
+                if (serviceProvider != null)
+                    serviceProvider.RegisterServices(this, Services);
 
                 if (typeProvider != null)
                     typeProvider.RegisterTypes();

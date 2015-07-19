@@ -25,7 +25,7 @@ namespace SampSharp.GameMode
     {
         private readonly Dictionary<Type, IService> _services = new Dictionary<Type, IService>();
 
-        #region Implementation of IServiceProvider
+        #region Implementation of IGameServiceProvider
 
         /// <summary>
         ///     Gets the service object of the specified type.

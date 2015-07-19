@@ -67,6 +67,7 @@
     <Compile Include="Controllers\DialogController.cs" />
     <Compile Include="Controllers\GlobalObjectController.cs" />
     <Compile Include="Controllers\IController.cs" />
+    <Compile Include="Controllers\IGameServiceProvider.cs" />
     <Compile Include="Controllers\ITypeProvider.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PickupController.cs" />
@@ -113,6 +114,9 @@
     <Compile Include="Events\SpawnEventArgs.cs" />
     <Compile Include="Events\PlayerUpdateEventArgs.cs" />
     <Compile Include="Events\TrailerEventArgs.cs" />
+    <Compile Include="Factories\IVehicleFactory.cs" />
+    <Compile Include="Factories\GtaVehicleFactory.cs" />
+    <Compile Include="Factories\VehicleFactory.Internal.cs" />
     <Compile Include="FrameworkConfiguration.cs" />
     <Compile Include="FrameworkLog.cs" />
     <Compile Include="FrameworkMessageLevel.cs" />
