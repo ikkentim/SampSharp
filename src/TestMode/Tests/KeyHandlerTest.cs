@@ -23,7 +23,7 @@ namespace TestMode.Tests
         {
             gameMode.PlayerConnected += (sender, args) =>
             {
-                var player = sender as GtaPlayer;
+                var player = sender as BasePlayer;
                 player.Key.Pressed.Jump.NormalPriority +=
                     (o, eventArgs) => player.SendClientMessage("You've pressed jump!");
                 player.Key.Released.Jump.NormalPriority +=

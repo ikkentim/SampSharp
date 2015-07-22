@@ -19,7 +19,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerText" /> or <see cref="GtaPlayer.Text" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerText" /> or <see cref="BasePlayer.Text" /> event.
     /// </summary>
     public class TextEventArgs : EventArgs
     {

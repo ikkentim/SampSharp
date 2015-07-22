@@ -19,7 +19,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerInteriorChanged" /> or <see cref="GtaPlayer.InteriorChanged" />
+    ///     Provides data for the <see cref="BaseMode.PlayerInteriorChanged" /> or <see cref="BasePlayer.InteriorChanged" />
     ///     event.
     /// </summary>
     public class InteriorChangedEventArgs : EventArgs

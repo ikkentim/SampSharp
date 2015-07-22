@@ -19,7 +19,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerWeaponShot" /> or <see cref="GtaPlayer.WeaponShot" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerWeaponShot" /> or <see cref="BasePlayer.WeaponShot" /> event.
     /// </summary>
     public class WeaponShotEventArgs : PositionEventArgs
     {

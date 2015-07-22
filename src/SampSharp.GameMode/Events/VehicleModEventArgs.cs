@@ -18,7 +18,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.VehicleMod" /> or <see cref="GtaVehicle.Mod" /> event.
+    ///     Provides data for the <see cref="BaseMode.VehicleMod" /> or <see cref="BaseVehicle.Mod" /> event.
     /// </summary>
     public class VehicleModEventArgs : PlayerEventArgs
     {
@@ -27,7 +27,7 @@ namespace SampSharp.GameMode.Events
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="componentId">The component identifier.</param>
-        public VehicleModEventArgs(GtaPlayer player, int componentId)
+        public VehicleModEventArgs(BasePlayer player, int componentId)
             : base(player)
         {
             ComponentId = componentId;

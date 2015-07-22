@@ -28,7 +28,7 @@ namespace TestMode.Tests
         }
 
         [Command("menu")]
-        public static bool MenuCommand(GtaPlayer player)
+        public static bool MenuCommand(BasePlayer player)
         {
             var m = new Menu("Test menu", Vector2.Zero);
 

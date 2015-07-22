@@ -22,7 +22,7 @@ namespace TestMode.Checkers
     {
         public string Message { get; private set; }
 
-        public bool Check(GtaPlayer player)
+        public bool Check(BasePlayer player)
         {
             return player.IsAdmin;
         }

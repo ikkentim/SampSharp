@@ -19,7 +19,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerUpdate" /> or <see cref="GtaPlayer.Update" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerUpdate" /> or <see cref="BasePlayer.Update" /> event.
     /// </summary>
     public class PlayerUpdateEventArgs : EventArgs
     {

@@ -27,7 +27,7 @@ using TestMode.Tests;
 
 namespace TestMode
 {
-    public class Vehicle : GtaVehicle
+    public class Vehicle : BaseVehicle
     {
         public override void OnPlayerEnter(EnterVehicleEventArgs e)
         {
@@ -43,12 +43,12 @@ namespace TestMode
         }
     }
 
-    public class Player : GtaPlayer
+    public class Player : BasePlayer
     {
         [Command("spawn")]
         public void SpawnVehicle()
         {
-            var v = GtaVehicle.Create(VehicleModelType.BMX, Position + new Vector3(0, 0.5f, 0), 0, -1, -1);
+            var v = BaseVehicle.Create(VehicleModelType.BMX, Position + new Vector3(0, 0.5f, 0), 0, -1, -1);
             PutInVehicle(v);
         }
     }
@@ -119,7 +119,7 @@ namespace TestMode
         protected override void OnRconCommand(RconEventArgs e)
         {
             Console.WriteLine("[RCON] {0}", e.Command);
-            GtaPlayer.SendClientMessageToAll("Rcon message: {0}", e.Command);
+            BasePlayer.SendClientMessageToAll("Rcon message: {0}", e.Command);
 
             Console.WriteLine("Throwing exception after a stack filter...");
             StackFiller(20);

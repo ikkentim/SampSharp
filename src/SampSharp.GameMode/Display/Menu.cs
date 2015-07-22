@@ -27,7 +27,7 @@ namespace SampSharp.GameMode.Display
     /// </summary>
     public partial class Menu : Pool<Menu>
     {
-        private readonly List<GtaPlayer> _viewers = new List<GtaPlayer>();
+        private readonly List<BasePlayer> _viewers = new List<BasePlayer>();
 
         #region Constructors
 
@@ -101,10 +101,10 @@ namespace SampSharp.GameMode.Display
         public Vector2 Position { get; private set; }
 
         /// <summary>
-        ///     Gets an <see cref="IReadOnlyCollection{T}" /> of <see cref="GtaPlayer" /> instances which are viewing this
+        ///     Gets an <see cref="IReadOnlyCollection{T}" /> of <see cref="BasePlayer" /> instances which are viewing this
         ///     instance.
         /// </summary>
-        public IReadOnlyCollection<GtaPlayer> Viewers { get; private set; }
+        public IReadOnlyCollection<BasePlayer> Viewers { get; private set; }
 
         /// <summary>
         ///     Gets a collection of columns.
@@ -131,7 +131,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         /// <param name="player">The player to show this menu to.</param>
         /// <returns>True when successful; False otherwise.</returns>
-        public bool Show(GtaPlayer player)
+        public bool Show(BasePlayer player)
         {
             AssertNotDisposed();
 
@@ -158,7 +158,7 @@ namespace SampSharp.GameMode.Display
         ///     Hides this <see cref="IMenu" /> for the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player to hide this menu for.</param>
-        public void Hide(GtaPlayer player)
+        public void Hide(BasePlayer player)
         {
             AssertNotDisposed();
 
@@ -197,7 +197,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        public void OnExit(GtaPlayer player, EventArgs e)
+        public void OnExit(BasePlayer player, EventArgs e)
         {
             if (Exit != null)
                 Exit(player, e);
@@ -208,7 +208,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="e">The <see cref="MenuRowEventArgs" /> instance containing the event data.</param>
-        public void OnResponse(GtaPlayer player, MenuRowEventArgs e)
+        public void OnResponse(BasePlayer player, MenuRowEventArgs e)
         {
             if (Response != null)
                 Response(player, e);

@@ -28,7 +28,7 @@ namespace TestMode.Tests
             var actor = Actor.Create(0, new Vector3(10, 10, 2), 0);
             actor.Health = 100;
 
-            gameMode.PlayerSpawned += (sender, args) => { (sender as GtaPlayer).GiveWeapon(Weapon.AK47, 100); };
+            gameMode.PlayerSpawned += (sender, args) => { (sender as BasePlayer).GiveWeapon(Weapon.AK47, 100); };
             actor.PlayerGiveDamage += (sender, args) =>
             {
                 args.OtherPlayer.SendClientMessage("You damaged an actor ({0} {1} {2})", args.Weapon, args.Amount,

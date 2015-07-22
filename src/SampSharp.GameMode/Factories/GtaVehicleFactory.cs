@@ -34,7 +34,7 @@ namespace SampSharp.GameMode.Factories
         }
 
         /// <summary>
-        ///     Creates a <see cref="GtaVehicle" /> in the world.
+        ///     Creates a <see cref="BaseVehicle" /> in the world.
         /// </summary>
         /// <param name="vehicletype">The model for the vehicle.</param>
         /// <param name="position">The coordinates for the vehicle.</param>
@@ -46,8 +46,8 @@ namespace SampSharp.GameMode.Factories
         ///     vehicle from respawning.
         /// </param>
         /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
-        /// <returns> The <see cref="GtaVehicle" /> created.</returns>
-        public virtual GtaVehicle Create(VehicleModelType vehicletype, Vector3 position, float rotation, int color1,
+        /// <returns> The <see cref="BaseVehicle" /> created.</returns>
+        public virtual BaseVehicle Create(VehicleModelType vehicletype, Vector3 position, float rotation, int color1,
             int color2,
             int respawnDelay = -1, bool addAlarm = false)
         {
@@ -58,11 +58,11 @@ namespace SampSharp.GameMode.Factories
                 : Internal.CreateVehicle((int) vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
                     respawnDelay, addAlarm);
 
-            return id == GtaVehicle.InvalidId ? null : GtaVehicle.FindOrCreate(id);
+            return id == BaseVehicle.InvalidId ? null : BaseVehicle.FindOrCreate(id);
         }
 
         /// <summary>
-        ///     Creates a static <see cref="GtaVehicle" /> in the world.
+        ///     Creates a static <see cref="BaseVehicle" /> in the world.
         /// </summary>
         /// <param name="vehicletype">The model for the vehicle.</param>
         /// <param name="position">The coordinates for the vehicle.</param>
@@ -74,8 +74,8 @@ namespace SampSharp.GameMode.Factories
         ///     vehicle from respawning.
         /// </param>
         /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
-        /// <returns> The <see cref="GtaVehicle" /> created.</returns>
-        public virtual GtaVehicle CreateStatic(VehicleModelType vehicletype, Vector3 position, float rotation,
+        /// <returns> The <see cref="BaseVehicle" /> created.</returns>
+        public virtual BaseVehicle CreateStatic(VehicleModelType vehicletype, Vector3 position, float rotation,
             int color1,
             int color2,
             int respawnDelay, bool addAlarm = false)
@@ -84,26 +84,26 @@ namespace SampSharp.GameMode.Factories
                 color2,
                 respawnDelay, addAlarm);
 
-            return id == GtaVehicle.InvalidId ? null : GtaVehicle.FindOrCreate(id);
+            return id == BaseVehicle.InvalidId ? null : BaseVehicle.FindOrCreate(id);
         }
 
         /// <summary>
-        ///     Creates a static <see cref="GtaVehicle" /> in the world.
+        ///     Creates a static <see cref="BaseVehicle" /> in the world.
         /// </summary>
         /// <param name="vehicletype">The model for the vehicle.</param>
         /// <param name="position">The coordinates for the vehicle.</param>
         /// <param name="rotation">The facing angle for the vehicle.</param>
         /// <param name="color1">The primary color ID.</param>
         /// <param name="color2">The secondary color ID.</param>
-        /// <returns> The <see cref="GtaVehicle" /> created.</returns>
-        public virtual GtaVehicle CreateStatic(VehicleModelType vehicletype, Vector3 position, float rotation,
+        /// <returns> The <see cref="BaseVehicle" /> created.</returns>
+        public virtual BaseVehicle CreateStatic(VehicleModelType vehicletype, Vector3 position, float rotation,
             int color1,
             int color2)
         {
             var id = Internal.AddStaticVehicle((int) vehicletype, position.X, position.Y, position.Z, rotation, color1,
                 color2);
 
-            return id == GtaVehicle.InvalidId ? null : GtaVehicle.FindOrCreate(id);
+            return id == BaseVehicle.InvalidId ? null : BaseVehicle.FindOrCreate(id);
         }
 
         /// <summary>

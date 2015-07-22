@@ -20,7 +20,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerStateChanged" /> or <see cref="GtaPlayer.StateChanged" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerStateChanged" /> or <see cref="BasePlayer.StateChanged" /> event.
     /// </summary>
     public class StateEventArgs : EventArgs
     {

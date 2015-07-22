@@ -19,7 +19,7 @@ namespace SampSharp.GameMode.Events
 {
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.UnoccupiedVehicleUpdated" /> or
-    ///     <see cref="GtaVehicle.UnoccupiedUpdate" /> event.
+    ///     <see cref="BaseVehicle.UnoccupiedUpdate" /> event.
     /// </summary>
     public class UnoccupiedVehicleEventArgs : PlayerEventArgs
     {
@@ -30,7 +30,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="passengerSeat">The passenger seat.</param>
         /// <param name="newPosition">The new position.</param>
         /// <param name="newVelocity">The new velocity.</param>
-        public UnoccupiedVehicleEventArgs(GtaPlayer player, int passengerSeat, Vector3 newPosition,
+        public UnoccupiedVehicleEventArgs(BasePlayer player, int passengerSeat, Vector3 newPosition,
             Vector3 newVelocity)
             : base(player)
         {

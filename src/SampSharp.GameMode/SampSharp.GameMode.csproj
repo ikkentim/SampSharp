@@ -165,10 +165,10 @@
       <DependentUpon>GlobalObject.cs</DependentUpon>
     </Compile>
     <Compile Include="World\GtaPlayer.Internal.cs">
-      <DependentUpon>GtaPlayer.cs</DependentUpon>
+      <DependentUpon>BasePlayer.cs</DependentUpon>
     </Compile>
     <Compile Include="World\GtaVehicle.Internal.cs">
-      <DependentUpon>GtaVehicle.cs</DependentUpon>
+      <DependentUpon>BaseVehicle.cs</DependentUpon>
     </Compile>
     <Compile Include="World\Pickup.cs" />
     <Compile Include="World\Pickup.Internal.cs">
@@ -271,7 +271,7 @@
     <Compile Include="World\IIDentifiable.cs" />
     <Compile Include="World\IOwnable.cs" />
     <Compile Include="World\IWorldObject.cs" />
-    <Compile Include="World\GtaPlayer.cs" />
+    <Compile Include="World\BasePlayer.cs" />
     <Compile Include="World\PlayerObject.cs" />
     <Compile Include="Display\PlayerTextDraw.cs" />
     <Compile Include="World\PlayerTextLabel.cs" />
@@ -279,7 +279,7 @@
     <Compile Include="World\TextLabel.cs" />
     <Compile Include="SAMP\Timer.cs" />
     <Compile Include="Vector3.cs" />
-    <Compile Include="World\GtaVehicle.cs" />
+    <Compile Include="World\BaseVehicle.cs" />
     <Compile Include="World\VehicleModelInfo.Internal.cs">
       <DependentUpon>VehicleModelInfo.cs</DependentUpon>
     </Compile>

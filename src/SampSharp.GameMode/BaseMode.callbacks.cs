@@ -50,7 +50,7 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerConnect(int playerid)
         {
-            OnPlayerConnected(GtaPlayer.FindOrCreate(playerid), EventArgs.Empty);
+            OnPlayerConnected(BasePlayer.FindOrCreate(playerid), EventArgs.Empty);
 
             return true;
         }
@@ -59,8 +59,8 @@ namespace SampSharp.GameMode
         {
             var args = new DisconnectEventArgs((DisconnectReason) reason);
 
-            OnPlayerDisconnected(GtaPlayer.FindOrCreate(playerid), args);
-            OnPlayerCleanup(GtaPlayer.FindOrCreate(playerid), args);
+            OnPlayerDisconnected(BasePlayer.FindOrCreate(playerid), args);
+            OnPlayerCleanup(BasePlayer.FindOrCreate(playerid), args);
 
             return true;
         }
@@ -69,15 +69,15 @@ namespace SampSharp.GameMode
         {
             var args = new SpawnEventArgs();
 
-            OnPlayerSpawned(GtaPlayer.FindOrCreate(playerid), args);
+            OnPlayerSpawned(BasePlayer.FindOrCreate(playerid), args);
 
             return !args.ReturnToClassSelection;
         }
 
         internal bool OnPlayerDeath(int playerid, int killerid, int reason)
         {
-            OnPlayerDied(GtaPlayer.FindOrCreate(playerid),
-                new DeathEventArgs(killerid == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(killerid),
+            OnPlayerDied(BasePlayer.FindOrCreate(playerid),
+                new DeathEventArgs(killerid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(killerid),
                     (Weapon) reason));
 
             return true;
@@ -85,15 +85,15 @@ namespace SampSharp.GameMode
 
         internal bool OnVehicleSpawn(int vehicleid)
         {
-            OnVehicleSpawned(GtaVehicle.FindOrCreate(vehicleid), EventArgs.Empty);
+            OnVehicleSpawned(BaseVehicle.FindOrCreate(vehicleid), EventArgs.Empty);
 
             return true;
         }
 
         internal bool OnVehicleDeath(int vehicleid, int killerid)
         {
-            OnVehicleDied(GtaVehicle.FindOrCreate(vehicleid),
-                new PlayerEventArgs(killerid == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(killerid)));
+            OnVehicleDied(BaseVehicle.FindOrCreate(vehicleid),
+                new PlayerEventArgs(killerid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(killerid)));
 
             return true;
         }
@@ -102,7 +102,7 @@ namespace SampSharp.GameMode
         {
             var args = new TextEventArgs(text);
 
-            OnPlayerText(GtaPlayer.FindOrCreate(playerid), args);
+            OnPlayerText(BasePlayer.FindOrCreate(playerid), args);
 
             return args.SendToPlayers;
         }
@@ -111,7 +111,7 @@ namespace SampSharp.GameMode
         {
             var args = new CommandTextEventArgs(cmdtext);
 
-            OnPlayerCommandText(GtaPlayer.FindOrCreate(playerid), args);
+            OnPlayerCommandText(BasePlayer.FindOrCreate(playerid), args);
 
             return args.Success;
         }
@@ -120,32 +120,32 @@ namespace SampSharp.GameMode
         {
             var args = new RequestClassEventArgs(classid);
 
-            OnPlayerRequestClass(GtaPlayer.FindOrCreate(playerid), args);
+            OnPlayerRequestClass(BasePlayer.FindOrCreate(playerid), args);
 
             return !args.PreventSpawning;
         }
 
         internal bool OnPlayerEnterVehicle(int playerid, int vehicleid, bool ispassenger)
         {
-            var player = GtaPlayer.FindOrCreate(playerid);
+            var player = BasePlayer.FindOrCreate(playerid);
             OnPlayerEnterVehicle(player,
-                new EnterVehicleEventArgs(player, GtaVehicle.FindOrCreate(vehicleid), ispassenger));
+                new EnterVehicleEventArgs(player, BaseVehicle.FindOrCreate(vehicleid), ispassenger));
 
             return true;
         }
 
         internal bool OnPlayerExitVehicle(int playerid, int vehicleid)
         {
-            var player = GtaPlayer.FindOrCreate(playerid);
+            var player = BasePlayer.FindOrCreate(playerid);
             OnPlayerExitVehicle(player,
-                new PlayerVehicleEventArgs(player, GtaVehicle.FindOrCreate(vehicleid)));
+                new PlayerVehicleEventArgs(player, BaseVehicle.FindOrCreate(vehicleid)));
 
             return true;
         }
 
         internal bool OnPlayerStateChange(int playerid, int newstate, int oldstate)
         {
-            OnPlayerStateChanged(GtaPlayer.FindOrCreate(playerid),
+            OnPlayerStateChanged(BasePlayer.FindOrCreate(playerid),
                 new StateEventArgs((PlayerState) newstate, (PlayerState) oldstate));
 
             return true;
@@ -153,28 +153,28 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerEnterCheckpoint(int playerid)
         {
-            OnPlayerEnterCheckpoint(GtaPlayer.FindOrCreate(playerid), EventArgs.Empty);
+            OnPlayerEnterCheckpoint(BasePlayer.FindOrCreate(playerid), EventArgs.Empty);
 
             return true;
         }
 
         internal bool OnPlayerLeaveCheckpoint(int playerid)
         {
-            OnPlayerLeaveCheckpoint(GtaPlayer.FindOrCreate(playerid), EventArgs.Empty);
+            OnPlayerLeaveCheckpoint(BasePlayer.FindOrCreate(playerid), EventArgs.Empty);
 
             return true;
         }
 
         internal bool OnPlayerEnterRaceCheckpoint(int playerid)
         {
-            OnPlayerEnterRaceCheckpoint(GtaPlayer.FindOrCreate(playerid), EventArgs.Empty);
+            OnPlayerEnterRaceCheckpoint(BasePlayer.FindOrCreate(playerid), EventArgs.Empty);
 
             return true;
         }
 
         internal bool OnPlayerLeaveRaceCheckpoint(int playerid)
         {
-            OnPlayerLeaveRaceCheckpoint(GtaPlayer.FindOrCreate(playerid), EventArgs.Empty);
+            OnPlayerLeaveRaceCheckpoint(BasePlayer.FindOrCreate(playerid), EventArgs.Empty);
 
             return true;
         }
@@ -191,7 +191,7 @@ namespace SampSharp.GameMode
         {
             var args = new RequestSpawnEventArgs();
 
-            OnPlayerRequestSpawn(GtaPlayer.FindOrCreate(playerid), args);
+            OnPlayerRequestSpawn(BasePlayer.FindOrCreate(playerid), args);
 
             return !args.PreventSpawning;
         }
@@ -205,30 +205,30 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerObjectMoved(int playerid, int objectid)
         {
-            OnPlayerObjectMoved(PlayerObject.FindOrCreate(GtaPlayer.FindOrCreate(playerid), objectid), EventArgs.Empty);
+            OnPlayerObjectMoved(PlayerObject.FindOrCreate(BasePlayer.FindOrCreate(playerid), objectid), EventArgs.Empty);
 
             return true;
         }
 
         internal bool OnPlayerPickUpPickup(int playerid, int pickupid)
         {
-            OnPlayerPickUpPickup(Pickup.FindOrCreate(pickupid), new PlayerEventArgs(GtaPlayer.FindOrCreate(playerid)));
+            OnPlayerPickUpPickup(Pickup.FindOrCreate(pickupid), new PlayerEventArgs(BasePlayer.FindOrCreate(playerid)));
 
             return true;
         }
 
         internal bool OnVehicleMod(int playerid, int vehicleid, int componentid)
         {
-            var args = new VehicleModEventArgs(GtaPlayer.FindOrCreate(playerid), componentid);
+            var args = new VehicleModEventArgs(BasePlayer.FindOrCreate(playerid), componentid);
 
-            OnVehicleMod(GtaVehicle.FindOrCreate(vehicleid), args);
+            OnVehicleMod(BaseVehicle.FindOrCreate(vehicleid), args);
 
             return !args.PreventPropagation;
         }
 
         internal bool OnEnterExitModShop(int playerid, int enterexit, int interiorid)
         {
-            OnPlayerEnterExitModShop(GtaPlayer.FindOrCreate(playerid),
+            OnPlayerEnterExitModShop(BasePlayer.FindOrCreate(playerid),
                 new EnterModShopEventArgs((EnterExit) enterexit, interiorid));
 
             return true;
@@ -236,8 +236,8 @@ namespace SampSharp.GameMode
 
         internal bool OnVehiclePaintjob(int playerid, int vehicleid, int paintjobid)
         {
-            OnVehiclePaintjobApplied(GtaVehicle.FindOrCreate(vehicleid),
-                new VehiclePaintjobEventArgs(GtaPlayer.FindOrCreate(playerid), paintjobid));
+            OnVehiclePaintjobApplied(BaseVehicle.FindOrCreate(vehicleid),
+                new VehiclePaintjobEventArgs(BasePlayer.FindOrCreate(playerid), paintjobid));
 
 
             return true;
@@ -245,16 +245,16 @@ namespace SampSharp.GameMode
 
         internal bool OnVehicleRespray(int playerid, int vehicleid, int color1, int color2)
         {
-            OnVehicleResprayed(GtaVehicle.FindOrCreate(vehicleid),
-                new VehicleResprayedEventArgs(GtaPlayer.FindOrCreate(playerid), color1, color2));
+            OnVehicleResprayed(BaseVehicle.FindOrCreate(vehicleid),
+                new VehicleResprayedEventArgs(BasePlayer.FindOrCreate(playerid), color1, color2));
 
             return true;
         }
 
         internal bool OnVehicleDamageStatusUpdate(int vehicleid, int playerid)
         {
-            OnVehicleDamageStatusUpdated(GtaVehicle.FindOrCreate(vehicleid),
-                new PlayerEventArgs(GtaPlayer.FindOrCreate(playerid)));
+            OnVehicleDamageStatusUpdated(BaseVehicle.FindOrCreate(vehicleid),
+                new PlayerEventArgs(BasePlayer.FindOrCreate(playerid)));
 
             return true;
         }
@@ -262,30 +262,30 @@ namespace SampSharp.GameMode
         internal bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX,
             float newY, float newZ, float velX, float velY, float velZ)
         {
-            var args = new UnoccupiedVehicleEventArgs(GtaPlayer.FindOrCreate(playerid), passengerSeat,
+            var args = new UnoccupiedVehicleEventArgs(BasePlayer.FindOrCreate(playerid), passengerSeat,
                 new Vector3(newX, newY, newZ), new Vector3(velX, velY, velZ));
-            OnUnoccupiedVehicleUpdated(GtaVehicle.FindOrCreate(vehicleid), args);
+            OnUnoccupiedVehicleUpdated(BaseVehicle.FindOrCreate(vehicleid), args);
 
             return !args.PreventPropagation;
         }
 
         internal bool OnPlayerSelectedMenuRow(int playerid, int row)
         {
-            OnPlayerSelectedMenuRow(GtaPlayer.FindOrCreate(playerid), new MenuRowEventArgs(row));
+            OnPlayerSelectedMenuRow(BasePlayer.FindOrCreate(playerid), new MenuRowEventArgs(row));
 
             return true;
         }
 
         internal bool OnPlayerExitedMenu(int playerid)
         {
-            OnPlayerExitedMenu(GtaPlayer.FindOrCreate(playerid), EventArgs.Empty);
+            OnPlayerExitedMenu(BasePlayer.FindOrCreate(playerid), EventArgs.Empty);
 
             return true;
         }
 
         internal bool OnPlayerInteriorChange(int playerid, int newinteriorid, int oldinteriorid)
         {
-            OnPlayerInteriorChanged(GtaPlayer.FindOrCreate(playerid),
+            OnPlayerInteriorChanged(BasePlayer.FindOrCreate(playerid),
                 new InteriorChangedEventArgs(newinteriorid, oldinteriorid));
 
             return true;
@@ -293,7 +293,7 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys)
         {
-            OnPlayerKeyStateChanged(GtaPlayer.FindOrCreate(playerid),
+            OnPlayerKeyStateChanged(BasePlayer.FindOrCreate(playerid),
                 new KeyStateChangedEventArgs((Keys) newkeys, (Keys) oldkeys));
 
             return true;
@@ -310,61 +310,61 @@ namespace SampSharp.GameMode
         {
             var args = new PlayerUpdateEventArgs();
 
-            OnPlayerUpdate(GtaPlayer.FindOrCreate(playerid), args);
+            OnPlayerUpdate(BasePlayer.FindOrCreate(playerid), args);
 
             return !args.PreventPropagation;
         }
 
         internal bool OnPlayerStreamIn(int playerid, int forplayerid)
         {
-            OnPlayerStreamIn(GtaPlayer.FindOrCreate(playerid), new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
+            OnPlayerStreamIn(BasePlayer.FindOrCreate(playerid), new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
 
         internal bool OnPlayerStreamOut(int playerid, int forplayerid)
         {
-            OnPlayerStreamOut(GtaPlayer.FindOrCreate(playerid), new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
+            OnPlayerStreamOut(BasePlayer.FindOrCreate(playerid), new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
 
         internal bool OnVehicleStreamIn(int vehicleid, int forplayerid)
         {
-            OnVehicleStreamIn(GtaVehicle.FindOrCreate(vehicleid),
-                new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
+            OnVehicleStreamIn(BaseVehicle.FindOrCreate(vehicleid),
+                new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
 
         internal bool OnVehicleStreamOut(int vehicleid, int forplayerid)
         {
-            OnVehicleStreamOut(GtaVehicle.FindOrCreate(vehicleid),
-                new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
+            OnVehicleStreamOut(BaseVehicle.FindOrCreate(vehicleid),
+                new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
 
         internal bool OnTrailerUpdate(int playerId, int vehicleId)
         {
-            var args = new TrailerEventArgs(GtaPlayer.FindOrCreate(playerId));
-            OnTrailerUpdate(GtaVehicle.FindOrCreate(vehicleId), args);
+            var args = new TrailerEventArgs(BasePlayer.FindOrCreate(playerId));
+            OnTrailerUpdate(BaseVehicle.FindOrCreate(vehicleId), args);
 
             return !args.PreventPropagation;
         }
 
         internal bool OnDialogResponse(int playerid, int dialogid, int response, int listitem, string inputtext)
         {
-            OnDialogResponse(GtaPlayer.FindOrCreate(playerid),
-                new DialogResponseEventArgs(GtaPlayer.FindOrCreate(playerid), dialogid, response, listitem, inputtext));
+            OnDialogResponse(BasePlayer.FindOrCreate(playerid),
+                new DialogResponseEventArgs(BasePlayer.FindOrCreate(playerid), dialogid, response, listitem, inputtext));
 
             return true;
         }
 
         internal bool OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid, int bodypart)
         {
-            OnPlayerTakeDamage(GtaPlayer.FindOrCreate(playerid),
-                new DamageEventArgs(issuerid == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(issuerid),
+            OnPlayerTakeDamage(BasePlayer.FindOrCreate(playerid),
+                new DamageEventArgs(issuerid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(issuerid),
                     amount, (Weapon) weaponid, (BodyPart) bodypart));
 
             return true;
@@ -372,8 +372,8 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerGiveDamage(int playerid, int damagedid, float amount, int weaponid, int bodypart)
         {
-            OnPlayerGiveDamage(GtaPlayer.FindOrCreate(playerid),
-                new DamageEventArgs(damagedid == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(damagedid),
+            OnPlayerGiveDamage(BasePlayer.FindOrCreate(playerid),
+                new DamageEventArgs(damagedid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(damagedid),
                     amount, (Weapon) weaponid, (BodyPart) bodypart));
 
             return true;
@@ -381,14 +381,14 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerClickMap(int playerid, float fX, float fY, float fZ)
         {
-            OnPlayerClickMap(GtaPlayer.FindOrCreate(playerid), new PositionEventArgs(new Vector3(fX, fY, fZ)));
+            OnPlayerClickMap(BasePlayer.FindOrCreate(playerid), new PositionEventArgs(new Vector3(fX, fY, fZ)));
 
             return true;
         }
 
         internal bool OnPlayerClickTextDraw(int playerid, int clickedid)
         {
-            var player = GtaPlayer.FindOrCreate(playerid);
+            var player = BasePlayer.FindOrCreate(playerid);
             OnPlayerClickTextDraw(player,
                 new ClickTextDrawEventArgs(player,
                     clickedid == TextDraw.InvalidId ? null : TextDraw.FindOrCreate(clickedid)));
@@ -398,7 +398,7 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerClickPlayerTextDraw(int playerid, int playertextid)
         {
-            var player = GtaPlayer.FindOrCreate(playerid);
+            var player = BasePlayer.FindOrCreate(playerid);
             OnPlayerClickPlayerTextDraw(player,
                 new ClickPlayerTextDrawEventArgs(player, playertextid == PlayerTextDraw.InvalidId
                     ? null
@@ -409,9 +409,9 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerClickPlayer(int playerid, int clickedplayerid, int source)
         {
-            OnPlayerClickPlayer(GtaPlayer.FindOrCreate(playerid),
+            OnPlayerClickPlayer(BasePlayer.FindOrCreate(playerid),
                 new ClickPlayerEventArgs(
-                    clickedplayerid == GtaPlayer.InvalidId ? null : GtaPlayer.FindOrCreate(clickedplayerid),
+                    clickedplayerid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(clickedplayerid),
                     (PlayerClickSource) source));
 
             return true;
@@ -420,7 +420,7 @@ namespace SampSharp.GameMode
         internal bool OnPlayerEditObject(int playerid, bool playerobject, int objectid, int response, float fX, float fY,
             float fZ, float fRotX, float fRotY, float fRotZ)
         {
-            var player = GtaPlayer.FindOrCreate(playerid);
+            var player = BasePlayer.FindOrCreate(playerid);
             if (playerobject)
             {
                 OnPlayerEditPlayerObject(player,
@@ -442,7 +442,7 @@ namespace SampSharp.GameMode
             float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX,
             float fScaleY, float fScaleZ)
         {
-            OnPlayerEditAttachedObject(GtaPlayer.FindOrCreate(playerid),
+            OnPlayerEditAttachedObject(BasePlayer.FindOrCreate(playerid),
                 new EditAttachedObjectEventArgs((EditObjectResponse) response, index, modelid, (Bone) boneid,
                     new Vector3(fOffsetX, fOffsetY, fOffsetZ), new Vector3(fRotX, fRotY, fRotZ),
                     new Vector3(fScaleX, fScaleY, fScaleZ)));
@@ -456,16 +456,16 @@ namespace SampSharp.GameMode
             switch ((ObjectType) type)
             {
                 case ObjectType.GlobalObject:
-                    OnPlayerSelectGlobalObject(GtaPlayer.FindOrCreate(playerid),
-                        new SelectGlobalObjectEventArgs(GtaPlayer.FindOrCreate(playerid),
+                    OnPlayerSelectGlobalObject(BasePlayer.FindOrCreate(playerid),
+                        new SelectGlobalObjectEventArgs(BasePlayer.FindOrCreate(playerid),
                             GlobalObject.FindOrCreate(objectid), modelid,
                             new Vector3(fX, fY, fZ)));
                     break;
                 case ObjectType.PlayerObject:
-                    var player = GtaPlayer.FindOrCreate(playerid);
+                    var player = BasePlayer.FindOrCreate(playerid);
 
                     OnPlayerSelectPlayerObject(player,
-                        new SelectPlayerObjectEventArgs(GtaPlayer.FindOrCreate(playerid),
+                        new SelectPlayerObjectEventArgs(BasePlayer.FindOrCreate(playerid),
                             PlayerObject.FindOrCreate(player, objectid), modelid,
                             new Vector3(fX, fY, fZ)));
                     break;
@@ -480,7 +480,7 @@ namespace SampSharp.GameMode
             var args = new WeaponShotEventArgs((Weapon) weaponid, (BulletHitType) hittype, hitid,
                 new Vector3(fX, fY, fZ));
 
-            OnPlayerWeaponShot(GtaPlayer.FindOrCreate(playerid), args);
+            OnPlayerWeaponShot(BasePlayer.FindOrCreate(playerid), args);
 
             return !args.PreventDamage;
         }
@@ -494,21 +494,21 @@ namespace SampSharp.GameMode
 
         internal bool OnVehicleSirenStateChange(int playerid, int vehicleid, bool newstate)
         {
-            OnVehicleSirenStateChange(GtaVehicle.FindOrCreate(vehicleid),
-                new SirenStateEventArgs(GtaPlayer.FindOrCreate(playerid), newstate));
+            OnVehicleSirenStateChange(BaseVehicle.FindOrCreate(vehicleid),
+                new SirenStateEventArgs(BasePlayer.FindOrCreate(playerid), newstate));
             return true;
         }
 
         internal bool OnActorStreamIn(int actorid, int forplayerid)
         {
-            OnActorStreamIn(Actor.FindOrCreate(actorid), new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
+            OnActorStreamIn(Actor.FindOrCreate(actorid), new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
 
         internal bool OnActorStreamOut(int actorid, int forplayerid)
         {
-            OnActorStreamOut(Actor.FindOrCreate(actorid), new PlayerEventArgs(GtaPlayer.FindOrCreate(forplayerid)));
+            OnActorStreamOut(Actor.FindOrCreate(actorid), new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
@@ -516,7 +516,7 @@ namespace SampSharp.GameMode
         internal bool OnPlayerGiveDamageActor(int playerid, int damagedActorid, float amount, int weaponid, int bodypart)
         {
             OnPlayerGiveDamageActor(Actor.FindOrCreate(damagedActorid),
-                new DamageEventArgs(GtaPlayer.FindOrCreate(playerid), amount, (Weapon) weaponid, (BodyPart) bodypart));
+                new DamageEventArgs(BasePlayer.FindOrCreate(playerid), amount, (Weapon) weaponid, (BodyPart) bodypart));
 
             return true;
         }

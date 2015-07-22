@@ -21,7 +21,7 @@ namespace SampSharp.GameMode.Events
 {
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.PlayerTakeDamage" />, <see cref="BaseMode.PlayerGiveDamage" />,
-    ///     <see cref="GtaPlayer.TakeDamage" /> or <see cref="GtaPlayer.GiveDamage" /> event.
+    ///     <see cref="BasePlayer.TakeDamage" /> or <see cref="BasePlayer.GiveDamage" /> event.
     /// </summary>
     public class DamageEventArgs : EventArgs
     {
@@ -32,7 +32,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="amount">Amount of damage done.</param>
         /// <param name="weapon">Weapon used to damage another.</param>
         /// <param name="bodypart">BodyPart shot at.</param>
-        public DamageEventArgs(GtaPlayer otherPlayer, float amount, Weapon weapon, BodyPart bodypart)
+        public DamageEventArgs(BasePlayer otherPlayer, float amount, Weapon weapon, BodyPart bodypart)
         {
             OtherPlayer = otherPlayer;
             Amount = amount;
@@ -43,7 +43,7 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the other player.
         /// </summary>
-        public GtaPlayer OtherPlayer { get; private set; }
+        public BasePlayer OtherPlayer { get; private set; }
 
         /// <summary>
         ///     Gets the amount of damage done.

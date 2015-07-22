@@ -265,7 +265,7 @@ namespace SampSharp.GameMode.World
         /// <param name="offset">The offset.</param>
         /// <param name="rotation">The rotation.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void AttachTo(GtaPlayer player, Vector3 offset, Vector3 rotation)
+        public virtual void AttachTo(BasePlayer player, Vector3 offset, Vector3 rotation)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -281,7 +281,7 @@ namespace SampSharp.GameMode.World
         /// <param name="offset">The offset.</param>
         /// <param name="rotation">The rotation.</param>
         /// <exception cref="System.ArgumentNullException">vehicle</exception>
-        public virtual void AttachTo(GtaVehicle vehicle, Vector3 offset, Vector3 rotation)
+        public virtual void AttachTo(BaseVehicle vehicle, Vector3 offset, Vector3 rotation)
         {
             if (vehicle == null)
                 throw new ArgumentNullException("vehicle");
@@ -294,7 +294,7 @@ namespace SampSharp.GameMode.World
         ///     Attaches a player's camera to this GlobalObject.
         /// </summary>
         /// <param name="player">The player whose camera to attach to this GlobalObject.</param>
-        public virtual void AttachCameraToObject(GtaPlayer player)
+        public virtual void AttachCameraToObject(BasePlayer player)
         {
             if (player == null)
             {
@@ -314,7 +314,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position.</param>
         /// <param name="radius">The radius.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public static void Remove(GtaPlayer player, int modelid, Vector3 position, float radius)
+        public static void Remove(BasePlayer player, int modelid, Vector3 position, float radius)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -356,7 +356,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="player">The player.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void Edit(GtaPlayer player)
+        public virtual void Edit(BasePlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -369,7 +369,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="player">The player.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public static void Select(GtaPlayer player)
+        public static void Select(BasePlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException("player");

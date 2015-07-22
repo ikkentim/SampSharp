@@ -17,7 +17,7 @@ using SampSharp.GameMode.API;
 
 namespace SampSharp.GameMode.World
 {
-    public partial class GtaPlayer
+    public partial class BasePlayer
     {
         private static class Internal
         {

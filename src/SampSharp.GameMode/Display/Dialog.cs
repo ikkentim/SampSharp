@@ -32,8 +32,8 @@ namespace SampSharp.GameMode.Display
         private const int DialogHideId = -1;
         private static readonly Dictionary<int, Dialog> OpenDialogs = new Dictionary<int, Dialog>();
 
-        private readonly ASyncWaiter<GtaPlayer, DialogResponseEventArgs> _aSyncWaiter =
-            new ASyncWaiter<GtaPlayer, DialogResponseEventArgs>();
+        private readonly ASyncWaiter<BasePlayer, DialogResponseEventArgs> _aSyncWaiter =
+            new ASyncWaiter<BasePlayer, DialogResponseEventArgs>();
 
         #region Properties of Dialog
 
@@ -53,7 +53,7 @@ namespace SampSharp.GameMode.Display
         ///     Hides all dialogs for the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The Player to hide all dialogs from.</param>
-        public static void Hide(GtaPlayer player)
+        public static void Hide(BasePlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -75,7 +75,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         /// <param name="player">The player whose dialog to get.</param>
         /// <returns>The dialog currently being shown to the specified <paramref name="player" />.</returns>
-        public static Dialog GetOpenDialog(GtaPlayer player)
+        public static Dialog GetOpenDialog(BasePlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -129,7 +129,7 @@ namespace SampSharp.GameMode.Display
         ///     Shows the dialog box to a Player.
         /// </summary>
         /// <param name="player">The Player to show the dialog to.</param>
-        public void Show(GtaPlayer player)
+        public void Show(BasePlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException("player");
@@ -150,7 +150,7 @@ namespace SampSharp.GameMode.Display
         ///     Shows the dialog box to a Player asynchronously.
         /// </summary>
         /// <param name="player">The Player to show the dialog to.</param>
-        public async Task<DialogResponseEventArgs> ShowAsync(GtaPlayer player)
+        public async Task<DialogResponseEventArgs> ShowAsync(BasePlayer player)
         {
             Show(player);
 

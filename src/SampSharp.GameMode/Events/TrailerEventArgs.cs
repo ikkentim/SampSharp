@@ -19,7 +19,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.TrailerUpdate" /> <see cref="GtaVehicle.TrailerUpdate" /> event.
+    ///     Provides data for the <see cref="BaseMode.TrailerUpdate" /> <see cref="BaseVehicle.TrailerUpdate" /> event.
     /// </summary>
     public class TrailerEventArgs : EventArgs
     {
@@ -27,7 +27,7 @@ namespace SampSharp.GameMode.Events
         ///     Initializes a new instance of the <see cref="TrailerEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player sending the update.</param>
-        public TrailerEventArgs(GtaPlayer player)
+        public TrailerEventArgs(BasePlayer player)
         {
             Player = player;
         }
@@ -35,7 +35,7 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player sending the update.
         /// </summary>
-        public GtaPlayer Player { get; private set; }
+        public BasePlayer Player { get; private set; }
 
         /// <summary>
         ///     Gets or sets whether to stop the vehicle syncing its position to other players.

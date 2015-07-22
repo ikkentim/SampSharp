@@ -19,8 +19,8 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerEnterVehicle" />, <see cref="GtaPlayer.EnterVehicle" /> or
-    ///     <see cref="GtaVehicle.PlayerEnter" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerEnterVehicle" />, <see cref="BasePlayer.EnterVehicle" /> or
+    ///     <see cref="BaseVehicle.PlayerEnter" /> event.
     /// </summary>
     public class EnterVehicleEventArgs : EventArgs
     {
@@ -30,7 +30,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="player">The player.</param>
         /// <param name="vehicle">The vehicle.</param>
         /// <param name="isPassenger">if set to <c>true</c> the player is a passenger.</param>
-        public EnterVehicleEventArgs(GtaPlayer player, GtaVehicle vehicle, bool isPassenger)
+        public EnterVehicleEventArgs(BasePlayer player, BaseVehicle vehicle, bool isPassenger)
         {
             Player = player;
             Vehicle = vehicle;
@@ -45,12 +45,12 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player.
         /// </summary>
-        public GtaPlayer Player { get; private set; }
+        public BasePlayer Player { get; private set; }
 
         /// <summary>
         ///     Gets the vehicle.
         /// </summary>
-        public GtaVehicle Vehicle { get; private set; }
+        public BaseVehicle Vehicle { get; private set; }
 
         /// <summary>
         ///     Gets a value indicating whether the <see cref="Player" /> is passenger.

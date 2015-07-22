@@ -27,7 +27,7 @@ namespace SampSharp.GameMode.Events
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="newState">if set to <c>true</c> the siren is turned on in the new state.</param>
-        public SirenStateEventArgs(GtaPlayer player, bool newState) : base(player)
+        public SirenStateEventArgs(BasePlayer player, bool newState) : base(player)
         {
             NewState = newState;
         }

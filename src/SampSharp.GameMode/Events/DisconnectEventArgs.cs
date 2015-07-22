@@ -21,7 +21,7 @@ namespace SampSharp.GameMode.Events
 {
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.PlayerDisconnected" />, <see cref="BaseMode.PlayerCleanup" />,
-    ///     <see cref="GtaPlayer.Disconnected" /> or <see cref="GtaPlayer.Cleanup" /> event.
+    ///     <see cref="BasePlayer.Disconnected" /> or <see cref="BasePlayer.Cleanup" /> event.
     /// </summary>
     public class DisconnectEventArgs : EventArgs
     {

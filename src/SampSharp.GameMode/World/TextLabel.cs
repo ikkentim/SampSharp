@@ -210,7 +210,7 @@ namespace SampSharp.GameMode.World
         /// <param name="player">The player.</param>
         /// <param name="offset">The offset.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void AttachTo(GtaPlayer player, Vector3 offset)
+        public virtual void AttachTo(BasePlayer player, Vector3 offset)
         {
             AssertNotDisposed();
 
@@ -226,7 +226,7 @@ namespace SampSharp.GameMode.World
         /// <param name="vehicle">The vehicle.</param>
         /// <param name="offset">The offset.</param>
         /// <exception cref="System.ArgumentNullException">vehicle</exception>
-        public virtual void AttachTo(GtaVehicle vehicle, Vector3 offset)
+        public virtual void AttachTo(BaseVehicle vehicle, Vector3 offset)
         {
             AssertNotDisposed();
 

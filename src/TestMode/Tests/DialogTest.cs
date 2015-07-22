@@ -31,7 +31,7 @@ namespace TestMode.Tests
         }
 
         [Command("dialog")]
-        public static void DialogCommand(GtaPlayer player)
+        public static void DialogCommand(BasePlayer player)
         {
             var dialog = new MessageDialog("Captions", "abc", "OK!", "Cancel");
 
@@ -42,7 +42,7 @@ namespace TestMode.Tests
 
         [Command("dialoglist")]
         [Text("items")]
-        public static void DialogListCommand(GtaPlayer player, string items)
+        public static void DialogListCommand(BasePlayer player, string items)
         {
             var dialog = new ListDialog("Captions", "OK!");
 
@@ -55,7 +55,7 @@ namespace TestMode.Tests
         }
 
         [Command("dialogasync")]
-        public static async void DialogASyncCommand(GtaPlayer player)
+        public static async void DialogASyncCommand(BasePlayer player)
         {
             var dialog = new InputDialog("Hello", "Insert something", false, "Confirm", "NO");
             var response = await dialog.ShowAsync(player);
@@ -65,7 +65,7 @@ namespace TestMode.Tests
         }
 
         [Command("dialogasynclogintest")]
-        public static async void DialogASyncCommandLogintest(GtaPlayer player)
+        public static async void DialogASyncCommandLogintest(BasePlayer player)
         {
             var dialog = new InputDialog("Hello", "Login please!", true, "Login", "Cancel");
 

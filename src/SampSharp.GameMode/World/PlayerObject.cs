@@ -24,7 +24,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a player-object.
     /// </summary>
-    public partial class PlayerObject : IdentifiedOwnedPool<PlayerObject, GtaPlayer>, IGameObject, IOwnable<GtaPlayer>,
+    public partial class PlayerObject : IdentifiedOwnedPool<PlayerObject, BasePlayer>, IGameObject, IOwnable<BasePlayer>,
         IIdentifiable
     {
         /// <summary>
@@ -108,7 +108,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the owner of this <see cref="PlayerObject" />.
         /// </summary>
-        public virtual GtaPlayer Owner { get; private set; }
+        public virtual BasePlayer Owner { get; private set; }
 
         #endregion
 
@@ -152,7 +152,7 @@ namespace SampSharp.GameMode.World
         /// <param name="modelid">The modelid.</param>
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
-        public PlayerObject(GtaPlayer owner, int modelid, Vector3 position, Vector3 rotation)
+        public PlayerObject(BasePlayer owner, int modelid, Vector3 position, Vector3 rotation)
             : this(owner, modelid, position, rotation, 0)
         {
         }
@@ -166,7 +166,7 @@ namespace SampSharp.GameMode.World
         /// <param name="rotation">The rotation.</param>
         /// <param name="drawDistance">The draw distance.</param>
         /// <exception cref="System.ArgumentNullException">owner</exception>
-        public PlayerObject(GtaPlayer owner, int modelid, Vector3 position, Vector3 rotation, float drawDistance)
+        public PlayerObject(BasePlayer owner, int modelid, Vector3 position, Vector3 rotation, float drawDistance)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
@@ -286,7 +286,7 @@ namespace SampSharp.GameMode.World
         /// <param name="offset">The offset.</param>
         /// <param name="rotation">The rotation.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void AttachTo(GtaPlayer player, Vector3 offset, Vector3 rotation)
+        public virtual void AttachTo(BasePlayer player, Vector3 offset, Vector3 rotation)
         {
             AssertNotDisposed();
 
@@ -304,7 +304,7 @@ namespace SampSharp.GameMode.World
         /// <param name="offset">The offset.</param>
         /// <param name="rotation">The rotation.</param>
         /// <exception cref="System.ArgumentNullException">vehicle</exception>
-        public virtual void AttachTo(GtaVehicle vehicle, Vector3 offset, Vector3 rotation)
+        public virtual void AttachTo(BaseVehicle vehicle, Vector3 offset, Vector3 rotation)
         {
             AssertNotDisposed();
 
@@ -354,7 +354,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="player">The player.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public static void Select(GtaPlayer player)
+        public static void Select(BasePlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException("player");

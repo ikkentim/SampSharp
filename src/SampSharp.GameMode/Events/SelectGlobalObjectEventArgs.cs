@@ -18,7 +18,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerSelectGlobalObject" />, <see cref="GtaPlayer.SelectGlobalObject" />
+    ///     Provides data for the <see cref="BaseMode.PlayerSelectGlobalObject" />, <see cref="BasePlayer.SelectGlobalObject" />
     ///     or <see cref="GlobalObject.Selected" /> event.
     /// </summary>
     public class SelectGlobalObjectEventArgs : PositionEventArgs
@@ -30,7 +30,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="object">The global object.</param>
         /// <param name="modelid">The modelid.</param>
         /// <param name="position">The position.</param>
-        public SelectGlobalObjectEventArgs(GtaPlayer player, GlobalObject @object, int modelid, Vector3 position)
+        public SelectGlobalObjectEventArgs(BasePlayer player, GlobalObject @object, int modelid, Vector3 position)
             : base(position)
         {
             Player = player;
@@ -46,7 +46,7 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player.
         /// </summary>
-        public GtaPlayer Player { get; private set; }
+        public BasePlayer Player { get; private set; }
 
         /// <summary>
         ///     Gets the global object.
@@ -60,7 +60,7 @@ namespace SampSharp.GameMode.Events
     }
 
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerSelectPlayerObject" />, <see cref="GtaPlayer.SelectPlayerObject" />
+    ///     Provides data for the <see cref="BaseMode.PlayerSelectPlayerObject" />, <see cref="BasePlayer.SelectPlayerObject" />
     ///     or <see cref="PlayerObject.Selected" /> event.
     /// </summary>
     public class SelectPlayerObjectEventArgs : PositionEventArgs
@@ -72,7 +72,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="object">The player object.</param>
         /// <param name="modelid">The modelid.</param>
         /// <param name="position">The position.</param>
-        public SelectPlayerObjectEventArgs(GtaPlayer player, PlayerObject @object, int modelid, Vector3 position)
+        public SelectPlayerObjectEventArgs(BasePlayer player, PlayerObject @object, int modelid, Vector3 position)
             : base(position)
         {
             Player = player;
@@ -83,7 +83,7 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player.
         /// </summary>
-        public GtaPlayer Player { get; private set; }
+        public BasePlayer Player { get; private set; }
 
         /// <summary>
         ///     Gets the player object.

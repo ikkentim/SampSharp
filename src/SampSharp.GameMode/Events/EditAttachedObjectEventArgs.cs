@@ -21,7 +21,7 @@ namespace SampSharp.GameMode.Events
 {
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.PlayerEditAttachedObject" /> or
-    ///     <see cref="GtaPlayer.EditAttachedObject" /> event.
+    ///     <see cref="BasePlayer.EditAttachedObject" /> event.
     /// </summary>
     public class EditAttachedObjectEventArgs : EventArgs
     {

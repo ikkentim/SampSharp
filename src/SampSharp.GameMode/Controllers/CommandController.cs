@@ -67,7 +67,7 @@ namespace SampSharp.GameMode.Controllers
                 foreach (var method in assembly.GetTypes().SelectMany(t => t.GetMethods())
                     .Where(m => m.GetCustomAttributes(typeof (CommandAttribute), false).Length > 0))
                 {
-                    if (!method.IsStatic && !typeof (GtaPlayer).IsAssignableFrom(method.DeclaringType))
+                    if (!method.IsStatic && !typeof (BasePlayer).IsAssignableFrom(method.DeclaringType))
                         continue;
 
                     new DetectedCommand(method);
@@ -100,7 +100,7 @@ namespace SampSharp.GameMode.Controllers
 
         private void gameMode_PlayerCommandText(object sender, CommandTextEventArgs e)
         {
-            var player = sender as GtaPlayer;
+            var player = sender as BasePlayer;
             if (player == null) return;
 
             var text = e.Text.Substring(1);

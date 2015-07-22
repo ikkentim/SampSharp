@@ -18,7 +18,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.VehicleResprayed" /> or <see cref="GtaVehicle.Resprayed" /> event.
+    ///     Provides data for the <see cref="BaseMode.VehicleResprayed" /> or <see cref="BaseVehicle.Resprayed" /> event.
     /// </summary>
     public class VehicleResprayedEventArgs : PlayerEventArgs
     {
@@ -28,7 +28,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="player">The player.</param>
         /// <param name="color1">The color1.</param>
         /// <param name="color2">The color2.</param>
-        public VehicleResprayedEventArgs(GtaPlayer player, int color1, int color2)
+        public VehicleResprayedEventArgs(BasePlayer player, int color1, int color2)
             : base(player)
         {
             Color1 = color1;

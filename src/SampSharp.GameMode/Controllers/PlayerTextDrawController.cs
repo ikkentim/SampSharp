@@ -40,7 +40,7 @@ namespace SampSharp.GameMode.Controllers
             };
             gameMode.PlayerCleanup += (sender, args) =>
             {
-                var player = sender as GtaPlayer;
+                var player = sender as BasePlayer;
                 foreach (var textdraw in PlayerTextDraw.All.Where(o => o.Owner == player))
                     textdraw.Dispose();
             };

@@ -28,7 +28,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a SA-MP vehicle.
     /// </summary>
-    public partial class GtaVehicle : IdentifiedPool<GtaVehicle>, IIdentifiable, IWorldObject
+    public partial class BaseVehicle : IdentifiedPool<BaseVehicle>, IIdentifiable, IWorldObject
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -43,9 +43,9 @@ namespace SampSharp.GameMode.World
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GtaVehicle" /> class.
+        ///     Initializes a new instance of the <see cref="BaseVehicle" /> class.
         /// </summary>
-        public GtaVehicle()
+        public BaseVehicle()
         {
             Id = InvalidId;
         }
@@ -71,7 +71,7 @@ namespace SampSharp.GameMode.World
         #region Properties
 
         /// <summary>
-        ///     Gets an instance of <see cref="VehicleModelInfo" /> about this <see cref="GtaVehicle" />.
+        ///     Gets an instance of <see cref="VehicleModelInfo" /> about this <see cref="BaseVehicle" />.
         /// </summary>
         public VehicleModelInfo ModelInfo
         {
@@ -79,19 +79,19 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets the driver of this <see cref="GtaVehicle" />.
+        ///     Gets the driver of this <see cref="BaseVehicle" />.
         /// </summary>
-        public GtaPlayer Driver
+        public BasePlayer Driver
         {
-            get { return GtaPlayer.All.FirstOrDefault(p => p.Vehicle == this && p.VehicleSeat == 0); }
+            get { return BasePlayer.All.FirstOrDefault(p => p.Vehicle == this && p.VehicleSeat == 0); }
         }
 
         /// <summary>
-        ///     Gets the passengers of this <see cref="GtaVehicle" />. (not the driver)
+        ///     Gets the passengers of this <see cref="BaseVehicle" />. (not the driver)
         /// </summary>
-        public IEnumerable<GtaPlayer> Passengers
+        public IEnumerable<BasePlayer> Passengers
         {
-            get { return GtaPlayer.All.Where(p => p.Vehicle == this).Where(player => player.VehicleSeat > 0); }
+            get { return BasePlayer.All.Where(p => p.Vehicle == this).Where(player => player.VehicleSeat > 0); }
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace SampSharp.GameMode.World
         #region Vehicles native properties
 
         /// <summary>
-        ///     Gets whether this <see cref="GtaVehicle" /> has been created and still is alive.
+        ///     Gets whether this <see cref="BaseVehicle" /> has been created and still is alive.
         /// </summary>
         public virtual bool IsValid
         {
@@ -124,7 +124,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the Z angle of this <see cref="GtaVehicle" />.
+        ///     Gets or sets the Z angle of this <see cref="BaseVehicle" />.
         /// </summary>
         public virtual float Angle
         {
@@ -138,7 +138,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets the model ID of this <see cref="GtaVehicle" />.
+        ///     Gets the model ID of this <see cref="BaseVehicle" />.
         /// </summary>
         public virtual VehicleModelType Model
         {
@@ -146,7 +146,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets whether this <see cref="GtaVehicle" /> has a trailer attached to it.
+        ///     Gets whether this <see cref="BaseVehicle" /> has a trailer attached to it.
         /// </summary>
         public virtual bool HasTrailer
         {
@@ -154,10 +154,10 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the the trailer attached to this <see cref="GtaVehicle" />.
+        ///     Gets or sets the the trailer attached to this <see cref="BaseVehicle" />.
         /// </summary>
         /// <returns>The trailer attached.</returns>
-        public virtual GtaVehicle Trailer
+        public virtual BaseVehicle Trailer
         {
             get
             {
@@ -174,7 +174,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the velocity at which this <see cref="GtaVehicle" /> is moving.
+        ///     Gets or sets the velocity at which this <see cref="BaseVehicle" /> is moving.
         /// </summary>
         public virtual Vector3 Velocity
         {
@@ -188,7 +188,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the virtual world of this <see cref="GtaVehicle" />.
+        ///     Gets or sets the virtual world of this <see cref="BaseVehicle" />.
         /// </summary>
         public virtual int VirtualWorld
         {
@@ -197,7 +197,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets this <see cref="GtaVehicle" />'s engine status. If True, the engine is running.
+        ///     Gets or sets this <see cref="BaseVehicle" />'s engine status. If True, the engine is running.
         /// </summary>
         public virtual bool Engine
         {
@@ -216,7 +216,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets this <see cref="GtaVehicle" />'s lights' state. If True the lights are on.
+        ///     Gets or sets this <see cref="BaseVehicle" />'s lights' state. If True the lights are on.
         /// </summary>
         public virtual bool Lights
         {
@@ -235,7 +235,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets this <see cref="GtaVehicle" />'s alarm state. If True the alarm is (or was) sounding.
+        ///     Gets or sets this <see cref="BaseVehicle" />'s alarm state. If True the alarm is (or was) sounding.
         /// </summary>
         public virtual bool Alarm
         {
@@ -254,7 +254,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the lock status of the doors of this <see cref="GtaVehicle" />. If True the doors are locked.
+        ///     Gets or sets the lock status of the doors of this <see cref="BaseVehicle" />. If True the doors are locked.
         /// </summary>
         public virtual bool Doors
         {
@@ -273,7 +273,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the bonnet/hood status of this <see cref="GtaVehicle" />. If True, it's open.
+        ///     Gets or sets the bonnet/hood status of this <see cref="BaseVehicle" />. If True, it's open.
         /// </summary>
         public virtual bool Bonnet
         {
@@ -292,7 +292,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the boot/trunk status of this <see cref="GtaVehicle" />. True means it is open.
+        ///     Gets or sets the boot/trunk status of this <see cref="BaseVehicle" />. True means it is open.
         /// </summary>
         public virtual bool Boot
         {
@@ -311,7 +311,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the objective status of this <see cref="GtaVehicle" />. True means the objective is on.
+        ///     Gets or sets the objective status of this <see cref="BaseVehicle" />. True means the objective is on.
         /// </summary>
         public virtual bool Objective
         {
@@ -494,7 +494,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the rotation of this <see cref="GtaVehicle" />.
+        ///     Gets or sets the rotation of this <see cref="BaseVehicle" />.
         /// </summary>
         /// <remarks>
         ///     Only the Z angle can be set!
@@ -506,7 +506,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the health of this <see cref="GtaVehicle" />.
+        ///     Gets or sets the health of this <see cref="BaseVehicle" />.
         /// </summary>
         public virtual float Health
         {
@@ -520,7 +520,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets or sets the position of this <see cref="GtaVehicle" />.
+        ///     Gets or sets the position of this <see cref="BaseVehicle" />.
         /// </summary>
         public virtual Vector3 Position
         {
@@ -539,86 +539,86 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnSpawn" /> is being called.
-        ///     This callback is called when <see cref="GtaVehicle" /> spawns.
+        ///     This callback is called when <see cref="BaseVehicle" /> spawns.
         /// </summary>
         public event EventHandler<EventArgs> Spawn;
 
         /// <summary>
         ///     Occurs when the <see cref="OnDeath" /> is being called.
-        ///     This callback is called when this <see cref="GtaVehicle" /> is destroyed - either by exploding or becoming
+        ///     This callback is called when this <see cref="BaseVehicle" /> is destroyed - either by exploding or becoming
         ///     submerged in water.
         /// </summary>
         public event EventHandler<PlayerEventArgs> Died;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerEnter" /> is being called.
-        ///     This callback is called when a <see cref="GtaPlayer" /> starts to enter this <see cref="GtaVehicle" />,
+        ///     This callback is called when a <see cref="BasePlayer" /> starts to enter this <see cref="BaseVehicle" />,
         ///     meaning the player is not in vehicle yet at the time this callback is called.
         /// </summary>
         public event EventHandler<EnterVehicleEventArgs> PlayerEnter;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerExit" /> is being called.
-        ///     This callback is called when a <see cref="GtaPlayer" /> exits a <see cref="GtaVehicle" />.
+        ///     This callback is called when a <see cref="BasePlayer" /> exits a <see cref="BaseVehicle" />.
         /// </summary>
         public event EventHandler<PlayerVehicleEventArgs> PlayerExit;
 
         /// <summary>
         ///     Occurs when the <see cref="OnMod" /> is being called.
-        ///     This callback is called when this <see cref="GtaVehicle" /> is modded.
+        ///     This callback is called when this <see cref="BaseVehicle" /> is modded.
         /// </summary>
         public event EventHandler<VehicleModEventArgs> Mod;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPaintjobApplied" /> is being called.
-        ///     Called when a <see cref="GtaPlayer" /> changes the paintjob of this <see cref="GtaVehicle" /> (in a modshop).
+        ///     Called when a <see cref="BasePlayer" /> changes the paintjob of this <see cref="BaseVehicle" /> (in a modshop).
         /// </summary>
         public event EventHandler<VehiclePaintjobEventArgs> PaintjobApplied;
 
         /// <summary>
         ///     Occurs when the <see cref="OnResprayed" /> is being called.
-        ///     The callback name is deceptive, this callback is called when a <see cref="GtaPlayer" /> exits a mod shop with this
-        ///     <see cref="GtaVehicle" />,
+        ///     The callback name is deceptive, this callback is called when a <see cref="BasePlayer" /> exits a mod shop with this
+        ///     <see cref="BaseVehicle" />,
         ///     regardless of whether the vehicle's colors were changed, and is NEVER called for pay 'n' spray garages.
         /// </summary>
         public event EventHandler<VehicleResprayedEventArgs> Resprayed;
 
         /// <summary>
         ///     Occurs when the <see cref="OnDamageStatusUpdated" /> is being called.
-        ///     This callback is called when a element of this <see cref="GtaVehicle" /> such as doors, tires, panels, or lights
+        ///     This callback is called when a element of this <see cref="BaseVehicle" /> such as doors, tires, panels, or lights
         ///     get damaged.
         /// </summary>
         public event EventHandler<PlayerEventArgs> DamageStatusUpdated;
 
         /// <summary>
         ///     Occurs when the <see cref="OnUnoccupiedUpdate" /> is being called.
-        ///     This callback is called everytime this <see cref="GtaVehicle" /> updates the server with their status while it is
+        ///     This callback is called everytime this <see cref="BaseVehicle" /> updates the server with their status while it is
         ///     unoccupied.
         /// </summary>
         public event EventHandler<UnoccupiedVehicleEventArgs> UnoccupiedUpdate;
 
         /// <summary>
         ///     Occurs when the <see cref="OnStreamIn" /> is being called.
-        ///     Called when a <see cref="GtaVehicle" /> is streamed to a <see cref="GtaPlayer" />'s client.
+        ///     Called when a <see cref="BaseVehicle" /> is streamed to a <see cref="BasePlayer" />'s client.
         /// </summary>
         public event EventHandler<PlayerEventArgs> StreamIn;
 
         /// <summary>
         ///     Occurs when the <see cref="OnStreamOut" /> is being called.
-        ///     This callback is called when a <see cref="GtaVehicle" /> is streamed out from some <see cref="GtaPlayer" />'s
+        ///     This callback is called when a <see cref="BaseVehicle" /> is streamed out from some <see cref="BasePlayer" />'s
         ///     client.
         /// </summary>
         public event EventHandler<PlayerEventArgs> StreamOut;
 
         /// <summary>
         ///     Occurs when the <see cref="OnTrailerUpdate" /> is being called.
-        ///     This callback is called when a <see cref="GtaPlayer" /> sent a trailer update about this <see cref="GtaVehicle" />.
+        ///     This callback is called when a <see cref="BasePlayer" /> sent a trailer update about this <see cref="BaseVehicle" />.
         /// </summary>
         public event EventHandler<TrailerEventArgs> TrailerUpdate;
 
         /// <summary>
         ///     Occurs when the <see cref="OnSirenStateChanged" /> is being called.
-        ///     This callback is called when this <see cref="GtaVehicle" />'s siren is toggled.
+        ///     This callback is called when this <see cref="BaseVehicle" />'s siren is toggled.
         /// </summary>
         public event EventHandler<SirenStateEventArgs> SirenStateChanged;
 
@@ -627,7 +627,7 @@ namespace SampSharp.GameMode.World
         #region Vehicles natives
 
         /// <summary>
-        ///     This function can be used to calculate the distance (as a float) between this <see cref="GtaVehicle" /> and another
+        ///     This function can be used to calculate the distance (as a float) between this <see cref="BaseVehicle" /> and another
         ///     map coordinate.
         ///     This can be useful to detect how far a vehicle away is from a location.
         /// </summary>
@@ -641,7 +641,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Creates a <see cref="GtaVehicle" /> in the world.
+        ///     Creates a <see cref="BaseVehicle" /> in the world.
         /// </summary>
         /// <param name="vehicletype">The model for the vehicle.</param>
         /// <param name="position">The coordinates for the vehicle.</param>
@@ -653,8 +653,8 @@ namespace SampSharp.GameMode.World
         ///     vehicle from respawning.
         /// </param>
         /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
-        /// <returns> The <see cref="GtaVehicle" /> created.</returns>
-        public static GtaVehicle Create(VehicleModelType vehicletype, Vector3 position, float rotation, int color1,
+        /// <returns> The <see cref="BaseVehicle" /> created.</returns>
+        public static BaseVehicle Create(VehicleModelType vehicletype, Vector3 position, float rotation, int color1,
             int color2,
             int respawnDelay = -1, bool addAlarm = false)
         {
@@ -666,7 +666,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Creates a static <see cref="GtaVehicle" /> in the world.
+        ///     Creates a static <see cref="BaseVehicle" /> in the world.
         /// </summary>
         /// <param name="vehicleType">The model for the vehicle.</param>
         /// <param name="position">The coordinates for the vehicle.</param>
@@ -678,8 +678,8 @@ namespace SampSharp.GameMode.World
         ///     vehicle from respawning.
         /// </param>
         /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
-        /// <returns> The <see cref="GtaVehicle" /> created.</returns>
-        public static GtaVehicle CreateStatic(VehicleModelType vehicleType, Vector3 position, float rotation, int color1, int color2,
+        /// <returns> The <see cref="BaseVehicle" /> created.</returns>
+        public static BaseVehicle CreateStatic(VehicleModelType vehicleType, Vector3 position, float rotation, int color1, int color2,
             int respawnDelay, bool addAlarm = false)
         {
             var service = BaseMode.Instance.Services.GetService<IVehicleFactory>();
@@ -690,15 +690,15 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Creates a static <see cref="GtaVehicle" /> in the world.
+        ///     Creates a static <see cref="BaseVehicle" /> in the world.
         /// </summary>
         /// <param name="vehicleType">The model for the vehicle.</param>
         /// <param name="position">The coordinates for the vehicle.</param>
         /// <param name="rotation">The facing angle for the vehicle.</param>
         /// <param name="color1">The primary color ID.</param>
         /// <param name="color2">The secondary color ID.</param>
-        /// <returns> The <see cref="GtaVehicle" /> created.</returns>
-        public static GtaVehicle CreateStatic(VehicleModelType vehicleType, Vector3 position, float rotation, int color1, int color2)
+        /// <returns> The <see cref="BaseVehicle" /> created.</returns>
+        public static BaseVehicle CreateStatic(VehicleModelType vehicleType, Vector3 position, float rotation, int color1, int color2)
         {
             var service = BaseMode.Instance.Services.GetService<IVehicleFactory>();
 
@@ -708,11 +708,11 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Checks if this <see cref="GtaVehicle" /> is streamed in for a <see cref="GtaPlayer" />.
+        ///     Checks if this <see cref="BaseVehicle" /> is streamed in for a <see cref="BasePlayer" />.
         /// </summary>
         /// <param name="forPlayer">The Player to check.</param>
         /// <returns>True if this vehicle is streamed in for the specified vehicle; False otherwise.</returns>
-        public virtual bool IsStreamedIn(GtaPlayer forPlayer)
+        public virtual bool IsStreamedIn(BasePlayer forPlayer)
         {
             AssertNotDisposed();
 
@@ -720,7 +720,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Returns this <see cref="GtaVehicle" />'s rotation on all axis as a quaternion.
+        ///     Returns this <see cref="BaseVehicle" />'s rotation on all axis as a quaternion.
         /// </summary>
         /// <param name="w">A float variable in which to store the first quaternion angle, passed by reference.</param>
         /// <param name="x">A float variable in which to store the second quaternion angle, passed by reference.</param>
@@ -735,12 +735,12 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Set the parameters of this <see cref="GtaVehicle" /> for a <see cref="GtaPlayer" />.
+        ///     Set the parameters of this <see cref="BaseVehicle" /> for a <see cref="BasePlayer" />.
         /// </summary>
-        /// <param name="player">The <see cref="GtaPlayer" /> to set this vehicles's parameters for.</param>
+        /// <param name="player">The <see cref="BasePlayer" /> to set this vehicles's parameters for.</param>
         /// <param name="objective">False to disable the objective or True to show it.</param>
         /// <param name="doorslocked">False to unlock the doors or True to lock them.</param>
-        public virtual void SetParametersForPlayer(GtaPlayer player, bool objective,
+        public virtual void SetParametersForPlayer(BasePlayer player, bool objective,
             bool doorslocked)
         {
             AssertNotDisposed();
@@ -752,7 +752,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets this <see cref="GtaVehicle" />'s parameters for all players.
+        ///     Sets this <see cref="BaseVehicle" />'s parameters for all players.
         /// </summary>
         /// <param name="engine">Toggle the engine status on or off.</param>
         /// <param name="lights">Toggle the lights on or off.</param>
@@ -771,7 +771,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets this <see cref="GtaVehicle" />'s parameters for all players.
+        ///     Sets this <see cref="BaseVehicle" />'s parameters for all players.
         /// </summary>
         /// <param name="engine">Toggle the engine status on or off.</param>
         /// <param name="lights">Toggle the lights on or off.</param>
@@ -793,7 +793,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets this <see cref="GtaVehicle" />'s parameters.
+        ///     Gets this <see cref="BaseVehicle" />'s parameters.
         /// </summary>
         /// <param name="engine">Get the engine status. If on the engine is running.</param>
         /// <param name="lights">Get the vehicle's lights' state. If on the lights are on.</param>
@@ -822,7 +822,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets this <see cref="GtaVehicle" />'s parameters.
+        ///     Gets this <see cref="BaseVehicle" />'s parameters.
         /// </summary>
         /// <param name="engine">Get the engine status. If true the engine is running.</param>
         /// <param name="lights">Get the vehicle's lights' state. If true the lights are on.</param>
@@ -991,7 +991,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets this <see cref="GtaVehicle" /> back to the position at where it was created.
+        ///     Sets this <see cref="BaseVehicle" /> back to the position at where it was created.
         /// </summary>
         public virtual void Respawn()
         {
@@ -1001,7 +1001,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Links this <see cref="GtaVehicle" /> to the interior. This can be used for example for an arena/stadium.
+        ///     Links this <see cref="BaseVehicle" /> to the interior. This can be used for example for an arena/stadium.
         /// </summary>
         /// <param name="interiorid">Interior ID.</param>
         public virtual void LinkToInterior(int interiorid)
@@ -1023,7 +1023,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Remove a component from the <see cref="GtaVehicle" />.
+        ///     Remove a component from the <see cref="BaseVehicle" />.
         /// </summary>
         /// <param name="componentid">ID of the component to remove.</param>
         public virtual void RemoveComponent(int componentid)
@@ -1034,7 +1034,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Change this <see cref="GtaVehicle" />'s primary and secondary colors.
+        ///     Change this <see cref="BaseVehicle" />'s primary and secondary colors.
         /// </summary>
         /// <param name="color1">The new vehicle's primary Color ID.</param>
         /// <param name="color2">The new vehicle's secondary Color ID.</param>
@@ -1046,7 +1046,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Change this <see cref="GtaVehicle" />'s paintjob (for plain colors see <see cref="ChangeColor" />).
+        ///     Change this <see cref="BaseVehicle" />'s paintjob (for plain colors see <see cref="ChangeColor" />).
         /// </summary>
         /// <param name="paintjobid">The ID of the Paintjob to apply. Use 3 to remove a paintjob.</param>
         public virtual void ChangePaintjob(int paintjobid)
@@ -1057,7 +1057,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Set this <see cref="GtaVehicle" />'s numberplate, which supports olor embedding.
+        ///     Set this <see cref="BaseVehicle" />'s numberplate, which supports olor embedding.
         /// </summary>
         /// <param name="numberplate">The text that should be displayed on the numberplate. Color Embedding> is supported.</param>
         public virtual void SetNumberPlate(string numberplate)
@@ -1068,7 +1068,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Retrieves the installed component ID from this <see cref="GtaVehicle" /> in a specific slot.
+        ///     Retrieves the installed component ID from this <see cref="BaseVehicle" /> in a specific slot.
         /// </summary>
         /// <param name="slot">The component slot to check for components.</param>
         /// <returns>The ID of the component installed in the specified slot.</returns>
@@ -1090,7 +1090,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Fully repairs this <see cref="GtaVehicle" />, including visual damage (bumps, dents, scratches, popped tires etc.).
+        ///     Fully repairs this <see cref="BaseVehicle" />, including visual damage (bumps, dents, scratches, popped tires etc.).
         /// </summary>
         public virtual void Repair()
         {
@@ -1100,7 +1100,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets the angular velocity of this <see cref="GtaVehicle" />.
+        ///     Sets the angular velocity of this <see cref="BaseVehicle" />.
         /// </summary>
         /// <param name="velocity">The amount of velocity in the angular directions.</param>
         public virtual void SetAngularVelocity(Vector3 velocity)
@@ -1111,7 +1111,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Retrieve the damage statuses of this <see cref="GtaVehicle" />.
+        ///     Retrieve the damage statuses of this <see cref="BaseVehicle" />.
         /// </summary>
         /// <param name="panels">A variable to store the panel damage data in, passed by reference.</param>
         /// <param name="doors">A variable to store the door damage data in, passed by reference.</param>
@@ -1125,7 +1125,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets the various visual damage statuses of this <see cref="GtaVehicle" />, such as popped tires, broken lights and
+        ///     Sets the various visual damage statuses of this <see cref="BaseVehicle" />, such as popped tires, broken lights and
         ///     damaged panels.
         /// </summary>
         /// <param name="panels">A set of bits containing the panel damage status.</param>

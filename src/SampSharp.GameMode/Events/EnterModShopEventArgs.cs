@@ -20,7 +20,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerEnterExitModShop" /> or <see cref="GtaPlayer.EnterExitModShop" />
+    ///     Provides data for the <see cref="BaseMode.PlayerEnterExitModShop" /> or <see cref="BasePlayer.EnterExitModShop" />
     ///     event.
     /// </summary>
     public class EnterModShopEventArgs : EventArgs

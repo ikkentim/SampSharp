@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.DialogResponse += (sender, args) =>
             {
-                var player = sender as GtaPlayer;
+                var player = sender as BasePlayer;
                 var dialog = Dialog.GetOpenDialog(player);
 
                 if (dialog != null)
@@ -40,7 +40,7 @@ namespace SampSharp.GameMode.Controllers
 
             gameMode.PlayerDisconnected += (sender, args) =>
             {
-                var player = sender as GtaPlayer;
+                var player = sender as BasePlayer;
                 Dialog.Hide(player);
             };
         }

@@ -19,7 +19,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerClickMap" /> or <see cref="GtaPlayer.ClickMap" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerClickMap" /> or <see cref="BasePlayer.ClickMap" /> event.
     /// </summary>
     public class PositionEventArgs : EventArgs
     {

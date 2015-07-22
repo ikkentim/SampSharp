@@ -499,7 +499,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerConnected(GtaPlayer player, EventArgs e)
+        protected virtual void OnPlayerConnected(BasePlayer player, EventArgs e)
         {
             if (PlayerConnected != null)
                 PlayerConnected(player, e);
@@ -510,7 +510,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="DisconnectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerDisconnected(GtaPlayer player, DisconnectEventArgs e)
+        protected virtual void OnPlayerDisconnected(BasePlayer player, DisconnectEventArgs e)
         {
             if (PlayerDisconnected != null)
                 PlayerDisconnected(player, e);
@@ -521,7 +521,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="DisconnectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerCleanup(GtaPlayer player, DisconnectEventArgs e)
+        protected virtual void OnPlayerCleanup(BasePlayer player, DisconnectEventArgs e)
         {
             if (PlayerCleanup != null)
                 PlayerCleanup(player, e);
@@ -532,7 +532,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerSpawned(GtaPlayer player, SpawnEventArgs e)
+        protected virtual void OnPlayerSpawned(BasePlayer player, SpawnEventArgs e)
         {
             if (PlayerSpawned != null)
                 PlayerSpawned(player, e);
@@ -543,7 +543,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="DeathEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerDied(GtaPlayer player, DeathEventArgs e)
+        protected virtual void OnPlayerDied(BasePlayer player, DeathEventArgs e)
         {
             if (PlayerDied != null)
                 PlayerDied(player, e);
@@ -554,7 +554,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleSpawned(GtaVehicle vehicle, EventArgs e)
+        protected virtual void OnVehicleSpawned(BaseVehicle vehicle, EventArgs e)
         {
             if (VehicleSpawned != null)
                 VehicleSpawned(vehicle, e);
@@ -565,7 +565,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleDied(GtaVehicle vehicle, PlayerEventArgs e)
+        protected virtual void OnVehicleDied(BaseVehicle vehicle, PlayerEventArgs e)
         {
             if (VehicleDied != null)
                 VehicleDied(vehicle, e);
@@ -576,7 +576,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="TextEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerText(GtaPlayer player, TextEventArgs e)
+        protected virtual void OnPlayerText(BasePlayer player, TextEventArgs e)
         {
             if (PlayerText != null)
                 PlayerText(player, e);
@@ -587,7 +587,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="TextEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerCommandText(GtaPlayer player, CommandTextEventArgs e)
+        protected virtual void OnPlayerCommandText(BasePlayer player, CommandTextEventArgs e)
         {
             if (PlayerCommandText != null)
                 PlayerCommandText(player, e);
@@ -598,7 +598,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="RequestClassEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerRequestClass(GtaPlayer player, RequestClassEventArgs e)
+        protected virtual void OnPlayerRequestClass(BasePlayer player, RequestClassEventArgs e)
         {
             if (PlayerRequestClass != null)
                 PlayerRequestClass(player, e);
@@ -609,7 +609,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EnterVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEnterVehicle(GtaPlayer player, EnterVehicleEventArgs e)
+        protected virtual void OnPlayerEnterVehicle(BasePlayer player, EnterVehicleEventArgs e)
         {
             if (PlayerEnterVehicle != null)
                 PlayerEnterVehicle(player, e);
@@ -620,7 +620,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerExitVehicle(GtaPlayer player, PlayerVehicleEventArgs e)
+        protected virtual void OnPlayerExitVehicle(BasePlayer player, PlayerVehicleEventArgs e)
         {
             if (PlayerExitVehicle != null)
                 PlayerExitVehicle(player, e);
@@ -631,7 +631,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="StateEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerStateChanged(GtaPlayer player, StateEventArgs e)
+        protected virtual void OnPlayerStateChanged(BasePlayer player, StateEventArgs e)
         {
             if (PlayerStateChanged != null)
                 PlayerStateChanged(player, e);
@@ -642,7 +642,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEnterCheckpoint(GtaPlayer player, EventArgs e)
+        protected virtual void OnPlayerEnterCheckpoint(BasePlayer player, EventArgs e)
         {
             if (PlayerEnterCheckpoint != null)
                 PlayerEnterCheckpoint(player, e);
@@ -653,7 +653,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerLeaveCheckpoint(GtaPlayer player, EventArgs e)
+        protected virtual void OnPlayerLeaveCheckpoint(BasePlayer player, EventArgs e)
         {
             if (PlayerLeaveCheckpoint != null)
                 PlayerLeaveCheckpoint(player, e);
@@ -664,7 +664,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEnterRaceCheckpoint(GtaPlayer player, EventArgs e)
+        protected virtual void OnPlayerEnterRaceCheckpoint(BasePlayer player, EventArgs e)
         {
             if (PlayerEnterRaceCheckpoint != null)
                 PlayerEnterRaceCheckpoint(player, e);
@@ -675,7 +675,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerLeaveRaceCheckpoint(GtaPlayer player, EventArgs e)
+        protected virtual void OnPlayerLeaveRaceCheckpoint(BasePlayer player, EventArgs e)
         {
             if (PlayerLeaveRaceCheckpoint != null)
                 PlayerLeaveRaceCheckpoint(player, e);
@@ -696,7 +696,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerRequestSpawn(GtaPlayer player, RequestSpawnEventArgs e)
+        protected virtual void OnPlayerRequestSpawn(BasePlayer player, RequestSpawnEventArgs e)
         {
             if (PlayerRequestSpawn != null)
                 PlayerRequestSpawn(player, e);
@@ -740,7 +740,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="VehicleModEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleMod(GtaVehicle vehicle, VehicleModEventArgs e)
+        protected virtual void OnVehicleMod(BaseVehicle vehicle, VehicleModEventArgs e)
         {
             if (VehicleMod != null)
                 VehicleMod(vehicle, e);
@@ -751,7 +751,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EnterModShopEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEnterExitModShop(GtaPlayer player, EnterModShopEventArgs e)
+        protected virtual void OnPlayerEnterExitModShop(BasePlayer player, EnterModShopEventArgs e)
         {
             if (PlayerEnterExitModShop != null)
                 PlayerEnterExitModShop(player, e);
@@ -762,7 +762,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="VehiclePaintjobEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehiclePaintjobApplied(GtaVehicle vehicle, VehiclePaintjobEventArgs e)
+        protected virtual void OnVehiclePaintjobApplied(BaseVehicle vehicle, VehiclePaintjobEventArgs e)
         {
             if (VehiclePaintjobApplied != null)
                 VehiclePaintjobApplied(vehicle, e);
@@ -773,7 +773,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="VehicleResprayedEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleResprayed(GtaVehicle vehicle, VehicleResprayedEventArgs e)
+        protected virtual void OnVehicleResprayed(BaseVehicle vehicle, VehicleResprayedEventArgs e)
         {
             if (VehicleResprayed != null)
                 VehicleResprayed(vehicle, e);
@@ -784,7 +784,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleDamageStatusUpdated(GtaVehicle vehicle, PlayerEventArgs e)
+        protected virtual void OnVehicleDamageStatusUpdated(BaseVehicle vehicle, PlayerEventArgs e)
         {
             if (VehicleDamageStatusUpdated != null)
                 VehicleDamageStatusUpdated(vehicle, e);
@@ -795,7 +795,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="UnoccupiedVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnUnoccupiedVehicleUpdated(GtaVehicle vehicle, UnoccupiedVehicleEventArgs e)
+        protected virtual void OnUnoccupiedVehicleUpdated(BaseVehicle vehicle, UnoccupiedVehicleEventArgs e)
         {
             if (UnoccupiedVehicleUpdated != null)
                 UnoccupiedVehicleUpdated(vehicle, e);
@@ -806,7 +806,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="MenuRowEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerSelectedMenuRow(GtaPlayer player, MenuRowEventArgs e)
+        protected virtual void OnPlayerSelectedMenuRow(BasePlayer player, MenuRowEventArgs e)
         {
             if (PlayerSelectedMenuRow != null)
                 PlayerSelectedMenuRow(player, e);
@@ -817,7 +817,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerExitedMenu(GtaPlayer player, EventArgs e)
+        protected virtual void OnPlayerExitedMenu(BasePlayer player, EventArgs e)
         {
             if (PlayerExitedMenu != null)
                 PlayerExitedMenu(player, e);
@@ -828,7 +828,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="InteriorChangedEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerInteriorChanged(GtaPlayer player, InteriorChangedEventArgs e)
+        protected virtual void OnPlayerInteriorChanged(BasePlayer player, InteriorChangedEventArgs e)
         {
             if (PlayerInteriorChanged != null)
                 PlayerInteriorChanged(player, e);
@@ -839,7 +839,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="KeyStateChangedEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerKeyStateChanged(GtaPlayer player, KeyStateChangedEventArgs e)
+        protected virtual void OnPlayerKeyStateChanged(BasePlayer player, KeyStateChangedEventArgs e)
         {
             if (PlayerKeyStateChanged != null)
                 PlayerKeyStateChanged(player, e);
@@ -860,7 +860,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerUpdate(GtaPlayer player, PlayerUpdateEventArgs e)
+        protected virtual void OnPlayerUpdate(BasePlayer player, PlayerUpdateEventArgs e)
         {
             if (PlayerUpdate != null)
                 PlayerUpdate(player, e);
@@ -871,7 +871,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerStreamIn(GtaPlayer player, PlayerEventArgs e)
+        protected virtual void OnPlayerStreamIn(BasePlayer player, PlayerEventArgs e)
         {
             if (PlayerStreamIn != null)
                 PlayerStreamIn(player, e);
@@ -882,7 +882,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerStreamOut(GtaPlayer player, PlayerEventArgs e)
+        protected virtual void OnPlayerStreamOut(BasePlayer player, PlayerEventArgs e)
         {
             if (PlayerStreamOut != null)
                 PlayerStreamOut(player, e);
@@ -893,7 +893,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleStreamIn(GtaVehicle vehicle, PlayerEventArgs e)
+        protected virtual void OnVehicleStreamIn(BaseVehicle vehicle, PlayerEventArgs e)
         {
             if (VehicleStreamIn != null)
                 VehicleStreamIn(vehicle, e);
@@ -904,7 +904,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleStreamOut(GtaVehicle vehicle, PlayerEventArgs e)
+        protected virtual void OnVehicleStreamOut(BaseVehicle vehicle, PlayerEventArgs e)
         {
             if (VehicleStreamOut != null)
                 VehicleStreamOut(vehicle, e);
@@ -915,7 +915,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="trailer">The trailer triggering the event.</param>
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnTrailerUpdate(GtaVehicle trailer, TrailerEventArgs e)
+        protected virtual void OnTrailerUpdate(BaseVehicle trailer, TrailerEventArgs e)
         {
             if (TrailerUpdate != null)
                 TrailerUpdate(trailer, e);
@@ -926,7 +926,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="DialogResponseEventArgs" /> that contains the event data. </param>
-        protected virtual void OnDialogResponse(GtaPlayer player, DialogResponseEventArgs e)
+        protected virtual void OnDialogResponse(BasePlayer player, DialogResponseEventArgs e)
         {
             if (DialogResponse != null)
                 DialogResponse(player, e);
@@ -937,7 +937,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="DamageEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerTakeDamage(GtaPlayer player, DamageEventArgs e)
+        protected virtual void OnPlayerTakeDamage(BasePlayer player, DamageEventArgs e)
         {
             if (PlayerTakeDamage != null)
                 PlayerTakeDamage(player, e);
@@ -948,7 +948,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="DamageEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerGiveDamage(GtaPlayer player, DamageEventArgs e)
+        protected virtual void OnPlayerGiveDamage(BasePlayer player, DamageEventArgs e)
         {
             if (PlayerGiveDamage != null)
                 PlayerGiveDamage(player, e);
@@ -959,7 +959,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PositionEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerClickMap(GtaPlayer player, PositionEventArgs e)
+        protected virtual void OnPlayerClickMap(BasePlayer player, PositionEventArgs e)
         {
             if (PlayerClickMap != null)
                 PlayerClickMap(player, e);
@@ -970,7 +970,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerClickTextDraw(GtaPlayer player, ClickTextDrawEventArgs e)
+        protected virtual void OnPlayerClickTextDraw(BasePlayer player, ClickTextDrawEventArgs e)
         {
             if (PlayerClickTextDraw != null)
                 PlayerClickTextDraw(player, e);
@@ -981,7 +981,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerClickPlayerTextDraw(GtaPlayer player, ClickPlayerTextDrawEventArgs e)
+        protected virtual void OnPlayerClickPlayerTextDraw(BasePlayer player, ClickPlayerTextDrawEventArgs e)
         {
             if (PlayerClickPlayerTextDraw != null)
                 PlayerClickPlayerTextDraw(player, e);
@@ -992,7 +992,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="ClickPlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerClickPlayer(GtaPlayer player, ClickPlayerEventArgs e)
+        protected virtual void OnPlayerClickPlayer(BasePlayer player, ClickPlayerEventArgs e)
         {
             if (PlayerClickPlayer != null)
                 PlayerClickPlayer(player, e);
@@ -1003,7 +1003,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EditGlobalObjectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEditGlobalObject(GtaPlayer player, EditGlobalObjectEventArgs e)
+        protected virtual void OnPlayerEditGlobalObject(BasePlayer player, EditGlobalObjectEventArgs e)
         {
             if (PlayerEditGlobalObject != null)
                 PlayerEditGlobalObject(player, e);
@@ -1014,7 +1014,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EditPlayerObjectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEditPlayerObject(GtaPlayer player, EditPlayerObjectEventArgs e)
+        protected virtual void OnPlayerEditPlayerObject(BasePlayer player, EditPlayerObjectEventArgs e)
         {
             if (PlayerEditPlayerObject != null)
                 PlayerEditPlayerObject(player, e);
@@ -1025,7 +1025,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EditAttachedObjectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEditAttachedObject(GtaPlayer player, EditAttachedObjectEventArgs e)
+        protected virtual void OnPlayerEditAttachedObject(BasePlayer player, EditAttachedObjectEventArgs e)
         {
             if (PlayerEditAttachedObject != null)
                 PlayerEditAttachedObject(player, e);
@@ -1036,7 +1036,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="SelectGlobalObjectEventArgs" /> that contains the event data.</param>
-        protected virtual void OnPlayerSelectGlobalObject(GtaPlayer player, SelectGlobalObjectEventArgs e)
+        protected virtual void OnPlayerSelectGlobalObject(BasePlayer player, SelectGlobalObjectEventArgs e)
         {
             if (PlayerSelectGlobalObject != null)
                 PlayerSelectGlobalObject(player, e);
@@ -1047,7 +1047,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="SelectPlayerObjectEventArgs" /> that contains the event data.</param>
-        protected virtual void OnPlayerSelectPlayerObject(GtaPlayer player, SelectPlayerObjectEventArgs e)
+        protected virtual void OnPlayerSelectPlayerObject(BasePlayer player, SelectPlayerObjectEventArgs e)
         {
             if (PlayerSelectPlayerObject != null)
                 PlayerSelectPlayerObject(player, e);
@@ -1058,7 +1058,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="WeaponShotEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerWeaponShot(GtaPlayer player, WeaponShotEventArgs e)
+        protected virtual void OnPlayerWeaponShot(BasePlayer player, WeaponShotEventArgs e)
         {
             if (PlayerWeaponShot != null)
                 PlayerWeaponShot(player, e);
@@ -1079,7 +1079,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="vehicle">The vehicle.</param>
         /// <param name="e">The <see cref="SirenStateEventArgs" /> instance containing the event data.</param>
-        protected void OnVehicleSirenStateChange(GtaVehicle vehicle, SirenStateEventArgs e)
+        protected void OnVehicleSirenStateChange(BaseVehicle vehicle, SirenStateEventArgs e)
         {
             if (VehicleSirenStateChange != null)
                 VehicleSirenStateChange(vehicle, e);

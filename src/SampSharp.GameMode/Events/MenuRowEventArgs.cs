@@ -20,7 +20,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerSelectedMenuRow" />, <see cref="GtaPlayer.SelectedMenuRow" /> or
+    ///     Provides data for the <see cref="BaseMode.PlayerSelectedMenuRow" />, <see cref="BasePlayer.SelectedMenuRow" /> or
     ///     <see cref="Menu.Response" /> event.
     /// </summary>
     public class MenuRowEventArgs : EventArgs

@@ -19,7 +19,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerEditGlobalObject" />, <see cref="GtaPlayer.EditGlobalObject" /> or
+    ///     Provides data for the <see cref="BaseMode.PlayerEditGlobalObject" />, <see cref="BasePlayer.EditGlobalObject" /> or
     ///     <see cref="GlobalObject.Edited" /> event.
     /// </summary>
     public class EditGlobalObjectEventArgs : PositionEventArgs
@@ -32,7 +32,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="response">The response.</param>
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
-        public EditGlobalObjectEventArgs(GtaPlayer player, GlobalObject @object, EditObjectResponse response,
+        public EditGlobalObjectEventArgs(BasePlayer player, GlobalObject @object, EditObjectResponse response,
             Vector3 position, Vector3 rotation) : base(position)
         {
             Player = player;
@@ -49,7 +49,7 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player.
         /// </summary>
-        public GtaPlayer Player { get; private set; }
+        public BasePlayer Player { get; private set; }
 
         /// <summary>
         ///     Gets the global object.

@@ -53,10 +53,10 @@ namespace TestMode.Tests
 
         private void gameMode_PlayerConnected(object sender, EventArgs e)
         {
-            ASyncPlayerConnectedDelayed(sender as GtaPlayer);
+            ASyncPlayerConnectedDelayed(sender as BasePlayer);
         }
 
-        public async void ASyncPlayerConnectedDelayed(GtaPlayer player)
+        public async void ASyncPlayerConnectedDelayed(BasePlayer player)
         {
             await Task.Delay(2000);
             Console.WriteLine("in ASyncPlayerConnectedDelayed");

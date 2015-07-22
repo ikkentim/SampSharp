@@ -24,7 +24,7 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-            var veh = GtaVehicle.Create(VehicleModelType.Burrito, new Vector3(5), 0, -1, -1, -1, true);
+            var veh = BaseVehicle.Create(VehicleModelType.Burrito, new Vector3(5), 0, -1, -1, -1, true);
             Console.WriteLine("Vehiclesize of {1}: {0}", veh.ModelInfo[VehicleModelInfoType.Size], veh.ModelInfo.Name);
         }
     }

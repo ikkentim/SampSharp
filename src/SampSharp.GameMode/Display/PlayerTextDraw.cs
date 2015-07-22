@@ -25,8 +25,8 @@ namespace SampSharp.GameMode.Display
     /// <summary>
     ///     Represents a player-textdraw.
     /// </summary>
-    public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, GtaPlayer>, IIdentifiable,
-        IOwnable<GtaPlayer>
+    public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePlayer>, IIdentifiable,
+        IOwnable<BasePlayer>
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -41,7 +41,7 @@ namespace SampSharp.GameMode.Display
         #region Events
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw(GtaPlayer,ClickPlayerTextDrawEventArgs)" /> is
+        ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw(BasePlayer,ClickPlayerTextDrawEventArgs)" /> is
         ///     being called.
         ///     This callback is called when a player clicks on a player-textdraw.
         /// </summary>
@@ -96,7 +96,7 @@ namespace SampSharp.GameMode.Display
         ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
         /// </summary>
         /// <param name="owner">The owner of the player-textdraw.</param>
-        public PlayerTextDraw(GtaPlayer owner)
+        public PlayerTextDraw(BasePlayer owner)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
@@ -115,7 +115,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="owner">The owner of the player-textdraw.</param>
         /// <param name="position">The position of the player-textdraw on the screen.</param>
         /// <param name="text">The text of the player-textdraw.</param>
-        public PlayerTextDraw(GtaPlayer owner, Vector2 position, string text)
+        public PlayerTextDraw(BasePlayer owner, Vector2 position, string text)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
@@ -134,7 +134,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="position">The position of the player-textdraw on the screen.</param>
         /// <param name="text">The text of the player-textdraw.</param>
         /// <param name="font">The <see cref="TextDrawFont" /> of this textdraw.</param>
-        public PlayerTextDraw(GtaPlayer owner, Vector2 position, string text, TextDrawFont font)
+        public PlayerTextDraw(BasePlayer owner, Vector2 position, string text, TextDrawFont font)
             : this(owner, position, text)
         {
             Font = font;
@@ -148,7 +148,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="text">The text of the player-textdraw.</param>
         /// <param name="font">The <see cref="TextDrawFont" /> of the player-textdraw.</param>
         /// <param name="foreColor">The foreground <see cref="Color" /> of the player-textdraw.</param>
-        public PlayerTextDraw(GtaPlayer owner, Vector2 position, string text, TextDrawFont font, Color foreColor)
+        public PlayerTextDraw(BasePlayer owner, Vector2 position, string text, TextDrawFont font, Color foreColor)
             : this(owner, position, text, font)
         {
             ForeColor = foreColor;
@@ -494,7 +494,7 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Gets the owner of this player-textdraw.
         /// </summary>
-        public virtual GtaPlayer Owner { get; protected set; }
+        public virtual BasePlayer Owner { get; protected set; }
 
         #endregion
 

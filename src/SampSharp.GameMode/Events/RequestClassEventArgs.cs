@@ -19,7 +19,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerRequestClass" /> or <see cref="GtaPlayer.RequestClass" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerRequestClass" /> or <see cref="BasePlayer.RequestClass" /> event.
     /// </summary>
     public class RequestClassEventArgs : EventArgs
     {

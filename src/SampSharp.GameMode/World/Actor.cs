@@ -207,7 +207,7 @@ namespace SampSharp.GameMode.World
         /// <param name="player">The player.</param>
         /// <returns>True if streamed in; False otherwise.</returns>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public bool IsStreamedIn(GtaPlayer player)
+        public bool IsStreamedIn(BasePlayer player)
         {
             if (player == null) throw new ArgumentNullException("player");
 

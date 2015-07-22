@@ -33,13 +33,13 @@ namespace SampSharp.GameMode.Controllers
             //Register all vehicle events
             gameMode.VehicleSpawned += (sender, args) =>
             {
-                var vehicle = sender as GtaVehicle;
+                var vehicle = sender as BaseVehicle;
                 if (vehicle != null)
                     vehicle.OnSpawn(args);
             };
             gameMode.VehicleDied += (sender, args) =>
             {
-                var vehicle = sender as GtaVehicle;
+                var vehicle = sender as BaseVehicle;
                 if (vehicle != null)
                     vehicle.OnDeath(args);
             };
@@ -55,55 +55,55 @@ namespace SampSharp.GameMode.Controllers
             };
             gameMode.VehicleMod += (sender, args) =>
             {
-                var vehicle = sender as GtaVehicle;
+                var vehicle = sender as BaseVehicle;
                 if (vehicle != null)
                     vehicle.OnMod(args);
             };
             gameMode.VehiclePaintjobApplied += (sender, args) =>
             {
-                var vehicle = sender as GtaVehicle;
+                var vehicle = sender as BaseVehicle;
                 if (vehicle != null)
                     vehicle.OnPaintjobApplied(args);
             };
             gameMode.VehicleResprayed += (sender, args) =>
             {
-                var vehicle = sender as GtaVehicle;
+                var vehicle = sender as BaseVehicle;
                 if (vehicle != null)
                     vehicle.OnResprayed(args);
             };
             gameMode.VehicleDamageStatusUpdated += (sender, args) =>
             {
-                var vehicle = sender as GtaVehicle;
+                var vehicle = sender as BaseVehicle;
                 if (vehicle != null)
                     vehicle.OnDamageStatusUpdated(args);
             };
             gameMode.UnoccupiedVehicleUpdated += (sender, args) =>
             {
-                var vehicle = sender as GtaVehicle;
+                var vehicle = sender as BaseVehicle;
                 if (vehicle != null)
                     vehicle.OnUnoccupiedUpdate(args);
             };
             gameMode.VehicleStreamIn += (sender, args) =>
             {
-                var vehicle = sender as GtaVehicle;
+                var vehicle = sender as BaseVehicle;
                 if (vehicle != null)
                     vehicle.OnStreamIn(args);
             };
             gameMode.VehicleStreamOut += (sender, args) =>
             {
-                var vehicle = sender as GtaVehicle;
+                var vehicle = sender as BaseVehicle;
                 if (vehicle != null)
                     vehicle.OnStreamOut(args);
             };
             gameMode.TrailerUpdate += (sender, args) =>
             {
-                var vehicle = sender as GtaVehicle;
+                var vehicle = sender as BaseVehicle;
                 if (vehicle != null)
                     vehicle.OnTrailerUpdate(args);
             };
             gameMode.VehicleSirenStateChange += (sender, args) =>
             {
-                var vehicle = sender as GtaVehicle;
+                var vehicle = sender as BaseVehicle;
                 if (vehicle != null)
                     vehicle.OnSirenStateChanged(args);
             };
@@ -124,7 +124,7 @@ namespace SampSharp.GameMode.Controllers
         /// </summary>
         public virtual void RegisterTypes()
         {
-            GtaVehicle.Register<GtaVehicle>();
+            BaseVehicle.Register<BaseVehicle>();
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace SampSharp.GameMode.Controllers
         {
             if (disposing)
             {
-                foreach (var vehicle in GtaVehicle.All)
+                foreach (var vehicle in BaseVehicle.All)
                 {
                     vehicle.Dispose();
                 }

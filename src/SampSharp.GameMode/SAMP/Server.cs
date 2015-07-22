@@ -175,10 +175,10 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="name">The name the NPC should connect as. Must follow the same rules as normal player names.</param>
         /// <param name="script">The NPC script name that is located in the npcmodes folder (without the .amx extension).</param>
         /// <returns>
-        ///     An instance of <see cref="GtaPlayer" /> based on the first available player slot. If no slots are available,
+        ///     An instance of <see cref="BasePlayer" /> based on the first available player slot. If no slots are available,
         ///     null.
         /// </returns>
-        public static GtaPlayer ConnectNPC(string name, string script)
+        public static BasePlayer ConnectNPC(string name, string script)
         {
             var id = -1;
             var max = MaxPlayers;
@@ -191,7 +191,7 @@ namespace SampSharp.GameMode.SAMP
                 return null;
 
             Internal.NativeConnectNPC(name, script);
-            return GtaPlayer.FindOrCreate(id);
+            return BasePlayer.FindOrCreate(id);
         }
 
         /// <summary>

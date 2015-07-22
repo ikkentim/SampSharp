@@ -107,7 +107,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="player">The player.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void Show(GtaPlayer player)
+        public virtual void Show(BasePlayer player)
         {
             if (player == null) throw new ArgumentNullException("player");
             AssertNotDisposed();
@@ -130,7 +130,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="player">The player.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void Hide(GtaPlayer player)
+        public virtual void Hide(BasePlayer player)
         {
             if (player == null) throw new ArgumentNullException("player");
             AssertNotDisposed();
@@ -154,7 +154,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="player">The player.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void Flash(GtaPlayer player)
+        public virtual void Flash(BasePlayer player)
         {
             if (player == null) throw new ArgumentNullException("player");
             Flash(player, new Color());
@@ -166,7 +166,7 @@ namespace SampSharp.GameMode.World
         /// <param name="player">The player.</param>
         /// <param name="color">The color.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void Flash(GtaPlayer player, Color color)
+        public virtual void Flash(BasePlayer player, Color color)
         {
             if (player == null) throw new ArgumentNullException("player");
             AssertNotDisposed();
@@ -189,7 +189,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="player">The player.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void StopFlash(GtaPlayer player)
+        public virtual void StopFlash(BasePlayer player)
         {
             AssertNotDisposed();
 

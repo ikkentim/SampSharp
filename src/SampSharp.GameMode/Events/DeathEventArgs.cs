@@ -20,7 +20,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerDied" /> or <see cref="GtaPlayer.Died" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerDied" /> or <see cref="BasePlayer.Died" /> event.
     /// </summary>
     public class DeathEventArgs : EventArgs
     {
@@ -29,7 +29,7 @@ namespace SampSharp.GameMode.Events
         /// </summary>
         /// <param name="killer">The killer.</param>
         /// <param name="reason">Reason of the death.</param>
-        public DeathEventArgs(GtaPlayer killer, Weapon reason)
+        public DeathEventArgs(BasePlayer killer, Weapon reason)
         {
             Killer = killer;
             DeathReason = reason;
@@ -38,7 +38,7 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the killer.
         /// </summary>
-        public GtaPlayer Killer { get; private set; }
+        public BasePlayer Killer { get; private set; }
 
         /// <summary>
         ///     Gets the reason of the death.

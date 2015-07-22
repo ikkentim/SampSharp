@@ -39,14 +39,14 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <param name="player">The player running the command.</param>
         /// <param name="args">The arguments the player entered.</param>
         /// <returns>True when the command has been executed, False otherwise.</returns>
-        public abstract bool RunCommand(GtaPlayer player, string args);
+        public abstract bool RunCommand(BasePlayer player, string args);
 
         /// <summary>
         ///     Checks whether the given player has the permission to run this command.
         /// </summary>
         /// <param name="player">The player that attempts to run this command.</param>
         /// <returns>True when allowed, False otherwise.</returns>
-        public virtual bool HasPlayerPermissionForCommand(GtaPlayer player)
+        public virtual bool HasPlayerPermissionForCommand(BasePlayer player)
         {
             return true;
         }

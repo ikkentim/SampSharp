@@ -50,7 +50,7 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     A function that can be used in <see cref="OnInitialized" /> to enable or disable the players markers,
         ///     which would normally be shown on the radar. If you want to change the marker settings at some other point in the
-        ///     gamemode, have a look at <see cref="GtaPlayer.SetPlayerMarker" /> which does exactly that.
+        ///     gamemode, have a look at <see cref="BasePlayer.SetPlayerMarker" /> which does exactly that.
         /// </summary>
         /// <param name="mode">The mode you want to use.</param>
         public virtual void ShowPlayerMarkers(PlayerMarkersMode mode)
@@ -80,7 +80,7 @@ namespace SampSharp.GameMode
         ///     Enable friendly fire for team vehicles.
         /// </summary>
         /// <remarks>
-        ///     Players will be unable to damage teammates' vehicles (<see cref="GtaPlayer.Team" /> must be used!)
+        ///     Players will be unable to damage teammates' vehicles (<see cref="BasePlayer.Team" /> must be used!)
         /// </remarks>
         public virtual void EnableVehicleFriendlyFire()
         {

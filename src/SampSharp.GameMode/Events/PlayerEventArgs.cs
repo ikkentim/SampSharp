@@ -22,8 +22,8 @@ namespace SampSharp.GameMode.Events
     ///     Provides data for the <see cref="BaseMode.VehicleDied" />, <see cref="BaseMode.PlayerPickUpPickup" />,
     ///     <see cref="BaseMode.VehicleDamageStatusUpdated" />, <see cref="BaseMode.PlayerStreamIn" />,
     ///     <see cref="BaseMode.PlayerStreamOut" />, <see cref="BaseMode.VehicleStreamIn" />,
-    ///     <see cref="BaseMode.VehicleStreamOut" />, <see cref="GtaPlayer.StreamIn" />, <see cref="GtaPlayer.StreamOut" />,
-    ///     <see cref="GtaVehicle.StreamIn" />, <see cref="GtaVehicle.StreamOut" /> or <see cref="Pickup.PickUp" /> event.
+    ///     <see cref="BaseMode.VehicleStreamOut" />, <see cref="BasePlayer.StreamIn" />, <see cref="BasePlayer.StreamOut" />,
+    ///     <see cref="BaseVehicle.StreamIn" />, <see cref="BaseVehicle.StreamOut" /> or <see cref="Pickup.PickUp" /> event.
     /// </summary>
     public class PlayerEventArgs : EventArgs
     {
@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.Events
         ///     Initializes a new instance of the <see cref="PlayerEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
-        public PlayerEventArgs(GtaPlayer player)
+        public PlayerEventArgs(BasePlayer player)
         {
             Player = player;
         }
@@ -39,6 +39,6 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player involved.
         /// </summary>
-        public GtaPlayer Player { get; private set; }
+        public BasePlayer Player { get; private set; }
     }
 }

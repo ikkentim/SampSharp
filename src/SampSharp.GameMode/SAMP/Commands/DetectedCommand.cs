@@ -44,7 +44,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 if (type == typeof (int)) return new IntegerAttribute(name);
                 if (type == typeof (string)) return new WordAttribute(name);
                 if (type == typeof (float)) return new FloatAttribute(name);
-                if (typeof (GtaPlayer).IsAssignableFrom(type)) return new PlayerAttribute(name);
+                if (typeof (BasePlayer).IsAssignableFrom(type)) return new PlayerAttribute(name);
 
                 return type.IsEnum ? new EnumAttribute(name, type) : null;
             };
@@ -60,7 +60,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         {
             if (command == null) throw new ArgumentNullException("command");
 
-            if (!command.IsStatic && !typeof (GtaPlayer).IsAssignableFrom(command.DeclaringType))
+            if (!command.IsStatic && !typeof (BasePlayer).IsAssignableFrom(command.DeclaringType))
                 throw new ArgumentException("command must be static or member of GtaPlayer");
 
             _parameterInfos = command.GetParameters();
@@ -88,7 +88,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             var cmdParams = Command.GetParameters();
 
             if (Command.IsStatic &&
-                (cmdParams.Length == 0 || !typeof (GtaPlayer).IsAssignableFrom(cmdParams[0].ParameterType)))
+                (cmdParams.Length == 0 || !typeof (BasePlayer).IsAssignableFrom(cmdParams[0].ParameterType)))
             {
                 throw new ArgumentException("command " + Name + " does not accept a player as first parameter");
             }
@@ -220,7 +220,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>
         ///     True when allowed, False otherwise.
         /// </returns>
-        public override bool HasPlayerPermissionForCommand(GtaPlayer player)
+        public override bool HasPlayerPermissionForCommand(BasePlayer player)
         {
             return PermissionCheck == null || PermissionCheck.Check(player);
         }
@@ -233,7 +233,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>
         ///     True when the command has been executed, False otherwise.
         /// </returns>
-        public override bool RunCommand(GtaPlayer player, string args)
+        public override bool RunCommand(BasePlayer player, string args)
         {
             if (!HasPlayerPermissionForCommand(player))
             {

@@ -41,7 +41,7 @@ namespace SampSharp.GameMode.Display
         #region Events
 
         /// <summary>
-        ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw(GtaPlayer,ClickTextDrawEventArgs)" /> is being called.
+        ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw(BasePlayer,ClickTextDrawEventArgs)" /> is being called.
         ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
         /// </summary>
         public event EventHandler<ClickTextDrawEventArgs> Click;
@@ -64,7 +64,7 @@ namespace SampSharp.GameMode.Display
 
         #region Fields
 
-        private readonly List<GtaPlayer> _playersShownTo = new List<GtaPlayer>();
+        private readonly List<BasePlayer> _playersShownTo = new List<BasePlayer>();
 
         private TextDrawAlignment _alignment;
         private Color _backColor;
@@ -491,7 +491,7 @@ namespace SampSharp.GameMode.Display
             if (Id == -1) Refresh();
 
             _playersShownTo.Clear();
-            _playersShownTo.AddRange(GtaPlayer.All);
+            _playersShownTo.AddRange(BasePlayer.All);
             Internal.TextDrawShowForAll(Id);
         }
 
@@ -499,7 +499,7 @@ namespace SampSharp.GameMode.Display
         ///     Display this textdraw to the given <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player to display this textdraw to.</param>
-        public virtual void Show(GtaPlayer player)
+        public virtual void Show(BasePlayer player)
         {
             AssertNotDisposed();
 
@@ -530,7 +530,7 @@ namespace SampSharp.GameMode.Display
         ///     Hides this textdraw for the given <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player to hide this textdraw from.</param>
-        public virtual void Hide(GtaPlayer player)
+        public virtual void Hide(BasePlayer player)
         {
             AssertNotDisposed();
 

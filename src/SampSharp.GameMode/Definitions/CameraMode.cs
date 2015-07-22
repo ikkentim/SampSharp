@@ -51,7 +51,7 @@ namespace SampSharp.GameMode.Definitions
         RocketLauncherAiming = 8,
 
         /// <summary>
-        ///     Camera is set to a fixed point (e.g. after setting <see cref="GtaPlayer.CameraPosition" />)
+        ///     Camera is set to a fixed point (e.g. after setting <see cref="BasePlayer.CameraPosition" />)
         /// </summary>
         Fixed = 15,
 

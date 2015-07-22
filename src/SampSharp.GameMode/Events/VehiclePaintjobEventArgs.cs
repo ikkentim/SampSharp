@@ -18,7 +18,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.VehiclePaintjobApplied" /> or <see cref="GtaVehicle.PaintjobApplied" />
+    ///     Provides data for the <see cref="BaseMode.VehiclePaintjobApplied" /> or <see cref="BaseVehicle.PaintjobApplied" />
     ///     event.
     /// </summary>
     public class VehiclePaintjobEventArgs : PlayerEventArgs
@@ -28,7 +28,7 @@ namespace SampSharp.GameMode.Events
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="paintjobId">The paintjob identifier.</param>
-        public VehiclePaintjobEventArgs(GtaPlayer player, int paintjobId)
+        public VehiclePaintjobEventArgs(BasePlayer player, int paintjobId)
             : base(player)
         {
             PaintjobId = paintjobId;

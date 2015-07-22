@@ -26,14 +26,14 @@ namespace SampSharp.GameMode.SAMP
     /// </summary>
     public partial class PVarCollection : IEnumerable<object>
     {
-        private readonly GtaPlayer _player;
+        private readonly BasePlayer _player;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="PVarCollection" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public PVarCollection(GtaPlayer player)
+        public PVarCollection(BasePlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException("player");

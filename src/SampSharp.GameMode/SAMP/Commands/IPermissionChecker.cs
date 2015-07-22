@@ -39,6 +39,6 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// </summary>
         /// <param name="player">The player that has tried to execute the command</param>
         /// <returns>Return true if the player passed as argument is allowed to use the command, False otherwise.</returns>
-        bool Check(GtaPlayer player);
+        bool Check(BasePlayer player);
     }
 }
