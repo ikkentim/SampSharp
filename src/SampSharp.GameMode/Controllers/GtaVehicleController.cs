@@ -116,7 +116,7 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="serviceContainer">The service container.</param>
         public virtual void RegisterServices(BaseMode gameMode, GameModeServiceContainer serviceContainer)
         {
-            serviceContainer.AddService<IVehicleFactory>(new GtaVehicleFactory(gameMode));
+            serviceContainer.AddService<IVehicleFactory>(new BaseVehicleFactory(gameMode));
         }
 
         /// <summary>

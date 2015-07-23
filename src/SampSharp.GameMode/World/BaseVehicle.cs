@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SampSharp.GameMode.API;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Factories;
@@ -28,7 +27,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a SA-MP vehicle.
     /// </summary>
-    public partial class BaseVehicle : IdentifiedPool<BaseVehicle>, IIdentifiable, IWorldObject
+    public partial class BaseVehicle : IdentifiedPool<BaseVehicle>, IWorldObject
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -39,18 +38,6 @@ namespace SampSharp.GameMode.World
         ///     Maximum number of vehicles which can exist.
         /// </summary>
         public const int Max = 2000;
-
-        #region Constructors
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="BaseVehicle" /> class.
-        /// </summary>
-        public BaseVehicle()
-        {
-            Id = InvalidId;
-        }
-
-        #endregion
 
         #region Overrides of Object
 
@@ -101,15 +88,6 @@ namespace SampSharp.GameMode.World
         {
             get { return Internal.GetVehiclePoolSize(); }
         }
-
-        #endregion
-
-        #region Implementation of IIdentifiable
-
-        /// <summary>
-        /// Gets the identity of this instance.
-        /// </summary>
-        public int Id { get; private set; }
 
         #endregion
 

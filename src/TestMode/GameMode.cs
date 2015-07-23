@@ -76,11 +76,12 @@ namespace TestMode
             new CharsetTest(),
             new VehicleInfoTest(),
             new NativesTest(),
-//            new MapAndreasTest(),
+            new MapAndreasTest(),
             new KeyHandlerTest(),
             new ExtensionTest(),
             new ActorTest(),
-            new ServicesTest()
+            new ServicesTest(),
+            new PoolTest()
         };
 
         #endregion

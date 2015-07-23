@@ -22,7 +22,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a 3d text label.
     /// </summary>
-    public partial class TextLabel : IdentifiedPool<TextLabel>, IIdentifiable
+    public partial class TextLabel : IdentifiedPool<TextLabel>
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -133,11 +133,6 @@ namespace SampSharp.GameMode.World
                     VirtualWorld, TestLOS);
             }
         }
-
-        /// <summary>
-        ///     Gets the Identity of this <see cref="TextLabel" />.
-        /// </summary>
-        public virtual int Id { get; private set; }
 
         #endregion
 

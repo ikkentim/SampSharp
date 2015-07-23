@@ -22,7 +22,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a SA-MP actor.
     /// </summary>
-    public partial class Actor : IdentifiedPool<Actor>, IIdentifiable, IWorldObject
+    public partial class Actor : IdentifiedPool<Actor>, IWorldObject
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -33,14 +33,6 @@ namespace SampSharp.GameMode.World
         ///     Maximum number of actors which can exist.
         /// </summary>
         public const int Max = 1000;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Actor" /> class.
-        /// </summary>
-        public Actor()
-        {
-            Id = InvalidId;
-        }
 
         /// <summary>
         ///     Gets the facing angle of this <see cref="Actor" />.
@@ -138,15 +130,6 @@ namespace SampSharp.GameMode.World
             get { return Internal.GetActorPoolSize(); }
         }
 
-        #region Implementation of IIdentifiable
-
-        /// <summary>
-        ///     Gets the Identity of this <see cref="Actor" />.
-        /// </summary>
-        public int Id { get; private set; }
-
-        #endregion
-
         #region Implementation of IWorldObject
 
         /// <summary>
@@ -235,8 +218,8 @@ namespace SampSharp.GameMode.World
         public void ApplyAnimation(string library, string name, float fDelta, bool loop, bool lockx, bool locky,
             bool freeze, int time)
         {
-            if (library == null) throw new ArgumentNullException("animlib");
-            if (name == null) throw new ArgumentNullException("animname");
+            if (library == null) throw new ArgumentNullException("library");
+            if (name == null) throw new ArgumentNullException("name");
 
             AssertNotDisposed();
 

@@ -22,7 +22,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a SA-MP pickup.
     /// </summary>
-    public partial class Pickup : IdentifiedPool<Pickup>, IIdentifiable, IWorldObject
+    public partial class Pickup : IdentifiedPool<Pickup>, IWorldObject
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -33,14 +33,6 @@ namespace SampSharp.GameMode.World
         ///     Maximum number of pickups which can exist.
         /// </summary>
         public const int Max = 4096;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Pickup" /> class.
-        /// </summary>
-        public Pickup()
-        {
-            Id = InvalidId;
-        }
 
         /// <summary>
         ///     Occurs when the <see cref="OnPickUp" /> is being called.
@@ -141,11 +133,6 @@ namespace SampSharp.GameMode.World
         ///     Gets the type of this <see cref="Pickup" />.
         /// </summary>
         public int SpawnType { get; private set; }
-
-        /// <summary>
-        ///     Gets the id of this <see cref="Pickup" />.
-        /// </summary>
-        public int Id { get; private set; }
 
         /// <summary>
         ///     Gets the position of this <see cref="Pickup" />.

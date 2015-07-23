@@ -26,7 +26,7 @@ namespace SampSharp.GameMode.Display
     /// <summary>
     ///     Represents a textdraw.
     /// </summary>
-    public partial class TextDraw : IdentifiedPool<TextDraw>, IIdentifiable
+    public partial class TextDraw : IdentifiedPool<TextDraw>
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -97,7 +97,6 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public TextDraw()
         {
-            Id = -1;
             IsApplyFixes = true;
             Text = "_";
         }
@@ -458,11 +457,6 @@ namespace SampSharp.GameMode.Display
                 UpdateClients();
             }
         }
-
-        /// <summary>
-        ///     Gets the id of this textdraw.
-        /// </summary>
-        public virtual int Id { get; protected set; }
 
         #endregion
 

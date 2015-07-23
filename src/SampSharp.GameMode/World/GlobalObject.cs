@@ -24,7 +24,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a global object
     /// </summary>
-    public partial class GlobalObject : IdentifiedPool<GlobalObject>, IGameObject, IIdentifiable
+    public partial class GlobalObject : IdentifiedPool<GlobalObject>, IGameObject
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -99,11 +99,6 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual float DrawDistance { get; private set; }
 
-        /// <summary>
-        ///     Gets the Identity of this instance.
-        /// </summary>
-        public virtual int Id { get; private set; }
-
         #endregion
 
         #region Events
@@ -135,8 +130,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public GlobalObject()
         {
-            Id = InvalidId;
         }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="GlobalObject" /> class.
         /// </summary>

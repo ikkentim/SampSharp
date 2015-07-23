@@ -26,7 +26,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a SA-MP player.
     /// </summary>
-    public partial class BasePlayer : IdentifiedPool<BasePlayer>, IIdentifiable, IWorldObject
+    public partial class BasePlayer : IdentifiedPool<BasePlayer>, IWorldObject
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -89,8 +89,6 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public BasePlayer()
         {
-            //Fill properties
-            Id = InvalidId;
             PVars = new PVarCollection(this);
             Key = new KeyChangeHandlerSet();
         }
@@ -121,11 +119,6 @@ namespace SampSharp.GameMode.World
         {
             get { return Internal.GetPlayerPoolSize(); }
         }
-
-        /// <summary>
-        ///     Gets the ID of this Player.
-        /// </summary>
-        public int Id { get; private set; }
 
         #endregion
 

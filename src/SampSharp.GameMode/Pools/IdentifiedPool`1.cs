@@ -14,8 +14,9 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Pools
@@ -24,14 +25,95 @@ namespace SampSharp.GameMode.Pools
     ///     Keeps track of a pool of identifyable instances.
     /// </summary>
     /// <typeparam name="TInstance">Base type of instances to keep track of.</typeparam>
-    public abstract class IdentifiedPool<TInstance> : Pool<TInstance> where TInstance : class, IIdentifiable
+    public abstract class IdentifiedPool<TInstance> : Disposable, IIdentifiable
+        where TInstance : IdentifiedPool<TInstance>
     {
+        private const int UnpooledId = -1;
+
+        private static readonly List<TInstance> UnpooledInstances = new List<TInstance>();
+        private static readonly Dictionary<int, TInstance> Instances = new Dictionary<int, TInstance>();
+        private int _id;
+
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="IdentifiedPool{TInstance}" /> class.
+        /// </summary>
+        protected IdentifiedPool()
+        {
+            _id = UnpooledId;
+        }
+
         /// <summary>
         ///     The type to initialize when adding an instance to this pool by id.
         /// </summary>
         protected static Type InstanceType { get; private set; }
 
-        private static PropertyInfo _idProperty;
+        /// <summary>
+        ///     Gets a collection containing all instances.
+        /// </summary>
+        public static IEnumerable<TInstance> All
+        {
+            get { return Instances.Values.Concat(UnpooledInstances); }
+        }
+
+        /// <summary>
+        ///     Gets the identifier of this instance.
+        /// </summary>
+        public int Id
+        {
+            get { return _id; }
+            protected set
+            {
+                if (_id == value) return;
+
+                if (_id == UnpooledId)
+                    UnpooledInstances.Remove((TInstance) this);
+                else
+                    Instances.Remove(_id);
+
+                if (value == UnpooledId)
+                    UnpooledInstances.Add((TInstance) this);
+                else
+                    Instances.Add(value, (TInstance) this);
+
+                _id = value;
+            }
+        }
+
+        /// <summary>
+        ///     Removes this instance from the pool.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (Id == UnpooledId)
+                UnpooledInstances.Remove((TInstance) this);
+            else
+                Instances.Remove(Id);
+        }
+
+        /// <summary>
+        ///     Gets whether the given instance is present in the pool.
+        /// </summary>
+        /// <param name="item">The instance to check the presence of.</param>
+        /// <returns>Whether the given instance is present in the pool.</returns>
+        public static bool Contains(TInstance item)
+        {
+            if (item == null)
+                return false;
+
+            return item.Id == UnpooledId ? UnpooledInstances.Contains(item) : Instances.ContainsKey(item.Id);
+        }
+
+        /// <summary>
+        ///     Gets a <see cref="IReadOnlyCollection{T}" /> containing all instances of the given type within this
+        ///     <see cref="Pool{T}" />.
+        /// </summary>
+        /// <typeparam name="T2">The <see cref="Type" /> of instances to get.</typeparam>
+        /// <returns>All instances of the given type within this <see cref="Pool{T}" />.</returns>
+        public static IEnumerable<T2> GetAll<T2>()
+        {
+            return All.OfType<T2>();
+        }
 
         /// <summary>
         ///     Registers the type to use when initializing new instances.
@@ -39,14 +121,22 @@ namespace SampSharp.GameMode.Pools
         /// <typeparam name="TRegister">The <see cref="Type" /> to use when initializing new instances.</typeparam>
         public static void Register<TRegister>() where TRegister : TInstance
         {
-            InstanceType = typeof (TRegister);
+            Register(typeof (TRegister));
+        }
 
-            var idProperty = InstanceType.GetProperty("Id");
+        /// <summary>
+        ///     Registers the type to use when initializing new instances.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown if type is null</exception>
+        /// <exception cref="System.ArgumentException">type must be of type TInstance;type</exception>
+        public static void Register(Type type)
+        {
+            if (type == null) throw new ArgumentNullException("type");
+            if (!typeof (TInstance).IsAssignableFrom(type))
+                throw new ArgumentException("type must be of type " + typeof (TInstance), "type");
 
-            if(idProperty == null)
-                throw new Exception("The specified type has no Id property");
-
-            _idProperty = idProperty;
+            InstanceType = type;
         }
 
         /// <summary>
@@ -56,7 +146,11 @@ namespace SampSharp.GameMode.Pools
         /// <returns>The found instance.</returns>
         public static TInstance Find(int id)
         {
-            return All.FirstOrDefault(i => i.Id == id);
+            if (id == UnpooledId)
+                return UnpooledInstances.FirstOrDefault();
+
+            TInstance instance;
+            return Instances.TryGetValue(id, out instance) ? instance : null;
         }
 
         /// <summary>
@@ -67,7 +161,7 @@ namespace SampSharp.GameMode.Pools
         public static TInstance Create(int id)
         {
             var instance = (TInstance) Activator.CreateInstance(InstanceType);
-            _idProperty.SetValue(instance, id);
+            instance.Id = id;
             return instance;
         }
 

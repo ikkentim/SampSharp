@@ -115,8 +115,10 @@
     <Compile Include="Events\PlayerUpdateEventArgs.cs" />
     <Compile Include="Events\TrailerEventArgs.cs" />
     <Compile Include="Factories\IVehicleFactory.cs" />
-    <Compile Include="Factories\GtaVehicleFactory.cs" />
-    <Compile Include="Factories\VehicleFactory.Internal.cs" />
+    <Compile Include="Factories\BaseVehicleFactory.cs" />
+    <Compile Include="Factories\BaseVehicleFactory.Internal.cs">
+      <DependentUpon>BaseVehicleFactory.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrameworkConfiguration.cs" />
     <Compile Include="FrameworkLog.cs" />
     <Compile Include="FrameworkMessageLevel.cs" />

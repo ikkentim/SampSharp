@@ -17,7 +17,7 @@ using SampSharp.GameMode.API;
 
 namespace SampSharp.GameMode.Factories
 {
-    public partial class GtaVehicleFactory
+    public partial class BaseVehicleFactory
     {
         private static class Internal
         {

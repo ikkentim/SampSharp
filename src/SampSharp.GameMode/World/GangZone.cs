@@ -22,7 +22,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a gang zone.
     /// </summary>
-    public partial class GangZone : IdentifiedPool<GangZone>, IIdentifiable
+    public partial class GangZone : IdentifiedPool<GangZone>
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -75,11 +75,6 @@ namespace SampSharp.GameMode.World
         ///     Gets or sets the color of this <see cref="GangZone" />.
         /// </summary>
         public virtual Color Color { get; set; }
-
-        /// <summary>
-        ///     Gets the Identity of this <see cref="GangZone" />.
-        /// </summary>
-        public virtual int Id { get; private set; }
 
         /// <summary>
         ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.

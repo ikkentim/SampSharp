@@ -22,13 +22,13 @@ namespace SampSharp.GameMode.Factories
     /// <summary>
     ///     Represents the default vehicle factory.
     /// </summary>
-    public partial class GtaVehicleFactory : IVehicleFactory
+    public partial class BaseVehicleFactory : IVehicleFactory
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GtaVehicleFactory" /> class.
+        ///     Initializes a new instance of the <see cref="BaseVehicleFactory" /> class.
         /// </summary>
         /// <param name="gameMode">The game mode.</param>
-        public GtaVehicleFactory(BaseMode gameMode)
+        public BaseVehicleFactory(BaseMode gameMode)
         {
             GameMode = gameMode;
         }
