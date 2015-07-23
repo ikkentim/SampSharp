@@ -28,10 +28,7 @@ namespace SampSharp.GameMode.Pools
     public abstract class IdentifiedPool<TInstance> : Disposable, IIdentifiable
         where TInstance : IdentifiedPool<TInstance>
     {
-        private const int UnpooledId = -1;
-
-        private static readonly List<TInstance> UnpooledInstances = new List<TInstance>();
-        private static readonly Dictionary<int, TInstance> Instances = new Dictionary<int, TInstance>();
+        private static readonly PoolContainer<TInstance> Container = new PoolContainer<TInstance>();
         private int _id;
 
 
@@ -40,7 +37,8 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         protected IdentifiedPool()
         {
-            _id = UnpooledId;
+            _id = PoolContainer<TInstance>.UnidentifiedId;
+            Container.Add(_id, (TInstance)this);
         }
 
         /// <summary>
@@ -53,7 +51,7 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         public static IEnumerable<TInstance> All
         {
-            get { return Instances.Values.Concat(UnpooledInstances); }
+            get { return Container; }
         }
 
         /// <summary>
@@ -64,18 +62,10 @@ namespace SampSharp.GameMode.Pools
             get { return _id; }
             protected set
             {
-                if (_id == value) return;
-
-                if (_id == UnpooledId)
-                    UnpooledInstances.Remove((TInstance) this);
+                if (_id == PoolContainer<TInstance>.UnidentifiedId)
+                    Container.MoveUnidentified((TInstance) this, value);
                 else
-                    Instances.Remove(_id);
-
-                if (value == UnpooledId)
-                    UnpooledInstances.Add((TInstance) this);
-                else
-                    Instances.Add(value, (TInstance) this);
-
+                    Container.Move(_id, value);
                 _id = value;
             }
         }
@@ -85,10 +75,10 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         protected override void Dispose(bool disposing)
         {
-            if (Id == UnpooledId)
-                UnpooledInstances.Remove((TInstance) this);
+            if (_id == PoolContainer<TInstance>.UnidentifiedId)
+                Container.RemoveUnidentified((TInstance) this);
             else
-                Instances.Remove(Id);
+                Container.Remove(_id);
         }
 
         /// <summary>
@@ -98,10 +88,9 @@ namespace SampSharp.GameMode.Pools
         /// <returns>Whether the given instance is present in the pool.</returns>
         public static bool Contains(TInstance item)
         {
-            if (item == null)
-                return false;
-
-            return item.Id == UnpooledId ? UnpooledInstances.Contains(item) : Instances.ContainsKey(item.Id);
+            return item.Id == PoolContainer<TInstance>.UnidentifiedId
+                ? Container.ContainsUnidentified(item)
+                : Container.Contains(item.Id);
         }
 
         /// <summary>
@@ -146,11 +135,7 @@ namespace SampSharp.GameMode.Pools
         /// <returns>The found instance.</returns>
         public static TInstance Find(int id)
         {
-            if (id == UnpooledId)
-                return UnpooledInstances.FirstOrDefault();
-
-            TInstance instance;
-            return Instances.TryGetValue(id, out instance) ? instance : null;
+            return Container.Get(id);
         }
 
         /// <summary>
@@ -160,7 +145,7 @@ namespace SampSharp.GameMode.Pools
         /// <returns>The initialized instance.</returns>
         public static TInstance Create(int id)
         {
-            var instance = (TInstance) Activator.CreateInstance(InstanceType);
+            var instance = (TInstance)Activator.CreateInstance(InstanceType);
             instance.Id = id;
             return instance;
         }

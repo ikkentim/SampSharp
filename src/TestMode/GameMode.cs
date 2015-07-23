@@ -76,7 +76,7 @@ namespace TestMode
             new CharsetTest(),
             new VehicleInfoTest(),
             new NativesTest(),
-            new MapAndreasTest(),
+//            new MapAndreasTest(),
             new KeyHandlerTest(),
             new ExtensionTest(),
             new ActorTest(),

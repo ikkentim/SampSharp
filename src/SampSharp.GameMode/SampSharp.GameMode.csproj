@@ -127,6 +127,7 @@
     <Compile Include="IService.cs" />
     <Compile Include="API\Native.cs" />
     <Compile Include="API\NativeAttribute.cs" />
+    <Compile Include="Pools\PoolContainer`1.cs" />
     <Compile Include="SAMP\Commands\CommandGroup.cs" />
     <Compile Include="SAMP\Commands\CommandGroupAttribute.cs" />
     <Compile Include="SAMP\Commands\DetectedCommand.cs" />
