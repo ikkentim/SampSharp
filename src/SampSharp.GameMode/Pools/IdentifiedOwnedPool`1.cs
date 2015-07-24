@@ -14,8 +14,9 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Pools
@@ -25,78 +26,213 @@ namespace SampSharp.GameMode.Pools
     /// </summary>
     /// <typeparam name="TInstance">Base type of instances to keep track of.</typeparam>
     /// <typeparam name="TOwner">Base type of the owner</typeparam>
-    public abstract class IdentifiedOwnedPool<TInstance, TOwner> : Pool<TInstance>
-        where TInstance : class, IIdentifiable, IOwnable<TOwner> where TOwner : IdentifiedPool<TOwner>, IIdentifiable
+    public abstract class IdentifiedOwnedPool<TInstance, TOwner> : Disposable, IIdentifiable, IOwnable<TOwner>
+        where TInstance : IdentifiedOwnedPool<TInstance, TOwner>
+        where TOwner : class, IIdentifiable
     {
+        private static readonly PoolContainer<TInstance> UnownedContainer = new PoolContainer<TInstance>();
+        private static readonly Dictionary<TOwner, PoolContainer<TInstance>> Containers =
+            new Dictionary<TOwner, PoolContainer<TInstance>>();
+
+        private int _id;
+        private TOwner _owner;
+
+        private static PoolContainer<TInstance> GetPool(TOwner owner, bool createIfNotExists=true)
+        {
+            if (owner == null) return UnownedContainer;
+
+            PoolContainer<TInstance> pool;
+            if (!Containers.TryGetValue(owner, out pool) && createIfNotExists)
+                pool = Containers[owner] = new PoolContainer<TInstance>();
+
+            return pool;
+        }
+
         /// <summary>
         ///     The type to initialize when adding an instance to this pool by id.
         /// </summary>
         protected static Type InstanceType { get; private set; }
 
-        private static PropertyInfo _idProperty;
-        private static PropertyInfo _ownerProperty;
+        protected IdentifiedOwnedPool()
+        {
+            _id = PoolContainer<TInstance>.UnidentifiedId;
+            UnownedContainer.Add(_id, (TInstance) this);
+        }
+
+        /// <summary>
+        ///     Gets a collection containing all instances.
+        /// </summary>
+        public static IEnumerable<TInstance> All
+        {
+            get
+            {
+                return
+                    Containers.Skip(1)
+                        .Aggregate((IEnumerable<TInstance>) Containers.Values.FirstOrDefault(),
+                            (a, b) => a.Concat(b.Value));
+            }
+        }
+
+        /// <summary>
+        ///     Gets the identifier of this instance.
+        /// </summary>
+        public int Id
+        {
+            get { return _id; }
+            protected set
+            {
+                var pool = GetPool(Owner);
+                if (_id == PoolContainer<TInstance>.UnidentifiedId)
+                    pool.MoveUnidentified((TInstance)this, value);
+                else
+                    pool.Move(_id, value);
+
+                _id = value;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the owner of this instance.
+        /// </summary>
+        public TOwner Owner
+        {
+            get { return _owner; }
+            protected set
+            {
+                if (_owner == value)
+                    return;
+
+                if (_owner == null)
+                {
+                    if (_id == PoolContainer<TInstance>.UnidentifiedId)
+                        UnownedContainer.RemoveUnidentified((TInstance) this);
+                    else
+                        UnownedContainer.Remove(_id);
+                }
+                else
+                {
+                    if (_id == PoolContainer<TInstance>.UnidentifiedId)
+                        Containers[_owner].RemoveUnidentified((TInstance)this);
+                    else
+                        Containers[_owner].Remove(_id);
+
+                    if (!Containers[_owner].Any())
+                        Containers.Remove(_owner);
+                }
+
+                GetPool(value).Add(_id, (TInstance) this);
+
+                _owner = value;
+            }
+        }
+
+        /// <summary>
+        ///     Removes this instance from the pool.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            var pool = GetPool(_owner, false);
+
+            if (pool == null) return;
+            if (_id == PoolContainer<TInstance>.UnidentifiedId)
+                pool.RemoveUnidentified((TInstance)this);
+            else
+                pool.Remove(_id);
+        }
+
+        /// <summary>
+        ///     Gets whether the given instance is present in the pool.
+        /// </summary>
+        /// <param name="item">The instance to check the presence of.</param>
+        /// <returns>Whether the given instance is present in the pool.</returns>
+        public static bool Contains(TInstance item)
+        {
+            if (item == null) return false;
+
+            var pool = GetPool(item.Owner, false);
+            if (pool == null) return false;
+
+            return item.Id == PoolContainer<TInstance>.UnidentifiedId
+                ? pool.ContainsUnidentified(item)
+                : pool.Contains(item.Id);
+        }
+
+        /// <summary>
+        ///     Gets a <see cref="IReadOnlyCollection{T}" /> containing all instances of the given type within this
+        ///     <see cref="Pool{T}" />.
+        /// </summary>
+        /// <typeparam name="T2">The <see cref="Type" /> of instances to get.</typeparam>
+        /// <returns>All instances of the given type within this <see cref="Pool{T}" />.</returns>
+        public static IEnumerable<T2> GetAll<T2>()
+        {
+            return All.OfType<T2>();
+        }
 
         /// <summary>
         ///     Registers the type to use when initializing new instances.
         /// </summary>
-        /// <typeparam name="TRegister">The Type to use when initializing new instances.</typeparam>
-        public static void Register<TRegister>()
+        /// <typeparam name="TRegister">The <see cref="Type" /> to use when initializing new instances.</typeparam>
+        public static void Register<TRegister>() where TRegister : TInstance
         {
-            InstanceType = typeof(TRegister);
-
-            var idProperty = InstanceType.GetProperty("Id");
-            var ownerProperty = InstanceType.GetProperty("Owner");
-
-            if (idProperty == null)
-                throw new Exception("The specified type has no Id property");
-
-            if (ownerProperty == null)
-                throw new Exception("The specified type has no Owner property");
-
-            _idProperty = idProperty;
-            _ownerProperty = ownerProperty;
+            Register(typeof(TRegister));
         }
 
         /// <summary>
-        ///     Finds an instance with the given <paramref name="owner" /> and <paramref name="id" />".
+        ///     Registers the type to use when initializing new instances.
         /// </summary>
-        /// <param name="owner">The owner of the instance to find.</param>
+        /// <param name="type">The type.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown if type is null</exception>
+        /// <exception cref="System.ArgumentException">type must be of type TInstance;type</exception>
+        public static void Register(Type type)
+        {
+            if (type == null) throw new ArgumentNullException("type");
+            if (!typeof(TInstance).IsAssignableFrom(type))
+                throw new ArgumentException("type must be of type " + typeof(TInstance), "type");
+
+            InstanceType = type;
+        }
+
+        /// <summary>
+        ///     Finds an instance with the given <paramref name="id" />".
+        /// </summary>
+        /// <param name="owner">The owner of the isntance to find.</param>
         /// <param name="id">The identity of the instance to find.</param>
         /// <returns>The found instance.</returns>
         public static TInstance Find(TOwner owner, int id)
         {
-            if (owner == null)
-                throw new ArgumentNullException("owner");
-
-            return All.FirstOrDefault(i => i.Owner == owner && i.Id == id);
+            var pool = GetPool(owner, false);
+            return pool == null ? null : pool.Get(id);
         }
 
         /// <summary>
-        ///     Initializes a new instance with the given <paramref name="owner" /> and <paramref name="id" />.
+        /// Initializes a new instance with the given id.
         /// </summary>
         /// <param name="owner">The owner of the instance to create.</param>
         /// <param name="id">The identity of the instance to create.</param>
-        /// <returns>The initialized instance.</returns>
-        public static TInstance Add(TOwner owner, int id)
+        /// <returns>
+        /// The initialized instance.
+        /// </returns>
+        public static TInstance Create(TOwner owner, int id)
         {
-            if (owner == null)
-                throw new ArgumentNullException("owner");
-
             var instance = (TInstance)Activator.CreateInstance(InstanceType);
-            _ownerProperty.SetValue(instance, owner);
-            _idProperty.SetValue(instance, id);
+            instance.Owner = owner;
+            instance.Id = id;
             return instance;
         }
 
         /// <summary>
-        ///     Finds an instance with the given <paramref name="owner" /> and <paramref name="id" /> or initializes a new one.
+        /// Finds an instance with the given <paramref name="id" /> or initializes a new one.
         /// </summary>
-        /// <param name="owner">The owner of the instance to find or create.</param>
+        /// <param name="owner">The owner of the isntance to find or create.</param>
         /// <param name="id">The identity of the instance to find or create.</param>
-        /// <returns>The found instance.</returns>
+        /// <returns>
+        /// The found instance.
+        /// </returns>
         public static TInstance FindOrCreate(TOwner owner, int id)
         {
-            return Find(owner, id) ?? Add(owner, id);
+            return Find(owner, id) ?? Create(owner, id);
         }
+
     }
+
 }

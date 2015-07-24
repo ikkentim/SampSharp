@@ -38,7 +38,7 @@ namespace SampSharp.GameMode.Pools
         protected IdentifiedPool()
         {
             _id = PoolContainer<TInstance>.UnidentifiedId;
-            Container.Add(_id, (TInstance)this);
+            Container.Add(_id, (TInstance) this);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace SampSharp.GameMode.Pools
             protected set
             {
                 if (_id == PoolContainer<TInstance>.UnidentifiedId)
-                    Container.MoveUnidentified((TInstance) this, value);
+                    Container.MoveUnidentified((TInstance)this, value);
                 else
                     Container.Move(_id, value);
                 _id = value;
@@ -88,6 +88,7 @@ namespace SampSharp.GameMode.Pools
         /// <returns>Whether the given instance is present in the pool.</returns>
         public static bool Contains(TInstance item)
         {
+            if (item == null) return false;
             return item.Id == PoolContainer<TInstance>.UnidentifiedId
                 ? Container.ContainsUnidentified(item)
                 : Container.Contains(item.Id);
@@ -145,7 +146,7 @@ namespace SampSharp.GameMode.Pools
         /// <returns>The initialized instance.</returns>
         public static TInstance Create(int id)
         {
-            var instance = (TInstance)Activator.CreateInstance(InstanceType);
+            var instance = (TInstance) Activator.CreateInstance(InstanceType);
             instance.Id = id;
             return instance;
         }

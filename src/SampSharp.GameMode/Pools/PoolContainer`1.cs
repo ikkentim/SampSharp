@@ -28,8 +28,16 @@ namespace SampSharp.GameMode.Pools
     {
         public const int UnidentifiedId = -1;
 
-        private readonly Dictionary<int, TInstance> _pooledItems = new Dictionary<int, TInstance>();
-        private readonly List<TInstance> _unpooledItems = new List<TInstance>();
+        private readonly Dictionary<int, TInstance> _identifiedItems = new Dictionary<int, TInstance>();
+        private readonly List<TInstance> _unidentifiedItems = new List<TInstance>();
+
+        /// <summary>
+        ///     Gets the unidentified items.
+        /// </summary>
+        public IEnumerable<TInstance> UnidentifiedItems
+        {
+            get { return _unidentifiedItems.AsReadOnly(); }
+        }
 
         /// <summary>
         ///     Returns an enumerator that iterates through the collection.
@@ -39,7 +47,7 @@ namespace SampSharp.GameMode.Pools
         /// </returns>
         public IEnumerator<TInstance> GetEnumerator()
         {
-            return _pooledItems.Values.Concat(_unpooledItems).GetEnumerator();
+            return _identifiedItems.Values.Concat(_unidentifiedItems).GetEnumerator();
         }
 
         /// <summary>
@@ -62,12 +70,12 @@ namespace SampSharp.GameMode.Pools
         public void Add(int key, TInstance item)
         {
             if (key == UnidentifiedId)
-                _unpooledItems.Add(item);
+                _unidentifiedItems.Add(item);
             else
             {
-                if (_pooledItems.ContainsKey(key)) throw new ArgumentException("duplicate key", "key");
+                if (_identifiedItems.ContainsKey(key)) throw new ArgumentException("duplicate key", "key");
 
-                _pooledItems.Add(key, item);
+                _identifiedItems.Add(key, item);
             }
         }
 
@@ -78,10 +86,10 @@ namespace SampSharp.GameMode.Pools
         /// <returns>The item associated with the specified key</returns>
         public TInstance Get(int key)
         {
-            if (key == UnidentifiedId) return _unpooledItems.FirstOrDefault();
+            if (key == UnidentifiedId) return _unidentifiedItems.FirstOrDefault();
 
             TInstance result;
-            _pooledItems.TryGetValue(key, out result);
+            _identifiedItems.TryGetValue(key, out result);
             return result;
         }
 
@@ -92,7 +100,7 @@ namespace SampSharp.GameMode.Pools
         /// <returns>True on success; False otherwise.</returns>
         public bool Remove(int key)
         {
-            return _pooledItems.Remove(key);
+            return _identifiedItems.Remove(key);
         }
 
         /// <summary>
@@ -104,7 +112,7 @@ namespace SampSharp.GameMode.Pools
         {
             if (item == null) return false;
 
-            return _unpooledItems.Remove(item);
+            return _unidentifiedItems.Remove(item);
         }
 
         /// <summary>
@@ -149,7 +157,7 @@ namespace SampSharp.GameMode.Pools
         /// <returns>True if the specified key exists; False otherwise.</returns>
         public bool Contains(int key)
         {
-            return _pooledItems.ContainsKey(key);
+            return _identifiedItems.ContainsKey(key);
         }
 
         /// <summary>
@@ -159,7 +167,7 @@ namespace SampSharp.GameMode.Pools
         /// <returns>True if the specified unidentified item exists; False otherwise.</returns>
         public bool ContainsUnidentified(TInstance item)
         {
-            return _unpooledItems.Contains(item);
+            return _unidentifiedItems.Contains(item);
         }
     }
 }

@@ -22,8 +22,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a player text label.
     /// </summary>
-    public partial class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel, BasePlayer>, IIdentifiable,
-        IOwnable<BasePlayer>
+    public partial class PlayerTextLabel : IdentifiedOwnedPool<PlayerTextLabel, BasePlayer>
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -175,16 +174,6 @@ namespace SampSharp.GameMode.World
                     AttachedVehicle == null ? BaseVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
             }
         }
-
-        /// <summary>
-        ///     Gets the Identity of this instance.
-        /// </summary>
-        public virtual int Id { get; private set; }
-
-        /// <summary>
-        ///     Gets the owner of this IOwnable.
-        /// </summary>
-        public virtual BasePlayer Owner { get; private set; }
 
         #endregion
 

@@ -24,8 +24,7 @@ namespace SampSharp.GameMode.World
     /// <summary>
     ///     Represents a player-object.
     /// </summary>
-    public partial class PlayerObject : IdentifiedOwnedPool<PlayerObject, BasePlayer>, IGameObject, IOwnable<BasePlayer>,
-        IIdentifiable
+    public partial class PlayerObject : IdentifiedOwnedPool<PlayerObject, BasePlayer>, IGameObject
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -100,16 +99,6 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual float DrawDistance { get; private set; }
 
-        /// <summary>
-        ///     Gets the Identity of this <see cref="IIdentifiable" />.
-        /// </summary>
-        public virtual int Id { get; private set; }
-
-        /// <summary>
-        ///     Gets the owner of this <see cref="PlayerObject" />.
-        /// </summary>
-        public virtual BasePlayer Owner { get; private set; }
-
         #endregion
 
         #region Events
@@ -122,7 +111,7 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnSelected" /> callback is being called.
-        ///     This callback is called when a player selects an object after <see cref="SelectObject" /> has been used.
+        ///     This callback is called when a player selects an object after <see cref="Select" /> has been used.
         /// </summary>
         public event EventHandler<SelectPlayerObjectEventArgs> Selected;
 
@@ -141,8 +130,6 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public PlayerObject()
         {
-            Owner = null;
-            Id = InvalidId;
         }
 
         /// <summary>
@@ -340,7 +327,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Lets the <see cref="Owner" /> of this <see cref="PlayerObject" /> edit this object.
+        ///     Lets the <see cref="IdentifiedOwnedPool{TInstance,TOwner}.Owner" /> of this <see cref="PlayerObject" /> edit this object.
         /// </summary>
         public virtual void Edit()
         {

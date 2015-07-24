@@ -25,8 +25,7 @@ namespace SampSharp.GameMode.Display
     /// <summary>
     ///     Represents a player-textdraw.
     /// </summary>
-    public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePlayer>, IIdentifiable,
-        IOwnable<BasePlayer>
+    public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePlayer>
     {
         /// <summary>
         ///     Identifier indicating the handle is invalid.
@@ -104,7 +103,6 @@ namespace SampSharp.GameMode.Display
             IsApplyFixes = true;
             AutoDestroy = true;
 
-            Id = -1;
             Owner = owner;
             Text = "_";
         }
@@ -121,7 +119,6 @@ namespace SampSharp.GameMode.Display
                 throw new ArgumentNullException("owner");
 
             IsApplyFixes = true;
-            Id = -1;
             Owner = owner;
             Position = position;
             Text = text;
@@ -486,16 +483,6 @@ namespace SampSharp.GameMode.Display
             }
         }
 
-        /// <summary>
-        ///     Gets the textdraw-id of this player-textdraw.
-        /// </summary>
-        public virtual int Id { get; protected set; }
-
-        /// <summary>
-        ///     Gets the owner of this player-textdraw.
-        /// </summary>
-        public virtual BasePlayer Owner { get; protected set; }
-
         #endregion
 
         #region Methods
@@ -514,7 +501,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Displays this player-textdraw to the <see cref="Owner" /> of this textdraw.
+        ///     Displays this player-textdraw to the <see cref="IdentifiedOwnedPool{TInstance,TOwner}.Owner" /> of this textdraw.
         /// </summary>
         public virtual void Show()
         {

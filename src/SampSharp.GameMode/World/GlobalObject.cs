@@ -111,7 +111,7 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnSelected" /> callback is being called.
-        ///     This callback is called when a player selects an object after <see cref="SelectObject" /> has been used.
+        ///     This callback is called when a player selects an object after <see cref="Select" /> has been used.
         /// </summary>
         public event EventHandler<SelectGlobalObjectEventArgs> Selected;
 
