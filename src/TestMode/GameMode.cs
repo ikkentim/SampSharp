@@ -81,7 +81,6 @@ namespace TestMode
             new ExtensionTest(),
             new ActorTest(),
             new ServicesTest(),
-            new PoolTest()
         };
 
         #endregion
