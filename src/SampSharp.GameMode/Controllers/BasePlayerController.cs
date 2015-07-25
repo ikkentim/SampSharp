@@ -21,7 +21,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all player actions.
     /// </summary>
-    public class GtaPlayerController : Disposable, IEventListener, ITypeProvider
+    public class BasePlayerController : Disposable, IEventListener, ITypeProvider
     {
         /// <summary>
         ///     Registers the events this PlayerController wants to listen to.

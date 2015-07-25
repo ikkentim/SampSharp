@@ -22,7 +22,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all vehicle actions.
     /// </summary>
-    public class GtaVehicleController : Disposable, IEventListener, ITypeProvider, IGameServiceProvider
+    public class BaseVehicleController : Disposable, IEventListener, ITypeProvider, IGameServiceProvider
     {
         /// <summary>
         ///     Registers the events this VehicleController wants to listen to.

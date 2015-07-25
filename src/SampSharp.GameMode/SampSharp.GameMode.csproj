@@ -71,13 +71,13 @@
     <Compile Include="Controllers\ITypeProvider.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PickupController.cs" />
-    <Compile Include="Controllers\GtaPlayerController.cs" />
+    <Compile Include="Controllers\BasePlayerController.cs" />
     <Compile Include="Controllers\PlayerObjectController.cs" />
     <Compile Include="Controllers\PlayerTextDrawController.cs" />
     <Compile Include="Controllers\SyncController.cs" />
     <Compile Include="Controllers\TextDrawController.cs" />
     <Compile Include="Controllers\TimerController.cs" />
-    <Compile Include="Controllers\GtaVehicleController.cs" />
+    <Compile Include="Controllers\BaseVehicleController.cs" />
     <Compile Include="Definitions\BodyPart.cs" />
     <Compile Include="Definitions\CameraMode.cs" />
     <Compile Include="Definitions\CheckpointType.cs" />

@@ -35,7 +35,7 @@ namespace TestMode
         }
     }
 
-    public class VehicleController : GtaVehicleController
+    public class VehicleController : BaseVehicleController
     {
         public override void RegisterTypes()
         {
@@ -53,7 +53,7 @@ namespace TestMode
         }
     }
 
-    public class PlayerController : GtaPlayerController
+    public class PlayerController : BasePlayerController
     {
         public override void RegisterTypes()
         {
@@ -132,9 +132,9 @@ namespace TestMode
         {
             base.LoadControllers(controllers);
 
-            controllers.Remove<GtaPlayerController>();
+            controllers.Remove<BasePlayerController>();
             controllers.Add(new PlayerController());
-            controllers.Remove<GtaVehicleController>();
+            controllers.Remove<BaseVehicleController>();
             controllers.Add(new VehicleController());
 
             foreach (var test in _tests.OfType<IControllerTest>())
