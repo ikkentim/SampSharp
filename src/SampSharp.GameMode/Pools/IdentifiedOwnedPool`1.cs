@@ -53,6 +53,9 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         protected static Type InstanceType { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IdentifiedOwnedPool{TInstance, TOwner}"/> class.
+        /// </summary>
         protected IdentifiedOwnedPool()
         {
             _id = PoolContainer<TInstance>.UnidentifiedId;

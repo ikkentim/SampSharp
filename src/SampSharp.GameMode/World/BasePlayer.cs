@@ -710,8 +710,8 @@ namespace SampSharp.GameMode.World
         ///     This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
-        ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as using
-        ///     <see cref="SetPlayerPos" />.
+        ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as setting
+        ///     <see cref="Position" />.
         /// </remarks>
         public event EventHandler<PlayerVehicleEventArgs> ExitVehicle;
 
@@ -720,8 +720,8 @@ namespace SampSharp.GameMode.World
         ///     This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
-        ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as using
-        ///     <see cref="SetPlayerPos" />.
+        ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as setting
+        ///     <see cref="Position" />.
         /// </remarks>
         public event EventHandler<StateEventArgs> StateChanged;
 
@@ -936,9 +936,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     This function can be used to change the spawn information of a specific player. It allows you to automatically set
         ///     someone's spawn weapons, their team, skin and spawn position, normally used in case of mini games or
-        ///     automatic-spawn
-        ///     systems. This function is more crash-safe then using <see cref="SetPlayerSkin" /> in
-        ///     <see cref="OnSpawned" /> and/or <see cref="OnRequestClass" />.
+        ///     automatic-spawn systems.
         /// </summary>
         /// <param name="team">The Team-ID of the chosen player.</param>
         /// <param name="skin">The skin which the player will spawn with.</param>

@@ -158,7 +158,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Raises the <see cref="IDialog.Response" /> event.
+        ///     Raises the <see cref="Response" /> event.
         /// </summary>
         /// <param name="e">An <see cref="DialogResponseEventArgs" /> that contains the event data. </param>
         public void OnResponse(DialogResponseEventArgs e)

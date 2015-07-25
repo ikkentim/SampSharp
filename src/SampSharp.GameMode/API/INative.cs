@@ -17,6 +17,9 @@ using System;
 
 namespace SampSharp.GameMode.API
 {
+    /// <summary>
+    ///     Contains the definition of a native.
+    /// </summary>
     public interface INative
     {
         /// <summary>

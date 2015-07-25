@@ -1673,6 +1673,13 @@ namespace SampSharp.GameMode.SAMP
 
         #region Equality members
 
+        /// <summary>
+        ///     Indicates whether this instance and a specified object are equal.
+        /// </summary>
+        /// <returns>
+        ///     true if <paramref name="other" /> and this instance represent the same value; otherwise, false.
+        /// </returns>
+        /// <param name="other">Another object to compare to. </param>
         public bool Equals(Color other)
         {
             return R == other.R && G == other.G && B == other.B && A == other.A;

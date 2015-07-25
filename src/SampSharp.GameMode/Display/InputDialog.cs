@@ -18,6 +18,9 @@ using SampSharp.GameMode.Definitions;
 
 namespace SampSharp.GameMode.Display
 {
+    /// <summary>
+    ///     Represents an input dialog.
+    /// </summary>
     public class InputDialog : Dialog
     {
         private string _message;

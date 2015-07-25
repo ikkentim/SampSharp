@@ -17,21 +17,54 @@ using System;
 
 namespace SampSharp.GameMode.API
 {
+    /// <summary>
+    ///     Specifies information about a native function. This class cannot be inherited.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    public class NativeAttribute : Attribute
+    public sealed class NativeAttribute : Attribute
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="NativeAttribute" /> class.
+        /// </summary>
+        /// <param name="name">The name of the native function.</param>
+        /// <remarks>
+        ///     The <see cref="Lengths" /> array is automatically generated based on the indices of the array string reference
+        ///     arguments + 1.
+        /// </remarks>
         public NativeAttribute(string name) : this(name, null)
         {
         }
 
-        public NativeAttribute(string name, params int[] sizes)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="NativeAttribute" /> class.
+        /// </summary>
+        /// <param name="name">The name of the native function.</param>
+        /// <param name="lengths">
+        ///     The indexes of the arguments which specify the length of the array and string reference arguments
+        ///     of the native function.
+        /// </param>
+        /// <remarks>
+        ///     Specifying a negative length index indicates that the length is always the negation of the specified length, e.g.
+        ///     -100 specifies a static length of 100 cells.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException">name</exception>
+        public NativeAttribute(string name, params int[] lengths)
         {
             if (name == null) throw new ArgumentNullException("name");
             Name = name;
-            Sizes = sizes;
+            Lengths = lengths;
         }
 
+        /// <summary>
+        ///     Gets the name of the native function.
+        /// </summary>
         public string Name { get; private set; }
-        public int[] Sizes { get; private set; }
+
+
+        /// <summary>
+        ///     Gets the indexes of the arguments which specify the length of the array and string reference arguments of the
+        ///     native function.
+        /// </summary>
+        public int[] Lengths { get; private set; }
     }
 }

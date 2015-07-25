@@ -52,9 +52,9 @@ namespace SampSharp.GameMode
         ///     This callback is called after a player has disconnected.
         /// </summary>
         /// <remarks>
-        ///     Because <see cref="GtaPlayer" /> probably is the first listener of this event,
-        ///     the <see cref="GtaPlayer" /> object is already disposed before any other listeners are called.
-        ///     It is better to either use the <see cref="PlayerDisconnected" /> event or <see cref="GtaPlayer.Cleanup" />
+        ///     Because <see cref="BasePlayer" /> probably is the first listener of this event,
+        ///     the <see cref="BasePlayer" /> object is already disposed before any other listeners are called.
+        ///     It is better to either use the <see cref="PlayerDisconnected" /> event or <see cref="BasePlayer.Cleanup" />
         /// </remarks>
         public event EventHandler<DisconnectEventArgs> PlayerCleanup;
 
@@ -88,37 +88,37 @@ namespace SampSharp.GameMode
         public event EventHandler<PlayerEventArgs> VehicleDied;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerText(GtaPlayer,TextEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerText(BasePlayer,TextEventArgs)" /> callback is being called.
         ///     Called when a player sends a chat message.
         /// </summary>
         public event EventHandler<TextEventArgs> PlayerText;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerCommandText(GtaPlayer,CommandTextEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerCommandText(BasePlayer,CommandTextEventArgs)" /> callback is being called.
         ///     This callback is called when a player enters a command into the client chat window, e.g. /help.
         /// </summary>
         public event EventHandler<CommandTextEventArgs> PlayerCommandText;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerRequestClass(GtaPlayer,RequestClassEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerRequestClass(BasePlayer,RequestClassEventArgs)" /> callback is being called.
         ///     Called when a player changes class at class selection (and when class selection first appears).
         /// </summary>
         public event EventHandler<RequestClassEventArgs> PlayerRequestClass;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEnterVehicle(GtaPlayer,EnterVehicleEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerEnterVehicle(BasePlayer,EnterVehicleEventArgs)" /> callback is being called.
         ///     This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the
         ///     time this callback is called.
         /// </summary>
         public event EventHandler<EnterVehicleEventArgs> PlayerEnterVehicle;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerExitVehicle(GtaPlayer,PlayerVehicleEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerExitVehicle(BasePlayer,PlayerVehicleEventArgs)" /> callback is being called.
         ///     This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as setting
-        ///     <see cref="GtaPlayer.Position" />.
+        ///     <see cref="BasePlayer.Position" />.
         /// </remarks>
         public event EventHandler<PlayerVehicleEventArgs> PlayerExitVehicle;
 
@@ -128,30 +128,30 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <remarks>
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as setting
-        ///     <see cref="GtaPlayer.Position" />.
+        ///     <see cref="BasePlayer.Position" />.
         /// </remarks>
         public event EventHandler<StateEventArgs> PlayerStateChanged;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEnterCheckpoint(GtaPlayer,EventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerEnterCheckpoint(BasePlayer,EventArgs)" /> callback is being called.
         ///     This callback is called when a player enters the checkpoint set for that player.
         /// </summary>
         public event EventHandler<EventArgs> PlayerEnterCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerLeaveCheckpoint(GtaPlayer,EventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerLeaveCheckpoint(BasePlayer,EventArgs)" /> callback is being called.
         ///     This callback is called when a player leaves the checkpoint set for that player.
         /// </summary>
         public event EventHandler<EventArgs> PlayerLeaveCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEnterRaceCheckpoint(GtaPlayer,EventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerEnterRaceCheckpoint(BasePlayer,EventArgs)" /> callback is being called.
         ///     This callback is called when a player enters a race checkpoint.
         /// </summary>
         public event EventHandler<EventArgs> PlayerEnterRaceCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerLeaveRaceCheckpoint(GtaPlayer,EventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerLeaveRaceCheckpoint(BasePlayer,EventArgs)" /> callback is being called.
         ///     This callback is called when a player leaves the race checkpoint.
         /// </summary>
         public event EventHandler<EventArgs> PlayerLeaveRaceCheckpoint;
@@ -164,7 +164,7 @@ namespace SampSharp.GameMode
         public event EventHandler<RconEventArgs> RconCommand;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerRequestSpawn(GtaPlayer,RequestSpawnEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerRequestSpawn(BasePlayer,RequestSpawnEventArgs)" /> callback is being called.
         ///     Called when a player attempts to spawn via class selection.
         /// </summary>
         public event EventHandler<RequestSpawnEventArgs> PlayerRequestSpawn;
@@ -190,11 +190,11 @@ namespace SampSharp.GameMode
         public event EventHandler<PlayerEventArgs> PlayerPickUpPickup;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleMod(GtaVehicle,VehicleModEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnVehicleMod(BaseVehicle,VehicleModEventArgs)" /> callback is being called.
         ///     This callback is called when a vehicle is modded.
         /// </summary>
         /// <remarks>
-        ///     This callback is not called by <see cref="GtaVehicle.AddComponent" />.
+        ///     This callback is not called by <see cref="BaseVehicle.AddComponent" />.
         /// </remarks>
         public event EventHandler<VehicleModEventArgs> VehicleMod;
 
@@ -240,13 +240,13 @@ namespace SampSharp.GameMode
         public event EventHandler<UnoccupiedVehicleEventArgs> UnoccupiedVehicleUpdated;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerSelectedMenuRow(GtaPlayer,MenuRowEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerSelectedMenuRow(BasePlayer,MenuRowEventArgs)" /> callback is being called.
         ///     This callback is called when a player selects an item from a menu.
         /// </summary>
         public event EventHandler<MenuRowEventArgs> PlayerSelectedMenuRow;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerExitedMenu(GtaPlayer,EventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerExitedMenu(BasePlayer,EventArgs)" /> callback is being called.
         ///     Called when a player exits a menu.
         /// </summary>
         public event EventHandler<EventArgs> PlayerExitedMenu;
@@ -256,7 +256,7 @@ namespace SampSharp.GameMode
         ///     Called when a player changes interior.
         /// </summary>
         /// <remarks>
-        ///     This is also called when <see cref="GtaPlayer.Interior" /> is set.
+        ///     This is also called when <see cref="BasePlayer.Interior" /> is set.
         /// </remarks>
         public event EventHandler<InteriorChangedEventArgs> PlayerInteriorChanged;
 
@@ -277,7 +277,7 @@ namespace SampSharp.GameMode
         public event EventHandler<RconLoginAttemptEventArgs> RconLoginAttempt;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerUpdate(GtaPlayer,PlayerUpdateEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerUpdate(BasePlayer,PlayerUpdateEventArgs)" /> callback is being called.
         ///     This callback is called everytime a client/player updates the server with their status.
         /// </summary>
         /// <remarks>
@@ -286,50 +286,50 @@ namespace SampSharp.GameMode
         public event EventHandler<PlayerUpdateEventArgs> PlayerUpdate;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerStreamIn(GtaPlayer,PlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerStreamIn(BasePlayer,PlayerEventArgs)" /> callback is being called.
         ///     This callback is called when a player is streamed by some other player's client.
         /// </summary>
         public event EventHandler<PlayerEventArgs> PlayerStreamIn;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerStreamOut(GtaPlayer,PlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerStreamOut(BasePlayer,PlayerEventArgs)" /> callback is being called.
         ///     This callback is called when a player is streamed out from some other player's client.
         /// </summary>
         public event EventHandler<PlayerEventArgs> PlayerStreamOut;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleStreamIn(GtaVehicle,PlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnVehicleStreamIn(BaseVehicle,PlayerEventArgs)" /> callback is being called.
         ///     Called when a vehicle is streamed to a player's client.
         /// </summary>
         public event EventHandler<PlayerEventArgs> VehicleStreamIn;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleStreamOut(GtaVehicle,PlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnVehicleStreamOut(BaseVehicle,PlayerEventArgs)" /> callback is being called.
         ///     This callback is called when a vehicle is streamed out from some player's client.
         /// </summary>
         public event EventHandler<PlayerEventArgs> VehicleStreamOut;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnTrailerUpdate(GtaVehicle,TrailerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnTrailerUpdate(BaseVehicle,TrailerEventArgs)" /> callback is being called.
         ///     This callback is called when a player sent a trailer update.
         /// </summary>
         public event EventHandler<TrailerEventArgs> TrailerUpdate;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnDialogResponse(GtaPlayer,DialogResponseEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnDialogResponse(BasePlayer,DialogResponseEventArgs)" /> callback is being called.
         ///     This callback is called when a player responds to a dialog shown using <see cref="Dialog" /> by
         ///     either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
         /// </summary>
         public event EventHandler<DialogResponseEventArgs> DialogResponse;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerTakeDamage(GtaPlayer,DamageEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerTakeDamage(BasePlayer,DamageEventArgs)" /> callback is being called.
         ///     This callback is called when a player takes damage.
         /// </summary>
         public event EventHandler<DamageEventArgs> PlayerTakeDamage;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerGiveDamage(GtaPlayer,DamageEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerGiveDamage(BasePlayer,DamageEventArgs)" /> callback is being called.
         ///     This callback is called when a player gives damage to another player.
         /// </summary>
         /// <remarks>
@@ -347,17 +347,17 @@ namespace SampSharp.GameMode
         public event EventHandler<DamageEventArgs> PlayerGiveDamage;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickMap(GtaPlayer,PositionEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerClickMap(BasePlayer,PositionEventArgs)" /> callback is being called.
         ///     This callback is called when a player places a target/waypoint on the pause menu map (by right-clicking).
         /// </summary>
         /// <remarks>
         ///     The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get
-        ///     a more accurate Z coordinate (or for teleportation; use <see cref="GtaPlayer.SetPositionFindZ" />).
+        ///     a more accurate Z coordinate (or for teleportation; use <see cref="BasePlayer.SetPositionFindZ" />).
         /// </remarks>
         public event EventHandler<PositionEventArgs> PlayerClickMap;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickTextDraw(GtaPlayer,ClickTextDrawEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerClickTextDraw(BasePlayer,ClickTextDrawEventArgs)" /> callback is being called.
         ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
         /// </summary>
         /// <remarks>
@@ -366,16 +366,16 @@ namespace SampSharp.GameMode
         public event EventHandler<ClickTextDrawEventArgs> PlayerClickTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickPlayerTextDraw(GtaPlayer,ClickPlayerTextDrawEventArgs)" /> callback is
+        ///     Occurs when the <see cref="OnPlayerClickPlayerTextDraw(BasePlayer,ClickPlayerTextDrawEventArgs)" /> callback is
         ///     being
         ///     called.
         ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
-        ///     mode (ESC) - however, <see cref="OnPlayerClickTextDraw(GtaPlayer,ClickTextDrawEventArgs)" /> is.
+        ///     mode (ESC) - however, <see cref="OnPlayerClickTextDraw(BasePlayer,ClickTextDrawEventArgs)" /> is.
         /// </summary>
         public event EventHandler<ClickPlayerTextDrawEventArgs> PlayerClickPlayerTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickPlayer(GtaPlayer, ClickPlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerClickPlayer(BasePlayer, ClickPlayerEventArgs)" /> callback is being called.
         ///     Called when a player double-clicks on a player on the scoreboard.
         /// </summary>
         /// <remarks>
@@ -385,21 +385,21 @@ namespace SampSharp.GameMode
         public event EventHandler<ClickPlayerEventArgs> PlayerClickPlayer;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEditGlobalObject(GtaPlayer,EditGlobalObjectEventArgs)" /> callback is being
+        ///     Occurs when the <see cref="OnPlayerEditGlobalObject(BasePlayer,EditGlobalObjectEventArgs)" /> callback is being
         ///     called.
         ///     This callback is called when a player ends global object edition mode.
         /// </summary>
         public event EventHandler<EditGlobalObjectEventArgs> PlayerEditGlobalObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEditPlayerObject(GtaPlayer,EditPlayerObjectEventArgs)" /> callback is being
+        ///     Occurs when the <see cref="OnPlayerEditPlayerObject(BasePlayer,EditPlayerObjectEventArgs)" /> callback is being
         ///     called.
         ///     This callback is called when a player ends player object edition mode.
         /// </summary>
         public event EventHandler<EditPlayerObjectEventArgs> PlayerEditPlayerObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEditAttachedObject(GtaPlayer,EditAttachedObjectEventArgs)" /> callback is being
+        ///     Occurs when the <see cref="OnPlayerEditAttachedObject(BasePlayer,EditAttachedObjectEventArgs)" /> callback is being
         ///     called.
         ///     This callback is called when a player ends attached object edition mode.
         /// </summary>
@@ -422,7 +422,7 @@ namespace SampSharp.GameMode
         public event EventHandler<SelectPlayerObjectEventArgs> PlayerSelectPlayerObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerWeaponShot(GtaPlayer,WeaponShotEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerWeaponShot(BasePlayer,WeaponShotEventArgs)" /> callback is being called.
         ///     This callback is called when a player fires a shot from a weapon.
         /// </summary>
         public event EventHandler<WeaponShotEventArgs> PlayerWeaponShot;
@@ -440,7 +440,7 @@ namespace SampSharp.GameMode
         public event EventHandler<DamageEventArgs> PlayerGiveDamageActor;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleSirenStateChange(GtaVehicle,SirenStateEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnVehicleSirenStateChange(BaseVehicle,SirenStateEventArgs)" /> callback is being called.
         ///     This callback is called when a vehicle's siren is toggled.
         /// </summary>
         public event EventHandler<SirenStateEventArgs> VehicleSirenStateChange;

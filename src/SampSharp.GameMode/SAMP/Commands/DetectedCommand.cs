@@ -140,6 +140,9 @@ namespace SampSharp.GameMode.SAMP.Commands
             return GetCommandGroupString(type.DeclaringType) + " " + attr.Group;
         }
 
+        /// <summary>
+        ///     Detects the group of this command.
+        /// </summary>
         public void DetectGroup()
         {
 
@@ -189,10 +192,8 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>True if all required arguments are present; False otherwise.</returns>
         public override bool AreArgumentsValid(string commandText)
         {
-            for (var paramIndex = 0; paramIndex < Parameters.Length; paramIndex++)
+            foreach (var parameterAttribute in Parameters)
             {
-                var parameterAttribute = Parameters[paramIndex];
-
                 commandText = commandText.Trim();
 
                 /*

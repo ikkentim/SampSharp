@@ -15,6 +15,9 @@
 
 namespace SampSharp.GameMode.API
 {
+    /// <summary>
+    /// Contains methods for registering SampSharp extensions.
+    /// </summary>
     public static class Extension
     {
         /// <summary>

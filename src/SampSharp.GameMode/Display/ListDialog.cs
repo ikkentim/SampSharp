@@ -19,6 +19,9 @@ using SampSharp.GameMode.Definitions;
 
 namespace SampSharp.GameMode.Display
 {
+    /// <summary>
+    ///     Represnets a list dialog.
+    /// </summary>
     public class ListDialog : Dialog
     {
         private readonly List<string> _items = new List<string>();
@@ -42,6 +45,9 @@ namespace SampSharp.GameMode.Display
             Style = DialogStyle.List;
         }
 
+        /// <summary>
+        ///     Gets the list items.
+        /// </summary>
         public IList<string> Items
         {
             get { return _items; }

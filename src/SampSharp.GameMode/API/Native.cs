@@ -101,6 +101,9 @@ namespace SampSharp.GameMode.API
                 sizes == null || sizes.Length == 0 ? (lengthList.Count > 0 ? lengthList.ToArray() : null) : sizes);
         }
 
+        /// <summary>
+        ///     Gets or sets the native loader.
+        /// </summary>
         public static INativeLoader NativeLoader
         {
             get { return _nativeLoader; }
@@ -379,7 +382,7 @@ namespace SampSharp.GameMode.API
 
                     if (field.GetValue(null) == null)
                     {
-                        var nativeFunction = Load(attribute.Name, attribute.Sizes,
+                        var nativeFunction = Load(attribute.Name, attribute.Lengths,
                             @delegate.GetMethod("Invoke").GetParameters().Select(p => p.ParameterType).ToArray());
 
                         if (nativeFunction != null)

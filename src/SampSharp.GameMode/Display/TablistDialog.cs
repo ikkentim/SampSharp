@@ -21,6 +21,9 @@ using SampSharp.GameMode.Definitions;
 
 namespace SampSharp.GameMode.Display
 {
+    /// <summary>
+    ///     Represents a tablist (table) dialog.
+    /// </summary>
     public class TablistDialog : Dialog, IList<IEnumerable<string>>
     {
         private readonly int _columnCount;

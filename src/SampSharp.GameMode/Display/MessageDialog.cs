@@ -18,6 +18,9 @@ using SampSharp.GameMode.Definitions;
 
 namespace SampSharp.GameMode.Display
 {
+    /// <summary>
+    ///     Represents a message dialog.
+    /// </summary>
     public class MessageDialog : Dialog
     {
         private string _message;
@@ -56,8 +59,6 @@ namespace SampSharp.GameMode.Display
 
         #endregion
 
-        public string Caption { get; set; }
-
         /// <summary>
         ///     Gets or sets the message in the dialog.
         /// </summary>
@@ -66,8 +67,5 @@ namespace SampSharp.GameMode.Display
             get { return _message; }
             set { _message = value; }
         }
-
-        public string Button1 { get; set; }
-        public string Button2 { get; set; }
     }
 }

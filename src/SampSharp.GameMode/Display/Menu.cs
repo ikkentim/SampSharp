@@ -127,7 +127,7 @@ namespace SampSharp.GameMode.Display
         public event EventHandler<MenuRowEventArgs> Response;
 
         /// <summary>
-        ///     Show this <see cref="IMenu" /> to the specified <paramref name="player" />.
+        ///     Show this <see cref="Menu" /> to the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player to show this menu to.</param>
         /// <returns>True when successful; False otherwise.</returns>
@@ -155,7 +155,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Hides this <see cref="IMenu" /> for the specified <paramref name="player" />.
+        ///     Hides this <see cref="Menu" /> for the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player to hide this menu for.</param>
         public void Hide(BasePlayer player)
@@ -181,7 +181,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Hides this <see cref="IMenu" /> for all viewers.
+        ///     Hides this <see cref="Menu" /> for all viewers.
         /// </summary>
         public void HideForAll()
         {
@@ -193,7 +193,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Raises the <see cref="IMenu.Exit" /> event.
+        ///     Raises the <see cref="Menu.Exit" /> event.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
@@ -204,7 +204,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Raises the <see cref="IMenu.Response" /> event.
+        ///     Raises the <see cref="Menu.Response" /> event.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="e">The <see cref="MenuRowEventArgs" /> instance containing the event data.</param>

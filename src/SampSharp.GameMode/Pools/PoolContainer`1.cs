@@ -26,6 +26,9 @@ namespace SampSharp.GameMode.Pools
     /// <typeparam name="TInstance">The type of the instance.</typeparam>
     public sealed class PoolContainer<TInstance> : IEnumerable<TInstance> where TInstance : class
     {
+        /// <summary>
+        ///     The identifier of an unidentified instance.
+        /// </summary>
         public const int UnidentifiedId = -1;
 
         private readonly Dictionary<int, TInstance> _identifiedItems = new Dictionary<int, TInstance>();
