@@ -13,25 +13,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace SampSharp.GameMode.API
 {
     /// <summary>
-    /// Contains methods for registering SampSharp extensions.
+    ///     Specifies the extension to load from this assembly.
     /// </summary>
-    public static class Extension
+    [AttributeUsage(AttributeTargets.Assembly, Inherited = false)]
+    public class SampSharpExtensionAttribute : Attribute
     {
         /// <summary>
-        ///     Registers an extension to the plugin.
+        ///     Initializes a new instance of the <see cref="SampSharpExtensionAttribute" /> class.
         /// </summary>
-        /// <param name="extension">The extension to register.</param>
-        /// <returns>
-        ///     True on success, False otherwise.
-        /// </returns>
-        public static bool Register<T>(T extension) where T : IExtension
+        /// <param name="type">The type.</param>
+        public SampSharpExtensionAttribute(Type type)
         {
-            Native.LoadDelegates<T>();
-
-            return Interop.RegisterExtension(extension);
+            Type = type;
         }
+
+        /// <summary>
+        ///     Gets the type of the extension.
+        /// </summary>
+        public Type Type { get; private set; }
     }
 }

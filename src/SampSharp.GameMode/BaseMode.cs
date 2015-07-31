@@ -14,6 +14,8 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
@@ -26,7 +28,7 @@ namespace SampSharp.GameMode
     public abstract partial class BaseMode : IDisposable
     {
         private readonly ControllerCollection _controllers = new ControllerCollection();
-
+        private readonly List<IExtension> _extensions = new List<IExtension>(); 
         #region Constructors
 
         /// <summary>
@@ -54,12 +56,43 @@ namespace SampSharp.GameMode
         #endregion
 
         /// <summary>
-        /// Gets the instance.
+        ///     Gets the instance.
         /// </summary>
         public static BaseMode Instance { get; private set; }
 
         internal void Initialize()
         {
+            foreach (
+                var assembly in
+                    GetType()
+                        .Assembly.GetReferencedAssemblies()
+                        .Select(Assembly.Load)
+                        .Where(a => a.GetCustomAttribute<SampSharpExtensionAttribute>() != null))
+            {
+                var attribute = assembly.GetCustomAttribute<SampSharpExtensionAttribute>();
+
+                var extensionType = attribute.Type;
+
+                if (extensionType == null)
+                {
+                    FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
+                        "The extension from {0} could not be loaded. The specified extension type is null.",
+                        assembly);
+                    continue;
+                }
+                if (!typeof (IExtension).IsAssignableFrom(extensionType))
+                {
+                    FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
+                        "The extension from {0} could not be loaded. The specified extension type does not inherit from IExtension.",
+                        assembly);
+                    continue;
+                }
+
+                var extension = (IExtension) Activator.CreateInstance(extensionType);
+                Extension.Register(extension);
+                _extensions.Add(extension);
+            }
+            
             Native.LoadDelegates<BaseMode>();
             Native.LoadDelegates(GetType()); 
 
@@ -106,6 +139,9 @@ namespace SampSharp.GameMode
 
         private void RegisterControllers()
         {
+            foreach (var extension in _extensions)
+                extension.PreLoad(this);
+
             LoadControllers(_controllers);
 
             foreach (var controller in _controllers)
@@ -123,6 +159,9 @@ namespace SampSharp.GameMode
                 if (eventListener != null)
                     eventListener.RegisterEvents(this);
             }
+
+            foreach (var extension in _extensions)
+                extension.PostLoad(this);
         }
 
         /// <summary>
@@ -145,6 +184,9 @@ namespace SampSharp.GameMode
             controllers.Add(new SyncController());
             controllers.Add(new PickupController());
             controllers.Add(new ActorController());
+
+            foreach (var extension in _extensions)
+                extension.Load(this, controllers);
         }
 
         #endregion

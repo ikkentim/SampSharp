@@ -13,25 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using SampSharp.GameMode.Controllers;
+
 namespace SampSharp.GameMode.API
 {
-    /// <summary>
-    /// Contains methods for registering SampSharp extensions.
-    /// </summary>
-    public static class Extension
+    public interface IExtension
     {
-        /// <summary>
-        ///     Registers an extension to the plugin.
-        /// </summary>
-        /// <param name="extension">The extension to register.</param>
-        /// <returns>
-        ///     True on success, False otherwise.
-        /// </returns>
-        public static bool Register<T>(T extension) where T : IExtension
-        {
-            Native.LoadDelegates<T>();
-
-            return Interop.RegisterExtension(extension);
-        }
+        void PreLoad(BaseMode gameMode);
+        void Load(BaseMode gameMode, ControllerCollection controllerCollection);
+        void PostLoad(BaseMode gameMode);
     }
 }
