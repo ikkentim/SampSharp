@@ -17,16 +17,45 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SampSharp.GameMode;
+using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
+using TestMode;
 using TestMode.Tests;
+
+[assembly: SampSharpExtension(typeof(ExA))]
+//[assembly: SampSharpExtension(typeof(ExB), typeof(ExA))]
 
 namespace TestMode
 {
+    public class ExA : Extension
+    {
+        #region Overrides of Extension
+
+        public override void PostLoad(BaseMode gameMode)
+        {
+            Console.WriteLine("ExA extension was loaded!");
+        }
+
+        #endregion
+    }
+    public class ExB : Extension
+    {
+        #region Overrides of Extension
+
+        public override void PostLoad(BaseMode gameMode)
+        {
+            Console.WriteLine("ExB extension was loaded!");
+        }
+
+        #endregion
+    }
+
+    
     public class Vehicle : BaseVehicle
     {
         public override void OnPlayerEnter(EnterVehicleEventArgs e)

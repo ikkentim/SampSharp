@@ -19,8 +19,21 @@ namespace SampSharp.GameMode.API
 {
     public interface IExtension
     {
-        void PreLoad(BaseMode gameMode);
-        void Load(BaseMode gameMode, ControllerCollection controllerCollection);
+        /// <summary>
+        /// Loads services provided by this extensions.
+        /// </summary>
+        /// <param name="gameMode">The game mode.</param>
+        void LoadServices(BaseMode gameMode);
+        /// <summary>
+        /// Loads controllers provided by this extensions.
+        /// </summary>
+        /// <param name="gameMode">The game mode.</param>
+        /// <param name="controllerCollection">The controller collection.</param>
+        void LoadControllers(BaseMode gameMode, ControllerCollection controllerCollection);
+        /// <summary>
+        /// Performs post-load actions.
+        /// </summary>
+        /// <param name="gameMode">The game mode.</param>
         void PostLoad(BaseMode gameMode);
     }
 }

@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
@@ -62,37 +63,84 @@ namespace SampSharp.GameMode
 
         internal void Initialize()
         {
+            var loadAssemblies = new List<Assembly>();
+            var loadingAssemblies = new List<Assembly>();
+
+
+            Action<Assembly> loadAssemblyOrder = null;
+            loadAssemblyOrder = assembly =>
+            {
+                // Already in load order.
+                if (loadAssemblies.Contains(assembly))
+                    return;
+
+                // Already in loading chain (circular dependency detected).
+                if (loadingAssemblies.Contains(assembly))
+                    throw new Exception(string.Format("Circular extension dependency detected. ({0})", assembly));
+
+                loadingAssemblies.Add(assembly);
+
+                foreach (
+                    var dependency in
+                        assembly.GetCustomAttributes<SampSharpExtensionAttribute>()
+                            .SelectMany(a => a.LoadBeforeAssemblies))
+                    loadAssemblyOrder(dependency);
+
+                loadingAssemblies.Remove(assembly);
+                loadAssemblies.Add(assembly);
+            };
+
             foreach (
                 var assembly in
                     GetType()
                         .Assembly.GetReferencedAssemblies()
                         .Select(Assembly.Load)
-                        .Where(a => a.GetCustomAttribute<SampSharpExtensionAttribute>() != null))
+                        .Concat(new []{GetType().Assembly})
+                        .Distinct()
+                        .Where(a => a.GetCustomAttributes<SampSharpExtensionAttribute>().Any()))
+                loadAssemblyOrder(assembly);
+
+            foreach (var assembly in loadAssemblies)
             {
-                var attribute = assembly.GetCustomAttribute<SampSharpExtensionAttribute>();
+                var attributes = assembly.GetCustomAttributes<SampSharpExtensionAttribute>();
 
-                var extensionType = attribute.Type;
-
-                if (extensionType == null)
+                foreach (var extensionType in attributes.Select(attribute => attribute.Type))
                 {
-                    FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
-                        "The extension from {0} could not be loaded. The specified extension type is null.",
-                        assembly);
-                    continue;
-                }
-                if (!typeof (IExtension).IsAssignableFrom(extensionType))
-                {
-                    FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
-                        "The extension from {0} could not be loaded. The specified extension type does not inherit from IExtension.",
-                        assembly);
-                    continue;
-                }
+                    if (extensionType == null)
+                    {
+                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
+                            "The extension from {0} could not be loaded. The specified extension type is null.",
+                            assembly);
+                        continue;
+                    }
+                    if (!typeof (IExtension).IsAssignableFrom(extensionType))
+                    {
+                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
+                            "The extension from {0} could not be loaded. The specified extension type does not inherit from IExtension.",
+                            assembly);
+                        continue;
+                    }
+                    if (extensionType.Assembly != assembly)
+                    {
+                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
+                            "The extension from {0} could not be loaded. The specified extension type is not part of the loading assembly.",
+                            assembly);
+                        continue;
+                    }
+                    if (_extensions.Any(e => e.GetType() == extensionType))
+                    {
+                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
+                            "The extension from {0} could not be loaded. The specified extension type was already loaded.",
+                            assembly);
+                        continue;
+                    }
 
-                var extension = (IExtension) Activator.CreateInstance(extensionType);
-                Extension.Register(extension);
-                _extensions.Add(extension);
+                    var extension = (IExtension) Activator.CreateInstance(extensionType);
+                    Extension.Register(extension);
+                    _extensions.Add(extension);
+                }
             }
-            
+
             Native.LoadDelegates<BaseMode>();
             Native.LoadDelegates(GetType()); 
 
@@ -140,25 +188,18 @@ namespace SampSharp.GameMode
         private void RegisterControllers()
         {
             foreach (var extension in _extensions)
-                extension.PreLoad(this);
+                extension.LoadServices(this);
 
             LoadControllers(_controllers);
 
-            foreach (var controller in _controllers)
-            {
-                var typeProvider = controller as ITypeProvider;
-                var eventListener = controller as IEventListener;
-                var serviceProvider = controller as IGameServiceProvider;
+            foreach (var controller in _controllers.OfType<IGameServiceProvider>())
+                controller.RegisterServices(this, Services);
 
-                if (serviceProvider != null)
-                    serviceProvider.RegisterServices(this, Services);
+            foreach (var controller in _controllers.OfType<ITypeProvider>())
+                controller.RegisterTypes();
 
-                if (typeProvider != null)
-                    typeProvider.RegisterTypes();
-
-                if (eventListener != null)
-                    eventListener.RegisterEvents(this);
-            }
+            foreach (var controller in _controllers.OfType<IEventListener>())
+                controller.RegisterEvents(this);
 
             foreach (var extension in _extensions)
                 extension.PostLoad(this);
@@ -186,7 +227,7 @@ namespace SampSharp.GameMode
             controllers.Add(new ActorController());
 
             foreach (var extension in _extensions)
-                extension.Load(this, controllers);
+                extension.LoadControllers(this, controllers);
         }
 
         #endregion

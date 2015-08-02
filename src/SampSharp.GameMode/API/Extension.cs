@@ -13,12 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using SampSharp.GameMode.Controllers;
+
 namespace SampSharp.GameMode.API
 {
     /// <summary>
-    /// Contains methods for registering SampSharp extensions.
+    ///     Contains methods for registering SampSharp extensions and represents a simple base class for extensions.
     /// </summary>
-    public static class Extension
+    public abstract class Extension : IExtension
     {
         /// <summary>
         ///     Registers an extension to the plugin.
@@ -33,5 +35,34 @@ namespace SampSharp.GameMode.API
 
             return Interop.RegisterExtension(extension);
         }
+
+        #region Implementation of IExtension
+
+        /// <summary>
+        /// Loads services provided by this extensions.
+        /// </summary>
+        /// <param name="gameMode">The game mode.</param>
+        public virtual void LoadServices(BaseMode gameMode)
+        {
+        }
+
+        /// <summary>
+        /// Loads controllers provided by this extensions.
+        /// </summary>
+        /// <param name="gameMode">The game mode.</param>
+        /// <param name="controllerCollection">The controller collection.</param>
+        public virtual void LoadControllers(BaseMode gameMode, ControllerCollection controllerCollection)
+        {
+        }
+
+        /// <summary>
+        /// Performs post-load actions.
+        /// </summary>
+        /// <param name="gameMode">The game mode.</param>
+        public virtual void PostLoad(BaseMode gameMode)
+        {
+        }
+
+        #endregion
     }
 }

@@ -14,21 +14,28 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace SampSharp.GameMode.API
 {
     /// <summary>
     ///     Specifies the extension to load from this assembly.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Assembly, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
     public class SampSharpExtensionAttribute : Attribute
     {
+        private readonly Type[] _loadBeforeAssembliesOfType;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="SampSharpExtensionAttribute" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
-        public SampSharpExtensionAttribute(Type type)
+        /// <param name="loadBeforeAssembliesOfType">Types of assemblies to load before this extension (extensions this extension has references to and requires to load before).</param>
+        public SampSharpExtensionAttribute(Type type, params Type[] loadBeforeAssembliesOfType)
         {
+            _loadBeforeAssembliesOfType = loadBeforeAssembliesOfType;
             Type = type;
         }
 
@@ -36,5 +43,18 @@ namespace SampSharp.GameMode.API
         ///     Gets the type of the extension.
         /// </summary>
         public Type Type { get; private set; }
+
+        /// <summary>
+        /// Gets the assemblies to load before this extension.
+        /// </summary>
+        public IEnumerable<Assembly> LoadBeforeAssemblies
+        {
+            get
+            {
+                return _loadBeforeAssembliesOfType == null
+                    ? null
+                    : _loadBeforeAssembliesOfType.Where(t => t != null).Select(t => t.Assembly);
+            }
+        }
     }
 }
