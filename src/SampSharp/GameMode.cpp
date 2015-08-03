@@ -50,6 +50,10 @@ MonoClass *GameMode::paramLengthClass_;
 MonoMethod *GameMode::paramLengthGetMethod_;
 
 bool GameMode::Load(std::string namespaceName, std::string className) {
+    if (isLoaded_) {
+        return false;
+    }
+
     assert(MonoRuntime::IsLoaded());
     /* Build paths */
     string dirPath = PathUtil::GetPathInBin("gamemode/");
@@ -62,7 +66,6 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     std::ifstream ifile(libraryPath.c_str());
     if (!ifile) {
         logprintf("ERROR: library does not exist!");
-        isLoaded_ = false;
         return false;
     }
 
@@ -75,7 +78,6 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
 
     if (!gameMode_.image) {
         logprintf("ERROR: Couldn't open image!");
-        isLoaded_ = false;
         return false;
     }
 
@@ -85,7 +87,6 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     if (!gameMode_.klass) {
         logprintf("ERROR: Couldn't find class %s:%s!",
             namespaceName.c_str(), className.c_str());
-        isLoaded_ = false;
         return false;
     }
 
@@ -95,7 +96,6 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
         mono_class_get_name(baseMode_.klass)) != 0) {
         logprintf("ERROR: Parent type of %s::%s is not BaseMode!",
             namespaceName.c_str(), className.c_str());
-        isLoaded_ = false;
         return false;
     }
 
@@ -111,8 +111,6 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     AddInternalCall("Print", (void *)Print);
     AddInternalCall("SetCodepage", (void *)set_codepage);
 
-    isLoaded_ = true;
-
     MonoObject *gamemode_obj = mono_object_new
         (mono_domain_get(), gameMode_.klass);
     gameModeHandle_ = mono_gchandle_new(gamemode_obj, false);
@@ -121,10 +119,15 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     MonoMethod *method = LoadEvent("Initialize", 0);
 
     if (method) {
-        CallEvent(method, gameModeHandle_, NULL);
-    }
+        MonoObject *exception = NULL;
+        CallEvent(method, gameModeHandle_, NULL, &exception);
 
-    return true;
+        return isLoaded_ = !exception;
+    }
+    else {
+        isLoaded_ = true;
+        return true;
+    }
 }
 
 bool GameMode::Unload() {
@@ -174,7 +177,7 @@ bool GameMode::Unload() {
 
     if (method) {
         logprintf("Disposing gamemode...");
-        CallEvent(method, gameModeHandle_, NULL);
+        CallEvent(method, gameModeHandle_, NULL, NULL);
     }
 
     /* Release game mode. */
@@ -203,10 +206,6 @@ bool GameMode::Unload() {
 }
 
 int GameMode::SetRefTimer(int interval, bool repeat, MonoObject *params) {
-    if (!isLoaded_) {
-        return 0;
-    }
-
     if (!params) {
         /* If no params are parsed, there is no need to keep a reference to it,
          * or the id.
@@ -223,10 +222,6 @@ int GameMode::SetRefTimer(int interval, bool repeat, MonoObject *params) {
 }
 
 bool GameMode::KillRefTimer(int id) {
-    if (!isLoaded_) {
-        return 0;
-    }
-
     /* Delete the timer from the map. */
     if (timers_.find(id) == timers_.end())
     {
@@ -240,7 +235,7 @@ bool GameMode::KillRefTimer(int id) {
 }
 
 bool GameMode::RegisterExtension(MonoObject *extension) {
-    if (!isLoaded_ || !extension) {
+    if (!extension) {
         return false;
     }
 
@@ -267,8 +262,7 @@ float GameMode::InvokeNativeFloat(int handle, MonoArray * args_array) {
     return amx_ctof(r);
 }
 
-int GameMode::InvokeNative(int handle, MonoArray *args_array)
-{
+int GameMode::InvokeNative(int handle, MonoArray *args_array) {
     if (handle < 0 || handle >= natives_.size()) {
         mono_raise_exception(mono_get_exception_invalid_operation(
             "invalid handle"));
@@ -689,7 +683,7 @@ void GameMode::ProcessTimerTick(int timerid, void *data) {
         args[1] = mono_gchandle_get_target(timer->handle);
     }
 
-    CallEvent(method, gameModeHandle_, args);
+    CallEvent(method, gameModeHandle_, args, NULL);
 
     /*
     * After OnTimerTick has been called and the timer is not repeating,
@@ -715,7 +709,7 @@ void GameMode::ProcessTick() {
         tickMethod_ = LoadEvent("OnTick", 0);
     }
 
-    CallEvent(tickMethod_, gameModeHandle_, NULL);
+    CallEvent(tickMethod_, gameModeHandle_, NULL, NULL);
 }
 
 void GameMode::AddInternalCall(const char * name, const void * method) {
@@ -915,7 +909,7 @@ void GameMode::ProcessPublicCall(AMX *amx, const char *name, cell *params,
     if (signature = callbacks_[name]) {
         /* Handle calls without parameters. */
         if (!param_count) {
-            int retint = CallEvent(signature->method, signature->handle, NULL);
+            int retint = CallEvent(signature->method, signature->handle, NULL, NULL);
 
             /* If there's a cell allocated for the return value and
              * the callback was executed successfuly, fill the cell with
@@ -1023,7 +1017,7 @@ void GameMode::ProcessPublicCall(AMX *amx, const char *name, cell *params,
             }
         }
 
-        int retint = CallEvent(signature->method, signature->handle, args);
+        int retint = CallEvent(signature->method, signature->handle, args, NULL);
 
         if (retval != NULL && retint != -1) {
             *retval = retint;
@@ -1067,7 +1061,8 @@ void GameMode::PrintException(const char *methodname, MonoObject *exception) {
 	mono_free(stacktrace);
 }
 
-int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params) {
+int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params,
+    MonoObject **exception_return) {
     assert(method);
     assert(handle);
 
@@ -1076,8 +1071,13 @@ int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params) {
         mono_gchandle_get_target(handle), params, &exception);
 
     if (exception) {
+        /* Return the exception. */
+        if (exception_return) {
+            *exception_return = exception;
+        }
+
         /* Find callback handler if it has not been found previously. */
-        if (!onCallbackException_ && mono_class_get_method_from_name(
+        if (isLoaded_ && !onCallbackException_ && mono_class_get_method_from_name(
             baseMode_.klass, "OnCallbackException", 1)) {
 
             void *method_iter = NULL;
@@ -1100,7 +1100,7 @@ int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params) {
         }
 
         /* Invoke the callback handler if it exists. */
-        if (onCallbackException_) {
+        if (isLoaded_ && onCallbackException_) {
             MonoObject *exception2;
             MonoObject *response2 = mono_runtime_invoke(onCallbackException_,
                 mono_gchandle_get_target(gameModeHandle_), (void **)&exception,
@@ -1118,6 +1118,7 @@ int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params) {
         return -1;
     }
 
+    /* Cast the response of the event to an integer. */
     if (!response) {
         return -1;
     }

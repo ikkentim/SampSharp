@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
@@ -30,6 +29,7 @@ namespace SampSharp.GameMode
     {
         private readonly ControllerCollection _controllers = new ControllerCollection();
         private readonly List<IExtension> _extensions = new List<IExtension>(); 
+
         #region Constructors
 
         /// <summary>
@@ -72,6 +72,10 @@ namespace SampSharp.GameMode
             {
                 // Already in load order.
                 if (loadAssemblies.Contains(assembly))
+                    return;
+
+                // Make sure the assembly is an extension.
+                if (!assembly.GetCustomAttributes<SampSharpExtensionAttribute>().Any())
                     return;
 
                 // Already in loading chain (circular dependency detected).

@@ -109,7 +109,8 @@ private:
     static void AddInternalCall(const char * name, const void * method);
     static MonoMethod *LoadEvent(const char *name, int param_count);
     static int GetParamLengthIndex(MonoMethod *method, int idx);
-    static int CallEvent(MonoMethod *method, uint32_t handle, void **params);
+    static int CallEvent(MonoMethod *method, uint32_t handle, void **params,
+        MonoObject **exception);
     static ParameterType GetParameterType(MonoType *type);
     static bool IsMethodValidCallback(MonoImage *image, MonoMethod *method,
         int param_count);
