@@ -314,7 +314,7 @@ namespace SampSharp.GameMode.World
 
             public delegate bool TogglePlayerSpectatingImpl(int playerid, bool toggle);
 
-            public delegate bool gpciImpl(int playerid, out string buffer, int size);
+            public delegate bool GPCIImpl(int playerid, out string buffer, int size);
 
 
             [Native("SetSpawnInfo")] public static readonly SetSpawnInfoImpl NativeSetSpawnInfo = null;
@@ -593,7 +593,7 @@ namespace SampSharp.GameMode.World
             [Native("GetPlayerNetworkStats")] public static readonly GetPlayerNetworkStatsImpl GetPlayerNetworkStats =
                 null;
 
-            [Native("gpci")] public static readonly gpciImpl gpci = null;
+            [Native("gpci")] public static readonly GPCIImpl GPCI = null;
         }
     }
 }

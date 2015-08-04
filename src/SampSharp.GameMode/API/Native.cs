@@ -37,7 +37,7 @@ namespace SampSharp.GameMode.API
 
         internal Native(string name, int[] sizes, params Type[] parameterTypes)
         {
-            if (name == null) throw new ArgumentNullException("name");
+            if (name == null) throw new ArgumentNullException(nameof(name));
 
             _name = name;
             _format = string.Empty;
@@ -113,10 +113,7 @@ namespace SampSharp.GameMode.API
         /// <summary>
         ///     Gets the name of the native function.
         /// </summary>
-        public virtual string Name
-        {
-            get { return _name; }
-        }
+        public virtual string Name => _name;
 
         /// <summary>
         ///     Invokes the native with the specified arguments.
@@ -334,7 +331,7 @@ namespace SampSharp.GameMode.API
         /// <param name="type">A type within the assembly of which to load the delegate fields.</param>
         public static void LoadDelegates(Type type)
         {
-            if (type == null) throw new ArgumentNullException("type");
+            if (type == null) throw new ArgumentNullException(nameof(type));
             LoadDelegates(type.Assembly);
         }
 
@@ -345,7 +342,7 @@ namespace SampSharp.GameMode.API
         /// <param name="assembly">The assembly of which to load the delegate fields.</param>
         public static void LoadDelegates(Assembly assembly)
         {
-            if (assembly == null) throw new ArgumentNullException("assembly");
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
 
             if (LoadedAssemblies.Contains(assembly.FullName))
             {
@@ -406,7 +403,7 @@ namespace SampSharp.GameMode.API
         {
             return Interop.InvokeNative(handle, args);
         }
-
+        
         private static bool InvokeHandleAsBool(int handle, object[] args)
         {
             return InvokeHandle(handle, args) != 0;
@@ -415,14 +412,14 @@ namespace SampSharp.GameMode.API
         #region Overrides of Object
 
         /// <summary>
-        ///     Returns a <see cref="System.String" /> that represents this instance.
+        ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
-        ///     A <see cref="System.String" /> that represents this instance.
+        ///     A string that represents the current object.
         /// </returns>
         public override string ToString()
         {
-            return string.Format("{0}#{1}", _name, _handle);
+            return $"{_name}#{_handle}";
         }
 
         #endregion

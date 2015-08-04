@@ -30,10 +30,7 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.TimerTick += (sender, args) =>
             {
-                var timer = sender as Timer;
-
-                if (timer != null)
-                    timer.OnTick(args);
+                (sender as Timer)?.OnTick(args);
             };
         }
     }

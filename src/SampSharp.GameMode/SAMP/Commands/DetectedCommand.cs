@@ -31,13 +31,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         static DetectedCommand()
         {
             UsageFormat = (name, parameters) =>
-                string.Format("Usage: /{0}{1}{2}", name, parameters.Any() ? ": " : string.Empty,
-                    string.Join(" ", parameters.Select(
-                        p => p.Optional
-                            ? string.Format("({0})", p.DisplayName)
-                            : string.Format("[{0}]", p.DisplayName)
-                        ))
-                    );
+                $"Usage: /{name}{(parameters.Any() ? ": " : string.Empty)}{string.Join(" ", parameters.Select(p => p.Optional ? $"({p.DisplayName})" : $"[{p.DisplayName}]"))}";
 
             ResolveParameterType = (type, name) =>
             {
@@ -58,7 +52,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <exception cref="System.ArgumentException">The given <paramref name="command" /> is not valid.</exception>
         public DetectedCommand(MethodInfo command)
         {
-            if (command == null) throw new ArgumentNullException("command");
+            if (command == null) throw new ArgumentNullException(nameof(command));
 
             if (!command.IsStatic && !typeof (BasePlayer).IsAssignableFrom(command.DeclaringType))
                 throw new ArgumentException("command must be static or member of GtaPlayer");
@@ -294,7 +288,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <summary>
         ///     Gets the alias.
         /// </summary>
-        public string Alias { get; private set; }
+        public string Alias { get; }
 
         /// <summary>
         ///     Gets or sets the shortcut.
@@ -309,17 +303,17 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <summary>
         ///     Gets the command method.
         /// </summary>
-        public MethodInfo Command { get; private set; }
+        public MethodInfo Command { get; }
 
         /// <summary>
         ///     Gets the permission check method.
         /// </summary>
-        public IPermissionChecker PermissionCheck { get; private set; }
+        public IPermissionChecker PermissionCheck { get; }
 
         /// <summary>
         ///     Gets the parameters.
         /// </summary>
-        public ParameterAttribute[] Parameters { get; private set; }
+        public ParameterAttribute[] Parameters { get; }
 
         /// <summary>
         ///     Gets the command paths.
@@ -346,11 +340,11 @@ namespace SampSharp.GameMode.SAMP.Commands
                 {
                     foreach (var str in Group.CommandPaths)
                     {
-                        yield return string.Format("{0} {1}", str, Name);
+                        yield return $"{str} {Name}";
 
                         if (Alias != null)
                         {
-                            yield return string.Format("{0} {1}", str, Alias);
+                            yield return $"{str} {Alias}";
                         }
                     }
                 }
@@ -360,10 +354,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <summary>
         ///     Gets the command path.
         /// </summary>
-        public string CommandPath
-        {
-            get { return Group == null ? Name : string.Format("{0} {1}", Group.CommandPath, Name); }
-        }
+        public string CommandPath => Group == null ? Name : $"{Group.CommandPath} {Name}";
 
         /// <summary>
         ///     Gets or sets the usage message send when a wrongly formatted command is being processed.

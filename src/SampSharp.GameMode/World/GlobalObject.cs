@@ -69,18 +69,12 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets whether this IGameObject is moving.
         /// </summary>
-        public virtual bool IsMoving
-        {
-            get { return Internal.IsObjectMoving(Id); }
-        }
+        public virtual bool IsMoving => Internal.IsObjectMoving(Id);
 
         /// <summary>
         ///     Gets whether this IGameObject is valid.
         /// </summary>
-        public virtual bool IsValid
-        {
-            get { return Internal.IsValidObject(Id); }
-        }
+        public virtual bool IsValid => Internal.IsValidObject(Id);
 
         /// <summary>
         ///     Gets the model of this IGameObject.
@@ -97,7 +91,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the draw distance of this IGameObject.
         /// </summary>
-        public virtual float DrawDistance { get; private set; }
+        public virtual float DrawDistance { get; }
 
         #endregion
 
@@ -263,7 +257,7 @@ namespace SampSharp.GameMode.World
         public virtual void AttachTo(BasePlayer player, Vector3 offset, Vector3 rotation)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             Internal.AttachObjectToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
                 rotation.Z);
@@ -279,7 +273,7 @@ namespace SampSharp.GameMode.World
         public virtual void AttachTo(BaseVehicle vehicle, Vector3 offset, Vector3 rotation)
         {
             if (vehicle == null)
-                throw new ArgumentNullException("vehicle");
+                throw new ArgumentNullException(nameof(vehicle));
 
             Internal.AttachObjectToVehicle(Id, vehicle.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
                 rotation.Z);
@@ -293,7 +287,7 @@ namespace SampSharp.GameMode.World
         {
             if (player == null)
             {
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
             }
 
             AssertNotDisposed();
@@ -312,7 +306,7 @@ namespace SampSharp.GameMode.World
         public static void Remove(BasePlayer player, int modelid, Vector3 position, float radius)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             Internal.RemoveBuildingForPlayer(player.Id, modelid, position.X, position.Y, position.Z, radius);
         }
@@ -340,7 +334,7 @@ namespace SampSharp.GameMode.World
             bool syncRotation = false)
         {
             if (globalObject == null)
-                throw new ArgumentNullException("globalObject");
+                throw new ArgumentNullException(nameof(globalObject));
 
             Internal.AttachObjectToObject(Id, globalObject.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
                 rotation.Z, syncRotation);
@@ -354,7 +348,7 @@ namespace SampSharp.GameMode.World
         public virtual void Edit(BasePlayer player)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             Internal.EditObject(player.Id, Id);
         }
@@ -367,7 +361,7 @@ namespace SampSharp.GameMode.World
         public static void Select(BasePlayer player)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             Internal.SelectObject(player.Id);
         }
@@ -382,8 +376,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         public virtual void OnMoved(EventArgs e)
         {
-            if (Moved != null)
-                Moved(this, e);
+            Moved?.Invoke(this, e);
         }
 
         /// <summary>
@@ -392,8 +385,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="SelectGlobalObjectEventArgs" /> that contains the event data. </param>
         public virtual void OnSelected(SelectGlobalObjectEventArgs e)
         {
-            if (Selected != null)
-                Selected(this, e);
+            Selected?.Invoke(this, e);
         }
 
         /// <summary>
@@ -402,8 +394,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EditGlobalObjectEventArgs" /> that contains the event data. </param>
         public virtual void OnEdited(EditGlobalObjectEventArgs e)
         {
-            if (Edited != null)
-                Edited(this, e);
+            Edited?.Invoke(this, e);
         }
 
         #endregion

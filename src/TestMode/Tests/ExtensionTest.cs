@@ -14,9 +14,7 @@
 // limitations under the License.
 
 using System;
-using SampSharp.GameMode;
 using SampSharp.GameMode.API;
-using SampSharp.GameMode.Controllers;
 
 namespace TestMode.Tests
 {

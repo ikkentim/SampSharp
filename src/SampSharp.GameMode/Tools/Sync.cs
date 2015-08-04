@@ -29,10 +29,7 @@ namespace SampSharp.GameMode.Tools
         /// <summary>
         ///     Gets whether is it required to sync before calling natives.
         /// </summary>
-        public static bool IsRequired
-        {
-            get { return SyncController.MainThread != Thread.CurrentThread; }
-        }
+        public static bool IsRequired => SyncController.MainThread != Thread.CurrentThread;
 
         /// <summary>
         ///     Run a function on the main thread.

@@ -30,6 +30,7 @@ namespace SampSharp.GameMode.Pools
         /// <summary>
         ///     The instances alive in this pool.
         /// </summary>
+        // ReSharper disable once StaticMemberInGenericType
         protected static readonly List<object> Instances = new List<object>();
 
         /// <summary>

@@ -95,8 +95,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         public virtual void OnPickUp(PlayerEventArgs e)
         {
-            if (PickUp != null)
-                PickUp(this, e);
+            PickUp?.Invoke(this, e);
         }
 
         #endregion
@@ -112,7 +111,7 @@ namespace SampSharp.GameMode.World
         /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
-            return string.Format("Pickup(Id: {0}, Model: {1})", Id, Model);
+            return $"Pickup(Id: {Id}, Model: {Model})";
         }
 
         #endregion

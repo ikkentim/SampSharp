@@ -102,8 +102,8 @@ namespace SampSharp.GameMode.World
                 Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
                 Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
-                    AttachedPlayer == null ? BasePlayer.InvalidId : AttachedPlayer.Id,
-                    AttachedVehicle == null ? BaseVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
+                    AttachedPlayer?.Id ?? BasePlayer.InvalidId,
+                    AttachedVehicle?.Id ?? BaseVehicle.InvalidId, TestLOS);
             }
         }
 
@@ -119,8 +119,8 @@ namespace SampSharp.GameMode.World
                 Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
                 Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
-                    AttachedPlayer == null ? BasePlayer.InvalidId : AttachedPlayer.Id,
-                    AttachedVehicle == null ? BaseVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
+                    AttachedPlayer?.Id ?? BasePlayer.InvalidId,
+                    AttachedVehicle?.Id ?? BaseVehicle.InvalidId, TestLOS);
             }
         }
 
@@ -136,8 +136,8 @@ namespace SampSharp.GameMode.World
                 Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
                 Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
-                    AttachedPlayer == null ? BasePlayer.InvalidId : AttachedPlayer.Id,
-                    AttachedVehicle == null ? BaseVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
+                    AttachedPlayer?.Id ?? BasePlayer.InvalidId,
+                    AttachedVehicle?.Id ?? BaseVehicle.InvalidId, TestLOS);
             }
         }
 
@@ -153,8 +153,8 @@ namespace SampSharp.GameMode.World
                 Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
                 Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
-                    AttachedPlayer == null ? BasePlayer.InvalidId : AttachedPlayer.Id,
-                    AttachedVehicle == null ? BaseVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
+                    AttachedPlayer?.Id ?? BasePlayer.InvalidId,
+                    AttachedVehicle?.Id ?? BaseVehicle.InvalidId, TestLOS);
             }
         }
 
@@ -170,8 +170,8 @@ namespace SampSharp.GameMode.World
                 Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
                 Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
-                    AttachedPlayer == null ? BasePlayer.InvalidId : AttachedPlayer.Id,
-                    AttachedVehicle == null ? BaseVehicle.InvalidId : AttachedVehicle.Id, TestLOS);
+                    AttachedPlayer?.Id ?? BasePlayer.InvalidId,
+                    AttachedVehicle?.Id ?? BaseVehicle.InvalidId, TestLOS);
             }
         }
 
@@ -193,7 +193,7 @@ namespace SampSharp.GameMode.World
             bool testLOS)
         {
             if (owner == null)
-                throw new ArgumentNullException("owner");
+                throw new ArgumentNullException(nameof(owner));
 
             Owner = owner;
             _color = color;
@@ -238,10 +238,10 @@ namespace SampSharp.GameMode.World
             bool testLOS, BasePlayer attachedPlayer)
         {
             if (owner == null)
-                throw new ArgumentNullException("owner");
+                throw new ArgumentNullException(nameof(owner));
 
             if (attachedPlayer == null)
-                throw new ArgumentNullException("attachedPlayer");
+                throw new ArgumentNullException(nameof(attachedPlayer));
 
             Owner = owner;
             _color = color;
@@ -287,10 +287,10 @@ namespace SampSharp.GameMode.World
             bool testLOS, BaseVehicle attachedVehicle)
         {
             if (owner == null)
-                throw new ArgumentNullException("owner");
+                throw new ArgumentNullException(nameof(owner));
 
             if (attachedVehicle == null)
-                throw new ArgumentNullException("attachedVehicle");
+                throw new ArgumentNullException(nameof(attachedVehicle));
 
             Owner = owner;
             _color = color;

@@ -45,16 +45,9 @@ namespace SampSharp.GameMode.API
         public Type Type { get; private set; }
 
         /// <summary>
-        /// Gets the assemblies to load before this extension.
+        ///     Gets the assemblies to load before this extension.
         /// </summary>
         public IEnumerable<Assembly> LoadBeforeAssemblies
-        {
-            get
-            {
-                return _loadBeforeAssembliesOfType == null
-                    ? null
-                    : _loadBeforeAssembliesOfType.Where(t => t != null).Select(t => t.Assembly);
-            }
-        }
+            => _loadBeforeAssembliesOfType?.Where(t => t != null).Select(t => t.Assembly);
     }
 }

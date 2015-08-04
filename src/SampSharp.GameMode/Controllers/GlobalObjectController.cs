@@ -31,25 +31,16 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.ObjectMoved += (sender, args) =>
             {
-                var obj = sender as GlobalObject;
-
-                if (obj != null)
-                    obj.OnMoved(args);
+                (sender as GlobalObject)?.OnMoved(args);
             };
 
             gameMode.PlayerEditGlobalObject += (sender, args) =>
             {
-                var obj = args.Object;
-
-                if (obj != null)
-                    obj.OnEdited(args);
+                (sender as GlobalObject)?.OnEdited(args);
             };
             gameMode.PlayerSelectGlobalObject += (sender, args) =>
             {
-                var obj = args.Object;
-
-                if (obj != null)
-                    obj.OnSelected(args);
+                (sender as GlobalObject)?.OnSelected(args);
             };
         }
 

@@ -38,7 +38,7 @@ namespace SampSharp.GameMode
         /// <exception cref="System.ArgumentNullException">serviceType</exception>
         public object GetService(Type serviceType)
         {
-            if (serviceType == null) throw new ArgumentNullException("serviceType");
+            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
 
             return _services.ContainsKey(serviceType) ? _services[serviceType] : null;
         }
@@ -58,8 +58,8 @@ namespace SampSharp.GameMode
         /// <exception cref="System.ArgumentException">serviceType must be of type IService</exception>
         public void AddService(Type serviceType, IService service)
         {
-            if (serviceType == null) throw new ArgumentNullException("serviceType");
-            if (service == null) throw new ArgumentNullException("service");
+            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
+            if (service == null) throw new ArgumentNullException(nameof(service));
             if (!typeof (IService).IsAssignableFrom(serviceType))
                 throw new ArgumentException("serviceType must be of type IService");
             if (!serviceType.IsInstanceOfType(service))

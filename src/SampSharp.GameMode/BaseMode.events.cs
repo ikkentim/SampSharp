@@ -480,8 +480,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         protected virtual void OnInitialized(EventArgs e)
         {
-            if (Initialized != null)
-                Initialized(this, e);
+            Initialized?.Invoke(this, e);
         }
 
         /// <summary>
@@ -490,8 +489,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         protected virtual void OnExited(EventArgs e)
         {
-            if (Exited != null)
-                Exited(this, e);
+            Exited?.Invoke(this, e);
         }
 
         /// <summary>
@@ -501,8 +499,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerConnected(BasePlayer player, EventArgs e)
         {
-            if (PlayerConnected != null)
-                PlayerConnected(player, e);
+            PlayerConnected?.Invoke(player, e);
         }
 
         /// <summary>
@@ -512,8 +509,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="DisconnectEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerDisconnected(BasePlayer player, DisconnectEventArgs e)
         {
-            if (PlayerDisconnected != null)
-                PlayerDisconnected(player, e);
+            PlayerDisconnected?.Invoke(player, e);
         }
 
         /// <summary>
@@ -523,8 +519,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="DisconnectEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerCleanup(BasePlayer player, DisconnectEventArgs e)
         {
-            if (PlayerCleanup != null)
-                PlayerCleanup(player, e);
+            PlayerCleanup?.Invoke(player, e);
         }
 
         /// <summary>
@@ -534,8 +529,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerSpawned(BasePlayer player, SpawnEventArgs e)
         {
-            if (PlayerSpawned != null)
-                PlayerSpawned(player, e);
+            PlayerSpawned?.Invoke(player, e);
         }
 
         /// <summary>
@@ -545,8 +539,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="DeathEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerDied(BasePlayer player, DeathEventArgs e)
         {
-            if (PlayerDied != null)
-                PlayerDied(player, e);
+            PlayerDied?.Invoke(player, e);
         }
 
         /// <summary>
@@ -556,8 +549,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         protected virtual void OnVehicleSpawned(BaseVehicle vehicle, EventArgs e)
         {
-            if (VehicleSpawned != null)
-                VehicleSpawned(vehicle, e);
+            VehicleSpawned?.Invoke(vehicle, e);
         }
 
         /// <summary>
@@ -567,8 +559,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         protected virtual void OnVehicleDied(BaseVehicle vehicle, PlayerEventArgs e)
         {
-            if (VehicleDied != null)
-                VehicleDied(vehicle, e);
+            VehicleDied?.Invoke(vehicle, e);
         }
 
         /// <summary>
@@ -578,8 +569,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="TextEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerText(BasePlayer player, TextEventArgs e)
         {
-            if (PlayerText != null)
-                PlayerText(player, e);
+            PlayerText?.Invoke(player, e);
         }
 
         /// <summary>
@@ -589,8 +579,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="TextEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerCommandText(BasePlayer player, CommandTextEventArgs e)
         {
-            if (PlayerCommandText != null)
-                PlayerCommandText(player, e);
+            PlayerCommandText?.Invoke(player, e);
         }
 
         /// <summary>
@@ -600,8 +589,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="RequestClassEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerRequestClass(BasePlayer player, RequestClassEventArgs e)
         {
-            if (PlayerRequestClass != null)
-                PlayerRequestClass(player, e);
+            PlayerRequestClass?.Invoke(player, e);
         }
 
         /// <summary>
@@ -611,8 +599,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EnterVehicleEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerEnterVehicle(BasePlayer player, EnterVehicleEventArgs e)
         {
-            if (PlayerEnterVehicle != null)
-                PlayerEnterVehicle(player, e);
+            PlayerEnterVehicle?.Invoke(player, e);
         }
 
         /// <summary>
@@ -622,8 +609,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerExitVehicle(BasePlayer player, PlayerVehicleEventArgs e)
         {
-            if (PlayerExitVehicle != null)
-                PlayerExitVehicle(player, e);
+            PlayerExitVehicle?.Invoke(player, e);
         }
 
         /// <summary>
@@ -633,8 +619,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="StateEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerStateChanged(BasePlayer player, StateEventArgs e)
         {
-            if (PlayerStateChanged != null)
-                PlayerStateChanged(player, e);
+            PlayerStateChanged?.Invoke(player, e);
         }
 
         /// <summary>
@@ -644,8 +629,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerEnterCheckpoint(BasePlayer player, EventArgs e)
         {
-            if (PlayerEnterCheckpoint != null)
-                PlayerEnterCheckpoint(player, e);
+            PlayerEnterCheckpoint?.Invoke(player, e);
         }
 
         /// <summary>
@@ -655,8 +639,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerLeaveCheckpoint(BasePlayer player, EventArgs e)
         {
-            if (PlayerLeaveCheckpoint != null)
-                PlayerLeaveCheckpoint(player, e);
+            PlayerLeaveCheckpoint?.Invoke(player, e);
         }
 
         /// <summary>
@@ -666,8 +649,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerEnterRaceCheckpoint(BasePlayer player, EventArgs e)
         {
-            if (PlayerEnterRaceCheckpoint != null)
-                PlayerEnterRaceCheckpoint(player, e);
+            PlayerEnterRaceCheckpoint?.Invoke(player, e);
         }
 
         /// <summary>
@@ -677,8 +659,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerLeaveRaceCheckpoint(BasePlayer player, EventArgs e)
         {
-            if (PlayerLeaveRaceCheckpoint != null)
-                PlayerLeaveRaceCheckpoint(player, e);
+            PlayerLeaveRaceCheckpoint?.Invoke(player, e);
         }
 
         /// <summary>
@@ -687,8 +668,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="RconEventArgs" /> that contains the event data. </param>
         protected virtual void OnRconCommand(RconEventArgs e)
         {
-            if (RconCommand != null)
-                RconCommand(this, e);
+            RconCommand?.Invoke(this, e);
         }
 
         /// <summary>
@@ -698,8 +678,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerRequestSpawn(BasePlayer player, RequestSpawnEventArgs e)
         {
-            if (PlayerRequestSpawn != null)
-                PlayerRequestSpawn(player, e);
+            PlayerRequestSpawn?.Invoke(player, e);
         }
 
         /// <summary>
@@ -709,8 +688,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         protected virtual void OnObjectMoved(GlobalObject globalObject, EventArgs e)
         {
-            if (ObjectMoved != null)
-                ObjectMoved(globalObject, e);
+            ObjectMoved?.Invoke(globalObject, e);
         }
 
         /// <summary>
@@ -720,8 +698,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerObjectMoved(PlayerObject playerObject, EventArgs e)
         {
-            if (PlayerObjectMoved != null)
-                PlayerObjectMoved(playerObject, e);
+            PlayerObjectMoved?.Invoke(playerObject, e);
         }
 
         /// <summary>
@@ -731,8 +708,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerPickUpPickup(Pickup pickup, PlayerEventArgs e)
         {
-            if (PlayerPickUpPickup != null)
-                PlayerPickUpPickup(pickup, e);
+            PlayerPickUpPickup?.Invoke(pickup, e);
         }
 
         /// <summary>
@@ -742,8 +718,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="VehicleModEventArgs" /> that contains the event data. </param>
         protected virtual void OnVehicleMod(BaseVehicle vehicle, VehicleModEventArgs e)
         {
-            if (VehicleMod != null)
-                VehicleMod(vehicle, e);
+            VehicleMod?.Invoke(vehicle, e);
         }
 
         /// <summary>
@@ -753,8 +728,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EnterModShopEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerEnterExitModShop(BasePlayer player, EnterModShopEventArgs e)
         {
-            if (PlayerEnterExitModShop != null)
-                PlayerEnterExitModShop(player, e);
+            PlayerEnterExitModShop?.Invoke(player, e);
         }
 
         /// <summary>
@@ -764,8 +738,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="VehiclePaintjobEventArgs" /> that contains the event data. </param>
         protected virtual void OnVehiclePaintjobApplied(BaseVehicle vehicle, VehiclePaintjobEventArgs e)
         {
-            if (VehiclePaintjobApplied != null)
-                VehiclePaintjobApplied(vehicle, e);
+            VehiclePaintjobApplied?.Invoke(vehicle, e);
         }
 
         /// <summary>
@@ -775,8 +748,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="VehicleResprayedEventArgs" /> that contains the event data. </param>
         protected virtual void OnVehicleResprayed(BaseVehicle vehicle, VehicleResprayedEventArgs e)
         {
-            if (VehicleResprayed != null)
-                VehicleResprayed(vehicle, e);
+            VehicleResprayed?.Invoke(vehicle, e);
         }
 
         /// <summary>
@@ -786,8 +758,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
         protected virtual void OnVehicleDamageStatusUpdated(BaseVehicle vehicle, PlayerEventArgs e)
         {
-            if (VehicleDamageStatusUpdated != null)
-                VehicleDamageStatusUpdated(vehicle, e);
+            VehicleDamageStatusUpdated?.Invoke(vehicle, e);
         }
 
         /// <summary>
@@ -797,8 +768,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="UnoccupiedVehicleEventArgs" /> that contains the event data. </param>
         protected virtual void OnUnoccupiedVehicleUpdated(BaseVehicle vehicle, UnoccupiedVehicleEventArgs e)
         {
-            if (UnoccupiedVehicleUpdated != null)
-                UnoccupiedVehicleUpdated(vehicle, e);
+            UnoccupiedVehicleUpdated?.Invoke(vehicle, e);
         }
 
         /// <summary>
@@ -808,8 +778,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="MenuRowEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerSelectedMenuRow(BasePlayer player, MenuRowEventArgs e)
         {
-            if (PlayerSelectedMenuRow != null)
-                PlayerSelectedMenuRow(player, e);
+            PlayerSelectedMenuRow?.Invoke(player, e);
         }
 
         /// <summary>
@@ -819,8 +788,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerExitedMenu(BasePlayer player, EventArgs e)
         {
-            if (PlayerExitedMenu != null)
-                PlayerExitedMenu(player, e);
+            PlayerExitedMenu?.Invoke(player, e);
         }
 
         /// <summary>
@@ -830,8 +798,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="InteriorChangedEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerInteriorChanged(BasePlayer player, InteriorChangedEventArgs e)
         {
-            if (PlayerInteriorChanged != null)
-                PlayerInteriorChanged(player, e);
+            PlayerInteriorChanged?.Invoke(player, e);
         }
 
         /// <summary>
@@ -841,8 +808,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="KeyStateChangedEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerKeyStateChanged(BasePlayer player, KeyStateChangedEventArgs e)
         {
-            if (PlayerKeyStateChanged != null)
-                PlayerKeyStateChanged(player, e);
+            PlayerKeyStateChanged?.Invoke(player, e);
         }
 
         /// <summary>
@@ -851,8 +817,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="RconLoginAttemptEventArgs" /> that contains the event data. </param>
         protected virtual void OnRconLoginAttempt(RconLoginAttemptEventArgs e)
         {
-            if (RconLoginAttempt != null)
-                RconLoginAttempt(this, e);
+            RconLoginAttempt?.Invoke(this, e);
         }
 
         /// <summary>
@@ -862,8 +827,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerUpdate(BasePlayer player, PlayerUpdateEventArgs e)
         {
-            if (PlayerUpdate != null)
-                PlayerUpdate(player, e);
+            PlayerUpdate?.Invoke(player, e);
         }
 
         /// <summary>
@@ -873,8 +837,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerStreamIn(BasePlayer player, PlayerEventArgs e)
         {
-            if (PlayerStreamIn != null)
-                PlayerStreamIn(player, e);
+            PlayerStreamIn?.Invoke(player, e);
         }
 
         /// <summary>
@@ -884,8 +847,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerStreamOut(BasePlayer player, PlayerEventArgs e)
         {
-            if (PlayerStreamOut != null)
-                PlayerStreamOut(player, e);
+            PlayerStreamOut?.Invoke(player, e);
         }
 
         /// <summary>
@@ -895,8 +857,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         protected virtual void OnVehicleStreamIn(BaseVehicle vehicle, PlayerEventArgs e)
         {
-            if (VehicleStreamIn != null)
-                VehicleStreamIn(vehicle, e);
+            VehicleStreamIn?.Invoke(vehicle, e);
         }
 
         /// <summary>
@@ -906,8 +867,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
         protected virtual void OnVehicleStreamOut(BaseVehicle vehicle, PlayerEventArgs e)
         {
-            if (VehicleStreamOut != null)
-                VehicleStreamOut(vehicle, e);
+            VehicleStreamOut?.Invoke(vehicle, e);
         }
 
         /// <summary>
@@ -917,8 +877,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
         protected virtual void OnTrailerUpdate(BaseVehicle trailer, TrailerEventArgs e)
         {
-            if (TrailerUpdate != null)
-                TrailerUpdate(trailer, e);
+            TrailerUpdate?.Invoke(trailer, e);
         }
 
         /// <summary>
@@ -928,8 +887,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="DialogResponseEventArgs" /> that contains the event data. </param>
         protected virtual void OnDialogResponse(BasePlayer player, DialogResponseEventArgs e)
         {
-            if (DialogResponse != null)
-                DialogResponse(player, e);
+            DialogResponse?.Invoke(player, e);
         }
 
         /// <summary>
@@ -939,8 +897,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="DamageEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerTakeDamage(BasePlayer player, DamageEventArgs e)
         {
-            if (PlayerTakeDamage != null)
-                PlayerTakeDamage(player, e);
+            PlayerTakeDamage?.Invoke(player, e);
         }
 
         /// <summary>
@@ -950,8 +907,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="DamageEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerGiveDamage(BasePlayer player, DamageEventArgs e)
         {
-            if (PlayerGiveDamage != null)
-                PlayerGiveDamage(player, e);
+            PlayerGiveDamage?.Invoke(player, e);
         }
 
         /// <summary>
@@ -961,8 +917,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="PositionEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerClickMap(BasePlayer player, PositionEventArgs e)
         {
-            if (PlayerClickMap != null)
-                PlayerClickMap(player, e);
+            PlayerClickMap?.Invoke(player, e);
         }
 
         /// <summary>
@@ -972,8 +927,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerClickTextDraw(BasePlayer player, ClickTextDrawEventArgs e)
         {
-            if (PlayerClickTextDraw != null)
-                PlayerClickTextDraw(player, e);
+            PlayerClickTextDraw?.Invoke(player, e);
         }
 
         /// <summary>
@@ -983,8 +937,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerClickPlayerTextDraw(BasePlayer player, ClickPlayerTextDrawEventArgs e)
         {
-            if (PlayerClickPlayerTextDraw != null)
-                PlayerClickPlayerTextDraw(player, e);
+            PlayerClickPlayerTextDraw?.Invoke(player, e);
         }
 
         /// <summary>
@@ -994,8 +947,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="ClickPlayerEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerClickPlayer(BasePlayer player, ClickPlayerEventArgs e)
         {
-            if (PlayerClickPlayer != null)
-                PlayerClickPlayer(player, e);
+            PlayerClickPlayer?.Invoke(player, e);
         }
 
         /// <summary>
@@ -1005,8 +957,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EditGlobalObjectEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerEditGlobalObject(BasePlayer player, EditGlobalObjectEventArgs e)
         {
-            if (PlayerEditGlobalObject != null)
-                PlayerEditGlobalObject(player, e);
+            PlayerEditGlobalObject?.Invoke(player, e);
         }
 
         /// <summary>
@@ -1016,8 +967,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EditPlayerObjectEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerEditPlayerObject(BasePlayer player, EditPlayerObjectEventArgs e)
         {
-            if (PlayerEditPlayerObject != null)
-                PlayerEditPlayerObject(player, e);
+            PlayerEditPlayerObject?.Invoke(player, e);
         }
 
         /// <summary>
@@ -1027,8 +977,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EditAttachedObjectEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerEditAttachedObject(BasePlayer player, EditAttachedObjectEventArgs e)
         {
-            if (PlayerEditAttachedObject != null)
-                PlayerEditAttachedObject(player, e);
+            PlayerEditAttachedObject?.Invoke(player, e);
         }
 
         /// <summary>
@@ -1038,8 +987,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="SelectGlobalObjectEventArgs" /> that contains the event data.</param>
         protected virtual void OnPlayerSelectGlobalObject(BasePlayer player, SelectGlobalObjectEventArgs e)
         {
-            if (PlayerSelectGlobalObject != null)
-                PlayerSelectGlobalObject(player, e);
+            PlayerSelectGlobalObject?.Invoke(player, e);
         }
 
         /// <summary>
@@ -1049,8 +997,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="SelectPlayerObjectEventArgs" /> that contains the event data.</param>
         protected virtual void OnPlayerSelectPlayerObject(BasePlayer player, SelectPlayerObjectEventArgs e)
         {
-            if (PlayerSelectPlayerObject != null)
-                PlayerSelectPlayerObject(player, e);
+            PlayerSelectPlayerObject?.Invoke(player, e);
         }
 
         /// <summary>
@@ -1060,8 +1007,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="WeaponShotEventArgs" /> that contains the event data. </param>
         protected virtual void OnPlayerWeaponShot(BasePlayer player, WeaponShotEventArgs e)
         {
-            if (PlayerWeaponShot != null)
-                PlayerWeaponShot(player, e);
+            PlayerWeaponShot?.Invoke(player, e);
         }
 
         /// <summary>
@@ -1070,8 +1016,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="ConnectionEventArgs" /> that contains the event dEventArgsata. </param>
         protected virtual void OnIncomingConnection(ConnectionEventArgs e)
         {
-            if (IncomingConnection != null)
-                IncomingConnection(this, e);
+            IncomingConnection?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1081,8 +1026,7 @@ namespace SampSharp.GameMode
         /// <param name="e">The <see cref="SirenStateEventArgs" /> instance containing the event data.</param>
         protected void OnVehicleSirenStateChange(BaseVehicle vehicle, SirenStateEventArgs e)
         {
-            if (VehicleSirenStateChange != null)
-                VehicleSirenStateChange(vehicle, e);
+            VehicleSirenStateChange?.Invoke(vehicle, e);
         }
 
         /// <summary>
@@ -1092,8 +1036,7 @@ namespace SampSharp.GameMode
         /// <param name="e">The <see cref="PlayerEventArgs" /> instance containing the event data.</param>
         protected void OnActorStreamIn(Actor actor, PlayerEventArgs e)
         {
-            if (ActorStreamIn != null)
-                ActorStreamIn(actor, e);
+            ActorStreamIn?.Invoke(actor, e);
         }
 
         /// <summary>
@@ -1103,8 +1046,7 @@ namespace SampSharp.GameMode
         /// <param name="e">The <see cref="PlayerEventArgs" /> instance containing the event data.</param>
         protected void OnActorStreamOut(Actor actor, PlayerEventArgs e)
         {
-            if (ActorStreamOut != null)
-                ActorStreamOut(actor, e);
+            ActorStreamOut?.Invoke(actor, e);
         }
 
         /// <summary>
@@ -1114,8 +1056,7 @@ namespace SampSharp.GameMode
         /// <param name="e">The <see cref="DamageEventArgs" /> instance containing the event data.</param>
         protected void OnPlayerGiveDamageActor(Actor actor, DamageEventArgs e)
         {
-            if (PlayerGiveDamageActor != null)
-                PlayerGiveDamageActor(actor, e);
+            PlayerGiveDamageActor?.Invoke(actor, e);
         }
 
         /// <summary>
@@ -1124,8 +1065,7 @@ namespace SampSharp.GameMode
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         protected virtual void OnTick(EventArgs e)
         {
-            if (Tick != null)
-                Tick(this, e);
+            Tick?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1134,8 +1074,7 @@ namespace SampSharp.GameMode
         /// <param name="e">The <see cref="ExceptionEventArgs" /> instance containing the event data.</param>
         protected virtual void OnCallbackException(ExceptionEventArgs e)
         {
-            if (CallbackException != null)
-                CallbackException(this, e);
+            CallbackException?.Invoke(this, e);
         }
     }
 }

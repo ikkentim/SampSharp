@@ -42,7 +42,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <summary>
         ///     Gets the enum type in which to look for values.
         /// </summary>
-        public Type Type { get; private set; }
+        public Type Type { get; }
 
         /// <summary>
         ///     Gets or sets whether input should be matches against the enum values.

@@ -37,8 +37,8 @@ namespace SampSharp.GameMode.Display
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
         public ListDialog(string caption, string button1, string button2 = null)
         {
-            if (caption == null) throw new ArgumentNullException("caption");
-            if (button1 == null) throw new ArgumentNullException("button1");
+            if (caption == null) throw new ArgumentNullException(nameof(caption));
+            if (button1 == null) throw new ArgumentNullException(nameof(button1));
             Button1 = button1;
             Button2 = button2;
             Caption = caption;
@@ -48,20 +48,14 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Gets the list items.
         /// </summary>
-        public IList<string> Items
-        {
-            get { return _items; }
-        }
+        public IList<string> Items => _items;
 
         #region Overrides of Dialog
 
         /// <summary>
         ///     Gets the info displayed in the box.
         /// </summary>
-        protected override string Info
-        {
-            get { return string.Join("\n", Items); }
-        }
+        protected override string Info => string.Join("\n", Items);
 
         #endregion
     }

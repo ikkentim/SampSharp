@@ -125,10 +125,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the size of the actors pool.
         /// </summary>
-        public static int PoolSize
-        {
-            get { return Internal.GetActorPoolSize(); }
-        }
+        public static int PoolSize => Internal.GetActorPoolSize();
 
         #region Implementation of IWorldObject
 
@@ -192,7 +189,7 @@ namespace SampSharp.GameMode.World
         /// <exception cref="System.ArgumentNullException">player</exception>
         public bool IsStreamedIn(BasePlayer player)
         {
-            if (player == null) throw new ArgumentNullException("player");
+            if (player == null) throw new ArgumentNullException(nameof(player));
 
             AssertNotDisposed();
 
@@ -218,8 +215,8 @@ namespace SampSharp.GameMode.World
         public void ApplyAnimation(string library, string name, float fDelta, bool loop, bool lockx, bool locky,
             bool freeze, int time)
         {
-            if (library == null) throw new ArgumentNullException("library");
-            if (name == null) throw new ArgumentNullException("name");
+            if (library == null) throw new ArgumentNullException(nameof(library));
+            if (name == null) throw new ArgumentNullException(nameof(name));
 
             AssertNotDisposed();
 
@@ -242,8 +239,7 @@ namespace SampSharp.GameMode.World
         /// <param name="args">The <see cref="PlayerEventArgs" /> instance containing the event data.</param>
         public void OnStreamIn(PlayerEventArgs args)
         {
-            if (StreamIn != null)
-                StreamIn(this, args);
+            StreamIn?.Invoke(this, args);
         }
 
         /// <summary>
@@ -252,8 +248,7 @@ namespace SampSharp.GameMode.World
         /// <param name="args">The <see cref="PlayerEventArgs" /> instance containing the event data.</param>
         public void OnStreamOut(PlayerEventArgs args)
         {
-            if (StreamOut != null)
-                StreamOut(this, args);
+            StreamOut?.Invoke(this, args);
         }
 
         /// <summary>
@@ -262,8 +257,7 @@ namespace SampSharp.GameMode.World
         /// <param name="args">The <see cref="DamageEventArgs" /> instance containing the event data.</param>
         public void OnPlayerGiveDamage(DamageEventArgs args)
         {
-            if (PlayerGiveDamage != null)
-                PlayerGiveDamage(this, args);
+            PlayerGiveDamage?.Invoke(this, args);
         }
 
         #region Overrides of Pool<GtaPlayer>

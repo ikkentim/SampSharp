@@ -42,10 +42,10 @@ namespace SampSharp.GameMode.Display
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
         public TablistDialog(string caption, int columnCount, string button1, string button2 = null)
         {
-            if (caption == null) throw new ArgumentNullException("caption");
-            if (button1 == null) throw new ArgumentNullException("button1");
+            if (caption == null) throw new ArgumentNullException(nameof(caption));
+            if (button1 == null) throw new ArgumentNullException(nameof(button1));
             if (columnCount <= 0)
-                throw new ArgumentOutOfRangeException("columnCount", "must be greater than 0");
+                throw new ArgumentOutOfRangeException(nameof(columnCount), "must be greater than 0");
 
             Caption = caption;
             Button1 = button1;
@@ -66,13 +66,13 @@ namespace SampSharp.GameMode.Display
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
         public TablistDialog(string caption, IEnumerable<string> columns, string button1, string button2 = null)
         {
-            if (caption == null) throw new ArgumentNullException("caption");
-            if (button1 == null) throw new ArgumentNullException("button1");
+            if (caption == null) throw new ArgumentNullException(nameof(caption));
+            if (button1 == null) throw new ArgumentNullException(nameof(button1));
 
             Caption = caption;
             Button1 = button1;
             Button2 = button2;
-            if (columns == null) throw new ArgumentNullException("columns");
+            if (columns == null) throw new ArgumentNullException(nameof(columns));
             Style = DialogStyle.TablistHeaders;
 
             _columns = columns.ToArray();
@@ -142,10 +142,10 @@ namespace SampSharp.GameMode.Display
             var row = item.ToArray();
 
             if (row.Length != _columnCount)
-                throw new ArgumentException(string.Format("Row must contain {0} cells.", _columnCount), "item");
+                throw new ArgumentException($"Row must contain {_columnCount} cells.", nameof(item));
 
             if (row.Any(cell => cell.Contains('\t')))
-                throw new ArgumentException("No cell can contain a TAB character.", "item");
+                throw new ArgumentException("No cell can contain a TAB character.", nameof(item));
 
             _rows.Add(string.Join("\n", row));
         }
@@ -172,7 +172,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
         public bool Contains(IEnumerable<string> item)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
             return _rows.Contains(string.Join("\t", item));
         }
@@ -196,15 +196,15 @@ namespace SampSharp.GameMode.Display
         /// </exception>
         public void CopyTo(IEnumerable<string>[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException("array");
+            if (array == null) throw new ArgumentNullException(nameof(array));
 
             if (arrayIndex < 0)
-                throw new ArgumentOutOfRangeException("arrayIndex", arrayIndex, "arrayIndex is less than 0.");
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex), arrayIndex, "arrayIndex is less than 0.");
 
             if (array.Length < arrayIndex + _rows.Count)
                 throw new ArgumentException(
                     "The number of elements in the collection is greater than the available space from arrayIndex to the end of the destination array.",
-                    "array");
+                    nameof(array));
 
             for (var i = 0; i < _rows.Count; i++)
                 array[i + arrayIndex] = _rows[i].Split('\t');
@@ -226,7 +226,7 @@ namespace SampSharp.GameMode.Display
         /// </exception>
         public bool Remove(IEnumerable<string> item)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
             return _rows.Remove(string.Join("\t", item));
         }
@@ -237,10 +237,7 @@ namespace SampSharp.GameMode.Display
         /// <returns>
         ///     The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </returns>
-        public int Count
-        {
-            get { return _rows.Count; }
-        }
+        public int Count => _rows.Count;
 
         /// <summary>
         ///     Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
@@ -248,10 +245,7 @@ namespace SampSharp.GameMode.Display
         /// <returns>
         ///     true if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise, false.
         /// </returns>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         #endregion
 
@@ -266,7 +260,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1" />.</param>
         public int IndexOf(IEnumerable<string> item)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
             return _rows.IndexOf(string.Join("\t", item));
         }
@@ -283,7 +277,7 @@ namespace SampSharp.GameMode.Display
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1" /> is read-only.</exception>
         public void Insert(int index, IEnumerable<string> item)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
             _rows.Insert(index, string.Join("\t", item));
         }
@@ -325,7 +319,7 @@ namespace SampSharp.GameMode.Display
                 var row = value.ToArray();
 
                 if (row.Length != _columnCount)
-                    throw new ArgumentException(string.Format("Row must contain {0} cells.", _columnCount), "item");
+                    throw new ArgumentException($"Row must contain {_columnCount} cells.", "item");
 
                 if (row.Any(cell => cell.Contains('\t')))
                     throw new ArgumentException("No cell can contain a TAB character.", "item");

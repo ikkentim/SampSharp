@@ -104,7 +104,7 @@ namespace SampSharp.GameMode.World
         /// <exception cref="System.ArgumentNullException">player</exception>
         public virtual void Show(BasePlayer player)
         {
-            if (player == null) throw new ArgumentNullException("player");
+            if (player == null) throw new ArgumentNullException(nameof(player));
             AssertNotDisposed();
 
             Internal.GangZoneShowForPlayer(player.Id, Id, Color);
@@ -127,7 +127,7 @@ namespace SampSharp.GameMode.World
         /// <exception cref="System.ArgumentNullException">player</exception>
         public virtual void Hide(BasePlayer player)
         {
-            if (player == null) throw new ArgumentNullException("player");
+            if (player == null) throw new ArgumentNullException(nameof(player));
             AssertNotDisposed();
 
             Internal.GangZoneHideForPlayer(player.Id, Id);
@@ -151,7 +151,7 @@ namespace SampSharp.GameMode.World
         /// <exception cref="System.ArgumentNullException">player</exception>
         public virtual void Flash(BasePlayer player)
         {
-            if (player == null) throw new ArgumentNullException("player");
+            if (player == null) throw new ArgumentNullException(nameof(player));
             Flash(player, new Color());
         }
 
@@ -163,7 +163,7 @@ namespace SampSharp.GameMode.World
         /// <exception cref="System.ArgumentNullException">player</exception>
         public virtual void Flash(BasePlayer player, Color color)
         {
-            if (player == null) throw new ArgumentNullException("player");
+            if (player == null) throw new ArgumentNullException(nameof(player));
             AssertNotDisposed();
 
             Internal.GangZoneFlashForPlayer(player.Id, Id, color);
@@ -189,7 +189,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             Internal.GangZoneStopFlashForPlayer(player.Id, Id);
         }

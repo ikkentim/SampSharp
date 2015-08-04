@@ -44,15 +44,13 @@ namespace SampSharp.GameMode.Pools
         /// <summary>
         ///     The type to initialize when adding an instance to this pool by id.
         /// </summary>
+        // ReSharper disable once StaticMemberInGenericType
         protected static Type InstanceType { get; private set; }
 
         /// <summary>
         ///     Gets a collection containing all instances.
         /// </summary>
-        public static IEnumerable<TInstance> All
-        {
-            get { return Container; }
-        }
+        public static IEnumerable<TInstance> All => Container;
 
         /// <summary>
         ///     Gets the identifier of this instance.
@@ -96,10 +94,10 @@ namespace SampSharp.GameMode.Pools
 
         /// <summary>
         ///     Gets a <see cref="IReadOnlyCollection{T}" /> containing all instances of the given type within this
-        ///     <see cref="Pool{T}" />.
+        ///     <see cref="IdentifiedPool{T}" />.
         /// </summary>
         /// <typeparam name="T2">The <see cref="Type" /> of instances to get.</typeparam>
-        /// <returns>All instances of the given type within this <see cref="Pool{T}" />.</returns>
+        /// <returns>All instances of the given type within this <see cref="IdentifiedPool{T}" />.</returns>
         public static IEnumerable<T2> GetAll<T2>()
         {
             return All.OfType<T2>();
@@ -122,9 +120,9 @@ namespace SampSharp.GameMode.Pools
         /// <exception cref="System.ArgumentException">type must be of type TInstance;type</exception>
         public static void Register(Type type)
         {
-            if (type == null) throw new ArgumentNullException("type");
+            if (type == null) throw new ArgumentNullException(nameof(type));
             if (!typeof (TInstance).IsAssignableFrom(type))
-                throw new ArgumentException("type must be of type " + typeof (TInstance), "type");
+                throw new ArgumentException("type must be of type " + typeof (TInstance), nameof(type));
 
             InstanceType = type;
         }

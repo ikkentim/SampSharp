@@ -21,13 +21,6 @@ namespace SampSharp.GameMode.World
     {
         private static class Internal
         {
-            public delegate int AddStaticVehicleExImpl(
-                int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int color1, int color2,
-                int respawnDelay, bool addsiren = false);
-
-            public delegate int AddStaticVehicleImpl(
-                int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int color1, int color2);
-
             public delegate bool AddVehicleComponentImpl(int vehicleid, int componentid);
 
             public delegate bool AttachTrailerToVehicleImpl(int trailerid, int vehicleid);
@@ -35,11 +28,7 @@ namespace SampSharp.GameMode.World
             public delegate bool ChangeVehicleColorImpl(int vehicleid, int color1, int color2);
 
             public delegate bool ChangeVehiclePaintjobImpl(int vehicleid, int paintjobid);
-
-            public delegate int CreateVehicleImpl(
-                int vehicletype, float x, float y, float z, float rotation, int color1,
-                int color2, int respawnDelay, bool addsiren = false);
-
+            
             public delegate bool DestroyVehicleImpl(int vehicleid);
 
             public delegate bool DetachTrailerFromVehicleImpl(int vehicleid);
@@ -133,8 +122,7 @@ namespace SampSharp.GameMode.World
 
             [Native("GetVehicleDistanceFromPoint")] public static readonly GetVehicleDistanceFromPointImpl
                 GetVehicleDistanceFromPoint = null;
-
-            [Native("CreateVehicle")] public static readonly CreateVehicleImpl CreateVehicle = null;
+            
             [Native("DestroyVehicle")] public static readonly DestroyVehicleImpl DestroyVehicle = null;
             [Native("IsVehicleStreamedIn")] public static readonly IsVehicleStreamedInImpl IsVehicleStreamedIn = null;
             [Native("GetVehiclePos")] public static readonly GetVehiclePosImpl GetVehiclePos = null;
@@ -234,10 +222,7 @@ namespace SampSharp.GameMode.World
                 null;
 
             [Native("GetVehicleModelInfo")] public static readonly GetVehicleModelInfoImpl GetVehicleModelInfo = null;
-
-            [Native("AddStaticVehicle")] public static readonly AddStaticVehicleImpl AddStaticVehicle = null;
-            [Native("AddStaticVehicleEx")] public static readonly AddStaticVehicleExImpl AddStaticVehicleEx = null;
-
+            
             [Native("GetVehiclePoolSize")] public static readonly GetVehiclePoolSizeImpl GetVehiclePoolSize = null;
         }
     }

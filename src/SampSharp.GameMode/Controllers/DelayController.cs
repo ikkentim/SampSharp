@@ -30,10 +30,7 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.TimerTick += (sender, args) =>
             {
-                var delay = sender as Delay;
-
-                if (delay != null && delay.Action != null)
-                    delay.Action();
+                (sender as Delay)?.Action?.Invoke();
             };
         }
     }

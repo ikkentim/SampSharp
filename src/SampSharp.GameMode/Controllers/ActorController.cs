@@ -32,21 +32,15 @@ namespace SampSharp.GameMode.Controllers
         {
             gameMode.PlayerGiveDamageActor += (sender, args) =>
             {
-                var actor = sender as Actor;
-                if (actor != null)
-                    actor.OnPlayerGiveDamage(args);
+                (sender as Actor)?.OnPlayerGiveDamage(args);
             };
             gameMode.ActorStreamIn += (sender, args) =>
             {
-                var actor = sender as Actor;
-                if (actor != null)
-                    actor.OnStreamIn(args);
+                (sender as Actor)?.OnStreamIn(args);
             };
             gameMode.ActorStreamOut += (sender, args) =>
             {
-                var actor = sender as Actor;
-                if (actor != null)
-                    actor.OnStreamOut(args);
+                (sender as Actor)?.OnStreamOut(args);
             };
         }
 

@@ -24,10 +24,9 @@ using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
-using TestMode;
 using TestMode.Tests;
 
-[assembly: SampSharpExtension(typeof(ExA), typeof(ExB))]
+//[assembly: SampSharpExtension(typeof(ExA), typeof(ExB))]
 //[assembly: SampSharpExtension(typeof(ExB), typeof(ExA))]
 
 namespace TestMode
@@ -43,6 +42,7 @@ namespace TestMode
 
         #endregion
     }
+
     public class ExB : Extension
     {
         #region Overrides of Extension
@@ -55,7 +55,7 @@ namespace TestMode
         #endregion
     }
 
-    
+
     public class Vehicle : BaseVehicle
     {
         public override void OnPlayerEnter(EnterVehicleEventArgs e)
@@ -109,15 +109,16 @@ namespace TestMode
             new KeyHandlerTest(),
             new ExtensionTest(),
             new ActorTest(),
-            new ServicesTest(),
+            new ServicesTest()
         };
 
         #endregion
 
-        private void StackFiller(int c)
+        private static void StackFiller(int c)
         {
             if (c <= 0)
                 throw new Exception();
+            // ReSharper disable once TailRecursiveCall
             StackFiller(c - 1);
         }
 

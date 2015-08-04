@@ -79,7 +79,7 @@ namespace TestMode.Tests
             {
                 await Task.Delay(1000);
 
-                Console.WriteLine("ASync: Mainthread: {0} !{1}!", Thread.CurrentThread == _main);
+                Console.WriteLine("ASync: Mainthread: {0}", Thread.CurrentThread == _main);
 
                 Sync.Run(() => Console.WriteLine("Sync: Mainthread: {0}", Thread.CurrentThread == _main));
             });

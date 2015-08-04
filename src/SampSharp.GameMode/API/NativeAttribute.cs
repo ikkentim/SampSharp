@@ -50,7 +50,7 @@ namespace SampSharp.GameMode.API
         /// <exception cref="ArgumentNullException">name</exception>
         public NativeAttribute(string name, params int[] lengths)
         {
-            if (name == null) throw new ArgumentNullException("name");
+            if (name == null) throw new ArgumentNullException(nameof(name));
             Name = name;
             Lengths = lengths;
         }

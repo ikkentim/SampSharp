@@ -109,6 +109,6 @@ namespace SampSharp.GameMode.Factories
         /// <summary>
         ///     Gets the game mode.
         /// </summary>
-        public BaseMode GameMode { get; private set; }
+        public BaseMode GameMode { get; }
     }
 }

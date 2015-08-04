@@ -256,7 +256,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the type of this <see cref="VehicleModelInfo" />.
         /// </summary>
-        public VehicleModelType Type { get; private set; }
+        public VehicleModelType Type { get; }
 
         /// <summary>
         ///     Gets the name of this <see cref="VehicleModelInfo" />.
@@ -291,14 +291,14 @@ namespace SampSharp.GameMode.World
         {
             if (vehicle == null)
             {
-                throw new ArgumentNullException("vehicle");
+                throw new ArgumentNullException(nameof(vehicle));
             }
 
             var model = (int) vehicle.Model;
 
             if (model < 400 || model > 611)
             {
-                throw new ArgumentOutOfRangeException("vehicle", "vehicle's model is non-existant");
+                throw new ArgumentOutOfRangeException(nameof(vehicle), "vehicle's model is non-existant");
             }
 
             return VehicleModelInfos[model - 400];
@@ -314,7 +314,7 @@ namespace SampSharp.GameMode.World
         {
             if ((int) model < 400 || (int) model > 611)
             {
-                throw new ArgumentOutOfRangeException("model", "model is non-existant");
+                throw new ArgumentOutOfRangeException(nameof(model), "model is non-existant");
             }
 
             return VehicleModelInfos[(int) model - 400];

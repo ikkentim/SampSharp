@@ -69,7 +69,7 @@ namespace SampSharp.GameMode.World
         /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
-            return string.Format("Player(Id:{0}, Name:{1})", Id, Name);
+            return $"Player(Id:{Id}, Name:{Name})";
         }
 
         #endregion
@@ -110,15 +110,12 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets a set of KeyHandlers for different key states.
         /// </summary>
-        public KeyChangeHandlerSet Key { get; private set; }
+        public KeyChangeHandlerSet Key { get; }
 
         /// <summary>
         ///     Gets the size of the players pool.
         /// </summary>
-        public static int PoolSize
-        {
-            get { return Internal.GetPlayerPoolSize(); }
-        }
+        public static int PoolSize => Internal.GetPlayerPoolSize();
 
         #endregion
 
@@ -201,26 +198,17 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the ammo of the Weapon this Player is currently holding.
         /// </summary>
-        public virtual int WeaponAmmo
-        {
-            get { return Internal.GetPlayerAmmo(Id); }
-        }
+        public virtual int WeaponAmmo => Internal.GetPlayerAmmo(Id);
 
         /// <summary>
         ///     Gets the WeaponState of the Weapon this Player is currently holding.
         /// </summary>
-        public virtual WeaponState WeaponState
-        {
-            get { return (WeaponState) Internal.GetPlayerWeaponState(Id); }
-        }
+        public virtual WeaponState WeaponState => (WeaponState) Internal.GetPlayerWeaponState(Id);
 
         /// <summary>
         ///     Gets the Weapon this Player is currently holding.
         /// </summary>
-        public virtual Weapon Weapon
-        {
-            get { return (Weapon) Internal.GetPlayerWeapon(Id); }
-        }
+        public virtual Weapon Weapon => (Weapon) Internal.GetPlayerWeapon(Id);
 
         /// <summary>
         ///     Gets the Player this Player is aiming at.
@@ -295,10 +283,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the state of this Player.
         /// </summary>
-        public virtual PlayerState State
-        {
-            get { return (PlayerState) Internal.GetPlayerState(Id); }
-        }
+        public virtual PlayerState State => (PlayerState) Internal.GetPlayerState(Id);
 
         /// <summary>
         ///     Gets the IP of this Player.
@@ -316,10 +301,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the ping of this Player.
         /// </summary>
-        public virtual int Ping
-        {
-            get { return Internal.GetPlayerPing(Id); }
-        }
+        public virtual int Ping => Internal.GetPlayerPing(Id);
 
         /// <summary>
         ///     Gets or sets the wanted level of this Player.
@@ -356,18 +338,12 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the vehicle seat this Player sits on.
         /// </summary>
-        public virtual int VehicleSeat
-        {
-            get { return Internal.GetPlayerVehicleSeat(Id); }
-        }
+        public virtual int VehicleSeat => Internal.GetPlayerVehicleSeat(Id);
 
         /// <summary>
         ///     Gets the index of the animation this Player is playing.
         /// </summary>
-        public virtual int AnimationIndex
-        {
-            get { return Internal.GetPlayerAnimationIndex(Id); }
-        }
+        public virtual int AnimationIndex => Internal.GetPlayerAnimationIndex(Id);
 
         /// <summary>
         ///     Gets or sets the SpecialAction of this Player.
@@ -409,10 +385,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the mode of this Player's camera.
         /// </summary>
-        public virtual CameraMode CameraMode
-        {
-            get { return (CameraMode) Internal.GetPlayerCameraMode(Id); }
-        }
+        public virtual CameraMode CameraMode => (CameraMode) Internal.GetPlayerCameraMode(Id);
 
         /// <summary>
         ///     Gets the Actor this Player is aiming at.
@@ -487,26 +460,17 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets whether this Player is currently in any vehicle.
         /// </summary>
-        public virtual bool InAnyVehicle
-        {
-            get { return Internal.IsPlayerInAnyVehicle(Id); }
-        }
+        public virtual bool InAnyVehicle => Internal.IsPlayerInAnyVehicle(Id);
 
         /// <summary>
         ///     Gets whether this Player is in his checkpoint.
         /// </summary>
-        public virtual bool InCheckpoint
-        {
-            get { return Internal.IsPlayerInCheckpoint(Id); }
-        }
+        public virtual bool InCheckpoint => Internal.IsPlayerInCheckpoint(Id);
 
         /// <summary>
         ///     Gets whether this Player is in his race-checkpoint.
         /// </summary>
-        public virtual bool InRaceCheckpoint
-        {
-            get { return Internal.IsPlayerInRaceCheckpoint(Id); }
-        }
+        public virtual bool InRaceCheckpoint => Internal.IsPlayerInRaceCheckpoint(Id);
 
         /// <summary>
         ///     Gets the Vehicle that this Player is surfing.
@@ -547,10 +511,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets whether this Player is connected to the server.
         /// </summary>
-        public virtual bool IsConnected
-        {
-            get { return Internal.IsPlayerConnected(Id); }
-        }
+        public virtual bool IsConnected => Internal.IsPlayerConnected(Id);
 
 
         /// <summary>
@@ -586,26 +547,17 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets whether this Player is an actual player or an NPC.
         /// </summary>
-        public virtual bool IsNPC
-        {
-            get { return Internal.IsPlayerNPC(Id); }
-        }
+        public virtual bool IsNPC => Internal.IsPlayerNPC(Id);
 
         /// <summary>
         ///     Gets whether this Player is logged into RCON.
         /// </summary>
-        public virtual bool IsAdmin
-        {
-            get { return Internal.IsPlayerAdmin(Id); }
-        }
+        public virtual bool IsAdmin => Internal.IsPlayerAdmin(Id);
 
         /// <summary>
         ///     Gets whether this Player is alive;
         /// </summary>
-        public virtual bool IsAlive
-        {
-            get { return !new[] {PlayerState.None, PlayerState.Spectating, PlayerState.Wasted}.Contains(State); }
-        }
+        public virtual bool IsAlive => !new[] {PlayerState.None, PlayerState.Spectating, PlayerState.Wasted}.Contains(State);
 
         /// <summary>
         ///     Gets this Player's network stats and saves them into a string.
@@ -641,7 +593,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 string result;
-                Internal.gpci(Id, out result, 64);
+                Internal.GPCI(Id, out result, 64);
                 return result;
             }
         }
@@ -1034,7 +986,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (other == null)
-                throw new ArgumentNullException("other");
+                throw new ArgumentNullException(nameof(other));
 
             return Internal.NativeIsPlayerStreamedIn(other.Id, Id);
         }
@@ -1237,7 +1189,7 @@ namespace SampSharp.GameMode.World
         /// <param name="crime">The crime ID, which will be reported as a 10-code (i.e. 10-16 if 16 was passed as the crimeid).</param>
         public virtual void PlayCrimeReport(BasePlayer suspect, int crime)
         {
-            if (suspect == null) throw new ArgumentNullException("suspect");
+            if (suspect == null) throw new ArgumentNullException(nameof(suspect));
             AssertNotDisposed();
 
             Internal.PlayCrimeReportForPlayer(Id, suspect.Id, crime);
@@ -1417,7 +1369,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (vehicle == null)
-                throw new ArgumentNullException("vehicle");
+                throw new ArgumentNullException(nameof(vehicle));
 
             Internal.PutPlayerInVehicle(Id, vehicle.Id, seatid);
         }
@@ -1653,7 +1605,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             Internal.SetPlayerMarkerForPlayer(Id, player.Id, color.ToInteger(ColorFormat.RGBA));
         }
@@ -1674,7 +1626,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             Internal.ShowPlayerNameTagForPlayer(Id, player.Id, show);
         }
@@ -1815,7 +1767,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (targetPlayer == null)
-                throw new ArgumentNullException("targetPlayer");
+                throw new ArgumentNullException(nameof(targetPlayer));
 
             Internal.PlayerSpectatePlayer(Id, targetPlayer.Id, (int) mode);
         }
@@ -1833,7 +1785,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (targetPlayer == null)
-                throw new ArgumentNullException("targetPlayer");
+                throw new ArgumentNullException(nameof(targetPlayer));
 
             SpectatePlayer(targetPlayer, SpectateMode.Normal);
         }
@@ -1852,7 +1804,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (targetVehicle == null)
-                throw new ArgumentNullException("targetVehicle");
+                throw new ArgumentNullException(nameof(targetVehicle));
 
             Internal.PlayerSpectateVehicle(Id, targetVehicle.Id, (int) mode);
         }
@@ -1870,7 +1822,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (targetVehicle == null)
-                throw new ArgumentNullException("targetVehicle");
+                throw new ArgumentNullException(nameof(targetVehicle));
 
             SpectateVehicle(targetVehicle, SpectateMode.Normal);
         }
@@ -2059,7 +2011,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (receiver == null)
-                throw new ArgumentNullException("receiver");
+                throw new ArgumentNullException(nameof(receiver));
 
             Internal.NativeSendPlayerMessageToPlayer(receiver.Id, Id, message);
         }
@@ -2166,8 +2118,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SendDeathMessageToPlayer(Id, killer == null ? InvalidId : killer.Id,
-                killee == null ? InvalidId : killee.Id, (int) weapon);
+            Internal.SendDeathMessageToPlayer(Id, killer?.Id ?? InvalidId, killee?.Id ?? InvalidId, (int) weapon);
         }
 
         /// <summary>
@@ -2178,9 +2129,7 @@ namespace SampSharp.GameMode.World
         /// <param name="weapon">The reason for this Player's death.</param>
         public static void SendDeathMessageToAll(BasePlayer killer, BasePlayer killee, Weapon weapon)
         {
-            Internal.NativeSendDeathMessage(killer == null ? InvalidId : killer.Id,
-                killee == null ? InvalidId : killee.Id,
-                (int) weapon);
+            Internal.NativeSendDeathMessage(killer?.Id ?? InvalidId, killee?.Id ?? InvalidId, (int) weapon);
         }
 
         #endregion
@@ -2193,8 +2142,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         public virtual void OnConnected(EventArgs e)
         {
-            if (Connected != null)
-                Connected(this, e);
+            Connected?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2203,8 +2151,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="DisconnectEventArgs" /> that contains the event data. </param>
         public virtual void OnDisconnected(DisconnectEventArgs e)
         {
-            if (Disconnected != null)
-                Disconnected(this, e);
+            Disconnected?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2213,8 +2160,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="DisconnectEventArgs" /> that contains the event data. </param>
         public virtual void OnCleanup(DisconnectEventArgs e)
         {
-            if (Cleanup != null)
-                Cleanup(this, e);
+            Cleanup?.Invoke(this, e);
 
             Dispose();
         }
@@ -2225,8 +2171,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="SpawnEventArgs" /> that contains the event data. </param>
         public virtual void OnSpawned(SpawnEventArgs e)
         {
-            if (Spawned != null)
-                Spawned(this, e);
+            Spawned?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2235,8 +2180,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="DeathEventArgs" /> that contains the event data. </param>
         public virtual void OnDeath(DeathEventArgs e)
         {
-            if (Died != null)
-                Died(this, e);
+            Died?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2245,8 +2189,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="TextEventArgs" /> that contains the event data. </param>
         public virtual void OnText(TextEventArgs e)
         {
-            if (Text != null)
-                Text(this, e);
+            Text?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2255,8 +2198,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="TextEventArgs" /> that contains the event data. </param>
         public virtual void OnCommandText(CommandTextEventArgs e)
         {
-            if (CommandText != null)
-                CommandText(this, e);
+            CommandText?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2265,8 +2207,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="RequestClassEventArgs" /> that contains the event data. </param>
         public virtual void OnRequestClass(RequestClassEventArgs e)
         {
-            if (RequestClass != null)
-                RequestClass(this, e);
+            RequestClass?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2275,8 +2216,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EnterVehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnEnterVehicle(EnterVehicleEventArgs e)
         {
-            if (EnterVehicle != null)
-                EnterVehicle(this, e);
+            EnterVehicle?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2285,8 +2225,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnExitVehicle(PlayerVehicleEventArgs e)
         {
-            if (ExitVehicle != null)
-                ExitVehicle(this, e);
+            ExitVehicle?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2295,8 +2234,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="StateEventArgs" /> that contains the event data. </param>
         public virtual void OnStateChanged(StateEventArgs e)
         {
-            if (StateChanged != null)
-                StateChanged(this, e);
+            StateChanged?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2305,8 +2243,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         public virtual void OnEnterCheckpoint(EventArgs e)
         {
-            if (EnterCheckpoint != null)
-                EnterCheckpoint(this, e);
+            EnterCheckpoint?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2315,8 +2252,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         public virtual void OnLeaveCheckpoint(EventArgs e)
         {
-            if (LeaveCheckpoint != null)
-                LeaveCheckpoint(this, e);
+            LeaveCheckpoint?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2325,8 +2261,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         public virtual void OnEnterRaceCheckpoint(EventArgs e)
         {
-            if (EnterRaceCheckpoint != null)
-                EnterRaceCheckpoint(this, e);
+            EnterRaceCheckpoint?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2335,8 +2270,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         public virtual void OnLeaveRaceCheckpoint(EventArgs e)
         {
-            if (LeaveRaceCheckpoint != null)
-                LeaveRaceCheckpoint(this, e);
+            LeaveRaceCheckpoint?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2345,8 +2279,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         public virtual void OnRequestSpawn(RequestSpawnEventArgs e)
         {
-            if (RequestSpawn != null)
-                RequestSpawn(this, e);
+            RequestSpawn?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2355,8 +2288,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EnterModShopEventArgs" /> that contains the event data. </param>
         public virtual void OnEnterExitModShop(EnterModShopEventArgs e)
         {
-            if (EnterExitModShop != null)
-                EnterExitModShop(this, e);
+            EnterExitModShop?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2365,8 +2297,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="MenuRowEventArgs" /> that contains the event data. </param>
         public virtual void OnSelectedMenuRow(MenuRowEventArgs e)
         {
-            if (SelectedMenuRow != null)
-                SelectedMenuRow(this, e);
+            SelectedMenuRow?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2375,8 +2306,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         public virtual void OnExitedMenu(EventArgs e)
         {
-            if (ExitedMenu != null)
-                ExitedMenu(this, e);
+            ExitedMenu?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2385,8 +2315,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="InteriorChangedEventArgs" /> that contains the event data. </param>
         public virtual void OnInteriorChanged(InteriorChangedEventArgs e)
         {
-            if (InteriorChanged != null)
-                InteriorChanged(this, e);
+            InteriorChanged?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2395,8 +2324,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="KeyStateChangedEventArgs" /> that contains the event data. </param>
         public virtual void OnKeyStateChanged(KeyStateChangedEventArgs e)
         {
-            if (KeyStateChanged != null)
-                KeyStateChanged(this, e);
+            KeyStateChanged?.Invoke(this, e);
 
             Key.Handle(this, e);
         }
@@ -2407,8 +2335,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         public virtual void OnUpdate(PlayerUpdateEventArgs e)
         {
-            if (Update != null)
-                Update(this, e);
+            Update?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2417,8 +2344,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         public virtual void OnStreamIn(PlayerEventArgs e)
         {
-            if (StreamIn != null)
-                StreamIn(this, e);
+            StreamIn?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2427,8 +2353,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         public virtual void OnStreamOut(PlayerEventArgs e)
         {
-            if (StreamOut != null)
-                StreamOut(this, e);
+            StreamOut?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2437,8 +2362,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="DialogResponseEventArgs" /> that contains the event data. </param>
         public virtual void OnDialogResponse(DialogResponseEventArgs e)
         {
-            if (DialogResponse != null)
-                DialogResponse(this, e);
+            DialogResponse?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2447,8 +2371,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="DamageEventArgs" /> that contains the event data. </param>
         public virtual void OnTakeDamage(DamageEventArgs e)
         {
-            if (TakeDamage != null)
-                TakeDamage(this, e);
+            TakeDamage?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2457,8 +2380,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="DamageEventArgs" /> that contains the event data. </param>
         public virtual void OnGiveDamage(DamageEventArgs e)
         {
-            if (GiveDamage != null)
-                GiveDamage(this, e);
+            GiveDamage?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2467,8 +2389,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="PositionEventArgs" /> that contains the event data. </param>
         public virtual void OnClickMap(PositionEventArgs e)
         {
-            if (ClickMap != null)
-                ClickMap(this, e);
+            ClickMap?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2477,8 +2398,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
         public virtual void OnClickTextDraw(ClickTextDrawEventArgs e)
         {
-            if (ClickTextDraw != null)
-                ClickTextDraw(this, e);
+            ClickTextDraw?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2487,8 +2407,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         public virtual void OnCancelClickTextDraw(EventArgs e)
         {
-            if (CancelClickTextDraw != null)
-                CancelClickTextDraw(this, e);
+            CancelClickTextDraw?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2497,8 +2416,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="ClickPlayerTextDrawEventArgs" /> that contains the event data. </param>
         public virtual void OnClickPlayerTextDraw(ClickPlayerTextDrawEventArgs e)
         {
-            if (ClickPlayerTextDraw != null)
-                ClickPlayerTextDraw(this, e);
+            ClickPlayerTextDraw?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2507,8 +2425,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="ClickPlayerEventArgs" /> that contains the event data. </param>
         public virtual void OnClickPlayer(ClickPlayerEventArgs e)
         {
-            if (ClickPlayer != null)
-                ClickPlayer(this, e);
+            ClickPlayer?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2517,8 +2434,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EditGlobalObjectEventArgs" /> that contains the event data. </param>
         public virtual void OnEditGlobalObject(EditGlobalObjectEventArgs e)
         {
-            if (EditGlobalObject != null)
-                EditGlobalObject(this, e);
+            EditGlobalObject?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2527,8 +2443,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EditPlayerObjectEventArgs" /> that contains the event data. </param>
         public virtual void OnEditPlayerObject(EditPlayerObjectEventArgs e)
         {
-            if (EditPlayerObject != null)
-                EditPlayerObject(this, e);
+            EditPlayerObject?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2537,8 +2452,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EditAttachedObjectEventArgs" /> that contains the event data. </param>
         public virtual void OnEditAttachedObject(EditAttachedObjectEventArgs e)
         {
-            if (EditAttachedObject != null)
-                EditAttachedObject(this, e);
+            EditAttachedObject?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2547,8 +2461,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="SelectGlobalObjectEventArgs" /> that contains the event data. </param>
         public virtual void OnSelectGlobalObject(SelectGlobalObjectEventArgs e)
         {
-            if (SelectGlobalObject != null)
-                SelectGlobalObject(this, e);
+            SelectGlobalObject?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2557,8 +2470,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="SelectPlayerObjectEventArgs" /> that contains the event data. </param>
         public virtual void OnSelectPlayerObject(SelectPlayerObjectEventArgs e)
         {
-            if (SelectPlayerObject != null)
-                SelectPlayerObject(this, e);
+            SelectPlayerObject?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2567,8 +2479,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="WeaponShotEventArgs" /> that contains the event data. </param>
         public virtual void OnWeaponShot(WeaponShotEventArgs e)
         {
-            if (WeaponShot != null)
-                WeaponShot(this, e);
+            WeaponShot?.Invoke(this, e);
         }
 
         #endregion

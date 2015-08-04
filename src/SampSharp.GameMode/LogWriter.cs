@@ -30,10 +30,7 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     When overridden in a derived class, returns the character encoding in which the output is written.
         /// </summary>
-        public override Encoding Encoding
-        {
-            get { return Encoding.Default; }
-        }
+        public override Encoding Encoding => Encoding.Default;
 
         #region WriteLine
 
@@ -361,7 +358,7 @@ namespace SampSharp.GameMode
         /// <param name="value">The decimal value to write.</param>
         public override void Write(decimal value)
         {
-            Write(value.ToString());
+            Write(value.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -370,7 +367,7 @@ namespace SampSharp.GameMode
         /// <param name="value">The 8-byte floating-point value to write.</param>
         public override void Write(double value)
         {
-            Write(value.ToString());
+            Write(value.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -379,7 +376,7 @@ namespace SampSharp.GameMode
         /// <param name="value">The 4-byte floating-point value to write.</param>
         public override void Write(float value)
         {
-            Write(value.ToString());
+            Write(value.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -407,7 +404,7 @@ namespace SampSharp.GameMode
         /// <param name="value">The object to write.</param>
         public override void Write(object value)
         {
-            Write(value == null ? string.Empty : value.ToString());
+            Write(value?.ToString() ?? string.Empty);
         }
 
         /// <summary>

@@ -69,18 +69,12 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets whether this <see cref="IGameObject" /> is moving.
         /// </summary>
-        public virtual bool IsMoving
-        {
-            get { return Internal.IsPlayerObjectMoving(Owner.Id, Id); }
-        }
+        public virtual bool IsMoving => Internal.IsPlayerObjectMoving(Owner.Id, Id);
 
         /// <summary>
         ///     Gets whether this <see cref="IGameObject" /> is valid.
         /// </summary>
-        public virtual bool IsValid
-        {
-            get { return Internal.IsValidPlayerObject(Owner.Id, Id); }
-        }
+        public virtual bool IsValid => Internal.IsValidPlayerObject(Owner.Id, Id);
 
         /// <summary>
         ///     Gets the model of this <see cref="IGameObject" />.
@@ -97,7 +91,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the draw distance of this <see cref="IGameObject" />.
         /// </summary>
-        public virtual float DrawDistance { get; private set; }
+        public virtual float DrawDistance { get; }
 
         #endregion
 
@@ -156,7 +150,7 @@ namespace SampSharp.GameMode.World
         public PlayerObject(BasePlayer owner, int modelid, Vector3 position, Vector3 rotation, float drawDistance)
         {
             if (owner == null)
-                throw new ArgumentNullException("owner");
+                throw new ArgumentNullException(nameof(owner));
 
             Owner = owner;
             DrawDistance = drawDistance;
@@ -278,7 +272,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             Internal.AttachPlayerObjectToPlayer(Owner.Id, Id, player.Id, offset.X, offset.Y, offset.Z, rotation.X,
                 rotation.Y, rotation.Z);
@@ -296,7 +290,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (vehicle == null)
-                throw new ArgumentNullException("vehicle");
+                throw new ArgumentNullException(nameof(vehicle));
 
             Internal.AttachPlayerObjectToVehicle(Owner.Id, Id, vehicle.Id, offset.X, offset.Y, offset.Z, rotation.X,
                 rotation.Y, rotation.Z);
@@ -344,7 +338,7 @@ namespace SampSharp.GameMode.World
         public static void Select(BasePlayer player)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             Internal.SelectObject(player.Id);
         }
@@ -359,8 +353,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         public virtual void OnMoved(EventArgs e)
         {
-            if (Moved != null)
-                Moved(this, e);
+            Moved?.Invoke(this, e);
         }
 
         /// <summary>
@@ -369,8 +362,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="SelectGlobalObjectEventArgs" /> that contains the event data. </param>
         public virtual void OnSelected(SelectPlayerObjectEventArgs e)
         {
-            if (Selected != null)
-                Selected(this, e);
+            Selected?.Invoke(this, e);
         }
 
         /// <summary>
@@ -379,8 +371,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EditPlayerObjectEventArgs" /> that contains the event data. </param>
         public virtual void OnEdited(EditPlayerObjectEventArgs e)
         {
-            if (Edited != null)
-                Edited(this, e);
+            Edited?.Invoke(this, e);
         }
 
         #endregion

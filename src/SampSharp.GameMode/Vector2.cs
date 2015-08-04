@@ -56,34 +56,22 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Gets an empty <see cref="Vector2" />.
         /// </summary>
-        public static Vector2 Zero
-        {
-            get { return new Vector2(0); }
-        }
+        public static Vector2 Zero => new Vector2(0);
 
         /// <summary>
         ///     Gets a <see cref="Vector2" /> with each component set to 1.
         /// </summary>
-        public static Vector2 One
-        {
-            get { return new Vector2(1); }
-        }
+        public static Vector2 One => new Vector2(1);
 
         /// <summary>
         ///     Gets the length of this <see cref="Vector2" />.
         /// </summary>
-        public float Length
-        {
-            get { return DistanceTo(Zero); }
-        }
+        public float Length => DistanceTo(Zero);
 
         /// <summary>
         ///     Gets whether this <see cref="Vector2" /> is empty.
         /// </summary>
-        public bool IsEmpty
-        {
-            get { return X == 0 && Y == 0; }
-        }
+        public bool IsEmpty => X == 0 && Y == 0;
 
         /// <summary>
         ///     Adds all components of a different <see cref="Vector2" /> to this <see cref="Vector2" />.
@@ -249,24 +237,7 @@ namespace SampSharp.GameMode
             if (ReferenceEquals(null, obj)) return false;
             return obj is Vector2 && Equals((Vector2) obj);
         }
-
-        /// <summary>
-        ///     Returns the hash code for this instance.
-        /// </summary>
-        /// <returns>
-        ///     A 32-bit signed integer that is the hash code for this instance.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = X.GetHashCode();
-                hashCode = (hashCode*397) ^ Y.GetHashCode();
-                return hashCode;
-            }
-        }
-
+        
         /// <summary>
         ///     Returns the fully qualified type name of this instance.
         /// </summary>

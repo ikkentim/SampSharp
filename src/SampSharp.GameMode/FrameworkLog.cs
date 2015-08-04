@@ -22,7 +22,7 @@ namespace SampSharp.GameMode
         public static void WriteLine(FrameworkMessageLevel messageLevel, string format, params object[] arg)
         {
             if (messageLevel == FrameworkMessageLevel.None)
-                throw new ArgumentException("Invalid message level", "messageLevel");
+                throw new ArgumentException("Invalid message level", nameof(messageLevel));
 
             if (FrameworkConfiguration.MessageLevel.HasFlag(messageLevel))
                 Console.WriteLine("[SampSharp:{0}] {1}", messageLevel, string.Format(format, arg));

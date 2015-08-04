@@ -58,105 +58,102 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Occurs when the Keys.Action key has been pressed.
         /// </summary>
-        public PriorityKeyHandler Action { get; private set; }
+        public PriorityKeyHandler Action { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Crouch key has been pressed.
         /// </summary>
-        public PriorityKeyHandler Crouch { get; private set; }
+        public PriorityKeyHandler Crouch { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Fire key has been pressed.
         /// </summary>
-        public PriorityKeyHandler Fire { get; private set; }
+        public PriorityKeyHandler Fire { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Sprint key has been pressed.
         /// </summary>
-        public PriorityKeyHandler Sprint { get; private set; }
+        public PriorityKeyHandler Sprint { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Attack key has been pressed.
         /// </summary>
-        public PriorityKeyHandler SecondaryAttack { get; private set; }
+        public PriorityKeyHandler SecondaryAttack { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Jump key has been pressed.
         /// </summary>
-        public PriorityKeyHandler Jump { get; private set; }
+        public PriorityKeyHandler Jump { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Right key has been pressed.
         /// </summary>
-        public PriorityKeyHandler LookRight { get; private set; }
+        public PriorityKeyHandler LookRight { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Handbrake key has been pressed.
         /// </summary>
-        public PriorityKeyHandler Handbrake { get; private set; }
+        public PriorityKeyHandler Handbrake { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Aim key has been pressed.
         /// </summary>
-        public PriorityKeyHandler Aim { get; private set; }
+        public PriorityKeyHandler Aim { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Left key has been pressed.
         /// </summary>
-        public PriorityKeyHandler LookLeft { get; private set; }
+        public PriorityKeyHandler LookLeft { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Submission or Keys.LookBehind key has been pressed.
         /// </summary>
-        public PriorityKeyHandler Submission { get; private set; }
+        public PriorityKeyHandler Submission { get; }
 
         /// <summary>
         ///     Occurs when the Keys.LookBehind or Keys.Submission key has been pressed.
         /// </summary>
-        public PriorityKeyHandler LookBehind
-        {
-            get { return Submission; }
-        }
+        public PriorityKeyHandler LookBehind => Submission;
 
         /// <summary>
         ///     Occurs when the Keys.Walk key has been pressed.
         /// </summary>
-        public PriorityKeyHandler Walk { get; private set; }
+        public PriorityKeyHandler Walk { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Up key has been pressed.
         /// </summary>
-        public PriorityKeyHandler AnalogUp { get; private set; }
+        public PriorityKeyHandler AnalogUp { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Down key has been pressed.
         /// </summary>
-        public PriorityKeyHandler AnalogDown { get; private set; }
+        public PriorityKeyHandler AnalogDown { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Left key has been pressed.
         /// </summary>
-        public PriorityKeyHandler AnalogLeft { get; private set; }
+        public PriorityKeyHandler AnalogLeft { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Right key has been pressed.
         /// </summary>
-        public PriorityKeyHandler AnalogRight { get; private set; }
+        public PriorityKeyHandler AnalogRight { get; }
 
         /// <summary>
         ///     Occurs when the Keys.Yes key has been pressed.
         /// </summary>
-        public PriorityKeyHandler Yes { get; private set; }
+        public PriorityKeyHandler Yes { get; }
 
         /// <summary>
         ///     Occurs when the Keys.No key has been pressed.
         /// </summary>
-        public PriorityKeyHandler No { get; private set; }
+        public PriorityKeyHandler No { get; }
 
         /// <summary>
         ///     Occurs when the Keys.CtrlBack key has been pressed.
         /// </summary>
-        public PriorityKeyHandler CtrlBack { get; private set; }
+        public PriorityKeyHandler CtrlBack { get; }
 
         /// <summary>
         ///     Handles a change in PlayerKeyState.

@@ -59,20 +59,17 @@ namespace SampSharp.GameMode.SAMP
 
         private void OnHighPriority(object sender, CancelableEventArgs e)
         {
-            if (HighPriority != null)
-                HighPriority(sender, e);
+            HighPriority?.Invoke(sender, e);
         }
 
         private void OnNormalPriority(object sender, CancelableEventArgs e)
         {
-            if (NormalPriority != null)
-                NormalPriority(sender, e);
+            NormalPriority?.Invoke(sender, e);
         }
 
         private void OnLowPriority(object sender, CancelableEventArgs e)
         {
-            if (LowPriority != null)
-                LowPriority(sender, e);
+            LowPriority?.Invoke(sender, e);
         }
     }
 }

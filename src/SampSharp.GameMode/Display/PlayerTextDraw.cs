@@ -56,8 +56,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="e">An <see cref="ClickPlayerTextDrawEventArgs" /> that contains the event data. </param>
         public virtual void OnClick(ClickPlayerTextDrawEventArgs e)
         {
-            if (Click != null)
-                Click(this, e);
+            Click?.Invoke(this, e);
         }
 
         #endregion
@@ -98,7 +97,7 @@ namespace SampSharp.GameMode.Display
         public PlayerTextDraw(BasePlayer owner)
         {
             if (owner == null)
-                throw new ArgumentNullException("owner");
+                throw new ArgumentNullException(nameof(owner));
 
             IsApplyFixes = true;
             AutoDestroy = true;
@@ -116,7 +115,7 @@ namespace SampSharp.GameMode.Display
         public PlayerTextDraw(BasePlayer owner, Vector2 position, string text)
         {
             if (owner == null)
-                throw new ArgumentNullException("owner");
+                throw new ArgumentNullException(nameof(owner));
 
             IsApplyFixes = true;
             Owner = owner;

@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using SampSharp.GameMode.Pools;
 
 namespace SampSharp.GameMode.SAMP.Commands
@@ -36,7 +35,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         {
             if (name == null)
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
 
             Name = name;
@@ -84,11 +83,11 @@ namespace SampSharp.GameMode.SAMP.Commands
                 {
                     foreach (var str in ParentGroup.CommandPaths)
                     {
-                        yield return string.Format("{0} {1}", str, Name);
+                        yield return $"{str} {Name}";
 
                         if (Alias != null)
                         {
-                            yield return string.Format("{0} {1}", str, Alias);
+                            yield return $"{str} {Alias}";
                         }
                     }
                 }
@@ -98,10 +97,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <summary>
         ///     Gets the main path to this CommandGroup.
         /// </summary>
-        public string CommandPath
-        {
-            get { return ParentGroup == null ? Name : string.Format("{0} {1}", ParentGroup.CommandPath, Name); }
-        }
+        public string CommandPath => ParentGroup == null ? Name : $"{ParentGroup.CommandPath} {Name}";
 
         /// <summary>
         ///     Initializes a new instance of the CommandGroup class.

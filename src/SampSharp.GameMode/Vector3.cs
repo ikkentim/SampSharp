@@ -82,34 +82,22 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Gets an empty <see cref="Vector3" />.
         /// </summary>
-        public static Vector3 Zero
-        {
-            get { return new Vector3(0); }
-        }
+        public static Vector3 Zero => new Vector3(0);
 
         /// <summary>
         ///     Gets a <see cref="Vector3" /> with each component set to 1.
         /// </summary>
-        public static Vector3 One
-        {
-            get { return new Vector3(1); }
-        }
+        public static Vector3 One => new Vector3(1);
 
         /// <summary>
         ///     Gets the length of this <see cref="Vector3" />.
         /// </summary>
-        public float Length
-        {
-            get { return DistanceTo(Zero); }
-        }
+        public float Length => DistanceTo(Zero);
 
         /// <summary>
         ///     Gets whether this <see cref="Vector3" /> is empty.
         /// </summary>
-        public bool IsEmpty
-        {
-            get { return X == 0 && Y == 0 && Z == 0; }
-        }
+        public bool IsEmpty => X == 0 && Y == 0 && Z == 0;
 
         /// <summary>
         ///     Adds all components of a different <see cref="Vector3" /> to this <see cref="Vector3" />.
@@ -278,25 +266,7 @@ namespace SampSharp.GameMode
             if (ReferenceEquals(null, obj)) return false;
             return obj is Vector3 && Equals((Vector3) obj);
         }
-
-        /// <summary>
-        ///     Returns the hash code for this instance.
-        /// </summary>
-        /// <returns>
-        ///     A 32-bit signed integer that is the hash code for this instance.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = X.GetHashCode();
-                hashCode = (hashCode*397) ^ Y.GetHashCode();
-                hashCode = (hashCode*397) ^ Z.GetHashCode();
-                return hashCode;
-            }
-        }
-
+        
         /// <summary>
         ///     Returns the fully qualified type name of this instance.
         /// </summary>

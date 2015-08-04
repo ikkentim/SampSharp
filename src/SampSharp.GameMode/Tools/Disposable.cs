@@ -63,20 +63,10 @@ namespace SampSharp.GameMode.Tools
             //We don't care to set IsDisposed value; Resource is being collected by GC anyways.
         }
 
-        private event EventHandler _disposed;
-
         /// <summary>
         /// Occurs when this isntance has been disposed.
         /// </summary>
-        public event EventHandler Disposed
-        {
-            add
-            {
-                AssertNotDisposed();
-                _disposed += value;
-            }
-            remove { _disposed -= value; }
-        }
+        public event EventHandler Disposed;
 
         /// <summary>
         ///     Checks whether this instance has been disposed. If it has, it throws an exception.
@@ -97,10 +87,8 @@ namespace SampSharp.GameMode.Tools
         private void OnDisposed(bool disposing)
         {
             Dispose(disposing);
-
-            var handler = _disposed;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            
+            Disposed?.Invoke(this, EventArgs.Empty);
         }
     }
 }

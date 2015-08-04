@@ -31,8 +31,8 @@ namespace SampSharp.GameMode.Helpers
         /// <returns>The index of the first matching item, or -1 if no items match.</returns>
         public static int FindIndex<T>(this IEnumerable<T> items, Func<T, bool> predicate)
         {
-            if (items == null) throw new ArgumentNullException("items");
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (items == null) throw new ArgumentNullException(nameof(items));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             var retVal = 0;
             foreach (var item in items)
@@ -50,8 +50,8 @@ namespace SampSharp.GameMode.Helpers
         /// <returns>The index of the last matching item, or -1 if no items match.</returns>
         public static int FindLastIndex<T>(this IEnumerable<T> items, Func<T, bool> predicate)
         {
-            if (items == null) throw new ArgumentNullException("items");
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (items == null) throw new ArgumentNullException(nameof(items));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             for (var i = items.Count() - 1; i >= 0; i--)
             {

@@ -210,7 +210,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             Internal.Attach3DTextLabelToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z);
         }
@@ -226,7 +226,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (vehicle == null)
-                throw new ArgumentNullException("vehicle");
+                throw new ArgumentNullException(nameof(vehicle));
 
             Internal.Attach3DTextLabelToVehicle(Id, vehicle.Id, offset.X, offset.Y, offset.Z);
         }

@@ -33,79 +33,55 @@ namespace SampSharp.GameMode.Controllers
             //Register all vehicle events
             gameMode.VehicleSpawned += (sender, args) =>
             {
-                var vehicle = sender as BaseVehicle;
-                if (vehicle != null)
-                    vehicle.OnSpawn(args);
+                    (sender as BaseVehicle)?.OnSpawn(args);
             };
             gameMode.VehicleDied += (sender, args) =>
             {
-                var vehicle = sender as BaseVehicle;
-                if (vehicle != null)
-                    vehicle.OnDeath(args);
+                (sender as BaseVehicle)?.OnDeath(args);
             };
             gameMode.PlayerEnterVehicle += (sender, args) =>
             {
-                if (args.Vehicle != null)
-                    args.Vehicle.OnPlayerEnter(args);
+                args.Vehicle?.OnPlayerEnter(args);
             };
             gameMode.PlayerExitVehicle += (sender, args) =>
             {
-                if (args.Vehicle != null)
-                    args.Vehicle.OnPlayerExit(args);
+                args.Vehicle?.OnPlayerExit(args);
             };
             gameMode.VehicleMod += (sender, args) =>
             {
-                var vehicle = sender as BaseVehicle;
-                if (vehicle != null)
-                    vehicle.OnMod(args);
+                (sender as BaseVehicle)?.OnMod(args);
             };
             gameMode.VehiclePaintjobApplied += (sender, args) =>
             {
-                var vehicle = sender as BaseVehicle;
-                if (vehicle != null)
-                    vehicle.OnPaintjobApplied(args);
+                (sender as BaseVehicle)?.OnPaintjobApplied(args);
             };
             gameMode.VehicleResprayed += (sender, args) =>
             {
-                var vehicle = sender as BaseVehicle;
-                if (vehicle != null)
-                    vehicle.OnResprayed(args);
+                (sender as BaseVehicle)?.OnResprayed(args);
             };
             gameMode.VehicleDamageStatusUpdated += (sender, args) =>
             {
-                var vehicle = sender as BaseVehicle;
-                if (vehicle != null)
-                    vehicle.OnDamageStatusUpdated(args);
+                (sender as BaseVehicle)?.OnDamageStatusUpdated(args);
             };
             gameMode.UnoccupiedVehicleUpdated += (sender, args) =>
             {
-                var vehicle = sender as BaseVehicle;
-                if (vehicle != null)
-                    vehicle.OnUnoccupiedUpdate(args);
+                (sender as BaseVehicle)?.OnUnoccupiedUpdate(args);
             };
             gameMode.VehicleStreamIn += (sender, args) =>
             {
-                var vehicle = sender as BaseVehicle;
-                if (vehicle != null)
-                    vehicle.OnStreamIn(args);
+                (sender as BaseVehicle)?.OnStreamIn(args);
             };
             gameMode.VehicleStreamOut += (sender, args) =>
             {
-                var vehicle = sender as BaseVehicle;
-                if (vehicle != null)
-                    vehicle.OnStreamOut(args);
+                (sender as BaseVehicle)?.OnStreamOut(args);
             };
             gameMode.TrailerUpdate += (sender, args) =>
             {
-                var vehicle = sender as BaseVehicle;
-                if (vehicle != null)
-                    vehicle.OnTrailerUpdate(args);
+                (sender as BaseVehicle)?.OnTrailerUpdate(args);
             };
             gameMode.VehicleSirenStateChange += (sender, args) =>
             {
-                var vehicle = sender as BaseVehicle;
-                if (vehicle != null)
-                    vehicle.OnSirenStateChanged(args);
+                (sender as BaseVehicle)?.OnSirenStateChanged(args);
             };
         }
 

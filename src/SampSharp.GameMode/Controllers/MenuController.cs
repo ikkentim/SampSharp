@@ -33,19 +33,21 @@ namespace SampSharp.GameMode.Controllers
             gameMode.PlayerExitedMenu += (sender, args) =>
             {
                 var player = sender as BasePlayer;
-                var menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(player));
 
-                if (menu != null)
-                    menu.OnExit(player, args);
+                if (player == null)
+                    return;
+
+                Menu.All.FirstOrDefault(m => m.Viewers.Contains(player))?.OnExit(player, args);
             };
 
             gameMode.PlayerSelectedMenuRow += (sender, args) =>
             {
                 var player = sender as BasePlayer;
-                var menu = Menu.All.FirstOrDefault(m => m.Viewers.Contains(player));
 
-                if (menu != null)
-                    menu.OnResponse(player, args);
+                if (player == null)
+                    return;
+
+                Menu.All.FirstOrDefault(m => m.Viewers.Contains(player))?.OnResponse(player, args);
             };
         }
     }

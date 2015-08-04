@@ -40,14 +40,11 @@ namespace SampSharp.GameMode
             Console.SetOut(new LogWriter());
 
             var type = Type.GetType("Mono.Runtime");
-            if (type != null)
-            {
-                var displayName = type.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
+            var displayName = type?.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
 
-                if (displayName != null)
-                    FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, "Detected mono version: {0}",
-                        displayName.Invoke(null, null));
-            }
+            if (displayName != null)
+                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, "Detected mono version: {0}",
+                    displayName.Invoke(null, null));
 
             Services = new GameModeServiceContainer();
 
@@ -80,7 +77,7 @@ namespace SampSharp.GameMode
 
                 // Already in loading chain (circular dependency detected).
                 if (loadingAssemblies.Contains(assembly))
-                    throw new Exception(string.Format("Circular extension dependency detected. ({0})", assembly));
+                    throw new Exception($"Circular extension dependency detected. ({assembly})");
 
                 loadingAssemblies.Add(assembly);
 
@@ -172,10 +169,7 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Gets the collection of controllers loaded.
         /// </summary>
-        protected virtual ControllerCollection Controllers
-        {
-            get { return _controllers; }
-        }
+        protected virtual ControllerCollection Controllers => _controllers;
 
         /// <summary>
         ///     Gets the <see cref="GameModeServiceContainer" /> holding all the service providers attached to the game mode.
@@ -183,7 +177,7 @@ namespace SampSharp.GameMode
         /// <value>
         ///     The services.
         /// </value>
-        public virtual GameModeServiceContainer Services { get; private set; }
+        public virtual GameModeServiceContainer Services { get; }
 
         #endregion
 

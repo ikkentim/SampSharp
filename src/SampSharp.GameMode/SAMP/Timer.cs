@@ -181,8 +181,7 @@ namespace SampSharp.GameMode.SAMP
                 Id = InvalidId;
             }
 
-            if (Tick != null)
-                Tick(this, e);
+            Tick?.Invoke(this, e);
         }
 
         /// <summary>

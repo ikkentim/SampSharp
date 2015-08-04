@@ -36,7 +36,7 @@ namespace SampSharp.GameMode.SAMP
         public PVarCollection(BasePlayer player)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             _player = player;
         }
@@ -99,10 +99,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Gets the upper index of the variables list.
         /// </summary>
-        public int UpperIndex
-        {
-            get { return _player == null ? 0 : Internal.GetPVarsUpperIndex(_player.Id); }
-        }
+        public int UpperIndex => _player == null ? 0 : Internal.GetPVarsUpperIndex(_player.Id);
 
         /// <summary>
         ///     Returns an enumerator that iterates through the collection.

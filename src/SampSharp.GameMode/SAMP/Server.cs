@@ -30,10 +30,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Gets the maximum number of players that can join the server, as set by the server var 'maxplayers' in server.cfg.
         /// </summary>
-        public static int MaxPlayers
-        {
-            get { return Internal.GetMaxPlayers(); }
-        }
+        public static int MaxPlayers => Internal.GetMaxPlayers();
 
         public static string NetworkStats
         {
@@ -46,12 +43,9 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Gets the server configuration.
+        ///     Gets the server configuration.
         /// </summary>
-        public static ServerConfig Config
-        {
-            get { return _serverConfig ?? (_serverConfig = new ServerConfig()); }
-        }
+        public static ServerConfig Config => _serverConfig ?? (_serverConfig = new ServerConfig());
 
         /// <summary>
         ///     Blocks an IP address from further communication with the server

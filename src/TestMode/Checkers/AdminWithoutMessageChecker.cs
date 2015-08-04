@@ -20,7 +20,7 @@ namespace TestMode.Checkers
 {
     internal class AdminWithoutMessageChecker : IPermissionChecker
     {
-        public string Message { get; private set; }
+        public string Message { get; } = null;
 
         public bool Check(BasePlayer player)
         {

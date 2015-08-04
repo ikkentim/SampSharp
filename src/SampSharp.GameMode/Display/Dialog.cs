@@ -40,10 +40,7 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Gets all opened dialogs.
         /// </summary>
-        public static IEnumerable<Dialog> All
-        {
-            get { return OpenDialogs.Values; }
-        }
+        public static IEnumerable<Dialog> All => OpenDialogs.Values;
 
         #endregion
 
@@ -56,7 +53,7 @@ namespace SampSharp.GameMode.Display
         public static void Hide(BasePlayer player)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             var openDialog = GetOpenDialog(player);
 
@@ -78,7 +75,7 @@ namespace SampSharp.GameMode.Display
         public static Dialog GetOpenDialog(BasePlayer player)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             return OpenDialogs.ContainsKey(player.Id) ? OpenDialogs[player.Id] : null;
         }
@@ -132,7 +129,7 @@ namespace SampSharp.GameMode.Display
         public void Show(BasePlayer player)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             // Hide previously opened dialogs.
             Hide(player);
@@ -168,8 +165,7 @@ namespace SampSharp.GameMode.Display
 
             _aSyncWaiter.Fire(e.Player, e);
 
-            if (Response != null)
-                Response(this, e);
+            Response?.Invoke(this, e);
         }
 
         #endregion

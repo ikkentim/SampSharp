@@ -16,7 +16,6 @@
 using System;
 using System.Linq;
 using SampSharp.GameMode;
-using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;

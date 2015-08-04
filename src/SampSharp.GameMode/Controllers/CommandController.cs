@@ -58,7 +58,7 @@ namespace SampSharp.GameMode.Controllers
         /// <returns>The number of commands loaded.</returns>
         public int RegisterCommands(Assembly assembly)
         {
-            if (assembly == null) throw new ArgumentNullException("assembly");
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
 
             try
             {

@@ -56,8 +56,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
         public virtual void OnClick(ClickTextDrawEventArgs e)
         {
-            if (Click != null)
-                Click(this, e);
+            Click?.Invoke(this, e);
         }
 
         #endregion
@@ -498,7 +497,7 @@ namespace SampSharp.GameMode.Display
             AssertNotDisposed();
 
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             if (Id == -1) Refresh();
 
@@ -529,7 +528,7 @@ namespace SampSharp.GameMode.Display
             AssertNotDisposed();
 
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             _playersShownTo.Remove(player);
 

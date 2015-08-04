@@ -32,6 +32,6 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Gets the game mode.
         /// </summary>
-        public virtual BaseMode GameMode { get; private set; }
+        public virtual BaseMode GameMode { get; }
     }
 }

@@ -36,7 +36,7 @@ namespace SampSharp.GameMode.Tools
         /// <returns>The arguments passed to the <see cref="Fire" /> method.</returns>
         public async Task<TArguments> Result(TKey key)
         {
-            if (key == null) throw new ArgumentNullException("key");
+            if (key == null) throw new ArgumentNullException(nameof(key));
 
             var taskCompletionSource = new TaskCompletionSource<TArguments>();
             _completionSources[key] = taskCompletionSource;
@@ -63,7 +63,7 @@ namespace SampSharp.GameMode.Tools
         /// <param name="arguments">The arguments.</param>
         public void Fire(TKey key, TArguments arguments)
         {
-            if (key == null) throw new ArgumentNullException("key");
+            if (key == null) throw new ArgumentNullException(nameof(key));
             if (!_completionSources.ContainsKey(key)) return;
 
             _completionSources[key].SetResult(arguments);
@@ -76,7 +76,7 @@ namespace SampSharp.GameMode.Tools
         /// <param name="key">The key of the task to cancel.</param>
         public void Cancel(TKey key)
         {
-            if (key == null) throw new ArgumentNullException("key");
+            if (key == null) throw new ArgumentNullException(nameof(key));
             if (!_completionSources.ContainsKey(key)) return;
 
             _completionSources[key].SetCanceled();

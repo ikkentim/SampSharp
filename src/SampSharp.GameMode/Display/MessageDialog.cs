@@ -23,8 +23,6 @@ namespace SampSharp.GameMode.Display
     /// </summary>
     public class MessageDialog : Dialog
     {
-        private string _message;
-
         /// <summary>
         ///     Initializes a new instance of the MessageDialog class.
         /// </summary>
@@ -37,9 +35,9 @@ namespace SampSharp.GameMode.Display
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
         public MessageDialog(string caption, string message, string button1, string button2 = null)
         {
-            if (caption == null) throw new ArgumentNullException("caption");
-            if (message == null) throw new ArgumentNullException("message");
-            if (button1 == null) throw new ArgumentNullException("button1");
+            if (caption == null) throw new ArgumentNullException(nameof(caption));
+            if (message == null) throw new ArgumentNullException(nameof(message));
+            if (button1 == null) throw new ArgumentNullException(nameof(button1));
             Caption = caption;
             Message = message;
             Button1 = button1;
@@ -52,20 +50,13 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Gets the Info displayed.
         /// </summary>
-        protected override string Info
-        {
-            get { return _message; }
-        }
+        protected override string Info => Message;
 
         #endregion
 
         /// <summary>
         ///     Gets or sets the message in the dialog.
         /// </summary>
-        public string Message
-        {
-            get { return _message; }
-            set { _message = value; }
-        }
+        public string Message { get; set; }
     }
 }

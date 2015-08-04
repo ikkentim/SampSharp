@@ -93,12 +93,12 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Gets the title.
         /// </summary>
-        public string Title { get; private set; }
+        public string Title { get; }
 
         /// <summary>
         ///     Gets the position.
         /// </summary>
-        public Vector2 Position { get; private set; }
+        public Vector2 Position { get; }
 
         /// <summary>
         ///     Gets an <see cref="IReadOnlyCollection{T}" /> of <see cref="BasePlayer" /> instances which are viewing this
@@ -109,12 +109,12 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Gets a collection of columns.
         /// </summary>
-        public IList<MenuColumn> Columns { get; private set; }
+        public IList<MenuColumn> Columns { get; }
 
         /// <summary>
         ///     Gets a collection of rows.
         /// </summary>
-        public IList<MenuRow> Rows { get; private set; }
+        public IList<MenuRow> Rows { get; }
 
         /// <summary>
         ///     Occurs when this <see cref="Menu" /> was exited.
@@ -136,7 +136,7 @@ namespace SampSharp.GameMode.Display
             AssertNotDisposed();
 
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             if (Id == InvalidId)
             {
@@ -164,7 +164,7 @@ namespace SampSharp.GameMode.Display
 
             if (player == null)
             {
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
             }
 
             _viewers.Remove(player);
@@ -199,8 +199,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         public void OnExit(BasePlayer player, EventArgs e)
         {
-            if (Exit != null)
-                Exit(player, e);
+            Exit?.Invoke(player, e);
         }
 
         /// <summary>
@@ -210,8 +209,7 @@ namespace SampSharp.GameMode.Display
         /// <param name="e">The <see cref="MenuRowEventArgs" /> instance containing the event data.</param>
         public void OnResponse(BasePlayer player, MenuRowEventArgs e)
         {
-            if (Response != null)
-                Response(player, e);
+            Response?.Invoke(player, e);
         }
 
         #endregion

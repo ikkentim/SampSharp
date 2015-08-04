@@ -32,15 +32,20 @@ namespace SampSharp.GameMode.Controllers
             gameMode.DialogResponse += (sender, args) =>
             {
                 var player = sender as BasePlayer;
-                var dialog = Dialog.GetOpenDialog(player);
 
-                if (dialog != null)
-                    dialog.OnResponse(args);
+                if (player == null)
+                    return;
+
+                Dialog.GetOpenDialog(player)?.OnResponse(args);
             };
 
             gameMode.PlayerDisconnected += (sender, args) =>
             {
                 var player = sender as BasePlayer;
+
+                if (player == null)
+                    return;
+
                 Dialog.Hide(player);
             };
         }

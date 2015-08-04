@@ -35,12 +35,12 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Gets a set of KeyHandlers which are triggered once a key has been pressed.
         /// </summary>
-        public KeyHandlerSet Pressed { get; private set; }
+        public KeyHandlerSet Pressed { get; }
 
         /// <summary>
         ///     Gets a set of KeyHandlers which are triggered once a key has been released.
         /// </summary>
-        public KeyHandlerSet Released { get; private set; }
+        public KeyHandlerSet Released { get; }
 
         /// <summary>
         ///     Handles a change in PlayerKeyState.

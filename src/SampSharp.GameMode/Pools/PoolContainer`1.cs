@@ -37,10 +37,7 @@ namespace SampSharp.GameMode.Pools
         /// <summary>
         ///     Gets the unidentified items.
         /// </summary>
-        public IEnumerable<TInstance> UnidentifiedItems
-        {
-            get { return _unidentifiedItems.AsReadOnly(); }
-        }
+        public IEnumerable<TInstance> UnidentifiedItems => _unidentifiedItems.AsReadOnly();
 
         /// <summary>
         ///     Returns an enumerator that iterates through the collection.
@@ -76,7 +73,7 @@ namespace SampSharp.GameMode.Pools
                 _unidentifiedItems.Add(item);
             else
             {
-                if (_identifiedItems.ContainsKey(key)) throw new ArgumentException("duplicate key", "key");
+                if (_identifiedItems.ContainsKey(key)) throw new ArgumentException("duplicate key", nameof(key));
 
                 _identifiedItems.Add(key, item);
             }
@@ -127,11 +124,11 @@ namespace SampSharp.GameMode.Pools
         public void Move(int oldKey, int newKey)
         {
             if (oldKey == newKey) return;
-            if (oldKey == UnidentifiedId) throw new ArgumentException("unidentified id cannot be moved", "oldKey");
+            if (oldKey == UnidentifiedId) throw new ArgumentException("unidentified id cannot be moved", nameof(oldKey));
 
             var item = Get(oldKey);
 
-            if (item == null) throw new ArgumentException("key not found", "oldKey");
+            if (item == null) throw new ArgumentException("key not found", nameof(oldKey));
             Remove(oldKey);
             Add(newKey, item);
         }
@@ -145,11 +142,11 @@ namespace SampSharp.GameMode.Pools
         /// <exception cref="System.ArgumentException">item not found;item</exception>
         public void MoveUnidentified(TInstance item, int newKey)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
             if (UnidentifiedId == newKey) return;
 
             if (!RemoveUnidentified(item))
-                throw new ArgumentException("item not found", "item");
+                throw new ArgumentException("item not found", nameof(item));
             Add(newKey, item);
         }
 

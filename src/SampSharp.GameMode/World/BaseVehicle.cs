@@ -50,7 +50,7 @@ namespace SampSharp.GameMode.World
         /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
-            return string.Format("Vehicle(Id:{0}, Model: {1})", Id, Model);
+            return $"Vehicle(Id:{Id}, Model: {Model})";
         }
 
         #endregion
@@ -60,10 +60,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets an instance of <see cref="VehicleModelInfo" /> about this <see cref="BaseVehicle" />.
         /// </summary>
-        public VehicleModelInfo ModelInfo
-        {
-            get { return VehicleModelInfo.ForVehicle(this); }
-        }
+        public VehicleModelInfo ModelInfo => VehicleModelInfo.ForVehicle(this);
 
         /// <summary>
         ///     Gets the driver of this <see cref="BaseVehicle" />.
@@ -84,10 +81,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the size of the vehicles pool.
         /// </summary>
-        public static int PoolSize
-        {
-            get { return Internal.GetVehiclePoolSize(); }
-        }
+        public static int PoolSize => Internal.GetVehiclePoolSize();
 
         #endregion
 
@@ -96,10 +90,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets whether this <see cref="BaseVehicle" /> has been created and still is alive.
         /// </summary>
-        public virtual bool IsValid
-        {
-            get { return Internal.IsValidVehicle(Id); }
-        }
+        public virtual bool IsValid => Internal.IsValidVehicle(Id);
 
         /// <summary>
         ///     Gets or sets the Z angle of this <see cref="BaseVehicle" />.
@@ -118,18 +109,12 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the model ID of this <see cref="BaseVehicle" />.
         /// </summary>
-        public virtual VehicleModelType Model
-        {
-            get { return (VehicleModelType) Internal.GetVehicleModel(Id); }
-        }
+        public virtual VehicleModelType Model => (VehicleModelType) Internal.GetVehicleModel(Id);
 
         /// <summary>
         ///     Gets whether this <see cref="BaseVehicle" /> has a trailer attached to it.
         /// </summary>
-        public virtual bool HasTrailer
-        {
-            get { return Internal.IsTrailerAttachedToVehicle(Id); }
-        }
+        public virtual bool HasTrailer => Internal.IsTrailerAttachedToVehicle(Id);
 
         /// <summary>
         ///     Gets or sets the the trailer attached to this <see cref="BaseVehicle" />.
@@ -638,9 +623,7 @@ namespace SampSharp.GameMode.World
         {
             var service = BaseMode.Instance.Services.GetService<IVehicleFactory>();
 
-            return service == null
-                ? null
-                : service.Create(vehicletype, position, rotation, color1, color2, respawnDelay, addAlarm);
+            return service?.Create(vehicletype, position, rotation, color1, color2, respawnDelay, addAlarm);
         }
 
         /// <summary>
@@ -662,9 +645,7 @@ namespace SampSharp.GameMode.World
         {
             var service = BaseMode.Instance.Services.GetService<IVehicleFactory>();
 
-            return service == null
-                ? null
-                : service.CreateStatic(vehicleType, position, rotation, color1, color2, respawnDelay, addAlarm);
+            return service?.CreateStatic(vehicleType, position, rotation, color1, color2, respawnDelay, addAlarm);
         }
 
         /// <summary>
@@ -680,9 +661,7 @@ namespace SampSharp.GameMode.World
         {
             var service = BaseMode.Instance.Services.GetService<IVehicleFactory>();
 
-            return service == null
-                ? null
-                : service.Create(vehicleType, position, rotation, color1, color2);
+            return service?.Create(vehicleType, position, rotation, color1, color2);
         }
 
         /// <summary>
@@ -724,7 +703,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             Internal.SetVehicleParamsForPlayer(Id, player.Id, objective, doorslocked);
         }
@@ -1151,8 +1130,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
         public virtual void OnSpawn(EventArgs e)
         {
-            if (Spawn != null)
-                Spawn(this, e);
+            Spawn?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1161,8 +1139,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         public virtual void OnDeath(PlayerEventArgs e)
         {
-            if (Died != null)
-                Died(this, e);
+            Died?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1171,8 +1148,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="EnterVehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnPlayerEnter(EnterVehicleEventArgs e)
         {
-            if (PlayerEnter != null)
-                PlayerEnter(this, e);
+            PlayerEnter?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1181,8 +1157,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnPlayerExit(PlayerVehicleEventArgs e)
         {
-            if (PlayerExit != null)
-                PlayerExit(this, e);
+            PlayerExit?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1191,8 +1166,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="VehicleModEventArgs" /> that contains the event data. </param>
         public virtual void OnMod(VehicleModEventArgs e)
         {
-            if (Mod != null)
-                Mod(this, e);
+            Mod?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1201,8 +1175,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="VehiclePaintjobEventArgs" /> that contains the event data. </param>
         public virtual void OnPaintjobApplied(VehiclePaintjobEventArgs e)
         {
-            if (PaintjobApplied != null)
-                PaintjobApplied(this, e);
+            PaintjobApplied?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1211,8 +1184,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="VehicleResprayedEventArgs" /> that contains the event data. </param>
         public virtual void OnResprayed(VehicleResprayedEventArgs e)
         {
-            if (Resprayed != null)
-                Resprayed(this, e);
+            Resprayed?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1221,8 +1193,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         public virtual void OnDamageStatusUpdated(PlayerEventArgs e)
         {
-            if (DamageStatusUpdated != null)
-                DamageStatusUpdated(this, e);
+            DamageStatusUpdated?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1231,8 +1202,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="UnoccupiedVehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnUnoccupiedUpdate(UnoccupiedVehicleEventArgs e)
         {
-            if (UnoccupiedUpdate != null)
-                UnoccupiedUpdate(this, e);
+            UnoccupiedUpdate?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1241,8 +1211,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         public virtual void OnStreamIn(PlayerEventArgs e)
         {
-            if (StreamIn != null)
-                StreamIn(this, e);
+            StreamIn?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1251,8 +1220,7 @@ namespace SampSharp.GameMode.World
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
         public virtual void OnStreamOut(PlayerEventArgs e)
         {
-            if (StreamOut != null)
-                StreamOut(this, e);
+            StreamOut?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1261,8 +1229,7 @@ namespace SampSharp.GameMode.World
         /// <param name="args">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
         public virtual void OnTrailerUpdate(TrailerEventArgs args)
         {
-            if (TrailerUpdate != null)
-                TrailerUpdate(this, args);
+            TrailerUpdate?.Invoke(this, args);
         }
 
         /// <summary>
@@ -1271,8 +1238,7 @@ namespace SampSharp.GameMode.World
         /// <param name="args">The <see cref="SirenStateEventArgs" /> instance containing the event data.</param>
         public virtual void OnSirenStateChanged(SirenStateEventArgs args)
         {
-            if (SirenStateChanged != null)
-                SirenStateChanged(this, args);
+            SirenStateChanged?.Invoke(this, args);
         }
 
         #endregion

@@ -20,12 +20,7 @@ namespace TestMode.Checkers
 {
     internal class AdminChecker : IPermissionChecker
     {
-        public AdminChecker()
-        {
-            Message = "You must be admin to use this command!";
-        }
-
-        public string Message { get; private set; }
+        public string Message { get; } = "You must be admin to use this command!";
 
         public bool Check(BasePlayer player)
         {

@@ -56,10 +56,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Gets the <see cref="System.String" /> with the specified key.
         /// </summary>
-        public string this[string key]
-        {
-            get { return Get(key); }
-        }
+        public string this[string key] => Get(key);
 
         /// <summary>
         ///     Gets the configuration value with the specified key.
@@ -96,7 +93,7 @@ namespace SampSharp.GameMode.SAMP
         /// <exception cref="ArgumentNullException">key</exception>
         public void Set(string key, string value)
         {
-            if (key == null) throw new ArgumentNullException("key");
+            if (key == null) throw new ArgumentNullException(nameof(key));
             _values[key] = value;
         }
     }

@@ -32,270 +32,154 @@ namespace SampSharp.GameMode.Controllers
             //Register all player events
             gameMode.PlayerConnected += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnConnected(args);
+                (sender as BasePlayer)?.OnConnected(args);
             };
             gameMode.PlayerDisconnected += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnDisconnected(args);
+                (sender as BasePlayer)?.OnDisconnected(args);
             };
             gameMode.PlayerCleanup += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnCleanup(args);
+                (sender as BasePlayer)?.OnCleanup(args);
             };
             gameMode.PlayerSpawned += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnSpawned(args);
+                (sender as BasePlayer)?.OnSpawned(args);
             };
             gameMode.PlayerDied += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnDeath(args);
+                (sender as BasePlayer)?.OnDeath(args);
             };
             gameMode.PlayerText += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnText(args);
+                (sender as BasePlayer)?.OnText(args);
             };
             gameMode.PlayerCommandText += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnCommandText(args);
+                (sender as BasePlayer)?.OnCommandText(args);
             };
             gameMode.PlayerRequestClass += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnRequestClass(args);
+                (sender as BasePlayer)?.OnRequestClass(args);
             };
             gameMode.PlayerEnterVehicle += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnEnterVehicle(args);
+                (sender as BasePlayer)?.OnEnterVehicle(args);
             };
             gameMode.PlayerExitVehicle += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnExitVehicle(args);
+                (sender as BasePlayer)?.OnExitVehicle(args);
             };
             gameMode.PlayerStateChanged += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnStateChanged(args);
+                (sender as BasePlayer)?.OnStateChanged(args);
             };
             gameMode.PlayerEnterCheckpoint += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnEnterCheckpoint(args);
+                (sender as BasePlayer)?.OnEnterCheckpoint(args);
             };
             gameMode.PlayerLeaveCheckpoint += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnLeaveCheckpoint(args);
+                (sender as BasePlayer)?.OnLeaveCheckpoint(args);
             };
             gameMode.PlayerEnterRaceCheckpoint += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnEnterRaceCheckpoint(args);
+                (sender as BasePlayer)?.OnEnterRaceCheckpoint(args);
             };
             gameMode.PlayerLeaveRaceCheckpoint += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnLeaveRaceCheckpoint(args);
+                (sender as BasePlayer)?.OnLeaveRaceCheckpoint(args);
             };
             gameMode.PlayerRequestSpawn += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnRequestSpawn(args);
+                (sender as BasePlayer)?.OnRequestSpawn(args);
             };
             gameMode.PlayerEnterExitModShop += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnEnterExitModShop(args);
+                (sender as BasePlayer)?.OnEnterExitModShop(args);
             };
             gameMode.PlayerSelectedMenuRow += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnSelectedMenuRow(args);
+                (sender as BasePlayer)?.OnSelectedMenuRow(args);
             };
             gameMode.PlayerExitedMenu += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnExitedMenu(args);
+                (sender as BasePlayer)?.OnExitedMenu(args);
             };
             gameMode.PlayerInteriorChanged += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnInteriorChanged(args);
+                (sender as BasePlayer)?.OnInteriorChanged(args);
             };
             gameMode.PlayerKeyStateChanged += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnKeyStateChanged(args);
+                (sender as BasePlayer)?.OnKeyStateChanged(args);
             };
             gameMode.PlayerUpdate += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnUpdate(args);
+                (sender as BasePlayer)?.OnUpdate(args);
             };
             gameMode.PlayerStreamIn += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnStreamIn(args);
+                (sender as BasePlayer)?.OnStreamIn(args);
             };
             gameMode.PlayerStreamOut += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnStreamOut(args);
+                (sender as BasePlayer)?.OnStreamOut(args);
             };
             gameMode.DialogResponse += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnDialogResponse(args);
+                (sender as BasePlayer)?.OnDialogResponse(args);
             };
             gameMode.PlayerTakeDamage += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnTakeDamage(args);
+                (sender as BasePlayer)?.OnTakeDamage(args);
             };
             gameMode.PlayerGiveDamage += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnGiveDamage(args);
+                (sender as BasePlayer)?.OnGiveDamage(args);
             };
             gameMode.PlayerClickMap += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnClickMap(args);
+                (sender as BasePlayer)?.OnClickMap(args);
             };
             gameMode.PlayerClickTextDraw += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
                 if (args.TextDraw == null)
-                {
-                    if (player != null)
-                        player.OnCancelClickTextDraw(args);
-                }
+                    (sender as BasePlayer)?.OnCancelClickTextDraw(args);
                 else
-                {
-                    if (player != null)
-                        player.OnClickTextDraw(args);
-                }
+                    (sender as BasePlayer)?.OnClickTextDraw(args);
             };
             gameMode.PlayerClickPlayerTextDraw += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnClickPlayerTextDraw(args);
+                (sender as BasePlayer)?.OnClickPlayerTextDraw(args);
             };
             gameMode.PlayerClickPlayer += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnClickPlayer(args);
+                (sender as BasePlayer)?.OnClickPlayer(args);
             };
             gameMode.PlayerEditGlobalObject += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnEditGlobalObject(args);
+                (sender as BasePlayer)?.OnEditGlobalObject(args);
             };
             gameMode.PlayerEditPlayerObject += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnEditPlayerObject(args);
+                (sender as BasePlayer)?.OnEditPlayerObject(args);
             };
             gameMode.PlayerEditAttachedObject += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnEditAttachedObject(args);
+                (sender as BasePlayer)?.OnEditAttachedObject(args);
             };
             gameMode.PlayerSelectGlobalObject += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnSelectGlobalObject(args);
+                (sender as BasePlayer)?.OnSelectGlobalObject(args);
             };
             gameMode.PlayerSelectPlayerObject += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnSelectPlayerObject(args);
+                (sender as BasePlayer)?.OnSelectPlayerObject(args);
             };
             gameMode.PlayerWeaponShot += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player != null)
-                    player.OnWeaponShot(args);
+                (sender as BasePlayer)?.OnWeaponShot(args);
             };
         }
 
