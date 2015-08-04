@@ -251,7 +251,7 @@
       <DependentUpon>Native.cs</DependentUpon>
     </Compile>
     <Compile Include="BaseMode.cs" />
-    <Compile Include="ParameterLengthAttribute.cs" />
+    <Compile Include="API\ParameterLengthAttribute.cs" />
     <Compile Include="Pools\IdentifiedOwnedPool`1.cs" />
     <Compile Include="Pools\IdentifiedPool`1.cs" />
     <Compile Include="Pools\Pool`1.cs" />

@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.GameMode
+namespace SampSharp.GameMode.API
 {
     /// <summary>
     ///     Contains an index property for defining which parameter of a callback contains the length of the parameter this

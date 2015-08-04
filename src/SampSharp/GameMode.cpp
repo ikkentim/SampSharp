@@ -55,14 +55,15 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     }
 
     assert(MonoRuntime::IsLoaded());
-    /* Build paths */
+
+    /* Build paths based on the specified namespace and class names. */
     string dirPath = PathUtil::GetPathInBin("gamemode/");
     string libraryPath = PathUtil::GetPathInBin("gamemode/")
         .append(namespaceName).append(".dll");
     string configPath = PathUtil::GetPathInBin("gamemode/")
         .append(namespaceName).append(".dll.config");
 
-    /* Check for existance of gamemode */
+    /* Check for existance of game mode */
     std::ifstream ifile(libraryPath.c_str());
     if (!ifile) {
         logprintf("ERROR: library does not exist!");

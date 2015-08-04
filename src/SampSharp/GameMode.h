@@ -34,7 +34,25 @@
 #define MAX_NATIVE_ARG_FORMAT_LEN           (8)
 
 class GameMode {
+    /* Public functions. */
+public:
+    /* Loads the game mode with the specified namespace class names. */
+    static bool Load(std::string namespaceName, std::string className);
+    /* Unloads the loaded game mode. */
+    static bool Unload();
+    /* Processes a server tick. */
+    static void ProcessTick();
+    /* Processes a public call. */
+    static void ProcessPublicCall(AMX *amx, const char *name, cell *params,
+        cell *retval);
+    /* Gets a value indicating whether a game mode was loaded.*/
+    static bool IsLoaded() {
+        return isLoaded_;
+    }
+
+    /* Internal types. */
 private:
+    /* Enum of supported parameter types. */
     enum ParameterType {
         PARAM_INVALID,
         PARAM_INT,
@@ -45,17 +63,23 @@ private:
         PARAM_FLOAT_ARRAY,
         PARAM_BOOL_ARRAY
     };
+    /* Represents a parameter signature of a callback. */
     struct ParameterSignature {
         ParameterType type;
         int length_idx;
     };
+    /* Holds a collection of parameters. */
     typedef std::map<int, ParameterSignature> ParameterMap;
+    // TODO: ParameterMap can be a vector. The key simply holds the index (0..).
+    /* Represents a callback signature. */
     struct CallbackSignature {
         MonoMethod *method;
         ParameterMap params;
         uint32_t handle;
     };
+    /* Holds a collection of callbacks. */
     typedef std::map<std::string, CallbackSignature *> CallbackMap;
+    /* Represents a signature of a native function. */
     struct NativeSignature {
         char name[MAX_NATIVE_NAME_LEN];
         char format[MAX_NATIVE_ARGS * MAX_NATIVE_ARG_FORMAT_LEN];
@@ -64,64 +88,76 @@ private:
         int param_count;
         AMX_NATIVE native;
     };
+    /* Holds a collection of native function signatures. */
     typedef std::vector<NativeSignature> NativeList;
     struct GameModeImage {
         MonoImage *image;
         MonoClass *klass;
     };
+    /* Represents a reference to a timer. */
     struct RefTimer {
         uint32_t handle;
         bool repeating;
     };
+    /* Holds a collection of timer references. */
     typedef std::map<int, RefTimer> TimerMap;
+    /* Holds a collection of handles of extensions. */
     typedef std::vector<uint32_t> ExtensionList;
 
-public:
-    static bool Load(std::string namespaceName, std::string className);
-    static bool Unload();
-    static void ProcessTick();
-    static void ProcessPublicCall(AMX *amx, const char *name, cell *params,
-        cell *retval);
-    static bool IsLoaded() {
-        return isLoaded_;
-    }
-
+    /* Fields */
 private:
     static bool isLoaded_;
-
     static TimerMap timers_;
     static ExtensionList extensions_;
     static CallbackMap callbacks_;
     static NativeList natives_;
-
     static MonoDomain *domain_;
     static GameModeImage gameMode_;
     static GameModeImage baseMode_;
     static uint32_t gameModeHandle_;
-
     static MonoMethod *onCallbackException_;
     static MonoMethod *tickMethod_;
     static MonoClass *paramLengthClass_;
     static MonoMethod *paramLengthGetMethod_;
 
+    /* Internal gamemode functions. */
 private:
+    /* Processes a timer tick. */
     static void SAMPGDK_CALL ProcessTimerTick(int timerid, void *data);
+    /* Adds an internal call to the SampSharp.GameMode.API.Interop class with
+     * the specified method and name. */
     static void AddInternalCall(const char * name, const void * method);
+    /* Loads an event with the specified name and parameter count. */
     static MonoMethod *LoadEvent(const char *name, int param_count);
+    /* Gets the index of the length parameter of a callback paramereter with the
+     * specified index based on
+     * a SampSharp.GameMode.API.ParameterLengthAttribute attribute attached to
+     * the specified method.*/
     static int GetParamLengthIndex(MonoMethod *method, int idx);
+    /* Calls an event with the specified method on the specified handle with the
+     * specified parameters. The exception pointer will be set if an exception
+     * is thrown during the executing of the event.*/
     static int CallEvent(MonoMethod *method, uint32_t handle, void **params,
         MonoObject **exception);
+    /* Gets the parameter type value asociated with the specified type. */
     static ParameterType GetParameterType(MonoType *type);
+    /* Checks whether the specified method in the specified image has the
+     * specified parameter count of supported parameter types.*/
     static bool IsMethodValidCallback(MonoImage *image, MonoMethod *method,
         int param_count);
+    /* Finds a method for the specified callback name within the specified
+     * class. */
     static MonoMethod *FindMethodForCallbackInClass(const char *name,
         int param_count, MonoClass *klass);
+    /* Finds a method for the specified callback name within the specified
+    * handle. */
     static MonoMethod *FindMethodForCallback(const char *name,
         int param_count, uint32_t &handle);
+    /* Prints the specified exception to the log. */
     static void PrintException(const char *methodname, MonoObject *exception);
 
+    /* Interop/API functions. */
 private:
-    /* API functions. */
     static bool RegisterExtension(MonoObject *extension);
     static void Print(MonoString *str);
 
