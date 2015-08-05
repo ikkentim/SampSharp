@@ -24,9 +24,10 @@ using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
+using TestMode;
 using TestMode.Tests;
 
-//[assembly: SampSharpExtension(typeof(ExA), typeof(ExB))]
+[assembly: SampSharpExtension(typeof(ExA), typeof(ExB))]
 //[assembly: SampSharpExtension(typeof(ExB), typeof(ExA))]
 
 namespace TestMode

@@ -84,7 +84,8 @@ namespace SampSharp.GameMode
                 foreach (
                     var dependency in
                         assembly.GetCustomAttributes<SampSharpExtensionAttribute>()
-                            .SelectMany(a => a.LoadBeforeAssemblies))
+                            .SelectMany(a => a.LoadBeforeAssemblies)
+                            .Except(new[] {assembly}))
                     loadAssemblyOrder(dependency);
 
                 loadingAssemblies.Remove(assembly);
