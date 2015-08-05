@@ -1,16 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampSharp", "SampSharp\SampSharp.vcxproj", "{39908193-8E5A-42EC-B71B-5D457CE87823}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampSharp.GameMode", "SampSharp.GameMode\SampSharp.GameMode.csproj", "{CCFB350D-BD04-41AB-A9F8-79767E94727E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMode", "TestMode\TestMode.csproj", "{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}"
-	ProjectSection(ProjectDependencies) = postProject
-		{39908193-8E5A-42EC-B71B-5D457CE87823} = {39908193-8E5A-42EC-B71B-5D457CE87823}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,11 +44,13 @@ Global
 		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Debug|Win32.Build.0 = Debug|Any CPU
 		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Win32.ActiveCfg = Release|Any CPU
+		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
