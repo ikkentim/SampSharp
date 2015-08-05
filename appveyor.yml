@@ -4,6 +4,7 @@ os: Visual Studio 2015
 install:
     - cmd: set PATH=%ProgramFiles(x86)%\MSBuild\14.0\bin;%PATH%
     - cmd: echo Path is %PATH%
+    - cmd: dir %ProgramFiles(x86)%\MSBuild\14.0\bin
 build:
   project: src\SampSharp.sln      # path to Visual Studio solution or project
   verbosity: minimal
