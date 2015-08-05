@@ -1,0 +1,15 @@
+version: b{build}-{branch}
+os: Visual Studio 2015
+
+install:
+    - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+
+artifacts:
+    - path: bin/SampSharp.dll
+      name: SampSharp.dll
+    - path: bin/SampSharp.GameMode.dll
+      name: SampSharp.GameMode.dll
+    - path: bin/SampSharp.GameMode.pdb
+      name: SampSharp.GameMode.pdb
+    - path: bin/SampSharp.GameMode.XML
+      name: SampSharp.GameMode.XML
