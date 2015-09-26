@@ -549,7 +549,6 @@ namespace SampSharp.GameMode.Display
             if (BackColor != 0) BackColor = BackColor;
             if (ForeColor != 0) ForeColor = ForeColor;
             if (BoxColor != 0) BoxColor = BoxColor;
-            if (Font != default(TextDrawFont)) Font = Font;
             if (LetterWidth != 0) LetterWidth = LetterWidth;
             if (LetterHeight != 0) LetterHeight = LetterHeight;
             if (Outline > 0) Outline = Outline;
