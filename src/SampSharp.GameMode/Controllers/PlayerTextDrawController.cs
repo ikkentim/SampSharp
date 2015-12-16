@@ -38,7 +38,7 @@ namespace SampSharp.GameMode.Controllers
             gameMode.PlayerCleanup += (sender, args) =>
             {
                 var player = sender as BasePlayer;
-                foreach (var textdraw in PlayerTextDraw.All.Where(o => o.Owner == player))
+                foreach (var textdraw in PlayerTextDraw.Of(player))
                     textdraw.Dispose();
             };
         }
