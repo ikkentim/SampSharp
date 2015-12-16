@@ -220,7 +220,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                         .Where(type => !type.IsInterface && type.IsClass && !type.IsAbstract)
                         // Select the methods in the type.
                         .SelectMany(
-                            type => type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
+                            type => type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance))
                         // Exclude abstract methods. (none should be since abstract types are excluded)
                         .Where(method => !method.IsAbstract)
                         // Only include methods with a return type of bool or void.

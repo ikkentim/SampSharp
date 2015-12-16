@@ -75,12 +75,20 @@ namespace TestMode
         }
     }
 
+    [CommandGroup("playertest")]
     public class Player : BasePlayer
     {
-        [Command("spawn")]
+        [Command("spawnbmx")]
         public void SpawnVehicle()
         {
             var v = BaseVehicle.Create(VehicleModelType.BMX, Position + new Vector3(0, 0.5f, 0), 0, -1, -1);
+            PutInVehicle(v);
+        }
+
+        [Command("spawn")]
+        public void SpawnVehicle(VehicleModelType model)
+        {
+            var v = BaseVehicle.Create(model, Position + new Vector3(0, 0.5f, 0), 0, -1, -1);
             PutInVehicle(v);
         }
     }
