@@ -32,6 +32,8 @@ using TestMode.Tests;
 
 namespace TestMode
 {
+    #region Misc classes
+
     public class ExA : Extension
     {
         #region Overrides of Extension
@@ -91,6 +93,8 @@ namespace TestMode
         }
     }
 
+    #endregion
+
     public class GameMode : BaseMode
     {
         #region Tests
@@ -98,31 +102,23 @@ namespace TestMode
         private readonly List<ITest> _tests = new List<ITest>
         {
             new CommandsTest(),
-            new ASyncTest(),
-            new DelayTest(),
-            new MenuTest(),
-            new DisposureTest(),
-            new DialogTest(),
-            new CharsetTest(),
-            new VehicleInfoTest(),
-            new NativesTest(),
+//            new ASyncTest(),
+//            new DelayTest(),
+//            new MenuTest(),
+//            new DisposureTest(),
+//            new DialogTest(),
+//            new CharsetTest(),
+//            new VehicleInfoTest(),
+//            new NativesTest(),
 //            new MapAndreasTest(),
-            new KeyHandlerTest(),
-            new ExtensionTest(),
-            new ActorTest(),
-            new ServicesTest()
+//            new KeyHandlerTest(),
+//            new ExtensionTest(),
+//            new ActorTest(),
+//            new ServicesTest()
         };
 
         #endregion
-
-        private static void StackFiller(int c)
-        {
-            if (c <= 0)
-                throw new Exception();
-            // ReSharper disable once TailRecursiveCall
-            StackFiller(c - 1);
-        }
-
+        
         #region Overrides of BaseMode
 
         protected override void OnInitialized(EventArgs args)
@@ -146,19 +142,7 @@ namespace TestMode
 
             base.OnInitialized(args);
         }
-
-        protected override void OnRconCommand(RconEventArgs e)
-        {
-            Console.WriteLine("[RCON] {0}", e.Command);
-            BasePlayer.SendClientMessageToAll("Rcon message: {0}", e.Command);
-
-            Console.WriteLine("Throwing exception after a stack filter...");
-            StackFiller(20);
-
-            e.Success = false;
-            base.OnRconCommand(e);
-        }
-
+        
         protected override void LoadControllers(ControllerCollection controllers)
         {
             base.LoadControllers(controllers);

@@ -27,32 +27,32 @@ namespace TestMode.Tests
         {
         }
 
-        [Command("menu")]
-        public static bool MenuCommand(BasePlayer player)
-        {
-            var m = new Menu("Test menu", Vector2.Zero);
-
-            m.Columns.Add(new MenuColumn(100));
-
-            m.Rows.Add(new MenuRow("Active"));
-            m.Rows.Add(new MenuRow("Disabled", true));
-            m.Rows.Add(new MenuRow("Active2"));
-
-            m.Show(player);
-
-            m.Exit += (o, eventArgs) =>
-            {
-                player.SendClientMessage(Color.Red, "MENU CLOSED");
-                m.Dispose();
-            };
-
-            m.Response += (o, eventArgs) =>
-            {
-                player.SendClientMessage(Color.Green, "SELECTED ROW " + eventArgs.Row);
-                m.Dispose();
-            };
-
-            return true;
-        }
+//        [Command("menu")]
+//        public static bool MenuCommand(BasePlayer player)
+//        {
+//            var m = new Menu("Test menu", Vector2.Zero);
+//
+//            m.Columns.Add(new MenuColumn(100));
+//
+//            m.Rows.Add(new MenuRow("Active"));
+//            m.Rows.Add(new MenuRow("Disabled", true));
+//            m.Rows.Add(new MenuRow("Active2"));
+//
+//            m.Show(player);
+//
+//            m.Exit += (o, eventArgs) =>
+//            {
+//                player.SendClientMessage(Color.Red, "MENU CLOSED");
+//                m.Dispose();
+//            };
+//
+//            m.Response += (o, eventArgs) =>
+//            {
+//                player.SendClientMessage(Color.Green, "SELECTED ROW " + eventArgs.Row);
+//                m.Dispose();
+//            };
+//
+//            return true;
+//        }
     }
 }

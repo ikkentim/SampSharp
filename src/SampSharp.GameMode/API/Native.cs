@@ -19,6 +19,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.API
 {
@@ -186,7 +187,7 @@ namespace SampSharp.GameMode.API
             if (invokeMethod == null)
                 throw new ArgumentException("type is not a delegate", "type");
 
-            // TODO: Verify format.
+            // TODO: Verify format of the specified delegate.
 
             var parameters = invokeMethod.GetParameters();
             var parameterTypes = parameters.Select(p => p.ParameterType).ToArray();

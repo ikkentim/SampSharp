@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
 
@@ -35,18 +36,25 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Initializes a new instance of the <see cref="BaseMode" /> class.
         /// </summary>
-        protected BaseMode()
+        protected BaseMode() : this(true)
         {
-            Console.SetOut(new LogWriter());
 
-            var type = Type.GetType("Mono.Runtime");
-            var displayName = type?.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
+        }
 
-            if (displayName != null)
-                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, "Detected mono version: {0}",
-                    displayName.Invoke(null, null));
+        protected BaseMode(bool redirectConsole)
+        {
+            if (redirectConsole)
+                Console.SetOut(new LogWriter());
 
-            Services = new GameModeServiceContainer();
+            if (FrameworkConfiguration.MessageLevel == FrameworkMessageLevel.Debug)
+            {
+                var type = Type.GetType("Mono.Runtime");
+                var displayName = type?.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
+
+                if (displayName != null)
+                    FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, "Detected mono version: {0}",
+                        displayName.Invoke(null, null));
+            }
 
             Instance = this;
         }
@@ -178,7 +186,7 @@ namespace SampSharp.GameMode
         /// <value>
         ///     The services.
         /// </value>
-        public virtual GameModeServiceContainer Services { get; }
+        public virtual GameModeServiceContainer Services { get; } = new GameModeServiceContainer();
 
         #endregion
 

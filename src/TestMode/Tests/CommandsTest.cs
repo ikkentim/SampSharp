@@ -14,148 +14,76 @@
 // limitations under the License.
 
 using System;
-using System.Linq;
-using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
-using TestMode.Checkers;
 
 namespace TestMode.Tests
 {
     public class CommandsTest : ITest
     {
+        [CommandGroup("alpha", "a")]
+        class A
+        {
+            [CommandGroup("bravo", "b")]
+            class B
+            {
+                [Command("whisper", Shortcut = "w")]
+                public static void WhisperCommand(BasePlayer p, string message)
+                {
+                    Console.WriteLine("Whipser: {0}", message);
+                    p.SendClientMessage("You whispered {0}", message);
+                }
+            }
+        }
+
+        [Command("test me", Shortcut = "testme", UsageMessage = "Usage: /testme [number]")]
+        public static void TestCommand(BasePlayer player, int value)
+        {
+            Console.WriteLine($"Test with int {value}");
+            player.SendClientMessage($"You tested with int {value}");
+        }
+
+        [Command("test me", UsageMessage = "Usage: /test me [decimal]")]
+        public static void TestCommand(BasePlayer player, float value)
+        {
+            Console.WriteLine($"Test with float {value}");
+            player.SendClientMessage($"You tested with float {value}");
+        }
+
+        [Command("test me", UsageMessage = "Usage: /test me [player]")]
+        public static void TestCommand(BasePlayer player, BasePlayer value)
+        {
+            Console.WriteLine($"Test with BasePlayer {value}");
+            player.SendClientMessage($"You tested with BasePlayer {value}");
+        }
+
+        [Command("test me", UsageMessage = "Usage: /test me [model]")]
+        public static void TestCommand(BasePlayer player, VehicleModelType value)
+        {
+            Console.WriteLine($"Test with VehicleModelType {value}");
+            player.SendClientMessage($"You tested with VehicleModelType {value}");
+        }
+
+        [Command("awkward")]
+        public static void AwkwardCommand(BasePlayer sender, int num1, int num2, string word1, string word2,
+            float float1, string text = null)
+        {
+            sender.SendClientMessage("That was awkward.");
+        }
+
         #region Implementation of ITest
 
         public void Start(GameMode gameMode)
         {
-            Console.WriteLine("Reg groups>>>>>");
-            CommandGroup.Register("tools", "t", CommandGroup.Register("test", "t"));
-            CommandGroup.Register("vehicle", "v");
-
-            var cmd = Command.GetAll<DetectedCommand>().FirstOrDefault(c => c.Name == "console");
-            Console.WriteLine("Command paths: {0}", string.Join(", ", cmd.CommandPaths));
+            var m = gameMode.Services.GetService<ICommandsManager>();
+            Console.WriteLine($"Commands: {m.Commands.Count}");
+            foreach (var command in m.Commands)
+            {
+                Console.WriteLine($"  {command}");
+            }
         }
 
         #endregion
-
-        [Command("console", Alias = "c", Shortcut = "1", PermissionChecker = typeof (AdminChecker))]
-        [CommandGroup("tools")]
-        [Text("text")]
-        public static void TestCommand(BasePlayer player, string word, int num, string text)
-        {
-            Console.WriteLine("Player: {0}, Word: {1}, Rest: {2}, Num: {3}", player, word, text, num);
-            Console.WriteLine("Text written to console...");
-            player.SendClientMessage(Color.Green, "Text written to console!");
-
-            player.SendClientMessage(Color.Green, "Formattest {0} -- {1} ,, {2}", 123, "xyz", "::DD");
-        }
-
-        [Command("adminwomessage", PermissionChecker = typeof (AdminWithoutMessageChecker))]
-        public static void TestAdminOnlyCommandWithoutMessage(BasePlayer player)
-        {
-            player.SendClientMessage("You are admin, congratz.");
-        }
-
-        //[Command("wrongcommandshouldnotcompile", PermissionChecker = typeof(GtaPlayer))]
-        //public static void TestCommandWithAWrongPermissionChecker(GtaPlayer player)
-        //{
-        //    // This method should throw let the commands loading fail
-        //    player.SendClientMessage("wtf?");
-        //}
-        [CommandGroup("vehicle")]
-        private static class VehicleCommandGroup
-        {
-            [Command("list", Alias = "l")]
-            public static void VehicleListCommand(BasePlayer player)
-            {
-                player.SendClientMessage(Color.Green, "Available vehicles:");
-                player.SendClientMessage(Color.GreenYellow, string.Join(", ", typeof (VehicleModelType).GetEnumNames()));
-            }
-
-            [Command("spawn", Alias = "s", Shortcut = "v")]
-            public static void VehicleCommand(BasePlayer player, VehicleModelType model)
-            {
-                player.SendClientMessage(Color.GreenYellow, "You have spawned a {0}", model);
-                Console.WriteLine("Spawning a {0} {2} for {1}", model, player, (int) model);
-                var vehicle = BaseVehicle.Create(model, player.Position + new Vector3(0, 0, 0.5f), player.Rotation.Z, -1,
-                    -1);
-                player.PutInVehicle(vehicle);
-            }
-
-            [Command("c")]
-            [CommandGroup("a", "b")]
-            public static void TestCommand(BasePlayer player)
-            {
-                player.SendClientMessage("Success!!!");
-            }
-        }
-
-        [Command("commands", Alias = "help")]
-        public static void CommandsCommand(BasePlayer player)
-        {
-            player.SendClientMessage(Color.Green, "Commands:");
-            foreach (
-                var cmd in
-                    Command.GetAll<DetectedCommand>()
-                        .Where(c => c.HasPlayerPermissionForCommand(player))
-                        .OrderBy( /* category??? */c => c.CommandPath))
-            {
-                player.SendClientMessage(Color.White,
-                    "/{0}: I could add an Attribute in my gamemode with an help message and/or color", cmd.CommandPath);
-            }
-        }
-
-        [Command("vehicle")]
-        public static void VehicleOverloadCommand(BasePlayer player)
-        {
-            player.SendClientMessage(
-                "This is the 'vehicle' overload. 'v', 'vehicle spawn' and 'vehicle list' are also available.");
-        }
-
-        [Command("tell")]
-        [Text("message")]
-        public static void TellCommand(BasePlayer player, BasePlayer to, string message)
-        {
-            to.SendClientMessage(Color.Green, "{0} tells you: {1}", player.Name, message);
-        }
-
-        [Command("put")]
-        public static void PutCommand(BasePlayer player, int vehicleid, int seat = 0)
-        {
-            var v = BaseVehicle.Find(vehicleid);
-            if (v == null)
-            {
-                player.SendClientMessage(Color.Red, "This vehicle does not exist!");
-                return;
-            }
-            player.PutInVehicle(v, seat);
-        }
-
-        [Command("position")]
-        public static void PositionCommand(BasePlayer player)
-        {
-            player.SendClientMessage(Color.Green, "Position: {0}", player.Position);
-        }
-
-        [Command("teleport", Alias = "tp")]
-        public static void TpCommand(BasePlayer player, int x, int y, int z = 4)
-        {
-            player.Position = new Vector3(x, y, z);
-            Console.WriteLine("Teleporting {0} to {1}, {2}, {3}", player, x, y, z);
-        }
-
-        [Command("wor")]
-        public static void World(BasePlayer player, int world)
-        {
-            player.VirtualWorld = world;
-        }
-
-        [Command("int")]
-        public static void Interior(BasePlayer player, int interior)
-        {
-            player.Interior = interior;
-        }
     }
 }

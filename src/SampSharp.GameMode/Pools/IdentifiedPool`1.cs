@@ -45,7 +45,7 @@ namespace SampSharp.GameMode.Pools
         ///     The type to initialize when adding an instance to this pool by id.
         /// </summary>
         // ReSharper disable once StaticMemberInGenericType
-        protected static Type InstanceType { get; private set; }
+        public static Type InstanceType { get; private set; }
 
         /// <summary>
         ///     Gets a collection containing all instances.
@@ -144,7 +144,7 @@ namespace SampSharp.GameMode.Pools
         /// <returns>The initialized instance.</returns>
         public static TInstance Create(int id)
         {
-            var instance = (TInstance) Activator.CreateInstance(InstanceType);
+            var instance = Activator.CreateInstance(InstanceType) as TInstance;
             instance.Id = id;
             return instance;
         }

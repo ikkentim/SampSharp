@@ -39,18 +39,18 @@ namespace TestMode.Tests
             Console.WriteLine();
         }
 
-        [Command("charset")]
-        public static bool CharsetCommand(BasePlayer player)
-        {
-            BasePlayer.SendClientMessageToAll(Color.Teal, "this is a test: \u00D6");
-            BasePlayer.SendClientMessageToAll(Color.Teal, "this is a test: Ä ä Ö ö Ü ü ß ...");
-
-            BasePlayer.SendClientMessageToAll("Cyrillic characters:");
-            BasePlayer.SendClientMessageToAll("А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ь Ы Ъ Э Ю Я");
-            BasePlayer.SendClientMessageToAll("Czech characters:");
-            BasePlayer.SendClientMessageToAll("ú ů ý ž ’ „ “ ” – — á č ď é ě í ň ó ř š ť Ú Ů Ý Ž Á Č Ď É Ě Í Ň Ó Ř Š Ť");
-
-            return true;
-        }
+//        [Command("charset")]
+//        public static bool CharsetCommand(BasePlayer player)
+//        {
+//            BasePlayer.SendClientMessageToAll(Color.Teal, "this is a test: \u00D6");
+//            BasePlayer.SendClientMessageToAll(Color.Teal, "this is a test: Ä ä Ö ö Ü ü ß ...");
+//
+//            BasePlayer.SendClientMessageToAll("Cyrillic characters:");
+//            BasePlayer.SendClientMessageToAll("А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ь Ы Ъ Э Ю Я");
+//            BasePlayer.SendClientMessageToAll("Czech characters:");
+//            BasePlayer.SendClientMessageToAll("ú ů ý ž ’ „ “ ” – — á č ď é ě í ň ó ř š ť Ú Ů Ý Ž Á Č Ď É Ě Í Ň Ó Ř Š Ť");
+//
+//            return true;
+//        }
     }
 }

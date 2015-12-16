@@ -142,6 +142,9 @@ namespace SampSharp.GameMode.Pools
                 pool.RemoveUnidentified((TInstance)this);
             else
                 pool.Remove(_id);
+
+            if (_id != PoolContainer<TInstance>.UnidentifiedId && !pool.Any())
+                Containers.Remove(_owner);
         }
 
         /// <summary>
@@ -181,6 +184,16 @@ namespace SampSharp.GameMode.Pools
             Register(typeof(TRegister));
         }
 
+        /// <summary>
+        ///     Gets a collection of instanced owned by the specified owner.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <returns>A collection of instanced owned by the specified owner</returns>
+        public static IEnumerable<TInstance> Of(TOwner owner)
+        {
+            return (IEnumerable<TInstance>) GetPool(owner, false) ?? new TInstance[0];
+        }
+        
         /// <summary>
         ///     Registers the type to use when initializing new instances.
         /// </summary>

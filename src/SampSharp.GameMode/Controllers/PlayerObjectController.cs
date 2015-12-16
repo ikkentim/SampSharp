@@ -49,7 +49,7 @@ namespace SampSharp.GameMode.Controllers
                 if (player == null)
                     return;
 
-                foreach (var obj in PlayerObject.All.Where(o => o.Owner == player))
+                foreach (var obj in PlayerObject.Of(player))
                     obj.Dispose();
             };
         }
