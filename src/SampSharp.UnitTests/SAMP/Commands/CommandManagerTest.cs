@@ -34,7 +34,7 @@ namespace SampSharp.UnitTests.SAMP.Commands
             {
                 var manager = new CommandsManager(new TestGameMode());
                 var expectedMethod = GetType().GetMethod(methodName);
-                manager.Register(new[] {new CommandPath(commandPath)}, false, null, expectedMethod, null);
+                manager.Register(new[] {new CommandPath(commandPath)}, null, false, null, expectedMethod, null);
 
                 var actualCommand = (manager.GetCommandForText(new BasePlayer(), runCommand) as DefaultCommand)?.Method;
 
