@@ -402,7 +402,9 @@ namespace SampSharp.GameMode.API
 
         private static int InvokeHandle(int handle, object[] args)
         {
-            return Interop.InvokeNative(handle, args);
+            return Sync.IsRequired
+                ? Sync.RunSync(() => Interop.InvokeNative(handle, args))
+                : Interop.InvokeNative(handle, args);
         }
         
         private static bool InvokeHandleAsBool(int handle, object[] args)

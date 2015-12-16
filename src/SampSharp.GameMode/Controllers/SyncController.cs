@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.Controllers
         ///     Gets the main thread.
         /// </summary>
         public static Thread MainThread { get; private set; }
-
+        
         /// <summary>
         ///     Registers the events this SyncController wants to listen to.
         /// </summary>

@@ -124,6 +124,7 @@
     <Compile Include="FrameworkConfiguration.cs" />
     <Compile Include="FrameworkLog.cs" />
     <Compile Include="FrameworkMessageLevel.cs" />
+    <Compile Include="Helpers\AsyncHelper.cs" />
     <Compile Include="Helpers\MathHelper.cs" />
     <Compile Include="Helpers\VehicleParameterValueHelper.cs" />
     <Compile Include="IService.cs" />

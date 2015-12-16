@@ -17,6 +17,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.Helpers;
 using SampSharp.GameMode.Pools;
 
 namespace SampSharp.GameMode.Tools
@@ -34,7 +35,7 @@ namespace SampSharp.GameMode.Tools
         /// <summary>
         ///     Run a function on the main thread.
         /// </summary>
-        /// <param name="action">The action the run</param>
+        /// <param name="action">The action to run.</param>
         public static void Run(Action action)
         {
             if (!IsRequired)
@@ -45,6 +46,31 @@ namespace SampSharp.GameMode.Tools
 
             new SyncTask {Action = action};
             SyncController.Start();
+        }
+
+        /// <summary>
+        ///     Run a function on the main thread synchronously and await its result.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        public static void RunSync(Action action)
+        {
+            if (!IsRequired)
+                action();
+            else
+                AsyncHelper.RunSync(() => RunAsync(action));
+        }
+
+        /// <summary>
+        ///     Run a function on the main thread synchronously and await its result.
+        /// </summary>
+        /// <typeparam name="T">The type of the return value.</typeparam>
+        /// <param name="func">The function.</param>
+        /// <returns></returns>
+        public static T RunSync<T>(Func<T> func)
+        {
+            return !IsRequired
+                ? func()
+                : AsyncHelper.RunSync(() => RunAsync(func));
         }
 
         /// <summary>
