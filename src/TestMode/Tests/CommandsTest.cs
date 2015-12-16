@@ -14,8 +14,11 @@
 // limitations under the License.
 
 using System;
+using System.Linq;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
+using SampSharp.GameMode.SAMP.Commands.Parameters;
 using SampSharp.GameMode.World;
 
 namespace TestMode.Tests
@@ -70,6 +73,64 @@ namespace TestMode.Tests
             float float1, string text = null)
         {
             sender.SendClientMessage("That was awkward.");
+        }
+
+        [Command("color")]
+        public static void TestComand(BasePlayer sender,
+            [ParameterType(typeof (CustomCommandParameterType))] Color color)
+        {
+            sender.SendClientMessage(color, "YOU CHOSE THIS COLOR!!!");
+        }
+
+        class CustomCommandParameterType : ICommandParameterType
+        {
+            #region Implementation of ICommandParameterType
+
+            /// <summary>
+            ///     Gets the value for the occurance of this parameter type at the start of the commandText. The processed text will be
+            ///     removed from the commandText.
+            /// </summary>
+            /// <param name="commandText">The command text.</param>
+            /// <param name="output">The output.</param>
+            /// <returns>true if parsed successfully; false otherwise.</returns>
+            public bool GetValue(ref string commandText, out object output)
+            {
+                output = null;
+                
+                // Can't parse without intput.
+                if (string.IsNullOrWhiteSpace(commandText))
+                    return false;
+
+                // Get the first word.
+                var word = commandText.TrimStart().Split(' ').First();
+
+                // Set the output (color) based on the input.
+                switch (word.ToLower())
+                {
+                    case "red":
+                        output = Color.Red;
+                        break;
+                    case "green":
+                        output = Color.Green;
+                        break;
+                    case "blue":
+                        output = Color.Blue;
+                        break;
+                }
+
+                // Remove the word from the input and trim the start.
+                if (output != null)
+                {
+                    commandText = commandText.Length == word.Length
+                        ? string.Empty
+                        : commandText.Substring(word.Length).TrimStart();
+                    return true;
+                }
+
+                return false;
+            }
+
+            #endregion
         }
 
         #region Implementation of ITest
