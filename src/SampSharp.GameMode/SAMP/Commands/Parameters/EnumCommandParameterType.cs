@@ -16,10 +16,18 @@
 using System;
 using System.Linq;
 
-namespace SampSharp.GameMode.SAMP.Commands.Arguments
+namespace SampSharp.GameMode.SAMP.Commands.Parameters
 {
+    /// <summary>
+    ///     Represents an enum command parameter.
+    /// </summary>
+    /// <typeparam name="T">The enum type.</typeparam>
     public class EnumCommandParameterType<T> : ICommandParameterType where T : struct, IConvertible
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="EnumCommandParameterType{T}" /> class.
+        /// </summary>
+        /// <exception cref="System.ArgumentException">T must be an enumerated type</exception>
         public EnumCommandParameterType()
         {
             if (!typeof (T).IsEnum)
@@ -34,6 +42,15 @@ namespace SampSharp.GameMode.SAMP.Commands.Arguments
 
         #region Implementation of ICommandParameterType
 
+        /// <summary>
+        ///     Gets the value for the occurance of this parameter type at the start of the commandText. The processed text will be
+        ///     removed from the commandText.
+        /// </summary>
+        /// <param name="commandText">The command text.</param>
+        /// <param name="output">The output.</param>
+        /// <returns>
+        ///     true if parsed successfully; false otherwise.
+        /// </returns>
         public bool GetValue(ref string commandText, out object output)
         {
             var text = commandText.TrimStart();

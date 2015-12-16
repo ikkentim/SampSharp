@@ -23,7 +23,7 @@ namespace SampSharp.GameMode.SAMP.Commands
     public interface ICommand
     {
         /// <summary>
-        /// Determines whether this instance can be invoked by the specified player.
+        ///     Determines whether this instance can be invoked by the specified player.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="commandText">The command text.</param>
@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         CommandCallableResponse CanInvoke(BasePlayer player, string commandText);
 
         /// <summary>
-        /// Invokes this command.
+        ///     Invokes this command.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="commandText">The command text.</param>

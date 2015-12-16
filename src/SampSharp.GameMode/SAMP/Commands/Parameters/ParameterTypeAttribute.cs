@@ -1,4 +1,4 @@
-﻿// SampSharp
+// SampSharp
 // Copyright 2015 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,24 +13,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.GameMode.SAMP.Commands
+using System;
+
+namespace SampSharp.GameMode.SAMP.Commands.Parameters
 {
-    public enum CommandCallableResponse
+    /// <summary>
+    ///     Indicates the type of the parameter.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    public class ParameterTypeAttribute : Attribute
     {
         /// <summary>
-        ///     The specified parameters don't allow this command to be called.
+        ///     Initializes a new instance of the <see cref="ParameterTypeAttribute" /> class.
         /// </summary>
-        False,
+        /// <param name="type">The type.</param>
+        public ParameterTypeAttribute(Type type)
+        {
+            Type = type;
+        }
 
         /// <summary>
-        ///     The specified parameters require this command to be called.
+        ///     Gets the type.
         /// </summary>
-        True,
-
-        /// <summary>
-        ///     The specified parameters allow this command to be called unless a different command accepts the parameters with a
-        ///     'True' response.
-        /// </summary>
-        Optional
+        public Type Type { get; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SampSharp.GameMode.SAMP.Commands.Arguments;
+using SampSharp.GameMode.SAMP.Commands.Parameters;
 
 namespace SampSharp.UnitTests.SAMP.Commands.Arguments
 {

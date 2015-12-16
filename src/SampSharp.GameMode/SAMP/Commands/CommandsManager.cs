@@ -1,3 +1,18 @@
+// SampSharp
+// Copyright 2015 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +21,13 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP.Commands
 {
+    /// <summary>
+    ///     Represents the default commands manager.
+    /// </summary>
     public class CommandsManager : ICommandsManager
     {
         private static readonly Type[] SupportedReturnTypes = {typeof (bool), typeof (void)};
-        private readonly List<ICommand> _commands = new List<ICommand>(); 
+        private readonly List<ICommand> _commands = new List<ICommand>();
 
         public CommandsManager(BaseMode gameMode)
         {
@@ -26,96 +44,33 @@ namespace SampSharp.GameMode.SAMP.Commands
 
         #endregion
 
-        #region Implementation of ICommandsManager
-
         /// <summary>
-        ///     Gets a read-only collection of all registered commands.
+        ///     Registers the specified command.
         /// </summary>
-        public virtual IReadOnlyCollection<ICommand> Commands => _commands.AsReadOnly();
-
-        /// <summary>
-        ///     Loads all tagged commands from the assembly containing the specified type.
-        /// </summary>
-        /// <typeparam name="T">A type inside the assembly to load the commands form.</typeparam>
-        public virtual void RegisterCommands<T>() where T : class
-        {
-            RegisterCommands(typeof(T));
-        }
-
-        /// <summary>
-        ///     Loads all tagged commands from the assembly containing the specified type.
-        /// </summary>
-        /// <param name="typeInAssembly">A type inside the assembly to load the commands form.</param>
-        public virtual void RegisterCommands(Type typeInAssembly)
-        {
-            if (typeInAssembly == null) throw new ArgumentNullException(nameof(typeInAssembly));
-            RegisterCommands(typeInAssembly.Assembly);
-        }
-
-        /// <summary>
-        ///     Loads all tagged commands from the specified <paramref name="assembly" />.
-        /// </summary>
-        /// <param name="assembly">The assembly to load the commands from.</param>
-        public virtual void RegisterCommands(Assembly assembly)
-        {
-
-            foreach (
-                var method in
-                    assembly.GetTypes()
-                        // Get all classes in the specified assembly.
-                        .Where(type => !type.IsInterface && type.IsClass && !type.IsAbstract)
-                        // Select the methods in the type.
-                        .SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
-                        // Exclude abstract methods. (none should be since abstract types are excluded)
-                        .Where(method => !method.IsAbstract)
-                        // Only include methods with a return type of bool or void.
-                        .Where(method => SupportedReturnTypes.Contains(method.ReturnType))
-                        // Only include methods which have a command attribute.
-                        .Where(method => method.GetCustomAttribute<CommandAttribute>() != null)
-                        // Only include methods which are static and have a player as first argument -or- are a non-static member of a player derived class.
-                        .Where(DefaultCommand.IsValidCommandMethod)
-                )
-            {
-                var attribute = method.GetCustomAttribute<CommandAttribute>();
-
-                var commandPaths =
-                    GetCommandGroupPaths(method)
-                        .SelectMany(g => attribute.Names.Select(n => new CommandPath(g, n)))
-                        .ToList();
-
-                if(commandPaths.Count == 0)
-                    commandPaths.AddRange(attribute.Names.Select(n => new CommandPath(n)));
-                
-                if (!string.IsNullOrWhiteSpace(attribute.Shortcut))
-                    commandPaths.Add(new CommandPath(attribute.Shortcut));
-
-                Register(commandPaths.ToArray(), attribute.DisplayName, attribute.IgnoreCase, GetCommandPermissionCheckers(method).ToArray(), method, attribute.UsageMessage);
-            }
-        }
-
-        public virtual void Register(ICommand command)
-        {
-            if (command == null) throw new ArgumentNullException(nameof(command));
-
-            _commands.Add(command);
-        }
-
-        public virtual bool Process(string commandText, BasePlayer player)
-        {
-            var command = GetCommandForText(player, commandText);
-
-            return command != null && command.Invoke(player, commandText);
-        }
-
-        #endregion
-
+        /// <param name="commandPaths">The command paths.</param>
+        /// <param name="displayName">The display name.</param>
+        /// <param name="ignoreCase">if set to <c>true</c> ignore the case of the command.</param>
+        /// <param name="permissionCheckers">The permission checkers.</param>
+        /// <param name="method">The method.</param>
+        /// <param name="usageMessage">The usage message.</param>
         public virtual void Register(CommandPath[] commandPaths, string displayName, bool ignoreCase,
             IPermissionChecker[] permissionCheckers, MethodInfo method, string usageMessage)
         {
-            Register(CreateDefaultCommand(commandPaths, displayName, ignoreCase, permissionCheckers, method, usageMessage));
+            Register(CreateCommand(commandPaths, displayName, ignoreCase, permissionCheckers, method,
+                usageMessage));
         }
 
-        protected virtual ICommand CreateDefaultCommand(CommandPath[] commandPaths, string displayName, bool ignoreCase,
+        /// <summary>
+        ///     Creates a command.
+        /// </summary>
+        /// <param name="commandPaths">The command paths.</param>
+        /// <param name="displayName">The display name.</param>
+        /// <param name="ignoreCase">if set to <c>true</c> ignore the case the command.</param>
+        /// <param name="permissionCheckers">The permission checkers.</param>
+        /// <param name="method">The method.</param>
+        /// <param name="usageMessage">The usage message.</param>
+        /// <returns>The created command</returns>
+        protected virtual ICommand CreateCommand(CommandPath[] commandPaths, string displayName, bool ignoreCase,
             IPermissionChecker[] permissionCheckers, MethodInfo method, string usageMessage)
         {
             return new DefaultCommand(commandPaths, displayName, ignoreCase, permissionCheckers, method, usageMessage);
@@ -123,7 +78,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
         private static IEnumerable<IPermissionChecker> GetCommandPermissionCheckers(Type type)
         {
-            if (type == null || type == typeof(object))
+            if (type == null || type == typeof (object))
                 yield break;
 
             foreach (var permissionChecker in GetCommandPermissionCheckers(type.DeclaringType))
@@ -150,7 +105,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
         private static IEnumerable<string> GetCommandGroupPaths(Type type)
         {
-            if (type == null || type == typeof(object))
+            if (type == null || type == typeof (object))
                 yield break;
 
             var count = 0;
@@ -201,6 +156,12 @@ namespace SampSharp.GameMode.SAMP.Commands
                     yield return g;
         }
 
+        /// <summary>
+        ///     Gets the command for the specified command text.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <param name="commandText">The command text.</param>
+        /// <returns>The found command.</returns>
         public ICommand GetCommandForText(BasePlayer player, string commandText)
         {
             ICommand candidate = null;
@@ -219,5 +180,99 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             return candidate;
         }
+
+        #region Implementation of ICommandsManager
+
+        /// <summary>
+        ///     Gets a read-only collection of all registered commands.
+        /// </summary>
+        public virtual IReadOnlyCollection<ICommand> Commands => _commands.AsReadOnly();
+
+        /// <summary>
+        ///     Loads all tagged commands from the assembly containing the specified type.
+        /// </summary>
+        /// <typeparam name="T">A type inside the assembly to load the commands form.</typeparam>
+        public virtual void RegisterCommands<T>() where T : class
+        {
+            RegisterCommands(typeof (T));
+        }
+
+        /// <summary>
+        ///     Loads all tagged commands from the assembly containing the specified type.
+        /// </summary>
+        /// <param name="typeInAssembly">A type inside the assembly to load the commands form.</param>
+        public virtual void RegisterCommands(Type typeInAssembly)
+        {
+            if (typeInAssembly == null) throw new ArgumentNullException(nameof(typeInAssembly));
+            RegisterCommands(typeInAssembly.Assembly);
+        }
+
+        /// <summary>
+        ///     Loads all tagged commands from the specified <paramref name="assembly" />.
+        /// </summary>
+        /// <param name="assembly">The assembly to load the commands from.</param>
+        public virtual void RegisterCommands(Assembly assembly)
+        {
+            foreach (
+                var method in
+                    assembly.GetTypes()
+                        // Get all classes in the specified assembly.
+                        .Where(type => !type.IsInterface && type.IsClass && !type.IsAbstract)
+                        // Select the methods in the type.
+                        .SelectMany(
+                            type => type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
+                        // Exclude abstract methods. (none should be since abstract types are excluded)
+                        .Where(method => !method.IsAbstract)
+                        // Only include methods with a return type of bool or void.
+                        .Where(method => SupportedReturnTypes.Contains(method.ReturnType))
+                        // Only include methods which have a command attribute.
+                        .Where(method => method.GetCustomAttribute<CommandAttribute>() != null)
+                        // Only include methods which are static and have a player as first argument -or- are a non-static member of a player derived class.
+                        .Where(DefaultCommand.IsValidCommandMethod)
+                )
+            {
+                var attribute = method.GetCustomAttribute<CommandAttribute>();
+
+                var commandPaths =
+                    GetCommandGroupPaths(method)
+                        .SelectMany(g => attribute.Names.Select(n => new CommandPath(g, n)))
+                        .ToList();
+
+                if (commandPaths.Count == 0)
+                    commandPaths.AddRange(attribute.Names.Select(n => new CommandPath(n)));
+
+                if (!string.IsNullOrWhiteSpace(attribute.Shortcut))
+                    commandPaths.Add(new CommandPath(attribute.Shortcut));
+
+                Register(commandPaths.ToArray(), attribute.DisplayName, attribute.IgnoreCase,
+                    GetCommandPermissionCheckers(method).ToArray(), method, attribute.UsageMessage);
+            }
+        }
+
+        /// <summary>
+        ///     Registers the specified command.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        public virtual void Register(ICommand command)
+        {
+            if (command == null) throw new ArgumentNullException(nameof(command));
+
+            _commands.Add(command);
+        }
+
+        /// <summary>
+        ///     Processes the specified player.
+        /// </summary>
+        /// <param name="commandText">The command text.</param>
+        /// <param name="player">The player.</param>
+        /// <returns>true if processed; false otherwise.</returns>
+        public virtual bool Process(string commandText, BasePlayer player)
+        {
+            var command = GetCommandForText(player, commandText);
+
+            return command != null && command.Invoke(player, commandText);
+        }
+
+        #endregion
     }
 }

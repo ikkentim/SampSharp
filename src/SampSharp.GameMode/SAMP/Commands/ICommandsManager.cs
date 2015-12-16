@@ -20,6 +20,9 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP.Commands
 {
+    /// <summary>
+    ///     Contains methods for a command manager service.
+    /// </summary>
     public interface ICommandsManager : IService
     {
         /// <summary>

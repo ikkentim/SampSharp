@@ -16,8 +16,11 @@
 using System.Globalization;
 using System.Linq;
 
-namespace SampSharp.GameMode.SAMP.Commands.Arguments
+namespace SampSharp.GameMode.SAMP.Commands.Parameters
 {
+    /// <summary>
+    ///     Represents an integer command parameter.
+    /// </summary>
     public class IntegerCommandParameterType : ICommandParameterType
     {
         private static readonly char[] Base10Characters = "1234567890,.".ToCharArray();
@@ -25,6 +28,15 @@ namespace SampSharp.GameMode.SAMP.Commands.Arguments
 
         #region Implementation of ICommandParameterType
 
+        /// <summary>
+        ///     Gets the value for the occurance of this parameter type at the start of the commandText. The processed text will be
+        ///     removed from the commandText.
+        /// </summary>
+        /// <param name="commandText">The command text.</param>
+        /// <param name="output">The output.</param>
+        /// <returns>
+        ///     true if parsed successfully; false otherwise.
+        /// </returns>
         public bool GetValue(ref string commandText, out object output)
         {
             var text = commandText.TrimStart();

@@ -16,15 +16,27 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using SampSharp.GameMode.SAMP.Commands.Arguments;
+using SampSharp.GameMode.SAMP.Commands.Parameters;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP.Commands
 {
+    /// <summary>
+    ///     Represents the default command based on a method with command attributes.
+    /// </summary>
     public class DefaultCommand : ICommand
     {
         private readonly string _displayName;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DefaultCommand" /> class.
+        /// </summary>
+        /// <param name="names">The names.</param>
+        /// <param name="displayName">The display name.</param>
+        /// <param name="ignoreCase">if set to <c>true</c> ignore the case of the command.</param>
+        /// <param name="permissionCheckers">The permission checkers.</param>
+        /// <param name="method">The method.</param>
+        /// <param name="usageMessage">The usage message.</param>
         public DefaultCommand(CommandPath[] names, string displayName, bool ignoreCase,
             IPermissionChecker[] permissionCheckers,
             MethodInfo method, string usageMessage)
@@ -57,20 +69,54 @@ namespace SampSharp.GameMode.SAMP.Commands
             PermissionCheckers = (permissionCheckers?.Where(p => p != null).ToArray() ?? new IPermissionChecker[0]);
         }
 
+        /// <summary>
+        ///     Gets the names.
+        /// </summary>
         public virtual CommandPath[] Names { get; }
 
+        /// <summary>
+        ///     Gets the display name.
+        /// </summary>
         public virtual string DisplayName
         {
             get { return _displayName ?? Names.OrderByDescending(n => n.Length).First().FullName; }
         }
 
+        /// <summary>
+        ///     Gets a value indicating whether this instance ignores the case of the command.
+        /// </summary>
         public virtual bool IsCaseIgnored { get; }
+
+        /// <summary>
+        ///     Gets the method.
+        /// </summary>
         public MethodInfo Method { get; }
+
+        /// <summary>
+        ///     Gets a value indicating whether this instance is method member of player.
+        /// </summary>
         public bool IsMethodMemberOfPlayer { get; }
+
+        /// <summary>
+        ///     Gets the usage message.
+        /// </summary>
         public virtual string UsageMessage { get; }
+
+        /// <summary>
+        ///     Gets the parameters.
+        /// </summary>
         public CommandParameterInfo[] Parameters { get; }
+
+        /// <summary>
+        ///     Gets the permission checkers.
+        /// </summary>
         public IPermissionChecker[] PermissionCheckers { get; }
 
+        /// <summary>
+        ///     Determines whether the specified method is a valid command method.
+        /// </summary>
+        /// <param name="method">The method.</param>
+        /// <returns>true if valid; false otherwise.</returns>
         public static bool IsValidCommandMethod(MethodInfo method)
         {
             return (method.IsStatic && method.GetParameters().Length >= 1 &&
@@ -103,9 +149,16 @@ namespace SampSharp.GameMode.SAMP.Commands
             return true;
         }
 
+        /// <summary>
+        ///     Gets the type of the specified parameter.
+        /// </summary>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="index">The index.</param>
+        /// <param name="count">The count.</param>
+        /// <returns>The type of the parameter.</returns>
         protected virtual ICommandParameterType GetParameterType(ParameterInfo parameter, int index, int count)
         {
-            var attribute = parameter.GetCustomAttribute<ArgumentTypeAttribute>();
+            var attribute = parameter.GetCustomAttribute<ParameterTypeAttribute>();
 
             if (attribute != null && typeof (ICommandParameterType).IsAssignableFrom(attribute.Type))
                 return Activator.CreateInstance(attribute.Type) as ICommandParameterType;
@@ -144,6 +197,12 @@ namespace SampSharp.GameMode.SAMP.Commands
             return true;
         }
 
+        /// <summary>
+        ///     Sends the permission denied message for the specified permission checker.
+        /// </summary>
+        /// <param name="permissionChecker">The permission checker.</param>
+        /// <param name="player">The player.</param>
+        /// <returns>true on success; false otherwise.</returns>
         protected virtual bool SendPermissionDeniedMessage(IPermissionChecker permissionChecker, BasePlayer player)
         {
             if (permissionChecker == null) throw new ArgumentNullException(nameof(permissionChecker));
@@ -178,6 +237,12 @@ namespace SampSharp.GameMode.SAMP.Commands
 
         #region Implementation of ICommand
 
+        /// <summary>
+        ///     Determines whether this instance can be invoked by the specified player.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <param name="commandText">The command text.</param>
+        /// <returns>A value indicating whether this instance can be invoked.</returns>
         public virtual CommandCallableResponse CanInvoke(BasePlayer player, string commandText)
         {
             if (PermissionCheckers.Where(p => p.Message == null).Any(p => !p.Check(player)))
@@ -199,6 +264,12 @@ namespace SampSharp.GameMode.SAMP.Commands
             return CommandCallableResponse.False;
         }
 
+        /// <summary>
+        ///     Invokes this command.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <param name="commandText">The command text.</param>
+        /// <returns>true on success; false otherwise.</returns>
         public virtual bool Invoke(BasePlayer player, string commandText)
         {
             foreach (var p in PermissionCheckers)

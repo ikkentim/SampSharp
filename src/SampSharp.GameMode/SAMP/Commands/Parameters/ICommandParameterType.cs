@@ -13,24 +13,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.GameMode.SAMP.Commands
+namespace SampSharp.GameMode.SAMP.Commands.Parameters
 {
-    public enum CommandCallableResponse
+    /// <summary>
+    ///     Contains methods for a command parameter type.
+    /// </summary>
+    public interface ICommandParameterType
     {
         /// <summary>
-        ///     The specified parameters don't allow this command to be called.
+        ///     Gets the value for the occurance of this parameter type at the start of the commandText. The processed text will be
+        ///     removed from the commandText.
         /// </summary>
-        False,
-
-        /// <summary>
-        ///     The specified parameters require this command to be called.
-        /// </summary>
-        True,
-
-        /// <summary>
-        ///     The specified parameters allow this command to be called unless a different command accepts the parameters with a
-        ///     'True' response.
-        /// </summary>
-        Optional
+        /// <param name="commandText">The command text.</param>
+        /// <param name="output">The output.</param>
+        /// <returns>true if parsed successfully; false otherwise.</returns>
+        bool GetValue(ref string commandText, out object output);
     }
 }

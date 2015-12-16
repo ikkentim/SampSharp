@@ -16,12 +16,24 @@
 using System.Globalization;
 using System.Linq;
 
-namespace SampSharp.GameMode.SAMP.Commands.Arguments
+namespace SampSharp.GameMode.SAMP.Commands.Parameters
 {
+    /// <summary>
+    ///     Represents a float command parameter.
+    /// </summary>
     public class FloatCommandParameterType : ICommandParameterType
     {
         #region Implementation of ICommandParameterType
 
+        /// <summary>
+        ///     Gets the value for the occurance of this parameter type at the start of the commandText. The processed text will be
+        ///     removed from the commandText.
+        /// </summary>
+        /// <param name="commandText">The command text.</param>
+        /// <param name="output">The output.</param>
+        /// <returns>
+        ///     true if parsed successfully; false otherwise.
+        /// </returns>
         public bool GetValue(ref string commandText, out object output)
         {
             var text = commandText.TrimStart();
@@ -58,7 +70,8 @@ namespace SampSharp.GameMode.SAMP.Commands.Arguments
 
                 preProcessedWord = firstComma < firstDot
                     ? preProcessedWord.Replace(",", "") // comma is thousands separator, dot is decimal separator.
-                    : preProcessedWord.Replace(".", "").Replace(',', '.'); // dot is thousands separator, comma is decimal separator.
+                    : preProcessedWord.Replace(".", "").Replace(',', '.');
+                // dot is thousands separator, comma is decimal separator.
             }
 
             // Parse the number
