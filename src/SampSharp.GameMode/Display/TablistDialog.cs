@@ -79,6 +79,15 @@ namespace SampSharp.GameMode.Display
             _columnCount = _columns.Length;
         }
 
+        /// <summary>
+        ///     Adds a row with the specified cells.
+        /// </summary>
+        /// <param name="cells">The cells of the row.</param>
+        public void Add(params string[] cells)
+        {
+            Add(cells as IEnumerable<string>);
+        }
+
         #region Overrides of Dialog
 
         /// <summary>
@@ -120,7 +129,7 @@ namespace SampSharp.GameMode.Display
         }
 
         #endregion
-
+        
         #region Implementation of ICollection<IEnumerable<string>>
 
         /// <summary>
@@ -143,11 +152,8 @@ namespace SampSharp.GameMode.Display
 
             if (row.Length != _columnCount)
                 throw new ArgumentException($"Row must contain {_columnCount} cells.", nameof(item));
-
-            if (row.Any(cell => cell.Contains('\t')))
-                throw new ArgumentException("No cell can contain a TAB character.", nameof(item));
-
-            _rows.Add(string.Join("\n", row));
+            
+            _rows.Add(string.Join("\t", row));
         }
 
         /// <summary>
