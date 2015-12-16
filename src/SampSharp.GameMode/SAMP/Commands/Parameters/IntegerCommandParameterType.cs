@@ -40,12 +40,10 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
         public bool GetValue(ref string commandText, out object output)
         {
             var text = commandText.TrimStart();
+                output = null;
 
             if (string.IsNullOrEmpty(text))
-            {
-                output = null;
                 return false;
-            }
 
             var word = text.Split(' ').First();
 
@@ -54,10 +52,7 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
             // Regular base 10 numbers (eg. 14143)
             if (word.All(Base10Characters.Contains) && int.TryParse(word, out number))
             {
-                commandText = word.Length == commandText.Length
-                    ? string.Empty
-                    : commandText.Substring(word.Length).TrimStart(' ');
-
+                commandText = commandText.Substring(word.Length).TrimStart(' ');
                 output = number;
                 return true;
             }
@@ -74,15 +69,11 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
             if (base16Word != null && base16Word.ToLower().All(Base16Characters.Contains) &&
                 int.TryParse(base16Word, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out number))
             {
-                commandText = word.Length == commandText.Length
-                    ? string.Empty
-                    : commandText.Substring(word.Length).TrimStart(' ');
-
+                commandText = commandText.Substring(word.Length).TrimStart(' ');
                 output = number;
                 return true;
             }
-
-            output = null;
+            
             return false;
         }
 

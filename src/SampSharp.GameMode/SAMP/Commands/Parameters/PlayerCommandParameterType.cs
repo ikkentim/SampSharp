@@ -38,12 +38,10 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
         public bool GetValue(ref string commandText, out object output)
         {
             var text = commandText.TrimStart();
+                output = null;
 
             if (string.IsNullOrEmpty(text))
-            {
-                output = null;
                 return false;
-            }
 
             var word = text.Split(' ').First();
 
@@ -55,10 +53,7 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
                 if (player != null)
                 {
                     output = player;
-
-                    commandText = word.Length == commandText.Length
-                        ? string.Empty
-                        : commandText.Substring(word.Length).TrimStart(' ');
+                    commandText = commandText.Substring(word.Length).TrimStart(' ');
                     return true;
                 }
             }
@@ -90,8 +85,7 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
                     : commandText.Substring(word.Length).TrimStart(' ');
                 return true;
             }
-
-            output = null;
+            
             return false;
         }
 

@@ -45,9 +45,7 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
 
             var word = text.Split(' ').First();
 
-            commandText = word.Length == commandText.Length
-                ? string.Empty
-                : commandText.Substring(word.Length).TrimStart(' ');
+            commandText = commandText.Substring(word.Length).TrimStart(' ');
 
             output = word;
             return true;
