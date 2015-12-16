@@ -66,16 +66,7 @@ namespace SampSharp.GameMode.Pools
         /// <summary>
         ///     Gets a collection containing all instances.
         /// </summary>
-        public static IEnumerable<TInstance> All
-        {
-            get
-            {
-                return
-                    Containers.Skip(1)
-                        .Aggregate((IEnumerable<TInstance>) Containers.Values.FirstOrDefault(),
-                            (a, b) => a.Concat(b.Value));
-            }
-        }
+        public static IEnumerable<TInstance> All => Containers.SelectMany(c => c.Value).Concat(UnownedContainer);
 
         /// <summary>
         ///     Gets the identifier of this instance.
