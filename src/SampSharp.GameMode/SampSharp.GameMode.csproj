@@ -150,6 +150,7 @@
     <Compile Include="SAMP\Commands\IPermissionChecker.cs" />
     <Compile Include="SAMP\Commands\Parameters\WordCommandParameterType.cs" />
     <Compile Include="SAMP\Commands\RemoteAdminPermissionChecker.cs" />
+    <Compile Include="SAMP\Commands\RemoteAdminWithoutMessagePermissionChecker.cs" />
     <Compile Include="SAMP\Delay.cs" />
     <Compile Include="SAMP\KeyChangeHandlerSet.cs" />
     <Compile Include="SAMP\KeyHandlerSet.cs" />
