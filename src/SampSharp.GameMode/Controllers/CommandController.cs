@@ -50,7 +50,7 @@ namespace SampSharp.GameMode.Controllers
         /// </summary>
         /// <param name="gameMode">The game mode.</param>
         /// <param name="serviceContainer">The service container.</param>
-        public void RegisterServices(BaseMode gameMode, GameModeServiceContainer serviceContainer)
+        public virtual void RegisterServices(BaseMode gameMode, GameModeServiceContainer serviceContainer)
         {
             _commandsManager = new CommandsManager(gameMode);
             serviceContainer.AddService(_commandsManager);

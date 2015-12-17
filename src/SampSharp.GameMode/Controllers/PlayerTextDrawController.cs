@@ -29,7 +29,7 @@ namespace SampSharp.GameMode.Controllers
         ///     Registers the events this PlayerTextDrawController wants to listen to.
         /// </summary>
         /// <param name="gameMode">The running GameMode.</param>
-        public void RegisterEvents(BaseMode gameMode)
+        public virtual void RegisterEvents(BaseMode gameMode)
         {
             gameMode.PlayerClickPlayerTextDraw += (sender, args) =>
             {
@@ -46,7 +46,7 @@ namespace SampSharp.GameMode.Controllers
         /// <summary>
         ///     Registers types this PlayerTextDrawController requires the system to use.
         /// </summary>
-        public void RegisterTypes()
+        public virtual void RegisterTypes()
         {
             PlayerTextDraw.Register<PlayerTextDraw>();
         }

@@ -28,7 +28,7 @@ namespace SampSharp.GameMode.Controllers
         ///     Registers the events this <see cref="IEventListener" /> wants to listen to.
         /// </summary>
         /// <param name="gameMode">An instance of the <see cref="BaseMode" /> currently running.</param>
-        public void RegisterEvents(BaseMode gameMode)
+        public virtual void RegisterEvents(BaseMode gameMode)
         {
             gameMode.PlayerGiveDamageActor += (sender, args) =>
             {
@@ -51,7 +51,7 @@ namespace SampSharp.GameMode.Controllers
         /// <summary>
         ///     Registers types this <see cref="ITypeProvider" /> requires the system to use.
         /// </summary>
-        public void RegisterTypes()
+        public virtual void RegisterTypes()
         {
             Actor.Register<Actor>();
         }

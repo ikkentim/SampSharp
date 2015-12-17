@@ -28,7 +28,7 @@ namespace SampSharp.GameMode.Controllers
         ///     Registers the events this PlayerController wants to listen to.
         /// </summary>
         /// <param name="gameMode">The running GameMode.</param>
-        public void RegisterEvents(BaseMode gameMode)
+        public virtual void RegisterEvents(BaseMode gameMode)
         {
             gameMode.PlayerExitedMenu += (sender, args) =>
             {
