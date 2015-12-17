@@ -24,7 +24,10 @@ namespace SampSharp.GameMode.Controllers
     /// </summary>
     public class CommandController : IEventListener, IGameServiceProvider
     {
-        private ICommandsManager _commandsManager;
+        /// <summary>
+        ///     Gets or sets the commands manager.
+        /// </summary>
+        protected virtual ICommandsManager CommandsManager { get; set; }
 
         /// <summary>
         ///     Registers the events this <see cref="GlobalObjectController" /> wants to listen to.
@@ -37,10 +40,13 @@ namespace SampSharp.GameMode.Controllers
 
         private void gameMode_PlayerCommandText(object sender, CommandTextEventArgs e)
         {
+            if (CommandsManager == null)
+                return;
+
             var player = sender as BasePlayer;
             if (player == null) return;
 
-            e.Success = _commandsManager.Process(e.Text, player);
+            e.Success = CommandsManager.Process(e.Text, player);
         }
 
         #region Implementation of IGameServiceProvider
@@ -52,11 +58,11 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="serviceContainer">The service container.</param>
         public virtual void RegisterServices(BaseMode gameMode, GameModeServiceContainer serviceContainer)
         {
-            _commandsManager = new CommandsManager(gameMode);
-            serviceContainer.AddService(_commandsManager);
+            CommandsManager = new CommandsManager(gameMode);
+            serviceContainer.AddService(CommandsManager);
 
             // Register commands in game mode.
-            _commandsManager.RegisterCommands(gameMode.GetType());
+            CommandsManager.RegisterCommands(gameMode.GetType());
         }
 
         #endregion
