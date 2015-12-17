@@ -63,9 +63,19 @@ namespace SampSharp.GameMode.SAMP.Commands
                 .Skip(skipCount)
                 .Select(
                     p =>
-                        new CommandParameterInfo(p.Name, GetParameterType(p, index++, count), p.HasDefaultValue,
-                            p.DefaultValue))
+                    {
+                        var type = GetParameterType(p, index++, count);
+                        return type == null
+                            ? null
+                            : new CommandParameterInfo(p.Name, type, p.HasDefaultValue, p.DefaultValue);
+                    })
                 .ToArray();
+
+            if (Parameters.Any(v => v == null))
+            {
+                throw new ArgumentException("Method has parameter of unknown type", nameof(method));
+            }
+
             PermissionCheckers = (permissionCheckers?.Where(p => p != null).ToArray() ?? new IPermissionChecker[0]);
         }
 
@@ -182,7 +192,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                     Activator.CreateInstance(typeof (EnumCommandParameterType<>).MakeGenericType(parameter.ParameterType))
                         as ICommandParameterType;
 
-            throw new Exception($"Parameter {parameter} has no type");
+            return null;
         }
 
         protected virtual bool SendUsageMessage(BasePlayer player)

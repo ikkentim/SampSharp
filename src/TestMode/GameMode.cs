@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using SampSharp.GameMode;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
@@ -23,6 +24,7 @@ using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
+using SampSharp.GameMode.SAMP.Commands.Parameters;
 using SampSharp.GameMode.World;
 using TestMode;
 using TestMode.Tests;
@@ -103,6 +105,121 @@ namespace TestMode
 
     #endregion
 
+    public class MyCommandManager : CommandsManager
+    {
+        public MyCommandManager(BaseMode gameMode) : base(gameMode)
+        {
+        }
+
+        #region Overrides of CommandsManager
+
+        /// <summary>
+        ///     Creates a command.
+        /// </summary>
+        /// <param name="commandPaths">The command paths.</param>
+        /// <param name="displayName">The display name.</param>
+        /// <param name="ignoreCase">if set to <c>true</c> ignore the case the command.</param>
+        /// <param name="permissionCheckers">The permission checkers.</param>
+        /// <param name="method">The method.</param>
+        /// <param name="usageMessage">The usage message.</param>
+        /// <returns>The created command</returns>
+        protected override ICommand CreateCommand(CommandPath[] commandPaths, string displayName, bool ignoreCase,
+            IPermissionChecker[] permissionCheckers, MethodInfo method, string usageMessage)
+        {
+            return new MyCommand(commandPaths, displayName, ignoreCase, permissionCheckers, method, usageMessage);
+        }
+
+        #endregion
+    }
+
+    public class MyCommand : DefaultCommand
+    {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DefaultCommand" /> class.
+        /// </summary>
+        /// <param name="names">The names.</param>
+        /// <param name="displayName">The display name.</param>
+        /// <param name="ignoreCase">if set to <c>true</c> ignore the case of the command.</param>
+        /// <param name="permissionCheckers">The permission checkers.</param>
+        /// <param name="method">The method.</param>
+        /// <param name="usageMessage">The usage message.</param>
+        public MyCommand(CommandPath[] names, string displayName, bool ignoreCase,
+            IPermissionChecker[] permissionCheckers, MethodInfo method, string usageMessage)
+            : base(names, displayName, ignoreCase, permissionCheckers, method, usageMessage)
+        {
+        }
+
+        #region Overrides of DefaultCommand
+
+        /// <summary>
+        ///     Gets the type of the specified parameter.
+        /// </summary>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="index">The index.</param>
+        /// <param name="count">The count.</param>
+        /// <returns>The type of the parameter.</returns>
+        protected override ICommandParameterType GetParameterType(ParameterInfo parameter, int index, int count)
+        {
+            // use default parameter type detection.
+            var type = base.GetParameterType(parameter, index, count);
+            
+            if (type != null)
+                return type;
+
+            // if no parameter type was found check if it's of any type we recognize.
+            if (parameter.ParameterType == typeof (bool))
+            {
+                // TODO: detected this type to be of type `bool`. 
+                // TODO: Return an implementation of ICommandParameterType which processes booleans.
+            }
+
+            // Unrecognized type. Return null.
+            return null;
+        }
+        
+        /// <summary>
+        ///     Sends the permission denied message for the specified permission checker.
+        /// </summary>
+        /// <param name="permissionChecker">The permission checker.</param>
+        /// <param name="player">The player.</param>
+        /// <returns>true on success; false otherwise.</returns>
+        protected override bool SendPermissionDeniedMessage(IPermissionChecker permissionChecker, BasePlayer player)
+        {
+            if (permissionChecker == null) throw new ArgumentNullException(nameof(permissionChecker));
+            if (player == null) throw new ArgumentNullException(nameof(player));
+
+            if (permissionChecker.Message == null)
+                return false;
+
+            // Send permission denied message in red instead of white.
+            player.SendClientMessage(Color.Red, permissionChecker.Message);
+            return true;
+        }
+        
+        #endregion
+    }
+
+    public class MyCommandController : CommandController
+    {
+        #region Overrides of CommandController
+
+        /// <summary>
+        ///     Registers the services this controller provides.
+        /// </summary>
+        /// <param name="gameMode">The game mode.</param>
+        /// <param name="serviceContainer">The service container.</param>
+        public override void RegisterServices(BaseMode gameMode, GameModeServiceContainer serviceContainer)
+        {
+            CommandsManager = new CommandsManager(gameMode);
+            serviceContainer.AddService(CommandsManager);
+
+            // Register commands in game mode.
+            CommandsManager.RegisterCommands(gameMode.GetType());
+        }
+
+        #endregion
+    }
+
     public class GameMode : BaseMode
     {
         #region Tests
@@ -159,6 +276,8 @@ namespace TestMode
             controllers.Add(new PlayerController());
             controllers.Remove<BaseVehicleController>();
             controllers.Add(new VehicleController());
+            controllers.Remove<CommandController>();
+            controllers.Add(new MyCommandController());
 
             foreach (var test in _tests.OfType<IControllerTest>())
                 test.LoadControllers(controllers);
