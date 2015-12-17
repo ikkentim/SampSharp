@@ -13,12 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode;
-using SampSharp.GameMode.Display;
-using SampSharp.GameMode.SAMP;
-using SampSharp.GameMode.SAMP.Commands;
-using SampSharp.GameMode.World;
-
 namespace TestMode.Tests
 {
     public class MenuTest : ITest

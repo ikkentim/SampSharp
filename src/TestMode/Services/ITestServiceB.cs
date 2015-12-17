@@ -1,4 +1,4 @@
-﻿// SampSharp
+// SampSharp
 // Copyright 2015 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,23 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using TestMode.Services;
-
-namespace TestMode.Tests
+namespace TestMode.Services
 {
-    public class ServicesTest : ITest
+    public interface ITestServiceB : ITestService
     {
-        #region Implementation of ITest
-
-        public void Start(GameMode gameMode)
-        {
-            gameMode.Services.AddService<ITestServiceA>(new TestServiceA(gameMode));
-            gameMode.Services.AddService(typeof (ITestServiceB), new TestServiceB(gameMode));
-
-            var a = gameMode.Services.GetService<ITestServiceA>();
-            a.Test();
-        }
-
-        #endregion
     }
 }

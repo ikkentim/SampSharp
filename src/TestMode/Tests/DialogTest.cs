@@ -13,15 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Linq;
-using SampSharp.GameMode;
-using SampSharp.GameMode.Display;
-using SampSharp.GameMode.SAMP;
-using SampSharp.GameMode.SAMP.Commands;
-using SampSharp.GameMode.Tools;
-using SampSharp.GameMode.World;
-
 namespace TestMode.Tests
 {
     public class DialogTest : ITest

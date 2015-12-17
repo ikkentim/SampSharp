@@ -13,23 +13,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using TestMode.Services;
+using SampSharp.GameMode.Controllers;
+using TestMode.World;
 
-namespace TestMode.Tests
+namespace TestMode.Controllers
 {
-    public class ServicesTest : ITest
+    public class PlayerController : BasePlayerController
     {
-        #region Implementation of ITest
-
-        public void Start(GameMode gameMode)
+        public override void RegisterTypes()
         {
-            gameMode.Services.AddService<ITestServiceA>(new TestServiceA(gameMode));
-            gameMode.Services.AddService(typeof (ITestServiceB), new TestServiceB(gameMode));
-
-            var a = gameMode.Services.GetService<ITestServiceA>();
-            a.Test();
+            Player.Register<Player>();
         }
-
-        #endregion
     }
 }

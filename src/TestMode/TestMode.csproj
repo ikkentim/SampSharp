@@ -41,9 +41,20 @@
   <ItemGroup>
     <Compile Include="Checkers\AdminChecker.cs" />
     <Compile Include="Checkers\AdminWithoutMessageChecker.cs" />
+    <Compile Include="Extensions\ExtensionA.cs" />
+    <Compile Include="Extensions\ExtensionB.cs" />
     <Compile Include="GameMode.cs" />
+    <Compile Include="Commands\MyCommand.cs" />
+    <Compile Include="Controllers\MyCommandController.cs" />
+    <Compile Include="Commands\MyCommandManager.cs" />
+    <Compile Include="Services\ITestService.cs" />
+    <Compile Include="Services\ITestServiceA.cs" />
+    <Compile Include="Services\ITestServiceB.cs" />
+    <Compile Include="Services\TestServiceA.cs" />
+    <Compile Include="World\Player.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestServices.cs" />
+    <Compile Include="Services\TestServiceB.cs" />
     <Compile Include="Tests\ActorTest.cs" />
     <Compile Include="Tests\ASyncTest.cs" />
     <Compile Include="Tests\CharsetTest.cs" />
@@ -61,6 +72,8 @@
     <Compile Include="Tests\ServicesTest.cs" />
     <Compile Include="Tests\TextDrawTest.cs" />
     <Compile Include="Tests\VehicleInfoTest.cs" />
+    <Compile Include="World\Vehicle.cs" />
+    <Compile Include="Controllers\VehicleController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SampSharp.GameMode\SampSharp.GameMode.csproj">

@@ -1,4 +1,4 @@
-﻿// SampSharp
+// SampSharp
 // Copyright 2015 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,21 +13,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using TestMode.Services;
+using System;
+using SampSharp.GameMode;
+using SampSharp.GameMode.API;
 
-namespace TestMode.Tests
+namespace TestMode.Extensions
 {
-    public class ServicesTest : ITest
+    public class ExtensionA : Extension
     {
-        #region Implementation of ITest
+        #region Overrides of Extension
 
-        public void Start(GameMode gameMode)
+        public override void PostLoad(BaseMode gameMode)
         {
-            gameMode.Services.AddService<ITestServiceA>(new TestServiceA(gameMode));
-            gameMode.Services.AddService(typeof (ITestServiceB), new TestServiceB(gameMode));
-
-            var a = gameMode.Services.GetService<ITestServiceA>();
-            a.Test();
+            Console.WriteLine("ExtensionA extension was loaded!");
         }
 
         #endregion

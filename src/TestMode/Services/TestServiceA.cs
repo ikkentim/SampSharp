@@ -1,4 +1,4 @@
-﻿// SampSharp
+// SampSharp
 // Copyright 2015 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,21 +16,8 @@
 using System;
 using SampSharp.GameMode;
 
-namespace TestMode
+namespace TestMode.Services
 {
-    public interface ITestService : IService
-    {
-        void Test();
-    }
-
-    public interface ITestServiceA : ITestService
-    {
-    }
-
-    public interface ITestServiceB : ITestService
-    {
-    }
-
     public class TestServiceA : Service, ITestServiceA
     {
         public TestServiceA(BaseMode gameMode) : base(gameMode)
@@ -44,23 +31,6 @@ namespace TestMode
             Console.WriteLine("Hit TestServicesA.Test");
             var service = GameMode.Services.GetService<ITestServiceB>();
             service.Test();
-        }
-
-        #endregion
-    }
-
-    public class TestServiceB : Service, ITestServiceB
-    {
-        public TestServiceB(BaseMode gameMode)
-            : base(gameMode)
-        {
-        }
-
-        #region Implementation of ITestService
-
-        public void Test()
-        {
-            Console.WriteLine("Hit TestServicesB.Test");
         }
 
         #endregion

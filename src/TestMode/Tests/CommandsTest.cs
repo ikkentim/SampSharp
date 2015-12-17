@@ -25,20 +25,19 @@ namespace TestMode.Tests
 {
     public class CommandsTest : ITest
     {
-        [CommandGroup("alpha", "a")]
-        class A
+        #region Implementation of ITest
+
+        public void Start(GameMode gameMode)
         {
-            [CommandGroup("bravo", "b")]
-            class B
+            var m = gameMode.Services.GetService<ICommandsManager>();
+            Console.WriteLine($"Commands: {m.Commands.Count}");
+            foreach (var command in m.Commands)
             {
-                [Command("whisper", Shortcut = "w")]
-                public static void WhisperCommand(BasePlayer p, string message)
-                {
-                    Console.WriteLine("Whipser: {0}", message);
-                    p.SendClientMessage("You whispered {0}", message);
-                }
+                Console.WriteLine($"  {command}");
             }
         }
+
+        #endregion
 
         [Command("test me", Shortcut = "testme", UsageMessage = "Usage: /testme [number]")]
         public static void TestCommand(BasePlayer player, int value)
@@ -82,7 +81,22 @@ namespace TestMode.Tests
             sender.SendClientMessage(color, "YOU CHOSE THIS COLOR!!!");
         }
 
-        class CustomCommandParameterType : ICommandParameterType
+        [CommandGroup("alpha", "a")]
+        private class A
+        {
+            [CommandGroup("bravo", "b")]
+            private class B
+            {
+                [Command("whisper", Shortcut = "w")]
+                public static void WhisperCommand(BasePlayer p, string message)
+                {
+                    Console.WriteLine("Whipser: {0}", message);
+                    p.SendClientMessage("You whispered {0}", message);
+                }
+            }
+        }
+
+        private class CustomCommandParameterType : ICommandParameterType
         {
             #region Implementation of ICommandParameterType
 
@@ -96,7 +110,7 @@ namespace TestMode.Tests
             public bool GetValue(ref string commandText, out object output)
             {
                 output = null;
-                
+
                 // Can't parse without intput.
                 if (string.IsNullOrWhiteSpace(commandText))
                     return false;
@@ -132,19 +146,5 @@ namespace TestMode.Tests
 
             #endregion
         }
-
-        #region Implementation of ITest
-
-        public void Start(GameMode gameMode)
-        {
-            var m = gameMode.Services.GetService<ICommandsManager>();
-            Console.WriteLine($"Commands: {m.Commands.Count}");
-            foreach (var command in m.Commands)
-            {
-                Console.WriteLine($"  {command}");
-            }
-        }
-
-        #endregion
     }
 }

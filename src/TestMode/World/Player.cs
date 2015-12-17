@@ -1,4 +1,4 @@
-﻿// SampSharp
+// SampSharp
 // Copyright 2015 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,24 +15,26 @@
 
 using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.Display;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
-namespace TestMode.Tests
+namespace TestMode.World
 {
-    public class TextDrawTest
+    [CommandGroup("playertest")]
+    public class Player : BasePlayer
     {
-        [Command("tdtesta")]
-        public static void Testa(BasePlayer player)
+        [Command("spawnbmx")]
+        public void SpawnVehicle()
         {
-            var d = new TextDraw(new Vector2(100, 100), "Diploma", TextDrawFont.Diploma);
-            var p = new TextDraw(new Vector2(100, 140), "Pricedown", TextDrawFont.Pricedown);
-            var n = new TextDraw(new Vector2(100, 180), "Normal", TextDrawFont.Normal);
+            var v = BaseVehicle.Create(VehicleModelType.BMX, Position + new Vector3(0, 0.5f, 0), 0, -1, -1);
+            PutInVehicle(v);
+        }
 
-            p.Show(player);
-            d.Show(player);
-            n.Show(player);
+        [Command("spawn")]
+        public void SpawnVehicle(VehicleModelType model)
+        {
+            var v = BaseVehicle.Create(model, Position + new Vector3(0, 0.5f, 0), 0, -1, -1);
+            PutInVehicle(v);
         }
     }
 }

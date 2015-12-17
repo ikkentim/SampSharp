@@ -13,23 +13,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using TestMode.Services;
+using SampSharp.GameMode.Events;
+using SampSharp.GameMode.World;
 
-namespace TestMode.Tests
+namespace TestMode.World
 {
-    public class ServicesTest : ITest
+    public class Vehicle : BaseVehicle
     {
-        #region Implementation of ITest
-
-        public void Start(GameMode gameMode)
+        public override void OnPlayerEnter(EnterVehicleEventArgs e)
         {
-            gameMode.Services.AddService<ITestServiceA>(new TestServiceA(gameMode));
-            gameMode.Services.AddService(typeof (ITestServiceB), new TestServiceB(gameMode));
-
-            var a = gameMode.Services.GetService<ITestServiceA>();
-            a.Test();
+            e.Player.SendClientMessage("You entered {0} ID {1}", this, Id);
         }
-
-        #endregion
     }
 }

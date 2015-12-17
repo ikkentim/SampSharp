@@ -13,21 +13,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using TestMode.Services;
+using System;
+using SampSharp.GameMode;
 
-namespace TestMode.Tests
+namespace TestMode.Services
 {
-    public class ServicesTest : ITest
+    public class TestServiceB : Service, ITestServiceB
     {
-        #region Implementation of ITest
-
-        public void Start(GameMode gameMode)
+        public TestServiceB(BaseMode gameMode)
+            : base(gameMode)
         {
-            gameMode.Services.AddService<ITestServiceA>(new TestServiceA(gameMode));
-            gameMode.Services.AddService(typeof (ITestServiceB), new TestServiceB(gameMode));
+        }
 
-            var a = gameMode.Services.GetService<ITestServiceA>();
-            a.Test();
+        #region Implementation of ITestService
+
+        public void Test()
+        {
+            Console.WriteLine("Hit TestServicesB.Test");
         }
 
         #endregion
