@@ -77,7 +77,7 @@ namespace TestMode.Tests
 
         [Command("color")]
         public static void TestComand(BasePlayer sender,
-            [Parameter(typeof (CustomCommandParameterType))] Color color)
+            [Parameter(typeof (CustomType))] Color color)
         {
             sender.SendClientMessage(color, "YOU CHOSE THIS COLOR!!!");
         }
@@ -97,7 +97,7 @@ namespace TestMode.Tests
             }
         }
 
-        private class CustomCommandParameterType : ICommandParameterType
+        private class CustomType : ICommandParameterType
         {
             #region Implementation of ICommandParameterType
 
