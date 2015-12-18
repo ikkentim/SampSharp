@@ -15,11 +15,12 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SampSharp.GameMode.SAMP.Commands.Parameters;
+using SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 
 namespace SampSharp.UnitTests.SAMP.Commands.Arguments
 {
     [TestClass]
-    public class TextTest : ArgumentTest<TextCommandParameterType>
+    public class TextTest : ArgumentTest<TextType>
     {
         [TestMethod]
         public void NoTextTest()

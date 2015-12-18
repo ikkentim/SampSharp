@@ -1,4 +1,4 @@
-﻿// SampSharp
+// SampSharp
 // Copyright 2015 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,23 +15,27 @@
 
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.SAMP.Commands
+namespace SampSharp.GameMode.SAMP.Commands.PermissionCheckers
 {
     /// <summary>
-    ///     Contains methods for a permission checker.
+    ///     Represents a permission checker for admins without a permission denied message.
     /// </summary>
-    public interface IPermissionChecker
+    public class SilentAdminChecker : IPermissionChecker
     {
+        #region Implementation of IPermissionChecker
+
         /// <summary>
         ///     Gets the message displayed when the player is denied permission.
         /// </summary>
-        string Message { get; }
+        public string Message => null;
 
         /// <summary>
         ///     Checks the permission for the specified player.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <returns>true if allowed; false if denied.</returns>
-        bool Check(BasePlayer player);
+        public bool Check(BasePlayer player) => player.IsAdmin;
+
+        #endregion
     }
 }

@@ -21,13 +21,13 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
     ///     Indicates the type of the parameter.
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
-    public class ParameterTypeAttribute : Attribute
+    public class ParameterAttribute : Attribute
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ParameterTypeAttribute" /> class.
+        ///     Initializes a new instance of the <see cref="ParameterAttribute" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
-        public ParameterTypeAttribute(Type type)
+        public ParameterAttribute(Type type)
         {
             Type = type;
         }

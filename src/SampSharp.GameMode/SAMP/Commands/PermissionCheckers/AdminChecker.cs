@@ -15,19 +15,19 @@
 
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.SAMP.Commands
+namespace SampSharp.GameMode.SAMP.Commands.PermissionCheckers
 {
     /// <summary>
-    ///     Represents a permission checker for remote admins without an error message.
+    ///     Represents a permission checker for admins.
     /// </summary>
-    public class RemoteAdminWithoutMessagePermissionChecker : IPermissionChecker
+    public class AdminChecker : IPermissionChecker
     {
         #region Implementation of IPermissionChecker
 
         /// <summary>
         ///     Gets the message displayed when the player is denied permission.
         /// </summary>
-        public string Message => null;
+        public string Message => "You need to be logged in as RCON admin to use this command.";
 
         /// <summary>
         ///     Checks the permission for the specified player.

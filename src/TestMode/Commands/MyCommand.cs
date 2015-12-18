@@ -18,6 +18,8 @@ using System.Reflection;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.SAMP.Commands.Parameters;
+using SampSharp.GameMode.SAMP.Commands.ParameterTypes;
+using SampSharp.GameMode.SAMP.Commands.PermissionCheckers;
 using SampSharp.GameMode.World;
 
 namespace TestMode.Commands

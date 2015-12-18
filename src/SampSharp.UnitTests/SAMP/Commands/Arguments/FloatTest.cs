@@ -1,10 +1,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SampSharp.GameMode.SAMP.Commands.Parameters;
+using SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 
 namespace SampSharp.UnitTests.SAMP.Commands.Arguments
 {
     [TestClass]
-    public class FloatTest : ArgumentTest<FloatCommandParameterType>
+    public class FloatTest : ArgumentTest<FloatType>
     {
         [TestMethod]
         public void TextTest()

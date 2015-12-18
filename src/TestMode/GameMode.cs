@@ -36,8 +36,8 @@ namespace TestMode
 
         private readonly List<ITest> _tests = new List<ITest>
         {
-            new CommandsTest()
-//            new ASyncTest(),
+            new CommandsTest(),
+            new ASyncTest(),
 //            new DelayTest(),
 //            new MenuTest(),
 //            new DisposureTest(),

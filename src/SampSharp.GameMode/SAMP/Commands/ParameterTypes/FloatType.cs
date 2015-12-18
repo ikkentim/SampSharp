@@ -16,12 +16,12 @@
 using System.Globalization;
 using System.Linq;
 
-namespace SampSharp.GameMode.SAMP.Commands.Parameters
+namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 {
     /// <summary>
     ///     Represents a float command parameter.
     /// </summary>
-    public class FloatCommandParameterType : ICommandParameterType
+    public class FloatType : ICommandParameterType
     {
         #region Implementation of ICommandParameterType
 
@@ -34,7 +34,7 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
         /// <returns>
         ///     true if parsed successfully; false otherwise.
         /// </returns>
-        public bool GetValue(ref string commandText, out object output)
+        public bool Parse(ref string commandText, out object output)
         {
             var text = commandText.TrimStart();
                 output = null;

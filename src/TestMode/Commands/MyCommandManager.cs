@@ -16,6 +16,7 @@
 using System.Reflection;
 using SampSharp.GameMode;
 using SampSharp.GameMode.SAMP.Commands;
+using SampSharp.GameMode.SAMP.Commands.PermissionCheckers;
 
 namespace TestMode.Commands
 {

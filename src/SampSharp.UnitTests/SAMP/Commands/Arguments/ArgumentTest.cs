@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SampSharp.GameMode.SAMP.Commands.Parameters;
+using SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 
 namespace SampSharp.UnitTests.SAMP.Commands.Arguments
 {
@@ -13,7 +14,7 @@ namespace SampSharp.UnitTests.SAMP.Commands.Arguments
             Prepare(parameter);
 
             object output;
-            var result = parameter.GetValue(ref commandText, out output);
+            var result = parameter.Parse(ref commandText, out output);
 
             Assert.AreEqual(expectedResult, result, "Unexpected result");
             Assert.AreEqual(expectedOutput, output, "Unexpected output");

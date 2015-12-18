@@ -13,18 +13,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
-namespace TestMode.Checkers
+namespace SampSharp.GameMode.SAMP.Commands.PermissionCheckers
 {
-    internal class AdminChecker : IPermissionChecker
+    /// <summary>
+    ///     Contains methods for a permission checker.
+    /// </summary>
+    public interface IPermissionChecker
     {
-        public string Message { get; } = "You must be admin to use this command!";
+        /// <summary>
+        ///     Gets the message displayed when the player is denied permission.
+        /// </summary>
+        string Message { get; }
 
-        public bool Check(BasePlayer player)
-        {
-            return player.IsAdmin;
-        }
+        /// <summary>
+        ///     Checks the permission for the specified player.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <returns>true if allowed; false if denied.</returns>
+        bool Check(BasePlayer player);
     }
 }

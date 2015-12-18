@@ -16,12 +16,12 @@
 using System.Globalization;
 using System.Linq;
 
-namespace SampSharp.GameMode.SAMP.Commands.Parameters
+namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 {
     /// <summary>
     ///     Represents an integer command parameter.
     /// </summary>
-    public class IntegerCommandParameterType : ICommandParameterType
+    public class IntegerType : ICommandParameterType
     {
         private static readonly char[] Base10Characters = "1234567890,.".ToCharArray();
         private static readonly char[] Base16Characters = "1234567890abcdef".ToCharArray();
@@ -37,7 +37,7 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
         /// <returns>
         ///     true if parsed successfully; false otherwise.
         /// </returns>
-        public bool GetValue(ref string commandText, out object output)
+        public bool Parse(ref string commandText, out object output)
         {
             var text = commandText.TrimStart();
                 output = null;

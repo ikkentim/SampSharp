@@ -19,6 +19,7 @@ using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.SAMP.Commands.Parameters;
+using SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 using SampSharp.GameMode.World;
 
 namespace TestMode.Tests
@@ -76,7 +77,7 @@ namespace TestMode.Tests
 
         [Command("color")]
         public static void TestComand(BasePlayer sender,
-            [ParameterType(typeof (CustomCommandParameterType))] Color color)
+            [Parameter(typeof (CustomCommandParameterType))] Color color)
         {
             sender.SendClientMessage(color, "YOU CHOSE THIS COLOR!!!");
         }
@@ -107,7 +108,7 @@ namespace TestMode.Tests
             /// <param name="commandText">The command text.</param>
             /// <param name="output">The output.</param>
             /// <returns>true if parsed successfully; false otherwise.</returns>
-            public bool GetValue(ref string commandText, out object output)
+            public bool Parse(ref string commandText, out object output)
             {
                 output = null;
 

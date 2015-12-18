@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using SampSharp.GameMode.SAMP.Commands.PermissionCheckers;
 
 namespace SampSharp.GameMode.SAMP.Commands
 {

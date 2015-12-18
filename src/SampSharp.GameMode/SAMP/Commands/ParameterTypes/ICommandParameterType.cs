@@ -13,44 +13,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Linq;
-
-namespace SampSharp.GameMode.SAMP.Commands.Parameters
+namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 {
     /// <summary>
-    ///     Represents a word command parameter.
+    ///     Contains methods for a command parameter type.
     /// </summary>
-    public class WordCommandParameterType : ICommandParameterType
+    public interface ICommandParameterType
     {
-        #region Implementation of ICommandParameterType
-
         /// <summary>
         ///     Gets the value for the occurance of this parameter type at the start of the commandText. The processed text will be
         ///     removed from the commandText.
         /// </summary>
         /// <param name="commandText">The command text.</param>
         /// <param name="output">The output.</param>
-        /// <returns>
-        ///     true if parsed successfully; false otherwise.
-        /// </returns>
-        public bool GetValue(ref string commandText, out object output)
-        {
-            var text = commandText.TrimStart();
-
-            if (string.IsNullOrEmpty(text))
-            {
-                output = null;
-                return false;
-            }
-
-            var word = text.Split(' ').First();
-
-            commandText = commandText.Substring(word.Length).TrimStart(' ');
-
-            output = word;
-            return true;
-        }
-
-        #endregion
+        /// <returns>true if parsed successfully; false otherwise.</returns>
+        bool Parse(ref string commandText, out object output);
     }
 }

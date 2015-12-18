@@ -13,12 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.GameMode.SAMP.Commands.Parameters
+using System.Linq;
+
+namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 {
     /// <summary>
-    ///     Represents a text command parameter.
+    ///     Represents a word command parameter.
     /// </summary>
-    public class TextCommandParameterType : ICommandParameterType
+    public class WordType : ICommandParameterType
     {
         #region Implementation of ICommandParameterType
 
@@ -31,9 +33,9 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
         /// <returns>
         ///     true if parsed successfully; false otherwise.
         /// </returns>
-        public bool GetValue(ref string commandText, out object output)
+        public bool Parse(ref string commandText, out object output)
         {
-            var text = commandText.Trim();
+            var text = commandText.TrimStart();
 
             if (string.IsNullOrEmpty(text))
             {
@@ -41,8 +43,11 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
                 return false;
             }
 
-            output = text;
-            commandText = string.Empty;
+            var word = text.Split(' ').First();
+
+            commandText = commandText.Substring(word.Length).TrimStart(' ');
+
+            output = word;
             return true;
         }
 

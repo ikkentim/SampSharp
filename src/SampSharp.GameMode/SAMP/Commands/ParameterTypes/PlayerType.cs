@@ -17,12 +17,12 @@ using System.Globalization;
 using System.Linq;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.SAMP.Commands.Parameters
+namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 {
     /// <summary>
     ///     Represents a player command parameter.
     /// </summary>
-    public class PlayerCommandParameterType : ICommandParameterType
+    public class PlayerType : ICommandParameterType
     {
         #region Implementation of ICommandParameterType
 
@@ -35,7 +35,7 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
         /// <returns>
         ///     true if parsed successfully; false otherwise.
         /// </returns>
-        public bool GetValue(ref string commandText, out object output)
+        public bool Parse(ref string commandText, out object output)
         {
             var text = commandText.TrimStart();
                 output = null;

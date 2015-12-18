@@ -1,11 +1,12 @@
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SampSharp.GameMode.SAMP.Commands.Parameters;
+using SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 
 namespace SampSharp.UnitTests.SAMP.Commands.Arguments
 {
     [TestClass]
-    public class EnumTest : ArgumentTest<EnumCommandParameterType<EnumTest.TestEnum>> 
+    public class EnumTest : ArgumentTest<EnumType<EnumTest.TestEnum>> 
     {
         public enum TestEnum
         {
@@ -16,13 +17,13 @@ namespace SampSharp.UnitTests.SAMP.Commands.Arguments
 
         private bool _testForValue;
 
-        #region Overrides of ArgumentTest<EnumCommandParameterType<TestEnum>>
+        #region Overrides of ArgumentTest<EnumType<TestEnum>>
 
-        protected override void Prepare(EnumCommandParameterType<TestEnum> commandParameterType)
+        protected override void Prepare(EnumType<TestEnum> type)
         {
-            commandParameterType.TestForValue = _testForValue;
+            type.TestForValue = _testForValue;
 
-            base.Prepare(commandParameterType);
+            base.Prepare(type);
         }
 
         #endregion

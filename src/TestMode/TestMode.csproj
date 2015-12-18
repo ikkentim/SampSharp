@@ -39,8 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Checkers\AdminChecker.cs" />
-    <Compile Include="Checkers\AdminWithoutMessageChecker.cs" />
     <Compile Include="Extensions\ExtensionA.cs" />
     <Compile Include="Extensions\ExtensionB.cs" />
     <Compile Include="GameMode.cs" />

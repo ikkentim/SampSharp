@@ -1,10 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SampSharp.GameMode.SAMP.Commands.Parameters;
+using SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 
 namespace SampSharp.UnitTests.SAMP.Commands.Arguments
 {
     [TestClass]
-    public class WordTest : ArgumentTest<WordCommandParameterType>
+    public class WordTest : ArgumentTest<WordType>
     {
         [TestMethod]
         public void NoTextTest()

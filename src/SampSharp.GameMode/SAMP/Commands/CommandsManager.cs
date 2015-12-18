@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SampSharp.GameMode.SAMP.Commands.PermissionCheckers;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP.Commands

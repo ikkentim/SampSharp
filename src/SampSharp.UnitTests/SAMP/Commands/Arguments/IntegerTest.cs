@@ -4,11 +4,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SampSharp.GameMode.SAMP.Commands.Parameters;
+using SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 
 namespace SampSharp.UnitTests.SAMP.Commands.Arguments
 {
     [TestClass]
-    public class IntegerTest : ArgumentTest<IntegerCommandParameterType>
+    public class IntegerTest : ArgumentTest<IntegerType>
     {
         [TestMethod]
         public void TextTest()

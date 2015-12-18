@@ -17,6 +17,8 @@ using System;
 using System.Linq;
 using System.Reflection;
 using SampSharp.GameMode.SAMP.Commands.Parameters;
+using SampSharp.GameMode.SAMP.Commands.ParameterTypes;
+using SampSharp.GameMode.SAMP.Commands.PermissionCheckers;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP.Commands
@@ -141,7 +143,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             foreach (var parameter in Parameters)
             {
                 object arg;
-                if (!parameter.CommandParameterType.GetValue(ref commandText, out arg))
+                if (!parameter.CommandParameterType.Parse(ref commandText, out arg))
                 {
                     if (!parameter.IsOptional)
                         return false;
@@ -168,28 +170,28 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>The type of the parameter.</returns>
         protected virtual ICommandParameterType GetParameterType(ParameterInfo parameter, int index, int count)
         {
-            var attribute = parameter.GetCustomAttribute<ParameterTypeAttribute>();
+            var attribute = parameter.GetCustomAttribute<ParameterAttribute>();
 
             if (attribute != null && typeof (ICommandParameterType).IsAssignableFrom(attribute.Type))
                 return Activator.CreateInstance(attribute.Type) as ICommandParameterType;
 
             if (parameter.ParameterType == typeof (string))
                 return index == count - 1
-                    ? (ICommandParameterType) new TextCommandParameterType()
-                    : new WordCommandParameterType();
+                    ? (ICommandParameterType) new TextType()
+                    : new WordType();
 
             if (parameter.ParameterType == typeof (int))
-                return new IntegerCommandParameterType();
+                return new IntegerType();
 
             if (parameter.ParameterType == typeof (float))
-                return new FloatCommandParameterType();
+                return new FloatType();
 
             if (typeof (BasePlayer).IsAssignableFrom(parameter.ParameterType))
-                return new PlayerCommandParameterType();
+                return new PlayerType();
 
             if (parameter.ParameterType.IsEnum)
                 return
-                    Activator.CreateInstance(typeof (EnumCommandParameterType<>).MakeGenericType(parameter.ParameterType))
+                    Activator.CreateInstance(typeof (EnumType<>).MakeGenericType(parameter.ParameterType))
                         as ICommandParameterType;
 
             return null;

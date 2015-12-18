@@ -16,19 +16,19 @@
 using System;
 using System.Linq;
 
-namespace SampSharp.GameMode.SAMP.Commands.Parameters
+namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 {
     /// <summary>
     ///     Represents an enum command parameter.
     /// </summary>
     /// <typeparam name="T">The enum type.</typeparam>
-    public class EnumCommandParameterType<T> : ICommandParameterType where T : struct, IConvertible
+    public class EnumType<T> : ICommandParameterType where T : struct, IConvertible
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="EnumCommandParameterType{T}" /> class.
+        ///     Initializes a new instance of the <see cref="EnumType{T}" /> class.
         /// </summary>
         /// <exception cref="System.ArgumentException">T must be an enumerated type</exception>
-        public EnumCommandParameterType()
+        public EnumType()
         {
             if (!typeof (T).IsEnum)
                 throw new ArgumentException("T must be an enumerated type");
@@ -51,7 +51,7 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
         /// <returns>
         ///     true if parsed successfully; false otherwise.
         /// </returns>
-        public bool GetValue(ref string commandText, out object output)
+        public bool Parse(ref string commandText, out object output)
         {
             var text = commandText.TrimStart();
             output = null;
