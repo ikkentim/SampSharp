@@ -4,14 +4,14 @@ os: Visual Studio 2015
 configuration:
   - Debug
   - Release
-  
+
 install:
     - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
-    
+
 build:
-  project: src\SampSharp.sln      # path to Visual Studio solution or project
+  project: SampSharp.sln      # path to Visual Studio solution or project
   verbosity: minimal
-  
+
 artifacts:
     - path: bin\SampSharp.dll
       name: SampSharp.dll
