@@ -77,17 +77,14 @@ namespace TestMode
 
             base.OnInitialized(args);
         }
-
+        
         protected override void LoadControllers(ControllerCollection controllers)
         {
             base.LoadControllers(controllers);
-
-            controllers.Remove<BasePlayerController>();
-            controllers.Add(new PlayerController());
-            controllers.Remove<BaseVehicleController>();
-            controllers.Add(new VehicleController());
-            controllers.Remove<CommandController>();
-            controllers.Add(new MyCommandController());
+            
+            controllers.Override(new PlayerController());
+            controllers.Override(new VehicleController());
+            controllers.Override(new MyCommandController());
 
             foreach (var test in _tests.OfType<IControllerTest>())
                 test.LoadControllers(controllers);

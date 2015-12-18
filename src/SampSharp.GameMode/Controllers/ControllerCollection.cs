@@ -60,6 +60,24 @@ namespace SampSharp.GameMode.Controllers
         }
 
         /// <summary>
+        ///     Adds a <see cref="IController" /> to this collection and remove controllers it overrides.
+        /// </summary>
+        /// <param name="controller">The <see cref="IController" /> to add to this collection.</param>
+        public void Override(IController controller)
+        {
+            var overrides = this.Where(c => c.GetType().IsInstanceOfType(controller)).ToArray();
+
+            if (overrides.Any())
+                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug,
+                    $"{controller} overrides {string.Join(", ", (object[]) overrides)}");
+
+            foreach (var c in overrides)
+                Remove(c);
+
+            _controllers.Add(controller);
+        }
+
+        /// <summary>
         ///     Removes a <see cref="IController" /> from this collection.
         /// </summary>
         /// <param name="controller">The <see cref="IController" /> to remove from this collection.</param>
