@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
 
@@ -29,133 +28,12 @@ namespace SampSharp.GameMode
     public abstract partial class BaseMode : IDisposable
     {
         private readonly ControllerCollection _controllers = new ControllerCollection();
-        private readonly List<IExtension> _extensions = new List<IExtension>(); 
-
-        #region Constructors
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="BaseMode" /> class.
-        /// </summary>
-        protected BaseMode() : this(true)
-        {
-
-        }
-
-        protected BaseMode(bool redirectConsole)
-        {
-            if (redirectConsole)
-                Console.SetOut(new LogWriter());
-
-            if (FrameworkConfiguration.MessageLevel == FrameworkMessageLevel.Debug)
-            {
-                var type = Type.GetType("Mono.Runtime");
-                var displayName = type?.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
-
-                if (displayName != null)
-                    FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, "Detected mono version: {0}",
-                        displayName.Invoke(null, null));
-            }
-
-            Instance = this;
-        }
-
-        #endregion
+        private readonly List<IExtension> _extensions = new List<IExtension>();
 
         /// <summary>
         ///     Gets the instance.
         /// </summary>
         public static BaseMode Instance { get; private set; }
-
-        internal void Initialize()
-        {
-            var loadAssemblies = new List<Assembly>();
-            var loadingAssemblies = new List<Assembly>();
-
-
-            Action<Assembly> loadAssemblyOrder = null;
-            loadAssemblyOrder = assembly =>
-            {
-                // Already in load order.
-                if (loadAssemblies.Contains(assembly))
-                    return;
-
-                // Make sure the assembly is an extension.
-                if (!assembly.GetCustomAttributes<SampSharpExtensionAttribute>().Any())
-                    return;
-
-                // Already in loading chain (circular dependency detected).
-                if (loadingAssemblies.Contains(assembly))
-                    throw new Exception($"Circular extension dependency detected. ({assembly})");
-
-                loadingAssemblies.Add(assembly);
-
-                foreach (
-                    var dependency in
-                        assembly.GetCustomAttributes<SampSharpExtensionAttribute>()
-                            .SelectMany(a => a.LoadBeforeAssemblies)
-                            .Except(new[] {assembly}))
-                    loadAssemblyOrder(dependency);
-
-                loadingAssemblies.Remove(assembly);
-                loadAssemblies.Add(assembly);
-            };
-
-            foreach (
-                var assembly in
-                    GetType()
-                        .Assembly.GetReferencedAssemblies()
-                        .Select(Assembly.Load)
-                        .Concat(new []{GetType().Assembly})
-                        .Distinct()
-                        .Where(a => a.GetCustomAttributes<SampSharpExtensionAttribute>().Any()))
-                loadAssemblyOrder(assembly);
-
-            foreach (var assembly in loadAssemblies)
-            {
-                var attributes = assembly.GetCustomAttributes<SampSharpExtensionAttribute>();
-
-                foreach (var extensionType in attributes.Select(attribute => attribute.Type))
-                {
-                    if (extensionType == null)
-                    {
-                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
-                            "The extension from {0} could not be loaded. The specified extension type is null.",
-                            assembly);
-                        continue;
-                    }
-                    if (!typeof (IExtension).IsAssignableFrom(extensionType))
-                    {
-                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
-                            "The extension from {0} could not be loaded. The specified extension type does not inherit from IExtension.",
-                            assembly);
-                        continue;
-                    }
-                    if (extensionType.Assembly != assembly)
-                    {
-                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
-                            "The extension from {0} could not be loaded. The specified extension type is not part of the loading assembly.",
-                            assembly);
-                        continue;
-                    }
-                    if (_extensions.Any(e => e.GetType() == extensionType))
-                    {
-                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
-                            "The extension from {0} could not be loaded. The specified extension type was already loaded.",
-                            assembly);
-                        continue;
-                    }
-
-                    var extension = (IExtension) Activator.CreateInstance(extensionType);
-                    Extension.Register(extension);
-                    _extensions.Add(extension);
-                }
-            }
-
-            Native.LoadDelegates<BaseMode>();
-            Native.LoadDelegates(GetType()); 
-
-            RegisterControllers();
-        }
 
         #region Implementation of IDisposable
 
@@ -169,6 +47,46 @@ namespace SampSharp.GameMode
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
+        }
+
+        #endregion
+
+        internal void Initialize()
+        {
+            LoadExtensions();
+
+            // Load natives in game mode and framework.
+            Native.LoadDelegates<BaseMode>();
+            Native.LoadDelegates(GetType());
+
+            LoadServicesAndControllers();
+        }
+
+        #region Constructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="BaseMode" /> class.
+        /// </summary>
+        protected BaseMode() : this(true)
+        {
+        }
+
+        protected BaseMode(bool redirectConsole)
+        {
+            if (redirectConsole)
+                Console.SetOut(new ServerLogWriter());
+
+            if (FrameworkConfiguration.MessageLevel == FrameworkMessageLevel.Debug)
+            {
+                var type = Type.GetType("Mono.Runtime");
+                var displayName = type?.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
+
+                if (displayName != null)
+                    FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, "Detected mono version: {0}",
+                        displayName.Invoke(null, null));
+            }
+
+            Instance = this;
         }
 
         #endregion
@@ -192,7 +110,7 @@ namespace SampSharp.GameMode
 
         #region Methods of BaseMode
 
-        private void RegisterControllers()
+        private void LoadServicesAndControllers()
         {
             foreach (var extension in _extensions)
                 extension.LoadServices(this);
@@ -210,6 +128,94 @@ namespace SampSharp.GameMode
 
             foreach (var extension in _extensions)
                 extension.PostLoad(this);
+        }
+
+        private void AddExtensionToLoadList(Assembly assembly, List<Assembly> load, List<Assembly> loading)
+        {
+            // Ensure assembly is an extension.
+            if (!assembly.GetCustomAttributes<SampSharpExtensionAttribute>().Any())
+                throw new Exception($"Assembly {assembly} is not an extension");
+
+            // Check if assembly is already in the load list.
+            if (load.Contains(assembly))
+                return;
+
+            // Already in loading chain? (circular dependency detected).
+            if (loading.Contains(assembly))
+                throw new Exception($"Circular extension dependency detected: {assembly}");
+
+            loading.Add(assembly);
+
+            // Load extension's dependencies to the load list.
+            foreach (
+                var dependency in
+                    assembly.GetCustomAttributes<SampSharpExtensionAttribute>()
+                        .SelectMany(a => a.LoadBeforeAssemblies)
+                        .Except(new[] {assembly}))
+                AddExtensionToLoadList(dependency, load, loading);
+
+            loading.Remove(assembly);
+            load.Add(assembly);
+        }
+
+        private void LoadExtensions()
+        {
+            var load = new List<Assembly>();
+
+            // Create a dependency-ordered list of extensions.
+            var loading = new List<Assembly>();
+            foreach (
+                var assembly in
+                    GetType()
+                        .Assembly.GetReferencedAssemblies()
+                        .Select(Assembly.Load)
+                        .Concat(new[] {GetType().Assembly})
+                        .Distinct()
+                        .Where(a => a.GetCustomAttributes<SampSharpExtensionAttribute>().Any()))
+                AddExtensionToLoadList(assembly, load, loading);
+
+            // Load extensions according to dependency list.
+            foreach (var assembly in load)
+            {
+                var attributes = assembly.GetCustomAttributes<SampSharpExtensionAttribute>();
+
+                foreach (var extensionType in attributes.Select(attribute => attribute.Type))
+                {
+                    if (extensionType == null)
+                    {
+                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
+                            "The extension from {0} could not be loaded. The specified extension type is null.",
+                            assembly);
+                        continue;
+                    }
+                    if (!typeof (IExtension).IsAssignableFrom(extensionType))
+                    {
+                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
+                            "The extension from {0} could not be loaded. The specified extension type does not inherit from IExtension.",
+                            assembly);
+                        continue;
+                    }
+                    if (extensionType.Assembly != assembly)
+                    {
+                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
+                            "The extension from {0} could not be loaded. The specified extension type is not part of the assembly.",
+                            assembly);
+                        continue;
+                    }
+                    if (_extensions.Any(e => e.GetType() == extensionType))
+                    {
+                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
+                            "The extension from {0} could not be loaded. The specified extension type was already loaded.",
+                            assembly);
+                        continue;
+                    }
+
+                    // Register the extension to the plugin.
+                    var extension = (IExtension) Activator.CreateInstance(extensionType);
+                    Extension.Register(extension);
+                    _extensions.Add(extension);
+                }
+            }
         }
 
         /// <summary>

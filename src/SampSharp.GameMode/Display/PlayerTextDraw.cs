@@ -69,8 +69,7 @@ namespace SampSharp.GameMode.Display
         private TextDrawFont _font;
         private Color _foreColor;
         private float _height;
-        private float _letterHeight;
-        private float _letterWidth;
+        private Vector2 _letterSize;
         private int _outline;
         private Vector2 _position;
         private int _previewModel;
@@ -241,35 +240,20 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the letter-width of this player-textdraw.
+        ///     Gets or sets the size of the letters of this player-textdraw.
         /// </summary>
-        public virtual float LetterWidth
+        public virtual Vector2 LetterSize
         {
-            get { return _letterWidth; }
+            get { return _letterSize; }
             set
             {
-                _letterWidth = value;
+                _letterSize = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawLetterSize(Owner.Id, Id, _letterWidth, _letterHeight);
+                Internal.PlayerTextDrawLetterSize(Owner.Id, Id, _letterSize.X, _letterSize.Y);
                 Update();
             }
         }
-
-        /// <summary>
-        ///     Gets or sets the letter-height of this player-textdraw.
-        /// </summary>
-        public virtual float LetterHeight
-        {
-            get { return _letterHeight; }
-            set
-            {
-                _letterHeight = value;
-                if (Id == -1) return;
-                Internal.PlayerTextDrawLetterSize(Owner.Id, Id, _letterWidth, _letterHeight);
-                Update();
-            }
-        }
-
+        
         /// <summary>
         ///     Gets or sets the outline size of this player-textdraw.
         /// </summary>
@@ -542,13 +526,12 @@ namespace SampSharp.GameMode.Display
             Id = Internal.CreatePlayerTextDraw(Owner.Id, Position.X, Position.Y, FixString(Text));
 
             //Reset properties
+            Font = Font;
             if (Alignment != default(TextDrawAlignment)) Alignment = Alignment;
             if (BackColor != 0) BackColor = BackColor;
             if (ForeColor != 0) ForeColor = ForeColor;
             if (BoxColor != 0) BoxColor = BoxColor;
-            if (Font != default(TextDrawFont)) Font = Font;
-            if (LetterWidth != 0) LetterWidth = LetterWidth;
-            if (LetterHeight != 0) LetterHeight = LetterHeight;
+            if (LetterSize != Vector2.Zero) LetterSize = LetterSize;
             if (Outline > 0) Outline = Outline;
             if (Proportional) Proportional = Proportional;
             if (Shadow > 0) Shadow = Shadow;

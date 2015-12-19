@@ -25,7 +25,7 @@ namespace SampSharp.GameMode
     /// <summary>
     ///     A TextWriter that writes all input to the server log.
     /// </summary>
-    public class LogWriter : TextWriter
+    public class ServerLogWriter : TextWriter
     {
         /// <summary>
         ///     When overridden in a derived class, returns the character encoding in which the output is written.

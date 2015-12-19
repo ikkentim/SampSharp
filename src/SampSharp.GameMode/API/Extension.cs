@@ -23,7 +23,7 @@ namespace SampSharp.GameMode.API
     public abstract class Extension : IExtension
     {
         /// <summary>
-        ///     Registers an extension to the plugin.
+        ///     Registers an extension to the plugin and loads its natives.
         /// </summary>
         /// <param name="extension">The extension to register.</param>
         /// <returns>

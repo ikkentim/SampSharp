@@ -259,7 +259,7 @@
     <Compile Include="Events\VehicleResprayedEventArgs.cs" />
     <Compile Include="Events\WeaponShotEventArgs.cs" />
     <Compile Include="Helpers\LinqHelper.cs" />
-    <Compile Include="LogWriter.cs" />
+    <Compile Include="ServerLogWriter.cs" />
     <Compile Include="API\Native.samp.cs">
       <DependentUpon>Native.cs</DependentUpon>
     </Compile>

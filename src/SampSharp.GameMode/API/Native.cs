@@ -347,50 +347,48 @@ namespace SampSharp.GameMode.API
 
             if (LoadedAssemblies.Contains(assembly.FullName))
             {
-                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug,
-                    "Native delegates in {0} have already been loaded. Skipping...", assembly.FullName);
-
+                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Native delegates in {assembly.FullName} have already been loaded. Skipping...");
                 return;
             }
 
-            FrameworkLog.WriteLine(FrameworkMessageLevel.Debug,
-                "Loading native delegates in {0}...", assembly.FullName);
+            FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Loading native delegates in {assembly.FullName}...");
 
             LoadedAssemblies.Add(assembly.FullName);
 
+            // Loop trough every type in the assembly and load all native delegate fields it contains.
             foreach (var type in assembly.GetTypes())
             {
-                if (type.IsInterface)
+                // Do not process interfaces or types with generic parameters.
+                if (type.IsInterface || type.ContainsGenericParameters)
                     continue;
 
-                if (type.ContainsGenericParameters)
-                    continue;
-
-                foreach (var field in type.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
-                    )
+                foreach (var field in type.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static))
                 {
+                    // Skip non-static or non-delegate fields.
                     if (!field.IsStatic || !typeof (Delegate).IsAssignableFrom(field.FieldType))
                         continue;
 
-                    var @delegate = field.FieldType;
+                    var delegateType = field.FieldType;
                     var attribute = field.GetCustomAttribute<NativeAttribute>();
-
-                    if (attribute == null)
+                    
+                    // Skip fields without Native attribute or with set values.
+                    if (attribute == null || field.GetValue(null) != null)
                         continue;
+                  
+                    // Load the native.
+                    var parameterTypes = delegateType.GetMethod("Invoke")
+                        .GetParameters()
+                        .Select(p => p.ParameterType)
+                        .ToArray();
 
-                    if (field.GetValue(null) == null)
+                    var nativeFunction = Load(attribute.Name, attribute.Lengths, parameterTypes);
+                    if (nativeFunction == null)
                     {
-                        var nativeFunction = Load(attribute.Name, attribute.Lengths,
-                            @delegate.GetMethod("Invoke").GetParameters().Select(p => p.ParameterType).ToArray());
-
-                        if (nativeFunction != null)
-                            field.SetValue(null, nativeFunction.GenerateInvoker(@delegate));
-                        else
-                        {
-                            FrameworkLog.WriteLine(FrameworkMessageLevel.Warning, "Could not load native '{0}'",
-                                attribute.Name);
-                        }
+                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning, "Could not load native '{attribute.Name}'");
+                        continue;
                     }
+
+                    field.SetValue(null, nativeFunction.GenerateInvoker(delegateType));
                 }
             }
         }
@@ -404,7 +402,7 @@ namespace SampSharp.GameMode.API
         {
             if (Sync.IsRequired)
             {
-                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, "Call to handle 0x{0} is being synchronized.", handle.ToString("X"));
+                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Call to native handle 0x{handle.ToString("X")} is being synchronized.");
                 return Sync.RunSync(() => Interop.InvokeNative(handle, args));
             }
 
@@ -426,7 +424,7 @@ namespace SampSharp.GameMode.API
         /// </returns>
         public override string ToString()
         {
-            return $"{_name}#{_handle}";
+            return $"{_name}#{_handle.ToString("X")}";
         }
 
         #endregion

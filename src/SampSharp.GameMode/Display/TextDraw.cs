@@ -72,7 +72,7 @@ namespace SampSharp.GameMode.Display
         private Color _foreColor;
         private float _height;
         private float _letterHeight;
-        private float _letterWidth;
+        private Vector2 _letterSize;
         private int _outline;
         private Vector2 _position;
         private int _previewModel;
@@ -218,32 +218,18 @@ namespace SampSharp.GameMode.Display
             }
         }
 
-        /// <summary>
-        ///     Gets or sets the letter-width of this textdraw.
-        /// </summary>
-        public virtual float LetterWidth
-        {
-            get { return _letterWidth; }
-            set
-            {
-                _letterWidth = value;
-                if (Id == -1) return;
-                Internal.TextDrawLetterSize(Id, _letterWidth, _letterHeight);
-                UpdateClients();
-            }
-        }
 
         /// <summary>
-        ///     Gets or sets the letter-height of this textdraw.
+        ///     Gets or sets the size of the letters of this textdraw.
         /// </summary>
-        public virtual float LetterHeight
+        public virtual Vector2 LetterSize
         {
-            get { return _letterHeight; }
+            get { return _letterSize; }
             set
             {
-                _letterHeight = value;
+                _letterSize = value;
                 if (Id == -1) return;
-                Internal.TextDrawLetterSize(Id, _letterWidth, _letterHeight);
+                Internal.TextDrawLetterSize(Id, _letterSize.X, _letterSize.Y);
                 UpdateClients();
             }
         }
@@ -545,12 +531,12 @@ namespace SampSharp.GameMode.Display
             Id = Internal.TextDrawCreate(Position.X, Position.Y, FixString(Text));
 
             //Reset properties
+            Font = Font;
             if (Alignment != default(TextDrawAlignment)) Alignment = Alignment;
             if (BackColor != 0) BackColor = BackColor;
             if (ForeColor != 0) ForeColor = ForeColor;
             if (BoxColor != 0) BoxColor = BoxColor;
-            if (LetterWidth != 0) LetterWidth = LetterWidth;
-            if (LetterHeight != 0) LetterHeight = LetterHeight;
+            if (LetterSize != Vector2.Zero) LetterSize = LetterSize;
             if (Outline > 0) Outline = Outline;
             if (Proportional) Proportional = Proportional;
             if (Shadow > 0) Shadow = Shadow;
