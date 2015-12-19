@@ -44,14 +44,14 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Gets or sets the X component of this <see cref="Vector2" />.
+        ///     Gets the X component of this <see cref="Vector2" />.
         /// </summary>
-        public float X { get; set; }
+        public float X { get; }
 
         /// <summary>
-        ///     Gets or sets the Y component of this <see cref="Vector2" />.
+        ///     Gets the Y component of this <see cref="Vector2" />.
         /// </summary>
-        public float Y { get; set; }
+        public float Y { get; }
 
         /// <summary>
         ///     Gets an empty <see cref="Vector2" />.
@@ -72,17 +72,7 @@ namespace SampSharp.GameMode
         ///     Gets whether this <see cref="Vector2" /> is empty.
         /// </summary>
         public bool IsEmpty => X == 0 && Y == 0;
-
-        /// <summary>
-        ///     Adds all components of a different <see cref="Vector2" /> to this <see cref="Vector2" />.
-        /// </summary>
-        /// <param name="other">The <see cref="Vector2" /> to add to this <see cref="Vector2" />.</param>
-        public void Add(Vector2 other)
-        {
-            X += other.X;
-            Y += other.Y;
-        }
-
+        
         /// <summary>
         ///     Gets the distance to another <see cref="Vector2" />.
         /// </summary>
@@ -94,15 +84,14 @@ namespace SampSharp.GameMode
             var dy = Y - other.Y;
             return (float) Math.Sqrt(dx*dx + dy*dy);
         }
-
+        
         /// <summary>
-        ///     Normalizes this <see cref="Vector2" /> to a single unit.
+        ///     Creates a new <see cref="Vector2" /> instance with the components normalized to a single unit.
         /// </summary>
-        public void Normalize()
+        public Vector2 Normalized()
         {
             var length = Length;
-            X /= length;
-            Y /= length;
+            return new Vector2(X/length, Y/length);
         }
 
         /// <summary>

@@ -65,19 +65,19 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Gets or sets the X component of this <see cref="Vector3" />.
+        ///     Gets the X component of this <see cref="Vector3" />.
         /// </summary>
-        public float X { get; set; }
+        public float X { get; }
 
         /// <summary>
-        ///     Gets or sets the Y component of this <see cref="Vector3" />.
+        ///     Gets the Y component of this <see cref="Vector3" />.
         /// </summary>
-        public float Y { get; set; }
+        public float Y { get; }
 
         /// <summary>
-        ///     Gets or sets the Z component of this <see cref="Vector3" />.
+        ///     Gets the Z component of this <see cref="Vector3" />.
         /// </summary>
-        public float Z { get; set; }
+        public float Z { get; }
 
         /// <summary>
         ///     Gets an empty <see cref="Vector3" />.
@@ -98,18 +98,7 @@ namespace SampSharp.GameMode
         ///     Gets whether this <see cref="Vector3" /> is empty.
         /// </summary>
         public bool IsEmpty => X == 0 && Y == 0 && Z == 0;
-
-        /// <summary>
-        ///     Adds all components of a different <see cref="Vector3" /> to this <see cref="Vector3" />.
-        /// </summary>
-        /// <param name="other">The <see cref="Vector3" /> to add to this <see cref="Vector3" />.</param>
-        public void Add(Vector3 other)
-        {
-            X += other.X;
-            Y += other.Y;
-            Z += other.Z;
-        }
-
+        
         /// <summary>
         ///     Gets the distance to another <see cref="Vector3" />.
         /// </summary>
@@ -124,14 +113,12 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Normalizes this <see cref="Vector3" /> to a single unit.
+        ///     Creates a new <see cref="Vector3" /> instance with the components normalized to a single unit.
         /// </summary>
-        public void Normalize()
+        public Vector3 Normalized()
         {
             var length = Length;
-            X /= length;
-            Y /= length;
-            Z /= length;
+            return new Vector3(X/length,Y/length,Z/length);
         }
 
         /// <summary>
