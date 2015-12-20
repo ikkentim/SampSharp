@@ -424,7 +424,7 @@ namespace SampSharp.GameMode.API
         /// </returns>
         public override string ToString()
         {
-            return $"{_name}#{_handle.ToString("X")}";
+            return $"{_name}#0x{_handle.ToString("X")}";
         }
 
         #endregion
