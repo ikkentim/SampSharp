@@ -179,15 +179,13 @@ namespace SampSharp.GameMode
             {
                 var attributes = assembly.GetCustomAttributes<SampSharpExtensionAttribute>();
 
+                if (attributes.Any(a => a.Type == null))
+                    Native.LoadDelegates(assembly);
+
                 foreach (var extensionType in attributes.Select(attribute => attribute.Type))
                 {
                     if (extensionType == null)
-                    {
-                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
-                            "The extension from {0} could not be loaded. The specified extension type is null.",
-                            assembly);
                         continue;
-                    }
                     if (!typeof (IExtension).IsAssignableFrom(extensionType))
                     {
                         FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
