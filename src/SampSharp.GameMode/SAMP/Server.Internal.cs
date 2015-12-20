@@ -54,12 +54,12 @@ namespace SampSharp.GameMode.SAMP
 
             [Native("GetMaxPlayers")] public static readonly GetMaxPlayersImpl GetMaxPlayers = null;
 
-            [Native("GetServerVarAsString")] public static readonly GetServerVarAsStringImpl GetServerVarAsString =
+            [Native("GetConsoleVarAsString")] public static readonly GetServerVarAsStringImpl GetConsoleVarAsString =
                 null;
 
-            [Native("GetServerVarAsInt")] public static readonly GetServerVarAsIntImpl GetServerVarAsInt = null;
+            [Native("GetConsoleVarAsInt")] public static readonly GetServerVarAsIntImpl GetConsoleVarAsInt = null;
 
-            [Native("GetServerVarAsBool")] public static readonly GetServerVarAsBoolImpl GetServerVarAsBool = null;
+            [Native("GetConsoleVarAsBool")] public static readonly GetServerVarAsBoolImpl GetConsoleVarAsBool = null;
 
             [Native("GetTickCount")] public static readonly GetTickCountImpl NativeGetTickCount = null;
 

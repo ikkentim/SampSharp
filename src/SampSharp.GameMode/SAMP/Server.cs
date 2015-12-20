@@ -94,18 +94,18 @@ namespace SampSharp.GameMode.SAMP
             if (typeof (T) == typeof (string))
             {
                 string value;
-                Internal.GetServerVarAsString(varName, out value, 64);
+                Internal.GetConsoleVarAsString(varName, out value, 64);
                 return (T) Convert.ChangeType(value, TypeCode.String);
             }
 
             if (typeof (T) == typeof (bool))
             {
-                return (T) Convert.ChangeType(Internal.GetServerVarAsBool(varName), TypeCode.Boolean);
+                return (T) Convert.ChangeType(Internal.GetConsoleVarAsBool(varName), TypeCode.Boolean);
             }
 
             if (typeof (T) == typeof (int))
             {
-                return (T) Convert.ChangeType(Internal.GetServerVarAsInt(varName), TypeCode.Int32);
+                return (T) Convert.ChangeType(Internal.GetConsoleVarAsInt(varName), TypeCode.Int32);
             }
 
             throw new NotSupportedException("Type " + typeof (T) + " is not supported by SA:MP");
