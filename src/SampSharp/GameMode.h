@@ -25,7 +25,7 @@
 #define BASEMODE_NAMESPACE                  "SampSharp.GameMode"
 #define BASEMODE_CLASS                      "BaseMode"
 
-#define PARAM_LENGTH_ATTRIBUTE_NAMESPACE    "SampSharp.GameMode"
+#define PARAM_LENGTH_ATTRIBUTE_NAMESPACE    "SampSharp.GameMode.API"
 #define PARAM_LENGTH_ATTRIBUTE_CLASS        "ParameterLengthAttribute"
 
 #define MAX_CALLBACK_PARAM_COUNT            (16)
