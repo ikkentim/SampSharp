@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampSharp", "src\SampSharp\SampSharp.vcxproj", "{39908193-8E5A-42EC-B71B-5D457CE87823}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampSharp.GameMode", "src\SampSharp.GameMode\SampSharp.GameMode.csproj", "{CCFB350D-BD04-41AB-A9F8-79767E94727E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{39908193-8E5A-42EC-B71B-5D457CE87823} = {39908193-8E5A-42EC-B71B-5D457CE87823}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMode", "src\TestMode\TestMode.csproj", "{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}"
 EndProject

@@ -286,13 +286,8 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
     for (int i = 0; i < sig->param_count; i++) {
         switch (sig->parameters[i]) {
         case 'd': /* integer */
-        case 'b': /* boolean */
             params[i] = mono_object_unbox(
                 mono_array_get(args_array, MonoObject *, i));
-            break;
-        case 'f': /* floating-point */
-            params[i] = &amx_ftoc(*(float *)mono_object_unbox(
-                mono_array_get(args_array, MonoObject *, i)));
             break;
         case 's': { /* const string */
             params[i] = monostring_to_string(
@@ -315,46 +310,10 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
             params[i] = value;
             break;
         }
-        case 'v': { /* array of floats */
-            MonoArray *values_array =
-                mono_array_get(args_array, MonoArray *, i);
-
-            int size_info = sig->sizes[i];
-            param_size[i] = size_info < 0 ? -size_info
-                : *(int *)mono_object_unbox(
-                mono_array_get(args_array, MonoObject *, size_info));
-
-            cell *value = new cell[param_size[i]];
-            for (int j = 0; j<param_size[i]; j++) {
-                value[j] = amx_ftoc(mono_array_get(values_array, float, j));
-            }
-            params[i] = value;
-            break;
-        }
         case 'D': { /* integer reference */
             MonoObject *object = mono_array_get(args_array, MonoObject *, i);
             if (object) {
                 params[i] = *(int **)mono_object_unbox(object);
-            }
-            else {
-                params[i] = &param_value[i];
-            }
-            break;
-        }
-        case 'B': { /* boolean reference */
-            MonoObject *object = mono_array_get(args_array, MonoObject *, i);
-            if (object) {
-                params[i] = *(bool **)mono_object_unbox(object);
-            }
-            else {
-                params[i] = &param_value[i];
-            }
-            break;
-        }
-        case 'F': { /* floating-point reference */
-            MonoObject *object = mono_array_get(args_array, MonoObject *, i);
-            if (object) {
-                params[i] = &amx_ftoc(**(float **)mono_object_unbox(object));
             }
             else {
                 params[i] = &param_value[i];
@@ -367,7 +326,7 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
                 : *(int *)mono_object_unbox(
                 mono_array_get(args_array, MonoObject *, size_info));
 
-            params[i] = new cell[param_size[i] + 1] {'\0'};
+            params[i] = new char[param_size[i] + 1] {'\0'};
 
             assert(params[i]);
             break;
@@ -382,21 +341,6 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
             for (int j = 0; j < param_size[i]; j++) {
                 /* Set default value to int.MinValue */
                 value[j] = std::numeric_limits<int>::min();
-            }
-            params[i] = value;
-            break;
-        }
-        case 'V': { /* array of floating-points reference */
-            int size_info = sig->sizes[i];
-            param_size[i] = size_info < 0 ? -size_info
-                : *(int *)mono_object_unbox(
-                mono_array_get(args_array, MonoObject *, size_info));
-
-            cell *value = new cell[param_size[i]];
-            float minfloat = std::numeric_limits<float>::min();
-            for (int j = 0; j < param_size[i]; j++) {
-                /* Set default value to int.MinValue */
-                value[j] = amx_ftoc(minfloat);
             }
             params[i] = value;
             break;
@@ -419,51 +363,22 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
         switch (sig->parameters[i]) {
         case 's': /* const string */
         case 'a': /* array of integers */
-        case 'v': /* array of floats */
             delete[] params[i];
             break;
-        case 'D': /* integer reference */
-            if (mono_array_get(args_array, MonoObject *, i)) {
-                **(int **)mono_object_unbox(
-                    mono_array_get(args_array, MonoObject *, i)) =
-                    *(int *)params[i];
-            }
-            else {
-                mono_array_set(args_array, int, i, *(int *)params[i]);
-            }
+        case 'D': { /* integer reference */
+            int result = *(int *)params[i];
+            MonoObject *obj = mono_value_box(mono_domain_get(), 
+                mono_get_int32_class(), &result);
+            mono_array_set(args_array, MonoObject*, i, obj);
             break;
-        case 'B': /* integer reference */
-            if (mono_array_get(args_array, MonoObject *, i)) {
-                **(int **)mono_object_unbox(
-                    mono_array_get(args_array, MonoObject *, i)) =
-                    *(bool *)params[i];
-            }
-            else {
-                mono_array_set(args_array, bool, i, *(bool *)params[i]);
-            }
-            break;
-        case 'F': /* floating-point reference */
-            if (mono_array_get(args_array, MonoObject *, i)) {
-                **(float **)mono_object_unbox(
-                    mono_array_get(args_array, MonoObject *, i)) =
-                    amx_ctof(*(cell *)params[i]);
-            }
-            else {
-                mono_array_set(args_array, float, i,
-                    amx_ctof(*(cell *)params[i]));
-            }
-            break;
-        case 'S': /* non-const string (writeable) */
-            if (mono_array_get(args_array, MonoObject *, i)) {
-                *mono_array_get(args_array, MonoString **, i) =
-                    string_to_monostring((char *)params[i], param_size[i]);
-            }
-            else {
-                mono_array_set(args_array, MonoString *, i,
-                    string_to_monostring((char *)params[i], param_size[i]));
-            }
+        }
+        case 'S': { /* non-const string (writeable) */
+            MonoString *str = string_to_monostring((char *)params[i],
+                param_size[i]);
+            mono_array_set(args_array, MonoString *, i, str);
             delete[] params[i];
             break;
+        }
         case 'A': { /* array of integers reference */
             cell *param_array = (cell *)params[i];
             MonoArray *arr = mono_array_new(mono_domain_get(),
@@ -471,33 +386,8 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
             for (int j = 0; j < param_size[i]; j++) {
                 mono_array_set(arr, int, j, param_array[j]);
             }
-
-            if (mono_array_get(args_array, MonoObject *, i)) {
-                *mono_array_get(args_array, MonoArray **, i) = arr;
-            }
-            else {
-                mono_array_set(args_array, MonoArray *, i, arr);
-            }
-
-            delete[] params[i];
-            break;
-        }
-        case 'V': { /* array of floating-points reference */
-            cell *param_array = (cell *)params[i];
-
-            MonoArray *arr = mono_array_new(mono_domain_get(),
-                mono_get_single_class(), param_size[i]);
-            for (int j = 0; j<param_size[i]; j++) {
-                mono_array_set(arr, float, j, amx_ctof(param_array[j]));
-            }
-
-            if (mono_array_get(args_array, MonoObject *, i)) {
-                *mono_array_get(args_array, MonoArray **, i) = arr;
-            }
-            else {
-                mono_array_set(args_array, MonoArray *, i, arr);
-            }
-
+            mono_array_set(args_array, MonoArray *, i, arr);
+        
             delete[] params[i];
             break;
         }
