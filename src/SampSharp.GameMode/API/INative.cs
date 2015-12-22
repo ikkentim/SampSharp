@@ -33,39 +33,21 @@ namespace SampSharp.GameMode.API
         /// <param name="arguments">The arguments.</param>
         /// <returns>The return value of the native.</returns>
         int Invoke(params object[] arguments);
-
-//        /// <summary>
-//        ///     Invokes the native with the specified arguments.
-//        /// </summary>
-//        /// <returns>The return value of the native.</returns>
-//        int Invoke(__arglist);
-
+        
         /// <summary>
         ///     Invokes the native with the specified arguments and returns the return value as a float.
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The return value of the native as a float.</returns>
         float InvokeFloat(params object[] arguments);
-
-//        /// <summary>
-//        ///     Invokes the native with the specified arguments and returns the return value as a float.
-//        /// </summary>
-//        /// <returns>The return value of the native as a float.</returns>
-//        float InvokeFloat(__arglist);
-
+        
         /// <summary>
         ///     Invokes the native with the specified arguments and returns the return value as a bool.
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The return value of the native as a bool.</returns>
         bool InvokeBool(params object[] arguments);
-
-//        /// <summary>
-//        ///     Invokes the native with the specified arguments and returns the return value as a bool.
-//        /// </summary>
-//        /// <returns>The return value of the native as a bool.</returns>
-//        bool InvokeBool(__arglist);
-
+        
         /// <summary>
         ///     Generates an invoker delegate for the function this instance represents.
         /// </summary>
