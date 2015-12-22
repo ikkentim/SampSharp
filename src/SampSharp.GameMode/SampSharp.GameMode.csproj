@@ -182,10 +182,10 @@
     <Compile Include="World\GlobalObject.Internal.cs">
       <DependentUpon>GlobalObject.cs</DependentUpon>
     </Compile>
-    <Compile Include="World\GtaPlayer.Internal.cs">
+    <Compile Include="World\BasePlayer.Internal.cs">
       <DependentUpon>BasePlayer.cs</DependentUpon>
     </Compile>
-    <Compile Include="World\GtaVehicle.Internal.cs">
+    <Compile Include="World\BaseVehicle.Internal.cs">
       <DependentUpon>BaseVehicle.cs</DependentUpon>
     </Compile>
     <Compile Include="World\Pickup.cs" />
