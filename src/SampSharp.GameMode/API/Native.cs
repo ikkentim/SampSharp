@@ -410,7 +410,7 @@ namespace SampSharp.GameMode.API
                     var nativeFunction = Load(attribute.Name, attribute.Lengths, parameterTypes);
                     if (nativeFunction == null)
                     {
-                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning, "Could not load native '{attribute.Name}'");
+                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning, $"Could not load native '{attribute.Name}'");
                         continue;
                     }
 
