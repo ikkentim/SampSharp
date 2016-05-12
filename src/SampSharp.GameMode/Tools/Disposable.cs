@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ namespace SampSharp.GameMode.Tools
         }
 
         /// <summary>
-        /// Occurs when this isntance has been disposed.
+        ///     Occurs when this isntance has been disposed.
         /// </summary>
         public event EventHandler Disposed;
 
@@ -87,7 +87,7 @@ namespace SampSharp.GameMode.Tools
         private void OnDisposed(bool disposing)
         {
             Dispose(disposing);
-            
+
             Disposed?.Invoke(this, EventArgs.Empty);
         }
     }

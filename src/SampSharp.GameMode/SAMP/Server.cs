@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ namespace SampSharp.GameMode.SAMP
     public static partial class Server
     {
         private static ServerConfig _serverConfig;
+
         /// <summary>
         ///     Gets the maximum number of players that can join the server, as set by the server var 'maxplayers' in server.cfg.
         /// </summary>

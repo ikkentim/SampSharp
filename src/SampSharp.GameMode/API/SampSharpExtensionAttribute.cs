@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,10 @@ namespace SampSharp.GameMode.API
         ///     Initializes a new instance of the <see cref="SampSharpExtensionAttribute" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <param name="loadBeforeAssembliesOfType">Types of assemblies to load before this extension (extensions this extension has references to and requires to load before).</param>
+        /// <param name="loadBeforeAssembliesOfType">
+        ///     Types of assemblies to load before this extension (extensions this extension
+        ///     has references to and requires to load before).
+        /// </param>
         public SampSharpExtensionAttribute(Type type, params Type[] loadBeforeAssembliesOfType)
         {
             _loadBeforeAssembliesOfType = loadBeforeAssembliesOfType;

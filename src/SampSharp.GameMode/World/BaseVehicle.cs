@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -575,7 +575,8 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnTrailerUpdate" /> is being called.
-        ///     This callback is called when a <see cref="BasePlayer" /> sent a trailer update about this <see cref="BaseVehicle" />.
+        ///     This callback is called when a <see cref="BasePlayer" /> sent a trailer update about this
+        ///     <see cref="BaseVehicle" />.
         /// </summary>
         public event EventHandler<TrailerEventArgs> TrailerUpdate;
 
@@ -590,7 +591,8 @@ namespace SampSharp.GameMode.World
         #region Vehicles natives
 
         /// <summary>
-        ///     This function can be used to calculate the distance (as a float) between this <see cref="BaseVehicle" /> and another
+        ///     This function can be used to calculate the distance (as a float) between this <see cref="BaseVehicle" /> and
+        ///     another
         ///     map coordinate.
         ///     This can be useful to detect how far a vehicle away is from a location.
         /// </summary>
@@ -640,7 +642,8 @@ namespace SampSharp.GameMode.World
         /// </param>
         /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
         /// <returns> The <see cref="BaseVehicle" /> created.</returns>
-        public static BaseVehicle CreateStatic(VehicleModelType vehicleType, Vector3 position, float rotation, int color1, int color2,
+        public static BaseVehicle CreateStatic(VehicleModelType vehicleType, Vector3 position, float rotation,
+            int color1, int color2,
             int respawnDelay, bool addAlarm = false)
         {
             var service = BaseMode.Instance.Services.GetService<IVehicleFactory>();
@@ -657,7 +660,8 @@ namespace SampSharp.GameMode.World
         /// <param name="color1">The primary color ID.</param>
         /// <param name="color2">The secondary color ID.</param>
         /// <returns> The <see cref="BaseVehicle" /> created.</returns>
-        public static BaseVehicle CreateStatic(VehicleModelType vehicleType, Vector3 position, float rotation, int color1, int color2)
+        public static BaseVehicle CreateStatic(VehicleModelType vehicleType, Vector3 position, float rotation,
+            int color1, int color2)
         {
             var service = BaseMode.Instance.Services.GetService<IVehicleFactory>();
 
@@ -1047,7 +1051,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Fully repairs this <see cref="BaseVehicle" />, including visual damage (bumps, dents, scratches, popped tires etc.).
+        ///     Fully repairs this <see cref="BaseVehicle" />, including visual damage (bumps, dents, scratches, popped tires
+        ///     etc.).
         /// </summary>
         public virtual void Repair()
         {

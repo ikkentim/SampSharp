@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using SampSharp.GameMode.API;
 
 namespace SampSharp.GameMode.SAMP
@@ -34,7 +33,7 @@ namespace SampSharp.GameMode.SAMP
 
             public delegate int GetServerVarAsIntImpl(string varname);
 
-            public delegate bool GetServerVarAsStringImpl(string varname, out string value, int size); 
+            public delegate bool GetServerVarAsStringImpl(string varname, out string value, int size);
 
             public delegate int GetTickCountImpl();
 

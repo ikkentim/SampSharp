@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ using System;
 using System.Reflection;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
-using SampSharp.GameMode.SAMP.Commands.Parameters;
 using SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 using SampSharp.GameMode.SAMP.Commands.PermissionCheckers;
 using SampSharp.GameMode.World;

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,8 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerSelectGlobalObject" />, <see cref="BasePlayer.SelectGlobalObject" />
+    ///     Provides data for the <see cref="BaseMode.PlayerSelectGlobalObject" />,
+    ///     <see cref="BasePlayer.SelectGlobalObject" />
     ///     or <see cref="GlobalObject.Selected" /> event.
     /// </summary>
     public class SelectGlobalObjectEventArgs : PositionEventArgs
@@ -60,7 +61,8 @@ namespace SampSharp.GameMode.Events
     }
 
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerSelectPlayerObject" />, <see cref="BasePlayer.SelectPlayerObject" />
+    ///     Provides data for the <see cref="BaseMode.PlayerSelectPlayerObject" />,
+    ///     <see cref="BasePlayer.SelectPlayerObject" />
     ///     or <see cref="PlayerObject.Selected" /> event.
     /// </summary>
     public class SelectPlayerObjectEventArgs : PositionEventArgs

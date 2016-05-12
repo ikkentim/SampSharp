@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -124,7 +124,8 @@ namespace SampSharp.GameMode.Pools
         public void Move(int oldKey, int newKey)
         {
             if (oldKey == newKey) return;
-            if (oldKey == UnidentifiedId) throw new ArgumentException("unidentified id cannot be moved", nameof(oldKey));
+            if (oldKey == UnidentifiedId)
+                throw new ArgumentException("unidentified id cannot be moved", nameof(oldKey));
 
             var item = Get(oldKey);
 

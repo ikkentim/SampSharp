@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ namespace TestMode
         private readonly List<ITest> _tests = new List<ITest>
         {
             new CommandsTest(),
-            new ASyncTest(),
+            new ASyncTest()
 //            new DelayTest(),
 //            new MenuTest(),
 //            new DisposureTest(),
@@ -77,11 +77,11 @@ namespace TestMode
 
             base.OnInitialized(args);
         }
-        
+
         protected override void LoadControllers(ControllerCollection controllers)
         {
             base.LoadControllers(controllers);
-            
+
             controllers.Override(new PlayerController());
             controllers.Override(new VehicleController());
             controllers.Override(new MyCommandController());

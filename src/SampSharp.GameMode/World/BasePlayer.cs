@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -557,7 +557,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets whether this Player is alive;
         /// </summary>
-        public virtual bool IsAlive => !new[] {PlayerState.None, PlayerState.Spectating, PlayerState.Wasted}.Contains(State);
+        public virtual bool IsAlive
+            => !new[] {PlayerState.None, PlayerState.Spectating, PlayerState.Wasted}.Contains(State);
 
         /// <summary>
         ///     Gets this Player's network stats and saves them into a string.
@@ -1182,7 +1183,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This function plays a crime report for this <see cref="BasePlayer" /> - just like in single-player when CJ commits a
+        ///     This function plays a crime report for this <see cref="BasePlayer" /> - just like in single-player when CJ commits
+        ///     a
         ///     crime.
         /// </summary>
         /// <param name="suspect">The suspect player which will be described in the crime report.</param>
@@ -1880,7 +1882,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Kicks this <see cref="BasePlayer" /> from the server. They will have to quit the game and re-connect if they wish to
+        ///     Kicks this <see cref="BasePlayer" /> from the server. They will have to quit the game and re-connect if they wish
+        ///     to
         ///     continue playing.
         /// </summary>
         public virtual void Kick()
@@ -1928,7 +1931,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This function sends a message to this <see cref="BasePlayer" /> in white in the chat. The whole line in the chat box
+        ///     This function sends a message to this <see cref="BasePlayer" /> in white in the chat. The whole line in the chat
+        ///     box
         ///     will be
         ///     in the set color unless color embedding is used.
         /// </summary>
@@ -1939,7 +1943,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     This function sends a message to this <see cref="BasePlayer" /> in white in the chat. The whole line in the chat box
+        ///     This function sends a message to this <see cref="BasePlayer" /> in white in the chat. The whole line in the chat
+        ///     box
         ///     will be
         ///     in the set color unless color embedding is used.
         /// </summary>

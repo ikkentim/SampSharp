@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ namespace SampSharp.GameMode
         ///     Gets whether this <see cref="Vector2" /> is empty.
         /// </summary>
         public bool IsEmpty => X == 0 && Y == 0;
-        
+
         /// <summary>
         ///     Gets the distance to another <see cref="Vector2" />.
         /// </summary>
@@ -84,7 +84,7 @@ namespace SampSharp.GameMode
             var dy = Y - other.Y;
             return (float) Math.Sqrt(dx*dx + dy*dy);
         }
-        
+
         /// <summary>
         ///     Creates a new <see cref="Vector2" /> instance with the components normalized to a single unit.
         /// </summary>
@@ -226,7 +226,7 @@ namespace SampSharp.GameMode
             if (ReferenceEquals(null, obj)) return false;
             return obj is Vector2 && Equals((Vector2) obj);
         }
-        
+
         /// <summary>
         ///     Returns the fully qualified type name of this instance.
         /// </summary>

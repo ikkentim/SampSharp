@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,21 +31,20 @@ namespace SampSharp.GameMode.Pools
         where TOwner : class, IIdentifiable
     {
         private static readonly PoolContainer<TInstance> UnownedContainer = new PoolContainer<TInstance>();
+
         private static readonly Dictionary<TOwner, PoolContainer<TInstance>> Containers =
             new Dictionary<TOwner, PoolContainer<TInstance>>();
 
         private int _id;
         private TOwner _owner;
 
-        private static PoolContainer<TInstance> GetPool(TOwner owner, bool createIfNotExists=true)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="IdentifiedOwnedPool{TInstance, TOwner}" /> class.
+        /// </summary>
+        protected IdentifiedOwnedPool()
         {
-            if (owner == null) return UnownedContainer;
-
-            PoolContainer<TInstance> pool;
-            if (!Containers.TryGetValue(owner, out pool) && createIfNotExists)
-                pool = Containers[owner] = new PoolContainer<TInstance>();
-
-            return pool;
+            _id = PoolContainer<TInstance>.UnidentifiedId;
+            UnownedContainer.Add(_id, (TInstance) this);
         }
 
         /// <summary>
@@ -53,15 +52,6 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         // ReSharper disable once StaticMemberInGenericType
         protected static Type InstanceType { get; private set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IdentifiedOwnedPool{TInstance, TOwner}"/> class.
-        /// </summary>
-        protected IdentifiedOwnedPool()
-        {
-            _id = PoolContainer<TInstance>.UnidentifiedId;
-            UnownedContainer.Add(_id, (TInstance) this);
-        }
 
         /// <summary>
         ///     Gets a collection containing all instances.
@@ -78,7 +68,7 @@ namespace SampSharp.GameMode.Pools
             {
                 var pool = GetPool(Owner);
                 if (_id == PoolContainer<TInstance>.UnidentifiedId)
-                    pool.MoveUnidentified((TInstance)this, value);
+                    pool.MoveUnidentified((TInstance) this, value);
                 else
                     pool.Move(_id, value);
 
@@ -107,7 +97,7 @@ namespace SampSharp.GameMode.Pools
                 else
                 {
                     if (_id == PoolContainer<TInstance>.UnidentifiedId)
-                        Containers[_owner].RemoveUnidentified((TInstance)this);
+                        Containers[_owner].RemoveUnidentified((TInstance) this);
                     else
                         Containers[_owner].Remove(_id);
 
@@ -121,6 +111,17 @@ namespace SampSharp.GameMode.Pools
             }
         }
 
+        private static PoolContainer<TInstance> GetPool(TOwner owner, bool createIfNotExists = true)
+        {
+            if (owner == null) return UnownedContainer;
+
+            PoolContainer<TInstance> pool;
+            if (!Containers.TryGetValue(owner, out pool) && createIfNotExists)
+                pool = Containers[owner] = new PoolContainer<TInstance>();
+
+            return pool;
+        }
+
         /// <summary>
         ///     Removes this instance from the pool.
         /// </summary>
@@ -130,7 +131,7 @@ namespace SampSharp.GameMode.Pools
 
             if (pool == null) return;
             if (_id == PoolContainer<TInstance>.UnidentifiedId)
-                pool.RemoveUnidentified((TInstance)this);
+                pool.RemoveUnidentified((TInstance) this);
             else
                 pool.Remove(_id);
 
@@ -172,7 +173,7 @@ namespace SampSharp.GameMode.Pools
         /// <typeparam name="TRegister">The <see cref="Type" /> to use when initializing new instances.</typeparam>
         public static void Register<TRegister>() where TRegister : TInstance
         {
-            Register(typeof(TRegister));
+            Register(typeof (TRegister));
         }
 
         /// <summary>
@@ -184,7 +185,7 @@ namespace SampSharp.GameMode.Pools
         {
             return (IEnumerable<TInstance>) GetPool(owner, false) ?? new TInstance[0];
         }
-        
+
         /// <summary>
         ///     Registers the type to use when initializing new instances.
         /// </summary>
@@ -194,8 +195,8 @@ namespace SampSharp.GameMode.Pools
         public static void Register(Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
-            if (!typeof(TInstance).IsAssignableFrom(type))
-                throw new ArgumentException("type must be of type " + typeof(TInstance), nameof(type));
+            if (!typeof (TInstance).IsAssignableFrom(type))
+                throw new ArgumentException("type must be of type " + typeof (TInstance), nameof(type));
 
             InstanceType = type;
         }
@@ -212,34 +213,32 @@ namespace SampSharp.GameMode.Pools
         }
 
         /// <summary>
-        /// Initializes a new instance with the given id.
+        ///     Initializes a new instance with the given id.
         /// </summary>
         /// <param name="owner">The owner of the instance to create.</param>
         /// <param name="id">The identity of the instance to create.</param>
         /// <returns>
-        /// The initialized instance.
+        ///     The initialized instance.
         /// </returns>
         public static TInstance Create(TOwner owner, int id)
         {
-            var instance = (TInstance)Activator.CreateInstance(InstanceType);
+            var instance = (TInstance) Activator.CreateInstance(InstanceType);
             instance.Owner = owner;
             instance.Id = id;
             return instance;
         }
 
         /// <summary>
-        /// Finds an instance with the given <paramref name="id" /> or initializes a new one.
+        ///     Finds an instance with the given <paramref name="id" /> or initializes a new one.
         /// </summary>
         /// <param name="owner">The owner of the isntance to find or create.</param>
         /// <param name="id">The identity of the instance to find or create.</param>
         /// <returns>
-        /// The found instance.
+        ///     The found instance.
         /// </returns>
         public static TInstance FindOrCreate(TOwner owner, int id)
         {
             return Find(owner, id) ?? Create(owner, id);
         }
-
     }
-
 }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,18 +20,20 @@ namespace SampSharp.GameMode.API
     public interface IExtension
     {
         /// <summary>
-        /// Loads services provided by this extensions.
+        ///     Loads services provided by this extensions.
         /// </summary>
         /// <param name="gameMode">The game mode.</param>
         void LoadServices(BaseMode gameMode);
+
         /// <summary>
-        /// Loads controllers provided by this extensions.
+        ///     Loads controllers provided by this extensions.
         /// </summary>
         /// <param name="gameMode">The game mode.</param>
         /// <param name="controllerCollection">The controller collection.</param>
         void LoadControllers(BaseMode gameMode, ControllerCollection controllerCollection);
+
         /// <summary>
-        /// Performs post-load actions.
+        ///     Performs post-load actions.
         /// </summary>
         /// <param name="gameMode">The game mode.</param>
         void PostLoad(BaseMode gameMode);

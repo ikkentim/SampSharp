@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,17 +38,6 @@ namespace SampSharp.GameMode.Controllers
             gameMode.PlayerCommandText += gameMode_PlayerCommandText;
         }
 
-        private void gameMode_PlayerCommandText(object sender, CommandTextEventArgs e)
-        {
-            if (CommandsManager == null)
-                return;
-
-            var player = sender as BasePlayer;
-            if (player == null) return;
-
-            e.Success = CommandsManager.Process(e.Text, player);
-        }
-
         #region Implementation of IGameServiceProvider
 
         /// <summary>
@@ -66,5 +55,16 @@ namespace SampSharp.GameMode.Controllers
         }
 
         #endregion
+
+        private void gameMode_PlayerCommandText(object sender, CommandTextEventArgs e)
+        {
+            if (CommandsManager == null)
+                return;
+
+            var player = sender as BasePlayer;
+            if (player == null) return;
+
+            e.Success = CommandsManager.Process(e.Text, player);
+        }
     }
 }

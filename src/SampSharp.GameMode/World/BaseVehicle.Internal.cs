@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ namespace SampSharp.GameMode.World
             public delegate bool ChangeVehicleColorImpl(int vehicleid, int color1, int color2);
 
             public delegate bool ChangeVehiclePaintjobImpl(int vehicleid, int paintjobid);
-            
+
             public delegate bool DestroyVehicleImpl(int vehicleid);
 
             public delegate bool DetachTrailerFromVehicleImpl(int vehicleid);
@@ -122,7 +122,7 @@ namespace SampSharp.GameMode.World
 
             [Native("GetVehicleDistanceFromPoint")] public static readonly GetVehicleDistanceFromPointImpl
                 GetVehicleDistanceFromPoint = null;
-            
+
             [Native("DestroyVehicle")] public static readonly DestroyVehicleImpl DestroyVehicle = null;
             [Native("IsVehicleStreamedIn")] public static readonly IsVehicleStreamedInImpl IsVehicleStreamedIn = null;
             [Native("GetVehiclePos")] public static readonly GetVehiclePosImpl GetVehiclePos = null;
@@ -222,7 +222,7 @@ namespace SampSharp.GameMode.World
                 null;
 
             [Native("GetVehicleModelInfo")] public static readonly GetVehicleModelInfoImpl GetVehicleModelInfo = null;
-            
+
             [Native("GetVehiclePoolSize")] public static readonly GetVehiclePoolSizeImpl GetVehiclePoolSize = null;
         }
     }

@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -86,7 +86,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Sets the configuration value with the specified key to the specified value for the current session.
+        ///     Sets the configuration value with the specified key to the specified value for the current session.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>

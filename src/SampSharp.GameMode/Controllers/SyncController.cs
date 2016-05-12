@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,12 +25,12 @@ namespace SampSharp.GameMode.Controllers
     public sealed class SyncController : IEventListener
     {
         private static bool _waiting;
-        
+
         /// <summary>
         ///     Gets the main thread.
         /// </summary>
         public static Thread MainThread { get; private set; }
-        
+
         /// <summary>
         ///     Registers the events this SyncController wants to listen to.
         /// </summary>

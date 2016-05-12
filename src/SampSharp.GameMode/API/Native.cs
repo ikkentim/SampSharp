@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -55,37 +55,6 @@ namespace SampSharp.GameMode.API
                 (sizes?.Length ?? 0) == 0 ? lengthIndices : sizes);
         }
 
-        private static char GetTypeFormatChar(Type type)
-        {
-            if (type == typeof (int) || type == typeof (bool) || type == typeof (float))
-                return 'd';
-            if (type == typeof (int[]) || type == typeof (bool[]) || type == typeof (float[]))
-                return 'a';
-            if (type == typeof (string))
-                return 's';
-
-            throw new ApplicationException("Invalid native delegate argument type");
-        }
-
-        private static int[] ComputeFormatString(Type[] types, out string format)
-        {
-            var lengthIndices = new List<int>();
-            format = string.Empty;
-            
-            for (var i = 0; i < types.Length; i++)
-            {
-                var c = types[i].IsByRef
-                    ? char.ToUpper(GetTypeFormatChar(types[i].GetElementType()))
-                    : GetTypeFormatChar(types[i]);
-                
-                if (c == 'S' || c == 'a' || c == 'A')
-                    lengthIndices.Add(i + 1);
-
-                format += c;
-            }
-
-            return lengthIndices.ToArray();
-        }
         /// <summary>
         ///     Gets or sets the native loader.
         /// </summary>
@@ -186,7 +155,7 @@ namespace SampSharp.GameMode.API
             // Store the newly created array to the argTypes local.
             var argTypesLocal = ilGenerator.DeclareLocal(typeof (Type[]));
             ilGenerator.Emit(OpCodes.Stloc, argTypesLocal);
-            
+
             // Generate a pass-trough for every parameter of the native.
             for (var index = 0; index < parameterCount; index++)
             {
@@ -304,6 +273,38 @@ namespace SampSharp.GameMode.API
             ilGenerator.Emit(OpCodes.Ret);
 
             return dynamicMethod.CreateDelegate(delegateType);
+        }
+
+        private static char GetTypeFormatChar(Type type)
+        {
+            if (type == typeof (int) || type == typeof (bool) || type == typeof (float))
+                return 'd';
+            if (type == typeof (int[]) || type == typeof (bool[]) || type == typeof (float[]))
+                return 'a';
+            if (type == typeof (string))
+                return 's';
+
+            throw new ApplicationException("Invalid native delegate argument type");
+        }
+
+        private static int[] ComputeFormatString(Type[] types, out string format)
+        {
+            var lengthIndices = new List<int>();
+            format = string.Empty;
+
+            for (var i = 0; i < types.Length; i++)
+            {
+                var c = types[i].IsByRef
+                    ? char.ToUpper(GetTypeFormatChar(types[i].GetElementType()))
+                    : GetTypeFormatChar(types[i]);
+
+                if (c == 'S' || c == 'a' || c == 'A')
+                    lengthIndices.Add(i + 1);
+
+                format += c;
+            }
+
+            return lengthIndices.ToArray();
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,58 +31,20 @@ namespace SampSharp.GameMode.Controllers
         public virtual void RegisterEvents(BaseMode gameMode)
         {
             //Register all vehicle events
-            gameMode.VehicleSpawned += (sender, args) =>
-            {
-                    (sender as BaseVehicle)?.OnSpawn(args);
-            };
-            gameMode.VehicleDied += (sender, args) =>
-            {
-                (sender as BaseVehicle)?.OnDeath(args);
-            };
-            gameMode.PlayerEnterVehicle += (sender, args) =>
-            {
-                args.Vehicle?.OnPlayerEnter(args);
-            };
-            gameMode.PlayerExitVehicle += (sender, args) =>
-            {
-                args.Vehicle?.OnPlayerExit(args);
-            };
-            gameMode.VehicleMod += (sender, args) =>
-            {
-                (sender as BaseVehicle)?.OnMod(args);
-            };
-            gameMode.VehiclePaintjobApplied += (sender, args) =>
-            {
-                (sender as BaseVehicle)?.OnPaintjobApplied(args);
-            };
-            gameMode.VehicleResprayed += (sender, args) =>
-            {
-                (sender as BaseVehicle)?.OnResprayed(args);
-            };
-            gameMode.VehicleDamageStatusUpdated += (sender, args) =>
-            {
-                (sender as BaseVehicle)?.OnDamageStatusUpdated(args);
-            };
-            gameMode.UnoccupiedVehicleUpdated += (sender, args) =>
-            {
-                (sender as BaseVehicle)?.OnUnoccupiedUpdate(args);
-            };
-            gameMode.VehicleStreamIn += (sender, args) =>
-            {
-                (sender as BaseVehicle)?.OnStreamIn(args);
-            };
-            gameMode.VehicleStreamOut += (sender, args) =>
-            {
-                (sender as BaseVehicle)?.OnStreamOut(args);
-            };
-            gameMode.TrailerUpdate += (sender, args) =>
-            {
-                (sender as BaseVehicle)?.OnTrailerUpdate(args);
-            };
-            gameMode.VehicleSirenStateChange += (sender, args) =>
-            {
-                (sender as BaseVehicle)?.OnSirenStateChanged(args);
-            };
+            gameMode.VehicleSpawned += (sender, args) => (sender as BaseVehicle)?.OnSpawn(args);
+            gameMode.VehicleDied += (sender, args) => (sender as BaseVehicle)?.OnDeath(args);
+            gameMode.PlayerEnterVehicle += (sender, args) => args.Vehicle?.OnPlayerEnter(args);
+            gameMode.PlayerExitVehicle += (sender, args) => args.Vehicle?.OnPlayerExit(args);
+            gameMode.VehicleMod += (sender, args) => (sender as BaseVehicle)?.OnMod(args);
+            gameMode.VehiclePaintjobApplied += (sender, args) => (sender as BaseVehicle)?.OnPaintjobApplied(args);
+            gameMode.VehicleResprayed += (sender, args) => (sender as BaseVehicle)?.OnResprayed(args);
+            gameMode.VehicleDamageStatusUpdated +=
+                (sender, args) => (sender as BaseVehicle)?.OnDamageStatusUpdated(args);
+            gameMode.UnoccupiedVehicleUpdated += (sender, args) => (sender as BaseVehicle)?.OnUnoccupiedUpdate(args);
+            gameMode.VehicleStreamIn += (sender, args) => (sender as BaseVehicle)?.OnStreamIn(args);
+            gameMode.VehicleStreamOut += (sender, args) => (sender as BaseVehicle)?.OnStreamOut(args);
+            gameMode.TrailerUpdate += (sender, args) => (sender as BaseVehicle)?.OnTrailerUpdate(args);
+            gameMode.VehicleSirenStateChange += (sender, args) => (sender as BaseVehicle)?.OnSirenStateChanged(args);
         }
 
         /// <summary>

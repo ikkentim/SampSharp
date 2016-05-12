@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ namespace TestMode.Tests
             _timerStart = DateTime.Now;
             var timer = new Timer(new TimeSpan(0, 0, 0, 2, 500), false);
             timer.Tick += TimerOnTick;
-            
+
             gameMode.PlayerConnected += gameMode_PlayerConnected;
         }
 
@@ -71,7 +71,8 @@ namespace TestMode.Tests
             Print("asyncp", "past delay");
             player.SendClientMessage("ASync message! (on main thread?: {0})", Thread.CurrentThread == _main);
 
-            Sync.Run(() => player.SendClientMessage("Sync message! (on main thread?: {0})", Thread.CurrentThread == _main));
+            Sync.Run(
+                () => player.SendClientMessage("Sync message! (on main thread?: {0})", Thread.CurrentThread == _main));
         }
 
         public async void ASyncTestMethod2()

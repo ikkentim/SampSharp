@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -221,7 +221,9 @@ namespace SampSharp.GameMode.SAMP.Commands
                         .Where(type => !type.IsInterface && type.IsClass && !type.IsAbstract)
                         // Select the methods in the type.
                         .SelectMany(
-                            type => type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance))
+                            type =>
+                                type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static |
+                                                BindingFlags.Instance))
                         // Exclude abstract methods. (none should be since abstract types are excluded)
                         .Where(method => !method.IsAbstract)
                         // Only include methods with a return type of bool or void.

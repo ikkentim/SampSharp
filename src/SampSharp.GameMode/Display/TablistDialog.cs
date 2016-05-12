@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -79,15 +79,6 @@ namespace SampSharp.GameMode.Display
             _columnCount = _columns.Length;
         }
 
-        /// <summary>
-        ///     Adds a row with the specified cells.
-        /// </summary>
-        /// <param name="cells">The cells of the row.</param>
-        public void Add(params string[] cells)
-        {
-            Add(cells as IEnumerable<string>);
-        }
-
         #region Overrides of Dialog
 
         /// <summary>
@@ -103,6 +94,15 @@ namespace SampSharp.GameMode.Display
         }
 
         #endregion
+
+        /// <summary>
+        ///     Adds a row with the specified cells.
+        /// </summary>
+        /// <param name="cells">The cells of the row.</param>
+        public void Add(params string[] cells)
+        {
+            Add(cells as IEnumerable<string>);
+        }
 
         #region Implementation of IEnumerable
 
@@ -129,7 +129,7 @@ namespace SampSharp.GameMode.Display
         }
 
         #endregion
-        
+
         #region Implementation of ICollection<IEnumerable<string>>
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace SampSharp.GameMode.Display
 
             if (row.Length != _columnCount)
                 throw new ArgumentException($"Row must contain {_columnCount} cells.", nameof(item));
-            
+
             _rows.Add(string.Join("\t", row));
         }
 

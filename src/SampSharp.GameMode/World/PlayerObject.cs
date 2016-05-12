@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -321,7 +321,8 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Lets the <see cref="IdentifiedOwnedPool{TInstance,TOwner}.Owner" /> of this <see cref="PlayerObject" /> edit this object.
+        ///     Lets the <see cref="IdentifiedOwnedPool{TInstance,TOwner}.Owner" /> of this <see cref="PlayerObject" /> edit this
+        ///     object.
         /// </summary>
         public virtual void Edit()
         {

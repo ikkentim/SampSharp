@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ namespace SampSharp.GameMode.World
     public interface IIdentifiable
     {
         /// <summary>
-        /// Gets the identifier of this instance.
+        ///     Gets the identifier of this instance.
         /// </summary>
         int Id { get; }
     }

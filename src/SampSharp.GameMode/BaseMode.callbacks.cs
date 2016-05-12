@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -317,14 +317,16 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerStreamIn(int playerid, int forplayerid)
         {
-            OnPlayerStreamIn(BasePlayer.FindOrCreate(playerid), new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
+            OnPlayerStreamIn(BasePlayer.FindOrCreate(playerid),
+                new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
 
         internal bool OnPlayerStreamOut(int playerid, int forplayerid)
         {
-            OnPlayerStreamOut(BasePlayer.FindOrCreate(playerid), new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
+            OnPlayerStreamOut(BasePlayer.FindOrCreate(playerid),
+                new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
 
             return true;
         }

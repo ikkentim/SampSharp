@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,19 +29,9 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="gameMode">The running GameMode.</param>
         public virtual void RegisterEvents(BaseMode gameMode)
         {
-            gameMode.ObjectMoved += (sender, args) =>
-            {
-                (sender as GlobalObject)?.OnMoved(args);
-            };
-
-            gameMode.PlayerEditGlobalObject += (sender, args) =>
-            {
-                (sender as GlobalObject)?.OnEdited(args);
-            };
-            gameMode.PlayerSelectGlobalObject += (sender, args) =>
-            {
-                (sender as GlobalObject)?.OnSelected(args);
-            };
+            gameMode.ObjectMoved += (sender, args) => (sender as GlobalObject)?.OnMoved(args);
+            gameMode.PlayerEditGlobalObject += (sender, args) => (sender as GlobalObject)?.OnEdited(args);
+            gameMode.PlayerSelectGlobalObject += (sender, args) => (sender as GlobalObject)?.OnSelected(args);
         }
 
         /// <summary>

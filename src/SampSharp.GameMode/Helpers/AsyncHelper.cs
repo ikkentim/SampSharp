@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -87,12 +87,13 @@ namespace SampSharp.GameMode.Helpers
 
         private class ExclusiveSynchronizationContext : SynchronizationContext
         {
-            private bool _done;
-            public Exception InnerException { get; set; }
-            private readonly AutoResetEvent _workItemsWaiting = new AutoResetEvent(false);
-
             private readonly Queue<Tuple<SendOrPostCallback, object>> _items =
                 new Queue<Tuple<SendOrPostCallback, object>>();
+
+            private readonly AutoResetEvent _workItemsWaiting = new AutoResetEvent(false);
+            private bool _done;
+
+            public Exception InnerException { get; set; }
 
             public override void Send(SendOrPostCallback d, object state)
             {

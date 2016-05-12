@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -98,7 +98,7 @@ namespace SampSharp.GameMode
         ///     Gets whether this <see cref="Vector3" /> is empty.
         /// </summary>
         public bool IsEmpty => X == 0 && Y == 0 && Z == 0;
-        
+
         /// <summary>
         ///     Gets the distance to another <see cref="Vector3" />.
         /// </summary>
@@ -118,7 +118,7 @@ namespace SampSharp.GameMode
         public Vector3 Normalized()
         {
             var length = Length;
-            return new Vector3(X/length,Y/length,Z/length);
+            return new Vector3(X/length, Y/length, Z/length);
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace SampSharp.GameMode
             if (ReferenceEquals(null, obj)) return false;
             return obj is Vector3 && Equals((Vector3) obj);
         }
-        
+
         /// <summary>
         ///     Returns the fully qualified type name of this instance.
         /// </summary>

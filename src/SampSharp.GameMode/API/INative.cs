@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,21 +33,21 @@ namespace SampSharp.GameMode.API
         /// <param name="arguments">The arguments.</param>
         /// <returns>The return value of the native.</returns>
         int Invoke(params object[] arguments);
-        
+
         /// <summary>
         ///     Invokes the native with the specified arguments and returns the return value as a float.
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The return value of the native as a float.</returns>
         float InvokeFloat(params object[] arguments);
-        
+
         /// <summary>
         ///     Invokes the native with the specified arguments and returns the return value as a bool.
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The return value of the native as a bool.</returns>
         bool InvokeBool(params object[] arguments);
-        
+
         /// <summary>
         ///     Generates an invoker delegate for the function this instance represents.
         /// </summary>

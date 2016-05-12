@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ namespace SampSharp.GameMode.Display
     /// </summary>
     public class InputDialog : Dialog
     {
-        private string _message;
-
         /// <summary>
         ///     Initializes a new instance of the Dialog class.
         /// </summary>
@@ -53,17 +51,13 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Gets the Info displayed.
         /// </summary>
-        protected override string Info => _message;
+        protected override string Info => Message;
 
         #endregion
 
         /// <summary>
         ///     Gets or sets the message in the dialog.
         /// </summary>
-        public string Message
-        {
-            get { return _message; }
-            set { _message = value; }
-        }
+        public string Message { get; set; }
     }
 }

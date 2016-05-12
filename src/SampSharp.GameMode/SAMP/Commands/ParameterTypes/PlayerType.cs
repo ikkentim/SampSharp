@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2015 Tim Potze
+// Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         public bool Parse(ref string commandText, out object output)
         {
             var text = commandText.TrimStart();
-                output = null;
+            output = null;
 
             if (string.IsNullOrEmpty(text))
                 return false;
@@ -85,7 +85,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
                     : commandText.Substring(word.Length).TrimStart(' ');
                 return true;
             }
-            
+
             return false;
         }
 
