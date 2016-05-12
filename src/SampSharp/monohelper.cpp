@@ -20,29 +20,6 @@
 #include "PathUtil.h"
 #include "unicode.h"
 
-void mono_convert_symbols(const char * path) {
-    std::string converter_path_string = PathUtil::GetLibDirectory()
-        .append("mono/4.5/pdb2mdb.exe");
-
-    char *converter_path = new char[converter_path_string.size() + 1];
-
-    converter_path[converter_path_string.size()] = 0;
-    memcpy(converter_path, converter_path_string.c_str(),
-        converter_path_string.size());
-
-    MonoAssembly *converter_assembly = mono_domain_assembly_open(
-        mono_domain_get(), converter_path);
-
-    assert(converter_assembly);
-
-    char * argv[2];
-    argv[0] = (char *)converter_path;
-    argv[1] = (char *)path;
-    mono_jit_exec(mono_domain_get(), converter_assembly, 2, argv);
-
-    delete[] converter_path;
-}
-
 char *monostring_to_string(MonoString *string_obj)
 {
     mono_unichar2 *uni_buffer = mono_string_chars(string_obj);

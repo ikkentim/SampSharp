@@ -21,6 +21,7 @@
 #include "unicode.h"
 #include "monohelper.h"
 #include "GameMode.h"
+#include <assert.h>
 #include <iostream>
 
 extern void *pAMXFunctions;
@@ -30,36 +31,9 @@ using std::stringstream;
 using sampgdk::logprintf;
 
 bool filterscript_loaded = false;
-
-void convertSymbols() {
-    string symbols = Config::GetSymbolFiles();
-
-    if (symbols.length() > 0) {
-        logprintf("Symbol file generation");
-        logprintf("----------------------");
-
-        stringstream symbols_stream(symbols);
-        string file;
-        int successes = 0;
-        while (std::getline(symbols_stream, file, ' ')) {
-            logprintf("Converting: %s", file.c_str());
-
-            std::string path = PathUtil::GetGameModeDirectory().append(file);
-
-            std::ifstream ifile(path.c_str());
-            if (file.empty() || !ifile) {
-                logprintf("  Failed.");
-                continue;
-            }
-            mono_convert_symbols(path.c_str());
-
-            successes++;
-            logprintf("  Converted.");
-        }
-        logprintf(" Converted %d files.", successes);
-        logprintf("");
-    }
-}
+bool initial_load = false;
+int run_signal = 0;
+AMX *signal_amx;
 
 void loadGamemode() {
     if (GameMode::IsLoaded()) return;
@@ -81,8 +55,6 @@ void loadGamemode() {
     /* Set initial codepage to the configured one. */
     int codepage = Config::GetCodepage();
     set_codepage(codepage);
-
-    convertSymbols();
 
     /* Load game mode */
     string namespaceName = Config::GetGameModeNameSpace();
@@ -130,7 +102,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     logprintf("");
     logprintf("SampSharp Plugin");
     logprintf("----------------");
-    logprintf("v%s, (C)2014-2015 Tim Potze", PLUGIN_VERSION);
+    logprintf("v%s, (C)2014-2016 Tim Potze", PLUGIN_VERSION);
     logprintf("");
 
     Config::Read();
@@ -146,12 +118,75 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload() {
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
     GameMode::ProcessTick();
     sampgdk::ProcessTick();
+
+    // Process run signals
+    if (run_signal == -1) {
+        cell noParams[1];
+        noParams[0] = 0;
+        cell unhandledRetval;
+        GameMode::ProcessPublicCall(signal_amx, "OnGameModeExit", noParams, &unhandledRetval);
+
+        unloadGamemode();
+
+        logprintf("");
+        logprintf("=================================");
+        logprintf("> SampSharp gamemode has stopped!");
+        logprintf("> Replace your gamemode files and run `sampsharp start`");
+        logprintf("=================================");
+        logprintf("");
+    }
+    else if (run_signal == 1) {
+        loadGamemode();
+
+        cell noParams[1];
+        noParams[0] = 0;
+        cell unhandledRetval;
+        GameMode::ProcessPublicCall(signal_amx, "OnGameModeInit", noParams, &unhandledRetval);
+    }
+
+    run_signal = 0;
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     cell *params, cell *retval) {
+    if (!strcmp(name, "OnRconCommand") && params && params[0] == sizeof(cell)) {
+        char buf[64];
+        cell* addr;
+        amx_GetAddr(amx, params[1], &addr);
+        amx_GetString(buf, addr, 0, 64);
+
+        if (!strcmp(buf, "sampsharpstop")) {
+            if (!GameMode::IsLoaded()) {
+                logprintf("A gamemode must be loaded in order to stop.");
+                return false;
+            }
+
+            logprintf("Stopping SampSharp...");
+            run_signal = -1;
+            signal_amx = amx;
+
+            return false;
+        }
+        if (!strcmp(buf, "sampsharpstart")) {
+            if (!initial_load) {
+                logprintf("OnGameModeInit needs to be called first.");
+                return false;
+            }
+            if (GameMode::IsLoaded()) {
+                logprintf("You need to stop the gamemode before you can start it.");
+                return false;
+            }
+
+            logprintf("Starting SampSharp...");
+            run_signal = 1;
+            signal_amx = amx;
+
+            return false;
+        }
+    }
     if (!strcmp(name, "OnGameModeInit")) {
         loadGamemode();
+        initial_load = true;
     }
     else if (GameMode::IsLoaded() && !strcmp(name, "OnGameModeExit")) {
         /* Process call before actually unloading the gamemode. */

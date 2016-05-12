@@ -36,6 +36,7 @@ using sampgdk::logprintf;
 
 bool GameMode::isLoaded_;
 MonoDomain *GameMode::domain_;
+MonoDomain *GameMode::previousDomain_;
 GameMode::GameModeImage GameMode::gameMode_;
 GameMode::GameModeImage GameMode::baseMode_;
 GameMode::CallbackMap GameMode::callbacks_;
@@ -48,6 +49,7 @@ MonoMethod *GameMode::onCallbackException_;
 MonoMethod *GameMode::tickMethod_;
 MonoClass *GameMode::paramLengthClass_;
 MonoMethod *GameMode::paramLengthGetMethod_;
+int GameMode::bootSequenceNumber_;
 
 bool GameMode::Load(std::string namespaceName, std::string className) {
     if (isLoaded_) {
@@ -70,10 +72,20 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
         return false;
     }
 
-    mono_domain_set_config(mono_domain_get(), dirPath.c_str(),
-        configPath.c_str());
+    /* Create an appdomain for the game mode */
+    char appdomainBuf[32];
+    sprintf(appdomainBuf, "sashDomainForBoot%d", bootSequenceNumber_++);
+    logprintf("Creating domain %s...", appdomainBuf);
 
-    domain_ = mono_domain_get();
+    previousDomain_ = mono_domain_get();
+    domain_ = mono_domain_create_appdomain(appdomainBuf, NULL);
+
+    mono_domain_set(domain_, 1);
+    mono_thread_attach(domain_);
+
+    mono_domain_set_config(domain_, dirPath.c_str(), configPath.c_str());
+
+    logprintf("Loading image...");
     gameMode_.image = mono_assembly_get_image(
         mono_assembly_open(libraryPath.c_str(), NULL));
 
@@ -82,6 +94,7 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
         return false;
     }
 
+    logprintf("Creating gamemode instance...");
     gameMode_.klass = mono_class_from_name(gameMode_.image,
         namespaceName.c_str(), className.c_str());
 
@@ -95,7 +108,7 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
 
     if (!baseMode_.klass || strcmp("BaseMode",
         mono_class_get_name(baseMode_.klass)) != 0) {
-        logprintf("ERROR: Parent type of %s::%s is not BaseMode!",
+        logprintf("ERROR: Parent type of %s::%s is not  SampSharp.GameMode::BaseMode!",
             namespaceName.c_str(), className.c_str());
         return false;
     }
@@ -186,13 +199,12 @@ bool GameMode::Unload() {
 
     gameModeHandle_ = NULL;
 
-    /* TODO: For now, I see no way of unloading and reloading images without problems.
-     * Best to look at this again in the future.
-     */
-    //mono_image_close(gameMode_.image);
-    //mono_image_close(baseMode_.image);
+    logprintf("Closing images...");
+    mono_image_close(gameMode_.image);
+    mono_image_close(baseMode_.image);
 
-    //mono_images_cleanup();
+    logprintf("Unloading domain...");
+    mono_domain_unload(domain_);
 
     gameMode_.image = NULL;
     gameMode_.klass = NULL;
@@ -201,6 +213,9 @@ bool GameMode::Unload() {
     baseMode_.klass = NULL;
 
     domain_ = NULL;
+
+    mono_domain_set(previousDomain_, 1);
+    mono_thread_attach(previousDomain_);
 
     isLoaded_ = false;
     return true;
@@ -367,7 +382,7 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
             break;
         case 'D': { /* integer reference */
             int result = *(int *)params[i];
-            MonoObject *obj = mono_value_box(mono_domain_get(), 
+            MonoObject *obj = mono_value_box(mono_domain_get(),
                 mono_get_int32_class(), &result);
             mono_array_set(args_array, MonoObject*, i, obj);
             break;
@@ -387,7 +402,7 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
                 mono_array_set(arr, int, j, param_array[j]);
             }
             mono_array_set(args_array, MonoArray *, i, arr);
-        
+
             delete[] params[i];
             break;
         }

@@ -119,6 +119,8 @@ private:
     static MonoMethod *tickMethod_;
     static MonoClass *paramLengthClass_;
     static MonoMethod *paramLengthGetMethod_;
+    static int bootSequenceNumber_;
+    static MonoDomain *previousDomain_;
 
     /* Internal gamemode functions. */
 private:

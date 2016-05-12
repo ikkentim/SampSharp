@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using SampSharp.GameMode;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
@@ -36,8 +37,8 @@ namespace TestMode
 
         private readonly List<ITest> _tests = new List<ITest>
         {
-            new CommandsTest(),
-            new ASyncTest()
+//            new CommandsTest(),
+//            new ASyncTest()
 //            new DelayTest(),
 //            new MenuTest(),
 //            new DisposureTest(),
@@ -58,11 +59,13 @@ namespace TestMode
 
         protected override void OnInitialized(EventArgs args)
         {
-            Console.WriteLine("TestMode for SampSharp");
+            Console.WriteLine($"TestMode for SampSharp v{GetType().Assembly.GetName().Version}");
             Console.WriteLine("----------------------");
 
             Server.ToggleDebugOutput(true);
+            
             SetGameModeText("sa-mp# testmode");
+
             UsePlayerPedAnimations();
 
             AddPlayerClass(65, new Vector3(5), 0);
@@ -74,6 +77,7 @@ namespace TestMode
                 test.Start(this);
                 Console.WriteLine();
             }
+
 
             base.OnInitialized(args);
         }
