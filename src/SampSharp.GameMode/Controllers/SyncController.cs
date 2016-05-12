@@ -24,9 +24,8 @@ namespace SampSharp.GameMode.Controllers
     /// </summary>
     public sealed class SyncController : IEventListener
     {
-        private static BaseMode _gameMode;
         private static bool _waiting;
-
+        
         /// <summary>
         ///     Gets the main thread.
         /// </summary>
@@ -38,9 +37,9 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="gameMode">The running GameMode.</param>
         public void RegisterEvents(BaseMode gameMode)
         {
-            _gameMode = gameMode;
             MainThread = Thread.CurrentThread;
 
+            gameMode.Tick += _gameMode_Tick;
             gameMode.Exited += (sender, args) =>
             {
                 foreach (var t in Sync.SyncTask.All)
@@ -48,11 +47,6 @@ namespace SampSharp.GameMode.Controllers
                     t.Dispose();
                 }
             };
-
-            if (_waiting)
-            {
-                _gameMode.Tick += _gameMode_Tick;
-            }
         }
 
         /// <summary>
@@ -60,17 +54,13 @@ namespace SampSharp.GameMode.Controllers
         /// </summary>
         public static void Start()
         {
-            if (!_waiting)
-            {
-                _waiting = true;
-
-                if (_gameMode != null)
-                    _gameMode.Tick += _gameMode_Tick;
-            }
+            _waiting = true;
         }
 
         private static void _gameMode_Tick(object sender, EventArgs e)
         {
+            if (!_waiting) return;
+
             foreach (var t in Sync.SyncTask.All)
             {
                 t.Run();
@@ -78,7 +68,6 @@ namespace SampSharp.GameMode.Controllers
             }
 
             _waiting = false;
-            _gameMode.Tick -= _gameMode_Tick;
         }
     }
 }
