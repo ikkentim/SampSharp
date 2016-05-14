@@ -22,6 +22,7 @@
 #include "monohelper.h"
 #include "GameMode.h"
 #include <assert.h>
+#include <string.h>
 #include <iostream>
 
 extern void *pAMXFunctions;

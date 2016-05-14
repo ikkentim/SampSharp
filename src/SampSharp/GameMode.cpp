@@ -19,6 +19,8 @@
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
+#include <string.h>
+#include <limits>
 #include <time.h>
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/threads.h>
@@ -241,7 +243,7 @@ bool GameMode::KillRefTimer(int id) {
     /* Delete the timer from the map. */
     if (timers_.find(id) == timers_.end())
     {
-        auto timer = timers_[id];
+        RefTimer timer = timers_[id];
         mono_gchandle_free(timer.handle);
 
         timers_.erase(id);
