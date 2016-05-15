@@ -19,23 +19,33 @@ namespace SampSharp.GameMode.Factories
 {
     public partial class BaseVehicleFactory
     {
-        private static class Internal
+        protected static readonly BaseVehicleFactoryInternal Internal;
+
+        static BaseVehicleFactory()
         {
-            public delegate int AddStaticVehicleExImpl(
-                int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int color1, int color2,
-                int respawnDelay, bool addsiren = false);
+            Internal = NativeObjectProxyFactory.CreateInstance<BaseVehicleFactoryInternal>();
+        }
 
-            public delegate int AddStaticVehicleImpl(
-                int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int color1, int color2);
+        protected class BaseVehicleFactoryInternal
+        {
+            [NativeMethod]
+            public virtual int CreateVehicle(int vehicletype, float x, float y, float z, float rotation, int color1, int color2, int respawnDelay, bool addsiren = false)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate int CreateVehicleImpl(
-                int vehicletype, float x, float y, float z, float rotation, int color1,
-                int color2, int respawnDelay, bool addsiren = false);
+            [NativeMethod]
+            public virtual int AddStaticVehicle(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int color1, int color2)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [Native("CreateVehicle")] public static readonly CreateVehicleImpl CreateVehicle = null;
+            [NativeMethod]
+            public virtual int AddStaticVehicleEx(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int color1, int color2, int respawnDelay, bool addsiren = false)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [Native("AddStaticVehicle")] public static readonly AddStaticVehicleImpl AddStaticVehicle = null;
-            [Native("AddStaticVehicleEx")] public static readonly AddStaticVehicleExImpl AddStaticVehicleEx = null;
         }
     }
 }

@@ -19,27 +19,45 @@ namespace SampSharp.GameMode.Tools
 {
     public static partial class MapAndreas
     {
-        private static class Internal
+        private static readonly MapAndreasInternal Internal;
+
+        static MapAndreas()
         {
-            public delegate bool FindAverageZImpl(float x, float y, out float z);
+            Internal = NativeObjectProxyFactory.CreateInstance<MapAndreasInternal>();
+        }
 
-            public delegate bool FindZImpl(float x, float y, out float z);
-
-            public delegate bool InitImpl(int mode, string filename, int length);
-
-            public delegate bool SaveCurrentHMapImpl(string filename);
-
-            public delegate bool SetZImpl(float x, float y, float z);
-
-            public delegate bool UnloadImpl();
-
-            [Native("MapAndreas_Init")] public static readonly InitImpl Init = null;
-            [Native("MapAndreas_Unload")] public static readonly UnloadImpl Unload = null;
-            [Native("MapAndreas_FindZ_For2DCoord")] public static readonly FindZImpl FindZ = null;
-            [Native("MapAndreas_FindAverageZ")] public static readonly FindAverageZImpl FindAverageZ = null;
-            [Native("MapAndreas_SaveCurrentHMap")] public static readonly SetZImpl SetZ = null;
-
-            public static readonly SaveCurrentHMapImpl SaveCurrentHMap = null;
+        private class MapAndreasInternal
+        {
+            [NativeMethod(Function = "MapAndreas_Init")]
+            public virtual bool Init(int mode, string filename, int length)
+            {
+                throw new NativeNotImplementedException();
+            }
+            [NativeMethod(Function = "MapAndreas_Unload")]
+            public virtual bool Unload()
+            {
+                throw new NativeNotImplementedException();
+            }
+            [NativeMethod(Function = "MapAndreas_FindZ_For2DCoord")]
+            public virtual bool FindZ(float x, float y, out float z)
+            {
+                throw new NativeNotImplementedException();
+            }
+            [NativeMethod(Function = "MapAndreas_FindAverageZ")]
+            public virtual bool FindAverageZ(float x, float y, out float z)
+            {
+                throw new NativeNotImplementedException();
+            }
+            [NativeMethod(Function = "MapAndreas_SetZ_For2DCoord")]
+            public virtual bool SetZ(float x, float y, float z)
+            {
+                throw new NativeNotImplementedException();
+            }
+            [NativeMethod(Function = "MapAndreas_SaveCurrentHMap")]
+            public virtual bool SaveCurrentHMap(string filename)
+            {
+                throw new NativeNotImplementedException();
+            }
         }
     }
 }

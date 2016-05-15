@@ -19,58 +19,92 @@ namespace SampSharp.GameMode.SAMP
 {
     public static partial class Server
     {
-        private static class Internal
+        private static readonly ServerInternal Internal;
+
+        static Server()
         {
-            public delegate bool BlockIpAddressImpl(string ipAddress, int timems);
+            Internal = NativeObjectProxyFactory.CreateInstance<ServerInternal>();
+        }
 
-            public delegate bool ConnectNPCImpl(string name, string script);
+        private class ServerInternal
+        {
+            [NativeMethod]
+            public virtual bool BlockIpAddress(string ipAddress, int timems)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate int GetMaxPlayersImpl();
+            [NativeMethod]
+            public virtual bool UnBlockIpAddress(string ipAddress)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GetNetworkStatsImpl(out string retstr, int size);
+            [NativeMethod]
+            public virtual bool IsPlayerConnected(int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GetServerVarAsBoolImpl(string varname);
+            [NativeMethod]
+            public virtual int GetMaxPlayers()
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate int GetServerVarAsIntImpl(string varname);
+            [NativeMethod]
+            public virtual int GetTickCount()
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GetServerVarAsStringImpl(string varname, out string value, int size);
+            [NativeMethod]
+            public virtual bool ConnectNPC(string name, string script)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate int GetTickCountImpl();
+            [NativeMethod]
+            public virtual bool SendRconCommand(string command)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool IsPlayerConnectedImpl(int playerid);
+            [NativeMethod]
+            public virtual bool SetWorldTime(int hour)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SendRconCommandImpl(string command);
+            [NativeMethod]
+            public virtual bool SetWeather(int weatherid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetWeatherImpl(int weatherid);
+            [NativeMethod]
+            public virtual bool GetNetworkStats(out string retstr, int size)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetWorldTimeImpl(int hour);
+            [NativeMethod]
+            public virtual bool GetConsoleVarAsString(string varname, out string value, int size)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool UnBlockIpAddressImpl(string ipAddress);
-
-            [Native("BlockIpAddress")] public static readonly BlockIpAddressImpl BlockIpAddress = null;
-            [Native("UnBlockIpAddress")] public static readonly UnBlockIpAddressImpl UnBlockIpAddress = null;
-            [Native("IsPlayerConnected")] public static readonly IsPlayerConnectedImpl IsPlayerConnected = null;
-
-            [Native("GetMaxPlayers")] public static readonly GetMaxPlayersImpl GetMaxPlayers = null;
-
-            [Native("GetConsoleVarAsString")] public static readonly GetServerVarAsStringImpl GetConsoleVarAsString =
-                null;
-
-            [Native("GetConsoleVarAsInt")] public static readonly GetServerVarAsIntImpl GetConsoleVarAsInt = null;
-
-            [Native("GetConsoleVarAsBool")] public static readonly GetServerVarAsBoolImpl GetConsoleVarAsBool = null;
-
-            [Native("GetTickCount")] public static readonly GetTickCountImpl NativeGetTickCount = null;
-
-            [Native("ConnectNPC")] public static readonly ConnectNPCImpl NativeConnectNPC = null;
-
-            [Native("SendRconCommand")] public static readonly SendRconCommandImpl NativeSendRconCommand = null;
-
-            [Native("SetWorldTime")] public static readonly SetWorldTimeImpl NativeSetWorldTime = null;
-
-            [Native("SetWeather")] public static readonly SetWeatherImpl NativeSetWeather = null;
-
-            [Native("GetNetworkStats")] public static readonly GetNetworkStatsImpl GetNetworkStats = null;
+            [NativeMethod]
+            public virtual int GetConsoleVarAsInt(string varname)
+            {
+                throw new NativeNotImplementedException();
+            }
+            
+            [NativeMethod]
+            public virtual bool GetConsoleVarAsBool(string varname)
+            {
+                throw new NativeNotImplementedException();
+            }
         }
     }
 }

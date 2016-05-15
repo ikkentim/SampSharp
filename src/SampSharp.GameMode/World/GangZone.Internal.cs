@@ -19,53 +19,75 @@ namespace SampSharp.GameMode.World
 {
     public partial class GangZone
     {
-        private static class Internal
+        protected static readonly GangZoneInternal Internal;
+
+        static GangZone()
         {
-            public delegate int GangZoneCreateImpl(float minx, float miny, float maxx, float maxy);
+            Internal = NativeObjectProxyFactory.CreateInstance<GangZoneInternal>();
+        }
 
-            public delegate bool GangZoneDestroyImpl(int zone);
+        protected class GangZoneInternal
+        {
+            [NativeMethod]
+            public virtual int GangZoneCreate(float minx, float miny, float maxx, float maxy)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GangZoneFlashForAllImpl(int zone, int flashcolor);
+            [NativeMethod]
+            public virtual bool GangZoneDestroy(int zone)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GangZoneFlashForPlayerImpl(int playerid, int zone, int flashcolor);
+            [NativeMethod]
+            public virtual bool GangZoneShowForPlayer(int playerid, int zone, int color)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GangZoneHideForAllImpl(int zone);
+            [NativeMethod]
+            public virtual bool GangZoneShowForAll(int zone, int color)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GangZoneHideForPlayerImpl(int playerid, int zone);
+            [NativeMethod]
+            public virtual bool GangZoneHideForPlayer(int playerid, int zone)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GangZoneShowForAllImpl(int zone, int color);
+            [NativeMethod]
+            public virtual bool GangZoneHideForAll(int zone)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GangZoneShowForPlayerImpl(int playerid, int zone, int color);
+            [NativeMethod]
+            public virtual bool GangZoneFlashForPlayer(int playerid, int zone, int flashcolor)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GangZoneStopFlashForAllImpl(int zone);
+            [NativeMethod]
+            public virtual bool GangZoneFlashForAll(int zone, int flashcolor)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GangZoneStopFlashForPlayerImpl(int playerid, int zone);
+            [NativeMethod]
+            public virtual bool GangZoneStopFlashForPlayer(int playerid, int zone)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [Native("GangZoneCreate")] public static readonly GangZoneCreateImpl GangZoneCreate = null;
-            [Native("GangZoneDestroy")] public static readonly GangZoneDestroyImpl GangZoneDestroy = null;
+            [NativeMethod]
+            public virtual bool GangZoneStopFlashForAll(int zone)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [Native("GangZoneShowForPlayer")] public static readonly GangZoneShowForPlayerImpl GangZoneShowForPlayer =
-                null;
-
-            [Native("GangZoneShowForAll")] public static readonly GangZoneShowForAllImpl GangZoneShowForAll = null;
-
-            [Native("GangZoneHideForPlayer")] public static readonly GangZoneHideForPlayerImpl GangZoneHideForPlayer =
-                null;
-
-            [Native("GangZoneHideForAll")] public static readonly GangZoneHideForAllImpl GangZoneHideForAll = null;
-
-            [Native("GangZoneFlashForPlayer")] public static readonly GangZoneFlashForPlayerImpl GangZoneFlashForPlayer
-                =
-                null;
-
-            [Native("GangZoneFlashForAll")] public static readonly GangZoneFlashForAllImpl GangZoneFlashForAll = null;
-
-            [Native("GangZoneStopFlashForPlayer")] public static readonly GangZoneStopFlashForPlayerImpl
-                GangZoneStopFlashForPlayer = null;
-
-            [Native("GangZoneStopFlashForAll")] public static readonly GangZoneStopFlashForAllImpl
-                GangZoneStopFlashForAll =
-                    null;
         }
     }
 }

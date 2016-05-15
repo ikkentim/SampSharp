@@ -19,98 +19,148 @@ namespace SampSharp.GameMode.Display
 {
     public partial class TextDraw
     {
-        private static class Internal
+        protected readonly static TextDrawInternal Internal;
+
+        static TextDraw()
         {
-            public delegate bool TextDrawAlignmentImpl(int text, int alignment);
+            Internal = NativeObjectProxyFactory.CreateInstance<TextDrawInternal>();
+        }
 
-            public delegate bool TextDrawBackgroundColorImpl(int text, int color);
+        protected class TextDrawInternal
+        {
+            [NativeMethod]
+            public virtual int TextDrawCreate(float x, float y, string text)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawBoxColorImpl(int text, int color);
+            [NativeMethod]
+            public virtual bool TextDrawDestroy(int text)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawColorImpl(int text, int color);
+            [NativeMethod]
+            public virtual bool TextDrawLetterSize(int text, float x, float y)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate int TextDrawCreateImpl(float x, float y, string text);
+            [NativeMethod]
+            public virtual bool TextDrawTextSize(int text, float x, float y)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawDestroyImpl(int text);
+            [NativeMethod]
+            public virtual bool TextDrawAlignment(int text, int alignment)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawFontImpl(int text, int font);
+            [NativeMethod]
+            public virtual bool TextDrawColor(int text, int color)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawHideForAllImpl(int text);
+            [NativeMethod]
+            public virtual bool TextDrawUseBox(int text, bool use)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawHideForPlayerImpl(int playerid, int text);
+            [NativeMethod]
+            public virtual bool TextDrawBoxColor(int text, int color)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawLetterSizeImpl(int text, float x, float y);
+            [NativeMethod]
+            public virtual bool TextDrawSetShadow(int text, int size)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawSetOutlineImpl(int text, int size);
+            [NativeMethod]
+            public virtual bool TextDrawSetOutline(int text, int size)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawSetPreviewModelImpl(int text, int modelindex);
+            [NativeMethod]
+            public virtual bool TextDrawBackgroundColor(int text, int color)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawSetPreviewRotImpl(int text, float rotX, float rotY, float rotZ, float zoom);
+            [NativeMethod]
+            public virtual bool TextDrawFont(int text, int font)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawSetPreviewVehColImpl(int text, int color1, int color2);
+            [NativeMethod]
+            public virtual bool TextDrawSetProportional(int text, bool set)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawSetProportionalImpl(int text, bool set);
+            [NativeMethod]
+            public virtual bool TextDrawSetSelectable(int text, bool set)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawSetSelectableImpl(int text, bool set);
+            [NativeMethod]
+            public virtual bool TextDrawShowForPlayer(int playerid, int text)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawSetShadowImpl(int text, int size);
+            [NativeMethod]
+            public virtual bool TextDrawHideForPlayer(int playerid, int text)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawSetStringImpl(int text, string str);
+            [NativeMethod]
+            public virtual bool TextDrawShowForAll(int text)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawShowForAllImpl(int text);
+            [NativeMethod]
+            public virtual bool TextDrawHideForAll(int text)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawShowForPlayerImpl(int playerid, int text);
+            [NativeMethod]
+            public virtual bool TextDrawSetString(int text, string str)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawTextSizeImpl(int text, float x, float y);
+            [NativeMethod]
+            public virtual bool TextDrawSetPreviewModel(int text, int modelindex)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool TextDrawUseBoxImpl(int text, bool use);
+            [NativeMethod]
+            public virtual bool TextDrawSetPreviewRot(int text, float rotX, float rotY, float rotZ, float zoom)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [Native("TextDrawCreate")] public static readonly TextDrawCreateImpl TextDrawCreate = null;
-            [Native("TextDrawDestroy")] public static readonly TextDrawDestroyImpl TextDrawDestroy = null;
-            [Native("TextDrawLetterSize")] public static readonly TextDrawLetterSizeImpl TextDrawLetterSize = null;
-            [Native("TextDrawTextSize")] public static readonly TextDrawTextSizeImpl TextDrawTextSize = null;
-            [Native("TextDrawAlignment")] public static readonly TextDrawAlignmentImpl TextDrawAlignment = null;
-            [Native("TextDrawColor")] public static readonly TextDrawColorImpl TextDrawColor = null;
-            [Native("TextDrawUseBox")] public static readonly TextDrawUseBoxImpl TextDrawUseBox = null;
-            [Native("TextDrawBoxColor")] public static readonly TextDrawBoxColorImpl TextDrawBoxColor = null;
-            [Native("TextDrawSetShadow")] public static readonly TextDrawSetShadowImpl TextDrawSetShadow = null;
-            [Native("TextDrawSetOutline")] public static readonly TextDrawSetOutlineImpl TextDrawSetOutline = null;
+            [NativeMethod]
+            public virtual bool TextDrawSetPreviewVehCol(int text, int color1, int color2)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [Native("TextDrawBackgroundColor")] public static readonly TextDrawBackgroundColorImpl
-                TextDrawBackgroundColor
-                    =
-                    null;
 
-            [Native("TextDrawFont")] public static readonly TextDrawFontImpl TextDrawFont = null;
-
-            [Native("TextDrawSetProportional")] public static readonly TextDrawSetProportionalImpl
-                TextDrawSetProportional
-                    =
-                    null;
-
-            [Native("TextDrawSetSelectable")] public static readonly TextDrawSetSelectableImpl TextDrawSetSelectable =
-                null;
-
-            [Native("TextDrawShowForPlayer")] public static readonly TextDrawShowForPlayerImpl TextDrawShowForPlayer =
-                null;
-
-            [Native("TextDrawHideForPlayer")] public static readonly TextDrawHideForPlayerImpl TextDrawHideForPlayer =
-                null;
-
-            [Native("TextDrawShowForAll")] public static readonly TextDrawShowForAllImpl TextDrawShowForAll = null;
-            [Native("TextDrawHideForAll")] public static readonly TextDrawHideForAllImpl TextDrawHideForAll = null;
-            [Native("TextDrawSetString")] public static readonly TextDrawSetStringImpl TextDrawSetString = null;
-
-            [Native("TextDrawSetPreviewModel")] public static readonly TextDrawSetPreviewModelImpl
-                TextDrawSetPreviewModel
-                    =
-                    null;
-
-            [Native("TextDrawSetPreviewRot")] public static readonly TextDrawSetPreviewRotImpl TextDrawSetPreviewRot =
-                null;
-
-            [Native("TextDrawSetPreviewVehCol")] public static readonly TextDrawSetPreviewVehColImpl
-                TextDrawSetPreviewVehCol = null;
         }
     }
 }

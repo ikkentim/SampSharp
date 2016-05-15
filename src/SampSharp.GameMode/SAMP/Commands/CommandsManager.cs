@@ -260,6 +260,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
 
+            FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Registering command {command}");
             _commands.Add(command);
         }
 

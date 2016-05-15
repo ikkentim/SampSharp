@@ -19,211 +19,279 @@ namespace SampSharp.GameMode.World
 {
     public partial class BaseVehicle
     {
-        private static class Internal
+        protected static readonly VehicleInternal Internal;
+
+        static BaseVehicle()
         {
-            public delegate bool AddVehicleComponentImpl(int vehicleid, int componentid);
-
-            public delegate bool AttachTrailerToVehicleImpl(int trailerid, int vehicleid);
-
-            public delegate bool ChangeVehicleColorImpl(int vehicleid, int color1, int color2);
-
-            public delegate bool ChangeVehiclePaintjobImpl(int vehicleid, int paintjobid);
-
-            public delegate bool DestroyVehicleImpl(int vehicleid);
-
-            public delegate bool DetachTrailerFromVehicleImpl(int vehicleid);
-
-            public delegate int GetVehicleComponentInSlotImpl(int vehicleid, int slot);
-
-            public delegate int GetVehicleComponentTypeImpl(int component);
-
-            public delegate bool GetVehicleDamageStatusImpl(
-                int vehicleid, out int panels, out int doors, out int lights,
-                out int tires);
-
-            public delegate float GetVehicleDistanceFromPointImpl(int vehicleid, float x, float y, float z);
-
-            public delegate bool GetVehicleHealthImpl(int vehicleid, out float health);
-
-            public delegate int GetVehicleModelImpl(int vehicleid);
-
-            public delegate bool GetVehicleModelInfoImpl(int model, int infotype, out float x, out float y, out float z);
-
-            public delegate bool GetVehicleParamsCarDoorsImpl(int vehicleid, out int driver, out int passenger,
-                out int backleft, out int backright);
-
-            public delegate bool GetVehicleParamsCarWindowsImpl(int vehicleid, out int driver, out int passenger,
-                out int backleft, out int backright);
-
-            public delegate bool GetVehicleParamsExImpl(int vehicleid, out int engine, out int lights, out int alarm,
-                out int doors, out int bonnet, out int boot, out int objective);
-
-            public delegate int GetVehicleParamsSirenStateImpl(int vehicleid);
-
-            public delegate int GetVehiclePoolSizeImpl();
-
-            public delegate bool GetVehiclePosImpl(int vehicleid, out float x, out float y, out float z);
-
-            public delegate bool GetVehicleRotationQuatImpl(int vehicleid, out float w, out float x, out float y,
-                out float z);
-
-            public delegate int GetVehicleTrailerImpl(int vehicleid);
-
-            public delegate bool GetVehicleVelocityImpl(int vehicleid, out float x, out float y, out float z);
-
-            public delegate int GetVehicleVirtualWorldImpl(int vehicleid);
-
-            public delegate bool GetVehicleZAngleImpl(int vehicleid, out float zAngle);
-
-            public delegate bool IsTrailerAttachedToVehicleImpl(int vehicleid);
-
-            public delegate bool IsValidVehicleImpl(int vehicleid);
-
-            public delegate bool IsVehicleStreamedInImpl(int vehicleid, int forplayerid);
-
-            public delegate bool LinkVehicleToInteriorImpl(int vehicleid, int interiorid);
-
-            public delegate bool RemoveVehicleComponentImpl(int vehicleid, int componentid);
-
-            public delegate bool RepairVehicleImpl(int vehicleid);
-
-            public delegate bool SetVehicleAngularVelocityImpl(int vehicleid, float x, float y, float z);
-
-            public delegate bool SetVehicleHealthImpl(int vehicleid, float health);
-
-            public delegate bool SetVehicleNumberPlateImpl(int vehicleid, string numberplate);
-
-            public delegate bool SetVehicleParamsCarDoorsImpl(int vehicleid, int driver, int passenger, int backleft,
-                int backright);
-
-            public delegate bool SetVehicleParamsCarWindowsImpl(int vehicleid, int driver, int passenger, int backleft,
-                int backright);
-
-            public delegate bool SetVehicleParamsExImpl(int vehicleid, int engine, int lights, int alarm, int doors,
-                int bonnet, int boot, int objective);
-
-            public delegate bool SetVehicleParamsForPlayerImpl(int vehicleid, int playerid, bool objective,
-                bool doorslocked);
-
-            public delegate bool SetVehiclePosImpl(int vehicleid, float x, float y, float z);
-
-            public delegate bool SetVehicleToRespawnImpl(int vehicleid);
-
-            public delegate bool SetVehicleVelocityImpl(int vehicleid, float x, float y, float z);
-
-            public delegate bool SetVehicleVirtualWorldImpl(int vehicleid, int worldid);
-
-            public delegate bool SetVehicleZAngleImpl(int vehicleid, float zAngle);
-
-            public delegate bool UpdateVehicleDamageStatusImpl(
-                int vehicleid, int panels, int doors, int lights, int tires);
-
-            [Native("IsValidVehicle")] public static readonly IsValidVehicleImpl IsValidVehicle = null;
-
-            [Native("GetVehicleDistanceFromPoint")] public static readonly GetVehicleDistanceFromPointImpl
-                GetVehicleDistanceFromPoint = null;
-
-            [Native("DestroyVehicle")] public static readonly DestroyVehicleImpl DestroyVehicle = null;
-            [Native("IsVehicleStreamedIn")] public static readonly IsVehicleStreamedInImpl IsVehicleStreamedIn = null;
-            [Native("GetVehiclePos")] public static readonly GetVehiclePosImpl GetVehiclePos = null;
-            [Native("SetVehiclePos")] public static readonly SetVehiclePosImpl SetVehiclePos = null;
-            [Native("GetVehicleZAngle")] public static readonly GetVehicleZAngleImpl GetVehicleZAngle = null;
-
-            [Native("GetVehicleRotationQuat")] public static readonly GetVehicleRotationQuatImpl GetVehicleRotationQuat
-                =
-                null;
-
-            [Native("SetVehicleZAngle")] public static readonly SetVehicleZAngleImpl SetVehicleZAngle = null;
-
-            [Native("SetVehicleParamsForPlayer")] public static readonly SetVehicleParamsForPlayerImpl
-                SetVehicleParamsForPlayer = null;
-
-            [Native("SetVehicleParamsEx")] public static readonly SetVehicleParamsExImpl SetVehicleParamsEx = null;
-            [Native("GetVehicleParamsEx")] public static readonly GetVehicleParamsExImpl GetVehicleParamsEx = null;
-
-            [Native("GetVehicleParamsSirenState")] public static readonly GetVehicleParamsSirenStateImpl
-                GetVehicleParamsSirenState = null;
-
-            [Native("SetVehicleParamsCarDoors")] public static readonly SetVehicleParamsCarDoorsImpl
-                SetVehicleParamsCarDoors = null;
-
-            [Native("GetVehicleParamsCarDoors")] public static readonly GetVehicleParamsCarDoorsImpl
-                GetVehicleParamsCarDoors = null;
-
-            [Native("SetVehicleParamsCarWindows")] public static readonly SetVehicleParamsCarWindowsImpl
-                SetVehicleParamsCarWindows = null;
-
-            [Native("GetVehicleParamsCarWindows")] public static readonly GetVehicleParamsCarWindowsImpl
-                GetVehicleParamsCarWindows = null;
-
-            [Native("SetVehicleToRespawn")] public static readonly SetVehicleToRespawnImpl SetVehicleToRespawn = null;
-
-            [Native("LinkVehicleToInterior")] public static readonly LinkVehicleToInteriorImpl LinkVehicleToInterior =
-                null;
-
-            [Native("AddVehicleComponent")] public static readonly AddVehicleComponentImpl AddVehicleComponent = null;
-
-            [Native("RemoveVehicleComponent")] public static readonly RemoveVehicleComponentImpl RemoveVehicleComponent
-                =
-                null;
-
-            [Native("ChangeVehicleColor")] public static readonly ChangeVehicleColorImpl ChangeVehicleColor = null;
-
-            [Native("ChangeVehiclePaintjob")] public static readonly ChangeVehiclePaintjobImpl ChangeVehiclePaintjob =
-                null;
-
-            [Native("SetVehicleHealth")] public static readonly SetVehicleHealthImpl SetVehicleHealth = null;
-            [Native("GetVehicleHealth")] public static readonly GetVehicleHealthImpl GetVehicleHealth = null;
-
-            [Native("AttachTrailerToVehicle")] public static readonly AttachTrailerToVehicleImpl AttachTrailerToVehicle
-                =
-                null;
-
-            [Native("DetachTrailerFromVehicle")] public static readonly DetachTrailerFromVehicleImpl
-                DetachTrailerFromVehicle = null;
-
-            [Native("IsTrailerAttachedToVehicle")] public static readonly IsTrailerAttachedToVehicleImpl
-                IsTrailerAttachedToVehicle = null;
-
-            [Native("GetVehicleTrailer")] public static readonly GetVehicleTrailerImpl GetVehicleTrailer = null;
-
-            [Native("SetVehicleNumberPlate")] public static readonly SetVehicleNumberPlateImpl SetVehicleNumberPlate =
-                null;
-
-            [Native("GetVehicleModel")] public static readonly GetVehicleModelImpl GetVehicleModel = null;
-
-            [Native("GetVehicleComponentInSlot")] public static readonly GetVehicleComponentInSlotImpl
-                GetVehicleComponentInSlot = null;
-
-            [Native("GetVehicleComponentType")] public static readonly GetVehicleComponentTypeImpl
-                GetVehicleComponentType =
-                    null;
-
-            [Native("RepairVehicle")] public static readonly RepairVehicleImpl RepairVehicle = null;
-            [Native("GetVehicleVelocity")] public static readonly GetVehicleVelocityImpl GetVehicleVelocity = null;
-            [Native("SetVehicleVelocity")] public static readonly SetVehicleVelocityImpl SetVehicleVelocity = null;
-
-            [Native("SetVehicleAngularVelocity")] public static readonly SetVehicleAngularVelocityImpl
-                SetVehicleAngularVelocity = null;
-
-            [Native("GetVehicleDamageStatus")] public static readonly GetVehicleDamageStatusImpl GetVehicleDamageStatus
-                =
-                null;
-
-            [Native("UpdateVehicleDamageStatus")] public static readonly UpdateVehicleDamageStatusImpl
-                UpdateVehicleDamageStatus = null;
-
-            [Native("SetVehicleVirtualWorld")] public static readonly SetVehicleVirtualWorldImpl SetVehicleVirtualWorld
-                =
-                null;
-
-            [Native("GetVehicleVirtualWorld")] public static readonly GetVehicleVirtualWorldImpl GetVehicleVirtualWorld
-                =
-                null;
-
-            [Native("GetVehicleModelInfo")] public static readonly GetVehicleModelInfoImpl GetVehicleModelInfo = null;
-
-            [Native("GetVehiclePoolSize")] public static readonly GetVehiclePoolSizeImpl GetVehiclePoolSize = null;
+            Internal = NativeObjectProxyFactory.CreateInstance<VehicleInternal>();
+        }
+
+        protected class VehicleInternal
+        {
+            [NativeMethod]
+            public virtual bool IsValidVehicle(int vehicleid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual float GetVehicleDistanceFromPoint(int vehicleid, float x, float y, float z)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool DestroyVehicle(int vehicleid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool IsVehicleStreamedIn(int vehicleid, int forplayerid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool GetVehiclePos(int vehicleid, out float x, out float y, out float z)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool SetVehiclePos(int vehicleid, float x, float y, float z)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool GetVehicleZAngle(int vehicleid, out float zAngle)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool GetVehicleRotationQuat(int vehicleid, out float w, out float x, out float y, out float z)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool SetVehicleZAngle(int vehicleid, float zAngle)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool SetVehicleParamsForPlayer(int vehicleid, int playerid, bool objective, bool doorslocked)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool SetVehicleParamsEx(int vehicleid, int engine, int lights, int alarm, int doors,
+                int bonnet, int boot, int objective)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool GetVehicleParamsEx(int vehicleid, out int engine, out int lights, out int alarm,
+                out int doors, out int bonnet, out int boot, out int objective)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual int GetVehicleParamsSirenState(int vehicleid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool SetVehicleParamsCarDoors(int vehicleid, int driver, int passenger, int backleft,
+                int backright)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool GetVehicleParamsCarDoors(int vehicleid, out int driver, out int passenger,
+                out int backleft, out int backright)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool SetVehicleParamsCarWindows(int vehicleid, int driver, int passenger, int backleft,
+                int backright)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool GetVehicleParamsCarWindows(int vehicleid, out int driver, out int passenger,
+                out int backleft, out int backright)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool SetVehicleToRespawn(int vehicleid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool LinkVehicleToInterior(int vehicleid, int interiorid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool AddVehicleComponent(int vehicleid, int componentid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool RemoveVehicleComponent(int vehicleid, int componentid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool ChangeVehicleColor(int vehicleid, int color1, int color2)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool ChangeVehiclePaintjob(int vehicleid, int paintjobid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool SetVehicleHealth(int vehicleid, float health)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool GetVehicleHealth(int vehicleid, out float health)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool AttachTrailerToVehicle(int trailerid, int vehicleid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool DetachTrailerFromVehicle(int vehicleid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool IsTrailerAttachedToVehicle(int vehicleid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual int GetVehicleTrailer(int vehicleid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool SetVehicleNumberPlate(int vehicleid, string numberplate)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual int GetVehicleModel(int vehicleid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual int GetVehicleComponentInSlot(int vehicleid, int slot)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual int GetVehicleComponentType(int component)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool RepairVehicle(int vehicleid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool GetVehicleVelocity(int vehicleid, out float x, out float y, out float z)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool SetVehicleVelocity(int vehicleid, float x, float y, float z)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool SetVehicleAngularVelocity(int vehicleid, float x, float y, float z)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool GetVehicleDamageStatus(int vehicleid, out int panels, out int doors, out int lights,
+                out int tires)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool UpdateVehicleDamageStatus(int vehicleid, int panels, int doors, int lights, int tires)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool SetVehicleVirtualWorld(int vehicleid, int worldid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual int GetVehicleVirtualWorld(int vehicleid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual bool GetVehicleModelInfo(int model, int infotype, out float x, out float y, out float z)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual int GetVehiclePoolSize()
+            {
+                throw new NativeNotImplementedException();
+            }
         }
     }
 }

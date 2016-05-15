@@ -13,26 +13,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using System;
 
-namespace SampSharp.GameMode.Display
+namespace SampSharp.GameMode.API
 {
-    public abstract partial class Dialog
+    [AttributeUsage(AttributeTargets.Property)]
+    public class NativePropertyAttribute : Attribute
     {
-        protected readonly static DialogInternal Internal;
-
-        static Dialog()
+        public NativePropertyAttribute()
         {
-            Internal = NativeObjectProxyFactory.CreateInstance<DialogInternal>();
         }
 
-        protected class DialogInternal
+        public NativePropertyAttribute(bool ignoreIdentifiers)
         {
-            [NativeMethod]
-            public virtual bool ShowPlayerDialog(int playerid, int dialogid, int style, string caption, string info, string button1, string button2)
-            {
-                throw new NativeNotImplementedException();
-            }
+            IgnoreIdentifiers = ignoreIdentifiers;
         }
+
+        public string SetFunction { get; set; }
+
+        public string GetFunction { get; set; }
+
+        public bool IgnoreIdentifiers { get; }
     }
 }

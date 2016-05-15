@@ -19,95 +19,129 @@ namespace SampSharp.GameMode.World
 {
     public partial class PlayerObject
     {
-        private static class Internal
+        protected static readonly PlayerObjectInternal Internal;
+
+        static PlayerObject()
         {
-            public delegate bool AttachCameraToPlayerObjectImpl(int playerid, int playerobjectid);
+            Internal = NativeObjectProxyFactory.CreateInstance<PlayerObjectInternal>();
+        }
 
-            public delegate bool AttachPlayerObjectToPlayerImpl(int objectplayer, int objectid, int attachplayerid,
-                float offsetX, float offsetY, float offsetZ, float rX, float rY, float rZ);
+        protected class PlayerObjectInternal
+        {
+            [NativeMethod]
+            public virtual bool AttachCameraToPlayerObject(int playerid, int playerobjectid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool AttachPlayerObjectToVehicleImpl(
-                int playerid, int objectid, int vehicleid, float offsetX,
-                float offsetY, float offsetZ, float rotX, float rotY, float rotZ);
+            [NativeMethod]
+            public virtual bool EditPlayerObject(int playerid, int objectid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate int CreatePlayerObjectImpl(int playerid, int modelid, float x, float y, float z, float rX,
-                float rY, float rZ, float drawDistance);
+            [NativeMethod]
+            public virtual int CreatePlayerObject(int playerid, int modelid, float x, float y, float z, float rX, float rY, float rZ, float drawDistance)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool DestroyPlayerObjectImpl(int playerid, int objectid);
+            [NativeMethod]
+            public virtual bool AttachPlayerObjectToPlayer(int objectplayer, int objectid, int attachplayerid, float offsetX, float offsetY, float offsetZ, float rX, float rY, float rZ)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool EditPlayerObjectImpl(int playerid, int objectid);
+            [NativeMethod]
+            public virtual bool AttachPlayerObjectToVehicle(int playerid, int objectid, int vehicleid, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate int GetPlayerObjectModelImpl(int playerid, int objectid);
+            [NativeMethod]
+            public virtual bool SetPlayerObjectPos(int playerid, int objectid, float x, float y, float z)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GetPlayerObjectPosImpl(
-                int playerid, int objectid, out float x, out float y, out float z);
+            [NativeMethod]
+            public virtual bool GetPlayerObjectPos(int playerid, int objectid, out float x, out float y, out float z)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GetPlayerObjectRotImpl(int playerid, int objectid, out float rotX, out float rotY,
-                out float rotZ);
+            [NativeMethod]
+            public virtual bool SetPlayerObjectRot(int playerid, int objectid, float rotX, float rotY, float rotZ)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool IsPlayerObjectMovingImpl(int playerid, int objectid);
+            [NativeMethod]
+            public virtual bool GetPlayerObjectRot(int playerid, int objectid, out float rotX, out float rotY, out float rotZ)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool IsValidPlayerObjectImpl(int playerid, int objectid);
+            [NativeMethod]
+            public virtual int GetPlayerObjectModel(int playerid, int objectid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate int MovePlayerObjectImpl(int playerid, int objectid, float x, float y, float z, float speed,
-                float rotX, float rotY, float rotZ);
+            [NativeMethod]
+            public virtual bool SetPlayerObjectNoCameraCol(int playerid, int objectid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SelectObjectImpl(int playerid);
+            [NativeMethod]
+            public virtual bool IsValidPlayerObject(int playerid, int objectid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetPlayerObjectMaterialImpl(int playerid, int objectid, int materialindex, int modelid,
-                string txdname, string texturename, int materialcolor);
+            [NativeMethod]
+            public virtual bool DestroyPlayerObject(int playerid, int objectid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetPlayerObjectMaterialTextImpl(
-                int playerid, int objectid, string text, int materialindex,
-                int materialsize, string fontface, int fontsize, bool bold, int fontcolor, int backcolor,
-                int textalignment);
+            [NativeMethod]
+            public virtual int MovePlayerObject(int playerid, int objectid, float x, float y, float z, float speed, float rotX, float rotY, float rotZ)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetPlayerObjectNoCameraColImpl(int playerid, int objectid);
+            [NativeMethod]
+            public virtual bool StopPlayerObject(int playerid, int objectid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetPlayerObjectPosImpl(int playerid, int objectid, float x, float y, float z);
+            [NativeMethod]
+            public virtual bool IsPlayerObjectMoving(int playerid, int objectid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetPlayerObjectRotImpl(int playerid, int objectid, float rotX, float rotY, float rotZ);
+            [NativeMethod]
+            public virtual bool SetPlayerObjectMaterial(int playerid, int objectid, int materialindex, int modelid, string txdname, string texturename, int materialcolor)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool StopPlayerObjectImpl(int playerid, int objectid);
+            [NativeMethod]
+            public virtual bool SetPlayerObjectMaterialText(int playerid, int objectid, string text, int materialindex, int materialsize, string fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment)
+            {
+                throw new NativeNotImplementedException();
+            }
 
+            [NativeMethod]
+            public virtual bool SelectObject(int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [Native("AttachCameraToPlayerObject")] public static readonly AttachCameraToPlayerObjectImpl
-                NativeAttachCameraToPlayerObject = null;
-
-            [Native("EditPlayerObject")] public static readonly EditPlayerObjectImpl EditPlayerObject = null;
-
-            [Native("CreatePlayerObject")] public static readonly CreatePlayerObjectImpl CreatePlayerObject = null;
-
-
-            [Native("AttachPlayerObjectToPlayer")] public static readonly AttachPlayerObjectToPlayerImpl
-                AttachPlayerObjectToPlayer = null;
-
-            [Native("AttachPlayerObjectToVehicle")] public static readonly AttachPlayerObjectToVehicleImpl
-                AttachPlayerObjectToVehicle = null;
-
-            [Native("SetPlayerObjectPos")] public static readonly SetPlayerObjectPosImpl SetPlayerObjectPos = null;
-            [Native("GetPlayerObjectPos")] public static readonly GetPlayerObjectPosImpl GetPlayerObjectPos = null;
-            [Native("SetPlayerObjectRot")] public static readonly SetPlayerObjectRotImpl SetPlayerObjectRot = null;
-            [Native("GetPlayerObjectRot")] public static readonly GetPlayerObjectRotImpl GetPlayerObjectRot = null;
-            [Native("GetPlayerObjectModel")] public static readonly GetPlayerObjectModelImpl GetPlayerObjectModel = null;
-
-            [Native("SetPlayerObjectNoCameraCol")] public static readonly SetPlayerObjectNoCameraColImpl
-                SetPlayerObjectNoCameraCol = null;
-
-            [Native("IsValidPlayerObject")] public static readonly IsValidPlayerObjectImpl IsValidPlayerObject = null;
-            [Native("DestroyPlayerObject")] public static readonly DestroyPlayerObjectImpl DestroyPlayerObject = null;
-            [Native("MovePlayerObject")] public static readonly MovePlayerObjectImpl MovePlayerObject = null;
-            [Native("StopPlayerObject")] public static readonly StopPlayerObjectImpl StopPlayerObject = null;
-            [Native("IsPlayerObjectMoving")] public static readonly IsPlayerObjectMovingImpl IsPlayerObjectMoving = null;
-
-            [Native("SetPlayerObjectMaterial")] public static readonly SetPlayerObjectMaterialImpl
-                SetPlayerObjectMaterial =
-                    null;
-
-            [Native("SetPlayerObjectMaterialText")] public static readonly SetPlayerObjectMaterialTextImpl
-                SetPlayerObjectMaterialText = null;
-
-            [Native("SelectObject")] public static readonly SelectObjectImpl SelectObject = null;
         }
     }
 }

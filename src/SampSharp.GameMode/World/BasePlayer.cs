@@ -15,6 +15,7 @@
 
 using System;
 using System.Linq;
+using SampSharp.GameMode.API;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
@@ -82,6 +83,7 @@ namespace SampSharp.GameMode.World
         static BasePlayer()
         {
             DefaultClientMessageColor = Color.White;
+            Internal = NativeObjectProxyFactory.CreateInstance<PlayerInternal>();
         }
 
         /// <summary>
@@ -908,7 +910,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeSetSpawnInfo(Id, team, skin, position.X, position.Y, position.Z, rotation, (int) weapon1,
+            Internal.SetSpawnInfo(Id, team, skin, position.X, position.Y, position.Z, rotation, (int) weapon1,
                 weapon1Ammo,
                 (int) weapon2, weapon2Ammo,
                 (int) weapon3, weapon3Ammo);
@@ -989,7 +991,7 @@ namespace SampSharp.GameMode.World
             if (other == null)
                 throw new ArgumentNullException(nameof(other));
 
-            return Internal.NativeIsPlayerStreamedIn(other.Id, Id);
+            return Internal.IsPlayerStreamedIn(other.Id, Id);
         }
 
         /// <summary>
@@ -1158,7 +1160,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeForceClassSelection(Id);
+            Internal.ForceClassSelection(Id);
         }
 
         /// <summary>
@@ -1169,7 +1171,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeSelectTextDraw(Id, hoverColor);
+            Internal.SelectTextDraw(Id, hoverColor);
         }
 
         /// <summary>
@@ -1179,7 +1181,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeCancelSelectTextDraw(Id);
+            Internal.CancelSelectTextDraw(Id);
         }
 
         /// <summary>
@@ -1235,7 +1237,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeDisableRemoteVehicleCollisions(Id, disable);
+            Internal.DisableRemoteVehicleCollisions(Id, disable);
         }
 
         /// <summary>
@@ -1246,7 +1248,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeEnablePlayerCameraTarget(Id, enable);
+            Internal.EnablePlayerCameraTarget(Id, enable);
         }
 
         /// <summary>
@@ -1343,7 +1345,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.NativeEditAttachedObject(Id, index);
+            return Internal.EditAttachedObject(Id, index);
         }
 
         /// <summary>
@@ -1464,7 +1466,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync);
+            Internal.ApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync);
         }
 
         /// <summary>
@@ -1489,7 +1491,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, false);
+            Internal.ApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, false);
         }
 
         /// <summary>
@@ -1500,7 +1502,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeClearAnimations(Id, forcesync);
+            Internal.ClearAnimations(Id, forcesync);
         }
 
         /// <summary>
@@ -1510,7 +1512,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeClearAnimations(Id, false);
+            Internal.ClearAnimations(Id, false);
         }
 
         /// <summary>
@@ -1523,7 +1525,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.NativeGetAnimationName(AnimationIndex, out animlib, 64, out animname, 64);
+            return Internal.GetAnimationName(AnimationIndex, out animlib, 64, out animname, 64);
         }
 
         /// <summary>
@@ -1715,7 +1717,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeInterpolateCameraLookAt(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
+            Internal.InterpolateCameraLookAt(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
         }
 
         /// <summary>
@@ -1841,7 +1843,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeStartRecordingPlayerData(Id, (int) recordtype, recordname);
+            Internal.StartRecordingPlayerData(Id, (int) recordtype, recordname);
         }
 
         /// <summary>
@@ -1852,7 +1854,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeStopRecordingPlayerData(Id);
+            Internal.StopRecordingPlayerData(Id);
         }
 
         #endregion
@@ -1872,12 +1874,12 @@ namespace SampSharp.GameMode.World
 
             if (message.Length > 144)
             {
-                Internal.NativeSendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message.Substring(0, 144));
+                Internal.SendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message.Substring(0, 144));
                 SendClientMessage(color, message.Substring(144));
             }
             else
             {
-                Internal.NativeSendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message);
+                Internal.SendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message);
             }
         }
 
@@ -1890,7 +1892,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeKick(Id);
+            Internal.Kick(Id);
         }
 
         /// <summary>
@@ -1903,7 +1905,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeBan(Id);
+            Internal.Ban(Id);
         }
 
         /// <summary>
@@ -1964,12 +1966,12 @@ namespace SampSharp.GameMode.World
         {
             if (message.Length > 144)
             {
-                Internal.NativeSendClientMessageToAll(color.ToInteger(ColorFormat.RGBA), message.Substring(0, 144));
+                Internal.SendClientMessageToAll(color.ToInteger(ColorFormat.RGBA), message.Substring(0, 144));
                 SendClientMessageToAll(color, message.Substring(144));
             }
             else
             {
-                Internal.NativeSendClientMessageToAll(color.ToInteger(ColorFormat.RGBA), message);
+                Internal.SendClientMessageToAll(color.ToInteger(ColorFormat.RGBA), message);
             }
         }
 
@@ -2018,7 +2020,7 @@ namespace SampSharp.GameMode.World
             if (receiver == null)
                 throw new ArgumentNullException(nameof(receiver));
 
-            Internal.NativeSendPlayerMessageToPlayer(receiver.Id, Id, message);
+            Internal.SendPlayerMessageToPlayer(receiver.Id, Id, message);
         }
 
         /// <summary>
@@ -2031,7 +2033,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeSendPlayerMessageToAll(Id, message);
+            Internal.SendPlayerMessageToAll(Id, message);
         }
 
         /// <summary>
@@ -2042,7 +2044,7 @@ namespace SampSharp.GameMode.World
         /// <param name="style">The style of text to be displayed.</param>
         public static void GameTextForAll(string text, int time, int style)
         {
-            Internal.NativeGameTextForAll(text, time, style);
+            Internal.GameTextForAll(text, time, style);
         }
 
         /// <summary>
@@ -2066,7 +2068,7 @@ namespace SampSharp.GameMode.World
         /// <param name="radius">The explosion radius.</param>
         public static void CreateExplosionForAll(Vector3 position, int type, float radius)
         {
-            Internal.NativeCreateExplosion(position.X, position.Y, position.Z, type, radius);
+            Internal.CreateExplosion(position.X, position.Y, position.Z, type, radius);
         }
 
         /// <summary>
@@ -2134,7 +2136,7 @@ namespace SampSharp.GameMode.World
         /// <param name="weapon">The reason for this Player's death.</param>
         public static void SendDeathMessageToAll(BasePlayer killer, BasePlayer killee, Weapon weapon)
         {
-            Internal.NativeSendDeathMessage(killer?.Id ?? InvalidId, killee?.Id ?? InvalidId, (int) weapon);
+            Internal.SendDeathMessage(killer?.Id ?? InvalidId, killee?.Id ?? InvalidId, (int) weapon);
         }
 
         #endregion

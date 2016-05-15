@@ -31,6 +31,14 @@ namespace SampSharp.GameMode.API
         /// <returns>The loaded native.</returns>
         INative Load(string name, int[] sizes, Type[] parameterTypes);
 
+
+        /// <summary>
+        ///     Gets the native with the specified handle.
+        /// </summary>
+        /// <param name="handle">The handle of the native.</param>
+        /// <returns>The native.</returns>
+        INative Get(int handle);
+
         /// <summary>
         ///     Checks whether a native with the specified <paramref name="name" /> exists.
         /// </summary>

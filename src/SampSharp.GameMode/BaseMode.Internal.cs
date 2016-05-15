@@ -19,100 +19,135 @@ namespace SampSharp.GameMode
 {
     public abstract partial class BaseMode
     {
-        private static class Internal
+        protected static readonly BaseModeInternal Internal;
+
+        static BaseMode()
         {
-            public delegate int AddPlayerClassExImpl(
-                int teamid, int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int weapon1,
-                int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
+            Internal = NativeObjectProxyFactory.CreateInstance<BaseModeInternal>();
+        }
 
-            public delegate int AddPlayerClassImpl(
-                int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int weapon1, int weapon1Ammo,
-                int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo);
+        protected class BaseModeInternal
+        {
+            [NativeMethod]
+            public virtual bool ManualVehicleEngineAndLights()
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool AllowInteriorWeaponsImpl(bool allow);
+            [NativeMethod]
+            public virtual bool EnableStuntBonusForAll(bool enable)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool DisableInteriorEnterExitsImpl();
+            [NativeMethod]
+            public virtual bool UsePlayerPedAnims()
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool DisableNameTagLOSImpl();
+            [NativeMethod]
+            public virtual bool ShowPlayerMarkers(int mode)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool EnableStuntBonusForAllImpl(bool enable);
+            [NativeMethod]
+            public virtual int AddPlayerClass(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool EnableTirePoppingImpl(bool enable);
+            [NativeMethod]
+            public virtual int AddPlayerClassEx(int teamid, int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool EnableVehicleFriendlyFireImpl();
+            [NativeMethod]
+            public virtual bool LimitGlobalChatRadius(float chatRadius)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GameModeExitImpl();
+            [NativeMethod]
+            public virtual bool LimitPlayerMarkerRadius(float markerRadius)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate float GetGravityImpl();
+            [NativeMethod]
+            public virtual bool GameModeExit()
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool LimitGlobalChatRadiusImpl(float chatRadius);
+            [NativeMethod]
+            public virtual bool ShowNameTags(bool show)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool LimitPlayerMarkerRadiusImpl(float markerRadius);
+            [NativeMethod]
+            public virtual bool SetTeamCount(int count)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool ManualVehicleEngineAndLightsImpl();
+            [NativeMethod]
+            public virtual bool SetGameModeText(string text)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetGameModeTextImpl(string text);
+            [NativeMethod]
+            public virtual bool EnableTirePopping(bool enable)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetGravityImpl(float gravity);
+            [NativeMethod]
+            public virtual bool EnableVehicleFriendlyFire()
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetNameTagDrawDistanceImpl(float distance);
+            [NativeMethod]
+            public virtual bool AllowInteriorWeapons(bool allow)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetTeamCountImpl(int count);
+            [NativeMethod]
+            public virtual bool SetGravity(float gravity)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool ShowNameTagsImpl(bool show);
+            [NativeMethod]
+            public virtual float GetGravity()
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool ShowPlayerMarkersImpl(int mode);
+            [NativeMethod]
+            public virtual bool DisableInteriorEnterExits()
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool UsePlayerPedAnimsImpl();
+            [NativeMethod]
+            public virtual bool SetNameTagDrawDistance(float distance)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [Native("ManualVehicleEngineAndLights")] public static readonly ManualVehicleEngineAndLightsImpl
-                NativeManualVehicleEngineAndLights = null;
+            [NativeMethod]
+            public virtual bool DisableNameTagLOS()
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [Native("EnableStuntBonusForAll")] public static readonly EnableStuntBonusForAllImpl
-                NativeEnableStuntBonusForAll =
-                    null;
-
-            [Native("UsePlayerPedAnims")] public static readonly UsePlayerPedAnimsImpl UsePlayerPedAnims = null;
-
-            [Native("ShowPlayerMarkers")] public static readonly ShowPlayerMarkersImpl NativeShowPlayerMarkers = null;
-
-            [Native("AddPlayerClass")] public static readonly AddPlayerClassImpl NativeAddPlayerClass = null;
-            [Native("AddPlayerClassEx")] public static readonly AddPlayerClassExImpl NativeAddPlayerClassEx = null;
-
-            [Native("LimitGlobalChatRadius")] public static readonly LimitGlobalChatRadiusImpl
-                NativeLimitGlobalChatRadius = null;
-
-            [Native("LimitPlayerMarkerRadius")] public static readonly LimitPlayerMarkerRadiusImpl
-                NativeLimitPlayerMarkerRadius =
-                    null;
-
-            [Native("GameModeExit")] public static readonly GameModeExitImpl GameModeExit = null;
-
-            [Native("ShowNameTags")] public static readonly ShowNameTagsImpl NativeShowNameTags = null;
-
-            [Native("SetTeamCount")] public static readonly SetTeamCountImpl NativeSetTeamCount = null;
-
-            [Native("SetGameModeText")] public static readonly SetGameModeTextImpl NativeSetGameModeText = null;
-
-            [Native("EnableTirePopping")] public static readonly EnableTirePoppingImpl NativeEnableTirePopping = null;
-
-            [Native("EnableVehicleFriendlyFire")] public static readonly EnableVehicleFriendlyFireImpl
-                NativeEnableVehicleFriendlyFire = null;
-
-            [Native("AllowInteriorWeapons")] public static readonly AllowInteriorWeaponsImpl NativeAllowInteriorWeapons
-                = null;
-
-            [Native("SetGravity")] public static readonly SetGravityImpl NativeSetGravity = null;
-            [Native("GetGravity")] public static readonly GetGravityImpl NativeGetGravity = null;
-
-            [Native("DisableInteriorEnterExits")] public static readonly DisableInteriorEnterExitsImpl
-                NativeDisableInteriorEnterExits = null;
-
-            [Native("SetNameTagDrawDistance")] public static readonly SetNameTagDrawDistanceImpl
-                NativeSetNameTagDrawDistance =
-                    null;
-
-            [Native("DisableNameTagLOS")] public static readonly DisableNameTagLOSImpl NativeDisableNameTagLOS = null;
         }
     }
 }

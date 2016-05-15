@@ -19,44 +19,76 @@ namespace SampSharp.GameMode.Display
 {
     public partial class Menu
     {
-        private static class Internal
+        protected readonly static MenuInternal Internal;
+
+        static Menu()
         {
-            public delegate int AddMenuItemImpl(int menuid, int column, string menutext);
+            Internal = NativeObjectProxyFactory.CreateInstance<MenuInternal>();
+        }
 
-            public delegate int CreateMenuImpl(
-                string title, int columns, float x, float y, float col1Width, float col2Width
-                );
+        protected class MenuInternal
+        {
+            [NativeMethod]
+            public virtual int CreateMenu(string title, int columns, float x, float y, float col1Width, float col2Width)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool DestroyMenuImpl(int menuid);
+            [NativeMethod]
+            public virtual bool DestroyMenu(int menuid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            //        public delegate bool DisableMenuImpl(int menuid);
+            [NativeMethod]
+            public virtual int AddMenuItem(int menuid, int column, string menutext)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool DisableMenuRowImpl(int menuid, int row);
+            [NativeMethod]
+            public virtual bool SetMenuColumnHeader(int menuid, int column, string columnheader)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            //        public delegate int GetPlayerMenuImpl(int playerid);
+            [NativeMethod]
+            public virtual bool ShowMenuForPlayer(int menuid, int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool HideMenuForPlayerImpl(int menuid, int playerid);
+            [NativeMethod]
+            public virtual bool HideMenuForPlayer(int menuid, int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            //        public delegate bool IsValidMenuImpl(int menuid);
+            [NativeMethod]
+            public virtual bool IsValidMenu(int menuid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetMenuColumnHeaderImpl(int menuid, int column, string columnheader);
+            [NativeMethod]
+            public virtual bool DisableMenu(int menuid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool ShowMenuForPlayerImpl(int menuid, int playerid);
+            [NativeMethod]
+            public virtual bool DisableMenuRow(int menuid, int row)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [Native("CreateMenu")] public static readonly CreateMenuImpl CreateMenu = null;
-            [Native("DestroyMenu")] public static readonly DestroyMenuImpl DestroyMenu = null;
-            [Native("AddMenuItem")] public static readonly AddMenuItemImpl AddMenuItem = null;
-            [Native("SetMenuColumnHeader")] public static readonly SetMenuColumnHeaderImpl SetMenuColumnHeader = null;
-            [Native("ShowMenuForPlayer")] public static readonly ShowMenuForPlayerImpl ShowMenuForPlayer = null;
-            [Native("HideMenuForPlayer")] public static readonly HideMenuForPlayerImpl HideMenuForPlayer = null;
-            //        [Native("IsValidMenu")]
-            //        public static readonly IsValidMenuImpl IsValidMenu = null;
-            //        [Native("DisableMenu")]
-            //        public static readonly DisableMenuImpl DisableMenu = null;
-            [Native("DisableMenuRow")] public static readonly DisableMenuRowImpl DisableMenuRow = null;
-            //        public static readonly GetPlayerMenuImpl GetPlayerMenu = null;
+            [NativeMethod]
+            public virtual int GetPlayerMenu(int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            //        [Native("GetPlayerMenu")]
+
         }
     }
 }

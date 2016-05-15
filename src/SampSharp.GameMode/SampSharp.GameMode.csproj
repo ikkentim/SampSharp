@@ -43,12 +43,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\DefaultNative.cs" />
+    <Compile Include="API\NativeNotImplementedException.cs" />
     <Compile Include="API\DefaultNativeLoader.cs" />
     <Compile Include="API\Extension.cs" />
     <Compile Include="API\IExtension.cs" />
     <Compile Include="API\INative.cs" />
     <Compile Include="API\INativeLoader.cs" />
     <Compile Include="API\Interop.cs" />
+    <Compile Include="API\NativeHandleInvokers.cs" />
+    <Compile Include="API\NativeILGenerator.cs" />
+    <Compile Include="API\NativeMethodAttribute.cs" />
+    <Compile Include="API\NativeObjectIdentifiersAttribute.cs" />
+    <Compile Include="API\NativeObjectILGenerator.cs" />
+    <Compile Include="API\NativeObjectProxyFactory.cs" />
+    <Compile Include="API\NativePropertyAttribute.cs" />
     <Compile Include="API\SampSharpExtensionAttribute.cs" />
     <Compile Include="BaseMode.callbacks.cs">
       <DependentUpon>BaseMode.cs</DependentUpon>

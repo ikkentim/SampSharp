@@ -15,6 +15,7 @@
 
 using System;
 using System.IO;
+using SampSharp.GameMode.API;
 
 namespace SampSharp.GameMode.Tools
 {
@@ -41,7 +42,7 @@ namespace SampSharp.GameMode.Tools
             /*
              * Require version 1.2 or newer
              */
-            return Internal.SaveCurrentHMap != null;
+            return Native.Exists("MapAndreas_SaveCurrentHMap");
         }
 
         /// <summary>

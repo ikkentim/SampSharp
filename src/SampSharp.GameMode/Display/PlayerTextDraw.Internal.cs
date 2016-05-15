@@ -19,111 +19,136 @@ namespace SampSharp.GameMode.Display
 {
     public partial class PlayerTextDraw
     {
-        private static class Internal
+        protected readonly static PlayerTextDrawInternal Internal;
+
+        static PlayerTextDraw()
         {
-            public delegate int CreatePlayerTextDrawImpl(int playerid, float x, float y, string text);
+            Internal = NativeObjectProxyFactory.CreateInstance<PlayerTextDrawInternal>();
+        }
 
-            public delegate bool PlayerTextDrawAlignmentImpl(int playerid, int text, int alignment);
+        protected class PlayerTextDrawInternal
+        {
+            [NativeMethod]
+            public virtual int CreatePlayerTextDraw(int playerid, float x, float y, string text)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawBackgroundColorImpl(int playerid, int text, int color);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawDestroy(int playerid, int text)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawBoxColorImpl(int playerid, int text, int color);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawLetterSize(int playerid, int text, float x, float y)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawColorImpl(int playerid, int text, int color);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawTextSize(int playerid, int text, float x, float y)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawDestroyImpl(int playerid, int text);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawAlignment(int playerid, int text, int alignment)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawFontImpl(int playerid, int text, int font);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawColor(int playerid, int text, int color)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawHideImpl(int playerid, int text);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawUseBox(int playerid, int text, bool use)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawLetterSizeImpl(int playerid, int text, float x, float y);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawBoxColor(int playerid, int text, int color)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawSetOutlineImpl(int playerid, int text, int size);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawSetShadow(int playerid, int text, int size)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawSetPreviewModelImpl(int playerid, int text, int modelindex);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawSetOutline(int playerid, int text, int size)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawSetPreviewRotImpl(int playerid, int text, float rotX, float rotY,
-                float rotZ, float zoom);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawBackgroundColor(int playerid, int text, int color)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawSetPreviewVehColImpl(int playerid, int text, int color1, int color2);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawFont(int playerid, int text, int font)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawSetProportionalImpl(int playerid, int text, bool set);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawSetProportional(int playerid, int text, bool set)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawSetSelectableImpl(int playerid, int text, bool set);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawSetSelectable(int playerid, int text, bool set)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawSetShadowImpl(int playerid, int text, int size);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawShow(int playerid, int text)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawSetStringImpl(int playerid, int text, string str);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawHide(int playerid, int text)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawShowImpl(int playerid, int text);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawSetString(int playerid, int text, string str)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawTextSizeImpl(int playerid, int text, float x, float y);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawSetPreviewModel(int playerid, int text, int modelindex)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool PlayerTextDrawUseBoxImpl(int playerid, int text, bool use);
+            [NativeMethod]
+            public virtual bool PlayerTextDrawSetPreviewRot(int playerid, int text, float rotX, float rotY, float rotZ, float zoom)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [Native("CreatePlayerTextDraw")] public static readonly CreatePlayerTextDrawImpl CreatePlayerTextDraw =
-                null;
+            [NativeMethod]
+            public virtual bool PlayerTextDrawSetPreviewVehCol(int playerid, int text, int color1, int color2)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [Native("PlayerTextDrawDestroy")] public static readonly PlayerTextDrawDestroyImpl PlayerTextDrawDestroy =
-                null;
 
-            [Native("PlayerTextDrawLetterSize")] public static readonly PlayerTextDrawLetterSizeImpl
-                PlayerTextDrawLetterSize = null;
-
-            [Native("PlayerTextDrawTextSize")] public static readonly PlayerTextDrawTextSizeImpl PlayerTextDrawTextSize
-                =
-                null;
-
-            [Native("PlayerTextDrawAlignment")] public static readonly PlayerTextDrawAlignmentImpl
-                PlayerTextDrawAlignment
-                    =
-                    null;
-
-            [Native("PlayerTextDrawColor")] public static readonly PlayerTextDrawColorImpl PlayerTextDrawColor = null;
-
-            [Native("PlayerTextDrawUseBox")] public static readonly PlayerTextDrawUseBoxImpl PlayerTextDrawUseBox =
-                null;
-
-            [Native("PlayerTextDrawBoxColor")] public static readonly PlayerTextDrawBoxColorImpl PlayerTextDrawBoxColor
-                =
-                null;
-
-            [Native("PlayerTextDrawSetShadow")] public static readonly PlayerTextDrawSetShadowImpl
-                PlayerTextDrawSetShadow
-                    =
-                    null;
-
-            [Native("PlayerTextDrawSetOutline")] public static readonly PlayerTextDrawSetOutlineImpl
-                PlayerTextDrawSetOutline = null;
-
-            [Native("PlayerTextDrawBackgroundColor")] public static readonly PlayerTextDrawBackgroundColorImpl
-                PlayerTextDrawBackgroundColor = null;
-
-            [Native("PlayerTextDrawFont")] public static readonly PlayerTextDrawFontImpl PlayerTextDrawFont = null;
-
-            [Native("PlayerTextDrawSetProportional")] public static readonly PlayerTextDrawSetProportionalImpl
-                PlayerTextDrawSetProportional = null;
-
-            [Native("PlayerTextDrawSetSelectable")] public static readonly PlayerTextDrawSetSelectableImpl
-                PlayerTextDrawSetSelectable = null;
-
-            [Native("PlayerTextDrawShow")] public static readonly PlayerTextDrawShowImpl PlayerTextDrawShow = null;
-            [Native("PlayerTextDrawHide")] public static readonly PlayerTextDrawHideImpl PlayerTextDrawHide = null;
-
-            [Native("PlayerTextDrawSetString")] public static readonly PlayerTextDrawSetStringImpl
-                PlayerTextDrawSetString
-                    =
-                    null;
-
-            [Native("PlayerTextDrawSetPreviewModel")] public static readonly PlayerTextDrawSetPreviewModelImpl
-                PlayerTextDrawSetPreviewModel = null;
-
-            [Native("PlayerTextDrawSetPreviewRot")] public static readonly PlayerTextDrawSetPreviewRotImpl
-                PlayerTextDrawSetPreviewRot = null;
-
-            [Native("PlayerTextDrawSetPreviewVehCol")] public static readonly PlayerTextDrawSetPreviewVehColImpl
-                PlayerTextDrawSetPreviewVehCol = null;
         }
     }
 }

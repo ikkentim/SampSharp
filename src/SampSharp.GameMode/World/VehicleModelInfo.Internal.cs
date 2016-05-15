@@ -19,11 +19,21 @@ namespace SampSharp.GameMode.World
 {
     public partial struct VehicleModelInfo
     {
-        private static class Internal
-        {
-            public delegate bool GetVehicleModelInfoImpl(int model, int infotype, out float x, out float y, out float z);
+        private static readonly VehicleModelInfoInternal Internal;
 
-            [Native("GetVehicleModelInfo")] public static readonly GetVehicleModelInfoImpl GetVehicleModelInfo = null;
+        static VehicleModelInfo()
+        {
+            Internal = NativeObjectProxyFactory.CreateInstance<VehicleModelInfoInternal>();
+        }
+
+        private class VehicleModelInfoInternal
+        {
+            [NativeMethod]
+            public virtual bool GetVehicleModelInfo(int model, int infotype, out float x, out float y, out float z)
+            {
+                throw new NativeNotImplementedException();
+            }
+
         }
     }
 }

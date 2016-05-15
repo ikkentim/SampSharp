@@ -14,6 +14,8 @@
 // limitations under the License.
 
 using System;
+using System.Reflection;
+using System.Reflection.Emit;
 
 namespace SampSharp.GameMode.API
 {
@@ -23,9 +25,20 @@ namespace SampSharp.GameMode.API
     public interface INative
     {
         /// <summary>
+        ///     Gets the handle of this native.
+        /// </summary>
+        int Handle { get; }
+
+        /// <summary>
         ///     Gets the name of the native function.
         /// </summary>
         string Name { get; }
+
+
+        /// <summary>
+        ///     Gets the parameter types.
+        /// </summary>
+        Type[] ParameterTypes { get; }
 
         /// <summary>
         ///     Invokes the native with the specified arguments.
@@ -47,7 +60,7 @@ namespace SampSharp.GameMode.API
         /// <param name="arguments">The arguments.</param>
         /// <returns>The return value of the native as a bool.</returns>
         bool InvokeBool(params object[] arguments);
-
+        
         /// <summary>
         ///     Generates an invoker delegate for the function this instance represents.
         /// </summary>

@@ -118,7 +118,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>Uptime of the SA:MP server(NOT the physical box).</returns>
         public static int GetTickCount()
         {
-            return Internal.NativeGetTickCount();
+            return Internal.GetTickCount();
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>This function doesn't return a specific value.</returns>
         public static void SendRconCommand(string command)
         {
-            Internal.NativeSendRconCommand(command);
+            Internal.SendRconCommand(command);
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace SampSharp.GameMode.SAMP
             if (id == -1)
                 return null;
 
-            Internal.NativeConnectNPC(name, script);
+            Internal.ConnectNPC(name, script);
             return BasePlayer.FindOrCreate(id);
         }
 
@@ -195,7 +195,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="weatherid">The weather to set.</param>
         public static void SetWeather(int weatherid)
         {
-            Internal.NativeSetWeather(weatherid);
+            Internal.SetWeather(weatherid);
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="hour">Which time to set.</param>
         public static void SetWorldTime(int hour)
         {
-            Internal.NativeSetWorldTime(hour);
+            Internal.SetWorldTime(hour);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// SampSharp
+// SampSharp
 // Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,26 +13,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
-
-namespace SampSharp.GameMode.Display
+namespace SampSharp.GameMode.API
 {
-    public abstract partial class Dialog
+    internal static class NativeHandleInvokers
     {
-        protected readonly static DialogInternal Internal;
-
-        static Dialog()
+        public static float InvokeHandleAsFloat(int handle, object[] args)
         {
-            Internal = NativeObjectProxyFactory.CreateInstance<DialogInternal>();
+            return Native.Get(handle).InvokeFloat(args);
         }
 
-        protected class DialogInternal
+        public static bool InvokeHandleAsBool(int handle, object[] args)
         {
-            [NativeMethod]
-            public virtual bool ShowPlayerDialog(int playerid, int dialogid, int style, string caption, string info, string button1, string button2)
-            {
-                throw new NativeNotImplementedException();
-            }
+            return Native.Get(handle).InvokeBool(args);
+        }
+
+        public static void InvokeHandleAsVoid(int handle, object[] args)
+        {
+            Native.Get(handle).Invoke(args);
+        }
+
+        public static int InvokeHandle(int handle, object[] args)
+        {
+            return Native.Get(handle).Invoke(args);
         }
     }
 }

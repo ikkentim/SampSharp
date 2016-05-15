@@ -19,24 +19,5 @@ using SampSharp.GameMode.SAMP.Commands;
 
 namespace TestMode.Controllers
 {
-    public class MyCommandController : CommandController
-    {
-        #region Overrides of CommandController
 
-        /// <summary>
-        ///     Registers the services this controller provides.
-        /// </summary>
-        /// <param name="gameMode">The game mode.</param>
-        /// <param name="serviceContainer">The service container.</param>
-        public override void RegisterServices(BaseMode gameMode, GameModeServiceContainer serviceContainer)
-        {
-            CommandsManager = new CommandsManager(gameMode);
-            serviceContainer.AddService(CommandsManager);
-
-            // Register commands in game mode.
-            CommandsManager.RegisterCommands(gameMode.GetType());
-        }
-
-        #endregion
-    }
 }

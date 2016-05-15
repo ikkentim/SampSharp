@@ -26,8 +26,8 @@ namespace SampSharp.GameMode
         /// </summary>
         public static float Gravity
         {
-            get { return Internal.NativeGetGravity(); }
-            set { Internal.NativeSetGravity(value); }
+            get { return Internal.GetGravity(); }
+            set { Internal.SetGravity(value); }
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace SampSharp.GameMode
         /// </summary>
         public virtual void DisableNameTagLOS()
         {
-            Internal.NativeDisableNameTagLOS();
+            Internal.DisableNameTagLOS();
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace SampSharp.GameMode
         /// <param name="text">GameMode name.</param>
         public virtual void SetGameModeText(string text)
         {
-            Internal.NativeSetGameModeText(text);
+            Internal.SetGameModeText(text);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace SampSharp.GameMode
         /// <param name="mode">The mode you want to use.</param>
         public virtual void ShowPlayerMarkers(PlayerMarkersMode mode)
         {
-            Internal.NativeShowPlayerMarkers((int) mode);
+            Internal.ShowPlayerMarkers((int) mode);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace SampSharp.GameMode
         /// <param name="show">False to disable, True to enable.</param>
         public virtual void ShowNameTags(bool show)
         {
-            Internal.NativeShowNameTags(show);
+            Internal.ShowNameTags(show);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace SampSharp.GameMode
         /// </remarks>
         public virtual void EnableVehicleFriendlyFire()
         {
-            Internal.NativeEnableVehicleFriendlyFire();
+            Internal.EnableVehicleFriendlyFire();
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace SampSharp.GameMode
         /// <param name="distance">The distance to set.</param>
         public virtual void SetNameTagDrawDistance(float distance)
         {
-            Internal.NativeSetNameTagDrawDistance(distance);
+            Internal.SetNameTagDrawDistance(distance);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace SampSharp.GameMode
         /// </summary>
         public virtual void DisableInteriorEnterExits()
         {
-            Internal.NativeDisableInteriorEnterExits();
+            Internal.DisableInteriorEnterExits();
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace SampSharp.GameMode
         /// <param name="count">Number of teams the gamemode knows.</param>
         public virtual void SetTeamCount(int count)
         {
-            Internal.NativeSetTeamCount(count);
+            Internal.SetTeamCount(count);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace SampSharp.GameMode
         public virtual int AddPlayerClass(int modelid, Vector3 position, float zAngle, Weapon weapon1, int weapon1Ammo,
             Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
-            return Internal.NativeAddPlayerClass(modelid, position.X, position.Y, position.Z, zAngle, (int) weapon1,
+            return Internal.AddPlayerClass(modelid, position.X, position.Y, position.Z, zAngle, (int) weapon1,
                 weapon1Ammo,
                 (int) weapon2, weapon2Ammo, (int) weapon3, weapon3Ammo);
         }
@@ -211,7 +211,7 @@ namespace SampSharp.GameMode
         public virtual int AddPlayerClass(int teamid, int modelid, Vector3 position, float zAngle, Weapon weapon1,
             int weapon1Ammo, Weapon weapon2, int weapon2Ammo, Weapon weapon3, int weapon3Ammo)
         {
-            return Internal.NativeAddPlayerClassEx(teamid, modelid, position.X, position.Y, position.Z, zAngle,
+            return Internal.AddPlayerClassEx(teamid, modelid, position.X, position.Y, position.Z, zAngle,
                 (int) weapon1,
                 weapon1Ammo, (int) weapon2, weapon2Ammo, (int) weapon3, weapon3Ammo);
         }
@@ -270,7 +270,7 @@ namespace SampSharp.GameMode
         /// <param name="enable">True to enable stunt bonuses, False to disable.</param>
         public virtual void EnableStuntBonusForAll(bool enable)
         {
-            Internal.NativeEnableStuntBonusForAll(enable);
+            Internal.EnableStuntBonusForAll(enable);
         }
 
         /// <summary>
@@ -280,7 +280,7 @@ namespace SampSharp.GameMode
         /// <param name="chatRadius">Radius limit.</param>
         public virtual void LimitGlobalChatRadius(float chatRadius)
         {
-            Internal.NativeLimitGlobalChatRadius(chatRadius);
+            Internal.LimitGlobalChatRadius(chatRadius);
         }
 
         /// <summary>
@@ -289,7 +289,7 @@ namespace SampSharp.GameMode
         /// <param name="markerRadius">The radius that markers will show at.</param>
         public virtual void LimitPlayerMarkerRadius(float markerRadius)
         {
-            Internal.NativeLimitPlayerMarkerRadius(markerRadius);
+            Internal.LimitPlayerMarkerRadius(markerRadius);
         }
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace SampSharp.GameMode
         /// </summary>
         public virtual void ManualVehicleEngineAndLights()
         {
-            Internal.NativeManualVehicleEngineAndLights();
+            Internal.ManualVehicleEngineAndLights();
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace SampSharp.GameMode
         /// <param name="allow">True to enable weapons in interiors (enabled by default), False to disable weapons in interiors.</param>
         public virtual void AllowInteriorWeapons(bool allow)
         {
-            Internal.NativeAllowInteriorWeapons(allow);
+            Internal.AllowInteriorWeapons(allow);
         }
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace SampSharp.GameMode
         /// <param name="enable">True to enable, False to disable tire popping.</param>
         public virtual void EnableTirePopping(bool enable)
         {
-            Internal.NativeEnableTirePopping(enable);
+            Internal.EnableTirePopping(enable);
         }
 
         /// <summary>

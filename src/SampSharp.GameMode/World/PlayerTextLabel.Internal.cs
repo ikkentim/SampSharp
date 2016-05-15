@@ -19,26 +19,30 @@ namespace SampSharp.GameMode.World
 {
     public partial class PlayerTextLabel
     {
-        private static class Internal
+        protected static readonly PlayerTextLabelInternal Internal;
+
+        static PlayerTextLabel()
         {
-            public delegate int CreatePlayer3DTextLabelImpl(
-                int playerid, string text, int color, float x, float y, float z, float drawDistance, int attachedplayer,
-                int attachedvehicle, bool testLOS);
+            Internal = NativeObjectProxyFactory.CreateInstance<PlayerTextLabelInternal>();
+        }
 
-            public delegate bool DeletePlayer3DTextLabelImpl(int playerid, int id);
-
-            public delegate bool UpdatePlayer3DTextLabelTextImpl(int playerid, int id, int color, string text);
-
-            [Native("CreatePlayer3DTextLabel")] public static readonly CreatePlayer3DTextLabelImpl
-                CreatePlayer3DTextLabel =
-                    null;
-
-            [Native("DeletePlayer3DTextLabel")] public static readonly DeletePlayer3DTextLabelImpl
-                DeletePlayer3DTextLabel =
-                    null;
-
-            [Native("UpdatePlayer3DTextLabelText")] public static readonly UpdatePlayer3DTextLabelTextImpl
-                UpdatePlayer3DTextLabelText = null;
+        protected class PlayerTextLabelInternal
+        {
+            [NativeMethod]
+            public virtual int CreatePlayer3DTextLabel(int playerid, string text, int color, float x, float y, float z, float drawDistance, int attachedplayer, int attachedvehicle, bool testLOS)
+            {
+                throw new NativeNotImplementedException();
+            }
+            [NativeMethod]
+            public virtual int DeletePlayer3DTextLabel(int playerid, int id)
+            {
+                throw new NativeNotImplementedException();
+            }
+            [NativeMethod]
+            public virtual int UpdatePlayer3DTextLabelText(int playerid, int id, int color, string text)
+            {
+                throw new NativeNotImplementedException();
+            }
         }
     }
 }

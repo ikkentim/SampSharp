@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using SampSharp.GameMode;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
@@ -35,23 +36,7 @@ namespace TestMode
     {
         #region Tests
 
-        private readonly List<ITest> _tests = new List<ITest>
-        {
-//            new CommandsTest(),
-//            new ASyncTest()
-//            new DelayTest(),
-//            new MenuTest(),
-//            new DisposureTest(),
-//            new DialogTest(),
-//            new CharsetTest(),
-//            new VehicleInfoTest(),
-//            new NativesTest(),
-//            new MapAndreasTest(),
-//            new KeyHandlerTest(),
-//            new ExtensionTest(),
-//            new ActorTest(),
-//            new ServicesTest()
-        };
+        private readonly List<ITest> _tests = new List<ITest>();
 
         #endregion
 
@@ -63,7 +48,7 @@ namespace TestMode
             Console.WriteLine("----------------------");
 
             Server.ToggleDebugOutput(true);
-            
+
             SetGameModeText("sa-mp# testmode");
 
             UsePlayerPedAnimations();
@@ -78,7 +63,7 @@ namespace TestMode
                 Console.WriteLine();
             }
 
-
+            Console.WriteLine(Server.NetworkStats);
             base.OnInitialized(args);
         }
 
@@ -88,7 +73,6 @@ namespace TestMode
 
             controllers.Override(new PlayerController());
             controllers.Override(new VehicleController());
-            controllers.Override(new MyCommandController());
 
             foreach (var test in _tests.OfType<IControllerTest>())
                 test.LoadControllers(controllers);

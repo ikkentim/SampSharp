@@ -19,32 +19,40 @@ namespace SampSharp.GameMode.World
 {
     public partial class TextLabel
     {
-        private static class Internal
+        protected static readonly TextLabelInternal Internal;
+
+        static TextLabel()
         {
-            public delegate bool Attach3DTextLabelToPlayerImpl(
-                int id, int playerid, float offsetX, float offsetY, float offsetZ);
+            Internal = NativeObjectProxyFactory.CreateInstance<TextLabelInternal>();
+        }
 
-            public delegate bool Attach3DTextLabelToVehicleImpl(
-                int id, int vehicleid, float offsetX, float offsetY, float offsetZ);
-
-            public delegate int Create3DTextLabelImpl(
-                string text, int color, float x, float y, float z, float drawDistance, int virtualWorld, bool testLOS);
-
-            public delegate bool Delete3DTextLabelImpl(int id);
-
-            public delegate bool Update3DTextLabelTextImpl(int id, int color, string text);
-
-            [Native("Create3DTextLabel")] public static readonly Create3DTextLabelImpl Create3DTextLabel = null;
-            [Native("Delete3DTextLabel")] public static readonly Delete3DTextLabelImpl Delete3DTextLabel = null;
-
-            [Native("Attach3DTextLabelToPlayer")] public static readonly Attach3DTextLabelToPlayerImpl
-                Attach3DTextLabelToPlayer = null;
-
-            [Native("Attach3DTextLabelToVehicle")] public static readonly Attach3DTextLabelToVehicleImpl
-                Attach3DTextLabelToVehicle = null;
-
-            [Native("Update3DTextLabelText")] public static readonly Update3DTextLabelTextImpl Update3DTextLabelText =
-                null;
+        protected class TextLabelInternal
+        {
+            [NativeMethod]
+            public virtual int Create3DTextLabel(string text, int color, float x, float y, float z, float drawDistance, int virtualWorld, bool testLOS)
+            {
+                throw new NativeNotImplementedException();
+            }
+            [NativeMethod]
+            public virtual int Delete3DTextLabel(int id)
+            {
+                throw new NativeNotImplementedException();
+            }
+            [NativeMethod]
+            public virtual int Update3DTextLabelText(int id, int color, string text)
+            {
+                throw new NativeNotImplementedException();
+            }
+            [NativeMethod]
+            public virtual int Attach3DTextLabelToPlayer(int id, int playerid, float offsetX, float offsetY, float offsetZ)
+            {
+                throw new NativeNotImplementedException();
+            }
+            [NativeMethod]
+            public virtual int Attach3DTextLabelToVehicle(int id, int vehicleid, float offsetX, float offsetY, float offsetZ)
+            {
+                throw new NativeNotImplementedException();
+            }
         }
     }
 }

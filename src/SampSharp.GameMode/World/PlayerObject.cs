@@ -306,7 +306,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.NativeAttachCameraToPlayerObject(Owner.Id, Id);
+            Internal.AttachCameraToPlayerObject(Owner.Id, Id);
         }
 
         /// <summary>

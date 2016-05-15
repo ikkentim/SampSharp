@@ -19,38 +19,76 @@ namespace SampSharp.GameMode.SAMP
 {
     public partial class PVarCollection
     {
-        private static class Internal
+        protected readonly static PVarCollectionInternal Internal;
+
+        static PVarCollection()
         {
-            public delegate bool DeletePVarImpl(int playerid, string varname);
+            Internal = NativeObjectProxyFactory.CreateInstance<PVarCollectionInternal>();
+        }
 
-            public delegate float GetPVarFloatImpl(int playerid, string varname);
+        protected class PVarCollectionInternal
+        {
+            [NativeMethod]
+            public virtual bool SetPVarInt(int playerid, string varname, int value)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate int GetPVarIntImpl(int playerid, string varname);
+            [NativeMethod]
+            public virtual int GetPVarInt(int playerid, string varname)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GetPVarNameAtIndexImpl(int playerid, int index, out string varname, int size);
+            [NativeMethod]
+            public virtual bool SetPVarString(int playerid, string varname, string value)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool GetPVarStringImpl(int playerid, string varname, out string value, int size);
+            [NativeMethod]
+            public virtual bool GetPVarString(int playerid, string varname, out string value, int size)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate int GetPVarsUpperIndexImpl(int playerid);
+            [NativeMethod]
+            public virtual bool SetPVarFloat(int playerid, string varname, float value)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate int GetPVarTypeImpl(int playerid, string varname);
+            [NativeMethod]
+            public virtual float GetPVarFloat(int playerid, string varname)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetPVarFloatImpl(int playerid, string varname, float value);
+            [NativeMethod]
+            public virtual bool DeletePVar(int playerid, string varname)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetPVarIntImpl(int playerid, string varname, int value);
+            [NativeMethod]
+            public virtual int GetPVarsUpperIndex(int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool SetPVarStringImpl(int playerid, string varname, string value);
+            [NativeMethod]
+            public virtual bool GetPVarNameAtIndex(int playerid, int index, out string varname, int size)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [Native("SetPVarInt")] public static readonly SetPVarIntImpl SetPVarInt = null;
-            [Native("GetPVarInt")] public static readonly GetPVarIntImpl GetPVarInt = null;
-            [Native("SetPVarString")] public static readonly SetPVarStringImpl SetPVarString = null;
-            [Native("GetPVarString")] public static readonly GetPVarStringImpl GetPVarString = null;
-            [Native("SetPVarFloat")] public static readonly SetPVarFloatImpl SetPVarFloat = null;
-            [Native("GetPVarFloat")] public static readonly GetPVarFloatImpl GetPVarFloat = null;
-            [Native("DeletePVar")] public static readonly DeletePVarImpl DeletePVar = null;
-            [Native("GetPVarsUpperIndex")] public static readonly GetPVarsUpperIndexImpl GetPVarsUpperIndex = null;
-            [Native("GetPVarNameAtIndex")] public static readonly GetPVarNameAtIndexImpl GetPVarNameAtIndex = null;
-            [Native("GetPVarType")] public static readonly GetPVarTypeImpl GetPVarType = null;
+            [NativeMethod]
+            public virtual int GetPVarType(int playerid, string varname)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+
         }
     }
 }

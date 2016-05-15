@@ -1,4 +1,4 @@
-﻿// SampSharp
+// SampSharp
 // Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,26 +13,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using System;
 
-namespace SampSharp.GameMode.Display
+namespace SampSharp.GameMode.API
 {
-    public abstract partial class Dialog
+    [AttributeUsage(AttributeTargets.Class)]
+    public class NativeObjectIdentifiersAttribute : Attribute
     {
-        protected readonly static DialogInternal Internal;
-
-        static Dialog()
+        public NativeObjectIdentifiersAttribute(params string[] identifiers)
         {
-            Internal = NativeObjectProxyFactory.CreateInstance<DialogInternal>();
+            Identifiers = identifiers;
         }
 
-        protected class DialogInternal
-        {
-            [NativeMethod]
-            public virtual bool ShowPlayerDialog(int playerid, int dialogid, int style, string caption, string info, string button1, string button2)
-            {
-                throw new NativeNotImplementedException();
-            }
-        }
+        public string[] Identifiers { get; set; }
     }
 }

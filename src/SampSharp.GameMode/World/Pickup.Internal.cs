@@ -19,17 +19,33 @@ namespace SampSharp.GameMode.World
 {
     public partial class Pickup
     {
-        private static class Internal
+        protected static readonly PickupInternal Internal;
+
+        static Pickup()
         {
-            public delegate int AddStaticPickupImpl(int model, int type, float x, float y, float z, int virtualworld);
+            Internal = NativeObjectProxyFactory.CreateInstance<PickupInternal>();
+        }
 
-            public delegate int CreatePickupImpl(int model, int type, float x, float y, float z, int virtualworld);
+        protected class PickupInternal
+        {
+            [NativeMethod]
+            public virtual int AddStaticPickup(int model, int type, float x, float y, float z, int virtualworld)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            public delegate bool DestroyPickupImpl(int pickupid);
+            [NativeMethod]
+            public virtual int CreatePickup(int model, int type, float x, float y, float z, int virtualworld)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [Native("AddStaticPickup")] public static readonly AddStaticPickupImpl AddStaticPickup = null;
-            [Native("CreatePickup")] public static readonly CreatePickupImpl CreatePickup = null;
-            [Native("DestroyPickup")] public static readonly DestroyPickupImpl DestroyPickup = null;
+            [NativeMethod]
+            public virtual bool DestroyPickup(int pickupid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
         }
     }
 }
