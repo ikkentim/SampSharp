@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SampSharp.GameMode.API
 {
@@ -23,7 +24,8 @@ namespace SampSharp.GameMode.API
     /// </summary>
     public class DefaultNativeLoader : INativeLoader
     {
-        private Dictionary<int,INative> _handles = new Dictionary<int, INative>(); 
+        private readonly Dictionary<int,INative> _handles = new Dictionary<int, INative>(); 
+
         #region Implementation of INativeLoader
 
         /// <summary>
@@ -60,7 +62,7 @@ namespace SampSharp.GameMode.API
             }
             catch (Exception e)
             {
-                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, "Native load failure ({0}): \n{1}", name, e);
+                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, "Native load failure ({0})", name);
                 return null;
             }
         }
@@ -104,22 +106,30 @@ namespace SampSharp.GameMode.API
 
         private static int[] ComputeFormatString(Type[] types, out string format)
         {
-            var lengthIndices = new List<int>();
-            format = string.Empty;
+            format =
+                types.Select(t => t.IsByRef
+                    ? char.ToUpper(GetTypeFormatChar(t.GetElementType()))
+                    : GetTypeFormatChar(t))
+                    .Aggregate(string.Empty, (current, c) => current + c);
 
-            for (var i = 0; i < types.Length; i++)
+            var sizeReqs = new [] {'S', 'a', 'A'};
+
+            var ir = format.Select((c, i) => sizeReqs.Contains(c) ? i : -1)
+                .Where(i => i != -1)
+                .ToArray();
+            var ie = Enumerable.Range(0, format.Length).Except(ir).ToList();
+
+            var result = new List<int>();
+            foreach (var i in ir)
             {
-                var c = types[i].IsByRef
-                    ? char.ToUpper(GetTypeFormatChar(types[i].GetElementType()))
-                    : GetTypeFormatChar(types[i]);
+                var j = i + 1;
+                while (!ie.Contains(j) && j < format.Length)
+                    j++;
 
-                if (c == 'S' || c == 'a' || c == 'A')
-                    lengthIndices.Add(i + 1);
-
-                format += c;
+                ie.Remove(j);
+                result.Add(j);
             }
-
-            return lengthIndices.ToArray();
+            return result.ToArray();
         }
     }
 }

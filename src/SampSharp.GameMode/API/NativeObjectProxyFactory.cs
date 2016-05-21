@@ -74,12 +74,13 @@ namespace SampSharp.GameMode.API
                 if (get != null)
                 {
                     var name = attr.GetFunction ?? "Get" + property.Name;
+                    var sizes = attr.GetLengths;
                     var methodBuilder = typeBuilder.DefineMethod(get.Name,
                         (get.IsPublic ? MethodAttributes.Public : MethodAttributes.Family) | MethodAttributes.ReuseSlot |
                         MethodAttributes.Virtual | MethodAttributes.HideBySig, get.ReturnType, Type.EmptyTypes);
 
                     var il = methodBuilder.GetILGenerator();
-                    var native = Native.Load(name,
+                    var native = Native.Load(name, sizes,
                         Enumerable.Repeat(typeof (int), attr.IgnoreIdentifiers ? 0 : objAttr?.Identifiers?.Length ?? 0)
                             .ToArray());
 
@@ -93,13 +94,14 @@ namespace SampSharp.GameMode.API
                 if (set != null)
                 {
                     var name = attr.SetFunction ?? "Set" + property.Name;
+                    var sizes = attr.SetLengths;
                     var methodBuilder = typeBuilder.DefineMethod(set.Name,
                         (set.IsPublic ? MethodAttributes.Public : MethodAttributes.Family) | MethodAttributes.ReuseSlot |
                         MethodAttributes.Virtual | MethodAttributes.HideBySig, set.ReturnType,
                         new[] {property.PropertyType});
 
                     var il = methodBuilder.GetILGenerator();
-                    var native = Native.Load(name,
+                    var native = Native.Load(name, sizes,
                         Enumerable.Repeat(typeof (int), attr.IgnoreIdentifiers ? 0 : objAttr?.Identifiers?.Length ?? 0)
                             .Concat(new[] {property.PropertyType})
                             .ToArray());
@@ -127,16 +129,22 @@ namespace SampSharp.GameMode.API
 
                 var name = attr.Function ?? method.Name;
                 var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
+                var sizes = attr.Lengths;
 
                 var methodBuilder = typeBuilder.DefineMethod(method.Name,
                     (method.IsPublic ? MethodAttributes.Public : MethodAttributes.Family) | MethodAttributes.ReuseSlot |
                     MethodAttributes.Virtual | MethodAttributes.HideBySig, method.ReturnType, argTypes);
 
                 var il = methodBuilder.GetILGenerator();
-                var native = Native.Load(name,
+                var native = Native.Load(name, sizes,
                     Enumerable.Repeat(typeof (int), attr.IgnoreIdentifiers ? 0 : objAttr?.Identifiers?.Length ?? 0)
                         .Concat(argTypes)
                         .ToArray());
+
+                if (native == null)
+                {
+                    continue;
+                }
 
                 var gen = new NativeObjectILGenerator(native, type,
                     attr.IgnoreIdentifiers ? new string[0] : objAttr?.Identifiers ?? new string[0], argTypes,

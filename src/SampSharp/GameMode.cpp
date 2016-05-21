@@ -33,6 +33,11 @@
 
 #define ERR_EXCEPTION                   (-1)
 
+#define GET_PAR_SIZE(a, s, x)   (s->sizes[x] < 0 \
+                                ? -s->sizes[x] \
+                                : *(int *)mono_object_unbox( \
+                                mono_array_get(a, MonoObject *, s->sizes[x])))
+
 using std::string;
 using sampgdk::logprintf;
 
@@ -301,24 +306,20 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
     cell param_value[MAX_NATIVE_ARGS];
     int param_size[MAX_NATIVE_ARGS];
     for (int i = 0; i < sig->param_count; i++) {
+        MonoObject* obj = mono_array_get(args_array, MonoObject *, i);
+
         switch (sig->parameters[i]) {
         case 'd': /* integer */
-            params[i] = mono_object_unbox(
-                mono_array_get(args_array, MonoObject *, i));
+            params[i] = mono_object_unbox(obj);
             break;
         case 's': { /* const string */
-            params[i] = monostring_to_string(
-                mono_array_get(args_array, MonoString *, i));
+            params[i] = monostring_to_string((MonoString*)obj);
             break;
         }
         case 'a': { /* array of integers */
-            MonoArray *values_array =
-                mono_array_get(args_array, MonoArray *, i);
+            MonoArray *values_array = (MonoArray*)obj;
 
-            int size_info = sig->sizes[i];
-            param_size[i] = size_info < 0 ? -size_info
-                : *(int *)mono_object_unbox(
-                mono_array_get(args_array, MonoObject *, size_info));
+            param_size[i] = GET_PAR_SIZE(args_array, sig, i);
 
             cell *value = new cell[param_size[i]];
             for (int j = 0; j < param_size[i]; j++) {
@@ -328,31 +329,18 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
             break;
         }
         case 'D': { /* integer reference */
-            MonoObject *object = mono_array_get(args_array, MonoObject *, i);
-            if (object) {
-                params[i] = *(int **)mono_object_unbox(object);
-            }
-            else {
-                params[i] = &param_value[i];
-            }
+            params[i] = obj
+                ? *(int **)mono_object_unbox(obj)
+                : &param_value[i];
             break;
         }
         case 'S': /* non-const string (writeable) */ {
-            int size_info = sig->sizes[i];
-            param_size[i] = size_info < 0 ? -size_info
-                : *(int *)mono_object_unbox(
-                mono_array_get(args_array, MonoObject *, size_info));
-
+            param_size[i] = GET_PAR_SIZE(args_array, sig, i);
             params[i] = new char[param_size[i] + 1] {'\0'};
-
-            assert(params[i]);
             break;
         }
         case 'A': { /* array of integers reference */
-            int size_info = sig->sizes[i];
-            param_size[i] = size_info < 0 ? -size_info
-                : *(int *)mono_object_unbox(
-                mono_array_get(args_array, MonoObject *, size_info));
+            param_size[i] = GET_PAR_SIZE(args_array, sig, i);
 
             cell *value = new cell[param_size[i]];
             for (int j = 0; j < param_size[i]; j++) {
@@ -368,7 +356,6 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
             return ERR_EXCEPTION;
             break;
         }
-
     }
 
     int return_value = sampgdk::InvokeNativeArray(sig->native, sig->format,

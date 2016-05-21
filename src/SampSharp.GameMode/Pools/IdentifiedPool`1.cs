@@ -144,6 +144,9 @@ namespace SampSharp.GameMode.Pools
         /// <returns>The initialized instance.</returns>
         public static TInstance Create(int id)
         {
+            if (InstanceType == null)
+                throw new Exception($"No instance type has yet been registered to the {typeof(IdentifiedPool<TInstance>)} pool.");
+
             var instance = Activator.CreateInstance(InstanceType) as TInstance;
             instance.Id = id;
             return instance;

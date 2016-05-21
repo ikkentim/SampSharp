@@ -222,6 +222,9 @@ namespace SampSharp.GameMode.Pools
         /// </returns>
         public static TInstance Create(TOwner owner, int id)
         {
+            if(InstanceType == null)
+                throw new Exception($"No instance type has yet been registered to the {typeof(IdentifiedOwnedPool<TInstance,TOwner>)} pool.");
+
             var instance = (TInstance) Activator.CreateInstance(InstanceType);
             instance.Owner = owner;
             instance.Id = id;

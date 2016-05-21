@@ -31,7 +31,11 @@ namespace SampSharp.GameMode.API
 
         public string SetFunction { get; set; }
 
+        public int[] SetLengths { get; set; }
+
         public string GetFunction { get; set; }
+
+        public int[] GetLengths { get; set; }
 
         public bool IgnoreIdentifiers { get; }
     }

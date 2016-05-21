@@ -24,13 +24,20 @@ namespace SampSharp.GameMode.API
         {
         }
 
-        public NativeMethodAttribute(bool ignoreIdentifiers)
+        public NativeMethodAttribute(params int[] lengths) : this(false, lengths)
+        {
+        }
+
+        public NativeMethodAttribute(bool ignoreIdentifiers, params int[] lengths)
         {
             IgnoreIdentifiers = ignoreIdentifiers;
+            Lengths = lengths;
         }
 
         public string Function { get; set; }
 
         public bool IgnoreIdentifiers { get; }
+
+        public int[] Lengths { get; }
     }
 }
