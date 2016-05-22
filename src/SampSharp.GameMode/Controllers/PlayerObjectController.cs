@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using System.Linq;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
@@ -39,7 +41,7 @@ namespace SampSharp.GameMode.Controllers
                 if (player == null)
                     return;
 
-                foreach (var obj in PlayerObject.Of(player))
+                foreach (var obj in PlayerObject.Of(player).ToArray())
                     obj.Dispose();
             };
         }

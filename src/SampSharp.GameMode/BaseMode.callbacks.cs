@@ -25,9 +25,7 @@ namespace SampSharp.GameMode
     {
         internal bool OnTimerTick(int timerid, object args)
         {
-            /*
-             * Pass straight trough to TimerTick. Set the args as sender.
-             */
+            // Pass straight trough to TimerTick. Set the args as sender.
             if (TimerTick != null && args != null)
                 TimerTick(args, EventArgs.Empty);
 
@@ -85,15 +83,24 @@ namespace SampSharp.GameMode
 
         internal bool OnVehicleSpawn(int vehicleid)
         {
-            OnVehicleSpawned(BaseVehicle.FindOrCreate(vehicleid), EventArgs.Empty);
+            var vehicle = BaseVehicle.Find(vehicleid);
+
+            if (vehicle == null)
+                return true;
+
+            OnVehicleSpawned(vehicle, EventArgs.Empty);
 
             return true;
         }
 
         internal bool OnVehicleDeath(int vehicleid, int killerid)
         {
-            OnVehicleDied(BaseVehicle.FindOrCreate(vehicleid),
-                new PlayerEventArgs(killerid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(killerid)));
+            var vehicle = BaseVehicle.Find(vehicleid);
+
+            if (vehicle == null)
+                return true;
+
+            OnVehicleDied(vehicle, new PlayerEventArgs(killerid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(killerid)));
 
             return true;
         }
@@ -127,18 +134,26 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerEnterVehicle(int playerid, int vehicleid, bool ispassenger)
         {
+            var vehicle = BaseVehicle.Find(vehicleid);
+
+            if (vehicle == null)
+                return true;
+
             var player = BasePlayer.FindOrCreate(playerid);
-            OnPlayerEnterVehicle(player,
-                new EnterVehicleEventArgs(player, BaseVehicle.FindOrCreate(vehicleid), ispassenger));
+            OnPlayerEnterVehicle(player, new EnterVehicleEventArgs(player, vehicle, ispassenger));
 
             return true;
         }
 
         internal bool OnPlayerExitVehicle(int playerid, int vehicleid)
         {
+            var vehicle = BaseVehicle.Find(vehicleid);
+
+            if (vehicle == null)
+                return true;
+
             var player = BasePlayer.FindOrCreate(playerid);
-            OnPlayerExitVehicle(player,
-                new PlayerVehicleEventArgs(player, BaseVehicle.FindOrCreate(vehicleid)));
+            OnPlayerExitVehicle(player, new PlayerVehicleEventArgs(player, vehicle));
 
             return true;
         }
@@ -198,30 +213,50 @@ namespace SampSharp.GameMode
 
         internal bool OnObjectMoved(int objectid)
         {
-            OnObjectMoved(GlobalObject.FindOrCreate(objectid), EventArgs.Empty);
+            var @object = GlobalObject.Find(objectid);
+
+            if (@object == null)
+                return true;
+
+            OnObjectMoved(@object, EventArgs.Empty);
 
             return true;
         }
 
         internal bool OnPlayerObjectMoved(int playerid, int objectid)
         {
-            OnPlayerObjectMoved(PlayerObject.FindOrCreate(BasePlayer.FindOrCreate(playerid), objectid), EventArgs.Empty);
+            var @object = PlayerObject.Find(BasePlayer.FindOrCreate(playerid), objectid);
+
+            if (@object == null)
+                return true;
+
+            OnPlayerObjectMoved(@object, EventArgs.Empty);
 
             return true;
         }
 
         internal bool OnPlayerPickUpPickup(int playerid, int pickupid)
         {
-            OnPlayerPickUpPickup(Pickup.FindOrCreate(pickupid), new PlayerEventArgs(BasePlayer.FindOrCreate(playerid)));
+            var pickup = Pickup.Find(pickupid);
+
+            if (pickup == null)
+                return true;
+
+            OnPlayerPickUpPickup(pickup, new PlayerEventArgs(BasePlayer.FindOrCreate(playerid)));
 
             return true;
         }
 
         internal bool OnVehicleMod(int playerid, int vehicleid, int componentid)
         {
+            var vehicle = BaseVehicle.Find(vehicleid);
+
+            if (vehicle == null)
+                return true;
+
             var args = new VehicleModEventArgs(BasePlayer.FindOrCreate(playerid), componentid);
 
-            OnVehicleMod(BaseVehicle.FindOrCreate(vehicleid), args);
+            OnVehicleMod(vehicle, args);
 
             return !args.PreventPropagation;
         }
@@ -236,7 +271,12 @@ namespace SampSharp.GameMode
 
         internal bool OnVehiclePaintjob(int playerid, int vehicleid, int paintjobid)
         {
-            OnVehiclePaintjobApplied(BaseVehicle.FindOrCreate(vehicleid),
+            var vehicle = BaseVehicle.Find(vehicleid);
+
+            if (vehicle == null)
+                return true;
+
+            OnVehiclePaintjobApplied(vehicle,
                 new VehiclePaintjobEventArgs(BasePlayer.FindOrCreate(playerid), paintjobid));
 
 
@@ -245,16 +285,24 @@ namespace SampSharp.GameMode
 
         internal bool OnVehicleRespray(int playerid, int vehicleid, int color1, int color2)
         {
-            OnVehicleResprayed(BaseVehicle.FindOrCreate(vehicleid),
-                new VehicleResprayedEventArgs(BasePlayer.FindOrCreate(playerid), color1, color2));
+            var vehicle = BaseVehicle.Find(vehicleid);
+
+            if (vehicle == null)
+                return true;
+
+            OnVehicleResprayed(vehicle, new VehicleResprayedEventArgs(BasePlayer.FindOrCreate(playerid), color1, color2));
 
             return true;
         }
 
         internal bool OnVehicleDamageStatusUpdate(int vehicleid, int playerid)
         {
-            OnVehicleDamageStatusUpdated(BaseVehicle.FindOrCreate(vehicleid),
-                new PlayerEventArgs(BasePlayer.FindOrCreate(playerid)));
+            var vehicle = BaseVehicle.Find(vehicleid);
+
+            if (vehicle == null)
+                return true;
+
+            OnVehicleDamageStatusUpdated(vehicle, new PlayerEventArgs(BasePlayer.FindOrCreate(playerid)));
 
             return true;
         }
@@ -262,9 +310,14 @@ namespace SampSharp.GameMode
         internal bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX,
             float newY, float newZ, float velX, float velY, float velZ)
         {
+            var vehicle = BaseVehicle.Find(vehicleid);
+
+            if (vehicle == null)
+                return true;
+
             var args = new UnoccupiedVehicleEventArgs(BasePlayer.FindOrCreate(playerid), passengerSeat,
                 new Vector3(newX, newY, newZ), new Vector3(velX, velY, velZ));
-            OnUnoccupiedVehicleUpdated(BaseVehicle.FindOrCreate(vehicleid), args);
+            OnUnoccupiedVehicleUpdated(vehicle, args);
 
             return !args.PreventPropagation;
         }
@@ -333,24 +386,37 @@ namespace SampSharp.GameMode
 
         internal bool OnVehicleStreamIn(int vehicleid, int forplayerid)
         {
-            OnVehicleStreamIn(BaseVehicle.FindOrCreate(vehicleid),
-                new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
+            var vehicle = BaseVehicle.Find(vehicleid);
+
+            if (vehicle == null)
+                return true;
+
+            OnVehicleStreamIn(vehicle, new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
 
         internal bool OnVehicleStreamOut(int vehicleid, int forplayerid)
         {
-            OnVehicleStreamOut(BaseVehicle.FindOrCreate(vehicleid),
-                new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
+            var vehicle = BaseVehicle.Find(vehicleid);
+
+            if (vehicle == null)
+                return true;
+
+            OnVehicleStreamOut(vehicle, new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
 
-        internal bool OnTrailerUpdate(int playerId, int vehicleId)
+        internal bool OnTrailerUpdate(int playerId, int vehicleid)
         {
+            var vehicle = BaseVehicle.Find(vehicleid);
+
+            if (vehicle == null)
+                return true;
+
             var args = new TrailerEventArgs(BasePlayer.FindOrCreate(playerId));
-            OnTrailerUpdate(BaseVehicle.FindOrCreate(vehicleId), args);
+            OnTrailerUpdate(vehicle, args);
 
             return !args.PreventPropagation;
         }
@@ -390,10 +456,13 @@ namespace SampSharp.GameMode
 
         internal bool OnPlayerClickTextDraw(int playerid, int clickedid)
         {
+            var clicked = clickedid == TextDraw.InvalidId ? null : TextDraw.Find(clickedid);
+
+            if (clickedid != TextDraw.InvalidId && clicked == null)
+                return true;
+
             var player = BasePlayer.FindOrCreate(playerid);
-            OnPlayerClickTextDraw(player,
-                new ClickTextDrawEventArgs(player,
-                    clickedid == TextDraw.InvalidId ? null : TextDraw.FindOrCreate(clickedid)));
+            OnPlayerClickTextDraw(player, new ClickTextDrawEventArgs(player, clicked));
 
             return true;
         }
@@ -401,10 +470,13 @@ namespace SampSharp.GameMode
         internal bool OnPlayerClickPlayerTextDraw(int playerid, int playertextid)
         {
             var player = BasePlayer.FindOrCreate(playerid);
-            OnPlayerClickPlayerTextDraw(player,
-                new ClickPlayerTextDrawEventArgs(player, playertextid == PlayerTextDraw.InvalidId
-                    ? null
-                    : PlayerTextDraw.FindOrCreate(player, playertextid)));
+
+            var clicked = playertextid == PlayerTextDraw.InvalidId ? null : PlayerTextDraw.Find(player, playertextid);
+
+            if (playertextid != TextDraw.InvalidId && clicked == null)
+                return true;
+
+            OnPlayerClickPlayerTextDraw(player, new ClickPlayerTextDrawEventArgs(player, clicked));
 
             return true;
         }
@@ -425,15 +497,24 @@ namespace SampSharp.GameMode
             var player = BasePlayer.FindOrCreate(playerid);
             if (playerobject)
             {
+                var @object = PlayerObject.FindOrCreate(player, objectid);
+
+                if (@object == null)
+                    return true;
+
                 OnPlayerEditPlayerObject(player,
-                    new EditPlayerObjectEventArgs(player, PlayerObject.FindOrCreate(player, objectid),
-                        (EditObjectResponse) response, new Vector3(fX, fY, fZ), new Vector3(fRotX, fRotY, fRotZ)));
+                    new EditPlayerObjectEventArgs(player, @object, (EditObjectResponse) response,
+                        new Vector3(fX, fY, fZ), new Vector3(fRotX, fRotY, fRotZ)));
             }
             else
             {
+                var @object = GlobalObject.FindOrCreate(objectid);
+
+                if (@object == null)
+                    return true;
+
                 OnPlayerEditGlobalObject(player,
-                    new EditGlobalObjectEventArgs(player, GlobalObject.FindOrCreate(objectid),
-                        (EditObjectResponse) response,
+                    new EditGlobalObjectEventArgs(player, @object, (EditObjectResponse) response,
                         new Vector3(fX, fY, fZ), new Vector3(fRotX, fRotY, fRotZ)));
             }
 
@@ -458,19 +539,29 @@ namespace SampSharp.GameMode
             switch ((ObjectType) type)
             {
                 case ObjectType.GlobalObject:
-                    OnPlayerSelectGlobalObject(BasePlayer.FindOrCreate(playerid),
-                        new SelectGlobalObjectEventArgs(BasePlayer.FindOrCreate(playerid),
-                            GlobalObject.FindOrCreate(objectid), modelid,
-                            new Vector3(fX, fY, fZ)));
-                    break;
-                case ObjectType.PlayerObject:
-                    var player = BasePlayer.FindOrCreate(playerid);
+                {
+                    var @object = GlobalObject.FindOrCreate(objectid);
 
-                    OnPlayerSelectPlayerObject(player,
-                        new SelectPlayerObjectEventArgs(BasePlayer.FindOrCreate(playerid),
-                            PlayerObject.FindOrCreate(player, objectid), modelid,
-                            new Vector3(fX, fY, fZ)));
+                    if (@object == null)
+                        return true;
+
+                        var player = BasePlayer.FindOrCreate(playerid);
+
+                        OnPlayerSelectGlobalObject(player,     new SelectGlobalObjectEventArgs(player, @object, modelid,  new Vector3(fX, fY, fZ)));
                     break;
+                }
+                case ObjectType.PlayerObject:
+                    {
+                        var player = BasePlayer.FindOrCreate(playerid);
+
+                        var @object = PlayerObject.FindOrCreate(player, objectid);
+
+                    if (@object == null)
+                        return true;
+
+                    OnPlayerSelectPlayerObject(player,  new SelectPlayerObjectEventArgs(player, @object, modelid,  new Vector3(fX, fY, fZ)));
+                    break;
+                }
             }
 
             return true;
@@ -496,29 +587,48 @@ namespace SampSharp.GameMode
 
         internal bool OnVehicleSirenStateChange(int playerid, int vehicleid, bool newstate)
         {
-            OnVehicleSirenStateChange(BaseVehicle.FindOrCreate(vehicleid),
-                new SirenStateEventArgs(BasePlayer.FindOrCreate(playerid), newstate));
+            var vehicle = BaseVehicle.Find(vehicleid);
+
+            if (vehicle == null)
+                return true;
+
+            OnVehicleSirenStateChange(vehicle, new SirenStateEventArgs(BasePlayer.FindOrCreate(playerid), newstate));
+
             return true;
         }
 
         internal bool OnActorStreamIn(int actorid, int forplayerid)
         {
-            OnActorStreamIn(Actor.FindOrCreate(actorid), new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
+            var actor = Actor.Find(actorid);
+
+            if (actor == null)
+                return true;
+
+            OnActorStreamIn(actor, new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
 
         internal bool OnActorStreamOut(int actorid, int forplayerid)
         {
-            OnActorStreamOut(Actor.FindOrCreate(actorid), new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
+            var actor = Actor.Find(actorid);
+
+            if (actor == null)
+                return true;
+
+            OnActorStreamOut(actor, new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
 
         internal bool OnPlayerGiveDamageActor(int playerid, int damagedActorid, float amount, int weaponid, int bodypart)
         {
-            OnPlayerGiveDamageActor(Actor.FindOrCreate(damagedActorid),
-                new DamageEventArgs(BasePlayer.FindOrCreate(playerid), amount, (Weapon) weaponid, (BodyPart) bodypart));
+            var actor = Actor.Find(damagedActorid);
+
+            if (actor == null)
+                return true;
+
+            OnPlayerGiveDamageActor(actor, new DamageEventArgs(BasePlayer.FindOrCreate(playerid), amount, (Weapon) weaponid, (BodyPart) bodypart));
 
             return true;
         }
