@@ -204,7 +204,7 @@ bool GameMode::Unload() {
     /* Release game mode. */
     mono_gchandle_free(gameModeHandle_);
 
-    gameModeHandle_ = NULL;
+    gameModeHandle_ = 0;
 
     logprintf("Closing images...");
     mono_image_close(gameMode_.image);
