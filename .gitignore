@@ -240,3 +240,7 @@ Makefile
 
 # Sandcastle build files
 /Help
+
+# Cake
+tools/
+!tools/packages.config
