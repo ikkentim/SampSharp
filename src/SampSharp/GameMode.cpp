@@ -450,23 +450,16 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
     for (int i = 0; i < sig.param_count; i++) {
         switch (sig.parameters[i]) {
         case 'd': // integer
-        case 'b': // boolean
             sprintf(sig.format, "%sd", sig.format);
-            break;
-        case 'f': // floating-point
-            sprintf(sig.format, "%sf", sig.format);
             break;
         case 's': { // const string
             sprintf(sig.format, "%ss", sig.format);
             break;
         }
         case 'D': // integer reference
-        case 'B': // boolean reference
-        case 'F': // floating-point reference
             sprintf(sig.format, "%sR", sig.format);
             break;
-        case 'a':
-        case 'v':{ // array of integers or array of floats
+        case 'a': { // array of integers
             if (!sizes_array) {
                 mono_raise_exception(mono_get_exception_invalid_operation(
                     "sizes cannot be null when an array or string "
@@ -502,8 +495,7 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
             }
             break;
         }
-        case 'A':
-        case 'V': { // array of integers reference
+        case 'A': { // array of integers reference
             if (!sizes_array) {
                 mono_raise_exception(mono_get_exception_invalid_operation(
                     "sizes cannot be null when an array or string "
@@ -621,6 +613,7 @@ void GameMode::AddInternalCall(const char * name, const void * method) {
 
 GameMode::ParameterType GameMode::GetParameterType(MonoType *type) {
     char *type_name = mono_type_get_name(type);
+
     if (!strcmp(type_name, "System.Int32")) {
         return PARAM_INT;
     }
