@@ -25,7 +25,6 @@ public:
     }
     static void Load(std::string assemblyDir, std::string configDir,
         std::string traceLevel, std::string file);
-    static void Unload();
 private:
     static bool isLoaded_;
 };

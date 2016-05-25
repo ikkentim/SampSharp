@@ -68,21 +68,21 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
 
     assert(MonoRuntime::IsLoaded());
 
-    /* Build paths based on the specified namespace and class names. */
+    // Build paths based on the specified namespace and class names.
     string dirPath = PathUtil::GetPathInBin("gamemode/");
     string libraryPath = PathUtil::GetPathInBin("gamemode/")
         .append(namespaceName).append(".dll");
     string configPath = PathUtil::GetPathInBin("gamemode/")
         .append(namespaceName).append(".dll.config");
 
-    /* Check for existance of game mode */
+    // Check for existance of game mode.
     std::ifstream ifile(libraryPath.c_str());
     if (!ifile) {
         logprintf("ERROR: library does not exist!");
         return false;
     }
 
-    /* Create an appdomain for the game mode */
+    // Create an appdomain for the game mode.
     char appdomainBuf[32];
     sprintf(appdomainBuf, "sashDomainForBoot%d", bootSequenceNumber_++);
 
@@ -117,14 +117,15 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
 
     if (!baseMode_.klass || strcmp("BaseMode",
         mono_class_get_name(baseMode_.klass)) != 0) {
-        logprintf("ERROR: Parent type of %s::%s is not SampSharp.GameMode::BaseMode!",
+        logprintf("ERROR: Parent type of %s::%s is not "
+            "SampSharp.GameMode::BaseMode!",
             namespaceName.c_str(), className.c_str());
         return false;
     }
 
     baseMode_.image = mono_class_get_image(baseMode_.klass);
 
-    /* Add all internal calls. */
+    // Add all internal calls.
     AddInternalCall("RegisterExtension", (void *)RegisterExtension);
     AddInternalCall("SetTimer", (void *)SetRefTimer);
     AddInternalCall("KillTimer", (void *)KillRefTimer);
@@ -158,13 +159,13 @@ bool GameMode::Unload() {
         return false;
     }
 
-    /* Clear found methods. */
+    // Clear found methods.
     tickMethod_ = NULL;
     paramLengthClass_ = NULL;
     paramLengthGetMethod_ = NULL;
     onCallbackException_ = NULL;
 
-    /* Clear timers. */
+    // Clear timers.
     logprintf("Stopping timers...");
     for (TimerMap::iterator iter = timers_.begin();
         iter != timers_.end(); iter++) {
@@ -176,7 +177,7 @@ bool GameMode::Unload() {
     }
     timers_.clear();
 
-    /* Clear extensions. */
+    // Clear extensions.
     logprintf("Unloading extensions...");
     for (ExtensionList::iterator iter = extensions_.begin();
         iter != extensions_.end(); iter++) {
@@ -184,7 +185,7 @@ bool GameMode::Unload() {
     }
     extensions_.clear();
 
-    /* Clear callbacks. */
+    // Clear callbacks.
     logprintf("Clearing callbacks table...");
     for (CallbackMap::iterator iter = callbacks_.begin();
         iter != callbacks_.end(); iter++) {
@@ -193,7 +194,7 @@ bool GameMode::Unload() {
     }
     callbacks_.clear();
 
-    /* Dispose of game mode. */
+    // Dispose of game mode.
     mono_thread_attach(domain_);
 
     MonoMethod *method = LoadEvent("Dispose", 0);
@@ -203,7 +204,7 @@ bool GameMode::Unload() {
         CallEvent(method, gameModeHandle_, NULL, NULL);
     }
 
-    /* Release game mode. */
+    // Release game mode.
     mono_gchandle_free(gameModeHandle_);
 
     gameModeHandle_ = 0;
@@ -242,7 +243,7 @@ int GameMode::SetRefTimer(int interval, bool repeat, MonoObject *params) {
         return SetTimer(interval, repeat, ProcessTimerTick, NULL);
     }
 
-    /* Stop the GC from collecting the params. */
+    // Stop the GC from collecting the params.
     uint32_t handle = mono_gchandle_new(params, false);
     int id = SetTimer(interval, repeat, ProcessTimerTick, &handle);
 
@@ -251,7 +252,7 @@ int GameMode::SetRefTimer(int interval, bool repeat, MonoObject *params) {
 }
 
 bool GameMode::KillRefTimer(int id) {
-    /* Delete the timer from the map. */
+    // Delete the timer from the map.
     if (timers_.find(id) == timers_.end())
     {
         RefTimer timer = timers_[id];
@@ -302,7 +303,7 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
             "invalid argument count"));
     }
 
-    /* Unbox all mono arguments and store them in the params array. */
+    // Unbox all mono arguments and store them in the params array.
     void *params[MAX_NATIVE_ARGS];
     cell param_value[MAX_NATIVE_ARGS];
     int param_size[MAX_NATIVE_ARGS];
@@ -310,14 +311,14 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
         MonoObject* obj = mono_array_get(args_array, MonoObject *, i);
 
         switch (sig->parameters[i]) {
-        case 'd': /* integer */
+        case 'd': // integer
             params[i] = mono_object_unbox(obj);
             break;
-        case 's': { /* const string */
+        case 's': { // const string
             params[i] = monostring_to_string((MonoString*)obj);
             break;
         }
-        case 'a': { /* array of integers */
+        case 'a': { // array of integers
             MonoArray *values_array = (MonoArray*)obj;
 
             param_size[i] = GET_PAR_SIZE(args_array, sig, i);
@@ -329,23 +330,23 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
             params[i] = value;
             break;
         }
-        case 'D': { /* integer reference */
+        case 'D': { // integer reference
             params[i] = obj
                 ? *(int **)mono_object_unbox(obj)
                 : &param_value[i];
             break;
         }
-        case 'S': /* non-const string (writeable) */ {
+        case 'S': { // non-const string (writeable)
             param_size[i] = GET_PAR_SIZE(args_array, sig, i);
             params[i] = new char[param_size[i] + 1] {'\0'};
             break;
         }
-        case 'A': { /* array of integers reference */
+        case 'A': { // array of integers reference
             param_size[i] = GET_PAR_SIZE(args_array, sig, i);
 
             cell *value = new cell[param_size[i]];
             for (int j = 0; j < param_size[i]; j++) {
-                /* Set default value to int.MinValue */
+                // Set default value to int.MinValue
                 value[j] = std::numeric_limits<int>::min();
             }
             params[i] = value;
@@ -366,25 +367,25 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
      * array. */
     for (int i = 0; i < sig->param_count; i++) {
         switch (sig->parameters[i]) {
-        case 's': /* const string */
-        case 'a': /* array of integers */
+        case 's': // const string
+        case 'a': // array of integers
             delete[] params[i];
             break;
-        case 'D': { /* integer reference */
+        case 'D': { // integer reference
             int result = *(int *)params[i];
             MonoObject *obj = mono_value_box(mono_domain_get(),
                 mono_get_int32_class(), &result);
             mono_array_set(args_array, MonoObject*, i, obj);
             break;
         }
-        case 'S': { /* non-const string (writeable) */
+        case 'S': { // non-const string (writeable)
             MonoString *str = string_to_monostring((char *)params[i],
                 param_size[i]);
             mono_array_set(args_array, MonoString *, i, str);
             delete[] params[i];
             break;
         }
-        case 'A': { /* array of integers reference */
+        case 'A': { // array of integers reference
             cell *param_array = (cell *)params[i];
             MonoArray *arr = mono_array_new(mono_domain_get(),
                 mono_get_int32_class(), param_size[i]);
@@ -414,7 +415,7 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
         return ERR_EXCEPTION;
     }
 
-    /* Check whether the parameters count is less than MAX_NATIVE_ARGS. */
+    // Check whether the parameters count is less than MAX_NATIVE_ARGS.
     sig.param_count = !format_string ? 0 : mono_string_length(format_string);
     if (sig.param_count >= MAX_NATIVE_ARGS) {
         mono_raise_exception(mono_get_exception_invalid_operation(
@@ -437,7 +438,7 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
 		mono_free(utf8_format_string);
 	}
 
-    /* Find the specified native. If it wasn't found throw an exception. */
+    // Find the specified native. If it wasn't found throw an exception.
     sig.native = sampgdk::FindNative(sig.name);
     if (!sig.native) {
         mono_raise_exception(mono_get_exception_invalid_operation(
@@ -445,27 +446,27 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
         return ERR_EXCEPTION;
     }
 
-    /* Validate the passed format and create the amx format string. */
+    // Validate the passed format and create the amx format string.
     for (int i = 0; i < sig.param_count; i++) {
         switch (sig.parameters[i]) {
-        case 'd': /* integer */
-        case 'b': /* boolean */
+        case 'd': // integer
+        case 'b': // boolean
             sprintf(sig.format, "%sd", sig.format);
             break;
-        case 'f': /* floating-point */
+        case 'f': // floating-point
             sprintf(sig.format, "%sf", sig.format);
             break;
-        case 's': { /* const string */
+        case 's': { // const string
             sprintf(sig.format, "%ss", sig.format);
             break;
         }
-        case 'D': /* integer reference */
-        case 'B': /* boolean reference */
-        case 'F': /* floating-point reference */
+        case 'D': // integer reference
+        case 'B': // boolean reference
+        case 'F': // floating-point reference
             sprintf(sig.format, "%sR", sig.format);
             break;
         case 'a':
-        case 'v':{ /* array of integers or array of floats */
+        case 'v':{ // array of integers or array of floats
             if (!sizes_array) {
                 mono_raise_exception(mono_get_exception_invalid_operation(
                     "sizes cannot be null when an array or string "
@@ -483,7 +484,7 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
             }
             break;
         }
-        case 'S': /* non-const string (writeable) */ {
+        case 'S': { // non-const string (writeable)
             if (!sizes_array) {
                 mono_raise_exception(mono_get_exception_invalid_operation(
                     "sizes cannot be null when an array or string "
@@ -502,7 +503,7 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
             break;
         }
         case 'A':
-        case 'V': { /* array of integers reference */
+        case 'V': { // array of integers reference
             if (!sizes_array) {
                 mono_raise_exception(mono_get_exception_invalid_operation(
                     "sizes cannot be null when an array or string "
@@ -581,15 +582,12 @@ void GameMode::ProcessTimerTick(int timerid, void *data) {
 
     CallEvent(method, gameModeHandle_, args, NULL);
 
-    /*
-    * After OnTimerTick has been called and the timer is not repeating,
-    * drop the handle and erase the timer from the map.
-    */
+    /* After OnTimerTick has been called and the timer is not repeating,
+     * drop the handle and erase the timer from the map.
+     */
     if (timer && !timer->repeating) {
         if (args[1]) {
-            /*
-             * Only free the handle, if it was asociated with an object.
-             */
+            // Only free the handle if it was asociated with an object.
             mono_gchandle_free(timer->handle);
         }
         timers_.erase(timerid);
@@ -609,10 +607,10 @@ void GameMode::ProcessTick() {
 }
 
 void GameMode::AddInternalCall(const char * name, const void * method) {
-    /* Namespace to which every internal call is registered. */
+    // Namespace to which every internal call is registered.
     static const char * namespase = "SampSharp.GameMode.API.Interop";
 
-    /* Construct combination of 'namespace::method'. */
+    // Construct combination of 'namespace::method'.
     char * call = new char[strlen(namespase) + 2 /* :: */ + strlen(name) + 1];
     sprintf(call, "%s::%s", namespase, name);
 
@@ -711,7 +709,7 @@ MonoMethod *GameMode::FindMethodForCallback(const char *name,
     int param_count, uint32_t &handle) {
     MonoMethod *method;
 
-    /* Look in the game mode. */
+    // Look in the game mode.
     method = FindMethodForCallbackInClass(name, param_count, gameMode_.klass);
 
     if (method) {
@@ -719,7 +717,7 @@ MonoMethod *GameMode::FindMethodForCallback(const char *name,
         return method;
     }
 
-    /* Look in the extensions. */
+    // Look in the extensions.
     for (ExtensionList::iterator iter = extensions_.begin();
         iter != extensions_.end(); iter++) {
         MonoClass *klass = mono_object_get_class(
@@ -803,9 +801,10 @@ void GameMode::ProcessPublicCall(AMX *amx, const char *name, cell *params,
     }
 
     if (signature = callbacks_[name]) {
-        /* Handle calls without parameters. */
+        // Handle calls without parameters.
         if (!param_count) {
-            int retint = CallEvent(signature->method, signature->handle, NULL, NULL);
+            int retint = CallEvent(signature->method, signature->handle, NULL,
+                NULL);
 
             /* If there's a cell allocated for the return value and
              * the callback was executed successfuly, fill the cell with
@@ -817,8 +816,7 @@ void GameMode::ProcessPublicCall(AMX *amx, const char *name, cell *params,
             return;
         }
 
-        /* Handle calls with parameters. */
-
+        // Handle calls with parameters.
         void *args[MAX_CALLBACK_PARAM_COUNT];
         int len = 0;
         cell *addr = NULL;
@@ -913,7 +911,8 @@ void GameMode::ProcessPublicCall(AMX *amx, const char *name, cell *params,
             }
         }
 
-        int retint = CallEvent(signature->method, signature->handle, args, NULL);
+        int retint = CallEvent(signature->method, signature->handle, args,
+            NULL);
 
         if (retval != NULL && retint != -1) {
             *retval = retint;
@@ -937,13 +936,14 @@ void GameMode::PrintException(const char *methodname, MonoObject *exception) {
     char *stacktrace = mono_string_to_utf8(
         mono_object_to_string(exception, NULL));
 
-    /* Print error to console. */
-    /* Cannot print the exception to logprintf; the buffer is too small. */
+    /* Print error to console. Cannot print the exception to logprintf; the
+     * buffer is too small.
+     */
     std::cout << "[SampSharp] Exception thrown during execution of "
         << methodname << ":" << std::endl
         << stacktrace << std::endl;
 
-    /* Append error to log file. */
+    // Append error to log file.
     time_t now = time(0);
     char timestamp[32];
     strftime(timestamp, sizeof(timestamp), "[%d/%m/%Y %H:%M:%S]",
@@ -967,14 +967,15 @@ int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params,
         mono_gchandle_get_target(handle), params, &exception);
 
     if (exception) {
-        /* Return the exception. */
+        // Return the exception.
         if (exception_return) {
             *exception_return = exception;
         }
 
-        /* Find callback handler if it has not been found previously. */
-        if (isLoaded_ && !onCallbackException_ && mono_class_get_method_from_name(
-            baseMode_.klass, "OnCallbackException", 1)) {
+        // Find callback handler if it has not been found previously.
+        if (isLoaded_ && !onCallbackException_ &&
+            mono_class_get_method_from_name(baseMode_.klass,
+                "OnCallbackException", 1)) {
 
             void *method_iter = NULL;
             while ((onCallbackException_ = mono_class_get_methods(
@@ -995,7 +996,7 @@ int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params,
             }
         }
 
-        /* Invoke the callback handler if it exists. */
+        // Invoke the callback handler if it exists.
         if (isLoaded_ && onCallbackException_) {
             MonoObject *exception2;
             MonoObject *response2 = mono_runtime_invoke(onCallbackException_,
@@ -1014,7 +1015,7 @@ int GameMode::CallEvent(MonoMethod *method, uint32_t handle, void **params,
         return -1;
     }
 
-    /* Cast the response of the event to an integer. */
+    // Cast the response of the event to an integer.
     if (!response) {
         return -1;
     }

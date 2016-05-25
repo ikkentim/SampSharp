@@ -44,16 +44,3 @@ void MonoRuntime::Load(std::string assemblyDir, std::string configDir,
 
     isLoaded_ = true;
 }
-
-void MonoRuntime::Unload() {
-    if (!isLoaded_) {
-        return;
-    }
-
-    /* For some reason, the process crashes when trying to cleanup mono.
-     * For now, lets just not cleanup.
-     */
-    // mono_jit_cleanup(mono_domain_get());
-
-    // isLoaded_ = false;
-}

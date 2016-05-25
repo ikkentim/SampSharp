@@ -39,13 +39,13 @@ AMX *signal_amx;
 void loadGamemode() {
     if (GameMode::IsLoaded()) return;
 
-    /* Load empty filterscript */
+    // Load empty filterscript.
     if (!filterscript_loaded) {
         SendRconCommand("loadfs empty");
         filterscript_loaded = true;
     }
 
-    /* Load mono */
+    // Load mono.
     if (!MonoRuntime::IsLoaded()) {
         MonoRuntime::Load(Config::GetMonoAssemblyDir(),
             Config::GetMonoConfigDir(), Config::GetTraceLevel(),
@@ -53,11 +53,11 @@ void loadGamemode() {
             .append(Config::GetGameModeNameSpace()).append(".dll"));
     }
 
-    /* Set initial codepage to the configured one. */
+    // Set initial codepage to the configured one.
     int codepage = Config::GetCodepage();
     set_codepage(codepage);
 
-    /* Load game mode */
+    // Load game mode.
     string namespaceName = Config::GetGameModeNameSpace();
     string className = Config::GetGameModeClass();
 
@@ -91,6 +91,77 @@ void unloadGamemode() {
     logprintf("");
 }
 
+bool HandleRconCommands(AMX *amx, cell *params, cell *retval) {
+    char buf[64];
+    cell* addr;
+    amx_GetAddr(amx, params[1], &addr);
+    amx_GetString(buf, addr, 0, 64);
+
+    if (!strcmp(buf, "sampsharpstop")) {
+        if (!GameMode::IsLoaded()) {
+            logprintf("A gamemode must be loaded in order to stop.");
+            return false;
+        }
+
+        logprintf("Stopping SampSharp...");
+        run_signal = -1;
+        signal_amx = amx;
+
+        return false;
+    }
+    if (!strcmp(buf, "sampsharpstart")) {
+        if (!initial_load) {
+            logprintf("OnGameModeInit needs to be called first.");
+            return false;
+        }
+        if (GameMode::IsLoaded()) {
+            logprintf("You need to stop the gamemode before you can start it.");
+            return false;
+        }
+
+        logprintf("Starting SampSharp...");
+        run_signal = 1;
+        signal_amx = amx;
+
+        return false;
+    }
+}
+
+void ProcessSignals() {
+    // Process run signals.
+    if (run_signal == -1) {
+        cell noParams[1];
+        noParams[0] = 0;
+        cell unhandledRetval;
+
+        GameMode::ProcessPublicCall(signal_amx, "OnGameModeExit", noParams,
+            &unhandledRetval);
+
+        unloadGamemode();
+
+        logprintf("");
+        logprintf("=================================");
+        logprintf("> SampSharp gamemode has stopped!");
+        logprintf("> Replace your gamemode files and run `sampsharp start`");
+        logprintf("=================================");
+        logprintf("");
+
+        run_signal = 0;
+    }
+    else if (run_signal == 1) {
+        loadGamemode();
+
+        cell noParams[1];
+        noParams[0] = 0;
+        cell unhandledRetval;
+
+        GameMode::ProcessPublicCall(signal_amx, "OnGameModeInit", noParams,
+            &unhandledRetval);
+
+        run_signal = 0;
+    }
+}
+
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
     return sampgdk::Supports() | SUPPORTS_PROCESS_TICK;
 }
@@ -112,85 +183,28 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
     GameMode::Unload();
-    MonoRuntime::Unload();
     sampgdk::Unload();
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
     GameMode::ProcessTick();
     sampgdk::ProcessTick();
-
-    // Process run signals
-    if (run_signal == -1) {
-        cell noParams[1];
-        noParams[0] = 0;
-        cell unhandledRetval;
-        GameMode::ProcessPublicCall(signal_amx, "OnGameModeExit", noParams, &unhandledRetval);
-
-        unloadGamemode();
-
-        logprintf("");
-        logprintf("=================================");
-        logprintf("> SampSharp gamemode has stopped!");
-        logprintf("> Replace your gamemode files and run `sampsharp start`");
-        logprintf("=================================");
-        logprintf("");
-    }
-    else if (run_signal == 1) {
-        loadGamemode();
-
-        cell noParams[1];
-        noParams[0] = 0;
-        cell unhandledRetval;
-        GameMode::ProcessPublicCall(signal_amx, "OnGameModeInit", noParams, &unhandledRetval);
-    }
-
-    run_signal = 0;
+    ProcessSignals();
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     cell *params, cell *retval) {
     if (!strcmp(name, "OnRconCommand") && params && params[0] == sizeof(cell)) {
-        char buf[64];
-        cell* addr;
-        amx_GetAddr(amx, params[1], &addr);
-        amx_GetString(buf, addr, 0, 64);
-
-        if (!strcmp(buf, "sampsharpstop")) {
-            if (!GameMode::IsLoaded()) {
-                logprintf("A gamemode must be loaded in order to stop.");
-                return false;
-            }
-
-            logprintf("Stopping SampSharp...");
-            run_signal = -1;
-            signal_amx = amx;
-
-            return false;
-        }
-        if (!strcmp(buf, "sampsharpstart")) {
-            if (!initial_load) {
-                logprintf("OnGameModeInit needs to be called first.");
-                return false;
-            }
-            if (GameMode::IsLoaded()) {
-                logprintf("You need to stop the gamemode before you can start it.");
-                return false;
-            }
-
-            logprintf("Starting SampSharp...");
-            run_signal = 1;
-            signal_amx = amx;
-
+        if (!HandleRconCommands(amx, params, retval)) {
             return false;
         }
     }
-    if (!strcmp(name, "OnGameModeInit")) {
+    else if (!strcmp(name, "OnGameModeInit")) {
         loadGamemode();
         initial_load = true;
     }
     else if (GameMode::IsLoaded() && !strcmp(name, "OnGameModeExit")) {
-        /* Process call before actually unloading the gamemode. */
+        // Process call before actually unloading the gamemode.
         GameMode::ProcessPublicCall(amx, name, params, retval);
 
         unloadGamemode();
