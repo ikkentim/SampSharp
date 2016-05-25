@@ -121,6 +121,7 @@ private:
     static MonoMethod *paramLengthGetMethod_;
     static int bootSequenceNumber_;
     static MonoDomain *previousDomain_;
+    static MonoAssembly *assemby_;
 
     /* Internal gamemode functions. */
 private:
@@ -169,7 +170,6 @@ private:
     static int LoadNative(MonoString *name, MonoString *format,
         MonoArray *sizes_array);
     static int InvokeNative(int handle, MonoArray *arguments);
-    static float InvokeNativeFloat(int handle, MonoArray *arguments);
     static bool NativeExists(MonoString *name);
 
 };

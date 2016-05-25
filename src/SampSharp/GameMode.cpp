@@ -26,6 +26,7 @@
 #include <mono/metadata/threads.h>
 #include <mono/metadata/exception.h>
 #include <mono/metadata/debug-helpers.h>
+#include <mono/metadata/mono-gc.h>
 #include "unicode.h"
 #include "MonoRuntime.h"
 #include "PathUtil.h"
@@ -56,6 +57,8 @@ MonoMethod *GameMode::onCallbackException_;
 MonoMethod *GameMode::tickMethod_;
 MonoClass *GameMode::paramLengthClass_;
 MonoMethod *GameMode::paramLengthGetMethod_;
+MonoAssembly *GameMode::assemby_;
+
 int GameMode::bootSequenceNumber_;
 
 bool GameMode::Load(std::string namespaceName, std::string className) {
@@ -82,7 +85,6 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     /* Create an appdomain for the game mode */
     char appdomainBuf[32];
     sprintf(appdomainBuf, "sashDomainForBoot%d", bootSequenceNumber_++);
-    logprintf("Creating domain %s...", appdomainBuf);
 
     previousDomain_ = mono_domain_get();
     domain_ = mono_domain_create_appdomain(appdomainBuf, NULL);
@@ -93,8 +95,8 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     mono_domain_set_config(domain_, dirPath.c_str(), configPath.c_str());
 
     logprintf("Loading image...");
-    gameMode_.image = mono_assembly_get_image(
-        mono_assembly_open(libraryPath.c_str(), NULL));
+    assemby_ = mono_domain_assembly_open(domain_, libraryPath.c_str());
+    gameMode_.image = mono_assembly_get_image(assemby_);
 
     if (!gameMode_.image) {
         logprintf("ERROR: Couldn't open image!");
@@ -115,7 +117,7 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
 
     if (!baseMode_.klass || strcmp("BaseMode",
         mono_class_get_name(baseMode_.klass)) != 0) {
-        logprintf("ERROR: Parent type of %s::%s is not  SampSharp.GameMode::BaseMode!",
+        logprintf("ERROR: Parent type of %s::%s is not SampSharp.GameMode::BaseMode!",
             namespaceName.c_str(), className.c_str());
         return false;
     }
@@ -210,6 +212,9 @@ bool GameMode::Unload() {
     mono_image_close(gameMode_.image);
     mono_image_close(baseMode_.image);
 
+    logprintf("Collecting garbage...");
+    mono_gc_collect(mono_gc_max_generation());
+
     logprintf("Unloading domain...");
     mono_domain_unload(domain_);
 
@@ -220,6 +225,7 @@ bool GameMode::Unload() {
     baseMode_.klass = NULL;
 
     domain_ = NULL;
+    assemby_ = NULL;
 
     mono_domain_set(previousDomain_, 1);
     mono_thread_attach(previousDomain_);
@@ -278,11 +284,6 @@ void GameMode::Print(MonoString *str) {
     char *buffer = monostring_to_string(str);
     sampgdk_logprintf("%s", buffer);
     delete[] buffer;
-}
-
-float GameMode::InvokeNativeFloat(int handle, MonoArray * args_array) {
-    cell r = (cell)InvokeNative(handle, args_array);
-    return amx_ctof(r);
 }
 
 int GameMode::InvokeNative(int handle, MonoArray *args_array) {
