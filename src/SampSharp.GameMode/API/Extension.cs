@@ -53,6 +53,7 @@ namespace SampSharp.GameMode.API
         /// <param name="controllerCollection">The controller collection.</param>
         public virtual void LoadControllers(BaseMode gameMode, ControllerCollection controllerCollection)
         {
+            gameMode.AutoloadControllersForAssembly(GetType().Assembly);
         }
 
         /// <summary>

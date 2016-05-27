@@ -110,37 +110,21 @@ namespace SampSharp.GameMode
 
         #region Methods of BaseMode
 
+        public void AutoloadControllersForAssembly(Assembly assembly)
+        {
+            foreach (var type in assembly.GetExportedTypes()
+                .Where(t => t.IsClass &&
+                            typeof (IController).IsAssignableFrom(t) &&
+                            t.GetCustomAttribute<ControllerAttribute>() != null))
+            {
+                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Autoloading type {type}...");
+                _controllers.Override(Activator.CreateInstance(type) as IController);
+            }
+        }
         private void AutoloadControllers()
         {
-            var assemblies = new[] {GetType().Assembly, typeof (BaseMode).Assembly}
-                .Concat(_extensions.Select(e => e.GetType().Assembly))
-                .Distinct()
-                .ToArray();
-
-            var types = new List<Type>();
-            foreach (var controllerType in assemblies.SelectMany(a => a.GetExportedTypes())
-                .Where(t => t.IsClass && typeof (IController).IsAssignableFrom(t) && t.GetCustomAttribute<ControllerAttribute>() != null))
-            {
-                // If controllerType or subclass of controllerType is already in types, continue.
-                if (types.Any(t => t == controllerType || controllerType.IsAssignableFrom(t)))
-                {
-                    FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Controller of type {controllerType} is not autoloaded because a subclass of it will already be loaded.");
-                    continue;
-                }
-
-                // Remove all types in types where type is supertype of controllerType.
-                foreach (var t in types.Where(t => t.IsAssignableFrom(controllerType)).ToArray())
-                {
-                    FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"No longer autoloading type {controllerType} because a subclass of it is going to be loaded.");
-                    types.Remove(t);
-                }
-
-                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Autoloading controller of type {controllerType}.");
-                types.Add(controllerType);
-            }
-
-            foreach (var type in types)
-                _controllers.Add(Activator.CreateInstance(type) as IController);
+            AutoloadControllersForAssembly(typeof(BaseMode).Assembly);
+            AutoloadControllersForAssembly(GetType().Assembly);
         }
 
         private void LoadServicesAndControllers()
