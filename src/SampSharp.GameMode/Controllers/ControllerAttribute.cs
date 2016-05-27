@@ -13,12 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.Controllers;
+using System;
 
-namespace TestMode.Tests
+namespace SampSharp.GameMode.Controllers
 {
-    public interface IControllerTest
+    /// <summary>
+    /// Indicates the controller this attribute was attached to should automatically be loaded.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
+    public class ControllerAttribute : Attribute
     {
-        void LoadControllers(ControllerCollection controllers);
     }
 }

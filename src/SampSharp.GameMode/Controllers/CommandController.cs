@@ -22,6 +22,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all commands.
     /// </summary>
+    [Controller]
     public class CommandController : IEventListener, IGameServiceProvider
     {
         /// <summary>

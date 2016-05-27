@@ -22,6 +22,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing sync requests.
     /// </summary>
+    [Controller]
     public sealed class SyncController : IEventListener
     {
         private static bool _waiting;

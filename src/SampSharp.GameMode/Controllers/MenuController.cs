@@ -22,6 +22,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all menu actions.
     /// </summary>
+    [Controller]
     public class MenuController : IEventListener
     {
         /// <summary>

@@ -20,6 +20,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing delays.
     /// </summary>
+    [Controller]
     public class DelayController : IEventListener
     {
         /// <summary>

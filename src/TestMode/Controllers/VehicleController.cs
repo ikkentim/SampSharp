@@ -18,6 +18,7 @@ using TestMode.World;
 
 namespace TestMode.Controllers
 {
+    [Controller]
     public class VehicleController : BaseVehicleController
     {
         public override void RegisterTypes()

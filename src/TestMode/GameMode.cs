@@ -66,18 +66,7 @@ namespace TestMode
             Console.WriteLine(Server.NetworkStats);
             base.OnInitialized(args);
         }
-
-        protected override void LoadControllers(ControllerCollection controllers)
-        {
-            base.LoadControllers(controllers);
-
-            controllers.Override(new PlayerController());
-            controllers.Override(new VehicleController());
-
-            foreach (var test in _tests.OfType<IControllerTest>())
-                test.LoadControllers(controllers);
-        }
-
+        
         /// <summary>
         ///     Raises the <see cref="E:CallbackException" /> event.
         /// </summary>

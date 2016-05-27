@@ -23,6 +23,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all player-textdraw actions.
     /// </summary>
+    [Controller]
     public class PlayerTextDrawController : Disposable, IEventListener, ITypeProvider
     {
         /// <summary>

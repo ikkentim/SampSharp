@@ -73,6 +73,7 @@
     </Compile>
     <Compile Include="Controllers\ActorController.cs" />
     <Compile Include="Controllers\CommandController.cs" />
+    <Compile Include="Controllers\ControllerAttribute.cs" />
     <Compile Include="Controllers\ControllerCollection.cs" />
     <Compile Include="Controllers\DelayController.cs" />
     <Compile Include="Controllers\DialogController.cs" />

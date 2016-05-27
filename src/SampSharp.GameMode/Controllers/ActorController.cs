@@ -20,6 +20,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all actor actions.
     /// </summary>
+    [Controller]
     public class ActorController : ITypeProvider, IEventListener
     {
         #region Implementation of IEventListener

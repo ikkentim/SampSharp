@@ -43,7 +43,6 @@
     <Compile Include="Extensions\ExtensionB.cs" />
     <Compile Include="GameMode.cs" />
     <Compile Include="Commands\MyCommand.cs" />
-    <Compile Include="Controllers\MyCommandController.cs" />
     <Compile Include="Commands\MyCommandManager.cs" />
     <Compile Include="Services\ITestService.cs" />
     <Compile Include="Services\ITestServiceA.cs" />
@@ -61,7 +60,6 @@
     <Compile Include="Tests\DialogTest.cs" />
     <Compile Include="Tests\DisposureTest.cs" />
     <Compile Include="Tests\ExtensionTest.cs" />
-    <Compile Include="Tests\IControllerTest.cs" />
     <Compile Include="Tests\ITest.cs" />
     <Compile Include="Tests\KeyHandlerTest.cs" />
     <Compile Include="Tests\MapAndreasTest.cs" />

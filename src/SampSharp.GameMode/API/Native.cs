@@ -79,6 +79,7 @@ namespace SampSharp.GameMode.API
         {
             return _nativeLoader.Get(handle);
         }
+
         /// <summary>
         ///     Loads the delegate fields annotated with a <see cref="NativeAttribute" /> attribute within the assembly of the
         ///     specified type <typeparamref name="T" /> with calls to the desired native function.

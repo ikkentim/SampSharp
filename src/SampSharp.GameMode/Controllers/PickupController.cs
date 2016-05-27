@@ -21,6 +21,7 @@ namespace SampSharp.GameMode.Controllers
     /// <summary>
     ///     A controller processing all pickup actions.
     /// </summary>
+    [Controller]
     public class PickupController : Disposable, IEventListener, ITypeProvider
     {
         /// <summary>
