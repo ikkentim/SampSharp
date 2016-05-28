@@ -14,10 +14,12 @@
 // limitations under the License.
 
 using SampSharp.GameMode.Events;
+using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.World;
 
 namespace TestMode.World
 {
+    [PooledType]
     public class Vehicle : BaseVehicle
     {
         public override void OnPlayerEnter(EnterVehicleEventArgs e)

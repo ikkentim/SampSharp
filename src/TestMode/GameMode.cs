@@ -16,30 +16,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 using SampSharp.GameMode;
-using SampSharp.GameMode.API;
-using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
-using TestMode.Controllers;
-using TestMode.Extensions;
 using TestMode.Tests;
-
-[assembly: SampSharpExtension(typeof (ExtensionA), typeof (ExtensionB))]
-[assembly: SampSharpExtension(typeof (ExtensionB), typeof (ExtensionA))]
 
 namespace TestMode
 {
     public class GameMode : BaseMode
     {
-        #region Tests
-
-        private readonly List<ITest> _tests = new List<ITest>();
-
-        #endregion
-
         #region Overrides of BaseMode
 
         protected override void OnInitialized(EventArgs args)
@@ -55,30 +40,24 @@ namespace TestMode
 
             AddPlayerClass(65, new Vector3(5), 0);
 
-            foreach (var test in _tests)
+            foreach (
+                var test in
+                    GetType()
+                        .Assembly.GetTypes()
+                        .Where(t => t.IsClass)
+                        .Where(typeof (ITest).IsAssignableFrom)
+                        .Select(t => Activator.CreateInstance(t) as ITest))
             {
+                Console.WriteLine();
                 Console.WriteLine("=========");
-                Console.WriteLine("Starting test: {0}", test);
+                Console.WriteLine(test);
+                Console.WriteLine("=========");
                 test.Start(this);
+                Console.WriteLine($"Test {test} completed.");
                 Console.WriteLine();
             }
 
-            Console.WriteLine(Server.NetworkStats);
             base.OnInitialized(args);
-        }
-        
-        /// <summary>
-        ///     Raises the <see cref="E:CallbackException" /> event.
-        /// </summary>
-        /// <param name="e">The <see cref="ExceptionEventArgs" /> instance containing the event data.</param>
-        protected override void OnCallbackException(ExceptionEventArgs e)
-        {
-            Console.WriteLine("[SampSharp] Exception thrown during execution of {0}:", e.Exception.TargetSite.Name);
-
-            Console.WriteLine("{0}: {1}", e.Exception.GetType().FullName, e.Exception.Message);
-            Console.WriteLine(e.Exception.StackTrace);
-            e.Handled = true;
-            base.OnCallbackException(e);
         }
 
         #endregion

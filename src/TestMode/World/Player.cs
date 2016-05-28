@@ -15,11 +15,13 @@
 
 using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
 namespace TestMode.World
 {
+    [PooledType]
     [CommandGroup("playertest")]
     public class Player : BasePlayer
     {

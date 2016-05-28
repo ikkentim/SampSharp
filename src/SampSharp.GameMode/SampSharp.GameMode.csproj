@@ -141,6 +141,7 @@
     <Compile Include="API\Native.cs" />
     <Compile Include="API\NativeAttribute.cs" />
     <Compile Include="Pools\PoolContainer`1.cs" />
+    <Compile Include="Pools\PooledTypeAttribute.cs" />
     <Compile Include="SAMP\Commands\Parameters\ParameterAttribute.cs" />
     <Compile Include="SAMP\Commands\Parameters\CommandParameterInfo.cs" />
     <Compile Include="SAMP\Commands\ParameterTypes\EnumType.cs" />

@@ -19,6 +19,7 @@ using System.Linq;
 using System.Reflection;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.Pools;
 
 namespace SampSharp.GameMode
 {
@@ -34,33 +35,6 @@ namespace SampSharp.GameMode
         ///     Gets the instance.
         /// </summary>
         public static BaseMode Instance { get; private set; }
-
-        #region Implementation of IDisposable
-
-        /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            _controllers.Dispose();
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-        }
-
-        #endregion
-
-        internal void Initialize()
-        {
-            LoadExtensions();
-            
-            // Load natives in game mode and framework.
-            Native.LoadDelegates<BaseMode>();
-            Native.LoadDelegates(GetType());
-
-            LoadServicesAndControllers();
-        }
 
         #region Constructors
 
@@ -90,9 +64,7 @@ namespace SampSharp.GameMode
         }
 
         #endregion
-
-        #region Properties of BaseMode
-
+        
         /// <summary>
         ///     Gets the collection of controllers loaded.
         /// </summary>
@@ -101,14 +73,23 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Gets the <see cref="GameModeServiceContainer" /> holding all the service providers attached to the game mode.
         /// </summary>
-        /// <value>
-        ///     The services.
-        /// </value>
         public virtual GameModeServiceContainer Services { get; } = new GameModeServiceContainer();
+        
+        #region Implementation of IDisposable
+
+        /// <summary>
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            _controllers.Dispose();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
 
         #endregion
-
-        #region Methods of BaseMode
 
         public void AutoloadControllersForAssembly(Assembly assembly)
         {
@@ -121,10 +102,89 @@ namespace SampSharp.GameMode
                 _controllers.Override(Activator.CreateInstance(type) as IController);
             }
         }
+
+        internal void Initialize()
+        {
+            LoadExtensions();
+
+            // Load natives in game mode and framework.
+            Native.LoadDelegates<BaseMode>();
+            Native.LoadDelegates(GetType());
+
+            AutoloadPoolTypes();
+            LoadServicesAndControllers();
+        }
+
+        /// <summary>
+        ///     Loads all controllers into the given ControllerCollection.
+        /// </summary>
+        /// <param name="controllers">The collection to load the default controllers into.</param>
+        protected virtual void LoadControllers(ControllerCollection controllers)
+        {
+            AutoloadControllers();
+
+            foreach (var extension in _extensions)
+                extension.LoadControllers(this, controllers);
+        }
+
         private void AutoloadControllers()
         {
             AutoloadControllersForAssembly(typeof(BaseMode).Assembly);
             AutoloadControllersForAssembly(GetType().Assembly);
+        }
+
+        private void AutoloadPoolTypes()
+        {
+            var types = new List<Type>();
+
+            foreach (var poolType in new[] {typeof (BaseMode), GetType()}.Concat(_extensions.Select(e => e.GetType()))
+                .Select(t => t.Assembly)
+                .Distinct()
+                .SelectMany(a => a.GetTypes())
+                .Where(t => t.IsClass && t.GetCustomAttribute<PooledTypeAttribute>() != null)
+                .Distinct())
+            {
+                // If poolType or subclass of poolType is already in types, continue.
+                if (types.Any(t => t == poolType || poolType.IsAssignableFrom(t)))
+                {
+                    FrameworkLog.WriteLine(FrameworkMessageLevel.Debug,
+                        $"Pool of type {poolType} is not autoloaded because a subclass of it will already be loaded.");
+                    continue;
+                }
+
+                // Remove all types in types where type is supertype of poolType.
+                foreach (var t in types.Where(t => t.IsAssignableFrom(poolType)).ToArray())
+                {
+                    FrameworkLog.WriteLine(FrameworkMessageLevel.Debug,
+                        $"No longer autoloading type {poolType} because a subclass of it is going to be loaded.");
+                    types.Remove(t);
+                }
+
+                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Autoloading pool of type {poolType}.");
+                types.Add(poolType);
+            }
+
+            var poolTypes = new[]
+            {
+                typeof (IdentifiedPool<>),
+                typeof (IdentifiedOwnedPool<,>)
+            };
+            foreach (var type in types)
+            {
+                var pool = type;
+                do
+                {
+                    pool = pool.BaseType;
+                } while (pool != null && (!pool.IsGenericType || !poolTypes.Contains(pool.GetGenericTypeDefinition())));
+
+                if (pool == null)
+                {
+                    FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Skipped autoloading pool of type {type} because it's not a subtype of a pool.");
+                    continue;
+                }
+
+                pool.GetMethod("Register", new[] {typeof (Type)}).Invoke(null, new[] {type});
+            }
         }
 
         private void LoadServicesAndControllers()
@@ -233,18 +293,5 @@ namespace SampSharp.GameMode
             }
         }
 
-        /// <summary>
-        ///     Loads all controllers into the given ControllerCollection.
-        /// </summary>
-        /// <param name="controllers">The collection to load the default controllers into.</param>
-        protected virtual void LoadControllers(ControllerCollection controllers)
-        {
-            AutoloadControllers();
-
-            foreach (var extension in _extensions)
-                extension.LoadControllers(this, controllers);
-        }
-
-        #endregion
     }
 }

@@ -1,4 +1,4 @@
-// SampSharp
+﻿// SampSharp
 // Copyright 2016 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,17 +13,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.Controllers;
-using TestMode.World;
+using System;
 
-namespace TestMode.Controllers
+namespace SampSharp.GameMode.Pools
 {
-    [Controller]
-    public class VehicleController : BaseVehicleController
+    [AttributeUsage(AttributeTargets.Class)]
+    public class PooledTypeAttribute : Attribute
     {
-        public override void RegisterTypes()
-        {
-            Vehicle.Register<Vehicle>();
-        }
     }
 }
