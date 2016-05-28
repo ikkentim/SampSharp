@@ -106,11 +106,7 @@ namespace SampSharp.GameMode
         internal void Initialize()
         {
             LoadExtensions();
-
-            // Load natives in game mode and framework.
-            Native.LoadDelegates<BaseMode>();
-            Native.LoadDelegates(GetType());
-
+            
             AutoloadPoolTypes();
             LoadServicesAndControllers();
         }
@@ -255,10 +251,7 @@ namespace SampSharp.GameMode
             foreach (var assembly in load)
             {
                 var attributes = assembly.GetCustomAttributes<SampSharpExtensionAttribute>();
-
-                if (attributes.Any(a => a.Type == null))
-                    Native.LoadDelegates(assembly);
-
+                
                 foreach (var extensionType in attributes.Select(attribute => attribute.Type))
                 {
                     if (extensionType == null)

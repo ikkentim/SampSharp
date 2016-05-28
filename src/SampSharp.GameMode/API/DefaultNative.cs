@@ -72,37 +72,7 @@ namespace SampSharp.GameMode.API
         {
             return ConvertIntToBool(Invoke(arguments));
         }
-
-        /// <summary>
-        ///     Generates an invoker delegate for the function this instance represents.
-        /// </summary>
-        /// <param name="delegateType">Type of the delegate.</param>
-        /// <returns>The generated invoker delegate.</returns>
-        public Delegate GenerateInvoker(Type delegateType)
-        {
-            var invokeMethod = delegateType.GetMethod("Invoke");
-
-            if (invokeMethod == null)
-                throw new ArgumentException("type is not a delegate", nameof(delegateType));
-
-            if (_parameterTypes.Length != invokeMethod.GetParameters().Length ||
-                _parameterTypes.Zip(invokeMethod.GetParameters(), (n, d) => n == d.ParameterType).Any(v => !v))
-                throw new ArgumentException("Invalid parameter types", nameof(delegateType));
-
-            // Create a dynamic method for the delegate implementation.
-            var dynamicMethod = new DynamicMethod("DynamicCall", invokeMethod.ReturnType, _parameterTypes, typeof(Native));
-
-            // Generate the method
-            if (_parameterTypes.Length != invokeMethod.GetParameters().Length ||
-                _parameterTypes.Zip(invokeMethod.GetParameters(), (n, d) => n == d.ParameterType).Any(v => !v))
-                throw new ArgumentException("Invalid parameter types", nameof(invokeMethod));
-
-            var generator = new NativeILGenerator(this, _parameterTypes, invokeMethod.ReturnType);
-            generator.Generate(dynamicMethod.GetILGenerator());
-
-            return dynamicMethod.CreateDelegate(delegateType);
-        }
-
+        
         #endregion
 
         #region Overrides of Object

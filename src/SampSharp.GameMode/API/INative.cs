@@ -60,12 +60,5 @@ namespace SampSharp.GameMode.API
         /// <param name="arguments">The arguments.</param>
         /// <returns>The return value of the native as a bool.</returns>
         bool InvokeBool(params object[] arguments);
-        
-        /// <summary>
-        ///     Generates an invoker delegate for the function this instance represents.
-        /// </summary>
-        /// <param name="delegateType">Type of the delegate.</param>
-        /// <returns>The generated invoker delegate.</returns>
-        Delegate GenerateInvoker(Type delegateType);
     }
 }

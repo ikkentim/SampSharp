@@ -139,7 +139,6 @@
     <Compile Include="Helpers\VehicleParameterValueHelper.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="API\Native.cs" />
-    <Compile Include="API\NativeAttribute.cs" />
     <Compile Include="Pools\PoolContainer`1.cs" />
     <Compile Include="Pools\PooledTypeAttribute.cs" />
     <Compile Include="SAMP\Commands\Parameters\ParameterAttribute.cs" />
