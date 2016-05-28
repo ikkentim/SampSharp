@@ -22,10 +22,16 @@ namespace SampSharp.GameMode.Tools
     /// </summary>
     public abstract class Disposable : IDisposable
     {
+        private volatile bool _isDisposed;
+
         /// <summary>
         ///     Gets whether this resource has been disposed.
         /// </summary>
-        public bool IsDisposed { get; private set; }
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
+            private set { _isDisposed = value; }
+        }
 
         /// <summary>
         ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
