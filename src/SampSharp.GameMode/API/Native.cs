@@ -26,7 +26,6 @@ namespace SampSharp.GameMode.API
     public static class Native
     {
         private static INativeLoader _nativeLoader = new DefaultNativeLoader();
-        private static readonly List<string> LoadedAssemblies = new List<string>();
 
         /// <summary>
         ///     Gets or sets the native loader.
