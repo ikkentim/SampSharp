@@ -27,6 +27,7 @@ namespace SampSharp.GameMode.SAMP
     public static partial class Server
     {
         private static ServerConfig _serverConfig;
+        private static SVarCollection _varCollection;
 
         /// <summary>
         ///     Gets the maximum number of players that can join the server, as set by the server var 'maxplayers' in server.cfg.
@@ -47,6 +48,11 @@ namespace SampSharp.GameMode.SAMP
         ///     Gets the server configuration.
         /// </summary>
         public static ServerConfig Config => _serverConfig ?? (_serverConfig = new ServerConfig());
+
+        /// <summary>
+        ///     Gets the server variables.
+        /// </summary>
+        public static SVarCollection Variables => _varCollection ?? (_varCollection = new SVarCollection());
 
         /// <summary>
         ///     Blocks an IP address from further communication with the server
@@ -81,7 +87,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Retrieve a server variable.
+        ///     Retrieve a console variable.
         /// </summary>
         /// <typeparam name="T">
         ///     The type to which the variable should be cast. Supported types: <see cref="int" />,
@@ -90,7 +96,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="varName">The server variable to read.</param>
         /// <returns>The value of the server variable.</returns>
         /// <exception cref="NotSupportedException"><typeparamref name="T" /> is not supported by SA-MP.</exception>
-        public static T Get<T>(string varName)
+        public static T GetConsoleVariable<T>(string varName)
         {
             if (typeof (T) == typeof (string))
             {

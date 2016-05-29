@@ -16,9 +16,9 @@
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Contains all playervar types.
+    ///     Contains all server variable types.
     /// </summary>
-    public enum PlayerVarType
+    public enum ServerVarType
     {
         /// <summary>
         ///     Var does not exist.
