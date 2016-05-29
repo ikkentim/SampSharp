@@ -12,7 +12,7 @@ solution "SampSharp"
       links { "mono-2.0", "rt" }
       
       includedirs { "src/SampSharp/includes", "src/SampSharp/includes/sdk", "src/SampSharp/includes/sdk/amx" }
-      buildoptions { "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-m32", "-std=c++11", "-stdlib=libc++" }
+      buildoptions { "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-m32", "-std=c++11" }
       
       files { "src/SampSharp**.cpp", "src/SampSharp/includes/sampgdk/sampgdk.c" }
 
