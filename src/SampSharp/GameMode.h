@@ -163,8 +163,8 @@ private:
     /* Prints the specified exception to the log. */
     static void PrintException(const char *methodname, MonoObject *exception);
 
-    static MonoString* GameMode::StringToMonoString(char* str, int len);
-    static char* GameMode::MonoStringToString(MonoString *str);
+    static MonoString* StringToMonoString(char* str, int len);
+    static char* MonoStringToString(MonoString *str);
 
     /* Interop/API functions. */
 private:
