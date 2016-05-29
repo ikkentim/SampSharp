@@ -15,6 +15,7 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SampSharp.GameMode.API;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
@@ -30,6 +31,8 @@ namespace SampSharp.UnitTests.SAMP.Commands
         [TestMethod]
         public void FindCommandTest()
         {
+            Native.NativeLoader = new NoNativeLoader();
+            
             Action<string, string, string, bool> action = (methodName, commandPath, runCommand, expectSuccess) =>
             {
                 var manager = new CommandsManager(new TestGameMode());

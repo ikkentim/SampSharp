@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="NoNativeLoader.cs" />
     <Compile Include="SAMP\Commands\Arguments\ArgumentTest.cs" />
     <Compile Include="SAMP\Commands\Arguments\EnumTest.cs" />
     <Compile Include="SAMP\Commands\Arguments\FloatTest.cs" />
