@@ -601,6 +601,11 @@ namespace SampSharp.GameMode.World
             }
         }
 
+        /// <summary>
+        ///     Gets a value indicating whether this player is selecting a textdraw.
+        /// </summary>
+        public virtual bool IsSelectingTextDraw { get; private set; }
+
         #endregion
 
         #region Events
@@ -1162,7 +1167,7 @@ namespace SampSharp.GameMode.World
 
             Internal.ForceClassSelection(Id);
         }
-
+        
         /// <summary>
         ///     Display the cursor and allow this <see cref="BasePlayer" /> to select a text draw.
         /// </summary>
@@ -1171,6 +1176,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
+            IsSelectingTextDraw = true;
             Internal.SelectTextDraw(Id, hoverColor);
         }
 
@@ -1181,6 +1187,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
+            IsSelectingTextDraw = false;
             Internal.CancelSelectTextDraw(Id);
         }
 
