@@ -8,7 +8,7 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -qq premake4 gcc-4.8 g++-4.8 gcc-4.8-multilib
+  - sudo apt-get install -qq premake4 gcc-4.8 g++-4.8 gcc-4.8-multilib g++-4.9-multilib
   - sudo apt-get --yes install mono-complete
   - export CXX="g++-4.8"
   
