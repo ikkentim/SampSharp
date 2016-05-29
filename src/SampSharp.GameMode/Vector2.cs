@@ -23,7 +23,7 @@ namespace SampSharp.GameMode
     public struct Vector2
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Vector2" /> struct with the z component set to 0.
+        ///     Initializes a new instance of the <see cref="Vector2" /> struct.
         /// </summary>
         /// <param name="x">Value of the x component.</param>
         /// <param name="y">Value of the y component.</param>
@@ -35,11 +35,30 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="Vector2" /> struct.
+        /// </summary>
+        /// <param name="x">Value of the x component.</param>
+        /// <param name="y">Value of the y component.</param>
+        public Vector2(double x, double y)
+            : this((float)x, (float)y)
+        {
+        }
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="Vector2" /> struct with same values for x and y components.
         /// </summary>
         /// <param name="xy">Value of x and y components.</param>
         public Vector2(float xy)
             : this(xy, xy)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Vector2" /> struct with same values for x and y components.
+        /// </summary>
+        /// <param name="xy">Value of x and y components.</param>
+        public Vector2(double xy)
+            : this((float)xy)
         {
         }
 
@@ -200,32 +219,41 @@ namespace SampSharp.GameMode
             return !left.Equals(right);
         }
 
-        /// <summary>
-        ///     Indicates whether this instance and a specified object are equal.
-        /// </summary>
-        /// <param name="other">Another object to compare to.</param>
-        /// <returns>
-        ///     true if <paramref name="other" /> and this instance are the same type and represent the same value; otherwise,
-        ///     false.
-        /// </returns>
+        #region Equality members
+
         public bool Equals(Vector2 other)
         {
             return X.Equals(other.X) && Y.Equals(other.Y);
         }
 
         /// <summary>
-        ///     Indicates whether this instance and a specified object are equal.
+        /// Indicates whether this instance and a specified object are equal.
         /// </summary>
         /// <returns>
-        ///     true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false.
+        /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false. 
         /// </returns>
-        /// <param name="obj">Another object to compare to. </param>
-        /// <filterpriority>2</filterpriority>
+        /// <param name="obj">The object to compare with the current instance. </param>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             return obj is Vector2 && Equals((Vector2) obj);
         }
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer that is the hash code for this instance.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (X.GetHashCode()*397) ^ Y.GetHashCode();
+            }
+        }
+
+        #endregion
 
         /// <summary>
         ///     Returns the fully qualified type name of this instance.

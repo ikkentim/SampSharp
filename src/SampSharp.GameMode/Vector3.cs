@@ -36,12 +36,33 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="Vector3" /> struct.
+        /// </summary>
+        /// <param name="x">Value of the x component.</param>
+        /// <param name="y">Value of the y component.</param>
+        /// <param name="z">Value of the z component.</param>
+        public Vector3(double x, double y, double z) : this((float) x, (float) y, (float) z)
+        {
+
+        }
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="Vector3" /> struct with the z component set to 0.
         /// </summary>
         /// <param name="x">Value of the x component.</param>
         /// <param name="y">Value of the y component.</param>
         public Vector3(float x, float y)
             : this(x, y, 0)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Vector3" /> struct with the z component set to 0.
+        /// </summary>
+        /// <param name="x">Value of the x component.</param>
+        /// <param name="y">Value of the y component.</param>
+        public Vector3(double x, double y)
+            : this((float)x, (float)y)
         {
         }
 
@@ -56,11 +77,30 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="Vector3" /> struct.
+        /// </summary>
+        /// <param name="xy">Values of the x and y components.</param>
+        /// <param name="z">Value of the z component.</param>
+        public Vector3(Vector2 xy, double z)
+            : this(xy.X, xy.Y, (float)z)
+        {
+        }
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="Vector3" /> struct with same values for x, y and z components.
         /// </summary>
         /// <param name="xyz">Value of x, y and z components.</param>
         public Vector3(float xyz)
             : this(xyz, xyz, xyz)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Vector3" /> struct with same values for x, y and z components.
+        /// </summary>
+        /// <param name="xyz">Value of x, y and z components.</param>
+        public Vector3(double xyz)
+            : this((float)xyz, (float)xyz, (float)xyz)
         {
         }
 
@@ -226,33 +266,45 @@ namespace SampSharp.GameMode
         {
             return !left.Equals(right);
         }
+        
+        #region Equality members
 
         /// <summary>
-        ///     Indicates whether this instance and a specified object are equal.
+        /// Returns the hash code for this instance.
         /// </summary>
-        /// <param name="other">Another object to compare to.</param>
         /// <returns>
-        ///     true if <paramref name="other" /> and this instance are the same type and represent the same value; otherwise,
-        ///     false.
+        /// A 32-bit signed integer that is the hash code for this instance.
         /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = X.GetHashCode();
+                hashCode = (hashCode*397) ^ Y.GetHashCode();
+                hashCode = (hashCode*397) ^ Z.GetHashCode();
+                return hashCode;
+            }
+        }
+        
         public bool Equals(Vector3 other)
         {
             return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
         }
 
         /// <summary>
-        ///     Indicates whether this instance and a specified object are equal.
+        /// Indicates whether this instance and a specified object are equal.
         /// </summary>
         /// <returns>
-        ///     true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false.
+        /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false. 
         /// </returns>
-        /// <param name="obj">Another object to compare to. </param>
-        /// <filterpriority>2</filterpriority>
+        /// <param name="obj">The object to compare with the current instance. </param>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             return obj is Vector3 && Equals((Vector3) obj);
         }
+
+        #endregion
 
         /// <summary>
         ///     Returns the fully qualified type name of this instance.
