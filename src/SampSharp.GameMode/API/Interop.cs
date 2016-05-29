@@ -41,6 +41,6 @@ namespace SampSharp.GameMode.API
         public static extern void Print(string msg);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern void SetCodepage(int codepage);
+        public static extern void SetCodepage(string codepage);
     }
 }

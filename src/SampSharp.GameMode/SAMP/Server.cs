@@ -124,8 +124,8 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Sets the currently active codepage.
         /// </summary>
-        /// <param name="codepage">The identifier of the codepage to use.</param>
-        public static void SetCodepage(int codepage)
+        /// <param name="codepage">The name of the codepage to use.</param>
+        public static void SetCodepage(string codepage)
         {
             Interop.SetCodepage(codepage);
         }

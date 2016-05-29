@@ -28,14 +28,13 @@ public:
 
         std::string tmpGameMode = "GameMode::GameMode";
         traceLevel_ = "error";
-        codepage_ = 1250;
+        codepage_ = "cp1252";
 
         server_cfg.GetOptionAsString("gamemode", tmpGameMode);
         server_cfg.GetOptionAsString("trace_level", traceLevel_);
         server_cfg.GetOptionAsString("mono_assembly_dir", monoAssemblyDir_);
         server_cfg.GetOptionAsString("mono_config_dir", monoConfigDir_);
-        server_cfg.GetOption("codepage", codepage_);
-        server_cfg.GetOptionAsString("symbols", symbolFiles_);
+        server_cfg.GetOptionAsString("codepage", codepage_);
 
         std::stringstream gamemode_stream(tmpGameMode);
 
@@ -62,11 +61,8 @@ public:
     static std::string GetGameModeClass() {
         return gameModeClass_;
     }
-    static int GetCodepage() {
+    static std::string GetCodepage() {
         return codepage_;
-    }
-    static std::string GetSymbolFiles() {
-        return symbolFiles_;
     }
 
 private:
@@ -75,6 +71,5 @@ private:
     static std::string traceLevel_;
     static std::string gameModeNamespace_;
     static std::string gameModeClass_;
-    static int codepage_;
-    static std::string symbolFiles_;
+    static std::string codepage_;
 };

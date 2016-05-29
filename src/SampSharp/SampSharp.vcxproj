@@ -103,9 +103,7 @@
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="includes\sampgdk\sampgdk.c" />
     <ClCompile Include="includes\sdk\amxplugin.cpp" />
-    <ClCompile Include="monohelper.cpp" />
     <ClCompile Include="MonoRuntime.cpp" />
-    <ClCompile Include="unicode.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -113,9 +111,7 @@
     <ClInclude Include="ConfigReader.h" />
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="monohelper.h" />
     <ClInclude Include="MonoRuntime.h" />
-    <ClInclude Include="unicode.h" />
     <ClInclude Include="PathUtil.h" />
     <ClInclude Include="StringUtil.h" />
   </ItemGroup>

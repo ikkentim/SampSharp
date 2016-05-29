@@ -39,7 +39,7 @@ namespace TestMode
             UsePlayerPedAnimations();
 
             AddPlayerClass(65, new Vector3(5), 0);
-
+            
             foreach (
                 var test in
                     GetType()

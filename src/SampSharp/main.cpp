@@ -18,8 +18,6 @@
 #include <sampgdk/sampgdk.h>
 #include "Config.h"
 #include "MonoRuntime.h"
-#include "unicode.h"
-#include "monohelper.h"
 #include "GameMode.h"
 #include <assert.h>
 #include <string.h>
@@ -52,10 +50,6 @@ void loadGamemode() {
             PathUtil::GetPathInBin("gamemode/")
             .append(Config::GetGameModeNameSpace()).append(".dll"));
     }
-
-    // Set initial codepage to the configured one.
-    int codepage = Config::GetCodepage();
-    set_codepage(codepage);
 
     // Load game mode.
     string namespaceName = Config::GetGameModeNameSpace();

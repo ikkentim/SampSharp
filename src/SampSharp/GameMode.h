@@ -122,6 +122,10 @@ private:
     static int bootSequenceNumber_;
     static MonoDomain *previousDomain_;
     static MonoAssembly *assemby_;
+    static std::map<uint16_t, uint16_t> cptouni_;
+    static std::map<uint16_t, uint16_t> unitocp_;
+    static bool cpwide_[256];
+
 
     /* Internal gamemode functions. */
 private:
@@ -159,6 +163,9 @@ private:
     /* Prints the specified exception to the log. */
     static void PrintException(const char *methodname, MonoObject *exception);
 
+    static MonoString* GameMode::StringToMonoString(char* str, int len);
+    static char* GameMode::MonoStringToString(MonoString *str);
+
     /* Interop/API functions. */
 private:
     static bool RegisterExtension(MonoObject *extension);
@@ -171,5 +178,7 @@ private:
         MonoArray *sizes_array);
     static int InvokeNative(int handle, MonoArray *arguments);
     static bool NativeExists(MonoString *name);
+
+    static void LoadCodepage(const char *name);
 
 };

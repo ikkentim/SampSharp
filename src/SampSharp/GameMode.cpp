@@ -27,10 +27,9 @@
 #include <mono/metadata/exception.h>
 #include <mono/metadata/debug-helpers.h>
 #include <mono/metadata/mono-gc.h>
-#include "unicode.h"
 #include "MonoRuntime.h"
 #include "PathUtil.h"
-#include "monohelper.h"
+#include "Config.h"
 
 #define ERR_EXCEPTION                   (-1)
 
@@ -61,12 +60,18 @@ MonoAssembly *GameMode::assemby_;
 
 int GameMode::bootSequenceNumber_;
 
+std::map<uint16_t, uint16_t> GameMode::cptouni_;
+std::map<uint16_t, uint16_t> GameMode::unitocp_;
+bool GameMode::cpwide_[256];
+
 bool GameMode::Load(std::string namespaceName, std::string className) {
     if (isLoaded_) {
         return false;
     }
 
     assert(MonoRuntime::IsLoaded());
+
+    LoadCodepage(Config::GetCodepage().c_str());
 
     // Build paths based on the specified namespace and class names.
     string dirPath = PathUtil::GetPathInBin("gamemode/");
@@ -133,7 +138,7 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
     AddInternalCall("LoadNative", (void *)LoadNative);
     AddInternalCall("InvokeNative", (void *)InvokeNative);
     AddInternalCall("Print", (void *)Print);
-    AddInternalCall("SetCodepage", (void *)set_codepage);
+    AddInternalCall("SetCodepage", (void *)LoadCodepage);
 
     MonoObject *gamemode_obj = mono_object_new
         (mono_domain_get(), gameMode_.klass);
@@ -239,6 +244,155 @@ bool GameMode::Unload() {
     return true;
 }
 
+void GameMode::LoadCodepage(const char *name) {
+    char path[64];
+    sprintf(path, "codepages/%s.txt", name);
+
+    const uint16_t fallback[256] =
+    {
+        0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0006, 0x0007, 0x0008,
+        0x0009, 0x000A, 0x000B, 0x000C, 0x000D, 0x000E, 0x000F, 0x0010, 0x0011,
+        0x0012, 0x0013, 0x0014, 0x0015, 0x0016, 0x0017, 0x0018, 0x0019, 0x001A,
+        0x001B, 0x001C, 0x001D, 0x001E, 0x001F, 0x0020, 0x0021, 0x0022, 0x0023,
+        0x0024, 0x0025, 0x0026, 0x0027, 0x0028, 0x0029, 0x002A, 0x002B, 0x002C,
+        0x002D, 0x002E, 0x002F, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035,
+        0x0036, 0x0037, 0x0038, 0x0039, 0x003A, 0x003B, 0x003C, 0x003D, 0x003E,
+        0x003F, 0x0040, 0x0041, 0x0042, 0x0043, 0x0044, 0x0045, 0x0046, 0x0047,
+        0x0048, 0x0049, 0x004A, 0x004B, 0x004C, 0x004D, 0x004E, 0x004F, 0x0050,
+        0x0051, 0x0052, 0x0053, 0x0054, 0x0055, 0x0056, 0x0057, 0x0058, 0x0059,
+        0x005A, 0x005B, 0x005C, 0x005D, 0x005E, 0x005F, 0x0060, 0x0061, 0x0062,
+        0x0063, 0x0064, 0x0065, 0x0066, 0x0067, 0x0068, 0x0069, 0x006A, 0x006B,
+        0x006C, 0x006D, 0x006E, 0x006F, 0x0070, 0x0071, 0x0072, 0x0073, 0x0074,
+        0x0075, 0x0076, 0x0077, 0x0078, 0x0079, 0x007A, 0x007B, 0x007C, 0x007D,
+        0x007E, 0x007F, 0x20AC, 0x9999, 0x201A, 0x0192, 0x201E, 0x2026, 0x2020,
+        0x2021, 0x02C6, 0x2030, 0x0160, 0x2039, 0x0152, 0x9999, 0x017D, 0x9999,
+        0x9999, 0x2018, 0x2019, 0x201C, 0x201D, 0x2022, 0x2013, 0x2014, 0x02DC,
+        0x2122, 0x0161, 0x203A, 0x0153, 0x9999, 0x017E, 0x0178, 0x00A0, 0x00A1,
+        0x00A2, 0x00A3, 0x00A4, 0x00A5, 0x00A6, 0x00A7, 0x00A8, 0x00A9, 0x00AA,
+        0x00AB, 0x00AC, 0x00AD, 0x00AE, 0x00AF, 0x00B0, 0x00B1, 0x00B2, 0x00B3,
+        0x00B4, 0x00B5, 0x00B6, 0x00B7, 0x00B8, 0x00B9, 0x00BA, 0x00BB, 0x00BC,
+        0x00BD, 0x00BE, 0x00BF, 0x00C0, 0x00C1, 0x00C2, 0x00C3, 0x00C4, 0x00C5,
+        0x00C6, 0x00C7, 0x00C8, 0x00C9, 0x00CA, 0x00CB, 0x00CC, 0x00CD, 0x00CE,
+        0x00CF, 0x00D0, 0x00D1, 0x00D2, 0x00D3, 0x00D4, 0x00D5, 0x00D6, 0x00D7,
+        0x00D8, 0x00D9, 0x00DA, 0x00DB, 0x00DC, 0x00DD, 0x00DE, 0x00DF, 0x00E0,
+        0x00E1, 0x00E2, 0x00E3, 0x00E4, 0x00E5, 0x00E6, 0x00E7, 0x00E8, 0x00E9,
+        0x00EA, 0x00EB, 0x00EC, 0x00ED, 0x00EE, 0x00EF, 0x00F0, 0x00F1, 0x00F2,
+        0x00F3, 0x00F4, 0x00F5, 0x00F6, 0x00F7, 0x00F8, 0x00F9, 0x00FA, 0x00FB,
+        0x00FC, 0x00FD, 0x00FE, 0x00FF
+    };
+
+    std::ifstream infile(path);
+
+    cptouni_.clear();
+    unitocp_.clear();
+    for (int i = 0; i < 256; i++) {
+        cpwide_[i] = false;
+    }
+
+    if (!infile.is_open()) {
+        logprintf("[SampSharp] WARNING: Could not open codepage file %s. Using "
+            "fallback codepage cp1252.", path);
+
+        // Fallback codepage is cp1252
+        for (uint16_t i = 0; i < 256; i++)  {
+            cptouni_[i] = fallback[i];
+            unitocp_[fallback[i]] = i;
+        }
+        return;
+    }
+
+    string line;
+
+    while (std::getline(infile, line)) {
+        if (line.substr(0, 2) != string("0x")) {
+            continue;
+        }
+
+        int tab1 = line.find("\t");
+        int tab2 = line.find("\t", tab1 + 1);
+
+        if (tab1 <= 0 || tab2 <= 0) {
+            continue;
+        }
+
+        string cp = line.substr(0, tab1);
+
+        if (cp.find(" ") != string::npos) {
+            continue;
+        }
+
+        uint16_t cps = (uint16_t)std::stoul(cp, nullptr, 16);
+
+        string uni = line.substr(tab1 + 1, tab2 - tab1 - 1);
+
+        if (uni.find(" ") != string::npos) {
+            if (cps < 256) {
+                cpwide_[(uint8_t)cps] = true;
+                continue;
+            }
+            continue;
+        }
+        uint16_t unis = (uint16_t)std::stoul(uni, nullptr, 16);
+
+        cptouni_[cps] = unis;
+        unitocp_[unis] = cps;
+    }
+}
+
+MonoString* GameMode::StringToMonoString(char* str, int len) {
+    std::vector<mono_unichar2> buffer;
+    for (int i = 0; i < len; i++) {
+        uint16_t c = (uint16_t)str[i];
+        if (cpwide_[c]) {
+            if (i >= len - 1) {
+                continue;
+            }
+            c <<= 8;
+            c |= (uint16_t)str[++i];
+        }
+
+        if (c == 0) {
+            break;
+        }
+
+        if (cptouni_.find(c) != cptouni_.end()) {
+            buffer.push_back(cptouni_[c]);
+        }
+    }
+
+    buffer.push_back('\0');
+
+    return  mono_string_from_utf16(&buffer[0]);
+}
+
+char* GameMode::MonoStringToString(MonoString *str) {
+    std::vector<char> buffer;
+    mono_unichar2* uni_buf = mono_string_chars(str);
+    int len = mono_string_length(str);
+    for (int i = 0; i < len; i++) {
+        uint16_t c = (uint16_t)uni_buf[i];
+
+        if (c == 0) {
+            break;
+        }
+
+        if (unitocp_.find(c) != unitocp_.end()) {
+            uint16_t v = unitocp_[c];
+            if (v & 0xff00) {
+                buffer.push_back((uint8_t)(v >> 8));
+            }
+            buffer.push_back((uint8_t)(v & 0xff));
+        }
+    }
+
+    buffer.push_back('\0');
+
+    char *result = new char[buffer.size()];
+    std::copy(buffer.begin(), buffer.end(), result);
+    return  result;
+}
+
+
 int GameMode::SetRefTimer(int interval, bool repeat, MonoObject *params) {
     if (!params) {
         /* If no params are parsed, there is no need to keep a reference to it,
@@ -286,7 +440,7 @@ bool GameMode::RegisterExtension(MonoObject *extension) {
 }
 
 void GameMode::Print(MonoString *str) {
-    char *buffer = monostring_to_string(str);
+    char *buffer = MonoStringToString(str);
     sampgdk_logprintf("%s", buffer);
     delete[] buffer;
 }
@@ -319,7 +473,7 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
             params[i] = mono_object_unbox(obj);
             break;
         case 's': { // const string
-            params[i] = monostring_to_string((MonoString*)obj);
+            params[i] = MonoStringToString((MonoString*)obj);
             break;
         }
         case 'a': { // array of integers
@@ -383,7 +537,7 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
             break;
         }
         case 'S': { // non-const string (writeable)
-            MonoString *str = string_to_monostring((char *)params[i],
+            MonoString *str = StringToMonoString((char *)params[i],
                 param_size[i]);
             mono_array_set(args_array, MonoString *, i, str);
             delete[] params[i];
@@ -845,7 +999,7 @@ void GameMode::ProcessPublicCall(AMX *amx, const char *name, cell *params,
                     char* text = new char[len];
 
                     amx_GetString(text, addr, 0, len);
-                    args[i] = string_to_monostring(text, len);
+                    args[i] = StringToMonoString(text, len);
                 }
                 else {
                     args[i] = mono_string_new(mono_domain_get(), "");

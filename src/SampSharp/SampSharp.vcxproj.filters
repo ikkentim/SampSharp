@@ -20,13 +20,7 @@
     <ClCompile Include="includes\sampgdk\sampgdk.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="unicode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="monohelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameMode.cpp">
@@ -49,13 +43,7 @@
     <ClInclude Include="StringUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="unicode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="main.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="monohelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameMode.h">
