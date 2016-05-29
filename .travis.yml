@@ -9,4 +9,4 @@ before_script:
   - premake4 gmake
 
 script:
-  - make config=release64
+  - make config=release32
