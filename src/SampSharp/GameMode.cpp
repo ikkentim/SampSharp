@@ -387,8 +387,12 @@ char* GameMode::MonoStringToString(MonoString *str) {
 
     buffer.push_back('\0');
 
+    // TODO: Change this to something that doesn't give compile warnings.
     char *result = new char[buffer.size()];
-    std::copy(buffer.begin(), buffer.end(), result);
+    for (int i = 0; i < buffer.size(); i++) {
+        result[i] = buffer[i];
+    }
+
     return  result;
 }
 
@@ -446,7 +450,7 @@ void GameMode::Print(MonoString *str) {
 }
 
 int GameMode::InvokeNative(int handle, MonoArray *args_array) {
-    if (handle < 0 || handle >= natives_.size()) {
+    if (handle < 0 || handle >= (int)natives_.size()) {
         mono_raise_exception(mono_get_exception_invalid_operation(
             "invalid handle"));
     }
@@ -496,7 +500,9 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
         }
         case 'S': { // non-const string (writeable)
             param_size[i] = GET_PAR_SIZE(args_array, sig, i);
-            params[i] = new char[param_size[i] + 1] {'\0'};
+            char *str = new char[param_size[i] + 1];
+            str[0] = '\0';
+            params[i] = str;
             break;
         }
         case 'A': { // array of integers reference
@@ -682,7 +688,7 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
 
     /* Check whether the native has already been loaded. If it has check whether
     * the signature matches the specified format and return it's handle.*/
-    for (int i = 0; i < natives_.size(); i++) {
+    for (int i = 0; i < (int)natives_.size(); i++) {
         if (!strcmp(natives_[i].name, sig.name)) {
             if (natives_[i].param_count == sig.param_count &&
                 !strcmp(natives_[i].format, sig.format)) {

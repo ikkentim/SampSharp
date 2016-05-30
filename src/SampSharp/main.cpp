@@ -119,6 +119,8 @@ bool HandleRconCommands(AMX *amx, cell *params, cell *retval) {
 
         return false;
     }
+
+    return true;
 }
 
 void ProcessSignals() {
