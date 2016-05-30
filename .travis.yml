@@ -8,19 +8,10 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -qq premake4 gcc-4.8 g++-4.8 gcc-4.8-multilib g++-4.8-multilib autoconf libtool automake build-essential mono-devel gettext
-  
-  - PREFIX=/usr/local
-  - PATH=$PREFIX/bin:$PATH
-  - git clone https://github.com/mono/mono.git
-  - cd mono
-  - ./autogen.sh --prefix=$PREFIX
-  - make
-  - make install
-  - cd ..
-  
+  - sudo apt-get install -qq premake4 gcc-4.8 g++-4.8 gcc-4.8-multilib g++-4.8-multilib mono-complete
+
 before_script:
   - premake4 gmake
 
 script:
-  - make CC=gcc-4.8 CXX=g++-4.8 config=release32
+  - make CC=gcc-4.8 CXX=g++-4.8 config=release64
