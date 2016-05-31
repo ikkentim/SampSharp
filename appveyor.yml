@@ -8,8 +8,10 @@ configuration:
 install:
     - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
 
-script:
-  - ./build.sh target AppVeyor
+build_script:
+  - ps: .\build.ps1 -Target "AppVeyor"
+
+test: off
 
 artifacts:
     - path: bin\plugin.dll
