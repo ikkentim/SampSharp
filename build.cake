@@ -244,12 +244,12 @@ Task("__CreateGitHubReleaseIfAppVeyorTag")
     var pass = EnvironmentVariable("GITHUB_PASSWORD");
 
     GitReleaseManagerCreate(user, pass, "ikkentim", "SampSharp", new GitReleaseManagerCreateSettings {
-            Milestone         = vesrion,
+            Milestone         = version,
             Name              = version,
             Prerelease        = version != semanticVersion,
             TargetCommitish   = "master"
         });
-}
+})
 .OnError(exception =>
 {
     Information("__CreateGitHubReleaseIfAppVeyorTag Task failed, but continuing with next Task...");
