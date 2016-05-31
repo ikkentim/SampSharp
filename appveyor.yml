@@ -8,13 +8,12 @@ configuration:
 install:
     - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
 
-build:
-  project: SampSharp.sln      # path to Visual Studio solution or project
-  verbosity: minimal
+script:
+  - ./build.sh target AppVeyor
 
 artifacts:
-    - path: bin\SampSharp.dll
-      name: SampSharp.dll
+    - path: bin\plugin.dll
+      name: plugin.dll
     - path: bin\SampSharp.GameMode.dll
       name: SampSharp.GameMode.dll
     - path: bin\SampSharp.GameMode.pdb
