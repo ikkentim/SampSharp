@@ -12,13 +12,3 @@ build_script:
   - ps: .\build.ps1 -Target "AppVeyor"
 
 test: off
-
-artifacts:
-    - path: bin\plugin.dll
-      name: plugin.dll
-    - path: bin\SampSharp.GameMode.dll
-      name: SampSharp.GameMode.dll
-    - path: bin\SampSharp.GameMode.pdb
-      name: SampSharp.GameMode.pdb
-    - path: bin\SampSharp.GameMode.XML
-      name: SampSharp.GameMode.XML

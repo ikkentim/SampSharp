@@ -233,6 +233,28 @@ Task("__PublishNuGetPackagesIfAppVeyorTag")
     }
 });
 
+Task("__CreateGitHubReleaseIfAppVeyorTag")
+.WithCriteria(() => configuration == "Release" &&
+    (EnvironmentVariable("APPVEYOR") ?? "False") == "True" &&
+    BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
+.IsDependentOn("__ComputeVersion")
+.Does(() =>
+{
+    var user = EnvironmentVariable("GITHUB_USERNAME");
+    var pass = EnvironmentVariable("GITHUB_PASSWORD");
+
+    GitReleaseManagerCreate(user, pass, "ikkentim", "SampSharp", new GitReleaseManagerCreateSettings {
+            Milestone         = vesrion,
+            Name              = version,
+            Prerelease        = version != semanticVersion,
+            TargetCommitish   = "master"
+        });
+}
+.OnError(exception =>
+{
+    Information("__CreateGitHubReleaseIfAppVeyorTag Task failed, but continuing with next Task...");
+});
+
 Task("__PublishGitHubReleaseIfAppVeyorTag")
     .WithCriteria(() => configuration == "Release" &&
         (EnvironmentVariable("APPVEYOR") ?? "False") == "True" &&
@@ -249,8 +271,9 @@ Task("__PublishGitHubReleaseIfAppVeyorTag")
 })
 .OnError(exception =>
 {
-    Information("PublishGitHubReleaseIfAppVeyorTag Task failed, but continuing with next Task...");
+    Information("__PublishGitHubReleaseIfAppVeyorTag Task failed, but continuing with next Task...");
 });
+
 //////////////////////////////////////////////////////////////////////
 // TASKS
 //////////////////////////////////////////////////////////////////////
@@ -273,6 +296,7 @@ Task("PublishToNuGetIfAppVeyorTag")
         BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
     .IsDependentOn("__CreateNuGetPackagesIfAppVeyorTag")
     .IsDependentOn("__PublishNuGetPackagesIfAppVeyorTag")
+    .IsDependentOn("__CreateGitHubReleaseIfAppVeyorTag")
     .IsDependentOn("__PublishGitHubReleaseIfAppVeyorTag")
     ;
 
