@@ -101,7 +101,7 @@ Task("__ComputeVersion")
     }
     else
     {
-        semanticVersion = version.Substring(idx);
+        semanticVersion = version.Substring(0, idx);
     }
 	
 	Console.WriteLine("VERSION: " + version);
