@@ -15,6 +15,7 @@
 
 using System;
 using System.Linq;
+using System.Xml;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
@@ -1862,6 +1863,26 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             Internal.StopRecordingPlayerData(Id);
+        }
+
+        /// <summary>
+        ///     Retrieves the start and end (hit) position of the last bullet a player fired.
+        /// </summary>
+        /// <param name="origin">The origin.</param>
+        /// <param name="hitPosition">The hit position.</param>
+        public virtual void GetPlayerLastShotVectors(out Vector3 origin, out Vector3 hitPosition)
+        {
+            float ox,
+                oy,
+                oz,
+                hx,
+                hy,
+                hz;
+
+            Internal.GetPlayerLastShotVectors(Id, out ox, out oy, out oz, out hx, out hy, out hz);
+
+            origin = new Vector3(ox, oy, oz);
+            hitPosition = new Vector3(hx, hy, hz);
         }
 
         #endregion

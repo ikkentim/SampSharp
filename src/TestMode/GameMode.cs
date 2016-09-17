@@ -15,8 +15,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using SampSharp.GameMode;
+using SampSharp.GameMode.API;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using TestMode.Tests;
@@ -32,6 +34,11 @@ namespace TestMode
             Console.WriteLine($"TestMode for SampSharp v{GetType().Assembly.GetName().Version}");
             Console.WriteLine("----------------------");
 
+            var exists = Native.Exists("RNPC_StartPlayback");
+          
+            Console.Write("RNPC LOADED? " + exists);
+
+            return;
             Server.ToggleDebugOutput(true);
 
             SetGameModeText("sa-mp# testmode");

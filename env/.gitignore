@@ -21,6 +21,7 @@ server_log.txt
 /gamemode/
 /plugins/
 /scriptfiles/
+/npcmodes/
 
 # Config file
 server.cfg

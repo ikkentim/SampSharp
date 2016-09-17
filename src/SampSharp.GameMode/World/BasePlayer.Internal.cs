@@ -845,6 +845,12 @@ namespace SampSharp.GameMode.World
             {
                 throw new NativeNotImplementedException();
             }
+
+            [NativeMethod]
+            public virtual bool GetPlayerLastShotVectors(int playerid, out float fOriginX, out float fOriginY, out float fOriginZ, out float fHitPosX, out float fHitPosY, out float fHitPosZ)
+            {
+                throw new NativeNotImplementedException();
+            }
         }
     }
 }
