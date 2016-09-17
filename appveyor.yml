@@ -1,8 +1,7 @@
-version: b{build}-{branch}
+version: {branch}-b{build}
 os: Visual Studio 2015
 
 configuration:
-  - Debug
   - Release
 
 install:

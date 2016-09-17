@@ -277,6 +277,19 @@ Task("__PublishGitHubReleaseIfAppVeyorTag")
     Information("__PublishGitHubReleaseIfAppVeyorTag Task failed, but continuing with next Task...");
 });
 
+Task("__DisplayVersion")
+    .Does(() =>
+{
+    if(configuration == "Release")
+    {
+        Console.WriteLine("Suggested tag for the next release is: " + version);
+    }
+    else
+    {
+        throw new Exception("Build in release before you tag!");
+    }
+});
+
 //////////////////////////////////////////////////////////////////////
 // TASKS
 //////////////////////////////////////////////////////////////////////
@@ -316,6 +329,10 @@ Task("AppVeyor")
     .IsDependentOn("PublishToNuGetIfAppVeyorTag")
     ;
 
+Task("GenerateTag")
+    .IsDependentOn("Build")
+    .IsDependentOn("__DisplayVersion");
+    
 ///////////////////////////////////////////////////////////////////////////////
 // EXECUTION
 ///////////////////////////////////////////////////////////////////////////////
