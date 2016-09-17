@@ -1,5 +1,7 @@
+#tool "nuget:?package=gitreleasemanager"
 
 #load "./cake/version.cake"
+#load "./cake/utilities.cake"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -36,6 +38,9 @@ var lagetPackages = new [] {
     File("SampSharp.GameMode")
 };
 
+string githubUsername = "ikkentim";
+string githubRepo = "SampSharp";
+
 
 // /--------------------\
 // | Computed variables |
@@ -44,6 +49,7 @@ ReleaseNotes releaseNotes;
 string version;
 string semanticVersion;
 string pluginZipPath;
+string latestReleaseNotesPath;
 
 //////////////////////////////////////////////////////////////////////
 // PRIVATE TASKS
@@ -65,6 +71,14 @@ Task("__ParseReleaseNotes")
     .Does(() =>
 {
     releaseNotes = ParseReleaseNotes("./CHANGES.md");
+});
+
+Task("__CompileCurrentReleaseNotes")
+    .Does(() =>
+{
+    latestReleaseNotesPath = buildDir + "/releasenotes-" + version + ".txt";
+    string notes = string.Join(System.Environment.NewLine, releaseNotes.Notes);
+    System.IO.File.WriteAllText(latestReleaseNotesPath, notes);
 });
 
 Task("__ComputeVersion")
@@ -187,7 +201,7 @@ Task("__CreatePluginPackage")
     pluginZipPath = buildDir + "/" + outName + ".zip";
     Zip(pluginDir, pluginZipPath);
 
-    if((EnvironmentVariable("APPVEYOR") ?? "False") == "True")
+    if(BuildSystem.AppVeyor.IsRunningOnAppVeyor)
     {
         CopyFile(pluginZipPath, "./bin/plugin.zip");
     }
@@ -195,7 +209,7 @@ Task("__CreatePluginPackage")
 
 Task("__CreateNuGetPackagesIfAppVeyorTag")
     .WithCriteria(() => configuration == "Release" &&
-        (EnvironmentVariable("APPVEYOR") ?? "False") == "True" &&
+        BuildSystem.AppVeyor.IsRunningOnAppVeyor &&
         BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
     .IsDependentOn("__ParseReleaseNotes")
     .IsDependentOn("__ComputeVersion")
@@ -218,7 +232,7 @@ Task("__CreateNuGetPackagesIfAppVeyorTag")
 
 Task("__PublishNuGetPackagesIfAppVeyorTag")
     .WithCriteria(() => configuration == "Release" &&
-        (EnvironmentVariable("APPVEYOR") ?? "False") == "True" &&
+        BuildSystem.AppVeyor.IsRunningOnAppVeyor &&
         BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
     .Does(() =>
 {
@@ -236,45 +250,30 @@ Task("__PublishNuGetPackagesIfAppVeyorTag")
     }
 });
 
-Task("__CreateGitHubReleaseIfAppVeyorTag")
-.WithCriteria(() => configuration == "Release" &&
-    (EnvironmentVariable("APPVEYOR") ?? "False") == "True" &&
-    BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
-.IsDependentOn("__ComputeVersion")
-.Does(() =>
-{
-    var user = EnvironmentVariable("GITHUB_USERNAME");
-    var pass = EnvironmentVariable("GITHUB_PASSWORD");
-
-    GitReleaseManagerCreate(user, pass, "ikkentim", "SampSharp", new GitReleaseManagerCreateSettings {
-            Milestone         = version,
-            Name              = version,
-            Prerelease        = version != semanticVersion,
-            TargetCommitish   = "master"
-        });
-})
-.OnError(exception =>
-{
-    Information("__CreateGitHubReleaseIfAppVeyorTag Task failed, but continuing with next Task...");
-});
-
 Task("__PublishGitHubReleaseIfAppVeyorTag")
     .WithCriteria(() => configuration == "Release" &&
-        (EnvironmentVariable("APPVEYOR") ?? "False") == "True" &&
+        BuildSystem.AppVeyor.IsRunningOnAppVeyor &&
         BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
     .IsDependentOn("__ComputeVersion")
-    .IsDependentOn("__CreatePluginPackage")
+    .IsDependentOn("__CompileCurrentReleaseNotes")
     .Does(() =>
 {
     var user = EnvironmentVariable("GITHUB_USERNAME");
     var pass = EnvironmentVariable("GITHUB_PASSWORD");
 
-    GitReleaseManagerAddAssets(user, pass, "ikkentim", "SampSharp", version, pluginZipPath);
-    GitReleaseManagerClose(user, pass, "ikkentim", "SampSharp", version);
+    GitReleaseManagerCreate(user, pass, githubUsername, githubRepo, new GitReleaseManagerCreateSettings {
+            InputFilePath     = MakeAbsolutePath(latestReleaseNotesPath),
+            Name              = version,
+            Prerelease        = version != semanticVersion,
+            TargetCommitish   = "master",
+            Assets            = MakeAbsolutePath(pluginZipPath)
+        });
+    
+    GitReleaseManagerPublish(user, pass, githubUsername, githubRepo, version);
 })
 .OnError(exception =>
 {
-    Information("__PublishGitHubReleaseIfAppVeyorTag Task failed, but continuing with next Task...");
+    Information("__PublishGitHubReleaseIfAppVeyorTag Task failed, but continuing with next task...");
 });
 
 Task("__DisplayVersion")
@@ -308,11 +307,10 @@ Task("Build")
 
 Task("PublishToNuGetIfAppVeyorTag")
     .WithCriteria(() => configuration == "Release" &&
-        (EnvironmentVariable("APPVEYOR") ?? "False") == "True" &&
+        BuildSystem.AppVeyor.IsRunningOnAppVeyor &&
         BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
     .IsDependentOn("__CreateNuGetPackagesIfAppVeyorTag")
     .IsDependentOn("__PublishNuGetPackagesIfAppVeyorTag")
-    .IsDependentOn("__CreateGitHubReleaseIfAppVeyorTag")
     .IsDependentOn("__PublishGitHubReleaseIfAppVeyorTag")
     ;
 
@@ -332,7 +330,7 @@ Task("AppVeyor")
 Task("GenerateTag")
     .IsDependentOn("Build")
     .IsDependentOn("__DisplayVersion");
-    
+ 
 ///////////////////////////////////////////////////////////////////////////////
 // EXECUTION
 ///////////////////////////////////////////////////////////////////////////////
