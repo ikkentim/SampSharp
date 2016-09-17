@@ -23,7 +23,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
     /// </summary>
     public class IntegerType : ICommandParameterType
     {
-        private static readonly char[] Base10Characters = "1234567890,.".ToCharArray();
+        private static readonly char[] Base10Characters = "1234567890,.-".ToCharArray();
         private static readonly char[] Base16Characters = "1234567890abcdef".ToCharArray();
 
         #region Implementation of ICommandParameterType
