@@ -103,6 +103,9 @@ Task("__ComputeVersion")
     {
         semanticVersion = version.Substring(idx);
     }
+	
+	Console.WriteLine("VERSION: " + version);
+	Console.WriteLine("SEMVER: " + semanticVersion);
 });
 
 Task("__UpdateAssemblyInfo")
