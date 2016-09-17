@@ -32,6 +32,8 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         {
             if (!typeof (T).IsEnum)
                 throw new ArgumentException("T must be an enumerated type");
+
+            TestForValue = true;
         }
 
         /// <summary>

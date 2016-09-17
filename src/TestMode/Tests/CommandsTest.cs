@@ -15,6 +15,7 @@
 
 using System;
 using System.Linq;
+using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
@@ -82,6 +83,11 @@ namespace TestMode.Tests
             sender.SendClientMessage(color, "YOU CHOSE THIS COLOR!!!");
         }
 
+        [Command("spawn")]
+        public static void SpawnCommand(BasePlayer sender, VehicleModelType type)
+        {
+            BaseVehicle.Create(type, sender.Position + new Vector3(0, 0, 1), sender.Angle, -1, -1);
+        }
         [CommandGroup("alpha", "a")]
         private class A
         {
