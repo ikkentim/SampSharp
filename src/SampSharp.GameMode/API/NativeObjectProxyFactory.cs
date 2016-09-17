@@ -21,11 +21,17 @@ using System.Reflection.Emit;
 
 namespace SampSharp.GameMode.API
 {
+    /// <summary>
+    /// Contains logic for creating natove object proxies.
+    /// </summary>
     public static class NativeObjectProxyFactory
     {
         private static readonly Dictionary<Type, Type> KnownTypes = new Dictionary<Type, Type>();
         private static readonly ModuleBuilder ModuleBuilder;
 
+        /// <summary>
+        /// Initializes the <see cref="NativeObjectProxyFactory"/> class.
+        /// </summary>
         static NativeObjectProxyFactory()
         {
             var asmName = new AssemblyName("ProxyAssembly");
@@ -34,10 +40,23 @@ namespace SampSharp.GameMode.API
             ModuleBuilder = asmBuilder.DefineDynamicModule(asmName.Name, asmName.Name + ".dll");
         }
 
+        /// <summary>
+        /// Creates a proxy instance of the specified type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type to create a proxy of.</typeparam>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns>The proxy instance.</returns>
         public static T CreateInstance<T>(params object[] arguments) where T : class
         {
             return CreateInstance(typeof (T), arguments) as T;
         }
+
+        /// <summary>
+        /// Creates a proxy instance of  the specified <paramref name="type"/>.
+        /// </summary>
+        /// <param name="type">The type to create a proxy of.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns>The proxy isntance</returns>
         public static object CreateInstance(Type type, params object[] arguments)
         {
             Type outType;

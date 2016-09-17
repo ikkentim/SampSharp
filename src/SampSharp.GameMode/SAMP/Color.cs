@@ -1275,6 +1275,24 @@ namespace SampSharp.GameMode.SAMP
             return obj is Color && Equals((Color) obj);
         }
 
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = R.GetHashCode();
+                hashCode = (hashCode * 397) ^ G.GetHashCode();
+                hashCode = (hashCode * 397) ^ B.GetHashCode();
+                hashCode = (hashCode * 397) ^ A.GetHashCode();
+                return hashCode;
+            }
+        }
+
         #endregion
     }
 }

@@ -20,11 +20,23 @@ using System.Reflection.Emit;
 
 namespace SampSharp.GameMode.API
 {
+    /// <summary>
+    /// A generator for native object instances.
+    /// </summary>
     public class NativeObjectILGenerator : NativeILGenerator
     {
         private readonly string[] _identifiers;
         private readonly Type _nativeObjectType;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NativeObjectILGenerator"/> class.
+        /// </summary>
+        /// <param name="native">The native.</param>
+        /// <param name="nativeObjectType">Type of the native object.</param>
+        /// <param name="identifiers">The identifiers.</param>
+        /// <param name="parameterTypes">The parameter types.</param>
+        /// <param name="returnType">Type of the return.</param>
+        /// <exception cref="ArgumentNullException">Thrown if nativeObjectType or idnetifiers is null.</exception>
         public NativeObjectILGenerator(INative native, Type nativeObjectType, string[] identifiers,
             Type[] parameterTypes, Type returnType)
             : base(
@@ -41,6 +53,11 @@ namespace SampSharp.GameMode.API
 
         #region Overrides of NativeILGenerator
 
+        /// <summary>
+        /// Returns the native argument index for the specified method argument index.
+        /// </summary>
+        /// <param name="index">The method argument index.</param>
+        /// <returns>The native argument index for the specified method argument index.</returns>
         protected override int NativeArgIndexToMethodArgIndex(int index)
         {
             var num = index - _identifiers.Length;
@@ -51,6 +68,11 @@ namespace SampSharp.GameMode.API
             return num;
         }
 
+        /// <summary>
+        /// Generates the pass trough for input arguments.
+        /// </summary>
+        /// <param name="il">The il generator.</param>
+        /// <param name="argsLocal">The arguments local.</param>
         protected override void GeneratePassTrough(ILGenerator il, LocalBuilder argsLocal)
         {
             // Generate a pass-trough for every parameter of the native.

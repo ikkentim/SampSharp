@@ -19,14 +19,14 @@ namespace SampSharp.GameMode.World
 {
     public partial class Actor
     {
-        protected static readonly ActorInternal Internal;
+        private static readonly ActorInternal Internal;
 
         static Actor()
         {
             Internal = NativeObjectProxyFactory.CreateInstance<ActorInternal>();
         }
 
-        protected class ActorInternal
+        private class ActorInternal
         {
             [NativeMethod]
             public virtual int CreateActor(int modelid, float x, float y, float z, float rotattion)

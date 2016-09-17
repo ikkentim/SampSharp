@@ -30,6 +30,11 @@ namespace SampSharp.GameMode.SAMP.Commands
         private static readonly Type[] SupportedReturnTypes = {typeof (bool), typeof (void)};
         private readonly List<ICommand> _commands = new List<ICommand>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandsManager"/> class.
+        /// </summary>
+        /// <param name="gameMode">The game mode.</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public CommandsManager(BaseMode gameMode)
         {
             if (gameMode == null) throw new ArgumentNullException(nameof(gameMode));

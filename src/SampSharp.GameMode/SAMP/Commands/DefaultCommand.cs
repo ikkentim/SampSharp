@@ -197,6 +197,11 @@ namespace SampSharp.GameMode.SAMP.Commands
             return null;
         }
 
+        /// <summary>
+        /// Sends the usage message to the specified <paramref name="player"/>.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <returns>True on success, false otherwise.</returns>
         protected virtual bool SendUsageMessage(BasePlayer player)
         {
             if (UsageMessage == null)

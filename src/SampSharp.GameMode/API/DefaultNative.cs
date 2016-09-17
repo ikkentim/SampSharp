@@ -1,11 +1,14 @@
 using System;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.API
 {
+    /// <summary>
+    /// The default implementation of a native method.
+    /// </summary>
+    /// <seealso cref="SampSharp.GameMode.API.INative" />
     public class DefaultNative : INative
     {
         private readonly Type[] _parameterTypes;

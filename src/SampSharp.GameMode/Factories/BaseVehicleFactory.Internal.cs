@@ -19,14 +19,14 @@ namespace SampSharp.GameMode.Factories
 {
     public partial class BaseVehicleFactory
     {
-        protected static readonly BaseVehicleFactoryInternal Internal;
+        private static readonly BaseVehicleFactoryInternal Internal;
 
         static BaseVehicleFactory()
         {
             Internal = NativeObjectProxyFactory.CreateInstance<BaseVehicleFactoryInternal>();
         }
 
-        protected class BaseVehicleFactoryInternal
+        private class BaseVehicleFactoryInternal
         {
             [NativeMethod]
             public virtual int CreateVehicle(int vehicletype, float x, float y, float z, float rotation, int color1, int color2, int respawnDelay, bool addsiren = false)

@@ -17,6 +17,9 @@ using SampSharp.GameMode.Controllers;
 
 namespace SampSharp.GameMode.API
 {
+    /// <summary>
+    /// Contains methods defining a SampSharp extension.
+    /// </summary>
     public interface IExtension
     {
         /// <summary>

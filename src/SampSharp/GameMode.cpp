@@ -343,7 +343,7 @@ MonoString* GameMode::StringToMonoString(char* str, int len) {
     std::vector<mono_unichar2> buffer;
     for (int i = 0; i < len; i++) {
         uint16_t c = (uint16_t)str[i];
-        if (cpwide_[c]) {
+        if (c < 256 && cpwide_[c]) {
             if (i >= len - 1) {
                 continue;
             }

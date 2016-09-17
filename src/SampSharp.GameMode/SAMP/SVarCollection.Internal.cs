@@ -19,14 +19,14 @@ namespace SampSharp.GameMode.SAMP
 {
     public partial class SVarCollection
     {
-        protected static readonly SVarCollectionInternal Internal;
+        private static readonly SVarCollectionInternal Internal;
 
         static SVarCollection()
         {
             Internal = NativeObjectProxyFactory.CreateInstance<SVarCollectionInternal>();
         }
 
-        protected class SVarCollectionInternal
+        private class SVarCollectionInternal
         {
             [NativeMethod]
             public virtual bool SetSVarInt(string varname, int value)

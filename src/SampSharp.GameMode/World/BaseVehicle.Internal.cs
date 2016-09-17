@@ -19,14 +19,14 @@ namespace SampSharp.GameMode.World
 {
     public partial class BaseVehicle
     {
-        protected static readonly VehicleInternal Internal;
+        private static readonly VehicleInternal Internal;
 
         static BaseVehicle()
         {
             Internal = NativeObjectProxyFactory.CreateInstance<VehicleInternal>();
         }
 
-        protected class VehicleInternal
+        private class VehicleInternal
         {
             [NativeMethod]
             public virtual bool IsValidVehicle(int vehicleid)

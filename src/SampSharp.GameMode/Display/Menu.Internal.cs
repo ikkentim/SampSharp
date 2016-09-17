@@ -19,14 +19,14 @@ namespace SampSharp.GameMode.Display
 {
     public partial class Menu
     {
-        protected readonly static MenuInternal Internal;
+        private static readonly MenuInternal Internal;
 
         static Menu()
         {
             Internal = NativeObjectProxyFactory.CreateInstance<MenuInternal>();
         }
 
-        protected class MenuInternal
+        private class MenuInternal
         {
             [NativeMethod]
             public virtual int CreateMenu(string title, int columns, float x, float y, float col1Width, float col2Width)

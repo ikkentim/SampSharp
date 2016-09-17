@@ -23,9 +23,9 @@ namespace SampSharp.GameMode.Helpers
     internal static class AsyncHelper
     {
         /// <summary>
-        ///     Execute's an async Task<T> method which has a void return value synchronously
+        ///     Executes an asynctask method synchronously.
         /// </summary>
-        /// <param name="task">Task<T> method to execute</param>
+        /// <param name="task">The function to execute.</param>
         public static void RunSync(Func<Task> task)
         {
             var oldContext = SynchronizationContext.Current;
@@ -53,17 +53,17 @@ namespace SampSharp.GameMode.Helpers
         }
 
         /// <summary>
-        ///     Execute's an async Task<T> method which has a T return type synchronously
+        ///     Executes an async task method which has a <typeparamref name="T"/> return type synchronously.
         /// </summary>
-        /// <typeparam name="T">Return Type</typeparam>
-        /// <param name="task">Task<T> method to execute</param>
-        /// <returns></returns>
+        /// <typeparam name="T">The result type of the task.</typeparam>
+        /// <param name="task">Task method to execute.</param>
+        /// <returns>The result.</returns>
         public static T RunSync<T>(Func<Task<T>> task)
         {
             var oldContext = SynchronizationContext.Current;
             var synch = new ExclusiveSynchronizationContext();
             SynchronizationContext.SetSynchronizationContext(synch);
-            T ret = default(T);
+            var ret = default(T);
             synch.Post(async _ =>
             {
                 try

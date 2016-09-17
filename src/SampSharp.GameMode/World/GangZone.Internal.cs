@@ -19,14 +19,14 @@ namespace SampSharp.GameMode.World
 {
     public partial class GangZone
     {
-        protected static readonly GangZoneInternal Internal;
+        private static readonly GangZoneInternal Internal;
 
         static GangZone()
         {
             Internal = NativeObjectProxyFactory.CreateInstance<GangZoneInternal>();
         }
 
-        protected class GangZoneInternal
+        private class GangZoneInternal
         {
             [NativeMethod]
             public virtual int GangZoneCreate(float minx, float miny, float maxx, float maxy)

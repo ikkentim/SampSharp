@@ -71,7 +71,6 @@ namespace SampSharp.GameMode.Display
         private TextDrawFont _font;
         private Color _foreColor;
         private float _height;
-        private float _letterHeight;
         private Vector2 _letterSize;
         private int _outline;
         private Vector2 _position;

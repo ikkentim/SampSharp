@@ -17,27 +17,51 @@ using System;
 
 namespace SampSharp.GameMode.API
 {
+    /// <summary>
+    ///     Indicates a method should be proxied by the <see cref="NativeObjectILGenerator" />.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
     public class NativeMethodAttribute : Attribute
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.
+        /// </summary>
         public NativeMethodAttribute()
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.
+        /// </summary>
+        /// <param name="lengths">The lengths of special arguments.</param>
         public NativeMethodAttribute(params int[] lengths) : this(false, lengths)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.
+        /// </summary>
+        /// <param name="ignoreIdentifiers">if set to <c>true</c> identifiers are ignored.</param>
+        /// <param name="lengths">The lengths.</param>
         public NativeMethodAttribute(bool ignoreIdentifiers, params int[] lengths)
         {
             IgnoreIdentifiers = ignoreIdentifiers;
             Lengths = lengths;
         }
 
+        /// <summary>
+        ///     Gets or sets the function name.
+        /// </summary>
         public string Function { get; set; }
 
+        /// <summary>
+        ///     Gets a value indicating whether to ignore identifiers.
+        /// </summary>
         public bool IgnoreIdentifiers { get; }
 
+        /// <summary>
+        ///     Gets the lengths of special arguments.
+        /// </summary>
         public int[] Lengths { get; }
     }
 }

@@ -19,14 +19,14 @@ namespace SampSharp.GameMode.Display
 {
     public abstract partial class Dialog
     {
-        protected readonly static DialogInternal Internal;
+        private static readonly DialogInternal Internal;
 
         static Dialog()
         {
             Internal = NativeObjectProxyFactory.CreateInstance<DialogInternal>();
         }
 
-        protected class DialogInternal
+        private class DialogInternal
         {
             [NativeMethod]
             public virtual bool ShowPlayerDialog(int playerid, int dialogid, int style, string caption, string info, string button1, string button2)

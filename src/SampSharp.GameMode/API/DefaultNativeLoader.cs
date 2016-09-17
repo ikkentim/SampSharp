@@ -62,7 +62,7 @@ namespace SampSharp.GameMode.API
             }
             catch (Exception e)
             {
-                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, "Native load failure ({0})", name);
+                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Native load failure ({name}): {e?.Message}");
                 return null;
             }
         }

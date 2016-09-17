@@ -19,14 +19,14 @@ namespace SampSharp.GameMode.Display
 {
     public partial class PlayerTextDraw
     {
-        protected readonly static PlayerTextDrawInternal Internal;
+        private static readonly PlayerTextDrawInternal Internal;
 
         static PlayerTextDraw()
         {
             Internal = NativeObjectProxyFactory.CreateInstance<PlayerTextDrawInternal>();
         }
 
-        protected class PlayerTextDrawInternal
+        private class PlayerTextDrawInternal
         {
             [NativeMethod]
             public virtual int CreatePlayerTextDraw(int playerid, float x, float y, string text)

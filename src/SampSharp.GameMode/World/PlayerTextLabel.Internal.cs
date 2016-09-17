@@ -19,14 +19,14 @@ namespace SampSharp.GameMode.World
 {
     public partial class PlayerTextLabel
     {
-        protected static readonly PlayerTextLabelInternal Internal;
+        private static readonly PlayerTextLabelInternal Internal;
 
         static PlayerTextLabel()
         {
             Internal = NativeObjectProxyFactory.CreateInstance<PlayerTextLabelInternal>();
         }
 
-        protected class PlayerTextLabelInternal
+        private class PlayerTextLabelInternal
         {
             [NativeMethod]
             public virtual int CreatePlayer3DTextLabel(int playerid, string text, int color, float x, float y, float z, float drawDistance, int attachedplayer, int attachedvehicle, bool testLOS)

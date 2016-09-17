@@ -45,6 +45,10 @@ namespace SampSharp.GameMode
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseMode"/> class.
+        /// </summary>
+        /// <param name="redirectConsole">If true, all console output will be redirected to the server log.</param>
         protected BaseMode(bool redirectConsole)
         {
             if (redirectConsole)
@@ -91,6 +95,10 @@ namespace SampSharp.GameMode
 
         #endregion
 
+        /// <summary>
+        /// Autoloads the controllers in the specified assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
         public void AutoloadControllersForAssembly(Assembly assembly)
         {
             foreach (var type in assembly.GetExportedTypes()

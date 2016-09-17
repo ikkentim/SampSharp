@@ -33,6 +33,9 @@ namespace SampSharp.GameMode.SAMP.Commands
             Paths = paths;
         }
 
+        /// <summary>
+        /// Gets the relative paths of the command group.
+        /// </summary>
         public string[] Paths { get; }
 
         /// <summary>

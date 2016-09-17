@@ -19,14 +19,14 @@ namespace SampSharp.GameMode
 {
     public abstract partial class BaseMode
     {
-        protected static readonly BaseModeInternal Internal;
+        private static readonly BaseModeInternal Internal;
 
         static BaseMode()
         {
             Internal = NativeObjectProxyFactory.CreateInstance<BaseModeInternal>();
         }
 
-        protected class BaseModeInternal
+        private class BaseModeInternal
         {
             [NativeMethod]
             public virtual bool ManualVehicleEngineAndLights()

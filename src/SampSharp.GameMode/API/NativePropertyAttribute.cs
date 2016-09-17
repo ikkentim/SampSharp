@@ -17,26 +17,51 @@ using System;
 
 namespace SampSharp.GameMode.API
 {
+    /// <summary>
+    ///     Indicates a property represents a native setter/getter.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class NativePropertyAttribute : Attribute
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="NativePropertyAttribute" /> class.
+        /// </summary>
         public NativePropertyAttribute()
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="NativePropertyAttribute" /> class.
+        /// </summary>
+        /// <param name="ignoreIdentifiers">if set to <c>true</c> identifiers are ignored.</param>
         public NativePropertyAttribute(bool ignoreIdentifiers)
         {
             IgnoreIdentifiers = ignoreIdentifiers;
         }
 
+        /// <summary>
+        ///     Gets or sets the set function.
+        /// </summary>
         public string SetFunction { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the set lengths.
+        /// </summary>
         public int[] SetLengths { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the get function.
+        /// </summary>
         public string GetFunction { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the get lengths.
+        /// </summary>
         public int[] GetLengths { get; set; }
 
+        /// <summary>
+        ///     Gets a value indicating whether to ignore identifiers.
+        /// </summary>
         public bool IgnoreIdentifiers { get; }
     }
 }

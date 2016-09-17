@@ -17,14 +17,24 @@ using System;
 
 namespace SampSharp.GameMode.API
 {
+    /// <summary>
+    /// Specifies the identifiers properties for a native object class.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class NativeObjectIdentifiersAttribute : Attribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NativeObjectIdentifiersAttribute"/> class.
+        /// </summary>
+        /// <param name="identifiers">The identifiers of the native object.</param>
         public NativeObjectIdentifiersAttribute(params string[] identifiers)
         {
             Identifiers = identifiers;
         }
 
+        /// <summary>
+        /// Gets or sets the identifiers of the native object.
+        /// </summary>
         public string[] Identifiers { get; set; }
     }
 }

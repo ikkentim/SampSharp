@@ -19,14 +19,14 @@ namespace SampSharp.GameMode.World
 {
     public partial class GlobalObject
     {
-        protected static readonly GlobalObjectInternal Internal;
+        private static readonly GlobalObjectInternal Internal;
 
         static GlobalObject()
         {
             Internal = NativeObjectProxyFactory.CreateInstance<GlobalObjectInternal>();
         }
 
-        protected class GlobalObjectInternal
+        private class GlobalObjectInternal
         {
             [NativeMethod]
             public virtual bool AttachCameraToObject(int playerid, int objectid)

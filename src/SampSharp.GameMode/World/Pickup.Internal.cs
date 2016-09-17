@@ -19,14 +19,14 @@ namespace SampSharp.GameMode.World
 {
     public partial class Pickup
     {
-        protected static readonly PickupInternal Internal;
+        private static readonly PickupInternal Internal;
 
         static Pickup()
         {
             Internal = NativeObjectProxyFactory.CreateInstance<PickupInternal>();
         }
 
-        protected class PickupInternal
+        private class PickupInternal
         {
             [NativeMethod]
             public virtual int AddStaticPickup(int model, int type, float x, float y, float z, int virtualworld)

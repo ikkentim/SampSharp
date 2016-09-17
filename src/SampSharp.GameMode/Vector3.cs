@@ -285,10 +285,17 @@ namespace SampSharp.GameMode
                 return hashCode;
             }
         }
-        
-        public bool Equals(Vector3 other)
+
+        /// <summary>
+        /// Indicates whether this instance and a specified object are equal.
+        /// </summary>
+        /// <returns>
+        /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false. 
+        /// </returns>
+        /// <param name="obj">The object to compare with the current instance. </param>
+        public bool Equals(Vector3 obj)
         {
-            return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
+            return X.Equals(obj.X) && Y.Equals(obj.Y) && Z.Equals(obj.Z);
         }
 
         /// <summary>

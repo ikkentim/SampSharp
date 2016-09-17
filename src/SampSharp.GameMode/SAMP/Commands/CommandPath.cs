@@ -18,6 +18,9 @@ using System.Linq;
 
 namespace SampSharp.GameMode.SAMP.Commands
 {
+    /// <summary>
+    /// Represents a single path to a command.
+    /// </summary>
     public struct CommandPath
     {
         /// <summary>

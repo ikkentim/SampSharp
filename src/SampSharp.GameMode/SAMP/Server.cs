@@ -34,6 +34,9 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public static int MaxPlayers => Internal.GetMaxPlayers();
 
+        /// <summary>
+        /// Gets the network stats as a string.
+        /// </summary>
         public static string NetworkStats
         {
             get

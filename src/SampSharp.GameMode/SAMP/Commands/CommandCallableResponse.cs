@@ -15,6 +15,9 @@
 
 namespace SampSharp.GameMode.SAMP.Commands
 {
+    /// <summary>
+    /// Contains the reponses available for callable commands
+    /// </summary>
     public enum CommandCallableResponse
     {
         /// <summary>

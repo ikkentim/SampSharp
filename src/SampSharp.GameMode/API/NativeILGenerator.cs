@@ -19,8 +19,18 @@ using System.Reflection.Emit;
 
 namespace SampSharp.GameMode.API
 {
+    /// <summary>
+    /// Represents a native method IL generator.
+    /// </summary>
     public class NativeILGenerator
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NativeILGenerator"/> class.
+        /// </summary>
+        /// <param name="native">The native.</param>
+        /// <param name="parameterTypes">The parameter types.</param>
+        /// <param name="returnType">Type of the return value.</param>
+        /// <exception cref="ArgumentNullException">Thrown if native, parameterTypes or returnType is null.</exception>
         public NativeILGenerator(INative native, Type[] parameterTypes, Type returnType)
         {
             if (native == null) throw new ArgumentNullException(nameof(native));
@@ -31,12 +41,26 @@ namespace SampSharp.GameMode.API
             ReturnType = returnType;
         }
 
+        /// <summary>
+        /// Gets the parameter types.
+        /// </summary>
         public Type[] ParameterTypes { get; }
 
+        /// <summary>
+        /// Gets the native.
+        /// </summary>
         protected INative Native { get; }
 
+        /// <summary>
+        /// Gets the type of the return value.
+        /// </summary>
         protected Type ReturnType { get; }
 
+        /// <summary>
+        /// Gets the handle invoker method.
+        /// </summary>
+        /// <returns>The handle invoker method.</returns>
+        /// <exception cref="Exception">Thrown if unsupported return type of method or native invoker is missing.</exception>
         protected virtual MethodInfo GetHandleInvokerMethod()
         {
             // Pick the right invoke method based on the return type of the delegate.
@@ -59,6 +83,11 @@ namespace SampSharp.GameMode.API
             return result;
         }
 
+        /// <summary>
+        /// Generates the arguments array.
+        /// </summary>
+        /// <param name="il">The il generator.</param>
+        /// <returns>The local for the arguments array.</returns>
         protected virtual LocalBuilder GenerateArgsArray(ILGenerator il)
         {
             // Create an instance of object[].
@@ -71,12 +100,22 @@ namespace SampSharp.GameMode.API
 
             return result;
         }
-        
+
+        /// <summary>
+        /// Returns the native argument index for the specified method argument index.
+        /// </summary>
+        /// <param name="index">The method argument index.</param>
+        /// <returns>The native argument index for the specified method argument index.</returns>
         protected virtual int NativeArgIndexToMethodArgIndex(int index)
         {
             return index;
         }
 
+        /// <summary>
+        /// Generates the pass trough for input arguments.
+        /// </summary>
+        /// <param name="il">The il generator.</param>
+        /// <param name="argsLocal">The arguments local.</param>
         protected virtual void GeneratePassTrough(ILGenerator il, LocalBuilder argsLocal)
         {
             // Generate a pass-trough for every parameter of the native.
@@ -115,6 +154,11 @@ namespace SampSharp.GameMode.API
             }
         }
 
+        /// <summary>
+        /// Generates the handle invoker.
+        /// </summary>
+        /// <param name="il">The il generator.</param>
+        /// <param name="argsLocal">The arguments local.</param>
         protected virtual void GenerateHandleInvoker(ILGenerator il, LocalBuilder argsLocal)
         {
             // Push the handle of the native onto the stack.
@@ -132,6 +176,11 @@ namespace SampSharp.GameMode.API
                 il.Emit(OpCodes.Callvirt, invokeMethodInfo);
         }
 
+        /// <summary>
+        /// Generates the pass back for output arguments.
+        /// </summary>
+        /// <param name="il">The il generator.</param>
+        /// <param name="argsLocal">The arguments local.</param>
         protected virtual void GeneratePassBack(ILGenerator il, LocalBuilder argsLocal)
         {
             // Generate a pass-back for every output parameter of the native.
@@ -183,12 +232,20 @@ namespace SampSharp.GameMode.API
             }
         }
 
+        /// <summary>
+        /// Generates the return statement.
+        /// </summary>
+        /// <param name="il">The il generator.</param>
         protected virtual void GenerateReturn(ILGenerator il)
         {
             // Return to the caller.
             il.Emit(OpCodes.Ret);
         }
 
+        /// <summary>
+        /// Generates the IL code with the speicifed il generator.
+        /// </summary>
+        /// <param name="il">The il generator.</param>
         public virtual void Generate(ILGenerator il)
         {
             var argsLocal = GenerateArgsArray(il);

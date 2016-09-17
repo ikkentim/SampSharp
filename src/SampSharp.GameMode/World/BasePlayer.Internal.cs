@@ -19,9 +19,9 @@ namespace SampSharp.GameMode.World
 {
     public partial class BasePlayer
     {
-        protected readonly static PlayerInternal Internal;
-        
-        protected class PlayerInternal
+        private static readonly PlayerInternal Internal;
+
+        private class PlayerInternal
         {
             [NativeMethod]
             public virtual bool SetSpawnInfo(int playerid, int team, int skin, float x, float y, float z, float rotation, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
