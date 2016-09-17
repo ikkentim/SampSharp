@@ -197,6 +197,15 @@ namespace SampSharp.GameMode.Tools
         }
 
         /// <summary>
+        ///     Finds highest Z point (ground level) for the provided point.
+        /// </summary>
+        /// <param name="point">The point to move to ground level.</param>
+        public static void Find(ref Vector3 point)
+        {
+            point = Find(point);
+        }
+
+        /// <summary>
         ///     Calculates a linear approximation of the ground level at the provided point.
         /// </summary>
         /// <param name="x">X-coordinate of the point.</param>
@@ -238,6 +247,15 @@ namespace SampSharp.GameMode.Tools
         public static Vector3 FindAverage(Vector3 point)
         {
             return new Vector3(point.X, point.Y, FindAverage(point.X, point.Y));
+        }
+
+        /// <summary>
+        ///     Calculates a linear approximation of the ground level at the provided point.
+        /// </summary>
+        /// <param name="point">The point to move to the approximate ground level.</param>
+        public static void FindAverage(ref Vector3 point)
+        {
+            point = FindAverage(point);
         }
 
         /// <summary>
