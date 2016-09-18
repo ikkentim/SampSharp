@@ -1,0 +1,3 @@
+[submodule "cake"]
+	path = cake
+	url = git@github.com:ikkentim/SampSharp-build
