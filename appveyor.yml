@@ -1,5 +1,5 @@
 install:
-    - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+    - git submodule update --init --recursive
 
 build_script:
   - ps: .\build.ps1 -Target "AppVeyor"
