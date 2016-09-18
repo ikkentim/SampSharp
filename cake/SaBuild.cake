@@ -48,7 +48,7 @@ public class SaBuild
     {
         get
         {
-            return Context.BuildSystem().AppVeyor.IsRunningOnAppVeyor;
+            return IsRelease && Context.BuildSystem().AppVeyor.IsRunningOnAppVeyor;
         }
     }
     
@@ -56,7 +56,7 @@ public class SaBuild
     {
         get
         {
-            return Context.BuildSystem().AppVeyor.Environment.Repository.Tag.IsTag;
+            return IsRunningOnAppVeyor && Context.BuildSystem().AppVeyor.Environment.Repository.Tag.IsTag;
         }
     }
     

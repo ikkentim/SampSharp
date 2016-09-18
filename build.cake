@@ -90,23 +90,17 @@ Task("__RunUnitTests")
     .Does(() => build.Test());
     
 Task("__CreateNuGetPackagesIfAppVeyorTag")
-    .WithCriteria(() => build.IsRelease &&
-        BuildSystem.AppVeyor.IsRunningOnAppVeyor &&
-        BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
+    .WithCriteria(() => build.IsAppVeyorTag)
     .IsDependentOn("__BuildSolution")
     .Does(() => build.CreateNuGetPackages());
 
 Task("__PublishNuGetPackagesIfAppVeyorTag")
-    .WithCriteria(() => build.IsRelease &&
-        BuildSystem.AppVeyor.IsRunningOnAppVeyor &&
-        BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
+    .WithCriteria(() => build.IsAppVeyorTag)
     .Does(() => build.PublisNuGetPackages());
 
 
 Task("__PublishGitHubReleaseIfAppVeyorTag")
-    .WithCriteria(() => build.IsRelease &&
-        BuildSystem.AppVeyor.IsRunningOnAppVeyor &&
-        BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
+    .WithCriteria(() => build.IsAppVeyorTag)
     .Does(() => build.PublishGitHubRelease())
     .OnError(exception =>
     {
@@ -132,9 +126,7 @@ Task("Build")
     ;
 
 Task("PublishToNuGetIfAppVeyorTag")
-    .WithCriteria(() => build.IsRelease &&
-        BuildSystem.AppVeyor.IsRunningOnAppVeyor &&
-        BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
+    .WithCriteria(() => build.IsAppVeyorTag)
     .IsDependentOn("__CreateNuGetPackagesIfAppVeyorTag")
     .IsDependentOn("__PublishNuGetPackagesIfAppVeyorTag")
     .IsDependentOn("__PublishGitHubReleaseIfAppVeyorTag")
