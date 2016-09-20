@@ -150,13 +150,8 @@ namespace SampSharp.GameMode.API
                 var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
                 var sizes = attr.Lengths;
 
-                var methodBuilder = typeBuilder.DefineMethod(method.Name,
-                    (method.IsPublic ? MethodAttributes.Public : MethodAttributes.Family) | MethodAttributes.ReuseSlot |
-                    MethodAttributes.Virtual | MethodAttributes.HideBySig, method.ReturnType, argTypes);
-
-                var il = methodBuilder.GetILGenerator();
                 var native = Native.Load(name, sizes,
-                    Enumerable.Repeat(typeof (int), attr.IgnoreIdentifiers ? 0 : objAttr?.Identifiers?.Length ?? 0)
+                    Enumerable.Repeat(typeof(int), attr.IgnoreIdentifiers ? 0 : objAttr?.Identifiers?.Length ?? 0)
                         .Concat(argTypes)
                         .ToArray());
 
@@ -164,6 +159,13 @@ namespace SampSharp.GameMode.API
                 {
                     continue;
                 }
+
+                var methodBuilder = typeBuilder.DefineMethod(method.Name,
+                    (method.IsPublic ? MethodAttributes.Public : MethodAttributes.Family) | MethodAttributes.ReuseSlot |
+                    MethodAttributes.Virtual | MethodAttributes.HideBySig, method.ReturnType, argTypes);
+
+                var il = methodBuilder.GetILGenerator();
+
 
                 var gen = new NativeObjectILGenerator(native, type,
                     attr.IgnoreIdentifiers ? new string[0] : objAttr?.Identifiers ?? new string[0], argTypes,
