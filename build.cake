@@ -8,8 +8,8 @@ public class CustomBuild : SaBuild
 {
     private string pluginZipPath;
     
-    public CustomBuild(ICakeContext context, string configuration, string debugBuildDir, string releaseBuildDir, string solution, string[] assemblyInfos, string[] nuGetPackages, string githubUsername, string githubRepo, string nuGetKey, string nuGetSource, string githubReleaseUsername, string githubReleasePassword) 
-        : base(context, configuration, debugBuildDir, releaseBuildDir, solution, assemblyInfos, nuGetPackages, githubUsername, githubRepo, nuGetKey, nuGetSource, githubReleaseUsername, githubReleasePassword)
+    public CustomBuild(ICakeContext context, string configuration, string debugBuildDir, string releaseBuildDir, string solution, string[] assemblyInfos, string[] nuGetPackages, string githubUsername, string githubRepo, string nuGetKey, string nuGetSource, string githubReleaseUsername, string githubReleasePassword, string[] nugetSources) 
+        : base(context, configuration, debugBuildDir, releaseBuildDir, solution, assemblyInfos, nuGetPackages, githubUsername, githubRepo, nuGetKey, nuGetSource, githubReleaseUsername, githubReleasePassword, nugetSources)
     {
         
     }
@@ -66,9 +66,12 @@ var build = new CustomBuild(
     "ikkentim",                             // github username
     "SampSharp",                            // github repository
     EnvironmentVariable("LAGET_KEY"),       // nuget key
-    "http://timpotze.nl/upload",            // nuget source
+    "http://nuget.timpotze.nl/upload",      // nuget source
     EnvironmentVariable("GITHUB_USERNAME"), // github release username
-    EnvironmentVariable("GITHUB_PASSWORD")  // github release password
+    EnvironmentVariable("GITHUB_PASSWORD"), // github release password
+    new[] {                                 // nuget sources
+        "http://nuget.timpotze.nl/api/v2/"
+    }
 );
    
 //////////////////////////////////////////////////////////////////////
