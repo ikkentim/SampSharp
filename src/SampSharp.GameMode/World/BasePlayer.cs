@@ -1870,7 +1870,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="origin">The origin.</param>
         /// <param name="hitPosition">The hit position.</param>
-        public virtual void GetPlayerLastShotVectors(out Vector3 origin, out Vector3 hitPosition)
+        public virtual void GetLastShot(out Vector3 origin, out Vector3 hitPosition)
         {
             float ox,
                 oy,
