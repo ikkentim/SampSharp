@@ -88,7 +88,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="running">Whether the timer is running.</param>
         public Timer(TimeSpan interval, bool isRepeating, bool running)
         {
-            Id = running ? Interop.SetTimer((int) interval.TotalMilliseconds, isRepeating, this) : InvalidId;
+            Id = running ? InteropProvider.SetTimer((int) interval.TotalMilliseconds, isRepeating, this) : InvalidId;
             Interval = interval;
             IsRepeating = isRepeating;
         }
@@ -136,11 +136,11 @@ namespace SampSharp.GameMode.SAMP
                 if (value && !IsRunning)
                 {
                     _hit = false;
-                    Id = Interop.SetTimer((int) Interval.TotalMilliseconds, IsRepeating, this);
+                    Id = InteropProvider.SetTimer((int) Interval.TotalMilliseconds, IsRepeating, this);
                 }
                 else if (!value && IsRunning)
                 {
-                    Interop.KillTimer(Id);
+                    InteropProvider.KillTimer(Id);
                     Id = InvalidId;
                 }
             }

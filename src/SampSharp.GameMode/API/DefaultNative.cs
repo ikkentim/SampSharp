@@ -114,7 +114,7 @@ namespace SampSharp.GameMode.API
                     baseArgs[i] = args[i];
             }
             
-            var result = Interop.InvokeNative(Handle, baseArgs);
+            var result = InteropProvider.InvokeNative(Handle, baseArgs);
 
             for (var i = 0; i < parameterCount; i++)
             {

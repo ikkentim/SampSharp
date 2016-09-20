@@ -43,7 +43,7 @@ namespace SampSharp.GameMode.API
             {
                 if (parameterTypes == null || parameterTypes.Length == 0)
                 {
-                    var handle = Interop.LoadNative(name, string.Empty, null);
+                    var handle = InteropProvider.LoadNative(name, string.Empty, null);
                     var native = new DefaultNative(name, handle, parameterTypes);
                     _handles[handle] = native;
                     return native;
@@ -54,7 +54,7 @@ namespace SampSharp.GameMode.API
                     string format;
                     var lengthIndices = ComputeFormatString(parameterTypes, out format);
 
-                    var handle = Interop.LoadNative(name, format, (sizes?.Length ?? 0) == 0 ? lengthIndices : sizes);
+                    var handle = InteropProvider.LoadNative(name, format, (sizes?.Length ?? 0) == 0 ? lengthIndices : sizes);
                     var native = new DefaultNative(name, handle, parameterTypes);
                     _handles[handle] = native;
                     return native;
@@ -87,7 +87,7 @@ namespace SampSharp.GameMode.API
         /// </returns>
         public bool Exists(string name)
         {
-            return Interop.NativeExists(name);
+            return InteropProvider.NativeExists(name);
         }
 
         #endregion

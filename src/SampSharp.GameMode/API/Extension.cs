@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.API
         /// </returns>
         public static bool Register<T>(T extension) where T : IExtension
         {
-            return Interop.RegisterExtension(extension);
+            return InteropProvider.RegisterExtension(extension);
         }
 
         #region Implementation of IExtension

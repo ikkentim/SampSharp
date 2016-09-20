@@ -42,7 +42,7 @@ namespace SampSharp.GameMode.SAMP
         {
             var instance = new Delay(action);
 
-            Interop.SetTimer(delay, false, instance);
+            InteropProvider.SetTimer(delay, false, instance);
         }
     }
 }

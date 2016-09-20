@@ -136,7 +136,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="codepage">The name of the codepage to use.</param>
         public static void SetCodepage(string codepage)
         {
-            Interop.SetCodepage(codepage);
+            InteropProvider.SetCodepage(codepage);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="message">The message.</param>
         public static void Print(string message)
         {
-            Interop.Print(message);
+            InteropProvider.Print(message);
         }
 
         /// <summary>
