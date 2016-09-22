@@ -13,18 +13,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.World
 {
     public partial class BasePlayer
     {
-        private static readonly PlayerInternal Internal;
-
-        private class PlayerInternal
+        private class PlayerInternal : NativeObjectSingleton<PlayerInternal>
         {
             [NativeMethod]
-            public virtual bool SetSpawnInfo(int playerid, int team, int skin, float x, float y, float z, float rotation, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
+            public virtual bool SetSpawnInfo(int playerid, int team, int skin, float x, float y, float z, float rotation,
+                int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
             {
                 throw new NativeNotImplementedException();
             }
@@ -366,7 +365,8 @@ namespace SampSharp.GameMode.World
             }
 
             [NativeMethod]
-            public virtual bool PlayAudioStreamForPlayer(int playerid, string url, float posX, float posY, float posZ, float distance, bool usepos)
+            public virtual bool PlayAudioStreamForPlayer(int playerid, string url, float posX, float posY, float posZ,
+                float distance, bool usepos)
             {
                 throw new NativeNotImplementedException();
             }
@@ -402,7 +402,9 @@ namespace SampSharp.GameMode.World
             }
 
             [NativeMethod]
-            public virtual bool SetPlayerAttachedObject(int playerid, int index, int modelid, int bone, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ, int materialcolor1, int materialcolor2)
+            public virtual bool SetPlayerAttachedObject(int playerid, int index, int modelid, int bone, float offsetX,
+                float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY,
+                float scaleZ, int materialcolor1, int materialcolor2)
             {
                 throw new NativeNotImplementedException();
             }
@@ -426,7 +428,8 @@ namespace SampSharp.GameMode.World
             }
 
             [NativeMethod]
-            public virtual bool SetPlayerChatBubble(int playerid, string text, int color, float drawdistance, int expiretime)
+            public virtual bool SetPlayerChatBubble(int playerid, string text, int color, float drawdistance,
+                int expiretime)
             {
                 throw new NativeNotImplementedException();
             }
@@ -468,7 +471,8 @@ namespace SampSharp.GameMode.World
             }
 
             [NativeMethod]
-            public virtual bool ApplyAnimation(int playerid, string animlib, string animname, float fDelta, bool loop, bool lockx, bool locky, bool freeze, int time, bool forcesync)
+            public virtual bool ApplyAnimation(int playerid, string animlib, string animname, float fDelta, bool loop,
+                bool lockx, bool locky, bool freeze, int time, bool forcesync)
             {
                 throw new NativeNotImplementedException();
             }
@@ -486,7 +490,8 @@ namespace SampSharp.GameMode.World
             }
 
             [NativeMethod]
-            public virtual bool GetAnimationName(int index, out string animlib, int animlibSize, out string animname, int animnameSize)
+            public virtual bool GetAnimationName(int index, out string animlib, int animlibSize, out string animname,
+                int animnameSize)
             {
                 throw new NativeNotImplementedException();
             }
@@ -522,7 +527,8 @@ namespace SampSharp.GameMode.World
             }
 
             [NativeMethod]
-            public virtual bool SetPlayerRaceCheckpoint(int playerid, int type, float x, float y, float z, float nextx, float nexty, float nextz, float size)
+            public virtual bool SetPlayerRaceCheckpoint(int playerid, int type, float x, float y, float z, float nextx,
+                float nexty, float nextz, float size)
             {
                 throw new NativeNotImplementedException();
             }
@@ -552,7 +558,8 @@ namespace SampSharp.GameMode.World
             }
 
             [NativeMethod]
-            public virtual bool SetPlayerMapIcon(int playerid, int iconid, float x, float y, float z, int markertype, int color, int style)
+            public virtual bool SetPlayerMapIcon(int playerid, int iconid, float x, float y, float z, int markertype,
+                int color, int style)
             {
                 throw new NativeNotImplementedException();
             }
@@ -630,13 +637,15 @@ namespace SampSharp.GameMode.World
             }
 
             [NativeMethod]
-            public virtual bool InterpolateCameraPos(int playerid, float fromX, float fromY, float fromZ, float toX, float toY, float toZ, int time, int cut)
+            public virtual bool InterpolateCameraPos(int playerid, float fromX, float fromY, float fromZ, float toX,
+                float toY, float toZ, int time, int cut)
             {
                 throw new NativeNotImplementedException();
             }
 
             [NativeMethod]
-            public virtual bool InterpolateCameraLookAt(int playerid, float fromX, float fromY, float fromZ, float toX, float toY, float toZ, int time, int cut)
+            public virtual bool InterpolateCameraLookAt(int playerid, float fromX, float fromY, float fromZ, float toX,
+                float toY, float toZ, int time, int cut)
             {
                 throw new NativeNotImplementedException();
             }
@@ -847,7 +856,8 @@ namespace SampSharp.GameMode.World
             }
 
             [NativeMethod]
-            public virtual bool GetPlayerLastShotVectors(int playerid, out float fOriginX, out float fOriginY, out float fOriginZ, out float fHitPosX, out float fHitPosY, out float fHitPosZ)
+            public virtual bool GetPlayerLastShotVectors(int playerid, out float fOriginX, out float fOriginY,
+                out float fOriginZ, out float fHitPosX, out float fHitPosY, out float fHitPosZ)
             {
                 throw new NativeNotImplementedException();
             }

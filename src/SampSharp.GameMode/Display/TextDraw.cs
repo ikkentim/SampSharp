@@ -152,7 +152,7 @@ namespace SampSharp.GameMode.Display
             {
                 _alignment = value;
                 if (Id == -1) return;
-                Internal.TextDrawAlignment(Id, (int) value);
+                TextDrawInternal.Instance.TextDrawAlignment(Id, (int) value);
                 UpdateClients();
             }
         }
@@ -167,7 +167,7 @@ namespace SampSharp.GameMode.Display
             {
                 _backColor = value;
                 if (Id == -1) return;
-                Internal.TextDrawBackgroundColor(Id, value);
+                TextDrawInternal.Instance.TextDrawBackgroundColor(Id, value);
                 UpdateClients();
             }
         }
@@ -182,7 +182,7 @@ namespace SampSharp.GameMode.Display
             {
                 _foreColor = value;
                 if (Id == -1) return;
-                Internal.TextDrawColor(Id, value);
+                TextDrawInternal.Instance.TextDrawColor(Id, value);
                 UpdateClients();
             }
         }
@@ -197,7 +197,7 @@ namespace SampSharp.GameMode.Display
             {
                 _boxColor = value;
                 if (Id == -1) return;
-                Internal.TextDrawBoxColor(Id, value);
+                TextDrawInternal.Instance.TextDrawBoxColor(Id, value);
                 UpdateClients();
             }
         }
@@ -212,7 +212,7 @@ namespace SampSharp.GameMode.Display
             {
                 _font = value;
                 if (Id == -1) return;
-                Internal.TextDrawFont(Id, (int) value);
+                TextDrawInternal.Instance.TextDrawFont(Id, (int) value);
                 UpdateClients();
             }
         }
@@ -228,7 +228,7 @@ namespace SampSharp.GameMode.Display
             {
                 _letterSize = value;
                 if (Id == -1) return;
-                Internal.TextDrawLetterSize(Id, _letterSize.X, _letterSize.Y);
+                TextDrawInternal.Instance.TextDrawLetterSize(Id, _letterSize.X, _letterSize.Y);
                 UpdateClients();
             }
         }
@@ -243,7 +243,7 @@ namespace SampSharp.GameMode.Display
             {
                 _outline = value;
                 if (Id == -1) return;
-                Internal.TextDrawSetOutline(Id, value);
+                TextDrawInternal.Instance.TextDrawSetOutline(Id, value);
                 UpdateClients();
             }
         }
@@ -258,7 +258,7 @@ namespace SampSharp.GameMode.Display
             {
                 _proportional = value;
                 if (Id == -1) return;
-                Internal.TextDrawSetProportional(Id, value);
+                TextDrawInternal.Instance.TextDrawSetProportional(Id, value);
                 UpdateClients();
             }
         }
@@ -273,7 +273,7 @@ namespace SampSharp.GameMode.Display
             {
                 _shadow = value;
                 if (Id == -1) return;
-                Internal.TextDrawSetShadow(Id, value);
+                TextDrawInternal.Instance.TextDrawSetShadow(Id, value);
                 UpdateClients();
             }
         }
@@ -288,7 +288,7 @@ namespace SampSharp.GameMode.Display
             {
                 _text = value;
                 if (Id == -1) return;
-                Internal.TextDrawSetString(Id, value);
+                TextDrawInternal.Instance.TextDrawSetString(Id, value);
                 UpdateClients();
             }
         }
@@ -317,7 +317,7 @@ namespace SampSharp.GameMode.Display
             {
                 _width = value;
                 if (Id == -1) return;
-                Internal.TextDrawTextSize(Id, _width, _height);
+                TextDrawInternal.Instance.TextDrawTextSize(Id, _width, _height);
                 UpdateClients();
             }
         }
@@ -332,7 +332,7 @@ namespace SampSharp.GameMode.Display
             {
                 _height = value;
                 if (Id == -1) return;
-                Internal.TextDrawTextSize(Id, _width, _height);
+                TextDrawInternal.Instance.TextDrawTextSize(Id, _width, _height);
                 UpdateClients();
             }
         }
@@ -347,7 +347,7 @@ namespace SampSharp.GameMode.Display
             {
                 _useBox = value;
                 if (Id == -1) return;
-                Internal.TextDrawUseBox(Id, value);
+                TextDrawInternal.Instance.TextDrawUseBox(Id, value);
                 UpdateClients();
             }
         }
@@ -362,7 +362,7 @@ namespace SampSharp.GameMode.Display
             {
                 _selectable = value;
                 if (Id == -1) return;
-                Internal.TextDrawSetSelectable(Id, value);
+                TextDrawInternal.Instance.TextDrawSetSelectable(Id, value);
                 UpdateClients();
             }
         }
@@ -377,7 +377,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewModel = value;
                 if (Id == -1) return;
-                Internal.TextDrawSetPreviewModel(Id, value);
+                TextDrawInternal.Instance.TextDrawSetPreviewModel(Id, value);
                 UpdateClients();
             }
         }
@@ -392,7 +392,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewRotation = value;
                 if (Id == -1) return;
-                Internal.TextDrawSetPreviewRot(Id, value.X, value.Y, value.Z, PreviewZoom);
+                TextDrawInternal.Instance.TextDrawSetPreviewRot(Id, value.X, value.Y, value.Z, PreviewZoom);
                 UpdateClients();
             }
         }
@@ -407,7 +407,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewZoom = value;
                 if (Id == -1) return;
-                Internal.TextDrawSetPreviewRot(Id, PreviewRotation.X, PreviewRotation.Y, PreviewRotation.Z, value);
+                TextDrawInternal.Instance.TextDrawSetPreviewRot(Id, PreviewRotation.X, PreviewRotation.Y, PreviewRotation.Z, value);
                 UpdateClients();
             }
         }
@@ -422,7 +422,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewPrimaryColor = value;
                 if (Id == -1) return;
-                Internal.TextDrawSetPreviewVehCol(Id, _previewPrimaryColor, _previewSecondaryColor);
+                TextDrawInternal.Instance.TextDrawSetPreviewVehCol(Id, _previewPrimaryColor, _previewSecondaryColor);
                 UpdateClients();
             }
         }
@@ -437,7 +437,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewSecondaryColor = value;
                 if (Id == -1) return;
-                Internal.TextDrawSetPreviewVehCol(Id, _previewPrimaryColor, _previewSecondaryColor);
+                TextDrawInternal.Instance.TextDrawSetPreviewVehCol(Id, _previewPrimaryColor, _previewSecondaryColor);
                 UpdateClients();
             }
         }
@@ -456,7 +456,7 @@ namespace SampSharp.GameMode.Display
 
             if (Id == -1) return;
 
-            Internal.TextDrawDestroy(Id);
+            TextDrawInternal.Instance.TextDrawDestroy(Id);
         }
 
         /// <summary>
@@ -470,7 +470,7 @@ namespace SampSharp.GameMode.Display
 
             _playersShownTo.Clear();
             _playersShownTo.AddRange(BasePlayer.All);
-            Internal.TextDrawShowForAll(Id);
+            TextDrawInternal.Instance.TextDrawShowForAll(Id);
         }
 
         /// <summary>
@@ -489,7 +489,7 @@ namespace SampSharp.GameMode.Display
             if (!_playersShownTo.Contains(player))
                 _playersShownTo.Add(player);
 
-            Internal.TextDrawShowForPlayer(player.Id, Id);
+            TextDrawInternal.Instance.TextDrawShowForPlayer(player.Id, Id);
         }
 
         /// <summary>
@@ -501,7 +501,7 @@ namespace SampSharp.GameMode.Display
 
             if (Id == -1) return;
             _playersShownTo.Clear();
-            Internal.TextDrawHideForAll(Id);
+            TextDrawInternal.Instance.TextDrawHideForAll(Id);
         }
 
         /// <summary>
@@ -518,7 +518,7 @@ namespace SampSharp.GameMode.Display
             _playersShownTo.Remove(player);
 
             if (Id == -1) return;
-            Internal.TextDrawHideForPlayer(player.Id, Id);
+            TextDrawInternal.Instance.TextDrawHideForPlayer(player.Id, Id);
         }
 
         /// <summary>
@@ -526,8 +526,8 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         protected virtual void Refresh()
         {
-            if (Id != -1) Internal.TextDrawDestroy(Id);
-            Id = Internal.TextDrawCreate(Position.X, Position.Y, FixString(Text));
+            if (Id != -1) TextDrawInternal.Instance.TextDrawDestroy(Id);
+            Id = TextDrawInternal.Instance.TextDrawCreate(Position.X, Position.Y, FixString(Text));
 
             //Reset properties
             Font = Font;

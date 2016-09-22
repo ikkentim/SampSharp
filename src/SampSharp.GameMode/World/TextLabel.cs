@@ -56,7 +56,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _color = value;
-                Internal.Update3DTextLabelText(Id, Color, Text);
+                TextLabelInternal.Instance.Update3DTextLabelText(Id, Color, Text);
             }
         }
 
@@ -69,7 +69,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _text = value;
-                Internal.Update3DTextLabelText(Id, Color, Text);
+                TextLabelInternal.Instance.Update3DTextLabelText(Id, Color, Text);
             }
         }
 
@@ -82,8 +82,8 @@ namespace SampSharp.GameMode.World
             set
             {
                 _position = value;
-                Internal.Delete3DTextLabel(Id);
-                Id = Internal.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
+                TextLabelInternal.Instance.Delete3DTextLabel(Id);
+                Id = TextLabelInternal.Instance.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     VirtualWorld, TestLOS);
             }
         }
@@ -97,8 +97,8 @@ namespace SampSharp.GameMode.World
             set
             {
                 _drawDistance = value;
-                Internal.Delete3DTextLabel(Id);
-                Id = Internal.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
+                TextLabelInternal.Instance.Delete3DTextLabel(Id);
+                Id = TextLabelInternal.Instance.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     VirtualWorld, TestLOS);
             }
         }
@@ -112,8 +112,8 @@ namespace SampSharp.GameMode.World
             set
             {
                 _virtualWorld = value;
-                Internal.Delete3DTextLabel(Id);
-                Id = Internal.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
+                TextLabelInternal.Instance.Delete3DTextLabel(Id);
+                Id = TextLabelInternal.Instance.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     VirtualWorld, TestLOS);
             }
         }
@@ -128,8 +128,8 @@ namespace SampSharp.GameMode.World
             set
             {
                 _testLOS = value;
-                Internal.Delete3DTextLabel(Id);
-                Id = Internal.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
+                TextLabelInternal.Instance.Delete3DTextLabel(Id);
+                Id = TextLabelInternal.Instance.Create3DTextLabel(Text, Color, Position.X, Position.Y, Position.Z, DrawDistance,
                     VirtualWorld, TestLOS);
             }
         }
@@ -155,7 +155,7 @@ namespace SampSharp.GameMode.World
             _drawDistance = drawDistance;
             _virtualWorld = virtualWorld;
             _testLOS = testLOS;
-            Id = Internal.Create3DTextLabel(text, color, position.X, position.Y, position.Z, drawDistance, virtualWorld,
+            Id = TextLabelInternal.Instance.Create3DTextLabel(text, color, position.X, position.Y, position.Z, drawDistance, virtualWorld,
                 testLOS);
         }
 
@@ -196,7 +196,7 @@ namespace SampSharp.GameMode.World
         {
             base.Dispose(disposing);
 
-            Internal.Delete3DTextLabel(Id);
+            TextLabelInternal.Instance.Delete3DTextLabel(Id);
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            Internal.Attach3DTextLabelToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z);
+            TextLabelInternal.Instance.Attach3DTextLabelToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z);
         }
 
         /// <summary>
@@ -228,7 +228,7 @@ namespace SampSharp.GameMode.World
             if (vehicle == null)
                 throw new ArgumentNullException(nameof(vehicle));
 
-            Internal.Attach3DTextLabelToVehicle(Id, vehicle.Id, offset.X, offset.Y, offset.Z);
+            TextLabelInternal.Instance.Attach3DTextLabelToVehicle(Id, vehicle.Id, offset.X, offset.Y, offset.Z);
         }
 
         #endregion

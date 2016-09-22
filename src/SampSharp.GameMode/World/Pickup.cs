@@ -50,7 +50,7 @@ namespace SampSharp.GameMode.World
         /// <returns>The created pickup or null if it cannot be created.</returns>
         public static Pickup Create(int model, int type, Vector3 position, int virtualWorld = -1)
         {
-            var id = Internal.CreatePickup(model, type, position.X, position.Y, position.Z, virtualWorld);
+            var id = PickupInternal.Instance.CreatePickup(model, type, position.X, position.Y, position.Z, virtualWorld);
 
             if (id == InvalidId) return null;
 
@@ -73,7 +73,7 @@ namespace SampSharp.GameMode.World
         /// <returns>True if the pickup has been created, otherwise False.</returns>
         public static bool CreateStatic(int model, int type, Vector3 position, int virtualWorld = -1)
         {
-            return Internal.AddStaticPickup(model, type, position.X, position.Y, position.Z, virtualWorld) == 1;
+            return PickupInternal.Instance.AddStaticPickup(model, type, position.X, position.Y, position.Z, virtualWorld) == 1;
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace SampSharp.GameMode.World
         {
             base.Dispose(disposing);
 
-            Internal.DestroyPickup(Id);
+            PickupInternal.Instance.DestroyPickup(Id);
         }
 
         #region Events

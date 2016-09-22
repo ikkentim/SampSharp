@@ -43,7 +43,7 @@ namespace SampSharp.GameMode.World
         /// <param name="maxY">The maximum y.</param>
         public GangZone(float minX, float minY, float maxX, float maxY)
         {
-            Id = Internal.GangZoneCreate(minX, minY, maxX, maxY);
+            Id = GangZoneInternal.Instance.GangZoneCreate(minX, minY, maxX, maxY);
 
             MinX = minX;
             MaxX = maxX;
@@ -84,7 +84,7 @@ namespace SampSharp.GameMode.World
         {
             base.Dispose(disposing);
 
-            Internal.GangZoneDestroy(Id);
+            GangZoneInternal.Instance.GangZoneDestroy(Id);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.GangZoneShowForAll(Id, Color);
+            GangZoneInternal.Instance.GangZoneShowForAll(Id, Color);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace SampSharp.GameMode.World
             if (player == null) throw new ArgumentNullException(nameof(player));
             AssertNotDisposed();
 
-            Internal.GangZoneShowForPlayer(player.Id, Id, Color);
+            GangZoneInternal.Instance.GangZoneShowForPlayer(player.Id, Id, Color);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.GangZoneHideForAll(Id);
+            GangZoneInternal.Instance.GangZoneHideForAll(Id);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace SampSharp.GameMode.World
             if (player == null) throw new ArgumentNullException(nameof(player));
             AssertNotDisposed();
 
-            Internal.GangZoneHideForPlayer(player.Id, Id);
+            GangZoneInternal.Instance.GangZoneHideForPlayer(player.Id, Id);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.GangZoneFlashForAll(Id, color);
+            GangZoneInternal.Instance.GangZoneFlashForAll(Id, color);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace SampSharp.GameMode.World
             if (player == null) throw new ArgumentNullException(nameof(player));
             AssertNotDisposed();
 
-            Internal.GangZoneFlashForPlayer(player.Id, Id, color);
+            GangZoneInternal.Instance.GangZoneFlashForPlayer(player.Id, Id, color);
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.GangZoneStopFlashForAll(Id);
+            GangZoneInternal.Instance.GangZoneStopFlashForAll(Id);
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            Internal.GangZoneStopFlashForPlayer(player.Id, Id);
+            GangZoneInternal.Instance.GangZoneStopFlashForPlayer(player.Id, Id);
         }
     }
 }

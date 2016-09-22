@@ -46,10 +46,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                Internal.GetPlayerObjectRot(Owner.Id, Id, out x, out y, out z);
+                PlayerObjectInternal.Instance.GetPlayerObjectRot(Owner.Id, Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { Internal.SetPlayerObjectRot(Owner.Id, Id, value.X, value.Y, value.Z); }
+            set { PlayerObjectInternal.Instance.SetPlayerObjectRot(Owner.Id, Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
@@ -60,21 +60,21 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                Internal.GetPlayerObjectPos(Owner.Id, Id, out x, out y, out z);
+                PlayerObjectInternal.Instance.GetPlayerObjectPos(Owner.Id, Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { Internal.SetPlayerObjectPos(Owner.Id, Id, value.X, value.Y, value.Z); }
+            set { PlayerObjectInternal.Instance.SetPlayerObjectPos(Owner.Id, Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
         ///     Gets whether this <see cref="IGameObject" /> is moving.
         /// </summary>
-        public virtual bool IsMoving => Internal.IsPlayerObjectMoving(Owner.Id, Id);
+        public virtual bool IsMoving => PlayerObjectInternal.Instance.IsPlayerObjectMoving(Owner.Id, Id);
 
         /// <summary>
         ///     Gets whether this <see cref="IGameObject" /> is valid.
         /// </summary>
-        public virtual bool IsValid => Internal.IsValidPlayerObject(Owner.Id, Id);
+        public virtual bool IsValid => PlayerObjectInternal.Instance.IsValidPlayerObject(Owner.Id, Id);
 
         /// <summary>
         ///     Gets the model of this <see cref="IGameObject" />.
@@ -84,7 +84,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 AssertNotDisposed();
-                return Internal.GetPlayerObjectModel(Owner.Id, Id);
+                return PlayerObjectInternal.Instance.GetPlayerObjectModel(Owner.Id, Id);
             }
         }
 
@@ -155,7 +155,7 @@ namespace SampSharp.GameMode.World
             Owner = owner;
             DrawDistance = drawDistance;
 
-            Id = Internal.CreatePlayerObject(owner.Id, modelid, position.X, position.Y, position.Z, rotation.X,
+            Id = PlayerObjectInternal.Instance.CreatePlayerObject(owner.Id, modelid, position.X, position.Y, position.Z, rotation.X,
                 rotation.Y,
                 rotation.Z, drawDistance);
         }
@@ -177,7 +177,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.MovePlayerObject(Owner.Id, Id, position.X, position.Y, position.Z, speed, rotation.X,
+            return PlayerObjectInternal.Instance.MovePlayerObject(Owner.Id, Id, position.X, position.Y, position.Z, speed, rotation.X,
                 rotation.Y, rotation.Z);
         }
 
@@ -193,7 +193,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.MovePlayerObject(Owner.Id, Id, position.X, position.Y, position.Z, speed, -1000,
+            return PlayerObjectInternal.Instance.MovePlayerObject(Owner.Id, Id, position.X, position.Y, position.Z, speed, -1000,
                 -1000, -1000);
         }
 
@@ -204,7 +204,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.StopPlayerObject(Owner.Id, Id);
+            PlayerObjectInternal.Instance.StopPlayerObject(Owner.Id, Id);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerObjectMaterial(Owner.Id, Id, materialindex, modelid, txdname, texturename,
+            PlayerObjectInternal.Instance.SetPlayerObjectMaterial(Owner.Id, Id, materialindex, modelid, txdname, texturename,
                 materialcolor.ToInteger(ColorFormat.ARGB));
         }
 
@@ -245,7 +245,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerObjectMaterialText(Owner.Id, Id, text, materialindex, (int) materialsize,
+            PlayerObjectInternal.Instance.SetPlayerObjectMaterialText(Owner.Id, Id, text, materialindex, (int) materialsize,
                 fontface, fontsize, bold,
                 foreColor.ToInteger(ColorFormat.ARGB), backColor.ToInteger(ColorFormat.ARGB),
                 (int) textalignment);
@@ -257,7 +257,7 @@ namespace SampSharp.GameMode.World
         public virtual void DisableCameraCollisions()
         {
             AssertNotDisposed();
-            Internal.SetPlayerObjectNoCameraCol(Owner.Id, Id);
+            PlayerObjectInternal.Instance.SetPlayerObjectNoCameraCol(Owner.Id, Id);
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            Internal.AttachPlayerObjectToPlayer(Owner.Id, Id, player.Id, offset.X, offset.Y, offset.Z, rotation.X,
+            PlayerObjectInternal.Instance.AttachPlayerObjectToPlayer(Owner.Id, Id, player.Id, offset.X, offset.Y, offset.Z, rotation.X,
                 rotation.Y, rotation.Z);
         }
 
@@ -292,7 +292,7 @@ namespace SampSharp.GameMode.World
             if (vehicle == null)
                 throw new ArgumentNullException(nameof(vehicle));
 
-            Internal.AttachPlayerObjectToVehicle(Owner.Id, Id, vehicle.Id, offset.X, offset.Y, offset.Z, rotation.X,
+            PlayerObjectInternal.Instance.AttachPlayerObjectToVehicle(Owner.Id, Id, vehicle.Id, offset.X, offset.Y, offset.Z, rotation.X,
                 rotation.Y, rotation.Z);
         }
 
@@ -306,7 +306,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.AttachCameraToPlayerObject(Owner.Id, Id);
+            PlayerObjectInternal.Instance.AttachCameraToPlayerObject(Owner.Id, Id);
         }
 
         /// <summary>
@@ -317,7 +317,7 @@ namespace SampSharp.GameMode.World
         {
             base.Dispose(disposing);
 
-            Internal.DestroyPlayerObject(Owner.Id, Id);
+            PlayerObjectInternal.Instance.DestroyPlayerObject(Owner.Id, Id);
         }
 
         /// <summary>
@@ -328,7 +328,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.EditPlayerObject(Owner.Id, Id);
+            PlayerObjectInternal.Instance.EditPlayerObject(Owner.Id, Id);
         }
 
         /// <summary>
@@ -341,7 +341,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            Internal.SelectObject(player.Id);
+            PlayerObjectInternal.Instance.SelectObject(player.Id);
         }
 
         #endregion

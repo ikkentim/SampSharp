@@ -59,7 +59,7 @@ namespace SampSharp.GameMode.SAMP
             {
                 if (varname == null || _player == null) return null;
 
-                switch ((ServerVarType) Internal.GetPVarType(_player.Id, varname))
+                switch ((ServerVarType) PVarCollectionInternal.Instance.GetPVarType(_player.Id, varname))
                 {
                     case ServerVarType.Int:
                         return Get<int>(varname);
@@ -82,16 +82,16 @@ namespace SampSharp.GameMode.SAMP
                 }
 
                 if (value is int)
-                    Internal.SetPVarInt(_player.Id, varname, (int) value);
+                    PVarCollectionInternal.Instance.SetPVarInt(_player.Id, varname, (int) value);
                 else if (value is float)
-                    Internal.SetPVarFloat(_player.Id, varname, (float) value);
+                    PVarCollectionInternal.Instance.SetPVarFloat(_player.Id, varname, (float) value);
                 else if (value is bool)
-                    Internal.SetPVarInt(_player.Id, varname, (bool) value ? 1 : 0);
+                    PVarCollectionInternal.Instance.SetPVarInt(_player.Id, varname, (bool) value ? 1 : 0);
                 else
                 {
                     var s = value as string;
                     if (s != null)
-                        Internal.SetPVarString(_player.Id, varname, s);
+                        PVarCollectionInternal.Instance.SetPVarString(_player.Id, varname, s);
                 }
             }
         }
@@ -99,7 +99,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Gets the upper index of the variables list.
         /// </summary>
-        public int UpperIndex => _player == null ? 0 : Internal.GetPVarsUpperIndex(_player.Id);
+        public int UpperIndex => _player == null ? 0 : PVarCollectionInternal.Instance.GetPVarsUpperIndex(_player.Id);
 
         /// <summary>
         ///     Returns an enumerator that iterates through the collection.
@@ -136,17 +136,17 @@ namespace SampSharp.GameMode.SAMP
 
             object value = default(T);
             if (typeof (T) == typeof (int))
-                value = Internal.GetPVarInt(_player.Id, varname);
+                value = PVarCollectionInternal.Instance.GetPVarInt(_player.Id, varname);
             else if (typeof (T) == typeof (float))
-                value = Internal.GetPVarFloat(_player.Id, varname);
+                value = PVarCollectionInternal.Instance.GetPVarFloat(_player.Id, varname);
             else if (typeof (T) == typeof (string))
             {
                 string output;
-                Internal.GetPVarString(_player.Id, varname, out output, 64);
+                PVarCollectionInternal.Instance.GetPVarString(_player.Id, varname, out output, 64);
                 value = output;
             }
             else if (typeof (T) == typeof (bool))
-                value = Internal.GetPVarInt(_player.Id, varname) > 0;
+                value = PVarCollectionInternal.Instance.GetPVarInt(_player.Id, varname) > 0;
             return (T) Convert.ChangeType(value, typeof (T));
         }
 
@@ -157,7 +157,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>True if the variable exists; False otherwise.</returns>
         public bool Exists(string varname)
         {
-            return _player != null && Internal.GetPVarType(_player.Id, varname) != (int) ServerVarType.None;
+            return _player != null && PVarCollectionInternal.Instance.GetPVarType(_player.Id, varname) != (int) ServerVarType.None;
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace SampSharp.GameMode.SAMP
         {
             if (_player == null) return null;
 
-            switch ((ServerVarType) Internal.GetPVarType(_player.Id, varname))
+            switch ((ServerVarType) PVarCollectionInternal.Instance.GetPVarType(_player.Id, varname))
             {
                 case ServerVarType.Float:
                     return typeof (float);
@@ -192,7 +192,7 @@ namespace SampSharp.GameMode.SAMP
             if (_player == null) return null;
 
             string name;
-            Internal.GetPVarNameAtIndex(_player.Id, index, out name, 64);
+            PVarCollectionInternal.Instance.GetPVarNameAtIndex(_player.Id, index, out name, 64);
             return name;
         }
 
@@ -203,7 +203,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>True on success; False otherwise.</returns>
         public bool Delete(string varname)
         {
-            return _player != null && Internal.DeletePVar(_player.Id, varname);
+            return _player != null && PVarCollectionInternal.Instance.DeletePVar(_player.Id, varname);
         }
     }
 }

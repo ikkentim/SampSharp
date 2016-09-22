@@ -13,31 +13,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.World
 {
     public partial class PlayerTextLabel
     {
-        private static readonly PlayerTextLabelInternal Internal;
-
-        static PlayerTextLabel()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<PlayerTextLabelInternal>();
-        }
-
-        private class PlayerTextLabelInternal
+        private class PlayerTextLabelInternal : NativeObjectSingleton<PlayerTextLabelInternal>
         {
             [NativeMethod]
-            public virtual int CreatePlayer3DTextLabel(int playerid, string text, int color, float x, float y, float z, float drawDistance, int attachedplayer, int attachedvehicle, bool testLOS)
+            public virtual int CreatePlayer3DTextLabel(int playerid, string text, int color, float x, float y, float z,
+                float drawDistance, int attachedplayer, int attachedvehicle, bool testLOS)
             {
                 throw new NativeNotImplementedException();
             }
+
             [NativeMethod]
             public virtual int DeletePlayer3DTextLabel(int playerid, int id)
             {
                 throw new NativeNotImplementedException();
             }
+
             [NativeMethod]
             public virtual int UpdatePlayer3DTextLabelText(int playerid, int id, int color, string text)
             {

@@ -52,10 +52,10 @@ namespace SampSharp.GameMode.Factories
             int respawnDelay = -1, bool addAlarm = false)
         {
             var id = new[] {449, 537, 538, 569, 570, 590}.Contains((int) vehicletype)
-                ? Internal.AddStaticVehicleEx((int) vehicletype, position.X, position.Y, position.Z, rotation, color1,
+                ? BaseVehicleFactoryInternal.Instance.AddStaticVehicleEx((int) vehicletype, position.X, position.Y, position.Z, rotation, color1,
                     color2,
                     respawnDelay, addAlarm)
-                : Internal.CreateVehicle((int) vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
+                : BaseVehicleFactoryInternal.Instance.CreateVehicle((int) vehicletype, position.X, position.Y, position.Z, rotation, color1, color2,
                     respawnDelay, addAlarm);
 
             return id == BaseVehicle.InvalidId ? null : BaseVehicle.FindOrCreate(id);
@@ -80,7 +80,7 @@ namespace SampSharp.GameMode.Factories
             int color2,
             int respawnDelay, bool addAlarm = false)
         {
-            var id = Internal.AddStaticVehicleEx((int) vehicletype, position.X, position.Y, position.Z, rotation, color1,
+            var id = BaseVehicleFactoryInternal.Instance.AddStaticVehicleEx((int) vehicletype, position.X, position.Y, position.Z, rotation, color1,
                 color2,
                 respawnDelay, addAlarm);
 
@@ -100,7 +100,7 @@ namespace SampSharp.GameMode.Factories
             int color1,
             int color2)
         {
-            var id = Internal.AddStaticVehicle((int) vehicletype, position.X, position.Y, position.Z, rotation, color1,
+            var id = BaseVehicleFactoryInternal.Instance.AddStaticVehicle((int) vehicletype, position.X, position.Y, position.Z, rotation, color1,
                 color2);
 
             return id == BaseVehicle.InvalidId ? null : BaseVehicle.FindOrCreate(id);

@@ -13,20 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.World
 {
     public partial class BaseVehicle
     {
-        private static readonly VehicleInternal Internal;
-
-        static BaseVehicle()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<VehicleInternal>();
-        }
-
-        private class VehicleInternal
+        private class VehicleInternal : NativeObjectSingleton<VehicleInternal>
         {
             [NativeMethod]
             public virtual bool IsValidVehicle(int vehicleid)

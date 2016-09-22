@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.GameMode.API
+namespace SampSharp.GameMode.API.NativeObjects
 {
     /// <summary>
     /// Specifies the identifiers properties for a native object class.

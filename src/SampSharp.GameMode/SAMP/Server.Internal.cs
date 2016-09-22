@@ -13,20 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.SAMP
 {
     public static partial class Server
     {
-        private static readonly ServerInternal Internal;
-
-        static Server()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<ServerInternal>();
-        }
-
-        private class ServerInternal
+        private class ServerInternal : NativeObjectSingleton<ServerInternal>
         {
             [NativeMethod]
             public virtual bool BlockIpAddress(string ipAddress, int timems)
@@ -99,7 +92,7 @@ namespace SampSharp.GameMode.SAMP
             {
                 throw new NativeNotImplementedException();
             }
-            
+
             [NativeMethod]
             public virtual bool GetConsoleVarAsBool(string varname)
             {

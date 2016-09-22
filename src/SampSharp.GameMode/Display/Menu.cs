@@ -149,7 +149,7 @@ namespace SampSharp.GameMode.Display
             }
 
             _viewers.Add(player);
-            Internal.ShowMenuForPlayer(Id, player.Id);
+            MenuInternal.Instance.ShowMenuForPlayer(Id, player.Id);
 
             return true;
         }
@@ -171,7 +171,7 @@ namespace SampSharp.GameMode.Display
 
             if (Id != InvalidId)
             {
-                Internal.HideMenuForPlayer(Id, player.Id);
+                MenuInternal.Instance.HideMenuForPlayer(Id, player.Id);
             }
 
             if (_viewers.Count == 0)
@@ -230,7 +230,7 @@ namespace SampSharp.GameMode.Display
                 throw new Exception("This menu contains no rows");
             }
 
-            Id = Internal.CreateMenu(Title, Columns.Count, Position.X, Position.Y,
+            Id = MenuInternal.Instance.CreateMenu(Title, Columns.Count, Position.X, Position.Y,
                 Columns[0].Width, Columns.Count == 2 ? Columns[1].Width : 0);
 
             if (Id == InvalidId)
@@ -242,19 +242,19 @@ namespace SampSharp.GameMode.Display
             {
                 if (Columns[i].Caption != null)
                 {
-                    Internal.SetMenuColumnHeader(Id, i, Columns[i].Caption);
+                    MenuInternal.Instance.SetMenuColumnHeader(Id, i, Columns[i].Caption);
                 }
             }
 
             for (var i = 0; i < Rows.Count; i++)
             {
-                Internal.AddMenuItem(Id, 0, Rows[i].Column1Text ?? string.Empty);
+                MenuInternal.Instance.AddMenuItem(Id, 0, Rows[i].Column1Text ?? string.Empty);
                 if (!string.IsNullOrEmpty(Rows[i].Column2Text))
-                    Internal.AddMenuItem(Id, 1, Rows[i].Column2Text);
+                    MenuInternal.Instance.AddMenuItem(Id, 1, Rows[i].Column2Text);
 
                 if (Rows[i].Disabled)
                 {
-                    Internal.DisableMenuRow(Id, i);
+                    MenuInternal.Instance.DisableMenuRow(Id, i);
                 }
             }
         }
@@ -265,7 +265,7 @@ namespace SampSharp.GameMode.Display
             {
                 HideForAll();
 
-                Internal.DestroyMenu(Id);
+                MenuInternal.Instance.DestroyMenu(Id);
                 Id = InvalidId;
             }
         }

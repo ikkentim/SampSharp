@@ -13,20 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.World
 {
     public partial class GlobalObject
     {
-        private static readonly GlobalObjectInternal Internal;
-
-        static GlobalObject()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<GlobalObjectInternal>();
-        }
-
-        private class GlobalObjectInternal
+        private class GlobalObjectInternal : NativeObjectSingleton<GlobalObjectInternal>
         {
             [NativeMethod]
             public virtual bool AttachCameraToObject(int playerid, int objectid)
@@ -35,31 +28,36 @@ namespace SampSharp.GameMode.World
             }
 
             [NativeMethod]
-            public virtual bool RemoveBuildingForPlayer(int playerid, int modelid, float x, float y, float z, float radius)
+            public virtual bool RemoveBuildingForPlayer(int playerid, int modelid, float x, float y, float z,
+                float radius)
             {
                 throw new NativeNotImplementedException();
             }
 
             [NativeMethod]
-            public virtual int CreateObject(int modelid, float x, float y, float z, float rX, float rY, float rZ, float drawDistance)
+            public virtual int CreateObject(int modelid, float x, float y, float z, float rX, float rY, float rZ,
+                float drawDistance)
             {
                 throw new NativeNotImplementedException();
             }
 
             [NativeMethod]
-            public virtual bool AttachObjectToVehicle(int objectid, int vehicleid, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ)
+            public virtual bool AttachObjectToVehicle(int objectid, int vehicleid, float offsetX, float offsetY,
+                float offsetZ, float rotX, float rotY, float rotZ)
             {
                 throw new NativeNotImplementedException();
             }
 
             [NativeMethod]
-            public virtual bool AttachObjectToObject(int objectid, int attachtoid, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, bool syncRotation)
+            public virtual bool AttachObjectToObject(int objectid, int attachtoid, float offsetX, float offsetY,
+                float offsetZ, float rotX, float rotY, float rotZ, bool syncRotation)
             {
                 throw new NativeNotImplementedException();
             }
 
             [NativeMethod]
-            public virtual bool AttachObjectToPlayer(int objectid, int playerid, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ)
+            public virtual bool AttachObjectToPlayer(int objectid, int playerid, float offsetX, float offsetY,
+                float offsetZ, float rotX, float rotY, float rotZ)
             {
                 throw new NativeNotImplementedException();
             }
@@ -113,7 +111,8 @@ namespace SampSharp.GameMode.World
             }
 
             [NativeMethod]
-            public virtual int MoveObject(int objectid, float x, float y, float z, float speed, float rotX, float rotY, float rotZ)
+            public virtual int MoveObject(int objectid, float x, float y, float z, float speed, float rotX, float rotY,
+                float rotZ)
             {
                 throw new NativeNotImplementedException();
             }
@@ -149,17 +148,18 @@ namespace SampSharp.GameMode.World
             }
 
             [NativeMethod]
-            public virtual bool SetObjectMaterial(int objectid, int materialindex, int modelid, string txdname, string texturename, int materialcolor)
+            public virtual bool SetObjectMaterial(int objectid, int materialindex, int modelid, string txdname,
+                string texturename, int materialcolor)
             {
                 throw new NativeNotImplementedException();
             }
 
             [NativeMethod]
-            public virtual bool SetObjectMaterialText(int objectid, string text, int materialindex, int materialsize, string fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment)
+            public virtual bool SetObjectMaterialText(int objectid, string text, int materialindex, int materialsize,
+                string fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment)
             {
                 throw new NativeNotImplementedException();
             }
-
         }
     }
 }

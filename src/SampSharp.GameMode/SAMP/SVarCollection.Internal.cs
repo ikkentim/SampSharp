@@ -13,20 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.SAMP
 {
     public partial class SVarCollection
     {
-        private static readonly SVarCollectionInternal Internal;
-
-        static SVarCollection()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<SVarCollectionInternal>();
-        }
-
-        private class SVarCollectionInternal
+        private class SVarCollectionInternal : NativeObjectSingleton<SVarCollectionInternal>
         {
             [NativeMethod]
             public virtual bool SetSVarInt(string varname, int value)

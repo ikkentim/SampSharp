@@ -18,7 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace SampSharp.GameMode.API
+namespace SampSharp.GameMode.API.NativeObjects
 {
     /// <summary>
     /// A generator for native object instances.

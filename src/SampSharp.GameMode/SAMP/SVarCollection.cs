@@ -43,7 +43,7 @@ namespace SampSharp.GameMode.SAMP
             {
                 if (varname == null) return null;
 
-                switch ((ServerVarType) Internal.GetSVarType(varname))
+                switch ((ServerVarType) SVarCollectionInternal.Instance.GetSVarType(varname))
                 {
                     case ServerVarType.Int:
                         return Get<int>(varname);
@@ -66,16 +66,16 @@ namespace SampSharp.GameMode.SAMP
                 }
 
                 if (value is int)
-                    Internal.SetSVarInt(varname, (int) value);
+                    SVarCollectionInternal.Instance.SetSVarInt(varname, (int) value);
                 else if (value is float)
-                    Internal.SetSVarFloat(varname, (float) value);
+                    SVarCollectionInternal.Instance.SetSVarFloat(varname, (float) value);
                 else if (value is bool)
-                    Internal.SetSVarInt(varname, (bool) value ? 1 : 0);
+                    SVarCollectionInternal.Instance.SetSVarInt(varname, (bool) value ? 1 : 0);
                 else
                 {
                     var s = value as string;
                     if (s != null)
-                        Internal.SetSVarString(varname, s);
+                        SVarCollectionInternal.Instance.SetSVarString(varname, s);
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Gets the upper index of the variables list.
         /// </summary>
-        public int UpperIndex => Internal.GetSVarsUpperIndex();
+        public int UpperIndex => SVarCollectionInternal.Instance.GetSVarsUpperIndex();
 
         /// <summary>
         ///     Returns an enumerator that iterates through the collection.
@@ -118,17 +118,17 @@ namespace SampSharp.GameMode.SAMP
         {
             object value = default(T);
             if (typeof (T) == typeof (int))
-                value = Internal.GetSVarInt(varname);
+                value = SVarCollectionInternal.Instance.GetSVarInt(varname);
             else if (typeof (T) == typeof (float))
-                value = Internal.GetSVarFloat(varname);
+                value = SVarCollectionInternal.Instance.GetSVarFloat(varname);
             else if (typeof (T) == typeof (string))
             {
                 string output;
-                Internal.GetSVarString(varname, out output, 64);
+                SVarCollectionInternal.Instance.GetSVarString(varname, out output, 64);
                 value = output;
             }
             else if (typeof (T) == typeof (bool))
-                value = Internal.GetSVarInt(varname) > 0;
+                value = SVarCollectionInternal.Instance.GetSVarInt(varname) > 0;
             return (T) Convert.ChangeType(value, typeof (T));
         }
 
@@ -139,7 +139,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>True if the variable exists; False otherwise.</returns>
         public bool Exists(string varname)
         {
-            return Internal.GetSVarType(varname) != (int) ServerVarType.None;
+            return SVarCollectionInternal.Instance.GetSVarType(varname) != (int) ServerVarType.None;
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>The type of the variable.</returns>
         public Type GetType(string varname)
         {
-            switch ((ServerVarType) Internal.GetSVarType(varname))
+            switch ((ServerVarType) SVarCollectionInternal.Instance.GetSVarType(varname))
             {
                 case ServerVarType.Float:
                     return typeof (float);
@@ -170,7 +170,7 @@ namespace SampSharp.GameMode.SAMP
         public string NameAtIndex(int index)
         {
             string name;
-            Internal.GetSVarNameAtIndex(index, out name, 64);
+            SVarCollectionInternal.Instance.GetSVarNameAtIndex(index, out name, 64);
             return name;
         }
 
@@ -181,7 +181,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>True on success; False otherwise.</returns>
         public bool Delete(string varname)
         {
-            return Internal.DeleteSVar(varname);
+            return SVarCollectionInternal.Instance.DeleteSVar(varname);
         }
     }
 }

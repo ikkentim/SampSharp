@@ -17,6 +17,7 @@ using System;
 using System.Linq;
 using System.Xml;
 using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
@@ -84,7 +85,6 @@ namespace SampSharp.GameMode.World
         static BasePlayer()
         {
             DefaultClientMessageColor = Color.White;
-            Internal = NativeObjectProxyFactory.CreateInstance<PlayerInternal>();
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the size of the players pool.
         /// </summary>
-        public static int PoolSize => Internal.GetPlayerPoolSize();
+        public static int PoolSize => PlayerInternal.Instance.GetPlayerPoolSize();
 
         #endregion
 
@@ -132,10 +132,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 string name;
-                Internal.GetPlayerName(Id, out name, MaxNameLength);
+                PlayerInternal.Instance.GetPlayerName(Id, out name, MaxNameLength);
                 return name;
             }
-            set { Internal.SetPlayerName(Id, value); }
+            set { PlayerInternal.Instance.SetPlayerName(Id, value); }
         }
 
         /// <summary>
@@ -146,10 +146,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float angle;
-                Internal.GetPlayerFacingAngle(Id, out angle);
+                PlayerInternal.Instance.GetPlayerFacingAngle(Id, out angle);
                 return angle;
             }
-            set { Internal.SetPlayerFacingAngle(Id, value); }
+            set { PlayerInternal.Instance.SetPlayerFacingAngle(Id, value); }
         }
 
         /// <summary>
@@ -157,8 +157,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Interior
         {
-            get { return Internal.GetPlayerInterior(Id); }
-            set { Internal.SetPlayerInterior(Id, value); }
+            get { return PlayerInternal.Instance.GetPlayerInterior(Id); }
+            set { PlayerInternal.Instance.SetPlayerInterior(Id, value); }
         }
 
         /// <summary>
@@ -166,8 +166,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int VirtualWorld
         {
-            get { return Internal.GetPlayerVirtualWorld(Id); }
-            set { Internal.SetPlayerVirtualWorld(Id, value); }
+            get { return PlayerInternal.Instance.GetPlayerVirtualWorld(Id); }
+            set { PlayerInternal.Instance.SetPlayerVirtualWorld(Id, value); }
         }
 
         /// <summary>
@@ -178,10 +178,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float health;
-                Internal.GetPlayerHealth(Id, out health);
+                PlayerInternal.Instance.GetPlayerHealth(Id, out health);
                 return health;
             }
-            set { Internal.SetPlayerHealth(Id, value); }
+            set { PlayerInternal.Instance.SetPlayerHealth(Id, value); }
         }
 
         /// <summary>
@@ -192,26 +192,26 @@ namespace SampSharp.GameMode.World
             get
             {
                 float armour;
-                Internal.GetPlayerArmour(Id, out armour);
+                PlayerInternal.Instance.GetPlayerArmour(Id, out armour);
                 return armour;
             }
-            set { Internal.SetPlayerArmour(Id, value); }
+            set { PlayerInternal.Instance.SetPlayerArmour(Id, value); }
         }
 
         /// <summary>
         ///     Gets the ammo of the Weapon this Player is currently holding.
         /// </summary>
-        public virtual int WeaponAmmo => Internal.GetPlayerAmmo(Id);
+        public virtual int WeaponAmmo => PlayerInternal.Instance.GetPlayerAmmo(Id);
 
         /// <summary>
         ///     Gets the WeaponState of the Weapon this Player is currently holding.
         /// </summary>
-        public virtual WeaponState WeaponState => (WeaponState) Internal.GetPlayerWeaponState(Id);
+        public virtual WeaponState WeaponState => (WeaponState) PlayerInternal.Instance.GetPlayerWeaponState(Id);
 
         /// <summary>
         ///     Gets the Weapon this Player is currently holding.
         /// </summary>
-        public virtual Weapon Weapon => (Weapon) Internal.GetPlayerWeapon(Id);
+        public virtual Weapon Weapon => (Weapon) PlayerInternal.Instance.GetPlayerWeapon(Id);
 
         /// <summary>
         ///     Gets the Player this Player is aiming at.
@@ -220,7 +220,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                var target = Internal.GetPlayerTargetPlayer(Id);
+                var target = PlayerInternal.Instance.GetPlayerTargetPlayer(Id);
                 return target == InvalidId ? null : Find(target);
             }
         }
@@ -230,8 +230,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Team
         {
-            get { return Internal.GetPlayerTeam(Id); }
-            set { Internal.SetPlayerTeam(Id, value); }
+            get { return PlayerInternal.Instance.GetPlayerTeam(Id); }
+            set { PlayerInternal.Instance.SetPlayerTeam(Id, value); }
         }
 
         /// <summary>
@@ -239,8 +239,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Score
         {
-            get { return Internal.GetPlayerScore(Id); }
-            set { Internal.SetPlayerScore(Id, value); }
+            get { return PlayerInternal.Instance.GetPlayerScore(Id); }
+            set { PlayerInternal.Instance.SetPlayerScore(Id, value); }
         }
 
         /// <summary>
@@ -248,8 +248,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int DrunkLevel
         {
-            get { return Internal.GetPlayerDrunkLevel(Id); }
-            set { Internal.SetPlayerDrunkLevel(Id, value); }
+            get { return PlayerInternal.Instance.GetPlayerDrunkLevel(Id); }
+            set { PlayerInternal.Instance.SetPlayerDrunkLevel(Id, value); }
         }
 
         /// <summary>
@@ -257,8 +257,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual Color Color
         {
-            get { return new Color(Internal.GetPlayerColor(Id)); }
-            set { Internal.SetPlayerColor(Id, value); }
+            get { return new Color(PlayerInternal.Instance.GetPlayerColor(Id)); }
+            set { PlayerInternal.Instance.SetPlayerColor(Id, value); }
         }
 
         /// <summary>
@@ -266,8 +266,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Skin
         {
-            get { return Internal.GetPlayerSkin(Id); }
-            set { Internal.SetPlayerSkin(Id, value); }
+            get { return PlayerInternal.Instance.GetPlayerSkin(Id); }
+            set { PlayerInternal.Instance.SetPlayerSkin(Id, value); }
         }
 
         /// <summary>
@@ -275,18 +275,18 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Money
         {
-            get { return Internal.GetPlayerMoney(Id); }
+            get { return PlayerInternal.Instance.GetPlayerMoney(Id); }
             set
             {
-                Internal.ResetPlayerMoney(Id);
-                Internal.GivePlayerMoney(Id, value);
+                PlayerInternal.Instance.ResetPlayerMoney(Id);
+                PlayerInternal.Instance.GivePlayerMoney(Id, value);
             }
         }
 
         /// <summary>
         ///     Gets the state of this Player.
         /// </summary>
-        public virtual PlayerState State => (PlayerState) Internal.GetPlayerState(Id);
+        public virtual PlayerState State => (PlayerState) PlayerInternal.Instance.GetPlayerState(Id);
 
         /// <summary>
         ///     Gets the IP of this Player.
@@ -296,7 +296,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 string ip;
-                Internal.GetPlayerIp(Id, out ip, 16);
+                PlayerInternal.Instance.GetPlayerIp(Id, out ip, 16);
                 return ip;
             }
         }
@@ -304,15 +304,15 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the ping of this Player.
         /// </summary>
-        public virtual int Ping => Internal.GetPlayerPing(Id);
+        public virtual int Ping => PlayerInternal.Instance.GetPlayerPing(Id);
 
         /// <summary>
         ///     Gets or sets the wanted level of this Player.
         /// </summary>
         public virtual int WantedLevel
         {
-            get { return Internal.GetPlayerWantedLevel(Id); }
-            set { Internal.SetPlayerWantedLevel(Id, value); }
+            get { return PlayerInternal.Instance.GetPlayerWantedLevel(Id); }
+            set { PlayerInternal.Instance.SetPlayerWantedLevel(Id, value); }
         }
 
         /// <summary>
@@ -320,8 +320,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual FightStyle FightStyle
         {
-            get { return (FightStyle) Internal.GetPlayerFightingStyle(Id); }
-            set { Internal.SetPlayerFightingStyle(Id, (int) value); }
+            get { return (FightStyle) PlayerInternal.Instance.GetPlayerFightingStyle(Id); }
+            set { PlayerInternal.Instance.SetPlayerFightingStyle(Id, (int) value); }
         }
 
         /// <summary>
@@ -332,29 +332,29 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                Internal.GetPlayerVelocity(Id, out x, out y, out z);
+                PlayerInternal.Instance.GetPlayerVelocity(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { Internal.SetPlayerVelocity(Id, value.X, value.Y, value.Z); }
+            set { PlayerInternal.Instance.SetPlayerVelocity(Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
         ///     Gets the vehicle seat this Player sits on.
         /// </summary>
-        public virtual int VehicleSeat => Internal.GetPlayerVehicleSeat(Id);
+        public virtual int VehicleSeat => PlayerInternal.Instance.GetPlayerVehicleSeat(Id);
 
         /// <summary>
         ///     Gets the index of the animation this Player is playing.
         /// </summary>
-        public virtual int AnimationIndex => Internal.GetPlayerAnimationIndex(Id);
+        public virtual int AnimationIndex => PlayerInternal.Instance.GetPlayerAnimationIndex(Id);
 
         /// <summary>
         ///     Gets or sets the SpecialAction of this Player.
         /// </summary>
         public virtual SpecialAction SpecialAction
         {
-            get { return (SpecialAction) Internal.GetPlayerSpecialAction(Id); }
-            set { Internal.SetPlayerSpecialAction(Id, (int) value); }
+            get { return (SpecialAction) PlayerInternal.Instance.GetPlayerSpecialAction(Id); }
+            set { PlayerInternal.Instance.SetPlayerSpecialAction(Id, (int) value); }
         }
 
         /// <summary>
@@ -366,10 +366,10 @@ namespace SampSharp.GameMode.World
             {
                 float x, y, z;
 
-                Internal.GetPlayerCameraPos(Id, out x, out y, out z);
+                PlayerInternal.Instance.GetPlayerCameraPos(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { Internal.SetPlayerCameraPos(Id, value.X, value.Y, value.Z); }
+            set { PlayerInternal.Instance.SetPlayerCameraPos(Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
@@ -380,7 +380,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                Internal.GetPlayerCameraFrontVector(Id, out x, out y, out z);
+                PlayerInternal.Instance.GetPlayerCameraFrontVector(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
         }
@@ -388,7 +388,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the mode of this Player's camera.
         /// </summary>
-        public virtual CameraMode CameraMode => (CameraMode) Internal.GetPlayerCameraMode(Id);
+        public virtual CameraMode CameraMode => (CameraMode) PlayerInternal.Instance.GetPlayerCameraMode(Id);
 
         /// <summary>
         ///     Gets the Actor this Player is aiming at.
@@ -399,7 +399,7 @@ namespace SampSharp.GameMode.World
             {
                 AssertNotDisposed();
 
-                var id = Internal.GetPlayerTargetActor(Id);
+                var id = PlayerInternal.Instance.GetPlayerTargetActor(Id);
                 return id == Actor.InvalidId ? null : Actor.Find(id);
             }
         }
@@ -413,7 +413,7 @@ namespace SampSharp.GameMode.World
             {
                 AssertNotDisposed();
 
-                var id = Internal.GetPlayerCameraTargetObject(Id);
+                var id = PlayerInternal.Instance.GetPlayerCameraTargetObject(Id);
                 return id == GlobalObject.InvalidId ? null : GlobalObject.Find(id);
             }
         }
@@ -427,7 +427,7 @@ namespace SampSharp.GameMode.World
             {
                 AssertNotDisposed();
 
-                var id = Internal.GetPlayerCameraTargetVehicle(Id);
+                var id = PlayerInternal.Instance.GetPlayerCameraTargetVehicle(Id);
                 return id == BaseVehicle.InvalidId ? null : BaseVehicle.Find(id);
             }
         }
@@ -441,7 +441,7 @@ namespace SampSharp.GameMode.World
             {
                 AssertNotDisposed();
 
-                var id = Internal.GetPlayerCameraTargetPlayer(Id);
+                var id = PlayerInternal.Instance.GetPlayerCameraTargetPlayer(Id);
                 return id == InvalidId ? null : Find(id);
             }
         }
@@ -455,7 +455,7 @@ namespace SampSharp.GameMode.World
             {
                 AssertNotDisposed();
 
-                var id = Internal.GetPlayerCameraTargetActor(Id);
+                var id = PlayerInternal.Instance.GetPlayerCameraTargetActor(Id);
                 return id == Actor.InvalidId ? null : Actor.Find(id);
             }
         }
@@ -463,17 +463,17 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets whether this Player is currently in any vehicle.
         /// </summary>
-        public virtual bool InAnyVehicle => Internal.IsPlayerInAnyVehicle(Id);
+        public virtual bool InAnyVehicle => PlayerInternal.Instance.IsPlayerInAnyVehicle(Id);
 
         /// <summary>
         ///     Gets whether this Player is in his checkpoint.
         /// </summary>
-        public virtual bool InCheckpoint => Internal.IsPlayerInCheckpoint(Id);
+        public virtual bool InCheckpoint => PlayerInternal.Instance.IsPlayerInCheckpoint(Id);
 
         /// <summary>
         ///     Gets whether this Player is in his race-checkpoint.
         /// </summary>
-        public virtual bool InRaceCheckpoint => Internal.IsPlayerInRaceCheckpoint(Id);
+        public virtual bool InRaceCheckpoint => PlayerInternal.Instance.IsPlayerInRaceCheckpoint(Id);
 
         /// <summary>
         ///     Gets the Vehicle that this Player is surfing.
@@ -482,7 +482,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                var vehicleid = Internal.GetPlayerSurfingVehicleID(Id);
+                var vehicleid = PlayerInternal.Instance.GetPlayerSurfingVehicleID(Id);
                 return vehicleid == BaseVehicle.InvalidId ? null : BaseVehicle.Find(vehicleid);
             }
         }
@@ -494,7 +494,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                var objectid = Internal.GetPlayerSurfingObjectID(Id);
+                var objectid = PlayerInternal.Instance.GetPlayerSurfingObjectID(Id);
                 return objectid == GlobalObject.InvalidId ? null : GlobalObject.Find(objectid);
             }
         }
@@ -506,7 +506,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                var vehicleid = Internal.GetPlayerVehicleID(Id); //Returns 0, not Vehicle.InvalidId!
+                var vehicleid = PlayerInternal.Instance.GetPlayerVehicleID(Id); //Returns 0, not Vehicle.InvalidId!
                 return vehicleid == 0 ? null : BaseVehicle.Find(vehicleid);
             }
         }
@@ -514,7 +514,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets whether this Player is connected to the server.
         /// </summary>
-        public virtual bool IsConnected => Internal.IsPlayerConnected(Id);
+        public virtual bool IsConnected => PlayerInternal.Instance.IsPlayerConnected(Id);
 
 
         /// <summary>
@@ -537,10 +537,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                Internal.GetPlayerPos(Id, out x, out y, out z);
+                PlayerInternal.Instance.GetPlayerPos(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { Internal.SetPlayerPos(Id, value.X, value.Y, value.Z); }
+            set { PlayerInternal.Instance.SetPlayerPos(Id, value.X, value.Y, value.Z); }
         }
 
         #endregion
@@ -550,12 +550,12 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets whether this Player is an actual player or an NPC.
         /// </summary>
-        public virtual bool IsNPC => Internal.IsPlayerNPC(Id);
+        public virtual bool IsNPC => PlayerInternal.Instance.IsPlayerNPC(Id);
 
         /// <summary>
         ///     Gets whether this Player is logged into RCON.
         /// </summary>
-        public virtual bool IsAdmin => Internal.IsPlayerAdmin(Id);
+        public virtual bool IsAdmin => PlayerInternal.Instance.IsPlayerAdmin(Id);
 
         /// <summary>
         ///     Gets whether this Player is alive;
@@ -571,7 +571,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 string stats;
-                Internal.GetPlayerNetworkStats(Id, out stats, 256);
+                PlayerInternal.Instance.GetPlayerNetworkStats(Id, out stats, 256);
                 return stats;
             }
         }
@@ -584,7 +584,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 string version;
-                Internal.GetPlayerVersion(Id, out version, 64);
+                PlayerInternal.Instance.GetPlayerVersion(Id, out version, 64);
                 return version;
             }
         }
@@ -597,7 +597,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 string result;
-                Internal.GPCI(Id, out result, 64);
+                PlayerInternal.Instance.GPCI(Id, out result, 64);
                 return result;
             }
         }
@@ -916,7 +916,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetSpawnInfo(Id, team, skin, position.X, position.Y, position.Z, rotation, (int) weapon1,
+            PlayerInternal.Instance.SetSpawnInfo(Id, team, skin, position.X, position.Y, position.Z, rotation, (int) weapon1,
                 weapon1Ammo,
                 (int) weapon2, weapon2Ammo,
                 (int) weapon3, weapon3Ammo);
@@ -929,7 +929,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SpawnPlayer(Id);
+            PlayerInternal.Instance.SpawnPlayer(Id);
         }
 
         /// <summary>
@@ -937,7 +937,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void PutCameraBehindPlayer()
         {
-            Internal.SetCameraBehindPlayer(Id);
+            PlayerInternal.Instance.SetCameraBehindPlayer(Id);
         }
 
         /// <summary>
@@ -950,7 +950,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerPosFindZ(Id, position.X, position.Y, position.Z);
+            PlayerInternal.Instance.SetPlayerPosFindZ(Id, position.X, position.Y, position.Z);
         }
 
         /// <summary>
@@ -963,7 +963,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.IsPlayerInRangeOfPoint(Id, range, point.X, point.Y, point.Z);
+            return PlayerInternal.Instance.IsPlayerInRangeOfPoint(Id, range, point.X, point.Y, point.Z);
         }
 
         /// <summary>
@@ -975,7 +975,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.GetPlayerDistanceFromPoint(Id, point.X, point.Y, point.Z);
+            return PlayerInternal.Instance.GetPlayerDistanceFromPoint(Id, point.X, point.Y, point.Z);
         }
 
         /// <summary>
@@ -997,7 +997,7 @@ namespace SampSharp.GameMode.World
             if (other == null)
                 throw new ArgumentNullException(nameof(other));
 
-            return Internal.IsPlayerStreamedIn(other.Id, Id);
+            return PlayerInternal.Instance.IsPlayerStreamedIn(other.Id, Id);
         }
 
         /// <summary>
@@ -1009,7 +1009,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerAmmo(Id, (int) weapon, ammo);
+            PlayerInternal.Instance.SetPlayerAmmo(Id, (int) weapon, ammo);
         }
 
         /// <summary>
@@ -1021,7 +1021,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.GivePlayerWeapon(Id, (int) weapon, ammo);
+            PlayerInternal.Instance.GivePlayerWeapon(Id, (int) weapon, ammo);
         }
 
 
@@ -1032,7 +1032,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.ResetPlayerWeapons(Id);
+            PlayerInternal.Instance.ResetPlayerWeapons(Id);
         }
 
         /// <summary>
@@ -1043,7 +1043,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerArmedWeapon(Id, (int) weapon);
+            PlayerInternal.Instance.SetPlayerArmedWeapon(Id, (int) weapon);
         }
 
         /// <summary>
@@ -1057,7 +1057,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             int weaponid;
-            Internal.GetPlayerWeaponData(Id, slot, out weaponid, out ammo);
+            PlayerInternal.Instance.GetPlayerWeaponData(Id, slot, out weaponid, out ammo);
             weapon = (Weapon) weaponid;
         }
 
@@ -1069,7 +1069,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.GivePlayerMoney(Id, money);
+            PlayerInternal.Instance.GivePlayerMoney(Id, money);
         }
 
         /// <summary>
@@ -1079,7 +1079,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.ResetPlayerMoney(Id);
+            PlayerInternal.Instance.ResetPlayerMoney(Id);
         }
 
         /// <summary>
@@ -1097,7 +1097,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             int keysDown;
-            Internal.GetPlayerKeys(Id, out keysDown, out updown, out leftright);
+            PlayerInternal.Instance.GetPlayerKeys(Id, out keysDown, out updown, out leftright);
             keys = (Keys) keysDown;
         }
 
@@ -1111,7 +1111,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerTime(Id, hour, minutes);
+            PlayerInternal.Instance.SetPlayerTime(Id, hour, minutes);
         }
 
         /// <summary>
@@ -1125,7 +1125,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.GetPlayerTime(Id, out hour, out minutes);
+            PlayerInternal.Instance.GetPlayerTime(Id, out hour, out minutes);
         }
 
         /// <summary>
@@ -1139,7 +1139,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.TogglePlayerClock(Id, toggle);
+            PlayerInternal.Instance.TogglePlayerClock(Id, toggle);
         }
 
         /// <summary>
@@ -1152,7 +1152,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerWeather(Id, weather);
+            PlayerInternal.Instance.SetPlayerWeather(Id, weather);
         }
 
         /// <summary>
@@ -1166,7 +1166,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.ForceClassSelection(Id);
+            PlayerInternal.Instance.ForceClassSelection(Id);
         }
         
         /// <summary>
@@ -1178,7 +1178,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             IsSelectingTextDraw = true;
-            Internal.SelectTextDraw(Id, hoverColor);
+            PlayerInternal.Instance.SelectTextDraw(Id, hoverColor);
         }
 
         /// <summary>
@@ -1189,7 +1189,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             IsSelectingTextDraw = false;
-            Internal.CancelSelectTextDraw(Id);
+            PlayerInternal.Instance.CancelSelectTextDraw(Id);
         }
 
         /// <summary>
@@ -1204,7 +1204,7 @@ namespace SampSharp.GameMode.World
             if (suspect == null) throw new ArgumentNullException(nameof(suspect));
             AssertNotDisposed();
 
-            Internal.PlayCrimeReportForPlayer(Id, suspect.Id, crime);
+            PlayerInternal.Instance.PlayCrimeReportForPlayer(Id, suspect.Id, crime);
         }
 
         /// <summary>
@@ -1220,7 +1220,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.PlayAudioStreamForPlayer(Id, url, position.X, position.Y, position.Z, distance, true);
+            PlayerInternal.Instance.PlayAudioStreamForPlayer(Id, url, position.X, position.Y, position.Z, distance, true);
         }
 
         /// <summary>
@@ -1234,7 +1234,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.PlayAudioStreamForPlayer(Id, url, 0, 0, 0, 0, false);
+            PlayerInternal.Instance.PlayAudioStreamForPlayer(Id, url, 0, 0, 0, 0, false);
         }
 
         /// <summary>
@@ -1245,7 +1245,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.DisableRemoteVehicleCollisions(Id, disable);
+            PlayerInternal.Instance.DisableRemoteVehicleCollisions(Id, disable);
         }
 
         /// <summary>
@@ -1256,7 +1256,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.EnablePlayerCameraTarget(Id, enable);
+            PlayerInternal.Instance.EnablePlayerCameraTarget(Id, enable);
         }
 
         /// <summary>
@@ -1266,7 +1266,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.StopAudioStreamForPlayer(Id);
+            PlayerInternal.Instance.StopAudioStreamForPlayer(Id);
         }
 
         /// <summary>
@@ -1277,7 +1277,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerShopName(Id, shopname);
+            PlayerInternal.Instance.SetPlayerShopName(Id, shopname);
         }
 
         /// <summary>
@@ -1295,7 +1295,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerSkillLevel(Id, (int) skill, level);
+            PlayerInternal.Instance.SetPlayerSkillLevel(Id, (int) skill, level);
         }
 
         /// <summary>
@@ -1315,7 +1315,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.SetPlayerAttachedObject(Id, index, modelid, (int) bone, offset.X, offset.Y, offset.Z,
+            return PlayerInternal.Instance.SetPlayerAttachedObject(Id, index, modelid, (int) bone, offset.X, offset.Y, offset.Z,
                 rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z,
                 materialcolor1.ToInteger(ColorFormat.ARGB), materialcolor2.ToInteger(ColorFormat.ARGB));
         }
@@ -1329,7 +1329,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.RemovePlayerAttachedObject(Id, index);
+            return PlayerInternal.Instance.RemovePlayerAttachedObject(Id, index);
         }
 
         /// <summary>
@@ -1341,7 +1341,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.IsPlayerAttachedObjectSlotUsed(Id, index);
+            return PlayerInternal.Instance.IsPlayerAttachedObjectSlotUsed(Id, index);
         }
 
         /// <summary>
@@ -1353,7 +1353,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.EditAttachedObject(Id, index);
+            return PlayerInternal.Instance.EditAttachedObject(Id, index);
         }
 
         /// <summary>
@@ -1368,7 +1368,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerChatBubble(Id, text, color.ToInteger(ColorFormat.RGBA), drawdistance, expiretime);
+            PlayerInternal.Instance.SetPlayerChatBubble(Id, text, color.ToInteger(ColorFormat.RGBA), drawdistance, expiretime);
         }
 
         /// <summary>
@@ -1383,7 +1383,7 @@ namespace SampSharp.GameMode.World
             if (vehicle == null)
                 throw new ArgumentNullException(nameof(vehicle));
 
-            Internal.PutPlayerInVehicle(Id, vehicle.Id, seatid);
+            PlayerInternal.Instance.PutPlayerInVehicle(Id, vehicle.Id, seatid);
         }
 
         /// <summary>
@@ -1408,7 +1408,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.RemovePlayerFromVehicle(Id);
+            PlayerInternal.Instance.RemovePlayerFromVehicle(Id);
         }
 
         /// <summary>
@@ -1419,7 +1419,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.TogglePlayerControllable(Id, toggle);
+            PlayerInternal.Instance.TogglePlayerControllable(Id, toggle);
         }
 
         /// <summary>
@@ -1431,7 +1431,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.PlayerPlaySound(Id, soundid, point.X, point.Y, point.Z);
+            PlayerInternal.Instance.PlayerPlaySound(Id, soundid, point.X, point.Y, point.Z);
         }
 
         /// <summary>
@@ -1442,7 +1442,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.PlayerPlaySound(Id, soundid, 0, 0, 0);
+            PlayerInternal.Instance.PlayerPlaySound(Id, soundid, 0, 0, 0);
         }
 
         /// <summary>
@@ -1474,7 +1474,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.ApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync);
+            PlayerInternal.Instance.ApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync);
         }
 
         /// <summary>
@@ -1499,7 +1499,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.ApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, false);
+            PlayerInternal.Instance.ApplyAnimation(Id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, false);
         }
 
         /// <summary>
@@ -1510,7 +1510,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.ClearAnimations(Id, forcesync);
+            PlayerInternal.Instance.ClearAnimations(Id, forcesync);
         }
 
         /// <summary>
@@ -1520,7 +1520,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.ClearAnimations(Id, false);
+            PlayerInternal.Instance.ClearAnimations(Id, false);
         }
 
         /// <summary>
@@ -1533,7 +1533,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.GetAnimationName(AnimationIndex, out animlib, 64, out animname, 64);
+            return PlayerInternal.Instance.GetAnimationName(AnimationIndex, out animlib, 64, out animname, 64);
         }
 
         /// <summary>
@@ -1550,7 +1550,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerCheckpoint(Id, point.X, point.Y, point.Z, size);
+            PlayerInternal.Instance.SetPlayerCheckpoint(Id, point.X, point.Y, point.Z, size);
         }
 
         /// <summary>
@@ -1560,7 +1560,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.DisablePlayerCheckpoint(Id);
+            PlayerInternal.Instance.DisablePlayerCheckpoint(Id);
         }
 
         /// <summary>
@@ -1575,7 +1575,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerRaceCheckpoint(Id, (int) type, point.X, point.Y, point.Z, nextPosition.X, nextPosition.Y,
+            PlayerInternal.Instance.SetPlayerRaceCheckpoint(Id, (int) type, point.X, point.Y, point.Z, nextPosition.X, nextPosition.Y,
                 nextPosition.Z, size);
         }
 
@@ -1586,7 +1586,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.DisablePlayerRaceCheckpoint(Id);
+            PlayerInternal.Instance.DisablePlayerRaceCheckpoint(Id);
         }
 
         /// <summary>
@@ -1604,7 +1604,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerWorldBounds(Id, xMax, xMin, yMax, yMin);
+            PlayerInternal.Instance.SetPlayerWorldBounds(Id, xMax, xMin, yMax, yMin);
         }
 
         /// <summary>
@@ -1619,7 +1619,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            Internal.SetPlayerMarkerForPlayer(Id, player.Id, color.ToInteger(ColorFormat.RGBA));
+            PlayerInternal.Instance.SetPlayerMarkerForPlayer(Id, player.Id, color.ToInteger(ColorFormat.RGBA));
         }
 
         /// <summary>
@@ -1640,7 +1640,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            Internal.ShowPlayerNameTagForPlayer(Id, player.Id, show);
+            PlayerInternal.Instance.ShowPlayerNameTagForPlayer(Id, player.Id, show);
         }
 
         /// <summary>
@@ -1660,7 +1660,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.SetPlayerMapIcon(Id, iconid, position.X, position.Y, position.Z, (int) markertype, color,
+            return PlayerInternal.Instance.SetPlayerMapIcon(Id, iconid, position.X, position.Y, position.Z, (int) markertype, color,
                 (int) style);
         }
 
@@ -1672,7 +1672,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.RemovePlayerMapIcon(Id, iconid);
+            PlayerInternal.Instance.RemovePlayerMapIcon(Id, iconid);
         }
 
         /// <summary>
@@ -1685,7 +1685,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetPlayerCameraLookAt(Id, point.X, point.Y, point.Z, (int) cut);
+            PlayerInternal.Instance.SetPlayerCameraLookAt(Id, point.X, point.Y, point.Z, (int) cut);
         }
 
         /// <summary>
@@ -1711,7 +1711,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.InterpolateCameraPos(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
+            PlayerInternal.Instance.InterpolateCameraPos(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
         }
 
         /// <summary>
@@ -1725,7 +1725,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.InterpolateCameraLookAt(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
+            PlayerInternal.Instance.InterpolateCameraLookAt(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
         }
 
         /// <summary>
@@ -1737,7 +1737,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.IsPlayerInVehicle(Id, vehicle.Id);
+            return PlayerInternal.Instance.IsPlayerInVehicle(Id, vehicle.Id);
         }
 
         /// <summary>
@@ -1748,7 +1748,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.EnableStuntBonusForPlayer(Id, enable);
+            PlayerInternal.Instance.EnableStuntBonusForPlayer(Id, enable);
         }
 
         /// <summary>
@@ -1762,7 +1762,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.TogglePlayerSpectating(Id, toggle);
+            PlayerInternal.Instance.TogglePlayerSpectating(Id, toggle);
         }
 
         /// <summary>
@@ -1781,7 +1781,7 @@ namespace SampSharp.GameMode.World
             if (targetPlayer == null)
                 throw new ArgumentNullException(nameof(targetPlayer));
 
-            Internal.PlayerSpectatePlayer(Id, targetPlayer.Id, (int) mode);
+            PlayerInternal.Instance.PlayerSpectatePlayer(Id, targetPlayer.Id, (int) mode);
         }
 
         /// <summary>
@@ -1818,7 +1818,7 @@ namespace SampSharp.GameMode.World
             if (targetVehicle == null)
                 throw new ArgumentNullException(nameof(targetVehicle));
 
-            Internal.PlayerSpectateVehicle(Id, targetVehicle.Id, (int) mode);
+            PlayerInternal.Instance.PlayerSpectateVehicle(Id, targetVehicle.Id, (int) mode);
         }
 
         /// <summary>
@@ -1851,7 +1851,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.StartRecordingPlayerData(Id, (int) recordtype, recordname);
+            PlayerInternal.Instance.StartRecordingPlayerData(Id, (int) recordtype, recordname);
         }
 
         /// <summary>
@@ -1862,7 +1862,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.StopRecordingPlayerData(Id);
+            PlayerInternal.Instance.StopRecordingPlayerData(Id);
         }
 
         /// <summary>
@@ -1879,7 +1879,7 @@ namespace SampSharp.GameMode.World
                 hy,
                 hz;
 
-            Internal.GetPlayerLastShotVectors(Id, out ox, out oy, out oz, out hx, out hy, out hz);
+            PlayerInternal.Instance.GetPlayerLastShotVectors(Id, out ox, out oy, out oz, out hx, out hy, out hz);
 
             origin = new Vector3(ox, oy, oz);
             hitPosition = new Vector3(hx, hy, hz);
@@ -1902,12 +1902,12 @@ namespace SampSharp.GameMode.World
 
             if (message.Length > 144)
             {
-                Internal.SendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message.Substring(0, 144));
+                PlayerInternal.Instance.SendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message.Substring(0, 144));
                 SendClientMessage(color, message.Substring(144));
             }
             else
             {
-                Internal.SendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message);
+                PlayerInternal.Instance.SendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message);
             }
         }
 
@@ -1920,7 +1920,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.Kick(Id);
+            PlayerInternal.Instance.Kick(Id);
         }
 
         /// <summary>
@@ -1933,7 +1933,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.Ban(Id);
+            PlayerInternal.Instance.Ban(Id);
         }
 
         /// <summary>
@@ -1944,7 +1944,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.BanEx(Id, reason);
+            PlayerInternal.Instance.BanEx(Id, reason);
         }
 
         /// <summary>
@@ -1994,12 +1994,12 @@ namespace SampSharp.GameMode.World
         {
             if (message.Length > 144)
             {
-                Internal.SendClientMessageToAll(color.ToInteger(ColorFormat.RGBA), message.Substring(0, 144));
+                PlayerInternal.Instance.SendClientMessageToAll(color.ToInteger(ColorFormat.RGBA), message.Substring(0, 144));
                 SendClientMessageToAll(color, message.Substring(144));
             }
             else
             {
-                Internal.SendClientMessageToAll(color.ToInteger(ColorFormat.RGBA), message);
+                PlayerInternal.Instance.SendClientMessageToAll(color.ToInteger(ColorFormat.RGBA), message);
             }
         }
 
@@ -2048,7 +2048,7 @@ namespace SampSharp.GameMode.World
             if (receiver == null)
                 throw new ArgumentNullException(nameof(receiver));
 
-            Internal.SendPlayerMessageToPlayer(receiver.Id, Id, message);
+            PlayerInternal.Instance.SendPlayerMessageToPlayer(receiver.Id, Id, message);
         }
 
         /// <summary>
@@ -2061,7 +2061,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SendPlayerMessageToAll(Id, message);
+            PlayerInternal.Instance.SendPlayerMessageToAll(Id, message);
         }
 
         /// <summary>
@@ -2072,7 +2072,7 @@ namespace SampSharp.GameMode.World
         /// <param name="style">The style of text to be displayed.</param>
         public static void GameTextForAll(string text, int time, int style)
         {
-            Internal.GameTextForAll(text, time, style);
+            PlayerInternal.Instance.GameTextForAll(text, time, style);
         }
 
         /// <summary>
@@ -2085,7 +2085,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.GameTextForPlayer(Id, text, time, style);
+            PlayerInternal.Instance.GameTextForPlayer(Id, text, time, style);
         }
 
         /// <summary>
@@ -2096,7 +2096,7 @@ namespace SampSharp.GameMode.World
         /// <param name="radius">The explosion radius.</param>
         public static void CreateExplosionForAll(Vector3 position, int type, float radius)
         {
-            Internal.CreateExplosion(position.X, position.Y, position.Z, type, radius);
+            PlayerInternal.Instance.CreateExplosion(position.X, position.Y, position.Z, type, radius);
         }
 
         /// <summary>
@@ -2140,7 +2140,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.CreateExplosionForPlayer(Id, position.X, position.Y, position.Z, type, radius);
+            PlayerInternal.Instance.CreateExplosionForPlayer(Id, position.X, position.Y, position.Z, type, radius);
         }
 
         /// <summary>
@@ -2153,7 +2153,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SendDeathMessageToPlayer(Id, killer?.Id ?? InvalidId, killee?.Id ?? InvalidId, (int) weapon);
+            PlayerInternal.Instance.SendDeathMessageToPlayer(Id, killer?.Id ?? InvalidId, killee?.Id ?? InvalidId, (int) weapon);
         }
 
         /// <summary>
@@ -2164,7 +2164,7 @@ namespace SampSharp.GameMode.World
         /// <param name="weapon">The reason for this Player's death.</param>
         public static void SendDeathMessageToAll(BasePlayer killer, BasePlayer killee, Weapon weapon)
         {
-            Internal.SendDeathMessage(killer?.Id ?? InvalidId, killee?.Id ?? InvalidId, (int) weapon);
+            PlayerInternal.Instance.SendDeathMessage(killer?.Id ?? InvalidId, killee?.Id ?? InvalidId, (int) weapon);
         }
 
         #endregion

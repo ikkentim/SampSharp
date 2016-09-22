@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.GameMode.API
+namespace SampSharp.GameMode.API.NativeObjects
 {
     /// <summary>
     ///     Indicates a method should be proxied by the <see cref="NativeObjectILGenerator" />.

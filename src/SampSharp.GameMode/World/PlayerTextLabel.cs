@@ -44,7 +44,7 @@ namespace SampSharp.GameMode.World
         {
             base.Dispose(disposing);
 
-            Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
+            PlayerTextLabelInternal.Instance.DeletePlayer3DTextLabel(Owner.Id, Id);
         }
 
         #endregion
@@ -73,7 +73,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _color = value;
-                Internal.UpdatePlayer3DTextLabelText(Owner.Id, Id, Color, Text);
+                PlayerTextLabelInternal.Instance.UpdatePlayer3DTextLabelText(Owner.Id, Id, Color, Text);
             }
         }
 
@@ -86,7 +86,7 @@ namespace SampSharp.GameMode.World
             set
             {
                 _text = value;
-                Internal.UpdatePlayer3DTextLabelText(Owner.Id, Id, Color, Text);
+                PlayerTextLabelInternal.Instance.UpdatePlayer3DTextLabelText(Owner.Id, Id, Color, Text);
             }
         }
 
@@ -99,8 +99,8 @@ namespace SampSharp.GameMode.World
             set
             {
                 _position = value;
-                Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
-                Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
+                PlayerTextLabelInternal.Instance.DeletePlayer3DTextLabel(Owner.Id, Id);
+                Id = PlayerTextLabelInternal.Instance.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer?.Id ?? BasePlayer.InvalidId,
                     AttachedVehicle?.Id ?? BaseVehicle.InvalidId, TestLOS);
@@ -116,8 +116,8 @@ namespace SampSharp.GameMode.World
             set
             {
                 _drawDistance = value;
-                Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
-                Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
+                PlayerTextLabelInternal.Instance.DeletePlayer3DTextLabel(Owner.Id, Id);
+                Id = PlayerTextLabelInternal.Instance.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer?.Id ?? BasePlayer.InvalidId,
                     AttachedVehicle?.Id ?? BaseVehicle.InvalidId, TestLOS);
@@ -133,8 +133,8 @@ namespace SampSharp.GameMode.World
             set
             {
                 _testLOS = value;
-                Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
-                Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
+                PlayerTextLabelInternal.Instance.DeletePlayer3DTextLabel(Owner.Id, Id);
+                Id = PlayerTextLabelInternal.Instance.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer?.Id ?? BasePlayer.InvalidId,
                     AttachedVehicle?.Id ?? BaseVehicle.InvalidId, TestLOS);
@@ -150,8 +150,8 @@ namespace SampSharp.GameMode.World
             set
             {
                 _attachedPlayer = value;
-                Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
-                Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
+                PlayerTextLabelInternal.Instance.DeletePlayer3DTextLabel(Owner.Id, Id);
+                Id = PlayerTextLabelInternal.Instance.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer?.Id ?? BasePlayer.InvalidId,
                     AttachedVehicle?.Id ?? BaseVehicle.InvalidId, TestLOS);
@@ -167,8 +167,8 @@ namespace SampSharp.GameMode.World
             set
             {
                 _attachedVehicle = value;
-                Internal.DeletePlayer3DTextLabel(Owner.Id, Id);
-                Id = Internal.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
+                PlayerTextLabelInternal.Instance.DeletePlayer3DTextLabel(Owner.Id, Id);
+                Id = PlayerTextLabelInternal.Instance.CreatePlayer3DTextLabel(Owner.Id, Text, Color, Position.X, Position.Y, Position.Z,
                     DrawDistance,
                     AttachedPlayer?.Id ?? BasePlayer.InvalidId,
                     AttachedVehicle?.Id ?? BaseVehicle.InvalidId, TestLOS);
@@ -201,7 +201,7 @@ namespace SampSharp.GameMode.World
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            Id = Internal.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z,
+            Id = PlayerTextLabelInternal.Instance.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z,
                 drawDistance,
                 BasePlayer.InvalidId, BaseVehicle.InvalidId, testLOS);
         }
@@ -249,7 +249,7 @@ namespace SampSharp.GameMode.World
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            Id = Internal.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z,
+            Id = PlayerTextLabelInternal.Instance.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z,
                 drawDistance,
                 attachedPlayer.Id, BaseVehicle.InvalidId, testLOS);
         }
@@ -298,7 +298,7 @@ namespace SampSharp.GameMode.World
             _drawDistance = drawDistance;
             _testLOS = testLOS;
 
-            Id = Internal.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z,
+            Id = PlayerTextLabelInternal.Instance.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z,
                 drawDistance,
                 BasePlayer.InvalidId, attachedVehicle.Id, testLOS);
         }

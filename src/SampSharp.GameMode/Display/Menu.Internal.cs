@@ -13,20 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.Display
 {
     public partial class Menu
     {
-        private static readonly MenuInternal Internal;
-
-        static Menu()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<MenuInternal>();
-        }
-
-        private class MenuInternal
+        private class MenuInternal : NativeObjectSingleton<MenuInternal>
         {
             [NativeMethod]
             public virtual int CreateMenu(string title, int columns, float x, float y, float col1Width, float col2Width)
@@ -87,8 +80,6 @@ namespace SampSharp.GameMode.Display
             {
                 throw new NativeNotImplementedException();
             }
-
-
         }
     }
 }

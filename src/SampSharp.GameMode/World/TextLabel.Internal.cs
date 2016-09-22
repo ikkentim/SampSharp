@@ -13,43 +13,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.World
 {
     public partial class TextLabel
     {
-        private static readonly TextLabelInternal Internal;
-
-        static TextLabel()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<TextLabelInternal>();
-        }
-
-        private class TextLabelInternal
+        private class TextLabelInternal : NativeObjectSingleton<TextLabelInternal>
         {
             [NativeMethod]
-            public virtual int Create3DTextLabel(string text, int color, float x, float y, float z, float drawDistance, int virtualWorld, bool testLOS)
+            public virtual int Create3DTextLabel(string text, int color, float x, float y, float z, float drawDistance,
+                int virtualWorld, bool testLOS)
             {
                 throw new NativeNotImplementedException();
             }
+
             [NativeMethod]
             public virtual int Delete3DTextLabel(int id)
             {
                 throw new NativeNotImplementedException();
             }
+
             [NativeMethod]
             public virtual int Update3DTextLabelText(int id, int color, string text)
             {
                 throw new NativeNotImplementedException();
             }
+
             [NativeMethod]
-            public virtual int Attach3DTextLabelToPlayer(int id, int playerid, float offsetX, float offsetY, float offsetZ)
+            public virtual int Attach3DTextLabelToPlayer(int id, int playerid, float offsetX, float offsetY,
+                float offsetZ)
             {
                 throw new NativeNotImplementedException();
             }
+
             [NativeMethod]
-            public virtual int Attach3DTextLabelToVehicle(int id, int vehicleid, float offsetX, float offsetY, float offsetZ)
+            public virtual int Attach3DTextLabelToVehicle(int id, int vehicleid, float offsetX, float offsetY,
+                float offsetZ)
             {
                 throw new NativeNotImplementedException();
             }

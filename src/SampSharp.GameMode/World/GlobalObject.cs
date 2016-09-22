@@ -46,10 +46,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                Internal.GetObjectRot(Id, out x, out y, out z);
+                GlobalObjectInternal.Instance.GetObjectRot(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { Internal.SetObjectRot(Id, value.X, value.Y, value.Z); }
+            set { GlobalObjectInternal.Instance.SetObjectRot(Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
@@ -60,21 +60,21 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                Internal.GetObjectPos(Id, out x, out y, out z);
+                GlobalObjectInternal.Instance.GetObjectPos(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { Internal.SetObjectPos(Id, value.X, value.Y, value.Z); }
+            set { GlobalObjectInternal.Instance.SetObjectPos(Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
         ///     Gets whether this IGameObject is moving.
         /// </summary>
-        public virtual bool IsMoving => Internal.IsObjectMoving(Id);
+        public virtual bool IsMoving => GlobalObjectInternal.Instance.IsObjectMoving(Id);
 
         /// <summary>
         ///     Gets whether this IGameObject is valid.
         /// </summary>
-        public virtual bool IsValid => Internal.IsValidObject(Id);
+        public virtual bool IsValid => GlobalObjectInternal.Instance.IsValidObject(Id);
 
         /// <summary>
         ///     Gets the model of this IGameObject.
@@ -84,7 +84,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 AssertNotDisposed();
-                return Internal.GetObjectModel(Id);
+                return GlobalObjectInternal.Instance.GetObjectModel(Id);
             }
         }
 
@@ -137,7 +137,7 @@ namespace SampSharp.GameMode.World
         {
             DrawDistance = drawDistance;
 
-            Id = Internal.CreateObject(modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z,
+            Id = GlobalObjectInternal.Instance.CreateObject(modelid, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z,
                 drawDistance);
         }
 
@@ -166,7 +166,7 @@ namespace SampSharp.GameMode.World
         /// </returns>
         public virtual int Move(Vector3 position, float speed, Vector3 rotation)
         {
-            return Internal.MoveObject(Id, position.X, position.Y, position.Z, speed, rotation.X, rotation.Y, rotation.Z);
+            return GlobalObjectInternal.Instance.MoveObject(Id, position.X, position.Y, position.Z, speed, rotation.X, rotation.Y, rotation.Z);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace SampSharp.GameMode.World
         /// </returns>
         public virtual int Move(Vector3 position, float speed)
         {
-            return Internal.MoveObject(Id, position.X, position.Y, position.Z, speed, -1000, -1000, -1000);
+            return GlobalObjectInternal.Instance.MoveObject(Id, position.X, position.Y, position.Z, speed, -1000, -1000, -1000);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual void Stop()
         {
-            Internal.StopObject(Id);
+            GlobalObjectInternal.Instance.StopObject(Id);
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace SampSharp.GameMode.World
         public virtual void SetMaterial(int materialindex, int modelid, string txdname, string texturename,
             Color materialcolor)
         {
-            Internal.SetObjectMaterial(Id, materialindex, modelid, txdname, texturename,
+            GlobalObjectInternal.Instance.SetObjectMaterial(Id, materialindex, modelid, txdname, texturename,
                 materialcolor.ToInteger(ColorFormat.ARGB));
         }
 
@@ -224,7 +224,7 @@ namespace SampSharp.GameMode.World
             string fontface, int fontsize, bool bold, Color foreColor, Color backColor,
             ObjectMaterialTextAlign textalignment)
         {
-            Internal.SetObjectMaterialText(Id, text, materialindex, (int) materialsize, fontface, fontsize, bold,
+            GlobalObjectInternal.Instance.SetObjectMaterialText(Id, text, materialindex, (int) materialsize, fontface, fontsize, bold,
                 foreColor.ToInteger(ColorFormat.ARGB), backColor.ToInteger(ColorFormat.ARGB),
                 (int) textalignment);
         }
@@ -235,7 +235,7 @@ namespace SampSharp.GameMode.World
         public virtual void DisableCameraCollisions()
         {
             AssertNotDisposed();
-            Internal.SetObjectNoCameraCol(Id);
+            GlobalObjectInternal.Instance.SetObjectNoCameraCol(Id);
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace SampSharp.GameMode.World
         /// <param name="toggle">If set to <c>true</c> the camera will be able to collide with objects by default.</param>
         public static void ToggleDefaultCameraCollisions(bool toggle)
         {
-            Internal.SetObjectsDefaultCameraCol(!toggle);
+            GlobalObjectInternal.Instance.SetObjectsDefaultCameraCol(!toggle);
         }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            Internal.AttachObjectToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
+            GlobalObjectInternal.Instance.AttachObjectToPlayer(Id, player.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
                 rotation.Z);
         }
 
@@ -275,7 +275,7 @@ namespace SampSharp.GameMode.World
             if (vehicle == null)
                 throw new ArgumentNullException(nameof(vehicle));
 
-            Internal.AttachObjectToVehicle(Id, vehicle.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
+            GlobalObjectInternal.Instance.AttachObjectToVehicle(Id, vehicle.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
                 rotation.Z);
         }
 
@@ -292,7 +292,7 @@ namespace SampSharp.GameMode.World
 
             AssertNotDisposed();
 
-            Internal.AttachCameraToObject(player.Id, Id);
+            GlobalObjectInternal.Instance.AttachCameraToObject(player.Id, Id);
         }
 
         /// <summary>
@@ -308,7 +308,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            Internal.RemoveBuildingForPlayer(player.Id, modelid, position.X, position.Y, position.Z, radius);
+            GlobalObjectInternal.Instance.RemoveBuildingForPlayer(player.Id, modelid, position.X, position.Y, position.Z, radius);
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace SampSharp.GameMode.World
         {
             base.Dispose(disposing);
 
-            Internal.DestroyObject(Id);
+            GlobalObjectInternal.Instance.DestroyObject(Id);
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace SampSharp.GameMode.World
             if (globalObject == null)
                 throw new ArgumentNullException(nameof(globalObject));
 
-            Internal.AttachObjectToObject(Id, globalObject.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
+            GlobalObjectInternal.Instance.AttachObjectToObject(Id, globalObject.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
                 rotation.Z, syncRotation);
         }
 
@@ -350,7 +350,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            Internal.EditObject(player.Id, Id);
+            GlobalObjectInternal.Instance.EditObject(player.Id, Id);
         }
 
         /// <summary>
@@ -363,7 +363,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            Internal.SelectObject(player.Id);
+            GlobalObjectInternal.Instance.SelectObject(player.Id);
         }
 
         #endregion

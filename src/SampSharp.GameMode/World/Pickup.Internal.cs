@@ -13,20 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.World
 {
     public partial class Pickup
     {
-        private static readonly PickupInternal Internal;
-
-        static Pickup()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<PickupInternal>();
-        }
-
-        private class PickupInternal
+        private class PickupInternal : NativeObjectSingleton<PickupInternal>
         {
             [NativeMethod]
             public virtual int AddStaticPickup(int model, int type, float x, float y, float z, int virtualworld)
@@ -45,7 +38,6 @@ namespace SampSharp.GameMode.World
             {
                 throw new NativeNotImplementedException();
             }
-
         }
     }
 }

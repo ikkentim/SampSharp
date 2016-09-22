@@ -174,7 +174,7 @@ namespace SampSharp.GameMode.Display
             {
                 _alignment = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawAlignment(Owner.Id, Id, (int) value);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawAlignment(Owner.Id, Id, (int) value);
                 Update();
             }
         }
@@ -189,7 +189,7 @@ namespace SampSharp.GameMode.Display
             {
                 _backColor = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawBackgroundColor(Owner.Id, Id, value);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawBackgroundColor(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -204,7 +204,7 @@ namespace SampSharp.GameMode.Display
             {
                 _foreColor = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawColor(Owner.Id, Id, value);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawColor(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -219,7 +219,7 @@ namespace SampSharp.GameMode.Display
             {
                 _boxColor = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawBoxColor(Owner.Id, Id, value);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawBoxColor(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -234,7 +234,7 @@ namespace SampSharp.GameMode.Display
             {
                 _font = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawFont(Owner.Id, Id, (int) value);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawFont(Owner.Id, Id, (int) value);
                 Update();
             }
         }
@@ -249,7 +249,7 @@ namespace SampSharp.GameMode.Display
             {
                 _letterSize = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawLetterSize(Owner.Id, Id, _letterSize.X, _letterSize.Y);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawLetterSize(Owner.Id, Id, _letterSize.X, _letterSize.Y);
                 Update();
             }
         }
@@ -264,7 +264,7 @@ namespace SampSharp.GameMode.Display
             {
                 _outline = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawSetOutline(Owner.Id, Id, value);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawSetOutline(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -279,7 +279,7 @@ namespace SampSharp.GameMode.Display
             {
                 _proportional = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawSetProportional(Owner.Id, Id, value);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawSetProportional(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -294,7 +294,7 @@ namespace SampSharp.GameMode.Display
             {
                 _shadow = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawSetShadow(Owner.Id, Id, value);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawSetShadow(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -309,7 +309,7 @@ namespace SampSharp.GameMode.Display
             {
                 _text = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawSetString(Owner.Id, Id, value);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawSetString(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -338,7 +338,7 @@ namespace SampSharp.GameMode.Display
             {
                 _width = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawTextSize(Owner.Id, Id, _width, _height);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawTextSize(Owner.Id, Id, _width, _height);
                 Update();
             }
         }
@@ -353,7 +353,7 @@ namespace SampSharp.GameMode.Display
             {
                 _height = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawTextSize(Owner.Id, Id, _width, _height);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawTextSize(Owner.Id, Id, _width, _height);
                 Update();
             }
         }
@@ -368,7 +368,7 @@ namespace SampSharp.GameMode.Display
             {
                 _useBox = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawUseBox(Owner.Id, Id, value);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawUseBox(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -383,7 +383,7 @@ namespace SampSharp.GameMode.Display
             {
                 _selectable = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawSetSelectable(Owner.Id, Id, value);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawSetSelectable(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -398,7 +398,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewModel = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawSetPreviewModel(Owner.Id, Id, value);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawSetPreviewModel(Owner.Id, Id, value);
                 Update();
             }
         }
@@ -413,7 +413,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewRotation = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawSetPreviewRot(Owner.Id, Id, value.X, value.Y, value.Z, PreviewZoom);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawSetPreviewRot(Owner.Id, Id, value.X, value.Y, value.Z, PreviewZoom);
                 Update();
             }
         }
@@ -428,7 +428,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewZoom = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawSetPreviewRot(Owner.Id, Id, PreviewRotation.X, PreviewRotation.Y,
+                PlayerTextDrawInternal.Instance.PlayerTextDrawSetPreviewRot(Owner.Id, Id, PreviewRotation.X, PreviewRotation.Y,
                     PreviewRotation.Z, value);
                 Update();
             }
@@ -444,7 +444,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewPrimaryColor = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawSetPreviewVehCol(Owner.Id, Id, _previewPrimaryColor,
+                PlayerTextDrawInternal.Instance.PlayerTextDrawSetPreviewVehCol(Owner.Id, Id, _previewPrimaryColor,
                     _previewSecondaryColor);
                 Update();
             }
@@ -460,7 +460,7 @@ namespace SampSharp.GameMode.Display
             {
                 _previewSecondaryColor = value;
                 if (Id == -1) return;
-                Internal.PlayerTextDrawSetPreviewVehCol(Owner.Id, Id, _previewPrimaryColor,
+                PlayerTextDrawInternal.Instance.PlayerTextDrawSetPreviewVehCol(Owner.Id, Id, _previewPrimaryColor,
                     _previewSecondaryColor);
                 Update();
             }
@@ -480,7 +480,7 @@ namespace SampSharp.GameMode.Display
 
             if (Id == -1) return;
 
-            Internal.PlayerTextDrawDestroy(Owner.Id, Id);
+            PlayerTextDrawInternal.Instance.PlayerTextDrawDestroy(Owner.Id, Id);
         }
 
         /// <summary>
@@ -493,7 +493,7 @@ namespace SampSharp.GameMode.Display
             if (Id == -1) Refresh();
             _visible = true;
 
-            Internal.PlayerTextDrawShow(Owner.Id, Id);
+            PlayerTextDrawInternal.Instance.PlayerTextDrawShow(Owner.Id, Id);
         }
 
         /// <summary>
@@ -506,11 +506,11 @@ namespace SampSharp.GameMode.Display
             if (Id == -1 || !_visible) return;
             _visible = false;
 
-            Internal.PlayerTextDrawHide(Owner.Id, Id);
+            PlayerTextDrawInternal.Instance.PlayerTextDrawHide(Owner.Id, Id);
 
             if (AutoDestroy)
             {
-                Internal.PlayerTextDrawDestroy(Owner.Id, Id);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawDestroy(Owner.Id, Id);
                 Id = -1;
             }
         }
@@ -522,8 +522,8 @@ namespace SampSharp.GameMode.Display
         {
             Hide();
 
-            if (Id != -1) Internal.PlayerTextDrawDestroy(Owner.Id, Id);
-            Id = Internal.CreatePlayerTextDraw(Owner.Id, Position.X, Position.Y, FixString(Text));
+            if (Id != -1) PlayerTextDrawInternal.Instance.PlayerTextDrawDestroy(Owner.Id, Id);
+            Id = PlayerTextDrawInternal.Instance.CreatePlayerTextDraw(Owner.Id, Position.X, Position.Y, FixString(Text));
 
             //Reset properties
             Font = Font;

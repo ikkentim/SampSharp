@@ -5,7 +5,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 // 
-//     http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 // 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,39 +13,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.Factories
 {
     public partial class BaseVehicleFactory
     {
-        private static readonly BaseVehicleFactoryInternal Internal;
-
-        static BaseVehicleFactory()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<BaseVehicleFactoryInternal>();
-        }
-
-        private class BaseVehicleFactoryInternal
+        private class BaseVehicleFactoryInternal : NativeObjectSingleton<BaseVehicleFactoryInternal>
         {
             [NativeMethod]
-            public virtual int CreateVehicle(int vehicletype, float x, float y, float z, float rotation, int color1, int color2, int respawnDelay, bool addsiren = false)
+            public virtual int CreateVehicle(int vehicletype, float x, float y, float z, float rotation, int color1,
+                int color2, int respawnDelay, bool addsiren = false)
             {
                 throw new NativeNotImplementedException();
             }
 
             [NativeMethod]
-            public virtual int AddStaticVehicle(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int color1, int color2)
+            public virtual int AddStaticVehicle(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle,
+                int color1, int color2)
             {
                 throw new NativeNotImplementedException();
             }
 
             [NativeMethod]
-            public virtual int AddStaticVehicleEx(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int color1, int color2, int respawnDelay, bool addsiren = false)
+            public virtual int AddStaticVehicleEx(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle,
+                int color1, int color2, int respawnDelay, bool addsiren = false)
             {
                 throw new NativeNotImplementedException();
             }
-
         }
     }
 }

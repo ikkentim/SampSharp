@@ -13,20 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.World
 {
     public partial class Actor
     {
-        private static readonly ActorInternal Internal;
-
-        static Actor()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<ActorInternal>();
-        }
-
-        private class ActorInternal
+        private class ActorInternal : NativeObjectSingleton<ActorInternal>
         {
             [NativeMethod]
             public virtual int CreateActor(int modelid, float x, float y, float z, float rotattion)
@@ -130,7 +123,6 @@ namespace SampSharp.GameMode.World
             {
                 throw new NativeNotImplementedException();
             }
-
         }
     }
 }

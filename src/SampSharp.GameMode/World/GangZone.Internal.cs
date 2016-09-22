@@ -13,20 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.World
 {
     public partial class GangZone
     {
-        private static readonly GangZoneInternal Internal;
-
-        static GangZone()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<GangZoneInternal>();
-        }
-
-        private class GangZoneInternal
+        private class GangZoneInternal : NativeObjectSingleton<GangZoneInternal>
         {
             [NativeMethod]
             public virtual int GangZoneCreate(float minx, float miny, float maxx, float maxy)
@@ -87,7 +80,6 @@ namespace SampSharp.GameMode.World
             {
                 throw new NativeNotImplementedException();
             }
-
         }
     }
 }

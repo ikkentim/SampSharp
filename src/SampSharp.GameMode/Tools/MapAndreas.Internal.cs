@@ -13,46 +13,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.Tools
 {
     public static partial class MapAndreas
     {
-        private static readonly MapAndreasInternal Internal;
-
-        static MapAndreas()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<MapAndreasInternal>();
-        }
-
-        private class MapAndreasInternal
+        private class MapAndreasInternal : NativeObjectSingleton<MapAndreasInternal>
         {
             [NativeMethod(Function = "MapAndreas_Init")]
             public virtual bool Init(int mode, string filename, int length)
             {
                 throw new NativeNotImplementedException();
             }
+
             [NativeMethod(Function = "MapAndreas_Unload")]
             public virtual bool Unload()
             {
                 throw new NativeNotImplementedException();
             }
+
             [NativeMethod(Function = "MapAndreas_FindZ_For2DCoord")]
             public virtual bool FindZ(float x, float y, out float z)
             {
                 throw new NativeNotImplementedException();
             }
+
             [NativeMethod(Function = "MapAndreas_FindAverageZ")]
             public virtual bool FindAverageZ(float x, float y, out float z)
             {
                 throw new NativeNotImplementedException();
             }
+
             [NativeMethod(Function = "MapAndreas_SetZ_For2DCoord")]
             public virtual bool SetZ(float x, float y, float z)
             {
                 throw new NativeNotImplementedException();
             }
+
             [NativeMethod(Function = "MapAndreas_SaveCurrentHMap")]
             public virtual bool SaveCurrentHMap(string filename)
             {

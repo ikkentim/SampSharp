@@ -62,7 +62,7 @@ namespace SampSharp.GameMode.Tools
 
             if (IsPluginLoaded())
             {
-                Internal.Init((int) mode, string.Empty, 1);
+                MapAndreasInternal.Instance.Init((int) mode, string.Empty, 1);
                 _usePlugin = true;
                 return;
             }
@@ -126,7 +126,7 @@ namespace SampSharp.GameMode.Tools
         {
             if (_usePlugin)
             {
-                Internal.Unload();
+                MapAndreasInternal.Instance.Unload();
 
                 _usePlugin = false;
                 _mode = MapAndreasMode.None;
@@ -160,7 +160,7 @@ namespace SampSharp.GameMode.Tools
             if (_usePlugin)
             {
                 float result;
-                Internal.FindZ(x, y, out result);
+                MapAndreasInternal.Instance.FindZ(x, y, out result);
                 return result;
             }
             // check for a co-ord outside the map
@@ -218,7 +218,7 @@ namespace SampSharp.GameMode.Tools
             if (_usePlugin)
             {
                 float result;
-                Internal.FindAverageZ(x, y, out result);
+                MapAndreasInternal.Instance.FindAverageZ(x, y, out result);
                 return result;
             }
 
@@ -269,7 +269,7 @@ namespace SampSharp.GameMode.Tools
         {
             if (_usePlugin)
             {
-                return Internal.SetZ(x, y, z);
+                return MapAndreasInternal.Instance.SetZ(x, y, z);
             }
 
             if (x < -3000.0f || x > 3000.0f || y > 3000.0f || y < -3000.0f) return false;
@@ -314,7 +314,7 @@ namespace SampSharp.GameMode.Tools
         {
             if (_usePlugin)
             {
-                return Internal.SaveCurrentHMap(file);
+                return MapAndreasInternal.Instance.SaveCurrentHMap(file);
             }
 
             try

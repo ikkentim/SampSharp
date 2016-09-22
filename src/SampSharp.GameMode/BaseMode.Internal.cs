@@ -13,20 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode
 {
     public abstract partial class BaseMode
     {
-        private static readonly BaseModeInternal Internal;
-
-        static BaseMode()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<BaseModeInternal>();
-        }
-
-        private class BaseModeInternal
+        private class BaseModeInternal : NativeObjectSingleton<BaseModeInternal>
         {
             [NativeMethod]
             public virtual bool ManualVehicleEngineAndLights()
@@ -53,13 +46,15 @@ namespace SampSharp.GameMode
             }
 
             [NativeMethod]
-            public virtual int AddPlayerClass(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
+            public virtual int AddPlayerClass(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle,
+                int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
             {
                 throw new NativeNotImplementedException();
             }
 
             [NativeMethod]
-            public virtual int AddPlayerClassEx(int teamid, int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
+            public virtual int AddPlayerClassEx(int teamid, int modelid, float spawnX, float spawnY, float spawnZ,
+                float zAngle, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
             {
                 throw new NativeNotImplementedException();
             }
@@ -147,7 +142,6 @@ namespace SampSharp.GameMode
             {
                 throw new NativeNotImplementedException();
             }
-
         }
     }
 }

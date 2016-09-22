@@ -81,7 +81,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the size of the vehicles pool.
         /// </summary>
-        public static int PoolSize => Internal.GetVehiclePoolSize();
+        public static int PoolSize => VehicleInternal.Instance.GetVehiclePoolSize();
 
         #endregion
 
@@ -90,7 +90,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets whether this <see cref="BaseVehicle" /> has been created and still is alive.
         /// </summary>
-        public virtual bool IsValid => Internal.IsValidVehicle(Id);
+        public virtual bool IsValid => VehicleInternal.Instance.IsValidVehicle(Id);
 
         /// <summary>
         ///     Gets or sets the Z angle of this <see cref="BaseVehicle" />.
@@ -100,21 +100,21 @@ namespace SampSharp.GameMode.World
             get
             {
                 float angle;
-                Internal.GetVehicleZAngle(Id, out angle);
+                VehicleInternal.Instance.GetVehicleZAngle(Id, out angle);
                 return angle;
             }
-            set { Internal.SetVehicleZAngle(Id, value); }
+            set { VehicleInternal.Instance.SetVehicleZAngle(Id, value); }
         }
 
         /// <summary>
         ///     Gets the model ID of this <see cref="BaseVehicle" />.
         /// </summary>
-        public virtual VehicleModelType Model => (VehicleModelType) Internal.GetVehicleModel(Id);
+        public virtual VehicleModelType Model => (VehicleModelType) VehicleInternal.Instance.GetVehicleModel(Id);
 
         /// <summary>
         ///     Gets whether this <see cref="BaseVehicle" /> has a trailer attached to it.
         /// </summary>
-        public virtual bool HasTrailer => Internal.IsTrailerAttachedToVehicle(Id);
+        public virtual bool HasTrailer => VehicleInternal.Instance.IsTrailerAttachedToVehicle(Id);
 
         /// <summary>
         ///     Gets or sets the the trailer attached to this <see cref="BaseVehicle" />.
@@ -124,15 +124,15 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                var id = Internal.GetVehicleTrailer(Id);
+                var id = VehicleInternal.Instance.GetVehicleTrailer(Id);
                 return id == 0 ? null : Find(id);
             }
             set
             {
                 if (value == null)
-                    Internal.DetachTrailerFromVehicle(Id);
+                    VehicleInternal.Instance.DetachTrailerFromVehicle(Id);
                 else
-                    Internal.AttachTrailerToVehicle(value.Id, Id);
+                    VehicleInternal.Instance.AttachTrailerToVehicle(value.Id, Id);
             }
         }
 
@@ -144,10 +144,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                Internal.GetVehicleVelocity(Id, out x, out y, out z);
+                VehicleInternal.Instance.GetVehicleVelocity(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { Internal.SetVehicleVelocity(Id, value.X, value.Y, value.Z); }
+            set { VehicleInternal.Instance.SetVehicleVelocity(Id, value.X, value.Y, value.Z); }
         }
 
         /// <summary>
@@ -155,8 +155,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int VirtualWorld
         {
-            get { return Internal.GetVehicleVirtualWorld(Id); }
-            set { Internal.SetVehicleVirtualWorld(Id, value); }
+            get { return VehicleInternal.Instance.GetVehicleVirtualWorld(Id); }
+            set { VehicleInternal.Instance.SetVehicleVirtualWorld(Id, value); }
         }
 
         /// <summary>
@@ -452,7 +452,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 AssertNotDisposed();
-                return Internal.GetVehicleParamsSirenState(Id) == 1;
+                return VehicleInternal.Instance.GetVehicleParamsSirenState(Id) == 1;
             }
         }
 
@@ -465,7 +465,7 @@ namespace SampSharp.GameMode.World
         public virtual Vector3 Rotation
         {
             get { return new Vector3(0, 0, Angle); }
-            set { Internal.SetVehicleZAngle(Id, value.Z); }
+            set { VehicleInternal.Instance.SetVehicleZAngle(Id, value.Z); }
         }
 
         /// <summary>
@@ -476,10 +476,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float value;
-                Internal.GetVehicleHealth(Id, out value);
+                VehicleInternal.Instance.GetVehicleHealth(Id, out value);
                 return value;
             }
-            set { Internal.SetVehicleHealth(Id, value); }
+            set { VehicleInternal.Instance.SetVehicleHealth(Id, value); }
         }
 
         /// <summary>
@@ -490,10 +490,10 @@ namespace SampSharp.GameMode.World
             get
             {
                 float x, y, z;
-                Internal.GetVehiclePos(Id, out x, out y, out z);
+                VehicleInternal.Instance.GetVehiclePos(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
-            set { Internal.SetVehiclePos(Id, value.X, value.Y, value.Z); }
+            set { VehicleInternal.Instance.SetVehiclePos(Id, value.X, value.Y, value.Z); }
         }
 
         #endregion
@@ -602,7 +602,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.GetVehicleDistanceFromPoint(Id, point.X, point.Y, point.Z);
+            return VehicleInternal.Instance.GetVehicleDistanceFromPoint(Id, point.X, point.Y, point.Z);
         }
 
         /// <summary>
@@ -677,7 +677,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.IsVehicleStreamedIn(Id, forPlayer.Id);
+            return VehicleInternal.Instance.IsVehicleStreamedIn(Id, forPlayer.Id);
         }
 
         /// <summary>
@@ -692,7 +692,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.GetVehicleRotationQuat(Id, out w, out x, out y, out z);
+            VehicleInternal.Instance.GetVehicleRotationQuat(Id, out w, out x, out y, out z);
         }
 
         /// <summary>
@@ -709,7 +709,7 @@ namespace SampSharp.GameMode.World
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            Internal.SetVehicleParamsForPlayer(Id, player.Id, objective, doorslocked);
+            VehicleInternal.Instance.SetVehicleParamsForPlayer(Id, player.Id, objective, doorslocked);
         }
 
         /// <summary>
@@ -727,7 +727,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetVehicleParamsEx(Id, engine ? 1 : 0, lights ? 1 : 0, alarm ? 1 : 0, doors ? 1 : 0, bonnet ? 1 : 0,
+            VehicleInternal.Instance.SetVehicleParamsEx(Id, engine ? 1 : 0, lights ? 1 : 0, alarm ? 1 : 0, doors ? 1 : 0, bonnet ? 1 : 0,
                 boot ? 1 : 0, objective ? 1 : 0);
         }
 
@@ -748,7 +748,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetVehicleParamsEx(Id, (int) engine, (int) lights, (int) alarm, (int) doors, (int) bonnet,
+            VehicleInternal.Instance.SetVehicleParamsEx(Id, (int) engine, (int) lights, (int) alarm, (int) doors, (int) bonnet,
                 (int) boot,
                 (int) objective);
         }
@@ -770,7 +770,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             int tmpEngine, tmpLights, tmpAlarm, tmpDoors, tmpBonnet, tmpBoot, tmpObjective;
-            Internal.GetVehicleParamsEx(Id, out tmpEngine, out tmpLights, out tmpAlarm, out tmpDoors, out tmpBonnet,
+            VehicleInternal.Instance.GetVehicleParamsEx(Id, out tmpEngine, out tmpLights, out tmpAlarm, out tmpDoors, out tmpBonnet,
                 out tmpBoot, out tmpObjective);
 
             engine = (VehicleParameterValue) tmpEngine;
@@ -819,7 +819,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetVehicleParamsCarDoors(Id, driver ? 1 : 0, passenger ? 1 : 0, backleft ? 1 : 0, backright ? 1 : 0);
+            VehicleInternal.Instance.SetVehicleParamsCarDoors(Id, driver ? 1 : 0, passenger ? 1 : 0, backleft ? 1 : 0, backright ? 1 : 0);
         }
 
         /// <summary>
@@ -834,7 +834,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetVehicleParamsCarDoors(Id, (int) driver, (int) passenger, (int) backleft, (int) backright);
+            VehicleInternal.Instance.SetVehicleParamsCarDoors(Id, (int) driver, (int) passenger, (int) backleft, (int) backright);
         }
 
         /// <summary>
@@ -850,7 +850,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             int tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
-            Internal.GetVehicleParamsCarDoors(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
+            VehicleInternal.Instance.GetVehicleParamsCarDoors(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
 
             driver = (VehicleParameterValue) tmpDriver;
             passenger = (VehicleParameterValue) tmpPassenger;
@@ -890,7 +890,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetVehicleParamsCarWindows(Id, driver ? 1 : 0, passenger ? 1 : 0, backleft ? 1 : 0,
+            VehicleInternal.Instance.SetVehicleParamsCarWindows(Id, driver ? 1 : 0, passenger ? 1 : 0, backleft ? 1 : 0,
                 backright ? 1 : 0);
         }
 
@@ -906,7 +906,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetVehicleParamsCarWindows(Id, (int) driver, (int) passenger, (int) backleft, (int) backright);
+            VehicleInternal.Instance.SetVehicleParamsCarWindows(Id, (int) driver, (int) passenger, (int) backleft, (int) backright);
         }
 
         /// <summary>
@@ -922,7 +922,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             int tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
-            Internal.GetVehicleParamsCarWindows(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
+            VehicleInternal.Instance.GetVehicleParamsCarWindows(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
 
             driver = (VehicleParameterValue) tmpDriver;
             passenger = (VehicleParameterValue) tmpPassenger;
@@ -958,7 +958,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetVehicleToRespawn(Id);
+            VehicleInternal.Instance.SetVehicleToRespawn(Id);
         }
 
         /// <summary>
@@ -969,7 +969,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.LinkVehicleToInterior(Id, interiorid);
+            VehicleInternal.Instance.LinkVehicleToInterior(Id, interiorid);
         }
 
         /// <summary>
@@ -980,7 +980,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.AddVehicleComponent(Id, componentid);
+            VehicleInternal.Instance.AddVehicleComponent(Id, componentid);
         }
 
         /// <summary>
@@ -991,7 +991,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.RemoveVehicleComponent(Id, componentid);
+            VehicleInternal.Instance.RemoveVehicleComponent(Id, componentid);
         }
 
         /// <summary>
@@ -1003,7 +1003,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.ChangeVehicleColor(Id, color1, color2);
+            VehicleInternal.Instance.ChangeVehicleColor(Id, color1, color2);
         }
 
         /// <summary>
@@ -1014,7 +1014,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.ChangeVehiclePaintjob(Id, paintjobid);
+            VehicleInternal.Instance.ChangeVehiclePaintjob(Id, paintjobid);
         }
 
         /// <summary>
@@ -1025,7 +1025,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetVehicleNumberPlate(Id, numberplate);
+            VehicleInternal.Instance.SetVehicleNumberPlate(Id, numberplate);
         }
 
         /// <summary>
@@ -1037,7 +1037,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return Internal.GetVehicleComponentInSlot(Id, (int) slot);
+            return VehicleInternal.Instance.GetVehicleComponentInSlot(Id, (int) slot);
         }
 
         /// <summary>
@@ -1047,7 +1047,7 @@ namespace SampSharp.GameMode.World
         /// <returns>The component slot ID of the specified component.</returns>
         public static int GetComponentType(int componentid)
         {
-            return Internal.GetVehicleComponentType(componentid);
+            return VehicleInternal.Instance.GetVehicleComponentType(componentid);
         }
 
         /// <summary>
@@ -1058,7 +1058,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.RepairVehicle(Id);
+            VehicleInternal.Instance.RepairVehicle(Id);
         }
 
         /// <summary>
@@ -1069,7 +1069,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.SetVehicleAngularVelocity(Id, velocity.X, velocity.Y, velocity.Z);
+            VehicleInternal.Instance.SetVehicleAngularVelocity(Id, velocity.X, velocity.Y, velocity.Z);
         }
 
         /// <summary>
@@ -1083,7 +1083,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.GetVehicleDamageStatus(Id, out panels, out doors, out lights, out tires);
+            VehicleInternal.Instance.GetVehicleDamageStatus(Id, out panels, out doors, out lights, out tires);
         }
 
         /// <summary>
@@ -1098,7 +1098,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.UpdateVehicleDamageStatus(Id, panels, doors, lights, tires);
+            VehicleInternal.Instance.UpdateVehicleDamageStatus(Id, panels, doors, lights, tires);
         }
 
         /// <summary>
@@ -1110,7 +1110,7 @@ namespace SampSharp.GameMode.World
         public static Vector3 GetModelInfo(VehicleModelType model, VehicleModelInfoType infotype)
         {
             float x, y, z;
-            Internal.GetVehicleModelInfo((int) model, (int) infotype, out x, out y, out z);
+            VehicleInternal.Instance.GetVehicleModelInfo((int) model, (int) infotype, out x, out y, out z);
             return new Vector3(x, y, z);
         }
 
@@ -1122,7 +1122,7 @@ namespace SampSharp.GameMode.World
             base.Dispose(disposing);
 
             if (IsValid)
-                Internal.DestroyVehicle(Id);
+                VehicleInternal.Instance.DestroyVehicle(Id);
         }
 
         #endregion

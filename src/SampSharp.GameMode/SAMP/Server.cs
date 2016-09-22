@@ -32,7 +32,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Gets the maximum number of players that can join the server, as set by the server var 'maxplayers' in server.cfg.
         /// </summary>
-        public static int MaxPlayers => Internal.GetMaxPlayers();
+        public static int MaxPlayers => ServerInternal.Instance.GetMaxPlayers();
 
         /// <summary>
         /// Gets the network stats as a string.
@@ -42,7 +42,7 @@ namespace SampSharp.GameMode.SAMP
             get
             {
                 string result;
-                Internal.GetNetworkStats(out result, 500);
+                ServerInternal.Instance.GetNetworkStats(out result, 500);
                 return result;
             }
         }
@@ -77,7 +77,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="time">The time that the connection will be blocked for. 0 can be used for an indefinite block.</param>
         public static void BlockIPAddress(string ip, TimeSpan time)
         {
-            Internal.BlockIpAddress(ip, (int) time.TotalMilliseconds);
+            ServerInternal.Instance.BlockIpAddress(ip, (int) time.TotalMilliseconds);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="ip">The IP address to unblock</param>
         public static void UnBlockIPAddress(string ip)
         {
-            Internal.UnBlockIpAddress(ip);
+            ServerInternal.Instance.UnBlockIpAddress(ip);
         }
 
         /// <summary>
@@ -104,18 +104,18 @@ namespace SampSharp.GameMode.SAMP
             if (typeof (T) == typeof (string))
             {
                 string value;
-                Internal.GetConsoleVarAsString(varName, out value, 64);
+                ServerInternal.Instance.GetConsoleVarAsString(varName, out value, 64);
                 return (T) Convert.ChangeType(value, TypeCode.String);
             }
 
             if (typeof (T) == typeof (bool))
             {
-                return (T) Convert.ChangeType(Internal.GetConsoleVarAsBool(varName), TypeCode.Boolean);
+                return (T) Convert.ChangeType(ServerInternal.Instance.GetConsoleVarAsBool(varName), TypeCode.Boolean);
             }
 
             if (typeof (T) == typeof (int))
             {
-                return (T) Convert.ChangeType(Internal.GetConsoleVarAsInt(varName), TypeCode.Int32);
+                return (T) Convert.ChangeType(ServerInternal.Instance.GetConsoleVarAsInt(varName), TypeCode.Int32);
             }
 
             throw new NotSupportedException("Type " + typeof (T) + " is not supported by SA:MP");
@@ -127,7 +127,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>Uptime of the SA:MP server(NOT the physical box).</returns>
         public static int GetTickCount()
         {
-            return Internal.GetTickCount();
+            return ServerInternal.Instance.GetTickCount();
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>This function doesn't return a specific value.</returns>
         public static void SendRconCommand(string command)
         {
-            Internal.SendRconCommand(command);
+            ServerInternal.Instance.SendRconCommand(command);
         }
 
         /// <summary>
@@ -188,13 +188,13 @@ namespace SampSharp.GameMode.SAMP
             var max = MaxPlayers;
 
             for (var i = 0; i < max; i++)
-                if (!Internal.IsPlayerConnected(i))
+                if (!ServerInternal.Instance.IsPlayerConnected(i))
                     id = i;
 
             if (id == -1)
                 return null;
 
-            Internal.ConnectNPC(name, script);
+            ServerInternal.Instance.ConnectNPC(name, script);
             return BasePlayer.FindOrCreate(id);
         }
 
@@ -204,7 +204,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="weatherid">The weather to set.</param>
         public static void SetWeather(int weatherid)
         {
-            Internal.SetWeather(weatherid);
+            ServerInternal.Instance.SetWeather(weatherid);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="hour">Which time to set.</param>
         public static void SetWorldTime(int hour)
         {
-            Internal.SetWorldTime(hour);
+            ServerInternal.Instance.SetWorldTime(hour);
         }
     }
 }

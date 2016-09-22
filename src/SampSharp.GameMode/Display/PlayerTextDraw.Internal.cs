@@ -13,20 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.Display
 {
     public partial class PlayerTextDraw
     {
-        private static readonly PlayerTextDrawInternal Internal;
-
-        static PlayerTextDraw()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<PlayerTextDrawInternal>();
-        }
-
-        private class PlayerTextDrawInternal
+        private class PlayerTextDrawInternal : NativeObjectSingleton<PlayerTextDrawInternal>
         {
             [NativeMethod]
             public virtual int CreatePlayerTextDraw(int playerid, float x, float y, string text)
@@ -137,7 +130,8 @@ namespace SampSharp.GameMode.Display
             }
 
             [NativeMethod]
-            public virtual bool PlayerTextDrawSetPreviewRot(int playerid, int text, float rotX, float rotY, float rotZ, float zoom)
+            public virtual bool PlayerTextDrawSetPreviewRot(int playerid, int text, float rotX, float rotY, float rotZ,
+                float zoom)
             {
                 throw new NativeNotImplementedException();
             }
@@ -147,8 +141,6 @@ namespace SampSharp.GameMode.Display
             {
                 throw new NativeNotImplementedException();
             }
-
-
         }
     }
 }

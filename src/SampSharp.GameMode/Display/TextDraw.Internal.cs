@@ -13,20 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.API.NativeObjects;
 
 namespace SampSharp.GameMode.Display
 {
     public partial class TextDraw
     {
-        private static readonly TextDrawInternal Internal;
-
-        static TextDraw()
-        {
-            Internal = NativeObjectProxyFactory.CreateInstance<TextDrawInternal>();
-        }
-
-        private class TextDrawInternal
+        private class TextDrawInternal : NativeObjectSingleton<TextDrawInternal>
         {
             [NativeMethod]
             public virtual int TextDrawCreate(float x, float y, string text)
@@ -159,8 +152,6 @@ namespace SampSharp.GameMode.Display
             {
                 throw new NativeNotImplementedException();
             }
-
-
         }
     }
 }

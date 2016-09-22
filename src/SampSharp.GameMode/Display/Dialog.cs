@@ -63,7 +63,7 @@ namespace SampSharp.GameMode.Display
 
             openDialog._aSyncWaiter.Cancel(player);
 
-            Internal.ShowPlayerDialog(player.Id, DialogHideId, (int) DialogStyle.MessageBox, string.Empty,
+            DialogInternal.Instance.ShowPlayerDialog(player.Id, DialogHideId, (int) DialogStyle.MessageBox, string.Empty,
                 string.Empty, string.Empty, string.Empty);
         }
 
@@ -139,7 +139,7 @@ namespace SampSharp.GameMode.Display
 
 
             // Show the dialog to the player.
-            Internal.ShowPlayerDialog(player.Id, DialogId, (int) Style, Caption, Info, Button1,
+            DialogInternal.Instance.ShowPlayerDialog(player.Id, DialogId, (int) Style, Caption, Info, Button1,
                 Button2 ?? string.Empty);
         }
 

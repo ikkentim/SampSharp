@@ -45,13 +45,13 @@ namespace SampSharp.GameMode.World
 
                 AssertNotDisposed();
 
-                Internal.GetActorFacingAngle(Id, out angle);
+                ActorInternal.Instance.GetActorFacingAngle(Id, out angle);
                 return angle;
             }
             set
             {
                 AssertNotDisposed();
-                Internal.SetActorFacingAngle(Id, value);
+                ActorInternal.Instance.SetActorFacingAngle(Id, value);
             }
         }
 
@@ -66,13 +66,13 @@ namespace SampSharp.GameMode.World
 
                 AssertNotDisposed();
 
-                Internal.GetActorHealth(Id, out health);
+                ActorInternal.Instance.GetActorHealth(Id, out health);
                 return health;
             }
             set
             {
                 AssertNotDisposed();
-                Internal.SetActorHealth(Id, value);
+                ActorInternal.Instance.SetActorHealth(Id, value);
             }
         }
 
@@ -84,12 +84,12 @@ namespace SampSharp.GameMode.World
             get
             {
                 AssertNotDisposed();
-                return Internal.IsActorInvulnerable(Id);
+                return ActorInternal.Instance.IsActorInvulnerable(Id);
             }
             set
             {
                 AssertNotDisposed();
-                Internal.SetActorInvulnerable(Id, value);
+                ActorInternal.Instance.SetActorInvulnerable(Id, value);
             }
         }
 
@@ -101,7 +101,7 @@ namespace SampSharp.GameMode.World
             get
             {
                 AssertNotDisposed();
-                return Internal.IsValidActor(Id);
+                return ActorInternal.Instance.IsValidActor(Id);
             }
         }
 
@@ -113,19 +113,19 @@ namespace SampSharp.GameMode.World
             get
             {
                 AssertNotDisposed();
-                return Internal.GetActorVirtualWorld(Id);
+                return ActorInternal.Instance.GetActorVirtualWorld(Id);
             }
             set
             {
                 AssertNotDisposed();
-                Internal.SetActorVirtualWorld(Id, value);
+                ActorInternal.Instance.SetActorVirtualWorld(Id, value);
             }
         }
 
         /// <summary>
         ///     Gets the size of the actors pool.
         /// </summary>
-        public static int PoolSize => Internal.GetActorPoolSize();
+        public static int PoolSize => ActorInternal.Instance.GetActorPoolSize();
 
         #region Implementation of IWorldObject
 
@@ -140,13 +140,13 @@ namespace SampSharp.GameMode.World
 
                 AssertNotDisposed();
 
-                Internal.GetActorPos(Id, out x, out y, out z);
+                ActorInternal.Instance.GetActorPos(Id, out x, out y, out z);
                 return new Vector3(x, y, z);
             }
             set
             {
                 AssertNotDisposed();
-                Internal.SetActorPos(Id, value.X, value.Y, value.Z);
+                ActorInternal.Instance.SetActorPos(Id, value.X, value.Y, value.Z);
             }
         }
 
@@ -176,7 +176,7 @@ namespace SampSharp.GameMode.World
         /// <returns>The instance of the actor.</returns>
         public static Actor Create(int modelid, Vector3 position, float rotation)
         {
-            var id = Internal.CreateActor(modelid, position.X, position.Y, position.Z, rotation);
+            var id = ActorInternal.Instance.CreateActor(modelid, position.X, position.Y, position.Z, rotation);
 
             return id == InvalidId ? null : FindOrCreate(id);
         }
@@ -193,7 +193,7 @@ namespace SampSharp.GameMode.World
 
             AssertNotDisposed();
 
-            return Internal.IsActorStreamedIn(Id, player.Id);
+            return ActorInternal.Instance.IsActorStreamedIn(Id, player.Id);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace SampSharp.GameMode.World
 
             AssertNotDisposed();
 
-            Internal.ApplyActorAnimation(Id, library, name, fDelta, loop, lockx, locky, freeze, time);
+            ActorInternal.Instance.ApplyActorAnimation(Id, library, name, fDelta, loop, lockx, locky, freeze, time);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            Internal.ClearActorAnimations(Id);
+            ActorInternal.Instance.ClearActorAnimations(Id);
         }
 
         /// <summary>
@@ -267,7 +267,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         protected override void Dispose(bool disposing)
         {
-            Internal.DestroyActor(Id);
+            ActorInternal.Instance.DestroyActor(Id);
             base.Dispose(disposing);
         }
 

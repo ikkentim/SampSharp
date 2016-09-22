@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.GameMode.API
+namespace SampSharp.GameMode.API.NativeObjects
 {
     /// <summary>
     ///     Indicates a property represents a native setter/getter.
