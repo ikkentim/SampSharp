@@ -124,6 +124,7 @@ namespace SampSharp.GameMode.Pools
             if (!typeof (TInstance).IsAssignableFrom(type))
                 throw new ArgumentException("type must be of type " + typeof (TInstance), nameof(type));
 
+            FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Type {type} registered to pool.");
             InstanceType = type;
         }
 

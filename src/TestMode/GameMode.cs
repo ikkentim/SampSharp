@@ -15,14 +15,21 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using SampSharp.GameMode;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
+using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
+using SampSharp.GameMode.World;
 using TestMode.Tests;
+using TestMode.World;
 
 namespace TestMode
 {
@@ -32,6 +39,8 @@ namespace TestMode
 
         protected override void OnInitialized(EventArgs args)
         {
+            base.OnInitialized(args);
+
             Console.WriteLine($"TestMode for SampSharp v{GetType().Assembly.GetName().Version}");
             Console.WriteLine("----------------------");
 
@@ -60,9 +69,46 @@ namespace TestMode
                 Console.WriteLine();
             }
 
-            base.OnInitialized(args);
+            var pooledTypes = new[]
+            {
+                typeof(IdentifiedPool<>),
+                typeof(IdentifiedOwnedPool<,>)
+            };
+
+
+            Console.WriteLine(DateTime.Now);
+            foreach (var type in new[] { typeof(GameMode).Assembly, typeof(BaseMode).Assembly }
+                .SelectMany(a => a.GetTypes())
+                .Where(t => !t.IsGenericType && t.IsClass)
+                .Select(t1 => pooledTypes.Select(t2 => GetBaseTypeOfGenericType(t1, t2))
+                    .FirstOrDefault(t => t != null))
+                .Where(t => t != null)
+                .Distinct())
+            {
+                Console.WriteLine($"Pool: {type.GetGenericArguments().FirstOrDefault()} \t=> {type.GetProperty("InstanceType", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)?.GetValue(null)}");
+            }
         }
 
         #endregion
+
+
+        private Type GetBaseTypeOfGenericType(Type type, Type genericType)
+        {
+            if (type == null)
+                return null;
+            if (genericType == null)
+                throw new ArgumentNullException(nameof(genericType));
+            
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == genericType)
+            {
+                return type;
+            }
+            
+            if ((type.BaseType == null) || (type.BaseType == typeof(object)))
+                return null;
+            
+            return GetBaseTypeOfGenericType(type.BaseType, genericType);
+        }
+
     }
 }

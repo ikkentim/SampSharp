@@ -113,10 +113,11 @@ namespace SampSharp.GameMode
 
         internal void Initialize()
         {
+            SyncController.Flush();
             LoadExtensions();
             
-            AutoloadPoolTypes();
             LoadServicesAndControllers();
+
         }
 
         /// <summary>
@@ -203,6 +204,8 @@ namespace SampSharp.GameMode
 
             foreach (var controller in _controllers.OfType<ITypeProvider>())
                 controller.RegisterTypes();
+            
+            AutoloadPoolTypes();
 
             foreach (var controller in _controllers.OfType<IEventListener>())
                 controller.RegisterEvents(this);

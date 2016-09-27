@@ -81,6 +81,7 @@
     <Compile Include="Controllers\ControllerCollection.cs" />
     <Compile Include="Controllers\DelayController.cs" />
     <Compile Include="Controllers\DialogController.cs" />
+    <Compile Include="Controllers\GangZoneController.cs" />
     <Compile Include="Controllers\GlobalObjectController.cs" />
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\IGameServiceProvider.cs" />
@@ -90,8 +91,10 @@
     <Compile Include="Controllers\BasePlayerController.cs" />
     <Compile Include="Controllers\PlayerObjectController.cs" />
     <Compile Include="Controllers\PlayerTextDrawController.cs" />
+    <Compile Include="Controllers\PlayerTextLabelController.cs" />
     <Compile Include="Controllers\SyncController.cs" />
     <Compile Include="Controllers\TextDrawController.cs" />
+    <Compile Include="Controllers\TextLabelController.cs" />
     <Compile Include="Controllers\TimerController.cs" />
     <Compile Include="Controllers\BaseVehicleController.cs" />
     <Compile Include="Definitions\BodyPart.cs" />

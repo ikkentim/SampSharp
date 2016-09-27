@@ -58,7 +58,10 @@ namespace SampSharp.GameMode.Controllers
             _waiting = true;
         }
 
-        private static void _gameMode_Tick(object sender, EventArgs e)
+        /// <summary>
+        ///    Runs all awaiting tasks on the current thread.
+        /// </summary>
+        public static void Flush()
         {
             if (!_waiting) return;
 
@@ -69,6 +72,11 @@ namespace SampSharp.GameMode.Controllers
             }
 
             _waiting = false;
+        }
+
+        private static void _gameMode_Tick(object sender, EventArgs e)
+        {
+            Flush();
         }
     }
 }
