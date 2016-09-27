@@ -148,9 +148,18 @@ namespace SampSharp.GameMode.Pools
             if (InstanceType == null)
                 throw new Exception($"No instance type has yet been registered to the {typeof(IdentifiedPool<TInstance>)} pool.");
 
-            var instance = Activator.CreateInstance(InstanceType) as TInstance;
+            var instance = (TInstance)Activator.CreateInstance(InstanceType);
             instance.Id = id;
+            instance.Initialize();
             return instance;
+        }
+
+        /// <summary>
+        ///     An overloadable point for initialization logic which requires the <see cref="Id"/> to be set.
+        /// </summary>
+        protected virtual void Initialize()
+        {
+
         }
 
         /// <summary>

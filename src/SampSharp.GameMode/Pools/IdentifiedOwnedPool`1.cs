@@ -229,7 +229,16 @@ namespace SampSharp.GameMode.Pools
             var instance = (TInstance) Activator.CreateInstance(InstanceType);
             instance.Owner = owner;
             instance.Id = id;
+            instance.Initialize();
             return instance;
+        }
+
+        /// <summary>
+        ///     An overloadable point for initialization logic which requires the <see cref="Id"/> and the <see cref="Owner"/> to be set.
+        /// </summary>
+        protected virtual void Initialize()
+        {
+
         }
 
         /// <summary>
@@ -244,5 +253,6 @@ namespace SampSharp.GameMode.Pools
         {
             return Find(owner, id) ?? Create(owner, id);
         }
+
     }
 }
