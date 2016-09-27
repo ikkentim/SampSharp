@@ -46,7 +46,7 @@ Some useful SA-MP# libraries:
 [my sa-mp profile]: http://forum.sa-mp.com/member.php?u=76946
 [sa-mp# topic on sa-mp]: http://forum.sa-mp.com/showthread.php?t=511686
 
-[nuget repository]: http://sampsharp.timpotze.nl/NuGet-repository
+[nuget repository]: http://sampsharp.timpotze.nl/package-manager
 
 [GrandLarc]: https://github.com/ikkentim/SampSharp-grandlarc
 [RiverShell]: https://github.com/ikkentim/SampSharp-rivershell
