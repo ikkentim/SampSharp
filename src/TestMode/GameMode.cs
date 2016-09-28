@@ -87,6 +87,8 @@ namespace TestMode
             {
                 Console.WriteLine($"Pool: {type.GetGenericArguments().FirstOrDefault()} \t=> {type.GetProperty("InstanceType", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)?.GetValue(null)}");
             }
+
+            throw new Exception();
         }
 
         #endregion

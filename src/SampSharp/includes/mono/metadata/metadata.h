@@ -10,19 +10,6 @@
 
 MONO_BEGIN_DECLS
 
-/*
- * When embedding, you have to define MONO_ZERO_LEN_ARRAY before including any
- * other Mono header file if you use a different compiler from the one used to
- * build Mono.
- */
-#ifndef MONO_ZERO_LEN_ARRAY
-#ifdef __GNUC__
-#define MONO_ZERO_LEN_ARRAY 0
-#else
-#define MONO_ZERO_LEN_ARRAY 1
-#endif
-#endif
-
 #define MONO_TYPE_ISSTRUCT(t) mono_type_is_struct (t)
 #define MONO_TYPE_IS_VOID(t) mono_type_is_void (t)
 #define MONO_TYPE_IS_POINTER(t) mono_type_is_pointer (t)
@@ -177,6 +164,8 @@ typedef enum {
 	MONO_MARSHAL_CONV_SAFEHANDLE,
 	MONO_MARSHAL_CONV_HANDLEREF
 } MonoMarshalConv;
+
+#define MONO_MARSHAL_CONV_INVALID ((MonoMarshalConv)-1)
 
 typedef struct {
 	MonoMarshalNative native;
@@ -390,21 +379,25 @@ MONO_API int            mono_metadata_parse_custom_mod  (MonoImage      *m,
 						MonoCustomMod   *dest,
 						const char      *ptr,
 						const char     **rptr);
+MONO_RT_EXTERNAL_ONLY
 MONO_API MonoArrayType *mono_metadata_parse_array       (MonoImage      *m,
 						const char      *ptr,
 						const char     **rptr);
 MONO_API void           mono_metadata_free_array        (MonoArrayType     *array);
+MONO_RT_EXTERNAL_ONLY
 MONO_API MonoType      *mono_metadata_parse_type        (MonoImage      *m,
 						MonoParseTypeMode  mode,
 						short              opt_attrs,
 						const char        *ptr,
 						const char       **rptr);
+MONO_RT_EXTERNAL_ONLY
 MONO_API MonoType      *mono_metadata_parse_param       (MonoImage      *m,
 						const char      *ptr,
 						const char      **rptr);
 MONO_API MonoType      *mono_metadata_parse_ret_type    (MonoImage      *m,
 						const char      *ptr,
 						const char      **rptr);
+MONO_RT_EXTERNAL_ONLY
 MONO_API MonoType      *mono_metadata_parse_field_type  (MonoImage      *m,
 		                                short            field_flags,
 						const char      *ptr,
@@ -429,6 +422,7 @@ MONO_API MonoMethodSignature  *mono_metadata_signature_alloc (MonoImage *image, 
 
 MONO_API MonoMethodSignature  *mono_metadata_signature_dup (MonoMethodSignature *sig);
 
+MONO_RT_EXTERNAL_ONLY
 MONO_API MonoMethodSignature  *mono_metadata_parse_signature (MonoImage *image, 
 						     uint32_t    token);
 
@@ -443,6 +437,7 @@ MONO_API mono_bool          mono_metadata_signature_equal (MonoMethodSignature *
 
 MONO_API unsigned int             mono_signature_hash (MonoMethodSignature *sig);
 
+MONO_RT_EXTERNAL_ONLY
 MONO_API MonoMethodHeader *mono_metadata_parse_mh (MonoImage *m, const char *ptr);
 MONO_API void              mono_metadata_free_mh  (MonoMethodHeader *mh);
 
@@ -484,6 +479,8 @@ mono_type_to_unmanaged (MonoType *type, MonoMarshalSpec *mspec,
 MONO_API uint32_t mono_metadata_token_from_dor (uint32_t dor_index);
 
 MONO_API char *mono_guid_to_string (const uint8_t *guid);
+
+MONO_API char *mono_guid_to_string_minimal (const uint8_t *guid);
 
 MONO_API uint32_t mono_metadata_declsec_from_index (MonoImage *meta, uint32_t idx);
 

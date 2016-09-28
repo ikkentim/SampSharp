@@ -23,3 +23,5 @@ string Config::traceLevel_;
 string Config::gameModeNamespace_;
 string Config::gameModeClass_;
 string Config::codepage_;
+string Config::debuggerEnable_;
+string Config::debuggerAddress_;

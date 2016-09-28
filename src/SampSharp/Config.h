@@ -29,12 +29,16 @@ public:
         std::string tmpGameMode = "GameMode::GameMode";
         traceLevel_ = "error";
         codepage_ = "cp1252";
+        debuggerEnable_ = "0";
+        debuggerAddress_ = "0.0.0.0:7776";
 
         server_cfg.GetOptionAsString("gamemode", tmpGameMode);
         server_cfg.GetOptionAsString("trace_level", traceLevel_);
         server_cfg.GetOptionAsString("mono_assembly_dir", monoAssemblyDir_);
         server_cfg.GetOptionAsString("mono_config_dir", monoConfigDir_);
         server_cfg.GetOptionAsString("codepage", codepage_);
+        server_cfg.GetOptionAsString("debugger", debuggerEnable_);
+        server_cfg.GetOptionAsString("debugger_address", debuggerAddress_);
 
         std::stringstream gamemode_stream(tmpGameMode);
 
@@ -64,6 +68,12 @@ public:
     static std::string GetCodepage() {
         return codepage_;
     }
+    static std::string GetDebuggerEnable() {
+        return debuggerEnable_;
+    }
+    static std::string GetDebuggerAddress() {
+        return debuggerAddress_;
+    }
 
 private:
     static std::string monoAssemblyDir_;
@@ -72,4 +82,6 @@ private:
     static std::string gameModeNamespace_;
     static std::string gameModeClass_;
     static std::string codepage_;
+    static std::string debuggerEnable_;
+    static std::string debuggerAddress_;
 };

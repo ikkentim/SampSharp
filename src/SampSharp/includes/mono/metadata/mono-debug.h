@@ -86,6 +86,7 @@ struct _MonoDebugMethodJitInfo {
 	const mono_byte *wrapper_addr;
 	uint32_t num_line_numbers;
 	MonoDebugLineNumberEntry *line_numbers;
+	uint32_t has_var_info;
 	uint32_t num_params;
 	MonoDebugVarInfo *this_var;
 	MonoDebugVarInfo *params;
@@ -184,6 +185,9 @@ mono_debug_add_delegate_trampoline (void* code, int size);
 
 MONO_API MonoDebugLocalsInfo*
 mono_debug_lookup_locals (MonoMethod *method);
+
+MonoDebugSourceLocation *
+mono_debug_method_lookup_location (MonoDebugMethodInfo *minfo, int il_offset);
 
 /*
  * Line number support.

@@ -19,6 +19,7 @@
 #include <mono/metadata/mono-debug.h>
 #include <mono/utils/mono-logger.h>
 #include <sampgdk/sampgdk.h>
+#include "Config.h"
 
 bool MonoRuntime::isLoaded_;
 
@@ -38,9 +39,24 @@ void MonoRuntime::Load(std::string assemblyDir, std::string configDir,
     }
 #endif
 
-    mono_debug_init(MONO_DEBUG_FORMAT_MONO);
-    mono_trace_set_level_string(traceLevel.c_str());
-    MonoDomain *dom = mono_jit_init(file.c_str());
+    if (Config::GetDebuggerEnable().compare("1") == 0) {
+        char* agent = new char[128];
+        sprintf(agent, "--debugger-agent=transport=dt_socket,address=%s,server=y", Config::GetDebuggerAddress().c_str());
 
+        sampgdk::logprintf("Launching with debugger at %s...", Config::GetDebuggerAddress().c_str());
+
+        const char* jit_options[] = {
+            "--soft-breakpoints",
+            agent
+        };
+        mono_jit_parse_options(2, (char**)jit_options);
+
+        delete agent;
+
+        sampgdk::logprintf("Waiting for debugger to attach...");
+    }
+
+    mono_debug_init(MONO_DEBUG_FORMAT_MONO);
+    MonoDomain *dom = mono_jit_init(file.c_str());
     isLoaded_ = true;
 }

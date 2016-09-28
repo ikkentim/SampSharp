@@ -47,11 +47,13 @@ typedef enum {
 	MONO_AOT_MODE_NONE,
 	/* Enables normal AOT mode, equivalent to mono_jit_set_aot_only (false) */
 	MONO_AOT_MODE_NORMAL,
-	/* Enables hyrbid AOT mode, JIT can still be used for wrappers */
+	/* Enables hybrid AOT mode, JIT can still be used for wrappers */
 	MONO_AOT_MODE_HYBRID,
 	/* Enables full AOT mode, JIT is disabled and not allowed,
 	 * equivalent to mono_jit_set_aot_only (true) */
-	MONO_AOT_MODE_FULL
+	MONO_AOT_MODE_FULL,
+	/* Same as full, but use only llvm compiled code */
+	MONO_AOT_MODE_LLVMONLY
 } MonoAotMode;
 
 MONO_API void
@@ -86,7 +88,7 @@ MONO_API char*       mono_get_runtime_build_info    (void);
 MONO_API MonoJitInfo *
 mono_get_jit_info_from_method (MonoDomain *domain, MonoMethod *method);
 
-MONO_API void *
+MONO_API MONO_RT_EXTERNAL_ONLY void *
 mono_aot_get_method (MonoDomain *domain, MonoMethod *method);
 
 MONO_END_DECLS
