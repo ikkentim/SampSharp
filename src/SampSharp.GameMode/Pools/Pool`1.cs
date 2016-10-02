@@ -25,20 +25,14 @@ namespace SampSharp.GameMode.Pools
     ///     Keeps track of a pool of instances.
     /// </summary>
     /// <typeparam name="TInstance">Base type of instances to keep track of.</typeparam>
-    public abstract class Pool<TInstance> : Disposable
+    public abstract class Pool<TInstance> : Disposable where TInstance : Pool<TInstance>
     {
         /// <summary>
         ///     The instances alive in this pool.
         /// </summary>
         // ReSharper disable once StaticMemberInGenericType
-        protected static readonly List<object> Instances = new List<object>();
-
-        /// <summary>
-        ///     A readonly collection of the instances in this pool.
-        /// </summary>
-        protected static ReadOnlyCollection<TInstance> ReadOnly =
-            new ReadOnlyCollection<TInstance>(new List<TInstance>());
-
+        protected static readonly List<Pool<TInstance>> Instances = new List<Pool<TInstance>>();
+        
         /// <summary>
         ///     A Locker for tread-saving this pool.
         /// </summary>
@@ -52,20 +46,19 @@ namespace SampSharp.GameMode.Pools
             lock (Lock)
             {
                 Instances.Add(this);
-                ReadOnly = Instances.OfType<TInstance>().ToList().AsReadOnly();
             }
         }
 
         /// <summary>
-        ///     Gets a <see cref="ReadOnlyCollection{T}" /> containing all instances of type.
+        ///     Gets a <see cref="IEnumerable{T}" /> containing all instances of type.
         /// </summary>
-        public static ReadOnlyCollection<TInstance> All
+        public static IEnumerable<TInstance> All
         {
             get
             {
                 lock (Lock)
                 {
-                    return ReadOnly;
+                    return Instances.OfType<TInstance>().ToArray();
                 }
             }
         }
@@ -78,7 +71,6 @@ namespace SampSharp.GameMode.Pools
             lock (Lock)
             {
                 Instances.Remove(this);
-                ReadOnly = Instances.OfType<TInstance>().ToList().AsReadOnly();
             }
         }
 

@@ -50,7 +50,7 @@ namespace SampSharp.GameMode.Pools
         /// <summary>
         ///     Gets a collection containing all instances.
         /// </summary>
-        public static IEnumerable<TInstance> All => Container;
+        public static IEnumerable<TInstance> All => Container.ToArray();
 
         /// <summary>
         ///     Gets the identifier of this instance.
