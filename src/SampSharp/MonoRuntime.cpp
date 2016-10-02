@@ -57,6 +57,8 @@ void MonoRuntime::Load(std::string assemblyDir, std::string configDir,
     }
 
     mono_debug_init(MONO_DEBUG_FORMAT_MONO);
+    mono_trace_set_level_string(traceLevel.c_str());
     MonoDomain *dom = mono_jit_init(file.c_str());
+    
     isLoaded_ = true;
 }
