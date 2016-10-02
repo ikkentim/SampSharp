@@ -16,21 +16,24 @@
 #include "main.h"
 #include <fstream>
 #include <sampgdk/sampgdk.h>
-#include "Config.h"
-#include "MonoRuntime.h"
-#include "GameMode.h"
 #include <assert.h>
 #include <string.h>
 #include <iostream>
+#include "Config.h"
+#include "MonoRuntime.h"
+#include "GameMode.h"
+#include "StringUtil.h"
+
 
 extern void *pAMXFunctions;
 
 using std::string;
-using std::stringstream;
+using std::ostringstream;
 using sampgdk::logprintf;
 
 bool filterscript_loaded = false;
 bool initial_load = false;
+bool plugin_initialized = false;
 int run_signal = 0;
 AMX *signal_amx;
 
@@ -86,6 +89,13 @@ void unloadGamemode() {
 }
 
 bool HandleRconCommands(AMX *amx, cell *params, cell *retval) {
+    // The plugin handles two RCON commands:
+    // sampsharpstop
+    // sampsharpstart
+    //
+    // These commands can be used to unload a SampSharp game mode, replace the
+    // DLL file and reloading the newly updated game mode.
+
     char buf[64];
     cell* addr;
     amx_GetAddr(amx, params[1], &addr);
@@ -163,9 +173,46 @@ PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
-    if (!sampgdk::Load(ppData)) return false;
+    // Load sampgdk. If loading fails, prevent the whole plugin from loading.
+    if (!sampgdk::Load(ppData)) {
+        return false;
+    }
 
+    // Store amx functions pointer in order to be able to interface with amx.
     pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
+
+    // Check whether gamemodeN values contain acceptable values.
+    ConfigReader server_cfg("server.cfg");
+    for (int i = 0; i < 15; i++) {
+        ostringstream gamemode_key;
+        gamemode_key << "gamemode";
+        gamemode_key << i;
+
+        string gamemode_value;
+        server_cfg.GetOptionAsString(gamemode_key.str(), gamemode_value);
+        gamemode_value = StringUtil::TrimString(gamemode_value);
+
+        if (i == 0 && gamemode_value.compare("empty 1") != 0) {
+            logprintf("ERROR: Can not load sampsharp if a non-SampSharp"
+                "gamemode is set to load.");
+            logprintf("ERROR: Please ensure you set 'gamemode0 empty 1' in your"
+                "server.cfg file.");
+            // During development, the server crashed while returning false
+            // here. Seeing the user will need to change their configuration
+            // file, it doesn't really matter.
+            return false;
+        }
+        else if (i > 0 && gamemode_value.length() > 0) {
+            logprintf("ERROR: Can not load sampsharp if a non-SampSharp"
+                "gamemode is set to load.");
+            logprintf("ERROR: Please ensure you only specify one script"
+                "gamemode, namely 'gamemode0 empty 1' in your server.cfg file.");
+            // During development, the server crashed while returning false
+            // here. Seeing the user will need to change their configuration
+            // file, it doesn't really matter.
+            return false;
+        }
+    }
 
     logprintf("");
     logprintf("SampSharp Plugin");
@@ -174,31 +221,51 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     logprintf("");
 
     Config::Read();
+
+    plugin_initialized = true;
     return true;
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
-    GameMode::Unload();
+    if (plugin_initialized) {
+        GameMode::Unload();
+    }
     sampgdk::Unload();
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
-    GameMode::ProcessTick();
-    sampgdk::ProcessTick();
-    ProcessSignals();
+    if (plugin_initialized) {
+        GameMode::ProcessTick();
+        sampgdk::ProcessTick();
+        ProcessSignals();
+    }
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     cell *params, cell *retval) {
+    // If the plugin did not initialize successfully, we don't care for any
+    // public call arriving here.
+    if (!plugin_initialized) {
+        return false;
+    }
+
+    // If an RCON command has been received, let HandleRconCommands handle it.
+    // If this function returns true, it did not handle the command. In this
+    // case, let the call trough to the SampSharp game mode.
     if (!strcmp(name, "OnRconCommand") && params && params[0] == sizeof(cell)) {
         if (!HandleRconCommands(amx, params, retval)) {
             return false;
         }
     }
+    // If the game mode initialize callback has been received, create the
+    // SampSharp game mode instance before passing the call trough to it.
     else if (!strcmp(name, "OnGameModeInit")) {
         loadGamemode();
         initial_load = true;
     }
+    // If a SampSharp game mode has been loaded and the game mode exit callback
+    // has been received, pass it trough to the SampSharp game mode before
+    // unloading the game mode instance.
     else if (GameMode::IsLoaded() && !strcmp(name, "OnGameModeExit")) {
         // Process call before actually unloading the gamemode.
         GameMode::ProcessPublicCall(amx, name, params, retval);
