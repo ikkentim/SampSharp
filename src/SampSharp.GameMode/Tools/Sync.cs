@@ -68,7 +68,9 @@ namespace SampSharp.GameMode.Tools
         /// <returns></returns>
         public static T RunSync<T>(Func<T> func)
         {
-            return !IsRequired ? func() : AsyncHelper.RunSync(() => RunAsync(func));
+            return !IsRequired
+                ? func()
+                : AsyncHelper.RunSync(() => RunAsync(func));
         }
 
         /// <summary>
@@ -86,7 +88,7 @@ namespace SampSharp.GameMode.Tools
             var task = new SyncTask {Action = action};
             SyncController.Start();
 
-            while (!task.Done && !task.IsDisposed)
+            while (!task.Done)
             {
                 await Task.Delay(1);
             }
@@ -102,11 +104,9 @@ namespace SampSharp.GameMode.Tools
         {
             if (!IsRequired)
             {
-                Console.WriteLine("async not required, immediate run");
                 return action();
             }
 
-            Console.WriteLine("");
             var result = default(TResult);
 
             await RunAsync(() => { result = action(); });

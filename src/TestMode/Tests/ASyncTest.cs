@@ -36,16 +36,16 @@ namespace TestMode.Tests
             //also proof calls to native from other threads work all right. (due to being synced)
             _main = Thread.CurrentThread;
 
-//            ASyncTestMethod();
-//            ASyncTestMethod2();
+            ASyncTestMethod();
+            ASyncTestMethod2();
             ASyncTestMethod3();
-//            ASyncTestMethod4();
+            ASyncTestMethod4();
 
-//            _timerStart = DateTime.Now;
-//            var timer = new Timer(new TimeSpan(0, 0, 0, 2, 500), false);
-//            timer.Tick += TimerOnTick;
+            _timerStart = DateTime.Now;
+            var timer = new Timer(new TimeSpan(0, 0, 0, 2, 500), false);
+            timer.Tick += TimerOnTick;
 
-//            gameMode.PlayerConnected += gameMode_PlayerConnected;
+            gameMode.PlayerConnected += gameMode_PlayerConnected;
         }
 
         private void Print(string env, string msg)

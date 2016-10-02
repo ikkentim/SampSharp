@@ -23,12 +23,12 @@ namespace TestMode.Tests
     {
         public void Start(GameMode gameMode)
         {
-//            var main = Thread.CurrentThread;
+            var main = Thread.CurrentThread;
 
-//            Console.WriteLine("Starting delay on main thread");
+            Console.WriteLine("Starting delay on main thread");
 
-//            Delay.Run(1500,
-//                () => Console.WriteLine("Delay passed. Now on main thread? {0}", main == Thread.CurrentThread));
+            Delay.Run(1500,
+                () => Console.WriteLine("Delay passed. Now on main thread? {0}", main == Thread.CurrentThread));
         }
     }
 }
