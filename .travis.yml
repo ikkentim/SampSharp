@@ -18,6 +18,5 @@ script:
 
 addons:
   artifacts:
-    s3_region: "eu-central-1"
     paths:
     - $(ls bin/*.so | tr "\n" ":")
