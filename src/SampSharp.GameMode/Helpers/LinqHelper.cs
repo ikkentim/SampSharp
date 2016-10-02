@@ -22,7 +22,7 @@ namespace SampSharp.GameMode.Helpers
     /// <summary>
     ///     Contains helper methods for LINQ queries.
     /// </summary>
-    public static class LinqHelper
+    internal static class LinqHelper
     {
         /// <summary>Finds the index of the first item matching an expression in an enumerable.</summary>
         /// <typeparam name="T">The <see cref="Type" /> of the collection.</typeparam>

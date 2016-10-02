@@ -143,6 +143,7 @@
     <Compile Include="FrameworkMessageLevel.cs" />
     <Compile Include="Helpers\AsyncHelper.cs" />
     <Compile Include="Helpers\MathHelper.cs" />
+    <Compile Include="Helpers\NullableHelper.cs" />
     <Compile Include="Helpers\VehicleParameterValueHelper.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="API\Native.cs" />

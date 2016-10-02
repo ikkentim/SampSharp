@@ -16,6 +16,7 @@
 using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
+using SampSharp.GameMode.Helpers;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
@@ -63,27 +64,27 @@ namespace SampSharp.GameMode.Display
 
         #region Fields
 
-        private TextDrawAlignment _alignment;
-        private Color _backColor;
-        private Color _boxColor;
-        private TextDrawFont _font;
-        private Color _foreColor;
-        private float _height;
-        private Vector2 _letterSize;
-        private int _outline;
+        private TextDrawAlignment? _alignment;
+        private Color? _backColor;
+        private Color? _boxColor;
+        private TextDrawFont? _font;
+        private Color? _foreColor;
+        private float? _height;
+        private Vector2? _letterSize;
+        private int? _outline;
         private Vector2 _position;
-        private int _previewModel;
-        private int _previewPrimaryColor = -1;
-        private Vector3 _previewRotation;
-        private int _previewSecondaryColor = -1;
-        private float _previewZoom = 1;
-        private bool _proportional;
-        private bool _selectable;
-        private int _shadow;
+        private int? _previewModel;
+        private int? _previewPrimaryColor = -1;
+        private Vector3? _previewRotation;
+        private int? _previewSecondaryColor = -1;
+        private float? _previewZoom = 1;
+        private bool? _proportional;
+        private bool? _selectable;
+        private int? _shadow;
         private string _text;
-        private bool _useBox;
+        private bool? _useBox;
         private bool _visible;
-        private float _width;
+        private float? _width;
 
         #endregion
 
@@ -102,7 +103,7 @@ namespace SampSharp.GameMode.Display
             AutoDestroy = true;
 
             Owner = owner;
-            Text = "_";
+            _text = "_";
         }
 
         /// <summary>
@@ -111,15 +112,10 @@ namespace SampSharp.GameMode.Display
         /// <param name="owner">The owner of the player-textdraw.</param>
         /// <param name="position">The position of the player-textdraw on the screen.</param>
         /// <param name="text">The text of the player-textdraw.</param>
-        public PlayerTextDraw(BasePlayer owner, Vector2 position, string text)
+        public PlayerTextDraw(BasePlayer owner, Vector2 position, string text) : this(owner)
         {
-            if (owner == null)
-                throw new ArgumentNullException(nameof(owner));
-
-            IsApplyFixes = true;
-            Owner = owner;
-            Position = position;
-            Text = text;
+            _position = position;
+            _text = text;
         }
 
         /// <summary>
@@ -132,7 +128,7 @@ namespace SampSharp.GameMode.Display
         public PlayerTextDraw(BasePlayer owner, Vector2 position, string text, TextDrawFont font)
             : this(owner, position, text)
         {
-            Font = font;
+            _font = font;
         }
 
         /// <summary>
@@ -146,7 +142,7 @@ namespace SampSharp.GameMode.Display
         public PlayerTextDraw(BasePlayer owner, Vector2 position, string text, TextDrawFont font, Color foreColor)
             : this(owner, position, text, font)
         {
-            ForeColor = foreColor;
+            _foreColor = foreColor;
         }
 
         #endregion
@@ -169,7 +165,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual TextDrawAlignment Alignment
         {
-            get { return _alignment; }
+            get { return _alignment ?? TextDrawAlignment.Left; }
             set
             {
                 _alignment = value;
@@ -184,7 +180,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual Color BackColor
         {
-            get { return _backColor; }
+            get { return _backColor ?? Color.Black; }
             set
             {
                 _backColor = value;
@@ -199,7 +195,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual Color ForeColor
         {
-            get { return _foreColor; }
+            get { return _foreColor ?? Color.White; }
             set
             {
                 _foreColor = value;
@@ -214,7 +210,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual Color BoxColor
         {
-            get { return _boxColor; }
+            get { return _boxColor ?? Color.Transparent; }
             set
             {
                 _boxColor = value;
@@ -229,7 +225,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual TextDrawFont Font
         {
-            get { return _font; }
+            get { return _font ?? TextDrawFont.Normal; }
             set
             {
                 _font = value;
@@ -244,12 +240,12 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual Vector2 LetterSize
         {
-            get { return _letterSize; }
+            get { return _letterSize ?? Vector2.Zero; }
             set
             {
                 _letterSize = value;
                 if (Id == -1) return;
-                PlayerTextDrawInternal.Instance.PlayerTextDrawLetterSize(Owner.Id, Id, _letterSize.X, _letterSize.Y);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawLetterSize(Owner.Id, Id, value.X, value.Y);
                 Update();
             }
         }
@@ -259,7 +255,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual int Outline
         {
-            get { return _outline; }
+            get { return _outline ?? 0; }
             set
             {
                 _outline = value;
@@ -274,7 +270,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual bool Proportional
         {
-            get { return _proportional; }
+            get { return _proportional ?? false; }
             set
             {
                 _proportional = value;
@@ -289,7 +285,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual int Shadow
         {
-            get { return _shadow; }
+            get { return _shadow ?? 0; }
             set
             {
                 _shadow = value;
@@ -333,12 +329,12 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual float Width
         {
-            get { return _width; }
+            get { return _width ?? 0; }
             set
             {
                 _width = value;
                 if (Id == -1) return;
-                PlayerTextDrawInternal.Instance.PlayerTextDrawTextSize(Owner.Id, Id, _width, _height);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawTextSize(Owner.Id, Id, value, Height);
                 Update();
             }
         }
@@ -348,12 +344,12 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual float Height
         {
-            get { return _height; }
+            get { return _height ?? 0; }
             set
             {
                 _height = value;
                 if (Id == -1) return;
-                PlayerTextDrawInternal.Instance.PlayerTextDrawTextSize(Owner.Id, Id, _width, _height);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawTextSize(Owner.Id, Id, Width, value);
                 Update();
             }
         }
@@ -363,7 +359,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual bool UseBox
         {
-            get { return _useBox; }
+            get { return _useBox ?? false; }
             set
             {
                 _useBox = value;
@@ -378,7 +374,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual bool Selectable
         {
-            get { return _selectable; }
+            get { return _selectable ?? false; }
             set
             {
                 _selectable = value;
@@ -393,7 +389,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual int PreviewModel
         {
-            get { return _previewModel; }
+            get { return _previewModel ?? 0; }
             set
             {
                 _previewModel = value;
@@ -408,7 +404,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual Vector3 PreviewRotation
         {
-            get { return _previewRotation; }
+            get { return _previewRotation ?? Vector3.Zero; }
             set
             {
                 _previewRotation = value;
@@ -423,7 +419,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual float PreviewZoom
         {
-            get { return _previewZoom; }
+            get { return _previewZoom ?? 0; }
             set
             {
                 _previewZoom = value;
@@ -439,13 +435,12 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual int PreviewPrimaryColor
         {
-            get { return _previewPrimaryColor; }
+            get { return _previewPrimaryColor ?? -1; }
             set
             {
                 _previewPrimaryColor = value;
                 if (Id == -1) return;
-                PlayerTextDrawInternal.Instance.PlayerTextDrawSetPreviewVehCol(Owner.Id, Id, _previewPrimaryColor,
-                    _previewSecondaryColor);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawSetPreviewVehCol(Owner.Id, Id, value, PreviewSecondaryColor);
                 Update();
             }
         }
@@ -455,13 +450,12 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual int PreviewSecondaryColor
         {
-            get { return _previewSecondaryColor; }
+            get { return _previewSecondaryColor ?? -1; }
             set
             {
                 _previewSecondaryColor = value;
                 if (Id == -1) return;
-                PlayerTextDrawInternal.Instance.PlayerTextDrawSetPreviewVehCol(Owner.Id, Id, _previewPrimaryColor,
-                    _previewSecondaryColor);
+                PlayerTextDrawInternal.Instance.PlayerTextDrawSetPreviewVehCol(Owner.Id, Id, PreviewPrimaryColor, value);
                 Update();
             }
         }
@@ -526,24 +520,24 @@ namespace SampSharp.GameMode.Display
             Id = PlayerTextDrawInternal.Instance.CreatePlayerTextDraw(Owner.Id, Position.X, Position.Y, FixString(Text));
 
             //Reset properties
-            Font = Font;
-            if (Alignment != default(TextDrawAlignment)) Alignment = Alignment;
-            if (BackColor != 0) BackColor = BackColor;
-            if (ForeColor != 0) ForeColor = ForeColor;
-            if (BoxColor != 0) BoxColor = BoxColor;
-            if (LetterSize != Vector2.Zero) LetterSize = LetterSize;
-            if (Outline > 0) Outline = Outline;
-            if (Proportional) Proportional = Proportional;
-            if (Shadow > 0) Shadow = Shadow;
-            if (Width != 0) Width = Width;
-            if (Height != 0) Height = Height;
-            if (UseBox) UseBox = UseBox;
-            if (Selectable) Selectable = Selectable;
-            if (PreviewModel != 0) PreviewModel = PreviewModel;
-            if (PreviewRotation != Vector3.Zero) PreviewRotation = PreviewRotation;
-            if (PreviewZoom != 1) PreviewZoom = PreviewZoom;
-            if (PreviewPrimaryColor != -1) PreviewPrimaryColor = PreviewPrimaryColor;
-            if (PreviewSecondaryColor != -1) PreviewSecondaryColor = PreviewSecondaryColor;
+            _font.Do(x => Font = x);
+            _alignment.Do(x => Alignment = x);
+            _backColor.Do(x => BackColor = x);
+            _foreColor.Do(x => ForeColor = x);
+            _boxColor.Do(x => BoxColor = x);
+            _letterSize.Do(x => LetterSize = x);
+            _outline.Do(x => Outline = x);
+            _proportional.Do(x => Proportional = x);
+            _shadow.Do(x => Shadow = x);
+            _width.Do(x => Width = x);
+            _height.Do(x => Height = x);
+            _useBox.Do(x => UseBox = x);
+            _selectable.Do(x => Selectable = x);
+            _previewModel.Do(x => PreviewModel = x);
+            _previewRotation.Do(x => PreviewRotation = x);
+            _previewZoom.Do(x => PreviewZoom = x);
+            _previewPrimaryColor.Do(x => PreviewPrimaryColor = x);
+            _previewSecondaryColor.Do(x => PreviewSecondaryColor = x);
 
             Update();
         }
