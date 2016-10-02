@@ -1,3 +1,16 @@
+### 0.7.6119.33589-alpha
+- Added `NativeObjectSingleton` class for easy access to singleton native object instances
+- Added mono soft debugger support
+- Added a virtual `Initialize` method to all pooled types (BasePlayer, BaseVehicle, etc.). You can override this function to initialize your instance.  If you have custom initialization logic in subclasses of `BaseVehicle` or `Globalobject` for example, the `Id` of the instance will not have been set yet. In these cases, you can override `Initialize` to provide your own initialization logic.
+- Updated mono to 4.6
+- Changed visibility of `LinqHelper` and `VehicleParameterValueHelper` from public to internal
+- Fixed textdraw(global/player) properties not updating properly when changed
+- Fixed a bug where the `.All` accessors of pooled types may cause exceptions when an item is added to it during iteration
+
+If you encounter problems or crashes, please ensure you have installed mono 4.6. If you use
+the standalone Windows version of mono, you can download an updated version here: http://deploy.timpotze.nl/packages/mono-portable46.zip
+Simply extract the contents of the archive to your server directory.
+
 ### 0.7.6107.37493-alpha
 - Fixed an error when generating a proxy object for virtual methods for
 - Renamed `BasePlayer.GetPlayerLastShotVectors` to `BasePlayer.GetLastShot`

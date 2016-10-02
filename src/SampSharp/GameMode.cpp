@@ -229,6 +229,7 @@ bool GameMode::Unload() {
     logprintf("Unloading domain...");
     mono_domain_unload(domain_);
 
+    logprintf("Unsetting references...");
     gameMode_.image = NULL;
     gameMode_.klass = NULL;
 
@@ -238,6 +239,7 @@ bool GameMode::Unload() {
     domain_ = NULL;
     assemby_ = NULL;
 
+    logprintf("Attaching to previous domain...");
     mono_domain_set(previousDomain_, 1);
     mono_thread_attach(previousDomain_);
 

@@ -50,7 +50,9 @@ namespace SampSharp.GameMode.API
             {
                 FrameworkLog.WriteLine(FrameworkMessageLevel.Debug,
                     $"Call to native handle {this} is being synchronized.");
-                return Sync.RunSync(() => CastArgsAndInvoke(arguments));
+                int result = Sync.RunSync(() => CastArgsAndInvoke(arguments));
+                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Synchronization of {this} completed.");
+                return result;
             }
 
             return CastArgsAndInvoke(arguments);
