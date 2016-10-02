@@ -22,9 +22,28 @@ public class CustomBuild : SaBuild
         }
     }
     
+    public override void VersionAssemblyInfo()
+    {
+        base.VersionAssemblyInfo();
+        
+        UpdateAssemblyInfo("./src/SampSharp/main.h", "#define PLUGIN_VERSION \"(.*)\"", "#define PLUGIN_VERSION \"{0}\"");
+    }
+    
+    public override void RestoreAssemblyInfo()
+    {
+        base.RestoreAssemblyInfo();
+        
+        RestoreAssemblyInfo("./src/SampSharp/main.h");
+    }
+    
     public override void Build()
     {
         base.Build();
+        
+        if(!IsRelease)
+        {
+            return;
+        }
         
         var outName = "SampSharp-" + Version;
         var pluginDir = buildDir + "/" + outName + "/";
@@ -42,7 +61,7 @@ public class CustomBuild : SaBuild
         pluginZipPath = buildDir + "/" + outName + ".zip";
         Context.Zip(pluginDir, pluginZipPath);
 
-        if(Context.BuildSystem().AppVeyor.IsRunningOnAppVeyor)
+        if(IsRunningOnAppVeyor)
         {
             Context.CopyFile(pluginZipPath, "./bin/plugin.zip");
         }
