@@ -15,3 +15,9 @@ before_script:
 
 script:
   - make CC=gcc-4.8 CXX=g++-4.8 config=release64
+
+addons:
+  artifacts:
+    s3_region: "eu-central-1"
+    paths:
+    - $(ls bin/*.so | tr "\n" ":")
