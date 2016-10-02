@@ -41,9 +41,11 @@ void MonoRuntime::Load(std::string assemblyDir, std::string configDir,
 
     if (Config::GetDebuggerEnable().compare("1") == 0) {
         char* agent = new char[128];
-        sprintf(agent, "--debugger-agent=transport=dt_socket,address=%s,server=y", Config::GetDebuggerAddress().c_str());
+        snprintf(agent, sizeof(agent), "--debugger-agent=transport=dt_socket,"
+            "address=%s,server=y", Config::GetDebuggerAddress().c_str());
 
-        sampgdk::logprintf("Launching with debugger at %s...", Config::GetDebuggerAddress().c_str());
+        sampgdk::logprintf("Launching with debugger at %s...",
+            Config::GetDebuggerAddress().c_str());
 
         const char* jit_options[] = {
             "--soft-breakpoints",

@@ -126,7 +126,6 @@ private:
     static std::map<uint16_t, uint16_t> unitocp_;
     static bool cpwide_[256];
 
-
     /* Internal gamemode functions. */
 private:
     /* Processes a timer tick. */
@@ -162,8 +161,9 @@ private:
         int param_count, uint32_t &handle);
     /* Prints the specified exception to the log. */
     static void PrintException(const char *methodname, MonoObject *exception);
-
+    /* Converts string to MonoString. */
     static MonoString* StringToMonoString(char* str, int len);
+    /* Converts MonoString to string. */
     static char* MonoStringToString(MonoString *str);
 
     /* Interop/API functions. */

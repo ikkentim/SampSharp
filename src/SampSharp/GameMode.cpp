@@ -89,7 +89,8 @@ bool GameMode::Load(std::string namespaceName, std::string className) {
 
     // Create an appdomain for the game mode.
     char appdomainBuf[32];
-    sprintf(appdomainBuf, "sashDomainForBoot%d", bootSequenceNumber_++);
+    snprintf(appdomainBuf, sizeof(appdomainBuf), "sashDomainForBoot%d",
+        bootSequenceNumber_++);
 
     previousDomain_ = mono_domain_get();
     domain_ = mono_domain_create_appdomain(appdomainBuf, NULL);
@@ -246,7 +247,7 @@ bool GameMode::Unload() {
 
 void GameMode::LoadCodepage(const char *name) {
     char path[64];
-    sprintf(path, "codepages/%s.txt", name);
+    snprintf(path, sizeof(path), "codepages/%s.txt", name);
 
     const uint16_t fallback[256] =
     {
@@ -389,7 +390,7 @@ char* GameMode::MonoStringToString(MonoString *str) {
 
     // TODO: Change this to something that doesn't give compile warnings.
     char *result = new char[buffer.size()];
-    for (int i = 0; i < buffer.size(); i++) {
+    for (size_t i = 0; i < buffer.size(); i++) {
         result[i] = buffer[i];
     }
 
@@ -445,7 +446,7 @@ bool GameMode::RegisterExtension(MonoObject *extension) {
 
 void GameMode::Print(MonoString *str) {
     char *buffer = MonoStringToString(str);
-    sampgdk_logprintf("%s", buffer);
+    logprintf("%s", buffer);
     delete[] buffer;
 }
 
@@ -588,17 +589,17 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
     }
 
 	char* utf8_name_string = mono_string_to_utf8(name_string);
-	sprintf(sig.name, "%s", utf8_name_string);
+    snprintf(sig.name, sizeof(sig.name), "%s", utf8_name_string);
 	mono_free(utf8_name_string);
 
-	sprintf(sig.format, "");
+    sig.format[0] = '\0';
 
 	if (!format_string) {
-		sprintf(sig.parameters, "");
+        sig.parameters[0] = '\0';
 	}
 	else {
 		char* utf8_format_string = mono_string_to_utf8(format_string);
-		sprintf(sig.parameters, "%s", utf8_format_string);
+        snprintf(sig.parameters, sizeof(sig.parameters), "%s", utf8_format_string);
 		mono_free(utf8_format_string);
 	}
 
@@ -614,14 +615,14 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
     for (int i = 0; i < sig.param_count; i++) {
         switch (sig.parameters[i]) {
         case 'd': // integer
-            sprintf(sig.format, "%sd", sig.format);
+            snprintf(sig.format, sizeof(sig.format), "%sd", sig.format);
             break;
         case 's': { // const string
-            sprintf(sig.format, "%ss", sig.format);
+            snprintf(sig.format, sizeof(sig.format), "%ss", sig.format);
             break;
         }
         case 'D': // integer reference
-            sprintf(sig.format, "%sR", sig.format);
+            snprintf(sig.format, sizeof(sig.format), "%sR", sig.format);
             break;
         case 'a': { // array of integers
             if (!sizes_array) {
@@ -634,10 +635,10 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
             sig.sizes[i] = mono_array_get(sizes_array, int, size_idx++);
 
             if (sig.sizes[i] < 0) {
-                sprintf(sig.format, "%sa[%d]", sig.format, -sig.sizes[i]);
+                snprintf(sig.format, sizeof(sig.format), "%sa[%d]", sig.format, -sig.sizes[i]);
             }
             else {
-                sprintf(sig.format, "%sa[*%d]", sig.format, sig.sizes[i]);
+                snprintf(sig.format, sizeof(sig.format), "%sa[*%d]", sig.format, sig.sizes[i]);
             }
             break;
         }
@@ -652,10 +653,10 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
             sig.sizes[i] = mono_array_get(sizes_array, int, size_idx++);
 
             if (sig.sizes[i] < 0) {
-                sprintf(sig.format, "%sS[%d]", sig.format, -sig.sizes[i]);
+                snprintf(sig.format, sizeof(sig.format), "%sS[%d]", sig.format, -sig.sizes[i]);
             }
             else {
-                sprintf(sig.format, "%sS[*%d]", sig.format, sig.sizes[i]);
+                snprintf(sig.format, sizeof(sig.format), "%sS[*%d]", sig.format, sig.sizes[i]);
             }
             break;
         }
@@ -670,10 +671,10 @@ int GameMode::LoadNative(MonoString *name_string, MonoString *format_string,
             sig.sizes[i] = mono_array_get(sizes_array, int, size_idx++);
 
             if (sig.sizes[i] < 0) {
-                sprintf(sig.format, "%sA[%d]", sig.format, -sig.sizes[i]);
+                snprintf(sig.format, sizeof(sig.format), "%sA[%d]", sig.format, -sig.sizes[i]);
             }
             else {
-                sprintf(sig.format, "%sA[*%d]", sig.format, sig.sizes[i]);
+                snprintf(sig.format, sizeof(sig.format), "%sA[*%d]", sig.format, sig.sizes[i]);
             }
             break;
         }
@@ -767,8 +768,9 @@ void GameMode::AddInternalCall(const char * name, const void * method) {
     static const char * namespase = "SampSharp.GameMode.API.Interop";
 
     // Construct combination of 'namespace::method'.
-    char * call = new char[strlen(namespase) + 2 /* :: */ + strlen(name) + 1];
-    sprintf(call, "%s::%s", namespase, name);
+    size_t call_length = strlen(namespase) + 2 /* :: */ + strlen(name) + 1;
+    char * call = new char[call_length];
+    snprintf(call, call_length, "%s::%s", namespase, name);
 
     mono_add_internal_call(call, method);
 
@@ -1102,9 +1104,16 @@ void GameMode::PrintException(const char *methodname, MonoObject *exception) {
 
     // Append error to log file.
     time_t now = time(0);
+    tm _Tm;
+
+#ifdef WIN32
+    localtime_s(&_Tm, &now);
+#else
+    _Tm = *localtime_r(&now, &_Tm);
+#endif
+
     char timestamp[32];
-    strftime(timestamp, sizeof(timestamp), "[%d/%m/%Y %H:%M:%S]",
-        localtime(&now));
+    strftime(timestamp, sizeof(timestamp), "[%d/%m/%Y %H:%M:%S]", &_Tm);
 
     std::ofstream logfile;
     logfile.open("SampSharp_errors.log", std::ios::app | std::ios::binary);

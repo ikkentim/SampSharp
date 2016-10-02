@@ -271,6 +271,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
         GameMode::ProcessPublicCall(amx, name, params, retval);
 
         unloadGamemode();
+        return true;
     }
 
     if (GameMode::IsLoaded())
