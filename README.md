@@ -8,7 +8,7 @@ SampSharp
 [![GitHub release](https://img.shields.io/github/release/ikkentim/sampsharp.svg)](https://github.com/ikkentim/sampsharp/releases)
 [![GitHub issues](https://img.shields.io/github/issues/ikkentim/sampsharp.svg)](https://github.com/ikkentim/sampsharp/issues) [![Gitter](https://img.shields.io/badge/GITTER-JOIN_CHAT_%E2%86%92-1dce73.svg)](https://gitter.im/ikkentim/SampSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-SampSharp (S# for short) is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. S#'s aim is to allow you to enjoy all features of OO-programming and .NET. S# uses the [Mono Framework] to allow linux servers to run this plugin as well. For information about installing and building S#, check the documentation. If you have any questions, join our [Gitter] chat, file an issue or post on our SA-MP forum post.
+SampSharp (S# for short) is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# or any other .NET language. S#'s aim is to allow you to enjoy all features of OO-programming and .NET. S# uses the [Mono Framework] to allow linux servers to run this plugin as well. For information about installing and building S#, check the documentation. If you have any questions, join our [Gitter] chat, file an issue or post on our SA-MP forum post.
 
 All feedback is welcome, file an Issue or contact me on the SA-MP forums:
 
