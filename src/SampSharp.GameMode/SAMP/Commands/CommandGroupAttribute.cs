@@ -39,8 +39,8 @@ namespace SampSharp.GameMode.SAMP.Commands
         public string[] Paths { get; }
 
         /// <summary>
-        ///     Gets or sets the permission checker.
+        ///     Gets or sets the permission checker type.
         /// </summary>
-        public IPermissionChecker PermissionChecker { get; set; }
+        public Type PermissionChecker { get; set; }
     }
 }

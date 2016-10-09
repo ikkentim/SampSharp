@@ -68,8 +68,8 @@ namespace SampSharp.GameMode.SAMP.Commands
         public string UsageMessage { get; set; }
 
         /// <summary>
-        ///     Gets or sets the permission checker.
+        ///     Gets or sets the permission checker type
         /// </summary>
-        public IPermissionChecker PermissionChecker { get; set; }
+        public Type PermissionChecker { get; set; }
     }
 }

@@ -82,9 +82,16 @@ namespace SampSharp.GameMode.SAMP.Commands
             return new DefaultCommand(commandPaths, displayName, ignoreCase, permissionCheckers, method, usageMessage);
         }
 
+        private static IPermissionChecker CreatePermissionChecker(Type type)
+        {
+            if (type == null || !typeof(IPermissionChecker).IsAssignableFrom(type))
+                return null;
+
+            return Activator.CreateInstance(type) as IPermissionChecker;
+        }
         private static IEnumerable<IPermissionChecker> GetCommandPermissionCheckers(Type type)
         {
-            if (type == null || type == typeof (object))
+            if (type == null || type == typeof(object))
                 yield break;
 
             foreach (var permissionChecker in GetCommandPermissionCheckers(type.DeclaringType))
@@ -92,7 +99,11 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             foreach (
                 var permissionChecker in
-                    type.GetCustomAttributes<CommandGroupAttribute>().Select(a => a.PermissionChecker))
+                type.GetCustomAttributes<CommandGroupAttribute>()
+                    .Select(a => a.PermissionChecker)
+                    .Distinct()
+                    .Select(CreatePermissionChecker)
+                    .Where(c => c != null))
                 yield return permissionChecker;
         }
 
@@ -103,9 +114,13 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             foreach (
                 var permissionChecker in
-                    method.GetCustomAttributes<CommandGroupAttribute>()
-                        .Select(a => a.PermissionChecker)
-                        .Concat(method.GetCustomAttributes<CommandAttribute>().Select(a => a.PermissionChecker)))
+                method.GetCustomAttributes<CommandGroupAttribute>()
+                    .Select(a => a.PermissionChecker)
+                    .Concat(method.GetCustomAttributes<CommandAttribute>()
+                        .Select(a => a.PermissionChecker))
+                    .Distinct()
+                    .Select(CreatePermissionChecker)
+                    .Where(c => c != null))
                 yield return permissionChecker;
         }
 
