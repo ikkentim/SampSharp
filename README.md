@@ -1,5 +1,3 @@
-
-
 SampSharp
 =========
 
@@ -10,18 +8,18 @@ SampSharp
 [![GitHub release](https://img.shields.io/github/release/ikkentim/sampsharp.svg)](https://github.com/ikkentim/sampsharp/releases)
 [![GitHub issues](https://img.shields.io/github/issues/ikkentim/sampsharp.svg)](https://github.com/ikkentim/sampsharp/issues) [![Gitter](https://img.shields.io/badge/GITTER-JOIN_CHAT_%E2%86%92-1dce73.svg)](https://gitter.im/ikkentim/SampSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-SA-MP# is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. SA-MP#'s aim is to allow you to enjoy all features of OO-programming and .NET. SA-MP# uses the [Mono Framework] to allow linux servers to run this plugin as well. For information about installing and building SA-MP#, check the wiki.
+SampSharp (S# for short) is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# and VB. S#'s aim is to allow you to enjoy all features of OO-programming and .NET. S# uses the [Mono Framework] to allow linux servers to run this plugin as well. For information about installing and building S#, check the documentation. If you have any questions, join our [Gitter] chat, file an issue or post on our SA-MP forum post.
 
 All feedback is welcome, file an Issue or contact me on the SA-MP forums:
 
 [My SA-MP profile]
 
-[SA-MP# topic on SA-MP]
+[S# topic on SA-MP]
 
 NuGet
 -----
-SA-MP# hosts it's own [NuGet Package Repository][nuget repository]. SampSharp.GameMode and all useful SA-MP# libraries are available from this repository. Instructions on adding the repository to Visual Studio are available [here][nuget repository].
-Feel free to contribute your useful SA-MP# libraries to this repository!
+S# hosts it's own [NuGet Package Repository][nuget repository]. SampSharp.GameMode and all useful S# libraries are available from this repository. Instructions on adding the repository to Visual Studio are available [here][nuget repository].
+Feel free to contribute your useful S# libraries to this repository!
 
 Documation
 ----------
@@ -32,25 +30,22 @@ Examples
 Some example gamemodes are available here:
 - [Grand Larceny][GrandLarc] - SA-MP default gamemode ported to C#
 - [RiverShell][RiverShell] - Another SA-MP default gamemode ported to C#
-- [NHibernate test][NHibernateTest] - Since I haven't found a way to get EntityFramework to work, here is a simple example of using NHibernate together with FluentNHibernate. [NHibernate][nhibernate] is an ORM for C#.
 
 Libraries
 ---------
-Some useful SA-MP# libraries:
-- [Streamer wrapper][streamer] - OO wrapper around streamer plugin.
+Some useful S# libraries:
+- [Streamer wrapper][streamer] - S# OO wrapper around streamer plugin.
 
 [gitter]: https://badges.gitter.im/Join%20Chat.svg
 [gitter page]: https://gitter.im/ikkentim/SampSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
 [mono framework]: http://www.mono-project.com/
 [my sa-mp profile]: http://forum.sa-mp.com/member.php?u=76946
-[sa-mp# topic on sa-mp]: http://forum.sa-mp.com/showthread.php?t=511686
+[s# topic on sa-mp]: http://forum.sa-mp.com/showthread.php?t=511686
 
 [nuget repository]: http://sampsharp.timpotze.nl/package-manager
 
 [GrandLarc]: https://github.com/ikkentim/SampSharp-grandlarc
 [RiverShell]: https://github.com/ikkentim/SampSharp-rivershell
-[NHibernateTest]: https://github.com/ikkentim/SampSharp/tree/993f44b77356ad0c544ac10ad100919b5d1830cb/src/NHibernateTest
-[nhibernate]: http://nhibernate.info/
 
 [streamer]: https://github.com/ikkentim/SampSharp-streamer
