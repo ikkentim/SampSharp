@@ -37,20 +37,43 @@ void MonoRuntime::Load(std::string assemblyDir, std::string configDir,
         mono_set_dirs(PathUtil::GetLibDirectory().c_str(),
             PathUtil::GetConfigDirectory().c_str());
     }
+
 #endif
 
-    if (Config::GetDebuggerEnable().compare("1") == 0) {
-        char* agent = new char[128];
-        snprintf(agent, 128, "--debugger-agent=transport=dt_socket,address=%s,server=y", Config::GetDebuggerAddress().c_str());
+#ifdef _WIN32
+    char debugger_address[32];
+    debugger_address[0] = '\0';
+    size_t required_size;
+    getenv_s(&required_size, debugger_address, sizeof(debugger_address), "debugger_address");
+#else
+    char* debugger_address = getenv("debugger_address");
+#endif
 
-        sampgdk::logprintf("Mono launch options options: --soft-breakpoints %s", agent);
-        sampgdk::logprintf("Launching with debugger at %s...",
-            Config::GetDebuggerAddress().c_str());
+    if (Config::GetDebuggerEnable().compare("1") == 0 || (debugger_address != NULL && strlen(debugger_address) > 0)) {
+
+        char* agent = new char[128];
+
+        if (debugger_address == NULL) {
+            snprintf(agent, 128,
+                "--debugger-agent=transport=dt_socket,address=%s,server=y",
+                Config::GetDebuggerAddress().c_str());
+        }
+        else {
+            snprintf(agent, 128,
+                "--debugger-agent=transport=dt_socket,address=%s,server=y",
+                debugger_address);
+        }
 
         const char* jit_options[] = {
             "--soft-breakpoints",
             agent
         };
+
+        sampgdk::logprintf("Mono launch options options: --soft-breakpoints %s",
+            agent);
+        sampgdk::logprintf("Launching with debugger at %s...",
+            Config::GetDebuggerAddress().c_str());
+
         mono_jit_parse_options(2, (char**)jit_options);
 
         delete agent;
