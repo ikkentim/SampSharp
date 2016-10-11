@@ -1023,6 +1023,8 @@ namespace SampSharp.GameMode.World
         /// <param name="numberplate">The text that should be displayed on the numberplate. Color Embedding> is supported.</param>
         public virtual void SetNumberPlate(string numberplate)
         {
+            if (numberplate == null) throw new ArgumentNullException(nameof(numberplate));
+
             AssertNotDisposed();
 
             VehicleInternal.Instance.SetVehicleNumberPlate(Id, numberplate);
