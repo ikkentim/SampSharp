@@ -50,19 +50,29 @@ void MonoRuntime::Load(std::string assemblyDir, std::string configDir,
     char* debugger_address = getenv("debugger_address");
 #endif
 
+    bool has_debugger = false;
     if (Config::GetDebuggerEnable().compare("1") == 0 || (debugger_address != NULL && strlen(debugger_address) > 0)) {
 
         char* agent = new char[128];
 
+
+        sampgdk::logprintf("Soft Debugger");
+        sampgdk::logprintf("---------------");
+
         if (debugger_address == NULL) {
             snprintf(agent, 128,
                 "--debugger-agent=transport=dt_socket,address=%s,server=y",
+                Config::GetDebuggerAddress().c_str());
+
+            sampgdk::logprintf("Launching debugger at %s...",
                 Config::GetDebuggerAddress().c_str());
         }
         else {
             snprintf(agent, 128,
                 "--debugger-agent=transport=dt_socket,address=%s,server=y",
                 debugger_address);
+
+            sampgdk::logprintf("Launching debugger at %s...", debugger_address);
         }
 
         const char* jit_options[] = {
@@ -70,21 +80,23 @@ void MonoRuntime::Load(std::string assemblyDir, std::string configDir,
             agent
         };
 
-        sampgdk::logprintf("Mono launch options options: --soft-breakpoints %s",
-            agent);
-        sampgdk::logprintf("Launching with debugger at %s...",
-            Config::GetDebuggerAddress().c_str());
 
         mono_jit_parse_options(2, (char**)jit_options);
 
         delete agent;
 
         sampgdk::logprintf("Waiting for debugger to attach...");
+        has_debugger = true;
     }
 
     mono_debug_init(MONO_DEBUG_FORMAT_MONO);
     mono_trace_set_level_string(traceLevel.c_str());
     MonoDomain *dom = mono_jit_init(file.c_str());
+
+    if (has_debugger) {
+        sampgdk::logprintf("Debugger attached!");
+        sampgdk::logprintf("");
+    }
 
     isLoaded_ = true;
 }
