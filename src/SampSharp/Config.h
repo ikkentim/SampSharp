@@ -14,6 +14,7 @@
 // limitations under the License.
 
 #include <string>
+#include <stdio.h>
 #include "ConfigReader.h"
 #include "StringUtil.h"
 #include "PathUtil.h"
@@ -40,6 +41,27 @@ public:
         server_cfg.GetOptionAsString("debugger", debuggerEnable_);
         server_cfg.GetOptionAsString("debugger_address", debuggerAddress_);
 
+
+#ifdef _WIN32
+        char* envGameMode = NULL;
+        size_t required_size;
+        getenv_s(&required_size, NULL, 0, "gamemode");
+        envGameMode = new char[required_size];
+        getenv_s(&required_size, envGameMode, required_size, "gamemode");
+
+        if (envGameMode != NULL && strlen(envGameMode) > 0) {
+            tmpGameMode = std::string(envGameMode);
+        }
+
+        delete[] envGameMode;
+#else
+        char* envGameMode = getenv("gamemode");
+
+        if (envGameMode != NULL && strlen(envGameMode) > 0) {
+            tmpGameMode = std::string(envGameMode);
+        }
+#endif
+
         std::stringstream gamemode_stream(tmpGameMode);
 
         std::getline(gamemode_stream, gameModeNamespace_, ':');
@@ -47,7 +69,6 @@ public:
 
         std::getline(gamemode_stream, gameModeClass_, '\n');
         StringUtil::TrimString(gameModeClass_);
-
     }
 
     static std::string GetMonoAssemblyDir() {
