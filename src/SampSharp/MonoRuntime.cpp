@@ -14,7 +14,7 @@
 // limitations under the License.
 
 #include "MonoRuntime.h"
-#include <stdio.h>
+#include <string.h>
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/mono-debug.h>
