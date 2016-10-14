@@ -112,6 +112,12 @@ namespace SampSharp.GameMode.API
                     baseArgs[i] = Cast<bool[], int[]>(ConvertBoolArrayToIntArray, args[i]);
                 else
                     baseArgs[i] = args[i];
+
+                if (baseArgs[i] == null)
+                {
+                    if (type == typeof(string))
+                        baseArgs[i] = string.Empty;
+                }
             }
             
             var result = InteropProvider.InvokeNative(Handle, baseArgs);

@@ -40,7 +40,7 @@ namespace TestMode
         protected override void OnInitialized(EventArgs args)
         {
             base.OnInitialized(args);
-
+            
             Console.WriteLine($"TestMode for SampSharp v{GetType().Assembly.GetName().Version}");
             Console.WriteLine("----------------------");
 
