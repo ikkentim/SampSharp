@@ -50,6 +50,27 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public IList<string> Items => _items;
 
+        /// <summary>
+        /// Adds the specified item to the list items.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        public void AddItem(string item)
+        {
+            _items.Add(item);
+        }
+
+        /// <summary>
+        /// Adds a collection of items to the list items.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown if <see cref="items"/> is null.</exception>
+        public void AddItems(IEnumerable<string> items)
+        {
+            if (items == null) throw new ArgumentNullException(nameof(items));
+
+            _items.AddRange(items);
+        }
+
         #region Overrides of Dialog
 
         /// <summary>
