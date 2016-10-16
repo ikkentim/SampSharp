@@ -20,8 +20,22 @@ namespace SampSharp.GameMode.Helpers
     /// <summary>
     ///     Contains commonly used precalculated values and mathematical operations.
     /// </summary>
-    public static class MathHelper
-    {
+    public static class MathHelper {
+        /// <summary>
+        /// Represents the mathematical constant e(2.71828175).
+        /// </summary>
+        public const float E = (float)Math.E;
+
+        /// <summary>
+        /// Represents the log base ten of e(0.4342945).
+        /// </summary>
+        public const float Log10E = 0.4342945f;
+
+        /// <summary>
+        /// Represents the log base two of e(1.442695).
+        /// </summary>
+        public const float Log2E = 1.442695f;
+
         /// <summary>
         ///     Represents the value of pi(3.14159274).
         /// </summary>
@@ -41,6 +55,39 @@ namespace SampSharp.GameMode.Helpers
         ///     Represents the value of pi times two(6.28318548).
         /// </summary>
         public const float TwoPi = (float) (Math.PI*2.0);
+
+        /// <summary>
+        /// Returns the Cartesian coordinate for one axis of a point that is defined by a given triangle and two normalized barycentric (areal) coordinates.
+        /// </summary>
+        /// <param name="value1">The coordinate on one axis of vertex 1 of the defining triangle.</param>
+        /// <param name="value2">The coordinate on the same axis of vertex 2 of the defining triangle.</param>
+        /// <param name="value3">The coordinate on the same axis of vertex 3 of the defining triangle.</param>
+        /// <param name="amount1">The normalized barycentric (areal) coordinate b2, equal to the weighting factor for vertex 2, the coordinate of which is specified in value2.</param>
+        /// <param name="amount2">The normalized barycentric (areal) coordinate b3, equal to the weighting factor for vertex 3, the coordinate of which is specified in value3.</param>
+        /// <returns>Cartesian coordinate of the specified point with respect to the axis being used.</returns>
+        public static float Barycentric(float value1, float value2, float value3, float amount1, float amount2) {
+            return value1 + (value2 - value1) * amount1 + (value3 - value1) * amount2;
+        }
+
+        /// <summary>
+        /// Performs a Catmull-Rom interpolation using the specified positions.
+        /// </summary>
+        /// <param name="value1">The first position in the interpolation.</param>
+        /// <param name="value2">The second position in the interpolation.</param>
+        /// <param name="value3">The third position in the interpolation.</param>
+        /// <param name="value4">The fourth position in the interpolation.</param>
+        /// <param name="amount">Weighting factor.</param>
+        /// <returns>A position that is the result of the Catmull-Rom interpolation.</returns>
+        public static float CatmullRom(float value1, float value2, float value3, float value4, float amount) {
+            // Using formula from http://www.mvps.org/directx/articles/catmull/
+            // Internally using doubles not to lose precission
+            double amountSquared = amount * amount;
+            double amountCubed = amountSquared * amount;
+            return (float)(0.5 * (2.0 * value2 +
+                (value3 - value1) * amount +
+                (2.0 * value1 - 5.0 * value2 + 4.0 * value3 - value4) * amountSquared +
+                (3.0 * value2 - value1 - 3.0 * value3 + value4) * amountCubed));
+        }
 
         /// <summary>
         ///     Restricts a value to be within a specified range.

@@ -696,6 +696,19 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
+        ///     Returns this <see cref="BaseVehicle" />'s rotation on all axis as a quaternion.
+        /// </summary>
+        /// <returns>The rotation in a <see cref="Quaternion"/> structure.</returns>
+        public virtual Quaternion GetRotationQuat()
+        {
+            AssertNotDisposed();
+
+            float x, y, z, w;
+            GetRotationQuat(out x, out y, out z, out w);
+            return new Quaternion(x, y, y, w);
+        }
+
+        /// <summary>
         ///     Set the parameters of this <see cref="BaseVehicle" /> for a <see cref="BasePlayer" />.
         /// </summary>
         /// <param name="player">The <see cref="BasePlayer" /> to set this vehicles's parameters for.</param>

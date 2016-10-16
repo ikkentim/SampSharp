@@ -147,8 +147,10 @@
     <Compile Include="Helpers\VehicleParameterValueHelper.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="API\Native.cs" />
+    <Compile Include="Matrix.cs" />
     <Compile Include="Pools\PoolContainer`1.cs" />
     <Compile Include="Pools\PooledTypeAttribute.cs" />
+    <Compile Include="Quaternion.cs" />
     <Compile Include="SAMP\Commands\Parameters\ParameterAttribute.cs" />
     <Compile Include="SAMP\Commands\Parameters\CommandParameterInfo.cs" />
     <Compile Include="SAMP\Commands\ParameterTypes\EnumType.cs" />
@@ -192,6 +194,7 @@
     </Compile>
     <Compile Include="Tools\Sync.cs" />
     <Compile Include="Vector2.cs" />
+    <Compile Include="Vector4.cs" />
     <Compile Include="World\Actor.cs" />
     <Compile Include="World\Actor.Internal.cs">
       <DependentUpon>Actor.cs</DependentUpon>
