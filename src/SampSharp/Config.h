@@ -14,7 +14,7 @@
 // limitations under the License.
 
 #include <string>
-#include <stdio.h>
+#include <string.h>
 #include "ConfigReader.h"
 #include "StringUtil.h"
 #include "PathUtil.h"
