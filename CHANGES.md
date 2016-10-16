@@ -1,3 +1,15 @@
+### 0.7.6133.31753-alpha
+- Added `Matrix` struct
+- Added `Quaternion` struct
+- Added `Vector4` struct
+- Added various calcuation methods to the `Vector2` and `Vector3` structs and `MathHelper` class
+- Added `AddItem` and `AddItems` methods to the `ListDialog` class
+- Added support for setting the debugger address and the starting game mode using environment variables
+- Fixed a bug which caused the permission system of commands not to work
+- Fixed a bug where using the debugger would cause the server to crash on startup
+- Fixed a bug where sending an empty string to a native would cause the server to crash
+
+
 ### 0.7.6119.35177-alpha
 - Fixed random debug messages being displayed in the server output
 
