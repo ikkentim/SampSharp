@@ -74,10 +74,10 @@ namespace SampSharp.GameMode.Display
         private int? _outline;
         private Vector2 _position;
         private int? _previewModel;
-        private int? _previewPrimaryColor = -1;
+        private int? _previewPrimaryColor;
         private Vector3? _previewRotation;
-        private int? _previewSecondaryColor = -1;
-        private float? _previewZoom = 1;
+        private int? _previewSecondaryColor;
+        private float? _previewZoom;
         private bool? _proportional;
         private bool? _selectable;
         private int? _shadow;
