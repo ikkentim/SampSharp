@@ -508,14 +508,12 @@ namespace SampSharp.GameMode.Display
                 Id = -1;
             }
         }
-
+        
         /// <summary>
         ///     Recreates this player-textdraw with all set properties. Called when changing the location on the screen.
         /// </summary>
         protected virtual void Refresh()
         {
-            Hide();
-
             if (Id != -1) PlayerTextDrawInternal.Instance.PlayerTextDrawDestroy(Owner.Id, Id);
             Id = PlayerTextDrawInternal.Instance.CreatePlayerTextDraw(Owner.Id, Position.X, Position.Y, FixString(Text));
 
