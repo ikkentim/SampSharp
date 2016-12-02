@@ -180,7 +180,7 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position.</param>
         /// <param name="drawDistance">The draw distance.</param>
         public TextLabel(string text, Color color, Vector3 position, float drawDistance)
-            : this(text, color, position, drawDistance, -1, true)
+            : this(text, color, position, drawDistance, 0, true)
         {
         }
 
