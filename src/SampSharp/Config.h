@@ -18,6 +18,7 @@
 #include "ConfigReader.h"
 #include "StringUtil.h"
 #include "PathUtil.h"
+#include "platforms.h"
 
 #pragma once
 
@@ -42,7 +43,7 @@ public:
         server_cfg.GetOptionAsString("debugger_address", debuggerAddress_);
 
 
-#ifdef _WIN32
+#if SAMPSHARP_WINDOWS
         char* envGameMode = NULL;
         size_t required_size;
         getenv_s(&required_size, NULL, 0, "gamemode");
@@ -54,7 +55,7 @@ public:
         }
 
         delete[] envGameMode;
-#else
+#elif SAMPSHARP_LINUX
         char* envGameMode = getenv("gamemode");
 
         if (envGameMode != NULL && strlen(envGameMode) > 0) {

@@ -1106,9 +1106,9 @@ void GameMode::PrintException(const char *methodname, MonoObject *exception) {
     time_t now = time(0);
     tm _Tm;
 
-#ifdef WIN32
+#if SAMPSHARP_WINDOWS
     localtime_s(&_Tm, &now);
-#else
+#elif SAMPSHARP_LINUX
     _Tm = *localtime_r(&now, &_Tm);
 #endif
 

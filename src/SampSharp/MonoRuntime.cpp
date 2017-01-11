@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "platforms.h"
 #include "MonoRuntime.h"
 #include <string.h>
 #include <mono/jit/jit.h>
@@ -33,7 +34,7 @@ void MonoRuntime::Load(std::string assemblyDir, std::string configDir,
     if (!assemblyDir.empty() && !configDir.empty()) {
         mono_set_dirs(assemblyDir.c_str(), configDir.c_str());
     }
-#ifdef _WIN32
+#if SAMPSHARP_WINDOWS
     else {
         mono_set_dirs(PathUtil::GetLibDirectory().c_str(),
             PathUtil::GetConfigDirectory().c_str());
@@ -41,12 +42,12 @@ void MonoRuntime::Load(std::string assemblyDir, std::string configDir,
 
 #endif
 
-#ifdef _WIN32
+#if SAMPSHARP_WINDOWS
     char debugger_address[32];
     debugger_address[0] = '\0';
     size_t required_size;
     getenv_s(&required_size, debugger_address, sizeof(debugger_address), "debugger_address");
-#else
+#elif SAMPSHARP_LINUX
     char* debugger_address = getenv("debugger_address");
 #endif
 

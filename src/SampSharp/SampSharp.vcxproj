@@ -113,6 +113,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="MonoRuntime.h" />
     <ClInclude Include="PathUtil.h" />
+    <ClInclude Include="platforms.h" />
     <ClInclude Include="StringUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

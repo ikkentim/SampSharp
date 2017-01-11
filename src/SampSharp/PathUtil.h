@@ -13,10 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifdef _WIN32
+#include "platforms.h"
+#if SAMPSHARP_WINDOWS
 #include <direct.h>
 #define getcwd _getcwd // stupid MSFT "deprecation" warning
-#else
+#elif SAMPSHARP_LINUX
 #include <unistd.h>
 #endif
 #include <string>
@@ -27,10 +28,10 @@ struct PathUtil
 {
     static std::string GetBinDirectory()
     {
-        #ifdef _WIN32
+        #if SAMPSHARP_WINDOWS
         std::string s_cwd(getcwd(NULL, 0));
         return s_cwd.append("/");
-        #else
+        #elif SAMPSHARP_LINUX
         return "./";
         #endif
     }
