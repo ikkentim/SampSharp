@@ -1,3 +1,10 @@
+### next release
+
+- Changed the default virtual world of `TextLabel` instances from -1 to 0, which is the expected behavior
+- Fixed a bug which caused previous colors and zoom levels in `TextDraw`/`PlayerTextDraw` instances to be set at every refresh
+- Fixed a bug which caused `PlayerTextDraw` instances to disappear at odd times
+- Fixed a possible crash when loading envirionment variables in the plugin
+
 ### 0.7.6133.31753-alpha
 - Added `Matrix` struct
 - Added `Quaternion` struct
