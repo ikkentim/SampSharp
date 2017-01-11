@@ -20,6 +20,7 @@
 #include <string.h>
 #include <iostream>
 #include "Config.h"
+#include "ConfigReader.h"
 #include "MonoRuntime.h"
 #include "GameMode.h"
 #include "StringUtil.h"

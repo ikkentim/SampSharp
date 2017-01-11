@@ -42,25 +42,17 @@ void MonoRuntime::Load(std::string assemblyDir, std::string configDir,
 
 #endif
 
-#if SAMPSHARP_WINDOWS
-    char debugger_address[32];
-    debugger_address[0] = '\0';
-    size_t required_size;
-    getenv_s(&required_size, debugger_address, sizeof(debugger_address), "debugger_address");
-#elif SAMPSHARP_LINUX
-    char* debugger_address = getenv("debugger_address");
-#endif
+    std::string debugger_address = Config::GetEnv("debugger_address");
 
     bool has_debugger = false;
-    if (Config::GetDebuggerEnable().compare("1") == 0 || (debugger_address != NULL && strlen(debugger_address) > 0)) {
-
+    if (Config::GetDebuggerEnable().compare("1") == 0 || debugger_address.length() > 0) {
         char* agent = new char[128];
 
 
         sampgdk::logprintf("Soft Debugger");
         sampgdk::logprintf("---------------");
 
-        if (debugger_address == NULL) {
+        if (debugger_address.length() == 0) {
             snprintf(agent, 128,
                 "--debugger-agent=transport=dt_socket,address=%s,server=y",
                 Config::GetDebuggerAddress().c_str());
@@ -71,9 +63,9 @@ void MonoRuntime::Load(std::string assemblyDir, std::string configDir,
         else {
             snprintf(agent, 128,
                 "--debugger-agent=transport=dt_socket,address=%s,server=y",
-                debugger_address);
+                debugger_address.c_str());
 
-            sampgdk::logprintf("Launching debugger at %s...", debugger_address);
+            sampgdk::logprintf("Launching debugger at %s...", debugger_address.c_str());
         }
 
         const char* jit_options[] = {
