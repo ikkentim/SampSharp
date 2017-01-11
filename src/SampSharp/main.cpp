@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2016 Tim Potze
+// Copyright 2017 Tim Potze
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -217,7 +217,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     logprintf("");
     logprintf("SampSharp Plugin");
     logprintf("----------------");
-    logprintf("v%s, (C)2014-2016 Tim Potze", PLUGIN_VERSION);
+    logprintf("v%s, (C)2014-2017 Tim Potze", PLUGIN_VERSION);
     logprintf("");
 
     Config::Read();
