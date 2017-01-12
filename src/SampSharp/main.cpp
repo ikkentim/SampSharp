@@ -90,6 +90,9 @@ void unloadGamemode() {
 }
 
 bool HandleRconCommands(AMX *amx, cell *params, cell *retval) {
+    // Disable signal rcon commands for now.
+    return true;
+
     // The plugin handles two RCON commands:
     // sampsharpstop
     // sampsharpstart
