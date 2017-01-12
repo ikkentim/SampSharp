@@ -1,9 +1,9 @@
-### next release
-
+### 0.7.6221.37952
 - Changed the default virtual world of `TextLabel` instances from -1 to 0, which is the expected behavior
 - Fixed a bug which caused previous colors and zoom levels in `TextDraw`/`PlayerTextDraw` instances to be set at every refresh
 - Fixed a bug which caused `PlayerTextDraw` instances to disappear at odd times
 - Fixed a possible crash when loading envirionment variables in the plugin
+- Fixed a crash during shutdown by disabling unloading DLLs, this consequently also disabled RCON shutdown signals (RCON commands `sampsharpstop` and `sampsharpstart`)
 
 ### 0.7.6133.31753-alpha
 - Added `Matrix` struct
