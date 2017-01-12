@@ -226,8 +226,11 @@ bool GameMode::Unload() {
     logprintf("Collecting garbage...");
     mono_gc_collect(mono_gc_max_generation());
 
-    logprintf("Unloading domain...");
-    mono_domain_unload(domain_);
+    //logprintf("Closing assembly...");
+    //mono_assembly_close(assemby_);
+
+    //logprintf("Unloading domain...");
+    //mono_domain_unload(domain_);
 
     gameMode_.image = NULL;
     gameMode_.klass = NULL;
