@@ -17,7 +17,7 @@ using SampSharp.GameMode.Tools;
 
 namespace TestMode.Tests
 {
-    internal class MapAndreasTest : ITest
+    internal class MapAndreasTest// : ITest
     {
         #region Implementation of ITest
 

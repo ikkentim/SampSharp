@@ -16,7 +16,7 @@ using TestMode.Services;
 
 namespace TestMode.Tests
 {
-    public class ServicesTest : ITest
+    public class ServicesTest// : ITest
     {
         #region Implementation of ITest
 

@@ -12,40 +12,47 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+using SampSharp.GameMode;
+using SampSharp.GameMode.Display;
+using SampSharp.GameMode.SAMP;
+using SampSharp.GameMode.SAMP.Commands;
+using SampSharp.GameMode.World;
+
 namespace TestMode.Tests
 {
-    public class MenuTest : ITest
+    public class MenuTest// : ITest
     {
         public void Start(GameMode gameMode)
         {
         }
 
-//        [Command("menu")]
-//        public static bool MenuCommand(BasePlayer player)
-//        {
-//            var m = new Menu("Test menu", Vector2.Zero);
-//
-//            m.Columns.Add(new MenuColumn(100));
-//
-//            m.Rows.Add(new MenuRow("Active"));
-//            m.Rows.Add(new MenuRow("Disabled", true));
-//            m.Rows.Add(new MenuRow("Active2"));
-//
-//            m.Show(player);
-//
-//            m.Exit += (o, eventArgs) =>
-//            {
-//                player.SendClientMessage(Color.Red, "MENU CLOSED");
-//                m.Dispose();
-//            };
-//
-//            m.Response += (o, eventArgs) =>
-//            {
-//                player.SendClientMessage(Color.Green, "SELECTED ROW " + eventArgs.Row);
-//                m.Dispose();
-//            };
-//
-//            return true;
-//        }
+        [Command("menu")]
+        public static bool MenuCommand(BasePlayer player)
+        {
+            var m = new Menu("Test menu", Vector2.Zero);
+
+            m.Columns.Add(new MenuColumn(100));
+
+            m.Rows.Add(new MenuRow("Active"));
+            m.Rows.Add(new MenuRow("Disabled", true));
+            m.Rows.Add(new MenuRow("Active2"));
+
+            m.Show(player);
+
+            m.Exit += (o, eventArgs) =>
+            {
+                player.SendClientMessage(Color.Red, "MENU CLOSED");
+                m.Dispose();
+            };
+
+            m.Response += (o, eventArgs) =>
+            {
+                player.SendClientMessage(Color.Green, "SELECTED ROW " + eventArgs.Row);
+                m.Dispose();
+            };
+
+            return true;
+        }
     }
 }

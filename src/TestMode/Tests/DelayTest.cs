@@ -18,7 +18,7 @@ using SampSharp.GameMode.SAMP;
 
 namespace TestMode.Tests
 {
-    public class DelayTest : ITest
+    public class DelayTest// : ITest
     {
         public void Start(GameMode gameMode)
         {

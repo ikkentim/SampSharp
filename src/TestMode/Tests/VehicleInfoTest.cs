@@ -19,7 +19,7 @@ using SampSharp.GameMode.World;
 
 namespace TestMode.Tests
 {
-    public class VehicleInfoTest : ITest
+    public class VehicleInfoTest// : ITest
     {
         public void Start(GameMode gameMode)
         {

@@ -16,7 +16,7 @@ using SampSharp.GameMode.World;
 
 namespace TestMode.Tests
 {
-    public class KeyHandlerTest : ITest
+    public class KeyHandlerTest// : ITest
     {
         public void Start(GameMode gameMode)
         {

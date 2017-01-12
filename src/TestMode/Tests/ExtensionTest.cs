@@ -17,7 +17,7 @@ using SampSharp.GameMode.API;
 
 namespace TestMode.Tests
 {
-    public class ExtensionTest : ITest
+    public class ExtensionTest// : ITest
     {
         #region Implementation of ITest
 

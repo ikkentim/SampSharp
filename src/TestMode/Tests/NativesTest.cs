@@ -17,7 +17,7 @@ using SampSharp.GameMode.API;
 
 namespace TestMode.Tests
 {
-    public class NativesTest : ITest
+    public class NativesTest// : ITest
     {
         public void Start(GameMode gameMode)
         {

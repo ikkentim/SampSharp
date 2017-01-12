@@ -22,7 +22,7 @@ using Timer = SampSharp.GameMode.SAMP.Timer;
 
 namespace TestMode.Tests
 {
-    public class ASyncTest : ITest
+    public class ASyncTest// : ITest
     {
         private Thread _main;
         private DateTime _timerStart;

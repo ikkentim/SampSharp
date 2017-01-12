@@ -24,7 +24,7 @@ using SampSharp.GameMode.World;
 
 namespace TestMode.Tests
 {
-    public class CommandsTest : ITest
+    public class CommandsTest// : ITest
     {
         #region Implementation of ITest
 
