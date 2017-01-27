@@ -3,7 +3,7 @@ SampSharp
 
 | Plugin | Framework |
 |:------:|:---------:|
-|[![Travis](https://img.shields.io/travis/ikkentim/SampSharp.svg)](https://travis-ci.org/ikkentim/SampSharp)|[![AppVeyor](https://img.shields.io/appveyor/ci/ikkentim/sampsharp.svg)](https://ci.appveyor.com/project/ikkentim/sampsharp/)|
+|[![Travis](https://img.shields.io/travis/ikkentim/SampSharp/master.svg)](https://travis-ci.org/ikkentim/SampSharp)|[![AppVeyor](https://img.shields.io/appveyor/ci/ikkentim/sampsharp/master.svg)](https://ci.appveyor.com/project/ikkentim/sampsharp/)|
 
 [![GitHub release](https://img.shields.io/github/release/ikkentim/sampsharp.svg)](https://github.com/ikkentim/sampsharp/releases)
 [![GitHub issues](https://img.shields.io/github/issues/ikkentim/sampsharp.svg)](https://github.com/ikkentim/sampsharp/issues) [![Gitter](https://img.shields.io/badge/GITTER-JOIN_CHAT_%E2%86%92-1dce73.svg)](https://gitter.im/ikkentim/SampSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
