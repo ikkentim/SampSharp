@@ -3,18 +3,16 @@ compiler: g++
 
 before_install:
   - sudo add-apt-repository ppa:codegear/release -y
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo add-apt-repository ppa:dns/gnu -y
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -qq premake4 gcc-4.8 g++-4.8 gcc-4.8-multilib g++-4.8-multilib mono-complete
+  - sudo apt-get install -qq premake4 gcc g++ mono-complete
 
 before_script:
   - premake4 gmake
 
 script:
-  - make CC=gcc-4.8 CXX=g++-4.8 config=release64
+  - make config=release64
 
 addons:
   artifacts:
