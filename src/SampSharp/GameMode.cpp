@@ -424,7 +424,10 @@ int GameMode::SetRefTimer(int interval, bool repeat, MonoObject *params) {
     uint32_t handle = mono_gchandle_new(params, false);
     int id = SetTimer(interval, repeat, ProcessTimerTick, &handle);
 
-    timers_[id] = { handle, repeat };
+    GameMode::RefTimer tmr;
+    tmr.handle = handle;
+    tmr.repeating = repeat;
+    timers_[id] = tmr;
     return id;
 }
 
