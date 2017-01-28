@@ -332,7 +332,6 @@ void GameMode::LoadCodepage(const char *name) {
         ss << std::hex << cp;
         ss >> cps;
         ss.clear();
-        logprintf("%s to %d", cp.c_str(), cps);
 
         string uni = line.substr(tab1 + 1, tab2 - tab1 - 1);
 
@@ -347,7 +346,6 @@ void GameMode::LoadCodepage(const char *name) {
         ss << std::hex << uni;
         ss >> unis;
         ss.clear();
-        logprintf("%s to %d", uni.c_str(), unis);
 
         cptouni_[cps] = unis;
         unitocp_[unis] = cps;
@@ -549,9 +547,12 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
      * array. */
     for (int i = 0; i < sig->param_count; i++) {
         switch (sig->parameters[i]) {
+
         case 's': // const string
+            delete[] (char *)params[i];
+            break;
         case 'a': // array of integers
-            delete[] params[i];
+            delete[] (cell *)params[i];
             break;
         case 'D': { // integer reference
             int result = *(int *)params[i];
@@ -564,7 +565,7 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
             MonoString *str = StringToMonoString((char *)params[i],
                 param_size[i]);
             mono_array_set(args_array, MonoString *, i, str);
-            delete[] params[i];
+            delete[](char *)params[i];
             break;
         }
         case 'A': { // array of integers reference
@@ -576,7 +577,7 @@ int GameMode::InvokeNative(int handle, MonoArray *args_array) {
             }
             mono_array_set(args_array, MonoArray *, i, arr);
 
-            delete[] params[i];
+            delete[](cell *)params[i];
             break;
         }
         }
