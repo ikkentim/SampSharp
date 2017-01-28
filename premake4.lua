@@ -19,7 +19,6 @@ solution "SampSharp"
         buildoptions {
             "-fvisibility=hidden",
             "-fvisibility-inlines-hidden",
-            "-std=c++11"
         }
 
         files { "src/SampSharp**.cpp", "src/SampSharp/includes/sampgdk/sampgdk.c" }
