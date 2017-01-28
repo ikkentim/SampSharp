@@ -22,6 +22,8 @@
 #include <string.h>
 #include <limits>
 #include <time.h>
+#include <iomanip>
+#include <sstream>
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/threads.h>
 #include <mono/metadata/exception.h>
@@ -325,7 +327,12 @@ void GameMode::LoadCodepage(const char *name) {
             continue;
         }
 
-        uint16_t cps = (uint16_t)std::stoul(cp, nullptr, 16);
+        uint16_t cps;
+        std::stringstream ss;
+        ss << std::hex << cp;
+        ss >> cps;
+        ss.clear();
+        logprintf("%s to %d", cp.c_str(), cps);
 
         string uni = line.substr(tab1 + 1, tab2 - tab1 - 1);
 
@@ -336,7 +343,11 @@ void GameMode::LoadCodepage(const char *name) {
             }
             continue;
         }
-        uint16_t unis = (uint16_t)std::stoul(uni, nullptr, 16);
+        uint16_t unis;
+        ss << std::hex << uni;
+        ss >> unis;
+        ss.clear();
+        logprintf("%s to %d", uni.c_str(), unis);
 
         cptouni_[cps] = unis;
         unitocp_[unis] = cps;
