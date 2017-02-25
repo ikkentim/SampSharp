@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Display
 {
     public partial class Menu
     {
-        private class MenuInternal : NativeObjectSingleton<MenuInternal>
+        public class MenuInternal : NativeObjectSingleton<MenuInternal>
         {
             [NativeMethod]
             public virtual int CreateMenu(string title, int columns, float x, float y, float col1Width, float col2Width)

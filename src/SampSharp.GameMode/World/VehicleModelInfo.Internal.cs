@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.World
 {
     public partial struct VehicleModelInfo
     {
-        private class VehicleModelInfoInternal : NativeObjectSingleton<VehicleModelInfoInternal>
+        public class VehicleModelInfoInternal : NativeObjectSingleton<VehicleModelInfoInternal>
         {
             [NativeMethod]
             public virtual bool GetVehicleModelInfo(int model, int infotype, out float x, out float y, out float z)

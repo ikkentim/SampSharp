@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.World
 {
     public partial class Actor
     {
-        private class ActorInternal : NativeObjectSingleton<ActorInternal>
+        public class ActorInternal : NativeObjectSingleton<ActorInternal>
         {
             [NativeMethod]
             public virtual int CreateActor(int modelid, float x, float y, float z, float rotattion)

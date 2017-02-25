@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.World
 {
     public partial class BaseVehicle
     {
-        private class VehicleInternal : NativeObjectSingleton<VehicleInternal>
+        public class VehicleInternal : NativeObjectSingleton<VehicleInternal>
         {
             [NativeMethod]
             public virtual bool IsValidVehicle(int vehicleid)

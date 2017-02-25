@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.SAMP
 {
     public static partial class Server
     {
-        private class ServerInternal : NativeObjectSingleton<ServerInternal>
+        public class ServerInternal : NativeObjectSingleton<ServerInternal>
         {
             [NativeMethod]
             public virtual bool BlockIpAddress(string ipAddress, int timems)

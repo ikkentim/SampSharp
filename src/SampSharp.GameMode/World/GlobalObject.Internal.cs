@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.World
 {
     public partial class GlobalObject
     {
-        private class GlobalObjectInternal : NativeObjectSingleton<GlobalObjectInternal>
+        public class GlobalObjectInternal : NativeObjectSingleton<GlobalObjectInternal>
         {
             [NativeMethod]
             public virtual bool AttachCameraToObject(int playerid, int objectid)

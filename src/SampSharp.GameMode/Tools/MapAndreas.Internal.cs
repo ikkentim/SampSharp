@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Tools
 {
     public static partial class MapAndreas
     {
-        private class MapAndreasInternal : NativeObjectSingleton<MapAndreasInternal>
+        public class MapAndreasInternal : NativeObjectSingleton<MapAndreasInternal>
         {
             [NativeMethod(Function = "MapAndreas_Init")]
             public virtual bool Init(int mode, string filename, int length)

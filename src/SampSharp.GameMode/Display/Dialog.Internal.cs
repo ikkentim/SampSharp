@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Display
 {
     public abstract partial class Dialog
     {
-        private class DialogInternal : NativeObjectSingleton<DialogInternal>
+        public class DialogInternal : NativeObjectSingleton<DialogInternal>
         {
             [NativeMethod]
             public virtual bool ShowPlayerDialog(int playerid, int dialogid, int style, string caption, string info,

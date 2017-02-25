@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.World
 {
     public partial class GangZone
     {
-        private class GangZoneInternal : NativeObjectSingleton<GangZoneInternal>
+        public class GangZoneInternal : NativeObjectSingleton<GangZoneInternal>
         {
             [NativeMethod]
             public virtual int GangZoneCreate(float minx, float miny, float maxx, float maxy)

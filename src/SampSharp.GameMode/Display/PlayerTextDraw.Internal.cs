@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Display
 {
     public partial class PlayerTextDraw
     {
-        private class PlayerTextDrawInternal : NativeObjectSingleton<PlayerTextDrawInternal>
+        public class PlayerTextDrawInternal : NativeObjectSingleton<PlayerTextDrawInternal>
         {
             [NativeMethod]
             public virtual int CreatePlayerTextDraw(int playerid, float x, float y, string text)

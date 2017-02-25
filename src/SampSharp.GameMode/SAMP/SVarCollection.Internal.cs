@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.SAMP
 {
     public partial class SVarCollection
     {
-        private class SVarCollectionInternal : NativeObjectSingleton<SVarCollectionInternal>
+        public class SVarCollectionInternal : NativeObjectSingleton<SVarCollectionInternal>
         {
             [NativeMethod]
             public virtual bool SetSVarInt(string varname, int value)

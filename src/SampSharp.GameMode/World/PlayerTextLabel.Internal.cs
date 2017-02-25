@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.World
 {
     public partial class PlayerTextLabel
     {
-        private class PlayerTextLabelInternal : NativeObjectSingleton<PlayerTextLabelInternal>
+        public class PlayerTextLabelInternal : NativeObjectSingleton<PlayerTextLabelInternal>
         {
             [NativeMethod]
             public virtual int CreatePlayer3DTextLabel(int playerid, string text, int color, float x, float y, float z,

@@ -70,9 +70,7 @@ namespace SampSharp.GameMode.API.NativeObjects
 
             var didWrapAnything = false;
 
-            foreach (
-                var property in type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                )
+            foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
             {
                 var get = property.GetMethod;
                 var set = property.SetMethod;

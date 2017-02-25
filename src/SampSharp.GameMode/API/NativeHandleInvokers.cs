@@ -12,25 +12,52 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.GameMode.API
 {
-    internal static class NativeHandleInvokers
+    /// <summary>
+    ///     Contains simple wrapper methods for invoking handles of natives with a set of arguments.
+    /// </summary>
+    public static class NativeHandleInvokers
     {
+        /// <summary>
+        ///     Invokes the native <see cref="handle" /> with the specified <see cref="args" />.
+        /// </summary>
+        /// <param name="handle">The handle.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>The return value as a float.</returns>
         public static float InvokeHandleAsFloat(int handle, object[] args)
         {
             return Native.Get(handle).InvokeFloat(args);
         }
 
+        /// <summary>
+        ///     Invokes the native <see cref="handle" /> with the specified <see cref="args" />.
+        /// </summary>
+        /// <param name="handle">The handle.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>The return value as a boolean.</returns>
         public static bool InvokeHandleAsBool(int handle, object[] args)
         {
             return Native.Get(handle).InvokeBool(args);
         }
 
+        /// <summary>
+        ///     Invokes the native <see cref="handle" /> with the specified <see cref="args" />.
+        /// </summary>
+        /// <param name="handle">The handle.</param>
+        /// <param name="args">The arguments.</param>
         public static void InvokeHandleAsVoid(int handle, object[] args)
         {
             Native.Get(handle).Invoke(args);
         }
 
+        /// <summary>
+        ///     Invokes the native <see cref="handle" /> with the specified <see cref="args" />.
+        /// </summary>
+        /// <param name="handle">The handle.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>The return value.</returns>
         public static int InvokeHandle(int handle, object[] args)
         {
             return Native.Get(handle).Invoke(args);

@@ -18,7 +18,7 @@ namespace SampSharp.GameMode
 {
     public abstract partial class BaseMode
     {
-        private class BaseModeInternal : NativeObjectSingleton<BaseModeInternal>
+        public class BaseModeInternal : NativeObjectSingleton<BaseModeInternal>
         {
             [NativeMethod]
             public virtual bool ManualVehicleEngineAndLights()

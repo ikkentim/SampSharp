@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.World
 {
     public partial class Pickup
     {
-        private class PickupInternal : NativeObjectSingleton<PickupInternal>
+        public class PickupInternal : NativeObjectSingleton<PickupInternal>
         {
             [NativeMethod]
             public virtual int AddStaticPickup(int model, int type, float x, float y, float z, int virtualworld)

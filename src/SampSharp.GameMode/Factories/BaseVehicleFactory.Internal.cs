@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Factories
 {
     public partial class BaseVehicleFactory
     {
-        private class BaseVehicleFactoryInternal : NativeObjectSingleton<BaseVehicleFactoryInternal>
+        public class BaseVehicleFactoryInternal : NativeObjectSingleton<BaseVehicleFactoryInternal>
         {
             [NativeMethod]
             public virtual int CreateVehicle(int vehicletype, float x, float y, float z, float rotation, int color1,
