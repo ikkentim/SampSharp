@@ -12,6 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
@@ -136,12 +137,12 @@ namespace SampSharp.GameMode.Definitions
         Bobcat,
 
         /// <summary>
-        ///     Model of a MrWhoopee.
+        ///     Model of a Mr Whoopee.
         /// </summary>
         MrWhoopee,
 
         /// <summary>
-        ///     Model of a BFInjection.
+        ///     Model of a BF Injection.
         /// </summary>
         BFInjection,
 
@@ -196,7 +197,7 @@ namespace SampSharp.GameMode.Definitions
         Hotknife,
 
         /// <summary>
-        ///     Model of a ArticleTrailer.
+        ///     Model of a Article Trailer.
         /// </summary>
         ArticleTrailer,
 
@@ -226,7 +227,7 @@ namespace SampSharp.GameMode.Definitions
         Rumpo,
 
         /// <summary>
-        ///     Model of a RCBandit.
+        ///     Model of a RC Bandit.
         /// </summary>
         RCBandit,
 
@@ -271,7 +272,7 @@ namespace SampSharp.GameMode.Definitions
         Tram,
 
         /// <summary>
-        ///     Model of a ArticleTrailer2.
+        ///     Model of a Article Trailer 2.
         /// </summary>
         ArticleTrailer2,
 
@@ -316,7 +317,7 @@ namespace SampSharp.GameMode.Definitions
         Solair,
 
         /// <summary>
-        ///     Model of a TopfunVanBerkleysRC.
+        ///     Model of a Topfun Van Berkleys RC.
         /// </summary>
         TopfunVanBerkleysRC,
 
@@ -326,7 +327,7 @@ namespace SampSharp.GameMode.Definitions
         Skimmer,
 
         /// <summary>
-        ///     Model of a PCJ600.
+        ///     Model of a PCJ-600.
         /// </summary>
         PCJ600,
 
@@ -341,12 +342,12 @@ namespace SampSharp.GameMode.Definitions
         Freeway,
 
         /// <summary>
-        ///     Model of a RCBaron.
+        ///     Model of a RC Baron.
         /// </summary>
         RCBaron,
 
         /// <summary>
-        ///     Model of a RCRaider.
+        ///     Model of a RC Raider.
         /// </summary>
         RCRaider,
 
@@ -461,7 +462,7 @@ namespace SampSharp.GameMode.Definitions
         Maverick,
 
         /// <summary>
-        ///     Model of a SANNewsMaverick.
+        ///     Model of a SAN News Maverick.
         /// </summary>
         SANNewsMaverick,
 
@@ -471,7 +472,7 @@ namespace SampSharp.GameMode.Definitions
         Rancher,
 
         /// <summary>
-        ///     Model of a FBIRancher.
+        ///     Model of a FBI Rancher.
         /// </summary>
         FBIRancher,
 
@@ -491,7 +492,7 @@ namespace SampSharp.GameMode.Definitions
         Jetmax,
 
         /// <summary>
-        ///     Model of a HotringRacer.
+        ///     Model of a Hotring Racer.
         /// </summary>
         HotringRacer,
 
@@ -501,12 +502,12 @@ namespace SampSharp.GameMode.Definitions
         Sandking,
 
         /// <summary>
-        ///     Model of a BlistaCompact.
+        ///     Model of a Blista Compact.
         /// </summary>
         BlistaCompact,
 
         /// <summary>
-        ///     Model of a PoliceMaverick.
+        ///     Model of a Police Maverick.
         /// </summary>
         PoliceMaverick,
 
@@ -526,32 +527,32 @@ namespace SampSharp.GameMode.Definitions
         Mesa,
 
         /// <summary>
-        ///     Model of a RCGoblin.
+        ///     Model of a RC Goblin.
         /// </summary>
         RCGoblin,
 
         /// <summary>
-        ///     Model of a HotringRacer2.
+        ///     Model of a Hotring Racer 2.
         /// </summary>
         HotringRacer2,
 
         /// <summary>
-        ///     Model of a HotringRacer3.
+        ///     Model of a Hotring Racer 3.
         /// </summary>
         HotringRacer3,
 
         /// <summary>
-        ///     Model of a BloodringBanger.
+        ///     Model of a Bloodring Banger.
         /// </summary>
         BloodringBanger,
 
         /// <summary>
-        ///     Model of a Rancher2.
+        ///     Model of a Rancher 2.
         /// </summary>
         Rancher2,
 
         /// <summary>
-        ///     Model of a SuperGT.
+        ///     Model of a Super GT.
         /// </summary>
         SuperGT,
 
@@ -571,7 +572,7 @@ namespace SampSharp.GameMode.Definitions
         Bike,
 
         /// <summary>
-        ///     Model of a MountainBike.
+        ///     Model of a Mountain Bike.
         /// </summary>
         MountainBike,
 
@@ -626,12 +627,12 @@ namespace SampSharp.GameMode.Definitions
         Hydra,
 
         /// <summary>
-        ///     Model of a FCR900.
+        ///     Model of a FCR-900.
         /// </summary>
         FCR900,
 
         /// <summary>
-        ///     Model of a NRG500.
+        ///     Model of a NRG-500.
         /// </summary>
         NRG500,
 
@@ -641,7 +642,7 @@ namespace SampSharp.GameMode.Definitions
         HPV1000,
 
         /// <summary>
-        ///     Model of a CementTruck.
+        ///     Model of a Cement Truck.
         /// </summary>
         CementTruck,
 
@@ -681,7 +682,7 @@ namespace SampSharp.GameMode.Definitions
         Tractor,
 
         /// <summary>
-        ///     Model of a CombineHarvester.
+        ///     Model of a Combine Harvester.
         /// </summary>
         CombineHarvester,
 
@@ -706,12 +707,12 @@ namespace SampSharp.GameMode.Definitions
         Blade,
 
         /// <summary>
-        ///     Model of a FreightTrain.
+        ///     Model of a Freight Train.
         /// </summary>
         FreightTrain,
 
         /// <summary>
-        ///     Model of a BrownstreakTrain.
+        ///     Model of a Brownstreak Train.
         /// </summary>
         BrownstreakTrain,
 
@@ -741,7 +742,7 @@ namespace SampSharp.GameMode.Definitions
         Sadler,
 
         /// <summary>
-        ///     Model of a FiretruckLA.
+        ///     Model of a Firetruck LA.
         /// </summary>
         FiretruckLA,
 
@@ -781,7 +782,7 @@ namespace SampSharp.GameMode.Definitions
         Merit,
 
         /// <summary>
-        ///     Model of a UtilityVan.
+        ///     Model of a Utility Van.
         /// </summary>
         UtilityVan,
 
@@ -801,12 +802,12 @@ namespace SampSharp.GameMode.Definitions
         Windsor,
 
         /// <summary>
-        ///     Model of a MonsterA.
+        ///     Model of a Monster A.
         /// </summary>
         MonsterA,
 
         /// <summary>
-        ///     Model of a MonsterB.
+        ///     Model of a Monster B.
         /// </summary>
         MonsterB,
 
@@ -841,7 +842,7 @@ namespace SampSharp.GameMode.Definitions
         Raindance,
 
         /// <summary>
-        ///     Model of a RCTiger.
+        ///     Model of a RC Tiger.
         /// </summary>
         RCTiger,
 
@@ -866,12 +867,12 @@ namespace SampSharp.GameMode.Definitions
         Bandito,
 
         /// <summary>
-        ///     Model of a FreightFlatTrailerTrain.
+        ///     Model of a Freight Flat Trailer Train.
         /// </summary>
         FreightFlatTrailerTrain,
 
         /// <summary>
-        ///     Model of a StreakTrailerTrain.
+        ///     Model of a Streak Trailer Train.
         /// </summary>
         StreakTrailerTrain,
 
@@ -911,7 +912,7 @@ namespace SampSharp.GameMode.Definitions
         AT400,
 
         /// <summary>
-        ///     Model of a DFT30.
+        ///     Model of a DFT-30.
         /// </summary>
         DFT30,
 
@@ -941,7 +942,7 @@ namespace SampSharp.GameMode.Definitions
         Tug,
 
         /// <summary>
-        ///     Model of a PetrolTrailer.
+        ///     Model of a Petrol Trailer.
         /// </summary>
         PetrolTrailer,
 
@@ -971,12 +972,12 @@ namespace SampSharp.GameMode.Definitions
         Club,
 
         /// <summary>
-        ///     Model of a FreightBoxTrailerTrain.
+        ///     Model of a Freight Box Trailer Train.
         /// </summary>
         FreightBoxTrailerTrain,
 
         /// <summary>
-        ///     Model of a ArticleTrailer3.
+        ///     Model of a Article Trailer 3.
         /// </summary>
         ArticleTrailer3,
 
@@ -991,7 +992,7 @@ namespace SampSharp.GameMode.Definitions
         Dodo,
 
         /// <summary>
-        ///     Model of a RCCam.
+        ///     Model of a RC Cam.
         /// </summary>
         RCCam,
 
@@ -1001,22 +1002,22 @@ namespace SampSharp.GameMode.Definitions
         Launch,
 
         /// <summary>
-        ///     Model of a PoliceCarLSPD.
+        ///     Model of a Police Car LSPD.
         /// </summary>
         PoliceCarLSPD,
 
         /// <summary>
-        ///     Model of a PoliceCarSFPD.
+        ///     Model of a Police Car SFPD.
         /// </summary>
         PoliceCarSFPD,
 
         /// <summary>
-        ///     Model of a PoliceCarLVPD.
+        ///     Model of a Police Car LVPD.
         /// </summary>
         PoliceCarLVPD,
 
         /// <summary>
-        ///     Model of a PoliceRanger.
+        ///     Model of a Police Ranger.
         /// </summary>
         PoliceRanger,
 
@@ -1026,7 +1027,7 @@ namespace SampSharp.GameMode.Definitions
         Picador,
 
         /// <summary>
-        ///     Model of a SWAT.
+        ///     Model of a SWAT Truck.
         /// </summary>
         SWAT,
 
@@ -1041,39 +1042,44 @@ namespace SampSharp.GameMode.Definitions
         Phoenix,
 
         /// <summary>
-        ///     Model of a GlendaleShit.
+        ///     Model of a Damaged Glendale.
         /// </summary>
         GlendaleShit,
 
         /// <summary>
-        ///     Model of a SadlerShit.
+        ///     Model of a Damaged Sadler.
         /// </summary>
         SadlerShit,
 
         /// <summary>
-        ///     Model of a BaggageTrailerA.
+        ///     Model of a Baggage Trailer A.
         /// </summary>
         BaggageTrailerA,
 
         /// <summary>
-        ///     Model of a BaggageTrailerB.
+        ///     Model of a Baggage Trailer B.
         /// </summary>
         BaggageTrailerB,
 
         /// <summary>
-        ///     Model of a TugStairsTrailer.
+        ///     Model of a Tug Stairs Trailer.
         /// </summary>
         TugStairsTrailer,
 
         /// <summary>
-        ///     Model of a Boxville2.
+        ///     Model of a Boxville 2.
         /// </summary>
         Boxville2,
 
         /// <summary>
-        ///     Model of a FarmTrailer.
+        ///     Model of a Farm Trailer.
         /// </summary>
-        FarmTrailer
+        FarmTrailer,
+
+        /// <summary>
+        ///     Model of a Utility Trailer.
+        /// </summary>
+        UtilityTrailer
         // ReSharper restore InconsistentNaming
     }
 }
