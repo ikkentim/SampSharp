@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO.Pipes;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -23,14 +24,14 @@ namespace CommunicationTest
 {
     public class Client : IDisposable
     {
-        private readonly TcpClient _client;
+        //private readonly TcpClient _client;
         private readonly MessageQueue _queue = new MessageQueue();
         private readonly byte[] _readBuffer = new byte[1024];
-        private NetworkStream _stream;
-
+        //private NetworkStream _stream;
+        private NamedPipeClientStream _stream;
         public Client()
         {
-            _client = new TcpClient();
+            //_client = new TcpClient();
         }
 
         #region IDisposable
@@ -49,6 +50,8 @@ namespace CommunicationTest
             Dispose(false);
         }
 
+        #region Bitconverter
+        
         public static IEnumerable<byte> StringToBytes(string str)
         {
             return str.Select(c => (byte) c).Concat(new[] { (byte) 0 });
@@ -102,13 +105,17 @@ namespace CommunicationTest
 //                   buffer[index];
         }
 
+        #endregion
+
         public async Task Connect(string host, int port)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
 
-            await _client.ConnectAsync(host, port);
+            _stream = new NamedPipeClientStream(".", "SampSharpSvr");
+            await _stream.ConnectAsync();
+            //await _client.ConnectAsync(host, port);
 
-            _stream = _client.GetStream();
+            //_stream = _client.GetStream();
         }
 
         public async Task Send(ServerCommand command, IEnumerable<byte> data)
@@ -125,8 +132,9 @@ namespace CommunicationTest
             await _stream.WriteAsync(buffer, 0, buffer.Length);
             await _stream.FlushAsync(); // TODO should I flush?
 
-            if (_stream.DataAvailable)
-                await Read();
+            
+//            if (_stream.DataAvailable)
+//                await Read();
         }
 
         private async Task Read()
@@ -158,7 +166,11 @@ namespace CommunicationTest
         protected void Dispose(bool disposing)
         {
             if (disposing)
-                _client.Dispose();
+            {
+                _stream.Dispose();
+            }
+//            if (disposing)
+//                _client.Dispose();
         }
     }
 }
