@@ -4,8 +4,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}</ProjectGuid>
-    <ProjectTypeGuids>{629CB73E-1FBE-4FA1-81F4-F7C15FCA9590};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TestMode</RootNamespace>
@@ -75,6 +73,20 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{629CB73E-1FBE-4FA1-81F4-F7C15FCA9590}" Configuration="Debug|Any CPU">
+        <SampSharpFlavorConfig>
+          <GameMode>GameMode</GameMode>
+        </SampSharpFlavorConfig>
+      </FlavorProperties>
+      <FlavorProperties GUID="{629CB73E-1FBE-4FA1-81F4-F7C15FCA9590}" Configuration="Release|Any CPU">
+        <SampSharpFlavorConfig>
+          <GameMode>GameMode</GameMode>
+        </SampSharpFlavorConfig>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

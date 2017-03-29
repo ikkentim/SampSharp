@@ -22,6 +22,7 @@
 #if defined WIN32 || defined _WIN32 || defined __WIN32__
 #define SAMPSHARP_LINUX 0
 #define SAMPSHARP_WINDOWS 1
+
 #endif
 
 #if defined __linux__ || defined __linux || defined linux
