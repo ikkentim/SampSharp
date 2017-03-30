@@ -11,32 +11,33 @@ callbacks_map::callbacks_map(server *svr) : svr_(svr) {
     clear();
 }
 
-
-callbacks_map::~callbacks_map() {
-}
-
 void callbacks_map::clear() {
-    for (std::map<std::string,uint8_t *>::iterator it = callbacks_.begin(); it != callbacks_.end(); it++) {
+    for (std::map<std::string,uint8_t *>::iterator it = callbacks_.begin(); 
+        it != callbacks_.end(); it++) {
         delete[] it->second;
     }
 
     callbacks_.clear();
 
-    uint8_t *e = new uint8_t[1];
-    e[0] = ARG_TERM;
+    uint8_t
+        *a = new uint8_t[1],
+        *b = new uint8_t[1];
+    a[0] = ARG_TERM;
+    b[0] = ARG_TERM;
 
-    callbacks_["OnGameModeInit"] = e;
-    callbacks_["OnGameModeExit"] = e;
+    callbacks_["OnGameModeInit"] = a;
+    callbacks_["OnGameModeExit"] = b;
 }
 
 void callbacks_map::register_buffer(uint8_t *buf) {
-    char *name = (char *)buf;
-    size_t name_len = strlen(name);
+    assert(buf);
 
+    char *name = (char *)buf;
+    size_t 
+        name_len = strlen(name),
+        info_len = 0;
     uint8_t *info = buf + name_len + 1;
-    size_t info_len = 0;
-    
-    printf("[Server] Registering %s\n", name);
+
     /* verify buffer and measure length */
     while (info[info_len] != ARG_TERM) {
         switch (info[info_len]) {
@@ -48,17 +49,23 @@ void callbacks_map::register_buffer(uint8_t *buf) {
             info_len += 5;
             break;
         default:
-            printf("ERROR: invalid cb arguments (value %d)\n", info[info_len]);// TODO: proper logging (prefixed)
+            svr_->log_error("Invalid callback argument %d.", info[info_len]);
             return;
         }
     }
 
     info_len++;
 
+    /* remove previous entry */
+    std::map<std::string, uint8_t *>::const_iterator it = callbacks_.find(name);
+    if (it != callbacks_.end()) {
+        delete[] it->second;
+    }
+
+    /* insert new entry */
     uint8_t *info_buf = new uint8_t[info_len];
     memcpy(info_buf, info, info_len);
 
-    // TODO: Clear previous entries
     callbacks_[name] = info_buf;
 }
 
@@ -67,20 +74,24 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
     assert(sizeof(cell) == sizeof(uint32_t));
 
     uint32_t call_len = 0;
+
+    /* find the callback in the map */
     std::map<std::string, uint8_t *>::const_iterator it = callbacks_.find(name);
     if (it == callbacks_.end()) {
         return 0;
     }
 
+    /* fill the buffer with the callback name */
     size_t name_len = strlen(name);
     if (len < name_len + 1) {
-        svr_->print("ERROR:buffer too small!");//TODO: logging
+        svr_->log_error("Callback buffer too small.");
         return 0;
     }
 
     memcpy(buf, name, name_len + 1);
     call_len = name_len + 1;
 
+    /* fill the buffer with the callback arguments */
     uint32_t i = 0;
     uint32_t params_count = params[0] / sizeof(cell);
     for (uint8_t *info = it->second; *info != ARG_TERM; i++) {
@@ -90,15 +101,16 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
         info++;
 
         if (params_count < i) {
-            svr_->print("ERROR: cb arguments mismatch!");//TODO: logging
+            svr_->log_error("Callback parameters count mismatch. Only expecting"
+                " %d parameters.", params_count);
         }
         switch (instr) {
             case ARG_VALUE:
                 if (len - call_len < sizeof(cell)) {
-                    svr_->print("ERROR:buffer too small!");//TODO: logging
+                    svr_->print("ERROR:buffer too small!");
                     return 0;
                 }
-                memcpy(buf + call_len, (const char *)&params[i + 1], sizeof(cell));
+                memcpy(buf + call_len, params + i + 1, sizeof(cell));
                 call_len += sizeof(cell);
                 break;
             case ARG_STRING:
@@ -112,12 +124,11 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
                 }
 
                 if ((int)len - (int)call_len < val_len + 1) {
-                    svr_->print("ERROR:buffer too small!");//TODO: logging
+                    svr_->log_error("Callback buffer too small.");
                     return 0;
                 }
 
                 if (val_len) {
-                    printf("[Server] AMX_GETSTRING LEN %d\n", val_len);
                     amx_GetString((char *)buf + call_len, val_addr, 0, len);
                 }
                 buf[call_len + val_len] = 0;
@@ -128,7 +139,8 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
                 info += sizeof(uint32_t);
 
                 if (val_len >= (int)params_count) {
-                    svr_->print("ERROR:invalid cb params (array size index)!");//TODO: logging
+                    svr_->log_error("Invalid callback array size indicator %d.", 
+                        val_len);
                     return 0;
                 }
 
@@ -136,23 +148,24 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
                 amx_GetAddr(amx, params[i + 1], &val_addr);
 
                 /* length */
-                memcpy(buf + call_len, (const char *)&val_len, sizeof(int));
+                memcpy(buf + call_len, &val_len, sizeof(int));
                 call_len += sizeof(int);
 
                 /* values */
                 for (int j = 0; j < val_len; j++) {
-                    memcpy(buf + call_len, (const char *)(val_addr + j), sizeof(cell));
+                    memcpy(buf + call_len, val_addr + j, sizeof(cell));
                     call_len += sizeof(cell);
                 }
                 break;
             default:
-                svr_->print("ERROR: invalid cb arguments");// TODO: proper logging (prefixed)
+                svr_->log_error("Invalid callback instruction %d.", instr);
                 return 0;
         }
     }
 
     if (params[0] / sizeof(cell) != i) {
-        svr_->print("ERROR: cb arguments mismatch!");//TODO: logging
+        svr_->log_error("Callback parameters count mismatch. Expecting %d but "
+            "received %d parameters.", params_count, i);
     }
 
     return call_len;

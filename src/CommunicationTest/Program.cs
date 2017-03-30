@@ -26,6 +26,7 @@ namespace CommunicationTest
     {
         public static void Main(string[] args)
         {
+            /*
             Process.Start(new ProcessStartInfo
             {
                 FileName = @"D:\projects\sampsharp\env\samp-server.exe",
@@ -33,7 +34,7 @@ namespace CommunicationTest
             });
 
             Thread.Sleep(1000);
-
+           */
             Console.WriteLine("Connecting.....");
 
             while (true)
@@ -45,7 +46,7 @@ namespace CommunicationTest
                 using (var stream = new Client())
                 {
                     var strs = new Queue<string>();
-                    stream.Connect("127.0.0.1", 8888).Wait();
+                    stream.Connect().Wait();
 
                     Console.WriteLine("Connected!");
                     //                stream.Send(ServerCommand.Ping, null);
@@ -115,8 +116,7 @@ namespace CommunicationTest
 
                     var natives = new Dictionary<string, uint>();
                     var start = DateTime.Now;
-
-                    bool rdy=false;
+                    
                     while (true)
                     {
                         var cmd = stream.Receive().Result;

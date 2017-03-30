@@ -33,7 +33,7 @@ public:
     /** frees memory allocated by this instance */
     ~server();
     /** starts the game mode thread */
-    void load();
+    void start();
     /** internal method, main loop of the game mode thread */
     void loop();
     /** called when a server tick occurs */
@@ -42,7 +42,13 @@ public:
     void public_call(AMX *amx, const char *name, cell *params, cell *retval);
     /** prints text to the output on the server thread */
     void print(const char *format, ...);
-private:
+    /** log an error */
+    void log_error(const char *format, ...);
+    /** log info */
+    void log_info(const char *format, ...);
+    /** log a message */
+    void vlog(const char* prefix, const char *format, va_list args);
+private: /* fields */
     /** statuses of received commands */
     enum cmd_status {
         conn_dead, handled, unhandled, no_cmd
@@ -66,27 +72,29 @@ private:
     bool started_;
     /** whether the client is currently reconnecting */
     bool reconnecting_;
-    /** common buffer for reading network */
+    /** common buffer for reading pipe */
     uint8_t *rxbuf_;
-    /** common buffer for writing network */
+    /** common buffer for writing pipe */
     uint8_t *txbuf_;
-    /** socket handle of the server */
-    int32_t sock_server_;
-    /** socket handle of the client */
-    int32_t sock_client_;
-
-    /** prepares the server tcp socket */
-    bool setup_sock_server();
-    /** prepares the client tcp socket, if a client is waiting to connect */
-    bool setup_sock_client();
+    /** pipe handle */
+    void *pipe_;
+    /** thread handle */
+    void *thread_;
+    /** whether connected to the pipe */
+    bool pipe_connected_;
+private: /* methods */
+    /** create the pipe */
+    bool pipe_create();
+    /** connect to the pipe */
+    bool pipe_connect();
+    /** disconnects from pipe */
+    void pipe_disconnect(const char *context, bool expected = false);
     /** sends the OnGameModeInit callback to the client */
     void cmd_send_gamemode_init();
     /** a value indicating whether the client is ready to receive messages */
     bool is_client_ready();
-    /** a value indicating whether the client has connected */
-    bool is_client_connected();
-    /** disconnects the client from the server */
-    void disconnect_client(bool expected = false);
+    /** a value indicating whether the pipe is connected */
+    bool is_pipe_connected();
     /** sends the specified command with the specified buffer as arguments */
     bool cmd_send(uint8_t cmd, uint32_t len, uint8_t *buf);
     /** receives a single command if available */
@@ -97,5 +105,16 @@ private:
     cmd_status cmd_process(uint8_t command, uint8_t *buffer, 
         uint32_t command_len, uint8_t **response, uint32_t *len);
 
+private: /* commands */
+#define CMD_DEFINE(name) void server::name(uint8_t *buf, uint32_t buflen)
+#define CMD_DECLARE(name) void name(uint8_t *buf, uint32_t buflen)
+    CMD_DECLARE(cmd_ping);
+    CMD_DECLARE(cmd_print);
+    CMD_DECLARE(cmd_register_call);
+    CMD_DECLARE(cmd_find_native);
+    CMD_DECLARE(cmd_invoke_native);
+    CMD_DECLARE(cmd_reconnect);
+    CMD_DECLARE(cmd_start);
+#undef CMD_DECLARE
 };
 

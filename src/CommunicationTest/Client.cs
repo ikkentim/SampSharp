@@ -24,14 +24,11 @@ namespace CommunicationTest
 {
     public class Client : IDisposable
     {
-        //private readonly TcpClient _client;
         private readonly MessageQueue _queue = new MessageQueue();
-        private readonly byte[] _readBuffer = new byte[1024];
-        //private NetworkStream _stream;
+        private readonly byte[] _readBuffer = new byte[1024 * 2];
         private NamedPipeClientStream _stream;
         public Client()
         {
-            //_client = new TcpClient();
         }
 
         #region IDisposable
@@ -107,15 +104,10 @@ namespace CommunicationTest
 
         #endregion
 
-        public async Task Connect(string host, int port)
+        public async Task Connect()
         {
-            if (host == null) throw new ArgumentNullException(nameof(host));
-
-            _stream = new NamedPipeClientStream(".", "SampSharpSvr");
+            _stream = new NamedPipeClientStream(".", "SampSharpSvr2");// TODO: Configurable name
             await _stream.ConnectAsync();
-            //await _client.ConnectAsync(host, port);
-
-            //_stream = _client.GetStream();
         }
 
         public async Task Send(ServerCommand command, IEnumerable<byte> data)
@@ -169,8 +161,6 @@ namespace CommunicationTest
             {
                 _stream.Dispose();
             }
-//            if (disposing)
-//                _client.Dispose();
         }
     }
 }

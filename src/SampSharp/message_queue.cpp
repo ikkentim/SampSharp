@@ -1,7 +1,8 @@
 #include "message_queue.h"
 #include <assert.h>
 
-message_queue::message_queue() : local_fill_(false)
+message_queue::message_queue() : 
+    local_fill_(false)
 {
 }
 
@@ -30,11 +31,11 @@ uint32_t message_queue::get(uint8_t *command, uint8_t *buf, uint32_t len) {
     }
 
     if (command_length_ > len) {
-        printf("BUFFER TOO SMALL!!!\n");// TODO
         for (uint32_t i = 0; i < command_length_; i++) {
             pop();
         }
-        return 0;
+
+        return MESSAGE_QUEUE_BUFFER_TOO_SMALL;
     }
     *command = command_;
     for (uint32_t i = 0; i < command_length_; i++) {
@@ -46,38 +47,32 @@ uint32_t message_queue::get(uint8_t *command, uint8_t *buf, uint32_t len) {
     return command_length_;
 }
 
+void message_queue::clear() {
+    queue_.clear();
+    local_fill_ = false;
+}
+
 bool message_queue::try_fill_local() {
     if (local_fill_) {
         return true;
     }
 
-    if (queue_.size() < 4) {
+    if (queue_.size() < 5) {
         return false;
     }
 
+    local_fill_ = true;
     command_ = pop();
-
-    /*
-    command_length_ = (uint32_t)(
-        (((uint32_t)pop()) << 24) |
-        (((uint32_t)pop()) << 16) |
-        (((uint32_t)pop()) << 8) |
-        (uint32_t)pop());
-    */
     command_length_ = (uint32_t)(
         ((uint32_t)pop() << 0) |
         ((uint32_t)pop() << 8) |
         ((uint32_t)pop() << 16) |
-        ((uint32_t)pop() << 24)
-        );
-
-    local_fill_ = true;
+        ((uint32_t)pop() << 24));
 
     return true;
 }
 
-uint8_t message_queue::pop()
-{
+uint8_t message_queue::pop() {
     uint8_t v = queue_.front();
     queue_.pop_front();
     return v;

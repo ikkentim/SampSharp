@@ -15,51 +15,67 @@
 
 #include "main.h"
 #include <fstream>
-#include <sampgdk/sampgdk.h>
 #include <assert.h>
 #include <string.h>
 #include <iostream>
+#include <sampgdk/sampgdk.h>
 #include "ConfigReader.h"
 #include "StringUtil.h"
 #include "server.h"
 
-extern void *pAMXFunctions;
-
-using std::string;
-using std::ostringstream;
 using sampgdk::logprintf;
 
-server *svr;
+extern void *pAMXFunctions;
 
-bool ValidateConfig() {
+server *svr = NULL;
+bool ready;
+
+void print_err(const char* error) {
+    logprintf("[SampSharp:ERROR] %s", error);
+}
+
+void print_info() {
+    logprintf("");
+    logprintf("SampSharp Plugin");
+    logprintf("----------------");
+    logprintf("v%s, (C)2014-2017 Tim Potze", PLUGIN_VERSION);
+    logprintf("");
+}
+
+bool config_validate() {
     /* check whether gamemodeN values contain acceptable values. */
     ConfigReader server_cfg("server.cfg");
     for (int i = 0; i < 15; i++) {
-        ostringstream gamemode_key;
+        std::ostringstream gamemode_key;
         gamemode_key << "gamemode";
         gamemode_key << i;
 
-        string gamemode_value;
+        std::string gamemode_value;
         server_cfg.GetOptionAsString(gamemode_key.str(), gamemode_value);
         gamemode_value = StringUtil::TrimString(gamemode_value);
 
         if (i == 0 && gamemode_value.compare("empty 1") != 0) {
-            logprintf("ERROR: Can not load sampsharp if a non-SampSharp"
-                "gamemode is set to load.");
-            logprintf("ERROR: Please ensure you set 'gamemode0 empty 1' in your"
+            print_err("Can not load sampsharp if a non-SampSharp gamemode is "
+                "set to load.");
+            print_err("Please ensure you set 'gamemode0 empty 1' in your "
                 "server.cfg file.");
             return false;
         }
         else if (i > 0 && gamemode_value.length() > 0) {
-            logprintf("ERROR: Can not load sampsharp if a non-SampSharp"
-                "gamemode is set to load.");
-            logprintf("ERROR: Please ensure you only specify one script"
-                "gamemode, namely 'gamemode0 empty 1' in your server.cfg file.");
+            print_err("Can not load sampsharp if a non-SampSharp gamemode is "
+                "set to load.");
+            print_err("Please ensure you only specify one script gamemode, "
+                "namely 'gamemode0 empty 1' in your server.cfg file.");
             return false;
         }
     }
 
     return true;
+}
+
+void start_server() {
+    svr = new server();
+    svr->start();
 }
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
@@ -67,48 +83,42 @@ PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
-    /* load sampgdk. if loading fails, prevent the whole plugin from loading. */
     if (!sampgdk::Load(ppData)) {
         return false;
     }
 
-    logprintf("");
-    logprintf("SampSharp Plugin");
-    logprintf("----------------");
-    logprintf("v%s, (C)2014-2017 Tim Potze", PLUGIN_VERSION);
-    logprintf("");
-
-    /* store amx functions pointer in order to be able to interface with amx. */
+    /* amx functions are used to gather info from callbacks */
     pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
 
-    if (!ValidateConfig()) {
-        /* during development, the server crashed while returning false here. 
-         * seeing the user will need to change their configuration file, it 
-         * doesn't really matter.
-         */
-        return false;
+    /* validate the server config is fit for running SampSharp */
+    if (!(ready = config_validate())) {
+        return ready = false;
     }
 
-    svr = new server();
-
-    svr->load();
-
-    return true;
+    return ready = true;
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
     sampgdk_Unload();
-
     delete svr;
+    svr = NULL;
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
     sampgdk_ProcessTick();
-    svr->tick();
+    if (svr) {
+        svr->tick();
+    }
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     cell *params, cell *retval) {
+    if (!ready) {
+        return true;
+    }
+    if (!svr) {
+        start_server();
+    }
 
     svr->public_call(amx, name, params, retval);
     return true;
