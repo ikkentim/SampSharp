@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "main.h"
 #include <fstream>
 #include <assert.h>
 #include <string.h>
@@ -22,6 +21,7 @@
 #include "ConfigReader.h"
 #include "StringUtil.h"
 #include "server.h"
+#include "version.h"
 
 using sampgdk::logprintf;
 
@@ -38,7 +38,7 @@ void print_info() {
     logprintf("");
     logprintf("SampSharp Plugin");
     logprintf("----------------");
-    logprintf("v%s, (C)2014-2017 Tim Potze", PLUGIN_VERSION);
+    logprintf("v%s, (C)2014-2017 Tim Potze", PLUGIN_VERSION_STR);
     logprintf("");
 }
 
@@ -74,8 +74,14 @@ bool config_validate() {
 }
 
 void start_server() {
+    print_info();
+
     svr = new server();
-    svr->start();
+
+    ConfigReader server_cfg("server.cfg");
+    std::string value;
+    server_cfg.GetOptionAsString("sampsharp_pipe", value);
+    svr->start(value.c_str());
 }
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {

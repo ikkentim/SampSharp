@@ -26,6 +26,8 @@
 #include "callbacks_map.h"
 #include "natives_map.h"
 
+#define MAX_PIPE_NAME_LEN       (256)
+
 class server {
 public:
     /** initializes and allocates required memory for the server instance */
@@ -33,7 +35,7 @@ public:
     /** frees memory allocated by this instance */
     ~server();
     /** starts the game mode thread */
-    void start();
+    void start(const char *pipe_name);
     /** internal method, main loop of the game mode thread */
     void loop();
     /** called when a server tick occurs */
@@ -82,6 +84,8 @@ private: /* fields */
     void *thread_;
     /** whether connected to the pipe */
     bool pipe_connected_;
+    /** name of the pipe to use */
+    char pipe_name_[MAX_PIPE_NAME_LEN];
 private: /* methods */
     /** create the pipe */
     bool pipe_create();
@@ -91,6 +95,8 @@ private: /* methods */
     void pipe_disconnect(const char *context, bool expected = false);
     /** sends the OnGameModeInit callback to the client */
     void cmd_send_gamemode_init();
+    /** sends the server annoucement to the client */
+    void cmd_send_announce();
     /** a value indicating whether the client is ready to receive messages */
     bool is_client_ready();
     /** a value indicating whether the pipe is connected */

@@ -114,7 +114,6 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
                 call_len += sizeof(cell);
                 break;
             case ARG_STRING:
-
                 amx_GetAddr(amx, params[i + 1], &val_addr);
                 if (val_addr == NULL) {
                     val_len = 0;

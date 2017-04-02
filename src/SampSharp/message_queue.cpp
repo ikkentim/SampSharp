@@ -69,6 +69,7 @@ bool message_queue::try_fill_local() {
         ((uint32_t)pop() << 16) |
         ((uint32_t)pop() << 24));
 
+    printf("[DEBUG] Next up : command %d with length %d...\n", command_ ,command_length_);
     return true;
 }
 

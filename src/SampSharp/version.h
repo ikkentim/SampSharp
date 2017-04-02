@@ -15,4 +15,13 @@
 
 #pragma once
 
-#define PLUGIN_VERSION "0.7.0"
+#define PLUGIN_VERSION_MAJOR        0
+#define PLUGIN_VERSION_MINOR        8
+#define PLUGIN_VERSION_PATCH        0
+#define PLUGIN_PROTOCOL_VERSION     1
+
+#define PLUGIN_VERSION_STR          "0.8.0"
+
+#define PLUGIN_VERSION              ((PLUGIN_VERSION_MAJOR << 16) |\
+                                        (PLUGIN_VERSION_MINOR << 8) |\
+                                        (PLUGIN_VERSION_PATCH))

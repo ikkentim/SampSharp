@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampSharp", "src\SampSharp\SampSharp.vcxproj", "{39908193-8E5A-42EC-B71B-5D457CE87823}"
 EndProject
@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunicationTest", "src\Co
 	ProjectSection(ProjectDependencies) = postProject
 		{39908193-8E5A-42EC-B71B-5D457CE87823} = {39908193-8E5A-42EC-B71B-5D457CE87823}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampSharp.Core", "src\SampSharp.Core\SampSharp.Core.csproj", "{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,6 +88,18 @@ Global
 		{CF55635E-2ADF-495B-ABD1-41FF27A89F8A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CF55635E-2ADF-495B-ABD1-41FF27A89F8A}.Release|Win32.ActiveCfg = Release|Any CPU
 		{CF55635E-2ADF-495B-ABD1-41FF27A89F8A}.Release|Win32.Build.0 = Release|Any CPU
+		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Debug|Win32.Build.0 = Debug|Any CPU
+		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Release|Win32.ActiveCfg = Release|Any CPU
+		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

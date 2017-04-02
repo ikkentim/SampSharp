@@ -14,7 +14,7 @@
 // limitations under the License.
 
 #include "platforms.h"
-
+#include "version.h"
 #include <assert.h>
 #include <thread>
 
@@ -90,7 +90,21 @@ DWORD WINAPI server_loop_f(LPVOID svr_ptr) {
     return 0;
 }
 
-void server::start() {
+void server::start(const char *pipe_name) {
+    /* default pipe name */
+    sampsharp_sprintf(pipe_name_, MAX_PIPE_NAME_LEN,
+        "\\\\.\\pipe\\SampSharp");
+
+    if (pipe_name && strlen(pipe_name) > 0) {
+        if (strlen(pipe_name) > MAX_PIPE_NAME_LEN - 10) {
+            log_error("Pipe name too long.");
+        }
+        else {
+            sampsharp_sprintf(pipe_name_, MAX_PIPE_NAME_LEN,
+                "\\\\.\\pipe\\%s", pipe_name);
+        }
+    }
+
     /* store main thread handle for later reference  */
     main_thread_ = std::this_thread::get_id();
 
@@ -200,9 +214,9 @@ bool server::pipe_create() {
         return true;
     }
 
-    LPTSTR name = L"\\\\.\\pipe\\SampSharpSvr2";
+    log_info("Creating pipe %s...", pipe_name_);
 
-    pipe_ = CreateNamedPipe(name,
+    pipe_ = CreateNamedPipe(pipe_name_,
         PIPE_ACCESS_DUPLEX,
         PIPE_TYPE_BYTE |                // from message
         PIPE_READMODE_BYTE |            // from message
@@ -246,11 +260,14 @@ bool server::pipe_connect() {
     if (!ConnectNamedPipe(pipe_, NULL)) {
         DWORD error = GetLastError();
 
-
         /* ERROR_PIPE_CONNECTED indicates it has connected? */
         if (error == ERROR_PIPE_CONNECTED) {
             log_info("Connected to the pipe.");
-            return pipe_connected_ = true;
+
+            pipe_connected_ = true;
+            cmd_send_announce();
+
+            return true;
         }
 
         /* ERROR_PIPE_LISTENING indicates nothing is listening on the other
@@ -263,7 +280,22 @@ bool server::pipe_connect() {
     }
 
     log_info("Connected to pipe.");
-    return pipe_connected_ = true;
+
+    pipe_connected_ = true;
+    cmd_send_announce();
+
+    return true;
+}
+
+void server::cmd_send_announce() {
+    /* send version */
+    uint32_t info[2];
+    info[0] = PLUGIN_PROTOCOL_VERSION;
+    info[1] = PLUGIN_VERSION;
+
+    cmd_send(CMD_ANNOUNCE, sizeof(info), (uint8_t *)info);
+
+    log_info("Server annoucement sent.");
 }
 
 void server::pipe_disconnect(const char *context, bool expected) {
@@ -371,6 +403,7 @@ CMD_DEFINE(cmd_reconnect) {
 
 CMD_DEFINE(cmd_start) {
     started_ = true;
+    log_info("The gamemode has started!");
     if (gamemode_started_) {
         cmd_send_gamemode_init();
     }
