@@ -13,7 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Core
+using SampSharp.Core.Communication;
+
+namespace SampSharp.Core.Callbacks
 {
     /// <summary>
     ///     Contains the possible callback parameter types.
@@ -23,16 +25,16 @@ namespace SampSharp.Core
         /// <summary>
         ///     A value (either of <see cref="int" />, <see cref="float" /> or <see cref="bool" />).
         /// </summary>
-        Value = 0x01,
+        Value = ServerCommandArgument.Value,
 
         /// <summary>
         ///     An array (of element type <see cref="int" />, <see cref="float" /> or <see cref="bool" />).
         /// </summary>
-        Array = 0x02,
+        Array = ServerCommandArgument.Array,
 
         /// <summary>
         ///     A string.
         /// </summary>
-        String = 0x04
+        String = ServerCommandArgument.String
     }
 }

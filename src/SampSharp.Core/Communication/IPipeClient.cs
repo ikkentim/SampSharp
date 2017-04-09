@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SampSharp.Core
+namespace SampSharp.Core.Communication
 {
     /// <summary>
     ///     Contains the methods a named pipe SampSharp client.
@@ -37,12 +37,18 @@ namespace SampSharp.Core
         /// <param name="command">The command.</param>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        Task Send(ServerCommand command, IEnumerable<byte> data);
+        void Send(ServerCommand command, IEnumerable<byte> data);
 
         /// <summary>
         ///     Waits for the next command sent by the server.
         /// </summary>
         /// <returns>The command sent by the server.</returns>
-        Task<ServerCommandData> Receive();
+        Task<ServerCommandData> ReceiveAsync();
+
+        /// <summary>
+        ///     Waits for the next command sent by the server.
+        /// </summary>
+        /// <returns>The command sent by the server.</returns>
+        ServerCommandData Receive();
     }
 }

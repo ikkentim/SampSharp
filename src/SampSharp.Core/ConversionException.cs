@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using SampSharp.Core.Communication;
 
 namespace SampSharp.Core
 {

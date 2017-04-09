@@ -17,7 +17,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace SampSharp.Core
+namespace SampSharp.Core.Communication
 {
     public static class ValueConverter
     {
@@ -26,8 +26,7 @@ namespace SampSharp.Core
         ///     Gets the bytes representing the specified value.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns>The bytes representing the specified value</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <see cref="value" /> is null.</exception>
+        /// <returns>The bytes representing the specified value.</returns>
         public static byte[] GetBytes(int value)
         {
             return BitConverter.GetBytes(value);
@@ -37,8 +36,27 @@ namespace SampSharp.Core
         ///     Gets the bytes representing the specified value.
         /// </summary>
         /// <param name="value">The value.</param>
+        /// <returns>The bytes representing the specified value.</returns>
+        public static byte[] GetBytes(bool value)
+        {
+            return BitConverter.GetBytes(ToInt32(value));
+        }
+
+        /// <summary>
+        ///     Gets the bytes representing the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The bytes representing the specified value.</returns>
+        public static byte[] GetBytes(float value)
+        {
+            return BitConverter.GetBytes(ToInt32(value));
+        }
+
+        /// <summary>
+        ///     Gets the bytes representing the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
         /// <returns>The bytes representing the specified value</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <see cref="value" /> is null.</exception>
         public static byte[] GetBytes(uint value)
         {
             return BitConverter.GetBytes(value);

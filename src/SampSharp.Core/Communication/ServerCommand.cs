@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Core
+namespace SampSharp.Core.Communication
 {
     /// <summary>
     ///     Contains the server commands which can be sent to and received from the SampSharp server.

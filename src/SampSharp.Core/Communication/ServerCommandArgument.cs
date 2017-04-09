@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.Core
+namespace SampSharp.Core.Communication
 {
     /// <summary>
     ///     Contains the possible SampShap server command argument types.
@@ -26,27 +26,27 @@ namespace SampSharp.Core
         /// <summary>
         ///     A terminator value to indicate no more arguments are past this point.
         /// </summary>
-        Terminator = 0x00,
+        Terminator = (0 << 0),
 
         /// <summary>
         ///     A value to indicate the next argument is an integer or float.
         /// </summary>
-        Value = 0x01,
+        Value = (1 << 0),
 
         /// <summary>
         ///     A value to indicate the next argument is an array of integers or floats.
         /// </summary>
-        Array = 0x02,
+        Array = (1 << 1),
 
         /// <summary>
         ///     A value to indicate the next argument is a string.
         /// </summary>
-        String = 0x04,
+        String = (1 << 2),
 
         /// <summary>
         ///     A value to indicate the next argument is a reference.
         /// </summary>
-        Reference = 0x08,
+        Reference = (1 << 3),
 
         /// <summary>
         ///     A value to indicate the next argument is a value reference.

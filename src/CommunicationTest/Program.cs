@@ -32,12 +32,18 @@ namespace CommunicationTest
                 {
                     FileName = @"D:\projects\sampsharp\env\samp-server.exe",
                     WorkingDirectory = @"D:\projects\sampsharp\env\",
-                    RedirectStandardOutput = true
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
                 });
 
             p.OutputDataReceived += (sender, eventArgs) =>
             {
-                Console.WriteLine("[SERVER] " + eventArgs.Data);
+                Console.WriteLine("[SERVER:OUT] " + eventArgs.Data);
+            };
+
+            p.ErrorDataReceived += (sender, eventArgs) =>
+            {
+                Console.WriteLine("[SERVER:ERR] " + eventArgs.Data);
             };
 
             p.BeginOutputReadLine();

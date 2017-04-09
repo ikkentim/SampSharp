@@ -1,8 +1,9 @@
 #include "natives_map.h"
 #include "platforms.h"
 #include "server.h"
+#include <assert.h>
 
-#define NATIVE_NOT_FOUND        UINT32_MAX
+#define NATIVE_NOT_FOUND        -1
 #define MAX_ARGS                (32)
 #define MAX_ARGS_FORMAT         (128)
 #define LEN_ARG_BUFFER          (8192)
@@ -17,9 +18,9 @@
 natives_map::natives_map(server *svr) : svr_(svr) {
 }
 
-uint32_t natives_map::get_handle(uint8_t *name) {
+int32_t natives_map::get_handle(uint8_t *name) {
     /* check for the native in the map */
-    std::map<std::string, uint32_t>::const_iterator it = 
+    std::map<std::string, int32_t>::const_iterator it = 
         natives_map_.find((char *)name);
     if (it != natives_map_.end()) {
         return it->second;
@@ -32,7 +33,7 @@ uint32_t natives_map::get_handle(uint8_t *name) {
         return NATIVE_NOT_FOUND;
     }
 
-    uint32_t handle = natives_.size();
+    int32_t handle = natives_.size();
     natives_.push_back(native);
     natives_map_[(char *)name] = handle;
 
@@ -41,87 +42,98 @@ uint32_t natives_map::get_handle(uint8_t *name) {
 
 void natives_map::invoke(uint8_t *rxbuf, uint32_t rxlen, uint8_t *txbuf, 
     uint32_t *txlen) {
+    assert(rxbuf);
+    assert(rxlen);
+    assert(txbuf);
+    assert(txlen);
+
+#define STOP_ERR(err) *txlen = 0; svr_->log_error(err); return
+#define ARG_LEN() *(uint32_t *)(rxbuf + rxpos)
+#define ARG_BUF_REQUIRE(len); \
+    if (*txlen < txpos + (len)) {STOP_ERR("Native output buffer is full.");}
+#define ARG_FORMAT_ADD(c) sampsharp_strcat(format, MAX_ARGS_FORMAT, c)
+#define ARG_FORMAT_ADDF(c, ...) sampsharp_sprintf(formattmp,MAX_ARGS_FORMAT, c,\
+    ##__VA_ARGS__); sampsharp_strcat(format, MAX_ARGS_FORMAT, formattmp)
+
     uint32_t
         arglen,
-        txpos = sizeof(uint32_t), /* space for reponse */
-        handle = *(uint32_t *)rxbuf;
+        txpos = sizeof(uint32_t); /* space for response */
+    int32_t handle = *(int32_t *)rxbuf;
     void* args[MAX_ARGS];
     char format[MAX_ARGS_FORMAT] = { 0 };
+    char formattmp[MAX_ARGS_FORMAT];
 
-    if (handle >= natives_.size()) {
-        *txlen = 0;
-        svr_->log_error("Invoking invalid native handle.");
-        return;
+    if (handle < 0 || handle >= (int32_t)natives_.size()) {
+        STOP_ERR("Invoking invalid native handle.");
     }
 
-    for (uint32_t i = sizeof(uint32_t), j = 0; i < rxlen; j++) {
+    for (uint32_t rxpos = sizeof(uint32_t) + 1, j = 0; rxpos < rxlen; j++, 
+        rxpos++) {
         if (j >= MAX_ARGS) {
-            *txlen = 0;
-            svr_->log_error("Too many native arguments.");
-            return;
+            STOP_ERR("Too many native arguments.");
         }
-        switch (rxbuf[i]) {
+
+        switch (rxbuf[rxpos - 1]) {
             case ARG_VALUE:
-                args[j] = &rxbuf[i + 1];
-                i += 5;
-                sampsharp_strcat(format, MAX_ARGS_FORMAT, "d");
+                ARG_FORMAT_ADD("d");
+
+                args[j] = rxbuf + rxpos;
+
+                rxpos += sizeof(uint32_t);
                 break;
             case ARG_VALUE_REF:
-                if (*txlen < txpos + sizeof(uint32_t)) {
-                    *txlen = 0;
-                    svr_->log_error("Native output buffer is full.");
-                    return;
-                }
-                args[j] = &txbuf[txpos];
-                *(uint32_t *)&txbuf[txpos] = *(uint32_t *)&rxbuf[i + 1];
+                ARG_BUF_REQUIRE(sizeof(uint32_t));
+                ARG_FORMAT_ADD("R");
+
+                args[j] = txbuf + txpos;
+                memcpy(txbuf + txpos, rxbuf + rxpos, sizeof(uint32_t));
+
                 txpos += sizeof(uint32_t);
-                i += 5;
-                sampsharp_strcat(format, MAX_ARGS_FORMAT, "R");
+                rxpos += sizeof(uint32_t);
                 break;
             case ARG_STRING:
-                args[j] = &rxbuf[i + 1];
-                i += 2 + strlen((char *)&rxbuf[i + 1]);
-                sampsharp_strcat(format, MAX_ARGS_FORMAT, "s");
+                ARG_FORMAT_ADD("s");
+
+                args[j] = &rxbuf[rxpos];
+                rxpos += strlen((char *)(rxbuf + rxpos)) + 1;
                 break;
             case ARG_STRING_REF:
-                arglen = *(uint32_t *)&rxbuf[i + 1];
-                if (*txlen < txpos + arglen) {
-                    *txlen = 0;
-                    svr_->log_error("Native output buffer is full.");
-                    return;
-                }
+                arglen = ARG_LEN();
+                ARG_BUF_REQUIRE(arglen);
+                ARG_FORMAT_ADDF("S[%d]", arglen);
+
                 args[j] = txbuf + txpos;
+                *(char *)args[j] = '\0';
+
                 txpos += arglen;
-                i += 5;
-                sampsharp_sprintf(format + strlen(format), MAX_ARGS_FORMAT, 
-                    "S[%d]", arglen);
+                rxpos += sizeof(uint32_t);
                 break;
             case ARG_ARRAY:
-                arglen = *(uint32_t *)&rxbuf[i + 1];
-                args[j] = &rxbuf[i + 1 + sizeof(uint32_t)];
-                i += 1 + sizeof(uint32_t) + arglen;
-                sampsharp_sprintf(format + strlen(format), MAX_ARGS_FORMAT, 
-                    "a[%d]", arglen);
+                arglen = ARG_LEN();
+                ARG_FORMAT_ADDF("a[%d]", arglen);
+
+                args[j] =  rxbuf + rxpos + sizeof(uint32_t);
+
+                rxpos += sizeof(uint32_t) + arglen;
                 break;
             case ARG_ARRAY_REF:
-                arglen = *(uint32_t *)&rxbuf[i + 1];
-                if (*txlen < txpos + arglen) {
-                    *txlen = 0;
-                    svr_->log_error("Native output buffer is full.");
-                    return;
-                }
+                arglen = ARG_LEN();
+                ARG_BUF_REQUIRE(arglen);
+                ARG_FORMAT_ADDF("A[%d]", arglen);
+
                 args[j] = txbuf + txpos;
+
                 txpos += arglen;
-                i += 5;
-                sampsharp_sprintf(format + strlen(format), MAX_ARGS_FORMAT, 
-                    "A[%d]", arglen);
+                rxpos += sizeof(uint32_t);
                 break;
+            default:
+                STOP_ERR("Invalid native argument type.");
         }
     }
 
     *txlen = txpos;
-    *(uint32_t*)txbuf = sampgdk::InvokeNativeArray(natives_[handle], format, 
-        args);
+    *(uint32_t*)txbuf = sampgdk::InvokeNativeArray(natives_[handle], format,
+                                                   args);
 }
 
 void natives_map::clear() {

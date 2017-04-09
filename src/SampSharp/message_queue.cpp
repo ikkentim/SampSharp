@@ -1,5 +1,6 @@
 #include "message_queue.h"
 #include <assert.h>
+#include "server.h"
 
 message_queue::message_queue() : 
     local_fill_(false)
@@ -69,7 +70,6 @@ bool message_queue::try_fill_local() {
         ((uint32_t)pop() << 16) |
         ((uint32_t)pop() << 24));
 
-    printf("[DEBUG] Next up : command %d with length %d...\n", command_ ,command_length_);
     return true;
 }
 

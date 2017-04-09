@@ -13,9 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.Collections.Generic;
 
-namespace SampSharp.Core
+namespace SampSharp.Core.Communication
 {
     /// <summary>
     ///     A buffer of data which can be translated into server messages.
@@ -62,6 +63,23 @@ namespace SampSharp.Core
             _queue.Enqueue(value);
         }
 
+        /// <summary>
+        ///     Pushes the specified value onto the buffer.
+        /// </summary>
+        /// <param name="values">The values.</param>
+        /// <param name="startIndex">The start index.</param>
+        /// <param name="length">The length.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <see cref="values"/> is null.</exception>
+        public void Push(byte[] values, int startIndex, int length)
+        {
+            if (values == null) throw new ArgumentNullException(nameof(values));
+
+            for (var i = startIndex; i < startIndex + length; i++)
+            {
+                Push(values[i]);
+            }
+        }
+
         private bool TryFillLocal()
         {
             if (_localFill)
@@ -78,7 +96,7 @@ namespace SampSharp.Core
                 (_queue.Dequeue() << 24));
 
             _localFill = true;
-
+            
             return true;
         }
 

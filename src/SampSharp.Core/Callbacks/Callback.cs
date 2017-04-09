@@ -16,15 +16,15 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using SampSharp.Core.Communication;
 
-namespace SampSharp.Core
+namespace SampSharp.Core.Callbacks
 {
     /// <summary>
     ///     Represents a public call (callback).
     /// </summary>
     internal class Callback
     {
-        public const int DefaultReturnValue = 0;
         private readonly MethodInfo _methodInfo;
         private readonly ParameterInfo[] _parameterInfos;
         private readonly CallbackParameterInfo[] _parameters;
@@ -90,7 +90,7 @@ namespace SampSharp.Core
         /// <param name="buffer">The buffer.</param>
         /// <param name="startIndex">The start index.</param>
         /// <returns>The value returned by the callback.</returns>
-        public int Invoke(byte[] buffer, int startIndex)
+        public int? Invoke(byte[] buffer, int startIndex)
         {
             if (buffer == null) throw new ArgumentNullException(nameof(buffer));
 
@@ -161,7 +161,7 @@ namespace SampSharp.Core
             }
 
             var result = _methodInfo.Invoke(_target, _parameterValues);
-
+            
             if (result is int)
                 return (int) result;
             if (result is float)
@@ -169,7 +169,7 @@ namespace SampSharp.Core
             if (result is bool)
                 return ValueConverter.ToInt32((bool) result);
 
-            return DefaultReturnValue;
+            return null;
         }
     }
 }

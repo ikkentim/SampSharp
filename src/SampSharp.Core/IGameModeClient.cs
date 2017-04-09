@@ -13,8 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using SampSharp.Core.Callbacks;
 
 namespace SampSharp.Core
 {
@@ -24,15 +27,15 @@ namespace SampSharp.Core
     public interface IGameModeClient
     {
         /// <summary>
-        ///     Registers a callback with the specified <see cref="name" />. When the callback is called, the specified
-        ///     <see cref="methodInfo" /> will be invoked on the specified <see cref="target" />.
+        ///     Start receiving ticks and public calls.
         /// </summary>
-        /// <param name="name">The name af the callback to register.</param>
-        /// <param name="target">The target on which to invoke the method.</param>
-        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
-        /// <param name="parameters">The parameters of the callback.</param>
-        /// <returns></returns>
-        Task RegisterCallback(string name, object target, MethodInfo methodInfo, params CallbackParameterInfo[] parameters);
+        void Start();
+
+        /// <summary>
+        ///     Pings the server.
+        /// </summary>
+        /// <returns>The ping to the server</returns>
+        Task<TimeSpan> Ping();
 
         /// <summary>
         ///     Registers a callback with the specified <see cref="name" />. When the callback is called, the specified
@@ -41,7 +44,26 @@ namespace SampSharp.Core
         /// <param name="name">The name af the callback to register.</param>
         /// <param name="target">The target on which to invoke the method.</param>
         /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
-        /// <returns></returns>
-        Task RegisterCallback(string name, object target, MethodInfo methodInfo);
+        /// <param name="parameters">The parameters of the callback.</param>
+        void RegisterCallback(string name, object target, MethodInfo methodInfo, params CallbackParameterInfo[] parameters);
+
+        /// <summary>
+        ///     Registers a callback with the specified <see cref="name" />. When the callback is called, the specified
+        ///     <see cref="methodInfo" /> will be invoked on the specified <see cref="target" />.
+        /// </summary>
+        /// <param name="name">The name af the callback to register.</param>
+        /// <param name="target">The target on which to invoke the method.</param>
+        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
+        void RegisterCallback(string name, object target, MethodInfo methodInfo);
+
+        /// <summary>
+        /// Prints the specified text to the server console.
+        /// </summary>
+        /// <param name="text">The text to print to the server console.</param>
+        void Print(string text);
+
+        int GetNativeHandle(string name);
+
+        byte[] InvokeNative(int handle, IEnumerable<byte> data);
     }
 }

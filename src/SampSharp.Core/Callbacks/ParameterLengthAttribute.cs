@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.Core
+namespace SampSharp.Core.Callbacks
 {
     /// <summary>
     ///     Contains an index property for defining which parameter of a callback contains the length of the parameter this

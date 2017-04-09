@@ -14,38 +14,40 @@
 // limitations under the License.
 
 using System;
+using System.Threading.Tasks;
 
 namespace SampSharp.Core
 {
     /// <summary>
     ///     Represents an measurement device for the duration of SampSharp server pings.
     /// </summary>
-    internal class PongReceiver : ICommandReceiveScope
+    internal class PongReceiver
     {
-        private bool _done;
+        private readonly TaskCompletionSource<int> _ponger = new TaskCompletionSource<int>();
+
+        private TimeSpan? _result;
         private DateTime _start;
 
         /// <summary>
-        ///     The result of the ping.
+        ///     Gets the task which contains the result after the ping has been completed.
         /// </summary>
-        public TimeSpan Result { get; private set; }
+        public Task<TimeSpan> Task => GetTask();
 
-        #region Implementation of ICommandReceiveScope
+        private async Task<TimeSpan> GetTask()
+        {
+            if (_result == null)
+                await _ponger.Task;
 
-        /// <summary>
-        ///     Gets a value indicating whether the <see cref="IGameModeClient" /> should continue to receive commands.
-        /// </summary>
-        public bool ShouldReceiveCommands => !_done;
-
-        #endregion
+            return _result ?? default(TimeSpan);
+        }
 
         /// <summary>
         ///     Ends the ping measurement.
         /// </summary>
         public void Pong()
         {
-            _done = true;
-            Result = DateTime.Now - _start;
+            _result = DateTime.Now - _start;
+            _ponger.SetResult(0);
         }
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace SampSharp.Core
         /// </summary>
         public void Ping()
         {
-            _done = false;
+            _result = null;
             _start = DateTime.Now;
         }
     }

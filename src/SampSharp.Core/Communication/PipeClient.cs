@@ -17,9 +17,10 @@ using System;
 using System.Collections.Generic;
 using System.IO.Pipes;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace SampSharp.Core
+namespace SampSharp.Core.Communication
 {
     /// <summary>
     ///     Represents a named pipe SampSharp client.
@@ -30,6 +31,38 @@ namespace SampSharp.Core
         private readonly byte[] _readBuffer = new byte[1024 * 2];
         private readonly byte[] _singleByteBuffer = new byte[1];
         private NamedPipeClientStream _stream;
+
+        /// <summary>
+        ///     Finalizes an instance of the <see cref="PipeClient" /> class.
+        /// </summary>
+        ~PipeClient()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        ///     Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
+        /// </param>
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+                _stream.Dispose();
+        }
+
+        private async Task ReadAsync()
+        {
+            var len = await _stream.ReadAsync(_readBuffer, 0, _readBuffer.Length);
+            _queue.Push(_readBuffer, 0, len);
+        }
+
+        private void Read()
+        {
+            var len = _stream.Read(_readBuffer, 0, _readBuffer.Length);
+            _queue.Push(_readBuffer, 0, len);
+        }
 
         #region IDisposable
 
@@ -44,6 +77,8 @@ namespace SampSharp.Core
 
         #endregion
 
+        #region Implementation of IPipeClient
+
         /// <summary>
         ///     Connects the named pipe with the specified pipe name.
         /// </summary>
@@ -51,8 +86,10 @@ namespace SampSharp.Core
         /// <returns></returns>
         public async Task Connect(string pipeName)
         {
-            _stream = new NamedPipeClientStream(".", pipeName);
+            _stream = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.WriteThrough | PipeOptions.Asynchronous);
+
             await _stream.ConnectAsync();
+            _stream.ReadMode = PipeTransmissionMode.Byte;
         }
 
         /// <summary>
@@ -61,64 +98,51 @@ namespace SampSharp.Core
         /// <param name="command">The command.</param>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        public async Task Send(ServerCommand command, IEnumerable<byte> data)
+        public void Send(ServerCommand command, IEnumerable<byte> data)
         {
             var dataBytes = data as byte[] ?? data?.ToArray();
             var length = dataBytes?.Length ?? 0;
             var lenbytes = ValueConverter.GetBytes(length);
-            
-            _singleByteBuffer[0] = (byte) command;
-            await _stream.WriteAsync(_singleByteBuffer, 0, 1);
-            await _stream.WriteAsync(lenbytes, 0, 4);
-            if (dataBytes != null)
-                await _stream.WriteAsync(dataBytes, 0, dataBytes.Length);
 
-            await _stream.FlushAsync(); // TODO should I flush?
+            _singleByteBuffer[0] = (byte) command;
+            _stream.Write(_singleByteBuffer, 0, 1);
+            _stream.Write(lenbytes, 0, 4);
+            if (dataBytes != null)
+                _stream.Write(dataBytes, 0, dataBytes.Length);
+
+            _stream.Flush(); // TODO should I flush?
         }
 
         /// <summary>
         ///     Waits for the next command sent by the server.
         /// </summary>
         /// <returns>The command sent by the server.</returns>
-        public async Task<ServerCommandData> Receive()
+        public async Task<ServerCommandData> ReceiveAsync()
         {
             while (true)
             {
                 if (_queue.TryPop(out var command))
                     return command;
 
-                await Read();
+                await ReadAsync();
             }
         }
 
         /// <summary>
-        ///     Finalizes an instance of the <see cref="PipeClient" /> class.
+        ///     Waits for the next command sent by the server.
         /// </summary>
-        ~PipeClient()
+        /// <returns>The command sent by the server.</returns>
+        public ServerCommandData Receive()
         {
-            Dispose(false);
-        }
-
-        private async Task Read()
-        {
-            var len = await _stream.ReadAsync(_readBuffer, 0, _readBuffer.Length);
-
-            for (var i = 0; i < len; i++)
+            while (true)
             {
-                _queue.Push(_readBuffer[i]);
+                if (_queue.TryPop(out var command))
+                    return command;
+
+                Read();
             }
         }
 
-        /// <summary>
-        ///     Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing">
-        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
-        /// </param>
-        protected void Dispose(bool disposing)
-        {
-            if (disposing)
-                _stream.Dispose();
-        }
+        #endregion
     }
 }

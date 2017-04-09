@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Threading;
 
 namespace SampSharp.Core
 {
@@ -24,7 +25,7 @@ namespace SampSharp.Core
     {
         private IGameModeProvider _gameModeProvider;
         private string _pipeName = "SampSharp";
-
+        private bool _redirectConsoleOutput;
         /// <summary>
         ///     Use the specified <see cref="pipeName" /> to communicate with the SampSharp server.
         /// </summary>
@@ -33,6 +34,16 @@ namespace SampSharp.Core
         public GameModeBuilder UsePipe(string pipeName)
         {
             _pipeName = pipeName;
+            return this;
+        }
+
+        /// <summary>
+        /// Redirect the console output to the server.
+        /// </summary>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder RedirectConsoleOutput()
+        {
+            _redirectConsoleOutput = true;
             return this;
         }
 
@@ -64,7 +75,12 @@ namespace SampSharp.Core
         {
             var client = new GameModeClient(_pipeName, _gameModeProvider);
 
-            client.Run().Wait();
+            if (_redirectConsoleOutput)
+            {
+                Console.SetOut(new ServerLogWriter(client));
+            }
+
+            client.Run();
         }
     }
 }

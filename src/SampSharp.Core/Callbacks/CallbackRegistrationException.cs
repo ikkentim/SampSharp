@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.Core
+namespace SampSharp.Core.Callbacks
 {
     /// <summary>
     ///     An error thrown when a callback could not be registered.

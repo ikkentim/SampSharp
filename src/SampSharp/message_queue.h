@@ -4,6 +4,7 @@
 
 #define MESSAGE_QUEUE_BUFFER_TOO_SMALL  UINT32_MAX
 
+class server;
 class message_queue
 {
 public:

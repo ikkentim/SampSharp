@@ -15,8 +15,9 @@
 
 using System;
 using System.Collections.Generic;
+using SampSharp.Core.Communication;
 
-namespace SampSharp.Core
+namespace SampSharp.Core.Callbacks
 {
     /// <summary>
     ///     Holds information about a callback parameter.

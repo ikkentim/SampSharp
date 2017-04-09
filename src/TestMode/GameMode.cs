@@ -40,6 +40,16 @@ namespace TestMode
         {
             base.OnInitialized(args);
             
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            for (var i = 0; i < 10; i++)
+            {
+                var s = Server.NetworkStats;
+                Server.SetWorldTime(i);
+            }
+            sw.Stop();
+
+            Console.WriteLine($"bench took {sw.Elapsed}");
             Console.WriteLine($"TestMode for SampSharp v{GetType().Assembly.GetName().Version}");
             Console.WriteLine("----------------------");
 

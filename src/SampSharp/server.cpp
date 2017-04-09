@@ -32,7 +32,6 @@
 
 #define PIPE_NONE INVALID_HANDLE_VALUE
 
-
 #define LEN_PRINT_BUFFER    (1024)
 #define LEN_NETBUF          (20000)
 
@@ -158,6 +157,15 @@ void server::log_error(const char * format, ...) {
     va_start(args, format);
     vlog("ERROR", format, args);
     va_end(args);
+}
+
+void server::log_debug(const char * format, ...) {
+    /*
+    va_list args;
+    va_start(args, format);
+    vlog("DEBUG", format, args);
+    va_end(args);
+    /**/
 }
 
 void server::log_info(const char * format, ...) {
@@ -338,8 +346,14 @@ bool server::cmd_send(uint8_t cmd, uint32_t len, uint8_t *buf) {
 
     DWORD tlen;
     if (!WriteFile(pipe_, &cmd, 1, &tlen, NULL) || 
-        !WriteFile(pipe_, &len, 4, &tlen, NULL) || 
-        !WriteFile(pipe_, buf, len, &tlen, NULL)) {
+        !WriteFile(pipe_, &len, 4, &tlen, NULL)) {
+        log_error("Failed to write to pipe with error 0x%x.", GetLastError());
+        pipe_disconnect("Failed to write to pipe.");
+
+        return false;
+    }
+
+    if (buf && len > 0 && !WriteFile(pipe_, buf, len, &tlen, NULL)) {
         log_error("Failed to write to pipe with error 0x%x.", GetLastError());
         pipe_disconnect("Failed to write to pipe.");
 
@@ -378,20 +392,29 @@ CMD_DEFINE(cmd_register_call) {
 }
 
 CMD_DEFINE(cmd_find_native) {
-    uint32_t handle = (uint32_t)queue_server_.enqueue([this, buf] {
+    int32_t handle = (int32_t)queue_server_.enqueue([this, buf] {
         return (void *)natives_.get_handle(buf);
     }).get();
 
-    cmd_send(CMD_RESPONSE, sizeof(uint32_t), (uint8_t *)&handle);
+    cmd_send(CMD_RESPONSE, sizeof(int32_t), (uint8_t *)&handle);
 }
 
 CMD_DEFINE(cmd_invoke_native) {
-    uint32_t txlen = (uint32_t)queue_server_.enqueue([this, buf, buflen] {
+    auto start = std::chrono::system_clock::now();
+    uint32_t txlen = (uint32_t)queue_server_.enqueue([this, buf, buflen, start] {
+        auto end = std::chrono::system_clock::now();
+        auto elapsed =
+            std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+        log_info("Q took %d micro\n", elapsed.count());
         uint32_t txlen = LEN_NETBUF;
         natives_.invoke(buf, buflen, txbuf_, &txlen);
 
         return (void *)txlen;
     }).get();
+    auto end = std::chrono::system_clock::now();
+    auto elapsed =
+        std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    log_info("Qdone took %d micro\n", elapsed.count());
 
     cmd_send(CMD_RESPONSE, txlen, txbuf_);
 }
@@ -523,6 +546,12 @@ void server::loop() {
 
 void server::public_call(AMX *amx, const char *name, cell *params, cell *retval) {
     if (!is_client_ready()) {
+        if (!strcmp(name, "OnGameModeInit")) {
+            gamemode_started_ = true;
+        }
+        else if (!strcmp(name, "OnGameModeExit")) {
+            gamemode_started_ = false;
+        }
         return;
     }
 
@@ -568,12 +597,16 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
 
 void server::tick() {
     if (is_client_ready()) {
-        /*
+        //*
         queue_gamemode_.enqueue([this] {
             cmd_send(CMD_TICK, 0, NULL);
             return (void*)NULL;
         });
         /**/
     }
-    queue_server_.run_all_for(1000 / 250);// TODO: Improve timing
+
+    if (queue_server_.count() > 0) {
+        //queue_server_.run_all_for(1000 / 1000);// TODO: Improve timing
+        queue_server_.run_all();
+    }
 }
