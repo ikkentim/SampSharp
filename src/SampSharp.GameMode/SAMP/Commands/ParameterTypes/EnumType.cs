@@ -14,6 +14,7 @@
 // limitations under the License.
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 {
@@ -29,7 +30,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         /// <exception cref="System.ArgumentException">T must be an enumerated type</exception>
         public EnumType()
         {
-            if (!typeof (T).IsEnum)
+            if (!typeof (T).GetTypeInfo().IsEnum)
                 throw new ArgumentException("T must be an enumerated type");
 
             TestForValue = true;
@@ -65,7 +66,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 
             // find all candiates containing the input word, case insensitive.
             var candidates =
-                typeof (T).GetEnumValues()
+                typeof (T).GetTypeInfo().GetEnumValues()
                     .OfType<object>()
                     .Where(v => v.ToString().ToLower().Contains(lowerWord))
                     .ToList();
@@ -92,7 +93,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
             if (TestForValue)
             {
                 candidates.AddRange(
-                    typeof (T).GetEnumValues()
+                    typeof (T).GetTypeInfo().GetEnumValues()
                         .OfType<object>()
                         .Where(t => Convert.ChangeType(t, Enum.GetUnderlyingType(typeof (T))).ToString() == word));
             }

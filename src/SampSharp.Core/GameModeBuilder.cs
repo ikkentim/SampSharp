@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using System.Threading;
 
 namespace SampSharp.Core
 {
@@ -26,6 +25,7 @@ namespace SampSharp.Core
         private IGameModeProvider _gameModeProvider;
         private string _pipeName = "SampSharp";
         private bool _redirectConsoleOutput;
+
         /// <summary>
         ///     Use the specified <see cref="pipeName" /> to communicate with the SampSharp server.
         /// </summary>
@@ -38,7 +38,7 @@ namespace SampSharp.Core
         }
 
         /// <summary>
-        /// Redirect the console output to the server.
+        ///     Redirect the console output to the server.
         /// </summary>
         /// <returns>The updated game mode configuration builder.</returns>
         public GameModeBuilder RedirectConsoleOutput()
@@ -69,6 +69,16 @@ namespace SampSharp.Core
         }
 
         /// <summary>
+        /// Sets the behaviour used once a OnGameModeExit call has been received.
+        /// </summary>
+        /// <param name="exotBehaviour">The exit behaviour.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseExitBehaviour(GameModeExitBehaviour exotBehaviour)
+        {
+            throw new NotImplementedException();
+        }
+        
+        /// <summary>
         ///     Run the game mode using the build configuration stored in this instance.
         /// </summary>
         public void Run()
@@ -76,9 +86,7 @@ namespace SampSharp.Core
             var client = new GameModeClient(_pipeName, _gameModeProvider);
 
             if (_redirectConsoleOutput)
-            {
                 Console.SetOut(new ServerLogWriter(client));
-            }
 
             client.Run();
         }

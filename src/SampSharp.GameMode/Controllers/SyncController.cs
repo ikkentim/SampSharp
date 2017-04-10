@@ -38,8 +38,7 @@ namespace SampSharp.GameMode.Controllers
         public void RegisterEvents(BaseMode gameMode)
         {
             MainThread = Thread.CurrentThread;
-
-            gameMode.Tick += _gameMode_Tick;
+            
             gameMode.Exited += (sender, args) =>
             {
                 foreach (var t in Sync.SyncTask.All)
@@ -71,11 +70,6 @@ namespace SampSharp.GameMode.Controllers
             }
 
             _waiting = false;
-        }
-
-        private static void _gameMode_Tick(object sender, EventArgs e)
-        {
-            Flush();
         }
     }
 }

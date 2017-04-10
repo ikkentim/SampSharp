@@ -12,9 +12,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 
-namespace SampSharp.GameMode.API.NativeObjects
+namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
     ///     Indicates a method should be proxied by the <see cref="NativeObjectILGenerator" />.
@@ -33,7 +34,7 @@ namespace SampSharp.GameMode.API.NativeObjects
         ///     Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.
         /// </summary>
         /// <param name="lengths">The lengths of special arguments.</param>
-        public NativeMethodAttribute(params int[] lengths) : this(false, lengths)
+        public NativeMethodAttribute(params uint[] lengths) : this(false, lengths)
         {
         }
 
@@ -42,7 +43,7 @@ namespace SampSharp.GameMode.API.NativeObjects
         /// </summary>
         /// <param name="ignoreIdentifiers">if set to <c>true</c> identifiers are ignored.</param>
         /// <param name="lengths">The lengths.</param>
-        public NativeMethodAttribute(bool ignoreIdentifiers, params int[] lengths)
+        public NativeMethodAttribute(bool ignoreIdentifiers, params uint[] lengths)
         {
             IgnoreIdentifiers = ignoreIdentifiers;
             Lengths = lengths;
@@ -61,6 +62,6 @@ namespace SampSharp.GameMode.API.NativeObjects
         /// <summary>
         ///     Gets the lengths of special arguments.
         /// </summary>
-        public int[] Lengths { get; }
+        public uint[] Lengths { get; }
     }
 }

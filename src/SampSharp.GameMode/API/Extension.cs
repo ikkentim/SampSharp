@@ -12,6 +12,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+using System;
+using System.Reflection;
 using SampSharp.GameMode.Controllers;
 
 namespace SampSharp.GameMode.API
@@ -30,7 +33,8 @@ namespace SampSharp.GameMode.API
         /// </returns>
         public static bool Register<T>(T extension) where T : IExtension
         {
-            return InteropProvider.RegisterExtension(extension);
+            throw new NotImplementedException();
+            //return InteropProvider.RegisterExtension(extension);
         }
 
         #region Implementation of IExtension
@@ -50,7 +54,7 @@ namespace SampSharp.GameMode.API
         /// <param name="controllerCollection">The controller collection.</param>
         public virtual void LoadControllers(BaseMode gameMode, ControllerCollection controllerCollection)
         {
-            gameMode.AutoloadControllersForAssembly(GetType().Assembly);
+            gameMode.AutoloadControllersForAssembly(GetType().GetTypeInfo().Assembly);
         }
 
         /// <summary>

@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
@@ -195,7 +196,7 @@ namespace SampSharp.GameMode.Pools
         public static void Register(Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
-            if (!typeof (TInstance).IsAssignableFrom(type))
+            if (!typeof (TInstance).GetTypeInfo().IsAssignableFrom(type))
                 throw new ArgumentException("type must be of type " + typeof (TInstance), nameof(type));
 
             FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Type {type} registered to pool.");

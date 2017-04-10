@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SampSharp.Core;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Pools;
@@ -25,7 +26,7 @@ namespace SampSharp.GameMode
     /// <summary>
     ///     Base class for a SA-MP game mode.
     /// </summary>
-    public abstract partial class BaseMode : IDisposable
+    public abstract partial class BaseMode : IDisposable, IGameModeProvider
     {
         private readonly ControllerCollection _controllers = new ControllerCollection();
         private readonly List<IExtension> _extensions = new List<IExtension>();
@@ -40,32 +41,11 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Initializes a new instance of the <see cref="BaseMode" /> class.
         /// </summary>
-        protected BaseMode() : this(true)
+        protected BaseMode()
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseMode"/> class.
-        /// </summary>
-        /// <param name="redirectConsole">If true, all console output will be redirected to the server log.</param>
-        protected BaseMode(bool redirectConsole)
-        {
-            if (redirectConsole)
-                Console.SetOut(new ServerLogWriter());
-
-            if (FrameworkConfiguration.MessageLevel == FrameworkMessageLevel.Debug)
-            {
-                var type = Type.GetType("Mono.Runtime");
-                var displayName = type?.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
-
-                if (displayName != null)
-                    FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, "Detected mono version: {0}",
-                        displayName.Invoke(null, null));
-            }
-
             Instance = this;
         }
-
+        
         #endregion
         
         /// <summary>
@@ -101,24 +81,15 @@ namespace SampSharp.GameMode
         public void AutoloadControllersForAssembly(Assembly assembly)
         {
             foreach (var type in assembly.GetExportedTypes()
-                .Where(t => t.IsClass &&
-                            typeof (IController).IsAssignableFrom(t) &&
-                            t.GetCustomAttribute<ControllerAttribute>() != null))
+                .Where(t => t.GetTypeInfo().IsClass &&
+                            typeof (IController).GetTypeInfo().IsAssignableFrom(t) &&
+                            t.GetTypeInfo().GetCustomAttribute<ControllerAttribute>() != null))
             {
                 FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Autoloading type {type}...");
                 _controllers.Override(Activator.CreateInstance(type) as IController);
             }
         }
-
-        internal void Initialize()
-        {
-            SyncController.Flush();
-            LoadExtensions();
-            
-            LoadServicesAndControllers();
-
-        }
-
+        
         /// <summary>
         ///     Loads all controllers into the given ControllerCollection.
         /// </summary>
@@ -133,8 +104,8 @@ namespace SampSharp.GameMode
 
         private void AutoloadControllers()
         {
-            AutoloadControllersForAssembly(typeof(BaseMode).Assembly);
-            AutoloadControllersForAssembly(GetType().Assembly);
+            AutoloadControllersForAssembly(typeof(BaseMode).GetTypeInfo().Assembly);
+            AutoloadControllersForAssembly(GetType().GetTypeInfo().Assembly);
         }
 
         private void AutoloadPoolTypes()
@@ -142,14 +113,14 @@ namespace SampSharp.GameMode
             var types = new List<Type>();
 
             foreach (var poolType in new[] {typeof (BaseMode), GetType()}.Concat(_extensions.Select(e => e.GetType()))
-                .Select(t => t.Assembly)
+                .Select(t => t.GetTypeInfo().Assembly)
                 .Distinct()
                 .SelectMany(a => a.GetTypes())
-                .Where(t => t.IsClass && t.GetCustomAttribute<PooledTypeAttribute>() != null)
+                .Where(t => t.GetTypeInfo().IsClass && t.GetTypeInfo().GetCustomAttribute<PooledTypeAttribute>() != null)
                 .Distinct())
             {
                 // If poolType or subclass of poolType is already in types, continue.
-                if (types.Any(t => t == poolType || poolType.IsAssignableFrom(t)))
+                if (types.Any(t => t == poolType || poolType.GetTypeInfo().IsAssignableFrom(t)))
                 {
                     FrameworkLog.WriteLine(FrameworkMessageLevel.Debug,
                         $"Pool of type {poolType} is not autoloaded because a subclass of it will already be loaded.");
@@ -157,7 +128,7 @@ namespace SampSharp.GameMode
                 }
 
                 // Remove all types in types where type is supertype of poolType.
-                foreach (var t in types.Where(t => t.IsAssignableFrom(poolType)).ToArray())
+                foreach (var t in types.Where(t => t.GetTypeInfo().IsAssignableFrom(poolType)).ToArray())
                 {
                     FrameworkLog.WriteLine(FrameworkMessageLevel.Debug,
                         $"No longer autoloading type {poolType} because a subclass of it is going to be loaded.");
@@ -178,8 +149,8 @@ namespace SampSharp.GameMode
                 var pool = type;
                 do
                 {
-                    pool = pool.BaseType;
-                } while (pool != null && (!pool.IsGenericType || !poolTypes.Contains(pool.GetGenericTypeDefinition())));
+                    pool = pool.GetTypeInfo().BaseType;
+                } while (pool != null && (!pool.GetTypeInfo().IsGenericType || !poolTypes.Contains(pool.GetGenericTypeDefinition())));
 
                 if (pool == null)
                 {
@@ -187,7 +158,7 @@ namespace SampSharp.GameMode
                     continue;
                 }
 
-                pool.GetMethod("Register", new[] {typeof (Type)}).Invoke(null, new[] {type});
+                pool.GetTypeInfo().GetMethod("Register", new[] {typeof (Type)}).Invoke(null, new[] {type});
             }
         }
 
@@ -250,9 +221,10 @@ namespace SampSharp.GameMode
             foreach (
                 var assembly in
                     GetType()
+                        .GetTypeInfo()
                         .Assembly.GetReferencedAssemblies()
                         .Select(Assembly.Load)
-                        .Concat(new[] {GetType().Assembly})
+                        .Concat(new[] {GetType().GetTypeInfo().Assembly})
                         .Distinct()
                         .Where(a => a.GetCustomAttributes<SampSharpExtensionAttribute>().Any()))
                 AddExtensionToLoadList(assembly, load, loading);
@@ -266,14 +238,14 @@ namespace SampSharp.GameMode
                 {
                     if (extensionType == null)
                         continue;
-                    if (!typeof (IExtension).IsAssignableFrom(extensionType))
+                    if (!typeof (IExtension).GetTypeInfo().IsAssignableFrom(extensionType))
                     {
                         FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
                             "The extension from {0} could not be loaded. The specified extension type does not inherit from IExtension.",
                             assembly);
                         continue;
                     }
-                    if (extensionType.Assembly != assembly)
+                    if (extensionType.GetTypeInfo().Assembly != assembly)
                     {
                         FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
                             "The extension from {0} could not be loaded. The specified extension type is not part of the assembly.",
@@ -296,5 +268,31 @@ namespace SampSharp.GameMode
             }
         }
 
+        #region Implementation of IGameModeProvider
+
+        /// <summary>
+        ///     Initializes the game mode with the specified game mode client.
+        /// </summary>
+        /// <param name="client">The game mode client which is loading this game mode.</param>
+        void IGameModeProvider.Initialize(IGameModeClient client)
+        {
+            client.RegisterCallbacksInObject(this);
+
+            SyncController.Flush();
+            LoadExtensions();
+            LoadServicesAndControllers();
+
+            client.Start();
+        }
+
+        /// <summary>
+        ///     A method called once every server tick.
+        /// </summary>
+        void IGameModeProvider.Tick()
+        {
+            OnTick();
+        }
+
+        #endregion
     }
 }

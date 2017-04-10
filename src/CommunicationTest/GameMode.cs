@@ -98,9 +98,9 @@ namespace CommunicationTest
             var GetNetworkStatsHandle = _client.GetNativeHandle("GetNetworkStats");
             var setWorldTimeHandle = _client.GetNativeHandle("SetWorldTime");
             
-            var GetNetworkStats = new Native(_client, GetNetworkStatsHandle, new NativeParameterInfo(NativeParameterType.StringReference, 1), new NativeParameterInfo(NativeParameterType.Int32, 0));
+            var GetNetworkStats = new Native(_client, "GetNetworkStats", GetNetworkStatsHandle, new NativeParameterInfo(NativeParameterType.StringReference, 1), new NativeParameterInfo(NativeParameterType.Int32, 0));
 
-            var setWorldTime = new Native(_client, setWorldTimeHandle, new NativeParameterInfo(NativeParameterType.Int32, 0));
+            var setWorldTime = new Native(_client, "SetWorldTime", setWorldTimeHandle, new NativeParameterInfo(NativeParameterType.Int32, 0));
 
             var args = new object[] { null, 400 };
 
@@ -127,10 +127,10 @@ namespace CommunicationTest
 
             var getPlayerNameHandle = _client.GetNativeHandle("GetPlayerName");
             var sendClientMessageToAllHandle = _client.GetNativeHandle("SendClientMessageToAll");
-            var getPlayerName = new Native(_client, getPlayerNameHandle, new NativeParameterInfo(NativeParameterType.Int32, 0),
+            var getPlayerName = new Native(_client, "GetPlayerName", getPlayerNameHandle, new NativeParameterInfo(NativeParameterType.Int32, 0),
                 new NativeParameterInfo(NativeParameterType.StringReference, 2), new NativeParameterInfo(NativeParameterType.Int32, 0));
 
-            var sendClientMessageToAll = new Native(_client, sendClientMessageToAllHandle, new NativeParameterInfo(NativeParameterType.Int32, 0),
+            var sendClientMessageToAll = new Native(_client, "SendClientMessageToAll", sendClientMessageToAllHandle, new NativeParameterInfo(NativeParameterType.Int32, 0),
                 new NativeParameterInfo(NativeParameterType.String, 0));
 
             var args = new object[] { playerid, null, 200 };

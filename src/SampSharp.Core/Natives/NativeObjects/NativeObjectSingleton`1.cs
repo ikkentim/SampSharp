@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-namespace SampSharp.GameMode.API.NativeObjects
+namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
     ///     Provides a singleton <see cref="Instance"/> property containing a single instance of the specified native object type.

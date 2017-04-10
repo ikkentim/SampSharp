@@ -16,19 +16,19 @@
 #include "platforms.h"
 #include "version.h"
 #include <assert.h>
-#include <thread>
+//#include <thread>
 
 #ifdef SAMPSHARP_WINDOWS
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#define vsnprintf vsprintf_s
-
 #elif SAMPSHARP_LINUX
 #endif
 
 #include "server.h"
+
+#define vsnprintf vsprintf_s
 
 #define PIPE_NONE INVALID_HANDLE_VALUE
 
@@ -58,7 +58,7 @@ server::server() :
     callbacks_(callbacks_map(this)),
     natives_(natives_map(this)),
     pipe_(PIPE_NONE),
-    thread_(INVALID_HANDLE_VALUE),
+    //thread_(INVALID_HANDLE_VALUE),
     pipe_connected_(false),
     gamemode_started_(false),
     started_(false),
@@ -70,9 +70,9 @@ server::server() :
 }
 
 server::~server() {
-    if (thread_ != INVALID_HANDLE_VALUE) {
-        TerminateThread(thread_, 0);
-    }
+    //if (thread_ != INVALID_HANDLE_VALUE) {
+    //    TerminateThread(thread_, 0);
+    //}
 
     if (pipe_ != PIPE_NONE) {
         pipe_disconnect(NULL, true);
@@ -82,12 +82,12 @@ server::~server() {
     delete[] txbuf_;
 }
 
-DWORD WINAPI server_loop_f(LPVOID svr_ptr) {
+/*DWORD WINAPI server_loop_f(LPVOID svr_ptr) {
     assert(svr_ptr);
     ((server *)svr_ptr)->loop();
 
     return 0;
-}
+}*/
 
 void server::start(const char *pipe_name) {
     /* default pipe name */
@@ -105,17 +105,17 @@ void server::start(const char *pipe_name) {
     }
 
     /* store main thread handle for later reference  */
-    main_thread_ = std::this_thread::get_id();
+    //main_thread_ = std::this_thread::get_id();
 
     /* setup the server sockets to allow clients to connect */
     pipe_create();
 
     /* create the gamemode thread */
-    thread_ = CreateThread(0, 0, server_loop_f, this, 0, NULL);
+    /*thread_ = CreateThread(0, 0, server_loop_f, this, 0, NULL);
 
     if (thread_ == INVALID_HANDLE_VALUE) {
         log_error("Failed to create a thread.");
-    }
+    }*/
 }
 
 #pragma endregion
@@ -125,16 +125,16 @@ void server::start(const char *pipe_name) {
 void server::print(const char *format, ...) {
     va_list args;
 
-    if (main_thread_ == std::this_thread::get_id()) {
+    /*if (main_thread_ == std::this_thread::get_id()) {*/
         va_start(args, format);
         sampgdk_vlogprintf(format, args);
         va_end(args);
-    }
+    /*}
     else {
         /* the format and arguments are likely stored on the stack, print the
          * values to a buffer on the heap so it's accessible from the main
          * thread. 
-         */
+         * /
 
         char *buffer = new char[LEN_PRINT_BUFFER];
 
@@ -149,7 +149,7 @@ void server::print(const char *format, ...) {
             delete[] buffer;
             return (void *)NULL;
         });
-    }
+    }*/
 }
 
 void server::log_error(const char * format, ...) {
@@ -176,18 +176,18 @@ void server::log_info(const char * format, ...) {
 }
 
 void server::vlog(const char* prefix, const char *format, va_list args) {
-    if (main_thread_ == std::this_thread::get_id()) {
+    /*if (main_thread_ == std::this_thread::get_id()) {*/
         char buffer[LEN_PRINT_BUFFER];
         vsnprintf(buffer, LEN_PRINT_BUFFER, format, args);
         buffer[LEN_PRINT_BUFFER - 1] = '\0';
 
         sampgdk_logprintf("[SampSharp:%s] %s", prefix, buffer);
-    }
+    /*}
     else {
         /* the format and arguments are likely stored on the stack, print the
         * values to a buffer on the heap so it's accessible from the main
         * thread.
-        */
+        * /
 
         char *buffer = new char[LEN_PRINT_BUFFER];
         vsnprintf(buffer, LEN_PRINT_BUFFER, format, args);
@@ -198,7 +198,7 @@ void server::vlog(const char* prefix, const char *format, va_list args) {
             delete[] buffer;
             return (void *)NULL;
         });
-    }
+    }*/
 }
 
 #pragma endregion
@@ -392,29 +392,31 @@ CMD_DEFINE(cmd_register_call) {
 }
 
 CMD_DEFINE(cmd_find_native) {
-    int32_t handle = (int32_t)queue_server_.enqueue([this, buf] {
-        return (void *)natives_.get_handle(buf);
-    }).get();
+    int32_t handle = /*(int32_t)queue_server_.enqueue([this, buf] {
+        return (void *)*/
+            natives_.get_handle(buf);
+    /*}).get();*/
 
     cmd_send(CMD_RESPONSE, sizeof(int32_t), (uint8_t *)&handle);
 }
 
 CMD_DEFINE(cmd_invoke_native) {
     auto start = std::chrono::system_clock::now();
-    uint32_t txlen = (uint32_t)queue_server_.enqueue([this, buf, buflen, start] {
-        auto end = std::chrono::system_clock::now();
-        auto elapsed =
-            std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-        log_info("Q took %d micro\n", elapsed.count());
-        uint32_t txlen = LEN_NETBUF;
+    uint32_t txlen = LEN_NETBUF;
+        /*(uint32_t)queue_server_.enqueue([this, buf, buflen, start] {*/
+        auto endjj = std::chrono::system_clock::now();
+        auto elapsedjj =
+            std::chrono::duration_cast<std::chrono::microseconds>(endjj - start);
+        //log_info("Q took %d micro\n", elapsedjj.count());
+        //uint32_t txlenjj = LEN_NETBUF;
         natives_.invoke(buf, buflen, txbuf_, &txlen);
 
-        return (void *)txlen;
-    }).get();
+        /*return (void *)txlen;
+    }).get();*/
     auto end = std::chrono::system_clock::now();
     auto elapsed =
         std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    log_info("Qdone took %d micro\n", elapsed.count());
+    //log_info("Qdone took %d micro\n", elapsed.count());
 
     cmd_send(CMD_RESPONSE, txlen, txbuf_);
 }
@@ -527,6 +529,8 @@ server::cmd_status server::cmd_process(uint8_t cmd, uint8_t *buf,
 #pragma endregion
 
 void server::loop() {
+    log_error("DONT RUN LOOP!!!");
+    return;//dontrun
     uint8_t *response = NULL;
     uint32_t len;
 
@@ -540,7 +544,7 @@ void server::loop() {
         }
 
         /* process jobs on the queue */
-        queue_gamemode_.run_all();
+        //queue_gamemode_.run_all();
     }
 }
 
@@ -555,12 +559,13 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
         return;
     }
 
-    task_queue::promise promise = queue_gamemode_.enqueue([this,amx,name,params,retval] {
+    //task_queue::promise promise = queue_gamemode_.enqueue([this,amx,name,params,retval] {
         uint32_t len = callbacks_.fill_call_buffer(amx, name, params, txbuf_, LEN_NETBUF);
         uint8_t *response = NULL;
 
         if (len == 0 || !is_client_ready()) {
-            return (void*)NULL;
+            //return (void*)NULL;
+            return;
         }
 
         /* send */
@@ -569,7 +574,8 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
         /* receive */
         if(!cmd_receive_unhandled(&response, &len) || !response || len == 0) {
             log_error("Received no response to callback %s.", name);
-            return (void*)NULL;
+            //return (void*)NULL;
+            return;
         }
 
         if (len >= 5 && response[0] && retval) {
@@ -579,13 +585,13 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
 
         delete[] response;
       
-        return (void*)NULL;
-    });
+        //return (void*)NULL;
+    //});
 
     // TODO: Timeout mechanism
-    while (!promise._Is_ready()) {
-        queue_server_.run_all();
-    }
+    //while (!promise._Is_ready()) {
+    //    queue_server_.run_all();
+    //}
 
     if (!strcmp(name, "OnGameModeInit")) {
         gamemode_started_ = true;
@@ -598,15 +604,28 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
 void server::tick() {
     if (is_client_ready()) {
         //*
-        queue_gamemode_.enqueue([this] {
+        //queue_gamemode_.enqueue([this] {
             cmd_send(CMD_TICK, 0, NULL);
-            return (void*)NULL;
-        });
+            //return (void*)NULL;
+        //});
         /**/
     }
 
-    if (queue_server_.count() > 0) {
+    uint8_t *response = NULL;
+    uint32_t len;
+    cmd_status stat;
+    /* receive calls from the game mode client */
+    do {
+        stat = cmd_receive_one(&response, &len);
+
+        if (response) {
+            log_error("Unhandled response in tick.");
+            delete[] response;
+        }
+    } while (stat != cmd_status::no_cmd && stat != cmd_status::conn_dead);
+
+    /*if (queue_server_.count() > 0) {
         //queue_server_.run_all_for(1000 / 1000);// TODO: Improve timing
         queue_server_.run_all();
-    }
+    }*/
 }

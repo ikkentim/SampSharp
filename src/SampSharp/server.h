@@ -21,7 +21,7 @@
 #include <map>
 
 #include <sampgdk/sampgdk.h>
-#include "task_queue.h"
+//#include "task_queue.h"
 #include "message_queue.h"
 #include "callbacks_map.h"
 #include "natives_map.h"
@@ -59,11 +59,11 @@ private: /* fields */
     };
 
     /** main (server) thread handle */
-    std::thread::id main_thread_;
+    //std::thread::id main_thread_;
     /** queue for tasks to run on the server thread */
-    task_queue queue_server_;
+    //task_queue queue_server_;
     /** queue for tasks to run on the game mode thread */
-    task_queue queue_gamemode_;
+    //task_queue queue_gamemode_;
     /** queue for messages to be handled by the game mode thread (send by the client) */
     message_queue queue_messages_;
     /** map of registered callbacks */
@@ -83,7 +83,7 @@ private: /* fields */
     /** pipe handle */
     void *pipe_;
     /** thread handle */
-    void *thread_;
+    //void *thread_;
     /** whether connected to the pipe */
     bool pipe_connected_;
     /** name of the pipe to use */

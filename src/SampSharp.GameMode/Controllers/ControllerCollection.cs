@@ -16,6 +16,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.Controllers
@@ -64,7 +65,7 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="controller">The <see cref="IController" /> to add to this collection.</param>
         public void Override(IController controller)
         {
-            var overrides = this.Where(c => c.GetType().IsInstanceOfType(controller)).ToArray();
+            var overrides = this.Where(c => c.GetType().GetTypeInfo().IsInstanceOfType(controller)).ToArray();
 
             if (overrides.Any())
                 FrameworkLog.WriteLine(FrameworkMessageLevel.Debug,

@@ -37,6 +37,7 @@ namespace SampSharp.GameMode.Tools
         /// <param name="action">The action to run.</param>
         public static void Run(Action action)
         {
+            throw new NotImplementedException();
             if (!IsRequired)
             {
                 action();
@@ -53,6 +54,7 @@ namespace SampSharp.GameMode.Tools
         /// <param name="action">The action.</param>
         public static void RunSync(Action action)
         {
+            throw new NotImplementedException();
             if (!IsRequired)
                 action();
             else
@@ -67,6 +69,7 @@ namespace SampSharp.GameMode.Tools
         /// <returns></returns>
         public static T RunSync<T>(Func<T> func)
         {
+            throw new NotImplementedException();
             return !IsRequired
                 ? func()
                 : AsyncHelper.RunSync(() => RunAsync(func));
@@ -78,6 +81,7 @@ namespace SampSharp.GameMode.Tools
         /// <param name="action">The action the run</param>
         public static async Task RunAsync(Action action)
         {
+            throw new NotImplementedException();
             if (!IsRequired)
             {
                 action();
@@ -101,6 +105,7 @@ namespace SampSharp.GameMode.Tools
         /// <returns>The return value of the method that the action encapsulates.</returns>
         public static async Task<TResult> RunAsync<TResult>(Func<TResult> action)
         {
+            throw new NotImplementedException();
             if (!IsRequired)
             {
                 return action();
@@ -121,6 +126,7 @@ namespace SampSharp.GameMode.Tools
 
             public void Run()
             {
+                throw new NotImplementedException();
                 Action();
                 Done = true;
             }

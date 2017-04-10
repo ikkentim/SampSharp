@@ -12,12 +12,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace SampSharp.GameMode.API.NativeObjects
+namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
     /// A generator for native object instances.
@@ -44,10 +45,8 @@ namespace SampSharp.GameMode.API.NativeObjects
                     .Concat(parameterTypes ?? new Type[0])
                     .ToArray(), returnType)
         {
-            if (nativeObjectType == null) throw new ArgumentNullException(nameof(nativeObjectType));
-            if (identifiers == null) throw new ArgumentNullException(nameof(identifiers));
-            _nativeObjectType = nativeObjectType;
-            _identifiers = identifiers;
+            _nativeObjectType = nativeObjectType ?? throw new ArgumentNullException(nameof(nativeObjectType));
+            _identifiers = identifiers ?? throw new ArgumentNullException(nameof(identifiers));
         }
 
         #region Overrides of NativeILGenerator
@@ -86,7 +85,7 @@ namespace SampSharp.GameMode.API.NativeObjects
                 // Load the identifier from the object.
                 il.Emit(OpCodes.Ldarg_0);
 
-                var id = _nativeObjectType.GetProperty(_identifiers[index],
+                var id = _nativeObjectType.GetTypeInfo().GetProperty(_identifiers[index],
                     BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
                 if (id.PropertyType != typeof(int))

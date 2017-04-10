@@ -12,11 +12,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace SampSharp.GameMode.API.NativeObjects
+namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
     /// Represents a native method IL generator.
@@ -32,12 +33,9 @@ namespace SampSharp.GameMode.API.NativeObjects
         /// <exception cref="ArgumentNullException">Thrown if native, parameterTypes or returnType is null.</exception>
         public NativeILGenerator(INative native, Type[] parameterTypes, Type returnType)
         {
-            if (native == null) throw new ArgumentNullException(nameof(native));
-            if (parameterTypes == null) throw new ArgumentNullException(nameof(parameterTypes));
-            if (returnType == null) throw new ArgumentNullException(nameof(returnType));
-            ParameterTypes = parameterTypes;
-            Native = native;
-            ReturnType = returnType;
+            ParameterTypes = parameterTypes ?? throw new ArgumentNullException(nameof(parameterTypes));
+            Native = native ?? throw new ArgumentNullException(nameof(native));
+            ReturnType = returnType ?? throw new ArgumentNullException(nameof(returnType));
         }
 
         /// <summary>
@@ -66,13 +64,13 @@ namespace SampSharp.GameMode.API.NativeObjects
             MethodInfo result;
             const BindingFlags flags = BindingFlags.Public | BindingFlags.Static;
             if (ReturnType == typeof (int))
-                result = typeof (NativeHandleInvokers).GetMethod("InvokeHandle", flags);
+                result = typeof (NativeHandleInvokers).GetTypeInfo().GetMethod("InvokeHandle", flags);
             else if (ReturnType == typeof (bool))
-                result = typeof (NativeHandleInvokers).GetMethod("InvokeHandleAsBool", flags);
+                result = typeof (NativeHandleInvokers).GetTypeInfo().GetMethod("InvokeHandleAsBool", flags);
             else if (ReturnType == typeof (float))
-                result = typeof (NativeHandleInvokers).GetMethod("InvokeHandleAsFloat", flags);
+                result = typeof (NativeHandleInvokers).GetTypeInfo().GetMethod("InvokeHandleAsFloat", flags);
             else if (ReturnType == typeof(void))
-                result = typeof(NativeHandleInvokers).GetMethod("InvokeHandleAsVoid", flags);
+                result = typeof(NativeHandleInvokers).GetTypeInfo().GetMethod("InvokeHandleAsVoid", flags);
             else
                 throw new Exception("Unsupported return type of method");
 
@@ -144,7 +142,7 @@ namespace SampSharp.GameMode.API.NativeObjects
                 il.Emit(OpCodes.Ldarg, argIndex);
 
                 // If the parameter is a value type, box it.
-                if (type.IsValueType)
+                if (type.GetTypeInfo().IsValueType)
                     il.Emit(OpCodes.Box, type);
 
                 // Replace the element at the current index within the parameters array with the argument at 

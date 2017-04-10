@@ -27,7 +27,7 @@ namespace CommunicationTest
     {
         public static void Main(string[] args)
         {
-            //*
+            /*
             var p = Process.Start(new ProcessStartInfo
                 {
                     FileName = @"D:\projects\sampsharp\env\samp-server.exe",

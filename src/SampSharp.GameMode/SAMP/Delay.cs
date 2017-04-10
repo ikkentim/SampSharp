@@ -40,8 +40,8 @@ namespace SampSharp.GameMode.SAMP
         public static void Run(int delay, Action action)
         {
             var instance = new Delay(action);
-
-            InteropProvider.SetTimer(delay, false, instance);
+            
+            throw new NotImplementedException();
         }
     }
 }

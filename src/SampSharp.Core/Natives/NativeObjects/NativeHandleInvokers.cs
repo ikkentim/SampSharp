@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.GameMode.API
+namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
     ///     Contains simple wrapper methods for invoking handles of natives with a set of arguments.
@@ -28,7 +28,7 @@ namespace SampSharp.GameMode.API
         /// <returns>The return value as a float.</returns>
         public static float InvokeHandleAsFloat(int handle, object[] args)
         {
-            return Native.Get(handle).InvokeFloat(args);
+            return InternalStorage.RunningClient.NativeLoader.Get(handle).InvokeFloat(args);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace SampSharp.GameMode.API
         /// <returns>The return value as a boolean.</returns>
         public static bool InvokeHandleAsBool(int handle, object[] args)
         {
-            return Native.Get(handle).InvokeBool(args);
+            return InternalStorage.RunningClient.NativeLoader.Get(handle).InvokeBool(args);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace SampSharp.GameMode.API
         /// <param name="args">The arguments.</param>
         public static void InvokeHandleAsVoid(int handle, object[] args)
         {
-            Native.Get(handle).Invoke(args);
+            InternalStorage.RunningClient.NativeLoader.Get(handle).Invoke(args);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace SampSharp.GameMode.API
         /// <returns>The return value.</returns>
         public static int InvokeHandle(int handle, object[] args)
         {
-            return Native.Get(handle).Invoke(args);
+            return InternalStorage.RunningClient.NativeLoader.Get(handle).Invoke(args);
         }
     }
 }

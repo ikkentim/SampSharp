@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using SampSharp.Core.Callbacks;
+using SampSharp.Core.Natives;
 
 namespace SampSharp.Core
 {
@@ -56,6 +57,8 @@ namespace SampSharp.Core
         /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
         void RegisterCallback(string name, object target, MethodInfo methodInfo);
 
+        void RegisterCallbacksInObject(object target);
+
         /// <summary>
         /// Prints the specified text to the server console.
         /// </summary>
@@ -64,6 +67,8 @@ namespace SampSharp.Core
 
         int GetNativeHandle(string name);
 
-        byte[] InvokeNative(int handle, IEnumerable<byte> data);
+        byte[] InvokeNative(IEnumerable<byte> data);
+
+        INativeLoader NativeLoader { get; set; }
     }
 }

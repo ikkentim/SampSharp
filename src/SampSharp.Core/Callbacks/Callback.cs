@@ -37,12 +37,14 @@ namespace SampSharp.Core.Callbacks
         /// </summary>
         /// <param name="target">The target to invoke the method on.</param>
         /// <param name="methodInfo">The information about the method to invoke.</param>
+        /// <param name="name">The name of the callback.</param>
         /// <param name="parameters">The parameters of the callback.</param>
-        public Callback(object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters)
+        public Callback(object target, MethodInfo methodInfo, string name, CallbackParameterInfo[] parameters)
         {
             _target = target ?? throw new ArgumentNullException(nameof(target));
             _methodInfo = methodInfo ?? throw new ArgumentNullException(nameof(methodInfo));
             _parameters = parameters ?? throw new ArgumentNullException(nameof(parameters));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             _parameterInfos = methodInfo.GetParameters();
             _parameterValues = new object[parameters.Length];
 
@@ -83,6 +85,12 @@ namespace SampSharp.Core.Callbacks
                 }
             }
         }
+
+
+        /// <summary>
+        ///     Gets the name of the callback.
+        /// </summary>
+        public string Name { get; }
 
         /// <summary>
         ///     Invokes the callback with the specified arguments buffer.
@@ -161,7 +169,7 @@ namespace SampSharp.Core.Callbacks
             }
 
             var result = _methodInfo.Invoke(_target, _parameterValues);
-            
+
             if (result is int)
                 return (int) result;
             if (result is float)
@@ -170,6 +178,54 @@ namespace SampSharp.Core.Callbacks
                 return ValueConverter.ToInt32((bool) result);
 
             return null;
+        }
+
+        /// <summary>
+        ///     Determines whether the specified type is a valid value type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns><c>true</c> if the specified type is a valid value type; otherwise, <c>false</c>.</returns>
+        public static bool IsValidValueType(Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            return type == typeof(int) || type == typeof(float) || type == typeof(bool);
+        }
+
+        /// <summary>
+        ///     Determines whether the specified type is a valid array type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns><c>true</c> if the specified type is a valid array type; otherwise, <c>false</c>.</returns>
+        public static bool IsValidArrayType(Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            return type.IsArray && !type.IsByRef && type.HasElementType && IsValidValueType(type.GetElementType());
+        }
+
+        /// <summary>
+        ///     Determines whether the specified type is a valid string type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns><c>true</c> if the specified type is a valid string type; otherwise, <c>false</c>.</returns>
+        public static bool IsValidStringType(Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            return type == typeof(string);
+        }
+
+        /// <summary>
+        ///     Determines whether the specified type is a valid return type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns><c>true</c> if the specified type is a valid return type; otherwise, <c>false</c>.</returns>
+        public static bool IsValidReturnType(Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            return type == typeof(void) || IsValidValueType(type);
         }
     }
 }

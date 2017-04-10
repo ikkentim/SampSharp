@@ -49,7 +49,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             if (!IsValidCommandMethod(method))
                 throw new ArgumentException("Method unsuitable as command", nameof(method));
 
-            IsMethodMemberOfPlayer = typeof (BasePlayer).IsAssignableFrom(method.DeclaringType);
+            IsMethodMemberOfPlayer = typeof (BasePlayer).GetTypeInfo().IsAssignableFrom(method.DeclaringType);
 
             var skipCount = IsMethodMemberOfPlayer ? 0 : 1;
             var index = 0;
@@ -131,8 +131,8 @@ namespace SampSharp.GameMode.SAMP.Commands
         public static bool IsValidCommandMethod(MethodInfo method)
         {
             return (method.IsStatic && method.GetParameters().Length >= 1 &&
-                    typeof (BasePlayer).IsAssignableFrom(method.GetParameters().First().ParameterType)) ||
-                   (!method.IsStatic && typeof (BasePlayer).IsAssignableFrom(method.DeclaringType));
+                    typeof (BasePlayer).GetTypeInfo().IsAssignableFrom(method.GetParameters().First().ParameterType)) ||
+                   (!method.IsStatic && typeof (BasePlayer).GetTypeInfo().IsAssignableFrom(method.DeclaringType));
         }
 
         private bool GetArguments(string commandText, out object[] arguments)
@@ -171,7 +171,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         {
             var attribute = parameter.GetCustomAttribute<ParameterAttribute>();
 
-            if (attribute != null && typeof (ICommandParameterType).IsAssignableFrom(attribute.Type))
+            if (attribute != null && typeof (ICommandParameterType).GetTypeInfo().IsAssignableFrom(attribute.Type))
                 return Activator.CreateInstance(attribute.Type) as ICommandParameterType;
 
             if (parameter.ParameterType == typeof (string))
@@ -185,10 +185,10 @@ namespace SampSharp.GameMode.SAMP.Commands
             if (parameter.ParameterType == typeof (float))
                 return new FloatType();
 
-            if (typeof (BasePlayer).IsAssignableFrom(parameter.ParameterType))
+            if (typeof (BasePlayer).GetTypeInfo().IsAssignableFrom(parameter.ParameterType))
                 return new PlayerType();
 
-            if (parameter.ParameterType.IsEnum)
+            if (parameter.ParameterType.GetTypeInfo().IsEnum)
                 return
                     Activator.CreateInstance(typeof (EnumType<>).MakeGenericType(parameter.ParameterType))
                         as ICommandParameterType;

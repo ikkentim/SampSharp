@@ -12,9 +12,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 
-namespace SampSharp.GameMode.API.NativeObjects
+namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
     ///     Indicates a property represents a native setter/getter.
@@ -46,7 +47,7 @@ namespace SampSharp.GameMode.API.NativeObjects
         /// <summary>
         ///     Gets or sets the set lengths.
         /// </summary>
-        public int[] SetLengths { get; set; }
+        public uint[] SetLengths { get; set; }
 
         /// <summary>
         ///     Gets or sets the get function.
@@ -56,7 +57,7 @@ namespace SampSharp.GameMode.API.NativeObjects
         /// <summary>
         ///     Gets or sets the get lengths.
         /// </summary>
-        public int[] GetLengths { get; set; }
+        public uint[] GetLengths { get; set; }
 
         /// <summary>
         ///     Gets a value indicating whether to ignore identifiers.

@@ -1,3 +1,18 @@
+// SampSharp
+// Copyright 2017 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using SampSharp.Core.Communication;
@@ -15,6 +30,12 @@ namespace SampSharp.Core.Natives
         {
             Type = type;
             LengthIndex = lengthIndex;
+        }
+
+        public NativeParameterInfo(NativeParameterType type)
+        {
+            Type = type;
+            LengthIndex = 0;
         }
 
         public NativeParameterType Type { get; }
@@ -38,25 +59,43 @@ namespace SampSharp.Core.Natives
                 }
 
                 if (Type.HasFlag(NativeParameterType.Array))
-                {
                     value |= ServerCommandArgument.Array;
-                }
 
                 if (Type.HasFlag(NativeParameterType.Reference))
-                {
                     value |= ServerCommandArgument.Reference;
-                }
 
                 return value;
             }
         }
 
-        public bool RequiresLength => IsArray || IsReference;
+        public static NativeParameterInfo ForType(Type type)
+        {
+            var isByRef = type.IsByRef;
+            var elementType = isByRef ? type.GetElementType() : type;
+            var isArray = elementType.IsArray;
+            elementType = isArray ? elementType.GetElementType() : elementType;
+
+            NativeParameterType parameterType;
+            if (elementType == typeof(int)) parameterType = NativeParameterType.Int32;
+            else if (elementType == typeof(float)) parameterType = NativeParameterType.Single;
+            else if (elementType == typeof(bool)) parameterType = NativeParameterType.Bool;
+            else if (elementType == typeof(string)) parameterType = NativeParameterType.String;
+            else throw new ArgumentOutOfRangeException(nameof(type));
+
+            if (isArray) parameterType |= NativeParameterType.Array;
+            if (isByRef) parameterType |= NativeParameterType.Reference;
+
+            return new NativeParameterInfo(parameterType);
+        }
+
+        public bool RequiresLength => IsArray || (IsReference && !IsValue);
 
         private bool IsArray => Type.HasFlag(NativeParameterType.Array);
-        
+
         private bool IsReference => Type.HasFlag(NativeParameterType.Reference);
 
+        public bool IsValue => Type.HasFlag(NativeParameterType.Int32) || Type.HasFlag(NativeParameterType.Single) ||
+                               Type.HasFlag(NativeParameterType.Bool);
         public uint LengthIndex { get; }
 
         public object GetReferenceArgument(byte[] response, ref int index)
@@ -152,17 +191,13 @@ namespace SampSharp.Core.Natives
                 case NativeParameterType.SingleArrayReference:
                 case NativeParameterType.BoolArrayReference:
                     if (length < 1)
-                    {
                         throw new ArgumentOutOfRangeException(nameof(length));
-                    }
                     return ValueConverter.GetBytes(length);
                 case NativeParameterType.Int32Array:
                     if (value is int[] ai)
                     {
                         if (length < 1)
-                        {
                             throw new ArgumentOutOfRangeException(nameof(length));
-                        }
 
                         var array = new byte[length * 4 + 4];
                         ValueConverter.GetBytes(length).CopyTo(array, 0);
@@ -178,9 +213,7 @@ namespace SampSharp.Core.Natives
                     if (value is float[] af)
                     {
                         if (length < 1)
-                        {
                             throw new ArgumentOutOfRangeException(nameof(length));
-                        }
 
                         var array = new byte[length * 4 + 4];
                         ValueConverter.GetBytes(length).CopyTo(array, 0);
@@ -196,9 +229,7 @@ namespace SampSharp.Core.Natives
                     if (value is bool[] ab)
                     {
                         if (length < 1)
-                        {
                             throw new ArgumentOutOfRangeException(nameof(length));
-                        }
 
                         var array = new byte[length * 4 + 4];
                         ValueConverter.GetBytes(length).CopyTo(array, 0);

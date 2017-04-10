@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
+using SampSharp.Core.Callbacks;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
@@ -31,6 +32,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnGameModeInit()
         {
             OnInitialized(EventArgs.Empty);
@@ -38,6 +40,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnGameModeExit()
         {
             OnExited(EventArgs.Empty);
@@ -45,6 +48,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerConnect(int playerid)
         {
             OnPlayerConnected(BasePlayer.FindOrCreate(playerid), EventArgs.Empty);
@@ -52,6 +56,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerDisconnect(int playerid, int reason)
         {
             var args = new DisconnectEventArgs((DisconnectReason) reason);
@@ -62,6 +67,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerSpawn(int playerid)
         {
             var args = new SpawnEventArgs();
@@ -71,6 +77,7 @@ namespace SampSharp.GameMode
             return !args.ReturnToClassSelection;
         }
 
+        [Callback]
         internal bool OnPlayerDeath(int playerid, int killerid, int reason)
         {
             OnPlayerDied(BasePlayer.FindOrCreate(playerid),
@@ -80,6 +87,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnVehicleSpawn(int vehicleid)
         {
             var vehicle = BaseVehicle.Find(vehicleid);
@@ -92,6 +100,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnVehicleDeath(int vehicleid, int killerid)
         {
             var vehicle = BaseVehicle.Find(vehicleid);
@@ -104,6 +113,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerText(int playerid, string text)
         {
             var args = new TextEventArgs(text);
@@ -113,6 +123,7 @@ namespace SampSharp.GameMode
             return args.SendToPlayers;
         }
 
+        [Callback]
         internal bool OnPlayerCommandText(int playerid, string cmdtext)
         {
             var args = new CommandTextEventArgs(cmdtext);
@@ -122,6 +133,7 @@ namespace SampSharp.GameMode
             return args.Success;
         }
 
+        [Callback]
         internal bool OnPlayerRequestClass(int playerid, int classid)
         {
             var args = new RequestClassEventArgs(classid);
@@ -131,6 +143,7 @@ namespace SampSharp.GameMode
             return !args.PreventSpawning;
         }
 
+        [Callback]
         internal bool OnPlayerEnterVehicle(int playerid, int vehicleid, bool ispassenger)
         {
             var vehicle = BaseVehicle.Find(vehicleid);
@@ -144,6 +157,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerExitVehicle(int playerid, int vehicleid)
         {
             var vehicle = BaseVehicle.Find(vehicleid);
@@ -157,6 +171,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerStateChange(int playerid, int newstate, int oldstate)
         {
             OnPlayerStateChanged(BasePlayer.FindOrCreate(playerid),
@@ -172,6 +187,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerLeaveCheckpoint(int playerid)
         {
             OnPlayerLeaveCheckpoint(BasePlayer.FindOrCreate(playerid), EventArgs.Empty);
@@ -179,6 +195,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerEnterRaceCheckpoint(int playerid)
         {
             OnPlayerEnterRaceCheckpoint(BasePlayer.FindOrCreate(playerid), EventArgs.Empty);
@@ -186,6 +203,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerLeaveRaceCheckpoint(int playerid)
         {
             OnPlayerLeaveRaceCheckpoint(BasePlayer.FindOrCreate(playerid), EventArgs.Empty);
@@ -193,6 +211,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnRconCommand(string command)
         {
             var args = new RconEventArgs(command);
@@ -201,6 +220,7 @@ namespace SampSharp.GameMode
             return args.Success;
         }
 
+        [Callback]
         internal bool OnPlayerRequestSpawn(int playerid)
         {
             var args = new RequestSpawnEventArgs();
@@ -210,6 +230,7 @@ namespace SampSharp.GameMode
             return !args.PreventSpawning;
         }
 
+        [Callback]
         internal bool OnObjectMoved(int objectid)
         {
             var @object = GlobalObject.Find(objectid);
@@ -222,6 +243,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerObjectMoved(int playerid, int objectid)
         {
             var @object = PlayerObject.Find(BasePlayer.FindOrCreate(playerid), objectid);
@@ -234,6 +256,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerPickUpPickup(int playerid, int pickupid)
         {
             var pickup = Pickup.Find(pickupid);
@@ -246,6 +269,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnVehicleMod(int playerid, int vehicleid, int componentid)
         {
             var vehicle = BaseVehicle.Find(vehicleid);
@@ -260,6 +284,7 @@ namespace SampSharp.GameMode
             return !args.PreventPropagation;
         }
 
+        [Callback]
         internal bool OnEnterExitModShop(int playerid, int enterexit, int interiorid)
         {
             OnPlayerEnterExitModShop(BasePlayer.FindOrCreate(playerid),
@@ -268,6 +293,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnVehiclePaintjob(int playerid, int vehicleid, int paintjobid)
         {
             var vehicle = BaseVehicle.Find(vehicleid);
@@ -282,6 +308,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnVehicleRespray(int playerid, int vehicleid, int color1, int color2)
         {
             var vehicle = BaseVehicle.Find(vehicleid);
@@ -294,6 +321,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnVehicleDamageStatusUpdate(int vehicleid, int playerid)
         {
             var vehicle = BaseVehicle.Find(vehicleid);
@@ -306,6 +334,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX,
             float newY, float newZ, float velX, float velY, float velZ)
         {
@@ -321,6 +350,7 @@ namespace SampSharp.GameMode
             return !args.PreventPropagation;
         }
 
+        [Callback]
         internal bool OnPlayerSelectedMenuRow(int playerid, int row)
         {
             OnPlayerSelectedMenuRow(BasePlayer.FindOrCreate(playerid), new MenuRowEventArgs(row));
@@ -328,6 +358,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerExitedMenu(int playerid)
         {
             OnPlayerExitedMenu(BasePlayer.FindOrCreate(playerid), EventArgs.Empty);
@@ -335,6 +366,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerInteriorChange(int playerid, int newinteriorid, int oldinteriorid)
         {
             OnPlayerInteriorChanged(BasePlayer.FindOrCreate(playerid),
@@ -343,6 +375,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys)
         {
             OnPlayerKeyStateChanged(BasePlayer.FindOrCreate(playerid),
@@ -351,6 +384,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnRconLoginAttempt(string ip, string password, bool success)
         {
             OnRconLoginAttempt(new RconLoginAttemptEventArgs(ip, password, success));
@@ -358,6 +392,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerUpdate(int playerid)
         {
             var args = new PlayerUpdateEventArgs();
@@ -367,6 +402,7 @@ namespace SampSharp.GameMode
             return !args.PreventPropagation;
         }
 
+        [Callback]
         internal bool OnPlayerStreamIn(int playerid, int forplayerid)
         {
             OnPlayerStreamIn(BasePlayer.FindOrCreate(playerid),
@@ -375,6 +411,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerStreamOut(int playerid, int forplayerid)
         {
             OnPlayerStreamOut(BasePlayer.FindOrCreate(playerid),
@@ -383,6 +420,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnVehicleStreamIn(int vehicleid, int forplayerid)
         {
             var vehicle = BaseVehicle.Find(vehicleid);
@@ -395,6 +433,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnVehicleStreamOut(int vehicleid, int forplayerid)
         {
             var vehicle = BaseVehicle.Find(vehicleid);
@@ -407,6 +446,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnTrailerUpdate(int playerId, int vehicleid)
         {
             var vehicle = BaseVehicle.Find(vehicleid);
@@ -420,6 +460,7 @@ namespace SampSharp.GameMode
             return !args.PreventPropagation;
         }
 
+        [Callback]
         internal bool OnDialogResponse(int playerid, int dialogid, int response, int listitem, string inputtext)
         {
             OnDialogResponse(BasePlayer.FindOrCreate(playerid),
@@ -428,6 +469,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid, int bodypart)
         {
             OnPlayerTakeDamage(BasePlayer.FindOrCreate(playerid),
@@ -437,6 +479,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerGiveDamage(int playerid, int damagedid, float amount, int weaponid, int bodypart)
         {
             OnPlayerGiveDamage(BasePlayer.FindOrCreate(playerid),
@@ -446,6 +489,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerClickMap(int playerid, float fX, float fY, float fZ)
         {
             OnPlayerClickMap(BasePlayer.FindOrCreate(playerid), new PositionEventArgs(new Vector3(fX, fY, fZ)));
@@ -453,6 +497,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerClickTextDraw(int playerid, int clickedid)
         {
             var clicked = clickedid == TextDraw.InvalidId ? null : TextDraw.Find(clickedid);
@@ -466,6 +511,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerClickPlayerTextDraw(int playerid, int playertextid)
         {
             var player = BasePlayer.FindOrCreate(playerid);
@@ -480,6 +526,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerClickPlayer(int playerid, int clickedplayerid, int source)
         {
             OnPlayerClickPlayer(BasePlayer.FindOrCreate(playerid),
@@ -490,6 +537,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerEditObject(int playerid, bool playerobject, int objectid, int response, float fX, float fY,
             float fZ, float fRotX, float fRotY, float fRotZ)
         {
@@ -520,6 +568,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid,
             float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX,
             float fScaleY, float fScaleZ)
@@ -532,6 +581,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY,
             float fZ)
         {
@@ -566,6 +616,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY,
             float fZ)
         {
@@ -577,6 +628,7 @@ namespace SampSharp.GameMode
             return !args.PreventDamage;
         }
 
+        [Callback]
         internal bool OnIncomingConnection(int playerid, string ipAddress, int port)
         {
             OnIncomingConnection(new ConnectionEventArgs(playerid, ipAddress, port));
@@ -584,6 +636,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnVehicleSirenStateChange(int playerid, int vehicleid, bool newstate)
         {
             var vehicle = BaseVehicle.Find(vehicleid);
@@ -596,6 +649,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnActorStreamIn(int actorid, int forplayerid)
         {
             var actor = Actor.Find(actorid);
@@ -608,6 +662,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnActorStreamOut(int actorid, int forplayerid)
         {
             var actor = Actor.Find(actorid);
@@ -620,6 +675,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerGiveDamageActor(int playerid, int damagedActorid, float amount, int weaponid, int bodypart)
         {
             var actor = Actor.Find(damagedActorid);
@@ -632,15 +688,17 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnTick()
         {
             OnTick(EventArgs.Empty);
 
             return true;
         }
-
+        
         internal bool OnCallbackException(Exception exception)
         {
+            throw new NotImplementedException();
             var args = new ExceptionEventArgs(exception);
             OnCallbackException(args);
 

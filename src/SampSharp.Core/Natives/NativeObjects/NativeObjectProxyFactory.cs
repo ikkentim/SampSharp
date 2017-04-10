@@ -12,13 +12,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace SampSharp.GameMode.API.NativeObjects
+namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
     /// Contains logic for creating natove object proxies.
@@ -34,9 +35,8 @@ namespace SampSharp.GameMode.API.NativeObjects
         static NativeObjectProxyFactory()
         {
             var asmName = new AssemblyName("ProxyAssembly");
-            var asmBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(asmName, AssemblyBuilderAccess.RunAndSave);
-
-            ModuleBuilder = asmBuilder.DefineDynamicModule(asmName.Name, asmName.Name + ".dll");
+            var asmBuilder = AssemblyBuilder.DefineDynamicAssembly(asmName, AssemblyBuilderAccess.Run);
+            ModuleBuilder = asmBuilder.DefineDynamicModule(asmName.Name + ".dll");
         }
 
         /// <summary>
@@ -66,11 +66,11 @@ namespace SampSharp.GameMode.API.NativeObjects
             var typeBuilder = ModuleBuilder.DefineType(type.Name + "ProxyClass",
                 TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.Class, type);
 
-            var objAttr = type.GetCustomAttribute<NativeObjectIdentifiersAttribute>();
+            var objAttr = type.GetTypeInfo().GetCustomAttribute<NativeObjectIdentifiersAttribute>();
 
             var didWrapAnything = false;
 
-            foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+            foreach (var property in type.GetTypeInfo().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
             {
                 var get = property.GetMethod;
                 var set = property.SetMethod;
@@ -96,7 +96,7 @@ namespace SampSharp.GameMode.API.NativeObjects
                         MethodAttributes.Virtual | MethodAttributes.HideBySig, get.ReturnType, Type.EmptyTypes);
 
                     var il = methodBuilder.GetILGenerator();
-                    var native = Native.Load(name, sizes,
+                    var native = InternalStorage.RunningClient.NativeLoader.Load(name, sizes,
                         Enumerable.Repeat(typeof (int), attr.IgnoreIdentifiers ? 0 : objAttr?.Identifiers?.Length ?? 0)
                             .ToArray());
 
@@ -117,7 +117,7 @@ namespace SampSharp.GameMode.API.NativeObjects
                         new[] {property.PropertyType});
 
                     var il = methodBuilder.GetILGenerator();
-                    var native = Native.Load(name, sizes,
+                    var native = InternalStorage.RunningClient.NativeLoader.Load(name, sizes,
                         Enumerable.Repeat(typeof (int), attr.IgnoreIdentifiers ? 0 : objAttr?.Identifiers?.Length ?? 0)
                             .Concat(new[] {property.PropertyType})
                             .ToArray());
@@ -132,7 +132,7 @@ namespace SampSharp.GameMode.API.NativeObjects
                 didWrapAnything = true;
             }
 
-            foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            foreach (var method in type.GetTypeInfo().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                 )
             {
                 if (!method.IsVirtual || (!method.IsPublic && !method.IsFamily))
@@ -147,7 +147,7 @@ namespace SampSharp.GameMode.API.NativeObjects
                 var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
                 var sizes = attr.Lengths;
 
-                var native = Native.Load(name, sizes,
+                var native = InternalStorage.RunningClient.NativeLoader.Load(name, sizes,
                     Enumerable.Repeat(typeof(int), attr.IgnoreIdentifiers ? 0 : objAttr?.Identifiers?.Length ?? 0)
                         .Concat(argTypes)
                         .ToArray());
@@ -172,7 +172,8 @@ namespace SampSharp.GameMode.API.NativeObjects
                 didWrapAnything = true;
             }
 
-            outType = didWrapAnything ? typeBuilder.CreateType() : type;
+            
+            outType = didWrapAnything ? typeBuilder.CreateTypeInfo().AsType() : type;
 
             KnownTypes[type] = outType;
             return Activator.CreateInstance(outType, arguments);

@@ -51,6 +51,6 @@ namespace SampSharp.GameMode.API
         ///     Gets the assemblies to load before this extension.
         /// </summary>
         public IEnumerable<Assembly> LoadBeforeAssemblies
-            => _loadBeforeAssembliesOfType?.Where(t => t != null).Select(t => t.Assembly);
+            => _loadBeforeAssembliesOfType?.Where(t => t != null).Select(t => t.GetTypeInfo().Assembly);
     }
 }

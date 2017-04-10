@@ -1,20 +1,6 @@
-// SampSharp
-// Copyright 2017 Tim Potze
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-using System;
+﻿using System;
 
-namespace SampSharp.GameMode.API
+namespace SampSharp.Core.Natives
 {
     /// <summary>
     ///     Contains the functionality of a native function loader.
@@ -28,8 +14,15 @@ namespace SampSharp.GameMode.API
         /// <param name="sizes">The references to the parameter which contains the size of array parameters.</param>
         /// <param name="parameterTypes">The parameter types.</param>
         /// <returns>The loaded native.</returns>
-        INative Load(string name, int[] sizes, Type[] parameterTypes);
+        INative Load(string name, uint[] sizes, Type[] parameterTypes);
 
+        /// <summary>
+        ///     Loads a native with the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The loaded native.</returns>
+        INative Load(string name, NativeParameterInfo[] parameters);
 
         /// <summary>
         ///     Gets the native with the specified handle.

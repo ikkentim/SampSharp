@@ -83,7 +83,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
         private static IPermissionChecker CreatePermissionChecker(Type type)
         {
-            if (type == null || !typeof(IPermissionChecker).IsAssignableFrom(type))
+            if (type == null || !typeof(IPermissionChecker).GetTypeInfo().IsAssignableFrom(type))
                 return null;
 
             return Activator.CreateInstance(type) as IPermissionChecker;
@@ -98,7 +98,8 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             foreach (
                 var permissionChecker in
-                type.GetCustomAttributes<CommandGroupAttribute>()
+                type.GetTypeInfo()
+                    .GetCustomAttributes<CommandGroupAttribute>()
                     .Select(a => a.PermissionChecker)
                     .Distinct()
                     .Select(CreatePermissionChecker)
@@ -130,7 +131,8 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             var count = 0;
             var groups =
-                type.GetCustomAttributes<CommandGroupAttribute>()
+                type.GetTypeInfo()
+                    .GetCustomAttributes<CommandGroupAttribute>()
                     .SelectMany(a => a.Paths)
                     .Select(g => g.Trim())
                     .Where(g => !string.IsNullOrEmpty(g)).ToArray();
@@ -224,7 +226,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         public virtual void RegisterCommands(Type typeInAssembly)
         {
             if (typeInAssembly == null) throw new ArgumentNullException(nameof(typeInAssembly));
-            RegisterCommands(typeInAssembly.Assembly);
+            RegisterCommands(typeInAssembly.GetTypeInfo().Assembly);
         }
 
         /// <summary>
@@ -237,11 +239,11 @@ namespace SampSharp.GameMode.SAMP.Commands
                 var method in
                     assembly.GetTypes()
                         // Get all classes in the specified assembly.
-                        .Where(type => !type.IsInterface && type.IsClass && !type.IsAbstract)
+                        .Where(type => !type.GetTypeInfo().IsInterface && type.GetTypeInfo().IsClass && !type.GetTypeInfo().IsAbstract)
                         // Select the methods in the type.
                         .SelectMany(
                             type =>
-                                type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static |
+                                type.GetTypeInfo().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static |
                                                 BindingFlags.Instance))
                         // Exclude abstract methods. (none should be since abstract types are excluded)
                         .Where(method => !method.IsAbstract)

@@ -14,6 +14,7 @@
 // limitations under the License.
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace SampSharp.GameMode
 {
@@ -59,9 +60,9 @@ namespace SampSharp.GameMode
         {
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
             if (service == null) throw new ArgumentNullException(nameof(service));
-            if (!typeof (IService).IsAssignableFrom(serviceType))
+            if (!typeof (IService).GetTypeInfo().IsAssignableFrom(serviceType))
                 throw new ArgumentException("serviceType must be of type IService");
-            if (!serviceType.IsInstanceOfType(service))
+            if (!serviceType.GetTypeInfo().IsInstanceOfType(service))
                 throw new ArgumentException("service must be instance of type serviceType");
 
             _services[serviceType] = service;

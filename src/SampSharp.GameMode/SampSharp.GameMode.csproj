@@ -1,329 +1,84 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CCFB350D-BD04-41AB-A9F8-79767E94727E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SampSharp.GameMode</RootNamespace>
-    <AssemblyName>SampSharp.GameMode</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard1.5</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\env\gamemode\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>..\..\bin\SampSharp.GameMode.XML</DocumentationFile>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="API\DefaultNative.cs" />
-    <Compile Include="API\IInterop.cs" />
-    <Compile Include="API\Interop.cs" />
-    <Compile Include="API\NativeObjects\NativeNotImplementedException.cs" />
-    <Compile Include="API\DefaultNativeLoader.cs" />
-    <Compile Include="API\Extension.cs" />
-    <Compile Include="API\IExtension.cs" />
-    <Compile Include="API\INative.cs" />
-    <Compile Include="API\INativeLoader.cs" />
-    <Compile Include="API\InteropProvider.cs" />
-    <Compile Include="API\NativeHandleInvokers.cs" />
-    <Compile Include="API\NativeObjects\NativeILGenerator.cs" />
-    <Compile Include="API\NativeObjects\NativeMethodAttribute.cs" />
-    <Compile Include="API\NativeObjects\NativeObjectIdentifiersAttribute.cs" />
-    <Compile Include="API\NativeObjects\NativeObjectILGenerator.cs" />
-    <Compile Include="API\NativeObjects\NativeObjectProxyFactory.cs" />
-    <Compile Include="API\NativeObjects\NativeObjectSingleton`1.cs" />
-    <Compile Include="API\NativeObjects\NativePropertyAttribute.cs" />
-    <Compile Include="API\SampSharpExtensionAttribute.cs" />
-    <Compile Include="API\ServerInterop.cs" />
-    <Compile Include="BaseMode.callbacks.cs">
+    <ProjectReference Include="..\SampSharp.Core\SampSharp.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="BaseMode.callbacks.cs">
       <DependentUpon>BaseMode.cs</DependentUpon>
     </Compile>
-    <Compile Include="BaseMode.events.cs">
+    <Compile Update="BaseMode.events.cs">
       <DependentUpon>BaseMode.cs</DependentUpon>
     </Compile>
-    <Compile Include="BaseMode.functions.cs">
+    <Compile Update="BaseMode.functions.cs">
       <DependentUpon>BaseMode.cs</DependentUpon>
     </Compile>
-    <Compile Include="BaseMode.Internal.cs">
+    <Compile Update="BaseMode.Internal.cs">
       <DependentUpon>BaseMode.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\ActorController.cs" />
-    <Compile Include="Controllers\CommandController.cs" />
-    <Compile Include="Controllers\ControllerAttribute.cs" />
-    <Compile Include="Controllers\ControllerCollection.cs" />
-    <Compile Include="Controllers\DelayController.cs" />
-    <Compile Include="Controllers\DialogController.cs" />
-    <Compile Include="Controllers\GangZoneController.cs" />
-    <Compile Include="Controllers\GlobalObjectController.cs" />
-    <Compile Include="Controllers\IController.cs" />
-    <Compile Include="Controllers\IGameServiceProvider.cs" />
-    <Compile Include="Controllers\ITypeProvider.cs" />
-    <Compile Include="Controllers\MenuController.cs" />
-    <Compile Include="Controllers\PickupController.cs" />
-    <Compile Include="Controllers\BasePlayerController.cs" />
-    <Compile Include="Controllers\PlayerObjectController.cs" />
-    <Compile Include="Controllers\PlayerTextDrawController.cs" />
-    <Compile Include="Controllers\PlayerTextLabelController.cs" />
-    <Compile Include="Controllers\SyncController.cs" />
-    <Compile Include="Controllers\TextDrawController.cs" />
-    <Compile Include="Controllers\TextLabelController.cs" />
-    <Compile Include="Controllers\TimerController.cs" />
-    <Compile Include="Controllers\BaseVehicleController.cs" />
-    <Compile Include="Definitions\BodyPart.cs" />
-    <Compile Include="Definitions\CameraMode.cs" />
-    <Compile Include="Definitions\CheckpointType.cs" />
-    <Compile Include="Definitions\DialogButton.cs" />
-    <Compile Include="Definitions\EnterExit.cs" />
-    <Compile Include="Definitions\ObjectType.cs" />
-    <Compile Include="Definitions\DisconnectReason.cs" />
-    <Compile Include="Definitions\ShopName.cs" />
-    <Compile Include="Definitions\TextDrawAlignment.cs" />
-    <Compile Include="Definitions\VehicleModelType.cs" />
-    <Compile Include="Display\Dialog.Internal.cs">
+    <Compile Update="Display\Dialog.Internal.cs">
       <DependentUpon>Dialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Display\InputDialog.cs" />
-    <Compile Include="Display\ListDialog.cs" />
-    <Compile Include="Display\Menu.Internal.cs">
+    <Compile Update="Display\Menu.Internal.cs">
       <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Display\MessageDialog.cs" />
-    <Compile Include="Display\PlayerTextDraw.Internal.cs">
+    <Compile Update="Display\PlayerTextDraw.Internal.cs">
       <DependentUpon>PlayerTextDraw.cs</DependentUpon>
     </Compile>
-    <Compile Include="Display\TablistDialog.cs" />
-    <Compile Include="Display\TextDraw.Internal.cs">
+    <Compile Update="Display\TextDraw.Internal.cs">
       <DependentUpon>TextDraw.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\ClickPlayerTextDrawEventArgs.cs" />
-    <Compile Include="Events\EditGlobalObjectEventArgs.cs" />
-    <Compile Include="Events\CancelableEventArgs.cs" />
-    <Compile Include="Events\CommandTextEventArgs.cs" />
-    <Compile Include="Events\ExceptionEventArgs.cs" />
-    <Compile Include="Events\RequestSpawnEventArgs.cs" />
-    <Compile Include="Events\SirenStateEventArgs.cs" />
-    <Compile Include="Events\SpawnEventArgs.cs" />
-    <Compile Include="Events\PlayerUpdateEventArgs.cs" />
-    <Compile Include="Events\TrailerEventArgs.cs" />
-    <Compile Include="Factories\IVehicleFactory.cs" />
-    <Compile Include="Factories\BaseVehicleFactory.cs" />
-    <Compile Include="Factories\BaseVehicleFactory.Internal.cs">
+    <Compile Update="Factories\BaseVehicleFactory.Internal.cs">
       <DependentUpon>BaseVehicleFactory.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrameworkConfiguration.cs" />
-    <Compile Include="FrameworkLog.cs" />
-    <Compile Include="FrameworkMessageLevel.cs" />
-    <Compile Include="Helpers\AsyncHelper.cs" />
-    <Compile Include="Helpers\MathHelper.cs" />
-    <Compile Include="Helpers\NullableHelper.cs" />
-    <Compile Include="Helpers\VehicleParameterValueHelper.cs" />
-    <Compile Include="IService.cs" />
-    <Compile Include="API\Native.cs" />
-    <Compile Include="Matrix.cs" />
-    <Compile Include="Pools\PoolContainer`1.cs" />
-    <Compile Include="Pools\PooledTypeAttribute.cs" />
-    <Compile Include="Quaternion.cs" />
-    <Compile Include="SAMP\Commands\Parameters\ParameterAttribute.cs" />
-    <Compile Include="SAMP\Commands\Parameters\CommandParameterInfo.cs" />
-    <Compile Include="SAMP\Commands\ParameterTypes\EnumType.cs" />
-    <Compile Include="SAMP\Commands\ParameterTypes\FloatType.cs" />
-    <Compile Include="SAMP\Commands\ParameterTypes\ICommandParameterType.cs" />
-    <Compile Include="SAMP\Commands\ParameterTypes\IntegerType.cs" />
-    <Compile Include="SAMP\Commands\ParameterTypes\PlayerType.cs" />
-    <Compile Include="SAMP\Commands\ParameterTypes\TextType.cs" />
-    <Compile Include="SAMP\Commands\CommandAttribute.cs" />
-    <Compile Include="SAMP\Commands\CommandCallableResponse.cs" />
-    <Compile Include="SAMP\Commands\CommandGroupAttribute.cs" />
-    <Compile Include="SAMP\Commands\CommandPath.cs" />
-    <Compile Include="SAMP\Commands\CommandsManager.cs" />
-    <Compile Include="SAMP\Commands\DefaultCommand.cs" />
-    <Compile Include="SAMP\Commands\ICommand.cs" />
-    <Compile Include="SAMP\Commands\ICommandsManager.cs" />
-    <Compile Include="SAMP\Commands\PermissionCheckers\IPermissionChecker.cs" />
-    <Compile Include="SAMP\Commands\ParameterTypes\WordType.cs" />
-    <Compile Include="SAMP\Commands\PermissionCheckers\AdminChecker.cs" />
-    <Compile Include="SAMP\Commands\PermissionCheckers\SilentAdminChecker.cs" />
-    <Compile Include="SAMP\Delay.cs" />
-    <Compile Include="SAMP\KeyChangeHandlerSet.cs" />
-    <Compile Include="SAMP\KeyHandlerSet.cs" />
-    <Compile Include="SAMP\PrintTraceListener.cs" />
-    <Compile Include="SAMP\PriorityKeyHandler.cs" />
-    <Compile Include="SAMP\PVarCollection.Internal.cs">
+    <Compile Update="SAMP\PVarCollection.Internal.cs">
       <DependentUpon>PVarCollection.cs</DependentUpon>
     </Compile>
-    <Compile Include="SAMP\Server.cs" />
-    <Compile Include="SAMP\Server.Internal.cs">
+    <Compile Update="SAMP\Server.Internal.cs">
       <DependentUpon>Server.cs</DependentUpon>
     </Compile>
-    <Compile Include="SAMP\ServerConfig.cs" />
-    <Compile Include="SAMP\SVarCollection.cs" />
-    <Compile Include="SAMP\SVarCollection.Internal.cs" />
-    <Compile Include="Service.cs" />
-    <Compile Include="GameModeServiceContainer.cs" />
-    <Compile Include="Tools\ASyncWaiter`2.cs" />
-    <Compile Include="Tools\MapAndreas.Internal.cs">
+    <Compile Update="Tools\MapAndreas.Internal.cs">
       <DependentUpon>MapAndreas.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Sync.cs" />
-    <Compile Include="Vector2.cs" />
-    <Compile Include="Vector4.cs" />
-    <Compile Include="World\Actor.cs" />
-    <Compile Include="World\Actor.Internal.cs">
+    <Compile Update="World\Actor.Internal.cs">
       <DependentUpon>Actor.cs</DependentUpon>
     </Compile>
-    <Compile Include="World\GangZone.Internal.cs">
-      <DependentUpon>GangZone.cs</DependentUpon>
-    </Compile>
-    <Compile Include="World\GlobalObject.Internal.cs">
-      <DependentUpon>GlobalObject.cs</DependentUpon>
-    </Compile>
-    <Compile Include="World\BasePlayer.Internal.cs">
+    <Compile Update="World\BasePlayer.Internal.cs">
       <DependentUpon>BasePlayer.cs</DependentUpon>
     </Compile>
-    <Compile Include="World\BaseVehicle.Internal.cs">
+    <Compile Update="World\BaseVehicle.Internal.cs">
       <DependentUpon>BaseVehicle.cs</DependentUpon>
     </Compile>
-    <Compile Include="World\Pickup.cs" />
-    <Compile Include="World\Pickup.Internal.cs">
+    <Compile Update="World\GangZone.Internal.cs">
+      <DependentUpon>GangZone.cs</DependentUpon>
+    </Compile>
+    <Compile Update="World\GlobalObject.Internal.cs">
+      <DependentUpon>GlobalObject.cs</DependentUpon>
+    </Compile>
+    <Compile Update="World\Pickup.Internal.cs">
       <DependentUpon>Pickup.cs</DependentUpon>
     </Compile>
-    <Compile Include="World\PlayerObject.Internal.cs">
+    <Compile Update="World\PlayerObject.Internal.cs">
       <DependentUpon>PlayerObject.cs</DependentUpon>
     </Compile>
-    <Compile Include="World\PlayerTextLabel.Internal.cs">
+    <Compile Update="World\PlayerTextLabel.Internal.cs">
       <DependentUpon>PlayerTextLabel.cs</DependentUpon>
     </Compile>
-    <Compile Include="World\TextLabel.Internal.cs">
+    <Compile Update="World\TextLabel.Internal.cs">
       <DependentUpon>TextLabel.cs</DependentUpon>
     </Compile>
-    <Compile Include="World\VehicleModelInfo.cs" />
-    <Compile Include="Definitions\VehicleCategory.cs" />
-    <Compile Include="Display\Menu.cs" />
-    <Compile Include="Display\MenuColumn.cs" />
-    <Compile Include="Display\MenuRow.cs" />
-    <Compile Include="Events\DialogResponseEventArgs.cs" />
-    <Compile Include="Definitions\BulletHitType.cs" />
-    <Compile Include="Definitions\Bone.cs" />
-    <Compile Include="Definitions\CameraCut.cs" />
-    <Compile Include="Definitions\CarModType.cs" />
-    <Compile Include="Definitions\DialogStyle.cs" />
-    <Compile Include="Definitions\EditObjectResponse.cs" />
-    <Compile Include="Definitions\FightStyle.cs" />
-    <Compile Include="Definitions\Keys.cs" />
-    <Compile Include="Definitions\MapIconType.cs" />
-    <Compile Include="Definitions\ObjectMaterialSize.cs" />
-    <Compile Include="Definitions\ObjectMaterialTextAlign.cs" />
-    <Compile Include="Definitions\PlayerClickSource.cs" />
-    <Compile Include="Definitions\PlayerMarkersMode.cs" />
-    <Compile Include="Definitions\PlayerRecordingType.cs" />
-    <Compile Include="Definitions\PlayerState.cs" />
-    <Compile Include="Definitions\ServerVarType.cs" />
-    <Compile Include="Definitions\SpecialAction.cs" />
-    <Compile Include="Definitions\SpectateMode.cs" />
-    <Compile Include="Definitions\TextDrawFont.cs" />
-    <Compile Include="Definitions\VehicleModelInfoType.cs" />
-    <Compile Include="Definitions\VehicleParameterValue.cs" />
-    <Compile Include="Definitions\Weapon.cs" />
-    <Compile Include="Definitions\WeaponSkill.cs" />
-    <Compile Include="Definitions\WeaponState.cs" />
-    <Compile Include="Events\ConnectionEventArgs.cs" />
-    <Compile Include="Events\PlayerVehicleEventArgs.cs" />
-    <Compile Include="Events\PositionEventArgs.cs" />
-    <Compile Include="Events\ClickPlayerEventArgs.cs" />
-    <Compile Include="Events\ClickTextDrawEventArgs.cs" />
-    <Compile Include="Events\DamageEventArgs.cs" />
-    <Compile Include="Events\DeathEventArgs.cs" />
-    <Compile Include="Events\DisconnectEventArgs.cs" />
-    <Compile Include="Events\EditAttachedObjectEventArgs.cs" />
-    <Compile Include="Events\EditPlayerObjectEventArgs.cs" />
-    <Compile Include="Events\EnterModShopEventArgs.cs" />
-    <Compile Include="Events\EnterVehicleEventArgs.cs" />
-    <Compile Include="Events\PlayerEventArgs.cs" />
-    <Compile Include="Events\InteriorChangedEventArgs.cs" />
-    <Compile Include="Events\KeyStateChangedEventArgs.cs" />
-    <Compile Include="Events\RequestClassEventArgs.cs" />
-    <Compile Include="Events\MenuRowEventArgs.cs" />
-    <Compile Include="Events\SelectGlobalObjectEventArgs.cs" />
-    <Compile Include="Events\StateEventArgs.cs" />
-    <Compile Include="Events\TextEventArgs.cs" />
-    <Compile Include="Events\RconEventArgs.cs" />
-    <Compile Include="Events\RconLoginAttemptEventArgs.cs" />
-    <Compile Include="Events\UnoccupiedVehicleEventArgs.cs" />
-    <Compile Include="Events\VehicleModEventArgs.cs" />
-    <Compile Include="Events\VehiclePaintjobEventArgs.cs" />
-    <Compile Include="Events\VehicleResprayedEventArgs.cs" />
-    <Compile Include="Events\WeaponShotEventArgs.cs" />
-    <Compile Include="Helpers\LinqHelper.cs" />
-    <Compile Include="ServerLogWriter.cs" />
-    <Compile Include="BaseMode.cs" />
-    <Compile Include="API\ParameterLengthAttribute.cs" />
-    <Compile Include="Pools\IdentifiedOwnedPool`1.cs" />
-    <Compile Include="Pools\IdentifiedPool`1.cs" />
-    <Compile Include="Pools\Pool`1.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SAMP\PVarCollection.cs" />
-    <Compile Include="Tools\Disposable.cs" />
-    <Compile Include="Tools\KeyUtils.cs" />
-    <Compile Include="Tools\MapAndreas.cs" />
-    <Compile Include="Tools\MapAndreasMode.cs" />
-    <Compile Include="SAMP\Color.cs" />
-    <Compile Include="SAMP\ColorFormat.cs" />
-    <Compile Include="Display\Dialog.cs" />
-    <Compile Include="World\GangZone.cs" />
-    <Compile Include="World\GlobalObject.cs" />
-    <Compile Include="Controllers\IEventListener.cs" />
-    <Compile Include="World\IGameObject.cs" />
-    <Compile Include="World\IIDentifiable.cs" />
-    <Compile Include="World\IOwnable.cs" />
-    <Compile Include="World\IWorldObject.cs" />
-    <Compile Include="World\BasePlayer.cs" />
-    <Compile Include="World\PlayerObject.cs" />
-    <Compile Include="Display\PlayerTextDraw.cs" />
-    <Compile Include="World\PlayerTextLabel.cs" />
-    <Compile Include="Display\TextDraw.cs" />
-    <Compile Include="World\TextLabel.cs" />
-    <Compile Include="SAMP\Timer.cs" />
-    <Compile Include="Vector3.cs" />
-    <Compile Include="World\BaseVehicle.cs" />
-    <Compile Include="World\VehicleModelInfo.Internal.cs">
+    <Compile Update="World\VehicleModelInfo.Internal.cs">
       <DependentUpon>VehicleModelInfo.cs</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

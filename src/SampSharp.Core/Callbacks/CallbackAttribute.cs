@@ -12,28 +12,33 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 
-namespace SampSharp.GameMode.API.NativeObjects
+namespace SampSharp.Core.Callbacks
 {
-    /// <summary>
-    /// Specifies the identifiers properties for a native object class.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class NativeObjectIdentifiersAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Method)]
+    public class CallbackAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NativeObjectIdentifiersAttribute"/> class.
+        ///     Initializes a new instance of the <see cref="CallbackAttribute" /> class.
         /// </summary>
-        /// <param name="identifiers">The identifiers of the native object.</param>
-        public NativeObjectIdentifiersAttribute(params string[] identifiers)
+        public CallbackAttribute()
         {
-            Identifiers = identifiers;
         }
 
         /// <summary>
-        /// Gets or sets the identifiers of the native object.
+        ///     Initializes a new instance of the <see cref="CallbackAttribute" /> class.
         /// </summary>
-        public string[] Identifiers { get; set; }
+        /// <param name="name">The name of the callback.</param>
+        public CallbackAttribute(string name)
+        {
+            Name = name;
+        }
+
+        /// <summary>
+        ///     Gets or sets the name of the callback.
+        /// </summary>
+        public string Name { get; set; }
     }
 }
