@@ -18,15 +18,39 @@ using System.Threading;
 
 namespace SampSharp.Core.Threading
 {
+    /// <summary>
+    ///     Represnets a pump for processing messages from a <see cref="MessageQueue" />.
+    /// </summary>
     public class MessagePump : IDisposable
     {
         private readonly MessageQueue _queue;
-
         private readonly ManualResetEvent _stopEvent = new ManualResetEvent(false);
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MessagePump" /> class.
+        /// </summary>
+        /// <param name="queue">The queue to pump the messages from.</param>
         public MessagePump(MessageQueue queue)
         {
             _queue = queue ?? throw new ArgumentNullException(nameof(queue));
+        }
+
+        /// <summary>
+        ///     Pumps the messages send to the message queue until this instance is disposed.
+        /// </summary>
+        public void Pump()
+        {
+            while (true)
+            {
+                // Watch for stop signals.
+                var stop = _stopEvent.WaitOne(0);
+                if (stop)
+                    break;
+
+                // Get the next item in the queue.
+                var workItem = _queue.Dequeue();
+                workItem?.Execute();
+            }
         }
 
         #region IDisposable
@@ -41,18 +65,5 @@ namespace SampSharp.Core.Threading
         }
 
         #endregion
-
-        public void Pump()
-        {
-            while (true)
-            {
-                var stop = _stopEvent.WaitOne(0);
-                if (stop)
-                    break;
-
-                var workItem = _queue.Dequeue();
-                workItem?.Execute();
-            }
-        }
     }
 }

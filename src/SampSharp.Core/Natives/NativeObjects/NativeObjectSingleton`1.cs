@@ -12,10 +12,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
-    ///     Provides a singleton <see cref="Instance"/> property containing a single instance of the specified native object type.
+    ///     Provides a singleton <see cref="Instance" /> property containing a single instance of the specified native object
+    ///     type.
     /// </summary>
     /// <typeparam name="T">The native object type.</typeparam>
     public abstract class NativeObjectSingleton<T> where T : NativeObjectSingleton<T>

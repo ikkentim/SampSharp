@@ -13,15 +13,16 @@ namespace SampSharp.Core
     {
         private readonly IGameModeClient _gameModeClient;
 
+        public ServerLogWriter(IGameModeClient gameModeClient)
+        {
+            _gameModeClient = gameModeClient ?? throw new ArgumentNullException(nameof(gameModeClient));
+        }
+
         /// <summary>
         ///     When overridden in a derived class, returns the character encoding in which the output is written.
         /// </summary>
         public override Encoding Encoding => Encoding.ASCII;
 
-        public ServerLogWriter(IGameModeClient gameModeClient)
-        {
-            _gameModeClient = gameModeClient ?? throw new ArgumentNullException(nameof(gameModeClient));
-        }
         #region WriteLine
 
         /// <summary>
@@ -407,6 +408,7 @@ namespace SampSharp.Core
         #endregion
 
         #region Async
+
         // TODO: Improve Async variants
         /// <summary>
         ///     Writes a character to the text string or stream asynchronously.

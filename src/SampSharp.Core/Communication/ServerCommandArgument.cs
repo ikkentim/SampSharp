@@ -26,27 +26,27 @@ namespace SampSharp.Core.Communication
         /// <summary>
         ///     A terminator value to indicate no more arguments are past this point.
         /// </summary>
-        Terminator = (0 << 0),
+        Terminator = 0 << 0,
 
         /// <summary>
         ///     A value to indicate the next argument is an integer or float.
         /// </summary>
-        Value = (1 << 0),
+        Value = 1 << 0,
 
         /// <summary>
         ///     A value to indicate the next argument is an array of integers or floats.
         /// </summary>
-        Array = (1 << 1),
+        Array = 1 << 1,
 
         /// <summary>
         ///     A value to indicate the next argument is a string.
         /// </summary>
-        String = (1 << 2),
+        String = 1 << 2,
 
         /// <summary>
         ///     A value to indicate the next argument is a reference.
         /// </summary>
-        Reference = (1 << 3),
+        Reference = 1 << 3,
 
         /// <summary>
         ///     A value to indicate the next argument is a value reference.

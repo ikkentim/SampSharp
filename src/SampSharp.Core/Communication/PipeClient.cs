@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.IO.Pipes;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace SampSharp.Core.Communication
@@ -50,18 +49,6 @@ namespace SampSharp.Core.Communication
         {
             if (disposing)
                 _stream.Dispose();
-        }
-
-        private async Task ReadAsync()
-        {
-            var len = await _stream.ReadAsync(_readBuffer, 0, _readBuffer.Length);
-            _queue.Push(_readBuffer, 0, len);
-        }
-
-        private void Read()
-        {
-            var len = _stream.Read(_readBuffer, 0, _readBuffer.Length);
-            _queue.Push(_readBuffer, 0, len);
         }
 
         #region IDisposable
@@ -97,7 +84,6 @@ namespace SampSharp.Core.Communication
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="data">The data.</param>
-        /// <returns></returns>
         public void Send(ServerCommand command, IEnumerable<byte> data)
         {
             var dataBytes = data as byte[] ?? data?.ToArray();
@@ -107,6 +93,7 @@ namespace SampSharp.Core.Communication
             _singleByteBuffer[0] = (byte) command;
             _stream.Write(_singleByteBuffer, 0, 1);
             _stream.Write(lenbytes, 0, 4);
+
             if (dataBytes != null)
                 _stream.Write(dataBytes, 0, dataBytes.Length);
 
@@ -124,7 +111,8 @@ namespace SampSharp.Core.Communication
                 if (_queue.TryPop(out var command))
                     return command;
 
-                await ReadAsync();
+                var len = await _stream.ReadAsync(_readBuffer, 0, _readBuffer.Length);
+                _queue.Push(_readBuffer, 0, len);
             }
         }
 
@@ -139,7 +127,8 @@ namespace SampSharp.Core.Communication
                 if (_queue.TryPop(out var command))
                     return command;
 
-                Read();
+                var len = _stream.Read(_readBuffer, 0, _readBuffer.Length);
+                _queue.Push(_readBuffer, 0, len);
             }
         }
 

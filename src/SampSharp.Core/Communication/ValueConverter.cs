@@ -228,6 +228,9 @@ namespace SampSharp.Core.Communication
             return Encoding.ASCII.GetString(buffer, startIndex, terminatorIndex - startIndex);
         }
 
+        /// <summary>
+        ///     A struct to immediately cast <see cref="int" />, <see cref="uint" /> or <see cref="float" /> values.
+        /// </summary>
         [StructLayout(LayoutKind.Explicit)]
         private struct ValueUnion
         {

@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using SampSharp.Core.Callbacks;
+using SampSharp.Core.Communication;
 using SampSharp.Core.Natives;
 
 namespace SampSharp.Core
@@ -28,6 +29,16 @@ namespace SampSharp.Core
     public interface IGameModeClient
     {
         /// <summary>
+        ///     Gets the named pipe connection.
+        /// </summary>
+        IPipeClient Pipe { get; }
+
+        /// <summary>
+        ///     Gets or sets the native loader to be used to load natives.
+        /// </summary>
+        INativeLoader NativeLoader { get; set; }
+
+        /// <summary>
         ///     Start receiving ticks and public calls.
         /// </summary>
         void Start();
@@ -35,7 +46,7 @@ namespace SampSharp.Core
         /// <summary>
         ///     Pings the server.
         /// </summary>
-        /// <returns>The ping to the server</returns>
+        /// <returns>The ping to the server.</returns>
         Task<TimeSpan> Ping();
 
         /// <summary>
@@ -60,15 +71,23 @@ namespace SampSharp.Core
         void RegisterCallbacksInObject(object target);
 
         /// <summary>
-        /// Prints the specified text to the server console.
+        ///     Prints the specified text to the server console.
         /// </summary>
         /// <param name="text">The text to print to the server console.</param>
         void Print(string text);
 
+        /// <summary>
+        ///     Gets the handle of the native with the specified <see cref="name" />.
+        /// </summary>
+        /// <param name="name">The name of the native.</param>
+        /// <returns>The handle of the native with the specified <see cref="name" />.</returns>
         int GetNativeHandle(string name);
 
+        /// <summary>
+        ///     Invokes a native using the specified <see cref="data" /> buffer.
+        /// </summary>
+        /// <param name="data">The data buffer to be used.</param>
+        /// <returns>The response from the native.</returns>
         byte[] InvokeNative(IEnumerable<byte> data);
-
-        INativeLoader NativeLoader { get; set; }
     }
 }

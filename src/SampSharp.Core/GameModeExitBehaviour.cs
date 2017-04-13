@@ -1,7 +1,7 @@
 namespace SampSharp.Core
 {
     /// <summary>
-    ///     Contains possible behaviours for the <see cref="GameModeBuilder"/> once a OnGameModeExit call has been received.
+    ///     Contains possible behaviours for the <see cref="GameModeBuilder" /> once a OnGameModeExit call has been received.
     /// </summary>
     public enum GameModeExitBehaviour
     {

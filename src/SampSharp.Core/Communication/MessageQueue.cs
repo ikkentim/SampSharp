@@ -24,7 +24,6 @@ namespace SampSharp.Core.Communication
     internal class MessageQueue
     {
         private readonly Queue<byte> _queue = new Queue<byte>(1000);
-
         private byte _command;
         private uint _commandLength;
         private bool _localFill;
@@ -69,7 +68,7 @@ namespace SampSharp.Core.Communication
         /// <param name="values">The values.</param>
         /// <param name="startIndex">The start index.</param>
         /// <param name="length">The length.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <see cref="values"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <see cref="values" /> is null.</exception>
         public void Push(byte[] values, int startIndex, int length)
         {
             if (values == null) throw new ArgumentNullException(nameof(values));
@@ -96,7 +95,7 @@ namespace SampSharp.Core.Communication
                 (_queue.Dequeue() << 24));
 
             _localFill = true;
-            
+
             return true;
         }
 

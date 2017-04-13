@@ -69,7 +69,7 @@ namespace SampSharp.Core
         }
 
         /// <summary>
-        /// Sets the behaviour used once a OnGameModeExit call has been received.
+        ///     Sets the behaviour used once a OnGameModeExit call has been received.
         /// </summary>
         /// <param name="exotBehaviour">The exit behaviour.</param>
         /// <returns>The updated game mode configuration builder.</returns>
@@ -77,7 +77,7 @@ namespace SampSharp.Core
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>
         ///     Run the game mode using the build configuration stored in this instance.
         /// </summary>

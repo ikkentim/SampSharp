@@ -1,5 +1,6 @@
 ﻿using System;
 using SampSharp.Core;
+using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.GameMode;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
@@ -33,6 +34,7 @@ namespace TestMode.DotNetCore
     {
         static void Main(string[] args)
         {
+            Console.WriteLine(nameof(NativeHandleInvokers.InvokeHandle));
             new GameModeBuilder()
                 .Use<GameMode>()
                 .Run();

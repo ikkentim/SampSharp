@@ -17,6 +17,11 @@ using System;
 
 namespace SampSharp.Core.Callbacks
 {
+    /// <summary>
+    ///     Indicates a method should be loaded by <see cref="IGameModeClient.RegisterCallbacksInObject" /> and indicates the
+    ///     name of the callback.
+    /// </summary>
+    /// <seealso cref="System.Attribute" />
     [AttributeUsage(AttributeTargets.Method)]
     public class CallbackAttribute : Attribute
     {

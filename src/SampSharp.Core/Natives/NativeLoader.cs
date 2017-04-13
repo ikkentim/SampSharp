@@ -1,4 +1,19 @@
-﻿using System;
+﻿// SampSharp
+// Copyright 2017 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using System.Collections.Generic;
 
 namespace SampSharp.Core.Natives
@@ -6,6 +21,8 @@ namespace SampSharp.Core.Natives
     public class NativeLoader : INativeLoader
     {
         private readonly IGameModeClient _gameModeClient;
+        private readonly Dictionary<string, int> _handles = new Dictionary<string, int>();
+        private readonly Dictionary<int, INative> _natives = new Dictionary<int, INative>();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="NativeLoader" /> class.
@@ -32,6 +49,8 @@ namespace SampSharp.Core.Natives
 
             var usedSizes = new List<uint>();
             var sizeIndex = 0;
+
+            // Construct the parameters and sizes array.
             for (var i = 0; i < parameterTypes.Length; i++)
             {
                 var type = parameterTypes[i];
@@ -42,7 +61,7 @@ namespace SampSharp.Core.Natives
                     if (sizes == null || sizes.Length == 0)
                     {
                         uint? size = null;
-                        for (var j = (uint)i + 1; j < parameterTypes.Length; j++)
+                        for (var j = (uint) i + 1; j < parameterTypes.Length; j++)
                         {
                             if (usedSizes.Contains(j)) continue;
 
@@ -56,21 +75,16 @@ namespace SampSharp.Core.Natives
                         }
 
                         if (size == null)
-                        {
                             throw new ArgumentException("Missing sizes information", nameof(sizes));
-                        }
 
                         info = new NativeParameterInfo(info.Type, size.Value);
                     }
                     else if (sizeIndex >= sizes.Length)
-                    {
                         throw new ArgumentException("Missing sizes information", nameof(sizes));
-                    }
                     else
-                    {
                         info = new NativeParameterInfo(info.Type, sizes[sizeIndex++]);
-                    }
                 }
+
 
                 parameters.Add(info);
             }
@@ -78,8 +92,6 @@ namespace SampSharp.Core.Natives
             return Load(name, parameters.ToArray());
         }
 
-        private readonly Dictionary<string, int> _handles = new Dictionary<string, int>();
-        private readonly Dictionary<int,INative> _natives = new Dictionary<int, INative>();
         /// <summary>
         ///     Loads a native with the specified name.
         /// </summary>
@@ -91,14 +103,11 @@ namespace SampSharp.Core.Natives
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
-
             if (!_handles.TryGetValue(name, out var handle))
                 handle = _handles[name] = _gameModeClient.GetNativeHandle(name);
 
             if (handle < 0)
-            {
                 return null;
-            }
 
             return _natives[handle] = new Native(_gameModeClient, name, handle, parameters);
         }

@@ -35,7 +35,6 @@ namespace SampSharp.Core
         private readonly Queue<PongReceiver> _pongs = new Queue<PongReceiver>();
 
         private readonly Queue<ServerCommandData> _unhandledCommands = new Queue<ServerCommandData>();
-        private IPipeClient _client;
         private int _mainThread;
 
         /// <summary>
@@ -63,7 +62,7 @@ namespace SampSharp.Core
                 Console.WriteLine("WARNING: Sending data to server from thread other than main");
             }
 
-            _client.Send(command, data);
+            Pipe.Send(command, data);
         }
 
         private async void Initialize()
@@ -75,15 +74,15 @@ namespace SampSharp.Core
 
             _mainThread = Thread.CurrentThread.ManagedThreadId;
 
-            _client = new PipeClient();
+            Pipe = new PipeClient();
 
             LogInfo($"Connecting to the server on pipe {_pipeName}...");
-            await _client.Connect(_pipeName);
+            await Pipe.Connect(_pipeName);
 
             LogInfo("Connected! Waiting for server annoucement...");
             while (true)
             {
-                var version = await _client.ReceiveAsync();
+                var version = await Pipe.ReceiveAsync();
                 if (version.Command == ServerCommand.Announce)
                 {
                     var protocolVersion = ValueConverter.ToUInt32(version.Data, 0);
@@ -109,12 +108,12 @@ namespace SampSharp.Core
 
         private async Task<ServerCommandData> ReceiveCommandAsync()
         {
-            return await _client.ReceiveAsync();
+            return await Pipe.ReceiveAsync();
         }
 
         private ServerCommandData ReceiveCommand()
         {
-            return _client.Receive();
+            return Pipe.Receive();
         }
 
         private ServerCommandData ReceiveCommand(ServerCommand type)
@@ -204,12 +203,20 @@ namespace SampSharp.Core
 
         private void AssertRunning()
         {
-            if (_client == null)
+            if (Pipe == null)
                 throw new GameModeNotRunningException();
         }
 
         #region Implementation of IGameModeClient
 
+        /// <summary>
+        ///     Gets the named pipe connection.
+        /// </summary>
+        public IPipeClient Pipe { get; private set; }
+
+        /// <summary>
+        ///     Gets or sets the native loader to be used to load natives.
+        /// </summary>
         public INativeLoader NativeLoader { get; set; }
 
         /// <summary>
@@ -334,6 +341,10 @@ namespace SampSharp.Core
             await ReceiveLoop();
         }
 
+        /// <summary>
+        ///     Pings the server.
+        /// </summary>
+        /// <returns>The ping to the server.</returns>
         public async Task<TimeSpan> Ping()
         {
             if (!IsOnMainThread)
@@ -348,6 +359,11 @@ namespace SampSharp.Core
             return await pong.Task;
         }
 
+        /// <summary>
+        ///     Gets the handle of the native with the specified <see cref="name" />.
+        /// </summary>
+        /// <param name="name">The name of the native.</param>
+        /// <returns>The handle of the native with the specified <see cref="name" />.</returns>
         public int GetNativeHandle(string name)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -361,6 +377,11 @@ namespace SampSharp.Core
             return ValueConverter.ToInt32(data.Data, 0);
         }
 
+        /// <summary>
+        ///     Invokes a native using the specified <see cref="data" /> buffer.
+        /// </summary>
+        /// <param name="data">The data buffer to be used.</param>
+        /// <returns>The response from the native.</returns>
         public byte[] InvokeNative(IEnumerable<byte> data)
         {
             Send(ServerCommand.InvokeNative, data);
@@ -388,10 +409,16 @@ namespace SampSharp.Core
         }
 
         [DebuggerHidden]
-        private void LogError(string message) => Log("ERROR", message);
+        private void LogError(string message)
+        {
+            Log("ERROR", message);
+        }
 
         [DebuggerHidden]
-        private void LogInfo(string message) => Log("INFO", message);
+        private void LogInfo(string message)
+        {
+            Log("INFO", message);
+        }
 
         #endregion
     }

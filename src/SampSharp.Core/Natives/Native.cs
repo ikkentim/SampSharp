@@ -20,10 +20,20 @@ using SampSharp.Core.Communication;
 
 namespace SampSharp.Core.Natives
 {
+    /// <summary>
+    ///     Represents a SA-MP native function.
+    /// </summary>
     public class Native : INative
     {
         private readonly IGameModeClient _gameModeClient;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Native" /> class.
+        /// </summary>
+        /// <param name="gameModeClient">The game mode client.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="handle">The handle.</param>
+        /// <param name="parameters">The parameters.</param>
         public Native(IGameModeClient gameModeClient, string name, int handle, params NativeParameterInfo[] parameters)
         {
             if (handle < 0) throw new ArgumentOutOfRangeException(nameof(handle));

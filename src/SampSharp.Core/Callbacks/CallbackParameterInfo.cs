@@ -20,7 +20,7 @@ using SampSharp.Core.Communication;
 namespace SampSharp.Core.Callbacks
 {
     /// <summary>
-    ///     Holds information about a callback parameter.
+    ///     Contains information about a callback parameter.
     /// </summary>
     public struct CallbackParameterInfo
     {
@@ -58,12 +58,16 @@ namespace SampSharp.Core.Callbacks
         public static CallbackParameterInfo String => new CallbackParameterInfo(CallbackParameterType.String, 0);
 
         /// <summary>
-        ///     The parameter contains an array (of element type <see cref="int" />, <see cref="float" /> or <see cref="bool" />) of
+        ///     The parameter contains an array (of element type <see cref="int" />, <see cref="float" /> or <see cref="bool" />)
+        ///     of
         ///     which the length can be found in the parameter at <see cref="LengthIndex" />.
         /// </summary>
         /// <param name="lengthIndex">The index of the parameter contains the length of the array.</param>
         /// <returns>The callback parameter info for the specified array length index.</returns>
-        public static CallbackParameterInfo Array(uint lengthIndex) => new CallbackParameterInfo(CallbackParameterType.Array, lengthIndex);
+        public static CallbackParameterInfo Array(uint lengthIndex)
+        {
+            return new CallbackParameterInfo(CallbackParameterType.Array, lengthIndex);
+        }
 
         /// <summary>
         ///     Gets the byte representation of the parameter info.

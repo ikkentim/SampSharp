@@ -20,12 +20,13 @@ using System.Reflection.Emit;
 namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
-    /// Represents a native method IL generator.
+    ///     Represents a native method IL generator. This class can be used to generate a method for invoking a specific
+    ///     native.
     /// </summary>
     public class NativeILGenerator
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NativeILGenerator"/> class.
+        ///     Initializes a new instance of the <see cref="NativeILGenerator" /> class.
         /// </summary>
         /// <param name="native">The native.</param>
         /// <param name="parameterTypes">The parameter types.</param>
@@ -39,22 +40,22 @@ namespace SampSharp.Core.Natives.NativeObjects
         }
 
         /// <summary>
-        /// Gets the parameter types.
+        ///     Gets the parameter types.
         /// </summary>
         public Type[] ParameterTypes { get; }
 
         /// <summary>
-        /// Gets the native.
+        ///     Gets the native.
         /// </summary>
         protected INative Native { get; }
 
         /// <summary>
-        /// Gets the type of the return value.
+        ///     Gets the type of the return value.
         /// </summary>
         protected Type ReturnType { get; }
 
         /// <summary>
-        /// Gets the handle invoker method.
+        ///     Gets the handle invoker method.
         /// </summary>
         /// <returns>The handle invoker method.</returns>
         /// <exception cref="Exception">Thrown if unsupported return type of method or native invoker is missing.</exception>
@@ -63,14 +64,14 @@ namespace SampSharp.Core.Natives.NativeObjects
             // Pick the right invoke method based on the return type of the delegate.
             MethodInfo result;
             const BindingFlags flags = BindingFlags.Public | BindingFlags.Static;
-            if (ReturnType == typeof (int))
-                result = typeof (NativeHandleInvokers).GetTypeInfo().GetMethod("InvokeHandle", flags);
-            else if (ReturnType == typeof (bool))
-                result = typeof (NativeHandleInvokers).GetTypeInfo().GetMethod("InvokeHandleAsBool", flags);
-            else if (ReturnType == typeof (float))
-                result = typeof (NativeHandleInvokers).GetTypeInfo().GetMethod("InvokeHandleAsFloat", flags);
+            if (ReturnType == typeof(int))
+                result = typeof(NativeHandleInvokers).GetTypeInfo().GetMethod(nameof(NativeHandleInvokers.InvokeHandle), flags);
+            else if (ReturnType == typeof(bool))
+                result = typeof(NativeHandleInvokers).GetTypeInfo().GetMethod(nameof(NativeHandleInvokers.InvokeHandleAsBool), flags);
+            else if (ReturnType == typeof(float))
+                result = typeof(NativeHandleInvokers).GetTypeInfo().GetMethod(nameof(NativeHandleInvokers.InvokeHandleAsFloat), flags);
             else if (ReturnType == typeof(void))
-                result = typeof(NativeHandleInvokers).GetTypeInfo().GetMethod("InvokeHandleAsVoid", flags);
+                result = typeof(NativeHandleInvokers).GetTypeInfo().GetMethod(nameof(NativeHandleInvokers.InvokeHandleAsVoid), flags);
             else
                 throw new Exception("Unsupported return type of method");
 
@@ -81,7 +82,8 @@ namespace SampSharp.Core.Natives.NativeObjects
         }
 
         /// <summary>
-        /// Generates the arguments array.
+        ///     Emits opcodes to the specified IL Generator to generate an array for the parameters. The array is stored in the
+        ///     local stored in the returned lcoal builder.
         /// </summary>
         /// <param name="il">The il generator.</param>
         /// <returns>The local for the arguments array.</returns>
@@ -89,17 +91,17 @@ namespace SampSharp.Core.Natives.NativeObjects
         {
             // Create an instance of object[].
             il.Emit(OpCodes.Ldc_I4_S, ParameterTypes.Length);
-            il.Emit(OpCodes.Newarr, typeof (object));
+            il.Emit(OpCodes.Newarr, typeof(object));
 
             // Store the newly created array to the args local.
-            var result = il.DeclareLocal(typeof (object[]));
+            var result = il.DeclareLocal(typeof(object[]));
             il.Emit(OpCodes.Stloc, result);
 
             return result;
         }
 
         /// <summary>
-        /// Returns the native argument index for the specified method argument index.
+        ///     Returns the native argument index for the specified method argument index.
         /// </summary>
         /// <param name="index">The method argument index.</param>
         /// <returns>The native argument index for the specified method argument index.</returns>
@@ -109,11 +111,11 @@ namespace SampSharp.Core.Natives.NativeObjects
         }
 
         /// <summary>
-        /// Generates the pass trough for input arguments.
+        ///     Emits opcodes to the specified IL Generator to store all input arguments in the arguments array local.
         /// </summary>
         /// <param name="il">The il generator.</param>
         /// <param name="argsLocal">The arguments local.</param>
-        protected virtual void GeneratePassTrough(ILGenerator il, LocalBuilder argsLocal)
+        protected virtual void GenerateInvokeInputCode(ILGenerator il, LocalBuilder argsLocal)
         {
             // Generate a pass-trough for every parameter of the native.
             for (var index = 0; index < ParameterTypes.Length; index++)
@@ -127,7 +129,7 @@ namespace SampSharp.Core.Natives.NativeObjects
 
                 if (argIndex < 0)
                     continue;
-                
+
                 // If this parameter is of an output type no pass-trough is required; skip it.
                 if (isByRef)
                     continue;
@@ -152,18 +154,18 @@ namespace SampSharp.Core.Natives.NativeObjects
         }
 
         /// <summary>
-        /// Generates the handle invoker.
+        ///     Generates the handle invoker.
         /// </summary>
         /// <param name="il">The il generator.</param>
         /// <param name="argsLocal">The arguments local.</param>
-        protected virtual void GenerateHandleInvoker(ILGenerator il, LocalBuilder argsLocal)
+        protected virtual void GenerateHandleInvokeCode(ILGenerator il, LocalBuilder argsLocal)
         {
             // Push the handle of the native onto the stack.
             il.Emit(OpCodes.Ldc_I4, Native.Handle);
 
             // Load the args array onto the stack.
             il.Emit(OpCodes.Ldloc, argsLocal);
-            
+
             // Invoke the native invocation method.
             var invokeMethodInfo = GetHandleInvokerMethod();
 
@@ -174,11 +176,12 @@ namespace SampSharp.Core.Natives.NativeObjects
         }
 
         /// <summary>
-        /// Generates the pass back for output arguments.
+        ///     Emits opcodes to the specified IL Generator to set reference arguments to the value sotred in the argument array
+        ///     local after the native has been invoked.
         /// </summary>
         /// <param name="il">The il generator.</param>
         /// <param name="argsLocal">The arguments local.</param>
-        protected virtual void GeneratePassBack(ILGenerator il, LocalBuilder argsLocal)
+        protected virtual void GenerateInvokeOutputCode(ILGenerator il, LocalBuilder argsLocal)
         {
             // Generate a pass-back for every output parameter of the native.
             for (var index = 0; index < ParameterTypes.Length; index++)
@@ -207,30 +210,28 @@ namespace SampSharp.Core.Natives.NativeObjects
                 il.Emit(OpCodes.Ldelem_Ref);
 
                 // Store the value in the reference argument at the current parameter index.
-                if (type == typeof (int))
+                if (type == typeof(int))
                 {
-                    il.Emit(OpCodes.Unbox_Any, typeof (int));
+                    il.Emit(OpCodes.Unbox_Any, typeof(int));
                     il.Emit(OpCodes.Stind_I4);
                 }
-                else if (type == typeof (bool))
+                else if (type == typeof(bool))
                 {
-                    il.Emit(OpCodes.Unbox_Any, typeof (bool));
+                    il.Emit(OpCodes.Unbox_Any, typeof(bool));
                     il.Emit(OpCodes.Stind_I4);
                 }
-                else if (type == typeof (float))
+                else if (type == typeof(float))
                 {
-                    il.Emit(OpCodes.Unbox_Any, typeof (float));
+                    il.Emit(OpCodes.Unbox_Any, typeof(float));
                     il.Emit(OpCodes.Stind_R4);
                 }
                 else
-                {
                     il.Emit(OpCodes.Stind_Ref);
-                }
             }
         }
 
         /// <summary>
-        /// Generates the return statement.
+        ///     Emits opcodes to the specified IL Generator to return.
         /// </summary>
         /// <param name="il">The il generator.</param>
         protected virtual void GenerateReturn(ILGenerator il)
@@ -240,16 +241,16 @@ namespace SampSharp.Core.Natives.NativeObjects
         }
 
         /// <summary>
-        /// Generates the IL code with the speicifed il generator.
+        ///     Generates the IL code with the speicifed il generator.
         /// </summary>
         /// <param name="il">The il generator.</param>
         public virtual void Generate(ILGenerator il)
         {
             var argsLocal = GenerateArgsArray(il);
 
-            GeneratePassTrough(il, argsLocal);
-            GenerateHandleInvoker(il, argsLocal);
-            GeneratePassBack(il, argsLocal);
+            GenerateInvokeInputCode(il, argsLocal);
+            GenerateHandleInvokeCode(il, argsLocal);
+            GenerateInvokeOutputCode(il, argsLocal);
             GenerateReturn(il);
         }
     }

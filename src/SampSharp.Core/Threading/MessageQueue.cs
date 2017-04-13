@@ -18,41 +18,65 @@ using System.Threading;
 
 namespace SampSharp.Core.Threading
 {
+    /// <summary>
+    ///     Represents a message queue for messages sent to a <see cref="SampSharpSyncronizationContext" />.
+    /// </summary>
     public class MessageQueue
     {
-        private readonly ManualResetEvent _killThread = new ManualResetEvent(false);
         private readonly Queue<SendOrPostCallbackItem> _queue = new Queue<SendOrPostCallbackItem>();
         private readonly Semaphore _semaphore = new Semaphore(0, int.MaxValue);
+        private readonly ManualResetEvent _stopSignal = new ManualResetEvent(false);
         private readonly WaitHandle[] _waitHandles;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MessageQueue" /> class.
+        /// </summary>
         public MessageQueue()
         {
-            _waitHandles = new WaitHandle[] { _semaphore, _killThread };
+            _waitHandles = new WaitHandle[] { _semaphore, _stopSignal };
         }
 
-        public void Enqueue(SendOrPostCallbackItem data)
+        /// <summary>
+        ///     Enqueues the specified item to this instance.
+        /// </summary>
+        /// <param name="item">The item to enqueue.</param>
+        public void Enqueue(SendOrPostCallbackItem item)
         {
             lock (_queue)
             {
-                _queue.Enqueue(data);
+                _queue.Enqueue(item);
             }
             _semaphore.Release();
         }
 
+        /// <summary>
+        ///     Dequeues an item from this instance. If none is avaiable, this call will wait for an item to be enqueued.
+        /// </summary>
+        /// <returns></returns>
         public SendOrPostCallbackItem Dequeue()
         {
+            // Wait for a signal (send by Enqueue or ReleaseReader)
             WaitHandle.WaitAny(_waitHandles);
+
+            // Dequeue from the internal queue.
             lock (_queue)
             {
                 if (_queue.Count > 0)
                     return _queue.Dequeue();
             }
-            return default(SendOrPostCallbackItem);
+
+            // If no item was dequeued, a stop signal must have been sent, reset the signal back for the next read and return a default value.
+            _stopSignal.Reset();
+
+            return null;
         }
 
+        /// <summary>
+        ///     Releases the reader waiting in a <see cref="Dequeue" />.
+        /// </summary>
         public void ReleaseReader()
         {
-            _killThread.Set();
+            _stopSignal.Set();
         }
     }
 }

@@ -21,7 +21,8 @@ using System.Reflection.Emit;
 namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
-    /// A generator for native object instances.
+    ///     A generator for native object instances. This class can be used to generate a method for invoking a specific native
+    ///     with a number of predefined identifiers stored within the class the method is a member of.
     /// </summary>
     public class NativeObjectILGenerator : NativeILGenerator
     {
@@ -29,7 +30,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         private readonly Type _nativeObjectType;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NativeObjectILGenerator"/> class.
+        ///     Initializes a new instance of the <see cref="NativeObjectILGenerator" /> class.
         /// </summary>
         /// <param name="native">The native.</param>
         /// <param name="nativeObjectType">Type of the native object.</param>
@@ -39,20 +40,23 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// <exception cref="ArgumentNullException">Thrown if nativeObjectType or idnetifiers is null.</exception>
         public NativeObjectILGenerator(INative native, Type nativeObjectType, string[] identifiers,
             Type[] parameterTypes, Type returnType)
-            : base(
-                native,
-                Enumerable.Repeat(typeof (int), identifiers?.Length ?? 0)
-                    .Concat(parameterTypes ?? new Type[0])
-                    .ToArray(), returnType)
+            : base(native, AddIdentifiersToParameterTypes(identifiers, parameterTypes), returnType)
         {
             _nativeObjectType = nativeObjectType ?? throw new ArgumentNullException(nameof(nativeObjectType));
             _identifiers = identifiers ?? throw new ArgumentNullException(nameof(identifiers));
         }
 
+        private static Type[] AddIdentifiersToParameterTypes(string[] identifiers, Type[] parameterTypes)
+        {
+            return Enumerable.Repeat(typeof(int), identifiers?.Length ?? 0)
+                .Concat(parameterTypes ?? new Type[0])
+                .ToArray();
+        }
+
         #region Overrides of NativeILGenerator
 
         /// <summary>
-        /// Returns the native argument index for the specified method argument index.
+        ///     Returns the native argument index for the specified method argument index.
         /// </summary>
         /// <param name="index">The method argument index.</param>
         /// <returns>The native argument index for the specified method argument index.</returns>
@@ -67,13 +71,13 @@ namespace SampSharp.Core.Natives.NativeObjects
         }
 
         /// <summary>
-        /// Generates the pass trough for input arguments.
+        ///     Emits opcodes to the specified IL Generator to store all input arguments in the arguments array local.
         /// </summary>
         /// <param name="il">The il generator.</param>
         /// <param name="argsLocal">The arguments local.</param>
-        protected override void GeneratePassTrough(ILGenerator il, LocalBuilder argsLocal)
+        protected override void GenerateInvokeInputCode(ILGenerator il, LocalBuilder argsLocal)
         {
-            // Generate a pass-trough for every parameter of the native.
+            // Load the
             for (var index = 0; index < _identifiers.Length; index++)
             {
                 // Load the args array onto the stack.
@@ -85,8 +89,9 @@ namespace SampSharp.Core.Natives.NativeObjects
                 // Load the identifier from the object.
                 il.Emit(OpCodes.Ldarg_0);
 
-                var id = _nativeObjectType.GetTypeInfo().GetProperty(_identifiers[index],
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                var id = _nativeObjectType.GetTypeInfo()
+                    .GetProperty(_identifiers[index],
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
                 if (id.PropertyType != typeof(int))
                     throw new Exception("Invalid identifier property return type for type " + _nativeObjectType);
@@ -97,14 +102,14 @@ namespace SampSharp.Core.Natives.NativeObjects
                 il.Emit(OpCodes.Callvirt, id.GetGetMethod(true));
 
                 // If the parameter is a value type, box it.
-                il.Emit(OpCodes.Box, typeof (int));
+                il.Emit(OpCodes.Box, typeof(int));
 
                 // Replace the element at the current index within the parameters array with the argument at 
                 // the current index.
                 il.Emit(OpCodes.Stelem_Ref);
             }
 
-            base.GeneratePassTrough(il, argsLocal);
+            base.GenerateInvokeInputCode(il, argsLocal);
         }
 
         #endregion

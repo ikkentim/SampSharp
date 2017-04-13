@@ -19,27 +19,48 @@ using SampSharp.Core.Communication;
 
 namespace SampSharp.Core.Natives
 {
+    /// <summary>
+    ///     Contains information about a native's parameter.
+    /// </summary>
     public struct NativeParameterInfo
     {
+        /// <summary>
+        ///     A mask for all supported argument value types.
+        /// </summary>
         private const NativeParameterType ArgumentMask = NativeParameterType.Int32 |
                                                          NativeParameterType.Single |
                                                          NativeParameterType.Bool |
                                                          NativeParameterType.String;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="NativeParameterInfo" /> struct.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="lengthIndex">Index of the length.</param>
         public NativeParameterInfo(NativeParameterType type, uint lengthIndex)
         {
             Type = type;
             LengthIndex = lengthIndex;
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="NativeParameterInfo" /> struct.
+        /// </summary>
+        /// <param name="type">The type.</param>
         public NativeParameterInfo(NativeParameterType type)
         {
             Type = type;
             LengthIndex = 0;
         }
 
+        /// <summary>
+        ///     Gets the type.
+        /// </summary>
         public NativeParameterType Type { get; }
 
+        /// <summary>
+        ///     Gets the type as a <see cref="ServerCommandArgument" />.
+        /// </summary>
         public ServerCommandArgument ArgumentType
         {
             get
@@ -68,6 +89,15 @@ namespace SampSharp.Core.Natives
             }
         }
 
+        /// <summary>
+        ///     Returns a <see cref="NativeParameterInfo" /> for the specified <see cref="type" />.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>A struct for the type.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        ///     Thrown if <see cref="type" /> is not a valid native parameter
+        ///     type.
+        /// </exception>
         public static NativeParameterInfo ForType(Type type)
         {
             var isByRef = type.IsByRef;
@@ -88,16 +118,38 @@ namespace SampSharp.Core.Natives
             return new NativeParameterInfo(parameterType);
         }
 
-        public bool RequiresLength => IsArray || (IsReference && !IsValue);
+        /// <summary>
+        ///     Gets a value indicating whether the parameter info requires length information.
+        /// </summary>
+        public bool RequiresLength => IsArray || IsReference && !IsValue;
 
+        /// <summary>
+        ///     Gets a value indicating whether this parameter is an array.
+        /// </summary>
         private bool IsArray => Type.HasFlag(NativeParameterType.Array);
 
+        /// <summary>
+        ///     Gets a value indicating whether this parameter is a reference.
+        /// </summary>
         private bool IsReference => Type.HasFlag(NativeParameterType.Reference);
 
+        /// <summary>
+        ///     Gets a value indicating whether this parameter is a value.
+        /// </summary>
         public bool IsValue => Type.HasFlag(NativeParameterType.Int32) || Type.HasFlag(NativeParameterType.Single) ||
                                Type.HasFlag(NativeParameterType.Bool);
+
+        /// <summary>
+        ///     Gets the index of the length parameter specifying the length of this parameter.
+        /// </summary>
         public uint LengthIndex { get; }
 
+        /// <summary>
+        ///     Returns the referenced value returned by a native.
+        /// </summary>
+        /// <param name="response">The response to extract the value from.</param>
+        /// <param name="index">The current top of the response.</param>
+        /// <returns>The referenced value.</returns>
         public object GetReferenceArgument(byte[] response, ref int index)
         {
             object result = null;
@@ -161,6 +213,12 @@ namespace SampSharp.Core.Natives
             return result;
         }
 
+        /// <summary>
+        ///     Converts the value to a collection of bytes according to this parameter.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="length">The length.</param>
+        /// <returns></returns>
         public IEnumerable<byte> GetBytes(object value, int length)
         {
             switch (Type)

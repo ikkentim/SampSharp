@@ -17,10 +17,17 @@ using System.Threading;
 
 namespace SampSharp.Core.Threading
 {
+    /// <summary>
+    ///     Represents a syncronization context for the SampSharp main thread.
+    /// </summary>
+    /// <seealso cref="System.Threading.SynchronizationContext" />
     public class SampSharpSyncronizationContext : SynchronizationContext
     {
         private readonly MessageQueue _queue = new MessageQueue();
-        
+
+        /// <summary>
+        ///     Gets the message pump which provides messages sent to this context.
+        /// </summary>
         public MessagePump MessagePump => new MessagePump(_queue);
 
         #region Overrides of SynchronizationContext
@@ -42,7 +49,7 @@ namespace SampSharp.Core.Threading
         }
 
         /// <summary>
-        /// When overridden in a derived class, dispatches an asynchronous message to a synchronization context.
+        ///     When overridden in a derived class, dispatches an asynchronous message to a synchronization context.
         /// </summary>
         /// <param name="d">The <see cref="SendOrPostCallback" /> delegate to call.</param>
         /// <param name="state">The object passed to the delegate.</param>
@@ -58,7 +65,10 @@ namespace SampSharp.Core.Threading
         ///     When overridden in a derived class, creates a copy of the synchronization context.
         /// </summary>
         /// <returns>A new <see cref="SynchronizationContext" /> object.</returns>
-        public override SynchronizationContext CreateCopy() => this;
+        public override SynchronizationContext CreateCopy()
+        {
+            return this;
+        }
 
         #endregion
     }

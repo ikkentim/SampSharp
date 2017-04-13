@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace SampSharp.Core
 {
     /// <summary>
-    ///     Represents an measurement device for the duration of SampSharp server pings.
+    ///     Represents an measurement device for the duration of pings to the SampSharp server.
     /// </summary>
     internal class PongReceiver
     {
