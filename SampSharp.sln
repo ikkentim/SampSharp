@@ -11,7 +11,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampSharp.Core", "src\SampS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampSharp.GameMode", "src\SampSharp.GameMode\SampSharp.GameMode.csproj", "{153D7525-B36F-4DB9-B5B6-483915C84A7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMode.DotNetCore", "TestMode.DotNetCore\TestMode.DotNetCore.csproj", "{D903A0E4-7732-433C-B154-65718C3FFE67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMode.DotNetCore", "src\TestMode.DotNetCore\TestMode.DotNetCore.csproj", "{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6B10DCD1-5FFB-4B21-AF82-1906E6AF7119}"
+	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
+		appveyor.yml = appveyor.yml
+		build.bat = build.bat
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		build.sh = build.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cake", "cake", "{63E4AD77-0DB4-4EB6-A132-91895CA7EFB8}"
+	ProjectSection(SolutionItems) = preProject
+		cake\SaBuild.cake = cake\SaBuild.cake
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,20 +85,23 @@ Global
 		{153D7525-B36F-4DB9-B5B6-483915C84A7E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{153D7525-B36F-4DB9-B5B6-483915C84A7E}.Release|Win32.ActiveCfg = Release|Any CPU
 		{153D7525-B36F-4DB9-B5B6-483915C84A7E}.Release|Win32.Build.0 = Release|Any CPU
-		{D903A0E4-7732-433C-B154-65718C3FFE67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D903A0E4-7732-433C-B154-65718C3FFE67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D903A0E4-7732-433C-B154-65718C3FFE67}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D903A0E4-7732-433C-B154-65718C3FFE67}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{D903A0E4-7732-433C-B154-65718C3FFE67}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{D903A0E4-7732-433C-B154-65718C3FFE67}.Debug|Win32.Build.0 = Debug|Any CPU
-		{D903A0E4-7732-433C-B154-65718C3FFE67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D903A0E4-7732-433C-B154-65718C3FFE67}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D903A0E4-7732-433C-B154-65718C3FFE67}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{D903A0E4-7732-433C-B154-65718C3FFE67}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{D903A0E4-7732-433C-B154-65718C3FFE67}.Release|Win32.ActiveCfg = Release|Any CPU
-		{D903A0E4-7732-433C-B154-65718C3FFE67}.Release|Win32.Build.0 = Release|Any CPU
+		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Debug|Win32.Build.0 = Debug|Any CPU
+		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Win32.ActiveCfg = Release|Any CPU
+		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{63E4AD77-0DB4-4EB6-A132-91895CA7EFB8} = {6B10DCD1-5FFB-4B21-AF82-1906E6AF7119}
 	EndGlobalSection
 EndGlobal

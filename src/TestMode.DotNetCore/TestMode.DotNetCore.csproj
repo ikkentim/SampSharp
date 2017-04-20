@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\SampSharp.GameMode\SampSharp.GameMode.csproj" />
+    <ProjectReference Include="..\SampSharp.GameMode\SampSharp.GameMode.csproj" />
   </ItemGroup>
 
 </Project>

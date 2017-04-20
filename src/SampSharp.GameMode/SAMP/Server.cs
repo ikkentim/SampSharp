@@ -127,17 +127,7 @@ namespace SampSharp.GameMode.SAMP
         {
             return ServerInternal.Instance.GetTickCount();
         }
-
-        /// <summary>
-        ///     Sets the currently active codepage.
-        /// </summary>
-        /// <param name="codepage">The name of the codepage to use.</param>
-        public static void SetCodepage(string codepage)
-        {
-            throw new NotImplementedException();
-            //InteropProvider.SetCodepage(codepage);
-        }
-
+        
         /// <summary>
         ///     Prints the specified message to the console.
         /// </summary>

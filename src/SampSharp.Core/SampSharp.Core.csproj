@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.5</TargetFramework>
+    <Version>0.8.0-prerelease1</Version>
+    <Authors>Tim Potze</Authors>
+    <Company>Tim Potze</Company>
+    <Description />
   </PropertyGroup>
 
   <ItemGroup>
