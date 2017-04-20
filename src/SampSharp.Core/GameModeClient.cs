@@ -15,13 +15,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
 using SampSharp.Core.Callbacks;
 using SampSharp.Core.Communication;
+using SampSharp.Core.Logging;
 using SampSharp.Core.Natives;
 using SampSharp.Core.Threading;
 
@@ -29,13 +30,17 @@ namespace SampSharp.Core
 {
     public sealed class GameModeClient : IGameModeClient
     {
+        private static readonly byte[] AOne = { 1 };
+        private static readonly byte[] AZero = { 0 };
+
         private readonly Dictionary<string, Callback> _callbacks = new Dictionary<string, Callback>();
         private readonly IGameModeProvider _gameModeProvider;
         private readonly string _pipeName;
         private readonly Queue<PongReceiver> _pongs = new Queue<PongReceiver>();
-
         private readonly Queue<ServerCommandData> _unhandledCommands = new Queue<ServerCommandData>();
         private int _mainThread;
+        private bool _started;
+        private SampSharpSyncronizationContext _syncronizationContext;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameModeClient" /> class.
@@ -57,29 +62,26 @@ namespace SampSharp.Core
         private void Send(ServerCommand command, IEnumerable<byte> data)
         {
             if (!IsOnMainThread)
-            {
-                // TODO: Throw exception
-                Console.WriteLine("WARNING: Sending data to server from thread other than main");
-            }
+                throw new GameModeClientException("Cannot send data to the server from a thread other than the main thread.");
 
             Pipe.Send(command, data);
         }
 
         private async void Initialize()
         {
-            Log("SampSharp GameMode Server");
-            Log("-------------------------");
-            Log($"v{CoreVersion.Version.ToString(3)}, (C)2014-2017 Tim Potze");
-            Log("");
+            CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Server");
+            CoreLog.Log(CoreLogLevel.Initialisation, "-------------------------");
+            CoreLog.Log(CoreLogLevel.Initialisation, $"v{CoreVersion.Version.ToString(3)}, (C)2014-2017 Tim Potze");
+            CoreLog.Log(CoreLogLevel.Initialisation, "");
 
             _mainThread = Thread.CurrentThread.ManagedThreadId;
 
             Pipe = new PipeClient();
 
-            LogInfo($"Connecting to the server on pipe {_pipeName}...");
+            CoreLog.Log(CoreLogLevel.Info, $"Connecting to the server on pipe {_pipeName}...");
             await Pipe.Connect(_pipeName);
 
-            LogInfo("Connected! Waiting for server annoucement...");
+            CoreLog.Log(CoreLogLevel.Info, "Connected! Waiting for server annoucement...");
             while (true)
             {
                 var version = await Pipe.ReceiveAsync();
@@ -91,16 +93,16 @@ namespace SampSharp.Core
                     if (protocolVersion != CoreVersion.ProtocolVersion)
                     {
                         var updatee = protocolVersion > CoreVersion.ProtocolVersion ? "game mode" : "server";
-                        LogError(
+                        CoreLog.Log(CoreLogLevel.Error,
                             $"Protocol version mismatch! The server is running protocol {protocolVersion} but the game mode is running {CoreVersion.ProtocolVersion}");
-                        LogError($"Please update your {updatee}.");
+                        CoreLog.Log(CoreLogLevel.Error, $"Please update your {updatee}.");
                         return;
                     }
-                    LogInfo($"Connected to version {pluginVersion.ToString(3)} via protocol {protocolVersion}");
+                    CoreLog.Log(CoreLogLevel.Info, $"Connected to version {pluginVersion.ToString(3)} via protocol {protocolVersion}");
 
                     break;
                 }
-                LogError($"Received command {version.Command.ToString().ToLower()} instead of announce.");
+                CoreLog.Log(CoreLogLevel.Error, $"Received command {version.Command.ToString().ToLower()} instead of announce.");
             }
 
             _gameModeProvider.Initialize(this);
@@ -147,32 +149,32 @@ namespace SampSharp.Core
                         break;
                     case ServerCommand.Pong:
                         if (_pongs.Count == 0)
-                            LogError("Received a random pong");
+                            CoreLog.Log(CoreLogLevel.Error, "Received a random pong");
                         else
                             _pongs.Dequeue().Pong();
                         break;
                     case ServerCommand.Announce:
-                        LogError("Received a random server announcement");
+                        CoreLog.Log(CoreLogLevel.Error, "Received a random server announcement");
                         break;
                     case ServerCommand.PublicCall:
                         var name = ValueConverter.ToString(data.Data, 0);
                         if (_callbacks.TryGetValue(name, out var callback))
                         {
                             var result = callback.Invoke(data.Data, name.Length + 1);
-
-                            // TODO: Cache 1 and 0 array
+                            
                             Send(ServerCommand.Response,
                                 result != null
-                                    ? new[] { (byte) 1 }.Concat(ValueConverter.GetBytes(result.Value))
-                                    : new[] { (byte) 0 });
+                                    ? AOne.Concat(ValueConverter.GetBytes(result.Value))
+                                    : AZero);
                         }
                         else
-                            LogError("Received unknown callback " + name);
+                            CoreLog.Log(CoreLogLevel.Error, "Received unknown callback " + name);
                         break;
                     case ServerCommand.Reply:
-                        throw new NotImplementedException();
+                        CoreLog.Log(CoreLogLevel.Error, "Received a random reply");
+                        break;
                     default:
-                        LogError($"Unknown command {data.Command} recieved with {data.Data.Length} data");
+                        CoreLog.Log(CoreLogLevel.Error, $"Unknown command {data.Command} recieved with {data.Data.Length} data");
                         break;
                 }
             }
@@ -186,17 +188,16 @@ namespace SampSharp.Core
             InternalStorage.RunningClient = this;
 
             // Prepare the syncronization context
-            var context = new SampSharpSyncronizationContext();
-            var messagePump = context.MessagePump;
+            _syncronizationContext = new SampSharpSyncronizationContext();
+            var messagePump = _syncronizationContext.MessagePump;
 
-            SynchronizationContext.SetSynchronizationContext(context);
+            SynchronizationContext.SetSynchronizationContext(_syncronizationContext);
 
             // Initialize the game mode
             Initialize();
 
             // Pump new tasks
             messagePump.Pump();
-
 
             InternalStorage.RunningClient = null;
         }
@@ -236,16 +237,24 @@ namespace SampSharp.Core
 
             AssertRunning();
 
-            // TODO: threading
-
             if (!Callback.IsValidReturnType(methodInfo.ReturnType))
                 throw new CallbackRegistrationException("The method uses an unsupported return type");
 
             _callbacks[name] = new Callback(target, methodInfo, name, parameters);
-
-            Send(ServerCommand.RegisterCall, ValueConverter.GetBytes(name)
-                .Concat(parameters.SelectMany(c => c.GetBytes()))
-                .Concat(new[] { (byte) ServerCommandArgument.Terminator }));
+            
+            if (IsOnMainThread)
+            {
+                Send(ServerCommand.RegisterCall, ValueConverter.GetBytes(name)
+                    .Concat(parameters.SelectMany(c => c.GetBytes()))
+                    .Concat(new[] { (byte) ServerCommandArgument.Terminator }));
+            }
+            else
+            {
+                _syncronizationContext.Send(ctx =>
+                    Send(ServerCommand.RegisterCall, ValueConverter.GetBytes(name)
+                        .Concat(parameters.SelectMany(c => c.GetBytes()))
+                        .Concat(new[] { (byte) ServerCommandArgument.Terminator })), null);
+            }
         }
 
         /// <summary>
@@ -296,6 +305,8 @@ namespace SampSharp.Core
         {
             if (target == null) throw new ArgumentNullException(nameof(target));
 
+            AssertRunning();
+
             foreach (var method in target.GetType().GetTypeInfo().GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
                 var attribute = method.GetCustomAttribute<CallbackAttribute>();
@@ -322,9 +333,10 @@ namespace SampSharp.Core
             if (text == null)
                 text = string.Empty;
 
-            // TODO: Threading 
-
-            Send(ServerCommand.Print, ValueConverter.GetBytes(text));
+            if (IsOnMainThread)
+                Send(ServerCommand.Print, ValueConverter.GetBytes(text));
+            else
+                _syncronizationContext.Send(ctx => { Send(ServerCommand.Print, ValueConverter.GetBytes(text)); }, null);
         }
 
         /// <summary>
@@ -332,11 +344,16 @@ namespace SampSharp.Core
         /// </summary>
         public async void Start()
         {
-            // TODO: Threading
-            // TODO: Guard this being called only once
+            if (_started)
+                throw new GameModeClientException("Game mode client already started.");
 
-            LogInfo("Sending start signal to server...");
-            Send(ServerCommand.Start, null);
+            _started = true;
+
+            CoreLog.Log(CoreLogLevel.Info, "Sending start signal to server...");
+            if (IsOnMainThread)
+                Send(ServerCommand.Start, null);
+            else
+                _syncronizationContext.Send(ctx => Send(ServerCommand.Start, null), null);
 
             await ReceiveLoop();
         }
@@ -347,15 +364,24 @@ namespace SampSharp.Core
         /// <returns>The ping to the server.</returns>
         public async Task<TimeSpan> Ping()
         {
-            if (!IsOnMainThread)
-                throw new Exception("Can only ping from the main thread");
-
             var pong = new PongReceiver();
-            _pongs.Enqueue(pong);
+            if (IsOnMainThread)
+            {
+                _pongs.Enqueue(pong);
 
-            pong.Ping();
-            Send(ServerCommand.Ping, null);
+                pong.Ping();
+                Send(ServerCommand.Ping, null);
+            }
+            else
+            {
+                _syncronizationContext.Send(ctx =>
+                {
+                    _pongs.Enqueue(pong);
 
+                    pong.Ping();
+                    Send(ServerCommand.Ping, null);
+                }, null);
+            }
             return await pong.Task;
         }
 
@@ -367,9 +393,24 @@ namespace SampSharp.Core
         public int GetNativeHandle(string name)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
-            Send(ServerCommand.FindNative, ValueConverter.GetBytes(name));
 
-            var data = ReceiveCommand(ServerCommand.Response);
+            var data = default(ServerCommandData);
+
+            if (IsOnMainThread)
+            {
+                Send(ServerCommand.FindNative, ValueConverter.GetBytes(name));
+
+                data = ReceiveCommand(ServerCommand.Response);
+            }
+            else
+            {
+                _syncronizationContext.Send(ctx =>
+                {
+                    Send(ServerCommand.FindNative, ValueConverter.GetBytes(name));
+
+                    data = ReceiveCommand(ServerCommand.Response);
+                }, null);
+            }
 
             if (data.Data.Length != 4)
                 throw new Exception("Invalid FindNative response from server.");
@@ -384,40 +425,25 @@ namespace SampSharp.Core
         /// <returns>The response from the native.</returns>
         public byte[] InvokeNative(IEnumerable<byte> data)
         {
-            Send(ServerCommand.InvokeNative, data);
+            var response = default(ServerCommandData);
 
-            var response = ReceiveCommand(ServerCommand.Response);
+            if (IsOnMainThread)
+            {
+                Send(ServerCommand.InvokeNative, data);
 
+                response = ReceiveCommand(ServerCommand.Response);
+            }
+            else
+            {
+                _syncronizationContext.Send(ctx =>
+                {
+                    Send(ServerCommand.InvokeNative, data);
+
+                    response = ReceiveCommand(ServerCommand.Response);
+                }, null);
+            }
+            
             return response.Data;
-        }
-
-        #endregion
-
-        #region Logging
-
-        // TODO: Some common logging structure which can also be used by SampSharp.GameMode.
-        [DebuggerHidden]
-        private void Log(string level, string message)
-        {
-            Console.WriteLine($"[SampSharp:{level}] {message}");
-        }
-
-        [DebuggerHidden]
-        private void Log(string message)
-        {
-            Console.WriteLine(message);
-        }
-
-        [DebuggerHidden]
-        private void LogError(string message)
-        {
-            Log("ERROR", message);
-        }
-
-        [DebuggerHidden]
-        private void LogInfo(string message)
-        {
-            Log("INFO", message);
         }
 
         #endregion

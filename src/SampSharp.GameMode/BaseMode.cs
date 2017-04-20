@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SampSharp.Core;
+using SampSharp.Core.Logging;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Pools;
@@ -85,7 +86,7 @@ namespace SampSharp.GameMode
                             typeof (IController).GetTypeInfo().IsAssignableFrom(t) &&
                             t.GetTypeInfo().GetCustomAttribute<ControllerAttribute>() != null))
             {
-                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Autoloading type {type}...");
+                CoreLog.Log(CoreLogLevel.Debug, $"Autoloading type {type}...");
                 _controllers.Override(Activator.CreateInstance(type) as IController);
             }
         }
@@ -122,7 +123,7 @@ namespace SampSharp.GameMode
                 // If poolType or subclass of poolType is already in types, continue.
                 if (types.Any(t => t == poolType || poolType.GetTypeInfo().IsAssignableFrom(t)))
                 {
-                    FrameworkLog.WriteLine(FrameworkMessageLevel.Debug,
+                    CoreLog.Log(CoreLogLevel.Debug,
                         $"Pool of type {poolType} is not autoloaded because a subclass of it will already be loaded.");
                     continue;
                 }
@@ -130,12 +131,12 @@ namespace SampSharp.GameMode
                 // Remove all types in types where type is supertype of poolType.
                 foreach (var t in types.Where(t => t.GetTypeInfo().IsAssignableFrom(poolType)).ToArray())
                 {
-                    FrameworkLog.WriteLine(FrameworkMessageLevel.Debug,
+                    CoreLog.Log(CoreLogLevel.Debug,
                         $"No longer autoloading type {poolType} because a subclass of it is going to be loaded.");
                     types.Remove(t);
                 }
 
-                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Autoloading pool of type {poolType}.");
+                CoreLog.Log(CoreLogLevel.Debug, $"Autoloading pool of type {poolType}.");
                 types.Add(poolType);
             }
 
@@ -154,7 +155,7 @@ namespace SampSharp.GameMode
 
                 if (pool == null)
                 {
-                    FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Skipped autoloading pool of type {type} because it's not a subtype of a pool.");
+                    CoreLog.Log(CoreLogLevel.Debug, $"Skipped autoloading pool of type {type} because it's not a subtype of a pool.");
                     continue;
                 }
 
@@ -240,23 +241,17 @@ namespace SampSharp.GameMode
                         continue;
                     if (!typeof (IExtension).GetTypeInfo().IsAssignableFrom(extensionType))
                     {
-                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
-                            "The extension from {0} could not be loaded. The specified extension type does not inherit from IExtension.",
-                            assembly);
+                        CoreLog.Log(CoreLogLevel.Warning, $"The extension from {assembly} could not be loaded. The specified extension type does not inherit from IExtension.");
                         continue;
                     }
-                    if (extensionType.GetTypeInfo().Assembly != assembly)
+                    if (!extensionType.GetTypeInfo().Assembly.Equals(assembly))
                     {
-                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
-                            "The extension from {0} could not be loaded. The specified extension type is not part of the assembly.",
-                            assembly);
+                        CoreLog.Log(CoreLogLevel.Warning, $"The extension from {assembly} could not be loaded. The specified extension type is not part of the assembly.");
                         continue;
                     }
                     if (_extensions.Any(e => e.GetType() == extensionType))
                     {
-                        FrameworkLog.WriteLine(FrameworkMessageLevel.Warning,
-                            "The extension from {0} could not be loaded. The specified extension type was already loaded.",
-                            assembly);
+                        CoreLog.Log(CoreLogLevel.Warning, $"The extension from {assembly} could not be loaded. The specified extension type was already loaded.");
                         continue;
                     }
 
@@ -277,8 +272,7 @@ namespace SampSharp.GameMode
         void IGameModeProvider.Initialize(IGameModeClient client)
         {
             client.RegisterCallbacksInObject(this);
-
-            SyncController.Flush();
+            
             LoadExtensions();
             LoadServicesAndControllers();
 

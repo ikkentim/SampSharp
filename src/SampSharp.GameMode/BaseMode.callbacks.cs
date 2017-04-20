@@ -23,15 +23,6 @@ namespace SampSharp.GameMode
 {
     public abstract partial class BaseMode
     {
-        internal bool OnTimerTick(int timerid, object args)
-        {
-            // Pass straight trough to TimerTick. Set the args as sender.
-            if (TimerTick != null && args != null)
-                TimerTick(args, EventArgs.Empty);
-
-            return true;
-        }
-
         [Callback]
         internal bool OnGameModeInit()
         {

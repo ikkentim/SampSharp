@@ -14,6 +14,8 @@
 // limitations under the License.
 
 using System;
+using System.IO;
+using SampSharp.Core.Logging;
 
 namespace SampSharp.Core
 {
@@ -66,6 +68,29 @@ namespace SampSharp.Core
         public GameModeBuilder Use<TGameMode>() where TGameMode : IGameModeProvider
         {
             return Use(Activator.CreateInstance<TGameMode>());
+        }
+
+        /// <summary>
+        ///     Uses the specified log level as the maximum level which is written to the log by SampSharp.
+        /// </summary>
+        /// <param name="logLevel">The log level.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseLogLevel(CoreLogLevel logLevel)
+        {
+            CoreLog.LogLevel = logLevel;
+            return this;
+        }
+
+        /// <summary>
+        ///     Uses the specified stream to log SampSharp log messages to.
+        /// </summary>
+        /// <param name="stream">The stream to log SampSharp log messages to.</param>
+        /// <remarks>If a null value is specified as stream, no log messages will appear.</remarks>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseLogStream(Stream stream)
+        {
+            CoreLog.Stream = stream;
+            return this;
         }
 
         /// <summary>

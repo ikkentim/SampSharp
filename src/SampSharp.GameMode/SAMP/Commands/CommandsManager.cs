@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SampSharp.Core.Logging;
 using SampSharp.GameMode.SAMP.Commands.PermissionCheckers;
 using SampSharp.GameMode.World;
 
@@ -281,7 +282,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
 
-            FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Registering command {command}");
+            CoreLog.Log(CoreLogLevel.Debug, $"Registering command {command}");
             _commands.Add(command);
         }
 

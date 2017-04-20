@@ -12,23 +12,37 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using SampSharp.GameMode.SAMP;
 
-namespace SampSharp.GameMode.Controllers
+namespace SampSharp.Core.Logging
 {
     /// <summary>
-    ///     A controller processing delays.
+    /// Contains all available log levels.
     /// </summary>
-    [Controller]
-    public class DelayController : IEventListener
+    public enum CoreLogLevel
     {
         /// <summary>
-        ///     Registers the events this DelayController wants to listen to.
+        ///     Initialization messages.
         /// </summary>
-        /// <param name="gameMode">The running GameMode.</param>
-        public virtual void RegisterEvents(BaseMode gameMode)
-        {
-            gameMode.TimerTick += (sender, args) => (sender as Delay)?.Action?.Invoke();
-        }
+        Initialisation,
+
+        /// <summary>
+        ///     Erroneous message.
+        /// </summary>
+        Error,
+
+        /// <summary>
+        ///     Warning message.
+        /// </summary>
+        Warning,
+
+        /// <summary>
+        ///     Informative message.
+        /// </summary>
+        Info,
+
+        /// <summary>
+        ///     Debug message.
+        /// </summary>
+        Debug,
     }
 }

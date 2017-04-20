@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SampSharp.Core.Logging;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
@@ -124,7 +125,7 @@ namespace SampSharp.GameMode.Pools
             if (!typeof (TInstance).GetTypeInfo().IsAssignableFrom(type))
                 throw new ArgumentException("type must be of type " + typeof (TInstance), nameof(type));
 
-            FrameworkLog.WriteLine(FrameworkMessageLevel.Debug, $"Type {type} registered to pool.");
+            CoreLog.Log(CoreLogLevel.Debug, $"Type {type} registered to pool.");
             InstanceType = type;
         }
 

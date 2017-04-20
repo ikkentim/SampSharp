@@ -17,6 +17,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SampSharp.Core.Logging;
 using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.Controllers
@@ -68,7 +69,7 @@ namespace SampSharp.GameMode.Controllers
             var overrides = this.Where(c => c.GetType().GetTypeInfo().IsInstanceOfType(controller)).ToArray();
 
             if (overrides.Any())
-                FrameworkLog.WriteLine(FrameworkMessageLevel.Debug,
+                CoreLog.Log(CoreLogLevel.Debug,
                     $"{controller} overrides {string.Join(", ", (object[]) overrides)}");
 
             foreach (var c in overrides)

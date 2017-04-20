@@ -50,12 +50,8 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="service">The service.</param>
-        /// <exception cref="System.ArgumentNullException">
-        ///     serviceType
-        ///     or
-        ///     service
-        /// </exception>
-        /// <exception cref="System.ArgumentException">serviceType must be of type IService</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <see cref="serviceType"/> or <see cref="service"/> is null.</exception>
+        /// <exception cref="ArgumentException">serviceType must be of type IService</exception>
         public void AddService(Type serviceType, IService service)
         {
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
@@ -73,11 +69,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="service">The service.</param>
         /// <typeparam name="TServiceType">Type of the service.</typeparam>
-        /// <exception cref="System.ArgumentNullException">
-        ///     serviceType
-        ///     or
-        ///     service
-        /// </exception>
+        /// <exception cref="System.ArgumentNullException">Thrown if <see cref="service"/> is null.</exception>
         /// <exception cref="System.ArgumentException">serviceType must be of type IService</exception>
         public void AddService<TServiceType>(TServiceType service) where TServiceType : IService
         {

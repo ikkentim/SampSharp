@@ -12,22 +12,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
-using SampSharp.GameMode.API;
+using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Tools;
-using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP
 {
     /// <summary>
     ///     Represents a SA:MP timer.
     /// </summary>
-    public sealed class Timer : Disposable, IIdentifiable
+    public sealed class Timer : Disposable
     {
-        private const int InvalidId = -1;
-        private bool _hit;
         private TimeSpan _interval;
-        private bool _isRepeating;
+        private bool _isRunning;
+        private DateTime _lastTick;
 
         /// <summary>
         ///     Initializes a new instance of the Timer class and starts the timer.
@@ -87,10 +86,9 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="running">Whether the timer is running.</param>
         public Timer(TimeSpan interval, bool isRepeating, bool running)
         {
-            throw new NotImplementedException();
-            //Id = running ? InteropProvider.SetTimer((int) interval.TotalMilliseconds, isRepeating, this) : InvalidId;
             Interval = interval;
             IsRepeating = isRepeating;
+            IsRunning = running;
         }
 
         /// <summary>
@@ -98,53 +96,40 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public TimeSpan Interval
         {
-            get { return _interval; }
+            get => _interval;
             set
             {
-                var wasRunning = IsRunning;
-                IsRunning = false;
                 _interval = value;
-                IsRunning = wasRunning;
+
+                if (IsRunning)
+                    NextTick = _lastTick + value;
             }
         }
 
         /// <summary>
-        ///     Gets or sets whether this Timer is a repeating  <see cref="Timer" />.
+        ///     Gets or sets whether this <see cref="Timer"/> is repeating.
         /// </summary>
-        public bool IsRepeating
-        {
-            get { return _isRepeating; }
-            set
-            {
-                if (_isRepeating == value) return;
-
-                var wasRunning = IsRunning;
-                IsRunning = false;
-                _isRepeating = value;
-                IsRunning = wasRunning;
-            }
-        }
+        public bool IsRepeating { get; set; }
 
         /// <summary>
-        ///     Gets or sets whether this Timer is running.
+        ///     Gets or sets whether this <see cref="Timer"/> is running.
         /// </summary>
         public bool IsRunning
         {
-            get { return (!IsRepeating && !_hit && Id != InvalidId) || (IsRepeating && Id != InvalidId); }
+            get => _isRunning;
             set
             {
-                if (value && !IsRunning)
+                if (_isRunning == value) return;
+                _isRunning = value;
+
+                if (value)
                 {
-                    throw new NotImplementedException();
-                    _hit = false;
-                    //Id = InteropProvider.SetTimer((int) Interval.TotalMilliseconds, IsRepeating, this);
+                    _lastTick = DateTime.UtcNow;
+                    NextTick = _lastTick + _interval;
+                    TimerController.Instance.AddTimer(this);
                 }
-                else if (!value && IsRunning)
-                {
-                    throw new NotImplementedException();
-                    //InteropProvider.KillTimer(Id);
-                    Id = InvalidId;
-                }
+                else
+                    TimerController.Instance.RemoveTimer(this);
             }
         }
 
@@ -153,10 +138,33 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public object Tag { get; set; }
 
+        internal DateTime NextTick { get; private set; }
+
         /// <summary>
-        ///     Gets the ID of this Timer.
+        ///     Runs the specified action repeatedly with the specified interval.
         /// </summary>
-        public int Id { get; private set; }
+        /// <param name="interval">The interval.</param>
+        /// <param name="action">The action.</param>
+        /// <returns>The creatd timer.</returns>
+        public static Timer Run(TimeSpan interval, Action action)
+        {
+            var t = new Timer(interval, true, true);
+            t.Tick += (sender, args) => action();
+            return t;
+        }
+
+        /// <summary>
+        ///     Runs the specified action once after the specified interval.
+        /// </summary>
+        /// <param name="interval">The interval.</param>
+        /// <param name="action">The action.</param>
+        /// <returns>The created timer.</returns>
+        public static Timer RunOnce(TimeSpan interval, Action action)
+        {
+            var t = new Timer(interval, false, true);
+            t.Tick += (sender, args) => action();
+            return t;
+        }
 
         /// <summary>
         ///     Removes this instance from the pool.
@@ -177,12 +185,6 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="e">A <see cref="System.EventArgs" /> that contains the event data.</param>
         public void OnTick(EventArgs e)
         {
-            _hit = true;
-            if (!IsRepeating)
-            {
-                Id = InvalidId;
-            }
-
             Tick?.Invoke(this, e);
         }
 
@@ -191,8 +193,21 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public void Restart()
         {
-            IsRunning = false;
+            _lastTick = DateTime.UtcNow;
             IsRunning = true;
+        }
+
+        internal void PerformTick()
+        {
+            OnTick(EventArgs.Empty);
+
+            if (!IsRepeating)
+                IsRunning = false;
+            else
+            {
+                _lastTick = DateTime.UtcNow;
+                NextTick = NextTick + _interval;
+            }
         }
     }
 }

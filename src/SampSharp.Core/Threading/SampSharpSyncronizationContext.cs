@@ -20,7 +20,7 @@ namespace SampSharp.Core.Threading
     /// <summary>
     ///     Represents a syncronization context for the SampSharp main thread.
     /// </summary>
-    /// <seealso cref="System.Threading.SynchronizationContext" />
+    /// <seealso cref="SynchronizationContext" />
     public class SampSharpSyncronizationContext : SynchronizationContext
     {
         private readonly MessageQueue _queue = new MessageQueue();
@@ -67,6 +67,7 @@ namespace SampSharp.Core.Threading
         /// <returns>A new <see cref="SynchronizationContext" /> object.</returns>
         public override SynchronizationContext CreateCopy()
         {
+            // Do not copy
             return this;
         }
 
