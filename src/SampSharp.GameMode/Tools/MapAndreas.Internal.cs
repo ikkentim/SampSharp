@@ -16,7 +16,7 @@ using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.GameMode.Tools
 {
-    public static partial class MapAndreas
+    internal static partial class MapAndreas
     {
         public class MapAndreasInternal : NativeObjectSingleton<MapAndreasInternal>
         {

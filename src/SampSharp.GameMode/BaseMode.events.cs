@@ -463,11 +463,6 @@ namespace SampSharp.GameMode
         public event EventHandler<EventArgs> Tick;
         
         /// <summary>
-        ///     Occurs when a callback throws an exception.
-        /// </summary>
-        public event EventHandler<ExceptionEventArgs> CallbackException;
-
-        /// <summary>
         ///     Raises the <see cref="Initialized" /> event.
         /// </summary>
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
@@ -1059,15 +1054,6 @@ namespace SampSharp.GameMode
         protected virtual void OnTick(EventArgs e)
         {
             Tick?.Invoke(this, e);
-        }
-
-        /// <summary>
-        ///     Raises the <see cref="E:CallbackException" /> event.
-        /// </summary>
-        /// <param name="e">The <see cref="ExceptionEventArgs" /> instance containing the event data.</param>
-        protected virtual void OnCallbackException(ExceptionEventArgs e)
-        {
-            CallbackException?.Invoke(this, e);
         }
     }
 }

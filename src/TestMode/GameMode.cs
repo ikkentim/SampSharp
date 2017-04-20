@@ -13,112 +13,56 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using SampSharp.GameMode;
-using SampSharp.GameMode.API;
-using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
-using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
+using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
-using TestMode.Tests;
-using TestMode.World;
 
 namespace TestMode
 {
     public class GameMode : BaseMode
     {
+        [Command("myfirstcommand")]
+        public static void MyFirstCommand(BasePlayer player, string message)
+        {
+            player.SendClientMessage($"Hello, world! You said {message}");
+        }
+
+        private void SpeedTest()
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+            var a = Server.GetTickCount();
+            var b = Server.GetTickCount();
+            var c = Server.GetTickCount();
+            Console.WriteLine($"In {sw.Elapsed.TotalMilliseconds} ms got {a} {b} {c}");
+        }
+
         #region Overrides of BaseMode
 
-        protected override void OnInitialized(EventArgs args)
+        protected override void OnInitialized(EventArgs e)
         {
-            base.OnInitialized(args);
-            
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            for (var i = 0; i < 10; i++)
+            base.OnInitialized(e);
+
+            Console.WriteLine("LOADED!");
+
+            SpeedTest();
+        }
+
+        protected override void OnRconCommand(RconEventArgs e)
+        {
+            Console.WriteLine($"Received RCON Command: {e.Command}");
+
+            if (e.Command == "speedtest")
             {
-                var s = Server.NetworkStats;
-                Server.SetWorldTime(i);
+                SpeedTest();
+                e.Success = true;
             }
-            sw.Stop();
-
-            Console.WriteLine($"bench took {sw.Elapsed}");
-            Console.WriteLine($"TestMode for SampSharp v{GetType().Assembly.GetName().Version}");
-            Console.WriteLine("----------------------");
-
-            Server.ToggleDebugOutput(true);
-
-            SetGameModeText("sa-mp# testmode");
-
-            UsePlayerPedAnimations();
-
-            AddPlayerClass(65, new Vector3(5), 0);
-            
-            foreach (
-                var test in
-                    GetType()
-                        .Assembly.GetTypes()
-                        .Where(t => t.IsClass)
-                        .Where(typeof (ITest).IsAssignableFrom)
-                        .Select(t => Activator.CreateInstance(t) as ITest))
-            {
-                Console.WriteLine();
-                Console.WriteLine("=========");
-                Console.WriteLine(test);
-                Console.WriteLine("=========");
-                test.Start(this);
-                Console.WriteLine($"Test {test} completed.");
-                Console.WriteLine();
-            }
-
-            var pooledTypes = new[]
-            {
-                typeof(IdentifiedPool<>),
-                typeof(IdentifiedOwnedPool<,>)
-            };
-
-
-            Console.WriteLine(DateTime.Now);
-            foreach (var type in new[] { typeof(GameMode).Assembly, typeof(BaseMode).Assembly }
-                .SelectMany(a => a.GetTypes())
-                .Where(t => !t.IsGenericType && t.IsClass)
-                .Select(t1 => pooledTypes.Select(t2 => GetBaseTypeOfGenericType(t1, t2))
-                    .FirstOrDefault(t => t != null))
-                .Where(t => t != null)
-                .Distinct())
-            {
-                Console.WriteLine($"Pool: {type.GetGenericArguments().FirstOrDefault()} \t=> {type.GetProperty("InstanceType", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)?.GetValue(null)}");
-            }
-            
+            base.OnRconCommand(e);
         }
 
         #endregion
-
-
-        private Type GetBaseTypeOfGenericType(Type type, Type genericType)
-        {
-            if (type == null)
-                return null;
-            if (genericType == null)
-                throw new ArgumentNullException(nameof(genericType));
-            
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == genericType)
-            {
-                return type;
-            }
-            
-            if ((type.BaseType == null) || (type.BaseType == typeof(object)))
-                return null;
-            
-            return GetBaseTypeOfGenericType(type.BaseType, genericType);
-        }
-
     }
 }

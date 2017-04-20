@@ -27,7 +27,7 @@ namespace SampSharp.GameMode.Tools
     ///     this logic has been copied from MapAndreas v1.2 released at
     ///     http://forum.sa-mp.com/showthread.php?t=275492
     /// </remarks>
-    public static partial class MapAndreas
+    internal static partial class MapAndreas // TODO: Temporarily disabled
     {
         private const string FullFile = "scriptfiles/SAfull.hmap";
         private const string MinimalFile = "scriptfiles/SAmin.hmap";

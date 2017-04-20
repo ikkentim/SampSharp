@@ -144,8 +144,10 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="message">The message.</param>
         public static void Print(string message)
         {
-            throw new NotImplementedException();
-            //InteropProvider.Print(message);
+            if(BaseMode.Instance == null || BaseMode.Instance.Client == null)
+                throw new Exception("The game mode has not yet been initialized.");
+            
+            BaseMode.Instance.Client.Print(message);
         }
 
         /// <summary>

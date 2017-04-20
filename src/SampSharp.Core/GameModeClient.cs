@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
 using SampSharp.Core.Callbacks;
@@ -59,12 +58,56 @@ namespace SampSharp.Core
         /// </summary>
         public bool IsOnMainThread => _mainThread == Thread.CurrentThread.ManagedThreadId;
 
-        private void Send(ServerCommand command, IEnumerable<byte> data)
+        private async Task ReceiveLoop()
         {
-            if (!IsOnMainThread)
-                throw new GameModeClientException("Cannot send data to the server from a thread other than the main thread.");
+            for (;;)
+            {
+                var data = await ReceiveOrDequeueCommandAsync();
 
-            Pipe.Send(command, data);
+                switch (data.Command)
+                {
+                    case ServerCommand.Tick:
+                        _gameModeProvider.Tick();
+                        break;
+                    case ServerCommand.Pong:
+                        if (_pongs.Count == 0)
+                            CoreLog.Log(CoreLogLevel.Error, "Received a random pong");
+                        else
+                            _pongs.Dequeue().Pong();
+                        break;
+                    case ServerCommand.Announce:
+                        CoreLog.Log(CoreLogLevel.Error, "Received a random server announcement");
+                        break;
+                    case ServerCommand.PublicCall:
+                        var name = ValueConverter.ToString(data.Data, 0);
+                        if (_callbacks.TryGetValue(name, out var callback))
+                        {
+                            int? result = null;
+                            try
+                            {
+                                result = callback.Invoke(data.Data, name.Length + 1);
+                            }
+                            catch (Exception e)
+                            {
+                                OnUnhandledException(new UnhandledExceptionEventArgs(e));
+                            }
+
+                            Send(ServerCommand.Response,
+                                result != null
+                                    ? AOne.Concat(ValueConverter.GetBytes(result.Value))
+                                    : AZero);
+                        }
+                        else
+                            CoreLog.Log(CoreLogLevel.Error, "Received unknown callback " + name);
+                        break;
+                    case ServerCommand.Reply:
+                        CoreLog.Log(CoreLogLevel.Error, "Received a random reply");
+                        break;
+                    default:
+                        CoreLog.Log(CoreLogLevel.Error, $"Unknown command {data.Command} recieved with {data.Data.Length} data");
+                        break;
+                }
+            }
         }
 
         private async void Initialize()
@@ -108,78 +151,6 @@ namespace SampSharp.Core
             _gameModeProvider.Initialize(this);
         }
 
-        private async Task<ServerCommandData> ReceiveCommandAsync()
-        {
-            return await Pipe.ReceiveAsync();
-        }
-
-        private ServerCommandData ReceiveCommand()
-        {
-            return Pipe.Receive();
-        }
-
-        private ServerCommandData ReceiveCommand(ServerCommand type)
-        {
-            for (;;)
-            {
-                var data = ReceiveCommand();
-                if (data.Command == type)
-                    return data;
-                _unhandledCommands.Enqueue(data);
-            }
-        }
-
-        private async Task<ServerCommandData> ReceiveOrDequeueCommandAsync()
-        {
-            return _unhandledCommands.Any()
-                ? _unhandledCommands.Dequeue()
-                : await ReceiveCommandAsync();
-        }
-
-        private async Task ReceiveLoop()
-        {
-            for (;;)
-            {
-                var data = await ReceiveOrDequeueCommandAsync();
-
-                switch (data.Command)
-                {
-                    case ServerCommand.Tick:
-                        _gameModeProvider.Tick();
-                        break;
-                    case ServerCommand.Pong:
-                        if (_pongs.Count == 0)
-                            CoreLog.Log(CoreLogLevel.Error, "Received a random pong");
-                        else
-                            _pongs.Dequeue().Pong();
-                        break;
-                    case ServerCommand.Announce:
-                        CoreLog.Log(CoreLogLevel.Error, "Received a random server announcement");
-                        break;
-                    case ServerCommand.PublicCall:
-                        var name = ValueConverter.ToString(data.Data, 0);
-                        if (_callbacks.TryGetValue(name, out var callback))
-                        {
-                            var result = callback.Invoke(data.Data, name.Length + 1);
-                            
-                            Send(ServerCommand.Response,
-                                result != null
-                                    ? AOne.Concat(ValueConverter.GetBytes(result.Value))
-                                    : AZero);
-                        }
-                        else
-                            CoreLog.Log(CoreLogLevel.Error, "Received unknown callback " + name);
-                        break;
-                    case ServerCommand.Reply:
-                        CoreLog.Log(CoreLogLevel.Error, "Received a random reply");
-                        break;
-                    default:
-                        CoreLog.Log(CoreLogLevel.Error, $"Unknown command {data.Command} recieved with {data.Data.Length} data");
-                        break;
-                }
-            }
-        }
-
         internal void Run()
         {
             if (InternalStorage.RunningClient != null)
@@ -208,6 +179,51 @@ namespace SampSharp.Core
                 throw new GameModeNotRunningException();
         }
 
+        private void OnUnhandledException(UnhandledExceptionEventArgs e)
+        {
+            UnhandledException?.Invoke(this, e);
+        }
+
+        #region Communication
+
+        private void Send(ServerCommand command, IEnumerable<byte> data)
+        {
+            if (!IsOnMainThread)
+                throw new GameModeClientException("Cannot send data to the server from a thread other than the main thread.");
+
+            Pipe.Send(command, data);
+        }
+
+        private async Task<ServerCommandData> ReceiveCommandAsync()
+        {
+            return await Pipe.ReceiveAsync();
+        }
+
+        private async Task<ServerCommandData> ReceiveOrDequeueCommandAsync()
+        {
+            return _unhandledCommands.Any()
+                ? _unhandledCommands.Dequeue()
+                : await ReceiveCommandAsync();
+        }
+
+        private ServerCommandData ReceiveCommand()
+        {
+            return Pipe.Receive();
+        }
+
+        private ServerCommandData ReceiveCommand(ServerCommand type)
+        {
+            for (;;)
+            {
+                var data = ReceiveCommand();
+                if (data.Command == type)
+                    return data;
+                _unhandledCommands.Enqueue(data);
+            }
+        }
+
+        #endregion
+
         #region Implementation of IGameModeClient
 
         /// <summary>
@@ -221,6 +237,11 @@ namespace SampSharp.Core
         public INativeLoader NativeLoader { get; set; }
 
         /// <summary>
+        ///     Occurs when an exception is unhandled during the execution of a callback or tick.
+        /// </summary>
+        public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
+
+        /// <summary>
         ///     Registers a callback with the specified <see cref="name" />. When the callback is called, the specified
         ///     <see cref="methodInfo" /> will be invoked on the specified <see cref="target" />.
         /// </summary>
@@ -228,7 +249,6 @@ namespace SampSharp.Core
         /// <param name="target">The target on which to invoke the method.</param>
         /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
         /// <param name="parameters">The parameters of the callback.</param>
-        /// <returns></returns>
         public void RegisterCallback(string name, object target, MethodInfo methodInfo, params CallbackParameterInfo[] parameters)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -241,7 +261,7 @@ namespace SampSharp.Core
                 throw new CallbackRegistrationException("The method uses an unsupported return type");
 
             _callbacks[name] = new Callback(target, methodInfo, name, parameters);
-            
+
             if (IsOnMainThread)
             {
                 Send(ServerCommand.RegisterCall, ValueConverter.GetBytes(name)
@@ -264,7 +284,6 @@ namespace SampSharp.Core
         /// <param name="name">The name af the callback to register.</param>
         /// <param name="target">The target on which to invoke the method.</param>
         /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
-        /// <returns></returns>
         public void RegisterCallback(string name, object target, MethodInfo methodInfo)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -442,7 +461,7 @@ namespace SampSharp.Core
                     response = ReceiveCommand(ServerCommand.Response);
                 }, null);
             }
-            
+
             return response.Data;
         }
 

@@ -58,7 +58,12 @@ namespace SampSharp.GameMode
         ///     Gets the <see cref="GameModeServiceContainer" /> holding all the service providers attached to the game mode.
         /// </summary>
         public virtual GameModeServiceContainer Services { get; } = new GameModeServiceContainer();
-        
+
+        /// <summary>
+        /// Gets the game mode client.
+        /// </summary>
+        protected internal IGameModeClient Client { get; private set; }
+
         #region Implementation of IDisposable
 
         /// <summary>
@@ -68,15 +73,12 @@ namespace SampSharp.GameMode
         public void Dispose()
         {
             _controllers.Dispose();
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
         #endregion
 
         /// <summary>
-        /// Autoloads the controllers in the specified assembly.
+        ///     Autoloads the controllers in the specified assembly.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
         public void AutoloadControllersForAssembly(Assembly assembly)
@@ -159,7 +161,7 @@ namespace SampSharp.GameMode
                     continue;
                 }
 
-                pool.GetTypeInfo().GetMethod("Register", new[] {typeof (Type)}).Invoke(null, new[] {type});
+                pool.GetTypeInfo().GetMethod("Register", new[] {typeof (Type)}).Invoke(null, new object[] {type});
             }
         }
 
@@ -257,10 +259,20 @@ namespace SampSharp.GameMode
 
                     // Register the extension to the plugin.
                     var extension = (IExtension) Activator.CreateInstance(extensionType);
-                    Extension.Register(extension);
-                    _extensions.Add(extension);
+                    RegisterExtension(extension);
                 }
             }
+        }
+
+        /// <summary>
+        ///     Registers the specified extension.
+        /// </summary>
+        /// <typeparam name="T">The type of the extension.</typeparam>
+        /// <param name="extension">The extension instance.</param>
+        public void RegisterExtension<T>(T extension) where T : IExtension
+        {
+            Client.RegisterCallbacksInObject(extension);
+            _extensions.Add(extension);
         }
 
         #region Implementation of IGameModeProvider
@@ -271,6 +283,8 @@ namespace SampSharp.GameMode
         /// <param name="client">The game mode client which is loading this game mode.</param>
         void IGameModeProvider.Initialize(IGameModeClient client)
         {
+            Client = client;
+
             client.RegisterCallbacksInObject(this);
             
             LoadExtensions();
@@ -284,7 +298,7 @@ namespace SampSharp.GameMode
         /// </summary>
         void IGameModeProvider.Tick()
         {
-            OnTick();
+            OnTick(EventArgs.Empty);
         }
 
         #endregion

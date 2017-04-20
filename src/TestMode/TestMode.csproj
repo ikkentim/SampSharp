@@ -41,34 +41,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameMode.cs" />
-    <Compile Include="Commands\MyCommand.cs" />
-    <Compile Include="Commands\MyCommandManager.cs" />
-    <Compile Include="Services\ITestService.cs" />
-    <Compile Include="Services\ITestServiceA.cs" />
-    <Compile Include="Services\ITestServiceB.cs" />
-    <Compile Include="Services\TestServiceA.cs" />
-    <Compile Include="World\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\TestServiceB.cs" />
-    <Compile Include="Tests\ActorTest.cs" />
-    <Compile Include="Tests\ASyncTest.cs" />
-    <Compile Include="Tests\CharsetTest.cs" />
-    <Compile Include="Tests\CommandsTest.cs" />
-    <Compile Include="Tests\DelayTest.cs" />
-    <Compile Include="Tests\DialogTest.cs" />
-    <Compile Include="Tests\DisposureTest.cs" />
-    <Compile Include="Tests\ExtensionTest.cs" />
-    <Compile Include="Tests\ITest.cs" />
-    <Compile Include="Tests\KeyHandlerTest.cs" />
-    <Compile Include="Tests\MapAndreasTest.cs" />
-    <Compile Include="Tests\MenuTest.cs" />
-    <Compile Include="Tests\NativesTest.cs" />
-    <Compile Include="Tests\ServicesTest.cs" />
-    <Compile Include="Tests\TextDrawTest.cs" />
-    <Compile Include="Tests\VehicleInfoTest.cs" />
-    <Compile Include="World\Vehicle.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SampSharp.Core\SampSharp.Core.csproj">
+      <Project>{7b9345a8-80f3-43e3-b3e1-b3e3b45b8b0f}</Project>
+      <Name>SampSharp.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SampSharp.GameMode\SampSharp.GameMode.csproj">
       <Project>{153d7525-b36f-4db9-b5b6-483915c84a7e}</Project>
       <Name>SampSharp.GameMode</Name>

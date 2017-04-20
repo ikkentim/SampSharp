@@ -678,22 +678,5 @@ namespace SampSharp.GameMode
 
             return true;
         }
-
-        [Callback]
-        internal bool OnTick()
-        {
-            OnTick(EventArgs.Empty);
-
-            return true;
-        }
-        
-        internal bool OnCallbackException(Exception exception)
-        {
-            throw new NotImplementedException();
-            var args = new ExceptionEventArgs(exception);
-            OnCallbackException(args);
-
-            return args.Handled;
-        }
     }
 }

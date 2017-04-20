@@ -39,6 +39,11 @@ namespace SampSharp.Core
         INativeLoader NativeLoader { get; set; }
 
         /// <summary>
+        ///     Occurs when an exception is unhandled during the execution of a callback or tick.
+        /// </summary>
+        event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
+
+        /// <summary>
         ///     Start receiving ticks and public calls.
         /// </summary>
         void Start();
@@ -68,6 +73,10 @@ namespace SampSharp.Core
         /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
         void RegisterCallback(string name, object target, MethodInfo methodInfo);
 
+        /// <summary>
+        ///     Registers callbacks in specified target object decorated with a <see cref="CallbackAttribute"/>.
+        /// </summary>
+        /// <param name="target">The target to register the callbacks from.</param>
         void RegisterCallbacksInObject(object target);
 
         /// <summary>

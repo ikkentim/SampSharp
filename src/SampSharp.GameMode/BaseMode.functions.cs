@@ -25,8 +25,8 @@ namespace SampSharp.GameMode
         /// </summary>
         public static float Gravity
         {
-            get { return BaseModeInternal.Instance.GetGravity(); }
-            set { BaseModeInternal.Instance.SetGravity(value); }
+            get => BaseModeInternal.Instance.GetGravity();
+            set => BaseModeInternal.Instance.SetGravity(value);
         }
 
         /// <summary>
