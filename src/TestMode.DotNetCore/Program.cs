@@ -33,6 +33,12 @@ namespace TestMode.DotNetCore
             player.SendClientMessage($"Hello, world! You said {message}");
         }
 
+        [Command("pos")]
+        public static void PositionCommand(BasePlayer player)
+        {
+            player.SendClientMessage(Color.Yellow, $"Position: {player.Position}");
+        }
+
         private void SpeedTest()
         {
             var sw = new Stopwatch();
@@ -42,9 +48,9 @@ namespace TestMode.DotNetCore
             var c = Server.GetTickCount();
             Console.WriteLine($"In {sw.Elapsed.TotalMilliseconds} ms got {a} {b} {c}");
         }
-
+        
         #region Overrides of BaseMode
-
+        
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
@@ -66,6 +72,12 @@ namespace TestMode.DotNetCore
             base.OnRconCommand(e);
         }
 
+        protected override void OnPlayerConnected(BasePlayer player, EventArgs e)
+        {
+            Console.WriteLine(player.Position);
+            base.OnPlayerConnected(player, e);
+        }
+        
         #endregion
     }
 

@@ -227,16 +227,22 @@ namespace SampSharp.Core.Natives
                 case NativeParameterType.Int32Reference:
                     if (value is int v)
                         return ValueConverter.GetBytes(v);
+                    else if (value == null)
+                        return ValueConverter.GetBytes(0);
                     break;
                 case NativeParameterType.Single:
                 case NativeParameterType.SingleReference:
                     if (value is float f)
                         return ValueConverter.GetBytes(f);
+                    else if (value == null)
+                        return ValueConverter.GetBytes(0.0f);
                     break;
                 case NativeParameterType.Bool:
                 case NativeParameterType.BoolReference:
                     if (value is bool b)
                         return ValueConverter.GetBytes(b);
+                    else if (value == null)
+                        return ValueConverter.GetBytes(false);
                     break;
                 case NativeParameterType.String:
                     if (value is string s)
