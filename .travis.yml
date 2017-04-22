@@ -6,7 +6,7 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -qq premake4 gcc g++ mono-complete
+  - sudo apt-get install -qq premake4 gcc g++
 
 before_script:
   - premake4 gmake

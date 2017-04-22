@@ -9,7 +9,7 @@ solution "SampSharp"
         kind "SharedLib"
 
         language "C++"
-        links { "mono-2.0", "rt" }
+        links { "rt" }
 
         includedirs {
             "src/SampSharp/includes",
