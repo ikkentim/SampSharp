@@ -1,3 +1,6 @@
+### 0.8.0
+- Changes for "named pipes" version
+
 ### 0.7.6221.37952
 - Changed the default virtual world of `TextLabel` instances from -1 to 0, which is the expected behavior
 - Fixed a bug which caused previous colors and zoom levels in `TextDraw`/`PlayerTextDraw` instances to be set at every refresh
