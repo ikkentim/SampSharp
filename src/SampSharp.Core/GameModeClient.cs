@@ -37,12 +37,13 @@ namespace SampSharp.Core
         private readonly IGameModeProvider _gameModeProvider;
         private readonly string _pipeName;
         private readonly Queue<PongReceiver> _pongs = new Queue<PongReceiver>();
-        private readonly Queue<ServerCommandData> _unhandledCommands = new Queue<ServerCommandData>();
         private int _mainThread;
         private bool _started;
         private bool _running = true;
         private SampSharpSyncronizationContext _syncronizationContext;
         private MessagePump _messagePump;
+        private bool _initReceived;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameModeClient" /> class.
         /// </summary>
@@ -62,68 +63,72 @@ namespace SampSharp.Core
         /// </summary>
         public bool IsOnMainThread => _mainThread == Thread.CurrentThread.ManagedThreadId;
 
+        private void ProcessCommand(ServerCommandData data)
+        {
+            switch (data.Command)
+            {
+                case ServerCommand.Tick:
+                    _gameModeProvider.Tick();
+                    break;
+                case ServerCommand.Pong:
+                    if (_pongs.Count == 0)
+                        CoreLog.Log(CoreLogLevel.Error, "Received a random pong");
+                    else
+                        _pongs.Dequeue().Pong();
+                    break;
+                case ServerCommand.Announce:
+                    CoreLog.Log(CoreLogLevel.Error, "Received a random server announcement");
+                    break;
+                case ServerCommand.PublicCall:
+                    var name = ValueConverter.ToString(data.Data, 0);
+                    if (_callbacks.TryGetValue(name, out var callback))
+                    {
+                        int? result = null;
+                        try
+                        {
+                            result = callback.Invoke(data.Data, name.Length + 1);
+                        }
+                        catch (Exception e)
+                        {
+                            OnUnhandledException(new UnhandledExceptionEventArgs(e));
+                        }
+
+                        Send(ServerCommand.Response,
+                            result != null
+                                ? AOne.Concat(ValueConverter.GetBytes(result.Value))
+                                : AZero);
+                    }
+                    else
+                        CoreLog.Log(CoreLogLevel.Error, "Received unknown callback " + name);
+
+                    if (!_initReceived && name == "OnGameModeInit")
+                    {
+                        _initReceived = true;
+                    }
+                    else if (_initReceived && name == "OnGameModeExit")
+                    {
+                        _gameModeProvider.Dispose();
+                        Pipe.Dispose();
+                        _messagePump.Dispose();
+                        _running = false;
+                    }
+                    break;
+                case ServerCommand.Reply:
+                    CoreLog.Log(CoreLogLevel.Error, "Received a random reply");
+                    break;
+                default:
+                    CoreLog.Log(CoreLogLevel.Error, $"Unknown command {data.Command} recieved with {data.Data.Length} data");
+                    break;
+            }
+        }
+
         private async Task ReceiveLoop()
         {
-            var initReceived = false;
             while(_running)
             {
-                var data = await ReceiveOrDequeueCommandAsync();
+                var data = await ReceiveCommandAsync();
 
-                switch (data.Command)
-                {
-                    case ServerCommand.Tick:
-                        _gameModeProvider.Tick();
-                        break;
-                    case ServerCommand.Pong:
-                        if (_pongs.Count == 0)
-                            CoreLog.Log(CoreLogLevel.Error, "Received a random pong");
-                        else
-                            _pongs.Dequeue().Pong();
-                        break;
-                    case ServerCommand.Announce:
-                        CoreLog.Log(CoreLogLevel.Error, "Received a random server announcement");
-                        break;
-                    case ServerCommand.PublicCall:
-                        var name = ValueConverter.ToString(data.Data, 0);
-                        if (_callbacks.TryGetValue(name, out var callback))
-                        {
-                            int? result = null;
-                            try
-                            {
-                                result = callback.Invoke(data.Data, name.Length + 1);
-                            }
-                            catch (Exception e)
-                            {
-                                OnUnhandledException(new UnhandledExceptionEventArgs(e));
-                            }
-
-                            Send(ServerCommand.Response,
-                                result != null
-                                    ? AOne.Concat(ValueConverter.GetBytes(result.Value))
-                                    : AZero);
-                        }
-                        else
-                            CoreLog.Log(CoreLogLevel.Error, "Received unknown callback " + name);
-
-                        if (!initReceived && name == "OnGameModeInit")
-                        {
-                            initReceived = true;
-                        }
-                        else if (initReceived && name == "OnGameModeExit")
-                        {
-                            _gameModeProvider.Dispose();
-                            Pipe.Dispose();
-                            _messagePump.Dispose();
-                            _running = false;
-                        }
-                        break;
-                    case ServerCommand.Reply:
-                        CoreLog.Log(CoreLogLevel.Error, "Received a random reply");
-                        break;
-                    default:
-                        CoreLog.Log(CoreLogLevel.Error, $"Unknown command {data.Command} recieved with {data.Data.Length} data");
-                        break;
-                }
+                ProcessCommand(data);
             }
         }
 
@@ -217,14 +222,7 @@ namespace SampSharp.Core
         {
             return await Pipe.ReceiveAsync();
         }
-
-        private async Task<ServerCommandData> ReceiveOrDequeueCommandAsync()
-        {
-            return _unhandledCommands.Any()
-                ? _unhandledCommands.Dequeue()
-                : await ReceiveCommandAsync();
-        }
-
+        
         private ServerCommandData ReceiveCommand()
         {
             return Pipe.Receive();
@@ -237,7 +235,8 @@ namespace SampSharp.Core
                 var data = ReceiveCommand();
                 if (data.Command == type)
                     return data;
-                _unhandledCommands.Enqueue(data);
+
+                ProcessCommand(data);
             }
         }
 

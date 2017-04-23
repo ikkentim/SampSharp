@@ -22,6 +22,12 @@ namespace TestMode.DotNetCore
             player.SendClientMessage(Color.Yellow, $"Position: {player.Position}");
         }
 
+        [Command("kick")]
+        public static void Kick(BasePlayer player, BasePlayer target)
+        {
+            target.Kick();
+        }
+
         private void SpeedTest()
         {
             var sw = new Stopwatch();
@@ -57,10 +63,16 @@ namespace TestMode.DotNetCore
 
         protected override void OnPlayerConnected(BasePlayer player, EventArgs e)
         {
-            Console.WriteLine(player.Position);
+            Console.WriteLine($"Player {player.Name} connected.");
             base.OnPlayerConnected(player, e);
         }
-        
+
+        protected override void OnPlayerDisconnected(BasePlayer player, DisconnectEventArgs e)
+        {
+            Console.WriteLine($"Player {player.Name} disconnected. Reason: {e.Reason}.");
+            base.OnPlayerDisconnected(player, e);
+        }
+
         protected override void OnTick(EventArgs e)
         {
             base.OnTick(e);
