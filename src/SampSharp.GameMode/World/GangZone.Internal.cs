@@ -18,6 +18,7 @@ namespace SampSharp.GameMode.World
 {
     public partial class GangZone
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public class GangZoneInternal : NativeObjectSingleton<GangZoneInternal>
         {
             [NativeMethod]
@@ -81,4 +82,5 @@ namespace SampSharp.GameMode.World
             }
         }
     }
+#pragma warning restore CS1591
 }

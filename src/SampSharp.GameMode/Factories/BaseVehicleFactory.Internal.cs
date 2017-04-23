@@ -18,6 +18,7 @@ namespace SampSharp.GameMode.Factories
 {
     public partial class BaseVehicleFactory
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public class BaseVehicleFactoryInternal : NativeObjectSingleton<BaseVehicleFactoryInternal>
         {
             [NativeMethod]
@@ -41,5 +42,6 @@ namespace SampSharp.GameMode.Factories
                 throw new NativeNotImplementedException();
             }
         }
+#pragma warning restore CS1591
     }
 }

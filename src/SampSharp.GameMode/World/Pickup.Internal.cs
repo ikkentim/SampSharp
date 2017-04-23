@@ -18,6 +18,7 @@ namespace SampSharp.GameMode.World
 {
     public partial class Pickup
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public class PickupInternal : NativeObjectSingleton<PickupInternal>
         {
             [NativeMethod]
@@ -38,5 +39,6 @@ namespace SampSharp.GameMode.World
                 throw new NativeNotImplementedException();
             }
         }
+#pragma warning restore
     }
 }

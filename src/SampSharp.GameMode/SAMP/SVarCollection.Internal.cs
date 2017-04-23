@@ -18,6 +18,7 @@ namespace SampSharp.GameMode.SAMP
 {
     public partial class SVarCollection
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public class SVarCollectionInternal : NativeObjectSingleton<SVarCollectionInternal>
         {
             [NativeMethod]
@@ -80,5 +81,6 @@ namespace SampSharp.GameMode.SAMP
                 throw new NativeNotImplementedException();
             }
         }
+#pragma warning restore CS1591
     }
 }

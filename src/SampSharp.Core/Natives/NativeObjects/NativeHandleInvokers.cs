@@ -22,7 +22,7 @@ namespace SampSharp.Core.Natives.NativeObjects
     public static class NativeHandleInvokers
     {
         /// <summary>
-        ///     Invokes the native <see cref="handle" /> with the specified <see cref="args" />.
+        ///     Invokes the native <paramref name="handle" /> with the specified <paramref name="args" />.
         /// </summary>
         /// <param name="handle">The handle.</param>
         /// <param name="args">The arguments.</param>
@@ -33,7 +33,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         }
 
         /// <summary>
-        ///     Invokes the native <see cref="handle" /> with the specified <see cref="args" />.
+        ///     Invokes the native <paramref name="handle" /> with the specified <paramref name="args" />.
         /// </summary>
         /// <param name="handle">The handle.</param>
         /// <param name="args">The arguments.</param>
@@ -44,7 +44,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         }
 
         /// <summary>
-        ///     Invokes the native <see cref="handle" /> with the specified <see cref="args" />.
+        ///     Invokes the native <paramref name="handle" /> with the specified <paramref name="args" />.
         /// </summary>
         /// <param name="handle">The handle.</param>
         /// <param name="args">The arguments.</param>
@@ -54,7 +54,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         }
 
         /// <summary>
-        ///     Invokes the native <see cref="handle" /> with the specified <see cref="args" />.
+        ///     Invokes the native <paramref name="handle" /> with the specified <paramref name="args" />.
         /// </summary>
         /// <param name="handle">The handle.</param>
         /// <param name="args">The arguments.</param>

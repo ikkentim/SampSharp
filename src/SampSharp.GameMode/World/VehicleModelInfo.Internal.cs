@@ -18,6 +18,7 @@ namespace SampSharp.GameMode.World
 {
     public partial struct VehicleModelInfo
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public class VehicleModelInfoInternal : NativeObjectSingleton<VehicleModelInfoInternal>
         {
             [NativeMethod]
@@ -26,5 +27,6 @@ namespace SampSharp.GameMode.World
                 throw new NativeNotImplementedException();
             }
         }
+#pragma warning restore CS1591
     }
 }

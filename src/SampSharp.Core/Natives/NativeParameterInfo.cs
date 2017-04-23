@@ -90,12 +90,12 @@ namespace SampSharp.Core.Natives
         }
 
         /// <summary>
-        ///     Returns a <see cref="NativeParameterInfo" /> for the specified <see cref="type" />.
+        ///     Returns a <see cref="NativeParameterInfo" /> for the specified <paramref name="type" />.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>A struct for the type.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">
-        ///     Thrown if <see cref="type" /> is not a valid native parameter
+        ///     Thrown if <paramref name="type" /> is not a valid native parameter
         ///     type.
         /// </exception>
         public static NativeParameterInfo ForType(Type type)

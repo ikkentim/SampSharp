@@ -28,10 +28,10 @@ namespace SampSharp.Core
         private string _pipeName = "SampSharp";
         private bool _redirectConsoleOutput;
         private GameModeStartBehaviour _startBehaviour = GameModeStartBehaviour.Gmx;
-        private GameModeExitBehaviour _exitBehaviour = GameModeExitBehaviour.ShutDown;
+        //private GameModeExitBehaviour _exitBehaviour = GameModeExitBehaviour.ShutDown;
 
         /// <summary>
-        ///     Use the specified <see cref="pipeName" /> to communicate with the SampSharp server.
+        ///     Use the specified <paramref name="pipeName" /> to communicate with the SampSharp server.
         /// </summary>
         /// <param name="pipeName">Name of the pipe.</param>
         /// <returns>The updated game mode configuration builder.</returns>
@@ -63,7 +63,7 @@ namespace SampSharp.Core
         }
 
         /// <summary>
-        ///     Use the gamemode of the specified <see cref="TGameMode" /> type.
+        ///     Use the gamemode of the specified <typeparamref name="TGameMode" /> type.
         /// </summary>
         /// <typeparam name="TGameMode">The type of the game mode to use.</typeparam>
         /// <returns>The updated game mode configuration builder.</returns>
@@ -103,8 +103,8 @@ namespace SampSharp.Core
         public GameModeBuilder UseExitBehaviour(GameModeExitBehaviour exitBehaviour)
         {
             throw new NotImplementedException();
-            _exitBehaviour = exitBehaviour;
-            return this;
+            //_exitBehaviour = exitBehaviour;
+            //return this;
         }
 
 

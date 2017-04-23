@@ -19,6 +19,9 @@ using System.Text;
 
 namespace SampSharp.Core.Communication
 {
+    /// <summary>
+    ///     Contains methods for converting byte arrays to values, values to byte arrays and values to other values.
+    /// </summary>
     public static class ValueConverter
     {
         // TODO: Endianness is assumed equal to the server. They should be (because both run on the same machine), but the behaviour of .NET is unknown if it respects the machine endianness. Need to check.
@@ -67,7 +70,7 @@ namespace SampSharp.Core.Communication
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The bytes representing the specified value</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <see cref="value" /> is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is null.</exception>
         public static byte[] GetBytes(string value)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
@@ -85,8 +88,8 @@ namespace SampSharp.Core.Communication
         }
 
         /// <summary>
-        ///     Reads an <see cref="int" /> from the specified <see cref="buffer" /> starting at the specified
-        ///     <see cref="startIndex" />.
+        ///     Reads an <see cref="int" /> from the specified <paramref name="buffer" /> starting at the specified
+        ///     <paramref name="startIndex" />.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="startIndex">The start index.</param>
@@ -104,7 +107,7 @@ namespace SampSharp.Core.Communication
         }
 
         /// <summary>
-        ///     Converts the specified <see cref="value" /> to a <see cref="int" />
+        ///     Converts the specified <paramref name="value" /> to a <see cref="int" />
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The converted <see cref="int" />.</returns>
@@ -114,7 +117,7 @@ namespace SampSharp.Core.Communication
         }
 
         /// <summary>
-        ///     Converts the specified <see cref="value" /> to a <see cref="int" />
+        ///     Converts the specified <paramref name="value" /> to a <see cref="int" />
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The converted <see cref="int" />.</returns>
@@ -124,8 +127,8 @@ namespace SampSharp.Core.Communication
         }
 
         /// <summary>
-        ///     Reads an <see cref="uint" /> from the specified <see cref="buffer" /> starting at the specified
-        ///     <see cref="startIndex" />.
+        ///     Reads an <see cref="uint" /> from the specified <paramref name="buffer" /> starting at the specified
+        ///     <paramref name="startIndex" />.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="startIndex">The start index.</param>
@@ -143,7 +146,7 @@ namespace SampSharp.Core.Communication
         }
 
         /// <summary>
-        ///     Converts the specified <see cref="value" /> to a <see cref="uint" />
+        ///     Converts the specified <paramref name="value" /> to a <see cref="uint" />
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The converted <see cref="uint" />.</returns>
@@ -153,8 +156,8 @@ namespace SampSharp.Core.Communication
         }
 
         /// <summary>
-        ///     Reads a <see cref="bool" /> from the specified <see cref="buffer" /> starting at the specified
-        ///     <see cref="startIndex" />.
+        ///     Reads a <see cref="bool" /> from the specified <paramref name="buffer" /> starting at the specified
+        ///     <paramref name="startIndex" />.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="startIndex">The start index.</param>
@@ -167,7 +170,7 @@ namespace SampSharp.Core.Communication
         }
 
         /// <summary>
-        ///     Converts the specified <see cref="value" /> to a <see cref="bool" />
+        ///     Converts the specified <paramref name="value" /> to a <see cref="bool" />
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The converted <see cref="bool" />.</returns>
@@ -177,8 +180,8 @@ namespace SampSharp.Core.Communication
         }
 
         /// <summary>
-        ///     Reads a <see cref="float" /> from the specified <see cref="buffer" /> starting at the specified
-        ///     <see cref="startIndex" />.
+        ///     Reads a <see cref="float" /> from the specified <paramref name="buffer" /> starting at the specified
+        ///     <paramref name="startIndex" />.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="startIndex">The start index.</param>
@@ -191,7 +194,7 @@ namespace SampSharp.Core.Communication
         }
 
         /// <summary>
-        ///     Converts the specified <see cref="value" /> to a <see cref="float" />
+        ///     Converts the specified <paramref name="value" /> to a <see cref="float" />
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The converted <see cref="float" />.</returns>
@@ -201,8 +204,8 @@ namespace SampSharp.Core.Communication
         }
 
         /// <summary>
-        ///     Reads a <see cref="Version" /> from the specified <see cref="buffer" /> starting at the specified
-        ///     <see cref="startIndex" />.
+        ///     Reads a <see cref="Version" /> from the specified <paramref name="buffer" /> starting at the specified
+        ///     <paramref name="startIndex" />.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="startIndex">The start index.</param>
@@ -216,8 +219,8 @@ namespace SampSharp.Core.Communication
         }
 
         /// <summary>
-        ///     Reads a <see cref="string" /> from the specified <see cref="buffer" /> starting at the specified
-        ///     <see cref="startIndex" />.
+        ///     Reads a <see cref="string" /> from the specified <paramref name="buffer" /> starting at the specified
+        ///     <paramref name="startIndex" />.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="startIndex">The start index.</param>

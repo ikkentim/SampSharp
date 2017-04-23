@@ -28,10 +28,14 @@ namespace SampSharp.GameMode.Controllers
         internal static TimerController Instance;
         private readonly List<Timer> _activeTimers = new List<Timer>();
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="TimerController"/> class.
+        /// </summary>
         public TimerController()
         {
             Instance = this;
         }
+
         internal void AddTimer(Timer timer)
         {
             if (timer == null) throw new ArgumentNullException(nameof(timer));

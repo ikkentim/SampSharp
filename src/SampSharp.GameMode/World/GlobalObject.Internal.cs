@@ -18,6 +18,7 @@ namespace SampSharp.GameMode.World
 {
     public partial class GlobalObject
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public class GlobalObjectInternal : NativeObjectSingleton<GlobalObjectInternal>
         {
             [NativeMethod]
@@ -160,5 +161,6 @@ namespace SampSharp.GameMode.World
                 throw new NativeNotImplementedException();
             }
         }
+#pragma warning restore CS1591
     }
 }

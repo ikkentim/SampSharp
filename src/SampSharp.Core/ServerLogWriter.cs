@@ -13,6 +13,11 @@ namespace SampSharp.Core
     {
         private readonly IGameModeClient _gameModeClient;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ServerLogWriter"/> class.
+        /// </summary>
+        /// <param name="gameModeClient">The game mode client.</param>
+        /// <exception cref="System.ArgumentNullException">gameModeClient</exception>
         public ServerLogWriter(IGameModeClient gameModeClient)
         {
             _gameModeClient = gameModeClient ?? throw new ArgumentNullException(nameof(gameModeClient));

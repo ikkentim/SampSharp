@@ -18,6 +18,7 @@ namespace SampSharp.GameMode.Display
 {
     public partial class Menu
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public class MenuInternal : NativeObjectSingleton<MenuInternal>
         {
             [NativeMethod]
@@ -80,5 +81,6 @@ namespace SampSharp.GameMode.Display
                 throw new NativeNotImplementedException();
             }
         }
+#pragma warning restore CS1591
     }
 }

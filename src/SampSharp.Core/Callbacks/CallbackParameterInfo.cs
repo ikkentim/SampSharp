@@ -29,7 +29,7 @@ namespace SampSharp.Core.Callbacks
         /// </summary>
         /// <param name="type">The type of the parameter.</param>
         /// <param name="lengthIndex">Index of the length of the parameter.</param>
-        /// <remarks>Only applies when <see cref="type" /> is equal to <see cref="CallbackParameterType.Array" />.</remarks>
+        /// <remarks>Only applies when <paramref name="type" /> is equal to <see cref="CallbackParameterType.Array" />.</remarks>
         public CallbackParameterInfo(CallbackParameterType type, uint lengthIndex)
         {
             Type = type;

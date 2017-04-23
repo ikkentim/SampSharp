@@ -18,6 +18,9 @@ using System.Collections.Generic;
 
 namespace SampSharp.Core.Natives
 {
+    /// <summary>
+    ///     Represents a native function loader
+    /// </summary>
     public class NativeLoader : INativeLoader
     {
         private readonly IGameModeClient _gameModeClient;

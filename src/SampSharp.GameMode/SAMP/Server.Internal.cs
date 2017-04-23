@@ -18,6 +18,7 @@ namespace SampSharp.GameMode.SAMP
 {
     public static partial class Server
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public class ServerInternal : NativeObjectSingleton<ServerInternal>
         {
             [NativeMethod]
@@ -98,5 +99,6 @@ namespace SampSharp.GameMode.SAMP
                 throw new NativeNotImplementedException();
             }
         }
+#pragma warning restore CS1591
     }
 }

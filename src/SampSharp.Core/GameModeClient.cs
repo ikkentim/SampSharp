@@ -27,6 +27,10 @@ using SampSharp.Core.Threading;
 
 namespace SampSharp.Core
 {
+    /// <summary>
+    ///     Represents a SampSharp game mode client.
+    /// </summary>
+    /// <seealso cref="SampSharp.Core.IGameModeClient" />
     public sealed class GameModeClient : IGameModeClient
     {
         private readonly GameModeStartBehaviour _startBehaviour;
@@ -260,8 +264,8 @@ namespace SampSharp.Core
         public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
 
         /// <summary>
-        ///     Registers a callback with the specified <see cref="name" />. When the callback is called, the specified
-        ///     <see cref="methodInfo" /> will be invoked on the specified <see cref="target" />.
+        ///     Registers a callback with the specified <paramref name="name"/>. When the callback is called, the specified
+        ///     <paramref name="methodInfo"/> will be invoked on the specified <paramref name="target" />.
         /// </summary>
         /// <param name="name">The name af the callback to register.</param>
         /// <param name="target">The target on which to invoke the method.</param>
@@ -296,8 +300,8 @@ namespace SampSharp.Core
         }
 
         /// <summary>
-        ///     Registers a callback with the specified <see cref="name" />. When the callback is called, the specified
-        ///     <see cref="methodInfo" /> will be invoked on the specified <see cref="target" />.
+        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
+        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
         /// </summary>
         /// <param name="name">The name af the callback to register.</param>
         /// <param name="target">The target on which to invoke the method.</param>
@@ -427,10 +431,10 @@ namespace SampSharp.Core
         }
 
         /// <summary>
-        ///     Gets the handle of the native with the specified <see cref="name" />.
+        ///     Gets the handle of the native with the specified <paramref name="name" />.
         /// </summary>
         /// <param name="name">The name of the native.</param>
-        /// <returns>The handle of the native with the specified <see cref="name" />.</returns>
+        /// <returns>The handle of the native with the specified <paramref name="name" />.</returns>
         public int GetNativeHandle(string name)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -460,7 +464,7 @@ namespace SampSharp.Core
         }
 
         /// <summary>
-        ///     Invokes a native using the specified <see cref="data" /> buffer.
+        ///     Invokes a native using the specified <paramref name="data" /> buffer.
         /// </summary>
         /// <param name="data">The data buffer to be used.</param>
         /// <returns>The response from the native.</returns>
