@@ -26,6 +26,7 @@ namespace SampSharp.Core.Communication
     /// </summary>
     public class PipeClient : IPipeClient
     {
+        private bool _disposed;
         private readonly MessageQueue _queue = new MessageQueue();
         private readonly byte[] _readBuffer = new byte[1024 * 2];
         private readonly byte[] _singleByteBuffer = new byte[1];
@@ -47,8 +48,15 @@ namespace SampSharp.Core.Communication
         /// </param>
         protected void Dispose(bool disposing)
         {
+            _disposed = true;
             if (disposing)
                 _stream.Dispose();
+        }
+
+        private void AssertNotDisposed()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(nameof(PipeClient));
         }
 
         #region IDisposable
@@ -73,6 +81,8 @@ namespace SampSharp.Core.Communication
         /// <returns></returns>
         public async Task Connect(string pipeName)
         {
+            AssertNotDisposed();
+
             _stream = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.WriteThrough | PipeOptions.Asynchronous);
 
             await _stream.ConnectAsync();
@@ -86,6 +96,8 @@ namespace SampSharp.Core.Communication
         /// <param name="data">The data.</param>
         public void Send(ServerCommand command, IEnumerable<byte> data)
         {
+            AssertNotDisposed();
+
             var dataBytes = data as byte[] ?? data?.ToArray();
             var length = dataBytes?.Length ?? 0;
             var lenbytes = ValueConverter.GetBytes(length);
@@ -106,6 +118,8 @@ namespace SampSharp.Core.Communication
         /// <returns>The command sent by the server.</returns>
         public async Task<ServerCommandData> ReceiveAsync()
         {
+            AssertNotDisposed();
+
             while (true)
             {
                 if (_queue.TryPop(out var command))
@@ -122,6 +136,8 @@ namespace SampSharp.Core.Communication
         /// <returns>The command sent by the server.</returns>
         public ServerCommandData Receive()
         {
+            AssertNotDisposed();
+
             while (true)
             {
                 if (_queue.TryPop(out var command))

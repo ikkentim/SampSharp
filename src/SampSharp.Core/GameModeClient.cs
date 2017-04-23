@@ -29,6 +29,7 @@ namespace SampSharp.Core
 {
     public sealed class GameModeClient : IGameModeClient
     {
+        private readonly GameModeStartBehaviour _startBehaviour;
         private static readonly byte[] AOne = { 1 };
         private static readonly byte[] AZero = { 0 };
 
@@ -39,15 +40,18 @@ namespace SampSharp.Core
         private readonly Queue<ServerCommandData> _unhandledCommands = new Queue<ServerCommandData>();
         private int _mainThread;
         private bool _started;
+        private bool _running = true;
         private SampSharpSyncronizationContext _syncronizationContext;
-
+        private MessagePump _messagePump;
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameModeClient" /> class.
         /// </summary>
         /// <param name="pipeName">Name of the pipe.</param>
+        /// <param name="startBehaviour">The start method.</param>
         /// <param name="gameModeProvider">The game mode provider.</param>
-        public GameModeClient(string pipeName, IGameModeProvider gameModeProvider)
+        public GameModeClient(string pipeName, GameModeStartBehaviour startBehaviour, IGameModeProvider gameModeProvider)
         {
+            _startBehaviour = startBehaviour;
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
             _pipeName = pipeName ?? throw new ArgumentNullException(nameof(pipeName));
             NativeLoader = new NativeLoader(this);
@@ -60,7 +64,8 @@ namespace SampSharp.Core
 
         private async Task ReceiveLoop()
         {
-            for (;;)
+            var initReceived = false;
+            while(_running)
             {
                 var data = await ReceiveOrDequeueCommandAsync();
 
@@ -99,6 +104,18 @@ namespace SampSharp.Core
                         }
                         else
                             CoreLog.Log(CoreLogLevel.Error, "Received unknown callback " + name);
+
+                        if (!initReceived && name == "OnGameModeInit")
+                        {
+                            initReceived = true;
+                        }
+                        else if (initReceived && name == "OnGameModeExit")
+                        {
+                            _gameModeProvider.Dispose();
+                            Pipe.Dispose();
+                            _messagePump.Dispose();
+                            _running = false;
+                        }
                         break;
                     case ServerCommand.Reply:
                         CoreLog.Log(CoreLogLevel.Error, "Received a random reply");
@@ -127,11 +144,12 @@ namespace SampSharp.Core
             CoreLog.Log(CoreLogLevel.Info, "Connected! Waiting for server annoucement...");
             while (true)
             {
-                var version = await Pipe.ReceiveAsync();
-                if (version.Command == ServerCommand.Announce)
+                var data = await Pipe.ReceiveAsync();
+                CoreLog.Log(CoreLogLevel.Debug, "Received " + data.Command);
+                if (data.Command == ServerCommand.Announce)
                 {
-                    var protocolVersion = ValueConverter.ToUInt32(version.Data, 0);
-                    var pluginVersion = ValueConverter.ToVersion(version.Data, 4);
+                    var protocolVersion = ValueConverter.ToUInt32(data.Data, 0);
+                    var pluginVersion = ValueConverter.ToVersion(data.Data, 4);
 
                     if (protocolVersion != CoreVersion.ProtocolVersion)
                     {
@@ -145,9 +163,10 @@ namespace SampSharp.Core
 
                     break;
                 }
-                CoreLog.Log(CoreLogLevel.Error, $"Received command {version.Command.ToString().ToLower()} instead of announce.");
+                CoreLog.Log(CoreLogLevel.Error, $"Received command {data.Command.ToString().ToLower()} instead of announce.");
             }
 
+            CoreLog.Log(CoreLogLevel.Info, "Initialializing game mode provider");
             _gameModeProvider.Initialize(this);
         }
 
@@ -160,7 +179,7 @@ namespace SampSharp.Core
 
             // Prepare the syncronization context
             _syncronizationContext = new SampSharpSyncronizationContext();
-            var messagePump = _syncronizationContext.MessagePump;
+            _messagePump = _syncronizationContext.MessagePump;
 
             SynchronizationContext.SetSynchronizationContext(_syncronizationContext);
 
@@ -168,17 +187,17 @@ namespace SampSharp.Core
             Initialize();
 
             // Pump new tasks
-            messagePump.Pump();
+            _messagePump.Pump();
 
             InternalStorage.RunningClient = null;
         }
 
         private void AssertRunning()
         {
-            if (Pipe == null)
+            if (Pipe == null || !_running)
                 throw new GameModeNotRunningException();
         }
-
+        
         private void OnUnhandledException(UnhandledExceptionEventArgs e)
         {
             UnhandledException?.Invoke(this, e);
@@ -369,10 +388,14 @@ namespace SampSharp.Core
             _started = true;
 
             CoreLog.Log(CoreLogLevel.Info, "Sending start signal to server...");
+
+            var method = new byte[1];
+            method[0] = (byte) _startBehaviour;
+
             if (IsOnMainThread)
-                Send(ServerCommand.Start, null);
+                Send(ServerCommand.Start, method);
             else
-                _syncronizationContext.Send(ctx => Send(ServerCommand.Start, null), null);
+                _syncronizationContext.Send(ctx => Send(ServerCommand.Start, method), null);
 
             await ReceiveLoop();
         }

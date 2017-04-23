@@ -21,13 +21,14 @@ using SampSharp.Core.Logging;
 using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Pools;
+using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode
 {
     /// <summary>
     ///     Base class for a SA-MP game mode.
     /// </summary>
-    public abstract partial class BaseMode : IDisposable, IGameModeProvider
+    public abstract partial class BaseMode : Disposable, IGameModeProvider
     {
         private readonly ControllerCollection _controllers = new ControllerCollection();
         private readonly List<IExtension> _extensions = new List<IExtension>();
@@ -60,22 +61,9 @@ namespace SampSharp.GameMode
         public virtual GameModeServiceContainer Services { get; } = new GameModeServiceContainer();
 
         /// <summary>
-        /// Gets the game mode client.
+        ///     Gets the game mode client.
         /// </summary>
         protected internal IGameModeClient Client { get; private set; }
-
-        #region Implementation of IDisposable
-
-        /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            _controllers.Dispose();
-        }
-
-        #endregion
 
         /// <summary>
         ///     Autoloads the controllers in the specified assembly.
@@ -274,6 +262,22 @@ namespace SampSharp.GameMode
             Client.RegisterCallbacksInObject(extension);
             _extensions.Add(extension);
         }
+
+        #region Overrides of Disposable
+
+        /// <summary>
+        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">Whether managed resources should be disposed.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _controllers.Dispose();
+            }
+        }
+
+        #endregion
 
         #region Implementation of IGameModeProvider
 

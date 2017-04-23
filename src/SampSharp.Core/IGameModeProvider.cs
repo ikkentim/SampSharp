@@ -13,12 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace SampSharp.Core
 {
     /// <summary>
     ///     Contains the methods of a provider of game mode routines.
     /// </summary>
-    public interface IGameModeProvider
+    public interface IGameModeProvider : IDisposable
     {
         /// <summary>
         ///     Initializes the game mode with the specified game mode client.

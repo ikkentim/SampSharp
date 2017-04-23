@@ -23,9 +23,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="task_queue.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -47,9 +44,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="platforms.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="task_queue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="server.h">

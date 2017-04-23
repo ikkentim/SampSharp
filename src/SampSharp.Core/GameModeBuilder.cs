@@ -27,6 +27,8 @@ namespace SampSharp.Core
         private IGameModeProvider _gameModeProvider;
         private string _pipeName = "SampSharp";
         private bool _redirectConsoleOutput;
+        private GameModeStartBehaviour _startBehaviour = GameModeStartBehaviour.Gmx;
+        private GameModeExitBehaviour _exitBehaviour = GameModeExitBehaviour.ShutDown;
 
         /// <summary>
         ///     Use the specified <see cref="pipeName" /> to communicate with the SampSharp server.
@@ -96,11 +98,25 @@ namespace SampSharp.Core
         /// <summary>
         ///     Sets the behaviour used once a OnGameModeExit call has been received.
         /// </summary>
-        /// <param name="exotBehaviour">The exit behaviour.</param>
+        /// <param name="exitBehaviour">The exit behaviour.</param>
         /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder UseExitBehaviour(GameModeExitBehaviour exotBehaviour)
+        public GameModeBuilder UseExitBehaviour(GameModeExitBehaviour exitBehaviour)
         {
             throw new NotImplementedException();
+            _exitBehaviour = exitBehaviour;
+            return this;
+        }
+
+
+        /// <summary>
+        ///     Use the specified start method when attaching to the server.
+        /// </summary>
+        /// <param name="startBehaviour">The start behaviour.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseStartBehaviour(GameModeStartBehaviour startBehaviour)
+        {
+            _startBehaviour = startBehaviour;
+            return this;
         }
 
         /// <summary>
@@ -108,12 +124,26 @@ namespace SampSharp.Core
         /// </summary>
         public void Run()
         {
-            var client = new GameModeClient(_pipeName, _gameModeProvider);
+            // TODO: To use the restart exit behaviour, the same client should still be used (because of the internal loaded resources, used by singletons)
+            //do
+            //{
+                BuildAndRun();
+            //} while (_exitBehaviour == GameModeExitBehaviour.Restart);
+        }
 
-            if (_redirectConsoleOutput)
+        private void BuildAndRun()
+        {
+            var client = new GameModeClient(_pipeName, _startBehaviour, _gameModeProvider);
+
+            var redirect = _redirectConsoleOutput;
+
+            if (redirect)
                 Console.SetOut(new ServerLogWriter(client));
 
             client.Run();
+
+            if (redirect)
+                Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
         }
     }
 }

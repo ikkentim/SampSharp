@@ -16,12 +16,10 @@
 #pragma once
 
 #include <inttypes.h>
-#include <thread>
 #include <string>
 #include <map>
 
 #include <sampgdk/sampgdk.h>
-//#include "task_queue.h"
 #include "message_queue.h"
 #include "callbacks_map.h"
 #include "natives_map.h"
@@ -34,15 +32,13 @@ public:
     server();
     /** frees memory allocated by this instance */
     ~server();
-    /** starts the game mode thread */
+    /** starts the pipe server */
     void start(const char *pipe_name);
-    /** internal method, main loop of the game mode thread */
-    void loop();
     /** called when a server tick occurs */
     void tick();
     /** called when a public call is send from the server */
     void public_call(AMX *amx, const char *name, cell *params, cell *retval);
-    /** prints text to the output on the server thread */
+    /** prints text to the output */
     void print(const char *format, ...);
     /** log an error */
     void log_error(const char *format, ...);
@@ -52,55 +48,50 @@ public:
     void log_info(const char *format, ...);
     /** log a message */
     void vlog(const char* prefix, const char *format, va_list args);
+
 private: /* fields */
     /** statuses of received commands */
     enum cmd_status {
         conn_dead, handled, unhandled, no_cmd
     };
+    /** statuses */
+    enum status {
+        status_none                 = 0,
+        status_client_connected     = (1 << 0), /* connected to pipe */
+        status_client_started       = (1 << 1), /* has sent a CMD_START */
+        status_client_received_init = (1 << 2), /* received a GMI */
+        status_client_reconnecting  = (1 << 3), /* is reconnecting to pipe */
+        status_server_received_init = (1 << 4), /* received GMI */
+    };
 
-    /** main (server) thread handle */
-    //std::thread::id main_thread_;
-    /** queue for tasks to run on the server thread */
-    //task_queue queue_server_;
-    /** queue for tasks to run on the game mode thread */
-    //task_queue queue_gamemode_;
+    /** status flags of the server */
+    status status_;
     /** queue for messages to be handled by the game mode thread (send by the client) */
     message_queue queue_messages_;
     /** map of registered callbacks */
     callbacks_map callbacks_;
     /** map of registred native functions */
     natives_map natives_;
-    /** whether the game mode has started according to the server */
-    bool gamemode_started_;
-    /** whether the client has indicated it is ready to receive messages */
-    bool started_;
-    /** whether the client is currently reconnecting */
-    bool reconnecting_;
     /** common buffer for reading pipe */
     uint8_t *rxbuf_;
     /** common buffer for writing pipe */
     uint8_t *txbuf_;
     /** pipe handle */
     void *pipe_;
-    /** thread handle */
-    //void *thread_;
-    /** whether connected to the pipe */
-    bool pipe_connected_;
     /** name of the pipe to use */
     char pipe_name_[MAX_PIPE_NAME_LEN];
+
 private: /* methods */
     /** create the pipe */
     bool pipe_create();
     /** connect to the pipe */
     bool pipe_connect();
+    /* update status for new connection */
+    void pipe_handle_new_connection();
     /** disconnects from pipe */
     void pipe_disconnect(const char *context, bool expected = false);
-    /** sends the OnGameModeInit callback to the client */
-    void cmd_send_gamemode_init();
     /** sends the server annoucement to the client */
     void cmd_send_announce();
-    /** a value indicating whether the client is ready to receive messages */
-    bool is_client_ready();
     /** a value indicating whether the pipe is connected */
     bool is_pipe_connected();
     /** sends the specified command with the specified buffer as arguments */

@@ -13,23 +13,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
 namespace SampSharp.Core
 {
     /// <summary>
-    ///     Contains the version of the SampSharp.Core package.
+    ///     Contains methods of attaching the game mode to the server.
     /// </summary>
-    internal static class CoreVersion
+    public enum GameModeStartBehaviour : byte
     {
         /// <summary>
-        ///     Gets the version of the SampSharp.Core package.
+        ///     Do nothing special, simply start running.
         /// </summary>
-        public static Version Version { get; } = new Version(0, 8, 0);
+        None = 0,
 
         /// <summary>
-        ///     Gets the version of the communication protocol used to communicate with the SampSharp server.
+        ///     Run a GMX, causing OnGameModeInit to be called on the server and the game mode.
         /// </summary>
-        public static uint ProtocolVersion { get; } = 2;
+        Gmx = 1,
+
+        /// <summary>
+        ///     Fake a GMX call, causing OnGamemodeInit to only be called in the game mode. This does not allow for game mode
+        ///     initialisation (such as spawning static vehicles) cannot be performed.
+        /// </summary>
+        FakeGmx = 2
     }
 }

@@ -13,82 +13,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Diagnostics;
 using SampSharp.Core;
 using SampSharp.Core.Logging;
-using SampSharp.GameMode;
-using SampSharp.GameMode.Events;
-using SampSharp.GameMode.SAMP;
-using SampSharp.GameMode.SAMP.Commands;
-using SampSharp.GameMode.World;
 
 namespace TestMode.DotNetCore
 {
-    internal class GameMode : BaseMode
-    {
-        [Command("myfirstcommand")]
-        public static void MyFirstCommand(BasePlayer player, string message)
-        {
-            player.SendClientMessage($"Hello, world! You said {message}");
-        }
-
-        [Command("pos")]
-        public static void PositionCommand(BasePlayer player)
-        {
-            player.SendClientMessage(Color.Yellow, $"Position: {player.Position}");
-        }
-
-        private void SpeedTest()
-        {
-            var sw = new Stopwatch();
-            sw.Start();
-            var a = Server.GetTickCount();
-            var b = Server.GetTickCount();
-            var c = Server.GetTickCount();
-            Console.WriteLine($"In {sw.Elapsed.TotalMilliseconds} ms got {a} {b} {c}");
-        }
-        
-        #region Overrides of BaseMode
-        
-        protected override void OnInitialized(EventArgs e)
-        {
-            base.OnInitialized(e);
-
-            Console.WriteLine("LOADED!");
-
-            SpeedTest();
-        }
-
-        protected override void OnRconCommand(RconEventArgs e)
-        {
-            Console.WriteLine($"Received RCON Command: {e.Command}");
-
-            if (e.Command == "speedtest")
-            {
-                SpeedTest();
-                e.Success = true;
-            }
-            base.OnRconCommand(e);
-        }
-
-        protected override void OnPlayerConnected(BasePlayer player, EventArgs e)
-        {
-            Console.WriteLine(player.Position);
-            base.OnPlayerConnected(player, e);
-        }
-        
-        #endregion
-    }
-
     internal class Program
     {
         private static void Main(string[] args)
         {
             new GameModeBuilder()
-                .UseLogLevel(CoreLogLevel.Debug)
-                .Use<GameMode>()
-                .Run();
+                .UseLogLevel(CoreLogLevel.Debug) // Minimum log level for SampSharp's internal log messages to appear. Default: CoreLogLevel.Info
+                //.UseLogStream(new CustomLogStream()) // A way of redirecting SampSharp's internal log messages trough your own logging system
+                // .RedirectConsoleOutput() // Redirects all console output to the server (better not do this, it's useless and only slows things down)
+                //.UseExitBehaviour(GameModeExitBehaviour.Restart) // Not yet implemented
+                .UseStartBehaviour(GameModeStartBehaviour.FakeGmx) // Option : None (OnInitialized will not be called), Gmx (OnInitialized is called as you expect, is a little slow because of GMX rcon command), FakeGmx (OnInitialized is called, but not during the servers' OnGameModeInit, so you you can't do actual server initialization stuff, like static vehicles, but is much faster than Gmx option )
+                .Use<GameMode>() // Game mode to run
+                .Use(new GameMode()) // Different way of specifying game mode to run
+                .UsePipe("myPipeName") // Use a different named pipe name, must be the same as specified in the server' config (under `sampsharp_pipe` in server.cfg) Default: SampSharp
+                .Run(); // Start
         }
     }
 }

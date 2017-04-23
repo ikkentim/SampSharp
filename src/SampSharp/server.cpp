@@ -16,7 +16,6 @@
 #include "platforms.h"
 #include "version.h"
 #include <assert.h>
-//#include <thread>
 
 #ifdef SAMPSHARP_WINDOWS
 
@@ -52,28 +51,26 @@
 #define CMD_REPLY           (0x14) /* reply to find native or native invoke */
 #define CMD_ANNOUNCE        (0x15) /* announce with version */
 
+#define STATUS_SET(v) status_ = (status)(status_ | (v))
+#define STATUS_UNSET(v) status_ = (status)(status_ & ~(v))
+#define STATUS_ISSET(v) ((status_ & (v)) == (v))
+
 #pragma region Constructors and loading
 
+/** initializes and allocates required memory for the server instance */
 server::server() : 
     callbacks_(callbacks_map(this)),
     natives_(natives_map(this)),
     pipe_(PIPE_NONE),
-    //thread_(INVALID_HANDLE_VALUE),
-    pipe_connected_(false),
-    gamemode_started_(false),
-    started_(false),
-    reconnecting_(false) {
+    status_(status_none) {
 
     /* pipe buffer */
     rxbuf_ = new uint8_t[LEN_NETBUF];
     txbuf_ = new uint8_t[LEN_NETBUF];
 }
 
+/** frees memory allocated by this instance */
 server::~server() {
-    //if (thread_ != INVALID_HANDLE_VALUE) {
-    //    TerminateThread(thread_, 0);
-    //}
-
     if (pipe_ != PIPE_NONE) {
         pipe_disconnect(NULL, true);
     }
@@ -82,13 +79,7 @@ server::~server() {
     delete[] txbuf_;
 }
 
-/*DWORD WINAPI server_loop_f(LPVOID svr_ptr) {
-    assert(svr_ptr);
-    ((server *)svr_ptr)->loop();
-
-    return 0;
-}*/
-
+/** starts the pipe server */
 void server::start(const char *pipe_name) {
     /* default pipe name */
     sampsharp_sprintf(pipe_name_, MAX_PIPE_NAME_LEN,
@@ -104,54 +95,23 @@ void server::start(const char *pipe_name) {
         }
     }
 
-    /* store main thread handle for later reference  */
-    //main_thread_ = std::this_thread::get_id();
-
     /* setup the server sockets to allow clients to connect */
     pipe_create();
-
-    /* create the gamemode thread */
-    /*thread_ = CreateThread(0, 0, server_loop_f, this, 0, NULL);
-
-    if (thread_ == INVALID_HANDLE_VALUE) {
-        log_error("Failed to create a thread.");
-    }*/
 }
 
 #pragma endregion
 
 #pragma region Logging
 
+/** prints text to the output */
 void server::print(const char *format, ...) {
     va_list args;
-
-    /*if (main_thread_ == std::this_thread::get_id()) {*/
-        va_start(args, format);
-        sampgdk_vlogprintf(format, args);
-        va_end(args);
-    /*}
-    else {
-        /* the format and arguments are likely stored on the stack, print the
-         * values to a buffer on the heap so it's accessible from the main
-         * thread. 
-         * /
-
-        char *buffer = new char[LEN_PRINT_BUFFER];
-
-        va_start(args, format);
-        vsnprintf(buffer, LEN_PRINT_BUFFER, format, args);
-        va_end(args);
-
-        buffer[LEN_PRINT_BUFFER - 1] = '\0';
-
-        queue_server_.enqueue([buffer] {
-            sampgdk_logprintf("%s", buffer);
-            delete[] buffer;
-            return (void *)NULL;
-        });
-    }*/
+    va_start(args, format);
+    sampgdk_vlogprintf(format, args);
+    va_end(args);
 }
 
+/** log error */
 void server::log_error(const char * format, ...) {
     va_list args;
     va_start(args, format);
@@ -159,15 +119,17 @@ void server::log_error(const char * format, ...) {
     va_end(args);
 }
 
+/** log debug */
 void server::log_debug(const char * format, ...) {
-    /*
+#if (defined DEBUG) || (defined _DEBUG)
     va_list args;
     va_start(args, format);
     vlog("DEBUG", format, args);
     va_end(args);
-    /**/
+#endif
 }
 
+/** log info */
 void server::log_info(const char * format, ...) {
     va_list args;
     va_start(args, format);
@@ -175,48 +137,114 @@ void server::log_info(const char * format, ...) {
     va_end(args);
 }
 
+/** log a message */
 void server::vlog(const char* prefix, const char *format, va_list args) {
-    /*if (main_thread_ == std::this_thread::get_id()) {*/
-        char buffer[LEN_PRINT_BUFFER];
-        vsnprintf(buffer, LEN_PRINT_BUFFER, format, args);
-        buffer[LEN_PRINT_BUFFER - 1] = '\0';
+    char buffer[LEN_PRINT_BUFFER];
+    vsnprintf(buffer, LEN_PRINT_BUFFER, format, args);
+    buffer[LEN_PRINT_BUFFER - 1] = '\0';
 
-        sampgdk_logprintf("[SampSharp:%s] %s", prefix, buffer);
-    /*}
-    else {
-        /* the format and arguments are likely stored on the stack, print the
-        * values to a buffer on the heap so it's accessible from the main
-        * thread.
-        * /
-
-        char *buffer = new char[LEN_PRINT_BUFFER];
-        vsnprintf(buffer, LEN_PRINT_BUFFER, format, args);
-        buffer[LEN_PRINT_BUFFER - 1] = '\0';
-
-        queue_server_.enqueue([prefix, buffer] {
-            sampgdk_logprintf("[SampSharp:%s] %s", prefix, buffer);
-            delete[] buffer;
-            return (void *)NULL;
-        });
-    }*/
+    sampgdk_logprintf("[SampSharp:%s] %s", prefix, buffer);
 }
 
 #pragma endregion
 
 #pragma region Getters
 
+/** a value indicating whether the pipe is connected */
 bool server::is_pipe_connected() {
-    return pipe_ != PIPE_NONE && pipe_connected_;
+    return pipe_ != PIPE_NONE && STATUS_ISSET(status_client_connected);
 }
 
-bool server::is_client_ready() {
-    return is_pipe_connected() && started_;
+#pragma endregion
+
+#pragma region Commands
+
+CMD_DEFINE(cmd_ping) {
+    cmd_send(CMD_PONG, 0, NULL);
+}
+
+CMD_DEFINE(cmd_print) {
+    print("%s", buf);
+}
+
+CMD_DEFINE(cmd_register_call) {
+    log_debug("Register call %s", buf);
+    callbacks_.register_buffer(buf);
+}
+
+CMD_DEFINE(cmd_find_native) {
+    log_debug("Find native w/%d data", buflen);
+    int32_t handle =  natives_.get_handle(buf);
+    cmd_send(CMD_RESPONSE, sizeof(int32_t), (uint8_t *)&handle);
+}
+
+CMD_DEFINE(cmd_invoke_native) {
+    log_debug("Invoke native w/%d data", buflen);
+    uint32_t txlen = LEN_NETBUF;
+    natives_.invoke(buf, buflen, txbuf_, &txlen);
+    cmd_send(CMD_RESPONSE, txlen, txbuf_);
+}
+
+CMD_DEFINE(cmd_reconnect) {
+    log_info("The gamemode has is reconnecting.");
+    STATUS_SET(status_client_reconnecting);
+    pipe_disconnect(NULL, true);
+}
+
+CMD_DEFINE(cmd_start) {
+    log_info("The gamemode has started.");
+    STATUS_SET(status_client_started);
+    uint8_t type = buflen == 0 ? 0 : buf[0];
+
+    switch (type) {
+    case 0:
+        log_debug("Using 'none' start method");
+        break;
+    case 1:
+        log_debug("Using 'gmx' start method");
+        if (STATUS_ISSET(status_server_received_init)) {
+            log_debug("Sending gmx to attach game mode.");
+            SendRconCommand("gmx");
+        }
+        break;
+    case 2:
+        log_debug("Using 'fake gmx' start method");
+        if (STATUS_ISSET(status_server_received_init)) {
+            STATUS_SET(status_client_received_init);
+
+            cell params = 0;
+            uint32_t len = callbacks_.fill_call_buffer(NULL, "OnGameModeInit",
+                &params, txbuf_, LEN_NETBUF);
+            uint8_t *response = NULL;
+
+            if (len == 0) {
+                break;
+            }
+
+            /* send */
+            cmd_send(CMD_PUBLIC_CALL, len, txbuf_);
+
+            /* receive */
+            if (!cmd_receive_unhandled(&response, &len) || !response || 
+                len == 0) {
+                log_error("Received no response to callback OnGameModeInit.");
+                break;
+            }
+
+            delete[] response;
+        }
+        break;
+    default:
+        log_error("Invalid game mode start mode");
+        break;
+    }
 }
 
 #pragma endregion
 
 #pragma region Pipes - Setup
 
+/** create the pipe */
 bool server::pipe_create() {
     if (pipe_ != PIPE_NONE) {
         return true;
@@ -256,7 +284,24 @@ bool server::pipe_create() {
     return true;
 }
 
+/* update status for new connection */
+void server::pipe_handle_new_connection() {
+    STATUS_SET(status_client_connected);
+
+    if (STATUS_ISSET(status_client_reconnecting)) {
+        log_info("Client reconnected.");
+    }
+    else {
+        log_info("Connected to pipe.");
+        cmd_send_announce();
+    }
+
+    STATUS_UNSET(status_client_reconnecting);
+}
+
+/** connect to the pipe */
 bool server::pipe_connect() {
+    /* ensure pipe exists */
     if (pipe_ == PIPE_NONE && !pipe_create()) {
         return false;
     }
@@ -268,33 +313,23 @@ bool server::pipe_connect() {
     if (!ConnectNamedPipe(pipe_, NULL)) {
         DWORD error = GetLastError();
 
-        /* ERROR_PIPE_CONNECTED indicates it has connected? */
-        if (error == ERROR_PIPE_CONNECTED) {
-            log_info("Connected to the pipe.");
-
-            pipe_connected_ = true;
-            cmd_send_announce();
-
+        switch (error) {
+        case ERROR_PIPE_CONNECTED: /* process on other side of pipe */
+            pipe_handle_new_connection();
             return true;
-        }
-
-        /* ERROR_PIPE_LISTENING indicates nothing is listening on the other
-         * side of the pipe */
-        if (error != ERROR_PIPE_LISTENING) {
+        case ERROR_PIPE_LISTENING: /* other end of pipe not connected */
+            return false;
+        default:
             log_error("Failed to connect to pipe with error 0x%x.", error);
+            return false;
         }
-
-        return false;
     }
 
-    log_info("Connected to pipe.");
-
-    pipe_connected_ = true;
-    cmd_send_announce();
-
+    pipe_handle_new_connection();
     return true;
 }
 
+/** sends the server annoucement to the client */
 void server::cmd_send_announce() {
     /* send version */
     uint32_t info[2];
@@ -306,6 +341,7 @@ void server::cmd_send_announce() {
     log_info("Server annoucement sent.");
 }
 
+/** disconnects from pipe */
 void server::pipe_disconnect(const char *context, bool expected) {
     if (!is_pipe_connected()) {
         return;
@@ -317,9 +353,13 @@ void server::pipe_disconnect(const char *context, bool expected) {
         }
         log_error("Unexpected disconnect of pipe. %s", context);
 
+        STATUS_UNSET(status_client_started);
         natives_.clear();
         callbacks_.clear();
         queue_messages_.clear();
+    }
+    else {
+        log_info("The client is reconnecting to the pipe.");
     }
     
     /* disconnect and close */
@@ -327,16 +367,17 @@ void server::pipe_disconnect(const char *context, bool expected) {
     CloseHandle(pipe_);
     pipe_ = PIPE_NONE;
 
-    started_ &= expected;
-    pipe_connected_ = false;
+    STATUS_UNSET(status_client_connected);
 }
 
 #pragma endregion
 
 #pragma region Pipes - Sending
 
+/** sends the specified command with the specified buffer as arguments */
 bool server::cmd_send(uint8_t cmd, uint32_t len, uint8_t *buf) {
     if (!is_pipe_connected()) {
+        log_error("Cannot send data; pipe not connected!");
         return false;
     }
 
@@ -363,81 +404,11 @@ bool server::cmd_send(uint8_t cmd, uint32_t len, uint8_t *buf) {
     return true;
 }
 
-void server::cmd_send_gamemode_init() {
-    const char* name = "OnGameModeInit";
-    uint32_t len = strlen(name) + 1;
-    uint8_t *response;
-
-    cmd_send(CMD_PUBLIC_CALL, len, (uint8_t*)name);
-
-    if (cmd_receive_unhandled(&response, &len) && response) {
-        delete[] response;
-    }
-}
-
-#pragma endregion
-
-#pragma region Commands
-
-CMD_DEFINE(cmd_ping) {
-    cmd_send(CMD_PONG, 0, NULL);
-}
-
-CMD_DEFINE(cmd_print) {
-    print("%s", buf);
-}
-
-CMD_DEFINE(cmd_register_call) {
-    callbacks_.register_buffer(buf);
-}
-
-CMD_DEFINE(cmd_find_native) {
-    int32_t handle = /*(int32_t)queue_server_.enqueue([this, buf] {
-        return (void *)*/
-            natives_.get_handle(buf);
-    /*}).get();*/
-
-    cmd_send(CMD_RESPONSE, sizeof(int32_t), (uint8_t *)&handle);
-}
-
-CMD_DEFINE(cmd_invoke_native) {
-    auto start = std::chrono::system_clock::now();
-    uint32_t txlen = LEN_NETBUF;
-        /*(uint32_t)queue_server_.enqueue([this, buf, buflen, start] {*/
-        auto endjj = std::chrono::system_clock::now();
-        auto elapsedjj =
-            std::chrono::duration_cast<std::chrono::microseconds>(endjj - start);
-        //log_info("Q took %d micro\n", elapsedjj.count());
-        //uint32_t txlenjj = LEN_NETBUF;
-        natives_.invoke(buf, buflen, txbuf_, &txlen);
-
-        /*return (void *)txlen;
-    }).get();*/
-    auto end = std::chrono::system_clock::now();
-    auto elapsed =
-        std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    //log_info("Qdone took %d micro\n", elapsed.count());
-
-    cmd_send(CMD_RESPONSE, txlen, txbuf_);
-}
-
-CMD_DEFINE(cmd_reconnect) {
-    reconnecting_ = true;
-    pipe_disconnect(NULL, true);
-}
-
-CMD_DEFINE(cmd_start) {
-    started_ = true;
-    log_info("The gamemode has started!");
-    if (gamemode_started_) {
-        cmd_send_gamemode_init();
-    }
-}
-
 #pragma endregion
 
 #pragma region Pipes - Receiving
 
+/** receives a single command if available */
 server::cmd_status server::cmd_receive_one(uint8_t **response, uint32_t *len) {
     assert(response);
     assert(len);
@@ -480,6 +451,7 @@ server::cmd_status server::cmd_receive_one(uint8_t **response, uint32_t *len) {
     return cmd_process(command, rxbuf_, command_len, response, len);
 }
 
+/** receives commands until an unhandled command appears */
 bool server::cmd_receive_unhandled(uint8_t **response, uint32_t *len) {
     assert(response);
     assert(len);
@@ -495,6 +467,7 @@ bool server::cmd_receive_unhandled(uint8_t **response, uint32_t *len) {
     return stat == cmd_status::unhandled;
 }
 
+/** processes a command */
 server::cmd_status server::cmd_process(uint8_t cmd, uint8_t *buf, 
     uint32_t buflen, uint8_t **resp, uint32_t *resplen) {
 #define MAP_COMMAND(a,b) \
@@ -528,92 +501,67 @@ server::cmd_status server::cmd_process(uint8_t cmd, uint8_t *buf,
 
 #pragma endregion
 
-void server::loop() {
-    log_error("DONT RUN LOOP!!!");
-    return;//dontrun
-    uint8_t *response = NULL;
-    uint32_t len;
-
-    for (;;) {
-        /* receive calls from the game mode client */
-        cmd_receive_one(&response, &len);
-
-        if (response) {
-            log_error("Unhandled response in loop.");
-            delete[] response;
-        }
-
-        /* process jobs on the queue */
-        //queue_gamemode_.run_all();
-    }
-}
-
+/** called when a public call is send from the server */
 void server::public_call(AMX *amx, const char *name, cell *params, cell *retval) {
-    if (!is_client_ready()) {
-        if (!strcmp(name, "OnGameModeInit")) {
-            gamemode_started_ = true;
-        }
-        else if (!strcmp(name, "OnGameModeExit")) {
-            gamemode_started_ = false;
-        }
+    log_debug("Received public call %s (%d)", name, params[0]);
+
+    bool is_gmi = !strcmp(name, "OnGameModeInit");
+    bool is_gme = !is_gmi && !strcmp(name, "OnGameModeExit");
+
+    if (is_gmi) {
+        STATUS_SET(status_server_received_init);
+    }
+    else if (is_gme) {
+        STATUS_UNSET(status_server_received_init);
+    }
+
+    if (!is_pipe_connected() || !STATUS_ISSET(status_client_started)) {
         return;
     }
 
-    //task_queue::promise promise = queue_gamemode_.enqueue([this,amx,name,params,retval] {
-        uint32_t len = callbacks_.fill_call_buffer(amx, name, params, txbuf_, LEN_NETBUF);
-        uint8_t *response = NULL;
+    if (is_gmi) {
+        STATUS_SET(status_client_received_init);
+    }
+    else if (!STATUS_ISSET(status_client_received_init)) {
+        return;
+    }
 
-        if (len == 0 || !is_client_ready()) {
-            //return (void*)NULL;
-            return;
-        }
+    uint32_t len = callbacks_.fill_call_buffer(amx, name, params, txbuf_, 
+        LEN_NETBUF);
+    uint8_t *response = NULL;
 
-        /* send */
-        cmd_send(CMD_PUBLIC_CALL, len, txbuf_);
+    if (len == 0) {
+        return;
+    }
+
+    /* send */
+    cmd_send(CMD_PUBLIC_CALL, len, txbuf_);
   
-        /* receive */
-        if(!cmd_receive_unhandled(&response, &len) || !response || len == 0) {
-            log_error("Received no response to callback %s.", name);
-            //return (void*)NULL;
-            return;
-        }
-
-        if (len >= 5 && response[0] && retval) {
-            /* get return value */
-            *retval = *((uint32_t *)(response + 1));
-        }
-
-        delete[] response;
-      
-        //return (void*)NULL;
-    //});
-
-    // TODO: Timeout mechanism
-    //while (!promise._Is_ready()) {
-    //    queue_server_.run_all();
-    //}
-
-    if (!strcmp(name, "OnGameModeInit")) {
-        gamemode_started_ = true;
+    /* receive */
+    if(!cmd_receive_unhandled(&response, &len) || !response || len == 0) {
+        log_error("Received no response to callback %s.", name);
+        return;
     }
-    else if (!strcmp(name, "OnGameModeExit")) {
-        gamemode_started_ = false;
+
+    if (len >= 5 && response[0] && retval) {
+        /* get return value */
+        *retval = *((uint32_t *)(response + 1));
     }
+
+    delete[] response;
 }
 
+/** called when a server tick occurs */
 void server::tick() {
-    if (is_client_ready()) {
-        //*
-        //queue_gamemode_.enqueue([this] {
-            cmd_send(CMD_TICK, 0, NULL);
-            //return (void*)NULL;
-        //});
-        /**/
+    if (is_pipe_connected() && STATUS_ISSET(status_client_started |
+        status_client_received_init)) {
+        cmd_send(CMD_TICK, 0, NULL);
     }
 
     uint8_t *response = NULL;
     uint32_t len;
     cmd_status stat;
+
     /* receive calls from the game mode client */
     do {
         stat = cmd_receive_one(&response, &len);
@@ -623,9 +571,4 @@ void server::tick() {
             delete[] response;
         }
     } while (stat != cmd_status::no_cmd && stat != cmd_status::conn_dead);
-
-    /*if (queue_server_.count() > 0) {
-        //queue_server_.run_all_for(1000 / 1000);// TODO: Improve timing
-        queue_server_.run_all();
-    }*/
 }
