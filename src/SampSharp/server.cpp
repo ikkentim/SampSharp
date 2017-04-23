@@ -47,7 +47,7 @@
 /* send */
 #define CMD_TICK            (0x11) /* server tick */
 #define CMD_PONG            (0x12) /* ping reply */
-#define CMD_PUBLIC_CALL     (0x13) /* public call*/
+#define CMD_PUBLIC_CALL     (0x13) /* public call */
 #define CMD_REPLY           (0x14) /* reply to find native or native invoke */
 #define CMD_ANNOUNCE        (0x15) /* announce with version */
 
@@ -55,11 +55,7 @@
 #define STATUS_UNSET(v) status_ = (status)(status_ & ~(v))
 #define STATUS_ISSET(v) ((status_ & (v)) == (v))
 
-#if !(defined DEBUG || defined _DEBUG)
-#define log_defdebug log_debug
-#define log_debug(x) log_debug(x)
 #pragma region Constructors and loading
-#endif
 
 /** initializes and allocates required memory for the server instance */
 server::server() : 
