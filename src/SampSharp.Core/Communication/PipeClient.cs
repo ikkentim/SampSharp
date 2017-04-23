@@ -27,7 +27,7 @@ namespace SampSharp.Core.Communication
     public class PipeClient : IPipeClient
     {
         private bool _disposed;
-        private readonly MessageQueue _queue = new MessageQueue();
+        private readonly MessageBuffer _buffer = new MessageBuffer();
         private readonly byte[] _readBuffer = new byte[1024 * 2];
         private readonly byte[] _singleByteBuffer = new byte[1];
         private NamedPipeClientStream _stream;
@@ -122,11 +122,11 @@ namespace SampSharp.Core.Communication
 
             while (true)
             {
-                if (_queue.TryPop(out var command))
+                if (_buffer.TryPop(out var command))
                     return command;
 
                 var len = await _stream.ReadAsync(_readBuffer, 0, _readBuffer.Length);
-                _queue.Push(_readBuffer, 0, len);
+                _buffer.Push(_readBuffer, 0, len);
             }
         }
 
@@ -140,11 +140,11 @@ namespace SampSharp.Core.Communication
 
             while (true)
             {
-                if (_queue.TryPop(out var command))
+                if (_buffer.TryPop(out var command))
                     return command;
 
                 var len = _stream.Read(_readBuffer, 0, _readBuffer.Length);
-                _queue.Push(_readBuffer, 0, len);
+                _buffer.Push(_readBuffer, 0, len);
             }
         }
 

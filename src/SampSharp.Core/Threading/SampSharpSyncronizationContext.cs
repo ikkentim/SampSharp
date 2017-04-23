@@ -41,7 +41,7 @@ namespace SampSharp.Core.Threading
         public override void Send(SendOrPostCallback d, object state)
         {
             var item = new SendOrPostCallbackItem(d, state, ExecutionType.Send);
-            _queue.Enqueue(item);
+            _queue.PushMessage(item);
 
             item.ExecutionCompleteWaitHandle.WaitOne();
 
@@ -59,7 +59,7 @@ namespace SampSharp.Core.Threading
             // Queue the item and don't wait for its execution. 
             // TODO: This is risky because an unhandled exception will terminate the main thread. Use with caution.
             var item = new SendOrPostCallbackItem(d, state, ExecutionType.Post);
-            _queue.Enqueue(item);
+            _queue.PushMessage(item);
         }
 
         /// <summary>

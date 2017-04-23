@@ -21,7 +21,7 @@ namespace SampSharp.Core.Communication
     /// <summary>
     ///     A buffer of data which can be translated into server messages.
     /// </summary>
-    internal class MessageQueue
+    internal class MessageBuffer
     {
         private readonly Queue<byte> _queue = new Queue<byte>(1000);
         private byte _command;
@@ -35,7 +35,7 @@ namespace SampSharp.Core.Communication
         /// <returns>true if a command has been popped of the buffer; false otherwise.</returns>
         public bool TryPop(out ServerCommandData command)
         {
-            if (!CanGet())
+            if (!MessageAvailable())
             {
                 command = default(ServerCommandData);
                 return false;
@@ -79,7 +79,7 @@ namespace SampSharp.Core.Communication
             }
         }
 
-        private bool TryFillLocal()
+        private bool TryFillLocalBuffer()
         {
             if (_localFill)
                 return true;
@@ -99,9 +99,9 @@ namespace SampSharp.Core.Communication
             return true;
         }
 
-        private bool CanGet()
+        private bool MessageAvailable()
         {
-            if (!TryFillLocal())
+            if (!TryFillLocalBuffer())
                 return false;
 
             return _commandLength <= _queue.Count;

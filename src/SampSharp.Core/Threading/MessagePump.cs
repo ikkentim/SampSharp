@@ -48,7 +48,7 @@ namespace SampSharp.Core.Threading
                     break;
 
                 // Get the next item in the queue.
-                var workItem = _queue.Dequeue();
+                var workItem = _queue.WaitForMessage();
                 workItem?.Execute();
             }
         }

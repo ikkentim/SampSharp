@@ -37,10 +37,10 @@ namespace SampSharp.Core.Threading
         }
 
         /// <summary>
-        ///     Enqueues the specified item to this instance.
+        ///     Pushes the specified item onto this instance.
         /// </summary>
         /// <param name="item">The item to enqueue.</param>
-        public void Enqueue(SendOrPostCallbackItem item)
+        public void PushMessage(SendOrPostCallbackItem item)
         {
             lock (_queue)
             {
@@ -50,10 +50,10 @@ namespace SampSharp.Core.Threading
         }
 
         /// <summary>
-        ///     Dequeues an item from this instance. If none is avaiable, this call will wait for an item to be enqueued.
+        ///     Pops an item from this instance. If none is avaiable, this call will wait for an item to be pushed.
         /// </summary>
         /// <returns></returns>
-        public SendOrPostCallbackItem Dequeue()
+        public SendOrPostCallbackItem WaitForMessage()
         {
             // Wait for a signal (send by Enqueue or ReleaseReader)
             WaitHandle.WaitAny(_waitHandles);
@@ -72,7 +72,7 @@ namespace SampSharp.Core.Threading
         }
 
         /// <summary>
-        ///     Releases the reader waiting in a <see cref="Dequeue" />.
+        ///     Releases the reader waiting in a <see cref="WaitForMessage" />.
         /// </summary>
         public void ReleaseReader()
         {
