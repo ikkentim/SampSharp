@@ -24,7 +24,7 @@ namespace SampSharp.Core.Threading
     public class MessageQueue
     {
         private readonly Queue<SendOrPostCallbackItem> _queue = new Queue<SendOrPostCallbackItem>();
-        private readonly Semaphore _semaphore = new Semaphore(0, int.MaxValue);
+        private readonly Semaphore _semaphore = new Semaphore(0, int.MaxValue);// TODO: Is the semaphore reset properly?
         private readonly ManualResetEvent _stopSignal = new ManualResetEvent(false);
         private readonly WaitHandle[] _waitHandles;
 
@@ -52,7 +52,7 @@ namespace SampSharp.Core.Threading
         /// <summary>
         ///     Pops an item from this instance. If none is avaiable, this call will wait for an item to be pushed.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The next message, or null if canceled.</returns>
         public SendOrPostCallbackItem WaitForMessage()
         {
             // Wait for a signal (send by Enqueue or ReleaseReader)

@@ -33,20 +33,20 @@ namespace SampSharp.Core
     /// <seealso cref="SampSharp.Core.IGameModeClient" />
     public sealed class GameModeClient : IGameModeClient
     {
-        private readonly GameModeStartBehaviour _startBehaviour;
         private static readonly byte[] AOne = { 1 };
         private static readonly byte[] AZero = { 0 };
 
         private readonly Dictionary<string, Callback> _callbacks = new Dictionary<string, Callback>();
-        private readonly IGameModeProvider _gameModeProvider;
-        private readonly string _pipeName;
         private readonly Queue<PongReceiver> _pongs = new Queue<PongReceiver>();
+        private readonly IGameModeProvider _gameModeProvider;
+        private readonly GameModeStartBehaviour _startBehaviour;
+        private readonly string _pipeName;
         private int _mainThread;
         private bool _started;
+        private bool _initReceived;
         private bool _running = true;
         private SampSharpSyncronizationContext _syncronizationContext;
         private MessagePump _messagePump;
-        private bool _initReceived;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameModeClient" /> class.
@@ -61,6 +61,8 @@ namespace SampSharp.Core
             _pipeName = pipeName ?? throw new ArgumentNullException(nameof(pipeName));
             NativeLoader = new NativeLoader(this);
         }
+
+        private Thread _communicationThread;
 
         /// <summary>
         ///     Gets a value indicating whether this property is invoked on the main thread.
@@ -126,14 +128,49 @@ namespace SampSharp.Core
             }
         }
 
-        private async Task ReceiveLoop()
+        private async Task MainRoutine()
         {
             while(_running)
             {
                 var data = await ReceiveCommandAsync();
-
                 ProcessCommand(data);
             }
+        }
+
+        private void NetworkingRoutine()
+        {
+            while (_running)
+            {
+                var data = Pipe.Receive();
+                _dataReceivers.Push(data);
+            }
+        }
+        
+        private readonly DataReceiveStack<ServerCommandData> _dataReceivers = new DataReceiveStack<ServerCommandData>();
+
+
+        private static bool VerifyVersionData(ServerCommandData data)
+        {
+            CoreLog.Log(CoreLogLevel.Debug, $"Received {data.Command} while waiting for server announcement.");
+            if (data.Command == ServerCommand.Announce)
+            {
+                var protocolVersion = ValueConverter.ToUInt32(data.Data, 0);
+                var pluginVersion = ValueConverter.ToVersion(data.Data, 4);
+
+                if (protocolVersion != CoreVersion.ProtocolVersion)
+                {
+                    var updatee = protocolVersion > CoreVersion.ProtocolVersion ? "game mode" : "server";
+                    CoreLog.Log(CoreLogLevel.Error,
+                        $"Protocol version mismatch! The server is running protocol {protocolVersion} but the game mode is running {CoreVersion.ProtocolVersion}");
+                    CoreLog.Log(CoreLogLevel.Error, $"Please update your {updatee}.");
+                    return false;
+                }
+                CoreLog.Log(CoreLogLevel.Info, $"Connected to version {pluginVersion.ToString(3)} via protocol {protocolVersion}");
+
+                return true;
+            }
+            CoreLog.Log(CoreLogLevel.Error, $"Received command {data.Command.ToString().ToLower()} instead of announce.");
+            return false;
         }
 
         private async void Initialize()
@@ -150,32 +187,17 @@ namespace SampSharp.Core
             CoreLog.Log(CoreLogLevel.Info, $"Connecting to the server on pipe {_pipeName}...");
             await Pipe.Connect(_pipeName);
 
+            CoreLog.Log(CoreLogLevel.Info, "Set up networking thread...");
+            _communicationThread = new Thread(NetworkingRoutine) { Name = "Networking Thread" };
+            _communicationThread.Start();// TODO: Kill thread properly when done
+
             CoreLog.Log(CoreLogLevel.Info, "Connected! Waiting for server annoucement...");
-            while (true)
-            {
-                var data = await Pipe.ReceiveAsync();
-                CoreLog.Log(CoreLogLevel.Debug, "Received " + data.Command);
-                if (data.Command == ServerCommand.Announce)
-                {
-                    var protocolVersion = ValueConverter.ToUInt32(data.Data, 0);
-                    var pluginVersion = ValueConverter.ToVersion(data.Data, 4);
+            var data = await ReceiveCommandAsync();
 
-                    if (protocolVersion != CoreVersion.ProtocolVersion)
-                    {
-                        var updatee = protocolVersion > CoreVersion.ProtocolVersion ? "game mode" : "server";
-                        CoreLog.Log(CoreLogLevel.Error,
-                            $"Protocol version mismatch! The server is running protocol {protocolVersion} but the game mode is running {CoreVersion.ProtocolVersion}");
-                        CoreLog.Log(CoreLogLevel.Error, $"Please update your {updatee}.");
-                        return;
-                    }
-                    CoreLog.Log(CoreLogLevel.Info, $"Connected to version {pluginVersion.ToString(3)} via protocol {protocolVersion}");
-
-                    break;
-                }
-                CoreLog.Log(CoreLogLevel.Error, $"Received command {data.Command.ToString().ToLower()} instead of announce.");
-            }
-
-            CoreLog.Log(CoreLogLevel.Info, "Initialializing game mode provider");
+            if (!VerifyVersionData(data))
+                return;
+            
+            CoreLog.Log(CoreLogLevel.Info, "Initialializing game mode provider...");
             _gameModeProvider.Initialize(this);
         }
 
@@ -224,12 +246,14 @@ namespace SampSharp.Core
 
         private async Task<ServerCommandData> ReceiveCommandAsync()
         {
-            return await Pipe.ReceiveAsync();
+            return await _dataReceivers.PopAsync();
+            //return await Pipe.ReceiveAsync();
         }
         
         private ServerCommandData ReceiveCommand()
         {
-            return Pipe.Receive();
+            return _dataReceivers.Pop();
+            //return Pipe.Receive();
         }
 
         private ServerCommandData ReceiveCommand(ServerCommand type)
@@ -400,7 +424,8 @@ namespace SampSharp.Core
             else
                 _syncronizationContext.Send(ctx => Send(ServerCommand.Start, method), null);
 
-            await ReceiveLoop();
+            // The main routine ends when the game mode ends
+            await MainRoutine();
         }
 
         /// <summary>
