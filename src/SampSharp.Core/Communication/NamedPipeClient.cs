@@ -24,8 +24,9 @@ namespace SampSharp.Core.Communication
     /// <summary>
     ///     Represents a named pipe SampSharp client.
     /// </summary>
-    public class PipeClient : IPipeClient
+    public class NamedPipeClient : ICommunicationClient
     {
+        private readonly string _pipeName;
         private bool _disposed;
         private readonly MessageBuffer _buffer = new MessageBuffer();
         private readonly byte[] _readBuffer = new byte[1024 * 2];
@@ -33,9 +34,19 @@ namespace SampSharp.Core.Communication
         private NamedPipeClientStream _stream;
 
         /// <summary>
-        ///     Finalizes an instance of the <see cref="PipeClient" /> class.
+        ///     Initializes a new instance of the <see cref="NamedPipeClient"/> class.
         /// </summary>
-        ~PipeClient()
+        /// <param name="pipeName">Name of the pipe.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="pipeName"/> is null.</exception>
+        public NamedPipeClient(string pipeName)
+        {
+            _pipeName = pipeName ?? throw new ArgumentNullException(nameof(pipeName));
+        }
+
+        /// <summary>
+        ///     Finalizes an instance of the <see cref="NamedPipeClient" /> class.
+        /// </summary>
+        ~NamedPipeClient()
         {
             Dispose(false);
         }
@@ -56,7 +67,7 @@ namespace SampSharp.Core.Communication
         private void AssertNotDisposed()
         {
             if (_disposed)
-                throw new ObjectDisposedException(nameof(PipeClient));
+                throw new ObjectDisposedException(nameof(NamedPipeClient));
         }
 
         #region IDisposable
@@ -75,18 +86,29 @@ namespace SampSharp.Core.Communication
         #region Implementation of IPipeClient
 
         /// <summary>
-        ///     Connects the named pipe with the specified pipe name.
+        /// Connects the client to the server.
         /// </summary>
-        /// <param name="pipeName">Name of the pipe.</param>
         /// <returns></returns>
-        public async Task Connect(string pipeName)
+        public async Task Connect()
         {
             AssertNotDisposed();
 
-            _stream = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.WriteThrough | PipeOptions.Asynchronous);
+            _stream = new NamedPipeClientStream(".", _pipeName, PipeDirection.InOut, PipeOptions.WriteThrough | PipeOptions.Asynchronous);
 
             await _stream.ConnectAsync();
             _stream.ReadMode = PipeTransmissionMode.Byte;
+        }
+
+        /// <summary>
+        ///     Disconnects this client from the server.
+        /// </summary>
+        public void Disconnect()
+        {
+            AssertNotDisposed();
+
+            _buffer.Clear();
+            _stream.Dispose();
+            _stream = null;
         }
 
         /// <summary>
@@ -125,6 +147,7 @@ namespace SampSharp.Core.Communication
                 if (_buffer.TryPop(out var command))
                     return command;
 
+                // TODO: This breaks on disconnect; _stream is set to null.
                 var len = await _stream.ReadAsync(_readBuffer, 0, _readBuffer.Length);
                 _buffer.Push(_readBuffer, 0, len);
             }
@@ -146,6 +169,17 @@ namespace SampSharp.Core.Communication
                 var len = _stream.Read(_readBuffer, 0, _readBuffer.Length);
                 _buffer.Push(_readBuffer, 0, len);
             }
+        }
+
+        #endregion
+
+        #region Overrides of Object
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return $"named pipe on {_pipeName}";
         }
 
         #endregion

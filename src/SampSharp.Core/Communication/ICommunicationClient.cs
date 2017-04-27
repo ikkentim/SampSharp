@@ -20,23 +20,26 @@ using System.Threading.Tasks;
 namespace SampSharp.Core.Communication
 {
     /// <summary>
-    ///     Contains the methods a named pipe SampSharp client.
+    ///     Contains the methods a of a communication client used by the SampSharp client to communicate with the server.
     /// </summary>
-    public interface IPipeClient : IDisposable
+    public interface ICommunicationClient : IDisposable
     {
         /// <summary>
-        ///     Connects the named pipe with the specified pipe name.
+        ///     Connects this client to the server.
         /// </summary>
-        /// <param name="pipeName">Name of the pipe.</param>
         /// <returns></returns>
-        Task Connect(string pipeName);
+        Task Connect();
 
         /// <summary>
-        ///     Sends the specified command to the named pipe.
+        ///     Disconnects this client from the server.
+        /// </summary>
+        void Disconnect();
+
+        /// <summary>
+        ///     Sends the specified command to the server.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="data">The data.</param>
-        /// <returns></returns>
         void Send(ServerCommand command, IEnumerable<byte> data);
 
         /// <summary>

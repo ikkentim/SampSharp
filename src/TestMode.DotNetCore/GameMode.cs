@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
@@ -17,9 +18,13 @@ namespace TestMode.DotNetCore
         }
 
         [Command("pos")]
-        public static void PositionCommand(BasePlayer player)
+        public static async void PositionCommand(BasePlayer player)
         {
             player.SendClientMessage(Color.Yellow, $"Position: {player.Position}");
+
+            await Task.Delay(1000);
+
+            player.SendClientMessage("Still here!");
         }
 
         [Command("kick")]
@@ -40,15 +45,21 @@ namespace TestMode.DotNetCore
         
         #region Overrides of BaseMode
         
-        protected override void OnInitialized(EventArgs e)
+        protected override async void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
 
-            Console.WriteLine("LOADED!");
+            //Console.WriteLine("LOADED!");
 
-            SpeedTest();
+            //SpeedTest();
+
+            SetGameModeText("Before delay");
+            await Task.Delay(2000);
+
+            Console.WriteLine("waited 2");
+            this.SetGameModeText("After delay");
         }
-
+        
         protected override void OnRconCommand(RconEventArgs e)
         {
             Console.WriteLine($"Received RCON Command: {e.Command}");

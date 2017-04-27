@@ -22,6 +22,7 @@
 #include "StringUtil.h"
 #include "server.h"
 #include "version.h"
+#include "pipe_server.h"
 
 using sampgdk::logprintf;
 
@@ -74,14 +75,19 @@ bool config_validate() {
 }
 
 void start_server() {
+    sampgdk_SendRconCommand("loadfs empty");
+
     print_info();
 
-    svr = new server();
 
     ConfigReader server_cfg("server.cfg");
     std::string value;
     server_cfg.GetOptionAsString("sampsharp_pipe", value);
-    svr->start(value.c_str());
+
+    pipe_server *p = new pipe_server(value.c_str());
+
+    svr = new server(p);
+    svr->start();
 }
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {

@@ -106,5 +106,14 @@ namespace SampSharp.Core.Communication
 
             return _commandLength <= _queue.Count;
         }
+
+        /// <summary>
+        /// Clears this instance.
+        /// </summary>
+        public void Clear()
+        {
+            _localFill = false;
+            _queue.Clear();
+        }
     }
 }

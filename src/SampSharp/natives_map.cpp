@@ -16,6 +16,8 @@
 #include "natives_map.h"
 #include "platforms.h"
 #include "server.h"
+#include <string.h>
+#include <stdio.h>
 #include <assert.h>
 
 #define NATIVE_NOT_FOUND        -1

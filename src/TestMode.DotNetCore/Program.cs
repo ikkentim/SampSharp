@@ -26,7 +26,7 @@ namespace TestMode.DotNetCore
                 .UseLogLevel(CoreLogLevel.Debug) // Minimum log level for SampSharp's internal log messages to appear. Default: CoreLogLevel.Info
                 //.UseLogStream(new CustomLogStream()) // A way of redirecting SampSharp's internal log messages trough your own logging system
                 // .RedirectConsoleOutput() // Redirects all console output to the server (better not do this, it's useless and only slows things down)
-                //.UseExitBehaviour(GameModeExitBehaviour.Restart) // Not yet implemented
+                .UseExitBehaviour(GameModeExitBehaviour.Restart) // Not yet implemented
                 .UseStartBehaviour(GameModeStartBehaviour.FakeGmx) // Option : None (OnInitialized will not be called), Gmx (OnInitialized is called as you expect, is a little slow because of GMX rcon command), FakeGmx (OnInitialized is called, but not during the servers' OnGameModeInit, so you you can't do actual server initialization stuff, like static vehicles, but is much faster than Gmx option )
                 .Use<GameMode>() // Game mode to run
                 //.Use(new GameMode()) // Different way of specifying game mode to run

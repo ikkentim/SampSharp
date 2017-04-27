@@ -16,20 +16,18 @@
 #include "platforms.h"
 #include "version.h"
 #include <assert.h>
-
-#ifdef SAMPSHARP_WINDOWS
-
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
-#elif SAMPSHARP_LINUX
-#endif
+#include <stdio.h>
+#include <string.h>
 
 #include "server.h"
 
-#define vsnprintf vsprintf_s
-
-#define PIPE_NONE INVALID_HANDLE_VALUE
+/* platform specifics */
+#if SAMPSHARP_WINDOWS
+#  define VC_EXTRALEAN
+#  define vsnprintf vsprintf_s
+#elif SAMPSHARP_LINUX
+#  error not implemented
+#endif
 
 #define LEN_PRINT_BUFFER    (1024)
 #define LEN_NETBUF          (20000)
@@ -51,6 +49,7 @@
 #define CMD_REPLY           (0x14) /* reply to find native or native invoke */
 #define CMD_ANNOUNCE        (0x15) /* announce with version */
 
+/* status marcos */
 #define STATUS_SET(v) status_ = (status)(status_ | (v))
 #define STATUS_UNSET(v) status_ = (status)(status_ & ~(v))
 #define STATUS_ISSET(v) ((status_ & (v)) == (v))
@@ -58,45 +57,26 @@
 #pragma region Constructors and loading
 
 /** initializes and allocates required memory for the server instance */
-server::server() : 
+server::server(communication_server *communication) :
     callbacks_(callbacks_map(this)),
+    communication_(communication),
     natives_(natives_map(this)),
-    pipe_(PIPE_NONE),
     status_(status_none) {
 
-    /* pipe buffer */
-    rxbuf_ = new uint8_t[LEN_NETBUF];
-    txbuf_ = new uint8_t[LEN_NETBUF];
+    buf_ = new uint8_t[LEN_NETBUF];
 }
 
 /** frees memory allocated by this instance */
 server::~server() {
-    if (pipe_ != PIPE_NONE) {
-        pipe_disconnect(NULL, true);
+    if (communication_) {
+        communication_->disconnect();
     }
-
-    delete[] rxbuf_;
-    delete[] txbuf_;
+    delete[] buf_;
 }
 
-/** starts the pipe server */
-void server::start(const char *pipe_name) {
-    /* default pipe name */
-    sampsharp_sprintf(pipe_name_, MAX_PIPE_NAME_LEN,
-        "\\\\.\\pipe\\SampSharp");
-
-    if (pipe_name && strlen(pipe_name) > 0) {
-        if (strlen(pipe_name) > MAX_PIPE_NAME_LEN - 10) {
-            log_error("Pipe name too long.");
-        }
-        else {
-            sampsharp_sprintf(pipe_name_, MAX_PIPE_NAME_LEN,
-                "\\\\.\\pipe\\%s", pipe_name);
-        }
-    }
-
-    /* setup the server sockets to allow clients to connect */
-    pipe_create();
+/** starts the comms server */
+void server::start() {
+    communication_->setup(this);
 }
 
 #pragma endregion
@@ -150,9 +130,9 @@ void server::vlog(const char* prefix, const char *format, va_list args) {
 
 #pragma region Getters
 
-/** a value indicating whether the pipe is connected */
-bool server::is_pipe_connected() {
-    return pipe_ != PIPE_NONE && STATUS_ISSET(status_client_connected);
+/** a value indicating whether the client is connected */
+bool server::is_client_connected() {
+    return communication_->is_connected() && STATUS_ISSET(status_client_connected);
 }
 
 #pragma endregion
@@ -160,7 +140,7 @@ bool server::is_pipe_connected() {
 #pragma region Commands
 
 CMD_DEFINE(cmd_ping) {
-    cmd_send(CMD_PONG, 0, NULL);
+    communication_->send(CMD_PONG, 0, NULL);
 }
 
 CMD_DEFINE(cmd_print) {
@@ -175,22 +155,22 @@ CMD_DEFINE(cmd_register_call) {
 CMD_DEFINE(cmd_find_native) {
     log_debug("Find native w/%d data", buflen);
     int32_t handle =  natives_.get_handle(buf);
-    cmd_send(CMD_RESPONSE, sizeof(int32_t), (uint8_t *)&handle);
+    communication_->send(CMD_RESPONSE, sizeof(int32_t), (uint8_t *)&handle);
 }
 
 CMD_DEFINE(cmd_invoke_native) {
     log_debug("Invoke native w/%d data", buflen);
     uint32_t txlen = LEN_NETBUF;
-    natives_.invoke(buf, buflen, txbuf_, &txlen);
+    natives_.invoke(buf, buflen, buf_, &txlen);
 
     log_debug("Sending response to native w/%d data", txlen);
-    cmd_send(CMD_RESPONSE, txlen, txbuf_);
+    communication_->send(CMD_RESPONSE, txlen, buf_);
 }
 
 CMD_DEFINE(cmd_reconnect) {
     log_info("The gamemode has is reconnecting.");
     STATUS_SET(status_client_reconnecting);
-    pipe_disconnect(NULL, true);
+    disconnect(NULL, true);
 }
 
 CMD_DEFINE(cmd_start) {
@@ -206,7 +186,7 @@ CMD_DEFINE(cmd_start) {
         log_debug("Using 'gmx' start method");
         if (STATUS_ISSET(status_server_received_init)) {
             log_debug("Sending gmx to attach game mode.");
-            SendRconCommand("gmx");
+            sampgdk_SendRconCommand("gmx");
         }
         break;
     case 2:
@@ -216,7 +196,7 @@ CMD_DEFINE(cmd_start) {
 
             cell params = 0;
             uint32_t len = callbacks_.fill_call_buffer(NULL, "OnGameModeInit",
-                &params, txbuf_, LEN_NETBUF);
+                &params, buf_, LEN_NETBUF);
             uint8_t *response = NULL;
 
             if (len == 0) {
@@ -224,7 +204,7 @@ CMD_DEFINE(cmd_start) {
             }
 
             /* send */
-            cmd_send(CMD_PUBLIC_CALL, len, txbuf_);
+            communication_->send(CMD_PUBLIC_CALL, len, buf_);
 
             /* receive */
             if (!cmd_receive_unhandled(&response, &len) || !response || 
@@ -244,90 +224,33 @@ CMD_DEFINE(cmd_start) {
 
 #pragma endregion
 
-#pragma region Pipes - Setup
+#pragma region Communication
 
-/** create the pipe */
-bool server::pipe_create() {
-    if (pipe_ != PIPE_NONE) {
+/* try to let a client connect */
+bool server::connect() {
+    if (communication_->is_connected()) {
         return true;
     }
 
-    log_info("Creating pipe %s...", pipe_name_);
-
-    pipe_ = CreateNamedPipe(pipe_name_,
-        PIPE_ACCESS_DUPLEX,
-        PIPE_TYPE_BYTE |                // from message
-        PIPE_READMODE_BYTE |            // from message
-        PIPE_NOWAIT |
-        PIPE_REJECT_REMOTE_CLIENTS,
-        PIPE_UNLIMITED_INSTANCES,       // max. instances 
-        LEN_NETBUF,                     // output buffer size 
-        LEN_NETBUF,                     // input buffer size 
-        NMPWAIT_USE_DEFAULT_WAIT,       // client time-out 
-        NULL);                          // no security attribute 
-
-    if (pipe_ == PIPE_NONE) {
-        DWORD error = GetLastError();
-        switch (error) {
-        case ERROR_PIPE_BUSY:
-            log_error("Failed to create pipe with error 0x%x. Is the server "
-                "already running?", error);
-            break;
-        default:
-            log_error("Failed to create pipe with error 0x%x.", error);
-            break;
-        }
+    if (!communication_->is_ready() && !communication_->setup(this)) {
         return false;
     }
-    else {
-        log_info("Pipe created.");
+
+    if (!communication_->connect()) {
+        return false;
     }
 
-    return true;
-}
-
-/* update status for new connection */
-void server::pipe_handle_new_connection() {
     STATUS_SET(status_client_connected);
 
     if (STATUS_ISSET(status_client_reconnecting)) {
         log_info("Client reconnected.");
     }
     else {
-        log_info("Connected to pipe.");
+        log_info("Connected to client.");
         cmd_send_announce();
     }
 
     STATUS_UNSET(status_client_reconnecting);
-}
-
-/** connect to the pipe */
-bool server::pipe_connect() {
-    /* ensure pipe exists */
-    if (pipe_ == PIPE_NONE && !pipe_create()) {
-        return false;
-    }
-
-    if (is_pipe_connected()) {
-        return true;
-    }
-
-    if (!ConnectNamedPipe(pipe_, NULL)) {
-        DWORD error = GetLastError();
-
-        switch (error) {
-        case ERROR_PIPE_CONNECTED: /* process on other side of pipe */
-            pipe_handle_new_connection();
-            return true;
-        case ERROR_PIPE_LISTENING: /* other end of pipe not connected */
-            return false;
-        default:
-            log_error("Failed to connect to pipe with error 0x%x.", error);
-            return false;
-        }
-    }
-
-    pipe_handle_new_connection();
     return true;
 }
 
@@ -338,14 +261,14 @@ void server::cmd_send_announce() {
     info[0] = PLUGIN_PROTOCOL_VERSION;
     info[1] = PLUGIN_VERSION;
 
-    cmd_send(CMD_ANNOUNCE, sizeof(info), (uint8_t *)info);
+    communication_->send(CMD_ANNOUNCE, sizeof(info), (uint8_t *)info);
 
     log_info("Server annoucement sent.");
 }
 
-/** disconnects from pipe */
-void server::pipe_disconnect(const char *context, bool expected) {
-    if (!is_pipe_connected()) {
+/** disconnects from client */
+void server::disconnect(const char *context, bool expected) {
+    if (!is_client_connected()) {
         return;
     }
     
@@ -353,104 +276,46 @@ void server::pipe_disconnect(const char *context, bool expected) {
         if (!context) {
             context = "";
         }
-        log_error("Unexpected disconnect of pipe. %s", context);
+        log_error("Unexpected disconnect of client. %s", context);
 
         STATUS_UNSET(status_client_started);
         natives_.clear();
         callbacks_.clear();
-        queue_messages_.clear();
+        
     }
     else {
-        log_info("The client is reconnecting to the pipe.");
+        log_info("Client disconnected.");
     }
     
     /* disconnect and close */
-    DisconnectNamedPipe(pipe_);
-    CloseHandle(pipe_);
-    pipe_ = PIPE_NONE;
+    communication_->disconnect();
+
+    /* re-setup */
+    communication_->setup(this);
 
     STATUS_UNSET(status_client_connected);
 }
 
-#pragma endregion
-
-#pragma region Pipes - Sending
-
-/** sends the specified command with the specified buffer as arguments */
-bool server::cmd_send(uint8_t cmd, uint32_t len, uint8_t *buf) {
-    if (!is_pipe_connected()) {
-        log_error("Cannot send data; pipe not connected!");
-        return false;
-    }
-
-    if (!buf) {
-        len = 0;
-    }
-
-    DWORD tlen;
-    if (!WriteFile(pipe_, &cmd, 1, &tlen, NULL) || 
-        !WriteFile(pipe_, &len, 4, &tlen, NULL)) {
-        log_error("Failed to write to pipe with error 0x%x.", GetLastError());
-        pipe_disconnect("Failed to write to pipe.");
-
-        return false;
-    }
-
-    if (buf && len > 0 && !WriteFile(pipe_, buf, len, &tlen, NULL)) {
-        log_error("Failed to write to pipe with error 0x%x.", GetLastError());
-        pipe_disconnect("Failed to write to pipe.");
-
-        return false;
-    }
-
-    return true;
-}
-
-#pragma endregion
-
-#pragma region Pipes - Receiving
-
 /** receives a single command if available */
-server::cmd_status server::cmd_receive_one(uint8_t **response, uint32_t *len) {
+cmd_status server::cmd_receive_one(uint8_t **response, uint32_t *len) {
+    uint8_t command;
+    uint32_t command_len = LEN_NETBUF;
+
     assert(response);
     assert(len);
     assert(sizeof(unsigned long) == sizeof(uint32_t));
 
-    if (!pipe_connect()) {
-        return cmd_status::conn_dead;
+    if (!connect()) {
+        return conn_dead;
+    }
+
+    cmd_status stat = communication_->receive(&command, buf_, &command_len);
+
+    if (stat == conn_dead || stat == no_cmd) {
+        return stat;
     }
     
-
-    //Read from client
-    DWORD rlen = 0;
-    if (!ReadFile(pipe_, rxbuf_, LEN_NETBUF, &rlen, NULL)) {
-        DWORD error = GetLastError();
-        if (error == ERROR_NO_DATA) {
-            rlen = 0;
-        }
-        else {
-            rlen = 0;
-            log_error("Failed to read from pipe with error 0x%x.", error);
-            pipe_disconnect("Failed to read from pipe.");
-        }
-    }
-
-
-    if (rlen > 0) {
-        queue_messages_.add(rxbuf_, rlen);
-    }
-
-    if (!queue_messages_.can_get()) {
-        return cmd_status::no_cmd;
-    }
-
-    uint8_t command;
-    uint32_t command_len = queue_messages_.get(&command, rxbuf_, LEN_NETBUF);
-    if (command_len == MESSAGE_QUEUE_BUFFER_TOO_SMALL) {
-        log_error("Message buffer too small.");
-    }
-
-    return cmd_process(command, rxbuf_, command_len, response, len);
+    return cmd_process(command, buf_, command_len, response, len);
 }
 
 /** receives commands until an unhandled command appears */
@@ -464,18 +329,16 @@ bool server::cmd_receive_unhandled(uint8_t **response, uint32_t *len) {
         *response = NULL;
         *len = 0;
         stat = cmd_receive_one(response, len);
-    } while (stat == cmd_status::handled || stat == cmd_status::no_cmd);
+    } while (stat == handled || 
+        stat == no_cmd);
 
-    return stat == cmd_status::unhandled;
+    return stat == unhandled;
 }
 
 /** processes a command */
-server::cmd_status server::cmd_process(uint8_t cmd, uint8_t *buf, 
-    uint32_t buflen, uint8_t **resp, uint32_t *resplen) {
-#define MAP_COMMAND(a,b) \
-    case a:\
-        b(buf, buflen);\
-        return cmd_status::handled
+cmd_status server::cmd_process(uint8_t cmd, uint8_t *buf, uint32_t buflen, 
+    uint8_t **resp, uint32_t *resplen) {
+#define MAP_COMMAND(a,b) case a:b(buf, buflen);return handled
 
     switch (cmd) {
         /* mapped commands */
@@ -495,7 +358,7 @@ server::cmd_status server::cmd_process(uint8_t cmd, uint8_t *buf,
                 memcpy(*resp, buf, buflen);
                 *resplen = buflen;
             }
-            return cmd_status::unhandled;
+            return unhandled;
     }
 
 #undef MAP_COMMAND
@@ -517,7 +380,7 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
         STATUS_UNSET(status_server_received_init);
     }
 
-    if (!is_pipe_connected() || !STATUS_ISSET(status_client_started)) {
+    if (!is_client_connected() || !STATUS_ISSET(status_client_started)) {
         return;
     }
 
@@ -528,7 +391,7 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
         return;
     }
 
-    uint32_t len = callbacks_.fill_call_buffer(amx, name, params, txbuf_, 
+    uint32_t len = callbacks_.fill_call_buffer(amx, name, params, buf_, 
         LEN_NETBUF);
     uint8_t *response = NULL;
 
@@ -537,13 +400,15 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
     }
 
     /* send */
-    cmd_send(CMD_PUBLIC_CALL, len, txbuf_);
-  
+    communication_->send(CMD_PUBLIC_CALL, len, buf_);
+    log_debug("Send public call to game mode.");
+
     /* receive */
     if(!cmd_receive_unhandled(&response, &len) || !response || len == 0) {
         log_error("Received no response to callback %s.", name);
         return;
     }
+    log_debug("Recevied %d response from game mode.", len);
 
     if (len >= 5 && response[0] && retval) {
         /* get return value */
@@ -555,9 +420,9 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
 
 /** called when a server tick occurs */
 void server::tick() {
-    if (is_pipe_connected() && STATUS_ISSET(status_client_started |
+    if (is_client_connected() && STATUS_ISSET(status_client_started |
         status_client_received_init)) {
-        cmd_send(CMD_TICK, 0, NULL);
+        communication_->send(CMD_TICK, 0, NULL);
     }
 
     uint8_t *response = NULL;
@@ -572,5 +437,5 @@ void server::tick() {
             log_error("Unhandled response in tick.");
             delete[] response;
         }
-    } while (stat != cmd_status::no_cmd && stat != cmd_status::conn_dead);
+    } while (stat != no_cmd && stat != conn_dead);
 }

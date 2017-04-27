@@ -15,6 +15,7 @@
 
 #include "callbacks_map.h"
 #include <assert.h>
+#include <string.h>
 #include "server.h"
 
 #define ARG_TERM    0x00
@@ -110,7 +111,7 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
     uint32_t i = 0;
     uint32_t params_count = params[0] / sizeof(cell);
     for (uint8_t *info = it->second; *info != ARG_TERM; i++) {
-        int val_len = NULL;
+        int val_len = 0;
         cell *val_addr = NULL;
         uint8_t instr = *info;
         info++;

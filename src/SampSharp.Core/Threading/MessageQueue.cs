@@ -24,7 +24,7 @@ namespace SampSharp.Core.Threading
     public class MessageQueue
     {
         private readonly Queue<SendOrPostCallbackItem> _queue = new Queue<SendOrPostCallbackItem>();
-        private readonly Semaphore _semaphore = new Semaphore(0, int.MaxValue);// TODO: Is the semaphore reset properly?
+        private readonly Semaphore _semaphore = new Semaphore(0, int.MaxValue);
         private readonly ManualResetEvent _stopSignal = new ManualResetEvent(false);
         private readonly WaitHandle[] _waitHandles;
 

@@ -293,8 +293,6 @@ namespace SampSharp.GameMode
             
             LoadExtensions();
             LoadServicesAndControllers();
-
-            client.Start();
         }
 
         /// <summary>

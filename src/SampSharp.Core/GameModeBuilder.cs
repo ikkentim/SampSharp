@@ -15,6 +15,7 @@
 
 using System;
 using System.IO;
+using SampSharp.Core.Communication;
 using SampSharp.Core.Logging;
 
 namespace SampSharp.Core
@@ -25,10 +26,19 @@ namespace SampSharp.Core
     public sealed class GameModeBuilder
     {
         private IGameModeProvider _gameModeProvider;
-        private string _pipeName = "SampSharp";
         private bool _redirectConsoleOutput;
+        private ICommunicationClient _communicationClient;
         private GameModeStartBehaviour _startBehaviour = GameModeStartBehaviour.Gmx;
-        //private GameModeExitBehaviour _exitBehaviour = GameModeExitBehaviour.ShutDown;
+        private GameModeExitBehaviour _exitBehaviour = GameModeExitBehaviour.ShutDown;
+
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="GameModeBuilder"/> class.
+        /// </summary>
+        public GameModeBuilder()
+        {
+            _communicationClient = new NamedPipeClient("SampSharp");
+        }
 
         /// <summary>
         ///     Use the specified <paramref name="pipeName" /> to communicate with the SampSharp server.
@@ -37,7 +47,18 @@ namespace SampSharp.Core
         /// <returns>The updated game mode configuration builder.</returns>
         public GameModeBuilder UsePipe(string pipeName)
         {
-            _pipeName = pipeName;
+            if (pipeName == null) throw new ArgumentNullException(nameof(pipeName));
+            return UseCommunicationClient(new NamedPipeClient(pipeName));
+        }
+
+        /// <summary>
+        ///     Use the specified communication client to communicate with the SampSharp server.
+        /// </summary>
+        /// <param name="communicationClient">The communication client.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseCommunicationClient(ICommunicationClient communicationClient)
+        {
+            _communicationClient = communicationClient ?? throw new ArgumentNullException(nameof(communicationClient));
             return this;
         }
 
@@ -102,9 +123,8 @@ namespace SampSharp.Core
         /// <returns>The updated game mode configuration builder.</returns>
         public GameModeBuilder UseExitBehaviour(GameModeExitBehaviour exitBehaviour)
         {
-            throw new NotImplementedException();
-            //_exitBehaviour = exitBehaviour;
-            //return this;
+            _exitBehaviour = exitBehaviour;
+            return this;
         }
 
 
@@ -125,15 +145,15 @@ namespace SampSharp.Core
         public void Run()
         {
             // TODO: To use the restart exit behaviour, the same client should still be used (because of the internal loaded resources, used by singletons)
-            //do
-            //{
+            do
+            {
                 BuildAndRun();
-            //} while (_exitBehaviour == GameModeExitBehaviour.Restart);
+            } while (_exitBehaviour == GameModeExitBehaviour.Restart);
         }
 
         private void BuildAndRun()
         {
-            var client = new GameModeClient(_pipeName, _startBehaviour, _gameModeProvider);
+            var client = new GameModeClient(_communicationClient, _startBehaviour, _gameModeProvider);
 
             var redirect = _redirectConsoleOutput;
 
@@ -141,7 +161,6 @@ namespace SampSharp.Core
                 Console.SetOut(new ServerLogWriter(client));
 
             client.Run();
-
             if (redirect)
                 Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
         }

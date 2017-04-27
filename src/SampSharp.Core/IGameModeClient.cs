@@ -29,9 +29,9 @@ namespace SampSharp.Core
     public interface IGameModeClient
     {
         /// <summary>
-        ///     Gets the named pipe connection.
+        ///     Gets the communication client.
         /// </summary>
-        IPipeClient Pipe { get; }
+        ICommunicationClient CommunicationClient { get; }
 
         /// <summary>
         ///     Gets or sets the native loader to be used to load natives.
@@ -42,12 +42,7 @@ namespace SampSharp.Core
         ///     Occurs when an exception is unhandled during the execution of a callback or tick.
         /// </summary>
         event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
-
-        /// <summary>
-        ///     Start receiving ticks and public calls.
-        /// </summary>
-        void Start();
-
+        
         /// <summary>
         ///     Pings the server.
         /// </summary>

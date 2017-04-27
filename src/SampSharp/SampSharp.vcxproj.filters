@@ -35,6 +35,9 @@
     <ClCompile Include="natives_map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="pipe_server.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConfigReader.h">
@@ -59,6 +62,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="communication_server.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pipe_server.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="command.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

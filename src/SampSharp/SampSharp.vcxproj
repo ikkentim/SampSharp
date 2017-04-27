@@ -57,7 +57,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;SAMPGDK_AMALGAMATION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;SAMPGDK_AMALGAMATION;SAMPGDK_CPP_WRAPPERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>includes;includes/sdk;includes/sdk/amx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>false</SDLCheck>
       <BrowseInformation>true</BrowseInformation>
@@ -81,7 +81,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SAMPGDK_AMALGAMATION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SAMPGDK_AMALGAMATION;SAMPGDK_CPP_WRAPPERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>includes;includes/sdk;includes/sdk/amx</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -106,11 +106,15 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message_queue.cpp" />
     <ClCompile Include="natives_map.cpp" />
+    <ClCompile Include="pipe_server.cpp" />
     <ClCompile Include="server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks_map.h" />
+    <ClInclude Include="command.h" />
+    <ClInclude Include="communication_server.h" />
     <ClInclude Include="ConfigReader.h" />
+    <ClInclude Include="pipe_server.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="message_queue.h" />
     <ClInclude Include="natives_map.h" />
