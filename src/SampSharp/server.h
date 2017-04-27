@@ -83,7 +83,7 @@ private: /* methods */
     /** receives commands until an unhandled command appears */
     bool cmd_receive_unhandled(uint8_t **response, uint32_t *len);
     /** receive an unhandled command */
-    cmd_status server::cmd_receive_one(uint8_t **response, uint32_t *len);
+    cmd_status cmd_receive_one(uint8_t **response, uint32_t *len);
     /** processes a command */
     cmd_status cmd_process(uint8_t command, uint8_t *buffer, 
         uint32_t command_len, uint8_t **response, uint32_t *len);

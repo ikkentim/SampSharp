@@ -13,20 +13,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "server.h"
 #include "platforms.h"
 #include "version.h"
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
-#include "server.h"
-
 /* platform specifics */
 #if SAMPSHARP_WINDOWS
-#  define VC_EXTRALEAN
 #  define vsnprintf vsprintf_s
-#elif SAMPSHARP_LINUX
-#  error not implemented
 #endif
 
 #define LEN_PRINT_BUFFER    (1024)

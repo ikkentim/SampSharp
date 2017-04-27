@@ -75,18 +75,20 @@ bool config_validate() {
 }
 
 void start_server() {
+    std::string value;
+    communication_server *comms = NULL;
+    ConfigReader server_cfg("server.cfg");
+
     sampgdk_SendRconCommand("loadfs empty");
 
     print_info();
 
-
-    ConfigReader server_cfg("server.cfg");
-    std::string value;
+#if SAMPSHARP_WINDOWS
     server_cfg.GetOptionAsString("sampsharp_pipe", value);
+    comms = new pipe_server(value.c_str());
+#endif
 
-    pipe_server *p = new pipe_server(value.c_str());
-
-    svr = new server(p);
+    svr = new server(comms);
     svr->start();
 }
 
