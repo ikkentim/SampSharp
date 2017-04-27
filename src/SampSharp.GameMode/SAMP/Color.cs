@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
+using System.Text.RegularExpressions;
 using SampSharp.GameMode.Helpers;
 
 namespace SampSharp.GameMode.SAMP
@@ -1102,9 +1103,11 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>A Color representation of the input.</returns>
         public static Color FromString(string input, ColorFormat colorFormat)
         {
-            uint output;
-            UInt32.TryParse(input.Trim('0', 'x'), out output);
-            return FromInteger(output, colorFormat);
+            var hexLength = colorFormat == ColorFormat.RGB ? 6 : 8;
+            var hexPattern = $@"^(?:0x)?[\dA-F]{{{hexLength}}}$";
+            var isValidHexNumber = Regex.IsMatch(input, hexPattern, RegexOptions.IgnoreCase);
+
+            return isValidHexNumber ? FromInteger(Convert.ToUInt32(input, 16), colorFormat) : White;
         }
 
         /// <summary>
