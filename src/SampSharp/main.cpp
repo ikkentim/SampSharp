@@ -22,13 +22,17 @@
 #include "StringUtil.h"
 #include "server.h"
 #include "version.h"
-#include "pipe_server.h"
+#include "pipesvr_win32.h"
+#include "dsock_unix.h"
+#include "tcp_unix.h"
 
 using sampgdk::logprintf;
 
 extern void *pAMXFunctions;
 
+ConfigReader *server_cfg = NULL;
 server *svr = NULL;
+commsvr *comms = NULL;
 bool ready;
 
 void print_err(const char* error) {
@@ -45,14 +49,13 @@ void print_info() {
 
 bool config_validate() {
     /* check whether gamemodeN values contain acceptable values. */
-    ConfigReader server_cfg("server.cfg");
     for (int i = 0; i < 15; i++) {
         std::ostringstream gamemode_key;
         gamemode_key << "gamemode";
         gamemode_key << i;
 
         std::string gamemode_value;
-        server_cfg.GetOptionAsString(gamemode_key.str(), gamemode_value);
+        server_cfg->GetOptionAsString(gamemode_key.str(), gamemode_value);
         gamemode_value = StringUtil::TrimString(gamemode_value);
 
         if (i == 0 && gamemode_value.compare("empty 1") != 0) {
@@ -74,22 +77,66 @@ bool config_validate() {
     return true;
 }
 
-void start_server() {
+#if SAMPSHARP_WINDOWS
+void com_pipe() {
     std::string value;
-    communication_server *comms = NULL;
-    ConfigReader server_cfg("server.cfg");
+    server_cfg->GetOptionAsString("com_pipe", value);
+    comms = new pipesvr_win32(value.c_str());
+}
+
+void com_tcp() {
+    // TODO: Not yet implemented
+    com_pipe();
+}
+#elif SAMPSHARP_LINUX
+void com_dsock() {
+    std::string value;
+    server_cfg->GetOptionAsString("com_dsock", value);
+    comms = new dsock_unix(value.c_str());
+}
+
+void com_tcp() {
+    std::string ip, port;
+    server_cfg->GetOptionAsString("com_ip", ip);
+    server_cfg->GetOptionAsString("com_port", port);
+    uint16_t portnum = atoi(port.c_str());
+
+    comms = new tcp_unix(ip.c_str(), portnum);
+}
+#endif
+
+void start_server() {
+    std::string type;
 
     sampgdk_SendRconCommand("loadfs empty");
 
     print_info();
 
 #if SAMPSHARP_WINDOWS
-    server_cfg.GetOptionAsString("sampsharp_pipe", value);
-    comms = new pipe_server(value.c_str());
+    com_pipe();
+#elif SAMPSHARP_LINUX
+    com_dsock();
 #endif
 
-    svr = new server(comms);
-    svr->start();
+    server_cfg->GetOptionAsString("com_type", type);
+
+    if (!type.compare("tcp")) {
+        com_tcp();
+    }
+#if SAMPSHARP_WINDOWS
+    else if (!type.compare("pipe")) {
+        com_pipe();
+    }
+#elif SAMPSHARP_LINUX
+    else if (!type.compare("dsock")) {
+        com_dsock();
+    }
+#endif
+
+    if (comms) {
+        svr = new server(comms);
+        svr->start();
+    }
 }
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
@@ -105,6 +152,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
 
     /* validate the server config is fit for running SampSharp */
+    server_cfg = new ConfigReader("server.cfg");
     if (!(ready = config_validate())) {
         return ready = false;
     }
@@ -114,8 +162,21 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
     sampgdk_Unload();
-    delete svr;
+
+    if (svr) {
+        logprintf("Shutting down SampSharp server...");
+        delete svr;
+    }
+    if (comms) {
+        comms->disconnect();
+        delete comms;
+    }
+
+    delete server_cfg;
+
     svr = NULL;
+    comms = NULL;
+    server_cfg = NULL;
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
@@ -133,7 +194,8 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     if (!svr) {
         start_server();
     }
-
-    svr->public_call(amx, name, params, retval);
+    if (svr) {
+        svr->public_call(amx, name, params, retval);
+    }
     return true;
 }

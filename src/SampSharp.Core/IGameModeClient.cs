@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using SampSharp.Core.Callbacks;
 using SampSharp.Core.Communication;
+using SampSharp.Core.Communication.Clients;
 using SampSharp.Core.Natives;
 
 namespace SampSharp.Core

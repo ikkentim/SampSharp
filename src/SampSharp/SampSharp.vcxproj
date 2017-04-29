@@ -101,20 +101,26 @@
   <ItemGroup>
     <ClCompile Include="callbacks_map.cpp" />
     <ClCompile Include="ConfigReader.cpp" />
+    <ClCompile Include="dsock_unix.cpp" />
     <ClCompile Include="includes\sampgdk\sampgdk.c" />
     <ClCompile Include="includes\sdk\amxplugin.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message_queue.cpp" />
     <ClCompile Include="natives_map.cpp" />
-    <ClCompile Include="pipe_server.cpp" />
+    <ClCompile Include="pipesvr_w32.cpp" />
     <ClCompile Include="server.cpp" />
+    <ClCompile Include="sock_unix.cpp" />
+    <ClCompile Include="tcp_unix.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks_map.h" />
     <ClInclude Include="command.h" />
-    <ClInclude Include="communication_server.h" />
+    <ClInclude Include="commsvr.h" />
     <ClInclude Include="ConfigReader.h" />
-    <ClInclude Include="pipe_server.h" />
+    <ClInclude Include="dsock_unix.h" />
+    <ClInclude Include="pipesvr_win32.h" />
+    <ClInclude Include="sock_unix.h" />
+    <ClInclude Include="tcp_unix.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="message_queue.h" />
     <ClInclude Include="natives_map.h" />

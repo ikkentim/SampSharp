@@ -14,6 +14,8 @@
 // limitations under the License.
 
 using SampSharp.Core;
+using SampSharp.Core.Communication;
+using SampSharp.Core.Communication.Clients;
 using SampSharp.Core.Logging;
 
 namespace TestMode.DotNetCore
@@ -29,6 +31,7 @@ namespace TestMode.DotNetCore
                 .UseExitBehaviour(GameModeExitBehaviour.Restart) // Not yet implemented
                 .UseStartBehaviour(GameModeStartBehaviour.FakeGmx) // Option : None (OnInitialized will not be called), Gmx (OnInitialized is called as you expect, is a little slow because of GMX rcon command), FakeGmx (OnInitialized is called, but not during the servers' OnGameModeInit, so you you can't do actual server initialization stuff, like static vehicles, but is much faster than Gmx option )
                 .Use<GameMode>() // Game mode to run
+                .UseTcpClient("127.0.0.1", 8383)
                 //.Use(new GameMode()) // Different way of specifying game mode to run
                 //.UsePipe("myPipeName") // Use a different named pipe name, must be the same as specified in the server' config (under `sampsharp_pipe` in server.cfg) Default: SampSharp
                 .Run(); // Start

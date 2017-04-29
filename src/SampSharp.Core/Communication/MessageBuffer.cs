@@ -21,7 +21,7 @@ namespace SampSharp.Core.Communication
     /// <summary>
     ///     A buffer of data which can be translated into server messages.
     /// </summary>
-    internal class MessageBuffer
+    public class MessageBuffer
     {
         private readonly Queue<byte> _queue = new Queue<byte>(1000);
         private byte _command;

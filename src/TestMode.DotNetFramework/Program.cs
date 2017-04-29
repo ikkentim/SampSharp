@@ -1,14 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Threading.Tasks;
+using SampSharp.Core;
+using SampSharp.Core.Communication;
+using SampSharp.Core.Communication.Clients;
+using SampSharp.Core.Logging;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
-namespace TestMode.DotNetCore
+namespace TestMode.DotNetFramework
 {
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            new GameModeBuilder()
+                .UseLogLevel(CoreLogLevel.Debug)
+                .UseExitBehaviour(GameModeExitBehaviour.Restart)
+                .UseStartBehaviour(GameModeStartBehaviour.FakeGmx)
+                .Use<GameMode>()
+                .UseTcpClient("127.0.0.1", 8383)
+                .Run();
+        }
+    }
+
     internal class GameMode : BaseMode
     {
         [Command("myfirstcommand")]
@@ -42,9 +65,9 @@ namespace TestMode.DotNetCore
             var c = Server.GetTickCount();
             Console.WriteLine($"In {sw.Elapsed.TotalMilliseconds} ms got {a} {b} {c}");
         }
-        
+
         #region Overrides of BaseMode
-        
+
         protected override async void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
@@ -53,14 +76,13 @@ namespace TestMode.DotNetCore
 
             //SpeedTest();
 
-            AddPlayerClass(0, Vector3.Zero, 0);
             SetGameModeText("Before delay");
             await Task.Delay(2000);
 
             Console.WriteLine("waited 2");
             this.SetGameModeText("After delay");
         }
-        
+
         protected override void OnRconCommand(RconEventArgs e)
         {
             Console.WriteLine($"Received RCON Command: {e.Command}");
@@ -89,7 +111,7 @@ namespace TestMode.DotNetCore
         {
             base.OnTick(e);
         }
-        
+
         #endregion
     }
 }

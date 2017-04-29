@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SampSharp.Core.Communication
+namespace SampSharp.Core.Communication.Clients
 {
     /// <summary>
     ///     Contains the methods a of a communication client used by the SampSharp client to communicate with the server.
@@ -47,11 +47,5 @@ namespace SampSharp.Core.Communication
         /// </summary>
         /// <returns>The command sent by the server.</returns>
         Task<ServerCommandData> ReceiveAsync();
-
-        /// <summary>
-        ///     Waits for the next command sent by the server.
-        /// </summary>
-        /// <returns>The command sent by the server.</returns>
-        ServerCommandData Receive();
     }
 }

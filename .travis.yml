@@ -6,13 +6,13 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -qq premake4 gcc g++
+  - sudo apt-get install -qq premake4 gcc g++ g++-multilib libc6-dev-i386 gcc-multilib
 
 before_script:
   - premake4 gmake
 
 script:
-  - make config=release64
+  - make config=release32
 
 addons:
   artifacts:

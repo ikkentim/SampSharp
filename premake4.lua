@@ -1,7 +1,7 @@
 -- A solution contains projects, and defines the available configurations
 solution "SampSharp"
     configurations { "debug", "release" }
-    platforms { "x32", "x64" }
+    platforms { "x32" }
 
     -- A project defines one build target
     project "SampSharp"
@@ -16,15 +16,15 @@ solution "SampSharp"
             "src/SampSharp/includes/sdk",
             "src/SampSharp/includes/sdk/amx"
         }
+
+        -- TODO: These are g++ options, but are also passed into gcc
         buildoptions {
             "-fvisibility=hidden",
             "-fvisibility-inlines-hidden",
+            "-std=c++11",
         }
 
         files { "src/SampSharp**.cpp", "src/SampSharp/includes/sampgdk/sampgdk.c" }
-
-        configuration "x64"
-            defines { "__i386__" }
 
         configuration "Debug"
             objdir "obj/Debug"

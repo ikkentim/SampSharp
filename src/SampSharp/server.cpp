@@ -53,7 +53,7 @@
 #pragma region Constructors and loading
 
 /** initializes and allocates required memory for the server instance */
-server::server(communication_server *communication) :
+server::server(commsvr *communication) :
     callbacks_(callbacks_map(this)),
     communication_(communication),
     natives_(natives_map(this)),
@@ -155,11 +155,8 @@ CMD_DEFINE(cmd_find_native) {
 }
 
 CMD_DEFINE(cmd_invoke_native) {
-    log_debug("Invoke native w/%d data", buflen);
     uint32_t txlen = LEN_NETBUF;
     natives_.invoke(buf, buflen, buf_, &txlen);
-
-    log_debug("Sending response to native w/%d data", txlen);
     communication_->send(CMD_RESPONSE, txlen, buf_);
 }
 
@@ -364,8 +361,6 @@ cmd_status server::cmd_process(uint8_t cmd, uint8_t *buf, uint32_t buflen,
 
 /** called when a public call is send from the server */
 void server::public_call(AMX *amx, const char *name, cell *params, cell *retval) {
-    log_debug("Received public call %s (%d)", name, params[0]);
-
     bool is_gmi = !strcmp(name, "OnGameModeInit");
     bool is_gme = !is_gmi && !strcmp(name, "OnGameModeExit");
 
@@ -395,16 +390,20 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
         return;
     }
 
+    mutex_.lock();
+
     /* send */
     communication_->send(CMD_PUBLIC_CALL, len, buf_);
-    log_debug("Send public call to game mode.");
 
     /* receive */
     if(!cmd_receive_unhandled(&response, &len) || !response || len == 0) {
         log_error("Received no response to callback %s.", name);
+
+        mutex_.unlock();
         return;
     }
-    log_debug("Recevied %d response from game mode.", len);
+
+    mutex_.unlock();
 
     if (len >= 5 && response[0] && retval) {
         /* get return value */
@@ -416,6 +415,8 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
 
 /** called when a server tick occurs */
 void server::tick() {
+    mutex_.lock();
+
     if (is_client_connected() && STATUS_ISSET(status_client_started |
         status_client_received_init)) {
         communication_->send(CMD_TICK, 0, NULL);
@@ -434,4 +435,6 @@ void server::tick() {
             delete[] response;
         }
     } while (stat != no_cmd && stat != conn_dead);
+
+    mutex_.unlock();
 }

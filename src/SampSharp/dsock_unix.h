@@ -15,25 +15,22 @@
 
 #pragma once
 
-#include <inttypes.h>
-#include <deque>
+#include "sock_unix.h"
 
-#define MESSAGE_QUEUE_BUFFER_TOO_SMALL  0xffffffffu
+#if SAMPSHARP_LINUX
 
-class message_queue
+#define MAX_DSOCK_PATH_LEN      (256)
+
+class dsock_unix : public sock_unix
 {
 public:
-    message_queue();
-    void add(uint8_t *buf, uint32_t len);
-    bool can_get();
-    uint32_t get(uint8_t *command, uint8_t *buf, uint32_t len);
-    void clear();
+    dsock_unix(const char *path);
+    void disconnect();
+protected:
+    int socket_create();
+    socklen_t addr_alloc(struct sockaddr** addrptr);
 private:
-    std::deque<uint8_t> queue_;
-    uint8_t command_;
-    uint32_t command_length_;
-    bool local_fill_;
-    bool try_fill_local();
-    uint8_t pop();
+    char path_[MAX_DSOCK_PATH_LEN];
 };
 
+#endif // SAMPSHARP_LINUX

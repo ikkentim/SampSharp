@@ -15,38 +15,30 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO.Pipes;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using SampSharp.Core.Logging;
 
-namespace SampSharp.Core.Communication
+namespace SampSharp.Core.Communication.Clients
 {
     /// <summary>
-    ///     Represents a named pipe SampSharp client.
+    ///     Represents a base class for communication clients based on a <see cref="Stream" />. The stream must support
+    ///     <see cref="Stream.ReadAsync(byte[], int, int, System.Threading.CancellationToken)" />,
+    ///     <see cref="Stream.Write(byte[], int, int)" /> and <see cref="Stream.Flush" />.
     /// </summary>
-    public class NamedPipeClient : ICommunicationClient
+    public abstract class StreamCommunicationClient : ICommunicationClient
     {
-        private readonly string _pipeName;
-        private bool _disposed;
         private readonly MessageBuffer _buffer = new MessageBuffer();
         private readonly byte[] _readBuffer = new byte[1024 * 2];
         private readonly byte[] _singleByteBuffer = new byte[1];
-        private NamedPipeClientStream _stream;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="NamedPipeClient"/> class.
-        /// </summary>
-        /// <param name="pipeName">Name of the pipe.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="pipeName"/> is null.</exception>
-        public NamedPipeClient(string pipeName)
-        {
-            _pipeName = pipeName ?? throw new ArgumentNullException(nameof(pipeName));
-        }
+        private bool _disposed;
+        private Stream _stream;
 
         /// <summary>
         ///     Finalizes an instance of the <see cref="NamedPipeClient" /> class.
         /// </summary>
-        ~NamedPipeClient()
+        ~StreamCommunicationClient()
         {
             Dispose(false);
         }
@@ -64,11 +56,21 @@ namespace SampSharp.Core.Communication
                 _stream.Dispose();
         }
 
-        private void AssertNotDisposed()
+        /// <summary>
+        ///     Throws a <see cref="ObjectDisposedException" /> if this instance has been disposed of.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">Thrown if this instance has been disposed of.</exception>
+        protected void AssertNotDisposed()
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(NamedPipeClient));
         }
+
+        /// <summary>
+        ///     Returns a newly created and connected stream for this client.
+        /// </summary>
+        /// <returns>A newly created and connected stream for this client.</returns>
+        protected abstract Task<Stream> CreateStream();
 
         #region IDisposable
 
@@ -86,23 +88,19 @@ namespace SampSharp.Core.Communication
         #region Implementation of IPipeClient
 
         /// <summary>
-        /// Connects the client to the server.
+        ///     Connects the client to the server.
         /// </summary>
         /// <returns></returns>
-        public async Task Connect()
+        public virtual async Task Connect()
         {
             AssertNotDisposed();
-
-            _stream = new NamedPipeClientStream(".", _pipeName, PipeDirection.InOut, PipeOptions.WriteThrough | PipeOptions.Asynchronous);
-
-            await _stream.ConnectAsync();
-            _stream.ReadMode = PipeTransmissionMode.Byte;
+            _stream = await CreateStream();
         }
 
         /// <summary>
         ///     Disconnects this client from the server.
         /// </summary>
-        public void Disconnect()
+        public virtual void Disconnect()
         {
             AssertNotDisposed();
 
@@ -116,7 +114,7 @@ namespace SampSharp.Core.Communication
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="data">The data.</param>
-        public void Send(ServerCommand command, IEnumerable<byte> data)
+        public virtual void Send(ServerCommand command, IEnumerable<byte> data)
         {
             AssertNotDisposed();
 
@@ -138,7 +136,7 @@ namespace SampSharp.Core.Communication
         ///     Waits for the next command sent by the server.
         /// </summary>
         /// <returns>The command sent by the server.</returns>
-        public async Task<ServerCommandData> ReceiveAsync()
+        public virtual async Task<ServerCommandData> ReceiveAsync()
         {
             AssertNotDisposed();
 
@@ -151,35 +149,6 @@ namespace SampSharp.Core.Communication
                 var len = await _stream.ReadAsync(_readBuffer, 0, _readBuffer.Length);
                 _buffer.Push(_readBuffer, 0, len);
             }
-        }
-
-        /// <summary>
-        ///     Waits for the next command sent by the server.
-        /// </summary>
-        /// <returns>The command sent by the server.</returns>
-        public ServerCommandData Receive()
-        {
-            AssertNotDisposed();
-
-            while (true)
-            {
-                if (_buffer.TryPop(out var command))
-                    return command;
-
-                var len = _stream.Read(_readBuffer, 0, _readBuffer.Length);
-                _buffer.Push(_readBuffer, 0, len);
-            }
-        }
-
-        #endregion
-
-        #region Overrides of Object
-
-        /// <summary>Returns a string that represents the current object.</summary>
-        /// <returns>A string that represents the current object.</returns>
-        public override string ToString()
-        {
-            return $"named pipe on {_pipeName}";
         }
 
         #endregion

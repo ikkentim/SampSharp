@@ -15,25 +15,30 @@
 
 #pragma once
 
-#include <inttypes.h>
-#include <deque>
+#include "platforms.h"
 
-#define MESSAGE_QUEUE_BUFFER_TOO_SMALL  0xffffffffu
+#if SAMPSHARP_WINDOWS
 
-class message_queue
-{
+#include "commsvr.h"
+#include "message_queue.h"
+
+#define MAX_PIPE_NAME_LEN       (256)
+
+class server;
+class pipesvr_win32 :
+	public commsvr {
 public:
-    message_queue();
-    void add(uint8_t *buf, uint32_t len);
-    bool can_get();
-    uint32_t get(uint8_t *command, uint8_t *buf, uint32_t len);
-    void clear();
+	pipesvr_win32(const char *pipe_name);
+	~pipesvr_win32();
+    COMMSVR_DECL_PUB();
+
 private:
-    std::deque<uint8_t> queue_;
-    uint8_t command_;
-    uint32_t command_length_;
-    bool local_fill_;
-    bool try_fill_local();
-    uint8_t pop();
+    server *svr_;
+    bool connected_;
+    char pipe_name_[MAX_PIPE_NAME_LEN];
+    void *pipe_;
+    uint8_t *buf_;
+    message_queue queue_messages_;
 };
 
+#endif // SAMPSHARP_WINDOWS

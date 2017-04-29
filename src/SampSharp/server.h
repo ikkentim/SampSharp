@@ -18,17 +18,17 @@
 #include <inttypes.h>
 #include <string>
 #include <map>
-
+#include <mutex>
 #include <sampgdk/sampgdk.h>
 #include "message_queue.h"
 #include "callbacks_map.h"
 #include "natives_map.h"
-#include "communication_server.h"
+#include "commsvr.h"
 
 class server {
 public:
     /** initializes and allocates required memory for the server instance */
-    server(communication_server *communication);
+    server(commsvr *communication);
 
     /** frees memory allocated by this instance */
     ~server();
@@ -71,8 +71,9 @@ private: /* fields */
     /** buffer */
     uint8_t *buf_;
     /** comms */
-    communication_server *communication_;
-
+    commsvr *communication_;
+    /** lock for callbacks/ticks */
+    std::mutex mutex_;
 private: /* methods */
     /* update status for new connection */
     bool connect();

@@ -21,6 +21,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SampSharp.Core.Callbacks;
 using SampSharp.Core.Communication;
+using SampSharp.Core.Communication.Clients;
 using SampSharp.Core.Logging;
 using SampSharp.Core.Natives;
 using SampSharp.Core.Threading;
@@ -74,12 +75,16 @@ namespace SampSharp.Core
                     break;
                 case ServerCommand.Pong:
                     if (_pongs.Count == 0)
+                    {
                         CoreLog.Log(CoreLogLevel.Error, "Received a random pong");
+                        CoreLog.Log(CoreLogLevel.Debug, Environment.StackTrace);
+                    }
                     else
                         _pongs.Dequeue().Pong();
                     break;
                 case ServerCommand.Announce:
                     CoreLog.Log(CoreLogLevel.Error, "Received a random server announcement");
+                    CoreLog.Log(CoreLogLevel.Debug, Environment.StackTrace);
                     break;
                 case ServerCommand.PublicCall:
                     var name = ValueConverter.ToString(data.Data, 0);
@@ -101,8 +106,10 @@ namespace SampSharp.Core
                                 : AZero);
                     }
                     else
+                    {
                         CoreLog.Log(CoreLogLevel.Error, "Received unknown callback " + name);
-
+                        CoreLog.Log(CoreLogLevel.Debug, Environment.StackTrace);
+                    }
                     if (!_initReceived && name == "OnGameModeInit")
                     {
                         _initReceived = true;
@@ -116,9 +123,11 @@ namespace SampSharp.Core
                     break;
                 case ServerCommand.Reply:
                     CoreLog.Log(CoreLogLevel.Error, "Received a random reply");
+                    CoreLog.Log(CoreLogLevel.Debug, Environment.StackTrace);
                     break;
                 default:
                     CoreLog.Log(CoreLogLevel.Error, $"Unknown command {data.Command} recieved with {data.Data.Length} data");
+                    CoreLog.Log(CoreLogLevel.Debug, Environment.StackTrace);
                     break;
             }
         }
@@ -164,7 +173,12 @@ namespace SampSharp.Core
             CoreLog.Log(CoreLogLevel.Error, $"Received command {data.Command.ToString().ToLower()} instead of announce.");
             return false;
         }
-        
+
+        private void StartNetworkingRoutine()
+        {
+            Task.Run(() => NetworkingRoutine().ConfigureAwait(false));
+        }
+
         private async void Initialize()
         {
             CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Server");
@@ -179,10 +193,7 @@ namespace SampSharp.Core
             await CommunicationClient.Connect();
 
             CoreLog.Log(CoreLogLevel.Info, "Set up networking routine...");
-#pragma warning disable CS4014
-            // A new routine is started here on a worker thread. We don't want it to continue on the current context or to await it. 
-            Task.Run(() => NetworkingRoutine().ConfigureAwait(false));
-#pragma warning restore CS4014
+            StartNetworkingRoutine();
 
             CoreLog.Log(CoreLogLevel.Info, "Connected! Waiting for server annoucement...");
             var data = await ReceiveCommandAsync();
@@ -194,10 +205,10 @@ namespace SampSharp.Core
             _gameModeProvider.Initialize(this);
 
             CoreLog.Log(CoreLogLevel.Info, "Sending start signal to server...");
-
-            var method = new byte[1];
-            method[0] = (byte)_startBehaviour;
-            Send(ServerCommand.Start, method);
+            Send(ServerCommand.Start, new[] { (byte)_startBehaviour });
+            
+            CoreLog.Log(CoreLogLevel.Info, "Set up main routine...");
+            MainRoutine();
         }
 
         internal void Run()
@@ -213,12 +224,9 @@ namespace SampSharp.Core
 
             SynchronizationContext.SetSynchronizationContext(_syncronizationContext);
 
-            // Initialize the game mode
+            // Initialize the game mode and start the main routine
             Initialize();
             
-            // Start the main routine
-            MainRoutine();
-
             // Pump new tasks
             _messagePump.Pump();
 

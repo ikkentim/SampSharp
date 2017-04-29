@@ -8,9 +8,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMode", "src\TestMode\TestMode.csproj", "{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampSharp.Core", "src\SampSharp.Core\SampSharp.Core.csproj", "{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{39908193-8E5A-42EC-B71B-5D457CE87823} = {39908193-8E5A-42EC-B71B-5D457CE87823}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampSharp.GameMode", "src\SampSharp.GameMode\SampSharp.GameMode.csproj", "{153D7525-B36F-4DB9-B5B6-483915C84A7E}"
 EndProject
@@ -26,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6B10DCD1
 		build.sh = build.sh
 		premake4.lua = premake4.lua
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMode.DotNetFramework", "src\TestMode.DotNetFramework\TestMode.DotNetFramework.csproj", "{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -96,6 +95,18 @@ Global
 		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Win32.ActiveCfg = Release|Any CPU
 		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Win32.Build.0 = Release|Any CPU
+		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Win32.Build.0 = Debug|Any CPU
+		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Win32.ActiveCfg = Release|Any CPU
+		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,25 +15,25 @@
 
 #pragma once
 
-#include <inttypes.h>
-#include "command.h"
+#include "sock_unix.h"
 
-class server;
-class communication_server {
+#if SAMPSHARP_LINUX
+
+#include <inttypes.h>
+#include <netinet/ip.h>
+
+class tcp_unix : public sock_unix
+{
 public:
-    /** setup communication */
-    virtual bool setup(server *svr) = 0;
-    /** let user connect */
-    virtual bool connect() = 0;
-    /** is user connected */
-    virtual bool is_connected() = 0;
-    /** is set up */
-    virtual bool is_ready() = 0;
-    /** disconnect user */
-    virtual void disconnect() = 0;
-    /** send command to server */
-    virtual bool send(uint8_t cmd, uint32_t len, uint8_t *buf) = 0;
-    /** receive command from server */
-    virtual cmd_status receive(uint8_t *command, uint8_t *buf, uint32_t *len)
-        = 0;
+    tcp_unix(const char *ip, uint16_t port);
+protected:
+    int socket_create();
+    socklen_t addr_alloc(struct sockaddr** addrptr);
+    socklen_t accept_addr_len();
+    bool accept_addr(struct sockaddr *addr, socklen_t addrlen);
+private:
+    struct in_addr addr_;
+    uint16_t port_;
 };
+
+#endif // SAMPSHARP_LINUX

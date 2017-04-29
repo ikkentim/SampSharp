@@ -17,34 +17,33 @@
 
 #include "platforms.h"
 
-#if SAMPSHARP_WINDOWS
+#if SAMPSHARP_LINUX
 
-#include "communication_server.h"
+#include "stdlib.h"
+#include "commsvr.h"
 #include "message_queue.h"
+#include <sys/types.h>
+#include <sys/socket.h>
 
-#define MAX_PIPE_NAME_LEN       (256)
-
-class server;
-class pipe_server :
-	public communication_server {
+class sock_unix : public commsvr
+{
 public:
-	pipe_server(const char *pipe_name);
-	~pipe_server();
-    bool setup(server *svr);
-    bool connect();
-    void disconnect();
-    bool send(uint8_t cmd, uint32_t len, uint8_t *buf);
-    cmd_status receive(uint8_t *command, uint8_t *buf, uint32_t *len);
-    bool is_connected();
-    bool is_ready();
-
+    sock_unix();
+    ~sock_unix();
+    COMMSVR_DECL_PUB();
+protected:
+    virtual bool accept_addr(struct sockaddr *addr, socklen_t addrlen);
+    virtual socklen_t accept_addr_len();
+    virtual int socket_create() = 0;
+    virtual socklen_t addr_alloc(struct sockaddr** addrptr) = 0;
 private:
-    server *server_;
-    bool connected_;
-    char pipe_name_[MAX_PIPE_NAME_LEN];
-    void *pipe_;
+    void logerr(const char *pfx);
+    bool wouldblock();
+    int sock_;
+    int sockc_;
     uint8_t *buf_;
+    server *svr_;
     message_queue queue_messages_;
 };
 
-#endif // SAMPSHARP_WINDOWS
+#endif // SAMPSHARP_LINUX

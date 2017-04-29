@@ -15,7 +15,8 @@
 
 using System;
 using System.IO;
-using SampSharp.Core.Communication;
+using System.Runtime.InteropServices;
+using SampSharp.Core.Communication.Clients;
 using SampSharp.Core.Logging;
 
 namespace SampSharp.Core
@@ -25,23 +26,26 @@ namespace SampSharp.Core
     /// </summary>
     public sealed class GameModeBuilder
     {
+        private ICommunicationClient _communicationClient;
+        private GameModeExitBehaviour _exitBehaviour = GameModeExitBehaviour.ShutDown;
         private IGameModeProvider _gameModeProvider;
         private bool _redirectConsoleOutput;
-        private ICommunicationClient _communicationClient;
         private GameModeStartBehaviour _startBehaviour = GameModeStartBehaviour.Gmx;
-        private GameModeExitBehaviour _exitBehaviour = GameModeExitBehaviour.ShutDown;
 
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GameModeBuilder"/> class.
+        ///     Initializes a new instance of the <see cref="GameModeBuilder" /> class.
         /// </summary>
         public GameModeBuilder()
         {
-            _communicationClient = new NamedPipeClient("SampSharp");
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                _communicationClient = new UnixDomainSocketCommunicationClient("/tmp/SampSharp");
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                _communicationClient = new NamedPipeClient("SampSharp");
         }
 
         /// <summary>
-        ///     Use the specified <paramref name="pipeName" /> to communicate with the SampSharp server.
+        ///     Use a named pipe with the specified <paramref name="pipeName" /> to communicate with the SampSharp server.
         /// </summary>
         /// <param name="pipeName">Name of the pipe.</param>
         /// <returns>The updated game mode configuration builder.</returns>
@@ -49,6 +53,40 @@ namespace SampSharp.Core
         {
             if (pipeName == null) throw new ArgumentNullException(nameof(pipeName));
             return UseCommunicationClient(new NamedPipeClient(pipeName));
+        }
+
+        /// <summary>
+        ///     Use an unix domain socket with a file at the specified <paramref name="path" /> to communicate with the SampSharp
+        ///     server.
+        /// </summary>
+        /// <param name="path">The path to the domain socket file.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseUnixDomainSocket(string path)
+        {
+            if (path == null) throw new ArgumentNullException(nameof(path));
+            return UseCommunicationClient(new UnixDomainSocketCommunicationClient(path));
+        }
+
+        /// <summary>
+        ///     Use a TCP client to communicate with the SampSharp server on localhost.
+        /// </summary>
+        /// <param name="port">The port on which to connect.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseTcpClient(int port)
+        {
+            return UseCommunicationClient(new TcpCommunicationClient("127.0.0.1", port));
+        }
+
+        /// <summary>
+        ///     Use a TCP client to communicate with the SampSharp server.
+        /// </summary>
+        /// <param name="host">The host to which to connect.</param>
+        /// <param name="port">The port on which to connect.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseTcpClient(string host, int port)
+        {
+            if (host == null) throw new ArgumentNullException(nameof(host));
+            return UseCommunicationClient(new TcpCommunicationClient(host, port));
         }
 
         /// <summary>
@@ -144,6 +182,9 @@ namespace SampSharp.Core
         /// </summary>
         public void Run()
         {
+            if (_communicationClient == null)
+                throw new GameModeBuilderException("No communication client has been specified");
+
             // TODO: To use the restart exit behaviour, the same client should still be used (because of the internal loaded resources, used by singletons)
             do
             {
