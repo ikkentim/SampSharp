@@ -1,4 +1,19 @@
-﻿using System;
+﻿// SampSharp
+// Copyright 2017 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using SampSharp.GameMode;
@@ -7,7 +22,7 @@ using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
-namespace TestMode.DotNetCore
+namespace TestMode
 {
     internal class GameMode : BaseMode
     {
@@ -42,9 +57,9 @@ namespace TestMode.DotNetCore
             var c = Server.GetTickCount();
             Console.WriteLine($"In {sw.Elapsed.TotalMilliseconds} ms got {a} {b} {c}");
         }
-        
+
         #region Overrides of BaseMode
-        
+
         protected override async void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
@@ -58,9 +73,9 @@ namespace TestMode.DotNetCore
             await Task.Delay(2000);
 
             Console.WriteLine("waited 2");
-            this.SetGameModeText("After delay");
+            SetGameModeText("After delay");
         }
-        
+
         protected override void OnRconCommand(RconEventArgs e)
         {
             Console.WriteLine($"Received RCON Command: {e.Command}");
@@ -89,7 +104,7 @@ namespace TestMode.DotNetCore
         {
             base.OnTick(e);
         }
-        
+
         #endregion
     }
 }

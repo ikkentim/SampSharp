@@ -24,6 +24,7 @@
 
 #include <string>
 #include <algorithm>
+#include <algorithm>
 
 #pragma once
 
@@ -33,6 +34,8 @@ struct StringUtil
         bool operator()(char c) {
             return !(c == ' ' || c == '\r' || c == '\n' || c == '\t');
         }
+    };
+    struct test {
     };
 
     static inline std::string &TrimStringLeft(std::string &s) {
@@ -47,5 +50,15 @@ struct StringUtil
 
     static inline std::string &TrimString(std::string &s) {
         return TrimStringLeft(TrimStringRight(s));
+    }
+
+    static char __to_lower(char in) {
+        if (in <= 'Z' && in >= 'A')
+            return in - ('Z' - 'z');
+        return in;
+    }
+    static inline std::string ToLower(std::string s) {
+        std::transform(s.begin(), s.end(), s.begin(), __to_lower);
+        return s;
     }
 };

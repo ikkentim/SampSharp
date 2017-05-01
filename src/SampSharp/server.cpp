@@ -26,7 +26,6 @@
 #endif
 
 #define LEN_PRINT_BUFFER    (1024)
-#define LEN_NETBUF          (20000)
 
 /* receive */
 #define CMD_PING            (0x01) /* request a pong */
@@ -53,13 +52,14 @@
 #pragma region Constructors and loading
 
 /** initializes and allocates required memory for the server instance */
-server::server(commsvr *communication) :
+server::server(plugin *plg, commsvr *communication) :
     callbacks_(callbacks_map(this)),
     communication_(communication),
     natives_(natives_map(this)),
-    status_(status_none) {
+    status_(status_none),
+    intermission_(plg) {
 
-    buf_ = new uint8_t[LEN_NETBUF];
+    //buf_ = new uint8_t[LEN_NETBUF];
 }
 
 /** frees memory allocated by this instance */
@@ -67,11 +67,12 @@ server::~server() {
     if (communication_) {
         communication_->disconnect();
     }
-    delete[] buf_;
+    //delete[] buf_;
 }
 
 /** starts the comms server */
 void server::start() {
+    intermission_.signal_starting();
     communication_->setup(this);
 }
 
@@ -120,15 +121,6 @@ void server::vlog(const char* prefix, const char *format, va_list args) {
     buffer[LEN_PRINT_BUFFER - 1] = '\0';
 
     sampgdk_logprintf("[SampSharp:%s] %s", prefix, buffer);
-}
-
-#pragma endregion
-
-#pragma region Getters
-
-/** a value indicating whether the client is connected */
-bool server::is_client_connected() {
-    return communication_->is_connected() && STATUS_ISSET(status_client_connected);
 }
 
 #pragma endregion
@@ -219,6 +211,11 @@ CMD_DEFINE(cmd_start) {
 
 #pragma region Communication
 
+/** a value indicating whether the client is connected */
+bool server::is_client_connected() {
+    return communication_->is_connected() && STATUS_ISSET(status_client_connected);
+}
+
 /* try to let a client connect */
 bool server::connect() {
     if (communication_->is_connected()) {
@@ -270,6 +267,7 @@ void server::disconnect(const char *context, bool expected) {
             context = "";
         }
         log_error("Unexpected disconnect of client. %s", context);
+        intermission_.signal_error();
 
         STATUS_UNSET(status_client_started);
         natives_.clear();
@@ -278,6 +276,7 @@ void server::disconnect(const char *context, bool expected) {
     }
     else {
         log_info("Client disconnected.");
+        intermission_.signal_disconnect();
     }
     
     /* disconnect and close */
@@ -375,6 +374,8 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
         return;
     }
 
+    intermission_.set_on(false);
+
     if (is_gmi) {
         STATUS_SET(status_client_received_init);
     }
@@ -419,6 +420,7 @@ void server::tick() {
 
     if (is_client_connected() && STATUS_ISSET(status_client_started |
         status_client_received_init)) {
+        intermission_.set_on(false);
         communication_->send(CMD_TICK, 0, NULL);
     }
 

@@ -104,10 +104,12 @@
     <ClCompile Include="dsock_unix.cpp" />
     <ClCompile Include="includes\sampgdk\sampgdk.c" />
     <ClCompile Include="includes\sdk\amxplugin.cpp" />
+    <ClCompile Include="intermission.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message_queue.cpp" />
     <ClCompile Include="natives_map.cpp" />
     <ClCompile Include="pipesvr_w32.cpp" />
+    <ClCompile Include="plugin.cpp" />
     <ClCompile Include="server.cpp" />
     <ClCompile Include="sock_unix.cpp" />
     <ClCompile Include="tcp_unix.cpp" />
@@ -118,7 +120,9 @@
     <ClInclude Include="commsvr.h" />
     <ClInclude Include="ConfigReader.h" />
     <ClInclude Include="dsock_unix.h" />
+    <ClInclude Include="intermission.h" />
     <ClInclude Include="pipesvr_win32.h" />
+    <ClInclude Include="plugin.h" />
     <ClInclude Include="sock_unix.h" />
     <ClInclude Include="tcp_unix.h" />
     <ClInclude Include="version.h" />

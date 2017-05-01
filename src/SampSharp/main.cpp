@@ -18,21 +18,20 @@
 #include <string.h>
 #include <iostream>
 #include <sampgdk/sampgdk.h>
-#include "ConfigReader.h"
 #include "StringUtil.h"
 #include "server.h"
 #include "version.h"
 #include "pipesvr_win32.h"
 #include "dsock_unix.h"
 #include "tcp_unix.h"
+#include "plugin.h"
 
 using sampgdk::logprintf;
 
-extern void *pAMXFunctions;
-
-ConfigReader *server_cfg = NULL;
 server *svr = NULL;
-commsvr *comms = NULL;
+commsvr *com = NULL;
+plugin *plg = NULL;
+
 bool ready;
 
 void print_err(const char* error) {
@@ -55,7 +54,7 @@ bool config_validate() {
         gamemode_key << i;
 
         std::string gamemode_value;
-        server_cfg->GetOptionAsString(gamemode_key.str(), gamemode_value);
+        plg->config()->GetOptionAsString(gamemode_key.str(), gamemode_value);
         gamemode_value = StringUtil::TrimString(gamemode_value);
 
         if (i == 0 && gamemode_value.compare("empty 1") != 0) {
@@ -80,8 +79,8 @@ bool config_validate() {
 #if SAMPSHARP_WINDOWS
 void com_pipe() {
     std::string value;
-    server_cfg->GetOptionAsString("com_pipe", value);
-    comms = new pipesvr_win32(value.c_str());
+    plg->config()->GetOptionAsString("com_pipe", value);
+    com = new pipesvr_win32(value.c_str());
 }
 
 void com_tcp() {
@@ -91,14 +90,14 @@ void com_tcp() {
 #elif SAMPSHARP_LINUX
 void com_dsock() {
     std::string value;
-    server_cfg->GetOptionAsString("com_dsock", value);
+    plg->config()->GetOptionAsString("com_dsock", value);
     comms = new dsock_unix(value.c_str());
 }
 
 void com_tcp() {
     std::string ip, port;
-    server_cfg->GetOptionAsString("com_ip", ip);
-    server_cfg->GetOptionAsString("com_port", port);
+    plg->config()->GetOptionAsString("com_ip", ip);
+    plg->config()->GetOptionAsString("com_port", port);
     uint16_t portnum = atoi(port.c_str());
 
     comms = new tcp_unix(ip.c_str(), portnum);
@@ -118,7 +117,7 @@ void start_server() {
     com_dsock();
 #endif
 
-    server_cfg->GetOptionAsString("com_type", type);
+    plg->config()->GetOptionAsString("com_type", type);
 
     if (!type.compare("tcp")) {
         com_tcp();
@@ -133,8 +132,8 @@ void start_server() {
     }
 #endif
 
-    if (comms) {
-        svr = new server(comms);
+    if (com) {
+        svr = new server(plg, com);
         svr->start();
     }
 }
@@ -148,12 +147,10 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
         return false;
     }
 
-    /* amx functions are used to gather info from callbacks */
-    pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
+    plg = new plugin(ppData);
 
     /* validate the server config is fit for running SampSharp */
-    server_cfg = new ConfigReader("server.cfg");
-    if (!(ready = config_validate())) {
+    if (!plg || !(ready = config_validate())) {
         return ready = false;
     }
 
@@ -167,16 +164,17 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload() {
         logprintf("Shutting down SampSharp server...");
         delete svr;
     }
-    if (comms) {
-        comms->disconnect();
-        delete comms;
+    if (com) {
+        com->disconnect();
+        delete com;
+    }
+    if (plg) {
+        delete plg;
     }
 
-    delete server_cfg;
-
+    plg = NULL;
     svr = NULL;
-    comms = NULL;
-    server_cfg = NULL;
+    com = NULL;
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {

@@ -184,6 +184,8 @@ namespace SampSharp.Core
         {
             if (_communicationClient == null)
                 throw new GameModeBuilderException("No communication client has been specified");
+            if(_gameModeProvider == null)
+                throw new GameModeBuilderException("No game mode provider has been specified");
 
             // TODO: To use the restart exit behaviour, the same client should still be used (because of the internal loaded resources, used by singletons)
             do

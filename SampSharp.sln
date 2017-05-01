@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampSharp", "src\SampSharp\SampSharp.vcxproj", "{39908193-8E5A-42EC-B71B-5D457CE87823}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMode", "src\TestMode\TestMode.csproj", "{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampSharp.Core", "src\SampSharp.Core\SampSharp.Core.csproj", "{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampSharp.GameMode", "src\SampSharp.GameMode\SampSharp.GameMode.csproj", "{153D7525-B36F-4DB9-B5B6-483915C84A7E}"
@@ -47,18 +45,6 @@ Global
 		{39908193-8E5A-42EC-B71B-5D457CE87823}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{39908193-8E5A-42EC-B71B-5D457CE87823}.Release|Win32.ActiveCfg = Release|Win32
 		{39908193-8E5A-42EC-B71B-5D457CE87823}.Release|Win32.Build.0 = Release|Win32
-		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Debug|Win32.Build.0 = Debug|Any CPU
-		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Win32.ActiveCfg = Release|Any CPU
-		{D5E69763-0993-45C1-88F2-8B3A1FE97CCC}.Release|Win32.Build.0 = Release|Any CPU
 		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

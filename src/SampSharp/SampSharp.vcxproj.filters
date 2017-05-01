@@ -47,6 +47,12 @@
     <ClCompile Include="tcp_unix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="intermission.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="plugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConfigReader.h">
@@ -89,6 +95,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tcp_unix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="intermission.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

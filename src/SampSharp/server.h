@@ -24,12 +24,14 @@
 #include "callbacks_map.h"
 #include "natives_map.h"
 #include "commsvr.h"
+#include "intermission.h"
+
+#define LEN_NETBUF          (20000)
 
 class server {
 public:
     /** initializes and allocates required memory for the server instance */
-    server(commsvr *communication);
-
+    server(plugin *plg, commsvr *communication);
     /** frees memory allocated by this instance */
     ~server();
     /** starts the server */
@@ -69,11 +71,13 @@ private: /* fields */
     /** map of registred native functions */
     natives_map natives_;
     /** buffer */
-    uint8_t *buf_;
+    uint8_t buf_[LEN_NETBUF];
     /** comms */
     commsvr *communication_;
     /** lock for callbacks/ticks */
     std::mutex mutex_;
+    /** intermission manager */
+    intermission intermission_;
 private: /* methods */
     /* update status for new connection */
     bool connect();

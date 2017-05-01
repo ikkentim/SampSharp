@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>TestMode.DotNetFramework</RootNamespace>
+    <RootNamespace>TestMode</RootNamespace>
     <AssemblyName>TestMode.DotNetFramework</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -120,6 +120,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameMode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
