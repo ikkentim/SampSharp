@@ -3,10 +3,12 @@ compiler: g++
 
 before_install:
   - sudo add-apt-repository ppa:codegear/release -y
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -qq premake4 gcc g++ g++-multilib libc6-dev-i386 gcc-multilib
+  - sudo apt-get install -qq premake4 gcc g++-4.8 g++-4.8-multilib libc6-dev-i386 gcc-multilib
+  - export CXX="g++-4.8"
 
 before_script:
   - premake4 gmake
