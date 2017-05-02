@@ -91,7 +91,7 @@ void com_tcp() {
 void com_dsock() {
     std::string value;
     plg->config()->GetOptionAsString("com_dsock", value);
-    comms = new dsock_unix(value.c_str());
+    com = new dsock_unix(value.c_str());
 }
 
 void com_tcp() {
@@ -100,7 +100,7 @@ void com_tcp() {
     plg->config()->GetOptionAsString("com_port", port);
     uint16_t portnum = atoi(port.c_str());
 
-    comms = new tcp_unix(ip.c_str(), portnum);
+    com = new tcp_unix(ip.c_str(), portnum);
 }
 #endif
 
