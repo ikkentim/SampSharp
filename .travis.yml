@@ -11,6 +11,7 @@ install:
   - export CXX="g++-4.8"
 
 before_script:
+  - $CXX --version
   - premake4 gmake
 
 script:
