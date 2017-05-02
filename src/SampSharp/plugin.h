@@ -21,7 +21,7 @@ class plugin
 {
 public:
     plugin(void **pp_data);
-    int filterscript_call(char *function_name);
+    int filterscript_call(const char *function_name);
     ConfigReader *config();
 private:
     void** data_;
