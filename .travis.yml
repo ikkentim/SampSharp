@@ -7,7 +7,7 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -qq premake4 gcc g g++-multilib libc6-dev-i386 gcc-multilib
+  - sudo apt-get install -qq premake4 gcc gcc-multilib libc6-dev-i386 g++ g++-multilib
 
 before_script:
   - $CXX --version
