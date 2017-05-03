@@ -33,5 +33,5 @@ ConfigReader *plugin::config() {
 }
 
 int plugin::filterscript_call(const char * function_name) {
-    return ((amx_call)data_[PLUGIN_DATA_CALLPUBLIC_FS])(function_name);
+    return ((amx_call)data_[PLUGIN_DATA_CALLPUBLIC_FS])((char *)function_name);
 }
