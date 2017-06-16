@@ -61,6 +61,11 @@ namespace SampSharp.Core.Communication
         Start = 0x08,
 
         /// <summary>
+        ///     An instruction which tells the server to expect the socket to close at any time.
+        /// </summary>
+        Disconnect = 0x09,
+
+        /// <summary>
         ///     A call sent by the server every server tick.
         /// </summary>
         Tick = 0x11,

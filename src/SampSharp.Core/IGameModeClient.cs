@@ -94,5 +94,11 @@ namespace SampSharp.Core
         /// <param name="data">The data buffer to be used.</param>
         /// <returns>The response from the native.</returns>
         byte[] InvokeNative(IEnumerable<byte> data);
+
+
+        /// <summary>
+        ///     Shuts down the server after the current callback has been processed.
+        /// </summary>
+        void ShutDown();
     }
 }

@@ -35,7 +35,8 @@
 #define CMD_REGISTER_CALL   (0x05) /* register a public call */
 #define CMD_FIND_NATIVE     (0x06) /* return native id */
 #define CMD_INVOKE_NATIVE   (0x07) /* invoke a native */
-#define CMD_START           (0x08) /* start sending messages */
+#define CMD_START           (0x08) /* start sending messages*/
+#define CMD_DISCONNECT      (0x09) /* expect client to disconnect */
 
 /* send */
 #define CMD_TICK            (0x11) /* server tick */
@@ -158,6 +159,11 @@ CMD_DEFINE(cmd_reconnect) {
     disconnect(NULL, true);
 }
 
+CMD_DEFINE(cmd_disconnect) {
+    log_info("The gamemode is disconnecting.");
+    STATUS_SET(status_client_disconnecting);
+}
+
 CMD_DEFINE(cmd_start) {
     log_info("The gamemode has started.");
     STATUS_SET(status_client_started);
@@ -264,7 +270,19 @@ void server::disconnect(const char *context, bool expected) {
         return;
     }
     
-    if (!expected) {
+    if (expected) {
+        log_info("Client disconnected.");
+        intermission_.signal_disconnect();
+    }
+    else if (STATUS_ISSET(status_client_disconnecting)) {
+        log_info("Client disconnected.");
+        intermission_.signal_disconnect();
+
+        STATUS_UNSET(status_client_started | status_client_disconnecting);
+        natives_.clear();
+        callbacks_.clear();
+    }
+    else {
         if (!context) {
             context = "";
         }
@@ -274,11 +292,6 @@ void server::disconnect(const char *context, bool expected) {
         STATUS_UNSET(status_client_started);
         natives_.clear();
         callbacks_.clear();
-        
-    }
-    else {
-        log_info("Client disconnected.");
-        intermission_.signal_disconnect();
     }
     
     /* disconnect and close */
@@ -342,6 +355,7 @@ cmd_status server::cmd_process(uint8_t cmd, uint8_t *buf, uint32_t buflen,
         MAP_COMMAND(CMD_FIND_NATIVE, cmd_find_native);
         MAP_COMMAND(CMD_INVOKE_NATIVE, cmd_invoke_native);
         MAP_COMMAND(CMD_RECONNECT, cmd_reconnect);
+        MAP_COMMAND(CMD_DISCONNECT, cmd_disconnect);
         MAP_COMMAND(CMD_START, cmd_start);
 
         /* unmapped commands (unhandled) */
@@ -374,7 +388,8 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
 
     if (!is_client_connected() || 
         !STATUS_ISSET(status_client_started) || 
-        STATUS_ISSET(status_client_reconnecting)) {
+        STATUS_ISSET(status_client_reconnecting) ||
+        STATUS_ISSET(status_client_disconnecting)) {
         return;
     }
 
@@ -424,7 +439,8 @@ void server::tick() {
 
     if (is_client_connected() && 
         STATUS_ISSET(status_client_started | status_client_received_init) && 
-        !STATUS_ISSET(status_client_reconnecting)) {
+        !STATUS_ISSET(status_client_reconnecting) &&
+        !STATUS_ISSET(status_client_disconnecting)) {
         intermission_.set_on(false);
         communication_->send(CMD_TICK, 0, NULL);
     }

@@ -62,6 +62,7 @@ private: /* fields */
         status_client_received_init = (1 << 2), /* received a GMI */
         status_client_reconnecting  = (1 << 3), /* is reconnecting */
         status_server_received_init = (1 << 4), /* received GMI */
+        status_client_disconnecting = (1 << 5), /* is disconnecting */
     };
 
     /** status flags of the server */
@@ -103,6 +104,7 @@ private: /* commands */
     CMD_DECLARE(cmd_invoke_native);
     CMD_DECLARE(cmd_reconnect);
     CMD_DECLARE(cmd_start);
+    CMD_DECLARE(cmd_disconnect);
 #undef CMD_DECLARE
 };
 

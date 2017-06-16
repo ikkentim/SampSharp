@@ -17,21 +17,18 @@ using System;
 
 namespace SampSharp.Core
 {
-    /// <summary>
-    ///     Contains the methods of a runnable game mode.
-    /// </summary>
-    public interface IGameModeRunner
+    public class ServerConnectionClosedException : Exception
     {
-        /// <summary>
-        ///     Runs the game mode of this runner.
-        /// </summary>
-        /// <returns>true if shut down by the game mode, false otherwise.</returns>
-        /// <exception cref="Exception">Thrown if a game mode is already running.</exception>
-        bool Run();
+        public ServerConnectionClosedException()
+        {
+        }
 
-        /// <summary>
-        ///     Gets the client of this game mode runner.
-        /// </summary>
-        IGameModeClient Client { get; }
+        public ServerConnectionClosedException(string message) : base(message)
+        {
+        }
+
+        public ServerConnectionClosedException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }

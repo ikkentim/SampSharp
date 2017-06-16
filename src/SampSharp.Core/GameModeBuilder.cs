@@ -203,12 +203,18 @@ namespace SampSharp.Core
             var redirect = _redirectConsoleOutput;
 
             var runner = Build();
+
             if (redirect)
                 Console.SetOut(new ServerLogWriter(runner.Client));
             
             do
             {
-                runner.Run();
+                // If true is returned, the runner wants to shut down.
+                if (runner.Run())
+                {
+                    break;
+                }
+
             } while (_exitBehaviour == GameModeExitBehaviour.Restart);
 
             if (redirect)

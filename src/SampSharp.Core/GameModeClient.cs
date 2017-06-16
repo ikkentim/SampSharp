@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -45,6 +46,7 @@ namespace SampSharp.Core
         private int _mainThread;
         private MessagePump _messagePump;
         private bool _running;
+        private bool _shuttingDown;
         private SampSharpSyncronizationContext _syncronizationContext;
 
         /// <summary>
@@ -158,11 +160,7 @@ namespace SampSharp.Core
                         // TODO: This is an ugly fix.
                         Thread.Sleep(100);
 
-                        _running = false;
-                        _initReceived = false;
-                        _messagePump.Dispose();
-
-                        CoreLog.Log(CoreLogLevel.Info, "Waiting for new start...");
+                        CleanUp();
                     }
                     break;
                 case ServerCommand.Reply:
@@ -175,7 +173,14 @@ namespace SampSharp.Core
                     break;
             }
         }
-        
+
+        private void CleanUp()
+        {
+            _running = false;
+            _initReceived = false;
+            _messagePump.Dispose();
+        }
+
         private static bool VerifyVersionData(ServerCommandData data)
         {
             CoreLog.Log(CoreLogLevel.Debug, $"Received {data.Command} while waiting for server announcement.");
@@ -258,6 +263,11 @@ namespace SampSharp.Core
             {
                 var data = await ReceiveCommandAsync();
                 ProcessCommand(data);
+
+                if (_shuttingDown)
+                {
+                    CleanUp();
+                }
             }
         }
 
@@ -295,7 +305,14 @@ namespace SampSharp.Core
             if (!IsOnMainThread)
                 throw new GameModeClientException("Cannot send data to the server from a thread other than the main thread.");
 
-            CommunicationClient.Send(command, data);
+            try
+            {
+                CommunicationClient.Send(command, data);
+            }
+            catch (IOException e)
+            {
+                throw new ServerConnectionClosedException("The server connection has closed. Did the server shut down?", e);
+            }
         }
 
         private async Task<ServerCommandData> ReceiveCommandAsync()
@@ -545,6 +562,23 @@ namespace SampSharp.Core
             return response.Data;
         }
 
+        /// <summary>
+        ///     Shuts down the server after the current callback has been processed.
+        /// </summary>
+        public void ShutDown()
+        {
+            if (_shuttingDown || !_running)
+                return;
+
+            CommunicationClient.Send(ServerCommand.Disconnect, null);
+
+            // Give the server time to receive the reconnect signal.
+            // TODO: Unexpected behaviour if called from outside a callback (because shuttingDown hook is inside callback handler).
+            // TODO: This is an ugly fix.
+            Thread.Sleep(100);
+            _shuttingDown = true;
+        }
+
         #endregion
 
         #region Implementation of IGameModeRunner
@@ -552,8 +586,9 @@ namespace SampSharp.Core
         /// <summary>
         ///     Runs this game mode client.
         /// </summary>
+        /// <returns>true if shut down by the game mode, false otherwise.</returns>
         /// <exception cref="Exception">Thrown if a game mode is already running.</exception>
-        public void Run()
+        public bool Run()
         {
             if (InternalStorage.RunningClient != null)
                 throw new Exception("A game mode is already running!");
@@ -575,6 +610,8 @@ namespace SampSharp.Core
             // Clean up
             InternalStorage.RunningClient = null;
             CommunicationClient.Disconnect();
+
+            return _shuttingDown;
         }
 
         /// <summary>
