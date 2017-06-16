@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using SampSharp.Core.Logging;
 
@@ -29,6 +30,7 @@ namespace SampSharp.Core.Communication.Clients
     /// </summary>
     public abstract class StreamCommunicationClient : ICommunicationClient
     {
+        private CancellationTokenSource _source;
         private readonly MessageBuffer _buffer = new MessageBuffer();
         private readonly byte[] _readBuffer = new byte[1024 * 2];
         private readonly byte[] _singleByteBuffer = new byte[1];
@@ -94,6 +96,8 @@ namespace SampSharp.Core.Communication.Clients
         public virtual async Task Connect()
         {
             AssertNotDisposed();
+
+            _source = new CancellationTokenSource();
             _stream = await CreateStream();
         }
 
@@ -104,6 +108,7 @@ namespace SampSharp.Core.Communication.Clients
         {
             AssertNotDisposed();
 
+            _source.Cancel();
             _buffer.Clear();
             _stream.Dispose();
             _stream = null;
@@ -145,9 +150,24 @@ namespace SampSharp.Core.Communication.Clients
                 if (_buffer.TryPop(out var command))
                     return command;
 
-                // TODO: This breaks on disconnect; _stream is set to null.
-                var len = await _stream.ReadAsync(_readBuffer, 0, _readBuffer.Length);
-                _buffer.Push(_readBuffer, 0, len);
+                try
+                {
+                    var task = _stream?.ReadAsync(_readBuffer, 0, _readBuffer.Length, _source.Token);
+
+                    if (task == null)
+                        throw new StreamCommunicationClientClosedException();
+
+                    var len = await task;
+
+                    if (_stream == null)
+                        throw new StreamCommunicationClientClosedException();
+
+                    _buffer.Push(_readBuffer, 0, len);
+                }
+                catch (TaskCanceledException)
+                {
+                    throw new StreamCommunicationClientClosedException();
+                }
             }
         }
 

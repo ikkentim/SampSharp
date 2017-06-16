@@ -31,21 +31,21 @@ namespace SampSharp.Core
     /// <summary>
     ///     Represents a SampSharp game mode client.
     /// </summary>
-    public sealed class GameModeClient : IGameModeClient
+    public sealed class GameModeClient : IGameModeClient, IGameModeRunner
     {
         private static readonly byte[] AOne = { 1 };
         private static readonly byte[] AZero = { 0 };
 
         private readonly Dictionary<string, Callback> _callbacks = new Dictionary<string, Callback>();
-        private readonly Queue<PongReceiver> _pongs = new Queue<PongReceiver>();
+        private readonly DataReceiveStack<ServerCommandData> _dataReceivers = new DataReceiveStack<ServerCommandData>();
         private readonly IGameModeProvider _gameModeProvider;
+        private readonly Queue<PongReceiver> _pongs = new Queue<PongReceiver>();
         private readonly GameModeStartBehaviour _startBehaviour;
-        private int _mainThread;
         private bool _initReceived;
+        private int _mainThread;
+        private MessagePump _messagePump;
         private bool _running;
         private SampSharpSyncronizationContext _syncronizationContext;
-        private MessagePump _messagePump;
-        private readonly DataReceiveStack<ServerCommandData> _dataReceivers = new DataReceiveStack<ServerCommandData>();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameModeClient" /> class.
@@ -60,7 +60,7 @@ namespace SampSharp.Core
             CommunicationClient = communicationClient ?? throw new ArgumentNullException(nameof(communicationClient));
             NativeLoader = new NativeLoader(this);
         }
-        
+
         /// <summary>
         ///     Gets a value indicating whether this property is invoked on the main thread.
         /// </summary>
@@ -88,6 +88,16 @@ namespace SampSharp.Core
                     break;
                 case ServerCommand.PublicCall:
                     var name = ValueConverter.ToString(data.Data, 0);
+                    var isInit = name == "OnGameModeInit";
+
+                    if ((_startBehaviour == GameModeStartBehaviour.Gmx || _startBehaviour == GameModeStartBehaviour.FakeGmx) && !_initReceived &&
+                        !isInit)
+                    {
+                        CoreLog.Log(CoreLogLevel.Debug, $"Skipping callback {name} because OnGameModeInit has not yet been called");
+                        Send(ServerCommand.Response, AZero);
+                        break;
+                    }
+
                     if (_callbacks.TryGetValue(name, out var callback))
                     {
                         int? result = null;
@@ -110,15 +120,49 @@ namespace SampSharp.Core
                         CoreLog.Log(CoreLogLevel.Error, "Received unknown callback " + name);
                         CoreLog.Log(CoreLogLevel.Debug, Environment.StackTrace);
                     }
-                    if (!_initReceived && name == "OnGameModeInit")
+
+                    if (!_initReceived && isInit)
                     {
                         _initReceived = true;
+
+                        if (_startBehaviour == GameModeStartBehaviour.FakeGmx)
+                        {
+                            if (_callbacks.TryGetValue("OnPlayerConnect", out var onPlayerConnect))
+                            {
+                                var isPlayerConnected = GetNativeHandle("IsPlayerConnected");
+                                var getPlayerPoolSize = GetNativeHandle("GetPlayerPoolSize");
+
+                                var args = ValueConverter.GetBytes(getPlayerPoolSize);
+                                var poolSize = ValueConverter.ToInt32(InvokeNative(args), 0);
+
+                                for (var i = 0; i < poolSize; i++)
+                                {
+                                    args = ValueConverter.GetBytes(isPlayerConnected);
+                                    var isConnected = ValueConverter.ToInt32(InvokeNative(args), 0);
+
+                                    if (isConnected == 0)
+                                        continue;
+
+                                    args = ValueConverter.GetBytes(i);
+                                    onPlayerConnect.Invoke(args, 0);
+                                }
+                            }
+                        }
                     }
                     else if (_initReceived && name == "OnGameModeExit")
                     {
+                        CoreLog.Log(CoreLogLevel.Info, "OnGameModeExit received, sending reconnect signal...");
+                        Send(ServerCommand.Reconnect, null);
+
+                        // Give the server time to receive the reconnect signal.
+                        // TODO: This is an ugly fix.
+                        Thread.Sleep(100);
+
                         _running = false;
                         _initReceived = false;
                         _messagePump.Dispose();
+
+                        CoreLog.Log(CoreLogLevel.Info, "Waiting for new start...");
                     }
                     break;
                 case ServerCommand.Reply:
@@ -129,24 +173,6 @@ namespace SampSharp.Core
                     CoreLog.Log(CoreLogLevel.Error, $"Unknown command {data.Command} recieved with {data.Data.Length} data");
                     CoreLog.Log(CoreLogLevel.Debug, Environment.StackTrace);
                     break;
-            }
-        }
-
-        private async void MainRoutine()
-        {
-            while(_running)
-            {
-                var data = await ReceiveCommandAsync();
-                ProcessCommand(data);
-            }
-        }
-
-        private async Task NetworkingRoutine()
-        {
-            while (_running)
-            {
-                var data = await CommunicationClient.ReceiveAsync();
-                _dataReceivers.Push(data);
             }
         }
         
@@ -174,11 +200,6 @@ namespace SampSharp.Core
             return false;
         }
 
-        private void StartNetworkingRoutine()
-        {
-            Task.Run(() => NetworkingRoutine().ConfigureAwait(false));
-        }
-
         private async void Initialize()
         {
             CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Server");
@@ -188,7 +209,7 @@ namespace SampSharp.Core
 
             _mainThread = Thread.CurrentThread.ManagedThreadId;
             _running = true;
-            
+
             CoreLog.Log(CoreLogLevel.Info, $"Connecting to the server via {CommunicationClient}...");
             await CommunicationClient.Connect();
 
@@ -196,44 +217,26 @@ namespace SampSharp.Core
             StartNetworkingRoutine();
 
             CoreLog.Log(CoreLogLevel.Info, "Connected! Waiting for server annoucement...");
-            var data = await ReceiveCommandAsync();
+            ServerCommandData data;
+
+            do
+            {
+                data = await ReceiveCommandAsync();
+
+                // Could receive ticks if reconnecting.
+            } while (data.Command == ServerCommand.Tick);
 
             if (!VerifyVersionData(data))
                 return;
-            
+
             CoreLog.Log(CoreLogLevel.Info, "Initialializing game mode provider...");
             _gameModeProvider.Initialize(this);
 
             CoreLog.Log(CoreLogLevel.Info, "Sending start signal to server...");
-            Send(ServerCommand.Start, new[] { (byte)_startBehaviour });
-            
+            Send(ServerCommand.Start, new[] { (byte) _startBehaviour });
+
             CoreLog.Log(CoreLogLevel.Info, "Set up main routine...");
             MainRoutine();
-        }
-
-        internal void Run()
-        {
-            if (InternalStorage.RunningClient != null)
-                throw new Exception("A game mode is already running!");
-
-            InternalStorage.RunningClient = this;
-
-            // Prepare the syncronization context
-            _syncronizationContext = new SampSharpSyncronizationContext();
-            _messagePump = _syncronizationContext.MessagePump;
-
-            SynchronizationContext.SetSynchronizationContext(_syncronizationContext);
-
-            // Initialize the game mode and start the main routine
-            Initialize();
-            
-            // Pump new tasks
-            _messagePump.Pump();
-
-            // Clean up
-            InternalStorage.RunningClient = null;
-            CommunicationClient.Disconnect();
-
         }
 
         private void AssertRunning()
@@ -241,11 +244,49 @@ namespace SampSharp.Core
             if (CommunicationClient == null || !_running)
                 throw new GameModeNotRunningException();
         }
-        
+
         private void OnUnhandledException(UnhandledExceptionEventArgs e)
         {
             UnhandledException?.Invoke(this, e);
         }
+
+        #region Routines
+
+        private async void MainRoutine()
+        {
+            while (_running)
+            {
+                var data = await ReceiveCommandAsync();
+                ProcessCommand(data);
+            }
+        }
+
+        private async Task NetworkingRoutine()
+        {
+            try
+            {
+                while (_running)
+                {
+                    var data = await CommunicationClient.ReceiveAsync();
+
+                    if (!_running)
+                        return;
+
+                    _dataReceivers.Push(data);
+                }
+            }
+            catch (StreamCommunicationClientClosedException)
+            {
+                //
+            }
+        }
+
+        private void StartNetworkingRoutine()
+        {
+            Task.Run(() => NetworkingRoutine().ConfigureAwait(false));
+        }
+
+        #endregion
 
         #region Communication
 
@@ -261,7 +302,7 @@ namespace SampSharp.Core
         {
             return await _dataReceivers.PopAsync();
         }
-        
+
         private ServerCommandData ReceiveCommand()
         {
             return _dataReceivers.Pop();
@@ -269,6 +310,7 @@ namespace SampSharp.Core
 
         private ServerCommandData ReceiveCommand(ServerCommand type)
         {
+            // Receive commands until the command of the expected type has been received.
             for (;;)
             {
                 var data = ReceiveCommand();
@@ -299,8 +341,8 @@ namespace SampSharp.Core
         public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
 
         /// <summary>
-        ///     Registers a callback with the specified <paramref name="name"/>. When the callback is called, the specified
-        ///     <paramref name="methodInfo"/> will be invoked on the specified <paramref name="target" />.
+        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
+        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
         /// </summary>
         /// <param name="name">The name af the callback to register.</param>
         /// <param name="target">The target on which to invoke the method.</param>
@@ -414,7 +456,7 @@ namespace SampSharp.Core
             else
                 _syncronizationContext.Send(ctx => { Send(ServerCommand.Print, ValueConverter.GetBytes(text)); }, null);
         }
-        
+
         /// <summary>
         ///     Pings the server.
         /// </summary>
@@ -502,6 +544,43 @@ namespace SampSharp.Core
 
             return response.Data;
         }
+
+        #endregion
+
+        #region Implementation of IGameModeRunner
+
+        /// <summary>
+        ///     Runs this game mode client.
+        /// </summary>
+        /// <exception cref="Exception">Thrown if a game mode is already running.</exception>
+        public void Run()
+        {
+            if (InternalStorage.RunningClient != null)
+                throw new Exception("A game mode is already running!");
+
+            InternalStorage.RunningClient = this;
+
+            // Prepare the syncronization context
+            _syncronizationContext = new SampSharpSyncronizationContext();
+            _messagePump = _syncronizationContext.MessagePump;
+
+            SynchronizationContext.SetSynchronizationContext(_syncronizationContext);
+
+            // Initialize the game mode and start the main routine
+            Initialize();
+
+            // Pump new tasks
+            _messagePump.Pump();
+
+            // Clean up
+            InternalStorage.RunningClient = null;
+            CommunicationClient.Disconnect();
+        }
+
+        /// <summary>
+        ///     Gets the client of this game mode runner.
+        /// </summary>
+        public IGameModeClient Client => this;
 
         #endregion
     }

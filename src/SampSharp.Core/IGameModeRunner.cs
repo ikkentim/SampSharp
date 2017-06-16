@@ -13,21 +13,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.Core;
-using SampSharp.Core.Logging;
+using System;
 
-namespace TestMode
+namespace SampSharp.Core
 {
-    internal class Program
+    /// <summary>
+    ///     Contains the methods of a runnable game mode.
+    /// </summary>
+    public interface IGameModeRunner
     {
-        private static void Main(string[] args)
-        {
-            new GameModeBuilder()
-                .UseLogLevel(CoreLogLevel.Debug)
-                .UseStartBehaviour(GameModeStartBehaviour.FakeGmx)
-                .UseExitBehaviour(GameModeExitBehaviour.Restart)
-                .Use<GameMode>()
-                .Run();
-        }
+        /// <summary>
+        ///     Runs the game mode of this runner.
+        /// </summary>
+        /// <exception cref="Exception">Thrown if a game mode is already running.</exception>
+        void Run();
+
+        /// <summary>
+        ///     Gets the client of this game mode runner.
+        /// </summary>
+        IGameModeClient Client { get; }
     }
 }

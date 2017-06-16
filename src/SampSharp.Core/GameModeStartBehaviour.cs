@@ -32,7 +32,7 @@ namespace SampSharp.Core
 
         /// <summary>
         ///     Fake a GMX call, causing OnGamemodeInit to only be called in the game mode. This does not allow for game mode
-        ///     initialisation (such as spawning static vehicles) cannot be performed.
+        ///     initialisation (such as spawning static vehicles).
         /// </summary>
         FakeGmx = 2
     }

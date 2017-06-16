@@ -47,27 +47,14 @@ namespace TestMode
         {
             target.Kick();
         }
-
-        private void SpeedTest()
-        {
-            var sw = new Stopwatch();
-            sw.Start();
-            var a = Server.GetTickCount();
-            var b = Server.GetTickCount();
-            var c = Server.GetTickCount();
-            Console.WriteLine($"In {sw.Elapsed.TotalMilliseconds} ms got {a} {b} {c}");
-        }
-
+        
         #region Overrides of BaseMode
 
         protected override async void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
 
-            //Console.WriteLine("LOADED!");
-
-            //SpeedTest();
-
+            Console.WriteLine("The game mode has loaded.");
             AddPlayerClass(0, Vector3.Zero, 0);
             SetGameModeText("Before delay");
             await Task.Delay(2000);
@@ -79,12 +66,6 @@ namespace TestMode
         protected override void OnRconCommand(RconEventArgs e)
         {
             Console.WriteLine($"Received RCON Command: {e.Command}");
-
-            if (e.Command == "speedtest")
-            {
-                SpeedTest();
-                e.Success = true;
-            }
             base.OnRconCommand(e);
         }
 
@@ -99,12 +80,7 @@ namespace TestMode
             Console.WriteLine($"Player {player.Name} disconnected. Reason: {e.Reason}.");
             base.OnPlayerDisconnected(player, e);
         }
-
-        protected override void OnTick(EventArgs e)
-        {
-            base.OnTick(e);
-        }
-
+        
         #endregion
     }
 }

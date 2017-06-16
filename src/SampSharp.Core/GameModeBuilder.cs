@@ -26,6 +26,7 @@ namespace SampSharp.Core
     /// </summary>
     public sealed class GameModeBuilder
     {
+        private Func<ICommunicationClient, GameModeStartBehaviour, IGameModeProvider, IGameModeRunner> _builder;
         private ICommunicationClient _communicationClient;
         private GameModeExitBehaviour _exitBehaviour = GameModeExitBehaviour.ShutDown;
         private IGameModeProvider _gameModeProvider;
@@ -178,34 +179,46 @@ namespace SampSharp.Core
         }
 
         /// <summary>
+        ///     Use a custom build procedure to load a custom game mode client.
+        /// </summary>
+        /// <param name="builder">The building function.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder BuildWith(Func<ICommunicationClient, GameModeStartBehaviour, IGameModeProvider, IGameModeRunner> builder)
+        {
+            _builder = builder;
+            return this;
+        }
+
+
+        /// <summary>
         ///     Run the game mode using the build configuration stored in this instance.
         /// </summary>
         public void Run()
         {
             if (_communicationClient == null)
                 throw new GameModeBuilderException("No communication client has been specified");
-            if(_gameModeProvider == null)
+            if (_gameModeProvider == null)
                 throw new GameModeBuilderException("No game mode provider has been specified");
-
-            // TODO: To use the restart exit behaviour, the same client should still be used (because of the internal loaded resources, used by singletons)
-            do
-            {
-                BuildAndRun();
-            } while (_exitBehaviour == GameModeExitBehaviour.Restart);
-        }
-
-        private void BuildAndRun()
-        {
-            var client = new GameModeClient(_communicationClient, _startBehaviour, _gameModeProvider);
 
             var redirect = _redirectConsoleOutput;
 
+            var runner = Build();
             if (redirect)
-                Console.SetOut(new ServerLogWriter(client));
+                Console.SetOut(new ServerLogWriter(runner.Client));
+            
+            do
+            {
+                runner.Run();
+            } while (_exitBehaviour == GameModeExitBehaviour.Restart);
 
-            client.Run();
             if (redirect)
                 Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+        }
+
+        private IGameModeRunner Build()
+        {
+            return _builder?.Invoke(_communicationClient, _startBehaviour, _gameModeProvider)
+                   ?? new GameModeClient(_communicationClient, _startBehaviour, _gameModeProvider);
         }
     }
 }

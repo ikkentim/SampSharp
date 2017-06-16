@@ -153,7 +153,7 @@ CMD_DEFINE(cmd_invoke_native) {
 }
 
 CMD_DEFINE(cmd_reconnect) {
-    log_info("The gamemode has is reconnecting.");
+    log_info("The gamemode is reconnecting.");
     STATUS_SET(status_client_reconnecting);
     disconnect(NULL, true);
 }
@@ -237,10 +237,12 @@ bool server::connect() {
     }
     else {
         log_info("Connected to client.");
-        cmd_send_announce();
     }
 
     STATUS_UNSET(status_client_reconnecting);
+
+    cmd_send_announce();
+
     return true;
 }
 
@@ -370,7 +372,9 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
         STATUS_UNSET(status_server_received_init);
     }
 
-    if (!is_client_connected() || !STATUS_ISSET(status_client_started)) {
+    if (!is_client_connected() || 
+        !STATUS_ISSET(status_client_started) || 
+        STATUS_ISSET(status_client_reconnecting)) {
         return;
     }
 
@@ -418,8 +422,9 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
 void server::tick() {
     mutex_.lock();
 
-    if (is_client_connected() && STATUS_ISSET(status_client_started |
-        status_client_received_init)) {
+    if (is_client_connected() && 
+        STATUS_ISSET(status_client_started | status_client_received_init) && 
+        !STATUS_ISSET(status_client_reconnecting)) {
         intermission_.set_on(false);
         communication_->send(CMD_TICK, 0, NULL);
     }
