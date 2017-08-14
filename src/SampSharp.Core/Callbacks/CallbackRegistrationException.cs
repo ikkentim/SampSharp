@@ -40,8 +40,8 @@ namespace SampSharp.Core.Callbacks
         /// <summary>
         ///     Initializes a new instance of the <see cref="CallbackRegistrationException" /> class.
         /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="inner">The inner.</param>
+        /// <param name="message">The message that describes the error.</param>
+        /// <param name="inner">The inner exception.</param>
         public CallbackRegistrationException(string message, Exception inner) : base(message, inner)
         {
         }

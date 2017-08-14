@@ -16,9 +16,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using SampSharp.Core.Callbacks;
-using SampSharp.Core.Communication;
 using SampSharp.Core.Communication.Clients;
 using SampSharp.Core.Natives;
 
@@ -29,6 +29,11 @@ namespace SampSharp.Core
     /// </summary>
     public interface IGameModeClient
     {
+        /// <summary>
+        ///     Gets the default encoding to use when translating server messages.
+        /// </summary>
+        Encoding Encoding { get; }
+
         /// <summary>
         ///     Gets the communication client.
         /// </summary>

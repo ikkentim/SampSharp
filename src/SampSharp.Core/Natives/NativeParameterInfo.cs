@@ -149,8 +149,9 @@ namespace SampSharp.Core.Natives
         /// </summary>
         /// <param name="response">The response to extract the value from.</param>
         /// <param name="index">The current top of the response.</param>
+        /// <param name="gameModeClient">The game mode client.</param>
         /// <returns>The referenced value.</returns>
-        public object GetReferenceArgument(byte[] response, ref int index)
+        public object GetReferenceArgument(byte[] response, ref int index, IGameModeClient gameModeClient)
         {
             object result = null;
             switch (Type)
@@ -168,7 +169,7 @@ namespace SampSharp.Core.Natives
                     index += 4;
                     break;
                 case NativeParameterType.StringReference:
-                    var str = ValueConverter.ToString(response, index);
+                    var str = ValueConverter.ToString(response, index, gameModeClient.Encoding);
                     result = str;
                     index += str.Length + 1;
                     break;
@@ -218,8 +219,9 @@ namespace SampSharp.Core.Natives
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="length">The length.</param>
-        /// <returns></returns>
-        public IEnumerable<byte> GetBytes(object value, int length)
+        /// <param name="gameModeClient">The game mode client.</param>
+        /// <returns>A collection of bytes.</returns>
+        public IEnumerable<byte> GetBytes(object value, int length, IGameModeClient gameModeClient)
         {
             switch (Type)
             {
@@ -246,9 +248,9 @@ namespace SampSharp.Core.Natives
                     break;
                 case NativeParameterType.String:
                     if (value is string s)
-                        return ValueConverter.GetBytes(s);
+                        return ValueConverter.GetBytes(s, gameModeClient.Encoding);
                     else if (value == null)
-                        return ValueConverter.GetBytes("");
+                        return ValueConverter.GetBytes("", gameModeClient.Encoding);
                     break;
                 case NativeParameterType.StringReference:
                 case NativeParameterType.Int32ArrayReference:

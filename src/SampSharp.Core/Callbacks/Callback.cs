@@ -25,6 +25,7 @@ namespace SampSharp.Core.Callbacks
     /// </summary>
     internal class Callback
     {
+        private readonly IGameModeClient _gameModeClient;
         private readonly MethodInfo _methodInfo;
         private readonly ParameterInfo[] _parameterInfos;
         private readonly CallbackParameterInfo[] _parameters;
@@ -39,8 +40,10 @@ namespace SampSharp.Core.Callbacks
         /// <param name="methodInfo">The information about the method to invoke.</param>
         /// <param name="name">The name of the callback.</param>
         /// <param name="parameters">The parameters of the callback.</param>
-        public Callback(object target, MethodInfo methodInfo, string name, CallbackParameterInfo[] parameters)
+        /// <param name="gameModeClient">The game mode client.</param>
+        public Callback(object target, MethodInfo methodInfo, string name, CallbackParameterInfo[] parameters, IGameModeClient gameModeClient)
         {
+            _gameModeClient = gameModeClient ?? throw new ArgumentNullException(nameof(gameModeClient));
             _target = target ?? throw new ArgumentNullException(nameof(target));
             _methodInfo = methodInfo ?? throw new ArgumentNullException(nameof(methodInfo));
             _parameters = parameters ?? throw new ArgumentNullException(nameof(parameters));
@@ -157,7 +160,7 @@ namespace SampSharp.Core.Callbacks
                     }
                     case CallbackParameterType.String:
                     {
-                        var value = ValueConverter.ToString(buffer, bufferIndex);
+                        var value = ValueConverter.ToString(buffer, bufferIndex, _gameModeClient.Encoding);
                         bufferIndex += value.Length + 1;
                         _parameterValues[i] = value;
 

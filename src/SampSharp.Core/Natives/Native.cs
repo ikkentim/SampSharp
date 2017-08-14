@@ -96,7 +96,7 @@ namespace SampSharp.Core.Natives
                     }
                 }
 
-                data = data.Concat(Parameters[i].GetBytes(arguments[i], length));
+                data = data.Concat(Parameters[i].GetBytes(arguments[i], length, _gameModeClient));
             }
 
             var response = _gameModeClient.InvokeNative(data);
@@ -108,7 +108,7 @@ namespace SampSharp.Core.Natives
 
             for (var i = 0; i < Parameters.Length; i++)
             {
-                var value = Parameters[i].GetReferenceArgument(response, ref respPos);
+                var value = Parameters[i].GetReferenceArgument(response, ref respPos, _gameModeClient);
                 if (value != null)
                     arguments[i] = value;
             }

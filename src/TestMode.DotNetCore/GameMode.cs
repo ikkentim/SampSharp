@@ -15,7 +15,9 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using SampSharp.Core.CodePages;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
@@ -61,6 +63,8 @@ namespace TestMode
 
             Console.WriteLine("waited 2");
             SetGameModeText("After delay");
+
+            Console.WriteLine("RCON commands: sd (shutdown) msg (repeat message)");
         }
 
         protected override void OnRconCommand(RconEventArgs e)
@@ -70,10 +74,40 @@ namespace TestMode
             if (e.Command == "sd")
             {
                 Client.ShutDown();
+                e.Success = true;
+                Console.WriteLine("Shutting down client...");
             }
+
+            if (e.Command.StartsWith("msg"))
+            {
+                var msg = e.Command.Substring(4);
+
+                Console.WriteLine("Received: " + msg);
+                msg = new string(msg.Reverse().ToArray());
+
+                Console.WriteLine("Sending: " + msg);
+
+                e.Success = true;
+                Server.Print(msg);
+            }
+            
             base.OnRconCommand(e);
         }
 
+        [Command("help")]
+        private static void Help(BasePlayer player)
+        {
+            player.SendClientMessage("/reverse, /help");
+        }
+
+        [Command("reverse")]
+        private static void Reverse(BasePlayer player, string message)
+        {
+            player.SendClientMessage($"{message} reversed: ");
+            message = new string(message.Reverse().ToArray());
+            player.SendClientMessage(message);
+        }
+        
         protected override void OnPlayerConnected(BasePlayer player, EventArgs e)
         {
             Console.WriteLine($"Player {player.Name} connected.");

@@ -17,16 +17,31 @@ using System;
 
 namespace SampSharp.Core
 {
+    /// <summary>
+    /// Represents errors that occur when the connection between an <see cref="IGameModeClient"/> instance and the server disappeared.
+    /// </summary>
     public class ServerConnectionClosedException : Exception
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ServerConnectionClosedException" /> class.
+        /// </summary>
         public ServerConnectionClosedException()
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ServerConnectionClosedException" /> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error.</param>
         public ServerConnectionClosedException(string message) : base(message)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ServerConnectionClosedException" /> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error.</param>
+        /// <param name="innerException">The inner exception.</param>
         public ServerConnectionClosedException(string message, Exception innerException) : base(message, innerException)
         {
         }

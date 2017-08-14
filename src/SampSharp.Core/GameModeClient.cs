@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using SampSharp.Core.Callbacks;
@@ -55,13 +56,20 @@ namespace SampSharp.Core
         /// <param name="communicationClient">The communication client to be used by the game mode client.</param>
         /// <param name="startBehaviour">The start method.</param>
         /// <param name="gameModeProvider">The game mode provider.</param>
-        public GameModeClient(ICommunicationClient communicationClient, GameModeStartBehaviour startBehaviour, IGameModeProvider gameModeProvider)
+        /// <param name="encoding">The encoding to use when en/decoding text messages sent to/from the server.</param>
+        public GameModeClient(ICommunicationClient communicationClient, GameModeStartBehaviour startBehaviour, IGameModeProvider gameModeProvider, Encoding encoding)
         {
+            Encoding = encoding;
             _startBehaviour = startBehaviour;
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
             CommunicationClient = communicationClient ?? throw new ArgumentNullException(nameof(communicationClient));
             NativeLoader = new NativeLoader(this);
         }
+
+        /// <summary>
+        ///     Gets the default encoding to use when translating server messages.
+        /// </summary>
+        public Encoding Encoding { get; }
 
         /// <summary>
         ///     Gets a value indicating whether this property is invoked on the main thread.
@@ -89,7 +97,7 @@ namespace SampSharp.Core
                     CoreLog.Log(CoreLogLevel.Debug, Environment.StackTrace);
                     break;
                 case ServerCommand.PublicCall:
-                    var name = ValueConverter.ToString(data.Data, 0);
+                    var name = ValueConverter.ToString(data.Data, 0, Encoding);
                     var isInit = name == "OnGameModeInit";
 
                     if ((_startBehaviour == GameModeStartBehaviour.Gmx || _startBehaviour == GameModeStartBehaviour.FakeGmx) && !_initReceived &&
@@ -157,7 +165,7 @@ namespace SampSharp.Core
                         Send(ServerCommand.Reconnect, null);
 
                         // Give the server time to receive the reconnect signal.
-                        // TODO: This is an ugly fix.
+                        // TODO: This is an ugly freeze/comms-deadlock fix.
                         Thread.Sleep(100);
 
                         CleanUp();
@@ -376,18 +384,18 @@ namespace SampSharp.Core
             if (!Callback.IsValidReturnType(methodInfo.ReturnType))
                 throw new CallbackRegistrationException("The method uses an unsupported return type");
 
-            _callbacks[name] = new Callback(target, methodInfo, name, parameters);
+            _callbacks[name] = new Callback(target, methodInfo, name, parameters, this);
 
             if (IsOnMainThread)
             {
-                Send(ServerCommand.RegisterCall, ValueConverter.GetBytes(name)
+                Send(ServerCommand.RegisterCall, ValueConverter.GetBytes(name, Encoding)
                     .Concat(parameters.SelectMany(c => c.GetBytes()))
                     .Concat(new[] { (byte) ServerCommandArgument.Terminator }));
             }
             else
             {
                 _syncronizationContext.Send(ctx =>
-                    Send(ServerCommand.RegisterCall, ValueConverter.GetBytes(name)
+                    Send(ServerCommand.RegisterCall, ValueConverter.GetBytes(name, Encoding)
                         .Concat(parameters.SelectMany(c => c.GetBytes()))
                         .Concat(new[] { (byte) ServerCommandArgument.Terminator })), null);
             }
@@ -469,9 +477,9 @@ namespace SampSharp.Core
                 text = string.Empty;
 
             if (IsOnMainThread)
-                Send(ServerCommand.Print, ValueConverter.GetBytes(text));
+                Send(ServerCommand.Print, ValueConverter.GetBytes(text, Encoding));
             else
-                _syncronizationContext.Send(ctx => { Send(ServerCommand.Print, ValueConverter.GetBytes(text)); }, null);
+                _syncronizationContext.Send(ctx => { Send(ServerCommand.Print, ValueConverter.GetBytes(text, Encoding)); }, null);
         }
 
         /// <summary>
@@ -514,7 +522,7 @@ namespace SampSharp.Core
 
             if (IsOnMainThread)
             {
-                Send(ServerCommand.FindNative, ValueConverter.GetBytes(name));
+                Send(ServerCommand.FindNative, ValueConverter.GetBytes(name, Encoding));
 
                 data = ReceiveCommand(ServerCommand.Response);
             }
@@ -522,7 +530,7 @@ namespace SampSharp.Core
             {
                 _syncronizationContext.Send(ctx =>
                 {
-                    Send(ServerCommand.FindNative, ValueConverter.GetBytes(name));
+                    Send(ServerCommand.FindNative, ValueConverter.GetBytes(name, Encoding));
 
                     data = ReceiveCommand(ServerCommand.Response);
                 }, null);

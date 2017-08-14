@@ -16,6 +16,8 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
+using SampSharp.Core.CodePages;
 using SampSharp.Core.Communication.Clients;
 using SampSharp.Core.Logging;
 
@@ -32,7 +34,7 @@ namespace SampSharp.Core
         private IGameModeProvider _gameModeProvider;
         private bool _redirectConsoleOutput;
         private GameModeStartBehaviour _startBehaviour = GameModeStartBehaviour.Gmx;
-
+        private Encoding _encoding;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameModeBuilder" /> class.
@@ -54,6 +56,38 @@ namespace SampSharp.Core
         {
             if (pipeName == null) throw new ArgumentNullException(nameof(pipeName));
             return UseCommunicationClient(new NamedPipeClient(pipeName));
+        }
+
+        /// <summary>
+        ///     Use the specified <paramref name="encoding"/> when en/decoding text messages sent to/from the server.
+        /// </summary>
+        /// <param name="encoding">The encoding to use when en/decoding text messages send to/from the server.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseEncoding(Encoding encoding)
+        {
+            _encoding = encoding ?? throw new ArgumentNullException(nameof(encoding));
+            return this;
+        }
+
+        /// <summary>
+        ///     Use the code page described by the file at the specified <paramref name="path"/> when en/decoding text messages sent to/from the server.
+        /// </summary>
+        /// <param name="path">The path to the code page file.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseEncoding(string path)
+        {
+            if (path == null) throw new ArgumentNullException(nameof(path));
+            return UseEncoding(CodePageEncoding.Load(path));
+        }
+
+        /// <summary>
+        ///     Use the code page described by the specified <paramref name="stream"/> when en/decoding text messages sent to/from the server.
+        /// </summary>
+        /// <param name="stream">The stream containing the code page definition.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseEncoding(Stream stream)
+        {
+            return UseEncoding(CodePageEncoding.Load(stream));
         }
 
         /// <summary>
@@ -224,7 +258,7 @@ namespace SampSharp.Core
         private IGameModeRunner Build()
         {
             return _builder?.Invoke(_communicationClient, _startBehaviour, _gameModeProvider)
-                   ?? new GameModeClient(_communicationClient, _startBehaviour, _gameModeProvider);
+                   ?? new GameModeClient(_communicationClient, _startBehaviour, _gameModeProvider, _encoding);
         }
     }
 }

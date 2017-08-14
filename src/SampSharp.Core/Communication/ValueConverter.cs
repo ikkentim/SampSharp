@@ -69,22 +69,19 @@ namespace SampSharp.Core.Communication
         ///     Gets the bytes representing the specified value.
         /// </summary>
         /// <param name="value">The value.</param>
+        /// <param name="encoding">The encoding to use.</param>
         /// <returns>The bytes representing the specified value</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is null.</exception>
-        public static byte[] GetBytes(string value)
+        public static byte[] GetBytes(string value, Encoding encoding)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
-            var result = new byte[value.Length + 1];
+            encoding = encoding ?? Encoding.ASCII;
 
-            for (var i = 0; i < value.Length; i++)
-            {
-                result[i] = (byte) value[i];
-            }
-
-            result[value.Length] = 0;
-
-            return result;
+            var bytes = new byte[encoding.GetByteCount(value) + 1];
+            bytes[bytes.Length - 1] = (byte) '\0';
+            encoding.GetBytes(value, 0, value.Length, bytes, 0);
+            return bytes;
         }
 
         /// <summary>
@@ -224,11 +221,14 @@ namespace SampSharp.Core.Communication
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="startIndex">The start index.</param>
+        /// <param name="encoding">The encoding to use.</param>
         /// <returns>The <see cref="string" /> read from the specified buffer.</returns>
-        public static string ToString(byte[] buffer, int startIndex)
+        public static string ToString(byte[] buffer, int startIndex, Encoding encoding)
         {
-            var terminatorIndex = Array.IndexOf(buffer, (byte) '\0', startIndex);
-            return Encoding.ASCII.GetString(buffer, startIndex, terminatorIndex - startIndex);
+            encoding = encoding ?? Encoding.ASCII;
+
+            var terminatorIndex = Array.IndexOf(buffer, (byte)'\0', startIndex);
+            return encoding.GetString(buffer, startIndex, terminatorIndex - startIndex);
         }
 
         /// <summary>
