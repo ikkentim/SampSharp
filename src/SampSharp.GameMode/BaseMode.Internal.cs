@@ -12,12 +12,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using SampSharp.GameMode.API.NativeObjects;
+
+using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.GameMode
 {
     public abstract partial class BaseMode
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public class BaseModeInternal : NativeObjectSingleton<BaseModeInternal>
         {
             [NativeMethod]
@@ -142,5 +144,6 @@ namespace SampSharp.GameMode
                 throw new NativeNotImplementedException();
             }
         }
+#pragma warning restore CS1591
     }
 }

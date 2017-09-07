@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.5</TargetFramework>
+    <PackageIconUrl>https://github.com/ikkentim/SampSharp/raw/master/sampsharp.png</PackageIconUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/ikkentim/SampSharp/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ikkentim/SampSharp</PackageProjectUrl>
+    <PackageId>SampSharp.Core</PackageId>
+    <Description>The core library of SampSharp which manages the communication with the SA-MP server.</Description>
+    <Product>SampSharp.Core</Product>
+    <Company>Tim Potze</Company>
+    <Authors>Tim Potze</Authors>
+    <Copyright>Tim Potze</Copyright>
+    <Version>0.0.0-localbuild</Version>
+    <AssemblyVersion>0.0.0</AssemblyVersion>
+    <PackageReleaseNotes>placeholder</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>..\..\bin\Debug\netstandard1.5\SampSharp.Core.xml</DocumentationFile>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\bin\Release\</OutputPath>
+    <DocumentationFile>..\..\bin\Release\netstandard1.5\SampSharp.Core.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Pipes" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.Emit.ILGeneration" Version="4.3.0" />
+    <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>

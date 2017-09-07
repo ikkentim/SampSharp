@@ -12,12 +12,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using SampSharp.GameMode.API.NativeObjects;
+using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.GameMode.Factories
 {
     public partial class BaseVehicleFactory
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public class BaseVehicleFactoryInternal : NativeObjectSingleton<BaseVehicleFactoryInternal>
         {
             [NativeMethod]
@@ -41,5 +42,6 @@ namespace SampSharp.GameMode.Factories
                 throw new NativeNotImplementedException();
             }
         }
+#pragma warning restore CS1591
     }
 }

@@ -1,18 +1,20 @@
 language: cpp
 compiler: g++
 
+dist: trusty
+
 before_install:
-  - sudo add-apt-repository ppa:codegear/release -y
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -qq premake4 gcc g++ mono-complete
+  - sudo apt-get install -qq premake4 gcc gcc-multilib libc6-dev-i386 g++ g++-multilib
 
 before_script:
+  - $CXX --version
   - premake4 gmake
 
 script:
-  - make config=release64
+  - make config=release32
 
 addons:
   artifacts:

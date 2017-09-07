@@ -3,6 +3,7 @@ announce.exe
 samp-npc.exe
 samp-server.exe
 /pawno
+
 # Linux
 announce
 samp-npc
@@ -10,12 +11,7 @@ samp03svr
 
 # Logs
 crashinfo.txt
-SampSharp_errors.log
 server_log.txt
-
-# Mono
-/mono/
-/mono-2.0.dll
 
 # Build directories
 /gamemode/

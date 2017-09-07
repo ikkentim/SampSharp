@@ -168,6 +168,10 @@ namespace SampSharp.GameMode
         /// </summary>
         public float M44 { get; }
 
+        /// <summary>
+        ///     Gets the value at the specified index.
+        /// </summary>
+        /// <param name="index">The index of the value to get.</param>
         public float this[int index]
         {
             get
@@ -212,6 +216,11 @@ namespace SampSharp.GameMode
             }
         }
 
+        /// <summary>
+        ///     Gets the value at the specified column and row.
+        /// </summary>
+        /// <param name="row">The row.</param>
+        /// <param name="column">The column.</param>
         public float this[int row, int column] => this[row*4 + column];
 
 
@@ -683,6 +692,12 @@ namespace SampSharp.GameMode
                 !matrix1.M44.Equals(matrix2.M44);
         }
 
+        /// <summary>
+        ///     Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        ///     A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
         public override int GetHashCode()
         {
             unchecked
@@ -823,6 +838,12 @@ namespace SampSharp.GameMode
                 matrix.M14, matrix.M24, matrix.M34, matrix.M44);
         }
 
+        /// <summary>
+        ///     Returns a <see cref="string" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        ///     A <see cref="string" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return $"(({M11}, {M12}, {M13}, {M14}), " +

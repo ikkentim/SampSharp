@@ -16,7 +16,7 @@ using System;
 using System.Linq;
 using System.Xml;
 using SampSharp.GameMode.API;
-using SampSharp.GameMode.API.NativeObjects;
+using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;

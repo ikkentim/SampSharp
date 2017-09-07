@@ -461,18 +461,7 @@ namespace SampSharp.GameMode
         ///     tick(50 times per second).
         /// </summary>
         public event EventHandler<EventArgs> Tick;
-
-        /// <summary>
-        ///     Occurs when a timer ticks.
-        ///     This callback is called when a timer ticks.
-        /// </summary>
-        public event EventHandler<EventArgs> TimerTick;
-
-        /// <summary>
-        ///     Occurs when a callback throws an exception.
-        /// </summary>
-        public event EventHandler<ExceptionEventArgs> CallbackException;
-
+        
         /// <summary>
         ///     Raises the <see cref="Initialized" /> event.
         /// </summary>
@@ -1065,15 +1054,6 @@ namespace SampSharp.GameMode
         protected virtual void OnTick(EventArgs e)
         {
             Tick?.Invoke(this, e);
-        }
-
-        /// <summary>
-        ///     Raises the <see cref="E:CallbackException" /> event.
-        /// </summary>
-        /// <param name="e">The <see cref="ExceptionEventArgs" /> instance containing the event data.</param>
-        protected virtual void OnCallbackException(ExceptionEventArgs e)
-        {
-            CallbackException?.Invoke(this, e);
         }
     }
 }

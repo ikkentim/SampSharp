@@ -102,19 +102,18 @@ namespace SampSharp.GameMode.SAMP
         {
             if (typeof (T) == typeof (string))
             {
-                string value;
-                ServerInternal.Instance.GetConsoleVarAsString(varName, out value, 64);
-                return (T) Convert.ChangeType(value, TypeCode.String);
+                ServerInternal.Instance.GetConsoleVarAsString(varName, out var value, 64);
+                return (T) Convert.ChangeType(value, typeof(T));
             }
 
             if (typeof (T) == typeof (bool))
             {
-                return (T) Convert.ChangeType(ServerInternal.Instance.GetConsoleVarAsBool(varName), TypeCode.Boolean);
+                return (T) Convert.ChangeType(ServerInternal.Instance.GetConsoleVarAsBool(varName), typeof(T));
             }
 
             if (typeof (T) == typeof (int))
             {
-                return (T) Convert.ChangeType(ServerInternal.Instance.GetConsoleVarAsInt(varName), TypeCode.Int32);
+                return (T) Convert.ChangeType(ServerInternal.Instance.GetConsoleVarAsInt(varName), typeof(T));
             }
 
             throw new NotSupportedException("Type " + typeof (T) + " is not supported by SA:MP");
@@ -128,23 +127,17 @@ namespace SampSharp.GameMode.SAMP
         {
             return ServerInternal.Instance.GetTickCount();
         }
-
-        /// <summary>
-        ///     Sets the currently active codepage.
-        /// </summary>
-        /// <param name="codepage">The name of the codepage to use.</param>
-        public static void SetCodepage(string codepage)
-        {
-            InteropProvider.SetCodepage(codepage);
-        }
-
+        
         /// <summary>
         ///     Prints the specified message to the console.
         /// </summary>
         /// <param name="message">The message.</param>
         public static void Print(string message)
         {
-            InteropProvider.Print(message);
+            if(BaseMode.Instance == null || BaseMode.Instance.Client == null)
+                throw new Exception("The game mode has not yet been initialized.");
+            
+            BaseMode.Instance.Client.Print(message);
         }
 
         /// <summary>
@@ -155,21 +148,6 @@ namespace SampSharp.GameMode.SAMP
         public static void SendRconCommand(string command)
         {
             ServerInternal.Instance.SendRconCommand(command);
-        }
-
-        /// <summary>
-        ///     Toggle debug output in console.
-        /// </summary>
-        /// <param name="toggle">True to log debug output to console, False otherwise.</param>
-        public static void ToggleDebugOutput(bool toggle)
-        {
-            var logger = Debug.Listeners.OfType<PrintTraceListener>().FirstOrDefault();
-
-            if (toggle && logger == null)
-                Debug.Listeners.Add(new PrintTraceListener());
-
-            else if (!toggle && logger != null)
-                Debug.Listeners.Remove(logger);
         }
 
         /// <summary>

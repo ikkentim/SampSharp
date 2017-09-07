@@ -19,7 +19,8 @@ namespace SampSharp.GameMode.Helpers
     /// <summary>
     ///     Contains commonly used precalculated values and mathematical operations.
     /// </summary>
-    public static class MathHelper {
+    public static class MathHelper
+    {
         /// <summary>
         /// Represents the mathematical constant e(2.71828175).
         /// </summary>

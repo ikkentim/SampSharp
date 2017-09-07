@@ -14,6 +14,7 @@
 // limitations under the License.
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace SampSharp.GameMode
 {
@@ -49,19 +50,15 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="service">The service.</param>
-        /// <exception cref="System.ArgumentNullException">
-        ///     serviceType
-        ///     or
-        ///     service
-        /// </exception>
-        /// <exception cref="System.ArgumentException">serviceType must be of type IService</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="serviceType"/> or <paramref name="service"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="serviceType"/> must be of type IService</exception>
         public void AddService(Type serviceType, IService service)
         {
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
             if (service == null) throw new ArgumentNullException(nameof(service));
-            if (!typeof (IService).IsAssignableFrom(serviceType))
+            if (!typeof (IService).GetTypeInfo().IsAssignableFrom(serviceType))
                 throw new ArgumentException("serviceType must be of type IService");
-            if (!serviceType.IsInstanceOfType(service))
+            if (!serviceType.GetTypeInfo().IsInstanceOfType(service))
                 throw new ArgumentException("service must be instance of type serviceType");
 
             _services[serviceType] = service;
@@ -72,11 +69,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="service">The service.</param>
         /// <typeparam name="TServiceType">Type of the service.</typeparam>
-        /// <exception cref="System.ArgumentNullException">
-        ///     serviceType
-        ///     or
-        ///     service
-        /// </exception>
+        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="service"/> is null.</exception>
         /// <exception cref="System.ArgumentException">serviceType must be of type IService</exception>
         public void AddService<TServiceType>(TServiceType service) where TServiceType : IService
         {
