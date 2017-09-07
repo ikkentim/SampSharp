@@ -16,8 +16,7 @@ Task("Build")
     .Does(() => build.Build());
     
 Task("Pack")
-    .IsDependentOn("Clean")
-    .IsDependentOn("Restore")
+    .IsDependentOn("Build")
     .Does(() => build.Pack());
 
 Task("Publish")
