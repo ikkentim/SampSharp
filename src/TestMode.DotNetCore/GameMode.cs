@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using SampSharp.Core.CodePages;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
+using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
@@ -45,6 +46,23 @@ namespace TestMode
             player.SendClientMessage("Still here!");
         }
 
+        [Command("dialogtest")]
+        public static async void DialogTest(BasePlayer player)
+        {
+            var dialog = new MessageDialog("Test dialog", "This message should hide in 2 seconds.", "Don't click me!");
+            dialog.Response += (sender, args) =>
+            {
+                player.SendClientMessage("You responed to the dialog with button" + args.DialogButton);
+            };
+
+            player.SendClientMessage("Showing dialog");
+            dialog.Show(player);
+
+            await Task.Delay(2000);
+
+            player.SendClientMessage("Hiding dialog");
+            Dialog.Hide(player);
+        }
         #region Overrides of BaseMode
         
         protected override void OnPlayerDied(BasePlayer player, DeathEventArgs e)

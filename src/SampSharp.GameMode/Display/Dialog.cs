@@ -62,8 +62,7 @@ namespace SampSharp.GameMode.Display
 
             openDialog._aSyncWaiter.Cancel(player);
 
-            DialogInternal.Instance.ShowPlayerDialog(player.Id, DialogHideId, (int) DialogStyle.MessageBox, string.Empty,
-                string.Empty, string.Empty, string.Empty);
+            DialogInternal.Instance.ShowPlayerDialog(player.Id, DialogHideId, (int) DialogStyle.MessageBox, " ", " ", " ", " ");
         }
 
         /// <summary>
