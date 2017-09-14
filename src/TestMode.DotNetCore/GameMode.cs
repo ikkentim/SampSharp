@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SampSharp.Core.CodePages;
 using SampSharp.GameMode;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
@@ -42,6 +43,22 @@ namespace TestMode
             await Task.Delay(1000);
 
             player.SendClientMessage("Still here!");
+        }
+
+        #region Overrides of BaseMode
+        
+        protected override void OnPlayerDied(BasePlayer player, DeathEventArgs e)
+        {
+            Console.WriteLine("Death");
+            base.OnPlayerDied(player, e);
+        }
+
+        #endregion
+
+        [Command("weapon")]
+        public static void WeaponCommand(BasePlayer player, Weapon weapon, int ammo = 30)
+        {
+            player.GiveWeapon(weapon, ammo);
         }
 
         [Command("kick")]

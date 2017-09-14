@@ -270,7 +270,7 @@ namespace SampSharp.GameMode.Definitions
         Drown = 53,
 
         /// <summary>
-        ///     Collision
+        ///     Collision.
         /// </summary>
         Collision = 54,
 
@@ -282,6 +282,11 @@ namespace SampSharp.GameMode.Definitions
         /// <summary>
         ///     Disconnected. (use with deathmessages)
         /// </summary>
-        Disconnect = 201
+        Disconnect = 201,
+
+        /// <summary>
+        ///     Self inflicted death.
+        /// </summary>
+        Suicide =  255
     }
 }
