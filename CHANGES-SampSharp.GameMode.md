@@ -1,3 +1,10 @@
+### 0.8.0-alpha2
+- Added `Weapon.Suicide` definition
+- Added `Color(byte, byte, byte, float)` constructor
+- Changed Dialog.ShowAsync to throw `PlayerDisconnectedException` instead of `TaskCancelledException`
+- Fixed `Dialog.Hide` not working (#212)
+- Fixed NuGet package referencing invalid build version 0.0.0-localbuild of SampSharp.Core
+
 ### 0.8.0-alpha1
 - Changes for "named pipes" version
 
