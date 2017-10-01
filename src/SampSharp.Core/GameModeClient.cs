@@ -139,21 +139,18 @@ namespace SampSharp.Core
                         {
                             if (_callbacks.TryGetValue("OnPlayerConnect", out var onPlayerConnect))
                             {
-                                var isPlayerConnected = GetNativeHandle("IsPlayerConnected");
-                                var getPlayerPoolSize = GetNativeHandle("GetPlayerPoolSize");
+                                var natIsPlayerConnected = NativeLoader.Load("IsPlayerConnected", new[] { NativeParameterInfo.ForType(typeof(int)) });
+                                var natGetPlayerPoolSize = NativeLoader.Load("GetPlayerPoolSize", new NativeParameterInfo[0]);
 
-                                var args = ValueConverter.GetBytes(getPlayerPoolSize);
-                                var poolSize = ValueConverter.ToInt32(InvokeNative(args), 0);
-
-                                for (var i = 0; i < poolSize; i++)
+                                var poolSize = natGetPlayerPoolSize.Invoke();
+                                for (var i = 0; i <= poolSize; i++)
                                 {
-                                    args = ValueConverter.GetBytes(isPlayerConnected);
-                                    var isConnected = ValueConverter.ToInt32(InvokeNative(args), 0);
+                                    var isConnected = natIsPlayerConnected.Invoke(i);
 
                                     if (isConnected == 0)
                                         continue;
 
-                                    args = ValueConverter.GetBytes(i);
+                                    var args = ValueConverter.GetBytes(i);
                                     onPlayerConnect.Invoke(args, 0);
                                 }
                             }
