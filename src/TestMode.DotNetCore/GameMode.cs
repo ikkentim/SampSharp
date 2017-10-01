@@ -63,6 +63,25 @@ namespace TestMode
             player.SendClientMessage("Hiding dialog");
             Dialog.Hide(player);
         }
+
+        [Command("asyncdialog")]
+        public static async void DialogAsyncTest(BasePlayer player)
+        {
+            var dialog = new MessageDialog("Async dialog test", "Quit with this dialog still open.", "Don't click me!");
+
+            Console.WriteLine("Showing dialog");
+            try
+            {
+
+                await dialog.ShowAsync(player);
+                Console.WriteLine("Dialog ended");
+            }
+            catch (PlayerDisconnectedException e)
+            {
+                Console.WriteLine($"{player} left.");
+                Console.WriteLine(e);
+            }
+    }
         #region Overrides of BaseMode
         
         protected override void OnPlayerDied(BasePlayer player, DeathEventArgs e)

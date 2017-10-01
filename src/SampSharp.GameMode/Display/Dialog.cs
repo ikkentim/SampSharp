@@ -30,9 +30,7 @@ namespace SampSharp.GameMode.Display
         private const int DialogId = 10000;
         private const int DialogHideId = -1;
         private static readonly Dictionary<int, Dialog> OpenDialogs = new Dictionary<int, Dialog>();
-
-        private readonly ASyncWaiter<BasePlayer, DialogResponseEventArgs> _aSyncWaiter =
-            new ASyncWaiter<BasePlayer, DialogResponseEventArgs>();
+        private readonly ASyncPlayerWaiter<DialogResponseEventArgs> _aSyncWaiter = new ASyncPlayerWaiter<DialogResponseEventArgs>();
 
         #region Properties of Dialog
 
@@ -148,7 +146,7 @@ namespace SampSharp.GameMode.Display
         public async Task<DialogResponseEventArgs> ShowAsync(BasePlayer player)
         {
             Show(player);
-
+            
             return await _aSyncWaiter.Result(player);
         }
 

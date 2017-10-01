@@ -33,7 +33,7 @@ namespace SampSharp.GameMode.Tools
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>The arguments passed to the <see cref="Fire" /> method.</returns>
-        public async Task<TArguments> Result(TKey key)
+        public virtual async Task<TArguments> Result(TKey key)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
 
@@ -51,7 +51,7 @@ namespace SampSharp.GameMode.Tools
         {
             if (!(sender is TKey)) return;
 
-            var key = (TKey) sender;
+            var key = (TKey)sender;
             Cancel(key);
         }
 
@@ -60,7 +60,7 @@ namespace SampSharp.GameMode.Tools
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="arguments">The arguments.</param>
-        public void Fire(TKey key, TArguments arguments)
+        public virtual void Fire(TKey key, TArguments arguments)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
             if (!_completionSources.ContainsKey(key)) return;
@@ -73,12 +73,12 @@ namespace SampSharp.GameMode.Tools
         ///     Cancels the task for the specified <paramref name="key" />.
         /// </summary>
         /// <param name="key">The key of the task to cancel.</param>
-        public void Cancel(TKey key)
+        public virtual void Cancel(TKey key)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
             if (!_completionSources.ContainsKey(key)) return;
 
-            _completionSources[key].SetCanceled();
+            _completionSources[key].TrySetCanceled();
             Remove(key);
         }
 

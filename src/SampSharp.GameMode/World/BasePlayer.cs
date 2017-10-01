@@ -71,7 +71,8 @@ namespace SampSharp.GameMode.World
         /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
-            return $"Player(Id:{Id}, Name:{Name})";
+            
+            return IsDisposed ? $"Player(IsDisposed=true)" : $"Player(Id:{Id}, Name:{Name})";
         }
 
         #endregion
