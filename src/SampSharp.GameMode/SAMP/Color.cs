@@ -76,12 +76,24 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="g">The green value of this Color.</param>
         /// <param name="b">The blue value of this Color.</param>
         /// <param name="a">The alpha value of this Color.</param>
+        public Color(byte r, byte g, byte b, float a)
+            : this(r, g, b, (byte) MathHelper.Clamp(a * byte.MaxValue, byte.MinValue, byte.MaxValue))
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the Color struct.
+        /// </summary>
+        /// <param name="r">The red value of this Color.</param>
+        /// <param name="g">The green value of this Color.</param>
+        /// <param name="b">The blue value of this Color.</param>
+        /// <param name="a">The alpha value of this Color.</param>
         public Color(int r, int g, int b, int a)
             : this(
-                (byte) MathHelper.Clamp(r, byte.MinValue, byte.MaxValue),
-                (byte) MathHelper.Clamp(g, byte.MinValue, byte.MaxValue),
-                (byte) MathHelper.Clamp(b, byte.MinValue, byte.MaxValue),
-                (byte) MathHelper.Clamp(a, byte.MinValue, byte.MaxValue))
+                (byte)MathHelper.Clamp(r, byte.MinValue, byte.MaxValue),
+                (byte)MathHelper.Clamp(g, byte.MinValue, byte.MaxValue),
+                (byte)MathHelper.Clamp(b, byte.MinValue, byte.MaxValue),
+                (byte)MathHelper.Clamp(a, byte.MinValue, byte.MaxValue))
         {
         }
 
