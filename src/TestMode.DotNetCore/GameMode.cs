@@ -113,11 +113,17 @@ namespace TestMode
             Console.WriteLine("The game mode has loaded.");
             AddPlayerClass(0, Vector3.Zero, 0);
             SetGameModeText("Before delay");
-            await Task.Delay(2000);
+            await Task.Delay(10);
 
             Console.WriteLine("waited 2");
             SetGameModeText("After delay");
 
+            for (var i = 0; i < 1000; i++)
+            {
+                await Task.Delay(10);
+                SetGameModeText("Loop " + i);
+                Console.WriteLine("Loop " + i);
+            }
             Console.WriteLine("RCON commands: sd (shutdown) msg (repeat message)");
         }
 

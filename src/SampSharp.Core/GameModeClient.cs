@@ -39,13 +39,13 @@ namespace SampSharp.Core
         private static readonly byte[] AZero = { 0 };
 
         private readonly Dictionary<string, Callback> _callbacks = new Dictionary<string, Callback>();
-        private readonly DataReceiveStack<ServerCommandData> _dataReceivers = new DataReceiveStack<ServerCommandData>();
+        private readonly CommandWaitQueue _commandWaitQueue = new CommandWaitQueue();
         private readonly IGameModeProvider _gameModeProvider;
         private readonly Queue<PongReceiver> _pongs = new Queue<PongReceiver>();
         private readonly GameModeStartBehaviour _startBehaviour;
-        private bool _initReceived;
         private int _mainThread;
         private MessagePump _messagePump;
+        private bool _initReceived;
         private bool _running;
         private bool _shuttingDown;
         private SampSharpSyncronizationContext _syncronizationContext;
@@ -231,7 +231,7 @@ namespace SampSharp.Core
 
             do
             {
-                data = await ReceiveCommandAsync();
+                data = await _commandWaitQueue.WaitAsync();
 
                 // Could receive ticks if reconnecting.
             } while (data.Command == ServerCommand.Tick);
@@ -266,13 +266,11 @@ namespace SampSharp.Core
         {
             while (_running)
             {
-                var data = await ReceiveCommandAsync();
+                var data = await _commandWaitQueue.WaitAsync();
                 ProcessCommand(data);
 
                 if (_shuttingDown)
-                {
                     CleanUp();
-                }
             }
         }
 
@@ -286,13 +284,13 @@ namespace SampSharp.Core
 
                     if (!_running)
                         return;
-
-                    _dataReceivers.Push(data);
+                    
+                    _commandWaitQueue.Release(data);
                 }
             }
             catch (StreamCommunicationClientClosedException)
             {
-                //
+                CoreLog.Log(CoreLogLevel.Warning, "Network routine ended because the communication with the SA:MP server was closed.");
             }
         }
 
@@ -320,27 +318,32 @@ namespace SampSharp.Core
             }
         }
 
-        private async Task<ServerCommandData> ReceiveCommandAsync()
+        private void SendOnMainThread(ServerCommand command, IEnumerable<byte> data)
         {
-            return await _dataReceivers.PopAsync();
+            if (IsOnMainThread)
+                Send(command, data);
+            else
+                _syncronizationContext.Send(ctx => Send(command, data), null);
         }
 
-        private ServerCommandData ReceiveCommand()
+        private ServerCommandData SendAndWait(ServerCommand command, IEnumerable<byte> data, ServerCommand response)
         {
-            return _dataReceivers.Pop();
+            // Add wait handle BEFORE sending command to prevent a race condition where the response has been received and processed
+            // by the default handler before the wait handle for this response type has been added.
+            var waiter = _commandWaitQueue.CreateWaitHandle(response);
+            Send(command, data);
+            return waiter.Wait();
         }
 
-        private ServerCommandData ReceiveCommand(ServerCommand type)
+        private ServerCommandData SendAndWaitOnMainThread(ServerCommand command, IEnumerable<byte> data, ServerCommand response)
         {
-            // Receive commands until the command of the expected type has been received.
-            for (;;)
-            {
-                var data = ReceiveCommand();
-                if (data.Command == type)
-                    return data;
 
-                ProcessCommand(data);
-            }
+            if (IsOnMainThread)
+                return SendAndWait(command, data, response);
+
+            var responseData = default(ServerCommandData);
+            _syncronizationContext.Send(ctx => responseData = SendAndWait(command, data, response), null);
+            return responseData;
         }
 
         #endregion
@@ -383,19 +386,9 @@ namespace SampSharp.Core
 
             _callbacks[name] = new Callback(target, methodInfo, name, parameters, this);
 
-            if (IsOnMainThread)
-            {
-                Send(ServerCommand.RegisterCall, ValueConverter.GetBytes(name, Encoding)
-                    .Concat(parameters.SelectMany(c => c.GetBytes()))
-                    .Concat(new[] { (byte) ServerCommandArgument.Terminator }));
-            }
-            else
-            {
-                _syncronizationContext.Send(ctx =>
-                    Send(ServerCommand.RegisterCall, ValueConverter.GetBytes(name, Encoding)
-                        .Concat(parameters.SelectMany(c => c.GetBytes()))
-                        .Concat(new[] { (byte) ServerCommandArgument.Terminator })), null);
-            }
+            SendOnMainThread(ServerCommand.RegisterCall, ValueConverter.GetBytes(name, Encoding)
+                .Concat(parameters.SelectMany(c => c.GetBytes()))
+                .Concat(new[] { (byte) ServerCommandArgument.Terminator }));
         }
 
         /// <summary>
@@ -473,10 +466,7 @@ namespace SampSharp.Core
             if (text == null)
                 text = string.Empty;
 
-            if (IsOnMainThread)
-                Send(ServerCommand.Print, ValueConverter.GetBytes(text, Encoding));
-            else
-                _syncronizationContext.Send(ctx => { Send(ServerCommand.Print, ValueConverter.GetBytes(text, Encoding)); }, null);
+            SendOnMainThread(ServerCommand.Print, ValueConverter.GetBytes(text, Encoding));
         }
 
         /// <summary>
@@ -515,24 +505,8 @@ namespace SampSharp.Core
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
 
-            var data = default(ServerCommandData);
-
-            if (IsOnMainThread)
-            {
-                Send(ServerCommand.FindNative, ValueConverter.GetBytes(name, Encoding));
-
-                data = ReceiveCommand(ServerCommand.Response);
-            }
-            else
-            {
-                _syncronizationContext.Send(ctx =>
-                {
-                    Send(ServerCommand.FindNative, ValueConverter.GetBytes(name, Encoding));
-
-                    data = ReceiveCommand(ServerCommand.Response);
-                }, null);
-            }
-
+            var data = SendAndWaitOnMainThread(ServerCommand.FindNative, ValueConverter.GetBytes(name, Encoding), ServerCommand.Response);
+          
             if (data.Data.Length != 4)
                 throw new Exception("Invalid FindNative response from server.");
 
@@ -546,24 +520,7 @@ namespace SampSharp.Core
         /// <returns>The response from the native.</returns>
         public byte[] InvokeNative(IEnumerable<byte> data)
         {
-            var response = default(ServerCommandData);
-
-            if (IsOnMainThread)
-            {
-                Send(ServerCommand.InvokeNative, data);
-
-                response = ReceiveCommand(ServerCommand.Response);
-            }
-            else
-            {
-                _syncronizationContext.Send(ctx =>
-                {
-                    Send(ServerCommand.InvokeNative, data);
-
-                    response = ReceiveCommand(ServerCommand.Response);
-                }, null);
-            }
-
+            var response = SendAndWaitOnMainThread(ServerCommand.InvokeNative, data, ServerCommand.Response);
             return response.Data;
         }
 

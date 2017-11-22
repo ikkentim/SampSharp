@@ -44,5 +44,10 @@ namespace SampSharp.Core.Logging
         ///     Debug message.
         /// </summary>
         Debug,
+
+        /// <summary>
+        ///     Verbose message (networking).
+        /// </summary>
+        Verbose,
     }
 }

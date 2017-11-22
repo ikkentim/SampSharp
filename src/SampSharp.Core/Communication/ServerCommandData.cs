@@ -40,5 +40,16 @@ namespace SampSharp.Core.Communication
         ///     Gets the data associated with the command.
         /// </summary>
         public byte[] Data { get; }
+
+        #region Overrides of ValueType
+
+        /// <summary>Returns the fully qualified type name of this instance.</summary>
+        /// <returns>A <see cref="T:System.String" /> containing a fully qualified type name.</returns>
+        public override string ToString()
+        {
+            return $"{{ Command = {Command}, Data = {(Data == null ? "null" : $"[{Data.Length}]")} }}";
+        }
+
+        #endregion
     }
 }

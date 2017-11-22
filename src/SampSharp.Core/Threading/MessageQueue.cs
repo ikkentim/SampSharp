@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Threading;
 
 namespace SampSharp.Core.Threading
@@ -23,7 +23,7 @@ namespace SampSharp.Core.Threading
     /// </summary>
     public class MessageQueue
     {
-        private readonly Queue<SendOrPostCallbackItem> _queue = new Queue<SendOrPostCallbackItem>();
+        private readonly ConcurrentQueue<SendOrPostCallbackItem> _queue = new ConcurrentQueue<SendOrPostCallbackItem>();
         private readonly Semaphore _semaphore = new Semaphore(0, int.MaxValue);
         private readonly ManualResetEvent _stopSignal = new ManualResetEvent(false);
         private readonly WaitHandle[] _waitHandles;
@@ -42,10 +42,7 @@ namespace SampSharp.Core.Threading
         /// <param name="item">The item to enqueue.</param>
         public void PushMessage(SendOrPostCallbackItem item)
         {
-            lock (_queue)
-            {
-                _queue.Enqueue(item);
-            }
+            _queue.Enqueue(item);
             _semaphore.Release();
         }
 
@@ -59,11 +56,8 @@ namespace SampSharp.Core.Threading
             WaitHandle.WaitAny(_waitHandles);
 
             // Dequeue from the internal queue.
-            lock (_queue)
-            {
-                if (_queue.Count > 0)
-                    return _queue.Dequeue();
-            }
+            if (_queue.TryDequeue(out var result))
+                return result;
 
             // If no item was dequeued, a stop signal must have been sent, reset the signal back for the next read and return a default value.
             _stopSignal.Reset();
