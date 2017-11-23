@@ -27,6 +27,10 @@
 
 #define LEN_PRINT_BUFFER    (1024)
 
+#define DEBUG_PAUSE_TIMEOUT         (5)
+#define DEBUG_PAUSE_TICK_INTERVAL   (7)
+#define DEBUG_PAUSE_TICK_MIN_SKIP   (50)
+
 /* receive */
 #define CMD_PING            (0x01) /* request a pong */
 #define CMD_PRINT           (0x02) /* print data */
@@ -37,6 +41,7 @@
 #define CMD_INVOKE_NATIVE   (0x07) /* invoke a native */
 #define CMD_START           (0x08) /* start sending messages*/
 #define CMD_DISCONNECT      (0x09) /* expect client to disconnect */
+#define CMD_ALIVE           (0x10) /* sign of live */
 
 /* send */
 #define CMD_TICK            (0x11) /* server tick */
@@ -53,14 +58,13 @@
 #pragma region Constructors and loading
 
 /** initializes and allocates required memory for the server instance */
-server::server(plugin *plg, commsvr *communication) :
-    callbacks_(callbacks_map(this)),
-    communication_(communication),
-    natives_(natives_map(this)),
+server::server(plugin *plg, commsvr *communication, const bool debug_check) :
     status_(status_none),
-    intermission_(plg) {
-
-    //buf_ = new uint8_t[LEN_NETBUF];
+    callbacks_(callbacks_map(this)),
+    natives_(natives_map(this)),
+    communication_(communication),
+    intermission_(plg),
+    debug_check_(debug_check) {
 }
 
 /** frees memory allocated by this instance */
@@ -68,7 +72,6 @@ server::~server() {
     if (communication_) {
         communication_->disconnect();
     }
-    //delete[] buf_;
 }
 
 /** starts the comms server */
@@ -134,6 +137,9 @@ CMD_DEFINE(cmd_ping) {
 
 CMD_DEFINE(cmd_print) {
     print("%s", buf);
+}
+
+CMD_DEFINE(cmd_alive) {
 }
 
 CMD_DEFINE(cmd_register_call) {
@@ -216,6 +222,44 @@ CMD_DEFINE(cmd_start) {
 #pragma endregion
 
 #pragma region Communication
+
+/** store current time as last interaction time */
+void server::store_time() {
+    sol_ = time(NULL);
+}
+
+/** a guessed value whether the client is paused by a debugger */
+bool server::is_debugging(bool is_tick) {
+    if(!debug_check_) {
+        return false;
+    }
+
+    const bool new_debug = tick_ - sol_ >= DEBUG_PAUSE_TIMEOUT;
+
+    if(new_debug && !is_debug_) {
+        log_info("Debugger pause detected.");
+    }
+    else if (!new_debug && is_debug_) {
+        log_info("Debugger resume detected.");
+    }
+
+    if (is_tick) {
+        if (new_debug && is_debug_) {
+            if (time(NULL) - tick_ >= DEBUG_PAUSE_TICK_INTERVAL && ticks_skipped_ > DEBUG_PAUSE_TICK_MIN_SKIP) {
+                log_debug("Keepalive tick.");
+                ticks_skipped_ = 0;
+                return false;
+            }
+
+            ticks_skipped_++;
+        }
+        else if (!new_debug && ticks_skipped_) {
+            ticks_skipped_ = 0;
+        }
+    }
+
+    return is_debug_ = new_debug;
+}
 
 /** a value indicating whether the client is connected */
 bool server::is_client_connected() {
@@ -322,6 +366,7 @@ cmd_status server::cmd_receive_one(uint8_t **response, uint32_t *len) {
         return stat;
     }
     
+    store_time();
     return cmd_process(command, buf_, command_len, response, len);
 }
 
@@ -357,6 +402,7 @@ cmd_status server::cmd_process(uint8_t cmd, uint8_t *buf, uint32_t buflen,
         MAP_COMMAND(CMD_RECONNECT, cmd_reconnect);
         MAP_COMMAND(CMD_DISCONNECT, cmd_disconnect);
         MAP_COMMAND(CMD_START, cmd_start);
+        MAP_COMMAND(CMD_ALIVE, cmd_alive);
 
         /* unmapped commands (unhandled) */
         case CMD_RESPONSE:
@@ -402,6 +448,12 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
         return;
     }
 
+    /* skip call if debugger pause is detected */
+    if (is_debugging(false)) {
+        return;
+    }
+
+    /* prep network buffer */
     uint32_t len = callbacks_.fill_call_buffer(amx, name, params, buf_, 
         LEN_NETBUF);
     uint8_t *response = NULL;
@@ -442,7 +494,12 @@ void server::tick() {
         !STATUS_ISSET(status_client_reconnecting) &&
         !STATUS_ISSET(status_client_disconnecting)) {
         intermission_.set_on(false);
-        communication_->send(CMD_TICK, 0, NULL);
+
+        /* only send tick if no paused debugger is detected */
+        if (!is_debugging(true)) {
+            tick_ = time(NULL);
+            communication_->send(CMD_TICK, 0, NULL);
+        }
     }
 
     uint8_t *response = NULL;

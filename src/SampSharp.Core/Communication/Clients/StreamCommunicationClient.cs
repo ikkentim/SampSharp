@@ -162,6 +162,13 @@ namespace SampSharp.Core.Communication.Clients
                     if (_stream == null)
                         throw new StreamCommunicationClientClosedException();
 
+                    if (_readBuffer.Length == len)
+                    {
+                        CoreLog.Log(CoreLogLevel.Error, "Network buffer overflow detected!");
+
+                        // TODO: Could try and detect first valid command, but that could mean some vital commands were lost.
+                    }
+
                     _buffer.Push(_readBuffer, 0, len);
                 }
                 catch (TaskCanceledException)

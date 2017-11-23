@@ -66,6 +66,11 @@ namespace SampSharp.Core.Communication
         Disconnect = 0x09,
 
         /// <summary>
+        ///     An instruction telling the server the client is still alive.
+        /// </summary>
+        Alive = 0x10,
+
+        /// <summary>
         ///     A call sent by the server every server tick.
         /// </summary>
         Tick = 0x11,

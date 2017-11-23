@@ -30,6 +30,8 @@ namespace TestMode
 {
     internal class GameMode : BaseMode
     {
+        private int _ticks;
+
         [Command("myfirstcommand")]
         public static void MyFirstCommand(BasePlayer player, string message)
         {
@@ -105,11 +107,25 @@ namespace TestMode
         }
         
         #region Overrides of BaseMode
+        
+        /// <summary>
+        ///     Raises the <see cref="BaseMode.Tick" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
+        protected override void OnTick(EventArgs e)
+        {
+            base.OnTick(e);
 
+            if (_ticks++ % 1000 == 0)
+            {
+                Console.WriteLine("Server is still ticking...");
+            }
+        }
+        
         protected override async void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
-
+            
             Console.WriteLine("The game mode has loaded.");
             AddPlayerClass(0, Vector3.Zero, 0);
             SetGameModeText("Before delay");

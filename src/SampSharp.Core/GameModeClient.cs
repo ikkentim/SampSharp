@@ -49,6 +49,7 @@ namespace SampSharp.Core
         private bool _running;
         private bool _shuttingDown;
         private SampSharpSyncronizationContext _syncronizationContext;
+        private DateTime _lastSend;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameModeClient" /> class.
@@ -82,6 +83,12 @@ namespace SampSharp.Core
             {
                 case ServerCommand.Tick:
                     _gameModeProvider.Tick();
+
+                    // The server expects at least a message every 5 seconds or else the debug pause
+                    // detector kicks in. Send one at least every 3 to be safe.
+                    if (DateTime.UtcNow - _lastSend > TimeSpan.FromSeconds(3))
+                        Send(ServerCommand.Alive, null);
+
                     break;
                 case ServerCommand.Pong:
                     if (_pongs.Count == 0)
@@ -311,6 +318,7 @@ namespace SampSharp.Core
             try
             {
                 CommunicationClient.Send(command, data);
+                _lastSend = DateTime.UtcNow;
             }
             catch (IOException e)
             {

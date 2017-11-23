@@ -20,6 +20,7 @@
 #include <map>
 #include <mutex>
 #include <sampgdk/sampgdk.h>
+#include <time.h>
 #include "message_queue.h"
 #include "callbacks_map.h"
 #include "natives_map.h"
@@ -31,7 +32,7 @@
 class server {
 public:
     /** initializes and allocates required memory for the server instance */
-    server(plugin *plg, commsvr *communication);
+    server(plugin *plg, commsvr *communication, bool debug_check);
     /** frees memory allocated by this instance */
     ~server();
     /** starts the server */
@@ -79,6 +80,17 @@ private: /* fields */
     std::mutex mutex_;
     /** intermission manager */
     intermission intermission_;
+    /** should check for attached paused debuggers */
+    bool debug_check_;
+    /** time of last sign of life of client */
+    time_t sol_;
+    /** time of last tick */
+    time_t tick_;
+    /** expecting client to paused by debugger */
+    bool is_debug_ = false;
+    /** number of ticks skipped while paused by debugger */
+    int ticks_skipped_ = 0;
+
 private: /* methods */
     /* update status for new connection */
     bool connect();
@@ -93,6 +105,10 @@ private: /* methods */
     /** processes a command */
     cmd_status cmd_process(uint8_t command, uint8_t *buffer, 
         uint32_t command_len, uint8_t **response, uint32_t *len);
+    /** store current time as last interaction time */
+    void store_time();
+    /** a guessed value whether the client is paused by a debugger */
+    bool is_debugging(bool is_tick);
 
 private: /* commands */
 #define CMD_DEFINE(name) void server::name(uint8_t *buf, uint32_t buflen)
@@ -105,6 +121,7 @@ private: /* commands */
     CMD_DECLARE(cmd_reconnect);
     CMD_DECLARE(cmd_start);
     CMD_DECLARE(cmd_disconnect);
+    CMD_DECLARE(cmd_alive);
 #undef CMD_DECLARE
 };
 
