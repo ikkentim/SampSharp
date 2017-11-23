@@ -132,12 +132,12 @@ void start_server() {
     }
 #endif
 
-    std::string nodebug_str;
-    plg->config()->GetOptionAsString("com_nodebug", type);
-    bool nodebug = nodebug_str == "1" || nodebug_str == "true";
+    std::string debug_str;
+    plg->config()->GetOptionAsString("com_debug", type);
+    bool debug = debug_str == "1" || debug_str == "true";
 
     if (com) {
-        svr = new server(plg, com, !nodebug);
+        svr = new server(plg, com, debug);
         svr->start();
     }
 }
