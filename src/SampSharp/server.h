@@ -26,7 +26,7 @@
 #include "commsvr.h"
 #include "intermission.h"
 
-#define LEN_NETBUF          (20000)
+#define LEN_NETBUF          (1024 * 32)
 
 class server {
 public:

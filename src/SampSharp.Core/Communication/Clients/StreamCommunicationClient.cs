@@ -25,14 +25,14 @@ namespace SampSharp.Core.Communication.Clients
 {
     /// <summary>
     ///     Represents a base class for communication clients based on a <see cref="Stream" />. The stream must support
-    ///     <see cref="Stream.ReadAsync(byte[], int, int, System.Threading.CancellationToken)" />,
+    ///     <see cref="Stream.ReadAsync(byte[], int, int, CancellationToken)" />,
     ///     <see cref="Stream.Write(byte[], int, int)" /> and <see cref="Stream.Flush" />.
     /// </summary>
     public abstract class StreamCommunicationClient : ICommunicationClient
     {
         private CancellationTokenSource _source;
         private readonly MessageBuffer _buffer = new MessageBuffer();
-        private readonly byte[] _readBuffer = new byte[1024 * 2];
+        private readonly byte[] _readBuffer = new byte[1024 * 32];
         private readonly byte[] _singleByteBuffer = new byte[1];
         private bool _disposed;
         private Stream _stream;

@@ -26,7 +26,6 @@
 
 #define vsnprintf           vsprintf_s
 #define PIPE_NONE           INVALID_HANDLE_VALUE
-#define LEN_NETBUF          (20000)
 
 pipesvr_win32::pipesvr_win32(const char *pipe_name) :
     pipe_(PIPE_NONE),
