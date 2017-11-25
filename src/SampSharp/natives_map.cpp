@@ -64,7 +64,7 @@ void natives_map::invoke(uint8_t *rxbuf, uint32_t rxlen, uint8_t *txbuf,
     assert(txbuf);
     assert(txlen);
 
-#define STOP_ERR(err, ...) *txlen = 0; svr_->log_error(err, __VA_ARGS__); return
+#define STOP_ERR(err, ...) *txlen = 0; svr_->log_error(err, ##__VA_ARGS__); return
 #define ARG_LEN() *(uint32_t *)(rxbuf + rxpos)
 #define ARG_BUF_REQUIRE(len); \
     if (*txlen < txpos + (len)) {STOP_ERR("Native output buffer is full.");}
