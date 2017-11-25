@@ -64,7 +64,7 @@ void natives_map::invoke(uint8_t *rxbuf, uint32_t rxlen, uint8_t *txbuf,
     assert(txbuf);
     assert(txlen);
 
-#define STOP_ERR(err) *txlen = 0; svr_->log_error(err); return
+#define STOP_ERR(err, ...) *txlen = 0; svr_->log_error(err, __VA_ARGS__); return
 #define ARG_LEN() *(uint32_t *)(rxbuf + rxpos)
 #define ARG_BUF_REQUIRE(len); \
     if (*txlen < txpos + (len)) {STOP_ERR("Native output buffer is full.");}
@@ -131,7 +131,7 @@ void natives_map::invoke(uint8_t *rxbuf, uint32_t rxlen, uint8_t *txbuf,
 
                 args[j] =  rxbuf + rxpos + sizeof(uint32_t);
 
-                rxpos += sizeof(uint32_t) + arglen;
+                rxpos += sizeof(uint32_t) + arglen * sizeof(uint32_t);
                 break;
             case ARG_ARRAY_REF:
                 arglen = ARG_LEN();
@@ -140,11 +140,11 @@ void natives_map::invoke(uint8_t *rxbuf, uint32_t rxlen, uint8_t *txbuf,
 
                 args[j] = txbuf + txpos;
 
-                txpos += arglen;
+                txpos += arglen * sizeof(uint32_t);
                 rxpos += sizeof(uint32_t);
                 break;
             default:
-                STOP_ERR("Invalid native argument type.");
+                STOP_ERR("Invalid native argument type. %d @%d@%d", rxbuf[rxpos - 1], j, rxpos - 1);
         }
     }
 

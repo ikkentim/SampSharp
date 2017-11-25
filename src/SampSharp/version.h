@@ -20,7 +20,7 @@
 #define PLUGIN_VERSION_PATCH        0
 #define PLUGIN_PROTOCOL_VERSION     3
 
-#define PLUGIN_VERSION_STR          "0.8.0-alpha1"
+#define PLUGIN_VERSION_STR          "0.8.0-alpha4"
 
 #define PLUGIN_VERSION              ((PLUGIN_VERSION_MAJOR << 16) |\
                                         (PLUGIN_VERSION_MINOR << 8) |\

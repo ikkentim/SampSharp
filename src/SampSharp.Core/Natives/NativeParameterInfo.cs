@@ -80,7 +80,7 @@ namespace SampSharp.Core.Natives
                 }
 
                 if (Type.HasFlag(NativeParameterType.Array))
-                    value |= ServerCommandArgument.Array;
+                    value = ServerCommandArgument.Array;
 
                 if (Type.HasFlag(NativeParameterType.Reference))
                     value |= ServerCommandArgument.Reference;
