@@ -149,9 +149,10 @@ namespace SampSharp.Core.Natives
         /// </summary>
         /// <param name="response">The response to extract the value from.</param>
         /// <param name="index">The current top of the response.</param>
+        /// <param name="length">The length of the argument.</param>
         /// <param name="gameModeClient">The game mode client.</param>
         /// <returns>The referenced value.</returns>
-        public object GetReferenceArgument(byte[] response, ref int index, IGameModeClient gameModeClient)
+        public object GetReferenceArgument(byte[] response, ref int index, int length, IGameModeClient gameModeClient)
         {
             object result = null;
             switch (Type)
@@ -175,38 +176,44 @@ namespace SampSharp.Core.Natives
                     break;
                 case NativeParameterType.Int32ArrayReference:
                 {
-                    var len = ValueConverter.ToInt32(response, index);
-                    index += 4;
-                    var arr = new int[len];
-                    for (var i = 0; i < len; i++)
+                    //var len =  ValueConverter.ToInt32(response, index);
+                    //index += 4;
+                    var arr = new int[length];
+                    for (var i = 0; i < length; i++)
                     {
                         arr[i] = ValueConverter.ToInt32(response, index);
                         index += 4;
                     }
+
+                    result = arr;
                     break;
                 }
                 case NativeParameterType.SingleArrayReference:
                 {
-                    var len = ValueConverter.ToInt32(response, index);
-                    index += 4;
-                    var arr = new float[len];
-                    for (var i = 0; i < len; i++)
+                    //var len = ValueConverter.ToInt32(response, index);
+                    //index += 4;
+                    var arr = new float[length];
+                    for (var i = 0; i < length; i++)
                     {
                         arr[i] = ValueConverter.ToSingle(response, index);
                         index += 4;
                     }
+
+                    result = arr;
                     break;
                 }
                 case NativeParameterType.BoolArrayReference:
                 {
-                    var len = ValueConverter.ToInt32(response, index);
-                    index += 4;
-                    var arr = new bool[len];
-                    for (var i = 0; i < len; i++)
+                    //var len = ValueConverter.ToInt32(response, index);
+                    //index += 4;
+                    var arr = new bool[length];
+                    for (var i = 0; i < length; i++)
                     {
                         arr[i] = ValueConverter.ToBoolean(response, index);
                         index += 4;
                     }
+
+                    result = arr;
                     break;
                 }
             }

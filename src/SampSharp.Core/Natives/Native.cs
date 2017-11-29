@@ -78,25 +78,15 @@ namespace SampSharp.Core.Natives
 
             IEnumerable<byte> data = ValueConverter.GetBytes(Handle);
 
+            int length;
+
             for (var i = 0; i < Parameters.Length; i++)
             {
-                data = data.Concat(new[] { (byte) Parameters[i].ArgumentType });
+                length = GetLength(i, arguments);
 
-                var length = 0;
-
-                if (Parameters[i].RequiresLength)
-                {
-                    var lengthObj = arguments[Parameters[i].LengthIndex];
-                    if (arguments[Parameters[i].LengthIndex] is int len)
-                        length = len;
-                    else
-                    {
-                        throw new ArgumentException("Argument is expected to be of type int, but is " + (lengthObj?.GetType().Name ?? "null"),
-                            nameof(arguments));
-                    }
-                }
-
-                data = data.Concat(Parameters[i].GetBytes(arguments[i], length, _gameModeClient));
+                data = data
+                    .Concat(new[] { (byte) Parameters[i].ArgumentType })
+                    .Concat(Parameters[i].GetBytes(arguments[i], length, _gameModeClient));
             }
 
             var response = _gameModeClient.InvokeNative(data);
@@ -105,10 +95,11 @@ namespace SampSharp.Core.Natives
                 return 0;
 
             var respPos = 4;
-
             for (var i = 0; i < Parameters.Length; i++)
             {
-                var value = Parameters[i].GetReferenceArgument(response, ref respPos, _gameModeClient);
+                length = GetLength(i, arguments);
+
+                var value = Parameters[i].GetReferenceArgument(response, ref respPos, length, _gameModeClient);
                 if (value != null)
                     arguments[i] = value;
             }
@@ -116,6 +107,19 @@ namespace SampSharp.Core.Natives
             return ValueConverter.ToInt32(response, 0);
         }
 
+        private int GetLength(int parameterIndex, object[] arguments)
+        {
+            if (!Parameters[parameterIndex].RequiresLength)
+                return 0;
+
+            // TODO: LengthIndex guard
+            var lengthObj = arguments[Parameters[parameterIndex].LengthIndex];
+            if (arguments[Parameters[parameterIndex].LengthIndex] is int len)
+                return len;
+
+            throw new ArgumentException("Argument is expected to be of type int, but is " + (lengthObj?.GetType().Name ?? "null"),
+                nameof(arguments));
+        }
         /// <summary>
         ///     Invokes the native with the specified arguments and returns the return value as a float.
         /// </summary>
