@@ -139,6 +139,7 @@ void natives_map::invoke(uint8_t *rxbuf, uint32_t rxlen, uint8_t *txbuf,
                 ARG_FORMAT_ADDF("A[%d]", arglen);
 
                 args[j] = txbuf + txpos;
+                memset(txbuf + txpos, 0, arglen * sizeof(uint32_t));
 
                 txpos += arglen * sizeof(uint32_t);
                 rxpos += sizeof(uint32_t);
