@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SampSharp.Core.Communication;
+using SampSharp.Core.Logging;
 
 namespace SampSharp.Core.Natives
 {
@@ -75,6 +76,8 @@ namespace SampSharp.Core.Natives
 
             if (Parameters.Length != arguments.Length)
                 throw new ArgumentOutOfRangeException(nameof(arguments), "Invalid argument count");
+
+            CoreLog.Log(CoreLogLevel.Debug, $"Invoking {Name}({string.Join(", ", arguments)})");
 
             IEnumerable<byte> data = ValueConverter.GetBytes(Handle);
 

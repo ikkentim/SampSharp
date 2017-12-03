@@ -74,6 +74,8 @@ private: /* fields */
     natives_map natives_;
     /** buffer */
     uint8_t buf_[LEN_NETBUF];
+    /** buffer tx */
+    uint8_t buftx_[LEN_NETBUF];
     /** comms */
     commsvr *communication_;
     /** lock for callbacks/ticks */

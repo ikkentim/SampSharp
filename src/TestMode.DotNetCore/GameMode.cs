@@ -32,6 +32,58 @@ namespace TestMode
     {
         private int _ticks;
 
+        [Command("spawn")]
+        public static void SpawnCommand(BasePlayer player, VehicleModelType type)
+        {
+            var vehicle = BaseVehicle.Create(type, player.Position + Vector3.Up, player.Angle, -1, -1);
+//            player.PutInVehicle(vehicle);
+            vehicle.GetDamageStatus(out var panels, out var doors, out var lights, out var tires);
+            Console.WriteLine(panels.ToString());
+            Console.WriteLine(doors.ToString());
+            Console.WriteLine(lights.ToString());
+            Console.WriteLine(tires.ToString());
+        }
+
+        [Command("status")]
+        public static void StatusCommand(BasePlayer player, int vehicleid)
+        {
+            var vehicle = BaseVehicle.Find(vehicleid);
+            int panels = 99;
+            int doors = 100;
+            int lights = 101;
+            int tires = 102;
+            vehicle.GetDamageStatus(out panels, out doors, out lights, out tires);
+            Console.WriteLine(panels.ToString());
+            Console.WriteLine(doors.ToString());
+            Console.WriteLine(lights.ToString());
+            Console.WriteLine(tires.ToString());
+        }
+
+        [Command("setstatus")]
+        public static void SetStatusCommand(BasePlayer player, int vehicleid)
+        {
+            var vehicle = BaseVehicle.Find(vehicleid);
+            vehicle.SetDoorsParameters(true, true, true, true);
+
+            vehicle.GetDamageStatus(out var panels, out var doors, out var lights, out var tires);
+            Console.WriteLine(panels.ToString());
+            Console.WriteLine(doors.ToString());
+            Console.WriteLine(lights.ToString());
+            Console.WriteLine(tires.ToString());
+        }
+
+        [Command("give")]
+        public static void GiveCommand(BasePlayer player, Weapon weapon, int ammo)
+        {
+            player.GiveWeapon(weapon, ammo);
+        }
+
+        [Command("enter")]
+        public static void EnterCommand(BasePlayer player, int vehicle)
+        {
+            player.PutInVehicle(BaseVehicle.Find(vehicle));
+        }
+
         [Command("myfirstcommand")]
         public static void MyFirstCommand(BasePlayer player, string message)
         {
@@ -84,6 +136,7 @@ namespace TestMode
                 Console.WriteLine(e);
             }
     }
+
         #region Overrides of BaseMode
         
         protected override void OnPlayerDied(BasePlayer player, DeathEventArgs e)
@@ -128,18 +181,19 @@ namespace TestMode
             
             Console.WriteLine("The game mode has loaded.");
             AddPlayerClass(0, Vector3.Zero, 0);
+
             SetGameModeText("Before delay");
             await Task.Delay(10);
 
             Console.WriteLine("waited 2");
             SetGameModeText("After delay");
 
-            for (var i = 0; i < 1000; i++)
-            {
-                await Task.Delay(10);
-                SetGameModeText("Loop " + i);
-                Console.WriteLine("Loop " + i);
-            }
+//            for (var i = 0; i < 1000; i++)
+//            {
+//                await Task.Delay(10);
+//                SetGameModeText("Loop " + i);
+//                Console.WriteLine("Loop " + i);
+//            }
             Console.WriteLine("RCON commands: sd (shutdown) msg (repeat message)");
         }
 
