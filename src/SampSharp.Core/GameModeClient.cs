@@ -348,6 +348,8 @@ namespace SampSharp.Core
             {
                 var responseData = waiter.Wait();
 
+                // To avoid server-to-server deadlocks, the command wait queue sometimes gives back commands we weren't waiting for.
+                // Only return if the command was the one we were expecting, otherwise just process the command and keep waiting.
                 if (responseData.Command == response)
                     return responseData;
 

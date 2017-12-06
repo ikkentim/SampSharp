@@ -22,6 +22,9 @@ using SampSharp.Core.Communication;
 
 namespace SampSharp.Core.Threading
 {
+    /// <remarks>
+    ///     This implementation ONLY works for 2-thread-communication. When more threads are involved, the wait handles list will not rewind in the right order.
+    /// </remarks>
     internal class CommandWaitQueue
     {
         private readonly ConcurrentQueue<ServerCommandData> _asyncQueue = new ConcurrentQueue<ServerCommandData>();
@@ -65,6 +68,10 @@ namespace SampSharp.Core.Threading
             // Find wait handle waiting for this command.
             lock (_waitHandles)
             {
+                // Process the command in REVERSE order (stack) because of natives calling callbacks
+                // calling natives calling callbacks... The deepest native should first receive a response.
+                // When forcing an unhandled command down some wait handle (next while loop), the order does
+                // not matter.
                 var current = _waitHandles.Last;
                 while (current != null)
                 {
@@ -77,7 +84,11 @@ namespace SampSharp.Core.Threading
                     current = current.Previous;
                 }
 
-                // Force it down some wait handle.
+                // Force it down some wait handle... Can't let asyncQueue handle it because at this point
+                // the main thread might be waiting for the response of a native, while the server might be
+                // waiting for the response to a callback invoked by the native. Deadlocks, yay! If no wait
+                // handles are available, the async queue should be able to handle this because the main thread
+                // is likely idle.
                 current = _waitHandles.First;
                 while (current != null)
                 {
@@ -90,8 +101,8 @@ namespace SampSharp.Core.Threading
                 }
             }
 
-            // Else provide to asyncs
-
+            // If no wait handles are able to process this command, put it on the queue for when the main thread
+            // is idle.
             _asyncQueue.Enqueue(command);
             _semaphore.Release();
         }
@@ -132,6 +143,7 @@ namespace SampSharp.Core.Threading
                 var result = _result;
                 _result = default(ServerCommandData);
 
+                // If we're not waiting for this command, don't recycle this handle.
                 if (result.Command == _condition)
                     _owner.Recycle(this);
 
