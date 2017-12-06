@@ -50,6 +50,16 @@ namespace SampSharp.Core.Logging
         }
 
         /// <summary>
+        ///     Gets a value indicating whether the specified log level is logged
+        /// </summary>
+        /// <param name="level">The level.</param>
+        /// <returns>Whether the specified log level is logged.</returns>
+        [DebuggerHidden]
+        public static bool DoesLog(CoreLogLevel level)
+        {
+            return LogLevel >= level || level == CoreLogLevel.Initialisation;
+        }
+        /// <summary>
         ///     Logs the specified message at the specified log level.
         /// </summary>
         /// <param name="level">The level.</param>

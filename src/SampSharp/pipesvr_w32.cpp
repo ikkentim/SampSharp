@@ -33,13 +33,12 @@ pipesvr_win32::pipesvr_win32(const char *pipe_name) :
     buf_ = new uint8_t[LEN_NETBUF];
 
     /* default pipe name */
-    sampsharp_sprintf(pipe_name_, MAX_PIPE_NAME_LEN,
-        "\\\\.\\pipe\\SampSharp");
+    sampsharp_sprintf(pipe_name_, MAX_PIPE_NAME_LEN, "\\\\.\\pipe\\SampSharp");
 
     if (pipe_name && strlen(pipe_name) > 0 && 
         strlen(pipe_name) <= MAX_PIPE_NAME_LEN - 10) {
-        sampsharp_sprintf(pipe_name_, MAX_PIPE_NAME_LEN, 
-            "\\\\.\\pipe\\%s", pipe_name);
+        sampsharp_sprintf(pipe_name_, MAX_PIPE_NAME_LEN, "\\\\.\\pipe\\%s",
+            pipe_name);
     }
 }
 

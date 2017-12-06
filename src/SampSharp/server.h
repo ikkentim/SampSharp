@@ -79,7 +79,7 @@ private: /* fields */
     /** comms */
     commsvr *communication_;
     /** lock for callbacks/ticks */
-    std::mutex mutex_;
+    std::recursive_mutex mutex_;
     /** intermission manager */
     intermission intermission_;
     /** should check for attached paused debuggers */

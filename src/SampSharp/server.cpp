@@ -156,6 +156,7 @@ CMD_DEFINE(cmd_find_native) {
 CMD_DEFINE(cmd_invoke_native) {
     uint32_t txlen = LEN_NETBUF;
     natives_.invoke(buf, buflen, buftx_, &txlen);
+    log_debug("Native invoked with %d buflen, response has %d buflen", buflen, txlen);
     communication_->send(CMD_RESPONSE, txlen, buftx_);
 }
 

@@ -32,11 +32,19 @@ namespace TestMode
     {
         private int _ticks;
 
+        [Command("kickme")]
+        public static async void KickMeCommand(BasePlayer player)
+        {
+            player.SendClientMessage("Bye!");
+            await Task.Delay(10);
+            player.Kick();
+        }
+
         [Command("spawn")]
         public static void SpawnCommand(BasePlayer player, VehicleModelType type)
         {
             var vehicle = BaseVehicle.Create(type, player.Position + Vector3.Up, player.Angle, -1, -1);
-//            player.PutInVehicle(vehicle);
+            player.PutInVehicle(vehicle);
             vehicle.GetDamageStatus(out var panels, out var doors, out var lights, out var tires);
             Console.WriteLine(panels.ToString());
             Console.WriteLine(doors.ToString());

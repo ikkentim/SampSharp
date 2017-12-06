@@ -13,12 +13,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SampSharp.Core.Communication;
-using SampSharp.Core.Logging;
 
 namespace SampSharp.Core.Threading
 {
@@ -28,7 +28,7 @@ namespace SampSharp.Core.Threading
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(0, int.MaxValue);
         private readonly ConcurrentStack<WaitEntry> _waitEntryPool = new ConcurrentStack<WaitEntry>();
         private readonly LinkedList<WaitEntry> _waitHandles = new LinkedList<WaitEntry>();
-
+        
         private void Recycle(WaitEntry entry)
         {
             if (_waitEntryPool.Count < 20)
@@ -57,22 +57,32 @@ namespace SampSharp.Core.Threading
                 await _semaphore.WaitAsync();
                 if (_asyncQueue.TryDequeue(out var result))
                     return result;
-
-                CoreLog.Log(CoreLogLevel.Warning, "Server command queue released a semaphore without a queued command.");
             }
         }
-
+        
         public void Release(ServerCommandData command)
         {
             // Find wait handle waiting for this command.
             lock (_waitHandles)
             {
-                var current = _waitHandles.First;
+                var current = _waitHandles.Last;
                 while (current != null)
                 {
-                    if (current.Value.Process(command))
+                    if (current.Value.Process(command, false))
                     {
                         _waitHandles.Remove(current);
+                        return;
+                    }
+
+                    current = current.Previous;
+                }
+
+                // Force it down some wait handle.
+                current = _waitHandles.First;
+                while (current != null)
+                {
+                    if (current.Value.Process(command, true))
+                    {
                         return;
                     }
 
@@ -92,18 +102,19 @@ namespace SampSharp.Core.Threading
             private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(0, 1);
             private ServerCommand _condition;
             private ServerCommandData _result;
-
+            
             public WaitEntry(CommandWaitQueue owner)
             {
                 _owner = owner;
             }
 
-            public bool Process(ServerCommandData command)
+            public bool Process(ServerCommandData command, bool force)
             {
-                if (_condition != command.Command)
+                if (_condition != command.Command && !force)
                     return false;
 
                 _result = command;
+                
                 _semaphore.Release();
 
                 return true;
@@ -120,7 +131,10 @@ namespace SampSharp.Core.Threading
 
                 var result = _result;
                 _result = default(ServerCommandData);
-                _owner.Recycle(this);
+
+                if (result.Command == _condition)
+                    _owner.Recycle(this);
+
                 return result;
             }
         }

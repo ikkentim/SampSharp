@@ -107,6 +107,9 @@ namespace SampSharp.Core
                     var name = ValueConverter.ToString(data.Data, 0, Encoding);
                     var isInit = name == "OnGameModeInit";
 
+                    if (CoreLog.DoesLog(CoreLogLevel.Verbose))
+                        CoreLog.Log(CoreLogLevel.Verbose, "Incoming public call: " + name);
+
                     if ((_startBehaviour == GameModeStartBehaviour.Gmx || _startBehaviour == GameModeStartBehaviour.FakeGmx) && !_initReceived &&
                         !isInit)
                     {
@@ -340,7 +343,16 @@ namespace SampSharp.Core
             // by the default handler before the wait handle for this response type has been added.
             var waiter = _commandWaitQueue.CreateWaitHandle(response);
             Send(command, data);
-            return waiter.Wait();
+
+            for (;;)
+            {
+                var responseData = waiter.Wait();
+
+                if (responseData.Command == response)
+                    return responseData;
+
+                ProcessCommand(responseData);
+            }
         }
 
         private ServerCommandData SendAndWaitOnMainThread(ServerCommand command, IEnumerable<byte> data, ServerCommand response)
