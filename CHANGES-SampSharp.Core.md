@@ -1,3 +1,9 @@
+### 0.8.0-alpha5
+- Added a separate buffer for native results so the native arguments don't get overwritten by the native when it is writing the output (plugin)
+- Changed natives to provide all results in array references instead of just the written values. The unwritten values are 0 by default
+- Fixed deadlocks when calling natives which call callbacks which call natives
+- Fixed a crash caused by a recursive non-recursive-mutex locking issue (plugin) 
+
 ### 0.8.0-alpha4
 - Fixed array arguments in natives not working
 
