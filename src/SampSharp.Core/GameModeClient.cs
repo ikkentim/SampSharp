@@ -118,6 +118,12 @@ namespace SampSharp.Core
                         break;
                     }
 
+                    var isFirstInit = isInit && !_initReceived;
+                    if (isFirstInit)
+                    {
+                        _initReceived = true;
+                    }
+
                     if (_callbacks.TryGetValue(name, out var callback))
                     {
                         int? result = null;
@@ -141,10 +147,8 @@ namespace SampSharp.Core
                         CoreLog.Log(CoreLogLevel.Debug, Environment.StackTrace);
                     }
 
-                    if (!_initReceived && isInit)
+                    if (isFirstInit)
                     {
-                        _initReceived = true;
-
                         if (_startBehaviour == GameModeStartBehaviour.FakeGmx)
                         {
                             if (_callbacks.TryGetValue("OnPlayerConnect", out var onPlayerConnect))
