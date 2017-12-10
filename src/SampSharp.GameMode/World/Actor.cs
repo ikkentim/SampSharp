@@ -15,6 +15,7 @@
 using System;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Pools;
+using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World
 {
@@ -231,7 +232,59 @@ namespace SampSharp.GameMode.World
 
             ActorInternal.Instance.ClearActorAnimations(Id);
         }
-
+        
+        public enum MoveAction
+        {
+            Walk = "WALK_civi",
+            Run = "RUN_civi"
+        }
+        
+        private Timer timer;
+        
+        public bool Moving
+        {
+            get
+            {
+                return timer.IsRunning;
+            }
+            set
+            {
+                if(value==false)
+                {
+                    timer.IsRunning = value;
+                    Position.Z = Position.Z-0.1f;
+                    ClearAnimations();
+                }
+            }
+        }
+        
+        public void Move(Vector3 position, MoveAction action)
+        {
+            if(Moving==true) Moving=false;
+            float animSpeed;
+            if(action==MoveAction.Walk) animSpeed = 1.5357f;
+            else animSpeed = 3.7f;
+            ClearAnimations();
+            FaceToPos(position);
+            ApplyAnimation("ped", action, 4.1, 1, 1, 1, 0, 0);
+            timer = new Timer(Vector3.Distance(Position, position)/animSpeed*918.0f, false);
+            timer.Tick += Stop;
+            
+        }
+        
+        private void Stop(object sender, EventArgs e)
+        {
+                Position.Z = Position.Z-0.1f;
+                ClearAnimations();
+        }
+        
+        public void FaceToPos(Vector3 position)
+        {
+            private double angle = Math.Atan2(position.Y-Position.Y, position.X-Position.X) + 270.0;
+            if(angle>360.0) angle-=360.0;
+            FacingAngle = (float) angle;
+        }
+        
         /// <summary>
         ///     Raises the <see cref="E:StreamIn" /> event.
         /// </summary>
