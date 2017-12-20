@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
@@ -10,66 +6,86 @@ namespace SampSharp.GameMode.Definitions
     public enum ExplosionType
     {
         /// <summary>
-        /// Size: large. Visible, physical blast.
+        /// Size large. Visible. Damage.
         /// </summary>
-        Zero,
+        LargeVisibleDamage,
+
+
         /// <summary>
-        /// Size: normal. Visible, creates fire.
+        /// Size normal. Visible. Creates a fire.
         /// </summary>
-        One,
+        NormalVisibleFire,
+
+
         /// <summary>
-        /// Size: large. Visible, creates fire, physical blast.
+        /// Size large. Visible. Damage. Creates a fire.
         /// </summary>
-        Two,
+        LargeVisibleDamageFire,
+
+
         /// <summary>
-        /// Size: large. Visible, sometimes creates fire, physical blast.
+        /// Size large. Visible. Damage. Sometimes it does not create a fire.
         /// </summary>
-        Three,
+        LargeVisibleDamageFireSometimes,
+
+
         /// <summary>
-        /// Size: normal. Visible, splits, physical blast.
-        /// Unusual explosion, produces just special blast burn FX effects and blasts things away, NO SOUND EFFECTS.
+        /// Size normal. Visible. Damage. It represents a vanishing flash. No sound.
         /// </summary>
-        Four,
+        NormalVisibleDamageFlash,
+
+
         /// <summary>
-        /// Size: normal. Visible, splits, physical blast.
-        /// Unusual explosion, produces just special blast burn FX effects and blasts things away, NO SOUND EFFECTS.
+        /// Size normal. Visible. Damage. It represents a vanishing flash. No sound.
         /// </summary>
-        Five,
+        NormalVisibleDamageFlash2,
+
+
         /// <summary>
-        /// Size: very large. Visible, physical blast.
-        /// Additional reddish explosion after-glow.
+        /// Size very large. Visible. Damage. Additional reddish explosion after-glow.
         /// </summary>
-        Six,
+        VeryLargeVisibleDamage,
+
+
         /// <summary>
-        /// Size: huge. Visible, physical blast.
-        /// Additional reddish explosion after-glow.
+        /// Size huge. Visible. Damage. Additional reddish explosion after-glow.
         /// </summary>
-        Seven,
+        HugeVisibleDamage,
+
+
         /// <summary>
-        /// Size: normal. Invisible, psysical blast.
+        /// Size normal. Invisible. Damage.
         /// </summary>
-        Eight,
+        NormalInvisibleDamage,
+
+
         /// <summary>
-        /// Size: normal. Invisible, creates fire, physical blast.
-        /// Creates fires at ground level, otherwise explosion is heard but invisible.
+        /// Size normal. Damage. Creates a fire at ground level, otherwise explosion is heard but invisible.
         /// </summary>
-        Nine,
+        NormalInvisibleDamageFire,
+
+
         /// <summary>
-        /// Size: large. Visible, physical blast.
+        /// Size large. Visible. Damage. Compared to the LargeVisibleDamage, the explosion seems great.
         /// </summary>
-        Ten,
+        LargeVisibleDamage2,
+
+
         /// <summary>
-        /// Size: small. Visible, physical blast.
+        /// Size small. Visible. Damage.
         /// </summary>
-        Eleven,
+        SmallVisibleDamage,
+
+
         /// <summary>
-        /// Size: very small. Visible, physical blast.
+        /// Size very small. Visible. Damage.
         /// </summary>
-        Twelve,
+        VerySmallVisibleDamage,
+
+
         /// <summary>
-        /// Size: large. Invisible.
-        /// Produces no special effects other than black burn effects on the ground, does no damage either.
+        /// Size large. Invisible. Produces no special effects other than black burn effects on the ground.
         /// </summary>
-        Thirteen
+        LargeInvisible
     }
 }
