@@ -2094,9 +2094,9 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position of the explosion.</param>
         /// <param name="type">The type of explosion.</param>
         /// <param name="radius">The explosion radius.</param>
-        public static void CreateExplosionForAll(Vector3 position, int type, float radius)
+        public static void CreateExplosionForAll(Vector3 position, ExplosionType type, float radius)
         {
-            PlayerInternal.Instance.CreateExplosion(position.X, position.Y, position.Z, type, radius);
+            PlayerInternal.Instance.CreateExplosion(position.X, position.Y, position.Z, (int)type, radius);
         }
 
         /// <summary>
@@ -2106,7 +2106,7 @@ namespace SampSharp.GameMode.World
         /// <param name="type">The type of explosion.</param>
         /// <param name="radius">The explosion radius.</param>
         /// <param name="interior">The interior of the explosion.</param>
-        public static void CreateExplosionForAll(Vector3 position, int type, float radius, int interior)
+        public static void CreateExplosionForAll(Vector3 position, ExplosionType type, float radius, int interior)
         {
             foreach (var p in All.Where(p => p.Interior == interior))
                 p.CreateExplosion(position, type, radius);
@@ -2120,7 +2120,7 @@ namespace SampSharp.GameMode.World
         /// <param name="radius">The explosion radius.</param>
         /// <param name="interior">The interior of the explosion.</param>
         /// <param name="virtualworld">The virtualworld of the explosion.</param>
-        public static void CreateExplosionForAll(Vector3 position, int type, float radius, int interior,
+        public static void CreateExplosionForAll(Vector3 position, ExplosionType type, float radius, int interior,
             int virtualworld)
         {
             foreach (var p in All.Where(p => p.Interior == interior && p.VirtualWorld == virtualworld))
@@ -2136,11 +2136,11 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position of the explosion.</param>
         /// <param name="type">The explosion type.</param>
         /// <param name="radius">The radius of the explosion.</param>
-        public virtual void CreateExplosion(Vector3 position, int type, float radius)
+        public virtual void CreateExplosion(Vector3 position, ExplosionType type, float radius)
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.CreateExplosionForPlayer(Id, position.X, position.Y, position.Z, type, radius);
+            PlayerInternal.Instance.CreateExplosionForPlayer(Id, position.X, position.Y, position.Z, (int) type, radius);
         }
 
         /// <summary>
