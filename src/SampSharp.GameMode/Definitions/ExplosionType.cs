@@ -26,7 +26,7 @@ namespace SampSharp.GameMode.Definitions
         /// <summary>
         /// Size large. Visible. Damage. Sometimes it does not create a fire.
         /// </summary>
-        LargeVisibleDamageFireSometimes,
+        LargeVisibleDamageFire2,
 
 
         /// <summary>
