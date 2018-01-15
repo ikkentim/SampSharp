@@ -563,9 +563,11 @@ namespace SampSharp.GameMode.World
         public virtual bool IsAlive
             => !new[] {PlayerState.None, PlayerState.Spectating, PlayerState.Wasted}.Contains(State);
 
+
         /// <summary>
         ///     Gets this Player's network stats and saves them into a string.
         /// </summary>
+        [Obsolete("Use properties: ConnectionStatus, BytesReceived, BytesSent and other")]
         public virtual string NetworkStats
         {
             get
@@ -606,6 +608,49 @@ namespace SampSharp.GameMode.World
         ///     Gets a value indicating whether this player is selecting a textdraw.
         /// </summary>
         public virtual bool IsSelectingTextDraw { get; private set; }
+
+        /// <summary>
+        /// Gets the amount of time (in milliseconds) that a player has been connected to the server for.
+        /// </summary>
+        public virtual int ConnectedTime => PlayerInternal.Instance.GetConnectedTime(Id);
+
+        /// <summary>
+        /// Gets the number of messages the server has received from the player.
+        /// </summary>
+        public virtual int MessagesReceived => PlayerInternal.Instance.GetMessagesReceived(Id);
+
+        /// <summary>
+        /// Gets the number of messages the player has received in the last second.
+        /// </summary>
+        public virtual int MessagesReceivedPerSecond => PlayerInternal.Instance.GetMessagesReceivedPerSecond(Id);
+
+        /// <summary>
+        /// Gets the number of messages the server has sent to the player.
+        /// </summary>
+        public virtual int MessagesSent => PlayerInternal.Instance.GetMessagesSent(Id);
+
+        /// <summary>
+        /// Get the amount of information (in bytes) that the server has sent to the player.
+        /// </summary>
+        public virtual int BytesReceived => PlayerInternal.Instance.GetBytesReceived(Id);
+
+        /// <summary>
+        /// Get the amount of information (in bytes) that the server has received from the player.
+        /// </summary>
+        public virtual int BytesSent => PlayerInternal.Instance.GetBytesSent(Id);
+
+        /// <summary>
+        /// Gets the packet loss percentage of a player. 
+        /// Packet loss means data the player is sending to the server is being lost (or vice-versa).
+        /// </summary>
+        [Obsolete("This function has been found to be currently unreliable the output is not as expected when compared to the client. Therefore this function should not be used as a packet loss kicker.")]
+        public virtual float PacketLossPercent => PlayerInternal.Instance.GetPacketLossPercent(Id);
+
+        /// <summary>
+        /// Get a player's connection status.
+        /// </summary>
+        public virtual ConnectionStatusType ConnectionStatus => (ConnectionStatusType)PlayerInternal.Instance.GetConnectionStatus(Id);
+
 
         #endregion
 
