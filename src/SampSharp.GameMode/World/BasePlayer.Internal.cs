@@ -861,6 +861,58 @@ namespace SampSharp.GameMode.World
             {
                 throw new NativeNotImplementedException();
             }
+
+            [NativeMethod(Function = "NetStats_GetConnectedTime")]
+            public virtual int GetConnectedTime(int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod(Function = "NetStats_MessagesReceived")]
+            public virtual int GetMessagesReceived(int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            // Another name, because on behalf of the player
+            [NativeMethod(Function = "NetStats_BytesReceived")]
+            public virtual int GetBytesSent(int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            // Another name, because on behalf of the player
+            [NativeMethod(Function = "NetStats_BytesSent")]
+            public virtual int GetBytesReceived(int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod(Function = "NetStats_MessagesSent")]
+            public virtual int GetMessagesSent(int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod(Function = "NetStats_MessagesRecvPerSecond")]
+            public virtual int GetMessagesReceivedPerSecond(int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod(Function = "NetStats_PacketLossPercent")]
+            public virtual float GetPacketLossPercent(int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod(Function = "NetStats_ConnectionStatus")]
+            public virtual int GetConnectionStatus(int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+
         }
 #pragma warning restore CS1591
     }
