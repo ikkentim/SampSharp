@@ -563,9 +563,11 @@ namespace SampSharp.GameMode.World
         public virtual bool IsAlive
             => !new[] {PlayerState.None, PlayerState.Spectating, PlayerState.Wasted}.Contains(State);
 
+
         /// <summary>
         ///     Gets this Player's network stats and saves them into a string.
         /// </summary>
+        [Obsolete("Use properties: ConnectionStatus, BytesReceived, BytesSent and other")]
         public virtual string NetworkStats
         {
             get
@@ -606,6 +608,49 @@ namespace SampSharp.GameMode.World
         ///     Gets a value indicating whether this player is selecting a textdraw.
         /// </summary>
         public virtual bool IsSelectingTextDraw { get; private set; }
+
+        /// <summary>
+        /// Gets the amount of time (in milliseconds) that a player has been connected to the server for.
+        /// </summary>
+        public virtual int ConnectedTime => PlayerInternal.Instance.GetConnectedTime(Id);
+
+        /// <summary>
+        /// Gets the number of messages the server has received from the player.
+        /// </summary>
+        public virtual int MessagesReceived => PlayerInternal.Instance.GetMessagesReceived(Id);
+
+        /// <summary>
+        /// Gets the number of messages the player has received in the last second.
+        /// </summary>
+        public virtual int MessagesReceivedPerSecond => PlayerInternal.Instance.GetMessagesReceivedPerSecond(Id);
+
+        /// <summary>
+        /// Gets the number of messages the server has sent to the player.
+        /// </summary>
+        public virtual int MessagesSent => PlayerInternal.Instance.GetMessagesSent(Id);
+
+        /// <summary>
+        /// Get the amount of information (in bytes) that the server has sent to the player.
+        /// </summary>
+        public virtual int BytesReceived => PlayerInternal.Instance.GetBytesReceived(Id);
+
+        /// <summary>
+        /// Get the amount of information (in bytes) that the server has received from the player.
+        /// </summary>
+        public virtual int BytesSent => PlayerInternal.Instance.GetBytesSent(Id);
+
+        /// <summary>
+        /// Gets the packet loss percentage of a player. 
+        /// Packet loss means data the player is sending to the server is being lost (or vice-versa).
+        /// </summary>
+        [Obsolete("This function has been found to be currently unreliable the output is not as expected when compared to the client. Therefore this function should not be used as a packet loss kicker.")]
+        public virtual float PacketLossPercent => PlayerInternal.Instance.GetPacketLossPercent(Id);
+
+        /// <summary>
+        /// Get a player's connection status.
+        /// </summary>
+        public virtual ConnectionStatusType ConnectionStatus => (ConnectionStatusType)PlayerInternal.Instance.GetConnectionStatus(Id);
+
 
         #endregion
 
@@ -2094,9 +2139,9 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position of the explosion.</param>
         /// <param name="type">The type of explosion.</param>
         /// <param name="radius">The explosion radius.</param>
-        public static void CreateExplosionForAll(Vector3 position, int type, float radius)
+        public static void CreateExplosionForAll(Vector3 position, ExplosionType type, float radius)
         {
-            PlayerInternal.Instance.CreateExplosion(position.X, position.Y, position.Z, type, radius);
+            PlayerInternal.Instance.CreateExplosion(position.X, position.Y, position.Z, (int)type, radius);
         }
 
         /// <summary>
@@ -2106,7 +2151,7 @@ namespace SampSharp.GameMode.World
         /// <param name="type">The type of explosion.</param>
         /// <param name="radius">The explosion radius.</param>
         /// <param name="interior">The interior of the explosion.</param>
-        public static void CreateExplosionForAll(Vector3 position, int type, float radius, int interior)
+        public static void CreateExplosionForAll(Vector3 position, ExplosionType type, float radius, int interior)
         {
             foreach (var p in All.Where(p => p.Interior == interior))
                 p.CreateExplosion(position, type, radius);
@@ -2120,7 +2165,7 @@ namespace SampSharp.GameMode.World
         /// <param name="radius">The explosion radius.</param>
         /// <param name="interior">The interior of the explosion.</param>
         /// <param name="virtualworld">The virtualworld of the explosion.</param>
-        public static void CreateExplosionForAll(Vector3 position, int type, float radius, int interior,
+        public static void CreateExplosionForAll(Vector3 position, ExplosionType type, float radius, int interior,
             int virtualworld)
         {
             foreach (var p in All.Where(p => p.Interior == interior && p.VirtualWorld == virtualworld))
@@ -2136,11 +2181,11 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position of the explosion.</param>
         /// <param name="type">The explosion type.</param>
         /// <param name="radius">The radius of the explosion.</param>
-        public virtual void CreateExplosion(Vector3 position, int type, float radius)
+        public virtual void CreateExplosion(Vector3 position, ExplosionType type, float radius)
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.CreateExplosionForPlayer(Id, position.X, position.Y, position.Z, type, radius);
+            PlayerInternal.Instance.CreateExplosionForPlayer(Id, position.X, position.Y, position.Z, (int) type, radius);
         }
 
         /// <summary>
