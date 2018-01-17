@@ -23,7 +23,7 @@ namespace TestMode
         private static void Main(string[] args)
         {
             new GameModeBuilder()
-                .UseLogLevel(CoreLogLevel.Verbose)
+                .UseLogLevel(CoreLogLevel.Info)
                 .UseStartBehaviour(GameModeStartBehaviour.FakeGmx)
                 .UseExitBehaviour(GameModeExitBehaviour.Restart)
                 .Use<GameMode>()

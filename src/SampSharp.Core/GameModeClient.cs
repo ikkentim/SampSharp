@@ -187,7 +187,7 @@ namespace SampSharp.Core
                     CoreLog.Log(CoreLogLevel.Debug, Environment.StackTrace);
                     break;
                 default:
-                    CoreLog.Log(CoreLogLevel.Error, $"Unknown command {data.Command} recieved with {data.Data.Length} data");
+                    CoreLog.Log(CoreLogLevel.Error, $"Unknown command {data.Command} recieved with {data.Data?.Length.ToString() ?? "NULL"} data");
                     CoreLog.Log(CoreLogLevel.Debug, Environment.StackTrace);
                     break;
             }
@@ -298,13 +298,17 @@ namespace SampSharp.Core
 
                     if (!_running)
                         return;
-                    
+
                     _commandWaitQueue.Release(data);
                 }
             }
             catch (StreamCommunicationClientClosedException)
             {
                 CoreLog.Log(CoreLogLevel.Warning, "Network routine ended because the communication with the SA:MP server was closed.");
+            }
+            catch (Exception e)
+            {
+                CoreLog.Log(CoreLogLevel.Error, "Network routine died! " + e);
             }
         }
 
@@ -343,20 +347,15 @@ namespace SampSharp.Core
 
         private ServerCommandData SendAndWait(ServerCommand command, IEnumerable<byte> data, ServerCommand response)
         {
-            // Add wait handle BEFORE sending command to prevent a race condition where the response has been received and processed
-            // by the default handler before the wait handle for this response type has been added.
-            var waiter = _commandWaitQueue.CreateWaitHandle(response);
             Send(command, data);
-
+            
             for (;;)
             {
-                var responseData = waiter.Wait();
-
-                // To avoid server-to-server deadlocks, the command wait queue sometimes gives back commands we weren't waiting for.
-                // Only return if the command was the one we were expecting, otherwise just process the command and keep waiting.
+                var responseData = _commandWaitQueue.Wait();
+                
                 if (responseData.Command == response)
                     return responseData;
-
+                
                 ProcessCommand(responseData);
             }
         }

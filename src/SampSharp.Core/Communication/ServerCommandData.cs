@@ -47,7 +47,7 @@ namespace SampSharp.Core.Communication
         /// <returns>A <see cref="T:System.String" /> containing a fully qualified type name.</returns>
         public override string ToString()
         {
-            return $"{{ Command = {Command}, Data = {(Data == null ? "null" : $"[{Data.Length}]")} }}";
+            return $"{{ Command = {Command}, Data = {(Data == null ? "null" : $"[Length = {Data.Length}]")} }}";
         }
 
         #endregion

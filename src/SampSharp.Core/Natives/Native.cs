@@ -96,7 +96,10 @@ namespace SampSharp.Core.Natives
             var response = _gameModeClient.InvokeNative(data);
 
             if (response.Length < 4)
+            {
+                CoreLog.Log(CoreLogLevel.Warning, "Native call returned no response, execution probably failed.");
                 return 0;
+            }
 
             var respPos = 4;
             for (var i = 0; i < Parameters.Length; i++)
