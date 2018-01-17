@@ -45,8 +45,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
             var word = text.Split(' ').First();
 
             // find a player with a matching id.
-            int id;
-            if (int.TryParse(word, NumberStyles.Integer, CultureInfo.InvariantCulture, out id))
+            if (int.TryParse(word, NumberStyles.Integer, CultureInfo.InvariantCulture, out var id))
             {
                 var player = BasePlayer.Find(id);
                 if (player != null)

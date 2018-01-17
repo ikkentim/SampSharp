@@ -275,8 +275,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float x, y, z;
-                VehicleModelInfoInternal.Instance.GetVehicleModelInfo((int) Type, (int) infotype, out x, out y, out z);
+                VehicleModelInfoInternal.Instance.GetVehicleModelInfo((int) Type, (int) infotype, out var x, out var y, out var z);
                 return new Vector3(x, y, z);
             }
         }

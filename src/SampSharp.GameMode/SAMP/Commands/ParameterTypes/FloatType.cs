@@ -72,8 +72,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
             }
 
             // Parse the number
-            float number;
-            if (float.TryParse(preProcessedWord, NumberStyles.Float, CultureInfo.InvariantCulture, out number))
+            if (float.TryParse(preProcessedWord, NumberStyles.Float, CultureInfo.InvariantCulture, out var number))
             {
                 commandText = commandText.Substring(word.Length).TrimStart(' ');
                 output = number;

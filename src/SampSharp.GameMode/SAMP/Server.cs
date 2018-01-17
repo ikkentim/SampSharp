@@ -40,8 +40,7 @@ namespace SampSharp.GameMode.SAMP
         {
             get
             {
-                string result;
-                ServerInternal.Instance.GetNetworkStats(out result, 500);
+                ServerInternal.Instance.GetNetworkStats(out var result, 500);
                 return result;
             }
         }

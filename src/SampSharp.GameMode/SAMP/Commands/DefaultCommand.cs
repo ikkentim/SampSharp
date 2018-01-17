@@ -141,8 +141,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             var index = 0;
             foreach (var parameter in Parameters)
             {
-                object arg;
-                if (!parameter.CommandParameterType.Parse(ref commandText, out arg))
+                if (!parameter.CommandParameterType.Parse(ref commandText, out var arg))
                 {
                     if (!parameter.IsOptional)
                         return false;
@@ -271,8 +270,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 if (!name.Matches(commandText, IsCaseIgnored)) continue;
 
                 commandText = commandText.Substring(name.Length);
-                object[] tmp;
-                return GetArguments(commandText, out tmp)
+                return GetArguments(commandText, out var tmp)
                     ? CommandCallableResponse.True
                     : CommandCallableResponse.Optional;
             }
@@ -296,7 +294,6 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             commandText = commandText.TrimStart('/');
 
-            object[] arguments;
             var name = Names.Cast<CommandPath?>().FirstOrDefault(n => n != null && n.Value.Matches(commandText));
 
             if (name == null)
@@ -304,7 +301,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             commandText = commandText.Substring(name.Value.Length).Trim();
 
-            if (!GetArguments(commandText, out arguments))
+            if (!GetArguments(commandText, out var arguments))
                 return SendUsageMessage(player);
 
             var result = Method.Invoke(IsMethodMemberOfPlayer ? player : null,

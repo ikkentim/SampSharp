@@ -159,8 +159,7 @@ namespace SampSharp.GameMode.Tools
 
             if (_usePlugin)
             {
-                float result;
-                MapAndreasInternal.Instance.FindZ(x, y, out result);
+                MapAndreasInternal.Instance.FindZ(x, y, out var result);
                 return result;
             }
             // check for a co-ord outside the map
@@ -217,8 +216,7 @@ namespace SampSharp.GameMode.Tools
 
             if (_usePlugin)
             {
-                float result;
-                MapAndreasInternal.Instance.FindAverageZ(x, y, out result);
+                MapAndreasInternal.Instance.FindAverageZ(x, y, out var result);
                 return result;
             }
 

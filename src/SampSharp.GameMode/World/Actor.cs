@@ -40,11 +40,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float angle;
 
                 AssertNotDisposed();
 
-                ActorInternal.Instance.GetActorFacingAngle(Id, out angle);
+                ActorInternal.Instance.GetActorFacingAngle(Id, out var angle);
                 return angle;
             }
             set
@@ -61,11 +60,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float health;
 
                 AssertNotDisposed();
 
-                ActorInternal.Instance.GetActorHealth(Id, out health);
+                ActorInternal.Instance.GetActorHealth(Id, out var health);
                 return health;
             }
             set
@@ -135,11 +133,9 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float x, y, z;
-
                 AssertNotDisposed();
 
-                ActorInternal.Instance.GetActorPos(Id, out x, out y, out z);
+                ActorInternal.Instance.GetActorPos(Id, out var x, out var y, out var z);
                 return new Vector3(x, y, z);
             }
             set

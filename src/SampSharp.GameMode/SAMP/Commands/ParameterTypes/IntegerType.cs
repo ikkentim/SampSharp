@@ -46,10 +46,9 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 
             var word = text.Split(' ').First();
 
-            int number;
 
             // Regular base 10 numbers (eg. 14143)
-            if (word.All(Base10Characters.Contains) && int.TryParse(word, out number))
+            if (word.All(Base10Characters.Contains) && int.TryParse(word, out var number))
             {
                 commandText = commandText.Substring(word.Length).TrimStart(' ');
                 output = number;

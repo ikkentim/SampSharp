@@ -87,8 +87,7 @@ namespace SampSharp.GameMode.Pools
         {
             if (key == UnidentifiedId) return _unidentifiedItems.FirstOrDefault();
 
-            TInstance result;
-            _identifiedItems.TryGetValue(key, out result);
+            _identifiedItems.TryGetValue(key, out var result);
             return result;
         }
 

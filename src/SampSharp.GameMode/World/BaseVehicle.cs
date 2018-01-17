@@ -82,11 +82,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float angle;
-                VehicleInternal.Instance.GetVehicleZAngle(Id, out angle);
+                VehicleInternal.Instance.GetVehicleZAngle(Id, out var angle);
                 return angle;
             }
-            set { VehicleInternal.Instance.SetVehicleZAngle(Id, value); }
+            set => VehicleInternal.Instance.SetVehicleZAngle(Id, value);
         }
 
         /// <summary>
@@ -126,11 +125,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float x, y, z;
-                VehicleInternal.Instance.GetVehicleVelocity(Id, out x, out y, out z);
+                VehicleInternal.Instance.GetVehicleVelocity(Id, out var x, out var y, out var z);
                 return new Vector3(x, y, z);
             }
-            set { VehicleInternal.Instance.SetVehicleVelocity(Id, value.X, value.Y, value.Z); }
+            set => VehicleInternal.Instance.SetVehicleVelocity(Id, value.X, value.Y, value.Z);
         }
 
         /// <summary>
@@ -138,8 +136,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int VirtualWorld
         {
-            get { return VehicleInternal.Instance.GetVehicleVirtualWorld(Id); }
-            set { VehicleInternal.Instance.SetVehicleVirtualWorld(Id, value); }
+            get => VehicleInternal.Instance.GetVehicleVirtualWorld(Id);
+            set => VehicleInternal.Instance.SetVehicleVirtualWorld(Id, value);
         }
 
         /// <summary>
@@ -149,14 +147,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetParameters(out value, out misc, out misc, out misc, out misc, out misc, out misc);
+                GetParameters(out bool value, out _, out _, out _, out _, out _, out _);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d, e, f, g;
-                GetParameters(out a, out b, out c, out d, out e, out f, out g);
+                GetParameters(out _, out var b, out var c, out var d, out var e, out var f, out VehicleParameterValue g);
                 SetParameters(value ? VehicleParameterValue.On : VehicleParameterValue.Off, b, c, d, e, f, g);
             }
         }
@@ -168,14 +164,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetParameters(out misc, out value, out misc, out misc, out misc, out misc, out misc);
+                GetParameters(out _, out bool value, out _, out _, out _, out _, out _);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d, e, f, g;
-                GetParameters(out a, out b, out c, out d, out e, out f, out g);
+                GetParameters(out var a, out _, out var c, out var d, out var e, out var f, out VehicleParameterValue g);
                 SetParameters(a, value ? VehicleParameterValue.On : VehicleParameterValue.Off, c, d, e, f, g);
             }
         }
@@ -187,14 +181,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetParameters(out misc, out misc, out value, out misc, out misc, out misc, out misc);
+                GetParameters(out _, out _, out bool value, out _, out _, out _, out _);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d, e, f, g;
-                GetParameters(out a, out b, out c, out d, out e, out f, out g);
+                GetParameters(out var a, out var b, out _, out var d, out var e, out var f, out VehicleParameterValue g);
                 SetParameters(a, b, value ? VehicleParameterValue.On : VehicleParameterValue.Off, d, e, f, g);
             }
         }
@@ -206,14 +198,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetParameters(out misc, out misc, out misc, out value, out misc, out misc, out misc);
+                GetParameters(out _, out _, out _, out bool value, out _, out _, out _);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d, e, f, g;
-                GetParameters(out a, out b, out c, out d, out e, out f, out g);
+                GetParameters(out var a, out var b, out var c, out _, out var e, out var f, out VehicleParameterValue g);
                 SetParameters(a, b, c, value ? VehicleParameterValue.On : VehicleParameterValue.Off, e, f, g);
             }
         }
@@ -225,14 +215,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetParameters(out misc, out value, out misc, out misc, out value, out misc, out misc);
+                GetParameters(out _, out bool value, out _, out _, out value, out _, out _);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d, e, f, g;
-                GetParameters(out a, out b, out c, out d, out e, out f, out g);
+                GetParameters(out var a, out var b, out var c, out var d, out _, out var f, out VehicleParameterValue g);
                 SetParameters(a, b, c, d, value ? VehicleParameterValue.On : VehicleParameterValue.Off, f, g);
             }
         }
@@ -244,14 +232,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetParameters(out misc, out value, out misc, out misc, out misc, out value, out misc);
+                GetParameters(out _, out bool value, out _, out _, out _, out value, out _);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d, e, f, g;
-                GetParameters(out a, out b, out c, out d, out e, out f, out g);
+                GetParameters(out var a, out var b, out var c, out var d, out var e, out _, out VehicleParameterValue g);
                 SetParameters(a, b, c, d, e, value ? VehicleParameterValue.On : VehicleParameterValue.Off, g);
             }
         }
@@ -263,14 +249,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetParameters(out misc, out value, out misc, out misc, out misc, out misc, out value);
+                GetParameters(out _, out bool value, out _, out _, out _, out _, out value);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d, e, f, g;
-                GetParameters(out a, out b, out c, out d, out e, out f, out g);
+                GetParameters(out VehicleParameterValue a, out var b, out var c, out var d, out var e, out var f, out _);
                 SetParameters(a, b, c, d, e, f, value ? VehicleParameterValue.On : VehicleParameterValue.Off);
             }
         }
@@ -282,14 +266,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetDoorsParameters(out value, out misc, out misc, out misc);
+                GetDoorsParameters(out bool value, out _, out _, out _);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d;
-                GetDoorsParameters(out a, out b, out c, out d);
+                GetDoorsParameters(out _, out var b, out var c, out VehicleParameterValue d);
                 SetDoorsParameters(value ? VehicleParameterValue.On : VehicleParameterValue.Off, b, c, d);
             }
         }
@@ -301,14 +283,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetDoorsParameters(out misc, out value, out misc, out misc);
+                GetDoorsParameters(out _, out bool value, out _, out _);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d;
-                GetDoorsParameters(out a, out b, out c, out d);
+                GetDoorsParameters(out var a, out _, out var c, out VehicleParameterValue d);
                 SetDoorsParameters(a, value ? VehicleParameterValue.On : VehicleParameterValue.Off, c, d);
             }
         }
@@ -320,14 +300,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetDoorsParameters(out misc, out misc, out value, out misc);
+                GetDoorsParameters(out _, out _, out bool value, out _);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d;
-                GetDoorsParameters(out a, out b, out c, out d);
+                GetDoorsParameters(out var a, out var b, out _, out VehicleParameterValue d);
                 SetDoorsParameters(a, b, value ? VehicleParameterValue.On : VehicleParameterValue.Off, d);
             }
         }
@@ -339,14 +317,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetDoorsParameters(out misc, out misc, out misc, out value);
+                GetDoorsParameters(out _, out _, out _, out bool value);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d;
-                GetDoorsParameters(out a, out b, out c, out d);
+                GetDoorsParameters(out VehicleParameterValue a, out var b, out var c, out  _);
                 SetDoorsParameters(a, b, c, value ? VehicleParameterValue.On : VehicleParameterValue.Off);
             }
         }
@@ -358,14 +334,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetWindowsParameters(out value, out misc, out misc, out misc);
+                GetWindowsParameters(out bool value, out _, out _, out _);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d;
-                GetWindowsParameters(out a, out b, out c, out d);
+                GetWindowsParameters(out _, out var b, out var c, out VehicleParameterValue d);
                 SetWindowsParameters(value ? VehicleParameterValue.On : VehicleParameterValue.Off, b, c, d);
             }
         }
@@ -377,14 +351,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetWindowsParameters(out misc, out value, out misc, out misc);
+                GetWindowsParameters(out _, out bool value, out _, out _);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d;
-                GetWindowsParameters(out a, out b, out c, out d);
+                GetWindowsParameters(out var a, out _, out var c, out VehicleParameterValue d);
                 SetWindowsParameters(a, value ? VehicleParameterValue.On : VehicleParameterValue.Off, c, d);
             }
         }
@@ -396,14 +368,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetWindowsParameters(out misc, out misc, out value, out misc);
+                GetWindowsParameters(out _, out _, out bool value, out _);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d;
-                GetWindowsParameters(out a, out b, out c, out d);
+                GetWindowsParameters(out var a, out var b, out _, out VehicleParameterValue d);
                 SetWindowsParameters(a, b, value ? VehicleParameterValue.On : VehicleParameterValue.Off, d);
             }
         }
@@ -415,14 +385,12 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                bool value, misc;
-                GetWindowsParameters(out misc, out misc, out misc, out value);
+                GetWindowsParameters(out _, out _, out _, out bool value);
                 return value;
             }
             set
             {
-                VehicleParameterValue a, b, c, d;
-                GetWindowsParameters(out a, out b, out c, out d);
+                GetWindowsParameters(out VehicleParameterValue a, out var b, out var c, out _);
                 SetWindowsParameters(a, b, c, value ? VehicleParameterValue.On : VehicleParameterValue.Off);
             }
         }
@@ -447,8 +415,8 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         public virtual Vector3 Rotation
         {
-            get { return new Vector3(0, 0, Angle); }
-            set { VehicleInternal.Instance.SetVehicleZAngle(Id, value.Z); }
+            get => new Vector3(0, 0, Angle);
+            set => VehicleInternal.Instance.SetVehicleZAngle(Id, value.Z);
         }
 
         /// <summary>
@@ -458,11 +426,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float value;
-                VehicleInternal.Instance.GetVehicleHealth(Id, out value);
+                VehicleInternal.Instance.GetVehicleHealth(Id, out var value);
                 return value;
             }
-            set { VehicleInternal.Instance.SetVehicleHealth(Id, value); }
+            set => VehicleInternal.Instance.SetVehicleHealth(Id, value);
         }
 
         /// <summary>
@@ -472,11 +439,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float x, y, z;
-                VehicleInternal.Instance.GetVehiclePos(Id, out x, out y, out z);
+                VehicleInternal.Instance.GetVehiclePos(Id, out var x, out var y, out var z);
                 return new Vector3(x, y, z);
             }
-            set { VehicleInternal.Instance.SetVehiclePos(Id, value.X, value.Y, value.Z); }
+            set => VehicleInternal.Instance.SetVehiclePos(Id, value.X, value.Y, value.Z);
         }
 
         #endregion
@@ -685,9 +651,7 @@ namespace SampSharp.GameMode.World
         public virtual Quaternion GetRotationQuat()
         {
             AssertNotDisposed();
-
-            float x, y, z, w;
-            GetRotationQuat(out x, out y, out z, out w);
+            GetRotationQuat(out var x, out var y, out var z, out var w);
             return new Quaternion(x, y, y, w);
         }
 
@@ -764,10 +728,8 @@ namespace SampSharp.GameMode.World
             out VehicleParameterValue boot, out VehicleParameterValue objective)
         {
             AssertNotDisposed();
-
-            int tmpEngine, tmpLights, tmpAlarm, tmpDoors, tmpBonnet, tmpBoot, tmpObjective;
-            VehicleInternal.Instance.GetVehicleParamsEx(Id, out tmpEngine, out tmpLights, out tmpAlarm, out tmpDoors, out tmpBonnet,
-                out tmpBoot, out tmpObjective);
+            VehicleInternal.Instance.GetVehicleParamsEx(Id, out var tmpEngine, out var tmpLights, out var tmpAlarm, out var tmpDoors, out var tmpBonnet,
+                out var tmpBoot, out var tmpObjective);
 
             engine = (VehicleParameterValue) tmpEngine;
             lights = (VehicleParameterValue) tmpLights;
@@ -791,9 +753,8 @@ namespace SampSharp.GameMode.World
         public virtual void GetParameters(out bool engine, out bool lights, out bool alarm,
             out bool doors, out bool bonnet, out bool boot, out bool objective)
         {
-            VehicleParameterValue tmpEngine, tmpLights, tmpAlarm, tmpDoors, tmpBonnet, tmpBoot, tmpObjective;
-            GetParameters(out tmpEngine, out tmpLights, out tmpAlarm, out tmpDoors, out tmpBonnet, out tmpBoot,
-                out tmpObjective);
+            GetParameters(out var tmpEngine, out var tmpLights, out var tmpAlarm, out var tmpDoors, out var tmpBonnet, out var tmpBoot,
+                out VehicleParameterValue tmpObjective);
 
             engine = tmpEngine.ToBool();
             lights = tmpLights.ToBool();
@@ -844,9 +805,7 @@ namespace SampSharp.GameMode.World
             out VehicleParameterValue backleft, out VehicleParameterValue backright)
         {
             AssertNotDisposed();
-
-            int tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
-            VehicleInternal.Instance.GetVehicleParamsCarDoors(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
+            VehicleInternal.Instance.GetVehicleParamsCarDoors(Id, out var tmpDriver, out var tmpPassenger, out var tmpBackleft, out var tmpBackright);
 
             driver = (VehicleParameterValue) tmpDriver;
             passenger = (VehicleParameterValue) tmpPassenger;
@@ -865,9 +824,7 @@ namespace SampSharp.GameMode.World
             out bool backright)
         {
             AssertNotDisposed();
-
-            VehicleParameterValue tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
-            GetDoorsParameters(out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
+            GetDoorsParameters(out var tmpDriver, out var tmpPassenger, out var tmpBackleft, out VehicleParameterValue tmpBackright);
 
             driver = tmpDriver.ToBool();
             passenger = tmpPassenger.ToBool();
@@ -916,9 +873,7 @@ namespace SampSharp.GameMode.World
             out VehicleParameterValue backleft, out VehicleParameterValue backright)
         {
             AssertNotDisposed();
-
-            int tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
-            VehicleInternal.Instance.GetVehicleParamsCarWindows(Id, out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
+            VehicleInternal.Instance.GetVehicleParamsCarWindows(Id, out var tmpDriver, out var tmpPassenger, out var tmpBackleft, out var tmpBackright);
 
             driver = (VehicleParameterValue) tmpDriver;
             passenger = (VehicleParameterValue) tmpPassenger;
@@ -937,9 +892,7 @@ namespace SampSharp.GameMode.World
             out bool backright)
         {
             AssertNotDisposed();
-
-            VehicleParameterValue tmpDriver, tmpPassenger, tmpBackleft, tmpBackright;
-            GetWindowsParameters(out tmpDriver, out tmpPassenger, out tmpBackleft, out tmpBackright);
+            GetWindowsParameters(out var tmpDriver, out var tmpPassenger, out var tmpBackleft, out VehicleParameterValue tmpBackright);
 
             driver = tmpDriver.ToBool(true); // unset is most commonly also closed
             passenger = tmpPassenger.ToBool(true);
@@ -1107,8 +1060,7 @@ namespace SampSharp.GameMode.World
         /// <returns>The offset vector.</returns>
         public static Vector3 GetModelInfo(VehicleModelType model, VehicleModelInfoType infotype)
         {
-            float x, y, z;
-            VehicleInternal.Instance.GetVehicleModelInfo((int) model, (int) infotype, out x, out y, out z);
+            VehicleInternal.Instance.GetVehicleModelInfo((int) model, (int) infotype, out var x, out var y, out var z);
             return new Vector3(x, y, z);
         }
 

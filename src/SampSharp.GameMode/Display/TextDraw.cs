@@ -147,7 +147,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual TextDrawAlignment Alignment
         {
-            get { return _alignment ?? TextDrawAlignment.Left; }
+            get => _alignment ?? TextDrawAlignment.Left;
             set
             {
                 _alignment = value;
@@ -162,7 +162,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual Color BackColor
         {
-            get { return _backColor ?? Color.Black; }
+            get => _backColor ?? Color.Black;
             set
             {
                 _backColor = value;
@@ -177,7 +177,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual Color ForeColor
         {
-            get { return _foreColor ?? Color.White; }
+            get => _foreColor ?? Color.White;
             set
             {
                 _foreColor = value;
@@ -192,7 +192,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual Color BoxColor
         {
-            get { return _boxColor ?? Color.Transparent; }
+            get => _boxColor ?? Color.Transparent;
             set
             {
                 _boxColor = value;
@@ -207,7 +207,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual TextDrawFont Font
         {
-            get { return _font ?? TextDrawFont.Normal; }
+            get => _font ?? TextDrawFont.Normal;
             set
             {
                 _font = value;
@@ -223,7 +223,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual Vector2 LetterSize
         {
-            get { return _letterSize ?? Vector2.One; }
+            get => _letterSize ?? Vector2.One;
             set
             {
                 _letterSize = value;
@@ -238,7 +238,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual int Outline
         {
-            get { return _outline ?? 0; }
+            get => _outline ?? 0;
             set
             {
                 _outline = value;
@@ -253,7 +253,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual bool Proportional
         {
-            get { return _proportional ?? false; }
+            get => _proportional ?? false;
             set
             {
                 _proportional = value;
@@ -268,7 +268,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual int Shadow
         {
-            get { return _shadow ?? 0; }
+            get => _shadow ?? 0;
             set
             {
                 _shadow = value;
@@ -283,7 +283,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual string Text
         {
-            get { return _text; }
+            get => _text;
             set
             {
                 _text = value;
@@ -298,7 +298,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual Vector2 Position
         {
-            get { return _position; }
+            get => _position;
             set
             {
                 _position = value;
@@ -312,7 +312,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual float Width
         {
-            get { return _width ?? 0; }
+            get => _width ?? 0;
             set
             {
                 _width = value;
@@ -327,7 +327,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual float Height
         {
-            get { return _height ?? 0; }
+            get => _height ?? 0;
             set
             {
                 _height = value;
@@ -342,7 +342,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual bool UseBox
         {
-            get { return _useBox ?? false; }
+            get => _useBox ?? false;
             set
             {
                 _useBox = value;
@@ -357,7 +357,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual bool Selectable
         {
-            get { return _selectable ?? false; }
+            get => _selectable ?? false;
             set
             {
                 _selectable = value;
@@ -372,7 +372,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual int PreviewModel
         {
-            get { return _previewModel ?? 0; }
+            get => _previewModel ?? 0;
             set
             {
                 _previewModel = value;
@@ -387,7 +387,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual Vector3 PreviewRotation
         {
-            get { return _previewRotation ?? Vector3.Zero; }
+            get => _previewRotation ?? Vector3.Zero;
             set
             {
                 _previewRotation = value;
@@ -402,7 +402,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual float PreviewZoom
         {
-            get { return _previewZoom ?? 0; }
+            get => _previewZoom ?? 0;
             set
             {
                 _previewZoom = value;
@@ -417,7 +417,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual int PreviewPrimaryColor
         {
-            get { return _previewPrimaryColor ?? -1; }
+            get => _previewPrimaryColor ?? -1;
             set
             {
                 _previewPrimaryColor = value;
@@ -432,7 +432,7 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public virtual int PreviewSecondaryColor
         {
-            get { return _previewSecondaryColor ?? -1; }
+            get => _previewSecondaryColor ?? -1;
             set
             {
                 _previewSecondaryColor = value;

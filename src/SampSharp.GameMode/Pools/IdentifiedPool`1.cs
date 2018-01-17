@@ -58,7 +58,7 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         public int Id
         {
-            get { return _id; }
+            get => _id;
             protected set
             {
                 if (_id == PoolContainer<TInstance>.UnidentifiedId)

@@ -65,7 +65,7 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         public int Id
         {
-            get { return _id; }
+            get => _id;
             protected set
             {
                 var pool = GetPool(Owner);
@@ -83,7 +83,7 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         public TOwner Owner
         {
-            get { return _owner; }
+            get => _owner;
             protected set
             {
                 if (_owner == value)
@@ -117,8 +117,7 @@ namespace SampSharp.GameMode.Pools
         {
             if (owner == null) return UnownedContainer;
 
-            PoolContainer<TInstance> pool;
-            if (!Containers.TryGetValue(owner, out pool) && createIfNotExists)
+            if (!Containers.TryGetValue(owner, out var pool) && createIfNotExists)
                 pool = Containers[owner] = new PoolContainer<TInstance>();
 
             return pool;

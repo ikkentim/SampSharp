@@ -68,7 +68,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual Color Color
         {
-            get { return _color; }
+            get => _color;
             set
             {
                 _color = value;
@@ -81,7 +81,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual string Text
         {
-            get { return _text; }
+            get => _text;
             set
             {
                 _text = value;
@@ -94,7 +94,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual Vector3 Position
         {
-            get { return _position; }
+            get => _position;
             set
             {
                 _position = value;
@@ -111,7 +111,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual float DrawDistance
         {
-            get { return _drawDistance; }
+            get => _drawDistance;
             set
             {
                 _drawDistance = value;
@@ -128,7 +128,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual bool TestLOS
         {
-            get { return _testLOS; }
+            get => _testLOS;
             set
             {
                 _testLOS = value;
@@ -145,7 +145,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual BasePlayer AttachedPlayer
         {
-            get { return _attachedPlayer; }
+            get => _attachedPlayer;
             set
             {
                 _attachedPlayer = value;
@@ -162,7 +162,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual BaseVehicle AttachedVehicle
         {
-            get { return _attachedVehicle; }
+            get => _attachedVehicle;
             set
             {
                 _attachedVehicle = value;

@@ -44,11 +44,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float x, y, z;
-                GlobalObjectInternal.Instance.GetObjectRot(Id, out x, out y, out z);
+                GlobalObjectInternal.Instance.GetObjectRot(Id, out var x, out var y, out var z);
                 return new Vector3(x, y, z);
             }
-            set { GlobalObjectInternal.Instance.SetObjectRot(Id, value.X, value.Y, value.Z); }
+            set => GlobalObjectInternal.Instance.SetObjectRot(Id, value.X, value.Y, value.Z);
         }
 
         /// <summary>
@@ -58,11 +57,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float x, y, z;
-                GlobalObjectInternal.Instance.GetObjectPos(Id, out x, out y, out z);
+                GlobalObjectInternal.Instance.GetObjectPos(Id, out var x, out var y, out var z);
                 return new Vector3(x, y, z);
             }
-            set { GlobalObjectInternal.Instance.SetObjectPos(Id, value.X, value.Y, value.Z); }
+            set => GlobalObjectInternal.Instance.SetObjectPos(Id, value.X, value.Y, value.Z);
         }
 
         /// <summary>

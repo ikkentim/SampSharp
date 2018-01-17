@@ -45,8 +45,8 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public object this[int index]
         {
-            get { return this[NameAtIndex(index)]; }
-            set { this[NameAtIndex(index)] = value; }
+            get => this[NameAtIndex(index)];
+            set => this[NameAtIndex(index)] = value;
         }
 
         /// <summary>
@@ -140,8 +140,7 @@ namespace SampSharp.GameMode.SAMP
                 value = PVarCollectionInternal.Instance.GetPVarFloat(_player.Id, varname);
             else if (typeof (T) == typeof (string))
             {
-                string output;
-                PVarCollectionInternal.Instance.GetPVarString(_player.Id, varname, out output, 64);
+                PVarCollectionInternal.Instance.GetPVarString(_player.Id, varname, out var output, 64);
                 value = output;
             }
             else if (typeof (T) == typeof (bool))
@@ -190,8 +189,7 @@ namespace SampSharp.GameMode.SAMP
         {
             if (_player == null) return null;
 
-            string name;
-            PVarCollectionInternal.Instance.GetPVarNameAtIndex(_player.Id, index, out name, 64);
+            PVarCollectionInternal.Instance.GetPVarNameAtIndex(_player.Id, index, out var name, 64);
             return name;
         }
 

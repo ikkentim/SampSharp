@@ -114,11 +114,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                string name;
-                PlayerInternal.Instance.GetPlayerName(Id, out name, MaxNameLength);
+                PlayerInternal.Instance.GetPlayerName(Id, out var name, MaxNameLength);
                 return name;
             }
-            set { PlayerInternal.Instance.SetPlayerName(Id, value); }
+            set => PlayerInternal.Instance.SetPlayerName(Id, value);
         }
 
         /// <summary>
@@ -128,11 +127,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float angle;
-                PlayerInternal.Instance.GetPlayerFacingAngle(Id, out angle);
+                PlayerInternal.Instance.GetPlayerFacingAngle(Id, out var angle);
                 return angle;
             }
-            set { PlayerInternal.Instance.SetPlayerFacingAngle(Id, value); }
+            set => PlayerInternal.Instance.SetPlayerFacingAngle(Id, value);
         }
 
         /// <summary>
@@ -140,8 +138,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Interior
         {
-            get { return PlayerInternal.Instance.GetPlayerInterior(Id); }
-            set { PlayerInternal.Instance.SetPlayerInterior(Id, value); }
+            get => PlayerInternal.Instance.GetPlayerInterior(Id);
+            set => PlayerInternal.Instance.SetPlayerInterior(Id, value);
         }
 
         /// <summary>
@@ -149,8 +147,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int VirtualWorld
         {
-            get { return PlayerInternal.Instance.GetPlayerVirtualWorld(Id); }
-            set { PlayerInternal.Instance.SetPlayerVirtualWorld(Id, value); }
+            get => PlayerInternal.Instance.GetPlayerVirtualWorld(Id);
+            set => PlayerInternal.Instance.SetPlayerVirtualWorld(Id, value);
         }
 
         /// <summary>
@@ -160,11 +158,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float health;
-                PlayerInternal.Instance.GetPlayerHealth(Id, out health);
+                PlayerInternal.Instance.GetPlayerHealth(Id, out var health);
                 return health;
             }
-            set { PlayerInternal.Instance.SetPlayerHealth(Id, value); }
+            set => PlayerInternal.Instance.SetPlayerHealth(Id, value);
         }
 
         /// <summary>
@@ -174,11 +171,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float armour;
-                PlayerInternal.Instance.GetPlayerArmour(Id, out armour);
+                PlayerInternal.Instance.GetPlayerArmour(Id, out var armour);
                 return armour;
             }
-            set { PlayerInternal.Instance.SetPlayerArmour(Id, value); }
+            set => PlayerInternal.Instance.SetPlayerArmour(Id, value);
         }
 
         /// <summary>
@@ -213,8 +209,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Team
         {
-            get { return PlayerInternal.Instance.GetPlayerTeam(Id); }
-            set { PlayerInternal.Instance.SetPlayerTeam(Id, value); }
+            get => PlayerInternal.Instance.GetPlayerTeam(Id);
+            set => PlayerInternal.Instance.SetPlayerTeam(Id, value);
         }
 
         /// <summary>
@@ -222,8 +218,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Score
         {
-            get { return PlayerInternal.Instance.GetPlayerScore(Id); }
-            set { PlayerInternal.Instance.SetPlayerScore(Id, value); }
+            get => PlayerInternal.Instance.GetPlayerScore(Id);
+            set => PlayerInternal.Instance.SetPlayerScore(Id, value);
         }
 
         /// <summary>
@@ -231,8 +227,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int DrunkLevel
         {
-            get { return PlayerInternal.Instance.GetPlayerDrunkLevel(Id); }
-            set { PlayerInternal.Instance.SetPlayerDrunkLevel(Id, value); }
+            get => PlayerInternal.Instance.GetPlayerDrunkLevel(Id);
+            set => PlayerInternal.Instance.SetPlayerDrunkLevel(Id, value);
         }
 
         /// <summary>
@@ -240,8 +236,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual Color Color
         {
-            get { return new Color(PlayerInternal.Instance.GetPlayerColor(Id)); }
-            set { PlayerInternal.Instance.SetPlayerColor(Id, value); }
+            get => new Color(PlayerInternal.Instance.GetPlayerColor(Id));
+            set => PlayerInternal.Instance.SetPlayerColor(Id, value);
         }
 
         /// <summary>
@@ -249,8 +245,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Skin
         {
-            get { return PlayerInternal.Instance.GetPlayerSkin(Id); }
-            set { PlayerInternal.Instance.SetPlayerSkin(Id, value); }
+            get => PlayerInternal.Instance.GetPlayerSkin(Id);
+            set => PlayerInternal.Instance.SetPlayerSkin(Id, value);
         }
 
         /// <summary>
@@ -258,7 +254,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int Money
         {
-            get { return PlayerInternal.Instance.GetPlayerMoney(Id); }
+            get => PlayerInternal.Instance.GetPlayerMoney(Id);
             set
             {
                 PlayerInternal.Instance.ResetPlayerMoney(Id);
@@ -278,8 +274,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                string ip;
-                PlayerInternal.Instance.GetPlayerIp(Id, out ip, 16);
+                PlayerInternal.Instance.GetPlayerIp(Id, out var ip, 16);
                 return ip;
             }
         }
@@ -294,8 +289,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual int WantedLevel
         {
-            get { return PlayerInternal.Instance.GetPlayerWantedLevel(Id); }
-            set { PlayerInternal.Instance.SetPlayerWantedLevel(Id, value); }
+            get => PlayerInternal.Instance.GetPlayerWantedLevel(Id);
+            set => PlayerInternal.Instance.SetPlayerWantedLevel(Id, value);
         }
 
         /// <summary>
@@ -303,8 +298,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual FightStyle FightStyle
         {
-            get { return (FightStyle) PlayerInternal.Instance.GetPlayerFightingStyle(Id); }
-            set { PlayerInternal.Instance.SetPlayerFightingStyle(Id, (int) value); }
+            get => (FightStyle) PlayerInternal.Instance.GetPlayerFightingStyle(Id);
+            set => PlayerInternal.Instance.SetPlayerFightingStyle(Id, (int) value);
         }
 
         /// <summary>
@@ -314,11 +309,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float x, y, z;
-                PlayerInternal.Instance.GetPlayerVelocity(Id, out x, out y, out z);
+                PlayerInternal.Instance.GetPlayerVelocity(Id, out var x, out var y, out var z);
                 return new Vector3(x, y, z);
             }
-            set { PlayerInternal.Instance.SetPlayerVelocity(Id, value.X, value.Y, value.Z); }
+            set => PlayerInternal.Instance.SetPlayerVelocity(Id, value.X, value.Y, value.Z);
         }
 
         /// <summary>
@@ -336,8 +330,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual SpecialAction SpecialAction
         {
-            get { return (SpecialAction) PlayerInternal.Instance.GetPlayerSpecialAction(Id); }
-            set { PlayerInternal.Instance.SetPlayerSpecialAction(Id, (int) value); }
+            get => (SpecialAction) PlayerInternal.Instance.GetPlayerSpecialAction(Id);
+            set => PlayerInternal.Instance.SetPlayerSpecialAction(Id, (int) value);
         }
 
         /// <summary>
@@ -347,12 +341,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float x, y, z;
-
-                PlayerInternal.Instance.GetPlayerCameraPos(Id, out x, out y, out z);
+                PlayerInternal.Instance.GetPlayerCameraPos(Id, out var x, out var y, out var z);
                 return new Vector3(x, y, z);
             }
-            set { PlayerInternal.Instance.SetPlayerCameraPos(Id, value.X, value.Y, value.Z); }
+            set => PlayerInternal.Instance.SetPlayerCameraPos(Id, value.X, value.Y, value.Z);
         }
 
         /// <summary>
@@ -362,8 +354,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float x, y, z;
-                PlayerInternal.Instance.GetPlayerCameraFrontVector(Id, out x, out y, out z);
+                PlayerInternal.Instance.GetPlayerCameraFrontVector(Id, out var x, out var y, out var z);
                 return new Vector3(x, y, z);
             }
         }
@@ -508,8 +499,8 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         public virtual Vector3 Rotation
         {
-            get { return new Vector3(0, 0, Angle); }
-            set { Angle = value.Z; }
+            get => new Vector3(0, 0, Angle);
+            set => Angle = value.Z;
         }
 
         /// <summary>
@@ -519,11 +510,10 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                float x, y, z;
-                PlayerInternal.Instance.GetPlayerPos(Id, out x, out y, out z);
+                PlayerInternal.Instance.GetPlayerPos(Id, out var x, out var y, out var z);
                 return new Vector3(x, y, z);
             }
-            set { PlayerInternal.Instance.SetPlayerPos(Id, value.X, value.Y, value.Z); }
+            set => PlayerInternal.Instance.SetPlayerPos(Id, value.X, value.Y, value.Z);
         }
 
         #endregion
@@ -555,8 +545,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                string stats;
-                PlayerInternal.Instance.GetPlayerNetworkStats(Id, out stats, 256);
+                PlayerInternal.Instance.GetPlayerNetworkStats(Id, out var stats, 256);
                 return stats;
             }
         }
@@ -568,8 +557,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                string version;
-                PlayerInternal.Instance.GetPlayerVersion(Id, out version, 64);
+                PlayerInternal.Instance.GetPlayerVersion(Id, out var version, 64);
                 return version;
             }
         }
@@ -581,8 +569,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                string result;
-                PlayerInternal.Instance.GPCI(Id, out result, 64);
+                PlayerInternal.Instance.GPCI(Id, out var result, 64);
                 return result;
             }
         }
@@ -1085,8 +1072,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            int weaponid;
-            PlayerInternal.Instance.GetPlayerWeaponData(Id, slot, out weaponid, out ammo);
+            PlayerInternal.Instance.GetPlayerWeaponData(Id, slot, out var weaponid, out ammo);
             weapon = (Weapon) weaponid;
         }
 
@@ -1125,8 +1111,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            int keysDown;
-            PlayerInternal.Instance.GetPlayerKeys(Id, out keysDown, out updown, out leftright);
+            PlayerInternal.Instance.GetPlayerKeys(Id, out var keysDown, out updown, out leftright);
             keys = (Keys) keysDown;
         }
 
@@ -1901,14 +1886,7 @@ namespace SampSharp.GameMode.World
         /// <param name="hitPosition">The hit position.</param>
         public virtual void GetLastShot(out Vector3 origin, out Vector3 hitPosition)
         {
-            float ox,
-                oy,
-                oz,
-                hx,
-                hy,
-                hz;
-
-            PlayerInternal.Instance.GetPlayerLastShotVectors(Id, out ox, out oy, out oz, out hx, out hy, out hz);
+            PlayerInternal.Instance.GetPlayerLastShotVectors(Id, out var ox, out var oy, out var oz, out var hx, out var hy, out var hz);
 
             origin = new Vector3(ox, oy, oz);
             hitPosition = new Vector3(hx, hy, hz);

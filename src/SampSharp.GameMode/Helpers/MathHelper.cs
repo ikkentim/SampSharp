@@ -82,7 +82,7 @@ namespace SampSharp.GameMode.Helpers
             // Using formula from http://www.mvps.org/directx/articles/catmull/
             // Internally using doubles not to lose precission
             double amountSquared = amount * amount;
-            double amountCubed = amountSquared * amount;
+            var amountCubed = amountSquared * amount;
             return (float)(0.5 * (2.0 * value2 +
                 (value3 - value1) * amount +
                 (2.0 * value1 - 5.0 * value2 + 4.0 * value3 - value4) * amountSquared +

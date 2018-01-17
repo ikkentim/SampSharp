@@ -318,7 +318,7 @@ namespace SampSharp.GameMode.Display
         /// </exception>
         public IEnumerable<string> this[int index]
         {
-            get { return _rows[index].Split('\t'); }
+            get => _rows[index].Split('\t');
             set
             {
                 var row = value.ToArray();

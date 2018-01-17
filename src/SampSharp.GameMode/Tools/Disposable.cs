@@ -28,8 +28,8 @@ namespace SampSharp.GameMode.Tools
         /// </summary>
         public bool IsDisposed
         {
-            get { return _isDisposed; }
-            private set { _isDisposed = value; }
+            get => _isDisposed;
+            private set => _isDisposed = value;
         }
 
         /// <summary>
