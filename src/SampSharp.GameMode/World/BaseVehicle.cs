@@ -38,22 +38,6 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public const int Max = 2000;
 
-        #region Overrides of Object
-
-        /// <summary>
-        ///     Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        ///     A string that represents the current object.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        public override string ToString()
-        {
-            return $"Vehicle(Id:{Id}, Model: {Model})";
-        }
-
-        #endregion
-
         #region Properties
 
         /// <summary>

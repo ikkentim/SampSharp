@@ -98,23 +98,7 @@ namespace SampSharp.GameMode.World
         }
 
         #endregion
-
-        #region Methods
-
-        /// <summary>
-        ///     Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        ///     A string that represents the current object.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        public override string ToString()
-        {
-            return $"Pickup(Id: {Id}, Model: {Model})";
-        }
-
-        #endregion
-
+        
         #region Properties
 
         /// <summary>

@@ -59,24 +59,7 @@ namespace SampSharp.GameMode.World
         ///     Maximum length of the text in a chat bubble.
         /// </summary>
         public const int MaxChatBubbleLength = 144;
-
-        #region Methods
-
-        /// <summary>
-        ///     Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        ///     A string that represents the current object.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        public override string ToString()
-        {
-            
-            return IsDisposed ? $"Player(IsDisposed=true)" : $"Player(Id:{Id}, Name:{Name})";
-        }
-
-        #endregion
-
+        
         #region Constructors
 
         /// <summary>
