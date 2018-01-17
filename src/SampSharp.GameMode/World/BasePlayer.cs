@@ -531,7 +531,7 @@ namespace SampSharp.GameMode.World
         public virtual bool IsAdmin => PlayerInternal.Instance.IsPlayerAdmin(Id);
 
         /// <summary>
-        ///     Gets whether this Player is alive;
+        ///     Gets a value indicating whether this Player is alive.
         /// </summary>
         public virtual bool IsAlive
             => !new[] {PlayerState.None, PlayerState.Spectating, PlayerState.Wasted}.Contains(State);
@@ -540,7 +540,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets this Player's network stats and saves them into a string.
         /// </summary>
-        [Obsolete("Use the properties ConnectionStatus, BytesReceived, BytesSent and other")]
+        [Obsolete("Use the properties ConnectionStatus, BytesReceived, BytesSent and others instead")]
         public virtual string NetworkStats
         {
             get

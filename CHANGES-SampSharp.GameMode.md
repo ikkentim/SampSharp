@@ -1,3 +1,7 @@
+### 0.8.0-alpha6
+- Added ExplosionType enum (#234)
+- Added netstat properties to the `BasePlayer` class (#238)
+
 ### 0.8.0-alpha2
 - Added `Weapon.Suicide` definition
 - Added `Color(byte, byte, byte, float)` constructor

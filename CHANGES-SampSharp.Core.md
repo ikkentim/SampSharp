@@ -1,3 +1,7 @@
+### 0.8.0-alpha6
+- Fixed random server freezes while waiting for a response from the server
+- Fixed callbacks called during the `OnGameModeInit` callback not being called
+
 ### 0.8.0-alpha5
 - Added a separate buffer for native results so the native arguments don't get overwritten by the native when it is writing the output (plugin)
 - Changed natives to provide all results in array references instead of just the written values. The unwritten values are 0 by default
