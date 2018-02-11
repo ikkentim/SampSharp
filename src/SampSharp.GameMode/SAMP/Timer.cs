@@ -199,8 +199,6 @@ namespace SampSharp.GameMode.SAMP
 
         internal void PerformTick()
         {
-            OnTick(EventArgs.Empty);
-
             if (!IsRepeating)
                 IsRunning = false;
             else
@@ -208,6 +206,7 @@ namespace SampSharp.GameMode.SAMP
                 _lastTick = DateTime.UtcNow;
                 NextTick = NextTick + _interval;
             }
+            OnTick(EventArgs.Empty);
         }
     }
 }
