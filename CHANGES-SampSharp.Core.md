@@ -1,3 +1,6 @@
+### 0.8.0-alpha7
+- Possibly fixed "Duplicate type name within an assembly." error
+
 ### 0.8.0-alpha6
 - Fixed random server freezes while waiting for a response from the server
 - Fixed callbacks called during the `OnGameModeInit` callback not being called

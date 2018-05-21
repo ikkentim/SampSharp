@@ -1,3 +1,6 @@
+### 0.8.0-alpha7
+- Fixed timer executed multiple times
+
 ### 0.8.0-alpha6
 - Added ExplosionType enum (#234)
 - Added netstat properties to the `BasePlayer` class (#238)
