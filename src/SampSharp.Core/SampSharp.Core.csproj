@@ -6,6 +6,7 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/ikkentim/SampSharp/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/ikkentim/SampSharp</PackageProjectUrl>
     <PackageId>SampSharp.Core</PackageId>
+    <Title>SampSharp Server Core</Title>
     <Description>The core library of SampSharp which manages the communication with the SA-MP server.</Description>
     <Product>SampSharp.Core</Product>
     <Company>Tim Potze</Company>

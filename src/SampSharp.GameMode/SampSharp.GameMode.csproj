@@ -6,6 +6,7 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/ikkentim/SampSharp/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/ikkentim/SampSharp</PackageProjectUrl>
     <PackageId>SampSharp.GameMode</PackageId>
+    <Title>SampSharp GameMode Framework</Title>
     <Description>A framework for writing SA-MP game modes in C#.</Description>
     <Product>SampSharp.GameMode</Product>
     <Company>Tim Potze</Company>

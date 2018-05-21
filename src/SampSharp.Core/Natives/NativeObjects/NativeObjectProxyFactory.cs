@@ -28,6 +28,7 @@ namespace SampSharp.Core.Natives.NativeObjects
     {
         private static readonly Dictionary<Type, Type> KnownTypes = new Dictionary<Type, Type>();
         private static readonly ModuleBuilder ModuleBuilder;
+        private static readonly object Lock = new object();
 
         /// <summary>
         ///     Initializes the <see cref="NativeObjectProxyFactory" /> class.
@@ -58,146 +59,149 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// <returns>The proxy isntance</returns>
         public static object CreateInstance(Type type, params object[] arguments)
         {
-            // Check already known types.
-            if (KnownTypes.TryGetValue(type, out var outType))
+            lock (Lock)
+            {
+                // Check already known types.
+                if (KnownTypes.TryGetValue(type, out var outType))
+                    return Activator.CreateInstance(outType, arguments);
+
+                // Define a type for the native object.
+                var typeBuilder = ModuleBuilder.DefineType(type.Name + "ProxyClass",
+                    TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.Class, type);
+
+                // Get the common identifiers for the native object.
+                var objectIdentifiers = type.GetTypeInfo().GetCustomAttribute<NativeObjectIdentifiersAttribute>()?.Identifiers ?? new string[0];
+
+                // Keep track of whether any method or property has been wrapped in a proxy method.
+                var didWrapAnything = false;
+
+                // Wrap properties
+                foreach (var property in type.GetTypeInfo().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+                {
+                    var get = property.GetMethod;
+                    var set = property.SetMethod;
+
+                    // Make sure the property is virtual and not an indexed property.
+                    if (!(get?.IsVirtual ?? set.IsVirtual) || property.GetIndexParameters().Length != 0)
+                        continue;
+
+                    // Find the attribute containing details about the property.
+                    var propertyAttribute = property.GetCustomAttribute<NativePropertyAttribute>();
+
+                    if (propertyAttribute == null)
+                        continue;
+
+                    var identifiers = propertyAttribute.IgnoreIdentifiers ? new string[0] : objectIdentifiers;
+
+                    // Define the wrapping property.
+                    var wrapProperty = typeBuilder.DefineProperty(property.Name, PropertyAttributes.None, property.PropertyType,
+                        Type.EmptyTypes);
+
+                    // Generate getters
+                    if (get != null)
+                    {
+                        // Use "Get{propertyName}" as the default name of the native to call if none is specified in the attached attribute.
+                        var name = propertyAttribute.GetFunction ?? "Get" + property.Name;
+
+                        // Define the method.
+                        var methodBuilder = typeBuilder.DefineMethod(get.Name,
+                            (get.IsPublic ? MethodAttributes.Public : MethodAttributes.Family) | MethodAttributes.ReuseSlot |
+                            MethodAttributes.Virtual | MethodAttributes.HideBySig, get.ReturnType, Type.EmptyTypes);
+
+                        // Find the native.
+                        var native = InternalStorage.RunningClient.NativeLoader.Load(name, propertyAttribute.GetLengths,
+                            Enumerable.Repeat(typeof(int), propertyAttribute.IgnoreIdentifiers ? 0 : objectIdentifiers.Length)
+                                .ToArray());
+
+                        if (native == null)
+                            continue;
+
+                        // Generate the method body.
+                        var gen = new NativeObjectILGenerator(native, type, identifiers, new Type[0], get.ReturnType);
+                        gen.Generate(methodBuilder.GetILGenerator());
+
+                        wrapProperty.SetGetMethod(methodBuilder);
+                    }
+
+                    // Getnerate setters
+                    if (set != null)
+                    {
+                        // Use "Set{propertyName}" as the default name of the native to call if none is specified in the attached attribute.
+                        var name = propertyAttribute.SetFunction ?? "Set" + property.Name;
+
+                        // Define the method.
+                        var methodBuilder = typeBuilder.DefineMethod(set.Name,
+                            (set.IsPublic ? MethodAttributes.Public : MethodAttributes.Family) | MethodAttributes.ReuseSlot |
+                            MethodAttributes.Virtual | MethodAttributes.HideBySig, set.ReturnType,
+                            new[] { property.PropertyType });
+
+                        // Find the native.
+                        var native = InternalStorage.RunningClient.NativeLoader.Load(name, propertyAttribute.SetLengths,
+                            Enumerable.Repeat(typeof(int), propertyAttribute.IgnoreIdentifiers ? 0 : objectIdentifiers.Length)
+                                .Concat(new[] { property.PropertyType })
+                                .ToArray());
+
+                        if (native == null)
+                            continue;
+
+                        // Generate the method body.
+                        var gen = new NativeObjectILGenerator(native, type, identifiers, new[] { property.PropertyType }, typeof(void));
+                        gen.Generate(methodBuilder.GetILGenerator());
+
+                        wrapProperty.SetSetMethod(methodBuilder);
+                    }
+
+                    didWrapAnything = true;
+                }
+
+                foreach (var method in type.GetTypeInfo().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+                {
+                    // Make sure the method is virtual, public and not protected.
+                    if (!method.IsVirtual || !method.IsPublic && !method.IsFamily)
+                        continue;
+
+                    // Find the attribute containing details about the method.
+                    var attr = method.GetCustomAttribute<NativeMethodAttribute>();
+
+                    if (attr == null)
+                        continue;
+
+                    // Determine the details about the native.
+                    var name = attr.Function ?? method.Name;
+                    var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
+                    var sizes = attr.Lengths;
+
+                    // Find the native.
+                    var native = InternalStorage.RunningClient.NativeLoader.Load(name, sizes,
+                        Enumerable.Repeat(typeof(int), attr.IgnoreIdentifiers ? 0 : objectIdentifiers.Length)
+                            .Concat(argTypes)
+                            .ToArray());
+
+                    if (native == null)
+                        continue;
+
+                    // Define the method.
+                    var methodBuilder = typeBuilder.DefineMethod(method.Name,
+                        (method.IsPublic ? MethodAttributes.Public : MethodAttributes.Family) | MethodAttributes.ReuseSlot |
+                        MethodAttributes.Virtual | MethodAttributes.HideBySig, method.ReturnType, argTypes);
+
+                    // Generate the method.
+                    var il = methodBuilder.GetILGenerator();
+
+                    var gen = new NativeObjectILGenerator(native, type,
+                        attr.IgnoreIdentifiers ? new string[0] : objectIdentifiers, argTypes,
+                        method.ReturnType);
+                    gen.Generate(il);
+
+                    didWrapAnything = true;
+                }
+
+                // Store the newly created type and return and instance of it.
+                outType = didWrapAnything ? typeBuilder.CreateTypeInfo().AsType() : type;
+
+                KnownTypes[type] = outType;
                 return Activator.CreateInstance(outType, arguments);
-
-            // Define a type for the native object.
-            var typeBuilder = ModuleBuilder.DefineType(type.Name + "ProxyClass",
-                TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.Class, type);
-
-            // Get the common identifiers for the native object.
-            var objectIdentifiers = type.GetTypeInfo().GetCustomAttribute<NativeObjectIdentifiersAttribute>()?.Identifiers ?? new string[0];
-
-            // Keep track of whether any method or property has been wrapped in a proxy method.
-            var didWrapAnything = false;
-
-            // Wrap properties
-            foreach (var property in type.GetTypeInfo().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
-            {
-                var get = property.GetMethod;
-                var set = property.SetMethod;
-
-                // Make sure the property is virtual and not an indexed property.
-                if (!(get?.IsVirtual ?? set.IsVirtual) || property.GetIndexParameters().Length != 0)
-                    continue;
-
-                // Find the attribute containing details about the property.
-                var propertyAttribute = property.GetCustomAttribute<NativePropertyAttribute>();
-
-                if (propertyAttribute == null)
-                    continue;
-
-                var identifiers = propertyAttribute.IgnoreIdentifiers ? new string[0] : objectIdentifiers;
-
-                // Define the wrapping property.
-                var wrapProperty = typeBuilder.DefineProperty(property.Name, PropertyAttributes.None, property.PropertyType,
-                    Type.EmptyTypes);
-
-                // Generate getters
-                if (get != null)
-                {
-                    // Use "Get{propertyName}" as the default name of the native to call if none is specified in the attached attribute.
-                    var name = propertyAttribute.GetFunction ?? "Get" + property.Name;
-
-                    // Define the method.
-                    var methodBuilder = typeBuilder.DefineMethod(get.Name,
-                        (get.IsPublic ? MethodAttributes.Public : MethodAttributes.Family) | MethodAttributes.ReuseSlot |
-                        MethodAttributes.Virtual | MethodAttributes.HideBySig, get.ReturnType, Type.EmptyTypes);
-
-                    // Find the native.
-                    var native = InternalStorage.RunningClient.NativeLoader.Load(name, propertyAttribute.GetLengths,
-                        Enumerable.Repeat(typeof(int), propertyAttribute.IgnoreIdentifiers ? 0 : objectIdentifiers.Length)
-                            .ToArray());
-
-                    if (native == null)
-                        continue;
-
-                    // Generate the method body.
-                    var gen = new NativeObjectILGenerator(native, type, identifiers, new Type[0], get.ReturnType);
-                    gen.Generate(methodBuilder.GetILGenerator());
-
-                    wrapProperty.SetGetMethod(methodBuilder);
-                }
-
-                // Getnerate setters
-                if (set != null)
-                {
-                    // Use "Set{propertyName}" as the default name of the native to call if none is specified in the attached attribute.
-                    var name = propertyAttribute.SetFunction ?? "Set" + property.Name;
-
-                    // Define the method.
-                    var methodBuilder = typeBuilder.DefineMethod(set.Name,
-                        (set.IsPublic ? MethodAttributes.Public : MethodAttributes.Family) | MethodAttributes.ReuseSlot |
-                        MethodAttributes.Virtual | MethodAttributes.HideBySig, set.ReturnType,
-                        new[] { property.PropertyType });
-
-                    // Find the native.
-                    var native = InternalStorage.RunningClient.NativeLoader.Load(name, propertyAttribute.SetLengths,
-                        Enumerable.Repeat(typeof(int), propertyAttribute.IgnoreIdentifiers ? 0 : objectIdentifiers.Length)
-                            .Concat(new[] { property.PropertyType })
-                            .ToArray());
-
-                    if (native == null)
-                        continue;
-
-                    // Generate the method body.
-                    var gen = new NativeObjectILGenerator(native, type, identifiers, new[] { property.PropertyType }, typeof(void));
-                    gen.Generate(methodBuilder.GetILGenerator());
-
-                    wrapProperty.SetSetMethod(methodBuilder);
-                }
-
-                didWrapAnything = true;
             }
-
-            foreach (var method in type.GetTypeInfo().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
-            {
-                // Make sure the method is virtual, public and not protected.
-                if (!method.IsVirtual || !method.IsPublic && !method.IsFamily)
-                    continue;
-
-                // Find the attribute containing details about the method.
-                var attr = method.GetCustomAttribute<NativeMethodAttribute>();
-
-                if (attr == null)
-                    continue;
-
-                // Determine the details about the native.
-                var name = attr.Function ?? method.Name;
-                var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
-                var sizes = attr.Lengths;
-
-                // Find the native.
-                var native = InternalStorage.RunningClient.NativeLoader.Load(name, sizes,
-                    Enumerable.Repeat(typeof(int), attr.IgnoreIdentifiers ? 0 : objectIdentifiers.Length)
-                        .Concat(argTypes)
-                        .ToArray());
-
-                if (native == null)
-                    continue;
-
-                // Define the method.
-                var methodBuilder = typeBuilder.DefineMethod(method.Name,
-                    (method.IsPublic ? MethodAttributes.Public : MethodAttributes.Family) | MethodAttributes.ReuseSlot |
-                    MethodAttributes.Virtual | MethodAttributes.HideBySig, method.ReturnType, argTypes);
-
-                // Generate the method.
-                var il = methodBuilder.GetILGenerator();
-
-                var gen = new NativeObjectILGenerator(native, type,
-                    attr.IgnoreIdentifiers ? new string[0] : objectIdentifiers, argTypes,
-                    method.ReturnType);
-                gen.Generate(il);
-
-                didWrapAnything = true;
-            }
-
-            // Store the newly created type and return and instance of it.
-            outType = didWrapAnything ? typeBuilder.CreateTypeInfo().AsType() : type;
-
-            KnownTypes[type] = outType;
-            return Activator.CreateInstance(outType, arguments);
         }
     }
 }
