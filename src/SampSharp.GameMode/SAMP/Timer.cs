@@ -27,6 +27,7 @@ namespace SampSharp.GameMode.SAMP
         private TimeSpan _interval;
         private bool _isRunning;
         private DateTime _lastTick;
+        private bool _isTicking;
 
         /// <summary>
         ///     Initializes a new instance of the Timer class and starts the timer.
@@ -199,6 +200,12 @@ namespace SampSharp.GameMode.SAMP
 
         internal void PerformTick()
         {
+            if (_isTicking)
+            {
+                // Skip double ticks.
+                return;
+            }
+
             if (!IsRepeating)
                 IsRunning = false;
             else
@@ -206,7 +213,16 @@ namespace SampSharp.GameMode.SAMP
                 _lastTick = DateTime.UtcNow;
                 NextTick = NextTick + _interval;
             }
-            OnTick(EventArgs.Empty);
+
+            try
+            {
+                _isTicking = true;
+                OnTick(EventArgs.Empty);
+            }
+            finally
+            {
+                _isTicking = false;
+            }
         }
     }
 }

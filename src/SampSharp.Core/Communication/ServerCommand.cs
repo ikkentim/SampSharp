@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2018 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,6 +12,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+using System;
 
 namespace SampSharp.Core.Communication
 {
@@ -31,7 +33,8 @@ namespace SampSharp.Core.Communication
         Print = 0x02,
 
         /// <summary>
-        ///     A message which can be sent to the server to deliver the response of a <see cref="PublicCall" />.
+        ///     A message which can be sent to the server to deliver the response of a <see cref="PublicCall" /> or received from
+        ///     the server carrying a reply after <see cref="FindNative" /> or <see cref="InvokeNative" />.
         /// </summary>
         Response = 0x03,
 
@@ -86,8 +89,9 @@ namespace SampSharp.Core.Communication
         PublicCall = 0x13,
 
         /// <summary>
-        ///     A reply sent by the server after <see cref="FindNative" /> or <see cref="InvokeNative" />.
+        ///     Obsolete.
         /// </summary>
+        [Obsolete("Replaced by Response")]
         Reply = 0x14,
 
         /// <summary>

@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2018 Tim Potze
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,10 +18,24 @@
 #define PLUGIN_VERSION_MAJOR        0
 #define PLUGIN_VERSION_MINOR        8
 #define PLUGIN_VERSION_PATCH        0
-#define PLUGIN_PROTOCOL_VERSION     3
+#define PLUGIN_VERSION_ALPHA        8
+#define PLUGIN_PROTOCOL_VERSION     4
 
-#define PLUGIN_VERSION_STR          "0.8.0-alpha7"
+#define __PLUGIN_STRINGIZE(x)       #x
+#define __PLUGIN_STRINGIZEX(x)      __PLUGIN_STRINGIZE(x)
+
+#define __PLUGIN_VERSION_STR        \
+    __PLUGIN_STRINGIZEX(PLUGIN_VERSION_MAJOR) "." \
+    __PLUGIN_STRINGIZEX(PLUGIN_VERSION_MINOR) "." \
+    __PLUGIN_STRINGIZEX(PLUGIN_VERSION_PATCH)
+
+#if PLUGIN_VERSION_ALPHA > 0
+#  define PLUGIN_VERSION_STR          __PLUGIN_VERSION_STR "-alpha" \
+    __PLUGIN_STRINGIZEX(PLUGIN_VERSION_ALPHA)
+#else
+#  define PLUGIN_VERSION_STR          __PLUGIN_VERSION_STR
+#endif
 
 #define PLUGIN_VERSION              ((PLUGIN_VERSION_MAJOR << 16) |\
                                         (PLUGIN_VERSION_MINOR << 8) |\
-                                        (PLUGIN_VERSION_PATCH))
+                                        (PLUGIN_VERSION_PATCH) | (PLUGIN_VERSION_ALPHA << 24))

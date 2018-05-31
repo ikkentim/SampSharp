@@ -50,6 +50,7 @@ namespace SampSharp.Core
         private bool _shuttingDown;
         private SampSharpSyncronizationContext _syncronizationContext;
         private DateTime _lastSend;
+        private ushort _callerIndex;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameModeClient" /> class.
@@ -181,10 +182,6 @@ namespace SampSharp.Core
 
                         CleanUp();
                     }
-                    break;
-                case ServerCommand.Reply:
-                    CoreLog.Log(CoreLogLevel.Error, "Received a random reply");
-                    CoreLog.Log(CoreLogLevel.Debug, Environment.StackTrace);
                     break;
                 default:
                     CoreLog.Log(CoreLogLevel.Error, $"Unknown command {data.Command} recieved with {data.Data?.Length.ToString() ?? "NULL"} data");
@@ -345,29 +342,29 @@ namespace SampSharp.Core
                 _syncronizationContext.Send(ctx => Send(command, data), null);
         }
 
-        private ServerCommandData SendAndWait(ServerCommand command, IEnumerable<byte> data, ServerCommand response)
+        private ServerCommandData SendAndWait(ServerCommand command, IEnumerable<byte> data, Func<ServerCommandData, bool> accept = null)
         {
             Send(command, data);
             
             for (;;)
             {
-                var responseData = _commandWaitQueue.Wait();
+                var responseData = _commandWaitQueue.Wait(accept);
                 
-                if (responseData.Command == response)
+                if (responseData.Command == ServerCommand.Response)
                     return responseData;
                 
                 ProcessCommand(responseData);
             }
         }
 
-        private ServerCommandData SendAndWaitOnMainThread(ServerCommand command, IEnumerable<byte> data, ServerCommand response)
+        private ServerCommandData SendAndWaitOnMainThread(ServerCommand command, IEnumerable<byte> data, Func<ServerCommandData, bool> accept = null)
         {
 
             if (IsOnMainThread)
-                return SendAndWait(command, data, response);
+                return SendAndWait(command, data, accept);
 
             var responseData = default(ServerCommandData);
-            _syncronizationContext.Send(ctx => responseData = SendAndWait(command, data, response), null);
+            _syncronizationContext.Send(ctx => responseData = SendAndWait(command, data, accept), null);
             return responseData;
         }
 
@@ -521,6 +518,16 @@ namespace SampSharp.Core
             return await pong.Task;
         }
 
+        private ushort GetCallerId()
+        {
+            unchecked
+            {
+                _callerIndex++;
+            }
+
+            return _callerIndex;
+        }
+
         /// <summary>
         ///     Gets the handle of the native with the specified <paramref name="name" />.
         /// </summary>
@@ -530,12 +537,14 @@ namespace SampSharp.Core
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
 
-            var data = SendAndWaitOnMainThread(ServerCommand.FindNative, ValueConverter.GetBytes(name, Encoding), ServerCommand.Response);
-          
-            if (data.Data.Length != 4)
-                throw new Exception("Invalid FindNative response from server.");
+            var caller = GetCallerId();
+            var data = SendAndWaitOnMainThread(ServerCommand.FindNative,
+                ValueConverter.GetBytes(caller).Concat(ValueConverter.GetBytes(name, Encoding)), d => d.Command != ServerCommand.Response || (d.Data != null && d.Data.Length >= 2 && ValueConverter.ToUInt16(d.Data, 0) == caller));
 
-            return ValueConverter.ToInt32(data.Data, 0);
+            if (data.Data.Length != 6)
+                throw new Exception("Invalid FindNative response from server.");
+            
+            return ValueConverter.ToInt32(data.Data, 2);
         }
 
         /// <summary>
@@ -545,8 +554,14 @@ namespace SampSharp.Core
         /// <returns>The response from the native.</returns>
         public byte[] InvokeNative(IEnumerable<byte> data)
         {
-            var response = SendAndWaitOnMainThread(ServerCommand.InvokeNative, data, ServerCommand.Response);
-            return response.Data;
+            var caller = GetCallerId();
+            data = ValueConverter.GetBytes(caller).Concat(data);
+            var response = SendAndWaitOnMainThread(ServerCommand.InvokeNative, data, d =>
+            {
+                return d.Command != ServerCommand.Response ||
+                           (d.Data != null && d.Data.Length >= 2 && ValueConverter.ToUInt16(d.Data, 0) == caller);
+            });
+            return response.Data.Skip(2).ToArray(); // TODO: Optimize GC allocations
         }
 
         /// <summary>

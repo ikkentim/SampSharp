@@ -59,6 +59,7 @@ namespace SampSharp.Core.Logging
         {
             return LogLevel >= level || level == CoreLogLevel.Initialisation;
         }
+
         /// <summary>
         ///     Logs the specified message at the specified log level.
         /// </summary>
@@ -75,6 +76,17 @@ namespace SampSharp.Core.Logging
                     sw.WriteLine(level == CoreLogLevel.Initialisation ? message : $"[SampSharp:{GetLevelName(level)}] {message}");
                 }
             }
+        }
+        
+        /// <summary>
+        ///     Logs the specified message at the debug log level. The log message is removed in non-debug builds.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        [DebuggerHidden]
+        [Conditional("DEBUG")]
+        public static void LogDebug(string message)
+        {
+            Log(CoreLogLevel.Debug, message);
         }
     }
 }

@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2018 Tim Potze
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ void print_info() {
     logprintf("");
     logprintf("SampSharp Plugin");
     logprintf("----------------");
-    logprintf("v%s, (C)2014-2017 Tim Potze", PLUGIN_VERSION_STR);
+    logprintf("v%s, (C)2014-2018 Tim Potze", PLUGIN_VERSION_STR);
     logprintf("");
 }
 

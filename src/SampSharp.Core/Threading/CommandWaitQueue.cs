@@ -13,7 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SampSharp.Core.Communication;
@@ -23,35 +25,106 @@ namespace SampSharp.Core.Threading
 {
     internal class CommandWaitQueue
     {
+        private readonly List<ServerCommandData> _backlog = new List<ServerCommandData>();
+        private readonly ConcurrentQueue<ServerCommandData> _dismissed = new ConcurrentQueue<ServerCommandData>();
         private readonly ConcurrentQueue<ServerCommandData> _asyncQueue = new ConcurrentQueue<ServerCommandData>();
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(0, int.MaxValue);
 
         public async Task<ServerCommandData> WaitAsync()
         {
+            ServerCommandData value;
+
+            lock (_backlog)
+            {
+                if (_backlog.Count > 0)
+                {
+                    value = _backlog[0];
+                    _backlog.RemoveAt(0);// TODO: Improve O(n) performance
+                    return value;
+                }
+            }
+
             for (;;)
             {
-                if (_asyncQueue.TryDequeue(out var value))
+                if (_asyncQueue.TryDequeue(out value))
                     return value;
 
                 await _semaphore.WaitAsync();
 
-                if (_asyncQueue.TryDequeue(out var result))
-                    return result;
+                if (_asyncQueue.TryDequeue(out value))
+                    return value;
             }
         }
 
-        public ServerCommandData Wait()
+        public ServerCommandData Wait(Func<ServerCommandData, bool> accept = null)
         {
+            ServerCommandData value;
+            
+            lock (_backlog)
+            {
+                if (accept == null)
+                {
+                    if (_backlog.Count > 0)
+                    {
+                        value = _backlog[0];
+                        _backlog.RemoveAt(0);// TODO: Improve O(n) performance
+                        return value;
+                    }
+                }
+                else
+                {
+                    for (var i = 0; i < _backlog.Count; i++)
+                    {
+                        if (accept(_backlog[i]))
+                        {
+                            value = _backlog[i];
+                            _backlog.RemoveAt(i);
+                            return value;
+                        }
+                    }
+                }
+            }
+
             for (;;)
             {
-                // TODO: This is rather much of a workaround. It seems with certain timing the semaphore might stay in the waiting state if it has been released too soon. In case that happens, the concurrent queue will have the member added already.
-                if (_asyncQueue.TryDequeue(out var value))
-                    return value;
+                // TODO: This is rather much of a workaround. It seems with certain timing the semaphore might stay in
+                // TODO: the waiting state if it has been released too soon. In case that happens, the concurrent queue
+                // TODO: will have the member added already.
+                if (_asyncQueue.TryDequeue(out value))
+                {
+                    var ok = accept?.Invoke(value) ?? true;
+
+                    if (ok)
+                    {
+                        return value;
+                    }
+
+                    CoreLog.LogDebug("command added to backlog");
+                    lock (_backlog)
+                    {
+                        _backlog.Add(value);
+                        continue;
+                    }
+                }
+
 
                 _semaphore.Wait();
 
-                if (_asyncQueue.TryDequeue(out var result))
-                    return result;
+                if (_asyncQueue.TryDequeue(out value))
+                {
+                    var ok = accept?.Invoke(value) ?? true;
+                    
+                    if (ok)
+                    {
+                        return value;
+                    }
+                    
+                    CoreLog.LogDebug("command added to backlog");
+                    lock (_backlog)
+                    {
+                        _backlog.Add(value);
+                    }
+                }
             }
         }
 

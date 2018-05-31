@@ -30,6 +30,6 @@ namespace SampSharp.Core
         /// <summary>
         ///     Gets the version of the communication protocol used to communicate with the SampSharp server.
         /// </summary>
-        public static uint ProtocolVersion { get; } = 3;
+        public static uint ProtocolVersion { get; } = 4;
     }
 }

@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2018 Tim Potze
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ void server::log_error(const char * format, ...) {
 
 /** log debug */
 void server::log_debug(const char * format, ...) {
-#if (defined DEBUG) || (defined _DEBUG)
+#if ((defined DEBUG) || (defined _DEBUG)) && false
     va_list args;
     va_start(args, format);
     vlog("DEBUG", format, args);
@@ -148,15 +148,32 @@ CMD_DEFINE(cmd_register_call) {
 }
 
 CMD_DEFINE(cmd_find_native) {
-    log_debug("Find native w/%d data", buflen);
-    int32_t handle =  natives_.get_handle(buf);
-    communication_->send(CMD_RESPONSE, sizeof(int32_t), (uint8_t *)&handle);
+
+    // copy callerid to output buffer
+    *(uint16_t *)buftx_ = *(uint16_t *)buf;
+
+    log_debug("Find native w/%d data", buflen - sizeof(uint16_t));
+
+    *(int32_t *)(buftx_ + sizeof(uint16_t)) = natives_.get_handle(buf + sizeof(uint16_t));
+    
+    communication_->send(CMD_RESPONSE, sizeof(int32_t) + sizeof(uint16_t), buftx_);
 }
 
 CMD_DEFINE(cmd_invoke_native) {
     uint32_t txlen = LEN_NETBUF;
-    natives_.invoke(buf, buflen, buftx_, &txlen);
+    uint8_t *buftx = buftx_;
+
+    // copy callerid to output buffer
+    *(uint16_t *)buftx = *(uint16_t *)buf;
+
+    buf += sizeof(uint16_t);
+    buftx += sizeof(uint16_t);
+    buflen -= sizeof(uint16_t);
+    txlen -= sizeof(uint16_t);
+
+    natives_.invoke(buf, buflen, buftx, &txlen);
     log_debug("Native invoked with %d buflen, response has %d buflen", buflen, txlen);
+    txlen += sizeof(uint16_t);
     communication_->send(CMD_RESPONSE, txlen, buftx_);
 }
 

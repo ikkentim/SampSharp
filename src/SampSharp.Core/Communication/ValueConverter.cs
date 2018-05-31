@@ -34,6 +34,15 @@ namespace SampSharp.Core.Communication
         {
             return BitConverter.GetBytes(value);
         }
+        /// <summary>
+        ///     Gets the bytes representing the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The bytes representing the specified value.</returns>
+        public static byte[] GetBytes(ushort value)
+        {
+            return BitConverter.GetBytes(value);
+        }
 
         /// <summary>
         ///     Gets the bytes representing the specified value.
@@ -141,6 +150,21 @@ namespace SampSharp.Core.Communication
                    ((uint)buffer[index + 2] << 16) |
                    ((uint)buffer[index + 3] << 24);*/
         }
+        
+        /// <summary>
+        ///     Reads an <see cref="ushort" /> from the specified <paramref name="buffer" /> starting at the specified
+        ///     <paramref name="startIndex" />.
+        /// </summary>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="startIndex">The start index.</param>
+        /// <returns>The <see cref="ushort" /> read from the specified buffer.</returns>
+        public static ushort ToUInt16(byte[] buffer, int startIndex)
+        {
+            if (buffer == null) throw new ArgumentNullException(nameof(buffer));
+
+            return BitConverter.ToUInt16(buffer, startIndex);
+
+        }
 
         /// <summary>
         ///     Converts the specified <paramref name="value" /> to a <see cref="uint" />
@@ -230,7 +254,7 @@ namespace SampSharp.Core.Communication
             var terminatorIndex = Array.IndexOf(buffer, (byte)'\0', startIndex);
             return encoding.GetString(buffer, startIndex, terminatorIndex - startIndex);
         }
-
+        
         /// <summary>
         ///     A struct to immediately cast <see cref="int" />, <see cref="uint" /> or <see cref="float" /> values.
         /// </summary>
@@ -245,6 +269,18 @@ namespace SampSharp.Core.Communication
 
             [FieldOffset(0)]
             public float single;
+        }
+        /// <summary>
+        ///     A struct to immediately cast <see cref="short" /> or <see cref="ushort" /> values.
+        /// </summary>
+        [StructLayout(LayoutKind.Explicit)]
+        private struct ValueUnion16
+        {
+            [FieldOffset(0)]
+            public short int16;
+
+            [FieldOffset(0)]
+            public readonly ushort uint16;
         }
     }
 }
