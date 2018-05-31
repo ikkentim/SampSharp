@@ -607,7 +607,7 @@ namespace SampSharp.Core
             Initialize();
 
             // Pump new tasks
-            _messagePump.Pump();
+            _messagePump.Pump(e => OnUnhandledException(new UnhandledExceptionEventArgs(e)));
 
             // Clean up
             InternalStorage.RunningClient = null;

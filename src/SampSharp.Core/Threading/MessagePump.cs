@@ -19,7 +19,7 @@ using System.Threading;
 namespace SampSharp.Core.Threading
 {
     /// <summary>
-    ///     Represnets a pump for processing messages from a <see cref="MessageQueue" />.
+    ///     Represents a pump for processing messages from a <see cref="MessageQueue" />.
     /// </summary>
     public class MessagePump : IDisposable
     {
@@ -38,7 +38,7 @@ namespace SampSharp.Core.Threading
         /// <summary>
         ///     Pumps the messages send to the message queue until this instance is disposed.
         /// </summary>
-        public void Pump()
+        public void Pump(Action<Exception> uncaughtExceptionHandler)
         {
             while (true)
             {
@@ -49,7 +49,15 @@ namespace SampSharp.Core.Threading
 
                 // Get the next item in the queue.
                 var workItem = _queue.WaitForMessage();
-                workItem?.Execute();
+
+                try
+                {
+                    workItem?.Execute();
+                }
+                catch (Exception e)
+                {
+                    uncaughtExceptionHandler?.Invoke(e);
+                }
             }
         }
 
