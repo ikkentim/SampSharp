@@ -614,7 +614,7 @@ namespace SampSharp.GameMode.World
         {
             var service = BaseMode.Instance.Services.GetService<IVehicleFactory>();
 
-            return service?.Create(vehicleType, position, rotation, color1, color2);
+            return service?.CreateStatic(vehicleType, position, rotation, color1, color2);
         }
 
         /// <summary>
