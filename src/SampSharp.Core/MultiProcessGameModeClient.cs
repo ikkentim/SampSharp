@@ -33,7 +33,7 @@ namespace SampSharp.Core
     /// <summary>
     ///     Represents a SampSharp game mode client.
     /// </summary>
-    public sealed class GameModeClient : IGameModeClient, IGameModeRunner
+    public sealed class MultiProcessGameModeClient : IGameModeClient, IGameModeRunner
     {
         private static readonly byte[] AOne = { 1 };
         private static readonly byte[] AZero = { 0 };
@@ -53,13 +53,13 @@ namespace SampSharp.Core
         private ushort _callerIndex;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GameModeClient" /> class.
+        ///     Initializes a new instance of the <see cref="MultiProcessGameModeClient" /> class.
         /// </summary>
         /// <param name="communicationClient">The communication client to be used by the game mode client.</param>
         /// <param name="startBehaviour">The start method.</param>
         /// <param name="gameModeProvider">The game mode provider.</param>
         /// <param name="encoding">The encoding to use when en/decoding text messages sent to/from the server.</param>
-        public GameModeClient(ICommunicationClient communicationClient, GameModeStartBehaviour startBehaviour, IGameModeProvider gameModeProvider, Encoding encoding)
+        public MultiProcessGameModeClient(ICommunicationClient communicationClient, GameModeStartBehaviour startBehaviour, IGameModeProvider gameModeProvider, Encoding encoding)
         {
             Encoding = encoding;
             _startBehaviour = startBehaviour;

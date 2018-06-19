@@ -258,7 +258,7 @@ namespace SampSharp.Core
         private IGameModeRunner Build()
         {
             return _builder?.Invoke(_communicationClient, _startBehaviour, _gameModeProvider)
-                   ?? new GameModeClient(_communicationClient, _startBehaviour, _gameModeProvider, _encoding);
+                   ?? new MultiProcessGameModeClient(_communicationClient, _startBehaviour, _gameModeProvider, _encoding);
         }
     }
 }
