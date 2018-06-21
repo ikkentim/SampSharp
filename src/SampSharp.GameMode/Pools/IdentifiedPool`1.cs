@@ -130,7 +130,7 @@ namespace SampSharp.GameMode.Pools
         }
 
         /// <summary>
-        ///     Finds an instance with the given <paramref name="id" />".
+        ///     Finds an instance with the given <paramref name="id" />.
         /// </summary>
         /// <param name="id">The identity of the instance to find.</param>
         /// <returns>The found instance.</returns>

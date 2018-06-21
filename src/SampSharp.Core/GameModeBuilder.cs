@@ -35,6 +35,7 @@ namespace SampSharp.Core
         private bool _redirectConsoleOutput;
         private GameModeStartBehaviour _startBehaviour = GameModeStartBehaviour.Gmx;
         private Encoding _encoding;
+        private bool _hosted;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameModeBuilder" /> class.
@@ -133,6 +134,16 @@ namespace SampSharp.Core
         {
             _communicationClient = communicationClient ?? throw new ArgumentNullException(nameof(communicationClient));
             return this;
+        }
+
+        /// <summary>
+        ///     Indicate the game mode will be hosted in the SA-MP server process.
+        /// </summary>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseHosted()
+        {
+            _hosted = true;
+            return RedirectConsoleOutput();
         }
 
         /// <summary>
@@ -238,27 +249,53 @@ namespace SampSharp.Core
 
             var runner = Build();
 
-            if (redirect)
-                Console.SetOut(new ServerLogWriter(runner.Client));
-            
-            do
+            if (runner == null)
             {
-                // If true is returned, the runner wants to shut down.
-                if (runner.Run())
-                {
-                    break;
-                }
-
-            } while (_exitBehaviour == GameModeExitBehaviour.Restart);
+                return;
+            }
 
             if (redirect)
-                Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            {
+                Console.SetOut(new ServerLogWriter(runner.Client));
+            }
+            
+            if (_hosted)
+            {
+                // Ignore exit behaviours for hosted environments.
+                runner.Run();
+            }
+            else
+            {
+                do
+                {
+                    // If true is returned, the runner wants to shut down.
+                    if (runner.Run())
+                    {
+                        break;
+                    }
+
+                } while (_exitBehaviour == GameModeExitBehaviour.Restart);
+
+                if (redirect)
+                    Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            }
         }
 
         private IGameModeRunner Build()
         {
-            return _builder?.Invoke(_communicationClient, _startBehaviour, _gameModeProvider)
-                   ?? new MultiProcessGameModeClient(_communicationClient, _startBehaviour, _gameModeProvider, _encoding);
+            if (_builder != null)
+            {
+                return _builder(_communicationClient, _startBehaviour, _gameModeProvider);
+            }
+
+            if (_hosted)
+            {
+                return new HostedGameModeClient();
+            }
+            else
+            {
+                return new MultiProcessGameModeClient(_communicationClient, _startBehaviour, _gameModeProvider, _encoding);
+            }
         }
     }
 }

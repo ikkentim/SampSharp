@@ -33,12 +33,7 @@ namespace SampSharp.Core
         ///     Gets the default encoding to use when translating server messages.
         /// </summary>
         Encoding Encoding { get; }
-
-        /// <summary>
-        ///     Gets the communication client.
-        /// </summary>
-        ICommunicationClient CommunicationClient { get; }
-
+        
         /// <summary>
         ///     Gets or sets the native loader to be used to load natives.
         /// </summary>
@@ -50,12 +45,6 @@ namespace SampSharp.Core
         event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
         
         /// <summary>
-        ///     Pings the server.
-        /// </summary>
-        /// <returns>The ping to the server.</returns>
-        Task<TimeSpan> Ping();
-
-        /// <summary>
         ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
         ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
         /// </summary>
@@ -64,22 +53,7 @@ namespace SampSharp.Core
         /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
         /// <param name="parameters">The parameters of the callback.</param>
         void RegisterCallback(string name, object target, MethodInfo methodInfo, params CallbackParameterInfo[] parameters);
-
-        /// <summary>
-        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
-        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
-        /// </summary>
-        /// <param name="name">The name af the callback to register.</param>
-        /// <param name="target">The target on which to invoke the method.</param>
-        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
-        void RegisterCallback(string name, object target, MethodInfo methodInfo);
-
-        /// <summary>
-        ///     Registers callbacks in specified target object decorated with a <see cref="CallbackAttribute"/>.
-        /// </summary>
-        /// <param name="target">The target to register the callbacks from.</param>
-        void RegisterCallbacksInObject(object target);
-
+        
         /// <summary>
         ///     Prints the specified text to the server console.
         /// </summary>

@@ -225,7 +225,7 @@ namespace SampSharp.Core
         {
             CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Server");
             CoreLog.Log(CoreLogLevel.Initialisation, "-------------------------");
-            CoreLog.Log(CoreLogLevel.Initialisation, $"v{CoreVersion.Version.ToString(3)}, (C)2014-2017 Tim Potze");
+            CoreLog.Log(CoreLogLevel.Initialisation, $"v{CoreVersion.Version.ToString(3)}, (C)2014-2018 Tim Potze");
             CoreLog.Log(CoreLogLevel.Initialisation, "");
 
             _mainThread = Thread.CurrentThread.ManagedThreadId;
@@ -369,6 +369,43 @@ namespace SampSharp.Core
         }
 
         #endregion
+        
+        /// <summary>
+        ///     Pings the server.
+        /// </summary>
+        /// <returns>The ping to the server.</returns>
+        public async Task<TimeSpan> Ping()
+        {
+            var pong = new PongReceiver();
+            if (IsOnMainThread)
+            {
+                _pongs.Enqueue(pong);
+
+                pong.Ping();
+                Send(ServerCommand.Ping, null);
+            }
+            else
+            {
+                _syncronizationContext.Send(ctx =>
+                {
+                    _pongs.Enqueue(pong);
+
+                    pong.Ping();
+                    Send(ServerCommand.Ping, null);
+                }, null);
+            }
+            return await pong.Task;
+        }
+
+        private ushort GetCallerId()
+        {
+            unchecked
+            {
+                _callerIndex++;
+            }
+
+            return _callerIndex;
+        }
 
         #region Implementation of IGameModeClient
 
@@ -412,71 +449,7 @@ namespace SampSharp.Core
                 .Concat(parameters.SelectMany(c => c.GetBytes()))
                 .Concat(new[] { (byte) ServerCommandArgument.Terminator }));
         }
-
-        /// <summary>
-        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
-        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
-        /// </summary>
-        /// <param name="name">The name af the callback to register.</param>
-        /// <param name="target">The target on which to invoke the method.</param>
-        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
-        public void RegisterCallback(string name, object target, MethodInfo methodInfo)
-        {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (target == null) throw new ArgumentNullException(nameof(target));
-            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
-
-            AssertRunning();
-
-            var parameterInfos = methodInfo.GetParameters();
-            var parameters = new CallbackParameterInfo[parameterInfos.Length];
-
-            for (var i = 0; i < parameters.Length; i++)
-            {
-                if (Callback.IsValidValueType(parameterInfos[i].ParameterType))
-                    parameters[i] = CallbackParameterInfo.Value;
-                else if (Callback.IsValidArrayType(parameterInfos[i].ParameterType))
-                {
-                    var attribute = parameterInfos[i].GetCustomAttribute<ParameterLengthAttribute>();
-                    if (attribute == null)
-                        throw new CallbackRegistrationException("Parameters of array types must have an attached ParameterLengthAttribute.");
-                    parameters[i] = CallbackParameterInfo.Array(attribute.Index);
-                }
-                else if (Callback.IsValidStringType(parameterInfos[i].ParameterType))
-                    parameters[i] = CallbackParameterInfo.String;
-                else
-                    throw new CallbackRegistrationException("The method contains unsupported parameter types");
-            }
-
-            RegisterCallback(name, target, methodInfo, parameters);
-        }
-
-        /// <summary>
-        ///     Registers all callbacks in the specified target object. Instance methods with a <see cref="CallbackAttribute" />
-        ///     attached will be loaded.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        public void RegisterCallbacksInObject(object target)
-        {
-            if (target == null) throw new ArgumentNullException(nameof(target));
-
-            AssertRunning();
-
-            foreach (var method in target.GetType().GetTypeInfo().GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
-            {
-                var attribute = method.GetCustomAttribute<CallbackAttribute>();
-
-                if (attribute == null)
-                    continue;
-
-                var name = attribute.Name;
-                if (string.IsNullOrEmpty(name))
-                    name = method.Name;
-
-                RegisterCallback(name, target, method);
-            }
-        }
-
+        
         /// <summary>
         ///     Prints the specified text to the server console.
         /// </summary>
@@ -489,43 +462,6 @@ namespace SampSharp.Core
                 text = string.Empty;
 
             SendOnMainThread(ServerCommand.Print, ValueConverter.GetBytes(text, Encoding));
-        }
-
-        /// <summary>
-        ///     Pings the server.
-        /// </summary>
-        /// <returns>The ping to the server.</returns>
-        public async Task<TimeSpan> Ping()
-        {
-            var pong = new PongReceiver();
-            if (IsOnMainThread)
-            {
-                _pongs.Enqueue(pong);
-
-                pong.Ping();
-                Send(ServerCommand.Ping, null);
-            }
-            else
-            {
-                _syncronizationContext.Send(ctx =>
-                {
-                    _pongs.Enqueue(pong);
-
-                    pong.Ping();
-                    Send(ServerCommand.Ping, null);
-                }, null);
-            }
-            return await pong.Task;
-        }
-
-        private ushort GetCallerId()
-        {
-            unchecked
-            {
-                _callerIndex++;
-            }
-
-            return _callerIndex;
         }
 
         /// <summary>
