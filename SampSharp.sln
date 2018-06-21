@@ -13,6 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMode.DotNetCore", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6B10DCD1-5FFB-4B21-AF82-1906E6AF7119}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.travis.yml = .travis.yml
 		appveyor.yml = appveyor.yml
 		build.bat = build.bat
@@ -22,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6B10DCD1
 		CHANGES-SampSharp.Core.md = CHANGES-SampSharp.Core.md
 		CHANGES-SampSharp.GameMode.md = CHANGES-SampSharp.GameMode.md
 		premake4.lua = premake4.lua
+		env\server.cfg = env\server.cfg
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMode.DotNetFramework", "src\TestMode.DotNetFramework\TestMode.DotNetFramework.csproj", "{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}"

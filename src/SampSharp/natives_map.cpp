@@ -19,6 +19,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
+#include "logging.h"
 
 #define NATIVE_NOT_FOUND        -1
 #define MAX_ARGS                (32)
@@ -32,19 +33,16 @@
 #define ARG_STRING              (4)
 #define ARG_STRING_REF          (12)/* require size */
 
-natives_map::natives_map(server *svr) : svr_(svr) {
-}
-
-int32_t natives_map::get_handle(uint8_t *name) {
+int32_t natives_map::get_handle(char *name) {
     /* check for the native in the map */
     std::map<std::string, int32_t>::const_iterator it = 
-        natives_map_.find((char *)name);
+        natives_map_.find(name);
     if (it != natives_map_.end()) {
         return it->second;
     }
 
     /* find the native trough amx */
-    AMX_NATIVE native = sampgdk_FindNative((char *)name);
+    AMX_NATIVE native = sampgdk_FindNative(name);
 
     if (!native) {
         return NATIVE_NOT_FOUND;
@@ -52,7 +50,7 @@ int32_t natives_map::get_handle(uint8_t *name) {
 
     int32_t handle = natives_.size();
     natives_.push_back(native);
-    natives_map_[(char *)name] = handle;
+    natives_map_[name] = handle;
 
     return handle;
 }
@@ -64,7 +62,7 @@ void natives_map::invoke(uint8_t *rxbuf, uint32_t rxlen, uint8_t *txbuf,
     assert(txbuf);
     assert(txlen);
 
-#define STOP_ERR(err, ...) *txlen = 0; svr_->log_error(err, ##__VA_ARGS__); return
+#define STOP_ERR(err, ...) *txlen = 0; log_error(err, ##__VA_ARGS__); return
 #define ARG_LEN() *(uint32_t *)(rxbuf + rxpos)
 #define ARG_BUF_REQUIRE(len); \
     if (*txlen < txpos + (len)) {STOP_ERR("Native output buffer is full.");}

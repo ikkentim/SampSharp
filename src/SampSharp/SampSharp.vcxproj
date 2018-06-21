@@ -65,7 +65,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>SampSharp.def</ModuleDefinitionFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -90,7 +90,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>SampSharp.def</ModuleDefinitionFile>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
     </Link>
@@ -101,13 +101,16 @@
   <ItemGroup>
     <ClCompile Include="callbacks_map.cpp" />
     <ClCompile Include="ConfigReader.cpp" />
+    <ClCompile Include="coreclr_app.cpp" />
     <ClCompile Include="dsock_unix.cpp" />
     <ClCompile Include="includes\sampgdk\sampgdk.c" />
     <ClCompile Include="includes\sdk\amxplugin.cpp" />
     <ClCompile Include="intermission.cpp" />
+    <ClCompile Include="logging.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message_queue.cpp" />
     <ClCompile Include="natives_map.cpp" />
+    <ClCompile Include="pathutil.cpp" />
     <ClCompile Include="pipesvr_w32.cpp" />
     <ClCompile Include="plugin.cpp" />
     <ClCompile Include="server.cpp" />
@@ -119,8 +122,13 @@
     <ClInclude Include="command.h" />
     <ClInclude Include="commsvr.h" />
     <ClInclude Include="ConfigReader.h" />
+    <ClInclude Include="coreclrhost.h" />
+    <ClInclude Include="coreclr_app.h" />
     <ClInclude Include="dsock_unix.h" />
     <ClInclude Include="intermission.h" />
+    <ClInclude Include="logging.h" />
+    <ClInclude Include="mscoree.h" />
+    <ClInclude Include="pathutil.h" />
     <ClInclude Include="pipesvr_win32.h" />
     <ClInclude Include="plugin.h" />
     <ClInclude Include="sock_unix.h" />

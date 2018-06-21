@@ -25,25 +25,27 @@
 #include "dsock_unix.h"
 #include "tcp_unix.h"
 #include "plugin.h"
+#include "coreclr_app.h"
+#include "pathutil.h"
+#include "logging.h"
+
 
 using sampgdk::logprintf;
 
-server *svr = NULL;
-commsvr *com = NULL;
-plugin *plg = NULL;
+server *svr = nullptr;
+commsvr *com = nullptr;
+plugin *plg = nullptr;
+std::string coreclr;
+std::string gamemode;
 
 bool ready;
 
-void print_err(const char* error) {
-    logprintf("[SampSharp:ERROR] %s", error);
-}
-
 void print_info() {
-    logprintf("");
-    logprintf("SampSharp Plugin");
-    logprintf("----------------");
-    logprintf("v%s, (C)2014-2018 Tim Potze", PLUGIN_VERSION_STR);
-    logprintf("");
+    print("");
+    print("SampSharp Plugin");
+    print("----------------");
+    print("v%s, (C)2014-2018 Tim Potze", PLUGIN_VERSION_STR);
+    print("");
 }
 
 bool config_validate() {
@@ -58,21 +60,49 @@ bool config_validate() {
         gamemode_value = StringUtil::TrimString(gamemode_value);
 
         if (i == 0 && gamemode_value.compare("empty 1") != 0) {
-            print_err("Can not load sampsharp if a non-SampSharp gamemode is "
+            log_error("Can not load sampsharp if a non-SampSharp gamemode is "
                 "set to load.");
-            print_err("Please ensure you set 'gamemode0 empty 1' in your "
+            log_error("Please ensure you set 'gamemode0 empty 1' in your "
                 "server.cfg file.");
             return false;
         }
         else if (i > 0 && gamemode_value.length() > 0) {
-            print_err("Can not load sampsharp if a non-SampSharp gamemode is "
+            log_error("Can not load sampsharp if a non-SampSharp gamemode is "
                 "set to load.");
-            print_err("Please ensure you only specify one script gamemode, "
+            log_error("Please ensure you only specify one script gamemode, "
                 "namely 'gamemode0 empty 1' in your server.cfg file.");
             return false;
         }
     }
+    
+    plg->config()->GetOptionAsString("coreclr", coreclr);
+    plg->config()->GetOptionAsString("gamemode", gamemode);
 
+    if(coreclr.length() <= 0) {
+        return true;
+    }
+
+    // Verify hosting config values if coreclr has been specified.
+    if(!dir_exists(coreclr.c_str())) {
+        log_error("Invalid coreclr directory specified in server.cfg.");
+        log_error("Directory could not be found.");
+        return false;
+    }
+
+    std::string coreclr_path;
+    path_append(coreclr.c_str(), CORECLR_LIB, coreclr_path);
+
+    if(!file_exists(coreclr_path.c_str())) {
+        log_error("Invalid coreclr directory specified in server.cfg.");
+        log_error(CORECLR_LIB " could not be found.");
+        return false;
+    }
+
+    if(!file_exists(gamemode.c_str())) {
+        log_error("Invalid gamemode specified in server.cfg.");
+        log_error("File could not be found.");
+        return false;
+    }
     return true;
 }
 
@@ -106,7 +136,11 @@ void com_tcp() {
 
 void start_server() {
     std::string type;
+    std::string coreclr;
+    std::string gamemode;
 
+    // Workaround for SA-MP bug which prevents OnRconCommand from working
+    // without a filterscript which implements it.
     sampgdk_SendRconCommand("loadfs empty");
 
     print_info();
@@ -116,7 +150,7 @@ void start_server() {
 #elif SAMPSHARP_LINUX
     com_dsock();
 #endif
-
+    
     plg->config()->GetOptionAsString("com_type", type);
 
     if (!type.compare("tcp")) {
@@ -154,7 +188,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     plg = new plugin(ppData);
 
     /* validate the server config is fit for running SampSharp */
-    if (!plg || !(ready = config_validate())) {
+    if (!plg || !((ready = config_validate()))) {
         return ready = false;
     }
 

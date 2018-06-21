@@ -17,13 +17,14 @@
 #include <assert.h>
 #include <string.h>
 #include "server.h"
+#include "logging.h"
 
 #define ARG_TERM    0x00
 #define ARG_VALUE   0x01
 #define ARG_ARRAY   0x02
 #define ARG_STRING  0x04
 
-callbacks_map::callbacks_map(server *svr) : svr_(svr) {
+callbacks_map::callbacks_map() {
     clear();
 }
 
@@ -65,7 +66,7 @@ void callbacks_map::register_buffer(uint8_t *buf) {
             info_len += 5;
             break;
         default:
-            svr_->log_error("Invalid callback argument %d.", info[info_len]);
+            log_error("Invalid callback argument %d.", info[info_len]);
             return;
         }
     }
@@ -100,7 +101,7 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
     /* fill the buffer with the callback name */
     size_t name_len = strlen(name);
     if (len < name_len + 1) {
-        svr_->log_error("Callback buffer too small.");
+        log_error("Callback buffer too small.");
         return 0;
     }
 
@@ -117,13 +118,13 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
         info++;
 
         if (params_count < i) {
-            svr_->log_error("Callback parameters count mismatch. Only expecting"
+            log_error("Callback parameters count mismatch. Only expecting"
                 " %d parameters.", params_count);
         }
         switch (instr) {
             case ARG_VALUE:
                 if (len - call_len < sizeof(cell)) {
-                    svr_->print("ERROR:buffer too small!");
+                    log_error("Callback buffer too small.");
                     return 0;
                 }
                 memcpy(buf + call_len, params + i + 1, sizeof(cell));
@@ -139,7 +140,7 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
                 }
 
                 if ((int)len - (int)call_len < val_len + 1) {
-                    svr_->log_error("Callback buffer too small.");
+                    log_error("Callback buffer too small.");
                     return 0;
                 }
 
@@ -154,7 +155,7 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
                 info += sizeof(uint32_t);
 
                 if (val_len >= (int)params_count) {
-                    svr_->log_error("Invalid callback array size indicator %d.", 
+                    log_error("Invalid callback array size indicator %d.", 
                         val_len);
                     return 0;
                 }
@@ -173,13 +174,13 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
                 }
                 break;
             default:
-                svr_->log_error("Invalid callback instruction %d.", instr);
+                log_error("Invalid callback instruction %d.", instr);
                 return 0;
         }
     }
 
     if (params[0] / sizeof(cell) != i) {
-        svr_->log_error("Callback parameters count mismatch. Expecting %d but "
+        log_error("Callback parameters count mismatch. Expecting %d but "
             "received %d parameters.", params_count, i);
     }
 

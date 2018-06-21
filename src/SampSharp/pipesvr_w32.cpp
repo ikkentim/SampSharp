@@ -14,6 +14,7 @@
 // limitations under the License.
 
 #include "pipesvr_win32.h"
+#include "logging.h"
 
 #if SAMPSHARP_WINDOWS
 
@@ -22,7 +23,7 @@
 #include <assert.h>
 #include "server.h"
 #define VC_EXTRALEAN
-#include <windows.h>
+#include <Windows.h>
 
 #define vsnprintf           vsprintf_s
 #define PIPE_NONE           INVALID_HANDLE_VALUE
@@ -65,7 +66,7 @@ bool pipesvr_win32::setup(server *svr) {
 
     svr_ = svr;
 
-    svr_->log_info("Creating pipe %s...", pipe_name_);
+    log_info("Creating pipe %s...", pipe_name_);
 
     pipe_ = CreateNamedPipe(pipe_name_,
         PIPE_ACCESS_DUPLEX,
@@ -83,17 +84,17 @@ bool pipesvr_win32::setup(server *svr) {
         DWORD error = GetLastError();
         switch (error) {
         case ERROR_PIPE_BUSY:
-            svr_->log_error("Failed to create pipe with error 0x%x. Is the server "
+            log_error("Failed to create pipe with error 0x%x. Is the server "
                 "already running?", error);
             break;
         default:
-            svr_->log_error("Failed to create pipe with error 0x%x.", error);
+            log_error("Failed to create pipe with error 0x%x.", error);
             break;
         }
         return false;
     }
     else {
-        svr_->log_info("Pipe created.");
+        log_info("Pipe created.");
     }
 
     return true;
@@ -114,7 +115,7 @@ bool pipesvr_win32::connect() {
         case ERROR_PIPE_LISTENING: /* other end of pipe not connected */
             return false;
         default:
-            svr_->log_error("Failed to connect to pipe with error 0x%x.", error);
+            log_error("Failed to connect to pipe with error 0x%x.", error);
             return false;
         }
     }
@@ -133,7 +134,7 @@ void pipesvr_win32::disconnect() {
 
 bool pipesvr_win32::send(uint8_t cmd, uint32_t len, uint8_t *buf) {
     if (!is_connected()) {
-        svr_->log_error("Cannot send data; pipe not connected!");
+        log_error("Cannot send data; pipe not connected!");
         return false;
     }
 
@@ -144,14 +145,14 @@ bool pipesvr_win32::send(uint8_t cmd, uint32_t len, uint8_t *buf) {
     DWORD tlen;
     if (!WriteFile(pipe_, &cmd, 1, &tlen, NULL) ||
         !WriteFile(pipe_, &len, 4, &tlen, NULL)) {
-        svr_->log_error("Failed to write to pipe with error 0x%x.", GetLastError());
+        log_error("Failed to write to pipe with error 0x%x.", GetLastError());
         svr_->disconnect("Failed to write to pipe.");
 
         return false;
     }
 
     if (buf && len > 0 && !WriteFile(pipe_, buf, len, &tlen, NULL)) {
-        svr_->log_error("Failed to write to pipe with error 0x%x.", GetLastError());
+        log_error("Failed to write to pipe with error 0x%x.", GetLastError());
         svr_->disconnect("Failed to write to pipe.");
 
         return false;
@@ -180,7 +181,7 @@ cmd_status pipesvr_win32::receive(uint8_t *command, uint8_t *buf,
         }
         else {
             rlen = 0;
-            svr_->log_error("Failed to read from pipe with error 0x%x.", error);
+            log_error("Failed to read from pipe with error 0x%x.", error);
             svr_->disconnect("Failed to read from pipe.");
         }
     }
@@ -196,7 +197,7 @@ cmd_status pipesvr_win32::receive(uint8_t *command, uint8_t *buf,
 
     *len = queue_messages_.get(command, buf, *len);
     if (*len == MESSAGE_QUEUE_BUFFER_TOO_SMALL) {
-        svr_->log_error("Message buffer too small.");
+        log_error("Message buffer too small.");
         len = 0;
     }
 

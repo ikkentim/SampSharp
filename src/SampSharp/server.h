@@ -43,16 +43,6 @@ public:
     void public_call(AMX *amx, const char *name, cell *params, cell *retval);
     /** clears local buffers and disconnect client */
     void disconnect(const char *context, bool expected = false);
-    /** prints text to the output */
-    void print(const char *format, ...);
-    /** log an error */
-    void log_error(const char *format, ...);
-    /** log a debug */
-    void log_debug(const char *format, ...);
-    /** log info */
-    void log_info(const char *format, ...);
-    /** log a message */
-    void vlog(const char* prefix, const char *format, va_list args);
 
 private: /* fields */
     /** statuses */

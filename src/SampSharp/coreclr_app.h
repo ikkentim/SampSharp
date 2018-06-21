@@ -1,0 +1,53 @@
+#pragma once
+
+#include <string>
+#include "platforms.h"
+#if SAMPSHARP_LINUX
+#  include "coreclrhost.h"
+#elif SAMPSHARP_WINDOWS
+#  include "mscoree.h"
+#endif
+
+#if SAMPSHARP_LINUX
+#  define CORECLR_LIB "libcoreclr.so"
+#  define TPA_DELIMITER ":"
+#elif SAMPSHARP_WINDOWS
+#  define CORECLR_LIB "coreclr.dll"
+#  define TPA_DELIMITER ";"
+#endif
+
+#if SAMPSHARP_LINUX
+typedef void host_t;
+typedef unsigned int domaind_id_t;
+#elif SAMPSHARP_WINDOWS
+typedef ICLRRuntimeHost2 host_t;
+typedef DWORD domaind_id_t;
+#endif
+
+class coreclr_app {
+public:
+    int initialize(const char *clr_dir, const char* exe_path, const char* app_domain_friendly_name);
+    int create_delegate(const char* assembly_name, const char* type_name, const char* method_name, void** delegate);
+    int execute_assembly(int argc, const char** argv, unsigned int* exit_code);
+    int release();
+
+private:
+    int construct_tpa(const char *directory, std::string &tpa_list);
+
+private:
+    std::string abs_exe_path_;
+    host_t *host_ = nullptr;
+    domaind_id_t domain_id_ = 0;
+
+#if SAMPSHARP_LINUX
+private:
+    bool load_symbol(void *coreclr_lib, const char *symbol, void **ptr);
+
+    coreclr_initialize_ptr coreclr_initialize_ = nullptr;
+    coreclr_shutdown_ptr coreclr_shutdown_ = nullptr;
+    coreclr_shutdown_2_ptr coreclr_shutdown_2_ = nullptr;
+    coreclr_create_delegate_ptr coreclr_create_delegate_ = nullptr;
+    coreclr_execute_assembly_ptr coreclr_execute_assembly_ = nullptr;
+#endif
+};
+

@@ -53,6 +53,15 @@
     <ClCompile Include="plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="coreclr_app.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logging.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pathutil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConfigReader.h">
@@ -101,6 +110,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="plugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="coreclr_app.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="coreclrhost.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mscoree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="logging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pathutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
