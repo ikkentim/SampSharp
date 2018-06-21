@@ -4,7 +4,7 @@ using SampSharp.GameMode.World;
 namespace TestMode
 {
     [PooledType]
-    internal class Player : BasePlayer
+    public class Player : BasePlayer
     {
 
     }
