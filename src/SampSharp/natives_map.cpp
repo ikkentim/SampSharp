@@ -15,13 +15,12 @@
 
 #include "natives_map.h"
 #include "platforms.h"
-#include "server.h"
+#include "remote_server.h"
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
 #include "logging.h"
 
-#define NATIVE_NOT_FOUND        -1
 #define MAX_ARGS                (32)
 #define MAX_ARGS_FORMAT         (128)
 #define LEN_ARG_BUFFER          (8192)
@@ -33,7 +32,7 @@
 #define ARG_STRING              (4)
 #define ARG_STRING_REF          (12)/* require size */
 
-int32_t natives_map::get_handle(char *name) {
+int32_t natives_map::get_handle(const char *name) {
     /* check for the native in the map */
     std::map<std::string, int32_t>::const_iterator it = 
         natives_map_.find(name);

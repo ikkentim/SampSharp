@@ -223,7 +223,7 @@ namespace SampSharp.Core
 
         private async void Initialize()
         {
-            CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Server");
+            CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Client");
             CoreLog.Log(CoreLogLevel.Initialisation, "-------------------------");
             CoreLog.Log(CoreLogLevel.Initialisation, $"v{CoreVersion.Version.ToString(3)}, (C)2014-2018 Tim Potze");
             CoreLog.Log(CoreLogLevel.Initialisation, "");
@@ -432,7 +432,7 @@ namespace SampSharp.Core
         /// <param name="target">The target on which to invoke the method.</param>
         /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
         /// <param name="parameters">The parameters of the callback.</param>
-        public void RegisterCallback(string name, object target, MethodInfo methodInfo, params CallbackParameterInfo[] parameters)
+        public void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (target == null) throw new ArgumentNullException(nameof(target));
@@ -534,8 +534,9 @@ namespace SampSharp.Core
             InternalStorage.RunningClient = this;
 
             // Prepare the syncronization context
-            _syncronizationContext = new SampSharpSyncronizationContext();
-            _messagePump = _syncronizationContext.MessagePump;
+            var queue = new SemaphoreMessageQueue();
+            _syncronizationContext = new SampSharpSyncronizationContext(queue);
+            _messagePump = new MessagePump(queue);
 
             SynchronizationContext.SetSynchronizationContext(_syncronizationContext);
 

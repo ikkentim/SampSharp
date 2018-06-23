@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "server.h"
+#include "remote_server.h"
 #include "platforms.h"
 #include "version.h"
 #include <assert.h>
@@ -52,29 +52,22 @@
 #pragma region Constructors and loading
 
 /** initializes and allocates required memory for the server instance */
-server::server(plugin *plg, commsvr *communication, const bool debug_check) :
+remote_server::remote_server(plugin *plg, commsvr *communication, const bool debug_check) :
     status_(status_none),
     communication_(communication),
     intermission_(plg),
     debug_check_(debug_check) {
-}
 
-/** frees memory allocated by this instance */
-server::~server() {
-    if (communication_) {
-        communication_->disconnect();
-    }
-}
-
-/** starts the comms server */
-void server::start() {
     intermission_.signal_starting();
     communication_->setup(this);
 }
 
-#pragma endregion
-
-#pragma region Logging
+/** frees memory allocated by this instance */
+remote_server::~remote_server() {
+    if (communication_) {
+        communication_->disconnect();
+    }
+}
 
 #pragma endregion
 
@@ -159,7 +152,7 @@ CMD_DEFINE(cmd_start) {
 
             cell params = 0;
             uint32_t len = callbacks_.fill_call_buffer(NULL, "OnGameModeInit",
-                &params, buf_, LEN_NETBUF);
+                &params, buf_, LEN_NETBUF, true);
             uint8_t *response = NULL;
 
             if (len == 0) {
@@ -190,12 +183,12 @@ CMD_DEFINE(cmd_start) {
 #pragma region Communication
 
 /** store current time as last interaction time */
-void server::store_time() {
+void remote_server::store_time() {
     sol_ = time(NULL);
 }
 
 /** a guessed value whether the client is paused by a debugger */
-bool server::is_debugging(bool is_tick) {
+bool remote_server::is_debugging(bool is_tick) {
     if(!debug_check_) {
         return false;
     }
@@ -228,12 +221,12 @@ bool server::is_debugging(bool is_tick) {
 }
 
 /** a value indicating whether the client is connected */
-bool server::is_client_connected() {
+bool remote_server::is_client_connected() {
     return communication_->is_connected() && STATUS_ISSET(status_client_connected);
 }
 
 /* try to let a client connect */
-bool server::connect() {
+bool remote_server::connect() {
     if (communication_->is_connected()) {
         return true;
     }
@@ -263,7 +256,7 @@ bool server::connect() {
 }
 
 /** sends the server annoucement to the client */
-void server::cmd_send_announce() {
+void remote_server::cmd_send_announce() {
     /* send version */
     uint32_t info[2];
     info[0] = PLUGIN_PROTOCOL_VERSION;
@@ -275,7 +268,7 @@ void server::cmd_send_announce() {
 }
 
 /** disconnects from client */
-void server::disconnect(const char *context, bool expected) {
+void remote_server::disconnect(const char *context, bool expected) {
     if (!is_client_connected()) {
         return;
     }
@@ -314,7 +307,7 @@ void server::disconnect(const char *context, bool expected) {
 }
 
 /** receives a single command if available */
-cmd_status server::cmd_receive_one(uint8_t **response, uint32_t *len) {
+cmd_status remote_server::cmd_receive_one(uint8_t **response, uint32_t *len) {
     uint8_t command;
     uint32_t command_len = LEN_NETBUF;
 
@@ -337,7 +330,7 @@ cmd_status server::cmd_receive_one(uint8_t **response, uint32_t *len) {
 }
 
 /** receives commands until an unhandled command appears */
-bool server::cmd_receive_unhandled(uint8_t **response, uint32_t *len) {
+bool remote_server::cmd_receive_unhandled(uint8_t **response, uint32_t *len) {
     assert(response);
     assert(len);
 
@@ -354,8 +347,8 @@ bool server::cmd_receive_unhandled(uint8_t **response, uint32_t *len) {
 }
 
 /** processes a command */
-cmd_status server::cmd_process(uint8_t cmd, uint8_t *buf, uint32_t buflen, 
-    uint8_t **resp, uint32_t *resplen) {
+cmd_status remote_server::cmd_process(uint8_t cmd, uint8_t *buf,
+    uint32_t buflen, uint8_t **resp, uint32_t *resplen) {
 #define MAP_COMMAND(a,b) case a:b(buf, buflen);return handled
 
     switch (cmd) {
@@ -386,8 +379,12 @@ cmd_status server::cmd_process(uint8_t cmd, uint8_t *buf, uint32_t buflen,
 
 #pragma endregion
 
+void remote_server::terminate(const char *context) {
+    disconnect(context, false);
+}
+
 /** called when a public call is send from the server */
-void server::public_call(AMX *amx, const char *name, cell *params, cell *retval) {
+void remote_server::public_call(AMX *amx, const char *name, cell *params, cell *retval) {
     bool is_gmi = !strcmp(name, "OnGameModeInit");
     bool is_gme = !is_gmi && !strcmp(name, "OnGameModeExit");
 
@@ -421,7 +418,7 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
 
     /* prep network buffer */
     uint32_t len = callbacks_.fill_call_buffer(amx, name, params, buf_, 
-        LEN_NETBUF);
+        LEN_NETBUF, true);
     uint8_t *response = NULL;
 
     if (len == 0) {
@@ -452,7 +449,7 @@ void server::public_call(AMX *amx, const char *name, cell *params, cell *retval)
 }
 
 /** called when a server tick occurs */
-void server::tick() {
+void remote_server::tick() {
     mutex_.lock();
 
     if (is_client_connected() && 

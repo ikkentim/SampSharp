@@ -6,6 +6,10 @@
     <RootNamespace>TestMode</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\env\gamemode</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />
   </ItemGroup>

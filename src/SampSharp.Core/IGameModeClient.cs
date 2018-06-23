@@ -52,7 +52,7 @@ namespace SampSharp.Core
         /// <param name="target">The target on which to invoke the method.</param>
         /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
         /// <param name="parameters">The parameters of the callback.</param>
-        void RegisterCallback(string name, object target, MethodInfo methodInfo, params CallbackParameterInfo[] parameters);
+        void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters);
         
         /// <summary>
         ///     Prints the specified text to the server console.

@@ -19,18 +19,18 @@ using System.Threading;
 namespace SampSharp.Core.Threading
 {
     /// <summary>
-    ///     Represents a pump for processing messages from a <see cref="MessageQueue" />.
+    ///     Represents a pump for processing messages from a <see cref="SemaphoreMessageQueue" />.
     /// </summary>
     public class MessagePump : IDisposable
     {
-        private readonly MessageQueue _queue;
+        private readonly SemaphoreMessageQueue _queue;
         private readonly ManualResetEvent _stopEvent = new ManualResetEvent(false);
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MessagePump" /> class.
         /// </summary>
         /// <param name="queue">The queue to pump the messages from.</param>
-        public MessagePump(MessageQueue queue)
+        public MessagePump(SemaphoreMessageQueue queue)
         {
             _queue = queue ?? throw new ArgumentNullException(nameof(queue));
         }
@@ -60,7 +60,7 @@ namespace SampSharp.Core.Threading
                 }
             }
         }
-
+        
         #region IDisposable
 
         /// <summary>

@@ -41,6 +41,9 @@
 #endif // __RPCNDR_H_VERSION__
 
 #ifndef COM_NO_WINDOWS_H
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
 #include "windows.h"
 #include "ole2.h"
 #endif /*COM_NO_WINDOWS_H*/

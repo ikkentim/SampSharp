@@ -19,9 +19,9 @@ using System.Threading;
 namespace SampSharp.Core.Threading
 {
     /// <summary>
-    ///     Represents a message queue for messages sent to a <see cref="SampSharpSyncronizationContext" />.
+    ///     Represents a message queue for messages sent to a <see cref="SampSharpSyncronizationContext" /> which can be retrieved via a semaphore.
     /// </summary>
-    public class MessageQueue
+    public class SemaphoreMessageQueue : IMessageQueue
     {
         private readonly ConcurrentQueue<SendOrPostCallbackItem> _queue = new ConcurrentQueue<SendOrPostCallbackItem>();
         private readonly Semaphore _semaphore = new Semaphore(0, int.MaxValue);
@@ -29,9 +29,9 @@ namespace SampSharp.Core.Threading
         private readonly WaitHandle[] _waitHandles;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MessageQueue" /> class.
+        ///     Initializes a new instance of the <see cref="SemaphoreMessageQueue" /> class.
         /// </summary>
-        public MessageQueue()
+        public SemaphoreMessageQueue()
         {
             _waitHandles = new WaitHandle[] { _semaphore, _stopSignal };
         }
@@ -47,7 +47,7 @@ namespace SampSharp.Core.Threading
         }
 
         /// <summary>
-        ///     Pops an item from this instance. If none is avaiable, this call will wait for an item to be pushed.
+        ///     Pops an item from this instance. If none are available, this call will wait for an item to be pushed.
         /// </summary>
         /// <returns>The next message, or null if canceled.</returns>
         public SendOrPostCallbackItem WaitForMessage()
@@ -64,7 +64,7 @@ namespace SampSharp.Core.Threading
 
             return null;
         }
-
+        
         /// <summary>
         ///     Releases the reader waiting in a <see cref="WaitForMessage" />.
         /// </summary>

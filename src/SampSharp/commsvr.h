@@ -19,7 +19,7 @@
 #include "command.h"
 
 #define COMMSVR_DECL_PUB() \
-    bool setup(server *svr);\
+    bool setup(remote_server *svr);\
     bool connect();\
     void disconnect();\
     bool send(uint8_t cmd, uint32_t len, uint8_t *buf);\
@@ -27,12 +27,14 @@
     bool is_connected();\
     bool is_ready();
 
-class server;
+class remote_server;
 
 class commsvr {
 public:
+    /** frees memory allocated by this instance */
+    virtual ~commsvr() {}
     /** setup communication */
-    virtual bool setup(server *svr) = 0;
+    virtual bool setup(remote_server *svr) = 0;
     /** let user connect */
     virtual bool connect() = 0;
     /** is user connected */

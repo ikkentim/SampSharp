@@ -1,3 +1,18 @@
+// SampSharp
+// Copyright 2018 Tim Potze
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include "coreclr_app.h"
 #include <algorithm>
 #include <cstdlib>
@@ -39,7 +54,6 @@ bool coreclr_app::load_symbol(void *coreclr_lib, const char *symbol, void **ptr)
     return true;
 }
 #endif
-
 
 int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const char* app_domain_friendly_name) {
     std::string abs_exe_path;
@@ -450,7 +464,7 @@ int coreclr_app::execute_assembly(int argc, const char** argv, unsigned int* exi
 
     // TODO: Arguments
 	DWORD dexit_code = -1;
-    const DWORD retval = host_->ExecuteAssembly(domain_id_, wabs_exe_path.c_str(), 0, nullptr, &dexit_code);
+    const DWORD retval = host_->ExecuteAssembly(domain_id_, wabs_exe_path.c_str(), 0, NULL, &dexit_code);
 
     *exit_code = dexit_code;
     return retval;

@@ -26,6 +26,7 @@
 #include <errno.h>
 #include <signal.h>
 #include <string.h>
+#include "logging.h"
 
 #define SOCK_NONE           (-1)
 #define LEN_NETBUF          (20000)
@@ -48,7 +49,7 @@ bool sock_unix::wouldblock() {
 void sock_unix::logerr(const char *pfx) {
     int err = errno;
     char* errstr = strerror(err);
-    svr_->log_error(pfx, errstr);
+    log_error(pfx, errstr);
 }
 
 bool sock_unix::setup(server *svr) {
@@ -83,7 +84,7 @@ bool sock_unix::setup(server *svr) {
     addrlen = addr_alloc(&addr);
 
     if (!addr) {
-        svr_->log_error("Failed to allocate socket address.");
+        log_error("Failed to allocate socket address.");
         close(sock_);
         sock_ = SOCK_NONE;
         return false;
@@ -106,7 +107,7 @@ bool sock_unix::setup(server *svr) {
         return false;
     }
 
-    svr_->log_info("Socket created.");
+    log_info("Socket created.");
 }
 
 
@@ -147,7 +148,7 @@ bool sock_unix::connect() {
     }
 
     if (addr && !accept_addr(addr, addrlen)) {
-        svr_->log_error("A non-whitelisted client was refused.");
+        log_error("A non-whitelisted client was refused.");
         close(sockc_);
         sockc_ = SOCK_NONE;
         return false;
@@ -184,7 +185,7 @@ bool sock_unix::send(uint8_t cmd, uint32_t len, uint8_t *buf) {
     int wb;
 
     if (!is_connected()) {
-        svr_->log_error("Cannot send data; pipe not connected!");
+        log_error("Cannot send data; pipe not connected!");
         return false;
     }
 
@@ -195,16 +196,16 @@ bool sock_unix::send(uint8_t cmd, uint32_t len, uint8_t *buf) {
     pfx[0] = cmd;
     *(uint32_t *)(pfx + 1) = len;
     if ((wb = write(sockc_, (char *)pfx, sizeof(pfx))) != sizeof(pfx)) {
-        svr_->log_error("Partial write %d/%d.", wb, sizeof(pfx));
+        log_error("Partial write %d/%d.", wb, sizeof(pfx));
         logerr("Failed to write to socket. %s");
-        svr_->disconnect("Failed to write to socket.");
+        svr_->terminate("Failed to write to socket.");
         return false;
     }
     if (len > 0) {
         if ((wb = write(sockc_, (char *)buf, len)) != len) {
-            svr_->log_error("Partial write %d/%d.", wb, len);
+            log_error("Partial write %d/%d.", wb, len);
             logerr("Failed to write to socket. %s");
-            svr_->disconnect("Failed to write to socket.");
+            svr_->terminate("Failed to write to socket.");
             return false;
         }
     }
@@ -225,7 +226,7 @@ cmd_status sock_unix::receive(uint8_t *command, uint8_t *buf, uint32_t *len) {
     }
     else if (count < 0 && errno != EAGAIN) {
         logerr("Failed to read from socket. %s");
-        svr_->disconnect("Failed to read from socket.");
+        svr_->terminate("Failed to read from socket.");
         return conn_dead;
     }
 
@@ -235,7 +236,7 @@ cmd_status sock_unix::receive(uint8_t *command, uint8_t *buf, uint32_t *len) {
 
     *len = queue_messages_.get(command, buf, *len);
     if (*len == MESSAGE_QUEUE_BUFFER_TOO_SMALL) {
-        svr_->log_error("Message buffer too small.");
+        log_error("Message buffer too small.");
         len = 0;
     }
 

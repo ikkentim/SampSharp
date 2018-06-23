@@ -103,6 +103,7 @@
     <ClCompile Include="ConfigReader.cpp" />
     <ClCompile Include="coreclr_app.cpp" />
     <ClCompile Include="dsock_unix.cpp" />
+    <ClCompile Include="hosted_server.cpp" />
     <ClCompile Include="includes\sampgdk\sampgdk.c" />
     <ClCompile Include="includes\sdk\amxplugin.cpp" />
     <ClCompile Include="intermission.cpp" />
@@ -113,7 +114,7 @@
     <ClCompile Include="pathutil.cpp" />
     <ClCompile Include="pipesvr_w32.cpp" />
     <ClCompile Include="plugin.cpp" />
-    <ClCompile Include="server.cpp" />
+    <ClCompile Include="remote_server.cpp" />
     <ClCompile Include="sock_unix.cpp" />
     <ClCompile Include="tcp_unix.cpp" />
   </ItemGroup>
@@ -125,19 +126,21 @@
     <ClInclude Include="coreclrhost.h" />
     <ClInclude Include="coreclr_app.h" />
     <ClInclude Include="dsock_unix.h" />
+    <ClInclude Include="hosted_server.h" />
     <ClInclude Include="intermission.h" />
     <ClInclude Include="logging.h" />
     <ClInclude Include="mscoree.h" />
     <ClInclude Include="pathutil.h" />
     <ClInclude Include="pipesvr_win32.h" />
     <ClInclude Include="plugin.h" />
+    <ClInclude Include="server.h" />
     <ClInclude Include="sock_unix.h" />
     <ClInclude Include="tcp_unix.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="message_queue.h" />
     <ClInclude Include="natives_map.h" />
     <ClInclude Include="platforms.h" />
-    <ClInclude Include="server.h" />
+    <ClInclude Include="remote_server.h" />
     <ClInclude Include="StringUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

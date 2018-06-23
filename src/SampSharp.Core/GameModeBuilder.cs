@@ -290,7 +290,7 @@ namespace SampSharp.Core
 
             if (_hosted)
             {
-                return new HostedGameModeClient();
+                return new HostedGameModeClient(_startBehaviour, _gameModeProvider, _encoding);
             }
             else
             {

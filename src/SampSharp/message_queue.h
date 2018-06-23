@@ -36,4 +36,3 @@ private:
     bool try_fill_local();
     uint8_t pop();
 };
-

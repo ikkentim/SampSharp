@@ -1,3 +1,18 @@
+// SampSharp
+// Copyright 2018 Tim Potze
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #pragma once
 
 #include <string>
@@ -24,10 +39,14 @@ typedef ICLRRuntimeHost2 host_t;
 typedef DWORD domaind_id_t;
 #endif
 
+#define CORECLR_CALL __stdcall
+
 class coreclr_app {
 public:
-    int initialize(const char *clr_dir, const char* exe_path, const char* app_domain_friendly_name);
-    int create_delegate(const char* assembly_name, const char* type_name, const char* method_name, void** delegate);
+    int initialize(const char *clr_dir, const char* exe_path,
+        const char* app_domain_friendly_name);
+    int create_delegate(const char* assembly_name, const char* type_name,
+        const char* method_name, void** delegate);
     int execute_assembly(int argc, const char** argv, unsigned int* exit_code);
     int release();
 
@@ -36,18 +55,18 @@ private:
 
 private:
     std::string abs_exe_path_;
-    host_t *host_ = nullptr;
+    host_t *host_ = NULL;
     domaind_id_t domain_id_ = 0;
 
 #if SAMPSHARP_LINUX
 private:
     bool load_symbol(void *coreclr_lib, const char *symbol, void **ptr);
 
-    coreclr_initialize_ptr coreclr_initialize_ = nullptr;
-    coreclr_shutdown_ptr coreclr_shutdown_ = nullptr;
-    coreclr_shutdown_2_ptr coreclr_shutdown_2_ = nullptr;
-    coreclr_create_delegate_ptr coreclr_create_delegate_ = nullptr;
-    coreclr_execute_assembly_ptr coreclr_execute_assembly_ = nullptr;
+    coreclr_initialize_ptr coreclr_initialize_ = NULL;
+    coreclr_shutdown_ptr coreclr_shutdown_ = NULL;
+    coreclr_shutdown_2_ptr coreclr_shutdown_2_ = NULL;
+    coreclr_create_delegate_ptr coreclr_create_delegate_ = NULL;
+    coreclr_execute_assembly_ptr coreclr_execute_assembly_ = NULL;
 #endif
 };
 

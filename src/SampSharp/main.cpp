@@ -19,7 +19,7 @@
 #include <iostream>
 #include <sampgdk/sampgdk.h>
 #include "StringUtil.h"
-#include "server.h"
+#include "remote_server.h"
 #include "version.h"
 #include "pipesvr_win32.h"
 #include "dsock_unix.h"
@@ -28,13 +28,14 @@
 #include "coreclr_app.h"
 #include "pathutil.h"
 #include "logging.h"
+#include "hosted_server.h"
 
 
 using sampgdk::logprintf;
 
-server *svr = nullptr;
-commsvr *com = nullptr;
-plugin *plg = nullptr;
+server *svr = NULL;
+commsvr *com = NULL;
+plugin *plg = NULL;
 std::string coreclr;
 std::string gamemode;
 
@@ -135,9 +136,6 @@ void com_tcp() {
 #endif
 
 void start_server() {
-    std::string type;
-    std::string coreclr;
-    std::string gamemode;
 
     // Workaround for SA-MP bug which prevents OnRconCommand from working
     // without a filterscript which implements it.
@@ -145,34 +143,41 @@ void start_server() {
 
     print_info();
 
-#if SAMPSHARP_WINDOWS
-    com_pipe();
-#elif SAMPSHARP_LINUX
-    com_dsock();
-#endif
-    
-    plg->config()->GetOptionAsString("com_type", type);
-
-    if (!type.compare("tcp")) {
-        com_tcp();
+    if(coreclr.length() > 0) {
+        svr = new hosted_server(coreclr.c_str(), gamemode.c_str());
     }
-#if SAMPSHARP_WINDOWS
-    else if (!type.compare("pipe")) {
+    else {
+        std::string type;
+        std::string debug_str;
+
+        plg->config()->GetOptionAsString("com_type", type);
+        plg->config()->GetOptionAsString("com_debug", debug_str);
+
+    #if SAMPSHARP_WINDOWS
         com_pipe();
-    }
-#elif SAMPSHARP_LINUX
-    else if (!type.compare("dsock")) {
+    #elif SAMPSHARP_LINUX
         com_dsock();
-    }
-#endif
+    #endif
+        
 
-    std::string debug_str;
-    plg->config()->GetOptionAsString("com_debug", type);
-    bool debug = debug_str == "1" || debug_str == "true";
+        if (!type.compare("tcp")) {
+            com_tcp();
+        }
+    #if SAMPSHARP_WINDOWS
+        else if (!type.compare("pipe")) {
+            com_pipe();
+        }
+    #elif SAMPSHARP_LINUX
+        else if (!type.compare("dsock")) {
+            com_dsock();
+        }
+    #endif
 
-    if (com) {
-        svr = new server(plg, com, debug);
-        svr->start();
+        bool debug = debug_str == "1" || debug_str == "true";
+
+        if (com) {
+            svr = new remote_server(plg, com, debug);
+        }
     }
 }
 
@@ -206,9 +211,8 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload() {
         com->disconnect();
         delete com;
     }
-    if (plg) {
-        delete plg;
-    }
+
+    delete plg;
 
     plg = NULL;
     svr = NULL;

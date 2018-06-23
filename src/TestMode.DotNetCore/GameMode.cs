@@ -72,7 +72,7 @@ namespace TestMode
         protected override void OnRconCommand(RconEventArgs e)
         {
             Console.WriteLine($"Received RCON Command: {e.Command}");
-
+            
             if (e.Command == "sd")
             {
                 Client.ShutDown();

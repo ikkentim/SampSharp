@@ -4,3 +4,7 @@ EXPORTS
     Unload
     ProcessTick
     OnPublicCall
+    sampsharp_print
+    sampsharp_get_native_handle
+    sampsharp_invoke_native
+    sampsharp_register_callback

@@ -24,7 +24,7 @@
 
 #define MAX_PIPE_NAME_LEN       (256)
 
-class server;
+class remote_server;
 class pipesvr_win32 :
 	public commsvr {
 public:
@@ -33,7 +33,7 @@ public:
     COMMSVR_DECL_PUB();
 
 private:
-    server *svr_;
+    remote_server *svr_;
     bool connected_;
     char pipe_name_[MAX_PIPE_NAME_LEN];
     void *pipe_;

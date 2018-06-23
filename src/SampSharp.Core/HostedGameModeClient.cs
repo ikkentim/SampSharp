@@ -1,24 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using SampSharp.Core.Callbacks;
+using SampSharp.Core.Communication;
 using SampSharp.Core.Communication.Clients;
+using SampSharp.Core.Hosting;
 using SampSharp.Core.Logging;
 using SampSharp.Core.Natives;
 using SampSharp.Core.Threading;
 
 namespace SampSharp.Core
 {
-    public sealed  class HostedGameModeClient : IGameModeClient, IGameModeRunner
+    public sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner
     {
-        private MessagePump _messagePump;
+        private readonly Dictionary<string, Callback> _callbacks = new Dictionary<string, Callback>();
+        private NoWaitMessageQueue _messageQueue;
         private SampSharpSyncronizationContext _syncronizationContext;
         private readonly GameModeStartBehaviour _startBehaviour;
         private readonly IGameModeProvider _gameModeProvider;
         private int _mainThread;
+        private int _rconThread = int.MinValue;
         private bool _running;
 
         /// <summary>
@@ -34,11 +40,18 @@ namespace SampSharp.Core
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
             NativeLoader = new NativeLoader(this);
         }
-        
+
         /// <summary>
         ///     Gets a value indicating whether this property is invoked on the main thread.
         /// </summary>
-        public bool IsOnMainThread => _mainThread == Thread.CurrentThread.ManagedThreadId;
+        public bool IsOnMainThread
+        {
+            get
+            {
+                var id = Thread.CurrentThread.ManagedThreadId;
+                return _mainThread == id || _rconThread == id;
+            }
+        }
 
         private void AssertRunning()
         {
@@ -49,6 +62,46 @@ namespace SampSharp.Core
         private void OnUnhandledException(UnhandledExceptionEventArgs e)
         {
             UnhandledException?.Invoke(this, e);
+        }
+
+        internal void Tick()
+        {
+            // Pump new tasks
+            var message = _messageQueue.GetMessage();
+
+            if (message != null)
+            {
+                try
+                {
+                    message.Execute();
+                }
+                catch (Exception e)
+                {
+                    OnUnhandledException(new UnhandledExceptionEventArgs(e));
+                }
+            }
+
+            _gameModeProvider.Tick();
+        }
+
+        internal int PublicCall(string name, IntPtr data, int length)
+        {
+            if (name == "OnRconCommand")
+            {
+                // TODO: Not sure if this will cause issues.
+                _rconThread = Thread.CurrentThread.ManagedThreadId;
+            }
+            
+            if(_callbacks.TryGetValue(name, out var callback))
+            {
+                // TODO: Optimize
+                var arr = new byte[length];
+                Marshal.Copy(data, arr, 0, length);
+
+                return callback.Invoke(arr, 0) ?? 1;
+            }
+
+            return 1;
         }
 
         #region Implementation of IGameModeClient
@@ -76,9 +129,33 @@ namespace SampSharp.Core
         /// <param name="target">The target on which to invoke the method.</param>
         /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
         /// <param name="parameters">The parameters of the callback.</param>
-        public void RegisterCallback(string name, object target, MethodInfo methodInfo, params CallbackParameterInfo[] parameters)
+        public void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters)
         {
-            throw new NotImplementedException();
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (target == null) throw new ArgumentNullException(nameof(target));
+            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
+
+            AssertRunning();
+
+            if (!Callback.IsValidReturnType(methodInfo.ReturnType))
+                throw new CallbackRegistrationException("The method uses an unsupported return type");
+
+            _callbacks[name] = new Callback(target, methodInfo, name, parameters, this);
+
+            var data = ValueConverter.GetBytes(name, Encoding)
+                .Concat(parameters.SelectMany(c => c.GetBytes()))
+                .Concat(new[] { (byte) ServerCommandArgument.Terminator }).ToArray();
+            
+            // TODO: Only call on main thread
+            var ptr = Marshal.AllocHGlobal(data.Length);
+            Marshal.Copy(data, 0, ptr, data.Length);
+
+            if (IsOnMainThread)
+                Interop.RegisterCallback(ptr);
+            else
+                _syncronizationContext.Send(ctx => Interop.RegisterCallback(ptr), null);
+
+            Marshal.FreeHGlobal(ptr);
         }
         
         /// <summary>
@@ -87,7 +164,10 @@ namespace SampSharp.Core
         /// <param name="text">The text to print to the server console.</param>
         public void Print(string text)
         {
-            throw new NotImplementedException();
+            if (IsOnMainThread)
+                Interop.Print(text);
+            else
+                _syncronizationContext.Send(ctx => Interop.Print(text), null);
         }
 
         /// <summary>
@@ -97,7 +177,12 @@ namespace SampSharp.Core
         /// <returns>The handle of the native with the specified <paramref name="name" />.</returns>
         public int GetNativeHandle(string name)
         {
-            throw new NotImplementedException();
+            if (IsOnMainThread)
+                return Interop.GetNativeHandle(name);
+
+            var result = 0;
+            _syncronizationContext.Send(ctx => result = Interop.GetNativeHandle(name), null);
+            return result;
         }
 
         /// <summary>
@@ -107,7 +192,26 @@ namespace SampSharp.Core
         /// <returns>The response from the native.</returns>
         public byte[] InvokeNative(IEnumerable<byte> data)
         {
-            throw new NotImplementedException();
+            // TODO: Only call on main thread
+            // TODO: Optimize
+            var adata = data.ToArray();
+            var inbuf = Marshal.AllocHGlobal(adata.Length);
+            Marshal.Copy(adata, 0, inbuf, adata.Length);
+
+            var outbuf = Marshal.AllocHGlobal(1024);// TODO proper allocation/ global buf
+            int outlen = 1024;
+            
+            if (IsOnMainThread)
+                Interop.InvokeNative(inbuf, adata.Length, outbuf, ref outlen);
+            else
+                _syncronizationContext.Send(ctx => Interop.InvokeNative(inbuf, adata.Length, outbuf, ref outlen), null);
+
+            var outarr = new byte[outlen];
+            Marshal.Copy(outbuf, outarr, 0, outlen);
+
+            Marshal.FreeHGlobal(inbuf);
+            Marshal.FreeHGlobal(outbuf);
+            return outarr;
         }
 
         /// <summary>
@@ -132,12 +236,12 @@ namespace SampSharp.Core
             InternalStorage.RunningClient = this;
 
             // Prepare the syncronization context
-            _syncronizationContext = new SampSharpSyncronizationContext();
-            _messagePump = _syncronizationContext.MessagePump;
+            _messageQueue = new NoWaitMessageQueue();
+            _syncronizationContext = new SampSharpSyncronizationContext(_messageQueue);
 
             SynchronizationContext.SetSynchronizationContext(_syncronizationContext);
 
-            CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Server");
+            CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Client");
             CoreLog.Log(CoreLogLevel.Initialisation, "-------------------------");
             CoreLog.Log(CoreLogLevel.Initialisation, $"v{CoreVersion.Version.ToString(3)}, (C)2014-2018 Tim Potze");
             CoreLog.Log(CoreLogLevel.Initialisation, "");

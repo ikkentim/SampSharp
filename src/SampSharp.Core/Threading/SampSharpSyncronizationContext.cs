@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2018 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,13 +24,19 @@ namespace SampSharp.Core.Threading
     /// <seealso cref="SynchronizationContext" />
     public class SampSharpSyncronizationContext : SynchronizationContext
     {
-        private readonly MessageQueue _queue = new MessageQueue();
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SampSharpSyncronizationContext" /> class.
+        /// </summary>
+        public SampSharpSyncronizationContext(IMessageQueue messageQueue)
+        {
+            MessageQueue = messageQueue ?? throw new ArgumentNullException(nameof(messageQueue));
+        }
 
         /// <summary>
-        ///     Gets the message pump which provides messages sent to this context.
+        /// Gets the message queue to which calls are enqueued.
         /// </summary>
-        public MessagePump MessagePump => new MessagePump(_queue);
-
+        public IMessageQueue MessageQueue { get; }
+        
         #region Overrides of SynchronizationContext
 
         /// <summary>
@@ -41,7 +47,7 @@ namespace SampSharp.Core.Threading
         public override void Send(SendOrPostCallback d, object state)
         {
             var item = new SendOrPostCallbackItem(d, state, ExecutionType.Send);
-            _queue.PushMessage(item);
+            MessageQueue.PushMessage(item);
 
             item.ExecutionCompleteWaitHandle.WaitOne();
 
@@ -59,7 +65,7 @@ namespace SampSharp.Core.Threading
             // Queue the item and don't wait for its execution. 
             // TODO: This is risky because an unhandled exception will terminate the main thread. Use with caution.
             var item = new SendOrPostCallbackItem(d, state, ExecutionType.Post);
-            _queue.PushMessage(item);
+            MessageQueue.PushMessage(item);
         }
 
         /// <summary>

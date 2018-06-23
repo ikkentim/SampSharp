@@ -21,7 +21,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
-#include "server.h"
+#include "remote_server.h"
 #define VC_EXTRALEAN
 #include <Windows.h>
 
@@ -55,7 +55,7 @@ bool pipesvr_win32::is_ready() {
     return pipe_ != PIPE_NONE;
 }
 
-bool pipesvr_win32::setup(server *svr) {
+bool pipesvr_win32::setup(remote_server *svr) {
     if (is_ready()) {
         return true;
     }
@@ -146,14 +146,14 @@ bool pipesvr_win32::send(uint8_t cmd, uint32_t len, uint8_t *buf) {
     if (!WriteFile(pipe_, &cmd, 1, &tlen, NULL) ||
         !WriteFile(pipe_, &len, 4, &tlen, NULL)) {
         log_error("Failed to write to pipe with error 0x%x.", GetLastError());
-        svr_->disconnect("Failed to write to pipe.");
+        svr_->terminate("Failed to write to pipe.");
 
         return false;
     }
 
     if (buf && len > 0 && !WriteFile(pipe_, buf, len, &tlen, NULL)) {
         log_error("Failed to write to pipe with error 0x%x.", GetLastError());
-        svr_->disconnect("Failed to write to pipe.");
+        svr_->terminate("Failed to write to pipe.");
 
         return false;
     }
@@ -182,7 +182,7 @@ cmd_status pipesvr_win32::receive(uint8_t *command, uint8_t *buf,
         else {
             rlen = 0;
             log_error("Failed to read from pipe with error 0x%x.", error);
-            svr_->disconnect("Failed to read from pipe.");
+            svr_->terminate("Failed to read from pipe.");
         }
     }
 

@@ -32,4 +32,3 @@ private:
     bool on_;
     bool enable_;
 };
-

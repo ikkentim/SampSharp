@@ -16,7 +16,7 @@
 #include "callbacks_map.h"
 #include <assert.h>
 #include <string.h>
-#include "server.h"
+#include "remote_server.h"
 #include "logging.h"
 
 #define ARG_TERM    0x00
@@ -87,7 +87,7 @@ void callbacks_map::register_buffer(uint8_t *buf) {
 }
 
 uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name, 
-    cell *params, uint8_t *buf, uint32_t len) {
+    cell *params, uint8_t *buf, uint32_t len, bool include_name) {
     assert(sizeof(cell) == sizeof(uint32_t));
 
     uint32_t call_len = 0;
@@ -98,16 +98,17 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
         return 0;
     }
 
-    /* fill the buffer with the callback name */
-    size_t name_len = strlen(name);
-    if (len < name_len + 1) {
-        log_error("Callback buffer too small.");
-        return 0;
+    if(include_name) {
+        /* fill the buffer with the callback name */
+        size_t name_len = strlen(name);
+        if (len < name_len + 1) {
+            log_error("Callback buffer too small.");
+            return 0;
+        }
+
+        memcpy(buf, name, name_len + 1);
+        call_len = name_len + 1;
     }
-
-    memcpy(buf, name, name_len + 1);
-    call_len = name_len + 1;
-
     /* fill the buffer with the callback arguments */
     uint32_t i = 0;
     uint32_t params_count = params[0] / sizeof(cell);
