@@ -16,6 +16,7 @@
 #include "pathutil.h"
 #include "platforms.h"
 #include <assert.h>
+#include <string.h>
 #if SAMPSHARP_WINDOWS
 #  include "Windows.h"
 #  include "Shlwapi.h"

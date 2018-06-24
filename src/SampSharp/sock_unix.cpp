@@ -17,7 +17,7 @@
 
 #if SAMPSHARP_LINUX
 
-#include "server.h"
+#include "remote_server.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -29,7 +29,6 @@
 #include "logging.h"
 
 #define SOCK_NONE           (-1)
-#define LEN_NETBUF          (20000)
 
 sock_unix::sock_unix() :
     sock_(SOCK_NONE),
@@ -52,7 +51,7 @@ void sock_unix::logerr(const char *pfx) {
     log_error(pfx, errstr);
 }
 
-bool sock_unix::setup(server *svr) {
+bool sock_unix::setup(remote_server *svr) {
     struct sockaddr* addr = NULL;
     size_t addrlen;
 

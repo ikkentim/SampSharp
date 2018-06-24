@@ -24,9 +24,11 @@
 #endif
 
 #if SAMPSHARP_LINUX
+#  define CORECLR_CALL
 #  define CORECLR_LIB "libcoreclr.so"
 #  define TPA_DELIMITER ":"
 #elif SAMPSHARP_WINDOWS
+#  define CORECLR_CALL __stdcall
 #  define CORECLR_LIB "coreclr.dll"
 #  define TPA_DELIMITER ";"
 #endif
@@ -39,7 +41,6 @@ typedef ICLRRuntimeHost2 host_t;
 typedef DWORD domaind_id_t;
 #endif
 
-#define CORECLR_CALL __stdcall
 
 class coreclr_app {
 public:

@@ -42,7 +42,7 @@ private:
     int sock_;
     int sockc_;
     uint8_t *buf_;
-    server *svr_;
+    remote_server *svr_;
     message_queue queue_messages_;
 };
 
