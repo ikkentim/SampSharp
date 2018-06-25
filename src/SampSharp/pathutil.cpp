@@ -54,7 +54,7 @@ bool dir_exists(const char *path) {
   return attrib != INVALID_FILE_ATTRIBUTES && 
          (attrib & FILE_ATTRIBUTE_DIRECTORY);
 #elif SAMPSHARP_LINUX
-    DIR* dir = opendir("mydir");
+    DIR* dir = opendir(path);
     if (dir) {
         closedir(dir);
         return true;
