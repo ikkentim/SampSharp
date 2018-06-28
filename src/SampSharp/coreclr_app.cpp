@@ -89,15 +89,19 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
     std::string tpa_list;
     
     tpa_list = abs_exe_path;
-    tpa_list.append(":");
+    tpa_list.append(TPA_DELIMITER);
     
     construct_tpa(clr_dir.c_str(), tpa_list);
 
 
     // Construct native search directory paths
+    std::string plugins_dir;
+    get_absolute_path("plugins", plugins_dir);
     std::string native_search_dirs(app_dir);
-    native_search_dirs.append(":");
+    native_search_dirs.append(TPA_DELIMITER);
     native_search_dirs.append(clr_dir);
+    native_search_dirs.append(TPA_DELIMITER);
+    native_search_dirs.append(plugins_dir);
 
 #if SAMPSHARP_LINUX
 
@@ -366,7 +370,7 @@ int coreclr_app::construct_tpa(const char *directory, std::string &tpa_list) {
                 tpa_list.append(directory);
                 tpa_list.append("/");
                 tpa_list.append(filename);
-                tpa_list.append(":");
+                tpa_list.append(TPA_DELIMITER);
             }
         }
         
