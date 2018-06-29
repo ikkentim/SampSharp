@@ -19,8 +19,12 @@
 #include "platforms.h"
 
 #if SAMPSHARP_LINUX
+#  define __DIR_SEPARATOR_FORWARD
+#endif
+
+#ifdef __DIR_SEPARATOR_FORWARD
 #  define DIR_SEPARATOR "/"
-#elif SAMPSHARP_WINDOWS
+#else
 #  define DIR_SEPARATOR "\\"
 #endif
 

@@ -25,27 +25,41 @@
 #  include <dirent.h>
 #endif
 
+#if !defined(PATH_MAX) && defined(MAX_PATH)
+#  define PATH_MAX MAX_PATH
+#endif
+
+#ifdef __DIR_SEPARATOR_FORWARD
+#  define NOT_DIR_SEPARATOR "\\"
+#else
+#  define NOT_DIR_SEPARATOR "/"
+#endif
+
 void path_append(const char *path, const char *append, std::string &result) {
-    if(!path && !append) {
+    // Normalize path
+    std::string tmp;
+    get_absolute_path(path, tmp);
+
+    // Append
+    if(!append) {
+        result = tmp;
         return;
     }
 
-    if(!path || strlen(path) == 0) {
-        result.assign(append);
+    std::string appends = std::string(append);
+
+    if(appends.length() > 0 && appends[0] == NOT_DIR_SEPARATOR[0]) {
+        appends[0] = DIR_SEPARATOR[0];
     }
-    else if(!append || strlen(append) == 0) {
-        result.assign(path);
+
+    if(appends[0] != DIR_SEPARATOR[0]) {
+        tmp.append(DIR_SEPARATOR);
     }
-    else if(path[strlen(path) - 1] == DIR_SEPARATOR[0] || append[0] == DIR_SEPARATOR[0])
-    {
-        result.assign(path);
-        result.append(append);
-    } 
-    else {
-        result.assign(path);
-        result.append(DIR_SEPARATOR);
-        result.append(append);
-    }
+
+    tmp.append(appends);
+
+    // Normalize with supplement
+    get_absolute_path(tmp.c_str(), result);
 }
 
 bool dir_exists(const char *path) {
@@ -73,13 +87,27 @@ bool file_exists(const char *path) {
 }
 
 bool get_absolute_path(const char *path, std::string &absolute_path) {
+    char cpath[PATH_MAX];
+
+#if SAMPSHARP_LINUX
+    strcpy(cpath, path);
+#elif SAMPSHARP_WINDOWS
+    strcpy_s(cpath, path);
+#endif
+
+    for(int i = strlen(cpath) - 1; i >= 0; i--) {
+        if(cpath[i] == NOT_DIR_SEPARATOR[0]) {
+            cpath[i] = DIR_SEPARATOR[0];
+        }
+    }
+
 #if SAMPSHARP_LINUX
     char real_path[PATH_MAX];
-    if (realpath(path, real_path) != nullptr && real_path[0] != '\0')
-    {
+
+    if (realpath(cpath, real_path) != nullptr && real_path[0] != '\0') {
         absolute_path.assign(real_path);
         // realpath should return canonicalized path without the trailing slash
-        assert(absolute_path.back() != '/');
+        assert(absolute_path.back() != DIR_SEPARATOR[0]);
 
         return true;
     }
@@ -87,15 +115,19 @@ bool get_absolute_path(const char *path, std::string &absolute_path) {
     return false;
 #elif SAMPSHARP_WINDOWS
 
-    wchar_t wreal_path[MAX_PATH];
-    wchar_t wpath[MAX_PATH];
-    mbstowcs_s(nullptr, wpath, path, MAX_PATH);
+    wchar_t wreal_path[PATH_MAX];
+    wchar_t wpath[PATH_MAX];
+    mbstowcs_s(nullptr, wpath, cpath, PATH_MAX);
 
-	GetFullPathNameW(wpath, MAX_PATH, wreal_path, nullptr);
+	GetFullPathNameW(wpath, PATH_MAX, wreal_path, nullptr);
 
     std::wstring wreal_path_s(wreal_path);
     absolute_path = std::string(wreal_path_s.begin(), wreal_path_s.end());
 
+    // not sure if GetFullPathNameW could return a trailing slash
+    if(absolute_path.back() == DIR_SEPARATOR[0]) {
+        absolute_path.pop_back();
+    }
     return true;
 #endif
 }

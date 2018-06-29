@@ -376,10 +376,10 @@ int coreclr_app::construct_tpa(const char *directory, std::string &tpa_list) {
 	for (int i = 0; i < _countof(tpaExtensions); i++)
 	{
 		// Construct the file name search pattern
-		wchar_t searchPath[MAX_PATH];
-        mbstowcs_s(NULL, searchPath, directory, MAX_PATH);
-		wcscat_s(searchPath, MAX_PATH, L"\\");
-		wcscat_s(searchPath, MAX_PATH, tpaExtensions[i]);
+		wchar_t searchPath[PATH_MAX];
+        mbstowcs_s(NULL, searchPath, directory, PATH_MAX);
+		wcscat_s(searchPath, PATH_MAX, L"\\");
+		wcscat_s(searchPath, PATH_MAX, tpaExtensions[i]);
 
 		// Find files matching the search pattern
 		WIN32_FIND_DATAW find;
