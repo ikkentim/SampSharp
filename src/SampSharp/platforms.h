@@ -43,7 +43,7 @@
 #  define sampsharp_strcat(dest, len, src) strcat_s(dest, len, src)
 #  define sampsharp_sprintf(dest, len, format, ...) sprintf_s(dest, len, format, ##__VA_ARGS__)
 #elif SAMPSHARP_LINUX
-#  define SAMPSHARP_CALL
+#  define SAMPSHARP_CALL __attribute__((visibility("default")))
 #  define sampsharp_strcat(dest, len, src) strcat(dest, src)
 #  define sampsharp_sprintf(dest, len, format, ...) sprintf(dest, format, ##__VA_ARGS__)
 #else
