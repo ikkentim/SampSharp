@@ -39,6 +39,8 @@ namespace SampSharp.Core
         private GameModeStartBehaviour _startBehaviour = GameModeStartBehaviour.Gmx;
         private Encoding _encoding;
         private bool _hosted;
+        private TextWriter _logWriter;
+        private bool _logWriterSet;
         
         private const string DefaultUnixDomainSocketPath = "/tmp/SampSharp";
         private const string DefaultPipeName = "SampSharp";
@@ -200,14 +202,15 @@ namespace SampSharp.Core
         }
 
         /// <summary>
-        ///     Uses the specified stream to log SampSharp log messages to.
+        ///     Uses the specified text writer to log SampSharp log messages to.
         /// </summary>
-        /// <param name="stream">The stream to log SampSharp log messages to.</param>
-        /// <remarks>If a null value is specified as stream, no log messages will appear.</remarks>
+        /// <param name="textWriter">The text writer to log SampSharp log messages to.</param>
+        /// <remarks>If a null value is specified as text writer, no log messages will appear.</remarks>
         /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder UseLogStream(Stream stream)
+        public GameModeBuilder UseLogWriter(TextWriter textWriter)
         {
-            CoreLog.Stream = stream;
+            _logWriter = textWriter;
+            _logWriterSet = true;
             return this;
         }
 
@@ -273,18 +276,30 @@ namespace SampSharp.Core
 
             var redirect = _redirectConsoleOutput;
 
+            // Build the game mode runner
             var runner = Build();
 
             if (runner == null)
-            {
                 return;
-            }
 
+            // Redirect console output
+            ServerLogWriter redirectWriter = null;
+            
             if (redirect)
             {
-                Console.SetOut(new ServerLogWriter(runner.Client));
+                redirectWriter = new ServerLogWriter(runner.Client);
+                Console.SetOut(redirectWriter);
             }
-            
+
+            // Set framework log writer
+            var logStream = _logWriter;
+
+            if (!_logWriterSet)
+                logStream = (TextWriter) redirectWriter ?? new StreamWriter(Console.OpenStandardOutput());
+
+            CoreLog.TextWriter = logStream;
+
+            // Run game mode runner
             if (_hosted)
             {
                 // Ignore exit behaviours for hosted environments.
@@ -296,10 +311,7 @@ namespace SampSharp.Core
                 {
                     // If true is returned, the runner wants to shut down.
                     if (runner.Run())
-                    {
                         break;
-                    }
-
                 } while (_exitBehaviour == GameModeExitBehaviour.Restart);
 
                 if (redirect)

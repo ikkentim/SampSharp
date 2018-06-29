@@ -30,7 +30,6 @@ namespace SampSharp.Core.Logging
         /// </summary>
         static CoreLog()
         {
-            Stream = Console.OpenStandardOutput();
             LogLevel = CoreLogLevel.Info;
         }
 
@@ -40,9 +39,9 @@ namespace SampSharp.Core.Logging
         internal static CoreLogLevel LogLevel { get; set; }
 
         /// <summary>
-        ///     Gets or sets the output stream.
+        ///     Gets or sets the output stream writer.
         /// </summary>
-        internal static Stream Stream { get; set; }
+        internal static TextWriter TextWriter { get; set; }
 
         private static string GetLevelName(CoreLogLevel level)
         {
@@ -68,13 +67,10 @@ namespace SampSharp.Core.Logging
         [DebuggerHidden]
         public static void Log(CoreLogLevel level, string message)
         {
-            if (Stream != null && (LogLevel >= level || level == CoreLogLevel.Initialisation))
+            var tw = TextWriter;
+            if (tw != null && (LogLevel >= level || level == CoreLogLevel.Initialisation))
             {
-                using (var sw = new StreamWriter(Stream, Encoding.ASCII, 1024, true))
-                {
-
-                    sw.WriteLine(level == CoreLogLevel.Initialisation ? message : $"[SampSharp:{GetLevelName(level)}] {message}");
-                }
+                 tw.WriteLine(level == CoreLogLevel.Initialisation ? message : $"[SampSharp:{GetLevelName(level)}] {message}");
             }
         }
         

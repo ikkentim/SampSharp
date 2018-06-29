@@ -240,14 +240,14 @@ namespace SampSharp.Core
             _syncronizationContext = new SampSharpSyncronizationContext(_messageQueue);
 
             SynchronizationContext.SetSynchronizationContext(_syncronizationContext);
+            
+            _mainThread = Thread.CurrentThread.ManagedThreadId;
+            _running = true;
 
             CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Client");
             CoreLog.Log(CoreLogLevel.Initialisation, "-------------------------");
             CoreLog.Log(CoreLogLevel.Initialisation, $"v{CoreVersion.Version.ToString(3)}, (C)2014-2018 Tim Potze");
             CoreLog.Log(CoreLogLevel.Initialisation, "");
-
-            _mainThread = Thread.CurrentThread.ManagedThreadId;
-            _running = true;
             
             // TODO: Verify plugin version
 
