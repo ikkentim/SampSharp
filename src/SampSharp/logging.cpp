@@ -60,13 +60,11 @@ void log_warning(const char * format, ...) {
 }
 
 /** log debug */
-void log_debug(const char * format, ...) {
-#if ((defined DEBUG) || (defined _DEBUG))
+void log_debug2(const char * format, ...) {
     va_list args;
     va_start(args, format);
     vlog("DEBUG", format, args);
     va_end(args);
-#endif
 }
 
 /** log info */

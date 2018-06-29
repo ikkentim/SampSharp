@@ -15,13 +15,23 @@
 
 #pragma once
 
+void log_debug2(const char *format, ...);
+
 /** prints text to the output */
 void log_print(const char *format, ...);
+
 /** log an error */
 void log_error(const char *format, ...);
+
 /** log a warning */
 void log_warning(const char *format, ...);
-/** log a debug */
-void log_debug(const char *format, ...);
+
+/** log debug info */
+#ifdef LOG_DEBUG
+#define log_debug(...) log_debug2(##__VA_ARGS__)
+#else
+#define log_debug(...) while(0)
+#endif
+
 /** log info */
 void log_info(const char *format, ...);

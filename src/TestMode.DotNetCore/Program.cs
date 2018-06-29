@@ -23,12 +23,7 @@ namespace TestMode
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("ARGS: " + string.Join(" ", Environment.GetCommandLineArgs()));
-
             new GameModeBuilder()
-                .UseLogLevel(CoreLogLevel.Debug)
-                .UseHosted()
-                .UseStartBehaviour(GameModeStartBehaviour.FakeGmx)
                 .Use<GameMode>()
                 .Run();
         }

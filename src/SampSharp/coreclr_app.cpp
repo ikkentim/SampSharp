@@ -105,30 +105,27 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
     native_search_dirs.append(plugins_dir);
 
 #if SAMPSHARP_LINUX
+    module_ = dlopen(coreclr_dll.c_str(), RTLD_NOW | RTLD_LOCAL);
 
-    void* coreclr_lib = dlopen(coreclr_dll.c_str(), RTLD_NOW | RTLD_LOCAL);
-
-    if(!coreclr_lib) {
+    if(!module_) {
         const char *error = dlerror();
         log_error("Failed to load CoreCLR library: %s.", error);
         return -1;
     }
 
-    // TODO: Close coreclr_lib
-
-    if(!load_symbol(coreclr_lib, "coreclr_initialize", (void **)&coreclr_initialize_)) {
+    if(!load_symbol(module_, "coreclr_initialize", (void **)&coreclr_initialize_)) {
         return -1;
     }
-    if(!load_symbol(coreclr_lib, "coreclr_shutdown", (void **)&coreclr_shutdown_)) {
+    if(!load_symbol(module_, "coreclr_shutdown", (void **)&coreclr_shutdown_)) {
         return -1;
     }
-    if(!load_symbol(coreclr_lib, "coreclr_shutdown_2", (void **)&coreclr_shutdown_2_)) {
+    if(!load_symbol(module_, "coreclr_shutdown_2", (void **)&coreclr_shutdown_2_)) {
         return -1;
     }
-    if(!load_symbol(coreclr_lib, "coreclr_create_delegate", (void **)&coreclr_create_delegate_)) {
+    if(!load_symbol(module_, "coreclr_create_delegate", (void **)&coreclr_create_delegate_)) {
         return -1;
     }
-    if(!load_symbol(coreclr_lib, "coreclr_execute_assembly", (void **)&coreclr_execute_assembly_)) {
+    if(!load_symbol(module_, "coreclr_execute_assembly", (void **)&coreclr_execute_assembly_)) {
         return -1;
     }
 
@@ -171,9 +168,9 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
     std::string adfn = std::string(app_domain_friendly_name);
     std::wstring wapp_domain_friendly_name = std::wstring(adfn.begin(), adfn.end());
 
-    const HMODULE coreclr_module = LoadLibraryExW(wcoreclr_dll.c_str(), nullptr, 0);
+    module_ = LoadLibraryExW(wcoreclr_dll.c_str(), nullptr, 0);
 
-	if (!coreclr_module)
+	if (!module_)
 	{
 		log_error("CoreCLR.dll could not be found.");
 		return -1;
@@ -181,7 +178,7 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
 
 
     const FnGetCLRRuntimeHost get_clr_runtime_host = FnGetCLRRuntimeHost(
-        ::GetProcAddress(coreclr_module, "GetCLRRuntimeHost"));
+        ::GetProcAddress(module_, "GetCLRRuntimeHost"));
 
 	if (!get_clr_runtime_host)
 	{
@@ -409,18 +406,30 @@ int coreclr_app::construct_tpa(const char *directory, std::string &tpa_list) {
 
 int coreclr_app::release()
 {
+    int retval = -1;
 #if SAMPSHARP_LINUX
-    if(!coreclr_shutdown_) {
-        return -1;
+    if(coreclr_shutdown_) {
+        retval = coreclr_shutdown_(host_, domain_id_);
     }
 
-    return coreclr_shutdown_(host_, domain_id_);
+    if(module_) {
+        dlclose(module_);
+        module_ = NULL;
+    }
+
 #elif SAMPSHARP_WINDOWS
     // TODO? Other errors???
     host_->UnloadAppDomain(domain_id_, true);
 	host_->Stop();
-	return host_->Release();
+	retval = host_->Release();
+
+    if(module_) {
+        FreeLibrary(module_);
+        module_ = NULL;
+    }
 #endif
+
+    return retval;
 }
 
 int coreclr_app::create_delegate(const char* assembly_name,
@@ -456,11 +465,35 @@ int coreclr_app::execute_assembly(int argc, const char** argv, unsigned int* exi
 #elif SAMPSHARP_WINDOWS
     std::wstring wabs_exe_path = std::wstring(abs_exe_path_.begin(), abs_exe_path_.end());
 
-    // TODO: Arguments
+    // Convert args from single to wide chars.
+    size_t pos = 0;
+    size_t written;
+    size_t len = argc;
+
+    for(int i = 0; i < argc; i++) {
+        len += strlen(argv[i]);
+    }
+    
+    wchar_t *wargs = new wchar_t[len];
+    wchar_t **wargv = new wchar_t*[argc];
+
+    for(int i = 0; i < argc; i++) {
+        wargs[pos] = L'\0';
+        mbstowcs_s(&written, wargs + pos, len - pos, argv[i], len - pos);
+
+        wargv[i] = wargs + pos;
+        pos += written;
+    }
+
+    // Execute
 	DWORD dexit_code = -1;
-    const DWORD retval = host_->ExecuteAssembly(domain_id_, wabs_exe_path.c_str(), 0, NULL, &dexit_code);
+    const DWORD retval = host_->ExecuteAssembly(domain_id_, wabs_exe_path.c_str(), argc, (const wchar_t **)wargv, &dexit_code);
 
     *exit_code = dexit_code;
+
+    delete[] wargs;
+    delete[] wargv;
+
     return retval;
 #endif
 }

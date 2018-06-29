@@ -34,7 +34,7 @@ namespace TestMode
         {
             base.OnTick(e);
 
-            if (_ticks++ % 1000 == 0)
+            if (_ticks++ % 5000 == 0)
                 Console.WriteLine("Server is still ticking...");
         }
         

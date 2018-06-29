@@ -15,6 +15,9 @@
 
 using System;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using SampSharp.Core.CodePages;
@@ -36,16 +39,33 @@ namespace SampSharp.Core
         private GameModeStartBehaviour _startBehaviour = GameModeStartBehaviour.Gmx;
         private Encoding _encoding;
         private bool _hosted;
+        
+        private const string DefaultUnixDomainSocketPath = "/tmp/SampSharp";
+        private const string DefaultPipeName = "SampSharp";
+        private const string DefaultTcpIp = "127.0.0.1";
+        private const int DefaultTcpPort = 8888;
+
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GameModeBuilder" /> class.
+        ///     Initializes a new instance of the <see cref="GameModeBuilder"/> class.
         /// </summary>
         public GameModeBuilder()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                _communicationClient = new UnixDomainSocketCommunicationClient("/tmp/SampSharp");
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                _communicationClient = new NamedPipeClient("SampSharp");
+            ParseArguments();
+        }
+
+        #region Communication
+        
+        /// <summary>
+        ///     Use the specified communication client to communicate with the SampSharp server.
+        /// </summary>
+        /// <param name="communicationClient">The communication client.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseCommunicationClient(ICommunicationClient communicationClient)
+        {
+            _communicationClient = communicationClient ?? throw new ArgumentNullException(nameof(communicationClient));
+
+            return this;
         }
 
         /// <summary>
@@ -58,6 +78,44 @@ namespace SampSharp.Core
             if (pipeName == null) throw new ArgumentNullException(nameof(pipeName));
             return UseCommunicationClient(new NamedPipeClient(pipeName));
         }
+        
+        /// <summary>
+        ///     Use an unix domain socket with a file at the specified <paramref name="path" /> to communicate with the SampSharp
+        ///     server.
+        /// </summary>
+        /// <param name="path">The path to the domain socket file.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseUnixDomainSocket(string path)
+        {
+            if (path == null) throw new ArgumentNullException(nameof(path));
+            return UseCommunicationClient(new UnixDomainSocketCommunicationClient(path));
+        }
+
+        /// <summary>
+        ///     Use a TCP client to communicate with the SampSharp server on localhost.
+        /// </summary>
+        /// <param name="port">The port on which to connect.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseTcpClient(int port)
+        {
+            return UseCommunicationClient(new TcpCommunicationClient(DefaultTcpIp, port));
+        }
+
+        /// <summary>
+        ///     Use a TCP client to communicate with the SampSharp server.
+        /// </summary>
+        /// <param name="host">The host to which to connect.</param>
+        /// <param name="port">The port on which to connect.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseTcpClient(string host, int port)
+        {
+            if (host == null) throw new ArgumentNullException(nameof(host));
+            return UseCommunicationClient(new TcpCommunicationClient(host, port));
+        }
+
+        #endregion
+
+        #region Encoding
 
         /// <summary>
         ///     Use the specified <paramref name="encoding"/> when en/decoding text messages sent to/from the server.
@@ -91,70 +149,9 @@ namespace SampSharp.Core
             return UseEncoding(CodePageEncoding.Load(stream));
         }
 
-        /// <summary>
-        ///     Use an unix domain socket with a file at the specified <paramref name="path" /> to communicate with the SampSharp
-        ///     server.
-        /// </summary>
-        /// <param name="path">The path to the domain socket file.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder UseUnixDomainSocket(string path)
-        {
-            if (path == null) throw new ArgumentNullException(nameof(path));
-            return UseCommunicationClient(new UnixDomainSocketCommunicationClient(path));
-        }
-
-        /// <summary>
-        ///     Use a TCP client to communicate with the SampSharp server on localhost.
-        /// </summary>
-        /// <param name="port">The port on which to connect.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder UseTcpClient(int port)
-        {
-            return UseCommunicationClient(new TcpCommunicationClient("127.0.0.1", port));
-        }
-
-        /// <summary>
-        ///     Use a TCP client to communicate with the SampSharp server.
-        /// </summary>
-        /// <param name="host">The host to which to connect.</param>
-        /// <param name="port">The port on which to connect.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder UseTcpClient(string host, int port)
-        {
-            if (host == null) throw new ArgumentNullException(nameof(host));
-            return UseCommunicationClient(new TcpCommunicationClient(host, port));
-        }
-
-        /// <summary>
-        ///     Use the specified communication client to communicate with the SampSharp server.
-        /// </summary>
-        /// <param name="communicationClient">The communication client.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder UseCommunicationClient(ICommunicationClient communicationClient)
-        {
-            _communicationClient = communicationClient ?? throw new ArgumentNullException(nameof(communicationClient));
-            return this;
-        }
-
-        /// <summary>
-        ///     Indicate the game mode will be hosted in the SA-MP server process.
-        /// </summary>
-        /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder UseHosted()
-        {
-            _hosted = true;
-            return RedirectConsoleOutput();
-        }
-
-        /// <summary>
-        ///     Redirect the console output to the server.
-        /// </summary>
-        /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder RedirectConsoleOutput()
-        {
-            _redirectConsoleOutput = true;
-            return this;
-        }
+        #endregion
+        
+        #region Game Mode Provider
 
         /// <summary>
         ///     Use the specified game mode.
@@ -176,6 +173,20 @@ namespace SampSharp.Core
         {
             return Use(Activator.CreateInstance<TGameMode>());
         }
+
+        #endregion
+        
+        /// <summary>
+        ///     Redirect the console output to the server.
+        /// </summary>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder RedirectConsoleOutput()
+        {
+            _redirectConsoleOutput = true;
+            return this;
+        }
+
+        #region Logging
 
         /// <summary>
         ///     Uses the specified log level as the maximum level which is written to the log by SampSharp.
@@ -200,10 +211,23 @@ namespace SampSharp.Core
             return this;
         }
 
+        #endregion
+
+        /// <summary>
+        ///     Indicate the game mode will be hosted in the SA-MP server process.
+        /// </summary>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder UseHosted()
+        {
+            _hosted = true;
+            return RedirectConsoleOutput();
+        }
+
         /// <summary>
         ///     Sets the behaviour used once a OnGameModeExit call has been received.
         /// </summary>
         /// <param name="exitBehaviour">The exit behaviour.</param>
+        /// <remarks>The exit behaviour is ignored when using a hosted game mode environment.</remarks>
         /// <returns>The updated game mode configuration builder.</returns>
         public GameModeBuilder UseExitBehaviour(GameModeExitBehaviour exitBehaviour)
         {
@@ -240,7 +264,9 @@ namespace SampSharp.Core
         /// </summary>
         public void Run()
         {
-            if (_communicationClient == null)
+            ApplyDefaults();
+
+            if (!_hosted && _communicationClient == null)
                 throw new GameModeBuilderException("No communication client has been specified");
             if (_gameModeProvider == null)
                 throw new GameModeBuilderException("No game mode provider has been specified");
@@ -278,6 +304,142 @@ namespace SampSharp.Core
 
                 if (redirect)
                     Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            }
+        }
+
+        private void ParseArguments()
+        {
+            var args = Environment.GetCommandLineArgs();
+
+            if (args == null || args.Length == 0)
+            {
+                return;
+            }
+            
+            for (int i = 0; i < args.Length; i++)
+            {
+                string option = null;
+                string value;
+                if (args[i].Length < 2 || !args[i].StartsWith("-"))
+                    continue;
+
+                if (args[i].StartsWith("--"))
+                {
+                    option = args[i];
+                    value = args.Length > i + 1
+                        ? args[i + 1]
+                        : null;
+                }
+                else
+                {
+                    option = args[i].Substring(0, 2);
+                    value = args[i].Length > 2
+                        ? args[i].Substring(2)
+                        : args.Length > i + 1
+                            ? args[i + 1]
+                            : null;
+                }
+
+                switch (option)
+                {
+                    case "--hosted":
+                    case "-h":
+                        UseHosted();
+                        break;
+                    case "--redirect-console-output":
+                    case "-r":
+                        RedirectConsoleOutput();
+                        break;
+                    case "--pipe":
+                    case "-p":
+                        if (value != null && !value.StartsWith("-"))
+                        {
+                            UsePipe(value);
+                            i++;
+                        }
+                        else
+                        {
+                            UsePipe(DefaultPipeName);
+                        }
+                        break;
+                    case "--unix":
+                    case "-u":
+                        if (value != null && !value.StartsWith("-"))
+                        {
+                            UseUnixDomainSocket(value);
+                            i++;
+                        }
+                        else
+                        {
+                            UseUnixDomainSocket(DefaultUnixDomainSocketPath);
+                        }
+                        break;
+                    case "--tcp":
+                        var ip = DefaultTcpIp;
+                        var port = DefaultTcpPort;
+
+                        if (value != null && !value.StartsWith("-"))
+                        {
+                            var colon = value.IndexOf(":", StringComparison.Ordinal);
+
+                            if (colon < 0)
+                            {
+                                if (IPAddress.TryParse(value.Substring(0, colon), out var addr) && addr.AddressFamily == AddressFamily.InterNetwork)
+                                    ip = value.Substring(0, colon);
+                                int.TryParse(value.Substring(colon + 1), out port);
+                            }
+                            else
+                            {
+                                int.TryParse(value, out port);
+                            }
+
+                            i++;
+                        }
+
+                        UseTcpClient(ip, port);
+                        break;
+                    case "--log-level":
+                    case "-l":
+                        if (value == null)
+                            break;
+
+                        if (Enum.TryParse<CoreLogLevel>(value, out var level))
+                            UseLogLevel(level);
+
+                        i++;
+                        break;
+                    case "--start-behaviour":
+                    case "-s":
+                        if (value == null)
+                            break;
+
+                        if (Enum.TryParse<GameModeStartBehaviour>(value, out var startBehaviour))
+                            UseStartBehaviour(startBehaviour);
+
+                        i++;
+                        break;
+                    case "--exit-behaviour":
+                    case "-e":
+                        if (value == null)
+                            break;
+
+                        if (Enum.TryParse<GameModeExitBehaviour>(value, out var exitBehaviour))
+                            UseExitBehaviour(exitBehaviour);
+
+                        i++;
+                        break;
+                }
+            }
+        }
+
+        private void ApplyDefaults()
+        {
+            if (_communicationClient == null && !_hosted)
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    _communicationClient = new UnixDomainSocketCommunicationClient(DefaultUnixDomainSocketPath);
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    _communicationClient = new NamedPipeClient(DefaultPipeName);
             }
         }
 

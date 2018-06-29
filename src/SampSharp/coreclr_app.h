@@ -36,9 +36,11 @@
 #if SAMPSHARP_LINUX
 typedef void host_t;
 typedef unsigned int domaind_id_t;
+typedef void * module_t;
 #elif SAMPSHARP_WINDOWS
 typedef ICLRRuntimeHost2 host_t;
 typedef DWORD domaind_id_t;
+typedef HMODULE module_t;
 #endif
 
 
@@ -57,6 +59,7 @@ private:
 private:
     std::string abs_exe_path_;
     host_t *host_ = NULL;
+    module_t module_ = NULL;
     domaind_id_t domain_id_ = 0;
 
 #if SAMPSHARP_LINUX
