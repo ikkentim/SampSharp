@@ -78,7 +78,7 @@ CMD_DEFINE(cmd_ping) {
 }
 
 CMD_DEFINE(cmd_print) {
-    print("%s", buf);
+    log_print("%s", buf);
 }
 
 CMD_DEFINE(cmd_alive) {

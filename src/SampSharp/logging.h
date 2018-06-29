@@ -16,7 +16,7 @@
 #pragma once
 
 /** prints text to the output */
-void print(const char *format, ...);
+void log_print(const char *format, ...);
 /** log an error */
 void log_error(const char *format, ...);
 /** log a warning */

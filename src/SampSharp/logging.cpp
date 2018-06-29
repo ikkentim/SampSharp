@@ -36,7 +36,7 @@ void vlog(const char* prefix, const char *format, va_list args) {
     sampgdk_logprintf("[SampSharp:%s] %s", prefix, buffer);
 }
 
-void print(const char *format, ...) {
+void log_print(const char *format, ...) {
     va_list args;
     va_start(args, format);
     sampgdk_vlogprintf(format, args);

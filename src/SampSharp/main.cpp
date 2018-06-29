@@ -42,11 +42,11 @@ std::string gamemode;
 bool ready;
 
 void print_info() {
-    print("");
-    print("SampSharp Plugin");
-    print("----------------");
-    print("v%s, (C)2014-2018 Tim Potze", PLUGIN_VERSION_STR);
-    print("");
+    log_print("");
+    log_print("SampSharp Plugin");
+    log_print("----------------");
+    log_print("v%s, (C)2014-2018 Tim Potze", PLUGIN_VERSION_STR);
+    log_print("");
 }
 
 bool config_validate() {

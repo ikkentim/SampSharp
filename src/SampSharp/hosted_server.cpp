@@ -106,7 +106,7 @@ void hosted_server::terminate(const char *context) {
 
 void hosted_server::print(const char* msg) const
 {
-    ::print("%s", msg);
+    log_print("%s", msg);
 }
 
 int hosted_server::get_native_handle(const char* name) {

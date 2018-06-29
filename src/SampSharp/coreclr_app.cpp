@@ -23,6 +23,7 @@
 #include <set>
 #include <string>
 #include "pathutil.h"
+#include "logging.h"
 #if SAMPSHARP_LINUX
 #  include <dirent.h>
 #  include <dlfcn.h>
@@ -47,7 +48,7 @@ bool coreclr_app::load_symbol(void *coreclr_lib, const char *symbol, void **ptr)
     *ptr = dlsym(coreclr_lib, symbol);
 
     if(!*ptr) {
-        fprintf(stderr, "Function %s not found in the libcoreclr.so\n", symbol);
+        log_error("Function %s not found in the libcoreclr.so.", symbol);
         return false;
     }
 
@@ -58,39 +59,39 @@ bool coreclr_app::load_symbol(void *coreclr_lib, const char *symbol, void **ptr)
 int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const char* app_domain_friendly_name) {
     std::string abs_exe_path;
     if(!get_absolute_path(exe_path, abs_exe_path)) {
-        printf("Failed to get absolute executable path\n");
+        log_error("Failed to get absolute executable path.");
         return -1;
     }
-    
+
     abs_exe_path_ = abs_exe_path;
 
     std::string app_dir;
     if(!get_directory(abs_exe_path.c_str(), app_dir)) {
-        printf("Failed to get app path\n");
+        log_error("Failed to get app path.");
         return -1;
     }
-    
+
     std::string clr_dir;
     if(!get_absolute_path(clr_dir_c, clr_dir)) {
-        printf("Failed to get absolute clr path\n");
+        log_error("Failed to get absolute clr path.");
         return -1;
     }
-    
+
     std::string coreclr_dll((clr_dir));
     coreclr_dll.append(DIR_SEPARATOR);
     coreclr_dll.append(CORECLR_LIB);
 
     if (coreclr_dll.length() >= PATH_MAX)
     {
-        fprintf(stderr, "Absolute path to libcoreclr.so too long\n");
+        log_error("Absolute path to libcoreclr.so too long.");
         return -1;
     }
 
     std::string tpa_list;
-    
+
     tpa_list = abs_exe_path;
     tpa_list.append(TPA_DELIMITER);
-    
+
     construct_tpa(clr_dir.c_str(), tpa_list);
 
 
@@ -109,7 +110,7 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
 
     if(!coreclr_lib) {
         const char *error = dlerror();
-        fprintf(stderr, "Failed to load CoreCLR library: %s\n", error);
+        log_error("Failed to load CoreCLR library: %s.", error);
         return -1;
     }
 
@@ -155,11 +156,11 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
     };
 
     return coreclr_initialize_(
-        abs_exe_path.c_str(), 
-        app_domain_friendly_name, 
-        sizeof(property_keys) / sizeof(property_keys[0]), 
-        property_keys, 
-        property_values, 
+        abs_exe_path.c_str(),
+        app_domain_friendly_name,
+        sizeof(property_keys) / sizeof(property_keys[0]),
+        property_keys,
+        property_values,
         &host_,
         &domain_id_
     );
@@ -174,7 +175,7 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
 
 	if (!coreclr_module)
 	{
-		printf("ERROR - CoreCLR.dll could not be found");
+		log_error("CoreCLR.dll could not be found.");
 		return -1;
 	}
 
@@ -184,7 +185,7 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
 
 	if (!get_clr_runtime_host)
 	{
-		printf("ERROR - GetCLRRuntimeHost not found");
+		log_error("GetCLRRuntimeHost not found.");
 		return -1;
 	}
 
@@ -193,7 +194,7 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
 
 	if (FAILED(hr))
 	{
-		printf("ERROR - Failed to get ICLRRuntimeHost2 instance.\nError code:%x\n", hr);
+		log_error("Failed to get ICLRRuntimeHost2 instance. Error code:%x.", hr);
 		return -1;
 	}
 
@@ -204,7 +205,7 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
 			// STARTUP_LOADER_OPTIMIZATION_MULTI_DOMAIN |		// Maximize domain-neutral loading
 			// STARTUP_LOADER_OPTIMIZATION_MULTI_DOMAIN_HOST |	// Domain-neutral loading for strongly-named assemblies
 			STARTUP_CONCURRENT_GC |						// Use concurrent GC
-			STARTUP_SINGLE_APPDOMAIN |					// All code executes in the default AppDomain 
+			STARTUP_SINGLE_APPDOMAIN |					// All code executes in the default AppDomain
 																		// (required to use the runtimeHost->ExecuteAssembly helper function)
 			STARTUP_LOADER_OPTIMIZATION_SINGLE_DOMAIN	// Prevents domain-neutral loading
 		)
@@ -212,7 +213,7 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
 
     if (FAILED(hr))
 	{
-		printf("ERROR - Failed to set startup flags.\nError code:%x\n", hr);
+		log_error("Failed to set startup flags. Error code:%x.", hr);
 		return -1;
 	}
 
@@ -220,7 +221,7 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
 	hr = host_->Start();
 	if (FAILED(hr))
 	{
-		printf("ERROR - Failed to start the runtime.\nError code:%x\n", hr);
+		log_error("Failed to start the runtime. Error code:%x.", hr);
 		return -1;
 	}
 
@@ -229,7 +230,7 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
 		// APPDOMAIN_SECURITY_SANDBOXED |					// Causes assemblies not from the TPA list to be loaded as partially trusted
 		APPDOMAIN_ENABLE_PLATFORM_SPECIFIC_APPS |			// Enable platform-specific assemblies to run
 		APPDOMAIN_ENABLE_PINVOKE_AND_CLASSIC_COMINTEROP |	// Allow PInvoking from non-TPA assemblies
-		APPDOMAIN_DISABLE_TRANSPARENCY_ENFORCEMENT;			// Entirely disables transparency checks 
+		APPDOMAIN_DISABLE_TRANSPARENCY_ENFORCEMENT;			// Entirely disables transparency checks
 
     // Setup key/value pairs for AppDomain  properties
 	const wchar_t* propertyKeys[] = {
@@ -240,10 +241,10 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
 		L"PLATFORM_RESOURCE_ROOTS",
 		L"AppDomainCompatSwitch"
 	};
-    
+
     std::wstring wtpa_list = std::wstring(tpa_list.begin(), tpa_list.end());
     std::wstring wnative_search_dirs = std::wstring(native_search_dirs.begin(), native_search_dirs.end());
-    
+
 	// Property values which were constructed in step 5
 	const wchar_t* propertyValues[] = {
 		wtpa_list.c_str(),
@@ -268,10 +269,10 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
 
 	if (FAILED(hr))
 	{
-		printf("ERROR - Failed to create AppDomain.\nError code:%x\n", hr);
+		log_error("Failed to create AppDomain. Error code:%x.", hr);
 		return -1;
 	}
-    
+
     return 0;
 #endif
 }
@@ -285,17 +286,15 @@ int coreclr_app::construct_tpa(const char *directory, std::string &tpa_list) {
                 ".exe",
                 };
 
-    printf("construct tpa for dir %s...", directory);
     DIR* dir = opendir(directory);
     if (dir == nullptr)
     {
-        printf("could not open dir!\n");
+        log_error("Could not open directory for TPA construction.");
         return 1;
     }
 
     std::set<std::string> addedAssemblies;
 
-    printf("checking for all %d exts...\n", sizeof(tpaExtensions) / sizeof(tpaExtensions[0]));
     // Walk the directory for each extension separately so that we first get files with .ni.dll extension,
     // then files with .dll extension, etc.
     for (int extIndex = 0; extIndex < sizeof(tpaExtensions) / sizeof(tpaExtensions[0]); extIndex++)
@@ -305,23 +304,19 @@ int coreclr_app::construct_tpa(const char *directory, std::string &tpa_list) {
 
         struct dirent* entry;
 
-        printf("checking dir %s\n", directory);
         // For all entries in the directory
         while ((entry = readdir(dir)) != nullptr)
         {
-                printf("aaaa\n");
             // We are interested in files only
             switch (entry->d_type)
             {
             case DT_REG:
-                printf("DT_REG");
                 break;
 
             // Handle symlinks and file systems that do not support d_type
             case DT_LNK:
             case DT_UNKNOWN:
                 {
-                printf("DT_LNK or DT_UNKNOWN");
                     std::string fullFilename;
 
                     fullFilename.append(directory);
@@ -342,15 +337,10 @@ int coreclr_app::construct_tpa(const char *directory, std::string &tpa_list) {
                 break;
 
             default:
-                printf("type is %d\n", entry->d_type);
                 continue;
             }
 
             std::string filename(entry->d_name);
-
-            
-                    printf("Adding to tpa %s\n", filename.c_str());
-
 
             // Check if the extension matches the one we are looking for
             int extPos = filename.length() - extLength;
@@ -373,11 +363,11 @@ int coreclr_app::construct_tpa(const char *directory, std::string &tpa_list) {
                 tpa_list.append(TPA_DELIMITER);
             }
         }
-        
+
         // Rewind the directory stream to be able to iterate over it for the next extension
         rewinddir(dir);
     }
-    
+
     closedir(dir);
 #elif SAMPSHARP_WINDOWS
     const wchar_t *tpaExtensions[] = {
@@ -440,14 +430,14 @@ int coreclr_app::create_delegate(const char* assembly_name,
         return -1;
     }
 
-    return coreclr_create_delegate_(host_, domain_id_, assembly_name, 
+    return coreclr_create_delegate_(host_, domain_id_, assembly_name,
         type_name, method_name, delegate);
 #elif SAMPSHARP_WINDOWS
-    
+
     std::string an = std::string(assembly_name);
     std::string tn = std::string(type_name);
     std::string mn = std::string(method_name);
-    
+
     std::wstring wan = std::wstring(an.begin(), an.end());
     std::wstring wtn = std::wstring(tn.begin(), tn.end());
     std::wstring wmn = std::wstring(mn.begin(), mn.end());
