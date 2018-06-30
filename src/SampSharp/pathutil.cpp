@@ -50,7 +50,7 @@ bool path_has_extension(const char *path, const char *ext) {
 #if SAMPSHARP_WINDOWS
     return _strcmpi(path + (path_len - ext_len), ext) == 0;
 #elif SAMPSHARP_LINUX
-    return strcmpi(path + (path_len - ext_len), ext) == 0;
+    return strcasecmp(path + (path_len - ext_len), ext) == 0;
 #endif
 }
 
