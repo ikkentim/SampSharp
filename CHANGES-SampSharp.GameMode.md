@@ -1,3 +1,6 @@
+### 0.8.0-alpha8
+- Fixed `BaseVehicle.CreateStatic(VehicleModelType, Vector3, float, int, int)` overload not creating static vehicle
+
 ### 0.8.0-alpha7
 - Fixed timer executed multiple times
 

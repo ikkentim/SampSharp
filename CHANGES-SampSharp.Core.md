@@ -1,3 +1,11 @@
+### 0.8.0-alpha8
+- Added option to host game mode inside samp-server process (experimental)
+- Renamed `GameModeClient` to `MultiProcessGameModeClient`
+- Changed `GameModeBuilder.UseLogStream(Stream stream)` to `GameModeBuilder.UseLogWriter(TextWriter textWriter)`
+- Fixed an `ArgumentOutOfRangeException` being thrown in certain cases when calling a native
+- Fixed exceptions from tasks not being sent to the `IGameModeClient.UnhandledException` event
+- Fixed log messages from SampSharp not being redirect to the SA-MP server when `RedirectConsoleOutput()` was used
+
 ### 0.8.0-alpha7
 - Possibly fixed "Duplicate type name within an assembly." error
 
