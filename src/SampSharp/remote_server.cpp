@@ -151,11 +151,10 @@ CMD_DEFINE(cmd_start) {
             STATUS_SET(status_client_received_init);
 
             cell params = 0;
-            uint32_t len = callbacks_.fill_call_buffer(NULL, "OnGameModeInit",
-                &params, buf_, LEN_NETBUF, true);
+            uint32_t len = LEN_NETBUF;
             uint8_t *response = NULL;
-
-            if (len == 0) {
+            if(!callbacks_.fill_call_buffer(NULL, "OnGameModeInit", &params,
+                buf_, &len, true)) {
                 break;
             }
 
@@ -417,14 +416,12 @@ void remote_server::public_call(AMX *amx, const char *name, cell *params, cell *
     }
 
     /* prep network buffer */
-    uint32_t len = callbacks_.fill_call_buffer(amx, name, params, buf_, 
-        LEN_NETBUF, true);
+    uint32_t len = LEN_NETBUF;
     uint8_t *response = NULL;
-
-    if (len == 0) {
+    if(!callbacks_.fill_call_buffer(amx, name, params, buf_, &len, true)) {
         return;
     }
-
+    
     mutex_.lock();
 
     /* send */

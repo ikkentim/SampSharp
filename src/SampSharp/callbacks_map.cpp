@@ -86,8 +86,8 @@ void callbacks_map::register_buffer(uint8_t *buf) {
     callbacks_[name] = info_buf;
 }
 
-uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name, 
-    cell *params, uint8_t *buf, uint32_t len, bool include_name) {
+bool callbacks_map::fill_call_buffer(AMX *amx, const char *name, 
+    cell *params, uint8_t *buf, uint32_t *len, bool include_name) {
     assert(sizeof(cell) == sizeof(uint32_t));
 
     uint32_t call_len = 0;
@@ -95,20 +95,21 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
     /* find the callback in the map */
     std::map<std::string, uint8_t *>::const_iterator it = callbacks_.find(name);
     if (it == callbacks_.end()) {
-        return 0;
+        return false;
     }
 
     if(include_name) {
         /* fill the buffer with the callback name */
         size_t name_len = strlen(name);
-        if (len < name_len + 1) {
+        if (*len < name_len + 1) {
             log_error("Callback buffer too small.");
-            return 0;
+            return false;
         }
 
         memcpy(buf, name, name_len + 1);
         call_len = name_len + 1;
     }
+
     /* fill the buffer with the callback arguments */
     uint32_t i = 0;
     uint32_t params_count = params[0] / sizeof(cell);
@@ -124,7 +125,7 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
         }
         switch (instr) {
             case ARG_VALUE:
-                if (len - call_len < sizeof(cell)) {
+                if (*len - call_len < sizeof(cell)) {
                     log_error("Callback buffer too small.");
                     return 0;
                 }
@@ -140,13 +141,14 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
                     amx_StrLen(val_addr, &val_len);
                 }
 
-                if ((int)len - (int)call_len < val_len + 1) {
+                if ((int)*len - (int)call_len < val_len + 1) {
                     log_error("Callback buffer too small.");
                     return 0;
                 }
 
                 if (val_len) {
-                    amx_GetString((char *)buf + call_len, val_addr, 0, len);
+                    amx_GetString((char *)buf + call_len, val_addr, 0,
+                        *len - call_len);
                 }
                 buf[call_len + val_len] = 0;
                 call_len += val_len + 1;
@@ -176,7 +178,7 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
                 break;
             default:
                 log_error("Invalid callback instruction %d.", instr);
-                return 0;
+                return false;
         }
     }
 
@@ -185,5 +187,6 @@ uint32_t callbacks_map::fill_call_buffer(AMX *amx, const char *name,
             "received %d parameters.", params_count, i);
     }
 
-    return call_len;
+    *len = call_len;
+    return true;
 }

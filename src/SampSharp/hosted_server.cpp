@@ -76,11 +76,8 @@ void hosted_server::public_call(AMX *amx, const char *name, cell *params,
         len;
 
     if(public_call_) {
-
-        len = callbacks_.fill_call_buffer(amx, name, params, buf_, LEN_CBBUF,
-            false);
-
-        if (len == 0) {
+        len = LEN_CBBUF;
+        if(!callbacks_.fill_call_buffer(amx, name, params, buf_, &len, false)) {
             return;
         }
 
