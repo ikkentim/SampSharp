@@ -148,6 +148,9 @@
     <ClInclude Include="hosted_server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="json.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SampSharp.def">

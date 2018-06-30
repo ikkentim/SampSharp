@@ -20,10 +20,13 @@
 #include <string.h>
 #include <assert.h>
 #include <limits.h>
+#include <fstream>
+#include <vector>
 #include <set>
 #include <string>
 #include "pathutil.h"
 #include "logging.h"
+#include "json.h"
 #if SAMPSHARP_LINUX
 #  include <dirent.h>
 #  include <dlfcn.h>
@@ -42,8 +45,12 @@
 #  define PATH_MAX MAX_PATH
 #endif
 
+#define JSON_IS(obj, type) (obj.JSONType() == json::JSON::Class::type)
+#define JSON_KEY_IS(obj, key, type) (obj.hasKey(key) && JSON_IS(obj[key], type))
+
 #if SAMPSHARP_LINUX
-bool coreclr_app::load_symbol(void *coreclr_lib, const char *symbol, void **ptr) {
+bool coreclr_app::load_symbol(void *coreclr_lib, const char *symbol,
+    void **ptr) {
 
     *ptr = dlsym(coreclr_lib, symbol);
 
@@ -56,7 +63,8 @@ bool coreclr_app::load_symbol(void *coreclr_lib, const char *symbol, void **ptr)
 }
 #endif
 
-int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const char* app_domain_friendly_name) {
+int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path,
+    const char* app_domain_friendly_name) {
     std::string abs_exe_path;
     if(!get_absolute_path(exe_path, abs_exe_path)) {
         log_error("Failed to get absolute executable path.");
@@ -87,13 +95,14 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path, const c
         return -1;
     }
 
+    // Construct tpa
     std::string tpa_list;
 
     tpa_list = abs_exe_path;
     tpa_list.append(TPA_DELIMITER);
 
     construct_tpa(clr_dir.c_str(), tpa_list);
-
+    add_deps_to_tpa(abs_exe_path, tpa_list);
 
     // Construct native search directory paths
     std::string plugins_dir;
@@ -402,6 +411,138 @@ int coreclr_app::construct_tpa(const char *directory, std::string &tpa_list) {
 	}
 #endif
     return 0;
+}
+
+void coreclr_app::add_deps_to_tpa(std::string abs_exe_path,
+    std::string &tpa_list) {
+    if(!path_has_extension(abs_exe_path.c_str(), ".dll")) {
+        return;
+    }
+
+    std::string runtimeconfig_path;
+    std::string deps_path;
+
+    // Find runtime config
+    path_change_extension(abs_exe_path.c_str(), ".runtimeconfig.dev.json",
+        runtimeconfig_path);
+
+    if(!file_exists(runtimeconfig_path.c_str())) {
+        path_change_extension(abs_exe_path.c_str(), ".runtimeconfig.json",
+            runtimeconfig_path);
+    }
+
+    if(!file_exists(runtimeconfig_path.c_str())) {
+        return;
+    }
+
+    // Find deps file
+    path_change_extension(abs_exe_path.c_str(), ".deps.json", deps_path);
+    if(!file_exists(deps_path.c_str())) {
+        return;
+    }
+
+    log_debug("runtimeconfig path: %s", runtimeconfig_path.c_str());
+    log_debug("deps path: %s", deps_path.c_str());
+
+    // Read files
+    std::ifstream runtimeconfig_stream(runtimeconfig_path);
+    std::string runtimeconfig_json;
+
+    runtimeconfig_stream.seekg(0, std::ios::end);   
+    runtimeconfig_json.reserve((size_t)runtimeconfig_stream.tellg());
+    runtimeconfig_stream.seekg(0, std::ios::beg);
+
+    runtimeconfig_json.assign(
+        std::istreambuf_iterator<char>(runtimeconfig_stream),
+        std::istreambuf_iterator<char>());
+
+    runtimeconfig_stream.close();
+
+    std::ifstream deps_stream(deps_path);
+    std::string deps_json;
+
+    deps_stream.seekg(0, std::ios::end);   
+    deps_json.reserve((size_t)deps_stream.tellg());
+    deps_stream.seekg(0, std::ios::beg);
+
+    deps_json.assign(
+        std::istreambuf_iterator<char>(deps_stream),
+        std::istreambuf_iterator<char>());
+
+    deps_stream.close();
+
+    // Find probing paths
+    json::JSON runtimeconfig = json::JSON::Load(runtimeconfig_json);
+
+    if(!runtimeconfig.hasKey("runtimeOptions") ||
+        !runtimeconfig["runtimeOptions"].hasKey("additionalProbingPaths")) {
+        return;
+    }
+
+    json::JSON probes =
+        runtimeconfig["runtimeOptions"]["additionalProbingPaths"];
+
+    if(!JSON_IS(probes, Array)) {
+        return;
+    }
+
+    std::vector<std::string> probing_paths;
+    for(const auto& path_obj : probes.ArrayRange()) {
+        std::string path = path_obj.ToString();
+        if(dir_exists(path.c_str())) {
+            probing_paths.push_back(path);
+
+            log_debug("Probe path found: %s", path.c_str());
+        }
+    }
+
+    // Find dependencies
+    json::JSON deps = json::JSON::Load(deps_json);
+
+    if(!JSON_KEY_IS(deps, "runtimeTarget", Object) ||
+        !JSON_KEY_IS(deps, "targets", Object) ||
+        !JSON_KEY_IS(deps, "libraries", Object) ||
+        !JSON_KEY_IS(deps["runtimeTarget"], "name", String)) {
+        return;
+    }
+
+    std::string target_name = deps["runtimeTarget"]["name"].ToString();
+
+    if(!deps["targets"].hasKey(target_name)) {
+        return;
+    }
+
+    json::JSON target = deps["targets"][target_name];
+
+    for(auto obj : target.ObjectRange()) {
+        if(!JSON_IS(obj.second, Object) ||
+            !JSON_KEY_IS(obj.second, "runtime", Object) ||
+            !JSON_KEY_IS(deps["libraries"], obj.first, Object) ||
+            !JSON_KEY_IS(deps["libraries"][obj.first], "type", String) ||
+            deps["libraries"][obj.first]["type"].ToString() != "package" ||
+            !JSON_KEY_IS(deps["libraries"][obj.first], "path", String)
+            ) {
+            continue;
+        }
+
+        std::string lib_path = deps["libraries"][obj.first]["path"].ToString();
+        
+
+        for(const auto& runtime_obj : obj.second["runtime"].ObjectRange()) {
+            for(const auto& probing_path : probing_paths) {
+                std::string path;
+                path_append(probing_path.c_str(), lib_path.c_str(), path);
+                path_append(path.c_str(), runtime_obj.first.c_str(), path);
+
+                if(file_exists(path.c_str())) {
+                    log_debug("Found dependency %s", path.c_str());
+
+                    tpa_list.append(path);
+                    tpa_list.append(TPA_DELIMITER);
+                }
+            }
+        }
+    }
 }
 
 int coreclr_app::release()

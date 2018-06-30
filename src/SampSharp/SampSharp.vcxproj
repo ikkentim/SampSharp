@@ -57,7 +57,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;SAMPGDK_AMALGAMATION;SAMPGDK_CPP_WRAPPERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;LOG_DEBUG;_DEBUG;_WINDOWS;_USRDLL;SAMPGDK_AMALGAMATION;SAMPGDK_CPP_WRAPPERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>includes;includes/sdk;includes/sdk/amx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>false</SDLCheck>
       <BrowseInformation>true</BrowseInformation>
@@ -128,6 +128,7 @@
     <ClInclude Include="dsock_unix.h" />
     <ClInclude Include="hosted_server.h" />
     <ClInclude Include="intermission.h" />
+    <ClInclude Include="json.h" />
     <ClInclude Include="logging.h" />
     <ClInclude Include="mscoree.h" />
     <ClInclude Include="pathutil.h" />

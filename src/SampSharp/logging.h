@@ -28,9 +28,9 @@ void log_warning(const char *format, ...);
 
 /** log debug info */
 #ifdef LOG_DEBUG
-#define log_debug(...) log_debug2(##__VA_ARGS__)
+#define log_debug(format, ...) log_debug2(format, ##__VA_ARGS__)
 #else
-#define log_debug(...) while(0)
+#define log_debug(format, ...) while(0)
 #endif
 
 /** log info */

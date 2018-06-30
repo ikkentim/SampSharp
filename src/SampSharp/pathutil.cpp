@@ -35,6 +35,37 @@
 #  define NOT_DIR_SEPARATOR "/"
 #endif
 
+bool path_has_extension(const char *path, const char *ext) {
+    if(!path || !ext) {
+        return false;
+    }
+
+    size_t path_len = strlen(path);
+    size_t ext_len = strlen(ext);
+
+    if(path_len < ext_len) {
+        return false;
+    }
+
+    return _strcmpi(path + (path_len - ext_len), ext) == 0;
+}
+
+void path_change_extension(const char *path, const char *ext, std::string &result) {
+    if(!path || !ext) {
+        return;
+    }
+
+    result.assign(path);
+
+    // Remove extension
+    size_t last_dot = result.find_last_of('.');
+    if(last_dot != std::string::npos) {
+        result = result.substr(0, last_dot);
+    }
+
+    result.append(ext);
+}
+
 void path_append(const char *path, const char *append, std::string &result) {
     // Normalize path
     std::string tmp;

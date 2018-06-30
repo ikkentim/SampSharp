@@ -55,6 +55,7 @@ public:
 
 private:
     int construct_tpa(const char *directory, std::string &tpa_list);
+    void add_deps_to_tpa(std::string abs_exe_path, std::string &tpa_list);
 
 private:
     std::string abs_exe_path_;

@@ -28,6 +28,8 @@
 #  define DIR_SEPARATOR "\\"
 #endif
 
+bool path_has_extension(const char *path, const char *ext);
+void path_change_extension(const char *path, const char *ext, std::string &result);
 void path_append(const char *path, const char *append, std::string &result);
 bool dir_exists(const char *path);
 bool file_exists(const char *path);
