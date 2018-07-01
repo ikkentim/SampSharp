@@ -14,6 +14,7 @@
 // limitations under the License.
 using System;
 using System.Text.RegularExpressions;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Helpers;
 
 namespace SampSharp.GameMode.SAMP
@@ -1139,6 +1140,31 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
+        /// Returns an Color representation of the specified VehicleColor.
+        /// </summary>
+        /// <param name="vehicleColor">Color of vehicle</param>
+        /// <returns>A Color representation of the input.</returns>
+        public static Color FromVehicleColor(VehicleColor vehicleColor)
+        {
+            uint[] vehicleColours = new uint[] {
+            0x000000FF, 0xF5F5F5FF, 0x2A77A1FF, 0x840410FF, 0x263739FF, 0x86446EFF, 0xD78E10FF, 0x4C75B7FF, 0xBDBEC6FF, 0x5E7072FF,
+            0x46597AFF, 0x656A79FF, 0x5D7E8DFF, 0x58595AFF, 0xD6DAD6FF, 0x9CA1A3FF, 0x335F3FFF, 0x730E1AFF, 0x7B0A2AFF, 0x9F9D94FF,
+            0x3B4E78FF, 0x732E3EFF, 0x691E3BFF, 0x96918CFF, 0x515459FF, 0x3F3E45FF, 0xA5A9A7FF, 0x635C5AFF, 0x3D4A68FF, 0x979592FF,
+            0x421F21FF, 0x5F272BFF, 0x8494ABFF, 0x767B7CFF, 0x646464FF, 0x5A5752FF, 0x252527FF, 0x2D3A35FF, 0x93A396FF, 0x6D7A88FF,
+            0x221918FF, 0x6F675FFF, 0x7C1C2AFF, 0x5F0A15FF, 0x193826FF, 0x5D1B20FF, 0x9D9872FF, 0x7A7560FF, 0x989586FF, 0xADB0B0FF,
+            0x848988FF, 0x304F45FF, 0x4D6268FF, 0x162248FF, 0x272F4BFF, 0x7D6256FF, 0x9EA4ABFF, 0x9C8D71FF, 0x6D1822FF, 0x4E6881FF,
+            0x9C9C98FF, 0x917347FF, 0x661C26FF, 0x949D9FFF, 0xA4A7A5FF, 0x8E8C46FF, 0x341A1EFF, 0x6A7A8CFF, 0xAAAD8EFF, 0xAB988FFF,
+            0x851F2EFF, 0x6F8297FF, 0x585853FF, 0x9AA790FF, 0x601A23FF, 0x20202CFF, 0xA4A096FF, 0xAA9D84FF, 0x78222BFF, 0x0E316DFF,
+            0x722A3FFF, 0x7B715EFF, 0x741D28FF, 0x1E2E32FF, 0x4D322FFF, 0x7C1B44FF, 0x2E5B20FF, 0x395A83FF, 0x6D2837FF, 0xA7A28FFF,
+            0xAFB1B1FF, 0x364155FF, 0x6D6C6EFF, 0x0F6A89FF, 0x204B6BFF, 0x2B3E57FF, 0x9B9F9DFF, 0x6C8495FF, 0x4D8495FF, 0xAE9B7FFF,
+            0x406C8FFF, 0x1F253BFF, 0xAB9276FF, 0x134573FF, 0x96816CFF, 0x64686AFF, 0x105082FF, 0xA19983FF, 0x385694FF, 0x525661FF,
+            0x7F6956FF, 0x8C929AFF, 0x596E87FF, 0x473532FF, 0x44624FFF, 0x730A27FF, 0x223457FF, 0x640D1BFF, 0xA3ADC6FF, 0x695853FF,
+            0x9B8B80FF, 0x620B1CFF, 0x5B5D5EFF, 0x624428FF, 0x731827FF, 0x1B376DFF, 0xEC6AAEFF
+            };
+            return FromInteger(vehicleColours[(int)vehicleColor], ColorFormat.RGBA);
+        }
+
+        /// <summary>
         ///     Performs linear interpolation of <see cref="Color" />.
         /// </summary>
         /// <param name="value1">Source <see cref="Color" />.</param>
@@ -1174,16 +1200,15 @@ namespace SampSharp.GameMode.SAMP
         {
             return Lerp(this, White, amount);
         }
-
         #endregion
 
         #region Operators
 
-        /// <summary>
-        ///     Cast a Color to an integer.
-        /// </summary>
-        /// <param name="value">The Color to cast to an integer.</param>
-        /// <returns>The resulting integer.</returns>
+            /// <summary>
+            ///     Cast a Color to an integer.
+            /// </summary>
+            /// <param name="value">The Color to cast to an integer.</param>
+            /// <returns>The resulting integer.</returns>
         public static implicit operator int(Color value)
         {
             return value.ToInteger(ColorFormat.RGBA); //Default format
