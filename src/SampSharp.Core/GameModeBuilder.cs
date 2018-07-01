@@ -292,12 +292,14 @@ namespace SampSharp.Core
             }
 
             // Set framework log writer
-            var logStream = _logWriter;
+            var logWriter = _logWriter;
 
             if (!_logWriterSet)
-                logStream = (TextWriter) redirectWriter ?? new StreamWriter(Console.OpenStandardOutput());
+                logWriter = redirectWriter != null
+                    ? (TextWriter) redirectWriter
+                    : new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
 
-            CoreLog.TextWriter = logStream;
+            CoreLog.TextWriter = logWriter;
 
             // Run game mode runner
             if (_hosted)
