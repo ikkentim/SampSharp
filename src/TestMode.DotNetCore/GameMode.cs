@@ -18,6 +18,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using SampSharp.GameMode;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
@@ -26,47 +27,18 @@ namespace TestMode
 {
     internal class GameMode : BaseMode
     {
-        private int _ticks;
-
         #region Overrides of BaseMode
-
-        protected override void OnTick(EventArgs e)
-        {
-            base.OnTick(e);
-
-            if (_ticks++ % 5000 == 0)
-                Console.WriteLine("Server is still ticking...");
-        }
         
-        protected override async void OnInitialized(EventArgs e)
+        protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
             
-            Mapper.Initialize(configuration =>
-            {
-                configuration.CreateMap<Player, PlayerDto>()
-                    .ForMember(item => item.Id, options => options.Ignore())
-                    .ForMember(item => item.PositionX, options => options.MapFrom(player => player.Position.X))
-                    .ForMember(item => item.PositionY, options => options.MapFrom(player => player.Position.Y))
-                    .ForMember(item => item.PositionZ, options => options.MapFrom(player => player.Position.Z));
-
-                configuration.CreateMap<PlayerDto, Player>()
-                    .ForMember(item => item.Id, options => options.Ignore())
-                    .ForMember(item => item.Name, options => options.Ignore())
-                    .ForMember(item => item.Position,
-                        options => options.MapFrom(playerDto => new Vector3(playerDto.PositionX, playerDto.PositionY, playerDto.PositionZ)));
-            });
-
             Console.WriteLine("The game mode has loaded.");
             AddPlayerClass(0, Vector3.Zero, 0);
 
-            SetGameModeText("Before delay");
-            await Task.Delay(10);
+            var sampleVehicle = BaseVehicle.Create(VehicleModelType.Alpha, Vector3.One * 10, 0, -1, -1);
 
-            Console.WriteLine("waited 2");
-            SetGameModeText("After delay");
-
-            Console.WriteLine("RCON commands: sd (shutdown) msg (repeat message)");
+            Console.WriteLine("Spawned sample vehicle " + sampleVehicle.Model);
         }
 
         protected override void OnRconCommand(RconEventArgs e)
@@ -87,13 +59,19 @@ namespace TestMode
                 Console.WriteLine("Received: " + msg);
                 msg = new string(msg.Reverse().ToArray());
 
-                Console.WriteLine("Sending: " + msg);
+                Console.WriteLine("Reversed: " + msg);
 
                 e.Success = true;
                 Server.Print(msg);
             }
 
             base.OnRconCommand(e);
+        }
+        
+        protected override void OnIncomingConnection(ConnectionEventArgs e)
+        {
+            Console.WriteLine($"Incomming connection: Player {e.PlayerId} from {e.IpAddress}:{e.Port}");
+            base.OnIncomingConnection(e);
         }
 
         protected override void OnPlayerConnected(BasePlayer player, EventArgs e)

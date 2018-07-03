@@ -237,9 +237,11 @@ bool remote_server::connect() {
     if (!communication_->connect()) {
         return false;
     }
+    
+    intermission_.set_on(false);
 
     STATUS_SET(status_client_connected);
-
+    
     if (STATUS_ISSET(status_client_reconnecting)) {
         log_info("Client reconnected.");
     }

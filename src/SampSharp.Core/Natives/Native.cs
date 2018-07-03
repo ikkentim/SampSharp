@@ -76,11 +76,11 @@ namespace SampSharp.Core.Natives
 
             if (Parameters.Length != arguments.Length)
                 throw new ArgumentOutOfRangeException(nameof(arguments), "Invalid argument count");
-
+            
             IEnumerable<byte> data = ValueConverter.GetBytes(Handle);
 
             if (CoreLog.DoesLog(CoreLogLevel.Verbose))
-                CoreLog.Log(CoreLogLevel.Verbose, $"Invoking {Name}({string.Join(", ", arguments)})");
+                CoreLog.LogVerbose("Invoking {0}({1})", Name, string.Join(", ", arguments));
 
             int length;
 

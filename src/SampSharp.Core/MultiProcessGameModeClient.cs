@@ -109,7 +109,7 @@ namespace SampSharp.Core
                     var isInit = name == "OnGameModeInit";
 
                     if (CoreLog.DoesLog(CoreLogLevel.Verbose))
-                        CoreLog.Log(CoreLogLevel.Verbose, "Incoming public call: " + name);
+                        CoreLog.LogVerbose("Incoming public call: {0}", name);
 
                     if ((_startBehaviour == GameModeStartBehaviour.Gmx || _startBehaviour == GameModeStartBehaviour.FakeGmx) && !_initReceived &&
                         !isInit)
@@ -131,6 +131,8 @@ namespace SampSharp.Core
                         try
                         {
                             result = callback.Invoke(data.Data, name.Length + 1);
+                            
+                            CoreLog.LogVerbose("Public call response for {0}: {1}", name, result);
                         }
                         catch (Exception e)
                         {
@@ -152,22 +154,63 @@ namespace SampSharp.Core
                     {
                         if (_startBehaviour == GameModeStartBehaviour.FakeGmx)
                         {
-                            if (_callbacks.TryGetValue("OnPlayerConnect", out var onPlayerConnect))
+                            _callbacks.TryGetValue("OnIncomingConnection", out var onIncomingConnection);
+                            _callbacks.TryGetValue("OnPlayerConnect", out var onPlayerConnect);
+                            _callbacks.TryGetValue("OnPlayerRequestClass", out var onPlayerRequestClass);
+
+                            var natIsPlayerConnected = NativeLoader.Load("IsPlayerConnected", new[]
                             {
-                                var natIsPlayerConnected = NativeLoader.Load("IsPlayerConnected", new[] { NativeParameterInfo.ForType(typeof(int)) });
-                                var natGetPlayerPoolSize = NativeLoader.Load("GetPlayerPoolSize", new NativeParameterInfo[0]);
-
-                                var poolSize = natGetPlayerPoolSize.Invoke();
-                                for (var i = 0; i <= poolSize; i++)
+                                NativeParameterInfo.ForType(typeof(int))
+                            });
+                            var natGetPlayerPoolSize = NativeLoader.Load("GetPlayerPoolSize", new NativeParameterInfo[0]);
+                            var natForceClassSelection =
+                                NativeLoader.Load("ForceClassSelection", new[]
                                 {
-                                    var isConnected = natIsPlayerConnected.Invoke(i);
+                                    NativeParameterInfo.ForType(typeof(int))
+                                });
+                            var natTogglePlayerSpectating = NativeLoader.Load("TogglePlayerSpectating",
+                                new[]
+                                {
+                                    NativeParameterInfo.ForType(typeof(int)),
+                                    NativeParameterInfo.ForType(typeof(int))
+                                });
+                            var natGetPlayerIp = NativeLoader.Load("GetPlayerIp",
+                                new[]
+                                {
+                                    NativeParameterInfo.ForType(typeof(int)),
+                                    new NativeParameterInfo(NativeParameterType.StringReference, 2),
+                                    NativeParameterInfo.ForType(typeof(int)), 
+                                });
+                            
+                            var poolSize = natGetPlayerPoolSize.Invoke();
+                            for (var i = 0; i <= poolSize; i++)
+                            {
+                                var isConnected = natIsPlayerConnected.Invoke(i);
 
-                                    if (isConnected == 0)
-                                        continue;
+                                if (isConnected == 0)
+                                    continue;
 
-                                    var args = ValueConverter.GetBytes(i);
-                                    onPlayerConnect.Invoke(args, 0);
-                                }
+                                var args = new object[] { i, null, 16 };
+                                natGetPlayerIp.Invoke(args);
+
+                                if (args[1] is string ip)
+                                    onIncomingConnection?.Invoke(
+                                        ValueConverter.GetBytes(i)
+                                            .Concat(ValueConverter.GetBytes(ip, Encoding.ASCII))
+                                            .Concat(ValueConverter.GetBytes(9999999))
+                                            .ToArray(), 0);
+
+                                onPlayerConnect?.Invoke(ValueConverter.GetBytes(i), 0);
+
+                                natForceClassSelection.Invoke(i);
+                                natTogglePlayerSpectating.Invoke(i, 1);
+                                natTogglePlayerSpectating.Invoke(i, 0);
+
+                                onPlayerRequestClass?.Invoke(
+                                    ValueConverter.GetBytes(i)
+                                        .Concat(ValueConverter.GetBytes(0))
+                                        .ToArray(), 0);
+
                             }
                         }
                     }

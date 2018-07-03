@@ -42,7 +42,6 @@ forward OnSampSharpDisconnect();
 /* Undeclared natives. */
 native IsValidVehicle(vehicleid);
 
-
 static stock gscPlayerColors[100] =
     { /* Extracted from fixes.inc */
         0xFF8C13FF, 0xC715FFFF, 0x20B2AAFF, 0xDC143CFF, 0x6495EDFF,
@@ -79,6 +78,9 @@ SetDefaultCameraPosition(playerid, spectate)
 
     /* Hide the controls for now. */
     TogglePlayerSpectating(playerid, spectate);
+    
+    if(!spectate)
+        SetPlayerPos(playerid, 0, 0, 5);
 
     /* Set their camera position. */
     SetPlayerCameraPos(playerid, CAMERA_POSITION);

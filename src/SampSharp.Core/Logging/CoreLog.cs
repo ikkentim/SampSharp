@@ -73,16 +73,36 @@ namespace SampSharp.Core.Logging
                  tw.WriteLine(level == CoreLogLevel.Initialisation ? message : $"[SampSharp:{GetLevelName(level)}] {message}");
             }
         }
-        
+
         /// <summary>
         ///     Logs the specified message at the debug log level. The log message is removed in non-debug builds.
         /// </summary>
-        /// <param name="message">The message.</param>
+        /// <param name="format">The format of the message.</param>
+        /// <param name="args">The arguments of the message.</param>
         [DebuggerHidden]
         [Conditional("DEBUG")]
-        public static void LogDebug(string message)
+        public static void LogDebug(string format, params object[] args)
         {
-            Log(CoreLogLevel.Debug, message);
+            var tw = TextWriter;
+            if (tw != null && LogLevel >= CoreLogLevel.Debug)
+            {
+                tw.WriteLine($"[SampSharp:{GetLevelName(CoreLogLevel.Debug)}] {string.Format(format, args)}");
+            }
+        }
+        /// <summary>
+        ///     Logs the specified message at the verbose log level. The log message is removed in non-debug builds.
+        /// </summary>
+        /// <param name="format">The format of the message.</param>
+        /// <param name="args">The arguments of the message.</param>
+        [DebuggerHidden]
+        [Conditional("DEBUG")]
+        public static void LogVerbose(string format, params object[] args)
+        {
+            var tw = TextWriter;
+            if (tw != null && LogLevel >= CoreLogLevel.Verbose)
+            {
+                tw.WriteLine($"[SampSharp:{GetLevelName(CoreLogLevel.Verbose)}] {string.Format(format, args)}");
+            }
         }
     }
 }
