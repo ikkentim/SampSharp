@@ -48,6 +48,7 @@ namespace SampSharp.Core
         private bool _initReceived;
         private bool _running;
         private bool _shuttingDown;
+        private bool _canTick;
         private SampSharpSyncronizationContext _syncronizationContext;
         private DateTime _lastSend;
         private ushort _callerIndex;
@@ -83,6 +84,9 @@ namespace SampSharp.Core
             switch (data.Command)
             {
                 case ServerCommand.Tick:
+                    if (!_canTick)
+                        break;
+
                     _gameModeProvider.Tick();
 
                     // The server expects at least a message every 5 seconds or else the debug pause
@@ -213,6 +217,8 @@ namespace SampSharp.Core
 
                             }
                         }
+
+                        _canTick = true;
                     }
                     else if (_initReceived && name == "OnGameModeExit")
                     {
@@ -236,6 +242,7 @@ namespace SampSharp.Core
         private void CleanUp()
         {
             _running = false;
+            _canTick = false;
             _initReceived = false;
             _messagePump.Dispose();
         }
