@@ -26,6 +26,4 @@ public:
     /** called when a public call is send from the server */
     virtual void public_call(AMX *amx, const char *name, cell *params,
         cell *retval) = 0;
-    /** terminates the game mode server in an error state */
-    virtual void terminate(const char *context) = 0;
 };

@@ -37,7 +37,6 @@ public:
     ~hosted_server();
     void tick() override;
     void public_call(AMX *amx, const char *name, cell *params, cell *retval) override;
-    void terminate(const char *context) override;
     void print(const char *msg) const;
     int get_native_handle(const char *name);
     void invoke_native(uint8_t *inbuf, uint32_t inlen, uint8_t *outbuf,

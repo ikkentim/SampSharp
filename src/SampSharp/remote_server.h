@@ -38,7 +38,8 @@ public:
     void tick() override;
     void public_call(AMX *amx, const char *name, cell *params, cell *retval)
         override;
-    void terminate(const char *context) override;
+    /** terminates the game mode server in an error state */
+    void terminate(const char *context);
 
 private: /* fields */
     /** statuses */

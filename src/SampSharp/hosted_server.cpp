@@ -58,6 +58,8 @@ hosted_server::hosted_server(const char *clr_dir, const char* exe_path) {
 }
 
 hosted_server::~hosted_server() {
+    app_.release();
+
     if(hosting == this) {
         hosting = NULL;
     }
@@ -93,16 +95,7 @@ void hosted_server::public_call(AMX *amx, const char *name, cell *params,
     }
 }
 
-void hosted_server::terminate(const char *context) {
-    log_warning("Hosted server termination not implemented.");
-    log_warning(context);
-
-    //natives_.clear();
-    //callbacks_.clear();
-}
-
-void hosted_server::print(const char* msg) const
-{
+void hosted_server::print(const char* msg) const {
     log_print("%s", msg);
 }
 

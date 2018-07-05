@@ -15,15 +15,36 @@
 
 #pragma once
 
+#include <string>
+#include <inttypes.h>
 #include "ConfigReader.h"
+#include "commsvr.h"
+
+#define STATE_NONE          0x00
+#define STATE_CONFIG_VALID  0x01
+#define STATE_HOSTED        0x02
+#define STATE_SWAPPING      0x04
+#define STATE_INITIALIZED   0x08
+
+typedef uint8_t plugin_state;
 
 class plugin
 {
 public:
     plugin(void **pp_data);
-    int filterscript_call(const char *function_name);
+    int filterscript_call(const char *function_name) const;
     ConfigReader *config();
+    void config(const std::string &name, std::string &value) const;
+    bool config_validate();
+    commsvr *create_commsvr() const;
+
+    plugin_state state() const;
+    plugin_state state_set(plugin_state flag);
+    plugin_state state_unset(plugin_state flag);
+    plugin_state state_reset();
+
 private:
     void** data_;
     ConfigReader config_;
+    plugin_state state_ = STATE_NONE;
 };
