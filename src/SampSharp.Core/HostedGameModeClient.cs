@@ -16,6 +16,9 @@ using SampSharp.Core.Threading;
 
 namespace SampSharp.Core
 {
+    /// <summary>
+    ///     Represents a SampSharp game mode client for hosted game modes.
+    /// </summary>
     public sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner
     {
         private readonly Dictionary<string, Callback> _callbacks = new Dictionary<string, Callback>();

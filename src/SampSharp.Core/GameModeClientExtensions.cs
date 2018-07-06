@@ -6,6 +6,9 @@ using SampSharp.Core.Callbacks;
 
 namespace SampSharp.Core
 {
+    /// <summary>
+    /// Contains <see cref="IGameModeClient"/> extension methods.
+    /// </summary>
     public static class GameModeClientExtensions
     {
         /// <summary>

@@ -31,7 +31,7 @@ using SampSharp.Core.Threading;
 namespace SampSharp.Core
 {
     /// <summary>
-    ///     Represents a SampSharp game mode client.
+    ///     Represents a SampSharp game mode client for remote SA-MP servers.
     /// </summary>
     public sealed class MultiProcessGameModeClient : IGameModeClient, IGameModeRunner
     {
