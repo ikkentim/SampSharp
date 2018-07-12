@@ -171,6 +171,7 @@ namespace SampSharp.GameMode
             return true;
         }
 
+        [Callback]
         internal bool OnPlayerEnterCheckpoint(int playerid)
         {
             OnPlayerEnterCheckpoint(BasePlayer.FindOrCreate(playerid), EventArgs.Empty);
