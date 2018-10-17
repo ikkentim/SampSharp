@@ -186,7 +186,10 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             if (typeof (BasePlayer).GetTypeInfo().IsAssignableFrom(parameter.ParameterType))
                 return new PlayerType();
-
+                
+            if (typeof (BaseVehicle).GetTypeInfo().IsAssignableFrom(parameter.ParameterType))
+                return new VehicleType();
+                
             if (parameter.ParameterType.GetTypeInfo().IsEnum)
                 return
                     Activator.CreateInstance(typeof (EnumType<>).MakeGenericType(parameter.ParameterType))
