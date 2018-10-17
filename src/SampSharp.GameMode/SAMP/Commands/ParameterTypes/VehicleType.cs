@@ -19,7 +19,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 {
     /// <summary>
-    ///     Represents a player command parameter.
+    ///     Represents a vehicle command parameter.
     /// </summary>
     public class VehicleType : ICommandParameterType
     {
