@@ -63,7 +63,7 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Gets the game mode client.
         /// </summary>
-        protected internal IGameModeClient Client { get; private set; }
+        public IGameModeClient Client { get; private set; }
 
         /// <summary>
         ///     Autoloads the controllers in the specified assembly.
