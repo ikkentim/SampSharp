@@ -99,9 +99,9 @@ namespace TestMode
         }
 
         [Command("enter")]
-        public static void EnterCommand(BasePlayer player, int vehicle)
+        public static void EnterCommand(BasePlayer player, BaseVehicle vehicle)
         {
-            player.PutInVehicle(BaseVehicle.Find(vehicle));
+            player.PutInVehicle(vehicle);
         }
 
         [Command("myfirstcommand")]

@@ -21,9 +21,8 @@
 #include <assert.h>
 #include "logging.h"
 
-#define MAX_ARGS                (32)
-#define MAX_ARGS_FORMAT         (128)
-#define LEN_ARG_BUFFER          (8192)
+#define MAX_ARGS                (128)
+#define MAX_ARGS_FORMAT         (MAX_ARGS * 4)
 
 #define ARG_VALUE               (1)
 #define ARG_VALUE_REF           (9)
