@@ -21,7 +21,7 @@ namespace SampSharp.GameMode.Events
     ///     Provides data for the <see cref="BaseMode.PlayerEnterVehicle" />, <see cref="BasePlayer.EnterVehicle" /> or
     ///     <see cref="BaseVehicle.PlayerEnter" /> event.
     /// </summary>
-    public class EnterVehicleEventArgs : EventArgs
+    public class EnterVehicleEventArgs : VehicleEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="EnterVehicleEventArgs" /> class.
@@ -29,10 +29,9 @@ namespace SampSharp.GameMode.Events
         /// <param name="player">The player.</param>
         /// <param name="vehicle">The vehicle.</param>
         /// <param name="isPassenger">if set to <c>true</c> the player is a passenger.</param>
-        public EnterVehicleEventArgs(BasePlayer player, BaseVehicle vehicle, bool isPassenger)
+        public EnterVehicleEventArgs(BasePlayer player, BaseVehicle vehicle, bool isPassenger) : base(vehicle)
         {
             Player = player;
-            Vehicle = vehicle;
             IsPassenger = isPassenger;
         }
 
@@ -45,11 +44,6 @@ namespace SampSharp.GameMode.Events
         ///     Gets the player.
         /// </summary>
         public BasePlayer Player { get; private set; }
-
-        /// <summary>
-        ///     Gets the vehicle.
-        /// </summary>
-        public BaseVehicle Vehicle { get; private set; }
 
         /// <summary>
         ///     Gets a value indicating whether the <see cref="Player" /> is passenger.

@@ -23,7 +23,7 @@ namespace SampSharp.GameMode.Events
     ///     Provides data for the <see cref="BaseMode.DialogResponse" />, <see cref="BasePlayer.DialogResponse" /> or
     ///     <see cref="Dialog.Response" /> event.
     /// </summary>
-    public class DialogResponseEventArgs : EventArgs
+    public class DialogResponseEventArgs : PlayerEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the DialogResponseEventArgs class.
@@ -33,7 +33,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="response">Response of the dialog response.</param>
         /// <param name="listitem">List item of the dialog response.</param>
         /// <param name="inputtext">Input text of the dialog response.</param>
-        public DialogResponseEventArgs(BasePlayer player, int dialogid, int response, int listitem, string inputtext)
+        public DialogResponseEventArgs(BasePlayer player, int dialogid, int response, int listitem, string inputtext) : base(player)
         {
             Player = player;
             DialogId = dialogid;

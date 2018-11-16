@@ -22,14 +22,15 @@ namespace SampSharp.GameMode.Events
     ///     Provides data for the <see cref="BaseMode.PlayerKeyStateChanged" /> or <see cref="BasePlayer.KeyStateChanged" />
     ///     event.
     /// </summary>
-    public class KeyStateChangedEventArgs : EventArgs
+    public class KeyStateChangedEventArgs : PlayerEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="KeyStateChangedEventArgs" /> class.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="newKeys">The new keys.</param>
         /// <param name="oldKeys">The old keys.</param>
-        public KeyStateChangedEventArgs(Keys newKeys, Keys oldKeys)
+        public KeyStateChangedEventArgs(BasePlayer player, Keys newKeys, Keys oldKeys) : base(player)
         {
             NewKeys = newKeys;
             OldKeys = oldKeys;

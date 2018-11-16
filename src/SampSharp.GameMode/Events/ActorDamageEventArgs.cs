@@ -19,30 +19,28 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerStateChanged" /> or <see cref="BasePlayer.StateChanged" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerTakeDamage" />, <see cref="BaseMode.PlayerGiveDamage" />,
+    ///     <see cref="BasePlayer.TakeDamage" /> or <see cref="BasePlayer.GiveDamage" /> event.
     /// </summary>
-    public class StateEventArgs : PlayerEventArgs
+    public class ActorDamageEventArgs : DamageEventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="StateEventArgs" /> class.
+        ///     Initializes a new instance of the DamageEventArgs class.
         /// </summary>
         /// <param name="player">The player.</param>
-        /// <param name="newstate">The newstate.</param>
-        /// <param name="oldstate">The oldstate.</param>
-        public StateEventArgs(BasePlayer player, PlayerState newstate, PlayerState oldstate) : base(player)
+        /// <param name="actor">The actor.</param>
+        /// <param name="amount">Amount of damage done.</param>
+        /// <param name="weapon">Weapon used to damage another.</param>
+        /// <param name="bodypart">BodyPart shot at.</param>
+        public ActorDamageEventArgs(BasePlayer player, Actor actor, float amount, Weapon weapon, BodyPart bodypart) : base(player, null, amount, weapon, bodypart)
         {
-            NewState = newstate;
-            OldState = oldstate;
+            Actor = actor;
         }
 
         /// <summary>
-        ///     Gets the new state.
+        ///     Gets the Actor
         /// </summary>
-        public PlayerState NewState { get; private set; }
-
-        /// <summary>
-        ///     Gets the old state.
-        /// </summary>
-        public PlayerState OldState { get; private set; }
+        public Actor Actor { get; private set; }
+        
     }
 }

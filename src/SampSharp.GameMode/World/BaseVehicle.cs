@@ -460,7 +460,7 @@ namespace SampSharp.GameMode.World
         ///     This callback is called when this <see cref="BaseVehicle" /> is destroyed - either by exploding or becoming
         ///     submerged in water.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> Died;
+        public event EventHandler<VehicleDiedEventArgs> Died;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerEnter" /> is being called.
@@ -473,7 +473,7 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="OnPlayerExit" /> is being called.
         ///     This callback is called when a <see cref="BasePlayer" /> exits a <see cref="BaseVehicle" />.
         /// </summary>
-        public event EventHandler<PlayerVehicleEventArgs> PlayerExit;
+        public event EventHandler<ExitVehicleEventArgs> PlayerExit;
 
         /// <summary>
         ///     Occurs when the <see cref="OnMod" /> is being called.
@@ -500,7 +500,7 @@ namespace SampSharp.GameMode.World
         ///     This callback is called when a element of this <see cref="BaseVehicle" /> such as doors, tires, panels, or lights
         ///     get damaged.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> DamageStatusUpdated;
+        public event EventHandler<VehicleDamageStatusUpdatedEventArgs> DamageStatusUpdated;
 
         /// <summary>
         ///     Occurs when the <see cref="OnUnoccupiedUpdate" /> is being called.
@@ -513,14 +513,14 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="OnStreamIn" /> is being called.
         ///     Called when a <see cref="BaseVehicle" /> is streamed to a <see cref="BasePlayer" />'s client.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> StreamIn;
+        public event EventHandler<VehicleStreamEventArgs> StreamIn;
 
         /// <summary>
         ///     Occurs when the <see cref="OnStreamOut" /> is being called.
         ///     This callback is called when a <see cref="BaseVehicle" /> is streamed out from some <see cref="BasePlayer" />'s
         ///     client.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> StreamOut;
+        public event EventHandler<VehicleStreamEventArgs> StreamOut;
 
         /// <summary>
         ///     Occurs when the <see cref="OnTrailerUpdate" /> is being called.
@@ -1091,8 +1091,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Died" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnDeath(PlayerEventArgs e)
+        /// <param name="e">An <see cref="VehicleDiedEventArgs" /> that contains the event data. </param>
+        public virtual void OnDeath(VehicleDiedEventArgs e)
         {
             Died?.Invoke(this, e);
         }
@@ -1109,8 +1109,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="PlayerExit" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        public virtual void OnPlayerExit(PlayerVehicleEventArgs e)
+        /// <param name="e">An <see cref="ExitVehicleEventArgs" /> that contains the event data. </param>
+        public virtual void OnPlayerExit(ExitVehicleEventArgs e)
         {
             PlayerExit?.Invoke(this, e);
         }
@@ -1145,8 +1145,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="DamageStatusUpdated" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnDamageStatusUpdated(PlayerEventArgs e)
+        /// <param name="e">An <see cref="VehicleDamageStatusUpdatedEventArgs" /> that contains the event data. </param>
+        public virtual void OnDamageStatusUpdated(VehicleDamageStatusUpdatedEventArgs e)
         {
             DamageStatusUpdated?.Invoke(this, e);
         }
@@ -1163,8 +1163,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="StreamIn" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnStreamIn(PlayerEventArgs e)
+        /// <param name="e">An <see cref="VehicleStreamEventArgs" /> that contains the event data. </param>
+        public virtual void OnStreamIn(VehicleStreamEventArgs e)
         {
             StreamIn?.Invoke(this, e);
         }
@@ -1172,8 +1172,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="StreamOut" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnStreamOut(PlayerEventArgs e)
+        /// <param name="e">An <see cref="VehicleStreamEventArgs" /> that contains the event data. </param>
+        public virtual void OnStreamOut(VehicleStreamEventArgs e)
         {
             StreamOut?.Invoke(this, e);
         }

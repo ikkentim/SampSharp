@@ -21,23 +21,24 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.PlayerClickPlayer" /> or <see cref="BasePlayer.ClickPlayer" /> event.
     /// </summary>
-    public class ClickPlayerEventArgs : EventArgs
+    public class ClickPlayerEventArgs : PlayerEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the ClickPlayerEventArgs class.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="clickedPlayer">Id of the clicked player.</param>
         /// <param name="source">PlayerClickSource of the event.</param>
-        public ClickPlayerEventArgs(BasePlayer clickedPlayer, PlayerClickSource source)
+        public ClickPlayerEventArgs(BasePlayer player, BasePlayer clickedPlayer, PlayerClickSource source) : base(player)
         {
-            ClickedPlayer = clickedPlayer;
+            ClickedPlayer = Optional<BasePlayer>.From(clickedPlayer);
             PlayerClickSource = source;
         }
 
         /// <summary>
         ///     Gets the clicked player.
         /// </summary>
-        public BasePlayer ClickedPlayer { get; private set; }
+        public Optional<BasePlayer> ClickedPlayer { get; private set; }
 
         /// <summary>
         ///     Gets the PlayerClickSource of this event.

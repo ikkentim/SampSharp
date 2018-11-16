@@ -22,11 +22,12 @@ namespace SampSharp.GameMode.Events
     ///     Provides data for the <see cref="BaseMode.PlayerEditAttachedObject" /> or
     ///     <see cref="BasePlayer.EditAttachedObject" /> event.
     /// </summary>
-    public class EditAttachedObjectEventArgs : EventArgs
+    public class EditAttachedObjectEventArgs : PlayerEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the EditAttachedObjectEventArgs class.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="response">EditObjectResponse.</param>
         /// <param name="index">Index of the attached object.</param>
         /// <param name="modelid">Model of the attached object.</param>
@@ -34,8 +35,8 @@ namespace SampSharp.GameMode.Events
         /// <param name="offset">Offset of the attached object.</param>
         /// <param name="rotation">Rotation of the attached object.</param>
         /// <param name="scale">Scale of the attached object.</param>
-        public EditAttachedObjectEventArgs(EditObjectResponse response, int index, int modelid, Bone bone,
-            Vector3 offset, Vector3 rotation, Vector3 scale)
+        public EditAttachedObjectEventArgs(BasePlayer player, EditObjectResponse response, int index, int modelid, Bone bone,
+            Vector3 offset, Vector3 rotation, Vector3 scale) : base(player)
         {
             EditObjectResponse = response;
             Index = index;

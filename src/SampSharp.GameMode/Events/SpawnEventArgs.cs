@@ -20,8 +20,14 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.PlayerSpawned" /> or <see cref="BasePlayer.Spawned" /> event.
     /// </summary>
-    public class SpawnEventArgs : EventArgs
+    public class SpawnEventArgs : PlayerEventArgs
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SpawnEventArgs" /> class.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        public SpawnEventArgs(BasePlayer player) : base(player) {}
+        
         /// <summary>
         ///     Gets or sets whether the player will be forced back to the class selection when they next spawn.
         /// </summary>

@@ -637,13 +637,13 @@ namespace SampSharp.GameMode.World
         ///     Occurs when the <see cref="OnDisconnected" /> is being called.
         ///     This callback is called when a player disconnects from the server.
         /// </summary>
-        public event EventHandler<DisconnectEventArgs> Disconnected;
+        public event EventHandler<PlayerDisconnectEventArgs> Disconnected;
 
         /// <summary>
         ///     Occurs when the <see cref="OnCleanup" /> is being called.
         ///     This callback is called after a player disconnects from the server.
         /// </summary>
-        public event EventHandler<DisconnectEventArgs> Cleanup;
+        public event EventHandler<PlayerDisconnectEventArgs> Cleanup;
 
         /// <summary>
         ///     Occurs when the <see cref="OnSpawned" /> is being called.
@@ -690,7 +690,7 @@ namespace SampSharp.GameMode.World
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as setting
         ///     <see cref="Position" />.
         /// </remarks>
-        public event EventHandler<PlayerVehicleEventArgs> ExitVehicle;
+        public event EventHandler<ExitVehicleEventArgs> ExitVehicle;
 
         /// <summary>
         ///     Occurs when the <see cref="OnStateChanged" /> is being called.
@@ -2190,8 +2190,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Disconnected" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="DisconnectEventArgs" /> that contains the event data. </param>
-        public virtual void OnDisconnected(DisconnectEventArgs e)
+        /// <param name="e">An <see cref="PlayerDisconnectEventArgs" /> that contains the event data. </param>
+        public virtual void OnDisconnected(PlayerDisconnectEventArgs e)
         {
             Disconnected?.Invoke(this, e);
         }
@@ -2199,8 +2199,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="Cleanup" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="DisconnectEventArgs" /> that contains the event data. </param>
-        public virtual void OnCleanup(DisconnectEventArgs e)
+        /// <param name="e">An <see cref="PlayerDisconnectEventArgs" /> that contains the event data. </param>
+        public virtual void OnCleanup(PlayerDisconnectEventArgs e)
         {
             Cleanup?.Invoke(this, e);
 
@@ -2264,8 +2264,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="ExitVehicle" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        public virtual void OnExitVehicle(PlayerVehicleEventArgs e)
+        /// <param name="e">An <see cref="ExitVehicleEventArgs" /> that contains the event data. </param>
+        public virtual void OnExitVehicle(ExitVehicleEventArgs e)
         {
             ExitVehicle?.Invoke(this, e);
         }

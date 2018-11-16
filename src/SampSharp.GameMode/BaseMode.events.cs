@@ -38,13 +38,13 @@ namespace SampSharp.GameMode
         ///     Occurs when the <see cref="OnPlayerConnected" /> callback is being called.
         ///     This callback is called when a player connects to the server.
         /// </summary>
-        public event EventHandler<EventArgs> PlayerConnected;
+        public event EventHandler<PlayerConnectEventArgs> PlayerConnected;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerDisconnected" /> callback is being called.
         ///     This callback is called when a player disconnects from the server.
         /// </summary>
-        public event EventHandler<DisconnectEventArgs> PlayerDisconnected;
+        public event EventHandler<PlayerDisconnectEventArgs> PlayerDisconnected;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerCleanup" /> callback is being called.
@@ -55,7 +55,7 @@ namespace SampSharp.GameMode
         ///     the <see cref="BasePlayer" /> object is already disposed before any other listeners are called.
         ///     It is better to either use the <see cref="PlayerDisconnected" /> event or <see cref="BasePlayer.Cleanup" />
         /// </remarks>
-        public event EventHandler<DisconnectEventArgs> PlayerCleanup;
+        public event EventHandler<PlayerDisconnectEventArgs> PlayerCleanup;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerSpawned" /> callback is being called.
@@ -73,7 +73,7 @@ namespace SampSharp.GameMode
         ///     Occurs when the <see cref="OnVehicleSpawned" /> callback is being called.
         ///     This callback is called when a vehicle respawns.
         /// </summary>
-        public event EventHandler<EventArgs> VehicleSpawned;
+        public event EventHandler<VehicleSpawnedEventArgs> VehicleSpawned;
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehicleDied" /> callback is being called.
@@ -84,42 +84,42 @@ namespace SampSharp.GameMode
         ///     teleportation or driving out (if only partially submerged). The callback won't be called a second time, and the
         ///     vehicle may disappear when the driver exits, or after a short time.
         /// </remarks>
-        public event EventHandler<PlayerEventArgs> VehicleDied;
+        public event EventHandler<VehicleDiedEventArgs> VehicleDied;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerText(BasePlayer,TextEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerText(TextEventArgs)" /> callback is being called.
         ///     Called when a player sends a chat message.
         /// </summary>
         public event EventHandler<TextEventArgs> PlayerText;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerCommandText(BasePlayer,CommandTextEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerCommandText(CommandTextEventArgs)" /> callback is being called.
         ///     This callback is called when a player enters a command into the client chat window, e.g. /help.
         /// </summary>
         public event EventHandler<CommandTextEventArgs> PlayerCommandText;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerRequestClass(BasePlayer,RequestClassEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerRequestClass(RequestClassEventArgs)" /> callback is being called.
         ///     Called when a player changes class at class selection (and when class selection first appears).
         /// </summary>
         public event EventHandler<RequestClassEventArgs> PlayerRequestClass;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEnterVehicle(BasePlayer,EnterVehicleEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerEnterVehicle(EnterVehicleEventArgs)" /> callback is being called.
         ///     This callback is called when a player starts to enter a vehicle, meaning the player is not in vehicle yet at the
         ///     time this callback is called.
         /// </summary>
         public event EventHandler<EnterVehicleEventArgs> PlayerEnterVehicle;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerExitVehicle(BasePlayer,PlayerVehicleEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerExitVehicle(ExitVehicleEventArgs)" /> callback is being called.
         ///     This callback is called when a player exits a vehicle.
         /// </summary>
         /// <remarks>
         ///     Not called if the player falls off a bike or is removed from a vehicle by other means such as setting
         ///     <see cref="BasePlayer.Position" />.
         /// </remarks>
-        public event EventHandler<PlayerVehicleEventArgs> PlayerExitVehicle;
+        public event EventHandler<ExitVehicleEventArgs> PlayerExitVehicle;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerStateChanged" /> callback is being called.
@@ -132,28 +132,28 @@ namespace SampSharp.GameMode
         public event EventHandler<StateEventArgs> PlayerStateChanged;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEnterCheckpoint(BasePlayer,EventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerEnterCheckpoint(PlayerEnterCheckpointEventArgs)" /> callback is being called.
         ///     This callback is called when a player enters the checkpoint set for that player.
         /// </summary>
-        public event EventHandler<EventArgs> PlayerEnterCheckpoint;
+        public event EventHandler<PlayerEnterCheckpointEventArgs> PlayerEnterCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerLeaveCheckpoint(BasePlayer,EventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerLeaveCheckpoint(PlayerLeaveCheckpointEventArgs)" /> callback is being called.
         ///     This callback is called when a player leaves the checkpoint set for that player.
         /// </summary>
-        public event EventHandler<EventArgs> PlayerLeaveCheckpoint;
+        public event EventHandler<PlayerLeaveCheckpointEventArgs> PlayerLeaveCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEnterRaceCheckpoint(BasePlayer,EventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerEnterRaceCheckpoint(PlayerEnterRaceCheckpointEventArgs)" /> callback is being called.
         ///     This callback is called when a player enters a race checkpoint.
         /// </summary>
-        public event EventHandler<EventArgs> PlayerEnterRaceCheckpoint;
+        public event EventHandler<PlayerEnterRaceCheckpointEventArgs> PlayerEnterRaceCheckpoint;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerLeaveRaceCheckpoint(BasePlayer,EventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerLeaveRaceCheckpoint(PlayerLeaveRaceCheckpointEventArgs)" /> callback is being called.
         ///     This callback is called when a player leaves the race checkpoint.
         /// </summary>
-        public event EventHandler<EventArgs> PlayerLeaveRaceCheckpoint;
+        public event EventHandler<PlayerLeaveRaceCheckpointEventArgs> PlayerLeaveRaceCheckpoint;
 
         /// <summary>
         ///     Occurs when the <see cref="OnRconCommand(RconEventArgs)" /> callback is being called.
@@ -163,33 +163,33 @@ namespace SampSharp.GameMode
         public event EventHandler<RconEventArgs> RconCommand;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerRequestSpawn(BasePlayer,RequestSpawnEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerRequestSpawn(RequestSpawnEventArgs)" /> callback is being called.
         ///     Called when a player attempts to spawn via class selection.
         /// </summary>
         public event EventHandler<RequestSpawnEventArgs> PlayerRequestSpawn;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnObjectMoved(GlobalObject,EventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnObjectMoved(ObjectMovedEventArgs)" /> callback is being called.
         ///     This callback is called when an object is moved using <see cref="GlobalObject.Move(Vector3,float)" /> or
         ///     <see cref="GlobalObject.Move(Vector3,float, Vector3)" /> (when it stops moving).
         /// </summary>
-        public event EventHandler<EventArgs> ObjectMoved;
+        public event EventHandler<ObjectMovedEventArgs> ObjectMoved;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerObjectMoved(PlayerObject,EventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerObjectMoved(PlayerObjectEventArgs)" /> callback is being called.
         ///     This callback is called when an object is moved using <see cref="PlayerObject.Move(Vector3,float)" /> or
         ///     <see cref="PlayerObject.Move(Vector3,float, Vector3)" /> (when it stops moving).
         /// </summary>
-        public event EventHandler<EventArgs> PlayerObjectMoved;
+        public event EventHandler<PlayerObjectEventArgs> PlayerObjectMoved;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerPickUpPickup(Pickup,PlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerPickUpPickup(PlayerPickUpPickupEventArgs)" /> callback is being called.
         ///     Called when a player picks up a pickup created with <see cref="Pickup" />.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> PlayerPickUpPickup;
+        public event EventHandler<PlayerPickUpPickupEventArgs> PlayerPickUpPickup;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleMod(BaseVehicle,VehicleModEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnVehicleMod(VehicleModEventArgs)" /> callback is being called.
         ///     This callback is called when a vehicle is modded.
         /// </summary>
         /// <remarks>
@@ -226,7 +226,7 @@ namespace SampSharp.GameMode
         /// <remarks>
         ///     This does not include vehicle health changes.
         /// </remarks>
-        public event EventHandler<PlayerEventArgs> VehicleDamageStatusUpdated;
+        public event EventHandler<VehicleDamageStatusUpdatedEventArgs> VehicleDamageStatusUpdated;
 
         /// <summary>
         ///     Occurs when the <see cref="OnUnoccupiedVehicleUpdated" /> callback is being called.
@@ -239,16 +239,16 @@ namespace SampSharp.GameMode
         public event EventHandler<UnoccupiedVehicleEventArgs> UnoccupiedVehicleUpdated;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerSelectedMenuRow(BasePlayer,MenuRowEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerSelectedMenuRow(MenuRowEventArgs)" /> callback is being called.
         ///     This callback is called when a player selects an item from a menu.
         /// </summary>
         public event EventHandler<MenuRowEventArgs> PlayerSelectedMenuRow;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerExitedMenu(BasePlayer,EventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerExitedMenu(PlayerExitMenuEventArgs)" /> callback is being called.
         ///     Called when a player exits a menu.
         /// </summary>
-        public event EventHandler<EventArgs> PlayerExitedMenu;
+        public event EventHandler<PlayerExitMenuEventArgs> PlayerExitedMenu;
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerInteriorChanged" /> callback is being called.
@@ -276,7 +276,7 @@ namespace SampSharp.GameMode
         public event EventHandler<RconLoginAttemptEventArgs> RconLoginAttempt;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerUpdate(BasePlayer,PlayerUpdateEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerUpdate(PlayerUpdateEventArgs)" /> callback is being called.
         ///     This callback is called everytime a client/player updates the server with their status.
         /// </summary>
         /// <remarks>
@@ -285,50 +285,50 @@ namespace SampSharp.GameMode
         public event EventHandler<PlayerUpdateEventArgs> PlayerUpdate;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerStreamIn(BasePlayer,PlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerStreamIn(PlayerStreamEventArgs)" /> callback is being called.
         ///     This callback is called when a player is streamed by some other player's client.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> PlayerStreamIn;
+        public event EventHandler<PlayerStreamEventArgs> PlayerStreamIn;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerStreamOut(BasePlayer,PlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerStreamOut(PlayerStreamEventArgs)" /> callback is being called.
         ///     This callback is called when a player is streamed out from some other player's client.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> PlayerStreamOut;
+        public event EventHandler<PlayerStreamEventArgs> PlayerStreamOut;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleStreamIn(BaseVehicle,PlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnVehicleStreamIn(VehicleStreamEventArgs)" /> callback is being called.
         ///     Called when a vehicle is streamed to a player's client.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> VehicleStreamIn;
+        public event EventHandler<VehicleStreamEventArgs> VehicleStreamIn;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleStreamOut(BaseVehicle,PlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnVehicleStreamOut(VehicleStreamEventArgs)" /> callback is being called.
         ///     This callback is called when a vehicle is streamed out from some player's client.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> VehicleStreamOut;
+        public event EventHandler<VehicleStreamEventArgs> VehicleStreamOut;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnTrailerUpdate(BaseVehicle,TrailerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnTrailerUpdate(TrailerEventArgs)" /> callback is being called.
         ///     This callback is called when a player sent a trailer update.
         /// </summary>
         public event EventHandler<TrailerEventArgs> TrailerUpdate;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnDialogResponse(BasePlayer,DialogResponseEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnDialogResponse(DialogResponseEventArgs)" /> callback is being called.
         ///     This callback is called when a player responds to a dialog shown using <see cref="Dialog" /> by
         ///     either clicking a button, pressing ENTER/ESC or double-clicking a list item (if using a list style dialog).
         /// </summary>
         public event EventHandler<DialogResponseEventArgs> DialogResponse;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerTakeDamage(BasePlayer,DamageEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerTakeDamage(DamageEventArgs)" /> callback is being called.
         ///     This callback is called when a player takes damage.
         /// </summary>
         public event EventHandler<DamageEventArgs> PlayerTakeDamage;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerGiveDamage(BasePlayer,DamageEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerGiveDamage(DamageEventArgs)" /> callback is being called.
         ///     This callback is called when a player gives damage to another player.
         /// </summary>
         /// <remarks>
@@ -346,7 +346,7 @@ namespace SampSharp.GameMode
         public event EventHandler<DamageEventArgs> PlayerGiveDamage;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickMap(BasePlayer,PositionEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerClickMap(PositionEventArgs)" /> callback is being called.
         ///     This callback is called when a player places a target/waypoint on the pause menu map (by right-clicking).
         /// </summary>
         /// <remarks>
@@ -356,7 +356,7 @@ namespace SampSharp.GameMode
         public event EventHandler<PositionEventArgs> PlayerClickMap;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickTextDraw(BasePlayer,ClickTextDrawEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerClickTextDraw(ClickTextDrawEventArgs)" /> callback is being called.
         ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
         /// </summary>
         /// <remarks>
@@ -365,16 +365,16 @@ namespace SampSharp.GameMode
         public event EventHandler<ClickTextDrawEventArgs> PlayerClickTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickPlayerTextDraw(BasePlayer,ClickPlayerTextDrawEventArgs)" /> callback is
+        ///     Occurs when the <see cref="OnPlayerClickPlayerTextDraw(ClickPlayerTextDrawEventArgs)" /> callback is
         ///     being
         ///     called.
         ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
-        ///     mode (ESC) - however, <see cref="OnPlayerClickTextDraw(BasePlayer,ClickTextDrawEventArgs)" /> is.
+        ///     mode (ESC) - however, <see cref="OnPlayerClickTextDraw(ClickTextDrawEventArgs)" /> is.
         /// </summary>
         public event EventHandler<ClickPlayerTextDrawEventArgs> PlayerClickPlayerTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickPlayer(BasePlayer, ClickPlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerClickPlayer(ClickPlayerEventArgs)" /> callback is being called.
         ///     Called when a player double-clicks on a player on the scoreboard.
         /// </summary>
         /// <remarks>
@@ -384,21 +384,21 @@ namespace SampSharp.GameMode
         public event EventHandler<ClickPlayerEventArgs> PlayerClickPlayer;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEditGlobalObject(BasePlayer,EditGlobalObjectEventArgs)" /> callback is being
+        ///     Occurs when the <see cref="OnPlayerEditGlobalObject(EditGlobalObjectEventArgs)" /> callback is being
         ///     called.
         ///     This callback is called when a player ends global object edition mode.
         /// </summary>
         public event EventHandler<EditGlobalObjectEventArgs> PlayerEditGlobalObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEditPlayerObject(BasePlayer,EditPlayerObjectEventArgs)" /> callback is being
+        ///     Occurs when the <see cref="OnPlayerEditPlayerObject(EditPlayerObjectEventArgs)" /> callback is being
         ///     called.
         ///     This callback is called when a player ends player object edition mode.
         /// </summary>
         public event EventHandler<EditPlayerObjectEventArgs> PlayerEditPlayerObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerEditAttachedObject(BasePlayer,EditAttachedObjectEventArgs)" /> callback is being
+        ///     Occurs when the <see cref="OnPlayerEditAttachedObject(EditAttachedObjectEventArgs)" /> callback is being
         ///     called.
         ///     This callback is called when a player ends attached object edition mode.
         /// </summary>
@@ -421,7 +421,7 @@ namespace SampSharp.GameMode
         public event EventHandler<SelectPlayerObjectEventArgs> PlayerSelectPlayerObject;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerWeaponShot(BasePlayer,WeaponShotEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerWeaponShot(WeaponShotEventArgs)" /> callback is being called.
         ///     This callback is called when a player fires a shot from a weapon.
         /// </summary>
         public event EventHandler<WeaponShotEventArgs> PlayerWeaponShot;
@@ -433,28 +433,28 @@ namespace SampSharp.GameMode
         public event EventHandler<ConnectionEventArgs> IncomingConnection;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerGiveDamageActor(Actor,DamageEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerGiveDamageActor(ActorDamageEventArgs)" /> callback is being called.
         ///     This callback is called when a player gives damage to an actor.
         /// </summary>
-        public event EventHandler<DamageEventArgs> PlayerGiveDamageActor;
+        public event EventHandler<ActorDamageEventArgs> PlayerGiveDamageActor;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnVehicleSirenStateChange(BaseVehicle,SirenStateEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnVehicleSirenStateChange(SirenStateEventArgs)" /> callback is being called.
         ///     This callback is called when a vehicle's siren is toggled.
         /// </summary>
         public event EventHandler<SirenStateEventArgs> VehicleSirenStateChange;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnActorStreamIn(Actor, PlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnActorStreamIn(ActorStreamEventArgs)" /> callback is being called.
         ///     This callback is called when an actor is streamed in by a player's client.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> ActorStreamIn;
+        public event EventHandler<ActorStreamEventArgs> ActorStreamIn;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnActorStreamOut(Actor, PlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnActorStreamOut(ActorStreamEventArgs)" /> callback is being called.
         ///     This callback is called when an actor is streamed out by a player's client.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> ActorStreamOut;
+        public event EventHandler<ActorStreamEventArgs> ActorStreamOut;
 
         /// <summary>
         ///     Occurs when the <see cref="OnTick(EventArgs)" /> callback is being called. This callback is called every
@@ -483,178 +483,161 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Raises the <see cref="PlayerConnected" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
-        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerConnected(BasePlayer player, EventArgs e)
+        /// <param name="e">An <see cref="PlayerConnectEventArgs" /> that contains the event data. </param>
+        internal void OnPlayerConnected(PlayerConnectEventArgs e)
         {
-            PlayerConnected?.Invoke(player, e);
+            PlayerConnected?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerDisconnected" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
-        /// <param name="e">An <see cref="DisconnectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerDisconnected(BasePlayer player, DisconnectEventArgs e)
+        /// <param name="e">An <see cref="PlayerDisconnectEventArgs" /> that contains the event data. </param>
+        internal void OnPlayerDisconnected(PlayerDisconnectEventArgs e)
         {
-            PlayerDisconnected?.Invoke(player, e);
+            PlayerDisconnected?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerCleanup" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
-        /// <param name="e">An <see cref="DisconnectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerCleanup(BasePlayer player, DisconnectEventArgs e)
+        /// <param name="e">An <see cref="PlayerDisconnectEventArgs" /> that contains the event data. </param>
+        internal void OnPlayerCleanup(PlayerDisconnectEventArgs e)
         {
-            PlayerCleanup?.Invoke(player, e);
+            PlayerCleanup?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerSpawned" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerSpawned(BasePlayer player, SpawnEventArgs e)
+        internal void OnPlayerSpawned(SpawnEventArgs e)
         {
-            PlayerSpawned?.Invoke(player, e);
+            PlayerSpawned?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerDied" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="DeathEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerDied(BasePlayer player, DeathEventArgs e)
+        internal void OnPlayerDied(DeathEventArgs e)
         {
-            PlayerDied?.Invoke(player, e);
+            PlayerDied?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehicleSpawned" /> event.
         /// </summary>
-        /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleSpawned(BaseVehicle vehicle, EventArgs e)
+        internal void OnVehicleSpawned(VehicleSpawnedEventArgs e)
         {
-            VehicleSpawned?.Invoke(vehicle, e);
+            VehicleSpawned?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehicleDied" /> event.
         /// </summary>
-        /// <param name="vehicle">The vehicle triggering the event.</param>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleDied(BaseVehicle vehicle, PlayerEventArgs e)
+        /// <param name="e">An <see cref="VehicleDiedEventArgs" /> that contains the event data. </param>
+        internal void OnVehicleDied(VehicleDiedEventArgs e)
         {
-            VehicleDied?.Invoke(vehicle, e);
+            VehicleDied?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerText" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="TextEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerText(BasePlayer player, TextEventArgs e)
+        internal void OnPlayerText(TextEventArgs e)
         {
-            PlayerText?.Invoke(player, e);
+            PlayerText?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerCommandText" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="TextEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerCommandText(BasePlayer player, CommandTextEventArgs e)
+        internal void OnPlayerCommandText(CommandTextEventArgs e)
         {
-            PlayerCommandText?.Invoke(player, e);
+            PlayerCommandText?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerRequestClass" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="RequestClassEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerRequestClass(BasePlayer player, RequestClassEventArgs e)
+        internal void OnPlayerRequestClass(RequestClassEventArgs e)
         {
-            PlayerRequestClass?.Invoke(player, e);
+            PlayerRequestClass?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerEnterVehicle" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EnterVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEnterVehicle(BasePlayer player, EnterVehicleEventArgs e)
+        internal void OnPlayerEnterVehicle(EnterVehicleEventArgs e)
         {
-            PlayerEnterVehicle?.Invoke(player, e);
+            PlayerEnterVehicle?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerExitVehicle" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
-        /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerExitVehicle(BasePlayer player, PlayerVehicleEventArgs e)
+        /// <param name="e">An <see cref="ExitVehicleEventArgs" /> that contains the event data. </param>
+        internal void OnPlayerExitVehicle(ExitVehicleEventArgs e)
         {
-            PlayerExitVehicle?.Invoke(player, e);
+            PlayerExitVehicle?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerStateChanged" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="StateEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerStateChanged(BasePlayer player, StateEventArgs e)
+        internal void OnPlayerStateChanged(StateEventArgs e)
         {
-            PlayerStateChanged?.Invoke(player, e);
+            PlayerStateChanged?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerEnterCheckpoint" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
-        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEnterCheckpoint(BasePlayer player, EventArgs e)
+        /// <param name="e">An <see cref="PlayerEnterCheckpointEventArgs" /> that contains the event data. </param>
+        internal void OnPlayerEnterCheckpoint(PlayerEnterCheckpointEventArgs e)
         {
-            PlayerEnterCheckpoint?.Invoke(player, e);
+            PlayerEnterCheckpoint?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerLeaveCheckpoint" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
-        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerLeaveCheckpoint(BasePlayer player, EventArgs e)
+        /// <param name="e">An <see cref="PlayerLeaveCheckpointEventArgs" /> that contains the event data. </param>
+       internal void OnPlayerLeaveCheckpoint(PlayerLeaveCheckpointEventArgs e)
         {
-            PlayerLeaveCheckpoint?.Invoke(player, e);
+            PlayerLeaveCheckpoint?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerEnterRaceCheckpoint" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
-        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEnterRaceCheckpoint(BasePlayer player, EventArgs e)
+        /// <param name="e">An <see cref="PlayerEnterRaceCheckpointEventArgs" /> that contains the event data. </param>
+        internal void OnPlayerEnterRaceCheckpoint(PlayerEnterRaceCheckpointEventArgs e)
         {
-            PlayerEnterRaceCheckpoint?.Invoke(player, e);
+            PlayerEnterRaceCheckpoint?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerLeaveRaceCheckpoint" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
-        /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerLeaveRaceCheckpoint(BasePlayer player, EventArgs e)
+        /// <param name="e">An <see cref="PlayerLeaveRaceCheckpointEventArgs" /> that contains the event data. </param>
+        internal void OnPlayerLeaveRaceCheckpoint(PlayerLeaveRaceCheckpointEventArgs e)
         {
-            PlayerLeaveRaceCheckpoint?.Invoke(player, e);
+            PlayerLeaveRaceCheckpoint?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="RconCommand" /> event.
         /// </summary>
         /// <param name="e">An <see cref="RconEventArgs" /> that contains the event data. </param>
-        protected virtual void OnRconCommand(RconEventArgs e)
+        internal void OnRconCommand(RconEventArgs e)
         {
             RconCommand?.Invoke(this, e);
         }
@@ -662,148 +645,134 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Raises the <see cref="PlayerRequestSpawn" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerRequestSpawn(BasePlayer player, RequestSpawnEventArgs e)
+        internal void OnPlayerRequestSpawn(RequestSpawnEventArgs e)
         {
-            PlayerRequestSpawn?.Invoke(player, e);
+            PlayerRequestSpawn?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="ObjectMoved" /> event.
         /// </summary>
-        /// <param name="globalObject">The global-object triggering the event.</param>
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
-        protected virtual void OnObjectMoved(GlobalObject globalObject, EventArgs e)
+        internal void OnObjectMoved(ObjectMovedEventArgs e)
         {
-            ObjectMoved?.Invoke(globalObject, e);
+            ObjectMoved?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerObjectMoved" /> event.
         /// </summary>
-        /// <param name="playerObject">The player-object triggering the event.</param>
         /// <param name="e">An <see cref="EventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerObjectMoved(PlayerObject playerObject, EventArgs e)
+        internal void OnPlayerObjectMoved(PlayerObjectEventArgs e)
         {
-            PlayerObjectMoved?.Invoke(playerObject, e);
+            PlayerObjectMoved?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerPickUpPickup" /> event.
         /// </summary>
-        /// <param name="pickup">The pickup triggering the event.</param>
         /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerPickUpPickup(Pickup pickup, PlayerEventArgs e)
+        internal void OnPlayerPickUpPickup(PlayerPickUpPickupEventArgs e)
         {
-            PlayerPickUpPickup?.Invoke(pickup, e);
+            PlayerPickUpPickup?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehicleMod" /> event.
         /// </summary>
-        /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="VehicleModEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleMod(BaseVehicle vehicle, VehicleModEventArgs e)
+        internal void OnVehicleMod(VehicleModEventArgs e)
         {
-            VehicleMod?.Invoke(vehicle, e);
+            VehicleMod?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerEnterExitModShop" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EnterModShopEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEnterExitModShop(BasePlayer player, EnterModShopEventArgs e)
+        internal void OnPlayerEnterExitModShop(EnterModShopEventArgs e)
         {
-            PlayerEnterExitModShop?.Invoke(player, e);
+            PlayerEnterExitModShop?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehiclePaintjobApplied" /> event.
         /// </summary>
-        /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="VehiclePaintjobEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehiclePaintjobApplied(BaseVehicle vehicle, VehiclePaintjobEventArgs e)
+        internal void OnVehiclePaintjobApplied(VehiclePaintjobEventArgs e)
         {
-            VehiclePaintjobApplied?.Invoke(vehicle, e);
+            VehiclePaintjobApplied?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehicleResprayed" /> event.
         /// </summary>
-        /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="VehicleResprayedEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleResprayed(BaseVehicle vehicle, VehicleResprayedEventArgs e)
+        internal void OnVehicleResprayed(VehicleResprayedEventArgs e)
         {
-            VehicleResprayed?.Invoke(vehicle, e);
+            VehicleResprayed?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehicleDamageStatusUpdated" /> event.
         /// </summary>
-        /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleDamageStatusUpdated(BaseVehicle vehicle, PlayerEventArgs e)
+        internal void OnVehicleDamageStatusUpdated(VehicleDamageStatusUpdatedEventArgs e)
         {
-            VehicleDamageStatusUpdated?.Invoke(vehicle, e);
+            VehicleDamageStatusUpdated?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="UnoccupiedVehicleUpdated" /> event.
         /// </summary>
-        /// <param name="vehicle">The vehicle triggering the event.</param>
         /// <param name="e">An <see cref="UnoccupiedVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnUnoccupiedVehicleUpdated(BaseVehicle vehicle, UnoccupiedVehicleEventArgs e)
+        internal void OnUnoccupiedVehicleUpdated(UnoccupiedVehicleEventArgs e)
         {
-            UnoccupiedVehicleUpdated?.Invoke(vehicle, e);
+            UnoccupiedVehicleUpdated?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerSelectedMenuRow" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="MenuRowEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerSelectedMenuRow(BasePlayer player, MenuRowEventArgs e)
+        internal void OnPlayerSelectedMenuRow(MenuRowEventArgs e)
         {
-            PlayerSelectedMenuRow?.Invoke(player, e);
+            PlayerSelectedMenuRow?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerExitedMenu" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerExitedMenu(BasePlayer player, EventArgs e)
+        /// <param name="e">An <see cref="PlayerExitMenuEventArgs" /> that contains the event data. </param>
+        internal void OnPlayerExitedMenu(PlayerExitMenuEventArgs e)
         {
-            PlayerExitedMenu?.Invoke(player, e);
+            PlayerExitedMenu?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerInteriorChanged" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="InteriorChangedEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerInteriorChanged(BasePlayer player, InteriorChangedEventArgs e)
+        internal void OnPlayerInteriorChanged(InteriorChangedEventArgs e)
         {
-            PlayerInteriorChanged?.Invoke(player, e);
+            PlayerInteriorChanged?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerKeyStateChanged" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="KeyStateChangedEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerKeyStateChanged(BasePlayer player, KeyStateChangedEventArgs e)
+        internal void OnPlayerKeyStateChanged(KeyStateChangedEventArgs e)
         {
-            PlayerKeyStateChanged?.Invoke(player, e);
+            PlayerKeyStateChanged?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="RconLoginAttempt" /> event.
         /// </summary>
         /// <param name="e">An <see cref="RconLoginAttemptEventArgs" /> that contains the event data. </param>
-        protected virtual void OnRconLoginAttempt(RconLoginAttemptEventArgs e)
+        internal void OnRconLoginAttempt(RconLoginAttemptEventArgs e)
         {
             RconLoginAttempt?.Invoke(this, e);
         }
@@ -811,111 +780,100 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Raises the <see cref="PlayerUpdate" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerUpdate(BasePlayer player, PlayerUpdateEventArgs e)
+        /// <param name="e">An <see cref="PlayerUpdateEventArgs" /> that contains the event data. </param>
+        internal void OnPlayerUpdate(PlayerUpdateEventArgs e)
         {
-            PlayerUpdate?.Invoke(player, e);
+            PlayerUpdate?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerStreamIn" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerStreamIn(BasePlayer player, PlayerEventArgs e)
+        /// <param name="e">An <see cref="PlayerStreamEventArgs" /> that contains the event data. </param>
+        internal void OnPlayerStreamIn(PlayerStreamEventArgs e)
         {
-            PlayerStreamIn?.Invoke(player, e);
+            PlayerStreamIn?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerStreamOut" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerStreamOut(BasePlayer player, PlayerEventArgs e)
+        /// <param name="e">An <see cref="PlayerStreamEventArgs" /> that contains the event data. </param>
+        internal void OnPlayerStreamOut(PlayerStreamEventArgs e)
         {
-            PlayerStreamOut?.Invoke(player, e);
+            PlayerStreamOut?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehicleStreamIn" /> event.
         /// </summary>
-        /// <param name="vehicle">The vehicle triggering the event.</param>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleStreamIn(BaseVehicle vehicle, PlayerEventArgs e)
+        /// <param name="e">An <see cref="VehicleStreamEventArgs" /> that contains the event data. </param>
+        internal void OnVehicleStreamIn(VehicleStreamEventArgs e)
         {
-            VehicleStreamIn?.Invoke(vehicle, e);
+            VehicleStreamIn?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="VehicleStreamOut" /> event.
         /// </summary>
-        /// <param name="vehicle">The vehicle triggering the event.</param>
-        /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnVehicleStreamOut(BaseVehicle vehicle, PlayerEventArgs e)
+        /// <param name="e">An <see cref="VehicleStreamEventArgs" /> that contains the event data. </param>
+        internal void OnVehicleStreamOut(VehicleStreamEventArgs e)
         {
-            VehicleStreamOut?.Invoke(vehicle, e);
+            VehicleStreamOut?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="TrailerUpdate" /> event.
         /// </summary>
-        /// <param name="trailer">The trailer triggering the event.</param>
         /// <param name="e">An <see cref="PlayerVehicleEventArgs" /> that contains the event data. </param>
-        protected virtual void OnTrailerUpdate(BaseVehicle trailer, TrailerEventArgs e)
+        internal void OnTrailerUpdate(TrailerEventArgs e)
         {
-            TrailerUpdate?.Invoke(trailer, e);
+            TrailerUpdate?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="DialogResponse" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="DialogResponseEventArgs" /> that contains the event data. </param>
-        protected virtual void OnDialogResponse(BasePlayer player, DialogResponseEventArgs e)
+        internal void OnDialogResponse(DialogResponseEventArgs e)
         {
-            DialogResponse?.Invoke(player, e);
+            DialogResponse?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerTakeDamage" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="DamageEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerTakeDamage(BasePlayer player, DamageEventArgs e)
+        internal void OnPlayerTakeDamage(DamageEventArgs e)
         {
-            PlayerTakeDamage?.Invoke(player, e);
+            PlayerTakeDamage?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerGiveDamage" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="DamageEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerGiveDamage(BasePlayer player, DamageEventArgs e)
+        internal void OnPlayerGiveDamage(DamageEventArgs e)
         {
-            PlayerGiveDamage?.Invoke(player, e);
+            PlayerGiveDamage?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerClickMap" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="PositionEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerClickMap(BasePlayer player, PositionEventArgs e)
+        internal void OnPlayerClickMap(PositionEventArgs e)
         {
-            PlayerClickMap?.Invoke(player, e);
+            PlayerClickMap?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerClickTextDraw" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerClickTextDraw(BasePlayer player, ClickTextDrawEventArgs e)
+        internal void OnPlayerClickTextDraw(ClickTextDrawEventArgs e)
         {
-            PlayerClickTextDraw?.Invoke(player, e);
+            PlayerClickTextDraw?.Invoke(this, e);
         }
 
         /// <summary>
@@ -923,86 +881,79 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerClickPlayerTextDraw(BasePlayer player, ClickPlayerTextDrawEventArgs e)
+        internal void OnPlayerClickPlayerTextDraw(ClickPlayerTextDrawEventArgs e)
         {
-            PlayerClickPlayerTextDraw?.Invoke(player, e);
+            PlayerClickPlayerTextDraw?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerClickPlayer" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="ClickPlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerClickPlayer(BasePlayer player, ClickPlayerEventArgs e)
+        internal void OnPlayerClickPlayer(ClickPlayerEventArgs e)
         {
-            PlayerClickPlayer?.Invoke(player, e);
+            PlayerClickPlayer?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerEditGlobalObject" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EditGlobalObjectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEditGlobalObject(BasePlayer player, EditGlobalObjectEventArgs e)
+        internal void OnPlayerEditGlobalObject(EditGlobalObjectEventArgs e)
         {
-            PlayerEditGlobalObject?.Invoke(player, e);
+            PlayerEditGlobalObject?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerEditPlayerObject" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EditPlayerObjectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEditPlayerObject(BasePlayer player, EditPlayerObjectEventArgs e)
+        internal void OnPlayerEditPlayerObject(EditPlayerObjectEventArgs e)
         {
-            PlayerEditPlayerObject?.Invoke(player, e);
+            PlayerEditPlayerObject?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerEditAttachedObject" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="EditAttachedObjectEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerEditAttachedObject(BasePlayer player, EditAttachedObjectEventArgs e)
+        internal void OnPlayerEditAttachedObject(EditAttachedObjectEventArgs e)
         {
-            PlayerEditAttachedObject?.Invoke(player, e);
+            PlayerEditAttachedObject?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerSelectGlobalObject" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="SelectGlobalObjectEventArgs" /> that contains the event data.</param>
-        protected virtual void OnPlayerSelectGlobalObject(BasePlayer player, SelectGlobalObjectEventArgs e)
+        internal void OnPlayerSelectGlobalObject(SelectGlobalObjectEventArgs e)
         {
-            PlayerSelectGlobalObject?.Invoke(player, e);
+            PlayerSelectGlobalObject?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerSelectPlayerObject" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="SelectPlayerObjectEventArgs" /> that contains the event data.</param>
-        protected virtual void OnPlayerSelectPlayerObject(BasePlayer player, SelectPlayerObjectEventArgs e)
+        internal void OnPlayerSelectPlayerObject(SelectPlayerObjectEventArgs e)
         {
-            PlayerSelectPlayerObject?.Invoke(player, e);
+            PlayerSelectPlayerObject?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerWeaponShot" /> event.
         /// </summary>
-        /// <param name="player">The player triggering the event.</param>
         /// <param name="e">An <see cref="WeaponShotEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerWeaponShot(BasePlayer player, WeaponShotEventArgs e)
+        internal void OnPlayerWeaponShot(WeaponShotEventArgs e)
         {
-            PlayerWeaponShot?.Invoke(player, e);
+            PlayerWeaponShot?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="IncomingConnection" /> event.
         /// </summary>
         /// <param name="e">An <see cref="ConnectionEventArgs" /> that contains the event dEventArgsata. </param>
-        protected virtual void OnIncomingConnection(ConnectionEventArgs e)
+        internal void OnIncomingConnection(ConnectionEventArgs e)
         {
             IncomingConnection?.Invoke(this, e);
         }
@@ -1010,41 +961,37 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Raises the <see cref="VehicleSirenStateChange" /> event.
         /// </summary>
-        /// <param name="vehicle">The vehicle.</param>
         /// <param name="e">The <see cref="SirenStateEventArgs" /> instance containing the event data.</param>
-        protected void OnVehicleSirenStateChange(BaseVehicle vehicle, SirenStateEventArgs e)
+        internal void OnVehicleSirenStateChange(SirenStateEventArgs e)
         {
-            VehicleSirenStateChange?.Invoke(vehicle, e);
+            VehicleSirenStateChange?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="ActorStreamIn" /> event.
         /// </summary>
-        /// <param name="actor">The actor.</param>
-        /// <param name="e">The <see cref="PlayerEventArgs" /> instance containing the event data.</param>
-        protected void OnActorStreamIn(Actor actor, PlayerEventArgs e)
+        /// <param name="e">The <see cref="ActorStreamEventArgs" /> instance containing the event data.</param>
+        internal void OnActorStreamIn(ActorStreamEventArgs e)
         {
-            ActorStreamIn?.Invoke(actor, e);
+            ActorStreamIn?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="ActorStreamOut" /> event.
         /// </summary>
-        /// <param name="actor">The actor.</param>
-        /// <param name="e">The <see cref="PlayerEventArgs" /> instance containing the event data.</param>
-        protected void OnActorStreamOut(Actor actor, PlayerEventArgs e)
+        /// <param name="e">The <see cref="ActorStreamEventArgs" /> instance containing the event data.</param>
+        internal void OnActorStreamOut(ActorStreamEventArgs e)
         {
-            ActorStreamOut?.Invoke(actor, e);
+            ActorStreamOut?.Invoke(this, e);
         }
 
         /// <summary>
         ///     Raises the <see cref="PlayerGiveDamageActor" /> event.
         /// </summary>
-        /// <param name="actor">The actor.</param>
-        /// <param name="e">The <see cref="DamageEventArgs" /> instance containing the event data.</param>
-        protected void OnPlayerGiveDamageActor(Actor actor, DamageEventArgs e)
+        /// <param name="e">The <see cref="ActorDamageEventArgs" /> instance containing the event data.</param>
+        internal void OnPlayerGiveDamageActor(ActorDamageEventArgs e)
         {
-            PlayerGiveDamageActor?.Invoke(actor, e);
+            PlayerGiveDamageActor?.Invoke(this, e);
         }
 
         /// <summary>

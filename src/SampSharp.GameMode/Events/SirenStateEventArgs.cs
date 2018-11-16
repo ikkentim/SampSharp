@@ -19,17 +19,24 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provided data for the x or y event.
     /// </summary>
-    public class SirenStateEventArgs : PlayerEventArgs
+    public class SirenStateEventArgs : VehicleEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="SirenStateEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
+        /// <param name="vehicle">The vehicle.</param>
         /// <param name="newState">if set to <c>true</c> the siren is turned on in the new state.</param>
-        public SirenStateEventArgs(BasePlayer player, bool newState) : base(player)
+        public SirenStateEventArgs(BasePlayer player, BaseVehicle vehicle, bool newState) : base(vehicle)
         {
+            Player = player;
             NewState = newState;
         }
+        
+        /// <summary>
+        ///     Gets the player.
+        /// </summary>
+        public BasePlayer Player { get; private set; }
 
         /// <summary>
         ///     Gets a value indicating whether the siren is turned on in the new state.

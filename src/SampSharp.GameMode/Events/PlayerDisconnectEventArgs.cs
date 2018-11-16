@@ -13,33 +13,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerCommandText" /> or <see cref="BasePlayer.CommandText" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerDisconnected" />, <see cref="BaseMode.PlayerCleanup" />,
+    ///     <see cref="BasePlayer.Disconnected" /> or <see cref="BasePlayer.Cleanup" /> event.
     /// </summary>
-    public class CommandTextEventArgs : PlayerEventArgs
+    public class PlayerDisconnectEventArgs : PlayerEventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CommandTextEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="PlayerDisconnectEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
-        /// <param name="text">The text sent by the player.</param>
-        public CommandTextEventArgs(BasePlayer player, string text) : base(player)
+        /// <param name="reason">The reason.</param>
+        public PlayerDisconnectEventArgs(BasePlayer player, DisconnectReason reason) : base(player)
         {
-            Text = text;
+            Reason = reason;
         }
 
         /// <summary>
-        ///     Gets the text sent by the player.
+        ///     Gets the reason of the disconnection.
         /// </summary>
-        public string Text { get; private set; }
-
-        /// <summary>
-        ///     Gets or sets whether this command has been handled successfully.
-        /// </summary>
-        public bool Success { get; set; }
+        public DisconnectReason Reason { get; private set; }
     }
 }

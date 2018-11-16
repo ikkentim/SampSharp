@@ -18,28 +18,22 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerCommandText" /> or <see cref="BasePlayer.CommandText" /> event.
+    ///     Provides data for the <see cref="BaseMode.PlayerConnected" /> event.
     /// </summary>
-    public class CommandTextEventArgs : PlayerEventArgs
+    public class PlayerPickUpPickupEventArgs : PlayerEventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CommandTextEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="PlayerConnectEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
-        /// <param name="text">The text sent by the player.</param>
-        public CommandTextEventArgs(BasePlayer player, string text) : base(player)
+        public PlayerPickUpPickupEventArgs(BasePlayer player, Pickup pickup) : base(player)
         {
-            Text = text;
+            Pickup = pickup;
         }
-
+        
         /// <summary>
-        ///     Gets the text sent by the player.
+        ///     Gets the pickup involved.
         /// </summary>
-        public string Text { get; private set; }
-
-        /// <summary>
-        ///     Gets or sets whether this command has been handled successfully.
-        /// </summary>
-        public bool Success { get; set; }
+        public Pickup Pickup { get; private set; }
     }
 }

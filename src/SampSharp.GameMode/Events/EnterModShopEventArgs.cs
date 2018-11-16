@@ -22,14 +22,15 @@ namespace SampSharp.GameMode.Events
     ///     Provides data for the <see cref="BaseMode.PlayerEnterExitModShop" /> or <see cref="BasePlayer.EnterExitModShop" />
     ///     event.
     /// </summary>
-    public class EnterModShopEventArgs : EventArgs
+    public class EnterModShopEventArgs : PlayerEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="EnterModShopEventArgs" /> class.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="enterExit">The enter exit value.</param>
         /// <param name="interiorid">The interiorid.</param>
-        public EnterModShopEventArgs(EnterExit enterExit, int interiorid)
+        public EnterModShopEventArgs(BasePlayer player, EnterExit enterExit, int interiorid) : base(player)
         {
             EnterExit = enterExit;
             InteriorId = interiorid;

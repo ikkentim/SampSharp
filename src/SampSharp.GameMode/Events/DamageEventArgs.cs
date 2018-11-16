@@ -27,22 +27,29 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Initializes a new instance of the DamageEventArgs class.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="otherPlayer">The other player.</param>
         /// <param name="amount">Amount of damage done.</param>
         /// <param name="weapon">Weapon used to damage another.</param>
         /// <param name="bodypart">BodyPart shot at.</param>
-        public DamageEventArgs(BasePlayer otherPlayer, float amount, Weapon weapon, BodyPart bodypart)
+        public DamageEventArgs(BasePlayer player, BasePlayer otherPlayer, float amount, Weapon weapon, BodyPart bodypart)
         {
-            OtherPlayer = otherPlayer;
+            Player = Optional<BasePlayer>.From(player);
+            OtherPlayer = Optional<BasePlayer>.From(otherPlayer);
             Amount = amount;
             Weapon = weapon;
             BodyPart = bodypart;
         }
 
         /// <summary>
-        ///     Gets the other player.
+        ///     Gets the player or null.
         /// </summary>
-        public BasePlayer OtherPlayer { get; private set; }
+        public Optional<BasePlayer> Player{ get; private set; }
+
+        /// <summary>
+        ///     Gets the other player or null.
+        /// </summary>
+        public Optional<BasePlayer> OtherPlayer { get; private set; }
 
         /// <summary>
         ///     Gets the amount of damage done.

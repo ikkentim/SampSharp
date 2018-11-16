@@ -36,7 +36,7 @@ namespace SampSharp.GameMode.Events
         }
 
         /// <summary>
-        ///     Gets the player involved.
+        ///     Gets the player.
         /// </summary>
         public BasePlayer Player { get; private set; }
     }

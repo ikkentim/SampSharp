@@ -18,23 +18,17 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerRequestSpawn" /> or <see cref="BasePlayer.RequestSpawn" /> event.
+    ///     Provides data for the _not_yet_ event.
     /// </summary>
-    public class RequestSpawnEventArgs : PlayerEventArgs
+    public class ObjectMovedEventArgs : ObjectEventArgs
     {
-        
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RequestSpawnEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="ObjectMovedEventArgs" /> class.
         /// </summary>
-        /// <param name="player">The player.</param>
-        public RequestSpawnEventArgs(BasePlayer player) : base(player)
+        /// <param name="globalObject">The object.</param>
+        public ObjectMovedEventArgs(GlobalObject globalObject) : base(globalObject)
         {
             
         }
-        
-        /// <summary>
-        ///     Gets or sets whether the player is prevented from spawning.
-        /// </summary>
-        public bool PreventSpawning { get; set; }
     }
 }

@@ -19,20 +19,26 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.VehicleResprayed" /> or <see cref="BaseVehicle.Resprayed" /> event.
     /// </summary>
-    public class VehicleResprayedEventArgs : PlayerEventArgs
+    public class VehicleResprayedEventArgs : VehicleEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="VehicleResprayedEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
+        /// <param name="vehicle">The vehicle.</param>
         /// <param name="color1">The color1.</param>
         /// <param name="color2">The color2.</param>
-        public VehicleResprayedEventArgs(BasePlayer player, int color1, int color2)
-            : base(player)
+        public VehicleResprayedEventArgs(BasePlayer player, BaseVehicle vehicle, int color1, int color2) : base(vehicle)
         {
+            Player = player;
             Color1 = color1;
             Color2 = color2;
         }
+        
+        /// <summary>
+        ///     Gets the player involved.
+        /// </summary>
+        public BasePlayer Player { get; private set; }
 
         /// <summary>
         ///     Gets the color1.

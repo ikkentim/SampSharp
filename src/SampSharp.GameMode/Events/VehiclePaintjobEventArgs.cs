@@ -20,18 +20,24 @@ namespace SampSharp.GameMode.Events
     ///     Provides data for the <see cref="BaseMode.VehiclePaintjobApplied" /> or <see cref="BaseVehicle.PaintjobApplied" />
     ///     event.
     /// </summary>
-    public class VehiclePaintjobEventArgs : PlayerEventArgs
+    public class VehiclePaintjobEventArgs : VehicleEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="VehiclePaintjobEventArgs" /> class.
         /// </summary>
+        /// <param name="vehicle">The vehicle.</param>
         /// <param name="player">The player.</param>
         /// <param name="paintjobId">The paintjob identifier.</param>
-        public VehiclePaintjobEventArgs(BasePlayer player, int paintjobId)
-            : base(player)
+        public VehiclePaintjobEventArgs(BasePlayer player, BaseVehicle vehicle, int paintjobId) : base(vehicle)
         {
+            Player = player;
             PaintjobId = paintjobId;
         }
+        
+        /// <summary>
+        ///     Gets the player involved.
+        /// </summary>
+        public BasePlayer Player { get; private set; }
 
         /// <summary>
         ///     Gets the paintjob identifier.

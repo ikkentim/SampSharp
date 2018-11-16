@@ -33,7 +33,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="rotation">The rotation.</param>
         public EditPlayerObjectEventArgs(BasePlayer player, PlayerObject @object, EditObjectResponse response,
             Vector3 position, Vector3 rotation)
-            : base(position)
+            : base(player, position)
         {
             Player = player;
             Object = @object;

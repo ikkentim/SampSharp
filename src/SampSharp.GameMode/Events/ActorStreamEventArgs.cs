@@ -13,33 +13,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerCommandText" /> or <see cref="BasePlayer.CommandText" /> event.
+    ///     Provides data for the _not_yet_ event.
     /// </summary>
-    public class CommandTextEventArgs : PlayerEventArgs
+    public class ActorStreamEventArgs : PlayerEventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CommandTextEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="VehicleStreamEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
-        /// <param name="text">The text sent by the player.</param>
-        public CommandTextEventArgs(BasePlayer player, string text) : base(player)
+        /// <param name="actor">The actor.</param>
+        /// <param name="mode">Streaming IN or OUT.</param>
+        public ActorStreamEventArgs(BasePlayer player, Actor actor, StreamMode mode) : base(player)
         {
-            Text = text;
+            Actor = actor;
+            Mode = mode;
         }
+        
+        /// <summary>
+        ///     Gets the actor
+        /// </summary>
+        public Actor Actor { get; private set; }
 
         /// <summary>
-        ///     Gets the text sent by the player.
+        ///     Gets the stream mode.
         /// </summary>
-        public string Text { get; private set; }
-
-        /// <summary>
-        ///     Gets or sets whether this command has been handled successfully.
-        /// </summary>
-        public bool Success { get; set; }
+        public StreamMode Mode { get; private set; }
     }
 }

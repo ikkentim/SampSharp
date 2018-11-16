@@ -21,14 +21,15 @@ namespace SampSharp.GameMode.Events
     ///     Provides data for the <see cref="BaseMode.PlayerInteriorChanged" /> or <see cref="BasePlayer.InteriorChanged" />
     ///     event.
     /// </summary>
-    public class InteriorChangedEventArgs : EventArgs
+    public class InteriorChangedEventArgs : PlayerEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="InteriorChangedEventArgs" /> class.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="newInterior">The new interior.</param>
         /// <param name="oldInterior">The old interior.</param>
-        public InteriorChangedEventArgs(int newInterior, int oldInterior)
+        public InteriorChangedEventArgs(BasePlayer player, int newInterior, int oldInterior) : base(player)
         {
             NewInterior = newInterior;
             OldInterior = oldInterior;

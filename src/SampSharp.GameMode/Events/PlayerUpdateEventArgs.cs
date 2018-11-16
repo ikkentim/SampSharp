@@ -20,8 +20,18 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.PlayerUpdate" /> or <see cref="BasePlayer.Update" /> event.
     /// </summary>
-    public class PlayerUpdateEventArgs : EventArgs
+    public class PlayerUpdateEventArgs : PlayerEventArgs
     {
+        
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="KeyStateChangedEventArgs" /> class.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        public PlayerUpdateEventArgs(BasePlayer player) : base(player)
+        {
+            
+        }
+        
         /// <summary>
         ///     Gets or sets whether to stop syncing the update to other players.
         /// </summary>

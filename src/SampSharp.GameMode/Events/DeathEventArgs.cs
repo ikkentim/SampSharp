@@ -21,14 +21,15 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.PlayerDied" /> or <see cref="BasePlayer.Died" /> event.
     /// </summary>
-    public class DeathEventArgs : EventArgs
+    public class DeathEventArgs : PlayerEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the DeathEventArgs class.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="killer">The killer.</param>
         /// <param name="reason">Reason of the death.</param>
-        public DeathEventArgs(BasePlayer killer, Weapon reason)
+        public DeathEventArgs(BasePlayer player, BasePlayer killer, Weapon reason) : base(player)
         {
             Killer = killer;
             DeathReason = reason;

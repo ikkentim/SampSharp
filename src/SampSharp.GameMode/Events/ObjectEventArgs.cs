@@ -18,28 +18,22 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerCommandText" /> or <see cref="BasePlayer.CommandText" /> event.
+    ///     Provides data for the _not_yet_ event.
     /// </summary>
-    public class CommandTextEventArgs : PlayerEventArgs
+    public class ObjectEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CommandTextEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="ObjectEventArgs" /> class.
         /// </summary>
-        /// <param name="player">The player.</param>
-        /// <param name="text">The text sent by the player.</param>
-        public CommandTextEventArgs(BasePlayer player, string text) : base(player)
+        /// <param name="globalObject">The object.</param>
+        public ObjectEventArgs(GlobalObject globalObject)
         {
-            Text = text;
+            Object = globalObject;
         }
 
         /// <summary>
-        ///     Gets the text sent by the player.
+        ///     Gets the object involved.
         /// </summary>
-        public string Text { get; private set; }
-
-        /// <summary>
-        ///     Gets or sets whether this command has been handled successfully.
-        /// </summary>
-        public bool Success { get; set; }
+        public GlobalObject Object { get; private set; }
     }
 }

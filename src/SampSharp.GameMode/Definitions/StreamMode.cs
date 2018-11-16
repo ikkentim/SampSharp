@@ -1,4 +1,4 @@
-﻿// SampSharp
+// SampSharp
 // Copyright 2017 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,28 +13,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
-using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Events
+namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerRequestSpawn" /> or <see cref="BasePlayer.RequestSpawn" /> event.
+    ///     Contains stream modes
     /// </summary>
-    public class RequestSpawnEventArgs : PlayerEventArgs
+    [Flags]
+    public enum StreamMode
     {
-        
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RequestSpawnEventArgs" /> class.
+        ///     The In mode.
         /// </summary>
-        /// <param name="player">The player.</param>
-        public RequestSpawnEventArgs(BasePlayer player) : base(player)
-        {
-            
-        }
-        
+        In = 1,
+
         /// <summary>
-        ///     Gets or sets whether the player is prevented from spawning.
+        ///     The Out mode.
         /// </summary>
-        public bool PreventSpawning { get; set; }
+        Out = 2
     }
 }

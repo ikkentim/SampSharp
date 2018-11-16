@@ -25,12 +25,13 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Initializes a new instance of the <see cref="WeaponShotEventArgs" /> class.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="weapon">The weapon.</param>
         /// <param name="hittype">The hittype.</param>
         /// <param name="hitid">The hitid.</param>
         /// <param name="position">The position.</param>
-        public WeaponShotEventArgs(Weapon weapon, BulletHitType hittype, int hitid, Vector3 position)
-            : base(position)
+        public WeaponShotEventArgs(BasePlayer player, Weapon weapon, BulletHitType hittype, int hitid, Vector3 position)
+            : base(player, position)
         {
             Weapon = weapon;
             BulletHitType = hittype;

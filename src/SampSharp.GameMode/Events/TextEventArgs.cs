@@ -20,13 +20,14 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.PlayerText" /> or <see cref="BasePlayer.Text" /> event.
     /// </summary>
-    public class TextEventArgs : EventArgs
+    public class TextEventArgs : PlayerEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the TextEventArgs class.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="text">The text sent by the player.</param>
-        public TextEventArgs(string text)
+        public TextEventArgs(BasePlayer player, string text) : base(player)
         {
             Text = text;
             SendToPlayers = true;

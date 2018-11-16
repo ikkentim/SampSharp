@@ -19,18 +19,24 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.VehicleMod" /> or <see cref="BaseVehicle.Mod" /> event.
     /// </summary>
-    public class VehicleModEventArgs : PlayerEventArgs
+    public class VehicleModEventArgs : VehicleEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="VehicleModEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
+        /// <param name="vehicle">The vehicle.</param>
         /// <param name="componentId">The component identifier.</param>
-        public VehicleModEventArgs(BasePlayer player, int componentId)
-            : base(player)
+        public VehicleModEventArgs(BasePlayer player, BaseVehicle vehicle, int componentId) : base(vehicle)
         {
+            Player = player;
             ComponentId = componentId;
         }
+        
+        /// <summary>
+        ///     Gets the player involved.
+        /// </summary>
+        public BasePlayer Player { get; private set; }
 
         /// <summary>
         ///     Gets or sets the component identifier.
@@ -44,5 +50,7 @@ namespace SampSharp.GameMode.Events
         ///     Gets or sets whether to desync the mod (or an invalid mod) from propagating and / or crashing players.
         /// </summary>
         public bool PreventPropagation { get; set; }
+        
+        
     }
 }

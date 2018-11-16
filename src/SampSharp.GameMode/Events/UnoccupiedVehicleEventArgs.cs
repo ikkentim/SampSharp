@@ -20,23 +20,29 @@ namespace SampSharp.GameMode.Events
     ///     Provides data for the <see cref="BaseMode.UnoccupiedVehicleUpdated" /> or
     ///     <see cref="BaseVehicle.UnoccupiedUpdate" /> event.
     /// </summary>
-    public class UnoccupiedVehicleEventArgs : PlayerEventArgs
+    public class UnoccupiedVehicleEventArgs : VehicleEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UnoccupiedVehicleEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
+        /// <param name="vehicle">The vehicle.</param>
         /// <param name="passengerSeat">The passenger seat.</param>
         /// <param name="newPosition">The new position.</param>
         /// <param name="newVelocity">The new velocity.</param>
-        public UnoccupiedVehicleEventArgs(BasePlayer player, int passengerSeat, Vector3 newPosition,
-            Vector3 newVelocity)
-            : base(player)
+        public UnoccupiedVehicleEventArgs(BasePlayer player, BaseVehicle vehicle, int passengerSeat, Vector3 newPosition,
+            Vector3 newVelocity) : base(vehicle)
         {
+            Player = player;
             PassengerSeat = passengerSeat;
             NewPosition = newPosition;
             NewVelocity = newVelocity;
         }
+        
+        /// <summary>
+        ///     Gets the player involved.
+        /// </summary>
+        public BasePlayer Player { get; private set; }
 
         /// <summary>
         ///     Gets the passenger seat.

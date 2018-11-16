@@ -22,23 +22,17 @@ namespace SampSharp.GameMode.Events
     ///     Provides data for the <see cref="BaseMode.PlayerClickTextDraw" />, <see cref="Display.TextDraw.Click" /> or
     ///     <see cref="BasePlayer.ClickTextDraw" /> event.
     /// </summary>
-    public class ClickTextDrawEventArgs : EventArgs
+    public class ClickTextDrawEventArgs : PlayerEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the ClickTextDrawEventArgs class.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="textDraw">The text draw.</param>
-        public ClickTextDrawEventArgs(BasePlayer player, TextDraw textDraw)
+        public ClickTextDrawEventArgs(BasePlayer player, TextDraw textDraw) : base(player)
         {
-            Player = player;
             TextDraw = textDraw;
         }
-
-        /// <summary>
-        ///     Gets the player.
-        /// </summary>
-        public BasePlayer Player { get; private set; }
 
         /// <summary>
         ///     Gets the text draw.

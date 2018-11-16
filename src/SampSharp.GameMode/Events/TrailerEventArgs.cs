@@ -20,13 +20,14 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.TrailerUpdate" /> <see cref="BaseVehicle.TrailerUpdate" /> event.
     /// </summary>
-    public class TrailerEventArgs : EventArgs
+    public class TrailerEventArgs : VehicleEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="TrailerEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player sending the update.</param>
-        public TrailerEventArgs(BasePlayer player)
+        /// <param name="trailer">The trailer.</param>
+        public TrailerEventArgs(BasePlayer player, BaseVehicle trailer) : base(trailer)
         {
             Player = player;
         }

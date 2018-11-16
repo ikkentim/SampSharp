@@ -13,33 +13,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
+using SampSharp.GameMode.Helpers;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerCommandText" /> or <see cref="BasePlayer.CommandText" /> event.
+    ///     Provides data for the <see cref="BaseMode.VehicleDied" /> event.
     /// </summary>
-    public class CommandTextEventArgs : PlayerEventArgs
+    public class VehicleDiedEventArgs : VehicleEventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CommandTextEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="VehicleSpawnedEventArgs" /> class.
         /// </summary>
-        /// <param name="player">The player.</param>
-        /// <param name="text">The text sent by the player.</param>
-        public CommandTextEventArgs(BasePlayer player, string text) : base(player)
+        /// <param name="killer">The killer.</param>
+        /// <param name="vehicle">The vehicle.</param>
+        public VehicleDiedEventArgs(BasePlayer killer, BaseVehicle vehicle) : base(vehicle)
         {
-            Text = text;
+            Killer = Optional<BasePlayer>.From(killer);
         }
-
+        
         /// <summary>
-        ///     Gets the text sent by the player.
+        ///     Gets the killer involved or null.
         /// </summary>
-        public string Text { get; private set; }
-
-        /// <summary>
-        ///     Gets or sets whether this command has been handled successfully.
-        /// </summary>
-        public bool Success { get; set; }
+        public Optional<BasePlayer> Killer { get; private set; }
     }
 }

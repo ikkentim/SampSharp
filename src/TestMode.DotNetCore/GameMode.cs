@@ -39,9 +39,14 @@ namespace TestMode
             var sampleVehicle = BaseVehicle.Create(VehicleModelType.Alpha, Vector3.One * 10, 0, -1, -1);
 
             Console.WriteLine("Spawned sample vehicle " + sampleVehicle.Model);
+            
+            IncomingConnection += OnIncomingConnection;
+            PlayerConnected += OnPlayerConnected;
+            PlayerDisconnected += OnPlayerDisconnected;
+            RconCommand += OnRconCommand;
         }
 
-        protected override void OnRconCommand(RconEventArgs e)
+        private void OnRconCommand(object sender, RconEventArgs e)
         {
             Console.WriteLine($"Received RCON Command: {e.Command}");
             
@@ -64,26 +69,23 @@ namespace TestMode
                 e.Success = true;
                 Server.Print(msg);
             }
-
-            base.OnRconCommand(e);
         }
         
-        protected override void OnIncomingConnection(ConnectionEventArgs e)
+        private void OnIncomingConnection(object sender, ConnectionEventArgs e)
         {
-            Console.WriteLine($"Incomming connection: Player {e.PlayerId} from {e.IpAddress}:{e.Port}");
-            base.OnIncomingConnection(e);
+            Console.WriteLine($"Incoming connection: Player {e.PlayerId} from {e.IpAddress}:{e.Port}");
         }
-
-        protected override void OnPlayerConnected(BasePlayer player, EventArgs e)
+        
+        private void OnPlayerConnected(object sender, PlayerConnectEventArgs e)
         {
+            var player = e.Player;
             Console.WriteLine($"Player {player.Name} connected.");
-            base.OnPlayerConnected(player, e);
         }
-
-        protected override void OnPlayerDisconnected(BasePlayer player, DisconnectEventArgs e)
+        
+        private void OnPlayerDisconnected(object sender, PlayerDisconnectEventArgs e)
         {
+            var player = e.Player;
             Console.WriteLine($"Player {player.Name} disconnected. Reason: {e.Reason}.");
-            base.OnPlayerDisconnected(player, e);
         }
 
         #endregion

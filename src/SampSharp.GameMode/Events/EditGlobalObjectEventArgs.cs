@@ -32,7 +32,7 @@ namespace SampSharp.GameMode.Events
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
         public EditGlobalObjectEventArgs(BasePlayer player, GlobalObject @object, EditObjectResponse response,
-            Vector3 position, Vector3 rotation) : base(position)
+            Vector3 position, Vector3 rotation) : base(player, position)
         {
             Player = player;
             Object = @object;

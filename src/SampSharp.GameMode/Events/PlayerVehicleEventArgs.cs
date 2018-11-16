@@ -20,21 +20,21 @@ namespace SampSharp.GameMode.Events
     ///     Provides data for the <see cref="BaseMode.PlayerExitVehicle" />, <see cref="BasePlayer.ExitVehicle" /> or
     ///     <see cref="BaseVehicle.PlayerExit" />
     /// </summary>
-    public class PlayerVehicleEventArgs : PlayerEventArgs
+    public class PlayerVehicleEventArgs : VehicleEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlayerVehicleEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="vehicle">The vehicle.</param>
-        public PlayerVehicleEventArgs(BasePlayer player, BaseVehicle vehicle) : base(player)
+        public PlayerVehicleEventArgs(BasePlayer player, BaseVehicle vehicle) : base(vehicle)
         {
-            Vehicle = vehicle;
+            Player = player;
         }
-
+        
         /// <summary>
-        ///     Gets the vehicle.
+        ///     Gets the player.
         /// </summary>
-        public BaseVehicle Vehicle { get; private set; }
+        public BasePlayer Player { get; private set; }
     }
 }

@@ -94,7 +94,7 @@ namespace TestMode
             base.OnPlayerConnected(player, e);
         }
 
-        protected override void OnPlayerDisconnected(BasePlayer player, DisconnectEventArgs e)
+        protected override void OnPlayerDisconnected(BasePlayer player, PlayerDisconnectEventArgs e)
         {
             Console.WriteLine($"Player {player.Name} disconnected. Reason: {e.Reason}.");
             base.OnPlayerDisconnected(player, e);

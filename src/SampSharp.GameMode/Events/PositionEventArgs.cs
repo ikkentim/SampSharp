@@ -20,13 +20,14 @@ namespace SampSharp.GameMode.Events
     /// <summary>
     ///     Provides data for the <see cref="BaseMode.PlayerClickMap" /> or <see cref="BasePlayer.ClickMap" /> event.
     /// </summary>
-    public class PositionEventArgs : EventArgs
+    public class PositionEventArgs : PlayerEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PositionEventArgs" /> class.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="position">The position.</param>
-        public PositionEventArgs(Vector3 position)
+        public PositionEventArgs(BasePlayer player, Vector3 position) : base(player)
         {
             Position = position;
         }

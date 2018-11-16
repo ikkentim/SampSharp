@@ -22,13 +22,14 @@ namespace SampSharp.GameMode.Events
     ///     Provides data for the <see cref="BaseMode.PlayerSelectedMenuRow" />, <see cref="BasePlayer.SelectedMenuRow" /> or
     ///     <see cref="Menu.Response" /> event.
     /// </summary>
-    public class MenuRowEventArgs : EventArgs
+    public class MenuRowEventArgs : PlayerEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="MenuRowEventArgs" /> class.
         /// </summary>
+        /// <param name="player">The player.</param>
         /// <param name="row">The row.</param>
-        public MenuRowEventArgs(int row)
+        public MenuRowEventArgs(BasePlayer player, int row) : base(player)
         {
             Row = row;
         }

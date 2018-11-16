@@ -13,29 +13,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
-using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerDisconnected" />, <see cref="BaseMode.PlayerCleanup" />,
-    ///     <see cref="BasePlayer.Disconnected" /> or <see cref="BasePlayer.Cleanup" /> event.
+    ///     Provides data for the _not_yet_ event.
     /// </summary>
-    public class DisconnectEventArgs : EventArgs
+    public class PlayerExitMenuEventArgs : PlayerEventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DisconnectEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="PlayerExitMenuEventArgs" /> class.
         /// </summary>
-        /// <param name="reason">The reason.</param>
-        public DisconnectEventArgs(DisconnectReason reason)
+        public PlayerExitMenuEventArgs(BasePlayer player) : base(player)
         {
-            Reason = reason;
+            
         }
-
-        /// <summary>
-        ///     Gets the reason of the disconnection.
-        /// </summary>
-        public DisconnectReason Reason { get; private set; }
     }
 }
