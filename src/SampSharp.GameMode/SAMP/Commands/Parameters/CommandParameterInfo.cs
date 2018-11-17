@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
         /// <param name="defaultValue">The default value.</param>
         /// <exception cref="ArgumentNullException">Thrown if name or commandParameterType is null</exception>
         public CommandParameterInfo(string name, ICommandParameterType commandParameterType, bool isOptional,
-            object defaultValue)
+            object defaultValue, bool ignoreUsage)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (commandParameterType == null) throw new ArgumentNullException(nameof(commandParameterType));
@@ -40,6 +40,7 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
             IsOptional = isOptional;
             Name = name;
             DefaultValue = defaultValue;
+            IgnoreUsage = ignoreUsage;
         }
 
         /// <summary>
@@ -61,5 +62,10 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
         ///     Gets the default value.
         /// </summary>
         public object DefaultValue { get; }
+        
+        /// <summary>
+        ///    Gets a value indicating whether this param can be null
+        /// </summary>
+        public bool IgnoreUsage { get; }
     }
 }

@@ -68,7 +68,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                         var type = GetParameterType(p, index++, count);
                         return type == null
                             ? null
-                            : new CommandParameterInfo(p.Name, type, p.HasDefaultValue, p.DefaultValue);
+                            : new CommandParameterInfo(p.Name, type, p.HasDefaultValue, p.DefaultValue, p.GetCustomAttribute<NullableParamAttribute>() != null);
                     })
                 .ToArray();
 
@@ -141,7 +141,8 @@ namespace SampSharp.GameMode.SAMP.Commands
             var index = 0;
             foreach (var parameter in Parameters)
             {
-                if (!parameter.CommandParameterType.Parse(ref commandText, out var arg))
+                var ignoreUsage = parameter.IgnoreUsage;
+                if (!parameter.CommandParameterType.Parse(ref commandText, out var arg, ignoreUsage))
                 {
                     if (!parameter.IsOptional)
                         return false;

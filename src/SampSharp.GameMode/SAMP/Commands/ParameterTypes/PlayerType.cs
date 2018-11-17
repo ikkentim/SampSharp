@@ -31,10 +31,11 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         /// </summary>
         /// <param name="commandText">The command text.</param>
         /// <param name="output">The output.</param>
+        /// <param name="ignoreUsage">Ignore usage toggle.</param>
         /// <returns>
         ///     true if parsed successfully; false otherwise.
         /// </returns>
-        public bool Parse(ref string commandText, out object output)
+        public bool Parse(ref string commandText, out object output, bool ignoreUsage = false)
         {
             var text = commandText.TrimStart();
             output = null;
@@ -81,6 +82,12 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
                 commandText = word.Length == commandText.Length
                     ? string.Empty
                     : commandText.Substring(word.Length).TrimStart(' ');
+                return true;
+            }
+            
+            if (ignoreUsage)
+            {
+                output = null;
                 return true;
             }
 
