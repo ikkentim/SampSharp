@@ -17,54 +17,9 @@ using System;
 
 namespace SampSharp.GameMode.Definitions
 {
-    
-    /*
-     * Generated from: https://wiki.sa-mp.com/wiki/MapIcons
-     * Added ID to <tbody id="MyId">
-     * Removed first row with titles.
-     * JavaScript used in chrome console:
- 
-function parseData() {
- 	var result = [];
-	var children = document.getElementById("MyId").children;
-	for(let i = 0; i < children.length; i++) {
-        var child = children[i];
-		var id = child.children[0].innerText.trim();
-        var name = child.children[2].innerText.trim();
-		result.push({id: id, name: name});
-    }
-	return result;
-}
-function replaceSpaceWithUpper(name) {
-	var result = "";
-	var spaces = name.split(" ");
-	for(var i = 0; i < spaces.length; i++) {
-		var text = spaces[i];
-		result += text.substr(0, 1).toUpperCase();
-		result += text.substr(1);
-    }
-	return result;
-}
-function convertNameToEnumName(name) {
-	return name.replace(/[\(\)\.\'\/]+/g, "");
-}
-function generateEnumElement(obj) { 
-	return "/// <summary>\n/// " + obj.name + "\n/// </summary>\n" + replaceSpaceWithUpper(convertNameToEnumName(obj.name)) + " = " + obj.id + ",\n";
-}
-(function() {
-	var data = parseData();
-    var result = "";
-    data.forEach(el => {
-		result += generateEnumElement(el) + "\n";
-	});
-	copy(result);
-    console.log(result);
-})();
-
-     */
-    
+        
     /// <summary>
-    ///     Contains all PlayerMarker modes.
+    ///     Contains all map icons.
     /// </summary>
     public enum MapIcons
     {
