@@ -15,31 +15,6 @@
 // limitations under the License.
 namespace SampSharp.GameMode.Definitions
 {
-    
-    /**
-     * List from: https://dev.prineside.com/en/GtasaSampmodelid/category/all/
-     * Hold PageDown till reach bottom of the page
-     * Javascript:
-     *
-    copyfunction {
-
-	Var data = function{
-        Var data = document.querySelectorAll"a";
-        Var result = [];
-        Forlet i = 0; i < data.length; i {
-            Var el = data[i];
-            ifel.hasAttribute"DataTitle" && el.hasAttribute"DataModel" result.push{id: el.getAttribute"DataModel", name: el.getAttribute"DataName"};
-        }
-        return result;
-    };
-	Var result = "";
-	Data.forEachd => {
-		Result = "/// <summary>\n/// "  d.name  "\n/// </summary>\n"  d.name  " = "  d.id  ",\n\n"
-	};
-	return result;
-};
-     */
-    
     /// <summary>
     ///     Contains all pickup models
     /// </summary>
