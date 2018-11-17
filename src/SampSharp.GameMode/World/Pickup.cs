@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Pools;
 
@@ -47,9 +48,9 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The position where the pickup should be spawned.</param>
         /// <param name="virtualWorld">The virtual world ID of the pickup. Use -1 for all worlds.</param>
         /// <returns>The created pickup or null if it cannot be created.</returns>
-        public static Pickup Create(int model, int type, Vector3 position, int virtualWorld = -1)
+        public static Pickup Create(PickupModel model, PickupType type, Vector3 position, int virtualWorld = -1)
         {
-            var id = PickupInternal.Instance.CreatePickup(model, type, position.X, position.Y, position.Z, virtualWorld);
+            var id = PickupInternal.Instance.CreatePickup((int) model, (int) type, position.X, position.Y, position.Z, virtualWorld);
 
             if (id == InvalidId) return null;
 
@@ -109,12 +110,12 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the model of this <see cref="Pickup" />.
         /// </summary>
-        public int Model { get; private set; }
+        public PickupModel Model { get; private set; }
 
         /// <summary>
         ///     Gets the type of this <see cref="Pickup" />.
         /// </summary>
-        public int SpawnType { get; private set; }
+        public PickupType SpawnType { get; private set; }
 
         /// <summary>
         ///     Gets the position of this <see cref="Pickup" />.
