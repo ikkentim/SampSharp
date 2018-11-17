@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using SampSharp.Core.Logging;
 using SampSharp.GameMode.SAMP.Commands.PermissionCheckers;
 using SampSharp.GameMode.World;
@@ -262,6 +263,11 @@ namespace SampSharp.GameMode.SAMP.Commands
                     GetCommandGroupPaths(method)
                         .SelectMany(g => attribute.Names.Select(n => new CommandPath(g, n)))
                         .ToList();
+                
+                // When user does not fill up a name in the command attribute then use it from method name
+                // Issue: #273
+                if(attribute.Names.Length <= 0)
+                    commandPaths.Add(new CommandPath(method.Name.Contains("Command") ? method.Name.Replace("Command", "") : method.Name));
 
                 if (commandPaths.Count == 0)
                     commandPaths.AddRange(attribute.Names.Select(n => new CommandPath(n)));
