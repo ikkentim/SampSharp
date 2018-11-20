@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Pools;
 
@@ -38,6 +39,20 @@ namespace SampSharp.GameMode.World
         ///     Called when a player picks up a pickup created with <see cref="Create" />
         /// </summary>
         public event EventHandler<PlayerEventArgs> PickUp;
+        
+        
+        /// <summary>
+        ///     Creates a <see cref="Pickup" />.
+        /// </summary>
+        /// <param name="model">The model of the pickup.</param>
+        /// <param name="type">The pickup spawn type.</param>
+        /// <param name="position">The position where the pickup should be spawned.</param>
+        /// <param name="virtualWorld">The virtual world ID of the pickup. Use -1 for all worlds.</param>
+        /// <returns>The created pickup or null if it cannot be created.</returns>
+        public static Pickup Create(PickupModel model, PickupType type, Vector3 position, int virtualWorld = -1)
+        {
+            return Create((int) model, (int) type, position, virtualWorld);
+        }
 
         /// <summary>
         ///     Creates a <see cref="Pickup" />.
