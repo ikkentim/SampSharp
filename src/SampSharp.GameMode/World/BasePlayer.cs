@@ -1665,16 +1665,16 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="iconid">The player's icon ID, ranging from 0 to 99, to be used in <see cref="RemoveMapIcon" />.</param>
         /// <param name="position">The coordinates of the place where you want the icon to be.</param>
-        /// <param name="markertype">The icon to set.</param>
+        /// <param name="mapIcon">The icon to set.</param>
         /// <param name="color">The color of the icon, this should only be used with the square icon (ID: 0).</param>
         /// <param name="style">The style of icon.</param>
         /// <returns>True if it was successful, False otherwise (e.g. the player isn't connected).</returns>
-        public virtual bool SetMapIcon(int iconid, Vector3 position, PlayerMarkersMode markertype, Color color,
+        public virtual bool SetMapIcon(int iconid, Vector3 position, MapIcons mapIcon, Color color,
             MapIconType style)
         {
             AssertNotDisposed();
 
-            return PlayerInternal.Instance.SetPlayerMapIcon(Id, iconid, position.X, position.Y, position.Z, (int) markertype, color,
+            return PlayerInternal.Instance.SetPlayerMapIcon(Id, iconid, position.X, position.Y, position.Z, (int) mapIcon, color,
                 (int) style);
         }
 
