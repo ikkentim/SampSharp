@@ -252,6 +252,9 @@ namespace SampSharp.Core.Communication
             encoding = encoding ?? Encoding.ASCII;
 
             var terminatorIndex = Array.IndexOf(buffer, (byte)'\0', startIndex);
+            if (terminatorIndex < 0)
+                terminatorIndex = buffer.Length;
+
             return encoding.GetString(buffer, startIndex, terminatorIndex - startIndex);
         }
         

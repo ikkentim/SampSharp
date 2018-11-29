@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "logging.h"
+#include "pathutil.h"
 
 #define DEBUG_PAUSE_TIMEOUT         (5)
 #define DEBUG_PAUSE_TICK_INTERVAL   (7)
@@ -256,16 +257,22 @@ bool remote_server::connect() {
     return true;
 }
 
-/** sends the server annoucement to the client */
+/** sends the server announcement to the client */
 void remote_server::cmd_send_announce() {
     /* send version */
-    uint32_t info[2];
-    info[0] = PLUGIN_PROTOCOL_VERSION;
-    info[1] = PLUGIN_VERSION;
+    uint8_t buf[sizeof(uint32_t) * 2 + 260];
+    ((uint32_t *)buf)[0] = PLUGIN_PROTOCOL_VERSION;
+    ((uint32_t *)buf)[1] = PLUGIN_VERSION;
 
-    communication_->send(CMD_ANNOUNCE, sizeof(info), (uint8_t *)info);
+    std::string cwd;
+    get_cwd(cwd);
 
-    log_info("Server annoucement sent.");
+    memcpy(buf + sizeof(uint32_t) * 2, cwd.c_str(), cwd.length());
+    communication_->send(CMD_ANNOUNCE, sizeof(uint32_t) * 2 + cwd.length(),
+        buf);
+
+    log_info("Server announcement sent.");
+    log_info("Hi from %s", cwd.c_str());
 }
 
 /** disconnects from client */

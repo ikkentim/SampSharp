@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,21 +23,22 @@ namespace SampSharp.GameMode.SAMP
     /// <summary>
     ///     Represents the server configuration file
     /// </summary>
-    public class ServerConfig
+    public class ServerConfig : IEnumerable<KeyValuePair<string, string>>
     {
         private readonly Dictionary<string, string> _values = new Dictionary<string, string>();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ServerConfig" /> class.
         /// </summary>
-        public ServerConfig()
+        /// <param name="configPath">The path to the configuration file.</param>
+        public ServerConfig(string configPath)
         {
-            if (!File.Exists("server.cfg"))
+            if (!File.Exists(configPath))
                 return;
 
             foreach (
                 var parts in
-                    File.ReadAllLines("server.cfg")
+                    File.ReadAllLines(configPath)
                         .Where(line => !string.IsNullOrWhiteSpace(line))
                         .Select(line => line.Split(new[] {' '}, 2)))
             {
@@ -95,5 +97,23 @@ namespace SampSharp.GameMode.SAMP
             if (key == null) throw new ArgumentNullException(nameof(key));
             _values[key] = value;
         }
+
+        #region Implementation of IEnumerable
+
+        /// <summary>Returns an enumerator that iterates through the collection.</summary>
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
+        {
+            return _values.GetEnumerator();
+        }
+
+        /// <summary>Returns an enumerator that iterates through a collection.</summary>
+        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
     }
 }

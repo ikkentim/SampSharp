@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -39,6 +40,13 @@ namespace TestMode
             var sampleVehicle = BaseVehicle.Create(VehicleModelType.Alpha, Vector3.One * 10, 0, -1, -1);
 
             Console.WriteLine("Spawned sample vehicle " + sampleVehicle.Model);
+
+            var cfg = new ServerConfig(Path.Combine(Client.ServerPath, "server.cfg"));
+
+            foreach (var kv in cfg)
+            {
+                Console.WriteLine(kv.Key + " " + kv.Value);
+            }
         }
 
         protected override void OnRconCommand(RconEventArgs e)

@@ -40,6 +40,11 @@ namespace SampSharp.Core
         INativeLoader NativeLoader { get; set; }
 
         /// <summary>
+        ///     Gets the path to the server directory.
+        /// </summary>
+        string ServerPath { get; }
+
+        /// <summary>
         ///     Occurs when an exception is unhandled during the execution of a callback or tick.
         /// </summary>
         event EventHandler<UnhandledExceptionEventArgs> UnhandledException;

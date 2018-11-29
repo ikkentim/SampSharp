@@ -247,7 +247,7 @@ namespace SampSharp.Core
             _messagePump.Dispose();
         }
 
-        private static bool VerifyVersionData(ServerCommandData data)
+        private bool VerifyVersionData(ServerCommandData data)
         {
             CoreLog.Log(CoreLogLevel.Debug, $"Received {data.Command} while waiting for server announcement.");
             if (data.Command == ServerCommand.Announce)
@@ -264,6 +264,8 @@ namespace SampSharp.Core
                     return false;
                 }
                 CoreLog.Log(CoreLogLevel.Info, $"Connected to version {pluginVersion.ToString(3)} via protocol {protocolVersion}");
+                
+                ServerPath = ValueConverter.ToString(data.Data, 8, Encoding.ASCII);
 
                 return true;
             }
@@ -287,7 +289,7 @@ namespace SampSharp.Core
             CoreLog.Log(CoreLogLevel.Info, "Set up networking routine...");
             StartNetworkingRoutine();
 
-            CoreLog.Log(CoreLogLevel.Info, "Connected! Waiting for server annoucement...");
+            CoreLog.Log(CoreLogLevel.Info, "Connected! Waiting for server announcement...");
             ServerCommandData data;
 
             do
@@ -300,7 +302,7 @@ namespace SampSharp.Core
             if (!VerifyVersionData(data))
                 return;
 
-            CoreLog.Log(CoreLogLevel.Info, "Initialializing game mode provider...");
+            CoreLog.Log(CoreLogLevel.Info, "Initializing game mode provider...");
             _gameModeProvider.Initialize(this);
 
             CoreLog.Log(CoreLogLevel.Info, "Sending start signal to server...");
@@ -456,18 +458,23 @@ namespace SampSharp.Core
 
             return _callerIndex;
         }
-
-        #region Implementation of IGameModeClient
-
+        
         /// <summary>
-        ///     Gets the communicaton client.
+        ///     Gets the communication client.
         /// </summary>
         public ICommunicationClient CommunicationClient { get; }
+
+        #region Implementation of IGameModeClient
 
         /// <summary>
         ///     Gets or sets the native loader to be used to load natives.
         /// </summary>
         public INativeLoader NativeLoader { get; set; }
+
+        /// <summary>
+        ///     Gets the path to the server directory.
+        /// </summary>
+        public string ServerPath { get; private set; }
 
         /// <summary>
         ///     Occurs when an exception is unhandled during the execution of a callback or tick.

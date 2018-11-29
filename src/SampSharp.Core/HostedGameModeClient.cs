@@ -42,6 +42,8 @@ namespace SampSharp.Core
             _startBehaviour = startBehaviour;
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
             NativeLoader = new NativeLoader(this);
+
+            ServerPath = AppContext.BaseDirectory;
         }
 
         /// <summary>
@@ -118,7 +120,12 @@ namespace SampSharp.Core
         ///     Gets or sets the native loader to be used to load natives.
         /// </summary>
         public INativeLoader NativeLoader { get; set; }
-        
+
+        /// <summary>
+        ///     Gets the path to the server directory.
+        /// </summary>
+        public string ServerPath { get; private set; }
+
         /// <summary>
         ///     Occurs when an exception is unhandled during the execution of a callback or tick.
         /// </summary>

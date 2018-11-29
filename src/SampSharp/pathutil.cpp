@@ -17,9 +17,12 @@
 #include "platforms.h"
 #include <assert.h>
 #include <string.h>
+#include <stdio.h>
+#include <iostream>
 #if SAMPSHARP_WINDOWS
 #  include "Windows.h"
 #  include "Shlwapi.h"
+#  include <direct.h>
 #elif SAMPSHARP_LINUX
 #  include <unistd.h>
 #  include <dirent.h>
@@ -167,7 +170,7 @@ bool get_absolute_path(const char *path, std::string &absolute_path) {
 #endif
 }
 
-bool get_directory(const char* absolute_path, std::string& directory) {
+bool get_directory(const char* absolute_path, std::string &directory) {
     directory.assign(absolute_path);
 
     size_t fwd = directory.rfind('/');
@@ -195,4 +198,16 @@ bool get_directory(const char* absolute_path, std::string& directory) {
     }
 
     return false;
+}
+
+void get_cwd(std::string &directory) {
+  char buf[PATH_MAX];
+    
+#ifdef SAMPSHARP_WINDOWS
+    _getcwd( buf, PATH_MAX );
+#elif SAMPSHARP_LINUX
+    getcwd( buf, PATH_MAX );
+#endif
+  
+  directory = std::string(buf);
 }
