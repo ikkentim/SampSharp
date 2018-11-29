@@ -68,7 +68,7 @@ namespace SampSharp.GameMode.Definitions
         /// <summary>
         /// Disappears after pickup, can only be picked up with a vehicle. Triggers checkpoint sound.
         /// </summary>
-        ShowAndPickableWithVehicleWithSound = 14,
+        ShowAndPickupableWithVehicleWithSound = 14,
         
         /// <summary>
         ///     Disappears after pickup, respawns after 30 seconds if the player is at a distance of at least 15 meters.
@@ -78,7 +78,7 @@ namespace SampSharp.GameMode.Definitions
         /// <summary>
         ///     Similar to type 1. Pressing Tab (KEY_ACTION) makes it disappear but the key press doesn't trigger OnPlayerPickUpPickup.
         /// </summary>
-        ScriptedActionsOnlyEveryFewSecondsButTabDisapper = 18,
+        ScriptedActionsOnlyEveryFewSecondsButTabDisappear = 18,
         
         /// <summary>
         ///     Disappears after pickup, but doesn't respawn. Makes "cash pickup" sound if picked up.

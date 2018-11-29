@@ -16,9 +16,9 @@
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Contains all pickup models
+    ///     Contains all (or at least most) object models.
     /// </summary>
-    public enum PickupModel
+    public enum ObjectModel
     {
     /// <summary>
     /// CigarGlow
