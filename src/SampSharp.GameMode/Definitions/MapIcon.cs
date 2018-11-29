@@ -21,7 +21,7 @@ namespace SampSharp.GameMode.Definitions
     /// <summary>
     ///     Contains all map icons.
     /// </summary>
-    public enum MapIcons
+    public enum MapIcon
     {
         /// <summary>
         /// Can be used in any colour. Used for Single Player objectives.

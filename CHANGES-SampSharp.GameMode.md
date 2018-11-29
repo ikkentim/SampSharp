@@ -1,3 +1,10 @@
+### 0.8.0-alpha10
+- Added `VehicleColor` enum and `Color.FromVehicleColor` (#270)
+- Added support for `BaseVehicle` or derived types in command parameters (#276)
+- Added `MapIcon` enum (#206/#288)
+- Added `ObjectModel` enum and `PickupType enum (#291)
+- Fixed `OnPlayerEnterCheckpoint` callback not being processed
+
 ### 0.8.0-alpha8
 - Fixed `BaseVehicle.CreateStatic(VehicleModelType, Vector3, float, int, int)` overload not creating static vehicle
 

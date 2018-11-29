@@ -1,3 +1,11 @@
+### 0.8.0-alpha10
+- Added `IGameModeClient.ServerPath` (#292)
+- Improved state resetting with intermission script
+- Increased native argument buffer size from 32 to 128 (#279)
+- Fixed missing framework log messages
+- Fixed "Duplicate typename within an assembly" exception being thrown in some cases when loading a gamemode when players are already connect (#258)
+- Fixed crash which occurs when using running gmx in non-hosted mode (#280)
+
 ### 0.8.0-alpha8
 - Added option to host game mode inside samp-server process (experimental)
 - Renamed `GameModeClient` to `MultiProcessGameModeClient`
