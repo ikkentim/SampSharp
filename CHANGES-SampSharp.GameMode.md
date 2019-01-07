@@ -1,3 +1,18 @@
+### 0.8.0
+- Initial .NET Core version
+- Added `Weapon.Suicide` definition
+- Added `Color(byte, byte, byte, float)` constructor
+- Added ExplosionType enum (#234)
+- Added netstat properties to the `BasePlayer` class (#238)
+- Added `VehicleColor` enum and `Color.FromVehicleColor` (#270)
+- Added support for `BaseVehicle` or derived types in command parameters (#276)
+- Added `MapIcon` enum (#206/#288)
+- Added `ObjectModel` enum and `PickupType enum (#291)
+- Changed Dialog.ShowAsync to throw `PlayerDisconnectedException` instead of `TaskCancelledException`
+- Fixed `Dialog.Hide` not working (#212)
+- Fixed `BaseVehicle.CreateStatic(VehicleModelType, Vector3, float, int, int)` overload not creating static vehicle
+- Fixed `OnPlayerEnterCheckpoint` callback not being processed
+
 ### 0.8.0-alpha10
 - Added `VehicleColor` enum and `Color.FromVehicleColor` (#270)
 - Added support for `BaseVehicle` or derived types in command parameters (#276)
