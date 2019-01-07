@@ -1,3 +1,6 @@
+### 0.8.0
+- Initial version
+
 ### 0.8.0-alpha10
 - Added `IGameModeClient.ServerPath` (#292)
 - Improved state resetting with intermission script
