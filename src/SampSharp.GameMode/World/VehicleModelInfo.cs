@@ -245,13 +245,13 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Initializes a new instance of the <see cref="VehicleModelInfo" /> class.
         /// </summary>
-        private VehicleModelInfo(int type, string name, VehicleCategory category, int seatsNumber)
+        private VehicleModelInfo(int type, string name, VehicleCategory category, int seatCount)
             : this()
         {
             Type = (VehicleModelType) type;
             Name = name;
             Category = category;
-            SeatsNumber = seatsNumber;
+            SeatCount = seatCount;
         }
 
         /// <summary>
@@ -272,7 +272,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the seats number of this <see cref="VehicleModelInfo" />.
         /// </summary>
-        public int SeatsNumber { get; private set; }
+        public int SeatCount { get; private set; }
 
         /// <summary>
         ///     Gets model information of the given type.
