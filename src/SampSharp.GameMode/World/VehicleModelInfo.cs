@@ -248,7 +248,7 @@ namespace SampSharp.GameMode.World
         private VehicleModelInfo(int type, string name, VehicleCategory category, int seatsNumber)
             : this()
         {
-            Type = (VehicleModelType)type;
+            Type = (VehicleModelType) type;
             Name = name;
             Category = category;
             SeatsNumber = seatsNumber;
@@ -282,7 +282,7 @@ namespace SampSharp.GameMode.World
         {
             get
             {
-                VehicleModelInfoInternal.Instance.GetVehicleModelInfo((int)Type, (int)infotype, out var x, out var y, out var z);
+                VehicleModelInfoInternal.Instance.GetVehicleModelInfo((int) Type, (int) infotype, out var x, out var y, out var z);
                 return new Vector3(x, y, z);
             }
         }
@@ -292,14 +292,14 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="vehicle">The vehicle to find information about.</param>
         /// <returns>An instance of <see cref="VehicleModelInfo" /> containing information about the specified vehicle.</returns>
-        public static VehicleModelInfo ForVehicle(SampSharp.GameMode.World.BaseVehicle vehicle)
+        public static VehicleModelInfo ForVehicle(BaseVehicle vehicle)
         {
             if (vehicle == null)
             {
                 throw new ArgumentNullException(nameof(vehicle));
             }
 
-            var model = (int)vehicle.Model;
+            var model = (int) vehicle.Model;
 
             if (model < 400 || model > 611)
             {
@@ -317,12 +317,12 @@ namespace SampSharp.GameMode.World
         /// <returns>An instance of <see cref="VehicleModelInfo" /> containing information about the given VehicleModelType.</returns>
         public static VehicleModelInfo ForVehicle(VehicleModelType model)
         {
-            if ((int)model < 400 || (int)model > 611)
+            if ((int) model < 400 || (int) model > 611)
             {
                 throw new ArgumentOutOfRangeException(nameof(model), "model is non-existant");
             }
 
-            return VehicleModelInfos[(int)model - 400];
+            return VehicleModelInfos[(int) model - 400];
         }
     }
 }
