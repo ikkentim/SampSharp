@@ -32,8 +32,8 @@ namespace SampSharp.GameMode.Controllers
         public virtual void RegisterEvents(BaseMode gameMode)
         {
             gameMode.PlayerObjectMoved += (sender, args) => (sender as PlayerObject)?.OnMoved(args);
-            gameMode.PlayerEditPlayerObject += (sender, args) => (sender as PlayerObject)?.OnEdited(args);
-            gameMode.PlayerSelectPlayerObject += (sender, args) => (sender as PlayerObject)?.OnSelected(args);
+            gameMode.PlayerEditPlayerObject += (sender, args) => args.Object?.OnEdited(args);
+            gameMode.PlayerSelectPlayerObject += (sender, args) => args.Object?.OnSelected(args);
             gameMode.PlayerCleanup += (sender, args) =>
             {
                 var player = sender as BasePlayer;
