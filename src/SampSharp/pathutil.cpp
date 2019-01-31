@@ -203,7 +203,7 @@ bool get_directory(const char* absolute_path, std::string &directory) {
 void get_cwd(std::string &directory) {
   char buf[PATH_MAX];
     
-#ifdef SAMPSHARP_WINDOWS
+#if SAMPSHARP_WINDOWS
     _getcwd( buf, PATH_MAX );
 #elif SAMPSHARP_LINUX
     getcwd( buf, PATH_MAX );
