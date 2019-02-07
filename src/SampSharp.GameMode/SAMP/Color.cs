@@ -1034,6 +1034,11 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public byte A { get; set; }
 
+        /// <summary>
+        ///     Gets the brightness of this Color.
+        /// </summary>
+        public float Brightness => 0.212655f * R + 0.715158f * G + 0.072187f * B;
+
         #endregion
 
         #region Methods
@@ -1200,15 +1205,61 @@ namespace SampSharp.GameMode.SAMP
         {
             return Lerp(this, White, amount);
         }
+
+        /// <summary>
+        ///     Returns this color with sRGB gamma correction added to it.
+        /// </summary>
+        /// <returns>The gamma corrected version of this color.</returns>
+        public Color AddGammaCorrection() {
+            float r = R / (float)byte.MaxValue;
+            float g = G / (float)byte.MaxValue;
+            float b = B / (float)byte.MaxValue;
+            float a = A / (float)byte.MaxValue;
+            const float power = 1.0f / 2.4f;
+
+            return new Color(
+                r <= 0.0031308f ? r * 12.92f : (float)Math.Pow(r, power) * 1.055f - 0.055f,
+                g <= 0.0031308f ? g * 12.92f : (float)Math.Pow(g, power) * 1.055f - 0.055f,
+                b <= 0.0031308f ? b * 12.92f : (float)Math.Pow(b, power) * 1.055f - 0.055f,
+                a <= 0.0031308f ? a * 12.92f : (float)Math.Pow(a, power) * 1.055f - 0.055f
+            );
+        }
+
+        /// <summary>
+        ///     Returns this color with sRGB gamma correction removed from it.
+        /// </summary>
+        /// <returns>The non-gamma corrected version of this color.</returns>
+        public Color RemoveGammaCorrection() {
+            float r = R / (float)byte.MaxValue;
+            float g = G / (float)byte.MaxValue;
+            float b = B / (float)byte.MaxValue;
+            float a = A / (float)byte.MaxValue;
+
+            return new Color(
+                r <= 0.04045f ? r / 12.92f : (float)Math.Pow((r + 0.055f) / 1.055f, 2.4f),
+                g <= 0.04045f ? g / 12.92f : (float)Math.Pow((g + 0.055f) / 1.055f, 2.4f),
+                b <= 0.04045f ? b / 12.92f : (float)Math.Pow((b + 0.055f) / 1.055f, 2.4f),
+                a <= 0.04045f ? a / 12.92f : (float)Math.Pow((a + 0.055f) / 1.055f, 2.4f)
+            );
+        }
+
+        /// <summary>
+        ///     Returns the grayscaled version of this color.
+        /// </summary>
+        /// <returns>The grayscaled version of this color.</returns>
+        public Color Grayscale() {
+            return new Color(Brightness, Brightness, Brightness, A / (float)byte.MaxValue);
+        }
+
         #endregion
 
         #region Operators
 
-            /// <summary>
-            ///     Cast a Color to an integer.
-            /// </summary>
-            /// <param name="value">The Color to cast to an integer.</param>
-            /// <returns>The resulting integer.</returns>
+        /// <summary>
+        ///     Cast a Color to an integer.
+        /// </summary>
+        /// <param name="value">The Color to cast to an integer.</param>
+        /// <returns>The resulting integer.</returns>
         public static implicit operator int(Color value)
         {
             return value.ToInteger(ColorFormat.RGBA); //Default format
