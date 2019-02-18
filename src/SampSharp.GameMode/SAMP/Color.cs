@@ -1175,35 +1175,38 @@ namespace SampSharp.GameMode.SAMP
         /// <param name="value1">Source <see cref="Color" />.</param>
         /// <param name="value2">Destination <see cref="Color" />.</param>
         /// <param name="amount">Interpolation factor.</param>
+        /// <param name="blendAlpha">Whether it also blends alpha.</param>
         /// <returns>Interpolated <see cref="Color" />.</returns>
-        public static Color Lerp(Color value1, Color value2, float amount)
+        public static Color Lerp(Color value1, Color value2, float amount, bool blendAlpha = false)
         {
             amount = MathHelper.Clamp(amount, 0, 1);
             return new Color(
                 (int) MathHelper.Lerp(value1.R, value2.R, amount),
                 (int) MathHelper.Lerp(value1.G, value2.G, amount),
                 (int) MathHelper.Lerp(value1.B, value2.B, amount),
-                (int) MathHelper.Lerp(value1.A, value2.A, amount));
+                blendAlpha ? (int) MathHelper.Lerp(value1.A, value2.A, amount) : value1.A);
         }
 
         /// <summary>
         ///     Returns this color darkened specified <paramref name="amount" />.
         /// </summary>
         /// <param name="amount">The amount.</param>
+        /// <param name="blendAlpha">Whether it also blends alpha.</param>
         /// <returns>The darkened color.</returns>
-        public Color Darken(float amount)
+        public Color Darken(float amount, bool blendAlpha = false)
         {
-            return Lerp(this, Black, amount);
+            return Lerp(this, Black, amount, blendAlpha);
         }
 
         /// <summary>
         ///     Returns this color lightened specified <paramref name="amount" />.
         /// </summary>
         /// <param name="amount">The amount.</param>
+        /// <param name="blendAlpha">Whether it also blends alpha.</param>
         /// <returns>The lightened color.</returns>
-        public Color Lighten(float amount)
+        public Color Lighten(float amount, bool blendAlpha = false)
         {
-            return Lerp(this, White, amount);
+            return Lerp(this, White, amount, blendAlpha);
         }
 
         /// <summary>
