@@ -29,13 +29,13 @@ namespace SampSharp.GameMode.Events
         /// </summary>
         /// <param name="otherPlayer">The other player.</param>
         /// <param name="amount">Amount of damage done.</param>
-        /// <param name="weapon">Weapon used to damage another.</param>
+        /// <param name="weaponType">Weapon used to damage another.</param>
         /// <param name="bodypart">BodyPart shot at.</param>
-        public DamageEventArgs(BasePlayer otherPlayer, float amount, Weapon weapon, BodyPart bodypart)
+        public DamageEventArgs(BasePlayer otherPlayer, float amount, WeaponType weaponType, BodyPart bodypart)
         {
             OtherPlayer = otherPlayer;
             Amount = amount;
-            Weapon = weapon;
+            WeaponType = weaponType;
             BodyPart = bodypart;
         }
 
@@ -52,7 +52,7 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the Weapon used to damage another player.
         /// </summary>
-        public Weapon Weapon { get; private set; }
+        public WeaponType WeaponType { get; private set; }
 
         /// <summary>
         ///     Gets the BodyPart shot at.

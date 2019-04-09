@@ -28,7 +28,7 @@ namespace SampSharp.GameMode.Events
         /// </summary>
         /// <param name="killer">The killer.</param>
         /// <param name="reason">Reason of the death.</param>
-        public DeathEventArgs(BasePlayer killer, Weapon reason)
+        public DeathEventArgs(BasePlayer killer, WeaponType reason)
         {
             Killer = killer;
             DeathReason = reason;
@@ -42,6 +42,6 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the reason of the death.
         /// </summary>
-        public Weapon DeathReason { get; private set; }
+        public WeaponType DeathReason { get; private set; }
     }
 }

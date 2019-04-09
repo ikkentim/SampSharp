@@ -12,16 +12,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using System;
-using System.Linq;
-using System.Xml;
-using SampSharp.GameMode.API;
-using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SampSharp.GameMode.World
 {
@@ -59,7 +57,7 @@ namespace SampSharp.GameMode.World
         ///     Maximum length of the text in a chat bubble.
         /// </summary>
         public const int MaxChatBubbleLength = 144;
-        
+
         #region Constructors
 
         /// <summary>
@@ -185,12 +183,17 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the WeaponState of the Weapon this Player is currently holding.
         /// </summary>
-        public virtual WeaponState WeaponState => (WeaponState) PlayerInternal.Instance.GetPlayerWeaponState(Id);
+        public virtual WeaponState WeaponState => (WeaponState)PlayerInternal.Instance.GetPlayerWeaponState(Id);
 
         /// <summary>
         ///     Gets the Weapon this Player is currently holding.
         /// </summary>
-        public virtual Weapon Weapon => (Weapon) PlayerInternal.Instance.GetPlayerWeapon(Id);
+        public virtual Weapon Weapon =>
+            GetWeaponData(
+                Weapon.GetWeaponSlot(
+                    (WeaponType)PlayerInternal.Instance.GetPlayerWeapon(Id)
+                )
+            );
 
         /// <summary>
         ///     Gets the Player this Player is aiming at.
@@ -265,7 +268,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the state of this Player.
         /// </summary>
-        public virtual PlayerState State => (PlayerState) PlayerInternal.Instance.GetPlayerState(Id);
+        public virtual PlayerState State => (PlayerState)PlayerInternal.Instance.GetPlayerState(Id);
 
         /// <summary>
         ///     Gets the IP of this Player.
@@ -298,8 +301,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual FightStyle FightStyle
         {
-            get => (FightStyle) PlayerInternal.Instance.GetPlayerFightingStyle(Id);
-            set => PlayerInternal.Instance.SetPlayerFightingStyle(Id, (int) value);
+            get => (FightStyle)PlayerInternal.Instance.GetPlayerFightingStyle(Id);
+            set => PlayerInternal.Instance.SetPlayerFightingStyle(Id, (int)value);
         }
 
         /// <summary>
@@ -330,8 +333,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual SpecialAction SpecialAction
         {
-            get => (SpecialAction) PlayerInternal.Instance.GetPlayerSpecialAction(Id);
-            set => PlayerInternal.Instance.SetPlayerSpecialAction(Id, (int) value);
+            get => (SpecialAction)PlayerInternal.Instance.GetPlayerSpecialAction(Id);
+            set => PlayerInternal.Instance.SetPlayerSpecialAction(Id, (int)value);
         }
 
         /// <summary>
@@ -362,7 +365,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the mode of this Player's camera.
         /// </summary>
-        public virtual CameraMode CameraMode => (CameraMode) PlayerInternal.Instance.GetPlayerCameraMode(Id);
+        public virtual CameraMode CameraMode => (CameraMode)PlayerInternal.Instance.GetPlayerCameraMode(Id);
 
         /// <summary>
         ///     Gets the Actor this Player is aiming at.
@@ -534,7 +537,7 @@ namespace SampSharp.GameMode.World
         ///     Gets a value indicating whether this Player is alive.
         /// </summary>
         public virtual bool IsAlive
-            => !new[] {PlayerState.None, PlayerState.Spectating, PlayerState.Wasted}.Contains(State);
+            => !new[] { PlayerState.None, PlayerState.Spectating, PlayerState.Wasted }.Contains(State);
 
 
         /// <summary>
@@ -919,23 +922,23 @@ namespace SampSharp.GameMode.World
         /// <param name="skin">The skin which the player will spawn with.</param>
         /// <param name="position">The player's spawn position.</param>
         /// <param name="rotation">The direction in which the player needs to be facing after spawning.</param>
-        /// <param name="weapon1">The first spawn-weapon for the player.</param>
+        /// <param name="weapon1">The first spawn-weaponType for the player.</param>
         /// <param name="weapon1Ammo">The amount of ammunition for the primary spawnweapon.</param>
-        /// <param name="weapon2">The second spawn-weapon for the player.</param>
+        /// <param name="weapon2">The second spawn-weaponType for the player.</param>
         /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
-        /// <param name="weapon3">The third spawn-weapon for the player.</param>
+        /// <param name="weapon3">The third spawn-weaponType for the player.</param>
         /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
         public virtual void SetSpawnInfo(int team, int skin, Vector3 position, float rotation,
-            Weapon weapon1 = Weapon.None,
-            int weapon1Ammo = 0, Weapon weapon2 = Weapon.None, int weapon2Ammo = 0, Weapon weapon3 = Weapon.None,
-            int weapon3Ammo = 0)
+            WeaponType weapon1 = WeaponType.None, int weapon1Ammo = 0, 
+            WeaponType weapon2 = WeaponType.None, int weapon2Ammo = 0,
+            WeaponType weapon3 = WeaponType.None, int weapon3Ammo = 0)
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.SetSpawnInfo(Id, team, skin, position.X, position.Y, position.Z, rotation, (int) weapon1,
+            PlayerInternal.Instance.SetSpawnInfo(Id, team, skin, position.X, position.Y, position.Z, rotation, (int)weapon1,
                 weapon1Ammo,
-                (int) weapon2, weapon2Ammo,
-                (int) weapon3, weapon3Ammo);
+                (int)weapon2, weapon2Ammo,
+                (int)weapon3, weapon3Ammo);
         }
 
         /// <summary>
@@ -1011,7 +1014,9 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (other == null)
+            {
                 throw new ArgumentNullException(nameof(other));
+            }
 
             return PlayerInternal.Instance.IsPlayerStreamedIn(other.Id, Id);
         }
@@ -1019,13 +1024,13 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Set the ammo of this <see cref="BasePlayer" />'s weapon.
         /// </summary>
-        /// <param name="weapon">The weapon to set the ammo of.</param>
+        /// <param name="weaponType">The weaponType to set the ammo of.</param>
         /// <param name="ammo">The amount of ammo to set.</param>
-        public virtual void SetAmmo(Weapon weapon, int ammo)
+        public virtual void SetAmmo(WeaponType weaponType, int ammo)
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.SetPlayerAmmo(Id, (int) weapon, ammo);
+            PlayerInternal.Instance.SetPlayerAmmo(Id, (int)weaponType, ammo);
         }
 
         /// <summary>
@@ -1037,7 +1042,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.GivePlayerWeapon(Id, (int) weapon, ammo);
+            PlayerInternal.Instance.GivePlayerWeapon(Id, (int)weapon.WeaponId, ammo);
         }
 
 
@@ -1052,28 +1057,41 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Sets the armed weapon of this <see cref="BasePlayer" />.
+        ///     Sets the armed weaponType of this <see cref="BasePlayer" />.
         /// </summary>
-        /// <param name="weapon">The weapon that the player should be armed with.</param>
+        /// <param name="weapon">The weaponType that the player should be armed with.</param>
         public virtual void SetArmedWeapon(Weapon weapon)
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.SetPlayerArmedWeapon(Id, (int) weapon);
+            PlayerInternal.Instance.SetPlayerArmedWeapon(Id, (int)weapon.WeaponId);
         }
 
         /// <summary>
         ///     Get the <see cref="Weapon" /> and ammo in this <see cref="BasePlayer" />'s weapon slot.
         /// </summary>
         /// <param name="slot">The weapon slot to get data for (0-12).</param>
-        /// <param name="weapon">The variable in which to store the weapon, passed by reference.</param>
-        /// <param name="ammo">The variable in which to store the ammo, passed by reference.</param>
-        public virtual void GetWeaponData(int slot, out Weapon weapon, out int ammo)
+        public virtual Weapon GetWeaponData(int slot)
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.GetPlayerWeaponData(Id, slot, out var weaponid, out ammo);
-            weapon = (Weapon) weaponid;
+            PlayerInternal.Instance.GetPlayerWeaponData(Id, slot, out var weaponId, out var ammo);
+            return new Weapon((WeaponType)weaponId, ammo);
+        }
+
+        /// <summary>
+        ///     Get all the the <see cref="Weapon" />s this <see cref="BasePlayer" /> owns.
+        /// </summary>
+        public virtual List<Weapon> GetWeaponData()
+        {
+            AssertNotDisposed();
+            var weaponsList = new List<Weapon>();
+            for (var slot = 0; slot <= 12; ++slot)
+            {
+                PlayerInternal.Instance.GetPlayerWeaponData(Id, slot, out var weaponId, out var ammo);
+                weaponsList.Add(new Weapon((WeaponType)weaponId, ammo));
+            }
+            return weaponsList;
         }
 
         /// <summary>
@@ -1112,7 +1130,7 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             PlayerInternal.Instance.GetPlayerKeys(Id, out var keysDown, out updown, out leftright);
-            keys = (Keys) keysDown;
+            keys = (Keys)keysDown;
         }
 
         /// <summary>
@@ -1182,7 +1200,7 @@ namespace SampSharp.GameMode.World
 
             PlayerInternal.Instance.ForceClassSelection(Id);
         }
-        
+
         /// <summary>
         ///     Display the cursor and allow this <see cref="BasePlayer" /> to select a text draw.
         /// </summary>
@@ -1215,7 +1233,11 @@ namespace SampSharp.GameMode.World
         /// <param name="crime">The crime ID, which will be reported as a 10-code (i.e. 10-16 if 16 was passed as the crimeid).</param>
         public virtual void PlayCrimeReport(BasePlayer suspect, int crime)
         {
-            if (suspect == null) throw new ArgumentNullException(nameof(suspect));
+            if (suspect == null)
+            {
+                throw new ArgumentNullException(nameof(suspect));
+            }
+
             AssertNotDisposed();
 
             PlayerInternal.Instance.PlayCrimeReportForPlayer(Id, suspect.Id, crime);
@@ -1302,14 +1324,14 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         /// <param name="skill">The <see cref="WeaponSkill" /> you want to set the skill of.</param>
         /// <param name="level">
-        ///     The skill level to set for that weapon, ranging from 0 to 999. (A level out of range will max it
+        ///     The skill level to set for that weaponType, ranging from 0 to 999. (A level out of range will max it
         ///     out)
         /// </param>
         public virtual void SetSkillLevel(WeaponSkill skill, int level)
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.SetPlayerSkillLevel(Id, (int) skill, level);
+            PlayerInternal.Instance.SetPlayerSkillLevel(Id, (int)skill, level);
         }
 
         /// <summary>
@@ -1329,7 +1351,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            return PlayerInternal.Instance.SetPlayerAttachedObject(Id, index, modelid, (int) bone, offset.X, offset.Y, offset.Z,
+            return PlayerInternal.Instance.SetPlayerAttachedObject(Id, index, modelid, (int)bone, offset.X, offset.Y, offset.Z,
                 rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z,
                 materialcolor1.ToInteger(ColorFormat.ARGB), materialcolor2.ToInteger(ColorFormat.ARGB));
         }
@@ -1395,7 +1417,9 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (vehicle == null)
+            {
                 throw new ArgumentNullException(nameof(vehicle));
+            }
 
             PlayerInternal.Instance.PutPlayerInVehicle(Id, vehicle.Id, seatid);
         }
@@ -1589,7 +1613,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.SetPlayerRaceCheckpoint(Id, (int) type, point.X, point.Y, point.Z, nextPosition.X, nextPosition.Y,
+            PlayerInternal.Instance.SetPlayerRaceCheckpoint(Id, (int)type, point.X, point.Y, point.Z, nextPosition.X, nextPosition.Y,
                 nextPosition.Z, size);
         }
 
@@ -1631,7 +1655,9 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (player == null)
+            {
                 throw new ArgumentNullException(nameof(player));
+            }
 
             PlayerInternal.Instance.SetPlayerMarkerForPlayer(Id, player.Id, color.ToInteger(ColorFormat.RGBA));
         }
@@ -1652,7 +1678,9 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (player == null)
+            {
                 throw new ArgumentNullException(nameof(player));
+            }
 
             PlayerInternal.Instance.ShowPlayerNameTagForPlayer(Id, player.Id, show);
         }
@@ -1672,7 +1700,7 @@ namespace SampSharp.GameMode.World
         public virtual bool SetMapIcon(int iconid, Vector3 position, MapIcon mapIcon, Color color,
             MapIconType style)
         {
-            return SetMapIcon(iconid, position, (int) mapIcon, color, style);
+            return SetMapIcon(iconid, position, (int)mapIcon, color, style);
         }
 
         /// <summary>
@@ -1693,18 +1721,18 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             return PlayerInternal.Instance.SetPlayerMapIcon(Id, iconid, position.X, position.Y, position.Z, mapIcon, color,
-                (int) style);
+                (int)style);
         }
 
         /// <summary>
         ///     Removes a map icon that was set earlier for this <see cref="BasePlayer" />.
         /// </summary>
-        /// <param name="iconid">The ID of the icon to remove. This is the second parameter of <see cref="SetMapIcon" />.</param>
-        public virtual void RemoveMapIcon(int iconid)
+        /// <param name="iconId">The ID of the icon to remove. This is the second parameter of <see cref="SetMapIcon" />.</param>
+        public virtual void RemoveMapIcon(int iconId)
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.RemovePlayerMapIcon(Id, iconid);
+            PlayerInternal.Instance.RemovePlayerMapIcon(Id, iconId);
         }
 
         /// <summary>
@@ -1717,7 +1745,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.SetPlayerCameraLookAt(Id, point.X, point.Y, point.Z, (int) cut);
+            PlayerInternal.Instance.SetPlayerCameraLookAt(Id, point.X, point.Y, point.Z, (int)cut);
         }
 
         /// <summary>
@@ -1743,7 +1771,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.InterpolateCameraPos(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
+            PlayerInternal.Instance.InterpolateCameraPos(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int)cut);
         }
 
         /// <summary>
@@ -1757,7 +1785,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.InterpolateCameraLookAt(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
+            PlayerInternal.Instance.InterpolateCameraLookAt(Id, from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int)cut);
         }
 
         /// <summary>
@@ -1811,9 +1839,11 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (targetPlayer == null)
+            {
                 throw new ArgumentNullException(nameof(targetPlayer));
+            }
 
-            PlayerInternal.Instance.PlayerSpectatePlayer(Id, targetPlayer.Id, (int) mode);
+            PlayerInternal.Instance.PlayerSpectatePlayer(Id, targetPlayer.Id, (int)mode);
         }
 
         /// <summary>
@@ -1829,7 +1859,9 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (targetPlayer == null)
+            {
                 throw new ArgumentNullException(nameof(targetPlayer));
+            }
 
             SpectatePlayer(targetPlayer, SpectateMode.Normal);
         }
@@ -1848,9 +1880,11 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (targetVehicle == null)
+            {
                 throw new ArgumentNullException(nameof(targetVehicle));
+            }
 
-            PlayerInternal.Instance.PlayerSpectateVehicle(Id, targetVehicle.Id, (int) mode);
+            PlayerInternal.Instance.PlayerSpectateVehicle(Id, targetVehicle.Id, (int)mode);
         }
 
         /// <summary>
@@ -1866,7 +1900,9 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (targetVehicle == null)
+            {
                 throw new ArgumentNullException(nameof(targetVehicle));
+            }
 
             SpectateVehicle(targetVehicle, SpectateMode.Normal);
         }
@@ -1883,7 +1919,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.StartRecordingPlayerData(Id, (int) recordtype, recordname);
+            PlayerInternal.Instance.StartRecordingPlayerData(Id, (int)recordtype, recordname);
         }
 
         /// <summary>
@@ -1913,7 +1949,6 @@ namespace SampSharp.GameMode.World
         #endregion
 
         #region SAMP natives
-
         /// <summary>
         ///     This function sends a message to this <see cref="BasePlayer" /> with a chosen color in the chat. The whole line in
         ///     the chat box will be
@@ -2071,7 +2106,9 @@ namespace SampSharp.GameMode.World
             AssertNotDisposed();
 
             if (receiver == null)
+            {
                 throw new ArgumentNullException(nameof(receiver));
+            }
 
             PlayerInternal.Instance.SendPlayerMessageToPlayer(receiver.Id, Id, message);
         }
@@ -2134,7 +2171,9 @@ namespace SampSharp.GameMode.World
         public static void CreateExplosionForAll(Vector3 position, ExplosionType type, float radius, int interior)
         {
             foreach (var p in All.Where(p => p.Interior == interior))
+            {
                 p.CreateExplosion(position, type, radius);
+            }
         }
 
         /// <summary>
@@ -2149,7 +2188,9 @@ namespace SampSharp.GameMode.World
             int virtualworld)
         {
             foreach (var p in All.Where(p => p.Interior == interior && p.VirtualWorld == virtualworld))
+            {
                 p.CreateExplosion(position, type, radius);
+            }
         }
 
         /// <summary>
@@ -2165,7 +2206,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.CreateExplosionForPlayer(Id, position.X, position.Y, position.Z, (int) type, radius);
+            PlayerInternal.Instance.CreateExplosionForPlayer(Id, position.X, position.Y, position.Z, (int)type, radius);
         }
 
         /// <summary>
@@ -2173,12 +2214,12 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="killer">The <see cref="BasePlayer" /> that killer the <paramref name="killee" />.</param>
         /// <param name="killee">The <see cref="BasePlayer" /> that has been killed.</param>
-        /// <param name="weapon">The reason for this <see cref="BasePlayer" />'s death.</param>
-        public virtual void SendDeathMessage(BasePlayer killer, BasePlayer killee, Weapon weapon)
+        /// <param name="weaponType">The reason for this <see cref="BasePlayer" />'s death.</param>
+        public virtual void SendDeathMessage(BasePlayer killer, BasePlayer killee, WeaponType weaponType)
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.SendDeathMessageToPlayer(Id, killer?.Id ?? InvalidId, killee?.Id ?? InvalidId, (int) weapon);
+            PlayerInternal.Instance.SendDeathMessageToPlayer(Id, killer?.Id ?? InvalidId, killee?.Id ?? InvalidId, (int)weaponType);
         }
 
         /// <summary>
@@ -2186,10 +2227,10 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="killer">The Player that killer the <paramref name="killee" />.</param>
         /// <param name="killee">The player that has been killed.</param>
-        /// <param name="weapon">The reason for this Player's death.</param>
-        public static void SendDeathMessageToAll(BasePlayer killer, BasePlayer killee, Weapon weapon)
+        /// <param name="weaponType">The reason for this Player's death.</param>
+        public static void SendDeathMessageToAll(BasePlayer killer, BasePlayer killee, WeaponType weaponType)
         {
-            PlayerInternal.Instance.SendDeathMessage(killer?.Id ?? InvalidId, killee?.Id ?? InvalidId, (int) weapon);
+            PlayerInternal.Instance.SendDeathMessage(killer?.Id ?? InvalidId, killee?.Id ?? InvalidId, (int)weaponType);
         }
 
         #endregion

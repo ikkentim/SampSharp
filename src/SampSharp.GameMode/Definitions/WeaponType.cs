@@ -17,7 +17,7 @@ namespace SampSharp.GameMode.Definitions
     /// <summary>
     ///     Contains all weapons.
     /// </summary>
-    public enum Weapon
+    public enum WeaponType
     {
         /// <summary>
         ///     No weapon.

@@ -73,7 +73,7 @@ namespace SampSharp.GameMode
         {
             OnPlayerDied(BasePlayer.FindOrCreate(playerid),
                 new DeathEventArgs(killerid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(killerid),
-                    (Weapon) reason));
+                    (WeaponType) reason));
 
             return true;
         }
@@ -466,7 +466,7 @@ namespace SampSharp.GameMode
         {
             OnPlayerTakeDamage(BasePlayer.FindOrCreate(playerid),
                 new DamageEventArgs(issuerid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(issuerid),
-                    amount, (Weapon) weaponid, (BodyPart) bodypart));
+                    amount, (WeaponType) weaponid, (BodyPart) bodypart));
 
             return true;
         }
@@ -476,7 +476,7 @@ namespace SampSharp.GameMode
         {
             OnPlayerGiveDamage(BasePlayer.FindOrCreate(playerid),
                 new DamageEventArgs(damagedid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(damagedid),
-                    amount, (Weapon) weaponid, (BodyPart) bodypart));
+                    amount, (WeaponType) weaponid, (BodyPart) bodypart));
 
             return true;
         }
@@ -612,7 +612,7 @@ namespace SampSharp.GameMode
         internal bool OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY,
             float fZ)
         {
-            var args = new WeaponShotEventArgs((Weapon) weaponid, (BulletHitType) hittype, hitid,
+            var args = new WeaponShotEventArgs((WeaponType) weaponid, (BulletHitType) hittype, hitid,
                 new Vector3(fX, fY, fZ));
 
             OnPlayerWeaponShot(BasePlayer.FindOrCreate(playerid), args);
@@ -675,7 +675,7 @@ namespace SampSharp.GameMode
             if (actor == null)
                 return true;
 
-            OnPlayerGiveDamageActor(actor, new DamageEventArgs(BasePlayer.FindOrCreate(playerid), amount, (Weapon) weaponid, (BodyPart) bodypart));
+            OnPlayerGiveDamageActor(actor, new DamageEventArgs(BasePlayer.FindOrCreate(playerid), amount, (WeaponType) weaponid, (BodyPart) bodypart));
 
             return true;
         }

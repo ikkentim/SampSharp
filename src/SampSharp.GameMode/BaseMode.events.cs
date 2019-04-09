@@ -12,11 +12,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.World;
+using System;
 
 namespace SampSharp.GameMode
 {
@@ -81,7 +81,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <remarks>
         ///     This callback will also be called when a vehicle enters water, but the vehicle can be saved from destruction by
-        ///     teleportation or driving out (if only partially submerged). The callback won't be called a second time, and the
+        ///     teleporting or driving out (if only partially submerged). The callback won't be called a second time, and the
         ///     vehicle may disappear when the driver exits, or after a short time.
         /// </remarks>
         public event EventHandler<PlayerEventArgs> VehicleDied;
@@ -205,7 +205,7 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehiclePaintjobApplied" /> callback is being called.
-        ///     Called when a player changes the paintjob of their vehicle (in a modshop).
+        ///     Called when a player changes the paintjob of their vehicle (in a mod shop).
         /// </summary>
         public event EventHandler<VehiclePaintjobEventArgs> VehiclePaintjobApplied;
 
@@ -215,7 +215,7 @@ namespace SampSharp.GameMode
         ///     vehicle's colors were changed, and is NEVER called for pay 'n' spray garages.
         /// </summary>
         /// <remarks>
-        ///     Misleadingly, this callback is not called for pay 'n' spray (only modshops).
+        ///     Misleadingly, this callback is not called for pay 'n' spray (only mod shops).
         /// </remarks>
         public event EventHandler<VehicleResprayedEventArgs> VehicleResprayed;
 
@@ -230,7 +230,7 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     Occurs when the <see cref="OnUnoccupiedVehicleUpdated" /> callback is being called.
-        ///     This callback is called everytime an unoccupied vehicle updates the server with their status.
+        ///     This callback is called every time an unoccupied vehicle updates the server with their status.
         /// </summary>
         /// <remarks>
         ///     This callback is called very frequently per second per unoccupied vehicle. You should refrain from implementing
@@ -268,7 +268,7 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     Occurs when the <see cref="OnRconLoginAttempt(RconLoginAttemptEventArgs)" /> callback is being called.
-        ///     This callback is called when someone tries to login to RCON, succesful or not.
+        ///     This callback is called when someone tries to login to RCON, successful or not.
         /// </summary>
         /// <remarks>
         ///     This callback is only called when /rcon login is used.
@@ -277,7 +277,7 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerUpdate(BasePlayer,PlayerUpdateEventArgs)" /> callback is being called.
-        ///     This callback is called everytime a client/player updates the server with their status.
+        ///     This callback is called every time a client/player updates the server with their status.
         /// </summary>
         /// <remarks>
         ///     This callback is called very frequently per second per player, only use it when you know what it's meant for.
@@ -347,11 +347,11 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerClickMap(BasePlayer,PositionEventArgs)" /> callback is being called.
-        ///     This callback is called when a player places a target/waypoint on the pause menu map (by right-clicking).
+        ///     This callback is called when a player places a target / waypoint on the pause menu map (by right-clicking).
         /// </summary>
         /// <remarks>
         ///     The Z value provided is only an estimate; you may find it useful to use a plugin like the MapAndreas plugin to get
-        ///     a more accurate Z coordinate (or for teleportation; use <see cref="BasePlayer.SetPositionFindZ" />).
+        ///     a more accurate Z coordinate (or for teleporting; use <see cref="BasePlayer.SetPositionFindZ" />).
         /// </remarks>
         public event EventHandler<PositionEventArgs> PlayerClickMap;
 
@@ -461,7 +461,7 @@ namespace SampSharp.GameMode
         ///     tick(50 times per second).
         /// </summary>
         public event EventHandler<EventArgs> Tick;
-        
+
         /// <summary>
         ///     Raises the <see cref="Initialized" /> event.
         /// </summary>
@@ -1001,7 +1001,7 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Raises the <see cref="IncomingConnection" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="ConnectionEventArgs" /> that contains the event dEventArgsata. </param>
+        /// <param name="e">An <see cref="ConnectionEventArgs" /> that contains the event Connection Event Args. </param>
         protected virtual void OnIncomingConnection(ConnectionEventArgs e)
         {
             IncomingConnection?.Invoke(this, e);
