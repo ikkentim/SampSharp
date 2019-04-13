@@ -628,6 +628,13 @@ namespace SampSharp.GameMode.World
 
         #endregion
 
+        #region Extension Properties
+        /// <summary>
+        ///     Used for getting the first available map icon Id.
+        /// </summary>
+        public List<BaseMapIcon> MapIcons { get; set; } = new List<BaseMapIcon>();
+        #endregion
+
         #region Events
 
         /// <summary>
@@ -1697,6 +1704,7 @@ namespace SampSharp.GameMode.World
         /// <param name="color">The color of the icon, this should only be used with the square icon (ID: 0).</param>
         /// <param name="style">The style of icon.</param>
         /// <returns>True if it was successful, False otherwise (e.g. the player isn't connected).</returns>
+        [Obsolete("This method is deprecated. Consider using the BaseMapIcon class instead. iconId Parameter is already unused!")]
         public virtual bool SetMapIcon(int iconid, Vector3 position, MapIcon mapIcon, Color color,
             MapIconType style)
         {
@@ -1715,24 +1723,27 @@ namespace SampSharp.GameMode.World
         /// <param name="color">The color of the icon, this should only be used with the square icon (ID: 0).</param>
         /// <param name="style">The style of icon.</param>
         /// <returns>True if it was successful, False otherwise (e.g. the player isn't connected).</returns>
+        /// 
+        [Obsolete("This method is deprecated. Consider using the BaseMapIcon class instead. iconId Parameter is already unused!")]
         public virtual bool SetMapIcon(int iconid, Vector3 position, int mapIcon, Color color,
             MapIconType style)
         {
             AssertNotDisposed();
 
-            return PlayerInternal.Instance.SetPlayerMapIcon(Id, iconid, position.X, position.Y, position.Z, mapIcon, color,
-                (int)style);
+            var newMapIcon = new BaseMapIcon(position, (MapIcon)mapIcon, style, color);
+            return newMapIcon.Show(this);
         }
 
         /// <summary>
         ///     Removes a map icon that was set earlier for this <see cref="BasePlayer" />.
         /// </summary>
         /// <param name="iconId">The ID of the icon to remove. This is the second parameter of <see cref="SetMapIcon" />.</param>
+        [Obsolete("This method is deprecated. Consider using the BaseMapIcon class instead.")]
         public virtual void RemoveMapIcon(int iconId)
         {
             AssertNotDisposed();
 
-            PlayerInternal.Instance.RemovePlayerMapIcon(Id, iconId);
+            MapIcons[iconId].Hide(this);
         }
 
         /// <summary>
