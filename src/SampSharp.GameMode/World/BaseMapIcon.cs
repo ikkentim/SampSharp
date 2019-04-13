@@ -41,8 +41,22 @@ namespace SampSharp.GameMode.World
         /// <param name="position"></param>
         /// <param name="type"></param>
         /// <param name="style"></param>
+        public BaseMapIcon(Vector3 position, MapIcon type, MapIconType style)
+        {
+            Position = position;
+            Type = type;
+            Style = style;
+            Color = Color.Red;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="type"></param>
+        /// <param name="style"></param>
         /// <param name="color"></param>
-        public BaseMapIcon(Vector3 position, MapIcon type, MapIconType style, Color color = default)
+        public BaseMapIcon(Vector3 position, MapIcon type, MapIconType style, Color color)
         {
             Position = position;
             Type = type;
