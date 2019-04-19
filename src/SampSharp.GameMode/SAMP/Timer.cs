@@ -146,12 +146,34 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         /// <param name="interval">The interval.</param>
         /// <param name="action">The action.</param>
-        /// <returns>The creatd timer.</returns>
+        /// <returns>The created timer.</returns>
         public static Timer Run(TimeSpan interval, Action action)
         {
             var t = new Timer(interval, true, true);
             t.Tick += (sender, args) => action();
             return t;
+        }
+        
+        /// <summary>
+        ///     Runs the specified action repeatedly with the specified interval.
+        /// </summary>
+        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="action">The action.</param>
+        /// <returns>The created timer.</returns>
+        public static Timer Run(double interval, Action action)
+        {
+             return Run(TimeSpan.FromMilliseconds(interval), action);
+        }
+        
+        /// <summary>
+        ///     Runs the specified action repeatedly with the specified interval.
+        /// </summary>
+        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="action">The action.</param>
+        /// <returns>The created timer.</returns>
+        public static Timer Run(int interval, Action action)
+        {
+             return Run(TimeSpan.FromMilliseconds(interval), action);
         }
 
         /// <summary>
@@ -165,6 +187,28 @@ namespace SampSharp.GameMode.SAMP
             var t = new Timer(interval, false, true);
             t.Tick += (sender, args) => action();
             return t;
+        }
+        
+        /// <summary>
+        ///     Runs the specified action once after the specified interval.
+        /// </summary>
+        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="action">The action.</param>
+        /// <returns>The created timer.</returns>
+        public static Timer RunOnce(double interval, Action action)
+        {
+            return RunOnce(TimeSpan.FromMilliseconds(interval), action);
+        }
+        
+        /// <summary>
+        ///     Runs the specified action once after the specified interval.
+        /// </summary>
+        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="action">The action.</param>
+        /// <returns>The created timer.</returns>
+        public static Timer RunOnce(int interval, Action action)
+        {
+            return RunOnce(TimeSpan.FromMilliseconds(interval), action);
         }
 
         /// <summary>
