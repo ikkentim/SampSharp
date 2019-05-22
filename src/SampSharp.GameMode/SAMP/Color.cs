@@ -1097,6 +1097,7 @@ namespace SampSharp.GameMode.SAMP
                     b = (byte) (color & 0xFF);
                     g = (byte) ((color >>= 8) & 0xFF);
                     r = (byte) ((color >> 8) & 0xFF);
+                    a = (byte) 0xFF;
                     break;
             }
             return new Color(r, g, b, a);
