@@ -39,7 +39,7 @@ namespace SampSharp.GameMode.Events
         public BasePlayer Player { get; private set; }
 
         /// <summary>
-        ///     Gets the player.
+        ///     Gets the pickup.
         /// </summary>
         public Pickup Pickup { get; private set; }
     }
