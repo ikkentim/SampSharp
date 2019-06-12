@@ -18,26 +18,29 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.VehicleDied" />, <see cref="BaseMode.PlayerPickUpPickup" />,
-    ///     <see cref="BaseMode.VehicleDamageStatusUpdated" />, <see cref="BaseMode.PlayerStreamIn" />,
-    ///     <see cref="BaseMode.PlayerStreamOut" />, <see cref="BaseMode.VehicleStreamIn" />,
-    ///     <see cref="BaseMode.VehicleStreamOut" />, <see cref="BasePlayer.StreamIn" />, <see cref="BasePlayer.StreamOut" />,
-    ///     <see cref="BaseVehicle.StreamIn" /> or <see cref="BaseVehicle.StreamOut" /> event.
+    ///     Provides data for the <see cref="Pickup.PickUp" /> event.
     /// </summary>
-    public class PlayerEventArgs : EventArgs
+    public class PickUpPickupEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="PlayerEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="PickUpPickupEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player.</param>
-        public PlayerEventArgs(BasePlayer player)
+        /// <param name="pickup">The pickup.</param>
+        public PickUpPickupEventArgs(BasePlayer player, Pickup pickup)
         {
             Player = player;
+            Pickup = pickup;
         }
 
         /// <summary>
-        ///     Gets the player involved.
+        ///     Gets the player.
         /// </summary>
         public BasePlayer Player { get; private set; }
+
+        /// <summary>
+        ///     Gets the player.
+        /// </summary>
+        public Pickup Pickup { get; private set; }
     }
 }

@@ -79,6 +79,7 @@ namespace SampSharp.GameMode.Controllers
             gameMode.PlayerSelectPlayerObject +=
                 (sender, args) => (sender as BasePlayer)?.OnSelectPlayerObject(args);
             gameMode.PlayerWeaponShot += (sender, args) => (sender as BasePlayer)?.OnWeaponShot(args);
+            gameMode.PlayerPickUpPickup += (sender, args) => (sender as BasePlayer)?.OnPickUpPickup(args);
         }
 
         /// <summary>

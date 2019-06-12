@@ -183,10 +183,10 @@ namespace SampSharp.GameMode
         public event EventHandler<EventArgs> PlayerObjectMoved;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerPickUpPickup(Pickup,PlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerPickUpPickup(BasePlayer,PickUpPickupEventArgs)" /> callback is being called.
         ///     Called when a player picks up a pickup created with <see cref="Pickup" />.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> PlayerPickUpPickup;
+        public event EventHandler<PickUpPickupEventArgs> PlayerPickUpPickup;
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehicleMod(BaseVehicle,VehicleModEventArgs)" /> callback is being called.
@@ -692,11 +692,11 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Raises the <see cref="PlayerPickUpPickup" /> event.
         /// </summary>
-        /// <param name="pickup">The pickup triggering the event.</param>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerPickUpPickup(Pickup pickup, PlayerEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="PickUpPickupEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerPickUpPickup(BasePlayer player, PickUpPickupEventArgs e)
         {
-            PlayerPickUpPickup?.Invoke(pickup, e);
+            PlayerPickUpPickup?.Invoke(player, e);
         }
 
         /// <summary>
