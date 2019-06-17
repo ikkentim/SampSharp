@@ -104,18 +104,23 @@ CMD_DEFINE(cmd_find_native) {
 CMD_DEFINE(cmd_invoke_native) {
     uint32_t txlen = LEN_NETBUF;
     uint8_t *buftx = buftx_;
-
-    // copy callerid to output buffer
-    *(uint16_t *)buftx = *(uint16_t *)buf;
+    uint16_t callerid = *(uint16_t *)buf;
+    uint16_t* calleridptr = (uint16_t *)buftx;
 
     buf += sizeof(uint16_t);
-    buftx += sizeof(uint16_t);
+    buftx += sizeof(uint16_t); // reserve callerid space
     buflen -= sizeof(uint16_t);
     txlen -= sizeof(uint16_t);
 
     natives_.invoke(buf, buflen, buftx, &txlen);
     log_debug("Native invoked with %d buflen, response has %d buflen", buflen, txlen);
     txlen += sizeof(uint16_t);
+    
+    // copy callerid to output buffer after the native was executed because the
+    // native might invoke callbacks which in turn may cause this function
+    // to be executed again, causing the value to be overwritten.
+    *calleridptr = callerid;
+
     communication_->send(CMD_RESPONSE, txlen, buftx_);
 }
 
