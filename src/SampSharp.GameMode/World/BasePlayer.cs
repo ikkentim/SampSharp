@@ -906,6 +906,12 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         public event EventHandler<WeaponShotEventArgs> WeaponShot;
 
+        /// <summary>
+        ///     Occurs when the <see cref="OnPickUpPickup" /> is being called.
+        ///     This callback is called when a player picks up a pickup.
+        /// </summary>
+        public event EventHandler<PickUpPickupEventArgs> PickUpPickup;
+
         #endregion
 
         #region Players natives
@@ -2540,6 +2546,15 @@ namespace SampSharp.GameMode.World
         public virtual void OnWeaponShot(WeaponShotEventArgs e)
         {
             WeaponShot?.Invoke(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="PickUpPickup" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PickUpPickupEventArgs" /> that contains the event data. </param>
+        public virtual void OnPickUpPickup(PickUpPickupEventArgs e)
+        {
+            PickUpPickup?.Invoke(this, e);
         }
 
         #endregion
