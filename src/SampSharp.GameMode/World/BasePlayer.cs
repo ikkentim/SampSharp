@@ -381,7 +381,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the GlobalObject the camera of this player is pointing at.
         /// </summary>
-        public virtual GlobalObject CameraTargetObject
+        public virtual GlobalObject CameraTargetGlobalObject
         {
             get
             {
@@ -389,6 +389,20 @@ namespace SampSharp.GameMode.World
 
                 var id = PlayerInternal.Instance.GetPlayerCameraTargetObject(Id);
                 return id == GlobalObject.InvalidId ? null : GlobalObject.Find(id);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the PlayerObject the camera of this player is pointing at.
+        /// </summary>
+        public virtual PlayerObject CameraTargetPlayerObject
+        {
+            get
+            {
+                AssertNotDisposed();
+
+                var id = PlayerInternal.Instance.GetPlayerCameraTargetObject(Id);
+                return id == PlayerObject.InvalidId ? null : PlayerObject.Find(this, id);
             }
         }
 
