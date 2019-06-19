@@ -256,7 +256,9 @@ namespace SampSharp.GameMode
             if (pickup == null)
                 return true;
 
-            OnPlayerPickUpPickup(pickup, new PlayerEventArgs(BasePlayer.FindOrCreate(playerid)));
+            var player = BasePlayer.FindOrCreate(playerid);
+
+            OnPlayerPickUpPickup(player, new PickUpPickupEventArgs(player, pickup));
 
             return true;
         }
