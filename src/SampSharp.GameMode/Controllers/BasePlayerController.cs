@@ -60,15 +60,12 @@ namespace SampSharp.GameMode.Controllers
             gameMode.PlayerTakeDamage += (sender, args) => (sender as BasePlayer)?.OnTakeDamage(args);
             gameMode.PlayerGiveDamage += (sender, args) => (sender as BasePlayer)?.OnGiveDamage(args);
             gameMode.PlayerClickMap += (sender, args) => (sender as BasePlayer)?.OnClickMap(args);
-            gameMode.PlayerClickTextDraw += (sender, args) =>
-            {
-                if (args.TextDraw == null)
-                    (sender as BasePlayer)?.OnCancelClickTextDraw(args);
-                else
-                    (sender as BasePlayer)?.OnClickTextDraw(args);
-            };
+            gameMode.PlayerClickTextDraw +=
+                (sender, args) => (sender as BasePlayer)?.OnClickTextDraw(args);
             gameMode.PlayerClickPlayerTextDraw +=
                 (sender, args) => (sender as BasePlayer)?.OnClickPlayerTextDraw(args);
+            gameMode.PlayerCancelClickTextDraw +=
+                (sender, args) => (sender as BasePlayer)?.OnCancelClickTextDraw(args);
             gameMode.PlayerClickPlayer += (sender, args) => (sender as BasePlayer)?.OnClickPlayer(args);
             gameMode.PlayerEditGlobalObject += (sender, args) => (sender as BasePlayer)?.OnEditGlobalObject(args);
             gameMode.PlayerEditPlayerObject += (sender, args) => (sender as BasePlayer)?.OnEditPlayerObject(args);

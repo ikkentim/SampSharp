@@ -357,7 +357,8 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerClickTextDraw(BasePlayer,ClickTextDrawEventArgs)" /> callback is being called.
-        ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
+        ///     This callback is called when a player clicks on a textdraw. It is not called when player cancels the select
+        ///     mode (ESC).
         /// </summary>
         /// <remarks>
         ///     The clickable area is defined by <see cref="TextDraw.Width" /> and <see cref="TextDraw.Height" />.
@@ -369,9 +370,16 @@ namespace SampSharp.GameMode
         ///     being
         ///     called.
         ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
-        ///     mode (ESC) - however, <see cref="OnPlayerClickTextDraw(BasePlayer,ClickTextDrawEventArgs)" /> is.
+        ///     mode (ESC).
         /// </summary>
         public event EventHandler<ClickPlayerTextDrawEventArgs> PlayerClickPlayerTextDraw;
+
+        /// <summary>
+        ///     Occurs when the <see cref="OnPlayerCancelClickTextDraw(BasePlayer, PlayerEventArgs)" /> callback is being called.
+        ///     This callback is called when a player cancels the textdraw select mode(ESC).
+        /// </summary>
+        public event EventHandler<PlayerEventArgs> PlayerCancelClickTextDraw;
+
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerClickPlayer(BasePlayer, ClickPlayerEventArgs)" /> callback is being called.
@@ -927,6 +935,17 @@ namespace SampSharp.GameMode
         {
             PlayerClickPlayerTextDraw?.Invoke(player, e);
         }
+
+        /// <summary>
+        ///     Raises the <see cref="PlayerCancelClickTextDraw" /> event.
+        /// </summary>
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerCancelClickTextDraw(BasePlayer player, PlayerEventArgs e)
+        {
+            PlayerCancelClickTextDraw?.Invoke(player, e);
+        }
+
 
         /// <summary>
         ///     Raises the <see cref="PlayerClickPlayer" /> event.

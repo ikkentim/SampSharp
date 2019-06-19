@@ -830,7 +830,8 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnClickTextDraw" /> is being called.
-        ///     This callback is called when a player clicks on a textdraw.
+        ///     This callback is called when a player clicks on a textdraw. It is not called when player cancels the select
+        ///     mode (ESC)
         /// </summary>
         /// <remarks>
         ///     The clickable area is defined by <see cref="TextDraw.Width" /> and <see cref="TextDraw.Width" />. The x and y
@@ -840,17 +841,17 @@ namespace SampSharp.GameMode.World
         public event EventHandler<ClickTextDrawEventArgs> ClickTextDraw;
 
         /// <summary>
+        ///     Occurs when the <see cref="OnClickPlayerTextDraw" /> is being called.
+        ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
+        ///     mode (ESC).
+        /// </summary>
+        public event EventHandler<ClickPlayerTextDrawEventArgs> ClickPlayerTextDraw;
+
+        /// <summary>
         ///     Occurs when the <see cref="OnCancelClickTextDraw" /> is being called.
         ///     This callback is called when a player cancels the textdraw select mode(ESC).
         /// </summary>
-        public event EventHandler<EventArgs> CancelClickTextDraw;
-
-        /// <summary>
-        ///     Occurs when the <see cref="OnClickPlayerTextDraw" /> is being called.
-        ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
-        ///     mode (ESC) - however, <see cref="OnClickTextDraw" /> is.
-        /// </summary>
-        public event EventHandler<ClickPlayerTextDrawEventArgs> ClickPlayerTextDraw;
+        public event EventHandler<PlayerEventArgs> CancelClickTextDraw;
 
         /// <summary>
         ///     Occurs when the <see cref="OnClickPlayer" /> is being called.
@@ -2468,21 +2469,21 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Raises the <see cref="CancelClickTextDraw" /> event.
-        /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnCancelClickTextDraw(EventArgs e)
-        {
-            CancelClickTextDraw?.Invoke(this, e);
-        }
-
-        /// <summary>
         ///     Raises the <see cref="ClickPlayerTextDraw" /> event.
         /// </summary>
         /// <param name="e">An <see cref="ClickPlayerTextDrawEventArgs" /> that contains the event data. </param>
         public virtual void OnClickPlayerTextDraw(ClickPlayerTextDrawEventArgs e)
         {
             ClickPlayerTextDraw?.Invoke(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="CancelClickTextDraw" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        public virtual void OnCancelClickTextDraw(PlayerEventArgs e)
+        {
+            CancelClickTextDraw?.Invoke(this, e);
         }
 
         /// <summary>
