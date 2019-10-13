@@ -478,12 +478,24 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the <see cref="GlobalObject" /> that this Player is surfing.
         /// </summary>
-        public virtual GlobalObject SurfingObject
+        public virtual GlobalObject SurfingGlobalObject
         {
             get
             {
                 var objectid = PlayerInternal.Instance.GetPlayerSurfingObjectID(Id);
                 return objectid == GlobalObject.InvalidId ? null : GlobalObject.Find(objectid);
+            }
+        }
+        
+        /// <summary>
+        ///     Gets the <see cref="PlayerObject" /> that this Player is surfing.
+        /// </summary>
+        public virtual PlayerObject SurfingPlayerObject
+        {
+            get
+            {
+                var objectid = PlayerInternal.Instance.GetPlayerSurfingObjectID(Id);
+                return objectid == PlayerObject.InvalidId ? null : PlayerObject.Find(this, objectid);
             }
         }
 
