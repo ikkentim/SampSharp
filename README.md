@@ -12,9 +12,7 @@ SampSharp
 
 SampSharp (S# for short) is a plugin and library that allows you to write San Andreas: Multiplayer(SA-MP) gamemodes in C# or any other .NET language. S#'s aim is to allow you to enjoy all features of OO-programming and .NET. S# uses the .Net Core to allow linux servers to run this plugin as well. For information about installing and building S#, check the documentation. If you have any questions, join our [Slack] chat, file an issue or post on our SA-MP forum post.
 
-All feedback is welcome, file an Issue or contact me on the SA-MP forums:
-
-[My SA-MP profile]
+All feedback is welcome, [file an issue](https://github.com/ikkentim/SampSharp/issues) or contact me on the SA-MP forums:
 
 [S# topic on SA-MP]
 
