@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Reflection;
 using System.Threading;
 using SampSharp.Core;
 using SampSharp.Core.Logging;
@@ -27,6 +28,7 @@ namespace TestMode
             new GameModeBuilder()
                 .Use<GameMode>()
                 .UseLogLevel(CoreLogLevel.Verbose)
+                .UseExitBehaviour(GameModeExitBehaviour.ShutDown)
                 .UseStartBehaviour(GameModeStartBehaviour.FakeGmx)
                 .Run();
         }

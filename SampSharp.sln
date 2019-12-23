@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampSharp", "src\SampSharp\SampSharp.vcxproj", "{39908193-8E5A-42EC-B71B-5D457CE87823}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -28,8 +28,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6B10DCD1
 		premake4.lua = premake4.lua
 		env\server.cfg = env\server.cfg
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMode.DotNetFramework", "src\TestMode.DotNetFramework\TestMode.DotNetFramework.csproj", "{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,18 +86,6 @@ Global
 		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Win32.ActiveCfg = Release|Any CPU
 		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Win32.Build.0 = Release|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Win32.Build.0 = Debug|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Win32.ActiveCfg = Release|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

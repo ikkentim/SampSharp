@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
@@ -13,36 +12,6 @@ namespace TestMode
 {
     internal class Commands
     {
-        [Command("mapout")]
-        public static void MapOut(BasePlayer player)
-        {
-            player.SendClientMessage("Mapping...");
-            player.SendClientMessage("OUT:");
-            var dto = new PlayerDto();
-
-            Mapper.Map(player, dto);
-
-            player.SendClientMessage(dto.ToString());
-        }
-
-        [Command("mapin")]
-        public static void MapIn(BasePlayer player)
-        {
-            player.SendClientMessage("Mapping...");
-            player.SendClientMessage("IN:");
-            var dto = new PlayerDto
-            {
-                Id = 999,
-                PositionX = 100,
-                PositionY = 100,
-                PositionZ = 100
-            };
-
-            Mapper.Map(dto, player);
-
-            player.SendClientMessage(dto.ToString());
-        }
-
         [Command("kickme")]
         public static async void KickMeCommand(BasePlayer player)
         {

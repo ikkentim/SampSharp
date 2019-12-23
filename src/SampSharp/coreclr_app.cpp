@@ -404,6 +404,8 @@ int coreclr_app::construct_tpa(const char *directory, std::string &tpa_list) {
                 tpa_list.append(DIR_SEPARATOR);
                 tpa_list.append(std::string(wname.begin(), wname.end()));
 				tpa_list.append(TPA_DELIMITER);
+
+                std::cout << std::string(wname.begin(), wname.end()) << std::endl;
 			}
 			while (FindNextFileW(fhandle, &find));
 			FindClose(fhandle);

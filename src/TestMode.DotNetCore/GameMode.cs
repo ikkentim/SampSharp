@@ -15,12 +15,8 @@
 
 using System;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.Events;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 
@@ -47,51 +43,6 @@ namespace TestMode
             {
                 Console.WriteLine(kv.Key + " " + kv.Value);
             }
-        }
-
-        protected override void OnRconCommand(RconEventArgs e)
-        {
-            Console.WriteLine($"Received RCON Command: {e.Command}");
-            
-            if (e.Command == "sd")
-            {
-                Client.ShutDown();
-                e.Success = true;
-                Console.WriteLine("Shutting down client...");
-            }
-
-            if (e.Command.StartsWith("msg"))
-            {
-                var msg = e.Command.Substring(4);
-
-                Console.WriteLine("Received: " + msg);
-                msg = new string(msg.Reverse().ToArray());
-
-                Console.WriteLine("Reversed: " + msg);
-
-                e.Success = true;
-                Server.Print(msg);
-            }
-
-            base.OnRconCommand(e);
-        }
-        
-        protected override void OnIncomingConnection(ConnectionEventArgs e)
-        {
-            Console.WriteLine($"Incomming connection: Player {e.PlayerId} from {e.IpAddress}:{e.Port}");
-            base.OnIncomingConnection(e);
-        }
-
-        protected override void OnPlayerConnected(BasePlayer player, EventArgs e)
-        {
-            Console.WriteLine($"Player {player.Name} connected.");
-            base.OnPlayerConnected(player, e);
-        }
-
-        protected override void OnPlayerDisconnected(BasePlayer player, DisconnectEventArgs e)
-        {
-            Console.WriteLine($"Player {player.Name} disconnected. Reason: {e.Reason}.");
-            base.OnPlayerDisconnected(player, e);
         }
 
         #endregion

@@ -548,12 +548,18 @@ namespace SampSharp.Core
         public byte[] InvokeNative(IEnumerable<byte> data)
         {
             var caller = GetCallerId();
+            
+            //CoreLog.LogVerbose("Caller: {0}, \n{1}", caller, Environment.StackTrace);
+
             data = ValueConverter.GetBytes(caller).Concat(data);
             var response = SendAndWaitOnMainThread(ServerCommand.InvokeNative, data, d =>
             {
                 return d.Command != ServerCommand.Response ||
                            (d.Data != null && d.Data.Length >= 2 && ValueConverter.ToUInt16(d.Data, 0) == caller);
             });
+
+           //CoreLog.LogVerbose("RESPONSE for Caller: {0}", caller);
+
             return response.Data.Skip(2).ToArray(); // TODO: Optimize GC allocations
         }
 
