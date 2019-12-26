@@ -19,7 +19,7 @@ using System.Threading;
 namespace SampSharp.Core.Threading
 {
     /// <summary>
-    ///     Represents an item enqueued to a <see cref="SampSharpSyncronizationContext" />.
+    ///     Represents an item enqueued to a <see cref="SampSharpSynchronizationContext" />.
     /// </summary>
     public class SendOrPostCallbackItem
     {

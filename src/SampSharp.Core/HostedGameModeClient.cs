@@ -23,7 +23,7 @@ namespace SampSharp.Core
     {
         private readonly Dictionary<string, Callback> _callbacks = new Dictionary<string, Callback>();
         private NoWaitMessageQueue _messageQueue;
-        private SampSharpSyncronizationContext _syncronizationContext;
+        private SampSharpSynchronizationContext _synchronizationContext;
         private readonly GameModeStartBehaviour _startBehaviour;
         private readonly IGameModeProvider _gameModeProvider;
         private int _mainThread;
@@ -144,13 +144,19 @@ namespace SampSharp.Core
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (target == null) throw new ArgumentNullException(nameof(target));
             if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
             AssertRunning();
 
             if (!Callback.IsValidReturnType(methodInfo.ReturnType))
                 throw new CallbackRegistrationException("The method uses an unsupported return type");
 
-            _callbacks[name] = new Callback(target, methodInfo, name, parameters, this);
+            var callback = new Callback(target, methodInfo, name, this);
+
+            if(!callback.MatchesParameters(parameters))
+                throw new CallbackRegistrationException("The method does not match the specified parameters.");
+
+            _callbacks[name] = callback;
 
             var data = ValueConverter.GetBytes(name, Encoding)
                 .Concat(parameters.SelectMany(c => c.GetBytes()))
@@ -163,7 +169,52 @@ namespace SampSharp.Core
             if (IsOnMainThread)
                 Interop.RegisterCallback(ptr);
             else
-                _syncronizationContext.Send(ctx => Interop.RegisterCallback(ptr), null);
+                _synchronizationContext.Send(ctx => Interop.RegisterCallback(ptr), null);
+
+            Marshal.FreeHGlobal(ptr);
+        }
+        
+        /// <summary>
+        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
+        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
+        /// </summary>
+        /// <param name="name">The name af the callback to register.</param>
+        /// <param name="target">The target on which to invoke the method.</param>
+        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
+        /// <param name="parameters">The parameters of the callback.</param>
+        /// <param name="parameterTypes">The types of the parameters.</param>
+        public void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters, Type[] parameterTypes)
+        {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (target == null) throw new ArgumentNullException(nameof(target));
+            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+            if (parameterTypes == null) throw new ArgumentNullException(nameof(parameterTypes));
+
+            AssertRunning();
+
+            if (!Callback.IsValidReturnType(methodInfo.ReturnType))
+                throw new CallbackRegistrationException("The method uses an unsupported return type");
+
+            var callback = new Callback(target, methodInfo, name, parameterTypes, this);
+
+            if(!callback.MatchesParameters(parameters))
+                throw new CallbackRegistrationException("The method does not match the specified parameters.");
+
+            _callbacks[name] = callback;
+
+            var data = ValueConverter.GetBytes(name, Encoding)
+                .Concat(parameters.SelectMany(c => c.GetBytes()))
+                .Concat(new[] { (byte) ServerCommandArgument.Terminator }).ToArray();
+            
+            // TODO: Only call on main thread
+            var ptr = Marshal.AllocHGlobal(data.Length);
+            Marshal.Copy(data, 0, ptr, data.Length);
+
+            if (IsOnMainThread)
+                Interop.RegisterCallback(ptr);
+            else
+                _synchronizationContext.Send(ctx => Interop.RegisterCallback(ptr), null);
 
             Marshal.FreeHGlobal(ptr);
         }
@@ -177,7 +228,7 @@ namespace SampSharp.Core
             if (IsOnMainThread)
                 Interop.Print(text);
             else
-                _syncronizationContext.Send(ctx => Interop.Print(text), null);
+                _synchronizationContext.Send(ctx => Interop.Print(text), null);
         }
 
         /// <summary>
@@ -191,7 +242,7 @@ namespace SampSharp.Core
                 return Interop.GetNativeHandle(name);
 
             var result = 0;
-            _syncronizationContext.Send(ctx => result = Interop.GetNativeHandle(name), null);
+            _synchronizationContext.Send(ctx => result = Interop.GetNativeHandle(name), null);
             return result;
         }
 
@@ -214,7 +265,7 @@ namespace SampSharp.Core
             if (IsOnMainThread)
                 Interop.InvokeNative(inbuf, adata.Length, outbuf, ref outlen);
             else
-                _syncronizationContext.Send(ctx => Interop.InvokeNative(inbuf, adata.Length, outbuf, ref outlen), null);
+                _synchronizationContext.Send(ctx => Interop.InvokeNative(inbuf, adata.Length, outbuf, ref outlen), null);
 
             var outarr = new byte[outlen];
             Marshal.Copy(outbuf, outarr, 0, outlen);
@@ -247,9 +298,9 @@ namespace SampSharp.Core
 
             // Prepare the syncronization context
             _messageQueue = new NoWaitMessageQueue();
-            _syncronizationContext = new SampSharpSyncronizationContext(_messageQueue);
+            _synchronizationContext = new SampSharpSynchronizationContext(_messageQueue);
 
-            SynchronizationContext.SetSynchronizationContext(_syncronizationContext);
+            SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
             
             _mainThread = Thread.CurrentThread.ManagedThreadId;
             _running = true;

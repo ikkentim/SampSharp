@@ -60,6 +60,18 @@ namespace SampSharp.Core
         void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters);
         
         /// <summary>
+        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
+        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
+        /// </summary>
+        /// <param name="name">The name af the callback to register.</param>
+        /// <param name="target">The target on which to invoke the method.</param>
+        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
+        /// <param name="parameters">The parameters of the callback.</param>
+        /// <param name="parameterTypes">The types of the parameters.</param>
+        void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters,
+            Type[] parameterTypes);
+
+        /// <summary>
         ///     Prints the specified text to the server console.
         /// </summary>
         /// <param name="text">The text to print to the server console.</param>
@@ -78,7 +90,6 @@ namespace SampSharp.Core
         /// <param name="data">The data buffer to be used.</param>
         /// <returns>The response from the native.</returns>
         byte[] InvokeNative(IEnumerable<byte> data);
-
 
         /// <summary>
         ///     Shuts down the server after the current callback has been processed.

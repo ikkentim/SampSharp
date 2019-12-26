@@ -49,7 +49,7 @@ namespace SampSharp.Core
         private bool _running;
         private bool _shuttingDown;
         private bool _canTick;
-        private SampSharpSyncronizationContext _syncronizationContext;
+        private SampSharpSynchronizationContext _synchronizationContext;
         private DateTime _lastSend;
         private ushort _callerIndex;
 
@@ -391,7 +391,7 @@ namespace SampSharp.Core
             if (IsOnMainThread)
                 Send(command, data);
             else
-                _syncronizationContext.Send(ctx => Send(command, data), null);
+                _synchronizationContext.Send(ctx => Send(command, data), null);
         }
 
         private ServerCommandData SendAndWait(ServerCommand command, IEnumerable<byte> data, Func<ServerCommandData, bool> accept = null)
@@ -416,7 +416,7 @@ namespace SampSharp.Core
                 return SendAndWait(command, data, accept);
 
             var responseData = default(ServerCommandData);
-            _syncronizationContext.Send(ctx => responseData = SendAndWait(command, data, accept), null);
+            _synchronizationContext.Send(ctx => responseData = SendAndWait(command, data, accept), null);
             return responseData;
         }
 
@@ -438,7 +438,7 @@ namespace SampSharp.Core
             }
             else
             {
-                _syncronizationContext.Send(ctx =>
+                _synchronizationContext.Send(ctx =>
                 {
                     _pongs.Enqueue(pong);
 
@@ -499,14 +499,52 @@ namespace SampSharp.Core
 
             if (!Callback.IsValidReturnType(methodInfo.ReturnType))
                 throw new CallbackRegistrationException("The method uses an unsupported return type");
+            
+            var callback = new Callback(target, methodInfo, name, this);
 
-            _callbacks[name] = new Callback(target, methodInfo, name, parameters, this);
+            if(!callback.MatchesParameters(parameters))
+                throw new CallbackRegistrationException("The method does not match the specified parameters.");
+            
+            _callbacks[name] = callback;
 
             SendOnMainThread(ServerCommand.RegisterCall, ValueConverter.GetBytes(name, Encoding)
                 .Concat(parameters.SelectMany(c => c.GetBytes()))
                 .Concat(new[] { (byte) ServerCommandArgument.Terminator }));
         }
-        
+
+        /// <summary>
+        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
+        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
+        /// </summary>
+        /// <param name="name">The name af the callback to register.</param>
+        /// <param name="target">The target on which to invoke the method.</param>
+        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
+        /// <param name="parameters">The parameters of the callback.</param>
+        /// <param name="parameterTypes">The types of the parameters.</param>
+        public void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters, Type[] parameterTypes)
+        {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (target == null) throw new ArgumentNullException(nameof(target));
+            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
+            if (parameterTypes == null) throw new ArgumentNullException(nameof(parameterTypes));
+
+            AssertRunning();
+
+            if (!Callback.IsValidReturnType(methodInfo.ReturnType))
+                throw new CallbackRegistrationException("The method uses an unsupported return type");
+            
+            var callback = new Callback(target, methodInfo, name, parameterTypes, this);
+
+            if(!callback.MatchesParameters(parameters))
+                throw new CallbackRegistrationException("The method does not match the specified parameters.");
+            
+            _callbacks[name] = callback;
+
+            SendOnMainThread(ServerCommand.RegisterCall, ValueConverter.GetBytes(name, Encoding)
+                .Concat(parameters.SelectMany(c => c.GetBytes()))
+                .Concat(new[] { (byte) ServerCommandArgument.Terminator }));
+        }
+
         /// <summary>
         ///     Prints the specified text to the server console.
         /// </summary>
@@ -598,10 +636,10 @@ namespace SampSharp.Core
 
             // Prepare the syncronization context
             var queue = new SemaphoreMessageQueue();
-            _syncronizationContext = new SampSharpSyncronizationContext(queue);
+            _synchronizationContext = new SampSharpSynchronizationContext(queue);
             _messagePump = new MessagePump(queue);
 
-            SynchronizationContext.SetSynchronizationContext(_syncronizationContext);
+            SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
 
             // Initialize the game mode and start the main routine
             Initialize();

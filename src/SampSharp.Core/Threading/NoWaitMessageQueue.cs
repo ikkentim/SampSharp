@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 namespace SampSharp.Core.Threading
 {
     /// <summary>
-    ///     Represents a message queue for messages sent to a <see cref="SampSharpSyncronizationContext" /> without a waiting mechanism.
+    ///     Represents a message queue for messages sent to a <see cref="SampSharpSynchronizationContext" /> without a waiting mechanism.
     /// </summary>
     public class NoWaitMessageQueue : IMessageQueue
     { 

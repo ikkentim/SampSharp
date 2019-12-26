@@ -19,15 +19,15 @@ using System.Threading;
 namespace SampSharp.Core.Threading
 {
     /// <summary>
-    ///     Represents a syncronization context for the SampSharp main thread.
+    ///     Represents a synchronization context for the SampSharp main thread.
     /// </summary>
     /// <seealso cref="SynchronizationContext" />
-    public class SampSharpSyncronizationContext : SynchronizationContext
+    public class SampSharpSynchronizationContext : SynchronizationContext
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SampSharpSyncronizationContext" /> class.
+        ///     Initializes a new instance of the <see cref="SampSharpSynchronizationContext" /> class.
         /// </summary>
-        public SampSharpSyncronizationContext(IMessageQueue messageQueue)
+        public SampSharpSynchronizationContext(IMessageQueue messageQueue)
         {
             MessageQueue = messageQueue ?? throw new ArgumentNullException(nameof(messageQueue));
         }

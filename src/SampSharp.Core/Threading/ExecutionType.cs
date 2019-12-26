@@ -16,7 +16,7 @@
 namespace SampSharp.Core.Threading
 {
     /// <summary>
-    ///     Contains execution types of messages provided to the <see cref="SampSharpSyncronizationContext" />.
+    ///     Contains execution types of messages provided to the <see cref="SampSharpSynchronizationContext" />.
     /// </summary>
     public enum ExecutionType
     {
