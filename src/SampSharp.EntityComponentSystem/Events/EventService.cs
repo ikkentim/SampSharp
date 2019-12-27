@@ -67,11 +67,14 @@ namespace SampSharp.EntityComponentSystem.Events
             evt.Middleware.Add(middleware);
         }
 
-        private object InvokeEventFuncs(EventContext context)
+        private object InvokeEventInternal(EventContext context)
         {
-            CoreLog.LogDebug($"Event: {context.Name}({string.Join(", ", context.Arguments)})");
+            CoreLog.LogDebug($"InvokeEventInternal: {context.Name}({string.Join(", ", context.Arguments)})");
 
-            if (_events.TryGetValue(context.Name, out var evt))
+            object result = null;
+
+            if (context.Name != null && _events.TryGetValue(context.Name, out var evt))
+            {
                 foreach (var sysEvt in evt.SystemEvents)
                 {
                     var system = _serviceProvider.GetService(sysEvt.Method.DeclaringType);
@@ -79,28 +82,27 @@ namespace SampSharp.EntityComponentSystem.Events
                     if (system == null)
                         continue;
 
-                    sysEvt.Call(system, context.Arguments, context.EventServices);
-
-                    // TODO: Handle return value
-//                    if (sysEvt.ParametersArray)
-//                    {
-//                        sysEvt.Method.Invoke(system, new object[] {context.Arguments});
-//                    }
-//                    else
-//                    {
-//                        // Match signature of method
-//                        if (context.Arguments.Length != sysEvt.ParameterTypes.Length)
-//                            continue;
-//
-//                        if (context.Arguments.Length != 0 &&
-//                            context.Arguments.Where((a, i) =>
-//                                !sysEvt.ParameterTypes[i].IsInstanceOfType(a) &&
-//                                !(a == null && !sysEvt.ParameterTypes[i].IsValueType)).Any())
-//                            continue;
-//
-//                        sysEvt.Method.Invoke(system, context.Arguments);
-//                    }
+                    result = sysEvt.Call(system, context) ?? result;
                 }
+            }
+            if (context.ComponentTargetName != null && _events.TryGetValue(context.ComponentTargetName, out var evt2))
+            {
+
+                foreach (var sysEvt in evt2.ComponentEvents)
+                {
+                    var target = context.TargetArgumentIndex >= 0 &&
+                                 context.TargetArgumentIndex < context.Arguments.Length
+                        ? context.Arguments[context.TargetArgumentIndex]
+                        : null;
+
+                    if (target == null)
+                        continue;
+
+                    result = sysEvt.Call(target, context) ?? result;
+                }
+
+                return result;
+            }
 
             return null;
         }
@@ -135,7 +137,7 @@ namespace SampSharp.EntityComponentSystem.Events
             // Find eligible methods in system implementations
             var events = assemblies
                 .SelectMany(a => a.GetTypes())
-                .Where(t => t.IsClass && !t.IsAbstract && typeof(ISystem).IsAssignableFrom(t))
+                .Where(t => t.IsClass && !t.IsAbstract && (typeof(ISystem).IsAssignableFrom(t) || typeof(Component).IsAssignableFrom(t)))
                 .SelectMany(t => t.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
                 .Select(m => (method: m, attribute: m.GetCustomAttribute<EventAttribute>()))
                 .Where(x => x.attribute != null);
@@ -153,16 +155,7 @@ namespace SampSharp.EntityComponentSystem.Events
                 var parameterIndex = 0;
                 var parameters = method.GetParameters();
                 var parameterInfos = new SystemEventParameter[parameters.Length];
-                var parametersArrayIndex = -1;
                 var parameterTypes = new List<Type>();
-
-                void AssertNoParamsArray()
-                {
-                    // Assert no object[] parameter has been detected already
-                    if (parametersArrayIndex != -1)
-                        throw new EventSignatureException(
-                            $"Event method {method.DeclaringType.Name}.{method.Name} has invalid parameters.");
-                }
 
                 // Scan and arrange parameters.
                 for (var i = 0; i < parameters.Length; i++)
@@ -171,18 +164,9 @@ namespace SampSharp.EntityComponentSystem.Events
 
                     parameterInfos[i] = new SystemEventParameter();
 
-                    // object[] array can appear once without any other non-DI parameters.
-                    if (type == typeof(object[]))
-                    {
-                        AssertNoParamsArray();
-                        parametersArrayIndex = i;
-                        continue;
-                    }
-
                     if (typeof(Component).IsAssignableFrom(type))
                     {
                         // Get component of entity
-                        AssertNoParamsArray();
                         parameterInfos[i].ParameterIndex = parameterIndex++;
                         parameterInfos[i].ComponentType = type;
                         parameterTypes.Add(typeof(Entity));
@@ -190,7 +174,6 @@ namespace SampSharp.EntityComponentSystem.Events
                     else if (DefaultParameterTypes.Contains(type))
                     {
                         // Default pass-through types
-                        AssertNoParamsArray();
                         parameterInfos[i].ParameterIndex = parameterIndex++;
                         parameterTypes.Add(type);
                     }
@@ -201,20 +184,43 @@ namespace SampSharp.EntityComponentSystem.Events
                     }
                 }
 
-                var caller = Compile(method, parameters, parameterInfos, parametersArrayIndex);
+               
 
-                var entry = new SystemEvent
+                if (typeof(ISystem).IsAssignableFrom(method.DeclaringType))
                 {
-                    Method = method,
-                    ParameterTypes = parameterTypes.ToArray(),
-                    Call = (instance, args, serviceProvider) =>
-                    {
-                        // TODO: Check parameters match types?
-                        return caller(instance, args, serviceProvider);
-                    }
-                };
+                    var caller = CompileForSystem(method, parameters, parameterInfos);
 
-                evt.SystemEvents.Add(entry);
+                    var entry = new SystemEvent
+                    {
+                        Method = method,
+                        ParameterTypes = parameterTypes.ToArray(),
+                        Call = (instance, eventContext) =>
+                        {
+                            // TODO: Check parameters match types?
+                            return caller(instance, eventContext.Arguments, eventContext);
+                        }
+                    };
+
+                    evt.SystemEvents.Add(entry);
+                }
+                else
+                {
+                    var callerWithSkip = CompileForComponent(method, parameters, parameterInfos);
+
+                    var entry = new SystemEvent
+                    {
+                        Method = method,
+                        ParameterTypes = parameterTypes.ToArray(),
+                        Call = (instance, eventContext) =>
+                        {
+                            // TODO: Check parameters match types?
+                            return callerWithSkip(instance, eventContext.Arguments, eventContext,
+                                eventContext.TargetArgumentIndex);
+                        }
+                    };
+
+                    evt.ComponentEvents.Add(entry);
+                }
             }
         }
 
@@ -222,7 +228,7 @@ namespace SampSharp.EntityComponentSystem.Events
         {
             // TODO: Construct the middleware just once
             return index >= evt.Middleware.Count
-                ? InvokeEventFuncs(context)
+                ? InvokeEventInternal(context)
                 : evt.Middleware[index](eventContext => Invoke(eventContext, index + 1, evt))(context);
         }
 
@@ -233,7 +239,7 @@ namespace SampSharp.EntityComponentSystem.Events
 
             return args =>
             {
-                context.SetArguments(args);
+                context.Arguments = args;
                 context.SetEventServices(_serviceProvider); // TODO: Should I scope it?
 
                 return _events.TryGetValue(name, out var evt)
@@ -242,8 +248,8 @@ namespace SampSharp.EntityComponentSystem.Events
             };
         }
 
-        private static Func<object, object[], IServiceProvider, object> Compile(MethodInfo methodInfo,
-            ParameterInfo[] parameters, SystemEventParameter[] parameterInfos, int parametersArrayIndex)
+        private static (Expression, ParameterExpression, ParameterExpression, ParameterExpression, ParameterExpression) CompileBody(MethodInfo methodInfo,
+            ParameterInfo[] parameters, SystemEventParameter[] parameterInfos, bool componentLevel)
         {
             if (methodInfo.DeclaringType == null)
                 throw new ArgumentException("Method must have declaring type", nameof(methodInfo));
@@ -251,7 +257,8 @@ namespace SampSharp.EntityComponentSystem.Events
             // Input arguments
             var instanceArg = Expression.Parameter(typeof(object), "instance");
             var argsArg = Expression.Parameter(typeof(object[]), "args");
-            var providerArg = Expression.Parameter(typeof(IServiceProvider), "serviceProvider");
+            var eventContextArg = Expression.Parameter(typeof(EventContext), "eventContext");
+            var skipArg = componentLevel ? Expression.Parameter(typeof(int), "skip") : null;
 
             var methodArguments = new Expression[parameters.Length];
             for (var i = 0; i < parameters.Length; i++)
@@ -259,16 +266,16 @@ namespace SampSharp.EntityComponentSystem.Events
                 var parameterType = parameters[i].ParameterType;
                 if (parameterType.IsByRef) throw new NotSupportedException();
 
-                if (i == parametersArrayIndex)
-                {
-                    // Args array
-                    methodArguments[i] = argsArg;
-                }
-                else if (parameterInfos[i].ComponentType != null)
+                if (parameterInfos[i].ComponentType != null)
                 {
                     // Get component from entity
+                    Expression index = Expression.Constant(parameterInfos[i].ParameterIndex);
+                    if (componentLevel)
+                        index = Expression.Condition(Expression.GreaterThanOrEqual(index, skipArg),
+                            Expression.Constant(parameterInfos[i].ParameterIndex + 1), index);
+
                     Expression getValue =
-                        Expression.ArrayIndex(argsArg, Expression.Constant(parameterInfos[i].ParameterIndex));
+                        Expression.ArrayIndex(argsArg, index);
                     getValue = Expression.Convert(getValue, typeof(Entity));
                     methodArguments[i] = Expression.Call(getValue,
                         GetComponentInfo.MakeGenericMethod(parameterInfos[i].ComponentType));
@@ -276,36 +283,89 @@ namespace SampSharp.EntityComponentSystem.Events
                 else if (parameterInfos[i].ServiceType != null)
                 {
                     // Get service
-                    var getServiceCall = Expression.Call(GetServiceInfo, providerArg,
+                    var getServiceCall = Expression.Call(GetServiceInfo, eventContextArg,
                         Expression.Constant(parameterType, typeof(Type)));
                     methodArguments[i] = Expression.Convert(getServiceCall, parameterType);
                 }
                 else if (parameterInfos[i].ParameterIndex >= 0)
                 {
                     // Pass through
+                    Expression index = Expression.Constant(parameterInfos[i].ParameterIndex);
+                    if (componentLevel)
+                        index = Expression.Condition(Expression.GreaterThanOrEqual(index, skipArg),
+                            Expression.Constant(parameterInfos[i].ParameterIndex + 1), index);
+
                     var getValue =
-                        Expression.ArrayIndex(argsArg, Expression.Constant(parameterInfos[i].ParameterIndex));
+                        Expression.ArrayIndex(argsArg, index);
                     methodArguments[i] = Expression.Convert(getValue, parameterType);
                 }
             }
 
-            var service = Expression.Convert(instanceArg, methodInfo.DeclaringType);
-            Expression body = Expression.Call(service, methodInfo, methodArguments);
+            Expression body;
+            if (componentLevel)
+            {
+                var nullValue = Expression.Constant(null);
 
-            if (methodInfo.ReturnType == typeof(void))
+                var entity = Expression.Convert(instanceArg, typeof(Entity));
+                var entityIsNull = Expression.Equal(entity, nullValue);
+
+                var component = Expression.Condition(entityIsNull, Expression.Convert(nullValue, methodInfo.DeclaringType),
+                    Expression.Call(entity, GetComponentInfo.MakeGenericMethod(methodInfo.DeclaringType)));
+                var componentIsNull = Expression.Equal(component, nullValue);
+
+                body = methodInfo.ReturnType == typeof(void)
+                    ? (Expression) Expression.Call(component, methodInfo, methodArguments)
+                    : Expression.Condition(componentIsNull, Expression.Convert(nullValue, methodInfo.ReturnType),
+                        Expression.Call(component, methodInfo, methodArguments));
+            }
+            else
+            {
+                var service = Expression.Convert(instanceArg, methodInfo.DeclaringType);
+                body = Expression.Call(service, methodInfo, methodArguments);
+            }
+
+            
+            if (body.Type == typeof(void))
                 body = Expression.Block(body, Expression.Constant(null));
-            else if (methodInfo.ReturnType != typeof(object)) body = Expression.Convert(body, typeof(object));
+            else if (body.Type != typeof(object)) body = Expression.Convert(body, typeof(object));
+
+            return (body, instanceArg, argsArg, eventContextArg, skipArg);
+        }
+
+        private static Func<object, object[], EventContext, object> CompileForSystem(MethodInfo methodInfo,
+            ParameterInfo[] parameters, SystemEventParameter[] parameterInfos)
+        {
+            var (body, instanceArg, argsArg, eventContextArg, _) =
+                CompileBody(methodInfo, parameters, parameterInfos, false);
 
             var lambda =
-                Expression.Lambda<Func<object, object[], IServiceProvider, object>>(body, instanceArg, argsArg,
-                    providerArg);
+                Expression.Lambda<Func<object, object[], EventContext, object>>(body, instanceArg, argsArg,
+                    eventContextArg);
 
             return lambda.Compile();
         }
 
-        private static object GetService(IServiceProvider sp, Type type)
+        private static Func<object, object[], EventContext, int, object> CompileForComponent(MethodInfo methodInfo,
+            ParameterInfo[] parameters, SystemEventParameter[] parameterInfos)
         {
-            var service = sp.GetService(type);
+            var (body, instanceArg, argsArg, eventContextArg, skipArg) =
+                CompileBody(methodInfo, parameters, parameterInfos, true);
+
+            var lambda =
+                Expression.Lambda<Func<object, object[], EventContext, int, object>>(body, instanceArg, argsArg,
+                    eventContextArg, skipArg);
+
+            return lambda.Compile();
+        }
+
+        private static object GetService(EventContext eventContext, Type type)
+        {
+            if (eventContext.ArgumentsSubstitute != null && type.IsInstanceOfType(eventContext.ArgumentsSubstitute))
+            {
+                return eventContext.ArgumentsSubstitute;
+            }
+
+            var service = eventContext.EventServices.GetService(type);
             return service ?? throw new InvalidOperationException();
         }
 
@@ -313,13 +373,15 @@ namespace SampSharp.EntityComponentSystem.Events
         {
             public readonly List<Func<EventDelegate, EventDelegate>> Middleware =
                 new List<Func<EventDelegate, EventDelegate>>();
-
+            
             public readonly List<SystemEvent> SystemEvents = new List<SystemEvent>();
+            public readonly List<SystemEvent> ComponentEvents = new List<SystemEvent>();
         }
 
         private class SystemEvent
         {
-            public Func<object, object[], IServiceProvider, object> Call;
+            public Func<object, EventContext, object> Call;
+            public Func<object, EventContext, int, object> CallWithSkip;
             public MethodInfo Method;
             public Type[] ParameterTypes;
         }

@@ -1,17 +1,20 @@
-﻿using SampSharp.EntityComponentSystem.Components;
+﻿using System;
+using SampSharp.EntityComponentSystem.Components;
 using SampSharp.EntityComponentSystem.Events;
+using TestMode.Ecs.Services;
 
 namespace TestMode.Ecs.Components
 {
     public class TestComponent : Component
     {
-        // Components will allow adding behaviour to entities by responding to events. These events will also allow dependency injection
-
         public string Hi => $"Hi, {Entity}";
+
         [Event]
-        public void OnPlayerText(string text)
+        public void OnText(string text, IVehicleRepository vehicleRepository)
         {
-            // TODO: Still working on getting this to be called
+            Console.WriteLine("Player send text!!!!!! from component!!!!! " + Hi + ":::" + text);
+
+            vehicleRepository.FooForPlayer(Entity);
         }
     }
 }

@@ -16,6 +16,8 @@ namespace SampSharp.EntityComponentSystem.SAMP
         {
             // TODO: Parenting to connection
             context.Arguments[0] = entityManager.Create(null, SampEntities.GetPlayerId((int)context.Arguments[0]));
+            context.TargetArgumentIndex = 0;
+            context.ComponentTargetName = "OnConnect";
 
             return _next(context);
         }
