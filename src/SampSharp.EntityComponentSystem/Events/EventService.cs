@@ -1,4 +1,19 @@
-﻿using System;
+﻿// SampSharp
+// Copyright 2019 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,6 +26,10 @@ using SampSharp.EntityComponentSystem.Systems;
 
 namespace SampSharp.EntityComponentSystem.Events
 {
+    /// <summary>
+    /// Represents the event service.
+    /// </summary>
+    /// <seealso cref="SampSharp.EntityComponentSystem.Events.IEventService" />
     public class EventService : IEventService
     {
         private static readonly Type[] DefaultParameterTypes =
@@ -74,7 +93,6 @@ namespace SampSharp.EntityComponentSystem.Events
             object result = null;
 
             if (context.Name != null && _events.TryGetValue(context.Name, out var evt))
-            {
                 foreach (var sysEvt in evt.SystemEvents)
                 {
                     var system = _serviceProvider.GetService(sysEvt.Method.DeclaringType);
@@ -84,10 +102,9 @@ namespace SampSharp.EntityComponentSystem.Events
 
                     result = sysEvt.Call(system, context) ?? result;
                 }
-            }
+
             if (context.ComponentTargetName != null && _events.TryGetValue(context.ComponentTargetName, out var evt2))
             {
-
                 foreach (var sysEvt in evt2.ComponentEvents)
                 {
                     var target = context.TargetArgumentIndex >= 0 &&
@@ -137,7 +154,8 @@ namespace SampSharp.EntityComponentSystem.Events
             // Find eligible methods in system implementations
             var events = assemblies
                 .SelectMany(a => a.GetTypes())
-                .Where(t => t.IsClass && !t.IsAbstract && (typeof(ISystem).IsAssignableFrom(t) || typeof(Component).IsAssignableFrom(t)))
+                .Where(t => t.IsClass && !t.IsAbstract &&
+                            (typeof(ISystem).IsAssignableFrom(t) || typeof(Component).IsAssignableFrom(t)))
                 .SelectMany(t => t.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
                 .Select(m => (method: m, attribute: m.GetCustomAttribute<EventAttribute>()))
                 .Where(x => x.attribute != null);
@@ -184,7 +202,6 @@ namespace SampSharp.EntityComponentSystem.Events
                     }
                 }
 
-               
 
                 if (typeof(ISystem).IsAssignableFrom(method.DeclaringType))
                 {
@@ -248,8 +265,9 @@ namespace SampSharp.EntityComponentSystem.Events
             };
         }
 
-        private static (Expression, ParameterExpression, ParameterExpression, ParameterExpression, ParameterExpression) CompileBody(MethodInfo methodInfo,
-            ParameterInfo[] parameters, SystemEventParameter[] parameterInfos, bool componentLevel)
+        private static (Expression, ParameterExpression, ParameterExpression, ParameterExpression, ParameterExpression)
+            CompileBody(MethodInfo methodInfo,
+                ParameterInfo[] parameters, SystemEventParameter[] parameterInfos, bool componentLevel)
         {
             if (methodInfo.DeclaringType == null)
                 throw new ArgumentException("Method must have declaring type", nameof(methodInfo));
@@ -309,7 +327,8 @@ namespace SampSharp.EntityComponentSystem.Events
                 var entity = Expression.Convert(instanceArg, typeof(Entity));
                 var entityIsNull = Expression.Equal(entity, nullValue);
 
-                var component = Expression.Condition(entityIsNull, Expression.Convert(nullValue, methodInfo.DeclaringType),
+                var component = Expression.Condition(entityIsNull,
+                    Expression.Convert(nullValue, methodInfo.DeclaringType),
                     Expression.Call(entity, GetComponentInfo.MakeGenericMethod(methodInfo.DeclaringType)));
                 var componentIsNull = Expression.Equal(component, nullValue);
 
@@ -324,7 +343,7 @@ namespace SampSharp.EntityComponentSystem.Events
                 body = Expression.Call(service, methodInfo, methodArguments);
             }
 
-            
+
             if (body.Type == typeof(void))
                 body = Expression.Block(body, Expression.Constant(null));
             else if (body.Type != typeof(object)) body = Expression.Convert(body, typeof(object));
@@ -361,9 +380,7 @@ namespace SampSharp.EntityComponentSystem.Events
         private static object GetService(EventContext eventContext, Type type)
         {
             if (eventContext.ArgumentsSubstitute != null && type.IsInstanceOfType(eventContext.ArgumentsSubstitute))
-            {
                 return eventContext.ArgumentsSubstitute;
-            }
 
             var service = eventContext.EventServices.GetService(type);
             return service ?? throw new InvalidOperationException();
@@ -371,11 +388,12 @@ namespace SampSharp.EntityComponentSystem.Events
 
         private class Event
         {
+            public readonly List<SystemEvent> ComponentEvents = new List<SystemEvent>();
+
             public readonly List<Func<EventDelegate, EventDelegate>> Middleware =
                 new List<Func<EventDelegate, EventDelegate>>();
-            
+
             public readonly List<SystemEvent> SystemEvents = new List<SystemEvent>();
-            public readonly List<SystemEvent> ComponentEvents = new List<SystemEvent>();
         }
 
         private class SystemEvent

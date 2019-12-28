@@ -2,7 +2,8 @@
 
 var build = new SharpBuild(Context, "ikkentim", "SampSharp",
     "SampSharp.Core",
-    "SampSharp.GameMode");
+    "SampSharp.GameMode",
+    "SampSharp.EntityComponentSystem");
 
 Task("Clean")
     .Does(() => build.Clean());

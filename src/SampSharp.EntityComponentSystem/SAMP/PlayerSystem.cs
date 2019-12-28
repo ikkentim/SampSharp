@@ -1,11 +1,28 @@
-﻿using System;
-using SampSharp.Core.Logging;
+﻿// SampSharp
+// Copyright 2019 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using SampSharp.EntityComponentSystem.Entities;
 using SampSharp.EntityComponentSystem.Events;
 using SampSharp.EntityComponentSystem.Systems;
 
 namespace SampSharp.EntityComponentSystem.SAMP
 {
+    /// <summary>
+    /// Represents a system which provides player functionality.
+    /// </summary>
     public class PlayerSystem : IConfiguringSystem
     {
         private readonly IEventService _eventService;
@@ -100,7 +117,7 @@ namespace SampSharp.EntityComponentSystem.SAMP
         private void AddPlayerTarget(IEcsBuilder builder, string callback)
         {
             builder.UseMiddleware<EntityMiddleware>(callback, 0,
-                (Func<int, EntityId>) SampEntities.GetPlayerId, true, callback.Replace("OnPlayer", "On"));
+                (Func<int, EntityId>) SampEntities.GetPlayerId, true, true, callback.Replace("OnPlayer", "On"));
         }
     }
 }
