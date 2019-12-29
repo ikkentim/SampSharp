@@ -32,6 +32,7 @@ namespace SampSharp.EntityComponentSystem.SAMP
             _eventService = eventService;
         }
 
+        /// <inheritdoc />
         public void Configure(IEcsBuilder builder)
         {
             _eventService.Load("OnPlayerConnect", typeof(int));
@@ -75,10 +76,10 @@ namespace SampSharp.EntityComponentSystem.SAMP
                 typeof(float), typeof(float), typeof(float));
             _eventService.Load("OnPlayerWeaponShot", typeof(int), typeof(int), typeof(int), typeof(int), typeof(float),
                 typeof(float), typeof(float));
-
+            
             builder.UseMiddleware<PlayerConnectMiddleware>("OnPlayerConnect");
+            builder.UseMiddleware<PlayerDisconnectMiddleware>("OnPlayerDisconnect");
 
-            AddPlayerTarget(builder, "OnPlayerDisconnect"); // TODO: Destroy entity after disconnect
             AddPlayerTarget(builder, "OnPlayerSpawn");
             AddPlayerTarget(builder, "OnPlayerDeath");
             AddPlayerTarget(builder, "OnPlayerText");
@@ -114,7 +115,7 @@ namespace SampSharp.EntityComponentSystem.SAMP
             AddPlayerTarget(builder, "OnPlayerWeaponShot");
         }
 
-        private void AddPlayerTarget(IEcsBuilder builder, string callback)
+        private static void AddPlayerTarget(IEcsBuilder builder, string callback)
         {
             builder.UseMiddleware<EntityMiddleware>(callback, 0,
                 (Func<int, EntityId>) SampEntities.GetPlayerId, true, true, callback.Replace("OnPlayer", "On"));

@@ -43,6 +43,18 @@ namespace SampSharp.EntityComponentSystem.Entities
         /// </summary>
         public int Handle { get; }
 
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="EntityId"/> to <see cref="int"/>.
+        /// </summary>
+        /// <param name="entityId">The entity identifier.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
+        public static implicit operator int(EntityId entityId)
+        {
+            return entityId.Handle;
+        }
+
         public override string ToString()
         {
             return $"(Type = {Type}, Handle = {Handle})";

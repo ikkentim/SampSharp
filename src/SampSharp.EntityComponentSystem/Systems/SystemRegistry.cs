@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SampSharp.EntityComponentSystem.Systems
 {
@@ -34,6 +35,7 @@ namespace SampSharp.EntityComponentSystem.Systems
 
             if (typeof(IConfiguringSystem).IsAssignableFrom(type))
                 _configuringSystems.Add(type);
+
         }
 
         public IEnumerable<Type> ConfiguringSystems => _configuringSystems.AsReadOnly();

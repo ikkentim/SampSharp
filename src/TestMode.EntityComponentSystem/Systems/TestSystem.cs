@@ -1,20 +1,42 @@
 ﻿using System;
+using SampSharp.EntityComponentSystem;
 using SampSharp.EntityComponentSystem.Entities;
 using SampSharp.EntityComponentSystem.Events;
+using SampSharp.EntityComponentSystem.SAMP;
+using SampSharp.EntityComponentSystem.SAMP.Components;
+using SampSharp.EntityComponentSystem.SAMP.NativeComponents;
 using SampSharp.EntityComponentSystem.Systems;
-using TestMode.Ecs.Components;
-using TestMode.Ecs.Services;
+using TestMode.EntityComponentSystem.Components;
+using TestMode.EntityComponentSystem.Services;
 
-namespace TestMode.Ecs.Systems
+namespace TestMode.EntityComponentSystem.Systems
 {
+
     public class TestSystem : ISystem
     {
         [Event]
-        public void OnGameModeInit(IVehicleRepository vehiclesRepository) // Event methods have dependency injection alongside the arguments
+        public void OnGameModeInit(IVehicleRepository vehiclesRepository, IWorldService worldService) // Event methods have dependency injection alongside the arguments
         {
             Console.WriteLine("Do game mode loading goodies");
 
             vehiclesRepository.Foo();
+
+            worldService.CreateActor(101, new Vector3(0, 0, 20), 0);
+        }
+
+        [Event]
+        public void OnPlayerCommandText(Player player, string text, IWorldService worldService)
+        {
+            if (text == "/actor")
+            {
+                worldService.CreateActor(0, player.Position + Vector3.Up, 0);
+                player.SendClientMessage(-1, "Actor created!");
+            }
+
+            if (text == "/pos")
+            {
+                player.SendClientMessage(-1, $"You are at {player.Position}");
+            }
         }
 
         [Event]
@@ -22,23 +44,21 @@ namespace TestMode.Ecs.Systems
         {
             Console.WriteLine("I connected! " + player.Id);
 
-            vehiclesRepository.FooForPlayer(player);
-
             player.AddComponent<TestComponent>();
-
-            // TODO: Each entity will have a component with characteristics, eg, player with have a Player component:
-            // var playerComponent = player.GetComponent<Player>()
-            // playerComponent.SendClientMessage($"Hello {playerComponent.Name!}");
-            //
-            // In the parameters of an event you will be able to replace the entity type with an component of the entity, eg:
-            // OnPlayerConnect(Player player) { ... }
-            // which would simply get the component of the entity and put it in the argument of the event.
+            
+            vehiclesRepository.FooForPlayer(player);
         }
 
         [Event]
-        public void OnPlayerText(TestComponent compo, string text)
+        public void OnPlayerConnect(Player player)
         {
-            Console.WriteLine(compo.Hi + ":::" + text);
+            player.SendClientMessage($"Hey there, {player.Name}");
+        }
+
+        [Event]
+        public void OnPlayerText(TestComponent test, string text)
+        {
+            Console.WriteLine(test.WelcomingMessage + ":::" + text);
         }
     }
 }

@@ -46,7 +46,7 @@ namespace SampSharp.EntityComponentSystem.SAMP
         /// identifier provided by <paramref name="idBuilder" />.
         /// </param>
         /// <param name="componentName">The event name substitute used when invoking the event on a component.</param>
-        public EntityMiddleware(EventDelegate next, int index, Func<int, EntityId> idBuilder, bool isTarget,
+        public EntityMiddleware(EventDelegate next, int index, Func<int, EntityId> idBuilder, bool isTarget = false,
             bool isRequired = true, string componentName = null)
         {
             _next = next;

@@ -38,6 +38,7 @@ namespace SampSharp.Core.Natives.NativeObjects
             var asmName = new AssemblyName("ProxyAssembly");
             var asmBuilder = AssemblyBuilder.DefineDynamicAssembly(asmName, AssemblyBuilderAccess.Run);
             ModuleBuilder = asmBuilder.DefineDynamicModule(asmName.Name + ".dll");
+
         }
 
         /// <summary>
@@ -117,7 +118,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                             continue;
 
                         // Generate the method body.
-                        var gen = new NativeObjectILGenerator(native, type, identifiers, new Type[0], get.ReturnType);
+                        var gen = new NativeObjectILGenerator(native, type, identifiers, 0, new Type[0], get.ReturnType);
                         gen.Generate(methodBuilder.GetILGenerator());
 
                         wrapProperty.SetGetMethod(methodBuilder);
@@ -145,7 +146,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                             continue;
 
                         // Generate the method body.
-                        var gen = new NativeObjectILGenerator(native, type, identifiers, new[] { property.PropertyType }, typeof(void));
+                        var gen = new NativeObjectILGenerator(native, type, identifiers, 0, new[] { property.PropertyType }, typeof(void));
                         gen.Generate(methodBuilder.GetILGenerator());
 
                         wrapProperty.SetSetMethod(methodBuilder);
@@ -170,12 +171,17 @@ namespace SampSharp.Core.Natives.NativeObjects
                     var name = attr.Function ?? method.Name;
                     var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
                     var sizes = attr.Lengths;
+                    var idIndex = Math.Max(0, attr.IdentifiersIndex);
 
                     // Find the native.
-                    var native = InternalStorage.RunningClient.NativeLoader.Load(name, sizes,
-                        Enumerable.Repeat(typeof(int), attr.IgnoreIdentifiers ? 0 : objectIdentifiers.Length)
-                            .Concat(argTypes)
-                            .ToArray());
+                    var nativeArgTypes = !attr.IgnoreIdentifiers && objectIdentifiers.Length > 0
+                        ? argTypes.Take(idIndex)
+                            .Concat(Enumerable.Repeat(typeof(int), objectIdentifiers.Length))
+                            .Concat(argTypes.Skip(idIndex))
+                            .ToArray()
+                        : argTypes;
+
+                    var native = InternalStorage.RunningClient.NativeLoader.Load(name, sizes, nativeArgTypes);
 
                     if (native == null)
                         continue;
@@ -189,7 +195,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                     var il = methodBuilder.GetILGenerator();
 
                     var gen = new NativeObjectILGenerator(native, type,
-                        attr.IgnoreIdentifiers ? new string[0] : objectIdentifiers, argTypes,
+                        attr.IgnoreIdentifiers ? new string[0] : objectIdentifiers, idIndex, argTypes,
                         method.ReturnType);
                     gen.Generate(il);
 

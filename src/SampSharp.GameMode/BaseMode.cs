@@ -18,7 +18,6 @@ using System.Linq;
 using System.Reflection;
 using SampSharp.Core;
 using SampSharp.Core.Logging;
-using SampSharp.GameMode.API;
 using SampSharp.GameMode.Controllers;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.Tools;

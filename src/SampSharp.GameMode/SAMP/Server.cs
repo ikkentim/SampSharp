@@ -15,7 +15,6 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using SampSharp.GameMode.API;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP

@@ -121,17 +121,15 @@ namespace SampSharp.Core.Natives.NativeObjects
             for (var index = 0; index < ParameterTypes.Length; index++)
             {
                 var isByRef = ParameterTypes[index].IsByRef;
-                var type = isByRef
-                    ? ParameterTypes[index].GetElementType()
-                    : ParameterTypes[index];
+                
+                // If this parameter is of an output type no pass-trough is required; skip it.
+                if (isByRef)
+                    continue;
 
+                var type = ParameterTypes[index];
                 var argIndex = NativeArgIndexToMethodArgIndex(index);
 
                 if (argIndex < 0)
-                    continue;
-
-                // If this parameter is of an output type no pass-trough is required; skip it.
-                if (isByRef)
                     continue;
 
                 // Load the args array onto the stack.
@@ -187,14 +185,15 @@ namespace SampSharp.Core.Natives.NativeObjects
             for (var index = 0; index < ParameterTypes.Length; index++)
             {
                 var isByRef = ParameterTypes[index].IsByRef;
-                var type = isByRef
-                    ? ParameterTypes[index].GetElementType()
-                    : ParameterTypes[index];
 
+                if (!isByRef)
+                    continue;
+
+                var type = ParameterTypes[index].GetElementType();
                 var argIndex = NativeArgIndexToMethodArgIndex(index);
 
                 // If this parameter is not of an output or reference type no pass-back is required; skip it.
-                if (!isByRef || argIndex < 0)
+                if (argIndex < 0)
                     continue;
 
                 // Load the argument at the current parameter index onto the stack.

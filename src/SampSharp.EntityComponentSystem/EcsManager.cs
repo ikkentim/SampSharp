@@ -69,12 +69,17 @@ namespace SampSharp.EntityComponentSystem
 
         private void Configure(IServiceCollection services)
         {
+            // Core services
             services.AddSingleton<IEventService, EventService>();
             services.AddSingleton<ISystemRegistry, SystemRegistry>();
             services.AddSingleton<IEntityManager, EntityManager>();
 
+            // SAMP services
+            services.AddSingleton<IWorldService, WorldService>();
+            services.AddSingleton<WorldSystem>();
             services.AddSingleton<PlayerSystem>();
 
+            // User services
             _startup.Configure(services);
         }
 
@@ -88,7 +93,9 @@ namespace SampSharp.EntityComponentSystem
 
             var builder = new EcsBuilder(_serviceProvider);
 
+            // SAMP systems
             builder.UseSystem<PlayerSystem>();
+            builder.UseSystem<WorldSystem>();
 
             // Configure startup
             _startup.Configure(builder);

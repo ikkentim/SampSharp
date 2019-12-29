@@ -1,7 +1,7 @@
 ﻿using System;
 using SampSharp.EntityComponentSystem.Entities;
 
-namespace TestMode.Ecs.Services
+namespace TestMode.EntityComponentSystem.Services
 {
     public class VehicleRepository : IVehicleRepository
     {

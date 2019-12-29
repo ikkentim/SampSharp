@@ -60,6 +60,11 @@ namespace SampSharp.Core.Natives.NativeObjects
         public bool IgnoreIdentifiers { get; }
 
         /// <summary>
+        /// Gets the parameter index of the identifiers.
+        /// </summary>
+        public int IdentifiersIndex { get; set; }
+
+        /// <summary>
         ///     Gets the lengths of special arguments.
         /// </summary>
         public uint[] Lengths { get; }

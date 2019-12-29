@@ -14,7 +14,6 @@
 // limitations under the License.
 using System;
 using System.IO;
-using SampSharp.GameMode.API;
 
 namespace SampSharp.GameMode.Tools
 {

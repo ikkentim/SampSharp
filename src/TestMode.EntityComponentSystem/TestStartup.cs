@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using SampSharp.EntityComponentSystem;
-using TestMode.Ecs.Services;
-using TestMode.Ecs.Systems;
+using TestMode.EntityComponentSystem.Services;
+using TestMode.EntityComponentSystem.Systems;
 
-namespace TestMode.Ecs
+namespace TestMode.EntityComponentSystem
 {
     public class TestStartup : IStartup
     {
@@ -12,12 +12,15 @@ namespace TestMode.Ecs
         {
             // Load services (e.g. repositories), systems, etc.
             services.AddTransient<IVehicleRepository, VehicleRepository>();
+            services.AddTransient<IFunnyService, FunnyService>();
 
             services.AddSingleton<TestSystem>();
+            
         }
 
         public void Configure(IEcsBuilder builder)
         {
+            // Enable systems:
             builder.UseSystem<TestSystem>();
 
             // Load middlewares:
@@ -37,8 +40,4 @@ namespace TestMode.Ecs
             });
         }
     }
-
-    // TODO:
-    // Entities are hierarchical, each entity can have a parent. For example the player entity will be a child of a connection, A player object will be a child of a player.
-    // Destroying an entity will destroy all children.
 }

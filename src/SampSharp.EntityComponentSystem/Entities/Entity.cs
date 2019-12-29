@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.EntityComponentSystem.Components;
 
 namespace SampSharp.EntityComponentSystem.Entities
@@ -25,11 +26,13 @@ namespace SampSharp.EntityComponentSystem.Entities
     /// </summary>
     public sealed class Entity
     {
+        private readonly EntityManager _manager;
         private readonly List<Entity> _children = new List<Entity>();
         private readonly List<Component> _components = new List<Component>();
 
-        internal Entity(Entity parent, EntityId id)
+        internal Entity(EntityManager manager, Entity parent, EntityId id)
         {
+            _manager = manager;
             Parent = parent;
             Id = id;
 
@@ -47,6 +50,11 @@ namespace SampSharp.EntityComponentSystem.Entities
         public Entity Parent { get; private set; }
 
         /// <summary>
+        /// Gets the manager of this entity.
+        /// </summary>
+        public IEntityManager Manager => _manager;
+
+        /// <summary>
         /// Gets a collection of child entities of this entity.
         /// </summary>
         public IEnumerable<Entity> Children => _children.AsReadOnly();
@@ -55,32 +63,38 @@ namespace SampSharp.EntityComponentSystem.Entities
         /// Adds a new component of the specified type <typeparamref name="T" /> to this entity.
         /// </summary>
         /// <typeparam name="T">The type of the entity to add.</typeparam>
-        public void AddComponent<T>() where T : Component, new()
+        /// <returns>The added component.</returns>
+        public T AddComponent<T>() where T : Component, new()
         {
-            AddComponent(typeof(T));
+            return (T)AddComponent(typeof(T));
         }
 
         /// <summary>
         /// Adds a new component of the specified <paramref name="type" /> to this entity.
         /// </summary>
         /// <param name="type">The type of the component to add.</param>
+        /// <returns>The added component.</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is null.</exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the specified <paramref name="type" /> is not instantiable or is not a
         /// subclass of <see cref="Component" />.
         /// </exception>
-        public void AddComponent(Type type)
+        public object AddComponent(Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
             if (!typeof(Component).IsAssignableFrom(type) || !type.IsClass || type.IsAbstract)
                 throw new ArgumentException("The type must be a subtype of Component", nameof(type));
 
-            var component = (Component) Activator.CreateInstance(type);
+            var component = typeof(NativeComponent).IsAssignableFrom(type)
+                ? (Component) NativeObjectProxyFactory.CreateInstance(type)
+                : (Component) Activator.CreateInstance(type);
             component.Entity = this;
 
             _components.Add(component);
 
             component.InitializeComponent();
+
+            return component;
         }
 
         /// <summary>
@@ -177,15 +191,19 @@ namespace SampSharp.EntityComponentSystem.Entities
 
             Parent?.GetComponentsInCurrentAndParent(result);
         }
-
+        
         internal void Destroy()
         {
+            if (_components != null)
+            {
+                foreach (var component in _components) component.DestroyComponent();
+                _components.Clear();
+            }
+
             Parent?._children.Remove(this);
             Parent = null;
 
-            foreach (var component in _components) component.DestroyComponent();
-
-            _components.Clear();
+            _manager.Remove(this);
         }
 
         public override string ToString()

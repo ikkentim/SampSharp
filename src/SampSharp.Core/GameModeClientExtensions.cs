@@ -56,12 +56,14 @@ namespace SampSharp.Core
         /// <param name="name">The name af the callback to register.</param>
         /// <param name="target">The target on which to invoke the method.</param>
         /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
+        /// <param name="parameterTypes">The types of the parameters of the callback.</param>
         public static void RegisterCallback(this IGameModeClient gameModeClient, string name, object target, MethodInfo methodInfo, Type[] parameterTypes)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (target == null) throw new ArgumentNullException(nameof(target));
             if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
-            
+            if (parameterTypes == null) throw new ArgumentNullException(nameof(parameterTypes));
+
             var parameters = new CallbackParameterInfo[parameterTypes.Length];
 
             for (var i = 0; i < parameters.Length; i++)

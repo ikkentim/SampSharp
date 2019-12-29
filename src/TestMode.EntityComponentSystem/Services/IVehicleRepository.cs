@@ -1,6 +1,6 @@
 ﻿using SampSharp.EntityComponentSystem.Entities;
 
-namespace TestMode.Ecs.Services
+namespace TestMode.EntityComponentSystem.Services
 {
     public interface IVehicleRepository
     {

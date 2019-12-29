@@ -15,6 +15,8 @@
 
 using SampSharp.EntityComponentSystem.Entities;
 using SampSharp.EntityComponentSystem.Events;
+using SampSharp.EntityComponentSystem.SAMP.Components;
+using SampSharp.EntityComponentSystem.SAMP.NativeComponents;
 
 namespace SampSharp.EntityComponentSystem.SAMP
 {
@@ -33,7 +35,12 @@ namespace SampSharp.EntityComponentSystem.SAMP
         public object Invoke(EventContext context, IEntityManager entityManager)
         {
             // TODO: Parenting to connection
-            context.Arguments[0] = entityManager.Create(null, SampEntities.GetPlayerId((int) context.Arguments[0]));
+            var entity = entityManager.Create(null, SampEntities.GetPlayerId((int) context.Arguments[0]));
+
+            entity.AddComponent<NativePlayer>();
+            entity.AddComponent<Player>();
+
+            context.Arguments[0] = entity;
             context.TargetArgumentIndex = 0;
             context.ComponentTargetName = "OnConnect";
 

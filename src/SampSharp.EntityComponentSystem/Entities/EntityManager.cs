@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using SampSharp.Core.Logging;
 
 namespace SampSharp.EntityComponentSystem.Entities
 {
@@ -22,19 +23,20 @@ namespace SampSharp.EntityComponentSystem.Entities
     /// Represents the entity manager.
     /// </summary>
     /// <seealso cref="SampSharp.EntityComponentSystem.Entities.IEntityManager" />
-    public class EntityManager : IEntityManager
+    public sealed class EntityManager : IEntityManager
     {
         private readonly Dictionary<EntityId, Entity> _entities = new Dictionary<EntityId, Entity>();
 
         public Entity Create(Entity parent, EntityId id)
         {
-            var entity = new Entity(parent, id);
+            var entity = new Entity(this, parent, id);
 
             if (_entities.ContainsKey(id))
                 throw new EntityCreationException($"Duplicate identity {id} in entities container.");
 
             _entities.Add(id, entity);
-
+            
+            CoreLog.LogVerbose("Entity added, {0} entities in registry.", _entities.Count);
             return entity;
         }
 
@@ -43,13 +45,28 @@ namespace SampSharp.EntityComponentSystem.Entities
             _entities.TryGetValue(id, out var entity);
             return entity;
         }
-
+        
         public void Destroy(Entity entity)
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
 
-            entity.Destroy();
-            _entities.Remove(entity.Id);
+            if (_entities.Remove(entity.Id))
+            {
+                entity.Destroy();
+
+                CoreLog.LogVerbose("Entity removed, {0} entities remaining.", _entities.Count);
+            }
+
+        }
+
+        internal void Remove(Entity entity)
+        {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
+            if (_entities.Remove(entity.Id))
+            {
+                CoreLog.LogVerbose("Entity removed, {0} entities remaining.", _entities.Count);
+            }
         }
     }
 }

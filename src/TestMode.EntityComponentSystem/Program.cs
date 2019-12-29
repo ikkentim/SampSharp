@@ -2,7 +2,7 @@
 using SampSharp.Core.Logging;
 using SampSharp.EntityComponentSystem;
 
-namespace TestMode.Ecs
+namespace TestMode.EntityComponentSystem
 {
 	class Program
 	{

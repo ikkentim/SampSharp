@@ -1,20 +1,20 @@
 ﻿using System;
 using SampSharp.EntityComponentSystem.Components;
 using SampSharp.EntityComponentSystem.Events;
-using TestMode.Ecs.Services;
+using TestMode.EntityComponentSystem.Services;
 
-namespace TestMode.Ecs.Components
+namespace TestMode.EntityComponentSystem.Components
 {
     public class TestComponent : Component
     {
-        public string Hi => $"Hi, {Entity}";
+        public string WelcomingMessage => $"WelcomingMessage, {Entity}";
 
         [Event]
-        public void OnText(string text, IVehicleRepository vehicleRepository)
+        public bool OnText(string text, IFunnyService funny)
         {
-            Console.WriteLine("Player send text!!!!!! from component!!!!! " + Hi + ":::" + text);
+            Console.WriteLine($"Player {funny.MakePlayerNameFunny(Entity)} said " + text);
 
-            vehicleRepository.FooForPlayer(Entity);
+            return true;
         }
     }
 }

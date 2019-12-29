@@ -1,4 +1,4 @@
-﻿namespace GameMode.Definitions
+﻿namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
     /// Contains the reasons a player could disconnect.

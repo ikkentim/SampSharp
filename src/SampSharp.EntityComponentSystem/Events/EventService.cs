@@ -256,7 +256,7 @@ namespace SampSharp.EntityComponentSystem.Events
 
             return args =>
             {
-                context.Arguments = args;
+                context.SetArguments(args);
                 context.SetEventServices(_serviceProvider); // TODO: Should I scope it?
 
                 return _events.TryGetValue(name, out var evt)
@@ -399,7 +399,6 @@ namespace SampSharp.EntityComponentSystem.Events
         private class SystemEvent
         {
             public Func<object, EventContext, object> Call;
-            public Func<object, EventContext, int, object> CallWithSkip;
             public MethodInfo Method;
             public Type[] ParameterTypes;
         }
