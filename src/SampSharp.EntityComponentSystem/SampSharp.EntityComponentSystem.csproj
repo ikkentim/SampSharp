@@ -1,7 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageIconUrl>https://github.com/ikkentim/SampSharp/raw/master/sampsharp.png</PackageIconUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/ikkentim/SampSharp/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ikkentim/SampSharp</PackageProjectUrl>
+    <PackageId>SampSharp.EntityComponentSystem</PackageId>
+    <Title>SampSharp Entities</Title>
+    <Description>An EntityComponentSystem framework for SampSharp.</Description>
+    <Product>SampSharp.EntityComponentSystem</Product>
+    <Company>Tim Potze</Company>
+    <Authors>Tim Potze</Authors>
+    <Copyright>Tim Potze</Copyright>
+    <Version>0.0.0-localbuild</Version>
+    <AssemblyVersion>0.0.0</AssemblyVersion>
+    <PackageReleaseNotes>placeholder</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
