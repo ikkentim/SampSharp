@@ -13,14 +13,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Diagnostics.CodeAnalysis;
 using SampSharp.Core.Natives.NativeObjects;
 
 #pragma warning disable 1591
 
 namespace SampSharp.EntityComponentSystem.SAMP.NativeComponents
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class NativePickup : BaseNativeComponent
     {
         [NativeMethod]

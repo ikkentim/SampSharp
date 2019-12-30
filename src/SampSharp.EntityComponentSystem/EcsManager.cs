@@ -20,6 +20,7 @@ using SampSharp.Core.Logging;
 using SampSharp.EntityComponentSystem.Entities;
 using SampSharp.EntityComponentSystem.Events;
 using SampSharp.EntityComponentSystem.SAMP;
+using SampSharp.EntityComponentSystem.SAMP.Systems;
 using SampSharp.EntityComponentSystem.Systems;
 
 namespace SampSharp.EntityComponentSystem

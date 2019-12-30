@@ -16,14 +16,12 @@
 using System;
 using SampSharp.EntityComponentSystem.Entities;
 using SampSharp.EntityComponentSystem.Events;
+using SampSharp.EntityComponentSystem.SAMP.Middleware;
 using SampSharp.EntityComponentSystem.Systems;
 
-namespace SampSharp.EntityComponentSystem.SAMP
+namespace SampSharp.EntityComponentSystem.SAMP.Systems
 {
-    /// <summary>
-    /// Represents a system which provides actor functionality.
-    /// </summary>
-    public class ActorSystem : IConfiguringSystem
+    internal class ActorSystem : IConfiguringSystem
     {
         private readonly IEventService _eventService;
 

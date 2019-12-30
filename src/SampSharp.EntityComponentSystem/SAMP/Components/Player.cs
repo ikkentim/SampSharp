@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using SampSharp.EntityComponentSystem.Components;
 using SampSharp.EntityComponentSystem.Definitions;
@@ -23,7 +22,9 @@ using SampSharp.EntityComponentSystem.SAMP.NativeComponents;
 
 namespace SampSharp.EntityComponentSystem.SAMP.Components
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    /// <summary>
+    /// Represents a component which provides the data and functionality of a player.
+    /// </summary>
     public class Player : Component
     {
         #region Players properties
@@ -644,7 +645,7 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         }
 
         /// <summary>
-        /// Checks if the specified <paramref name="player"/> is streamed in this player's client.
+        /// Checks if the specified <paramref name="player" /> is streamed in this player's client.
         /// </summary>
         /// <remarks>
         /// Players aren't streamed in on their own client, so if this player is the same as the other Player, it will return
@@ -892,7 +893,7 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         /// <summary>
         /// Loads or unloads an interior script for this player. (for example the Ammunation menu)
         /// </summary>
-        /// <param name="shopName">The name of the shop, see <see cref="ShopName"/> for shop names.</param>
+        /// <param name="shopName">The name of the shop, see <see cref="ShopName" /> for shop names.</param>
         public virtual void SetShopName(string shopName)
         {
             GetComponent<NativePlayer>().SetPlayerShopName(shopName);
@@ -1067,7 +1068,8 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         /// <param name="freeze">Will freeze the player in position after the animation finishes.</param>
         /// <param name="time">Timer in milliseconds. For a never ending loop it should be 0.</param>
         /// <param name="forceSync">Set to <c>true</c> to force the player to sync animation with other players in all instances</param>
-        public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX,
+        public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop,
+            bool lockX,
             bool lockY, bool freeze, int time, bool forceSync)
         {
             GetComponent<NativePlayer>()
@@ -1091,7 +1093,8 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         /// </param>
         /// <param name="freeze">Will freeze the player in position after the animation finishes.</param>
         /// <param name="time">Timer in milliseconds. For a never ending loop it should be 0.</param>
-        public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop, bool lockX,
+        public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop,
+            bool lockX,
             bool lockY, bool freeze, int time)
         {
             GetComponent<NativePlayer>()
@@ -1123,7 +1126,8 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         /// <returns>True on success, False otherwise.</returns>
         public virtual bool GetAnimationName(out string animationLibrary, out string animationName)
         {
-            return GetComponent<NativePlayer>().GetAnimationName(AnimationIndex, out animationLibrary, 64, out animationName, 64);
+            return GetComponent<NativePlayer>()
+                .GetAnimationName(AnimationIndex, out animationLibrary, 64, out animationName, 64);
         }
 
         /// <summary>
@@ -1436,7 +1440,9 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         }
 
         /// <summary>
-        /// Ban this player. The ban will be IP-based, and be saved in the samp.ban file in the server's root directory. <see cref="Ban(string)" /> allows you to ban with a reason, while you can ban and unban IPs using the RCON banip and unbanip commands.
+        /// Ban this player. The ban will be IP-based, and be saved in the samp.ban file in the server's root directory.
+        /// <see cref="Ban(string)" /> allows you to ban with a reason, while you can ban and unban IPs using the RCON banip and
+        /// unbanip commands.
         /// </summary>
         public virtual void Ban()
         {
@@ -1453,7 +1459,8 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         }
 
         /// <summary>
-        /// This function sends a message to this player with a chosen color in the chat. The whole line in the chatbox will be in the set color unless color embedding is used.
+        /// This function sends a message to this player with a chosen color in the chat. The whole line in the chatbox will be in
+        /// the set color unless color embedding is used.
         /// </summary>
         /// <param name="color">The color of the message.</param>
         /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
@@ -1464,7 +1471,8 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         }
 
         /// <summary>
-        /// This function sends a message to this player in white in the chat. The whole line in the chat box will be in the set color unless color embedding is used.
+        /// This function sends a message to this player in white in the chat. The whole line in the chat box will be in the set
+        /// color unless color embedding is used.
         /// </summary>
         /// <param name="message">The text that will be displayed.</param>
         public virtual void SendClientMessage(string message)
@@ -1473,7 +1481,8 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         }
 
         /// <summary>
-        /// This function sends a message to this player in white in the chat. The whole line in the chat box will be in the set color unless color embedding is used.
+        /// This function sends a message to this player in white in the chat. The whole line in the chat box will be in the set
+        /// color unless color embedding is used.
         /// </summary>
         /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
@@ -1535,6 +1544,48 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
             GetComponent<NativePlayer>()
                 .SendDeathMessageToPlayer(killer?.Id ?? NativePlayer.InvalidId, killee?.Id ?? NativePlayer.InvalidId,
                     (int) weapon);
+        }
+        
+        /// <summary>
+        ///     Attaches a player's camera to an object.
+        /// </summary>
+        /// <param name="object">The object to attach the camera to.</param>
+        public virtual void AttachCameraToObject(Entity @object)
+        {
+            if (@object == null)
+            {
+                throw new ArgumentNullException(nameof(@object));
+            }
+
+            GetComponent<NativePlayer>().AttachCameraToObject(@object.Id);
+
+            GetComponent<NativePlayer>().AttachCameraToPlayerObject(@object.GetComponent<NativePlayerObject>().Id);
+        }
+        
+        /// <summary>
+        ///     Lets this player edit the specified <paramref name="object"/>.
+        /// </summary>
+        /// <param name="object">The object to edit.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="object"/> is null.</exception>
+        public virtual void Edit(Entity @object)
+        {
+            if (@object == null)
+                throw new ArgumentNullException(nameof(@object));
+            
+            if (@object.GetComponent<NativeObject>() != null)
+                GetComponent<NativePlayer>().EditObject(@object.Id);
+            else if (@object.GetComponent<NativePlayerObject>() != null)
+                GetComponent<NativePlayer>().EditPlayerObject(@object.GetComponent<NativePlayerObject>().Id); // Need just the player object component of the handle.
+            else
+                throw new ArgumentException("Target must be of type object or player object", nameof(@object));
+        }
+
+        /// <summary>
+        ///     Lets this player select an object.
+        /// </summary>
+        public void Select()
+        {
+            GetComponent<NativePlayer>().SelectObject();
         }
 
         #endregion

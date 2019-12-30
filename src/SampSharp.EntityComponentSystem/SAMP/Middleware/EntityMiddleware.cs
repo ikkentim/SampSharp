@@ -17,7 +17,7 @@ using System;
 using SampSharp.EntityComponentSystem.Entities;
 using SampSharp.EntityComponentSystem.Events;
 
-namespace SampSharp.EntityComponentSystem.SAMP
+namespace SampSharp.EntityComponentSystem.SAMP.Middleware
 {
     /// <summary>
     /// Represents a middleware which replaces an entity id with an entity in the arguments of an event.

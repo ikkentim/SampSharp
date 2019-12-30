@@ -21,7 +21,6 @@ using SampSharp.Core.Natives.NativeObjects;
 namespace SampSharp.EntityComponentSystem.SAMP.NativeComponents
 {
     [SuppressMessage("ReSharper", "IdentifierTypo")]
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class NativeGangZone : BaseNativeComponent
     {
         [NativeMethod]
@@ -31,7 +30,7 @@ namespace SampSharp.EntityComponentSystem.SAMP.NativeComponents
         }
 
         [NativeMethod(IdentifiersIndex = 1)]
-        protected virtual bool GangZoneShowForPlayer(int playerid, int color)
+        public virtual bool GangZoneShowForPlayer(int playerid, int color)
         {
             throw new NativeNotImplementedException();
         }

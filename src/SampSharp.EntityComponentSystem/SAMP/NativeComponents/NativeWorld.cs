@@ -20,10 +20,10 @@ using SampSharp.EntityComponentSystem.Components;
 
 namespace SampSharp.EntityComponentSystem.SAMP.NativeComponents
 {
-    public class NativeWorld : NativeComponent
+    internal class NativeWorld : NativeComponent
     {
         [NativeMethod]
-        public virtual int CreateActor(int modelid, float x, float y, float z, float rotation)
+        public virtual int CreateActor(int modelId, float x, float y, float z, float rotation)
         {
             throw new NativeNotImplementedException();
         }

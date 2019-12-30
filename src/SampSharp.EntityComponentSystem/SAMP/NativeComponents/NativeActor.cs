@@ -21,7 +21,6 @@ using SampSharp.Core.Natives.NativeObjects;
 namespace SampSharp.EntityComponentSystem.SAMP.NativeComponents
 {
     [SuppressMessage("ReSharper", "IdentifierTypo")]
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class NativeActor : BaseNativeComponent
     {
         /// <summary>

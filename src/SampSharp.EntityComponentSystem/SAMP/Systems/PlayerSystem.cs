@@ -16,14 +16,12 @@
 using System;
 using SampSharp.EntityComponentSystem.Entities;
 using SampSharp.EntityComponentSystem.Events;
+using SampSharp.EntityComponentSystem.SAMP.Middleware;
 using SampSharp.EntityComponentSystem.Systems;
 
-namespace SampSharp.EntityComponentSystem.SAMP
+namespace SampSharp.EntityComponentSystem.SAMP.Systems
 {
-    /// <summary>
-    /// Represents a system which provides player functionality.
-    /// </summary>
-    public class PlayerSystem : IConfiguringSystem
+    internal class PlayerSystem : IConfiguringSystem
     {
         private readonly IEventService _eventService;
 
@@ -32,7 +30,6 @@ namespace SampSharp.EntityComponentSystem.SAMP
             _eventService = eventService;
         }
 
-        /// <inheritdoc />
         public void Configure(IEcsBuilder builder)
         {
             _eventService.Load("OnPlayerConnect", typeof(int));

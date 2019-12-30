@@ -21,7 +21,6 @@ using SampSharp.Core.Natives.NativeObjects;
 namespace SampSharp.EntityComponentSystem.SAMP.NativeComponents
 {
     [SuppressMessage("ReSharper", "IdentifierTypo")]
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class NativePlayer : BaseNativeComponent
@@ -862,6 +861,12 @@ namespace SampSharp.EntityComponentSystem.SAMP.NativeComponents
 
         [NativeMethod]
         public virtual bool EditObject(int objectid)
+        {
+            throw new NativeNotImplementedException();
+        }
+        
+        [NativeMethod]
+        public virtual bool EditPlayerObject(int objectid)
         {
             throw new NativeNotImplementedException();
         }

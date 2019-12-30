@@ -1,17 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// SampSharp
+// Copyright 2019 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using SampSharp.EntityComponentSystem.Components;
 using SampSharp.EntityComponentSystem.Entities;
 using SampSharp.EntityComponentSystem.SAMP.NativeComponents;
 
 namespace SampSharp.EntityComponentSystem.SAMP.Components
 {
+    /// <summary>
+    /// Represents a component which provides the data and functionality of an actor.
+    /// </summary>
     public class Actor : Component
     {
-        
         /// <summary>
-        ///     Gets the facing angle of this actor.
+        /// Gets the facing angle of this actor.
         /// </summary>
         public float FacingAngle
         {
@@ -24,13 +39,12 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         }
 
         /// <summary>
-        ///     Gets the health of this actor.
+        /// Gets the health of this actor.
         /// </summary>
         public float Health
         {
             get
             {
-
                 GetComponent<NativeActor>().GetActorHealth(out var health);
                 return health;
             }
@@ -38,7 +52,7 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether this actor is invulnerable.
+        /// Gets or sets a value indicating whether this actor is invulnerable.
         /// </summary>
         public bool IsInvulnerable
         {
@@ -47,7 +61,7 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         }
 
         /// <summary>
-        ///     Gets or sets the virtual world of this actor.
+        /// Gets or sets the virtual world of this actor.
         /// </summary>
         public int VirtualWorld
         {
@@ -58,7 +72,7 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         #region Implementation of IWorldObject
 
         /// <summary>
-        ///     Gets the position of this actor.
+        /// Gets the position of this actor.
         /// </summary>
         public Vector3 Position
         {
@@ -73,7 +87,7 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         #endregion
 
         /// <summary>
-        ///     Determines whether this actor is streamed in for the specified <paramref name="player" />.
+        /// Determines whether this actor is streamed in for the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <returns>True if streamed in; False otherwise.</returns>
@@ -86,7 +100,7 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         }
 
         /// <summary>
-        ///     Applies the specified animation to this actor.
+        /// Applies the specified animation to this actor.
         /// </summary>
         /// <param name="library">The animation library from which to apply an animation.</param>
         /// <param name="name">The name of the animation to apply, within the specified library.</param>
@@ -96,7 +110,10 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         /// <param name="lockY">if set to <c>true</c> allow this Actor to move it's y-coordinate.</param>
         /// <param name="freeze">if set to <c>true</c> freeze this Actor at the end of the animation.</param>
         /// <param name="time">The amount of time (in milliseconds) to play the animation.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="library"/> or <paramref name="name"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// Thrown if <paramref name="library" /> or <paramref name="name" /> is
+        /// null.
+        /// </exception>
         public void ApplyAnimation(string library, string name, float fDelta, bool loop, bool lockX, bool lockY,
             bool freeze, int time)
         {
@@ -106,13 +123,14 @@ namespace SampSharp.EntityComponentSystem.SAMP.Components
         }
 
         /// <summary>
-        ///     Clear any animations applied to this actor.
+        /// Clear any animations applied to this actor.
         /// </summary>
         public void ClearAnimations()
         {
             GetComponent<NativeActor>().ClearActorAnimations();
         }
 
+        /// <inheritdoc />
         protected override void OnDestroyComponent()
         {
             GetComponent<NativeActor>().DestroyActor();

@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Diagnostics.CodeAnalysis;
 using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.EntityComponentSystem.Components;
 
@@ -21,7 +20,6 @@ using SampSharp.EntityComponentSystem.Components;
 
 namespace SampSharp.EntityComponentSystem.SAMP.NativeComponents
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     [NativeObjectIdentifiers("PlayerId", "Id")]
     public class NativePlayerTextLabel : NativeComponent
     {

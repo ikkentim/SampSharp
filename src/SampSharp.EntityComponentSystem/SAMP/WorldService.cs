@@ -1,6 +1,7 @@
 ﻿using SampSharp.EntityComponentSystem.Entities;
 using SampSharp.EntityComponentSystem.SAMP.Components;
 using SampSharp.EntityComponentSystem.SAMP.NativeComponents;
+using SampSharp.EntityComponentSystem.SAMP.Systems;
 
 namespace SampSharp.EntityComponentSystem.SAMP
 {

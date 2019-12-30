@@ -15,6 +15,9 @@
 
 namespace SampSharp.EntityComponentSystem.SAMP
 {
+    /// <summary>
+    /// Contains limits of SA:MP.
+    /// </summary>
     public static class SampLimits
     {
         /// <summary>

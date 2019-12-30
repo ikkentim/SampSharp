@@ -15,36 +15,34 @@
 
 using SampSharp.EntityComponentSystem.Entities;
 using SampSharp.EntityComponentSystem.Events;
-using SampSharp.EntityComponentSystem.SAMP.Components;
-using SampSharp.EntityComponentSystem.SAMP.NativeComponents;
 
-namespace SampSharp.EntityComponentSystem.SAMP
+namespace SampSharp.EntityComponentSystem.SAMP.Middleware
 {
-    /// <summary>
-    /// Represents a middleware for OnPlayerConnect.
-    /// </summary>
-    public class PlayerConnectMiddleware
+    internal class PlayerDisconnectMiddleware
     {
         private readonly EventDelegate _next;
 
-        public PlayerConnectMiddleware(EventDelegate next)
+        public PlayerDisconnectMiddleware(EventDelegate next)
         {
             _next = next;
         }
 
         public object Invoke(EventContext context, IEntityManager entityManager)
         {
-            // TODO: Parenting to connection
-            var entity = entityManager.Create(null, SampEntities.GetPlayerId((int) context.Arguments[0]));
+            var entity = entityManager.Get(SampEntities.GetPlayerId((int) context.Arguments[0]));
 
-            entity.AddComponent<NativePlayer>();
-            entity.AddComponent<Player>();
+            if (entity == null)
+                return null;
 
             context.Arguments[0] = entity;
             context.TargetArgumentIndex = 0;
-            context.ComponentTargetName = "OnConnect";
+            context.ComponentTargetName = "OnDisconnect";
 
-            return _next(context);
+            var result = _next(context);
+
+            entityManager.Destroy(entity);
+
+            return result;
         }
     }
 }
