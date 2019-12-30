@@ -652,7 +652,7 @@ namespace SampSharp.GameMode.World
         {
             AssertNotDisposed();
             GetRotationQuat(out var x, out var y, out var z, out var w);
-            return new Quaternion(x, y, y, w);
+            return new Quaternion(x, y, z, w);
         }
 
         /// <summary>
