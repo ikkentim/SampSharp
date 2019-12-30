@@ -2261,7 +2261,7 @@ SAMPGDK_API(cell, sampgdk_InvokeNativeArray(AMX_NATIVE native,
 /* #include "native.h" */
 /* #include "log.h" */
 
-#define _SAMPGDK_NATIVE_MAX_ARGS     32
+#define _SAMPGDK_NATIVE_MAX_ARGS     64
 #define _SAMPGDK_NATIVE_MAX_ARGS_SIZE 8  /* in bytes */
 
 static struct sampgdk_array _sampgdk_natives;
