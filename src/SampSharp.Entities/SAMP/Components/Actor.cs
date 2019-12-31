@@ -67,8 +67,6 @@ namespace SampSharp.Entities.SAMP.Components
             set => GetComponent<NativeActor>().SetActorVirtualWorld(value);
         }
 
-        #region Implementation of IWorldObject
-
         /// <summary>
         /// Gets the position of this actor.
         /// </summary>
@@ -81,8 +79,6 @@ namespace SampSharp.Entities.SAMP.Components
             }
             set => GetComponent<NativeActor>().SetActorPos(value.X, value.Y, value.Z);
         }
-
-        #endregion
 
         /// <summary>
         /// Determines whether this actor is streamed in for the specified <paramref name="player" />.

@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using SampSharp.Entities.Events;
 using SampSharp.Entities.SAMP.Middleware;
 
@@ -25,17 +24,11 @@ namespace SampSharp.Entities.SAMP.Systems
         {
             builder.EnableEvent<int, int>("OnActorStreamIn");
             builder.EnableEvent<int, int>("OnActorStreamOut");
-            
-            builder.UseMiddleware<EntityMiddleware>("OnActorStreamIn", 0, (Func<int, EntityId>) SampEntities.GetActorId, true);
-            builder.UseMiddleware<EntityMiddleware>("OnActorStreamIn", 1, (Func<int, EntityId>) SampEntities.GetPlayerId);
-            builder.UseMiddleware<EntityMiddleware>("OnActorStreamOut", 0, (Func<int, EntityId>) SampEntities.GetActorId, true);
-            builder.UseMiddleware<EntityMiddleware>("OnActorStreamOut", 1, (Func<int, EntityId>) SampEntities.GetPlayerId);
-        }
 
-        [Event]
-        public void OnPlayerGiveDamageActor(Entity player, int damagedActorId, float amount, int weaponid, int bodypart)
-        {
-            // TODO fire new event for actors
+            builder.UseMiddleware<EntityMiddleware>("OnActorStreamIn", 0, SampEntities.ActorType, true);
+            builder.UseMiddleware<EntityMiddleware>("OnActorStreamIn", 1, SampEntities.PlayerType, true);
+            builder.UseMiddleware<EntityMiddleware>("OnActorStreamOut", 0, SampEntities.ActorType, true);
+            builder.UseMiddleware<EntityMiddleware>("OnActorStreamOut", 1, SampEntities.PlayerType, true);
         }
     }
 }

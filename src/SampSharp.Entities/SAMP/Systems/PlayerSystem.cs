@@ -62,9 +62,7 @@ namespace SampSharp.Entities.SAMP.Systems
             builder.UseMiddleware<PlayerConnectMiddleware>("OnPlayerConnect");
             builder.UseMiddleware<PlayerDisconnectMiddleware>("OnPlayerDisconnect");
 
-            void AddPlayerTarget(string callback) =>
-                builder.UseMiddleware<EntityMiddleware>(callback, 0, (Func<int, EntityId>) SampEntities.GetPlayerId, true);
-
+            void AddPlayerTarget(string callback) => builder.UseMiddleware<EntityMiddleware>(callback, 0, SampEntities.PlayerType, true);
             AddPlayerTarget("OnPlayerSpawn");
             AddPlayerTarget("OnPlayerDeath");
             AddPlayerTarget("OnPlayerText");
@@ -99,7 +97,5 @@ namespace SampSharp.Entities.SAMP.Systems
             AddPlayerTarget("OnPlayerSelectObject");
             AddPlayerTarget("OnPlayerWeaponShot");
         }
-
-
     }
 }
