@@ -92,8 +92,6 @@ namespace SampSharp.Entities.Events
 
         private object InvokeEventInternal(EventContext context)
         {
-            CoreLog.LogDebug($"InvokeEventInternal: {context.Name}({string.Join(", ", context.Arguments)})");
-
             object result = null;
 
             if (context.Name == null || !_events.TryGetValue(context.Name, out var evt)) return null;

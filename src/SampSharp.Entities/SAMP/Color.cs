@@ -1033,22 +1033,22 @@ namespace SampSharp.Entities.SAMP
         #region Properties
 
         /// <summary>
-        ///     Gets the red value of this Color.
+        ///     Gets or sets the red value of this Color.
         /// </summary>
         public byte R { get; set; }
 
         /// <summary>
-        ///     Gets the green value of this Color.
+        ///     Gets or sets the green value of this Color.
         /// </summary>
         public byte G { get; set; }
 
         /// <summary>
-        ///     Gets the blue value of this Color.
+        ///     Gets or sets the blue value of this Color.
         /// </summary>
         public byte B { get; set; }
 
         /// <summary>
-        ///     Gets the alpha value of this Color.
+        ///     Gets or sets the alpha value of this Color.
         /// </summary>
         public byte A { get; set; }
 

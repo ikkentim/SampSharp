@@ -18,6 +18,7 @@ using SampSharp.Entities;
 using SampSharp.Entities.Events;
 using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Components;
+using SampSharp.Entities.SAMP.Definitions;
 using TestMode.Entities.Components;
 using TestMode.Entities.Services;
 
@@ -25,16 +26,33 @@ namespace TestMode.Entities.Systems
 {
     public class TestSystem : ISystem
     {
+        private GangZone _zone;
+
         [Event]
-        public void
-            OnGameModeInit(IVehicleRepository vehiclesRepository,
-                IWorldService worldService) // Event methods have dependency injection alongside the arguments
+        public void  OnGameModeInit(IVehicleRepository vehiclesRepository,  IWorldService worldService) 
         {
-            Console.WriteLine("Do game mode loading goodies");
+            // Event methods have dependency injection alongside the arguments
+
+            Console.WriteLine("Do game mode loading goodies...");
 
             vehiclesRepository.Foo();
 
             worldService.CreateActor(101, new Vector3(0, 0, 20), 0);
+
+            var blue = Color.Blue;
+            blue.A = 128;
+            _zone = worldService.CreateGangZone(0, 0, 100, 100);
+            _zone.Color = blue;
+            _zone.Show();
+
+            var obj = worldService.CreateObject((int) ObjectModel.A51GateconA, new Vector3(10, 10, 40), Vector3.Zero, 1000);
+            obj.DisableCameraCollisions();
+
+            worldService.CreateVehicle(VehicleModelType.Alpha, new Vector3(40, 40, 10), 0, 0, 0);
+
+            var green = Color.Green;
+            green.A = 128;
+            worldService.CreateTextLabel("text", green, new Vector3(10, 10, 10), 1000);
         }
 
         [Event]
@@ -56,6 +74,7 @@ namespace TestMode.Entities.Systems
 
             player.AddComponent<TestComponent>();
 
+            _zone.Show(player);
             vehiclesRepository.FooForPlayer(player);
         }
 

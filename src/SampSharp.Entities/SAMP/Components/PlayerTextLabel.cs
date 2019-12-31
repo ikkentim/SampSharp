@@ -7,8 +7,6 @@ namespace SampSharp.Entities.SAMP.Components
     /// </summary>
     public class PlayerTextLabel : Component
     {
-        #region Properties
-
         /// <summary>
         ///     Gets the color of this player text label.
         /// </summary>
@@ -30,6 +28,11 @@ namespace SampSharp.Entities.SAMP.Components
         public virtual float DrawDistance { get; }
 
         /// <summary>
+        /// Gets the virtual world.
+        /// </summary>
+        public int VirtualWorld { get; }
+
+        /// <summary>
         ///     Gets a value indicating whether to test the line of sight.
         /// </summary>
         public virtual bool TestLos { get; }
@@ -39,22 +42,16 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         public virtual Entity AttachedEntity { get; }
 
-        #endregion
-
-        #region Constructors
-
-        public PlayerTextLabel(Entity attachedEntity, string text, Color color, Vector3 position, float drawDistance,
-            bool testLos)
+        public PlayerTextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld, bool testLos, Entity attachedEntity)
         {
-            AttachedEntity = attachedEntity;
             Text = text;
             Color = color;
             Position = position;
             DrawDistance = drawDistance;
+            VirtualWorld = virtualWorld;
             TestLos = testLos;
+            AttachedEntity = attachedEntity;
         }
-
-        #endregion
 
         /// <inheritdoc />
         protected override void OnDestroyComponent()

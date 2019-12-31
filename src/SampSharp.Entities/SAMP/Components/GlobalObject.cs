@@ -24,8 +24,6 @@ namespace SampSharp.Entities.SAMP.Components
     /// </summary>
     public class GlobalObject : Component
     {
-        #region Constructor
-
         /// <summary>
         /// Initializes a new instance of the <see cref="GlobalObject" /> class.
         /// </summary>
@@ -34,16 +32,6 @@ namespace SampSharp.Entities.SAMP.Components
         {
             DrawDistance = drawDistance;
         }
-
-        #endregion
-
-        /// <inheritdoc />
-        protected override void OnDestroyComponent()
-        {
-            GetComponent<NativeObject>().DestroyObject();
-        }
-
-        #region Properties
 
         /// <summary>
         /// Gets the rotation of this object.
@@ -86,9 +74,11 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         public virtual float DrawDistance { get; }
 
-        #endregion
-
-        #region Methods
+        /// <inheritdoc />
+        protected override void OnDestroyComponent()
+        {
+            GetComponent<NativeObject>().DestroyObject();
+        }
 
         /// <summary>
         /// Moves this object to the given position and rotation with the given speed.
@@ -203,7 +193,5 @@ namespace SampSharp.Entities.SAMP.Components
             else
                 throw new ArgumentException("Target must be an object, player or vehicle.", nameof(target));
         }
-
-        #endregion
     }
 }
