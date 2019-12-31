@@ -27,11 +27,6 @@ namespace SampSharp.Entities.Events
 
         public override object[] Arguments => _arguments;
 
-        public override int TargetArgumentIndex { get; set; } = -1;
-        public override string ComponentTargetName { get; set; }
-        public override object ArgumentsSubstitute { get; set; }
-
-
         public override IServiceProvider EventServices => _eventServices;
 
         public void SetArguments(object[] arguments)

@@ -33,22 +33,6 @@ namespace SampSharp.Entities.Events
         public abstract object[] Arguments { get; }
 
         /// <summary>
-        /// Gets or sets the index of the argument which indicates the target (subject) entity of the event. The event will be
-        /// invoked on components of the target entity.
-        /// </summary>
-        public abstract int TargetArgumentIndex { get; set; }
-
-        /// <summary>
-        /// Gets or sets the event name substitute used when invoking the event on a component.
-        /// </summary>
-        public abstract string ComponentTargetName { get; set; }
-
-        /// <summary>
-        /// Gets or sets an object which can be used by event listeners as a single argument instead of all the arguments.
-        /// </summary>
-        public abstract object ArgumentsSubstitute { get; set; }
-
-        /// <summary>
         /// Gets the service provider which can be used for providing services for events.
         /// </summary>
         public abstract IServiceProvider EventServices { get; }

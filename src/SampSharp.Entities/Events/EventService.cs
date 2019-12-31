@@ -51,6 +51,10 @@ namespace SampSharp.Entities.Events
         private readonly IGameModeClient _gameModeClient;
         private readonly IServiceProvider _serviceProvider;
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventService"/> class.
+        /// </summary>
         public EventService(IGameModeClient gameModeClient, IServiceProvider serviceProvider)
         {
             _gameModeClient = gameModeClient;
@@ -59,6 +63,8 @@ namespace SampSharp.Entities.Events
             Scanner();
         }
 
+
+        /// <inheritdoc />
         public void EnableEvent(string name, Type[] parameters)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -72,6 +78,7 @@ namespace SampSharp.Entities.Events
             if (!_events.ContainsKey(name)) _events[name] = new Event();
         }
 
+        /// <inheritdoc />
         public void UseMiddleware(string name, Func<EventDelegate, EventDelegate> middleware)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -89,33 +96,16 @@ namespace SampSharp.Entities.Events
 
             object result = null;
 
-            if (context.Name != null && _events.TryGetValue(context.Name, out var evt))
-                foreach (var sysEvt in evt.SystemEvents)
-                {
-                    var system = _serviceProvider.GetService(sysEvt.Method.DeclaringType);
+            if (context.Name == null || !_events.TryGetValue(context.Name, out var evt)) return null;
 
-                    if (system == null)
-                        continue;
-
-                    result = sysEvt.Call(system, context) ?? result;
-                }
-
-            if (context.ComponentTargetName != null && _events.TryGetValue(context.ComponentTargetName, out var evt2))
+            foreach (var sysEvt in evt.Events)
             {
-                foreach (var sysEvt in evt2.ComponentEvents)
-                {
-                    var target = context.TargetArgumentIndex >= 0 &&
-                                 context.TargetArgumentIndex < context.Arguments.Length
-                        ? context.Arguments[context.TargetArgumentIndex]
-                        : null;
+                var system = _serviceProvider.GetService(sysEvt.Method.DeclaringType);
 
-                    if (target == null)
-                        continue;
+                if (system == null)
+                    continue;
 
-                    result = sysEvt.Call(target, context) ?? result;
-                }
-
-                return result;
+                result = sysEvt.Call(system, context) ?? result;
             }
 
             return null;
@@ -151,8 +141,7 @@ namespace SampSharp.Entities.Events
             // Find eligible methods in system implementations
             var events = assemblies
                 .SelectMany(a => a.GetTypes())
-                .Where(t => t.IsClass && !t.IsAbstract &&
-                            (typeof(ISystem).IsAssignableFrom(t) || typeof(Component).IsAssignableFrom(t)))
+                .Where(t => t.IsClass && !t.IsAbstract && typeof(ISystem).IsAssignableFrom(t))
                 .SelectMany(t => t.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
                 .Select(m => (method: m, attribute: m.GetCustomAttribute<EventAttribute>()))
                 .Where(x => x.attribute != null);
@@ -199,42 +188,20 @@ namespace SampSharp.Entities.Events
                     }
                 }
 
+                var caller = CompileForSystem(method, parameters, parameterInfos);
 
-                if (typeof(ISystem).IsAssignableFrom(method.DeclaringType))
+                var entry = new SystemEvent
                 {
-                    var caller = CompileForSystem(method, parameters, parameterInfos);
-
-                    var entry = new SystemEvent
+                    Method = method,
+                    ParameterTypes = parameterTypes.ToArray(),
+                    Call = (instance, eventContext) =>
                     {
-                        Method = method,
-                        ParameterTypes = parameterTypes.ToArray(),
-                        Call = (instance, eventContext) =>
-                        {
-                            // TODO: Check parameters match types?
-                            return caller(instance, eventContext.Arguments, eventContext);
-                        }
-                    };
+                        // TODO: Check parameters match types?
+                        return caller(instance, eventContext.Arguments, eventContext);
+                    }
+                };
 
-                    evt.SystemEvents.Add(entry);
-                }
-                else
-                {
-                    var callerWithSkip = CompileForComponent(method, parameters, parameterInfos);
-
-                    var entry = new SystemEvent
-                    {
-                        Method = method,
-                        ParameterTypes = parameterTypes.ToArray(),
-                        Call = (instance, eventContext) =>
-                        {
-                            // TODO: Check parameters match types?
-                            return callerWithSkip(instance, eventContext.Arguments, eventContext,
-                                eventContext.TargetArgumentIndex);
-                        }
-                    };
-
-                    evt.ComponentEvents.Add(entry);
-                }
+                evt.Events.Add(entry);
             }
         }
 
@@ -262,9 +229,8 @@ namespace SampSharp.Entities.Events
             };
         }
 
-        private static (Expression, ParameterExpression, ParameterExpression, ParameterExpression, ParameterExpression)
-            CompileBody(MethodInfo methodInfo,
-                ParameterInfo[] parameters, SystemEventParameter[] parameterInfos, bool componentLevel)
+        private static Func<object, object[], EventContext, object> CompileForSystem(MethodInfo methodInfo,
+            ParameterInfo[] parameters, SystemEventParameter[] parameterInfos)
         {
             if (methodInfo.DeclaringType == null)
                 throw new ArgumentException("Method must have declaring type", nameof(methodInfo));
@@ -273,7 +239,6 @@ namespace SampSharp.Entities.Events
             var instanceArg = Expression.Parameter(typeof(object), "instance");
             var argsArg = Expression.Parameter(typeof(object[]), "args");
             var eventContextArg = Expression.Parameter(typeof(EventContext), "eventContext");
-            var skipArg = componentLevel ? Expression.Parameter(typeof(int), "skip") : null;
 
             var methodArguments = new Expression[parameters.Length];
             for (var i = 0; i < parameters.Length; i++)
@@ -285,12 +250,8 @@ namespace SampSharp.Entities.Events
                 {
                     // Get component from entity
                     Expression index = Expression.Constant(parameterInfos[i].ParameterIndex);
-                    if (componentLevel)
-                        index = Expression.Condition(Expression.GreaterThanOrEqual(index, skipArg),
-                            Expression.Constant(parameterInfos[i].ParameterIndex + 1), index);
 
-                    Expression getValue =
-                        Expression.ArrayIndex(argsArg, index);
+                    Expression getValue = Expression.ArrayIndex(argsArg, index);
                     getValue = Expression.Convert(getValue, typeof(Entity));
                     methodArguments[i] = Expression.Call(getValue,
                         GetComponentInfo.MakeGenericMethod(parameterInfos[i].ComponentType));
@@ -306,53 +267,18 @@ namespace SampSharp.Entities.Events
                 {
                     // Pass through
                     Expression index = Expression.Constant(parameterInfos[i].ParameterIndex);
-                    if (componentLevel)
-                        index = Expression.Condition(Expression.GreaterThanOrEqual(index, skipArg),
-                            Expression.Constant(parameterInfos[i].ParameterIndex + 1), index);
 
-                    var getValue =
-                        Expression.ArrayIndex(argsArg, index);
+                    var getValue = Expression.ArrayIndex(argsArg, index);
                     methodArguments[i] = Expression.Convert(getValue, parameterType);
                 }
             }
 
-            Expression body;
-            if (componentLevel)
-            {
-                var nullValue = Expression.Constant(null);
-
-                var entity = Expression.Convert(instanceArg, typeof(Entity));
-                var entityIsNull = Expression.Equal(entity, nullValue);
-
-                var component = Expression.Condition(entityIsNull,
-                    Expression.Convert(nullValue, methodInfo.DeclaringType),
-                    Expression.Call(entity, GetComponentInfo.MakeGenericMethod(methodInfo.DeclaringType)));
-                var componentIsNull = Expression.Equal(component, nullValue);
-
-                body = methodInfo.ReturnType == typeof(void)
-                    ? (Expression) Expression.Call(component, methodInfo, methodArguments)
-                    : Expression.Condition(componentIsNull, Expression.Convert(nullValue, methodInfo.ReturnType),
-                        Expression.Call(component, methodInfo, methodArguments));
-            }
-            else
-            {
-                var service = Expression.Convert(instanceArg, methodInfo.DeclaringType);
-                body = Expression.Call(service, methodInfo, methodArguments);
-            }
-
+            var service = Expression.Convert(instanceArg, methodInfo.DeclaringType);
+            Expression body = Expression.Call(service, methodInfo, methodArguments);
 
             if (body.Type == typeof(void))
                 body = Expression.Block(body, Expression.Constant(null));
             else if (body.Type != typeof(object)) body = Expression.Convert(body, typeof(object));
-
-            return (body, instanceArg, argsArg, eventContextArg, skipArg);
-        }
-
-        private static Func<object, object[], EventContext, object> CompileForSystem(MethodInfo methodInfo,
-            ParameterInfo[] parameters, SystemEventParameter[] parameterInfos)
-        {
-            var (body, instanceArg, argsArg, eventContextArg, _) =
-                CompileBody(methodInfo, parameters, parameterInfos, false);
 
             var lambda =
                 Expression.Lambda<Func<object, object[], EventContext, object>>(body, instanceArg, argsArg,
@@ -361,36 +287,18 @@ namespace SampSharp.Entities.Events
             return lambda.Compile();
         }
 
-        private static Func<object, object[], EventContext, int, object> CompileForComponent(MethodInfo methodInfo,
-            ParameterInfo[] parameters, SystemEventParameter[] parameterInfos)
-        {
-            var (body, instanceArg, argsArg, eventContextArg, skipArg) =
-                CompileBody(methodInfo, parameters, parameterInfos, true);
-
-            var lambda =
-                Expression.Lambda<Func<object, object[], EventContext, int, object>>(body, instanceArg, argsArg,
-                    eventContextArg, skipArg);
-
-            return lambda.Compile();
-        }
-
         private static object GetService(EventContext eventContext, Type type)
         {
-            if (eventContext.ArgumentsSubstitute != null && type.IsInstanceOfType(eventContext.ArgumentsSubstitute))
-                return eventContext.ArgumentsSubstitute;
-
             var service = eventContext.EventServices.GetService(type);
             return service ?? throw new InvalidOperationException();
         }
 
         private class Event
         {
-            public readonly List<SystemEvent> ComponentEvents = new List<SystemEvent>();
-
             public readonly List<Func<EventDelegate, EventDelegate>> Middleware =
                 new List<Func<EventDelegate, EventDelegate>>();
 
-            public readonly List<SystemEvent> SystemEvents = new List<SystemEvent>();
+            public readonly List<SystemEvent> Events = new List<SystemEvent>();
         }
 
         private class SystemEvent
