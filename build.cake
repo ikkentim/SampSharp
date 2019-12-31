@@ -3,7 +3,7 @@
 var build = new SharpBuild(Context, "ikkentim", "SampSharp",
     "SampSharp.Core",
     "SampSharp.GameMode",
-    "SampSharp.EntityComponentSystem");
+    "SampSharp.Entities");
 
 Task("Clean")
     .Does(() => build.Clean());

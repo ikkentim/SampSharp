@@ -24,14 +24,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6B10DCD1
 		build.ps1 = build.ps1
 		build.sh = build.sh
 		CHANGES-SampSharp.Core.md = CHANGES-SampSharp.Core.md
+		CHANGES-SampSharp.Entities.md = CHANGES-SampSharp.Entities.md
 		CHANGES-SampSharp.GameMode.md = CHANGES-SampSharp.GameMode.md
 		premake4.lua = premake4.lua
 		env\server.cfg = env\server.cfg
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampSharp.EntityComponentSystem", "src\SampSharp.EntityComponentSystem\SampSharp.EntityComponentSystem.csproj", "{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampSharp.Entities", "src\SampSharp.Entities\SampSharp.Entities.csproj", "{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMode.EntityComponentSystem", "src\TestMode.EntityComponentSystem\TestMode.EntityComponentSystem.csproj", "{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMode.Entities", "src\TestMode.Entities\TestMode.Entities.csproj", "{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
