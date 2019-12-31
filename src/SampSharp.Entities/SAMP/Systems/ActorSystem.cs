@@ -26,9 +26,9 @@ namespace SampSharp.Entities.SAMP.Systems
             builder.EnableEvent<int, int>("OnActorStreamIn");
             builder.EnableEvent<int, int>("OnActorStreamOut");
             
-            builder.UseMiddleware<EntityMiddleware>("OnActorStreamIn", 0, (Func<int, EntityId>) SampEntities.GetActorId, true, true, "OnStreamIn");
+            builder.UseMiddleware<EntityMiddleware>("OnActorStreamIn", 0, (Func<int, EntityId>) SampEntities.GetActorId, true);
             builder.UseMiddleware<EntityMiddleware>("OnActorStreamIn", 1, (Func<int, EntityId>) SampEntities.GetPlayerId);
-            builder.UseMiddleware<EntityMiddleware>("OnActorStreamOut", 0, (Func<int, EntityId>) SampEntities.GetActorId, true, true, "OnStreamOut");
+            builder.UseMiddleware<EntityMiddleware>("OnActorStreamOut", 0, (Func<int, EntityId>) SampEntities.GetActorId, true);
             builder.UseMiddleware<EntityMiddleware>("OnActorStreamOut", 1, (Func<int, EntityId>) SampEntities.GetPlayerId);
         }
 

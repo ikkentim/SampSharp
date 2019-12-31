@@ -23,11 +23,9 @@ namespace SampSharp.Entities.SAMP.Middleware
     /// </summary>
     public class EntityMiddleware
     {
-        private readonly string _componentName;
         private readonly Func<int, EntityId> _idBuilder;
         private readonly int _index;
         private readonly bool _isRequired;
-        private readonly bool _isTarget;
         private readonly EventDelegate _next;
 
         /// <summary>
@@ -39,21 +37,16 @@ namespace SampSharp.Entities.SAMP.Middleware
         /// A function which returns an <see cref="EntityId" /> based on the integer value provided in the
         /// parameter of the event.
         /// </param>
-        /// <param name="isTarget">If set to <c>true</c>, the parameter is marked as the identifier target entity.</param>
         /// <param name="isRequired">
         /// If set to <c>true</c>, the event will be canceled if no entity could be found with the entity
         /// identifier provided by <paramref name="idBuilder" />.
         /// </param>
-        /// <param name="componentName">The event name substitute used when invoking the event on a component.</param>
-        public EntityMiddleware(EventDelegate next, int index, Func<int, EntityId> idBuilder, bool isTarget = false,
-            bool isRequired = true, string componentName = null)
+        public EntityMiddleware(EventDelegate next, int index, Func<int, EntityId> idBuilder, bool isRequired = true)
         {
             _next = next;
             _index = index;
             _idBuilder = idBuilder;
-            _isTarget = isTarget;
             _isRequired = isRequired;
-            _componentName = componentName;
         }
 
         public object Invoke(EventContext context, IEntityManager entityManager)
@@ -64,12 +57,6 @@ namespace SampSharp.Entities.SAMP.Middleware
                 return null;
 
             context.Arguments[_index] = entity;
-
-            if (_isTarget)
-                context.TargetArgumentIndex = _index;
-
-            if (_componentName != null)
-                context.ComponentTargetName = _componentName;
 
             return _next(context);
         }

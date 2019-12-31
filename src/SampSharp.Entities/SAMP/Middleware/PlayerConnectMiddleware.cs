@@ -37,8 +37,6 @@ namespace SampSharp.Entities.SAMP.Middleware
             entity.AddComponent<Player>();
 
             context.Arguments[0] = entity;
-            context.TargetArgumentIndex = 0;
-            context.ComponentTargetName = "OnConnect";
 
             return _next(context);
         }

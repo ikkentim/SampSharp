@@ -63,8 +63,7 @@ namespace SampSharp.Entities.SAMP.Systems
             builder.UseMiddleware<PlayerDisconnectMiddleware>("OnPlayerDisconnect");
 
             void AddPlayerTarget(string callback) =>
-                builder.UseMiddleware<EntityMiddleware>(callback, 0,
-                    (Func<int, EntityId>) SampEntities.GetPlayerId, true, true, callback.Replace("OnPlayer", "On"));
+                builder.UseMiddleware<EntityMiddleware>(callback, 0, (Func<int, EntityId>) SampEntities.GetPlayerId, true);
 
             AddPlayerTarget("OnPlayerSpawn");
             AddPlayerTarget("OnPlayerDeath");

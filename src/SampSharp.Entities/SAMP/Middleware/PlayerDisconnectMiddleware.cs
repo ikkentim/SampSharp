@@ -34,8 +34,6 @@ namespace SampSharp.Entities.SAMP.Middleware
                 return null;
 
             context.Arguments[0] = entity;
-            context.TargetArgumentIndex = 0;
-            context.ComponentTargetName = "OnDisconnect";
 
             var result = _next(context);
 
