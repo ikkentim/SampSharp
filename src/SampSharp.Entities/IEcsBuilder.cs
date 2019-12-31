@@ -34,7 +34,7 @@ namespace SampSharp.Entities
         /// <param name="name">The name of the event.</param>
         /// <param name="middleware">The middleware to add to the event.</param>
         /// <returns>The builder.</returns>
-        IEcsBuilder Use(string name, Func<EventDelegate, EventDelegate> middleware);
+        IEcsBuilder UseMiddleware(string name, Func<EventDelegate, EventDelegate> middleware);
 
         /// <summary>
         /// Adds the system with the specified <paramref name="systemType" />.
@@ -42,5 +42,13 @@ namespace SampSharp.Entities
         /// <param name="systemType">Type of the system.</param>
         /// <returns>The builder.</returns>
         IEcsBuilder UseSystem(Type systemType);
+        
+        /// <summary>
+        /// Enables handling of the callback with the specified <paramref name="name" /> as an event.
+        /// </summary>
+        /// <param name="name">The name of the callback.</param>
+        /// <param name="parameters">The types of the parameters of the callback.</param>
+        /// <returns>The builder.</returns>
+        IEcsBuilder EnableEvent(string name, params Type[] parameters);
     }
 }

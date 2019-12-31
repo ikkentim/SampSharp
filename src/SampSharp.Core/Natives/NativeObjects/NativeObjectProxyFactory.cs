@@ -65,6 +65,14 @@ namespace SampSharp.Core.Natives.NativeObjects
                 // Check already known types.
                 if (KnownTypes.TryGetValue(type, out var outType))
                     return Activator.CreateInstance(outType, arguments);
+                
+                if(type == null)
+                    throw new ArgumentNullException(nameof(type));
+
+                if (!type.GetTypeInfo().IsPublic)
+                {
+                    throw new ArgumentException($"Type {type} is not public. Native proxies can only be created for public types.", nameof(type));
+                }
 
                 // Define a type for the native object.
                 var typeBuilder = ModuleBuilder.DefineType(type.Name + "ProxyClass",

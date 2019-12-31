@@ -25,13 +25,13 @@ namespace TestMode.Entities
 
             // Load middlewares:
             // Can also be loaded by systems which are IConfiguringSystem
-            builder.Use("OnGameModeInit", (ctx, next) =>
+            builder.UseMiddleware("OnGameModeInit", (ctx, next) =>
             {
                 Console.WriteLine("I am middleware for OnGameModeInit!");
                 return next();
             });
             
-            builder.Use("OnPlayerText", (ctx, next) =>
+            builder.UseMiddleware("OnPlayerText", (ctx, next) =>
             {
                 // Having to access arguments by an indexed array isn't ideal, might work towards a dictionary structure.
                 if (ctx.Arguments[1] is string txt && txt.Contains("I dislike SampSharp"))

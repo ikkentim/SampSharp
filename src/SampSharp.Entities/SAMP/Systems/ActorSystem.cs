@@ -21,17 +21,10 @@ namespace SampSharp.Entities.SAMP.Systems
 {
     internal class ActorSystem : IConfiguringSystem
     {
-        private readonly IEventService _eventService;
-
-        public ActorSystem(IEventService eventService)
-        {
-            _eventService = eventService;
-        }
-
         public void Configure(IEcsBuilder builder)
         {
-            _eventService.Load("OnActorStreamIn", typeof(int), typeof(int));
-            _eventService.Load("OnActorStreamOut", typeof(int), typeof(int));
+            builder.EnableEvent<int, int>("OnActorStreamIn");
+            builder.EnableEvent<int, int>("OnActorStreamOut");
             
             builder.UseMiddleware<EntityMiddleware>("OnActorStreamIn", 0, (Func<int, EntityId>) SampEntities.GetActorId, true, true, "OnStreamIn");
             builder.UseMiddleware<EntityMiddleware>("OnActorStreamIn", 1, (Func<int, EntityId>) SampEntities.GetPlayerId);

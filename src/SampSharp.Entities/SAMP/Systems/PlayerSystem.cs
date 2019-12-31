@@ -21,99 +21,86 @@ namespace SampSharp.Entities.SAMP.Systems
 {
     internal class PlayerSystem : IConfiguringSystem
     {
-        private readonly IEventService _eventService;
-
-        public PlayerSystem(IEventService eventService)
-        {
-            _eventService = eventService;
-        }
-
         public void Configure(IEcsBuilder builder)
         {
-            _eventService.Load("OnPlayerConnect", typeof(int));
-            _eventService.Load("OnPlayerDisconnect", typeof(int), typeof(int));
-            _eventService.Load("OnPlayerSpawn", typeof(int));
-            _eventService.Load("OnPlayerDeath", typeof(int), typeof(int), typeof(int));
-            _eventService.Load("OnPlayerText", typeof(int), typeof(string));
-            _eventService.Load("OnPlayerCommandText", typeof(int), typeof(string));
-            _eventService.Load("OnPlayerRequestClass", typeof(int), typeof(int));
-            _eventService.Load("OnPlayerEnterVehicle", typeof(int), typeof(int), typeof(bool));
-            _eventService.Load("OnPlayerExitVehicle", typeof(int), typeof(int));
-            _eventService.Load("OnPlayerStateChange", typeof(int), typeof(int), typeof(int));
-            _eventService.Load("OnPlayerEnterCheckpoint", typeof(int));
-            _eventService.Load("OnPlayerLeaveCheckpoint", typeof(int));
-            _eventService.Load("OnPlayerEnterRaceCheckpoint", typeof(int));
-            _eventService.Load("OnPlayerLeaveRaceCheckpoint", typeof(int));
-            _eventService.Load("OnPlayerRequestSpawn", typeof(int));
-            _eventService.Load("OnPlayerObjectMoved", typeof(int), typeof(int));
-            _eventService.Load("OnPlayerPickUpPickup", typeof(int), typeof(int));
-            _eventService.Load("OnPlayerSelectedMenuRow", typeof(int), typeof(int));
-            _eventService.Load("OnPlayerExitedMenu", typeof(int));
-            _eventService.Load("OnPlayerInteriorChange", typeof(int), typeof(int), typeof(int));
-            _eventService.Load("OnPlayerKeyStateChange", typeof(int), typeof(int), typeof(int));
-            _eventService.Load("OnPlayerUpdate", typeof(int));
-            _eventService.Load("OnPlayerStreamIn", typeof(int), typeof(int));
-            _eventService.Load("OnPlayerStreamOut", typeof(int), typeof(int));
-            _eventService.Load("OnPlayerTakeDamage", typeof(int), typeof(int), typeof(float), typeof(int), typeof(int));
-            _eventService.Load("OnPlayerGiveDamage", typeof(int), typeof(int), typeof(float), typeof(int), typeof(int));
-            _eventService.Load("OnPlayerGiveDamageActor", typeof(int), typeof(int), typeof(float), typeof(int),
-                typeof(int));
-            _eventService.Load("OnPlayerClickMap", typeof(int), typeof(float), typeof(float), typeof(float));
-            _eventService.Load("OnPlayerClickTextDraw", typeof(int), typeof(int));
-            _eventService.Load("OnPlayerClickPlayerTextDraw", typeof(int), typeof(int));
-            _eventService.Load("OnPlayerClickPlayer", typeof(int), typeof(int), typeof(int));
-            _eventService.Load("OnPlayerEditObject", typeof(int), typeof(bool), typeof(int), typeof(int), typeof(float),
-                typeof(float), typeof(float), typeof(float), typeof(float), typeof(float));
-            _eventService.Load("OnPlayerEditAttachedObject", typeof(int), typeof(int), typeof(int), typeof(int),
-                typeof(int), typeof(float), typeof(float), typeof(float), typeof(float), typeof(float), typeof(float),
-                typeof(float), typeof(float), typeof(float));
-            _eventService.Load("OnPlayerSelectObject", typeof(int), typeof(int), typeof(int), typeof(int),
-                typeof(float), typeof(float), typeof(float));
-            _eventService.Load("OnPlayerWeaponShot", typeof(int), typeof(int), typeof(int), typeof(int), typeof(float),
-                typeof(float), typeof(float));
+            builder.EnableEvent<int>("OnPlayerConnect");
+            builder.EnableEvent<int, int>("OnPlayerDisconnect");
+            builder.EnableEvent<int>("OnPlayerSpawn");
+            builder.EnableEvent<int, int, int>("OnPlayerDeath");
+            builder.EnableEvent<int, string>("OnPlayerText");
+            builder.EnableEvent<int, string>("OnPlayerCommandText");
+            builder.EnableEvent<int, int>("OnPlayerRequestClass");
+            builder.EnableEvent<int, int, bool>("OnPlayerEnterVehicle");
+            builder.EnableEvent<int, int>("OnPlayerExitVehicle");
+            builder.EnableEvent<int, int, int>("OnPlayerStateChange");
+            builder.EnableEvent<int>("OnPlayerEnterCheckpoint");
+            builder.EnableEvent<int>("OnPlayerLeaveCheckpoint");
+            builder.EnableEvent<int>("OnPlayerEnterRaceCheckpoint");
+            builder.EnableEvent<int>("OnPlayerLeaveRaceCheckpoint");
+            builder.EnableEvent<int>("OnPlayerRequestSpawn");
+            builder.EnableEvent<int, int>("OnPlayerObjectMoved");
+            builder.EnableEvent<int, int>("OnPlayerPickUpPickup");
+            builder.EnableEvent<int, int>("OnPlayerSelectedMenuRow");
+            builder.EnableEvent<int>("OnPlayerExitedMenu");
+            builder.EnableEvent<int, int, int>("OnPlayerInteriorChange");
+            builder.EnableEvent<int, int, int>("OnPlayerKeyStateChange");
+            builder.EnableEvent<int>("OnPlayerUpdate");
+            builder.EnableEvent<int, int>("OnPlayerStreamIn");
+            builder.EnableEvent<int, int>("OnPlayerStreamOut");
+            builder.EnableEvent<int, int, float, int, int>("OnPlayerTakeDamage");
+            builder.EnableEvent<int, int, float, int, int>("OnPlayerGiveDamage");
+            builder.EnableEvent<int, int, float, int, int>("OnPlayerGiveDamageActor");
+            builder.EnableEvent<int, float, float, float>("OnPlayerClickMap");
+            builder.EnableEvent<int, int>("OnPlayerClickTextDraw");
+            builder.EnableEvent<int, int>("OnPlayerClickPlayerTextDraw");
+            builder.EnableEvent<int, int, int>("OnPlayerClickPlayer");
+            builder.EnableEvent<int, bool, int, int, float, float, float, float, float, float>("OnPlayerEditObject");
+            builder.EnableEvent<int, int, int, int, int, float, float, float, float, float, float, float, float, float>("OnPlayerEditAttachedObject");
+            builder.EnableEvent<int, int, int, int, float, float, float>("OnPlayerSelectObject");
+            builder.EnableEvent<int, int, int, int, float, float, float>("OnPlayerWeaponShot");
             
             builder.UseMiddleware<PlayerConnectMiddleware>("OnPlayerConnect");
             builder.UseMiddleware<PlayerDisconnectMiddleware>("OnPlayerDisconnect");
 
-            AddPlayerTarget(builder, "OnPlayerSpawn");
-            AddPlayerTarget(builder, "OnPlayerDeath");
-            AddPlayerTarget(builder, "OnPlayerText");
-            AddPlayerTarget(builder, "OnPlayerCommandText");
-            AddPlayerTarget(builder, "OnPlayerRequestClass");
-            AddPlayerTarget(builder, "OnPlayerEnterVehicle");
-            AddPlayerTarget(builder, "OnPlayerExitVehicle");
-            AddPlayerTarget(builder, "OnPlayerStateChange");
-            AddPlayerTarget(builder, "OnPlayerEnterCheckpoint");
-            AddPlayerTarget(builder, "OnPlayerLeaveCheckpoint");
-            AddPlayerTarget(builder, "OnPlayerEnterRaceCheckpoint");
-            AddPlayerTarget(builder, "OnPlayerLeaveRaceCheckpoint");
-            AddPlayerTarget(builder, "OnPlayerRequestSpawn");
-            AddPlayerTarget(builder, "OnPlayerObjectMoved");
-            AddPlayerTarget(builder, "OnPlayerPickUpPickup");
-            AddPlayerTarget(builder, "OnPlayerSelectedMenuRow");
-            AddPlayerTarget(builder, "OnPlayerExitedMenu");
-            AddPlayerTarget(builder, "OnPlayerInteriorChange");
-            AddPlayerTarget(builder, "OnPlayerKeyStateChange");
-            AddPlayerTarget(builder, "OnPlayerUpdate");
-            AddPlayerTarget(builder, "OnPlayerStreamIn");
-            AddPlayerTarget(builder, "OnPlayerStreamOut");
-            AddPlayerTarget(builder, "OnPlayerTakeDamage");
-            AddPlayerTarget(builder, "OnPlayerGiveDamage");
-            AddPlayerTarget(builder, "OnPlayerGiveDamageActor");
-            AddPlayerTarget(builder, "OnPlayerClickMap");
-            AddPlayerTarget(builder, "OnPlayerClickTextDraw");
-            AddPlayerTarget(builder, "OnPlayerClickPlayerTextDraw");
-            AddPlayerTarget(builder, "OnPlayerClickPlayer");
-            AddPlayerTarget(builder, "OnPlayerEditObject");
-            AddPlayerTarget(builder, "OnPlayerEditAttachedObject");
-            AddPlayerTarget(builder, "OnPlayerSelectObject");
-            AddPlayerTarget(builder, "OnPlayerWeaponShot");
+            void AddPlayerTarget(string callback) =>
+                builder.UseMiddleware<EntityMiddleware>(callback, 0,
+                    (Func<int, EntityId>) SampEntities.GetPlayerId, true, true, callback.Replace("OnPlayer", "On"));
+
+            AddPlayerTarget("OnPlayerSpawn");
+            AddPlayerTarget("OnPlayerDeath");
+            AddPlayerTarget("OnPlayerText");
+            AddPlayerTarget("OnPlayerCommandText");
+            AddPlayerTarget("OnPlayerRequestClass");
+            AddPlayerTarget("OnPlayerEnterVehicle");
+            AddPlayerTarget("OnPlayerExitVehicle");
+            AddPlayerTarget("OnPlayerStateChange");
+            AddPlayerTarget("OnPlayerEnterCheckpoint");
+            AddPlayerTarget("OnPlayerLeaveCheckpoint");
+            AddPlayerTarget("OnPlayerEnterRaceCheckpoint");
+            AddPlayerTarget("OnPlayerLeaveRaceCheckpoint");
+            AddPlayerTarget("OnPlayerRequestSpawn");
+            AddPlayerTarget("OnPlayerObjectMoved");
+            AddPlayerTarget("OnPlayerPickUpPickup");
+            AddPlayerTarget("OnPlayerSelectedMenuRow");
+            AddPlayerTarget("OnPlayerExitedMenu");
+            AddPlayerTarget("OnPlayerInteriorChange");
+            AddPlayerTarget("OnPlayerKeyStateChange");
+            AddPlayerTarget("OnPlayerUpdate");
+            AddPlayerTarget("OnPlayerStreamIn");
+            AddPlayerTarget("OnPlayerStreamOut");
+            AddPlayerTarget("OnPlayerTakeDamage");
+            AddPlayerTarget("OnPlayerGiveDamage");
+            AddPlayerTarget("OnPlayerGiveDamageActor");
+            AddPlayerTarget("OnPlayerClickMap");
+            AddPlayerTarget("OnPlayerClickTextDraw");
+            AddPlayerTarget("OnPlayerClickPlayerTextDraw");
+            AddPlayerTarget("OnPlayerClickPlayer");
+            AddPlayerTarget("OnPlayerEditObject");
+            AddPlayerTarget("OnPlayerEditAttachedObject");
+            AddPlayerTarget("OnPlayerSelectObject");
+            AddPlayerTarget("OnPlayerWeaponShot");
         }
 
-        private static void AddPlayerTarget(IEcsBuilder builder, string callback)
-        {
-            builder.UseMiddleware<EntityMiddleware>(callback, 0,
-                (Func<int, EntityId>) SampEntities.GetPlayerId, true, true, callback.Replace("OnPlayer", "On"));
-        }
+
     }
 }

@@ -27,13 +27,13 @@ namespace SampSharp.Entities.Events
         /// </summary>
         /// <param name="name">The name of the callback.</param>
         /// <param name="parameters">The types of the parameters of the callback.</param>
-        void Load(string name, params Type[] parameters);
+        void EnableEvent(string name, params Type[] parameters);
 
         /// <summary>
         /// Adds a middleware to the handler of the event with the specified <paramref name="name" />.
         /// </summary>
         /// <param name="name">The name of the event.</param>
         /// <param name="middleware">The middleware to add to the event.</param>
-        void Use(string name, Func<EventDelegate, EventDelegate> middleware);
+        void UseMiddleware(string name, Func<EventDelegate, EventDelegate> middleware);
     }
 }

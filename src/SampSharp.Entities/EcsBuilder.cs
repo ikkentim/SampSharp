@@ -28,7 +28,7 @@ namespace SampSharp.Entities
         private readonly IEventService _eventService;
         private readonly ISystemRegistry _systemRegistry;
 
-        public EcsBuilder(IServiceProvider services)
+        internal EcsBuilder(IServiceProvider services)
         {
             Services = services ?? throw new ArgumentNullException(nameof(services));
 
@@ -36,15 +36,29 @@ namespace SampSharp.Entities
             _eventService = services.GetRequiredService<IEventService>();
         }
 
+        /// <inheritdoc />
         public IServiceProvider Services { get; }
 
-        public IEcsBuilder Use(string name, Func<EventDelegate, EventDelegate> middleware)
+        /// <inheritdoc />
+        public IEcsBuilder EnableEvent(string name, Type[] parameters)
         {
-            _eventService.Use(name, middleware);
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+
+            _eventService.EnableEvent(name, parameters);
 
             return this;
         }
 
+        /// <inheritdoc />
+        public IEcsBuilder UseMiddleware(string name, Func<EventDelegate, EventDelegate> middleware)
+        {
+            _eventService.UseMiddleware(name, middleware);
+
+            return this;
+        }
+
+        /// <inheritdoc />
         public IEcsBuilder UseSystem(Type systemType)
         {
             if (systemType == null) throw new ArgumentNullException(nameof(systemType));

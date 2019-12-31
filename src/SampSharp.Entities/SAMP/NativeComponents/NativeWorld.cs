@@ -19,7 +19,7 @@ using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Entities.SAMP.NativeComponents
 {
-    internal class NativeWorld : NativeComponent
+    public class NativeWorld : NativeComponent
     {
         [NativeMethod]
         public virtual int CreateActor(int modelId, float x, float y, float z, float rotation)

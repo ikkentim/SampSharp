@@ -90,8 +90,8 @@ namespace SampSharp.Entities
             var eventService = _serviceProvider.GetRequiredService<IEventService>();
 
             // Required callbacks
-            eventService.Load("OnGameModeInit");
-            eventService.Load("OnGameModeExit");
+            eventService.EnableEvent("OnGameModeInit");
+            eventService.EnableEvent("OnGameModeExit");
 
             var builder = new EcsBuilder(_serviceProvider);
 

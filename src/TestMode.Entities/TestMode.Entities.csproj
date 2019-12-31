@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SampSharp.Core\SampSharp.Core.csproj" />
-    <ProjectReference Include="..\SampSharp.EntityComponentSystem\SampSharp.Entities.csproj" />
+    <ProjectReference Include="..\SampSharp.Entities\SampSharp.Entities.csproj" />
   </ItemGroup>
 
 </Project>

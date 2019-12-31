@@ -59,7 +59,7 @@ namespace SampSharp.Entities.Events
             Scanner();
         }
 
-        public void Load(string name, Type[] parameters)
+        public void EnableEvent(string name, Type[] parameters)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
@@ -72,7 +72,7 @@ namespace SampSharp.Entities.Events
             if (!_events.ContainsKey(name)) _events[name] = new Event();
         }
 
-        public void Use(string name, Func<EventDelegate, EventDelegate> middleware)
+        public void UseMiddleware(string name, Func<EventDelegate, EventDelegate> middleware)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (middleware == null) throw new ArgumentNullException(nameof(middleware));
