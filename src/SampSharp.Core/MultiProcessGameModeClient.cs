@@ -52,6 +52,8 @@ namespace SampSharp.Core
         private SampSharpSynchronizationContext _synchronizationContext;
         private DateTime _lastSend;
         private ushort _callerIndex;
+        private Task _mainRoutine;
+        private Task _networkingRoutine;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MultiProcessGameModeClient" /> class.
@@ -83,6 +85,8 @@ namespace SampSharp.Core
         {
             switch (data.Command)
             {
+                case ServerCommand.Nop:
+                    break;
                 case ServerCommand.Tick:
                     if (!_canTick)
                         break;
@@ -226,14 +230,13 @@ namespace SampSharp.Core
                         Send(ServerCommand.Reconnect, null);
 
                         // Give the server time to receive the reconnect signal.
-                        // TODO: This is an ugly freeze/comms-deadlock fix.
                         Thread.Sleep(100);
 
                         CleanUp();
                     }
                     break;
                 default:
-                    CoreLog.Log(CoreLogLevel.Error, $"Unknown command {data.Command} recieved with {data.Data?.Length.ToString() ?? "NULL"} data");
+                    CoreLog.Log(CoreLogLevel.Error, $"Unknown command {data.Command} received with {data.Data?.Length.ToString() ?? "NULL"} data");
                     CoreLog.Log(CoreLogLevel.Debug, Environment.StackTrace);
                     break;
             }
@@ -277,14 +280,29 @@ namespace SampSharp.Core
         {
             CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Client");
             CoreLog.Log(CoreLogLevel.Initialisation, "-------------------------");
-            CoreLog.Log(CoreLogLevel.Initialisation, $"v{CoreVersion.Version.ToString(3)}, (C)2014-2019 Tim Potze");
+            CoreLog.Log(CoreLogLevel.Initialisation, $"v{CoreVersion.Version.ToString(3)}, (C)2014-2020 Tim Potze");
+            CoreLog.Log(CoreLogLevel.Initialisation, "Multi-process run mode is active. FOR DEVELOPMENT PURPOSES ONLY!");
+            CoreLog.Log(CoreLogLevel.Initialisation, "Run your server in hosted run mode for production environments. See https://sampsharp.net/running-in-production for more information.");
             CoreLog.Log(CoreLogLevel.Initialisation, "");
 
             _mainThread = Thread.CurrentThread.ManagedThreadId;
-            _running = true;
+
+            AppDomain.CurrentDomain.ProcessExit += (sender, args) =>
+            {
+                CoreLog.Log(CoreLogLevel.Info, "Shutdown signal received");
+                ShutDown();
+
+                if (_mainRoutine != null && !_mainRoutine.IsCompleted)
+                    _mainRoutine.Wait();
+
+                if (_networkingRoutine != null && !_networkingRoutine.IsCompleted)
+                    _networkingRoutine.Wait();
+            };           
 
             CoreLog.Log(CoreLogLevel.Info, $"Connecting to the server via {CommunicationClient}...");
             await CommunicationClient.Connect();
+
+            _running = true;
 
             CoreLog.Log(CoreLogLevel.Info, "Set up networking routine...");
             StartNetworkingRoutine();
@@ -309,7 +327,7 @@ namespace SampSharp.Core
             Send(ServerCommand.Start, new[] { (byte) _startBehaviour });
 
             CoreLog.Log(CoreLogLevel.Info, "Set up main routine...");
-            MainRoutine();
+            _mainRoutine = MainRoutine();
         }
 
         private void AssertRunning()
@@ -325,7 +343,7 @@ namespace SampSharp.Core
 
         #region Routines
 
-        private async void MainRoutine()
+        private async Task MainRoutine()
         {
             while (_running)
             {
@@ -363,7 +381,7 @@ namespace SampSharp.Core
 
         private void StartNetworkingRoutine()
         {
-            Task.Run(() => NetworkingRoutine().ConfigureAwait(false));
+            _networkingRoutine = Task.Run(() => NetworkingRoutine().ConfigureAwait(false));
         }
 
         #endregion
@@ -612,10 +630,10 @@ namespace SampSharp.Core
             CommunicationClient.Send(ServerCommand.Disconnect, null);
 
             // Give the server time to receive the reconnect signal.
-            // TODO: Unexpected behaviour if called from outside a callback (because shuttingDown hook is inside callback handler).
-            // TODO: This is an ugly fix.
             Thread.Sleep(100);
+
             _shuttingDown = true;
+            _commandWaitQueue.Release(new ServerCommandData(ServerCommand.Nop, new byte[0]));
         }
 
         #endregion

@@ -75,6 +75,7 @@ remote_server::~remote_server() {
 #pragma region Commands
 
 CMD_DEFINE(cmd_ping) {
+    log_debug("Sending pong");
     communication_->send(CMD_PONG, 0, NULL);
 }
 

@@ -54,7 +54,7 @@ namespace SampSharp.Core.Threading
             if (item.ExecutedWithException)
                 throw item.Exception;
         }
-
+        
         /// <summary>
         ///     When overridden in a derived class, dispatches an asynchronous message to a synchronization context.
         /// </summary>

@@ -307,7 +307,8 @@ namespace SampSharp.Core
 
             CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Client");
             CoreLog.Log(CoreLogLevel.Initialisation, "-------------------------");
-            CoreLog.Log(CoreLogLevel.Initialisation, $"v{CoreVersion.Version.ToString(3)}, (C)2014-2019 Tim Potze");
+            CoreLog.Log(CoreLogLevel.Initialisation, $"v{CoreVersion.Version.ToString(3)}, (C)2014-2020 Tim Potze");
+            CoreLog.Log(CoreLogLevel.Initialisation, "Hosted run mode is active.");
             CoreLog.Log(CoreLogLevel.Initialisation, "");
             
             // TODO: Verify plugin version
