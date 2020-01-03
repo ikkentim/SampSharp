@@ -12,43 +12,44 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all fighting styles.
+    /// Contains all fighting styles.
     /// </summary>
     /// <remarks>
-    ///     See <see href="http://wiki.sa-mp.com/wiki/Fight_styles">http://wiki.sa-mp.com/wiki/Fight_styles</see>.
+    /// See <see href="http://wiki.sa-mp.com/wiki/Fight_styles">http://wiki.sa-mp.com/wiki/Fight_styles</see>.
     /// </remarks>
     public enum FightStyle
     {
         /// <summary>
-        ///     Normal fighting style.
+        /// Normal fighting style.
         /// </summary>
         Normal = 4,
 
         /// <summary>
-        ///     Borxing fighting style.
+        /// Borxing fighting style.
         /// </summary>
         Boxing = 5,
 
         /// <summary>
-        ///     Kung fu fighting style.
+        /// Kung fu fighting style.
         /// </summary>
         Kungfu = 6,
 
         /// <summary>
-        ///     Kneehead fighting style.
+        /// Kneehead fighting style.
         /// </summary>
         Kneehead = 7,
 
         /// <summary>
-        ///     Grabkick fighting style.
+        /// Grabkick fighting style.
         /// </summary>
         Grabkick = 15,
 
         /// <summary>
-        ///     Elbow fighting style.
+        /// Elbow fighting style.
         /// </summary>
         Elbow = 16
     }

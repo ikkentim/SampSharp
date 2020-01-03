@@ -14,6 +14,8 @@
 // limitations under the License.
 
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using SampSharp.Entities;
 using SampSharp.Entities.Events;
 using SampSharp.Entities.SAMP;
@@ -29,7 +31,7 @@ namespace TestMode.Entities.Systems
         private GangZone _zone;
 
         [Event]
-        public void  OnGameModeInit(IVehicleRepository vehiclesRepository,  IWorldService worldService) 
+        public void OnGameModeInit(IVehicleRepository vehiclesRepository,  IWorldService worldService) 
         {
             // Event methods have dependency injection alongside the arguments
 
@@ -45,7 +47,7 @@ namespace TestMode.Entities.Systems
             _zone.Color = blue;
             _zone.Show();
 
-            var obj = worldService.CreateObject((int) ObjectModel.A51GateconA, new Vector3(10, 10, 40), Vector3.Zero, 1000);
+            var obj = worldService.CreateObject(16638, new Vector3(10, 10, 40), Vector3.Zero, 1000);
             obj.DisableCameraCollisions();
 
             worldService.CreateVehicle(VehicleModelType.Alpha, new Vector3(40, 40, 10), 0, 0, 0);
@@ -53,6 +55,18 @@ namespace TestMode.Entities.Systems
             var green = Color.Green;
             green.A = 128;
             worldService.CreateTextLabel("text", green, new Vector3(10, 10, 10), 1000);
+
+            var ctx = SynchronizationContext.Current;
+            Task.Run(() =>
+            {
+                // ... Run things on a worker thread.
+
+                ctx.Send(_ =>
+                {
+                    // ... Run things on the main thead.
+                }, null);
+            });
+
         }
 
         [Event]

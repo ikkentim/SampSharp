@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.Entities.Events;
 using SampSharp.Entities.SAMP.Middleware;
 
 namespace SampSharp.Entities.SAMP.Systems

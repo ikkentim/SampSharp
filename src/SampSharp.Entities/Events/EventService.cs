@@ -53,16 +53,15 @@ namespace SampSharp.Entities.Events
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventService"/> class.
+        /// Initializes a new instance of the <see cref="EventService" /> class.
         /// </summary>
         public EventService(IGameModeClient gameModeClient, IServiceProvider serviceProvider)
         {
             _gameModeClient = gameModeClient;
             _serviceProvider = serviceProvider;
 
-            Scanner();
+            CreateEventsFromAssemblies();
         }
-
 
         /// <inheritdoc />
         public void EnableEvent(string name, Type[] parameters)
@@ -96,111 +95,92 @@ namespace SampSharp.Entities.Events
 
             if (context.Name == null || !_events.TryGetValue(context.Name, out var evt)) return null;
 
-            foreach (var sysEvt in evt.Events)
+            foreach (var sysEvt in evt.Invokers)
             {
-                var system = _serviceProvider.GetService(sysEvt.Method.DeclaringType);
+                var system = _serviceProvider.GetService(sysEvt.TargetType);
 
+                // System is not loaded. Skip invoking target.
                 if (system == null)
                     continue;
 
-                result = sysEvt.Call(system, context) ?? result;
+                result = sysEvt.Invoke(system, context) ?? result;
             }
 
             return null;
         }
 
-        private void Scanner()
+        private void CreateEventsFromAssemblies()
         {
-            var assembly = Assembly.GetEntryAssembly();
+            // Find methods with EventAttribute in any ISystem in any assembly.
+            var events = MethodScanner.Create()
+                .IncludeAllAssemblies()
+                .IncludeNonPublicMethods()
+                .Implements<ISystem>()
+                .Scan<EventAttribute>();
 
-            var assemblies = new List<Assembly>();
-
-            void AddToScan(Assembly asm)
-            {
-                if (assemblies.Contains(asm))
-                    return;
-
-                assemblies.Add(asm);
-
-                foreach (var assemblyRef in asm.GetReferencedAssemblies())
-                {
-                    if (assemblyRef.Name.StartsWith("System") || assemblyRef.Name.StartsWith("Microsoft") ||
-                        assemblyRef.Name.StartsWith("netstandard"))
-                        continue;
-
-                    AddToScan(Assembly.Load(assemblyRef));
-                }
-            }
-
-            AddToScan(assembly);
-
-            CoreLog.LogDebug("Scan {0} assemblies for events", assemblies.Count);
-
-            // Find eligible methods in system implementations
-            var events = assemblies
-                .SelectMany(a => a.GetTypes())
-                .Where(t => t.IsClass && !t.IsAbstract && typeof(ISystem).IsAssignableFrom(t))
-                .SelectMany(t => t.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
-                .Select(m => (method: m, attribute: m.GetCustomAttribute<EventAttribute>()))
-                .Where(x => x.attribute != null);
-
-            // Add event methods to the event data
+            // Gather event data, compile invoker and add the data to the events collection.
             foreach (var (method, attribute) in events)
             {
-                CoreLog.LogDebug("Adding event listener on " + method.DeclaringType + "." + method.Name);
+                CoreLog.LogDebug("Adding event listener on {0}.{1}.", method.DeclaringType, method.Name);
 
                 var name = attribute.Name ?? method.Name;
 
-                if (!_events.TryGetValue(name, out var evt))
-                    _events[name] = evt = new Event();
+                if (!_events.TryGetValue(name, out var @event))
+                    _events[name] = @event = new Event();
 
-                var parameterIndex = 0;
-                var parameters = method.GetParameters();
-                var parameterInfos = new SystemEventParameter[parameters.Length];
-                var parameterTypes = new List<Type>();
+                var argsPtr = 0; // The current pointer in the event arguments array.
+                var parameterSources = method.GetParameters()
+                    .Select(info => new ParameterSource {Info = info})
+                    .ToArray();
 
-                // Scan and arrange parameters.
-                for (var i = 0; i < parameters.Length; i++)
+                // Determine the source of each parameter.
+                foreach (var source in parameterSources)
                 {
-                    var type = parameters[i].ParameterType;
-
-                    parameterInfos[i] = new SystemEventParameter();
+                    var type = source.Info.ParameterType;
 
                     if (typeof(Component).IsAssignableFrom(type))
                     {
-                        // Get component of entity
-                        parameterInfos[i].ParameterIndex = parameterIndex++;
-                        parameterInfos[i].ComponentType = type;
-                        parameterTypes.Add(typeof(Entity));
+                        // Components are provided by the entity in the arguments array of the event.
+                        source.ParameterIndex = argsPtr++;
+                        source.ComponentType = type;
                     }
                     else if (DefaultParameterTypes.Contains(type))
                     {
-                        // Default pass-through types
-                        parameterInfos[i].ParameterIndex = parameterIndex++;
-                        parameterTypes.Add(type);
+                        // Default types are passed straight trough.
+                        source.ParameterIndex = argsPtr++;
                     }
                     else
                     {
-                        // dependency injection
-                        parameterInfos[i].ServiceType = type;
+                        // Other types are provided trough Dependency Injection.
+                        source.ServiceType = type;
                     }
                 }
 
-                var caller = CompileForSystem(method, parameters, parameterInfos);
-
-                var entry = new SystemEvent
-                {
-                    Method = method,
-                    ParameterTypes = parameterTypes.ToArray(),
-                    Call = (instance, eventContext) =>
-                    {
-                        // TODO: Check parameters match types?
-                        return caller(instance, eventContext.Arguments, eventContext);
-                    }
-                };
-
-                evt.Events.Add(entry);
+                var invoker = CreateInvoker(method, parameterSources, argsPtr);
+                @event.Invokers.Add(invoker);
             }
+        }
+
+        private InvokerInfo CreateInvoker(MethodInfo method, ParameterSource[] parameterInfos, int callbackParamCount)
+        {
+            var compiled = Compile(method, parameterInfos);
+
+            return new InvokerInfo
+            {
+                TargetType = method.DeclaringType,
+                Invoke = (instance, eventContext) =>
+                {
+                    var args = eventContext.Arguments;
+                    if (callbackParamCount != args.Length)
+                    {
+                        CoreLog.Log(CoreLogLevel.Warning,
+                            $"Callback parameter count mismatch {callbackParamCount} != {args.Length}");
+                        return null;
+                    }
+
+                    return compiled(instance, args, eventContext);
+                }
+            };
         }
 
         private object Invoke(EventContext context, int index, Event evt)
@@ -227,8 +207,8 @@ namespace SampSharp.Entities.Events
             };
         }
 
-        private static Func<object, object[], EventContext, object> CompileForSystem(MethodInfo methodInfo,
-            ParameterInfo[] parameters, SystemEventParameter[] parameterInfos)
+        private static Func<object, object[], EventContext, object> Compile(MethodInfo methodInfo,
+            ParameterSource[] parameterSources)
         {
             if (methodInfo.DeclaringType == null)
                 throw new ArgumentException("Method must have declaring type", nameof(methodInfo));
@@ -238,33 +218,33 @@ namespace SampSharp.Entities.Events
             var argsArg = Expression.Parameter(typeof(object[]), "args");
             var eventContextArg = Expression.Parameter(typeof(EventContext), "eventContext");
 
-            var methodArguments = new Expression[parameters.Length];
-            for (var i = 0; i < parameters.Length; i++)
+            var methodArguments = new Expression[parameterSources.Length];
+            for (var i = 0; i < parameterSources.Length; i++)
             {
-                var parameterType = parameters[i].ParameterType;
+                var parameterType = parameterSources[i].Info.ParameterType;
                 if (parameterType.IsByRef) throw new NotSupportedException();
 
-                if (parameterInfos[i].ComponentType != null)
+                if (parameterSources[i].ComponentType != null)
                 {
                     // Get component from entity
-                    Expression index = Expression.Constant(parameterInfos[i].ParameterIndex);
+                    Expression index = Expression.Constant(parameterSources[i].ParameterIndex);
 
                     Expression getValue = Expression.ArrayIndex(argsArg, index);
                     getValue = Expression.Convert(getValue, typeof(Entity));
                     methodArguments[i] = Expression.Call(getValue,
-                        GetComponentInfo.MakeGenericMethod(parameterInfos[i].ComponentType));
+                        GetComponentInfo.MakeGenericMethod(parameterSources[i].ComponentType));
                 }
-                else if (parameterInfos[i].ServiceType != null)
+                else if (parameterSources[i].ServiceType != null)
                 {
                     // Get service
                     var getServiceCall = Expression.Call(GetServiceInfo, eventContextArg,
                         Expression.Constant(parameterType, typeof(Type)));
                     methodArguments[i] = Expression.Convert(getServiceCall, parameterType);
                 }
-                else if (parameterInfos[i].ParameterIndex >= 0)
+                else if (parameterSources[i].ParameterIndex >= 0)
                 {
                     // Pass through
-                    Expression index = Expression.Constant(parameterInfos[i].ParameterIndex);
+                    Expression index = Expression.Constant(parameterSources[i].ParameterIndex);
 
                     var getValue = Expression.ArrayIndex(argsArg, index);
                     methodArguments[i] = Expression.Convert(getValue, parameterType);
@@ -293,22 +273,22 @@ namespace SampSharp.Entities.Events
 
         private class Event
         {
+            public readonly List<InvokerInfo> Invokers = new List<InvokerInfo>();
+
             public readonly List<Func<EventDelegate, EventDelegate>> Middleware =
                 new List<Func<EventDelegate, EventDelegate>>();
-
-            public readonly List<SystemEvent> Events = new List<SystemEvent>();
         }
 
-        private class SystemEvent
+        private class InvokerInfo
         {
-            public Func<object, EventContext, object> Call;
-            public MethodInfo Method;
-            public Type[] ParameterTypes;
+            public Func<object, EventContext, object> Invoke;
+            public Type TargetType;
         }
 
-        private class SystemEventParameter
+        private class ParameterSource
         {
             public Type ComponentType;
+            public ParameterInfo Info;
             public int ParameterIndex = -1;
             public Type ServiceType;
         }

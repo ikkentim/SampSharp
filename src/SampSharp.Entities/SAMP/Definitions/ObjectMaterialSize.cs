@@ -12,80 +12,81 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all object material sizes.
+    /// Contains all object material sizes.
     /// </summary>
     public enum ObjectMaterialSize
     {
         /// <summary>
-        ///     32 x 32
+        /// 32 x 32
         /// </summary>
         X32X32 = 10,
 
         /// <summary>
-        ///     64 x 32
+        /// 64 x 32
         /// </summary>
         X64X32 = 20,
 
         /// <summary>
-        ///     64 x 64
+        /// 64 x 64
         /// </summary>
         X64X64 = 30,
 
         /// <summary>
-        ///     128 x 32
+        /// 128 x 32
         /// </summary>
         X128X32 = 40,
 
         /// <summary>
-        ///     128 x 64
+        /// 128 x 64
         /// </summary>
         X128X64 = 50,
 
         /// <summary>
-        ///     128 x 128
+        /// 128 x 128
         /// </summary>
         X128X128 = 60,
 
         /// <summary>
-        ///     256 x 32
+        /// 256 x 32
         /// </summary>
         X256X32 = 70,
 
         /// <summary>
-        ///     256 x 64
+        /// 256 x 64
         /// </summary>
         X256X64 = 80,
 
         /// <summary>
-        ///     256 x 128
+        /// 256 x 128
         /// </summary>
         X256X128 = 90,
 
         /// <summary>
-        ///     256 x 256
+        /// 256 x 256
         /// </summary>
         X256X256 = 100,
 
         /// <summary>
-        ///     512 x 64
+        /// 512 x 64
         /// </summary>
         X512X64 = 110,
 
         /// <summary>
-        ///     512 x 128
+        /// 512 x 128
         /// </summary>
         X512X128 = 120,
 
         /// <summary>
-        ///     512 x 256
+        /// 512 x 256
         /// </summary>
         X512X256 = 130,
 
         /// <summary>
-        ///     512 x 512
+        /// 512 x 512
         /// </summary>
         X512X512 = 140
     }

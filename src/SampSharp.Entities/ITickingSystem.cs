@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2020 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,21 +13,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP.Definitions
+namespace SampSharp.Entities
 {
     /// <summary>
-    /// Contains all camera cut styles.
+    /// Contains methods which can be implemented by systems which handle server ticks.
     /// </summary>
-    public enum CameraCut
+    /// <seealso cref="ISystem" />
+    public interface ITickingSystem : ISystem
     {
         /// <summary>
-        /// Move the camera from one point to another.
+        /// Occurs every server tick.
         /// </summary>
-        Move = 1,
-
-        /// <summary>
-        /// Teleport the camera from one point to another.
-        /// </summary>
-        Cut = 2
+        void Tick();
     }
 }

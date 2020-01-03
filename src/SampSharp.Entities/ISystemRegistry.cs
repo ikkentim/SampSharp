@@ -24,19 +24,17 @@ namespace SampSharp.Entities
     public interface ISystemRegistry
     {
         /// <summary>
-        /// Gets all types of systems.
-        /// </summary>
-        IEnumerable<Type> Systems { get; }
-
-        /// <summary>
-        /// Gets all types of systems which require configuration.
-        /// </summary>
-        IEnumerable<Type> ConfiguringSystems { get; }
-
-        /// <summary>
         /// Adds the specified type of system to this registry.
         /// </summary>
         /// <param name="type">The type of the system.</param>
         void Add(Type type);
+
+        /// <summary>
+        /// Gets all types of systems of the specified <paramref name="type" />.
+        /// </summary>
+        /// <param name="type">The type of the system to get.</param>
+        /// <param name="cache">If <c>true</c>, enable caching of the system type for future retrieval.</param>
+        /// <returns>The systems of the specified type.</returns>
+        IEnumerable<Type> Get(Type type, bool cache = false);
     }
 }

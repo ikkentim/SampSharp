@@ -12,25 +12,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all PlayerRecording types.
+    /// Contains all PlayerRecording types.
     /// </summary>
     public enum PlayerRecordingType
     {
         /// <summary>
-        ///     Nothing.
+        /// Nothing.
         /// </summary>
         None = 0,
 
         /// <summary>
-        ///     As a driver.
+        /// As a driver.
         /// </summary>
         Driver = 1,
 
         /// <summary>
-        ///     As a pedestrian
+        /// As a pedestrian
         /// </summary>
         OnFoot = 2
     }

@@ -864,7 +864,7 @@ namespace SampSharp.Entities.SAMP.NativeComponents
         {
             throw new NativeNotImplementedException();
         }
-        
+
         [NativeMethod]
         public virtual bool EditPlayerObject(int objectid)
         {

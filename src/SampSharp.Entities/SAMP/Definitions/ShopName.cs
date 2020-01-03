@@ -12,50 +12,51 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all shopnames.
+    /// Contains all shopnames.
     /// </summary>
     public static class ShopName
     {
         /// <summary>
-        ///     The Well Stacked Pizza Co.
+        /// The Well Stacked Pizza Co.
         /// </summary>
         public const string PizzaStack = "FDPIZA";
 
         /// <summary>
-        ///     Burger Shot.
+        /// Burger Shot.
         /// </summary>
         public const string BurgerShot = "FDBURG";
 
         /// <summary>
-        ///     Cluckin' Bell.
+        /// Cluckin' Bell.
         /// </summary>
         public const string CluckinBell = "FDCHICK";
 
         /// <summary>
-        ///     Ammunation 1.
+        /// Ammunation 1.
         /// </summary>
         public const string Ammunation1 = "AMMUN1";
 
         /// <summary>
-        ///     Ammunation 2.
+        /// Ammunation 2.
         /// </summary>
         public const string Ammunation2 = "AMMUN2";
 
         /// <summary>
-        ///     Ammunation 3.
+        /// Ammunation 3.
         /// </summary>
         public const string Ammunation3 = "AMMUN3";
 
         /// <summary>
-        ///     Ammunation 4.
+        /// Ammunation 4.
         /// </summary>
         public const string Ammunation4 = "AMMUN4";
 
         /// <summary>
-        ///     Ammunation 5.
+        /// Ammunation 5.
         /// </summary>
         public const string Ammunation5 = "AMMUN5";
     }

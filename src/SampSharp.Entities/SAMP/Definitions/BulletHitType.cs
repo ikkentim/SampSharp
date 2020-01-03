@@ -12,38 +12,39 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all types of things bullets can hit.
+    /// Contains all types of things bullets can hit.
     /// </summary>
     /// <remarks>
-    ///     See <see href="http://wiki.sa-mp.com/wiki/BulletHitTypes">http://wiki.sa-mp.com/wiki/BulletHitTypes</see>.
+    /// See <see href="http://wiki.sa-mp.com/wiki/BulletHitTypes">http://wiki.sa-mp.com/wiki/BulletHitTypes</see>.
     /// </remarks>
     public enum BulletHitType
     {
         /// <summary>
-        ///     Hit nothing.
+        /// Hit nothing.
         /// </summary>
         None = 0,
 
         /// <summary>
-        ///     Hit a player.
+        /// Hit a player.
         /// </summary>
         Player = 1,
 
         /// <summary>
-        ///     Hit a vehicle.
+        /// Hit a vehicle.
         /// </summary>
         Vehicle = 2,
 
         /// <summary>
-        ///     Hit an GlobalObject.
+        /// Hit an GlobalObject.
         /// </summary>
         Object = 3,
 
         /// <summary>
-        ///     Hit a PlayerObject.
+        /// Hit a PlayerObject.
         /// </summary>
         PlayerObject = 4
     }

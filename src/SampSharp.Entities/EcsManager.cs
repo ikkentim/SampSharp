@@ -30,6 +30,7 @@ namespace SampSharp.Entities
     {
         private readonly IStartup _startup;
         private IServiceProvider _serviceProvider;
+        private ISystemRegistry _systemRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EcsManager" /> class.
@@ -66,7 +67,11 @@ namespace SampSharp.Entities
         /// <inheritdoc />
         public void Tick()
         {
-            // TODO: Implement
+            var types = _systemRegistry.Get(typeof(ITickingSystem));
+
+            foreach (var type in types)
+                if (_serviceProvider.GetService(type) is ITickingSystem system)
+                    system.Tick();
         }
 
         private void Configure(IServiceCollection services)
@@ -103,9 +108,9 @@ namespace SampSharp.Entities
             _startup.Configure(builder);
 
             // Configure services
-            var registry = _serviceProvider.GetRequiredService<ISystemRegistry>();
+            _systemRegistry = _serviceProvider.GetRequiredService<ISystemRegistry>();
 
-            foreach (var serviceType in registry.ConfiguringSystems)
+            foreach (var serviceType in _systemRegistry.Get(typeof(IConfiguringSystem)))
             {
                 var service = _serviceProvider.GetService(serviceType) as IConfiguringSystem;
                 service?.Configure(builder);

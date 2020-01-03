@@ -42,7 +42,7 @@ namespace SampSharp.Entities
         /// <param name="systemType">Type of the system.</param>
         /// <returns>The builder.</returns>
         IEcsBuilder UseSystem(Type systemType);
-        
+
         /// <summary>
         /// Enables handling of the callback with the specified <paramref name="name" /> as an event.
         /// </summary>

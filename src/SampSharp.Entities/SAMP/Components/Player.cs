@@ -1543,43 +1543,42 @@ namespace SampSharp.Entities.SAMP.Components
                 .SendDeathMessageToPlayer(killer?.Id ?? NativePlayer.InvalidId, killee?.Id ?? NativePlayer.InvalidId,
                     (int) weapon);
         }
-        
+
         /// <summary>
-        ///     Attaches a player's camera to an object.
+        /// Attaches a player's camera to an object.
         /// </summary>
         /// <param name="object">The object to attach the camera to.</param>
         public virtual void AttachCameraToObject(Entity @object)
         {
-            if (@object == null)
-            {
-                throw new ArgumentNullException(nameof(@object));
-            }
+            if (@object == null) throw new ArgumentNullException(nameof(@object));
 
             GetComponent<NativePlayer>().AttachCameraToObject(@object.Id);
 
             GetComponent<NativePlayer>().AttachCameraToPlayerObject(@object.GetComponent<NativePlayerObject>().Id);
         }
-        
+
         /// <summary>
-        ///     Lets this player edit the specified <paramref name="object"/>.
+        /// Lets this player edit the specified <paramref name="object" />.
         /// </summary>
         /// <param name="object">The object to edit.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="object"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="object" /> is null.</exception>
         public virtual void Edit(Entity @object)
         {
             if (@object == null)
                 throw new ArgumentNullException(nameof(@object));
-            
+
             if (@object.GetComponent<NativeObject>() != null)
                 GetComponent<NativePlayer>().EditObject(@object.Id);
             else if (@object.GetComponent<NativePlayerObject>() != null)
-                GetComponent<NativePlayer>().EditPlayerObject(@object.GetComponent<NativePlayerObject>().Id); // Need just the player object component of the handle.
+                GetComponent<NativePlayer>()
+                    .EditPlayerObject(@object.GetComponent<NativePlayerObject>()
+                        .Id); // Need just the player object component of the handle.
             else
                 throw new ArgumentException("Target must be of type object or player object", nameof(@object));
         }
 
         /// <summary>
-        ///     Lets this player select an object.
+        /// Lets this player select an object.
         /// </summary>
         public void Select()
         {

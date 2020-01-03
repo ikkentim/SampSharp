@@ -12,20 +12,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all object types
+    /// Contains all object types
     /// </summary>
     public enum ObjectType
     {
         /// <summary>
-        ///     Global object.
+        /// Global object.
         /// </summary>
         GlobalObject = 1,
 
         /// <summary>
-        ///     Player object.
+        /// Player object.
         /// </summary>
         PlayerObject = 2
     }

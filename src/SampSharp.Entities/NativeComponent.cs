@@ -16,11 +16,10 @@
 namespace SampSharp.Entities
 {
     /// <summary>
-    /// Represents a <see cref="Component"/> which should be initialized as a native object proxy.
+    /// Represents a <see cref="Component" /> which should be initialized as a native object proxy.
     /// </summary>
-    /// <seealso cref="SampSharp.Core.Natives.NativeObjects.NativeObjectProxyFactory"/>
+    /// <seealso cref="SampSharp.Core.Natives.NativeObjects.NativeObjectProxyFactory" />
     public abstract class NativeComponent : Component
     {
-
     }
 }

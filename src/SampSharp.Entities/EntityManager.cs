@@ -35,7 +35,7 @@ namespace SampSharp.Entities
                 throw new EntityCreationException($"Duplicate identity {id} in entities container.");
 
             _entities.Add(id, entity);
-            
+
             CoreLog.LogVerbose("Entity added, {0} entities in registry.", _entities.Count);
             return entity;
         }
@@ -45,7 +45,7 @@ namespace SampSharp.Entities
             _entities.TryGetValue(id, out var entity);
             return entity;
         }
-        
+
         public void Destroy(Entity entity)
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
@@ -56,7 +56,6 @@ namespace SampSharp.Entities
 
                 CoreLog.LogVerbose("Entity removed, {0} entities remaining.", _entities.Count);
             }
-
         }
 
         internal void Remove(Entity entity)
@@ -64,9 +63,7 @@ namespace SampSharp.Entities
             if (entity == null) throw new ArgumentNullException(nameof(entity));
 
             if (_entities.Remove(entity.Id))
-            {
                 CoreLog.LogVerbose("Entity removed, {0} entities remaining.", _entities.Count);
-            }
         }
     }
 }

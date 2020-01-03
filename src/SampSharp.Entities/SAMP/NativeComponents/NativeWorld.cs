@@ -53,7 +53,7 @@ namespace SampSharp.Entities.SAMP.NativeComponents
         {
             throw new NativeNotImplementedException();
         }
-        
+
         [NativeMethod]
         public virtual int CreatePickup(int model, int type, float x, float y, float z, int virtualWorld)
         {
@@ -73,14 +73,14 @@ namespace SampSharp.Entities.SAMP.NativeComponents
         {
             throw new NativeNotImplementedException();
         }
-        
+
         [NativeMethod]
         public virtual int Create3DTextLabel(string text, int color, float x, float y, float z, float drawDistance,
             int virtualWorld, bool testLos)
         {
             throw new NativeNotImplementedException();
         }
-        
+
         [NativeMethod]
         public virtual int CreatePlayer3DTextLabel(int playerid, string text, int color, float x, float y, float z,
             float drawDistance, int attachedplayer, int attachedvehicle, bool testLOS)

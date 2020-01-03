@@ -12,25 +12,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all vehicle param values.
+    /// Contains all vehicle param values.
     /// </summary>
     public enum VehicleParameterValue
     {
         /// <summary>
-        ///     Value has not been set.
+        /// Value has not been set.
         /// </summary>
         Unset = -1,
 
         /// <summary>
-        ///     Value is off.
+        /// Value is off.
         /// </summary>
         Off = 0,
 
         /// <summary>
-        ///     Value is on.
+        /// Value is on.
         /// </summary>
         On = 1
     }

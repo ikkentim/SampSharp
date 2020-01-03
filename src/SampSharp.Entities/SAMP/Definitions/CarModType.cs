@@ -12,83 +12,84 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all modification types of vehicles.
+    /// Contains all modification types of vehicles.
     /// </summary>
     /// <remarks>
-    ///     See <see href="http://wiki.sa-mp.com/wiki/Componentslots">http://wiki.sa-mp.com/wiki/Componentslots</see>.
+    /// See <see href="http://wiki.sa-mp.com/wiki/Componentslots">http://wiki.sa-mp.com/wiki/Componentslots</see>.
     /// </remarks>
     public enum CarModType
     {
         /// <summary>
-        ///     Car spoiler.
+        /// Car spoiler.
         /// </summary>
         Spoiler = 0,
 
         /// <summary>
-        ///     Car hood.
+        /// Car hood.
         /// </summary>
         Hood = 1,
 
         /// <summary>
-        ///     Car roof.
+        /// Car roof.
         /// </summary>
         Roof = 2,
 
         /// <summary>
-        ///     Car sideskirts.
+        /// Car sideskirts.
         /// </summary>
         Sideskirt = 3,
 
         /// <summary>
-        ///     Car lamps.
+        /// Car lamps.
         /// </summary>
         Lamps = 4,
 
         /// <summary>
-        ///     Nitrogen.
+        /// Nitrogen.
         /// </summary>
         Nitro = 5,
 
         /// <summary>
-        ///     Car exhaust.
+        /// Car exhaust.
         /// </summary>
         Exhaust = 6,
 
         /// <summary>
-        ///     Car wheels.
+        /// Car wheels.
         /// </summary>
         Wheels = 7,
 
         /// <summary>
-        ///     Car stereo.
+        /// Car stereo.
         /// </summary>
         Stereo = 8,
 
         /// <summary>
-        ///     Car hydraulics.
+        /// Car hydraulics.
         /// </summary>
         Hydraulics = 9,
 
         /// <summary>
-        ///     Front car bumper.
+        /// Front car bumper.
         /// </summary>
         FrontBumper = 10,
 
         /// <summary>
-        ///     Rear car bumper.
+        /// Rear car bumper.
         /// </summary>
         RearBumper = 11,
 
         /// <summary>
-        ///     Right car vent.
+        /// Right car vent.
         /// </summary>
         VentRight = 12,
 
         /// <summary>
-        ///     Left car vent.
+        /// Left car vent.
         /// </summary>
         VentLeft = 13
     }

@@ -25,9 +25,9 @@ namespace SampSharp.Entities
     /// </summary>
     public sealed class Entity
     {
-        private readonly EntityManager _manager;
         private readonly List<Entity> _children = new List<Entity>();
         private readonly List<Component> _components = new List<Component>();
+        private readonly EntityManager _manager;
         private Entity _parent;
 
         internal Entity(EntityManager manager, Entity parent, EntityId id)
@@ -57,7 +57,7 @@ namespace SampSharp.Entities
 
                 _parent?._children.Remove(this);
                 value?._children.Add(this);
-                
+
                 _parent = value;
             }
         }
@@ -71,18 +71,15 @@ namespace SampSharp.Entities
         /// Gets a collection of child entities of this entity.
         /// </summary>
         public IEnumerable<Entity> Children => _children.AsReadOnly();
-        
+
         /// <summary>
         /// Destroys this entity, its components and its children.
         /// </summary>
         public void Destroy()
         {
-            foreach (var child in _children)
-            {
-                child.Destroy();
-            }
+            foreach (var child in _children) child.Destroy();
             _children.Clear();
-            
+
 
             if (_components != null)
             {
@@ -103,7 +100,7 @@ namespace SampSharp.Entities
         /// <returns>The added component.</returns>
         public T AddComponent<T>(params object[] args) where T : Component
         {
-            return (T)AddComponent(typeof(T), args);
+            return (T) AddComponent(typeof(T), args);
         }
 
         /// <summary>

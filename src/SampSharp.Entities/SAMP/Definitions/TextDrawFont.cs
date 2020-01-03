@@ -12,40 +12,41 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all fonts.
+    /// Contains all fonts.
     /// </summary>
     public enum TextDrawFont
     {
         /// <summary>
-        ///     Font 0, also known as Diploma.
+        /// Font 0, also known as Diploma.
         /// </summary>
         Diploma = 0,
 
         /// <summary>
-        ///     Font 1, also known as Normal.
+        /// Font 1, also known as Normal.
         /// </summary>
         Normal = 1,
 
         /// <summary>
-        ///     Font 2, also known as Slim.
+        /// Font 2, also known as Slim.
         /// </summary>
         Slim = 2,
 
         /// <summary>
-        ///     Font 3, also known as Pricedown.
+        /// Font 3, also known as Pricedown.
         /// </summary>
         Pricedown = 3,
 
         /// <summary>
-        ///     Font used to draw sprites.
+        /// Font used to draw sprites.
         /// </summary>
         DrawSprite = 4,
 
         /// <summary>
-        ///     Font used to draw model previews.
+        /// Font used to draw model previews.
         /// </summary>
         PreviewModel = 5
     }

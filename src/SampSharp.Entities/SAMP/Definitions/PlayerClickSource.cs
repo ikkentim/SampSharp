@@ -12,15 +12,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all player click sources.
+    /// Contains all player click sources.
     /// </summary>
     public enum PlayerClickSource
     {
         /// <summary>
-        ///     Clicked the player on the scoreboard.
+        /// Clicked the player on the scoreboard.
         /// </summary>
         Scoreboard = 0
     }

@@ -28,7 +28,8 @@ namespace SampSharp.Entities
     public static class EcsBuilderUseMiddlewareExtensions
     {
         private static readonly MethodInfo GetServiceInfo =
-            typeof(EcsBuilderUseMiddlewareExtensions).GetMethod(nameof(GetService), BindingFlags.NonPublic | BindingFlags.Static);
+            typeof(EcsBuilderUseMiddlewareExtensions).GetMethod(nameof(GetService),
+                BindingFlags.NonPublic | BindingFlags.Static);
 
 
         /// <summary>

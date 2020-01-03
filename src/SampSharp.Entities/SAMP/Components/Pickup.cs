@@ -30,34 +30,34 @@ namespace SampSharp.Entities.SAMP.Components
             Position = position;
         }
 
-        #region Properties
-
-        /// <summary>
-        ///     Gets the virtual world assigned to this <see cref="Pickup" />.
-        /// </summary>
-        public int VirtualWorld { get; private set; }
-
-        /// <summary>
-        ///     Gets the model of this <see cref="Pickup" />.
-        /// </summary>
-        public int Model { get; private set; }
-
-        /// <summary>
-        ///     Gets the type of this <see cref="Pickup" />.
-        /// </summary>
-        public int SpawnType { get; private set; }
-
-        /// <summary>
-        ///     Gets the position of this <see cref="Pickup" />.
-        /// </summary>
-        public Vector3 Position { get; private set; }
-
-        #endregion
-
         /// <inheritdoc />
         protected override void OnDestroyComponent()
         {
             GetComponent<NativePickup>().DestroyPickup();
         }
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the virtual world assigned to this <see cref="Pickup" />.
+        /// </summary>
+        public int VirtualWorld { get; }
+
+        /// <summary>
+        /// Gets the model of this <see cref="Pickup" />.
+        /// </summary>
+        public int Model { get; }
+
+        /// <summary>
+        /// Gets the type of this <see cref="Pickup" />.
+        /// </summary>
+        public int SpawnType { get; }
+
+        /// <summary>
+        /// Gets the position of this <see cref="Pickup" />.
+        /// </summary>
+        public Vector3 Position { get; }
+
+        #endregion
     }
 }

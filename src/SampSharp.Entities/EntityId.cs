@@ -44,7 +44,7 @@ namespace SampSharp.Entities
         public int Handle { get; }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="EntityId"/> to <see cref="int"/>.
+        /// Performs an implicit conversion from <see cref="EntityId" /> to <see cref="int" />.
         /// </summary>
         /// <param name="entityId">The entity identifier.</param>
         /// <returns>

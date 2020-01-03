@@ -12,40 +12,41 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all race checkpoint types.
+    /// Contains all race checkpoint types.
     /// </summary>
     /// <remarks>
-    ///     See
-    ///     <see href="http://wiki.sa-mp.com/wiki/SetPlayerRaceCheckpoint">http://wiki.sa-mp.com/wiki/SetPlayerRaceCheckpoint</see>
-    ///     .
+    /// See
+    /// <see href="http://wiki.sa-mp.com/wiki/SetPlayerRaceCheckpoint">http://wiki.sa-mp.com/wiki/SetPlayerRaceCheckpoint</see>
+    /// .
     /// </remarks>
     public enum CheckpointType
     {
         /// <summary>
-        ///     Normal racecheckpoint. (Normal red cilinder)
+        /// Normal racecheckpoint. (Normal red cilinder)
         /// </summary>
         Normal = 0,
 
         /// <summary>
-        ///     Finish racecheckpoint. (Finish flag in red cilinder)
+        /// Finish racecheckpoint. (Finish flag in red cilinder)
         /// </summary>
         Finish = 1,
 
         /// <summary>
-        ///     No checkpoint.
+        /// No checkpoint.
         /// </summary>
         Nothing = 2,
 
         /// <summary>
-        ///     Air racecheckpoint. (normal red circle in the air)
+        /// Air racecheckpoint. (normal red circle in the air)
         /// </summary>
         Air = 3,
 
         /// <summary>
-        ///     Finish air racecheckpoint. (Finish flag in red circle in the air)
+        /// Finish air racecheckpoint. (Finish flag in red circle in the air)
         /// </summary>
         AirFinish = 4
     }

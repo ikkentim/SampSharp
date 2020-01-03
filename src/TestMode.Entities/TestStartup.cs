@@ -15,6 +15,7 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using SampSharp.Entities;
 using TestMode.Entities.Services;
 using TestMode.Entities.Systems;

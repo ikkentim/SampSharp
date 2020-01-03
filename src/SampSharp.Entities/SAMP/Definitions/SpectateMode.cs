@@ -12,25 +12,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all specating modes.
+    /// Contains all specating modes.
     /// </summary>
     public enum SpectateMode
     {
         /// <summary>
-        ///     Normal spectating mode.
+        /// Normal spectating mode.
         /// </summary>
         Normal = 1,
 
         /// <summary>
-        ///     Player is looking from a fixed point.
+        /// Player is looking from a fixed point.
         /// </summary>
         Fixed = 2,
 
         /// <summary>
-        ///     Attached to the side.
+        /// Attached to the side.
         /// </summary>
         Side = 3
     }

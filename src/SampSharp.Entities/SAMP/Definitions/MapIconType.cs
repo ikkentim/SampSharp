@@ -12,33 +12,34 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all map icon styles.
+    /// Contains all map icon styles.
     /// </summary>
     /// <remarks>
-    ///     See <see href="http://wiki.sa-mp.com/wiki/MapIconStyle">http://wiki.sa-mp.com/wiki/MapIconStyle</see>.
+    /// See <see href="http://wiki.sa-mp.com/wiki/MapIconStyle">http://wiki.sa-mp.com/wiki/MapIconStyle</see>.
     /// </remarks>
     public enum MapIconType
     {
         /// <summary>
-        ///     Displays in the player's local are.
+        /// Displays in the player's local are.
         /// </summary>
         Local = 0,
 
         /// <summary>
-        ///     Displays always.
+        /// Displays always.
         /// </summary>
         Global = 1,
 
         /// <summary>
-        ///     Displays in the player's local area and has a checkpoint marker.
+        /// Displays in the player's local area and has a checkpoint marker.
         /// </summary>
         LocalCheckPoint = 2,
 
         /// <summary>
-        ///     Displays always and has a checkpoint marker.
+        /// Displays always and has a checkpoint marker.
         /// </summary>
         GlobalCheckPoint = 3
     }

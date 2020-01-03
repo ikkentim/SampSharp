@@ -15,14 +15,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SampSharp.Entities
 {
     public class SystemRegistry : ISystemRegistry
     {
-        private readonly List<Type> _configuringSystems = new List<Type>();
-        private readonly List<Type> _systems = new List<Type>();
+        private readonly Dictionary<Type, CacheEntry> _data = new Dictionary<Type, CacheEntry>
+        {
+            {typeof(ISystem), new CacheEntry()}
+        };
 
+        /// <inheritdoc />
         public void Add(Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
@@ -30,15 +34,39 @@ namespace SampSharp.Entities
             if (!typeof(ISystem).IsAssignableFrom(type))
                 throw new ArgumentException("Type must implement ISystem", nameof(type));
 
-            _systems.Add(type);
-
-            if (typeof(IConfiguringSystem).IsAssignableFrom(type))
-                _configuringSystems.Add(type);
-
+            foreach (var kv in _data)
+                if (kv.Key.IsAssignableFrom(type))
+                    kv.Value.All.Add(type);
         }
 
-        public IEnumerable<Type> ConfiguringSystems => _configuringSystems.AsReadOnly();
+        /// <inheritdoc />
+        public IEnumerable<Type> Get(Type type, bool cache = false)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
 
-        public IEnumerable<Type> Systems => _systems.AsReadOnly();
+            if (_data.TryGetValue(type, out var entry))
+                return entry.ReadOnly;
+
+            if (!cache)
+                return _data[typeof(ISystem)].All.Where(type.IsAssignableFrom);
+
+            entry = new CacheEntry();
+            entry.All.AddRange(_data[typeof(ISystem)].All.Where(type.IsAssignableFrom));
+            _data[type] = entry;
+
+            return entry.ReadOnly;
+        }
+
+        private class CacheEntry
+        {
+            public CacheEntry()
+            {
+                ReadOnly = All.AsReadOnly();
+            }
+
+            public List<Type> All { get; } = new List<Type>();
+
+            public IReadOnlyCollection<Type> ReadOnly { get; }
+        }
     }
 }

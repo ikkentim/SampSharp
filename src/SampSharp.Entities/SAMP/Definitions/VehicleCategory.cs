@@ -12,90 +12,91 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all vehicle categories.
+    /// Contains all vehicle categories.
     /// </summary>
     public enum VehicleCategory
     {
         /// <summary>
-        ///     Airplanes.
+        /// Airplanes.
         /// </summary>
         Airplane = 1,
 
         /// <summary>
-        ///     Helicopters.
+        /// Helicopters.
         /// </summary>
         Helicopter = 2,
 
         /// <summary>
-        ///     Bikes.
+        /// Bikes.
         /// </summary>
         Bike = 3,
 
         /// <summary>
-        ///     Convertibles.
+        /// Convertibles.
         /// </summary>
         Convertible = 4,
 
         /// <summary>
-        ///     Industrials.
+        /// Industrials.
         /// </summary>
         Industrial = 5,
 
         /// <summary>
-        ///     Lowriders.
+        /// Lowriders.
         /// </summary>
         Lowrider = 6,
 
         /// <summary>
-        ///     Off Road.
+        /// Off Road.
         /// </summary>
         OffRoad = 7,
 
         /// <summary>
-        ///     Public Service Vehicles.
+        /// Public Service Vehicles.
         /// </summary>
         PublicService = 8,
 
         /// <summary>
-        ///     Saloons.
+        /// Saloons.
         /// </summary>
         Saloon = 9,
 
         /// <summary>
-        ///     Sport Vehicles.
+        /// Sport Vehicles.
         /// </summary>
         Sport = 10,
 
         /// <summary>
-        ///     Station Wagons.
+        /// Station Wagons.
         /// </summary>
         Station = 11,
 
         /// <summary>
-        ///     Boats.
+        /// Boats.
         /// </summary>
         Boat = 12,
 
         /// <summary>
-        ///     Trailers.
+        /// Trailers.
         /// </summary>
         Trailer = 13,
 
         /// <summary>
-        ///     Unique Vehicles.
+        /// Unique Vehicles.
         /// </summary>
         Unique = 14,
 
         /// <summary>
-        ///     RC Vehicles.
+        /// RC Vehicles.
         /// </summary>
         RemoteControl = 15,
 
         /// <summary>
-        ///     Train trailers.
+        /// Train trailers.
         /// </summary>
         TrainTrailer = 16
     }

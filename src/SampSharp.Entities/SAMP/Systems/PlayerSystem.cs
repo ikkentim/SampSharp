@@ -13,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using SampSharp.Entities.Events;
 using SampSharp.Entities.SAMP.Middleware;
 
 namespace SampSharp.Entities.SAMP.Systems
@@ -55,14 +53,19 @@ namespace SampSharp.Entities.SAMP.Systems
             builder.EnableEvent<int, int>("OnPlayerClickPlayerTextDraw");
             builder.EnableEvent<int, int, int>("OnPlayerClickPlayer");
             builder.EnableEvent<int, bool, int, int, float, float, float, float, float, float>("OnPlayerEditObject");
-            builder.EnableEvent<int, int, int, int, int, float, float, float, float, float, float, float, float, float>("OnPlayerEditAttachedObject");
+            builder.EnableEvent<int, int, int, int, int, float, float, float, float, float, float, float, float, float>(
+                "OnPlayerEditAttachedObject");
             builder.EnableEvent<int, int, int, int, float, float, float>("OnPlayerSelectObject");
             builder.EnableEvent<int, int, int, int, float, float, float>("OnPlayerWeaponShot");
-            
+
             builder.UseMiddleware<PlayerConnectMiddleware>("OnPlayerConnect");
             builder.UseMiddleware<PlayerDisconnectMiddleware>("OnPlayerDisconnect");
 
-            void AddPlayerTarget(string callback) => builder.UseMiddleware<EntityMiddleware>(callback, 0, SampEntities.PlayerType, true);
+            void AddPlayerTarget(string callback)
+            {
+                builder.UseMiddleware<EntityMiddleware>(callback, 0, SampEntities.PlayerType, true);
+            }
+
             AddPlayerTarget("OnPlayerSpawn");
             AddPlayerTarget("OnPlayerDeath");
             AddPlayerTarget("OnPlayerText");

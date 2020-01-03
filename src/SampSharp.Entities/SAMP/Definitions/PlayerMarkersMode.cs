@@ -12,25 +12,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all PlayerMarker modes.
+    /// Contains all PlayerMarker modes.
     /// </summary>
     public enum PlayerMarkersMode
     {
         /// <summary>
-        ///     No makers.
+        /// No makers.
         /// </summary>
         Off = 0,
 
         /// <summary>
-        ///     All markers.
+        /// All markers.
         /// </summary>
         Global = 1,
 
         /// <summary>
-        ///     All markers within the streamed area.
+        /// All markers within the streamed area.
         /// </summary>
         Streamed = 2
     }

@@ -6,15 +6,17 @@
     public enum PlayerDisconnectReason
     {
         /// <summary>
-        ///     The player timed out.
+        /// The player timed out.
         /// </summary>
         TimedOut = 0,
+
         /// <summary>
-        ///     The player left.
+        /// The player left.
         /// </summary>
         Left = 1,
+
         /// <summary>
-        ///     The player was kicked.
+        /// The player was kicked.
         /// </summary>
         Kicked = 2
     }

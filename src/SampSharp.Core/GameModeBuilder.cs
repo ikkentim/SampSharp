@@ -31,7 +31,6 @@ namespace SampSharp.Core
     /// </summary>
     public sealed class GameModeBuilder
     {
-        private Func<ICommunicationClient, GameModeStartBehaviour, IGameModeProvider, IGameModeRunner> _builder;
         private ICommunicationClient _communicationClient;
         private GameModeExitBehaviour _exitBehaviour = GameModeExitBehaviour.ShutDown;
         private IGameModeProvider _gameModeProvider;
@@ -251,18 +250,6 @@ namespace SampSharp.Core
         }
 
         /// <summary>
-        ///     Use a custom build procedure to load a custom game mode client.
-        /// </summary>
-        /// <param name="builder">The building function.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder BuildWith(Func<ICommunicationClient, GameModeStartBehaviour, IGameModeProvider, IGameModeRunner> builder)
-        {
-            _builder = builder;
-            return this;
-        }
-
-
-        /// <summary>
         ///     Run the game mode using the build configuration stored in this instance.
         /// </summary>
         public void Run()
@@ -319,6 +306,8 @@ namespace SampSharp.Core
                 if (redirect)
                     Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
             }
+
+            _gameModeProvider.Dispose();
         }
 
         private void ParseArguments()
@@ -459,11 +448,6 @@ namespace SampSharp.Core
 
         private IGameModeRunner Build()
         {
-            if (_builder != null)
-            {
-                return _builder(_communicationClient, _startBehaviour, _gameModeProvider);
-            }
-
             if (_hosted)
             {
                 return new HostedGameModeClient(_startBehaviour, _gameModeProvider, _encoding);

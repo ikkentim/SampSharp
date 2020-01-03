@@ -12,48 +12,49 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all available body parts.
+    /// Contains all available body parts.
     /// </summary>
     /// <remarks>
-    ///     See <see href="http://wiki.sa-mp.com/wiki/BodyParts">http://wiki.sa-mp.com/wiki/BodyParts</see>.
+    /// See <see href="http://wiki.sa-mp.com/wiki/BodyParts">http://wiki.sa-mp.com/wiki/BodyParts</see>.
     /// </remarks>
     public enum BodyPart
     {
         /// <summary>
-        ///     The chest.
+        /// The chest.
         /// </summary>
         Chest = 3,
 
         /// <summary>
-        ///     The crotch.
+        /// The crotch.
         /// </summary>
         Crotch = 4,
 
         /// <summary>
-        ///     The left arm.
+        /// The left arm.
         /// </summary>
         LeftArm = 5,
 
         /// <summary>
-        ///     The right arm.
+        /// The right arm.
         /// </summary>
         RightArm = 6,
 
         /// <summary>
-        ///     The left leg.
+        /// The left leg.
         /// </summary>
         LeftLeg = 7,
 
         /// <summary>
-        ///     The right leg.
+        /// The right leg.
         /// </summary>
         RightLeg = 8,
 
         /// <summary>
-        ///     The head.
+        /// The head.
         /// </summary>
         Head = 9
     }

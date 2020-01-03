@@ -12,41 +12,42 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all dialog styles.
+    /// Contains all dialog styles.
     /// </summary>
     public enum DialogStyle
     {
         /// <summary>
-        ///     A box with a caption, text and one or two buttons.
+        /// A box with a caption, text and one or two buttons.
         /// </summary>
         MessageBox = 0,
 
         /// <summary>
-        ///     A box with a caption, text, an inputbox and one or two buttons.
+        /// A box with a caption, text, an inputbox and one or two buttons.
         /// </summary>
         Input = 1,
 
         /// <summary>
-        ///     A box with a caption, a bunch of selectable items and one or two buttons.
+        /// A box with a caption, a bunch of selectable items and one or two buttons.
         /// </summary>
         List = 2,
 
         /// <summary>
-        ///     A box with a caption, text, an password-inputbox and one or two buttons.
+        /// A box with a caption, text, an password-inputbox and one or two buttons.
         /// </summary>
         Password = 3,
 
         /// <summary>
-        ///     A box with a caption, a bunch of selectable rows which contain a number of columns and one or two buttons.
+        /// A box with a caption, a bunch of selectable rows which contain a number of columns and one or two buttons.
         /// </summary>
         Tablist = 4,
 
         /// <summary>
-        ///     A box with a caption, a bunch of selectable rows which contain a number of columns with a header and one or two
-        ///     buttons.
+        /// A box with a caption, a bunch of selectable rows which contain a number of columns with a header and one or two
+        /// buttons.
         /// </summary>
         TablistHeaders = 5
     }

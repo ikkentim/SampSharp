@@ -12,25 +12,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all object editing responses.
+    /// Contains all object editing responses.
     /// </summary>
     public enum EditObjectResponse
     {
         /// <summary>
-        ///     Editing has been canceled.
+        /// Editing has been canceled.
         /// </summary>
         Cancel = 0,
 
         /// <summary>
-        ///     The current is the final edit sate.
+        /// The current is the final edit sate.
         /// </summary>
         Final = 1,
 
         /// <summary>
-        ///     The current is a updated edit state.
+        /// The current is a updated edit state.
         /// </summary>
         Update = 2
     }

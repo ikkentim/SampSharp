@@ -12,25 +12,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP
 {
     /// <summary>
-    ///     Contains different formats of String representations of Color instances.
+    /// Contains different formats of String representations of Color instances.
     /// </summary>
     public enum ColorFormat
     {
         /// <summary>
-        ///     {RRGGBBAA}
+        /// {RRGGBBAA}
         /// </summary>
         RGBA,
 
         /// <summary>
-        ///     {AARRGGBB}
+        /// {AARRGGBB}
         /// </summary>
         ARGB,
 
         /// <summary>
-        ///     {RRGGBB}
+        /// {RRGGBB}
         /// </summary>
         RGB
     }

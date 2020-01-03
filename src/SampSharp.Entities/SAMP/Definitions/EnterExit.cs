@@ -12,20 +12,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all enter/exit garage states.
+    /// Contains all enter/exit garage states.
     /// </summary>
     public enum EnterExit
     {
         /// <summary>
-        ///     Has exited garage.
+        /// Has exited garage.
         /// </summary>
         Exited = 0,
 
         /// <summary>
-        ///     Has entered garage.
+        /// Has entered garage.
         /// </summary>
         Entered = 1
     }

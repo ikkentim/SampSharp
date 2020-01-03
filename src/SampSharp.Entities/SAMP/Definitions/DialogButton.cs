@@ -12,20 +12,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace SampSharp.Entities.SAMP.Definitions
 {
     /// <summary>
-    ///     Contains all dialog buttons.
+    /// Contains all dialog buttons.
     /// </summary>
     public enum DialogButton
     {
         /// <summary>
-        ///     Right button of the dialog.
+        /// Right button of the dialog.
         /// </summary>
         Right = 0,
 
         /// <summary>
-        ///     Left button of the dialog.
+        /// Left button of the dialog.
         /// </summary>
         Left = 1
     }

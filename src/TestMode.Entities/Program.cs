@@ -24,7 +24,7 @@ namespace TestMode.Entities
         private static void Main(string[] args)
         {
             new GameModeBuilder()
-                .UseLogLevel(CoreLogLevel.Debug)
+                .UseLogLevel(CoreLogLevel.Verbose)
                 .UseStartBehaviour(GameModeStartBehaviour.FakeGmx)
                 .UseEcs<TestStartup>()
                 .Run();
