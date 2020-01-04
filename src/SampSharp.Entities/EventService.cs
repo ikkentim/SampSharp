@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Core;
 using SampSharp.Core.Logging;
 using SampSharp.Entities.Utilities;
@@ -35,11 +36,12 @@ namespace SampSharp.Entities
             typeof(int),
             typeof(bool),
             typeof(float),
-            typeof(int[]),
-            typeof(bool[]),
-            typeof(float[]),
             typeof(string),
             typeof(Entity)
+            // TODO: Callbacks with parameter length are not yet supported
+            //typeof(int[]),
+            //typeof(bool[]),
+            //typeof(float[]),
         };
 
         private static readonly MethodInfo GetComponentInfo =
@@ -69,12 +71,8 @@ namespace SampSharp.Entities
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
-            // TODO: Callbacks with parameter length are not yet supported
-
-            var handler = GetInvoke(name);
+            var handler = BuildInvoke(name);
             _gameModeClient.RegisterCallback(name, handler.Target, handler.Method, parameters);
-
-            if (!_events.ContainsKey(name)) _events[name] = new Event();
         }
 
         /// <inheritdoc />
@@ -83,13 +81,22 @@ namespace SampSharp.Entities
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (middleware == null) throw new ArgumentNullException(nameof(middleware));
 
-            if (!_events.TryGetValue(name, out var evt))
-                _events[name] = evt = new Event();
+            if (!_events.TryGetValue(name, out var @event))
+                _events[name] = @event = new Event(Invoke);
 
-            evt.Middleware.Add(middleware);
+            @event.Middleware.Add(middleware);
+
+            // In order to chain the middleware from first to last, the middleware must be nested from last to first
+            EventDelegate invoke = Invoke;
+            for (var i = @event.Middleware.Count - 1; i >= 0; i--)
+            {
+                invoke = @event.Middleware[i](invoke);
+            }
+
+            @event.Invoke = invoke;
         }
 
-        private object InvokeEventInternal(EventContext context)
+        private object Invoke(EventContext context)
         {
             object result = null;
 
@@ -126,7 +133,7 @@ namespace SampSharp.Entities
                 var name = attribute.Name ?? method.Name;
 
                 if (!_events.TryGetValue(name, out var @event))
-                    _events[name] = @event = new Event();
+                    _events[name] = @event = new Event(Invoke);
 
                 var argsPtr = 0; // The current pointer in the event arguments array.
                 var parameterSources = method.GetParameters()
@@ -153,6 +160,7 @@ namespace SampSharp.Entities
                     {
                         // Other types are provided trough Dependency Injection.
                         source.ServiceType = type;
+                        @event.HasDependencies = true;
                     }
                 }
 
@@ -183,27 +191,46 @@ namespace SampSharp.Entities
             };
         }
 
-        private object Invoke(EventContext context, int index, Event evt)
-        {
-            // TODO: Construct the middleware just once
-            return index >= evt.Middleware.Count
-                ? InvokeEventInternal(context)
-                : evt.Middleware[index](eventContext => Invoke(eventContext, index + 1, evt))(context);
-        }
-
-        private Func<object[], object> GetInvoke(string name)
+        private Func<object[], object> BuildInvoke(string name)
         {
             var context = new EventContextImpl();
             context.SetName(name);
-
+            
             return args =>
             {
                 context.SetArguments(args);
-                context.SetEventServices(_serviceProvider); // TODO: Should I scope it?
 
-                return _events.TryGetValue(name, out var evt)
-                    ? Invoke(context, 0, evt)
-                    : null;
+                if (!_events.TryGetValue(name, out var @event))
+                    return null;
+
+                IServiceScope scope = null;
+                if (@event.HasDependencies)
+                {
+                     scope = _serviceProvider.CreateScope();
+                     context.SetEventServices(scope.ServiceProvider);
+                }
+                else
+                {
+                    context.SetEventServices(_serviceProvider);
+                }
+
+                if (@event.Invoke == null)
+                {
+                    // In order to chain the middleware from start to end, the middleware must be nested from end to beginning
+                    EventDelegate invoke = Invoke;
+                    for (var i = @event.Middleware.Count - 1; i >= 0; i--)
+                    {
+                        invoke = @event.Middleware[i](invoke);
+                    }
+
+                    @event.Invoke = invoke;
+                }
+
+                var result = @event.Invoke(context);
+
+                scope?.Dispose();
+
+                return result;
             };
         }
 
@@ -277,6 +304,15 @@ namespace SampSharp.Entities
 
             public readonly List<Func<EventDelegate, EventDelegate>> Middleware =
                 new List<Func<EventDelegate, EventDelegate>>();
+
+            public Event(EventDelegate invoke)
+            {
+                Invoke = invoke;
+            }
+
+            public EventDelegate Invoke;
+
+            public bool HasDependencies;
         }
 
         private class InvokerInfo
