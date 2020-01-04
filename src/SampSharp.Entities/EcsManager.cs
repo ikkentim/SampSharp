@@ -60,6 +60,8 @@ namespace SampSharp.Entities
             _serviceProvider = services.BuildServiceProvider();
             _systemRegistry = _serviceProvider.GetRequiredService<ISystemRegistry>();
 
+            AddWrappedSystemTypes();
+
             Configure();
         }
 
@@ -71,6 +73,14 @@ namespace SampSharp.Entities
             foreach (var type in types)
                 if (_serviceProvider.GetService(type) is ITickingSystem system)
                     system.Tick();
+        }
+        
+        private void AddWrappedSystemTypes()
+        {
+            foreach (var wrapper in _serviceProvider.GetServices<SystemTypeWrapper>())
+            {
+                _systemRegistry.Add(wrapper.Type);
+            }
         }
 
         private void Configure(IServiceCollection services)

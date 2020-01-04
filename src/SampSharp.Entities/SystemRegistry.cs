@@ -16,9 +16,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SampSharp.Entities
 {
+    /// <summary>
+    /// Represents a registry which contains all enabled system types.
+    /// </summary>
+    /// <seealso cref="ISystemRegistry" />
     public class SystemRegistry : ISystemRegistry
     {
         private readonly Dictionary<Type, CacheEntry> _data = new Dictionary<Type, CacheEntry>

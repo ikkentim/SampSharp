@@ -30,15 +30,12 @@ namespace TestMode.Entities
             services
                 .AddTransient<IVehicleRepository, VehicleRepository>()
                 .AddTransient<IFunnyService, FunnyService>()
-
-                .AddSingleton<TestSystem>();
+                .AddSystem<TestSystem>();
         }
 
         public void Configure(IEcsBuilder builder)
         {
-            // Enable systems:
-            builder.UseSystem<TestSystem>()
-                .EnableSampEvents();
+            builder.EnableSampEvents();
 
             // Load middlewares:
             // Can also be loaded by systems which are IConfiguringSystem
@@ -50,7 +47,6 @@ namespace TestMode.Entities
 
             builder.UseMiddleware("OnPlayerText", (ctx, next) =>
             {
-                // Having to access arguments by an indexed array isn't ideal, might work towards a dictionary structure.
                 if (ctx.Arguments[1] is string txt && txt.Contains("I dislike SampSharp"))
                     return null;
                 return next();

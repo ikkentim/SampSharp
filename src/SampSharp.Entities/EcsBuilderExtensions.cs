@@ -21,9 +21,9 @@ namespace SampSharp.Entities
     public static class EcsBuilderExtensions
     {
         /// <summary>
-        /// Adds the system with the specified type <typeparamref name="T" />.
+        /// Adds the system with the specified type <typeparamref name="T" />. The specified type must be available in the service provider.
         /// </summary>
-        /// <typeparam name="T">Type of the system</typeparam>
+        /// <typeparam name="T">Type of the system.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <returns>The builder.</returns>
         public static IEcsBuilder UseSystem<T>(this IEcsBuilder builder) where T : ISystem
