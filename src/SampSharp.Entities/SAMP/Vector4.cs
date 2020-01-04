@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.Entities
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Represents a 4D vector.

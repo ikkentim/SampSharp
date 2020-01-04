@@ -33,10 +33,8 @@ namespace SampSharp.Entities
         internal Entity(EntityManager manager, Entity parent, EntityId id)
         {
             _manager = manager;
-            Parent = parent;
             Id = id;
-
-            parent?._children.Add(this);
+            Parent = parent;
         }
 
         /// <summary>

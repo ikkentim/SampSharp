@@ -16,7 +16,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace SampSharp.Entities.Events
+namespace SampSharp.Entities
 {
     /// <summary>
     /// The exception that is thrown when an event method signature does not match a requirement.

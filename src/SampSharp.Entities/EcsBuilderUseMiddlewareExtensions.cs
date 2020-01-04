@@ -18,7 +18,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using SampSharp.Entities.Events;
 
 namespace SampSharp.Entities
 {

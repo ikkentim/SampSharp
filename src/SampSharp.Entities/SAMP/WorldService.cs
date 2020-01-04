@@ -17,7 +17,6 @@ using System;
 using SampSharp.Entities.SAMP.Components;
 using SampSharp.Entities.SAMP.Definitions;
 using SampSharp.Entities.SAMP.NativeComponents;
-using SampSharp.Entities.SAMP.Systems;
 
 namespace SampSharp.Entities.SAMP
 {
@@ -26,6 +25,16 @@ namespace SampSharp.Entities.SAMP
     /// </summary>
     public class WorldService : IWorldService
     {
+        /// <summary>
+        /// The type of a world entity.
+        /// </summary>
+        public static readonly Guid WorldType = new Guid("DD999ED7-9935-4F66-9CDC-E77484AF6BB8");
+
+        /// <summary>
+        /// The entity identifier used by the world entity.
+        /// </summary>
+        public static readonly EntityId WorldId = new EntityId(WorldType, 0);
+
         // TODO: Handling of invalid IDs (SA-MP entity limits)
 
         private readonly IEntityManager _entityManager;
@@ -41,7 +50,7 @@ namespace SampSharp.Entities.SAMP
         /// <inheritdoc />
         public Actor CreateActor(int modelId, Vector3 position, float rotation)
         {
-            var world = _entityManager.Get(WorldSystem.WorldId);
+            var world = _entityManager.Get(WorldId);
 
             var id = world.GetComponent<NativeWorld>()
                 .CreateActor(modelId, position.X, position.Y, position.Z, rotation);
@@ -56,7 +65,7 @@ namespace SampSharp.Entities.SAMP
         public Vehicle CreateVehicle(VehicleModelType type, Vector3 position, float rotation, int color1, int color2,
             int respawnDelay = -1, bool addSiren = false)
         {
-            var world = _entityManager.Get(WorldSystem.WorldId);
+            var world = _entityManager.Get(WorldId);
 
             var id = world.GetComponent<NativeWorld>().CreateVehicle((int) type, position.X, position.Y, position.Z,
                 rotation, color1, color2, respawnDelay, addSiren);
@@ -71,7 +80,7 @@ namespace SampSharp.Entities.SAMP
         public Vehicle CreateStaticVehicle(VehicleModelType type, Vector3 position, float rotation, int color1,
             int color2, int respawnDelay = -1, bool addSiren = false)
         {
-            var world = _entityManager.Get(WorldSystem.WorldId);
+            var world = _entityManager.Get(WorldId);
 
             var id = respawnDelay == -1 && !addSiren
                 ? world.GetComponent<NativeWorld>().AddStaticVehicle((int) type, position.X, position.Y, position.Z,
@@ -88,7 +97,7 @@ namespace SampSharp.Entities.SAMP
         /// <inheritdoc />
         public GangZone CreateGangZone(float minX, float minY, float maxX, float maxY)
         {
-            var world = _entityManager.Get(WorldSystem.WorldId);
+            var world = _entityManager.Get(WorldId);
 
             var id = world.GetComponent<NativeWorld>().GangZoneCreate(minX, minY, maxX, maxY);
 
@@ -101,7 +110,7 @@ namespace SampSharp.Entities.SAMP
         /// <inheritdoc />
         public Pickup CreatePickup(int model, int type, Vector3 position, int virtualWorld = -1)
         {
-            var world = _entityManager.Get(WorldSystem.WorldId);
+            var world = _entityManager.Get(WorldId);
 
             var id = world.GetComponent<NativeWorld>()
                 .CreatePickup(model, type, position.X, position.Y, position.Z, virtualWorld);
@@ -115,7 +124,7 @@ namespace SampSharp.Entities.SAMP
         /// <inheritdoc />
         public GlobalObject CreateObject(int modelId, Vector3 position, Vector3 rotation, float drawDistance)
         {
-            var world = _entityManager.Get(WorldSystem.WorldId);
+            var world = _entityManager.Get(WorldId);
 
             var id = world.GetComponent<NativeWorld>().CreateObject(modelId, position.X, position.Y, position.Z,
                 rotation.X, rotation.Y, rotation.Z, drawDistance);
@@ -135,7 +144,7 @@ namespace SampSharp.Entities.SAMP
             if (player.GetComponent<NativePlayer>() == null)
                 throw new ArgumentException("Entity must be of type player", nameof(player));
 
-            var world = _entityManager.Get(WorldSystem.WorldId);
+            var world = _entityManager.Get(WorldId);
 
             var id = world.GetComponent<NativeWorld>().CreatePlayerObject(player.Id, modelId, position.X, position.Y,
                 position.Z, rotation.X, rotation.Y, rotation.Z, drawDistance);
@@ -150,7 +159,7 @@ namespace SampSharp.Entities.SAMP
         public TextLabel CreateTextLabel(string text, Color color, Vector3 position, float drawDistance,
             int virtualWorld = 0, bool testLos = true)
         {
-            var world = _entityManager.Get(WorldSystem.WorldId);
+            var world = _entityManager.Get(WorldId);
 
             var id = world.GetComponent<NativeWorld>().Create3DTextLabel(text, color, position.X, position.Y,
                 position.Z, drawDistance, virtualWorld, testLos);
@@ -180,7 +189,7 @@ namespace SampSharp.Entities.SAMP
             else if (attachedTo != null)
                 throw new ArgumentException("Attach target must be either a player or a vehicle.", nameof(attachedTo));
 
-            var world = _entityManager.Get(WorldSystem.WorldId);
+            var world = _entityManager.Get(WorldId);
 
             var id = world.GetComponent<NativeWorld>().CreatePlayer3DTextLabel(player.Id, text, color, position.X,
                 position.Y, position.Z, drawDistance, attachPlayer, attachVehicle, testLos);

@@ -15,8 +15,8 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using SampSharp.Entities;
+using SampSharp.Entities.SAMP;
 using TestMode.Entities.Services;
 using TestMode.Entities.Systems;
 
@@ -27,16 +27,18 @@ namespace TestMode.Entities
         public void Configure(IServiceCollection services)
         {
             // Load services (e.g. repositories), systems, etc.
-            services.AddTransient<IVehicleRepository, VehicleRepository>();
-            services.AddTransient<IFunnyService, FunnyService>();
+            services
+                .AddTransient<IVehicleRepository, VehicleRepository>()
+                .AddTransient<IFunnyService, FunnyService>()
 
-            services.AddSingleton<TestSystem>();
+                .AddSingleton<TestSystem>();
         }
 
         public void Configure(IEcsBuilder builder)
         {
             // Enable systems:
-            builder.UseSystem<TestSystem>();
+            builder.UseSystem<TestSystem>()
+                .EnableSampEvents();
 
             // Load middlewares:
             // Can also be loaded by systems which are IConfiguringSystem

@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.Entities.Events
+namespace SampSharp.Entities
 {
     /// <summary>
     /// Contains context information about a fired event.

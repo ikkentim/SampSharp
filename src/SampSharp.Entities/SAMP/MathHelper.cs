@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.Entities
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Contains commonly used precalculated values and mathematical operations.

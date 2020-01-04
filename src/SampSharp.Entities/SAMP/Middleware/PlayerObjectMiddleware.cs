@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2019 Tim Potze
+// Copyright 2020 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,29 +13,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.Entities.SAMP.Components;
-using SampSharp.Entities.SAMP.NativeComponents;
-
 namespace SampSharp.Entities.SAMP.Middleware
 {
-    internal class PlayerConnectMiddleware
+    internal class PlayerObjectMiddleware
     {
         private readonly EventDelegate _next;
 
-        public PlayerConnectMiddleware(EventDelegate next)
+        public PlayerObjectMiddleware(EventDelegate next)
         {
             _next = next;
         }
 
         public object Invoke(EventContext context, IEntityManager entityManager)
         {
-            // TODO: Parenting to connection
-            var entity = entityManager.Create(null, SampEntities.GetPlayerId((int) context.Arguments[0]));
+            var playerEntity = entityManager.Get(SampEntities.GetPlayerId((int) context.Arguments[0]));
+            var objectEntity = entityManager.Get(SampEntities.GetPlayerObjectId((int) context.Arguments[0], (int) context.Arguments[1]));
 
-            entity.AddComponent<NativePlayer>();
-            entity.AddComponent<Player>();
+            if (playerEntity == null || objectEntity == null)
+                return null;
 
-            context.Arguments[0] = entity;
+            context.Arguments[0] = playerEntity;
+            context.Arguments[1] = objectEntity;
 
             return _next(context);
         }

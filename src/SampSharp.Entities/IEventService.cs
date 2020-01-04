@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.Entities.Events
+namespace SampSharp.Entities
 {
     /// <summary>
     /// Provides functionality for handling events.

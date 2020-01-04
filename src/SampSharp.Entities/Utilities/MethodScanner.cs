@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace SampSharp.Entities.Events
+namespace SampSharp.Entities.Utilities
 {
     /// <summary>
     /// Represents a utility for scanning for methods with specific attributes in loaded assemblies.

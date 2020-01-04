@@ -27,6 +27,7 @@ namespace SampSharp.Entities
     {
         private readonly Dictionary<EntityId, Entity> _entities = new Dictionary<EntityId, Entity>();
 
+        /// <inheritdoc />
         public Entity Create(Entity parent, EntityId id)
         {
             var entity = new Entity(this, parent, id);
@@ -40,12 +41,14 @@ namespace SampSharp.Entities
             return entity;
         }
 
+        /// <inheritdoc />
         public Entity Get(EntityId id)
         {
             _entities.TryGetValue(id, out var entity);
             return entity;
         }
 
+        /// <inheritdoc />
         public void Destroy(Entity entity)
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));

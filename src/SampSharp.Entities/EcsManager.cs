@@ -17,9 +17,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Core;
 using SampSharp.Core.Logging;
-using SampSharp.Entities.Events;
 using SampSharp.Entities.SAMP;
-using SampSharp.Entities.SAMP.Systems;
 
 namespace SampSharp.Entities
 {
@@ -60,6 +58,7 @@ namespace SampSharp.Entities
             Configure(services);
 
             _serviceProvider = services.BuildServiceProvider();
+            _systemRegistry = _serviceProvider.GetRequiredService<ISystemRegistry>();
 
             Configure();
         }
@@ -76,45 +75,22 @@ namespace SampSharp.Entities
 
         private void Configure(IServiceCollection services)
         {
-            // Core services
-            services.AddSingleton<IEventService, EventService>();
-            services.AddSingleton<ISystemRegistry, SystemRegistry>();
-            services.AddSingleton<IEntityManager, EntityManager>();
-
-            // SAMP services
-            services.AddSingleton<IWorldService, WorldService>();
-            services.AddSingleton<WorldSystem>();
-            services.AddSingleton<PlayerSystem>();
-
-            // User services
-            _startup.Configure(services);
+            _startup.Configure(
+                services.AddSingleton<IEventService, EventService>()
+                    .AddSingleton<ISystemRegistry, SystemRegistry>()
+                    .AddSingleton<IEntityManager, EntityManager>()
+                    .AddSingleton<IWorldService, WorldService>()
+            );
         }
 
         private void Configure()
         {
-            var eventService = _serviceProvider.GetRequiredService<IEventService>();
-
-            // Required callbacks
-            eventService.EnableEvent("OnGameModeInit");
-            eventService.EnableEvent("OnGameModeExit");
-
-            var builder = new EcsBuilder(_serviceProvider);
-
-            // SAMP systems
-            builder.UseSystem<PlayerSystem>();
-            builder.UseSystem<WorldSystem>();
-
-            // Configure startup
-            _startup.Configure(builder);
-
-            // Configure services
-            _systemRegistry = _serviceProvider.GetRequiredService<ISystemRegistry>();
-
-            foreach (var serviceType in _systemRegistry.Get(typeof(IConfiguringSystem)))
-            {
-                var service = _serviceProvider.GetService(serviceType) as IConfiguringSystem;
-                service?.Configure(builder);
-            }
+            _startup.Configure(
+                new EcsBuilder(_serviceProvider)
+                    .EnableEvent("OnGameModeInit")
+                    .EnableEvent("OnGameModeExit")
+                    .EnableWorld()
+            );
         }
     }
 }

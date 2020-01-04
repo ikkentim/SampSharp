@@ -34,9 +34,11 @@ namespace SampSharp.Entities
             if (!typeof(ISystem).IsAssignableFrom(type))
                 throw new ArgumentException("Type must implement ISystem", nameof(type));
 
-            foreach (var kv in _data)
-                if (kv.Key.IsAssignableFrom(type))
-                    kv.Value.All.Add(type);
+            if (_data[typeof(ISystem)].All.Contains(type))
+                return;
+
+            foreach (var kv in _data.Where(kv => kv.Key.IsAssignableFrom(type)))
+                kv.Value.All.Add(type);
         }
 
         /// <inheritdoc />

@@ -13,18 +13,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace SampSharp.Entities
 {
     /// <summary>
-    /// Contains methods which can be implemented by systems which require ECS system configuration.
+    /// Indicates a method is to be invoked when an event occurs.
     /// </summary>
-    /// <seealso cref="ISystem" />
-    public interface IConfiguringSystem : ISystem
+    /// <seealso cref="System.Attribute" />
+    [AttributeUsage(AttributeTargets.Method)]
+    public class EventAttribute : Attribute
     {
         /// <summary>
-        /// Configures the ECS system.
+        /// Gets or sets the name of the event which should invoke the method. If this value is null, the method name is used as
+        /// the event name.
         /// </summary>
-        /// <param name="builder">The ECS builder.</param>
-        void Configure(IEcsBuilder builder);
+        public string Name { get; set; }
     }
 }

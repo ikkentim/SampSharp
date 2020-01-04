@@ -23,9 +23,21 @@ namespace SampSharp.Entities
         /// <summary>
         /// Enables handling of the callback with the specified <paramref name="name" /> as an event.
         /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
+        public static IEcsBuilder EnableEvent(this IEcsBuilder builder, string name)
+        {
+            return builder.EnableEvent(name);
+        }
+
+        /// <summary>
+        /// Enables handling of the callback with the specified <paramref name="name" /> as an event.
+        /// </summary>
         /// <typeparam name="T">The type of the parameter of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T>(this IEcsBuilder builder, string name)
         {
             return builder.EnableEvent(name, typeof(T));
@@ -38,6 +50,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T2">The type of parameter 2 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2>(this IEcsBuilder builder, string name)
         {
             return builder.EnableEvent(name, typeof(T1), typeof(T2));
@@ -51,6 +64,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T3">The type of parameter 3 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2, T3>(this IEcsBuilder builder, string name)
         {
             return builder.EnableEvent(name, typeof(T1), typeof(T2), typeof(T3));
@@ -65,6 +79,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T4">The type of parameter 4 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2, T3, T4>(this IEcsBuilder builder, string name)
         {
             return builder.EnableEvent(name, typeof(T1), typeof(T2), typeof(T3), typeof(T4));
@@ -80,6 +95,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T5">The type of parameter 5 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2, T3, T4, T5>(this IEcsBuilder builder, string name)
         {
             return builder.EnableEvent(name, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5));
@@ -96,6 +112,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T6">The type of parameter 6 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2, T3, T4, T5, T6>(this IEcsBuilder builder, string name)
         {
             return builder.EnableEvent(name, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6));
@@ -113,6 +130,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T7">The type of parameter 7 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2, T3, T4, T5, T6, T7>(this IEcsBuilder builder, string name)
         {
             return builder.EnableEvent(name, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6),
@@ -132,6 +150,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T8">The type of parameter 8 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2, T3, T4, T5, T6, T7, T8>(this IEcsBuilder builder, string name)
         {
             return builder.EnableEvent(name, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6),
@@ -152,6 +171,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T9">The type of parameter 9 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this IEcsBuilder builder, string name)
         {
             return builder.EnableEvent(name, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6),
@@ -173,6 +193,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T10">The type of parameter 10 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this IEcsBuilder builder,
             string name)
         {
@@ -196,6 +217,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T11">The type of parameter 11 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this IEcsBuilder builder,
             string name)
         {
@@ -220,6 +242,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T12">The type of parameter 12 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
             this IEcsBuilder builder, string name)
         {
@@ -245,6 +268,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T13">The type of parameter 13 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(
             this IEcsBuilder builder, string name)
         {
@@ -271,6 +295,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T14">The type of parameter 14 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(
             this IEcsBuilder builder, string name)
         {
@@ -298,6 +323,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T15">The type of parameter 15 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(
             this IEcsBuilder builder, string name)
         {
@@ -327,6 +353,7 @@ namespace SampSharp.Entities
         /// <typeparam name="T16">The type of parameter 16 of the callback.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="name">The name of the callback.</param>
+        /// <returns>The builder.</returns>
         public static IEcsBuilder EnableEvent<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(
             this IEcsBuilder builder, string name)
         {

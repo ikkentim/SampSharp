@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.Events
+namespace SampSharp.Entities
 {
     /// <summary>
     /// Invokes the next event handler with the specified event context.

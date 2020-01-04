@@ -14,10 +14,10 @@
 // limitations under the License.
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using SampSharp.Entities;
-using SampSharp.Entities.Events;
 using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Components;
 using SampSharp.Entities.SAMP.Definitions;
@@ -70,15 +70,54 @@ namespace TestMode.Entities.Systems
         }
 
         [Event]
-        public void OnPlayerCommandText(Player player, string text, IWorldService worldService)
+        public void OnPlayerWeaponShot(Player player, int weaponId, int hitType, Entity hit, float x, float y, float z)
         {
+            var pos = new Vector3(x, y, z);
+            player.SendClientMessage($"You shot {hit} at {pos}");
+        }
+
+        [Event]
+        public bool OnPlayerCommandText(Player player, string text, IWorldService worldService, IEntityManager entityManager)
+        {
+            if (text == "/entities")
+            {
+                void Print(int indent, Entity entity)
+                {
+                    var ind = string.Concat(Enumerable.Repeat(' ', indent));
+
+                    player.SendClientMessage($"{ind}{entity}");
+                    foreach (var com in entity.GetComponents<Component>())
+                        player.SendClientMessage($"{ind}::>{com.GetType().Name}");
+
+                    foreach (var child in entity.Children)
+                        Print(indent + 2, child);
+                }
+
+                Print(0, entityManager.Get(WorldService.WorldId));
+                return true;
+            }
+            if (text == "/weapon")
+            {
+                player.GiveWeapon(Weapon.AK47, 100);
+                player.SetArmedWeapon(Weapon.AK47);
+                player.PlaySound(1083);
+                return true;
+            }
             if (text == "/actor")
             {
                 worldService.CreateActor(0, player.Position + Vector3.Up, 0);
-                player.SendClientMessage(-1, "Actor created!");
+                player.SendClientMessage("Actor created!");
+                player.PlaySound(1083);
+                return true;
             }
 
-            if (text == "/pos") player.SendClientMessage(-1, $"You are at {player.Position}");
+            if (text == "/pos")
+            {
+                player.SendClientMessage(-1, $"You are at {player.Position}");
+                return true;
+            }
+
+            return false;
         }
 
         [Event]

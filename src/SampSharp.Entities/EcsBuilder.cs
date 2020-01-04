@@ -15,7 +15,6 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using SampSharp.Entities.Events;
 
 namespace SampSharp.Entities
 {

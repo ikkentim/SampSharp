@@ -20,8 +20,9 @@ using System.Linq.Expressions;
 using System.Reflection;
 using SampSharp.Core;
 using SampSharp.Core.Logging;
+using SampSharp.Entities.Utilities;
 
-namespace SampSharp.Entities.Events
+namespace SampSharp.Entities
 {
     /// <summary>
     /// Represents the event service.
@@ -50,7 +51,6 @@ namespace SampSharp.Entities.Events
         private readonly Dictionary<string, Event> _events = new Dictionary<string, Event>();
         private readonly IGameModeClient _gameModeClient;
         private readonly IServiceProvider _serviceProvider;
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EventService" /> class.
@@ -106,7 +106,7 @@ namespace SampSharp.Entities.Events
                 result = sysEvt.Invoke(system, context) ?? result;
             }
 
-            return null;
+            return result;
         }
 
         private void CreateEventsFromAssemblies()

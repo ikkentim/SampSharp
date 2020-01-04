@@ -17,9 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using SampSharp.Core.Callbacks;
-using SampSharp.Core.Communication.Clients;
 using SampSharp.Core.Natives;
 
 namespace SampSharp.Core
