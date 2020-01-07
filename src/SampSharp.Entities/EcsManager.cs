@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Core;
 using SampSharp.Core.Logging;
 using SampSharp.Entities.SAMP;
+using SampSharp.Entities.SAMP.Dialogs;
 
 namespace SampSharp.Entities
 {
@@ -90,6 +91,8 @@ namespace SampSharp.Entities
                     .AddSingleton<ISystemRegistry, SystemRegistry>()
                     .AddSingleton<IEntityManager, EntityManager>()
                     .AddSingleton<IWorldService, WorldService>()
+                    .AddTransient<IDialogService, DialogService>()
+                    .AddSystem<DialogSystem>()
             );
         }
 

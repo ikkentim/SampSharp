@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Entities
@@ -88,6 +89,35 @@ namespace SampSharp.Entities
             Parent = null;
 
             _manager.Remove(this);
+        }
+        
+        /// <summary>
+        /// Destroys the specified component in this entity.
+        /// </summary>
+        /// <param name="component">The component to destroy.</param>
+        /// <returns><c>true</c> if the component was successfully destroyed.</returns>
+        public bool Destroy(Component component)
+        {
+            if (component == null || !_components.Contains(component))
+                return false;
+
+            component.DestroyComponent();
+            component.Entity = null;
+
+            _components.Remove(component);
+            return true;
+        }
+
+        /// <summary>
+        /// Destroys the components with the specified type <typeparamref name="T"/> in this entity.
+        /// </summary>
+        /// <typeparam name="T">The type of the components to remove.</typeparam>
+        /// <returns><c>true</c> if a component was successfully destroyed.</returns>
+        public bool Destroy<T>() where T : Component
+        {
+            var components = GetComponents<T>().ToArray();
+
+            return components.Aggregate(false, (current, component) => current | Destroy(component));
         }
 
         /// <summary>

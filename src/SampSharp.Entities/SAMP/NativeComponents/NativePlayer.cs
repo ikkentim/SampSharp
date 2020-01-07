@@ -908,5 +908,12 @@ namespace SampSharp.Entities.SAMP.NativeComponents
         {
             throw new NativeNotImplementedException();
         }
+        
+        [NativeMethod]
+        public virtual void ShowPlayerDialog(int dialogid, int style, string caption, string info,
+            string button1, string button2)
+        {
+            throw new NativeNotImplementedException();
+        }
     }
 }
