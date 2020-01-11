@@ -77,12 +77,17 @@ namespace TestMode.Entities.Systems
         }
 
         [Event]
-        public void OnRconCommand(string cmd)
+        public bool OnRconCommand(string cmd)
         {
             Console.WriteLine("RCON");
 
+            if (cmd == "ret")
+                return true;
+
             if(cmd == "err")
                 throw new Exception("RCON threw an error");
+
+            return false;
         }
 
         [Event]

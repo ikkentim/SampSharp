@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Core;
 using SampSharp.Core.Logging;
@@ -214,23 +215,21 @@ namespace SampSharp.Entities
                     context.SetEventServices(_serviceProvider);
                 }
 
-                if (@event.Invoke == null)
-                {
-                    // In order to chain the middleware from start to end, the middleware must be nested from end to beginning
-                    EventDelegate invoke = Invoke;
-                    for (var i = @event.Middleware.Count - 1; i >= 0; i--)
-                    {
-                        invoke = @event.Middleware[i](invoke);
-                    }
-
-                    @event.Invoke = invoke;
-                }
-
                 var result = @event.Invoke(context);
 
                 scope?.Dispose();
 
-                return result;
+                switch (result)
+                {
+                    case Task<bool> task:
+                        return !task.IsCompleted ? null : (object)task.Result;
+                    case Task<int> task:
+                        return !task.IsCompleted ? null : (object)task.Result;
+                    case Task task:
+                        return null;
+                    default:
+                        return result;
+                }
             };
         }
 
