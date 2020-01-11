@@ -82,28 +82,42 @@ namespace SampSharp.Core
                 }
                 catch (Exception e)
                 {
-                    OnUnhandledException(new UnhandledExceptionEventArgs(e));
+                    OnUnhandledException(new UnhandledExceptionEventArgs("async", e));
                 }
             }
 
-            _gameModeProvider.Tick();
+            try
+            {
+                _gameModeProvider.Tick();
+            }
+            catch (Exception e)
+            {
+                OnUnhandledException(new UnhandledExceptionEventArgs("Tick", e));
+            }
         }
 
         internal int PublicCall(string name, IntPtr data, int length)
         {
-            if (name == "OnRconCommand")
+            try
             {
-                // TODO: Not sure if this will cause issues.
-                _rconThread = Thread.CurrentThread.ManagedThreadId;
-            }
-            
-            if(_callbacks.TryGetValue(name, out var callback))
-            {
-                // TODO: Optimize
-                var arr = new byte[length];
-                Marshal.Copy(data, arr, 0, length);
+                if (name == "OnRconCommand")
+                {
+                    // TODO: Not sure if this will cause issues.
+                    _rconThread = Thread.CurrentThread.ManagedThreadId;
+                }
 
-                return callback.Invoke(arr, 0) ?? 1;
+                if (_callbacks.TryGetValue(name, out var callback))
+                {
+                    // TODO: Optimize
+                    var arr = new byte[length];
+                    Marshal.Copy(data, arr, 0, length);
+
+                    return callback.Invoke(arr, 0) ?? 1;
+                }
+            }
+            catch (Exception e)
+            {
+                OnUnhandledException(new UnhandledExceptionEventArgs(name, e));
             }
 
             return 1;

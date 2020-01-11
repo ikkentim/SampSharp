@@ -77,6 +77,15 @@ namespace TestMode.Entities.Systems
         }
 
         [Event]
+        public void OnRconCommand(string cmd)
+        {
+            Console.WriteLine("RCON");
+
+            if(cmd == "err")
+                throw new Exception("RCON threw an error");
+        }
+
+        [Event]
         public async Task<bool> OnPlayerCommandText(Player player, string text, IDialogService dialogService, IWorldService worldService, IEntityManager entityManager)
         {
             if (text == "/addcomponent")

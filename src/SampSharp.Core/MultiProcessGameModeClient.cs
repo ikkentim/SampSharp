@@ -91,7 +91,14 @@ namespace SampSharp.Core
                     if (!_canTick)
                         break;
 
-                    _gameModeProvider.Tick();
+                    try
+                    {
+                        _gameModeProvider.Tick();
+                    }
+                    catch (Exception e)
+                    {
+                        OnUnhandledException(new UnhandledExceptionEventArgs("Tick", e));
+                    }
 
                     // The server expects at least a message every 5 seconds or else the debug pause
                     // detector kicks in. Send one at least every 3 to be safe.
@@ -144,7 +151,7 @@ namespace SampSharp.Core
                         }
                         catch (Exception e)
                         {
-                            OnUnhandledException(new UnhandledExceptionEventArgs(e));
+                            OnUnhandledException(new UnhandledExceptionEventArgs(name, e));
                         }
 
                         Send(ServerCommand.Response,
@@ -652,7 +659,7 @@ namespace SampSharp.Core
 
             InternalStorage.RunningClient = this;
 
-            // Prepare the syncronization context
+            // Prepare the synchronization context
             var queue = new SemaphoreMessageQueue();
             _synchronizationContext = new SampSharpSynchronizationContext(queue);
             _messagePump = new MessagePump(queue);
@@ -663,7 +670,7 @@ namespace SampSharp.Core
             Initialize();
 
             // Pump new tasks
-            _messagePump.Pump(e => OnUnhandledException(new UnhandledExceptionEventArgs(e)));
+            _messagePump.Pump(e => OnUnhandledException(new UnhandledExceptionEventArgs("async", e)));
 
             // Clean up
             InternalStorage.RunningClient = null;
