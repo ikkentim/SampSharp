@@ -67,19 +67,39 @@ namespace TestMode.Entities.Systems
                     // ... Run things on the main thead.
                 }, null);
             });
-
         }
 
         [Event]
-        public void OnPlayerWeaponShot(Player player, int weaponId, int hitType, Entity hit, float x, float y, float z)
+        public void OnPlayerWeaponShot(Player player, Weapon weapon, int hitType, Entity hit, float x, float y, float z)
         {
             var pos = new Vector3(x, y, z);
-            player.SendClientMessage($"You shot {hit} at {pos}");
+            player.SendClientMessage($"You shot {hit} at {pos} with {weapon}");
         }
 
         [Event]
         public async Task<bool> OnPlayerCommandText(Player player, string text, IDialogService dialogService, IWorldService worldService, IEntityManager entityManager)
         {
+            if (text == "/addcomponent")
+            {
+                if(player.GetComponent<TestComponent>() == null)
+                    player.Entity.AddComponent<TestComponent>();
+
+                player.SendClientMessage("Added TestComponent!");
+                return true;
+            }
+            if (text == "/removecomponent")
+            {
+                player.Entity.Destroy<TestComponent>();
+
+                player.SendClientMessage("Remove TestComponent!");
+                return true;
+            }
+            if (text == "/getcomponents")
+            {
+                foreach (var comp in player.GetComponents<Component>())
+                    player.SendClientMessage(comp.GetType().FullName);
+                return true;
+            }
             if (text == "/tablist")
             {
                 dialogService.Show(player.Entity,
@@ -97,7 +117,6 @@ namespace TestMode.Entities.Systems
                 player.PlaySound(1083);
                 return true;
             }
-
             if (text == "/list")
             {
                 dialogService.Show(player.Entity, new ListDialog("Hello", "Left", "right")
@@ -171,7 +190,6 @@ namespace TestMode.Entities.Systems
                 player.PlaySound(1083);
                 return true;
             }
-
             if (text == "/pos")
             {
                 player.SendClientMessage(-1, $"You are at {player.Position}");
@@ -201,7 +219,13 @@ namespace TestMode.Entities.Systems
         [Event]
         public void OnPlayerText(TestComponent test, string text)
         {
-            Console.WriteLine(test.WelcomingMessage + ":::" + text);
+            Console.WriteLine(test.WelcomingMessage);
+        }
+
+        [Event]
+        public void OnPlayerText(Player player, string text)
+        {
+            Console.WriteLine(player + ": " + text);
         }
     }
 }

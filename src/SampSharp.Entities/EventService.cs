@@ -151,7 +151,7 @@ namespace SampSharp.Entities
                         source.ParameterIndex = argsPtr++;
                         source.ComponentType = type;
                     }
-                    else if (DefaultParameterTypes.Contains(type))
+                    else if (DefaultParameterTypes.Contains(type) || type.IsEnum)
                     {
                         // Default types are passed straight trough.
                         source.ParameterIndex = argsPtr++;
@@ -181,7 +181,7 @@ namespace SampSharp.Entities
                     var args = eventContext.Arguments;
                     if (callbackParamCount != args.Length)
                     {
-                        CoreLog.Log(CoreLogLevel.Warning,
+                        CoreLog.Log(CoreLogLevel.Error,
                             $"Callback parameter count mismatch {callbackParamCount} != {args.Length}");
                         return null;
                     }
@@ -244,22 +244,64 @@ namespace SampSharp.Entities
             var instanceArg = Expression.Parameter(typeof(object), "instance");
             var argsArg = Expression.Parameter(typeof(object[]), "args");
             var eventContextArg = Expression.Parameter(typeof(EventContext), "eventContext");
+            var entityNull = Expression.Constant(null, typeof(Entity));
+            Expression argsCheckExpression = null;
 
+            var locals = new List<ParameterExpression>();
+            var expressions = new List<Expression>();
             var methodArguments = new Expression[parameterSources.Length];
+
             for (var i = 0; i < parameterSources.Length; i++)
             {
                 var parameterType = parameterSources[i].Info.ParameterType;
-                if (parameterType.IsByRef) throw new NotSupportedException();
+                if (parameterType.IsByRef) throw new NotSupportedException("Reference parameters are not supported");
 
                 if (parameterSources[i].ComponentType != null)
                 {
                     // Get component from entity
+                    
+                    // Declare local variables
+                    var entityArg = Expression.Parameter(typeof(Entity), $"entity{i}");
+                    var componentArg = Expression.Parameter(parameterSources[i].ComponentType, $"component{i}");
+                    var componentNull = Expression.Constant(null, parameterSources[i].ComponentType);
+
+                    locals.Add(entityArg);
+                    locals.Add(componentArg);
+
+                    // Constant index in args array
                     Expression index = Expression.Constant(parameterSources[i].ParameterIndex);
 
-                    Expression getValue = Expression.ArrayIndex(argsArg, index);
-                    getValue = Expression.Convert(getValue, typeof(Entity));
-                    methodArguments[i] = Expression.Call(getValue,
-                        GetComponentInfo.MakeGenericMethod(parameterSources[i].ComponentType));
+                    // Assign entity from args array to entity variable.
+                    var getEntityExpression = Expression.Assign(entityArg,
+                        Expression.Convert(
+                            Expression.ArrayIndex(argsArg, index),
+                            typeof(Entity)));
+                    expressions.Add(getEntityExpression);
+
+                    // If entity is not null, convert entity to component. Assign component to component variable.
+                    var getComponentInfo = GetComponentInfo.MakeGenericMethod(parameterSources[i].ComponentType);
+                    var getComponentExpression = Expression.Assign(componentArg,
+                        Expression.Condition(
+                            Expression.Equal(entityArg, entityNull),
+                            componentNull,
+                            Expression.Call(entityArg, getComponentInfo)
+                        )
+                    );
+                    expressions.Add(getComponentExpression);
+
+                    // If an entity was provided in the args list, the entity must be convertible to the component. Add
+                    // check for entity to either be null or the component to not be null.
+                    var checkExpression = Expression.OrElse(
+                        Expression.Equal(entityArg, entityNull),
+                        Expression.NotEqual(componentArg, componentNull)
+                    );
+
+                    argsCheckExpression = argsCheckExpression == null
+                        ? checkExpression
+                        : Expression.AndAlso(argsCheckExpression, checkExpression);
+
+                    // Add component variable as the method argument.
+                    methodArguments[i] = componentArg;
                 }
                 else if (parameterSources[i].ServiceType != null)
                 {
@@ -281,9 +323,20 @@ namespace SampSharp.Entities
             var service = Expression.Convert(instanceArg, methodInfo.DeclaringType);
             Expression body = Expression.Call(service, methodInfo, methodArguments);
 
+
             if (body.Type == typeof(void))
                 body = Expression.Block(body, Expression.Constant(null));
-            else if (body.Type != typeof(object)) body = Expression.Convert(body, typeof(object));
+            else if (body.Type != typeof(object))
+                body = Expression.Convert(body, typeof(object));
+
+            if (argsCheckExpression != null)
+                body = Expression.Condition(argsCheckExpression, body, Expression.Constant(null));
+
+            if (locals.Count > 0 || expressions.Count > 0)
+            {
+                expressions.Add(body);
+                body = Expression.Block(locals, expressions);
+            }
 
             var lambda =
                 Expression.Lambda<Func<object, object[], EventContext, object>>(body, instanceArg, argsArg,
@@ -295,7 +348,7 @@ namespace SampSharp.Entities
         private static object GetService(EventContext eventContext, Type type)
         {
             var service = eventContext.EventServices.GetService(type);
-            return service ?? throw new InvalidOperationException();
+            return service ?? throw new InvalidOperationException($"Service of type {type} is not available.");
         }
 
         private class Event

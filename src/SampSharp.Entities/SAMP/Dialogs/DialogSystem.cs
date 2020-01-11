@@ -24,9 +24,6 @@ namespace SampSharp.Entities.SAMP.Dialogs
         // ReSharper disable once UnusedMember.Local
         private void OnPlayerDisconnect(VisibleDialog player, int reason)
         {
-            // TODO: Should not need to do this:
-            if (player == null) return;
-
             player.Handler(new DialogResult(DialogResponse.Disconnected, 0, null));
         }
 
@@ -34,9 +31,6 @@ namespace SampSharp.Entities.SAMP.Dialogs
         // ReSharper disable once UnusedMember.Local
         private void OnDialogResponse(VisibleDialog player, int dialogId, int response, int listItem, string inputText)
         {
-            // TODO: Should not need to do this:
-            if (player == null) return;
-
             if (dialogId != DialogService.DialogId)
                 return; // Prevent dialog hacks
 
