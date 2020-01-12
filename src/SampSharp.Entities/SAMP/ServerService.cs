@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Entities.SAMP.Definitions;
 using SampSharp.Entities.SAMP.NativeComponents;
 
@@ -40,6 +41,8 @@ namespace SampSharp.Entities.SAMP
         public ServerService(IEntityManager entityManager)
         {
             _entityManager = entityManager;
+            Variables = new VariableCollection(NativeObjectProxyFactory
+                .CreateInstance<VariableCollection.ServerVariableCollectionNatives>());
         }
 
         private NativeServer Native => _entityManager.Get(ServerId).GetComponent<NativeServer>();
@@ -55,6 +58,8 @@ namespace SampSharp.Entities.SAMP
 
         /// <inheritdoc />
         public int VehiclePoolSize => Native.GetVehiclePoolSize();
+
+        public VariableCollection Variables { get; }
 
         /// <inheritdoc />
         public int ActorPoolSize => Native.GetActorPoolSize();

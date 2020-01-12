@@ -16,6 +16,7 @@
 using System;
 using System.Linq;
 using System.Net;
+using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Entities.SAMP.Definitions;
 using SampSharp.Entities.SAMP.NativeComponents;
 
@@ -26,7 +27,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// </summary>
     public class Player : Component
     {
-        #region Players properties
+        private VariableCollection _variableCollection;
 
         /// <summary>
         /// Gets or sets the name of this player.
@@ -453,9 +454,22 @@ namespace SampSharp.Entities.SAMP.Components
             set => GetComponent<NativePlayer>().SetPlayerPos(value.X, value.Y, value.Z);
         }
 
-        #endregion
+        /// <summary>
+        /// Gets the PVar variable collection for this player.
+        /// </summary>
+        public VariableCollection Variables
+        {
+            get
+            {
+                if (_variableCollection != null)
+                    return _variableCollection;
 
-        #region SAMP properties
+                var proxy = NativeObjectProxyFactory.CreateInstance<VariableCollection.PlayerVariableCollectionNatives>();
+                proxy.PlayerId = Entity.Id;
+
+                return _variableCollection = new VariableCollection(proxy);
+            }
+        }
 
         /// <summary>
         /// Gets whether this player is an actual player or an NPC.
@@ -600,11 +614,6 @@ namespace SampSharp.Entities.SAMP.Components
         /// Gets the game camera zoom level for this player.
         /// </summary>
         public float CameraZoom => GetComponent<NativePlayer>().GetPlayerCameraZoom();
-
-        #endregion
-
-
-        #region Players natives
 
         /// <summary>
         /// This function can be used to change the spawn information of a specific player. It allows you to automatically set
@@ -1441,10 +1450,6 @@ namespace SampSharp.Entities.SAMP.Components
             hitPosition = new Vector3(hx, hy, hz);
         }
 
-        #endregion
-
-        #region SAMP natives
-
         /// <summary>
         /// This function sends a message to this player with a chosen color in the chat. The whole line in
         /// the chat box will be
@@ -1671,7 +1676,5 @@ namespace SampSharp.Entities.SAMP.Components
         {
             GetComponent<NativePlayer>().RemovePlayerMapIcon(iconId);
         }
-
-        #endregion
     }
 }

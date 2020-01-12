@@ -61,6 +61,11 @@ namespace SampSharp.Entities.SAMP
         int VehiclePoolSize { get; }
 
         /// <summary>
+        /// Gets the SVar variable collection.
+        /// </summary>
+        VariableCollection Variables { get; }
+
+        /// <summary>
         /// Adds a class to class selection. Classes are used so players may spawn with a skin of their choice.
         /// </summary>
         /// <param name="teamId">The team for the player to spawn with.</param>

@@ -69,7 +69,8 @@ namespace SampSharp.Core.Natives.NativeObjects
                 if(type == null)
                     throw new ArgumentNullException(nameof(type));
 
-                if (!type.GetTypeInfo().IsPublic)
+                
+                if (!(type.IsNested ? type.IsNestedPublic : type.IsPublic))
                 {
                     throw new ArgumentException($"Type {type} is not public. Native proxies can only be created for public types.", nameof(type));
                 }

@@ -32,7 +32,7 @@ namespace TestMode.Entities.Systems
         private GangZone _zone;
 
         [Event]
-        public void OnGameModeInit(IVehicleRepository vehiclesRepository,  IWorldService worldService) 
+        public void OnGameModeInit(IVehicleRepository vehiclesRepository,  IWorldService worldService, IServerService serverService) 
         {
             // Event methods have dependency injection alongside the arguments
 
@@ -67,6 +67,8 @@ namespace TestMode.Entities.Systems
                     // ... Run things on the main thead.
                 }, null);
             });
+
+            serverService.SetGameModeText("SampSharp.Entities");
         }
 
         [Event]
