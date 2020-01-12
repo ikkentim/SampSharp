@@ -21,7 +21,7 @@ using SampSharp.Entities.SAMP.NativeComponents;
 namespace SampSharp.Entities.SAMP
 {
     /// <summary>
-    /// Represents a service for adding entities to the SA:MP world.
+    /// Represents a service for adding entities to and control the SA:MP world.
     /// </summary>
     public class WorldService : IWorldService
     {
@@ -39,6 +39,9 @@ namespace SampSharp.Entities.SAMP
 
         private readonly IEntityManager _entityManager;
 
+        private Entity World => _entityManager.Get(WorldId);
+        private NativeWorld Native => World.GetComponent<NativeWorld>();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WorldService" /> class.
         /// </summary>
@@ -48,9 +51,23 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <inheritdoc />
+        public float Gravity
+        {
+            get => Native.GetGravity();
+            set
+            {
+                if (value < -50 || value > 50)
+                    throw new ArgumentOutOfRangeException(nameof(value), value,
+                        "Value must be between -50.0 and 50.0.");
+
+                Native.SetGravity(value);
+            }
+        }
+
+        /// <inheritdoc />
         public Actor CreateActor(int modelId, Vector3 position, float rotation)
         {
-            var world = _entityManager.Get(WorldId);
+            var world = World;
 
             var id = world.GetComponent<NativeWorld>()
                 .CreateActor(modelId, position.X, position.Y, position.Z, rotation);
@@ -65,7 +82,7 @@ namespace SampSharp.Entities.SAMP
         public Vehicle CreateVehicle(VehicleModelType type, Vector3 position, float rotation, int color1, int color2,
             int respawnDelay = -1, bool addSiren = false)
         {
-            var world = _entityManager.Get(WorldId);
+            var world = World;
 
             var id = world.GetComponent<NativeWorld>().CreateVehicle((int) type, position.X, position.Y, position.Z,
                 rotation, color1, color2, respawnDelay, addSiren);
@@ -80,7 +97,7 @@ namespace SampSharp.Entities.SAMP
         public Vehicle CreateStaticVehicle(VehicleModelType type, Vector3 position, float rotation, int color1,
             int color2, int respawnDelay = -1, bool addSiren = false)
         {
-            var world = _entityManager.Get(WorldId);
+            var world = World;
 
             var id = respawnDelay == -1 && !addSiren
                 ? world.GetComponent<NativeWorld>().AddStaticVehicle((int) type, position.X, position.Y, position.Z,
@@ -97,7 +114,7 @@ namespace SampSharp.Entities.SAMP
         /// <inheritdoc />
         public GangZone CreateGangZone(float minX, float minY, float maxX, float maxY)
         {
-            var world = _entityManager.Get(WorldId);
+            var world = World;
 
             var id = world.GetComponent<NativeWorld>().GangZoneCreate(minX, minY, maxX, maxY);
 
@@ -110,7 +127,7 @@ namespace SampSharp.Entities.SAMP
         /// <inheritdoc />
         public Pickup CreatePickup(int model, int type, Vector3 position, int virtualWorld = -1)
         {
-            var world = _entityManager.Get(WorldId);
+            var world = World;
 
             var id = world.GetComponent<NativeWorld>()
                 .CreatePickup(model, type, position.X, position.Y, position.Z, virtualWorld);
@@ -122,9 +139,18 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <inheritdoc />
+        public bool AddStaticPickup(int model, int type, Vector3 position, int virtualWorld = -1)
+        {
+            var world = World;
+
+            return world.GetComponent<NativeWorld>()
+                .AddStaticPickup(model, type, position.X, position.Y, position.Z, virtualWorld);
+        }
+
+        /// <inheritdoc />
         public GlobalObject CreateObject(int modelId, Vector3 position, Vector3 rotation, float drawDistance)
         {
-            var world = _entityManager.Get(WorldId);
+            var world = World;
 
             var id = world.GetComponent<NativeWorld>().CreateObject(modelId, position.X, position.Y, position.Z,
                 rotation.X, rotation.Y, rotation.Z, drawDistance);
@@ -144,7 +170,7 @@ namespace SampSharp.Entities.SAMP
             if (player.GetComponent<NativePlayer>() == null)
                 throw new ArgumentException("Entity must be of type player", nameof(player));
 
-            var world = _entityManager.Get(WorldId);
+            var world = World;
 
             var id = world.GetComponent<NativeWorld>().CreatePlayerObject(player.Id, modelId, position.X, position.Y,
                 position.Z, rotation.X, rotation.Y, rotation.Z, drawDistance);
@@ -159,7 +185,7 @@ namespace SampSharp.Entities.SAMP
         public TextLabel CreateTextLabel(string text, Color color, Vector3 position, float drawDistance,
             int virtualWorld = 0, bool testLos = true)
         {
-            var world = _entityManager.Get(WorldId);
+            var world = World;
 
             var id = world.GetComponent<NativeWorld>().Create3DTextLabel(text, color, position.X, position.Y,
                 position.Z, drawDistance, virtualWorld, testLos);
@@ -189,7 +215,7 @@ namespace SampSharp.Entities.SAMP
             else if (attachedTo != null)
                 throw new ArgumentException("Attach target must be either a player or a vehicle.", nameof(attachedTo));
 
-            var world = _entityManager.Get(WorldId);
+            var world = World;
 
             var id = world.GetComponent<NativeWorld>().CreatePlayer3DTextLabel(player.Id, text, color, position.X,
                 position.Y, position.Z, drawDistance, attachPlayer, attachVehicle, testLos);
@@ -198,6 +224,67 @@ namespace SampSharp.Entities.SAMP
 
             entity.AddComponent<NativePlayerTextLabel>();
             return entity.AddComponent<PlayerTextLabel>(text, color, position, drawDistance, testLos, attachedTo);
+        }
+
+        /// <inheritdoc />
+        public void SetObjectsDefaultCameraCollision(bool disable)
+        {
+            Native.SetObjectsDefaultCameraCol(disable);
+        }
+
+        /// <inheritdoc />
+        public void SendClientMessage(Color color, string message)
+        {
+            Native.SendClientMessageToAll(color, message);
+        }
+
+        /// <inheritdoc />
+        public void SendClientMessage(Color color, string messageFormat, params object[] args)
+        {
+            SendClientMessage(color, string.Format(messageFormat, args));
+        }
+
+        /// <inheritdoc />
+        public void SendClientMessage(string message)
+        {
+            SendClientMessage(Color.White, message);
+        }
+
+        /// <inheritdoc />
+        public void SendClientMessage(string messageFormat, params object[] args)
+        {
+            SendClientMessage(Color.White, string.Format(messageFormat, args));
+        }
+
+        /// <inheritdoc />
+        public void SendPlayerMessageToPlayer(Entity sender, string message)
+        {
+            Native.SendPlayerMessageToAll(sender.Id, message);
+        }
+
+        /// <inheritdoc />
+        public void SendDeathMessage(Entity killer, Entity killee, Weapon weapon)
+        {
+            Native.SendDeathMessage(killer?.Id ?? NativePlayer.InvalidId, killee?.Id ?? NativePlayer.InvalidId,
+                (int) weapon);
+        }
+
+        /// <inheritdoc />
+        public void GameText(string text, int time, int style)
+        {
+            Native.GameTextForAll(text, time, style);
+        }
+
+        /// <inheritdoc />
+        public void CreateExplosion(Vector3 position, ExplosionType type, float radius)
+        {
+            Native.CreateExplosion(position.X, position.Y, position.Z, (int) type, radius);
+        }
+
+        /// <inheritdoc />
+        public void SetWeather(int weather)
+        {
+            Native.SetWeather(weather);
         }
     }
 }

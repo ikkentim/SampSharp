@@ -15,6 +15,7 @@
 
 using System;
 using System.Linq;
+using System.Net;
 using SampSharp.Entities.SAMP.Definitions;
 using SampSharp.Entities.SAMP.NativeComponents;
 
@@ -30,7 +31,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the name of this player.
         /// </summary>
-        public virtual string Name
+        public string Name
         {
             get
             {
@@ -43,7 +44,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the facing angle of this player.
         /// </summary>
-        public virtual float Angle
+        public float Angle
         {
             get
             {
@@ -56,7 +57,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the interior of this player.
         /// </summary>
-        public virtual int Interior
+        public int Interior
         {
             get => GetComponent<NativePlayer>().GetPlayerInterior();
             set => GetComponent<NativePlayer>().SetPlayerInterior(value);
@@ -65,7 +66,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the virtual world of this player.
         /// </summary>
-        public virtual int VirtualWorld
+        public int VirtualWorld
         {
             get => GetComponent<NativePlayer>().GetPlayerVirtualWorld();
             set => GetComponent<NativePlayer>().SetPlayerVirtualWorld(value);
@@ -74,7 +75,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the health of this player.
         /// </summary>
-        public virtual float Health
+        public float Health
         {
             get
             {
@@ -87,7 +88,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the armor of this player.
         /// </summary>
-        public virtual float Armour
+        public float Armour
         {
             get
             {
@@ -100,22 +101,22 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the ammo of the Weapon this player is currently holding.
         /// </summary>
-        public virtual int WeaponAmmo => GetComponent<NativePlayer>().GetPlayerAmmo();
+        public int WeaponAmmo => GetComponent<NativePlayer>().GetPlayerAmmo();
 
         /// <summary>
         /// Gets the WeaponState of the Weapon this player is currently holding.
         /// </summary>
-        public virtual WeaponState WeaponState => (WeaponState) GetComponent<NativePlayer>().GetPlayerWeaponState();
+        public WeaponState WeaponState => (WeaponState) GetComponent<NativePlayer>().GetPlayerWeaponState();
 
         /// <summary>
         /// Gets the Weapon this player is currently holding.
         /// </summary>
-        public virtual Weapon Weapon => (Weapon) GetComponent<NativePlayer>().GetPlayerWeapon();
+        public Weapon Weapon => (Weapon) GetComponent<NativePlayer>().GetPlayerWeapon();
 
         /// <summary>
         /// Gets the Player this player is aiming at.
         /// </summary>
-        public virtual Entity TargetPlayer
+        public Entity TargetPlayer
         {
             get
             {
@@ -127,7 +128,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the team this player is in.
         /// </summary>
-        public virtual int Team
+        public int Team
         {
             get => GetComponent<NativePlayer>().GetPlayerTeam();
             set => GetComponent<NativePlayer>().SetPlayerTeam(value);
@@ -136,7 +137,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the score of this player.
         /// </summary>
-        public virtual int Score
+        public int Score
         {
             get => GetComponent<NativePlayer>().GetPlayerScore();
             set => GetComponent<NativePlayer>().SetPlayerScore(value);
@@ -145,7 +146,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the drunkenness level of this player.
         /// </summary>
-        public virtual int DrunkLevel
+        public int DrunkLevel
         {
             get => GetComponent<NativePlayer>().GetPlayerDrunkLevel();
             set => GetComponent<NativePlayer>().SetPlayerDrunkLevel(value);
@@ -154,7 +155,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the Color of this player.
         /// </summary>
-        public virtual Color Color
+        public Color Color
         {
             get => new Color(GetComponent<NativePlayer>().GetPlayerColor());
             set => GetComponent<NativePlayer>().SetPlayerColor(value);
@@ -163,7 +164,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the skin of this player.
         /// </summary>
-        public virtual int Skin
+        public int Skin
         {
             get => GetComponent<NativePlayer>().GetPlayerSkin();
             set => GetComponent<NativePlayer>().SetPlayerSkin(value);
@@ -172,7 +173,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the money of this player.
         /// </summary>
-        public virtual int Money
+        public int Money
         {
             get => GetComponent<NativePlayer>().GetPlayerMoney();
             set
@@ -185,12 +186,12 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the state of this player.
         /// </summary>
-        public virtual PlayerState State => (PlayerState) GetComponent<NativePlayer>().GetPlayerState();
+        public PlayerState State => (PlayerState) GetComponent<NativePlayer>().GetPlayerState();
 
         /// <summary>
         /// Gets the IP of this player.
         /// </summary>
-        public virtual string Ip
+        public string Ip
         {
             get
             {
@@ -202,12 +203,12 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the ping of this player.
         /// </summary>
-        public virtual int Ping => GetComponent<NativePlayer>().GetPlayerPing();
+        public int Ping => GetComponent<NativePlayer>().GetPlayerPing();
 
         /// <summary>
         /// Gets or sets the wanted level of this player.
         /// </summary>
-        public virtual int WantedLevel
+        public int WantedLevel
         {
             get => GetComponent<NativePlayer>().GetPlayerWantedLevel();
             set => GetComponent<NativePlayer>().SetPlayerWantedLevel(value);
@@ -216,7 +217,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the FightStyle of this player.
         /// </summary>
-        public virtual FightStyle FightStyle
+        public FightStyle FightStyle
         {
             get => (FightStyle) GetComponent<NativePlayer>().GetPlayerFightingStyle();
             set => GetComponent<NativePlayer>().SetPlayerFightingStyle((int) value);
@@ -225,7 +226,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the velocity of this player.
         /// </summary>
-        public virtual Vector3 Velocity
+        public Vector3 Velocity
         {
             get
             {
@@ -238,17 +239,17 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the vehicle seat this player sits on.
         /// </summary>
-        public virtual int VehicleSeat => GetComponent<NativePlayer>().GetPlayerVehicleSeat();
+        public int VehicleSeat => GetComponent<NativePlayer>().GetPlayerVehicleSeat();
 
         /// <summary>
         /// Gets the index of the animation this player is playing.
         /// </summary>
-        public virtual int AnimationIndex => GetComponent<NativePlayer>().GetPlayerAnimationIndex();
+        public int AnimationIndex => GetComponent<NativePlayer>().GetPlayerAnimationIndex();
 
         /// <summary>
         /// Gets or sets the SpecialAction of this player.
         /// </summary>
-        public virtual SpecialAction SpecialAction
+        public SpecialAction SpecialAction
         {
             get => (SpecialAction) GetComponent<NativePlayer>().GetPlayerSpecialAction();
             set => GetComponent<NativePlayer>().SetPlayerSpecialAction((int) value);
@@ -257,7 +258,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the position of the camera of this player.
         /// </summary>
-        public virtual Vector3 CameraPosition
+        public Vector3 CameraPosition
         {
             get
             {
@@ -270,7 +271,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the front Vector3 of this player's camera.
         /// </summary>
-        public virtual Vector3 CameraFrontVector
+        public Vector3 CameraFrontVector
         {
             get
             {
@@ -282,12 +283,12 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the mode of this player's camera.
         /// </summary>
-        public virtual CameraMode CameraMode => (CameraMode) GetComponent<NativePlayer>().GetPlayerCameraMode();
+        public CameraMode CameraMode => (CameraMode) GetComponent<NativePlayer>().GetPlayerCameraMode();
 
         /// <summary>
         /// Gets the Actor this player is aiming at.
         /// </summary>
-        public virtual Entity TargetActor
+        public Entity TargetActor
         {
             get
             {
@@ -299,7 +300,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the GlobalObject the camera of this player is pointing at.
         /// </summary>
-        public virtual Entity CameraTargetGlobalObject
+        public Entity CameraTargetGlobalObject
         {
             get
             {
@@ -311,7 +312,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the PlayerObject the camera of this player is pointing at.
         /// </summary>
-        public virtual Entity CameraTargetPlayerObject
+        public Entity CameraTargetPlayerObject
         {
             get
             {
@@ -325,7 +326,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the GtaVehicle the camera of this player is pointing at.
         /// </summary>
-        public virtual Entity CameraTargetVehicle
+        public Entity CameraTargetVehicle
         {
             get
             {
@@ -337,7 +338,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the GtaPlayer the camera of this player is pointing at.
         /// </summary>
-        public virtual Entity CameraTargetPlayer
+        public Entity CameraTargetPlayer
         {
             get
             {
@@ -349,7 +350,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the GtaPlayer the camera of this player is pointing at.
         /// </summary>
-        public virtual Entity CameraTargetActor
+        public Entity CameraTargetActor
         {
             get
             {
@@ -361,22 +362,22 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets whether this player is currently in any vehicle.
         /// </summary>
-        public virtual bool InAnyVehicle => GetComponent<NativePlayer>().IsPlayerInAnyVehicle();
+        public bool InAnyVehicle => GetComponent<NativePlayer>().IsPlayerInAnyVehicle();
 
         /// <summary>
         /// Gets whether this player is in his checkpoint.
         /// </summary>
-        public virtual bool InCheckpoint => GetComponent<NativePlayer>().IsPlayerInCheckpoint();
+        public bool InCheckpoint => GetComponent<NativePlayer>().IsPlayerInCheckpoint();
 
         /// <summary>
         /// Gets whether this player is in his race-checkpoint.
         /// </summary>
-        public virtual bool InRaceCheckpoint => GetComponent<NativePlayer>().IsPlayerInRaceCheckpoint();
+        public bool InRaceCheckpoint => GetComponent<NativePlayer>().IsPlayerInRaceCheckpoint();
 
         /// <summary>
         /// Gets the Vehicle that this player is surfing.
         /// </summary>
-        public virtual Entity SurfingVehicle
+        public Entity SurfingVehicle
         {
             get
             {
@@ -388,7 +389,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the object that this player is surfing.
         /// </summary>
-        public virtual Entity SurfingGlobalObject // TODO: Rename, maybe?
+        public Entity SurfingGlobalObject // TODO: Rename, maybe?
         {
             get
             {
@@ -400,7 +401,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the player object that this player is surfing.
         /// </summary>
-        public virtual Entity SurfingPlayerObject
+        public Entity SurfingPlayerObject
         {
             get
             {
@@ -412,7 +413,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the Vehicle this player is currently in.
         /// </summary>
-        public virtual Entity Vehicle
+        public Entity Vehicle
         {
             get
             {
@@ -424,7 +425,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets whether this player is connected to the server.
         /// </summary>
-        public virtual bool IsConnected => GetComponent<NativePlayer>().IsPlayerConnected();
+        public bool IsConnected => GetComponent<NativePlayer>().IsPlayerConnected();
 
 
         /// <summary>
@@ -433,7 +434,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <remarks>
         /// Only the Z angle can be set!
         /// </remarks>
-        public virtual Vector3 Rotation
+        public Vector3 Rotation
         {
             get => new Vector3(0, 0, Angle);
             set => Angle = value.Z;
@@ -442,7 +443,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the position of this player.
         /// </summary>
-        public virtual Vector3 Position
+        public Vector3 Position
         {
             get
             {
@@ -459,17 +460,17 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets whether this player is an actual player or an NPC.
         /// </summary>
-        public virtual bool IsNpc => GetComponent<NativePlayer>().IsPlayerNPC();
+        public bool IsNpc => GetComponent<NativePlayer>().IsPlayerNPC();
 
         /// <summary>
         /// Gets whether this player is logged into RCON.
         /// </summary>
-        public virtual bool IsAdmin => GetComponent<NativePlayer>().IsPlayerAdmin();
+        public bool IsAdmin => GetComponent<NativePlayer>().IsPlayerAdmin();
 
         /// <summary>
         /// Gets a value indicating whether this player is alive.
         /// </summary>
-        public virtual bool IsAlive
+        public bool IsAlive
             => !new[] {PlayerState.None, PlayerState.Spectating, PlayerState.Wasted}.Contains(State);
 
 
@@ -477,7 +478,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Gets this player's network stats and saves them into a string.
         /// </summary>
         [Obsolete("Use the properties ConnectionStatus, BytesReceived, BytesSent and others instead")]
-        public virtual string NetworkStats
+        public string NetworkStats
         {
             get
             {
@@ -487,9 +488,37 @@ namespace SampSharp.Entities.SAMP.Components
         }
 
         /// <summary>
+        /// Gets the end point (IP and port) of this player.
+        /// </summary>
+        public IPEndPoint EndPoint
+        {
+            get
+            {
+                var result = GetComponent<NativePlayer>().GetIpPort(out var ipPort, 64);
+
+                if (result <= 0)
+                    return null;
+
+                var colon = ipPort.IndexOf(':');
+
+                if (colon <= 0)
+                    return null;
+
+                var ipStr = ipPort.Substring(0, colon);
+                var portStr = ipPort.Substring(colon + 1);
+
+                return
+                    !int.TryParse(portStr, out var port) ||
+                    !IPAddress.TryParse(ipStr, out var ip)
+                        ? null
+                        : new IPEndPoint(ip, port);
+            }
+        }
+
+        /// <summary>
         /// Gets this player's game version.
         /// </summary>
-        public virtual string Version
+        public string Version
         {
             get
             {
@@ -501,7 +530,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets this player's GPCI string.
         /// </summary>
-        public virtual string Gpci
+        public string Gpci
         {
             get
             {
@@ -513,37 +542,37 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets a value indicating whether this player is selecting a textdraw.
         /// </summary>
-        public virtual bool IsSelectingTextDraw { get; private set; }
+        public bool IsSelectingTextDraw { get; private set; }
 
         /// <summary>
         /// Gets the amount of time (in milliseconds) that a player has been connected to the server for.
         /// </summary>
-        public virtual int ConnectedTime => GetComponent<NativePlayer>().GetConnectedTime();
+        public int ConnectedTime => GetComponent<NativePlayer>().GetConnectedTime();
 
         /// <summary>
         /// Gets the number of messages the server has received from the player.
         /// </summary>
-        public virtual int MessagesReceived => GetComponent<NativePlayer>().GetMessagesReceived();
+        public int MessagesReceived => GetComponent<NativePlayer>().GetMessagesReceived();
 
         /// <summary>
         /// Gets the number of messages the player has received in the last second.
         /// </summary>
-        public virtual int MessagesReceivedPerSecond => GetComponent<NativePlayer>().GetMessagesReceivedPerSecond();
+        public int MessagesReceivedPerSecond => GetComponent<NativePlayer>().GetMessagesReceivedPerSecond();
 
         /// <summary>
         /// Gets the number of messages the server has sent to the player.
         /// </summary>
-        public virtual int MessagesSent => GetComponent<NativePlayer>().GetMessagesSent();
+        public int MessagesSent => GetComponent<NativePlayer>().GetMessagesSent();
 
         /// <summary>
         /// Get the amount of information (in bytes) that the server has sent to the player.
         /// </summary>
-        public virtual int BytesReceived => GetComponent<NativePlayer>().GetBytesReceived();
+        public int BytesReceived => GetComponent<NativePlayer>().GetBytesReceived();
 
         /// <summary>
         /// Get the amount of information (in bytes) that the server has received from the player.
         /// </summary>
-        public virtual int BytesSent => GetComponent<NativePlayer>().GetBytesSent();
+        public int BytesSent => GetComponent<NativePlayer>().GetBytesSent();
 
         /// <summary>
         /// Gets the packet loss percentage of a player. Packet loss means data the player is sending to the server is being
@@ -554,13 +583,23 @@ namespace SampSharp.Entities.SAMP.Components
         /// client, therefore this function should not be used as a packet loss kicker.
         /// </remarks>
         [Obsolete("This value is unreliable. See remarks for details.")]
-        public virtual float PacketLossPercent => GetComponent<NativePlayer>().GetPacketLossPercent();
+        public float PacketLossPercent => GetComponent<NativePlayer>().GetPacketLossPercent();
 
         /// <summary>
         /// Get a player's connection status.
         /// </summary>
-        public virtual ConnectionStatus ConnectionStatus =>
+        public ConnectionStatus ConnectionStatus =>
             (ConnectionStatus) GetComponent<NativePlayer>().GetConnectionStatus();
+
+        /// <summary>
+        /// Gets the aspect ratio of this player's camera.
+        /// </summary>
+        public float AspectCameraRatio => GetComponent<NativePlayer>().GetPlayerCameraAspectRatio();
+
+        /// <summary>
+        /// Gets the game camera zoom level for this player.
+        /// </summary>
+        public float CameraZoom => GetComponent<NativePlayer>().GetPlayerCameraZoom();
 
         #endregion
 
@@ -582,7 +621,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="weapon2Ammo">The amount of ammunition for the second spawn-weapon.</param>
         /// <param name="weapon3">The third spawn-weapon for the player.</param>
         /// <param name="weapon3Ammo">The amount of ammunition for the third spawn-weapon.</param>
-        public virtual void SetSpawnInfo(int team, int skin, Vector3 position, float rotation,
+        public void SetSpawnInfo(int team, int skin, Vector3 position, float rotation,
             Weapon weapon1 = Weapon.None,
             int weapon1Ammo = 0, Weapon weapon2 = Weapon.None, int weapon2Ammo = 0, Weapon weapon3 = Weapon.None,
             int weapon3Ammo = 0)
@@ -597,7 +636,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// (Re)Spawns a player.
         /// </summary>
-        public virtual void Spawn()
+        public void Spawn()
         {
             GetComponent<NativePlayer>().SpawnPlayer();
         }
@@ -605,7 +644,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Restore the camera to a place behind the player, after using a function like <see cref="CameraPosition" />.
         /// </summary>
-        public virtual void PutCameraBehindPlayer()
+        public void PutCameraBehindPlayer()
         {
             GetComponent<NativePlayer>().SetCameraBehindPlayer();
         }
@@ -616,7 +655,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// position.
         /// </summary>
         /// <param name="position">The position to move this player to.</param>
-        public virtual void SetPositionFindZ(Vector3 position)
+        public void SetPositionFindZ(Vector3 position)
         {
             GetComponent<NativePlayer>().SetPlayerPosFindZ(position.X, position.Y, position.Z);
         }
@@ -627,7 +666,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="range">The furthest distance the player can be from the point to be in range.</param>
         /// <param name="point">The point to check the range to.</param>
         /// <returns>True if this player is in range of the point, otherwise False.</returns>
-        public virtual bool IsInRangeOfPoint(float range, Vector3 point)
+        public bool IsInRangeOfPoint(float range, Vector3 point)
         {
             return GetComponent<NativePlayer>().IsPlayerInRangeOfPoint(range, point.X, point.Y, point.Z);
         }
@@ -637,7 +676,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="point">The point to calculate the distance from.</param>
         /// <returns>The distance between the player and the point as a float.</returns>
-        public virtual float GetDistanceFromPoint(Vector3 point)
+        public float GetDistanceFromPoint(Vector3 point)
         {
             return GetComponent<NativePlayer>().GetPlayerDistanceFromPoint(point.X, point.Y, point.Z);
         }
@@ -654,7 +693,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </remarks>
         /// <param name="player">The player to check is streamed in.</param>
         /// <returns>True if the other Player is streamed in for this player, False if not.</returns>
-        public virtual bool IsPlayerStreamedIn(Entity player)
+        public bool IsPlayerStreamedIn(Entity player)
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
@@ -667,7 +706,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="weapon">The weapon to set the ammo of.</param>
         /// <param name="ammo">The amount of ammo to set.</param>
-        public virtual void SetAmmo(Weapon weapon, int ammo)
+        public void SetAmmo(Weapon weapon, int ammo)
         {
             GetComponent<NativePlayer>().SetPlayerAmmo((int) weapon, ammo);
         }
@@ -677,7 +716,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="weapon">The Weapon to give to this player.</param>
         /// <param name="ammo">The amount of ammo to give to this player.</param>
-        public virtual void GiveWeapon(Weapon weapon, int ammo)
+        public void GiveWeapon(Weapon weapon, int ammo)
         {
             GetComponent<NativePlayer>().GivePlayerWeapon((int) weapon, ammo);
         }
@@ -686,7 +725,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Removes all weapons from this player.
         /// </summary>
-        public virtual void ResetWeapons()
+        public void ResetWeapons()
         {
             GetComponent<NativePlayer>().ResetPlayerWeapons();
         }
@@ -695,7 +734,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Sets the armed weapon of this player.
         /// </summary>
         /// <param name="weapon">The weapon that the player should be armed with.</param>
-        public virtual void SetArmedWeapon(Weapon weapon)
+        public void SetArmedWeapon(Weapon weapon)
         {
             GetComponent<NativePlayer>().SetPlayerArmedWeapon((int) weapon);
         }
@@ -706,7 +745,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="slot">The weapon slot to get data for (0-12).</param>
         /// <param name="weapon">The variable in which to store the weapon, passed by reference.</param>
         /// <param name="ammo">The variable in which to store the ammo, passed by reference.</param>
-        public virtual void GetWeaponData(int slot, out Weapon weapon, out int ammo)
+        public void GetWeaponData(int slot, out Weapon weapon, out int ammo)
         {
             GetComponent<NativePlayer>().GetPlayerWeaponData(slot, out var weaponId, out ammo);
             weapon = (Weapon) weaponId;
@@ -716,7 +755,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Give money to this player.
         /// </summary>
         /// <param name="money">The amount of money to give this player. Use a minus value to take money.</param>
-        public virtual void GiveMoney(int money)
+        public void GiveMoney(int money)
         {
             GetComponent<NativePlayer>().GivePlayerMoney(money);
         }
@@ -724,7 +763,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Reset this player's money to $0.
         /// </summary>
-        public virtual void ResetMoney()
+        public void ResetMoney()
         {
             GetComponent<NativePlayer>().ResetPlayerMoney();
         }
@@ -739,7 +778,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="keys">A set of bits containing this player's key states</param>
         /// <param name="upDown">Up or Down value, passed by reference.</param>
         /// <param name="leftRight">Left or Right value, passed by reference.</param>
-        public virtual void GetKeys(out Keys keys, out int upDown, out int leftRight)
+        public void GetKeys(out Keys keys, out int upDown, out int leftRight)
         {
             GetComponent<NativePlayer>().GetPlayerKeys(out var keysDown, out upDown, out leftRight);
             keys = (Keys) keysDown;
@@ -751,17 +790,17 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="hour">Hour to set (0-23).</param>
         /// <param name="minutes">Minutes to set (0-59).</param>
-        public virtual void SetTime(int hour, int minutes)
+        public void SetTime(int hour, int minutes)
         {
             GetComponent<NativePlayer>().SetPlayerTime(hour, minutes);
         }
 
         /// <summary>
-        /// Get this player's current game time. Set by <see cref="IServer.SetWorldTime" />, or by <see cref="ToggleClock" />.
+        /// Get this player's current game time. Set by <see cref="IServerService.SetWorldTime" />, or by <see cref="ToggleClock" />.
         /// </summary>
         /// <param name="hour">The variable to store the hour in, passed by reference.</param>
         /// <param name="minutes">The variable to store the minutes in, passed by reference.</param>
-        public virtual void GetTime(out int hour, out int minutes)
+        public void GetTime(out int hour, out int minutes)
         {
             GetComponent<NativePlayer>().GetPlayerTime(out hour, out minutes);
         }
@@ -773,7 +812,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Time is not synced with other players!
         /// </remarks>
         /// <param name="toggle">True to show, False to hide.</param>
-        public virtual void ToggleClock(bool toggle)
+        public void ToggleClock(bool toggle)
         {
             GetComponent<NativePlayer>().TogglePlayerClock(toggle);
         }
@@ -784,7 +823,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// interpolate (gradually change), otherwise will change instantly.
         /// </summary>
         /// <param name="weather">The weather to set.</param>
-        public virtual void SetWeather(int weather)
+        public void SetWeather(int weather)
         {
             GetComponent<NativePlayer>().SetPlayerWeather(weather);
         }
@@ -796,7 +835,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// The player will not return to class selection until they re-spawn. This can be achieved with
         /// <see cref="ToggleSpectating" />
         /// </remarks>
-        public virtual void ForceClassSelection()
+        public void ForceClassSelection()
         {
             GetComponent<NativePlayer>().ForceClassSelection();
         }
@@ -805,7 +844,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Display the cursor and allow this player to select a text draw.
         /// </summary>
         /// <param name="hoverColor">The color of the text draw when hovering over with mouse.</param>
-        public virtual void SelectTextDraw(Color hoverColor)
+        public void SelectTextDraw(Color hoverColor)
         {
             IsSelectingTextDraw = true;
             GetComponent<NativePlayer>().SelectTextDraw(hoverColor);
@@ -814,7 +853,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Cancel text draw selection with the mouse for this player.
         /// </summary>
-        public virtual void CancelSelectTextDraw()
+        public void CancelSelectTextDraw()
         {
             IsSelectingTextDraw = false;
             GetComponent<NativePlayer>().CancelSelectTextDraw();
@@ -827,7 +866,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="suspect">The suspect player which will be described in the crime report.</param>
         /// <param name="crime">The crime ID, which will be reported as a 10-code (i.e. 10-16 if 16 was passed as the crime ID).</param>
-        public virtual void PlayCrimeReport(Entity suspect, int crime)
+        public void PlayCrimeReport(Entity suspect, int crime)
         {
             if (suspect == null) throw new ArgumentNullException(nameof(suspect));
 
@@ -844,7 +883,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </param>
         /// <param name="position">The position at which to play the audio.</param>
         /// <param name="distance">The distance over which the audio will be heard.</param>
-        public virtual void PlayAudioStream(string url, Vector3 position, float distance)
+        public void PlayAudioStream(string url, Vector3 position, float distance)
         {
             GetComponent<NativePlayer>()
                 .PlayAudioStreamForPlayer(url, position.X, position.Y, position.Z, distance, true);
@@ -857,7 +896,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// The url to play. Valid formats are mp3 and ogg/vorbis. A link to a .pls (playlist) file will play
         /// that playlist.
         /// </param>
-        public virtual void PlayAudioStream(string url)
+        public void PlayAudioStream(string url)
         {
             GetComponent<NativePlayer>().PlayAudioStreamForPlayer(url, 0, 0, 0, 0, false);
         }
@@ -866,7 +905,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Allows you to disable collisions between vehicles for a player.
         /// </summary>
         /// <param name="disable">if set to <c>true</c> disables the collision between vehicles.</param>
-        public virtual void DisableRemoteVehicleCollisions(bool disable)
+        public void DisableRemoteVehicleCollisions(bool disable)
         {
             GetComponent<NativePlayer>().DisableRemoteVehicleCollisions(disable);
         }
@@ -875,7 +914,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Toggles camera targeting functions for a player.
         /// </summary>
         /// <param name="enable">if set to <c>true</c> the functionality is enabled.</param>
-        public virtual void EnablePlayerCameraTarget(bool enable)
+        public void EnablePlayerCameraTarget(bool enable)
         {
             GetComponent<NativePlayer>().EnablePlayerCameraTarget(enable);
         }
@@ -883,7 +922,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Stops the current audio stream for this player.
         /// </summary>
-        public virtual void StopAudioStream()
+        public void StopAudioStream()
         {
             GetComponent<NativePlayer>().StopAudioStreamForPlayer();
         }
@@ -892,7 +931,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Loads or unloads an interior script for this player. (for example the Ammunation menu)
         /// </summary>
         /// <param name="shopName">The name of the shop, see <see cref="ShopName" /> for shop names.</param>
-        public virtual void SetShopName(string shopName)
+        public void SetShopName(string shopName)
         {
             GetComponent<NativePlayer>().SetPlayerShopName(shopName);
         }
@@ -908,7 +947,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// The skill level to set for that weapon, ranging from 0 to 999. (A level out of range will max it
         /// out)
         /// </param>
-        public virtual void SetSkillLevel(WeaponSkill skill, int level)
+        public void SetSkillLevel(WeaponSkill skill, int level)
         {
             GetComponent<NativePlayer>().SetPlayerSkillLevel((int) skill, level);
         }
@@ -925,7 +964,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="materialColor1">The first object color to set.</param>
         /// <param name="materialColor2">The second object color to set.</param>
         /// <returns>True on success, False otherwise.</returns>
-        public virtual bool SetAttachedObject(int index, int modelId, Bone bone, Vector3 offset, Vector3 rotation,
+        public bool SetAttachedObject(int index, int modelId, Bone bone, Vector3 offset, Vector3 rotation,
             Vector3 scale, Color materialColor1, Color materialColor2)
         {
             return GetComponent<NativePlayer>().SetPlayerAttachedObject(index, modelId, (int) bone, offset.X, offset.Y,
@@ -939,7 +978,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="index">The index of the object to remove (set with <see cref="SetAttachedObject" />).</param>
         /// <returns>True on success, False otherwise.</returns>
-        public virtual bool RemoveAttachedObject(int index)
+        public bool RemoveAttachedObject(int index)
         {
             return GetComponent<NativePlayer>().RemovePlayerAttachedObject(index);
         }
@@ -949,7 +988,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="index">The index (slot) to check.</param>
         /// <returns>True if the slot is used, False otherwise.</returns>
-        public virtual bool IsAttachedObjectSlotUsed(int index)
+        public bool IsAttachedObjectSlotUsed(int index)
         {
             return GetComponent<NativePlayer>().IsPlayerAttachedObjectSlotUsed(index);
         }
@@ -959,7 +998,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="index">The index (slot) of the attached object to edit.</param>
         /// <returns>True on success, False otherwise.</returns>
-        public virtual bool DoEditAttachedObject(int index)
+        public bool DoEditAttachedObject(int index)
         {
             return GetComponent<NativePlayer>().EditAttachedObject(index);
         }
@@ -971,7 +1010,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="color">The text color.</param>
         /// <param name="drawDistance">The distance from where players are able to see the chat bubble.</param>
         /// <param name="expireTime">The time in milliseconds the bubble should be displayed for.</param>
-        public virtual void SetChatBubble(string text, Color color, float drawDistance,
+        public void SetChatBubble(string text, Color color, float drawDistance,
             int expireTime)
         {
             GetComponent<NativePlayer>()
@@ -983,7 +1022,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="vehicle">The vehicle for the player to be put in.</param>
         /// <param name="seatId">The ID of the seat to put the player in.</param>
-        public virtual void PutInVehicle(Entity vehicle, int seatId)
+        public void PutInVehicle(Entity vehicle, int seatId)
         {
             // TODO: Ensure vehicle
             if (vehicle == null)
@@ -996,7 +1035,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Puts this player in a vehicle as driver.
         /// </summary>
         /// <param name="vehicle">The vehicle for the player to be put in.</param>
-        public virtual void PutInVehicle(Entity vehicle)
+        public void PutInVehicle(Entity vehicle)
         {
             PutInVehicle(vehicle, 0);
         }
@@ -1009,7 +1048,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// OnPlayerEnterVehicle event, because the player isn't in the vehicle when the callback is called. Use the
         /// OnPlayerStateChanged event instead.
         /// </remarks>
-        public virtual void RemoveFromVehicle()
+        public void RemoveFromVehicle()
         {
             GetComponent<NativePlayer>().RemovePlayerFromVehicle();
         }
@@ -1018,7 +1057,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Toggles whether this player can control themselves, basically freezes them.
         /// </summary>
         /// <param name="toggle">False to freeze the player or True to unfreeze them.</param>
-        public virtual void ToggleControllable(bool toggle)
+        public void ToggleControllable(bool toggle)
         {
             GetComponent<NativePlayer>().TogglePlayerControllable(toggle);
         }
@@ -1028,7 +1067,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="soundId">The sound to play.</param>
         /// <param name="point">Point for the sound to play at.</param>
-        public virtual void PlaySound(int soundId, Vector3 point)
+        public void PlaySound(int soundId, Vector3 point)
         {
             GetComponent<NativePlayer>().PlayerPlaySound(soundId, point.X, point.Y, point.Z);
         }
@@ -1037,7 +1076,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Plays the specified sound for this player.
         /// </summary>
         /// <param name="soundId">The sound to play.</param>
-        public virtual void PlaySound(int soundId)
+        public void PlaySound(int soundId)
         {
             GetComponent<NativePlayer>().PlayerPlaySound(soundId, 0, 0, 0);
         }
@@ -1066,7 +1105,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="freeze">Will freeze the player in position after the animation finishes.</param>
         /// <param name="time">Timer in milliseconds. For a never ending loop it should be 0.</param>
         /// <param name="forceSync">Set to <c>true</c> to force the player to sync animation with other players in all instances</param>
-        public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop,
+        public void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop,
             bool lockX,
             bool lockY, bool freeze, int time, bool forceSync)
         {
@@ -1091,7 +1130,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </param>
         /// <param name="freeze">Will freeze the player in position after the animation finishes.</param>
         /// <param name="time">Timer in milliseconds. For a never ending loop it should be 0.</param>
-        public virtual void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop,
+        public void ApplyAnimation(string animationLibrary, string animationName, float fDelta, bool loop,
             bool lockX,
             bool lockY, bool freeze, int time)
         {
@@ -1103,7 +1142,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Clears all animations for this player.
         /// </summary>
         /// <param name="forceSync">Specifies whether the animation should be shown to streamed in players.</param>
-        public virtual void ClearAnimations(bool forceSync)
+        public void ClearAnimations(bool forceSync)
         {
             GetComponent<NativePlayer>().ClearAnimations(forceSync);
         }
@@ -1111,7 +1150,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Clears all animations for this player.
         /// </summary>
-        public virtual void ClearAnimations()
+        public void ClearAnimations()
         {
             GetComponent<NativePlayer>().ClearAnimations(false);
         }
@@ -1122,7 +1161,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="animationLibrary">String variable that stores the animation library.</param>
         /// <param name="animationName">String variable that stores the animation name.</param>
         /// <returns>True on success, False otherwise.</returns>
-        public virtual bool GetAnimationName(out string animationLibrary, out string animationName)
+        public bool GetAnimationName(out string animationLibrary, out string animationName)
         {
             return GetComponent<NativePlayer>()
                 .GetAnimationName(AnimationIndex, out animationLibrary, 64, out animationName, 64);
@@ -1138,7 +1177,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </remarks>
         /// <param name="point">The point to set the checkpoint at.</param>
         /// <param name="size">The size of the checkpoint.</param>
-        public virtual void SetCheckpoint(Vector3 point, float size)
+        public void SetCheckpoint(Vector3 point, float size)
         {
             GetComponent<NativePlayer>().SetPlayerCheckpoint(point.X, point.Y, point.Z, size);
         }
@@ -1146,7 +1185,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Disable any initialized checkpoints for this player.
         /// </summary>
-        public virtual void DisableCheckpoint()
+        public void DisableCheckpoint()
         {
             GetComponent<NativePlayer>().DisablePlayerCheckpoint();
         }
@@ -1158,7 +1197,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="point">The point to set the checkpoint at.</param>
         /// <param name="nextPosition">Coordinates of the next point, for the arrow facing direction.</param>
         /// <param name="size">Length (diameter) of the checkpoint</param>
-        public virtual void SetRaceCheckpoint(CheckpointType type, Vector3 point, Vector3 nextPosition, float size)
+        public void SetRaceCheckpoint(CheckpointType type, Vector3 point, Vector3 nextPosition, float size)
         {
             GetComponent<NativePlayer>().SetPlayerRaceCheckpoint((int) type, point.X, point.Y, point.Z, nextPosition.X,
                 nextPosition.Y,
@@ -1168,7 +1207,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Disable any initialized race checkpoints for this player.
         /// </summary>
-        public virtual void DisableRaceCheckpoint()
+        public void DisableRaceCheckpoint()
         {
             GetComponent<NativePlayer>().DisablePlayerRaceCheckpoint();
         }
@@ -1184,7 +1223,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="xMin">The minimum X coordinate the player can go to.</param>
         /// <param name="yMax">The maximum Y coordinate the player can go to.</param>
         /// <param name="yMin">The minimum Y coordinate the player can go to.</param>
-        public virtual void SetWorldBounds(float xMax, float xMin, float yMax, float yMin)
+        public void SetWorldBounds(float xMax, float xMin, float yMax, float yMin)
         {
             GetComponent<NativePlayer>().SetPlayerWorldBounds(xMax, xMin, yMax, yMin);
         }
@@ -1194,7 +1233,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="player">The player whose color will be changed.</param>
         /// <param name="color">New color.</param>
-        public virtual void SetPlayerMarker(Entity player, Color color)
+        public void SetPlayerMarker(Entity player, Color color)
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
@@ -1204,16 +1243,16 @@ namespace SampSharp.Entities.SAMP.Components
 
         /// <summary>
         /// This functions allows you to toggle the drawing of player name tags, health bars and armor bars which display above
-        /// their head. For use of a similar function like this on a global level, <see cref="IServer.ShowNameTags" />
+        /// their head. For use of a similar function like this on a global level, <see cref="IServerService.ShowNameTags" />
         /// function.
         /// </summary>
         /// <remarks>
-        /// <see cref="IServer.ShowNameTags" /> must be set to <c>true</c> to be able to show name tags with
+        /// <see cref="IServerService.ShowNameTags" /> must be set to <c>true</c> to be able to show name tags with
         /// <see cref="ShowNameTagForPlayer" />.
         /// </remarks>
         /// <param name="player">The player whose name tag will be shown or hidden.</param>
         /// <param name="show">True to show name tag, False to hide name tag.</param>
-        public virtual void ShowNameTagForPlayer(Entity player, bool show)
+        public void ShowNameTagForPlayer(Entity player, bool show)
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
@@ -1227,7 +1266,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="point">The coordinates for this player's camera to look at.</param>
         /// <param name="cut">The style the camera-position changes.</param>
-        public virtual void SetCameraLookAt(Vector3 point, CameraCut cut)
+        public void SetCameraLookAt(Vector3 point, CameraCut cut)
         {
             GetComponent<NativePlayer>().SetPlayerCameraLookAt(point.X, point.Y, point.Z, (int) cut);
         }
@@ -1237,7 +1276,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <see cref="CameraPosition" />.
         /// </summary>
         /// <param name="point">The coordinates for this player's camera to look at.</param>
-        public virtual void SetCameraLookAt(Vector3 point)
+        public void SetCameraLookAt(Vector3 point)
         {
             SetCameraLookAt(point, CameraCut.Cut);
         }
@@ -1249,7 +1288,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="to">The position the camera should move to.</param>
         /// <param name="time">Time in milliseconds.</param>
         /// <param name="cut">The jump cut to use. Defaults to CameraCut.Cut. Set to CameraCut. Move for a smooth movement.</param>
-        public virtual void InterpolateCameraPosition(Vector3 from, Vector3 to, int time, CameraCut cut)
+        public void InterpolateCameraPosition(Vector3 from, Vector3 to, int time, CameraCut cut)
         {
             GetComponent<NativePlayer>()
                 .InterpolateCameraPos(from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
@@ -1262,7 +1301,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="to">The position the camera should move to.</param>
         /// <param name="time">Time in milliseconds to complete interpolation.</param>
         /// <param name="cut">The jump cut to use. Defaults to CameraCut.Cut (pointless). Set to CameraCut.Move for interpolation.</param>
-        public virtual void InterpolateCameraLookAt(Vector3 from, Vector3 to, int time, CameraCut cut)
+        public void InterpolateCameraLookAt(Vector3 from, Vector3 to, int time, CameraCut cut)
         {
             GetComponent<NativePlayer>()
                 .InterpolateCameraLookAt(from.X, from.Y, from.Z, to.X, to.Y, to.Z, time, (int) cut);
@@ -1273,7 +1312,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="vehicle">The vehicle.</param>
         /// <returns>True if player is in the vehicle; False otherwise.</returns>
-        public virtual bool IsInVehicle(Entity vehicle)
+        public bool IsInVehicle(Entity vehicle)
         {
             // TODO: ensure vehicle type
             return GetComponent<NativePlayer>().IsPlayerInVehicle(vehicle.Id);
@@ -1283,7 +1322,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Toggle stunt bonuses for this player.
         /// </summary>
         /// <param name="enable">True to enable stunt bonuses, False to disable them.</param>
-        public virtual void EnableStuntBonus(bool enable)
+        public void EnableStuntBonus(bool enable)
         {
             GetComponent<NativePlayer>().EnableStuntBonusForPlayer(enable);
         }
@@ -1295,7 +1334,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// When the spectating is turned off, OnPlayerSpawn will automatically be called.
         /// </remarks>
         /// <param name="toggle">True to enable spectating and False to disable.</param>
-        public virtual void ToggleSpectating(bool toggle)
+        public void ToggleSpectating(bool toggle)
         {
             GetComponent<NativePlayer>().TogglePlayerSpectating(toggle);
         }
@@ -1309,7 +1348,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </remarks>
         /// <param name="targetPlayer">The Player that should be spectated.</param>
         /// <param name="mode">The mode to spectate with.</param>
-        public virtual void SpectatePlayer(Entity targetPlayer, SpectateMode mode)
+        public void SpectatePlayer(Entity targetPlayer, SpectateMode mode)
         {
             if (targetPlayer == null)
                 throw new ArgumentNullException(nameof(targetPlayer));
@@ -1325,7 +1364,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <see cref="SpectatePlayer(Entity,SpectateMode)" />.
         /// </remarks>
         /// <param name="targetPlayer">The Player that should be spectated.</param>
-        public virtual void SpectatePlayer(Entity targetPlayer)
+        public void SpectatePlayer(Entity targetPlayer)
         {
             if (targetPlayer == null)
                 throw new ArgumentNullException(nameof(targetPlayer));
@@ -1342,7 +1381,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </remarks>
         /// <param name="targetVehicle">The vehicle to spectate.</param>
         /// <param name="mode">Spectate mode.</param>
-        public virtual void SpectateVehicle(Entity targetVehicle, SpectateMode mode)
+        public void SpectateVehicle(Entity targetVehicle, SpectateMode mode)
         {
             if (targetVehicle == null)
                 throw new ArgumentNullException(nameof(targetVehicle));
@@ -1358,7 +1397,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <see cref="SpectateVehicle(Entity,SpectateMode)" />.
         /// </remarks>
         /// <param name="targetVehicle">The vehicle to spectate.</param>
-        public virtual void SpectateVehicle(Entity targetVehicle)
+        public void SpectateVehicle(Entity targetVehicle)
         {
             if (targetVehicle == null)
                 throw new ArgumentNullException(nameof(targetVehicle));
@@ -1374,7 +1413,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Name of the file which will hold the recorded data. It will be saved in the scriptfiles folder, with an
         /// automatically added .rec extension.
         /// </param>
-        public virtual void StartRecordingPlayerData(PlayerRecordingType recordingType, string recordingName)
+        public void StartRecordingPlayerData(PlayerRecordingType recordingType, string recordingName)
         {
             GetComponent<NativePlayer>().StartRecordingPlayerData((int) recordingType, recordingName);
         }
@@ -1383,7 +1422,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Stops all the recordings that had been started with <see cref="StartRecordingPlayerData" /> for this
         /// <see cref="Entity" />.
         /// </summary>
-        public virtual void StopRecordingPlayerData()
+        public void StopRecordingPlayerData()
         {
             GetComponent<NativePlayer>().StopRecordingPlayerData();
         }
@@ -1393,7 +1432,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="origin">The origin.</param>
         /// <param name="hitPosition">The hit position.</param>
-        public virtual void GetLastShot(out Vector3 origin, out Vector3 hitPosition)
+        public void GetLastShot(out Vector3 origin, out Vector3 hitPosition)
         {
             GetComponent<NativePlayer>()
                 .GetPlayerLastShotVectors(out var ox, out var oy, out var oz, out var hx, out var hy, out var hz);
@@ -1413,7 +1452,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="color">The color of the message.</param>
         /// <param name="message">The text that will be displayed.</param>
-        public virtual void SendClientMessage(Color color, string message)
+        public void SendClientMessage(Color color, string message)
         {
             if (message.Length > 144)
             {
@@ -1432,7 +1471,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// to
         /// continue playing.
         /// </summary>
-        public virtual void Kick()
+        public void Kick()
         {
             GetComponent<NativePlayer>().Kick();
         }
@@ -1442,7 +1481,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <see cref="Ban(string)" /> allows you to ban with a reason, while you can ban and unban IPs using the RCON banip and
         /// unbanip commands.
         /// </summary>
-        public virtual void Ban()
+        public void Ban()
         {
             GetComponent<NativePlayer>().Ban();
         }
@@ -1451,7 +1490,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Ban this player with a reason.
         /// </summary>
         /// <param name="reason">The reason for the ban.</param>
-        public virtual void Ban(string reason)
+        public void Ban(string reason)
         {
             GetComponent<NativePlayer>().BanEx(reason);
         }
@@ -1463,7 +1502,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="color">The color of the message.</param>
         /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        public virtual void SendClientMessage(Color color, string messageFormat, params object[] args)
+        public void SendClientMessage(Color color, string messageFormat, params object[] args)
         {
             SendClientMessage(color, string.Format(messageFormat, args));
         }
@@ -1473,7 +1512,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// color unless color embedding is used.
         /// </summary>
         /// <param name="message">The text that will be displayed.</param>
-        public virtual void SendClientMessage(string message)
+        public void SendClientMessage(string message)
         {
             SendClientMessage(Color.White, message);
         }
@@ -1484,7 +1523,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        public virtual void SendClientMessage(string messageFormat, params object[] args)
+        public void SendClientMessage(string messageFormat, params object[] args)
         {
             SendClientMessage(Color.White, string.Format(messageFormat, args));
         }
@@ -1496,7 +1535,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="sender">The player which has sent the message.</param>
         /// <param name="message">The message that will be sent.</param>
-        public virtual void SendPlayerMessageToPlayer(Entity sender, string message)
+        public void SendPlayerMessageToPlayer(Entity sender, string message)
         {
             // TODO: check sender is player
             if (sender == null)
@@ -1511,21 +1550,21 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="text">The text to be displayed.</param>
         /// <param name="time">The duration of the text being shown in milliseconds.</param>
         /// <param name="style">The style of text to be displayed.</param>
-        public virtual void GameText(string text, int time, int style)
+        public void GameText(string text, int time, int style)
         {
             GetComponent<NativePlayer>().GameTextForPlayer(text, time, style);
         }
 
         /// <summary>
-        /// Creates an explosion for a <see cref="Entity" />.
-        /// Only the specific player will see explosion and feel its effects.
+        /// Creates an explosion for this player.
+        /// Only this player will see explosion and feel its effects.
         /// This is useful when you want to isolate explosions from other players or to make them only appear in specific
         /// virtual worlds.
         /// </summary>
         /// <param name="position">The position of the explosion.</param>
         /// <param name="type">The explosion type.</param>
         /// <param name="radius">The radius of the explosion.</param>
-        public virtual void CreateExplosion(Vector3 position, ExplosionType type, float radius)
+        public void CreateExplosion(Vector3 position, ExplosionType type, float radius)
         {
             GetComponent<NativePlayer>()
                 .CreateExplosionForPlayer(position.X, position.Y, position.Z, (int) type, radius);
@@ -1537,7 +1576,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="killer">The <see cref="Entity" /> that killer the <paramref name="killee" />.</param>
         /// <param name="killee">The <see cref="Entity" /> that has been killed.</param>
         /// <param name="weapon">The reason for this player's death.</param>
-        public virtual void SendDeathMessage(Entity killer, Entity killee, Weapon weapon)
+        public void SendDeathMessage(Entity killer, Entity killee, Weapon weapon)
         {
             GetComponent<NativePlayer>()
                 .SendDeathMessageToPlayer(killer?.Id ?? NativePlayer.InvalidId, killee?.Id ?? NativePlayer.InvalidId,
@@ -1548,13 +1587,19 @@ namespace SampSharp.Entities.SAMP.Components
         /// Attaches a player's camera to an object.
         /// </summary>
         /// <param name="object">The object to attach the camera to.</param>
-        public virtual void AttachCameraToObject(Entity @object)
+        public void AttachCameraToObject(Entity @object)
         {
             if (@object == null) throw new ArgumentNullException(nameof(@object));
 
-            GetComponent<NativePlayer>().AttachCameraToObject(@object.Id);
-
-            GetComponent<NativePlayer>().AttachCameraToPlayerObject(@object.GetComponent<NativePlayerObject>().Id);
+            if (@object.GetComponent<NativeObject>() != null)
+                GetComponent<NativePlayer>().AttachCameraToObject(@object.Id);
+            else
+            {
+                var playerObject = @object.GetComponent<NativePlayerObject>();
+                if (playerObject == null)
+                    throw new ArgumentException("Target must be of type object or player object", nameof(@object));
+                GetComponent<NativePlayer>().AttachCameraToPlayerObject(playerObject.Id);
+            }
         }
 
         /// <summary>
@@ -1562,7 +1607,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="object">The object to edit.</param>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="object" /> is null.</exception>
-        public virtual void Edit(Entity @object)
+        public void Edit(Entity @object)
         {
             if (@object == null)
                 throw new ArgumentNullException(nameof(@object));
@@ -1578,11 +1623,53 @@ namespace SampSharp.Entities.SAMP.Components
         }
 
         /// <summary>
+        /// Cancels object editing mode for this player.
+        /// </summary>
+        public void CancelEdit()
+        {
+            GetComponent<NativePlayer>().CancelEdit();
+        }
+
+        /// <summary>
         /// Lets this player select an object.
         /// </summary>
         public void Select()
         {
             GetComponent<NativePlayer>().SelectObject();
+        }
+
+        /// <summary>
+        /// Removes a standard San Andreas model for this player within a specified range.
+        /// </summary>
+        /// <param name="modelId">The model identifier.</param>
+        /// <param name="position">The position at which to remove the model.</param>
+        /// <param name="radius">The radius in which to remove the model.</param>
+        public void RemoveBuilding(int modelId, Vector3 position, float radius)
+        {
+            GetComponent<NativePlayer>().RemoveBuildingForPlayer(modelId, position.X, position.Y, position.Z, radius);
+        }
+
+        /// <summary>
+        /// Place an icon/marker on this player's map. Can be used to mark locations such as banks and hospitals to players.
+        /// </summary>
+        /// <param name="iconId">The player's icon identifier, ranging from 0 to 99. This means there is a maximum of 100 map icons.</param>
+        /// <param name="position">The position to place the map icon at.</param>
+        /// <param name="type">The type of the marker.</param>
+        /// <param name="color">The color of the marker.</param>
+        /// <param name="style">The style of the marker.</param>
+        public void SetMapIcon(int iconId, Vector3 position, MapIcon type, Color color, MapIconType style)
+        {
+            GetComponent<NativePlayer>().SetPlayerMapIcon(iconId, position.X, position.Y, position.Z, (int) type, color,
+                (int) style);
+        }
+
+        /// <summary>
+        /// Removes a map icon that was set earlier for this player.
+        /// </summary>
+        /// <param name="iconId">The player's icon identifier.</param>
+        public void RemoveMapIcon(int iconId)
+        {
+            GetComponent<NativePlayer>().RemovePlayerMapIcon(iconId);
         }
 
         #endregion

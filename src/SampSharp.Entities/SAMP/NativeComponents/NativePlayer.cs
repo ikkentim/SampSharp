@@ -734,6 +734,12 @@ namespace SampSharp.Entities.SAMP.NativeComponents
         {
             throw new NativeNotImplementedException();
         }
+        
+        [NativeMethod]
+        public virtual bool CancelEdit()
+        {
+            throw new NativeNotImplementedException();
+        }
 
         [NativeMethod]
         public virtual bool SendClientMessage(int color, string message)
@@ -859,6 +865,12 @@ namespace SampSharp.Entities.SAMP.NativeComponents
             throw new NativeNotImplementedException();
         }
 
+        [NativeMethod(Function = "NetStats_GetIpPort")]
+        public virtual int GetIpPort(out string ipPort, int ipPortLen)
+        {
+            throw new NativeNotImplementedException();
+        }
+
         [NativeMethod]
         public virtual bool EditObject(int objectid)
         {
@@ -915,5 +927,31 @@ namespace SampSharp.Entities.SAMP.NativeComponents
         {
             throw new NativeNotImplementedException();
         }
+        
+        [NativeMethod]
+        public virtual bool SetPlayerMapIcon(int iconid, float x, float y, float z, int markertype,
+            int color, int style)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool RemovePlayerMapIcon(int iconid)
+        {
+            throw new NativeNotImplementedException();
+        }
+        
+        [NativeMethod]
+        public virtual float GetPlayerCameraAspectRatio()
+        {
+            throw new NativeNotImplementedException();
+        }
+        
+        [NativeMethod]
+        public virtual float GetPlayerCameraZoom()
+        {
+            throw new NativeNotImplementedException();
+        }
     }
+
 }

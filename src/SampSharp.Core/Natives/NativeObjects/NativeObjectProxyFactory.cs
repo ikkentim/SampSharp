@@ -22,7 +22,7 @@ using System.Reflection.Emit;
 namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
-    ///     Contains logic for creating natove object proxies.
+    ///     Contains logic for creating native object proxies.
     /// </summary>
     public static class NativeObjectProxyFactory
     {

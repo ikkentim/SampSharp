@@ -49,7 +49,7 @@ namespace SampSharp.Entities.SAMP.Definitions
         RocketLauncherAiming = 8,
 
         /// <summary>
-        /// Camera is set to a fixed point (e.g. after setting <see cref="BasePlayer.CameraPosition" />)
+        /// Camera is set to a fixed point (e.g. after setting the player's camera position)
         /// </summary>
         Fixed = 15,
 
@@ -74,9 +74,9 @@ namespace SampSharp.Entities.SAMP.Definitions
         CameraWeaponAiming = 46,
 
         /// <summary>
-        /// Heatseeking rochet launcher view.
+        /// Heat-seeking rocket launcher view.
         /// </summary>
-        HeatseekingRocketLauncher = 51,
+        HeatSeekingRocketLauncher = 51,
 
         /// <summary>
         /// Aiming a weapon.

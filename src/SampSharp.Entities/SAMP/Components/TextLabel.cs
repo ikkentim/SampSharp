@@ -22,6 +22,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// </summary>
     public class TextLabel : Component
     {
+        /// <inheritdoc />
         public TextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld,
             bool testLos)
         {
@@ -36,22 +37,22 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the color of this text label.
         /// </summary>
-        public virtual Color Color { get; }
+        public Color Color { get; }
 
         /// <summary>
         /// Gets the text of this text label.
         /// </summary>
-        public virtual string Text { get; }
+        public string Text { get; }
 
         /// <summary>
         /// Gets the position of this text label.
         /// </summary>
-        public virtual Vector3 Position { get; }
+        public Vector3 Position { get; }
 
         /// <summary>
         /// Gets the draw distance.
         /// </summary>
-        public virtual float DrawDistance { get; }
+        public float DrawDistance { get; }
 
         /// <summary>
         /// Gets the virtual world.
@@ -61,12 +62,12 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets a value indicating whether to test the line of sight.
         /// </summary>
-        public virtual bool TestLos { get; }
+        public bool TestLos { get; }
 
         /// <summary>
         /// Gets the attached entity.
         /// </summary>
-        public virtual Entity AttachedEntity { get; } // TODO: Implement
+        public Entity AttachedEntity { get; } // TODO: Implement
 
         /// <inheritdoc />
         protected override void OnDestroyComponent()

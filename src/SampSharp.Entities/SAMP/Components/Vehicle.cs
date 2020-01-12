@@ -27,7 +27,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the Z angle of this vehicle.
         /// </summary>
-        public virtual float Angle
+        public float Angle
         {
             get
             {
@@ -40,18 +40,18 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the model ID of this vehicle.
         /// </summary>
-        public virtual VehicleModelType Model => (VehicleModelType) GetComponent<NativeVehicle>().GetVehicleModel();
+        public VehicleModelType Model => (VehicleModelType) GetComponent<NativeVehicle>().GetVehicleModel();
 
         /// <summary>
         /// Gets whether this vehicle has a trailer attached to it.
         /// </summary>
-        public virtual bool HasTrailer => GetComponent<NativeVehicle>().IsTrailerAttachedToVehicle();
+        public bool HasTrailer => GetComponent<NativeVehicle>().IsTrailerAttachedToVehicle();
 
         /// <summary>
         /// Gets or sets the the trailer attached to this vehicle.
         /// </summary>
         /// <returns>The trailer attached.</returns>
-        public virtual Entity Trailer
+        public Entity Trailer
         {
             get
             {
@@ -70,7 +70,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the velocity at which this vehicle is moving.
         /// </summary>
-        public virtual Vector3 Velocity
+        public Vector3 Velocity
         {
             get
             {
@@ -83,7 +83,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the virtual world of this vehicle.
         /// </summary>
-        public virtual int VirtualWorld
+        public int VirtualWorld
         {
             get => GetComponent<NativeVehicle>().GetVehicleVirtualWorld();
             set => GetComponent<NativeVehicle>().SetVehicleVirtualWorld(value);
@@ -92,7 +92,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets this vehicle's engine status. If True, the engine is running.
         /// </summary>
-        public virtual bool Engine
+        public bool Engine
         {
             get
             {
@@ -110,7 +110,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets this vehicle's lights' state. If True the lights are on.
         /// </summary>
-        public virtual bool Lights
+        public bool Lights
         {
             get
             {
@@ -128,7 +128,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets this vehicle's alarm state. If True the alarm is (or was) sounding.
         /// </summary>
-        public virtual bool Alarm
+        public bool Alarm
         {
             get
             {
@@ -146,7 +146,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the lock status of the doors of this vehicle. If True the doors are locked.
         /// </summary>
-        public virtual bool Doors
+        public bool Doors
         {
             get
             {
@@ -164,7 +164,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the bonnet/hood status of this vehicle. If True, it's open.
         /// </summary>
-        public virtual bool Bonnet
+        public bool Bonnet
         {
             get
             {
@@ -182,7 +182,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the boot/trunk status of this vehicle. True means it is open.
         /// </summary>
-        public virtual bool Boot
+        public bool Boot
         {
             get
             {
@@ -200,7 +200,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the objective status of this vehicle. True means the objective is on.
         /// </summary>
-        public virtual bool Objective
+        public bool Objective
         {
             get
             {
@@ -218,7 +218,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets a value indicating whether the driver door is open.
         /// </summary>
-        public virtual bool IsDriverDoorOpen
+        public bool IsDriverDoorOpen
         {
             get
             {
@@ -235,7 +235,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets a value indicating whether the passenger door is open.
         /// </summary>
-        public virtual bool IsPassengerDoorOpen
+        public bool IsPassengerDoorOpen
         {
             get
             {
@@ -252,7 +252,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets a value indicating whether the driver door is open.
         /// </summary>
-        public virtual bool IsBackLeftDoorOpen
+        public bool IsBackLeftDoorOpen
         {
             get
             {
@@ -269,7 +269,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets a value indicating whether the driver door is open.
         /// </summary>
-        public virtual bool IsBackRightDoorOpen
+        public bool IsBackRightDoorOpen
         {
             get
             {
@@ -286,7 +286,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets a value indicating whether the driver window is closed.
         /// </summary>
-        public virtual bool IsDriverWindowClosed
+        public bool IsDriverWindowClosed
         {
             get
             {
@@ -303,7 +303,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets a value indicating whether the passenger window is closed.
         /// </summary>
-        public virtual bool IsPassengerWindowClosed
+        public bool IsPassengerWindowClosed
         {
             get
             {
@@ -320,7 +320,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets a value indicating whether the driver window is closed.
         /// </summary>
-        public virtual bool IsBackLeftWindowClosed
+        public bool IsBackLeftWindowClosed
         {
             get
             {
@@ -337,7 +337,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets a value indicating whether the driver window is closed.
         /// </summary>
-        public virtual bool IsBackRightWindowClosed
+        public bool IsBackRightWindowClosed
         {
             get
             {
@@ -354,7 +354,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets a value indicating whether this Vehicle's siren is on.
         /// </summary>
-        public virtual bool IsSirenOn => GetComponent<NativeVehicle>().GetVehicleParamsSirenState() == 1;
+        public bool IsSirenOn => GetComponent<NativeVehicle>().GetVehicleParamsSirenState() == 1;
 
         /// <summary>
         /// Gets or sets the rotation of this vehicle.
@@ -362,7 +362,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <remarks>
         /// Only the Z angle can be set!
         /// </remarks>
-        public virtual Vector3 Rotation
+        public Vector3 Rotation
         {
             get => new Vector3(0, 0, Angle);
             set => GetComponent<NativeVehicle>().SetVehicleZAngle(value.Z);
@@ -371,7 +371,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the health of this vehicle.
         /// </summary>
-        public virtual float Health
+        public float Health
         {
             get
             {
@@ -384,7 +384,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets or sets the position of this vehicle.
         /// </summary>
-        public virtual Vector3 Position
+        public Vector3 Position
         {
             get
             {
@@ -402,7 +402,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns>A float containing the distance from the point specified in the coordinates.</returns>
-        public virtual float GetDistanceFromPoint(Vector3 point)
+        public float GetDistanceFromPoint(Vector3 point)
         {
             return GetComponent<NativeVehicle>().GetVehicleDistanceFromPoint(point.X, point.Y, point.Z);
         }
@@ -412,7 +412,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="forPlayer">The Player to check.</param>
         /// <returns>True if this vehicle is streamed in for the specified vehicle; False otherwise.</returns>
-        public virtual bool IsStreamedIn(Entity forPlayer)
+        public bool IsStreamedIn(Entity forPlayer)
         {
             // TODO: Move to player?
             return GetComponent<NativeVehicle>().IsVehicleStreamedIn(forPlayer.Id);
@@ -425,7 +425,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="x">A float variable in which to store the second quaternion angle, passed by reference.</param>
         /// <param name="y">A float variable in which to store the third quaternion angle, passed by reference.</param>
         /// <param name="z">A float variable in which to store the fourth quaternion angle, passed by reference.</param>
-        public virtual void GetRotationQuaternion(out float w, out float x, out float y,
+        public void GetRotationQuaternion(out float w, out float x, out float y,
             out float z)
         {
             GetComponent<NativeVehicle>().GetVehicleRotationQuat(out w, out x, out y, out z);
@@ -435,7 +435,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Returns this vehicle's rotation on all axis as a quaternion.
         /// </summary>
         /// <returns>The rotation in a <see cref="Quaternion" /> structure.</returns>
-        public virtual Quaternion GetRotationQuaternion()
+        public Quaternion GetRotationQuaternion()
         {
             // TODO: To property
             GetRotationQuaternion(out var x, out var y, out var z, out var w);
@@ -448,7 +448,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="player">The player to set this vehicle's parameters for.</param>
         /// <param name="objective">False to disable the objective or True to show it.</param>
         /// <param name="doorsLocked">False to unlock the doors or True to lock them.</param>
-        public virtual void SetParametersForPlayer(Entity player, bool objective,
+        public void SetParametersForPlayer(Entity player, bool objective,
             bool doorsLocked)
         {
             if (player == null)
@@ -467,7 +467,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="bonnet">Toggle the bonnet to be open or closed.</param>
         /// <param name="boot">Toggle the boot to be open or closed.</param>
         /// <param name="objective">Toggle the objective status for the vehicle on or off.</param>
-        public virtual void SetParameters(bool engine, bool lights, bool alarm, bool doors, bool bonnet, bool boot,
+        public void SetParameters(bool engine, bool lights, bool alarm, bool doors, bool bonnet, bool boot,
             bool objective)
         {
             GetComponent<NativeVehicle>().SetVehicleParamsEx(engine ? 1 : 0, lights ? 1 : 0, alarm ? 1 : 0,
@@ -485,7 +485,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="bonnet">Toggle the bonnet to be open or closed.</param>
         /// <param name="boot">Toggle the boot to be open or closed.</param>
         /// <param name="objective">Toggle the objective status for the vehicle on or off.</param>
-        public virtual void SetParameters(VehicleParameterValue engine, VehicleParameterValue lights,
+        public void SetParameters(VehicleParameterValue engine, VehicleParameterValue lights,
             VehicleParameterValue alarm, VehicleParameterValue doors, VehicleParameterValue bonnet,
             VehicleParameterValue boot,
             VehicleParameterValue objective)
@@ -506,7 +506,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="bonnet">Get the bonnet/hood status. If on it is open.</param>
         /// <param name="boot">Get the boot/trunk status. If on it is open.</param>
         /// <param name="objective">Get the objective status. If on the objective is on.</param>
-        public virtual void GetParameters(out VehicleParameterValue engine, out VehicleParameterValue lights,
+        public void GetParameters(out VehicleParameterValue engine, out VehicleParameterValue lights,
             out VehicleParameterValue alarm, out VehicleParameterValue doors, out VehicleParameterValue bonnet,
             out VehicleParameterValue boot, out VehicleParameterValue objective)
         {
@@ -538,7 +538,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="bonnet">Get the bonnet/hood status. If true it is open.</param>
         /// <param name="boot">Get the boot/trunk status. If true it is open.</param>
         /// <param name="objective">Get the objective status. If true the objective is on.</param>
-        public virtual void GetParameters(out bool engine, out bool lights, out bool alarm,
+        public void GetParameters(out bool engine, out bool lights, out bool alarm,
             out bool doors, out bool bonnet, out bool boot, out bool objective)
         {
             GetParameters(out var tmpEngine, out var tmpLights, out var tmpAlarm, out var tmpDoors, out var tmpBonnet,
@@ -561,7 +561,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="passenger">if set to <c>true</c> the passenger side door is open.</param>
         /// <param name="backLeft">if set to <c>true</c> the back-left door is open.</param>
         /// <param name="backRight">if set to <c>true</c> the back-right door is open.</param>
-        public virtual void SetDoorsParameters(bool driver, bool passenger, bool backLeft, bool backRight)
+        public void SetDoorsParameters(bool driver, bool passenger, bool backLeft, bool backRight)
         {
             GetComponent<NativeVehicle>()
                 .SetVehicleParamsCarDoors(driver ? 1 : 0, passenger ? 1 : 0, backLeft ? 1 : 0, backRight ? 1 : 0);
@@ -574,7 +574,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="passenger">if on the passenger side door is open.</param>
         /// <param name="backLeft">if on the back-left door is open.</param>
         /// <param name="backRight">if on the back-right door is open.</param>
-        public virtual void SetDoorsParameters(VehicleParameterValue driver, VehicleParameterValue passenger,
+        public void SetDoorsParameters(VehicleParameterValue driver, VehicleParameterValue passenger,
             VehicleParameterValue backLeft, VehicleParameterValue backRight)
         {
             GetComponent<NativeVehicle>()
@@ -588,7 +588,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="passenger">if on the passenger side door is open.</param>
         /// <param name="backLeft">if on the back-left door is open.</param>
         /// <param name="backRight">if on the back-right door is open.</param>
-        public virtual void GetDoorsParameters(out VehicleParameterValue driver, out VehicleParameterValue passenger,
+        public void GetDoorsParameters(out VehicleParameterValue driver, out VehicleParameterValue passenger,
             out VehicleParameterValue backLeft, out VehicleParameterValue backRight)
         {
             GetComponent<NativeVehicle>().GetVehicleParamsCarDoors(out var tmpDriver, out var tmpPassenger,
@@ -607,7 +607,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="passenger">if true the passenger side door is open.</param>
         /// <param name="backLeft">if true the back-left door is open.</param>
         /// <param name="backRight">if true the back-right door is open.</param>
-        public virtual void GetDoorsParameters(out bool driver, out bool passenger, out bool backLeft,
+        public void GetDoorsParameters(out bool driver, out bool passenger, out bool backLeft,
             out bool backRight)
         {
             GetDoorsParameters(out var tmpDriver, out var tmpPassenger, out var tmpBackLeft,
@@ -626,7 +626,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="passenger">if set to <c>true</c> the passenger side window is closed.</param>
         /// <param name="backLeft">if set to <c>true</c> the back-left window is closed.</param>
         /// <param name="backRight">if set to <c>true</c> the back-right window is closed.</param>
-        public virtual void SetWindowsParameters(bool driver, bool passenger, bool backLeft, bool backRight)
+        public void SetWindowsParameters(bool driver, bool passenger, bool backLeft, bool backRight)
         {
             GetComponent<NativeVehicle>().SetVehicleParamsCarWindows(driver ? 1 : 0, passenger ? 1 : 0,
                 backLeft ? 1 : 0,
@@ -640,7 +640,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="passenger">if on the passenger side window is closed.</param>
         /// <param name="backLeft">if on the back-left window is closed.</param>
         /// <param name="backRight">if on the back-right window is closed.</param>
-        public virtual void SetWindowsParameters(VehicleParameterValue driver, VehicleParameterValue passenger,
+        public void SetWindowsParameters(VehicleParameterValue driver, VehicleParameterValue passenger,
             VehicleParameterValue backLeft, VehicleParameterValue backRight)
         {
             GetComponent<NativeVehicle>()
@@ -654,7 +654,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="passenger">if on the passenger side window is closed.</param>
         /// <param name="backLeft">if on the back-left window is closed.</param>
         /// <param name="backRight">if on the back-right window is closed.</param>
-        public virtual void GetWindowsParameters(out VehicleParameterValue driver, out VehicleParameterValue passenger,
+        public void GetWindowsParameters(out VehicleParameterValue driver, out VehicleParameterValue passenger,
             out VehicleParameterValue backLeft, out VehicleParameterValue backRight)
         {
             GetComponent<NativeVehicle>().GetVehicleParamsCarWindows(out var tmpDriver, out var tmpPassenger,
@@ -673,7 +673,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="passenger">if true the passenger side window is closed.</param>
         /// <param name="backLeft">if true the back-left window is closed.</param>
         /// <param name="backRight">if true the back-right window is closed.</param>
-        public virtual void GetWindowsParameters(out bool driver, out bool passenger, out bool backLeft,
+        public void GetWindowsParameters(out bool driver, out bool passenger, out bool backLeft,
             out bool backRight)
         {
             GetWindowsParameters(out var tmpDriver, out var tmpPassenger, out var tmpBackLeft,
@@ -688,7 +688,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Sets this vehicle back to the position at where it was created.
         /// </summary>
-        public virtual void Respawn()
+        public void Respawn()
         {
             GetComponent<NativeVehicle>().SetVehicleToRespawn();
         }
@@ -697,7 +697,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Links this vehicle to the interior. This can be used for example for an arena/stadium.
         /// </summary>
         /// <param name="interiorId">Interior ID.</param>
-        public virtual void LinkToInterior(int interiorId)
+        public void LinkToInterior(int interiorId)
         {
             GetComponent<NativeVehicle>().LinkVehicleToInterior(interiorId);
         }
@@ -706,7 +706,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Adds a 'component' (often referred to as a 'mod' (modification)) to this Vehicle.
         /// </summary>
         /// <param name="componentId">The ID of the component to add to the vehicle.</param>
-        public virtual void AddComponent(int componentId)
+        public void AddComponent(int componentId)
         {
             GetComponent<NativeVehicle>().AddVehicleComponent(componentId);
         }
@@ -715,7 +715,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Remove a component from the vehicle.
         /// </summary>
         /// <param name="componentId">ID of the component to remove.</param>
-        public virtual void RemoveComponent(int componentId)
+        public void RemoveComponent(int componentId)
         {
             GetComponent<NativeVehicle>().RemoveVehicleComponent(componentId);
         }
@@ -725,7 +725,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="color1">The new vehicle's primary Color ID.</param>
         /// <param name="color2">The new vehicle's secondary Color ID.</param>
-        public virtual void ChangeColor(int color1, int color2)
+        public void ChangeColor(int color1, int color2)
         {
             GetComponent<NativeVehicle>().ChangeVehicleColor(color1, color2);
         }
@@ -734,7 +734,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Change this vehicle's paintjob (for plain colors see <see cref="ChangeColor" />).
         /// </summary>
         /// <param name="paintjobId">The ID of the paintjob to apply. Use 3 to remove a paintjob.</param>
-        public virtual void ChangePaintjob(int paintjobId)
+        public void ChangePaintjob(int paintjobId)
         {
             GetComponent<NativeVehicle>().ChangeVehiclePaintjob(paintjobId);
         }
@@ -743,7 +743,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Set this vehicle's numberplate, which supports color embedding.
         /// </summary>
         /// <param name="numberplate">The text that should be displayed on the numberplate. Color Embedding> is supported.</param>
-        public virtual void SetNumberPlate(string numberplate)
+        public void SetNumberPlate(string numberplate)
         {
             if (numberplate == null) throw new ArgumentNullException(nameof(numberplate));
 
@@ -755,7 +755,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="slot">The component slot to check for components.</param>
         /// <returns>The ID of the component installed in the specified slot.</returns>
-        public virtual int GetComponentInSlot(CarModType slot)
+        public int GetComponentInSlot(CarModType slot)
         {
             return GetComponent<NativeVehicle>().GetVehicleComponentInSlot((int) slot);
         }
@@ -764,7 +764,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Fully repairs this vehicle, including visual damage (bumps, dents, scratches, popped tires
         /// etc.).
         /// </summary>
-        public virtual void Repair()
+        public void Repair()
         {
             GetComponent<NativeVehicle>().RepairVehicle();
         }
@@ -773,7 +773,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Sets the angular velocity of this vehicle.
         /// </summary>
         /// <param name="velocity">The amount of velocity in the angular directions.</param>
-        public virtual void SetAngularVelocity(Vector3 velocity)
+        public void SetAngularVelocity(Vector3 velocity)
         {
             GetComponent<NativeVehicle>().SetVehicleAngularVelocity(velocity.X, velocity.Y, velocity.Z);
         }
@@ -785,7 +785,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="doors">A variable to store the door damage data in, passed by reference.</param>
         /// <param name="lights">A variable to store the light damage data in, passed by reference.</param>
         /// <param name="tires">A variable to store the tire damage data in, passed by reference.</param>
-        public virtual void GetDamageStatus(out int panels, out int doors, out int lights, out int tires)
+        public void GetDamageStatus(out int panels, out int doors, out int lights, out int tires)
         {
             GetComponent<NativeVehicle>().GetVehicleDamageStatus(out panels, out doors, out lights, out tires);
         }
@@ -798,7 +798,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="doors">A set of bits containing the door damage status.</param>
         /// <param name="lights">A set of bits containing the light damage status.</param>
         /// <param name="tires">A set of bits containing the tire damage status.</param>
-        public virtual void UpdateDamageStatus(int panels, int doors, int lights, int tires)
+        public void UpdateDamageStatus(int panels, int doors, int lights, int tires)
         {
             GetComponent<NativeVehicle>().UpdateVehicleDamageStatus(panels, doors, lights, tires);
         }

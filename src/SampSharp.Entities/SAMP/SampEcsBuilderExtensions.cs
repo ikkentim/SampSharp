@@ -27,8 +27,12 @@ namespace SampSharp.Entities.SAMP
     {
         internal static IEcsBuilder EnableWorld(this IEcsBuilder builder)
         {
+            var server = builder.Services.GetService<IEntityManager>()
+                .Create(null, ServerService.ServerId);
+            server.AddComponent<NativeServer>();
+
             builder.Services.GetService<IEntityManager>()
-                .Create(null, WorldService.WorldId)
+                .Create(server, WorldService.WorldId)
                 .AddComponent<NativeWorld>();
 
             return builder;

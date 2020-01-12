@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using SampSharp.Core.Natives.NativeObjects;
 
 #pragma warning disable 1591
@@ -61,6 +62,12 @@ namespace SampSharp.Entities.SAMP.NativeComponents
         }
 
         [NativeMethod]
+        public virtual bool AddStaticPickup(int model, int type, float x, float y, float z, int virtualWorld)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
         public virtual int CreateObject(int modelId, float x, float y, float z, float rX, float rY, float rZ,
             float drawDistance)
         {
@@ -84,6 +91,59 @@ namespace SampSharp.Entities.SAMP.NativeComponents
         [NativeMethod]
         public virtual int CreatePlayer3DTextLabel(int playerid, string text, int color, float x, float y, float z,
             float drawDistance, int attachedplayer, int attachedvehicle, bool testLOS)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        public virtual bool SetObjectsDefaultCameraCol(bool disable)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool SendClientMessageToAll(int color, string message)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool SendPlayerMessageToAll(int senderid, string message)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool SendDeathMessage(int killer, int killee, int weapon)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool GameTextForAll(string text, int time, int style)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool CreateExplosion(float x, float y, float z, int type, float radius)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool SetWeather(int weatherid)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool SetGravity(float gravity)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual float GetGravity()
         {
             throw new NativeNotImplementedException();
         }

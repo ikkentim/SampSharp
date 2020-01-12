@@ -41,32 +41,32 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Gets the minimum x value for this <see cref="GangZone" />.
         /// </summary>
-        public virtual float MinX { get; }
+        public float MinX { get; }
 
         /// <summary>
         /// Gets the minimum y value for this <see cref="GangZone" />.
         /// </summary>
-        public virtual float MinY { get; }
+        public float MinY { get; }
 
         /// <summary>
         /// Gets the maximum x value for this <see cref="GangZone" />.
         /// </summary>
-        public virtual float MaxX { get; }
+        public float MaxX { get; }
 
         /// <summary>
         /// Gets the maximum y value for this <see cref="GangZone" />.
         /// </summary>
-        public virtual float MaxY { get; }
+        public float MaxY { get; }
 
         /// <summary>
         /// Gets or sets the color of this <see cref="GangZone" />.
         /// </summary>
-        public virtual Color Color { get; set; }
+        public Color Color { get; set; }
 
         /// <summary>
         /// Shows this <see cref="GangZone" />.
         /// </summary>
-        public virtual void Show()
+        public void Show()
         {
             GetComponent<NativeGangZone>().GangZoneShowForAll(Color);
         }
@@ -76,7 +76,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="player">The player.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void Show(Entity player)
+        public void Show(Entity player)
         {
             if (player == null) throw new ArgumentNullException(nameof(player));
 
@@ -86,7 +86,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Hides this <see cref="GangZone" />.
         /// </summary>
-        public virtual void Hide()
+        public void Hide()
         {
             GetComponent<NativeGangZone>().GangZoneHideForAll();
         }
@@ -96,7 +96,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="player">The player.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void Hide(Entity player)
+        public void Hide(Entity player)
         {
             if (player == null) throw new ArgumentNullException(nameof(player));
 
@@ -107,7 +107,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// Flashes this <see cref="GangZone" />.
         /// </summary>
         /// <param name="color">The color.</param>
-        public virtual void Flash(Color color)
+        public void Flash(Color color)
         {
             GetComponent<NativeGangZone>().GangZoneFlashForAll(color);
         }
@@ -117,7 +117,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="player">The player.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void Flash(Entity player)
+        public void Flash(Entity player)
         {
             if (player == null) throw new ArgumentNullException(nameof(player));
             Flash(player, new Color());
@@ -129,7 +129,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="player">The player.</param>
         /// <param name="color">The color.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void Flash(Entity player, Color color)
+        public void Flash(Entity player, Color color)
         {
             if (player == null) throw new ArgumentNullException(nameof(player));
 
@@ -139,7 +139,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Stops this <see cref="GangZone" /> from flash.
         /// </summary>
-        public virtual void StopFlash()
+        public void StopFlash()
         {
             GetComponent<NativeGangZone>().GangZoneStopFlashForAll();
         }
@@ -149,7 +149,7 @@ namespace SampSharp.Entities.SAMP.Components
         /// </summary>
         /// <param name="player">The player.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>
-        public virtual void StopFlash(Entity player)
+        public void StopFlash(Entity player)
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));

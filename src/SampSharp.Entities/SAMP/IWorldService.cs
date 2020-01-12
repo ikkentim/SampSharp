@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2019 Tim Potze
+// Copyright 2020 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,16 +13,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using SampSharp.Entities.SAMP.Components;
 using SampSharp.Entities.SAMP.Definitions;
 
 namespace SampSharp.Entities.SAMP
 {
     /// <summary>
-    /// Provides functionality for adding entities to the SA:MP world.
+    /// Provides functionality for adding entities to and controlling the SA:MP world.
     /// </summary>
     public interface IWorldService
     {
+        /// <summary>
+        /// Gets or sets the gravity.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if value is not between -50.0 and 50.0.</exception>
+        float Gravity { get; set; }
+
         /// <summary>
         /// Creates a new actor in the world.
         /// </summary>
@@ -87,6 +94,17 @@ namespace SampSharp.Entities.SAMP
         Pickup CreatePickup(int model, int type, Vector3 position, int virtualWorld = -1);
 
         /// <summary>
+        /// Adds a 'static' pickup to the world. These pickups support weapons, health, armor etc., with the ability to function
+        /// without scripting them (weapons/health/armor will be given automatically).
+        /// </summary>
+        /// <param name="model">The model of the pickup.</param>
+        /// <param name="type">The pickup spawn type.</param>
+        /// <param name="position">The position where the pickup should be spawned.</param>
+        /// <param name="virtualWorld">The virtual world ID of the pickup. Use -1 for all worlds.</param>
+        /// <returns>A value indicating whether the pickup has been created successfully.</returns>
+        bool AddStaticPickup(int model, int type, Vector3 position, int virtualWorld = -1);
+
+        /// <summary>
         /// Creates an object in the world.
         /// </summary>
         /// <param name="modelId">The model ID.</param>
@@ -134,5 +152,82 @@ namespace SampSharp.Entities.SAMP
         /// <returns>The created text label.</returns>
         PlayerTextLabel CreatePlayerTextLabel(Entity player, string text, Color color, Vector3 position,
             float drawDistance, bool testLos = true, Entity attachedTo = null);
+
+        /// <summary>
+        /// Allows camera collisions with newly created objects to be disabled by default.
+        /// </summary>
+        /// <param name="disable">A value indicating whether camera collision with new objects should be disabled.</param>
+        void SetObjectsDefaultCameraCollision(bool disable);
+
+        /// <summary>
+        /// This function sends a message to all players with a chosen color in the chat. The whole line in the chat box will be in
+        /// the set color unless color embedding is used.
+        /// </summary>
+        /// <param name="color">The color of the message.</param>
+        /// <param name="message">The text that will be displayed.</param>
+        void SendClientMessage(Color color, string message);
+
+        /// <summary>
+        /// This function sends a message to all players with a chosen color in the chat. The whole line in the chat box will be in
+        /// the set color unless color embedding is used.
+        /// </summary>
+        /// <param name="color">The color of the message.</param>
+        /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        void SendClientMessage(Color color, string messageFormat, params object[] args);
+
+        /// <summary>
+        /// This function sends a message to all players in white in the chat. The whole line in the chat box will be in the set
+        /// color unless color embedding is used.
+        /// </summary>
+        /// <param name="message">The text that will be displayed.</param>
+        void SendClientMessage(string message);
+
+        /// <summary>
+        /// This function sends a message to all players in white in the chat. The whole line in the chat box will be in the set
+        /// color unless color embedding is used.
+        /// </summary>
+        /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        void SendClientMessage(string messageFormat, params object[] args);
+
+        /// <summary>
+        /// Sends a message in the name the specified <paramref name="sender" /> to all players. The message will appear in the
+        /// chat box and can be seen by all player. The line will start with the the sender's name in their color, followed
+        /// by the <paramref name="message" /> in white.
+        /// </summary>
+        /// <param name="sender">The player which has sent the message.</param>
+        /// <param name="message">The message that will be sent.</param>
+        void SendPlayerMessageToPlayer(Entity sender, string message);
+
+        /// <summary>
+        /// Adds a death to the kill feed on the right-hand side of the screen of all players.
+        /// </summary>
+        /// <param name="killer">The <see cref="Entity" /> that killer the <paramref name="killee" />.</param>
+        /// <param name="killee">The <see cref="Entity" /> that has been killed.</param>
+        /// <param name="weapon">The reason for this player's death.</param>
+        void SendDeathMessage(Entity killer, Entity killee, Weapon weapon);
+
+        /// <summary>
+        /// Shows 'game text' (on-screen text) for a certain length of time for all players.
+        /// </summary>
+        /// <param name="text">The text to be displayed.</param>
+        /// <param name="time">The duration of the text being shown in milliseconds.</param>
+        /// <param name="style">The style of text to be displayed.</param>
+        void GameText(string text, int time, int style);
+
+        /// <summary>
+        /// Creates an explosion for all players.
+        /// </summary>
+        /// <param name="position">The position of the explosion.</param>
+        /// <param name="type">The explosion type.</param>
+        /// <param name="radius">The radius of the explosion.</param>
+        void CreateExplosion(Vector3 position, ExplosionType type, float radius);
+
+        /// <summary>
+        /// Set the weather for all players.
+        /// </summary>
+        /// <param name="weather">The weather to set.</param>
+        void SetWeather(int weather);
     }
 }

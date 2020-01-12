@@ -90,7 +90,9 @@ namespace SampSharp.Entities
                 services.AddSingleton<IEventService, EventService>()
                     .AddSingleton<ISystemRegistry, SystemRegistry>()
                     .AddSingleton<IEntityManager, EntityManager>()
+                    .AddSingleton<IServerService, ServerService>()
                     .AddSingleton<IWorldService, WorldService>()
+                    .AddSingleton<IVehicleInfoService,VehicleInfoService>()
                     .AddTransient<IDialogService, DialogService>()
                     .AddSystem<DialogSystem>()
             );

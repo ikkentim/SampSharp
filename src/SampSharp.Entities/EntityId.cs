@@ -55,6 +55,7 @@ namespace SampSharp.Entities
             return entityId.Handle;
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return $"(Type = {Type}, Handle = {Handle})";
