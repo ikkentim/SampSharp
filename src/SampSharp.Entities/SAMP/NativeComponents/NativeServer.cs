@@ -150,7 +150,8 @@ namespace SampSharp.Entities.SAMP.NativeComponents
         }
 
         [NativeMethod]
-        public virtual bool GetNetworkStats(out string retstr, int size) {
+        public virtual bool GetNetworkStats(out string retstr, int size)
+        {
             throw new NativeNotImplementedException();
         }
 

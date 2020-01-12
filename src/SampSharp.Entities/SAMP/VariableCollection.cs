@@ -515,7 +515,7 @@ namespace SampSharp.Entities.SAMP
             public bool IsReadOnly { get; } = true;
         }
 #pragma warning disable 1591
-        
+
         public interface IVariableCollectionNatives
         {
             bool DeleteVar(string varName);

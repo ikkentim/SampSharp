@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2019 Tim Potze
+// Copyright 2020 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -734,7 +734,7 @@ namespace SampSharp.Entities.SAMP.NativeComponents
         {
             throw new NativeNotImplementedException();
         }
-        
+
         [NativeMethod]
         public virtual bool CancelEdit()
         {
@@ -920,14 +920,14 @@ namespace SampSharp.Entities.SAMP.NativeComponents
         {
             throw new NativeNotImplementedException();
         }
-        
+
         [NativeMethod]
         public virtual void ShowPlayerDialog(int dialogid, int style, string caption, string info,
             string button1, string button2)
         {
             throw new NativeNotImplementedException();
         }
-        
+
         [NativeMethod]
         public virtual bool SetPlayerMapIcon(int iconid, float x, float y, float z, int markertype,
             int color, int style)
@@ -940,18 +940,17 @@ namespace SampSharp.Entities.SAMP.NativeComponents
         {
             throw new NativeNotImplementedException();
         }
-        
+
         [NativeMethod]
         public virtual float GetPlayerCameraAspectRatio()
         {
             throw new NativeNotImplementedException();
         }
-        
+
         [NativeMethod]
         public virtual float GetPlayerCameraZoom()
         {
             throw new NativeNotImplementedException();
         }
     }
-
 }

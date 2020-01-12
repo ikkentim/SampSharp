@@ -57,18 +57,17 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// </summary>
         /// <param name="type">The type to create a proxy of.</param>
         /// <param name="arguments">The arguments.</param>
-        /// <returns>The proxy isntance</returns>
+        /// <returns>The proxy instance.</returns>
         public static object CreateInstance(Type type, params object[] arguments)
         {
+            if(type == null)
+                throw new ArgumentNullException(nameof(type));
+
             lock (Lock)
             {
                 // Check already known types.
                 if (KnownTypes.TryGetValue(type, out var outType))
                     return Activator.CreateInstance(outType, arguments);
-                
-                if(type == null)
-                    throw new ArgumentNullException(nameof(type));
-
                 
                 if (!(type.IsNested ? type.IsNestedPublic : type.IsPublic))
                 {

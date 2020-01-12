@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2019 Tim Potze
+// Copyright 2020 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -75,13 +75,11 @@ namespace SampSharp.Entities
                 if (_serviceProvider.GetService(type) is ITickingSystem system)
                     system.Tick();
         }
-        
+
         private void AddWrappedSystemTypes()
         {
             foreach (var wrapper in _serviceProvider.GetServices<SystemTypeWrapper>())
-            {
                 _systemRegistry.Add(wrapper.Type);
-            }
         }
 
         private void Configure(IServiceCollection services)
@@ -92,7 +90,7 @@ namespace SampSharp.Entities
                     .AddSingleton<IEntityManager, EntityManager>()
                     .AddSingleton<IServerService, ServerService>()
                     .AddSingleton<IWorldService, WorldService>()
-                    .AddSingleton<IVehicleInfoService,VehicleInfoService>()
+                    .AddSingleton<IVehicleInfoService, VehicleInfoService>()
                     .AddTransient<IDialogService, DialogService>()
                     .AddSystem<DialogSystem>()
             );

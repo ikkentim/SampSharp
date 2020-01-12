@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2019 Tim Potze
+// Copyright 2020 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ using System;
 namespace SampSharp.Entities.SAMP
 {
     /// <summary>
-    /// Contains commonly used precalculated values and mathematical operations.
+    /// Contains commonly used pre-calculated values and mathematical operations.
     /// </summary>
     public static class MathHelper
     {

@@ -1,0 +1,40 @@
+﻿// SampSharp
+// Copyright 2020 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
+using System.Collections.Generic;
+
+namespace SampSharp.Entities
+{
+    /// <summary>
+    /// Provides the functionality for a registry of system types.
+    /// </summary>
+    public interface ISystemRegistry
+    {
+        /// <summary>
+        /// Adds the specified type of system to this registry.
+        /// </summary>
+        /// <param name="type">The type of the system.</param>
+        void Add(Type type);
+
+        /// <summary>
+        /// Gets all types of systems of the specified <paramref name="type" />.
+        /// </summary>
+        /// <param name="type">The type of the system to get.</param>
+        /// <param name="cache">If <c>true</c>, enable caching of the system type for future retrieval.</param>
+        /// <returns>The systems of the specified type.</returns>
+        IEnumerable<Type> Get(Type type, bool cache = false);
+    }
+}

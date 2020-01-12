@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2019 Tim Potze
+// Copyright 2020 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ using static SampSharp.Entities.SAMP.SampEntities;
 namespace SampSharp.Entities.SAMP
 {
     /// <summary>
-    /// Provides methods for enabling SA:MP systems in an <see cref="IEcsBuilder"/> instance.
+    /// Provides methods for enabling SA:MP systems in an <see cref="IEcsBuilder" /> instance.
     /// </summary>
     public static class SampEcsBuilderExtensions
     {
@@ -109,7 +109,8 @@ namespace SampSharp.Entities.SAMP
             builder.EnableEvent<int, int>("OnPlayerClickPlayerTextDraw");
             builder.EnableEvent<int, int, int>("OnPlayerClickPlayer");
             builder.EnableEvent<int, bool, int, int, float, float, float, float, float, float>("OnPlayerEditObject");
-            builder.EnableEvent<int, int, int, int, int, float, float, float, float, float, float, float, float, float>("OnPlayerEditAttachedObject");
+            builder.EnableEvent<int, int, int, int, int, float, float, float, float, float, float, float, float, float>(
+                "OnPlayerEditAttachedObject");
             builder.EnableEvent<int, int, int, int, float, float, float>("OnPlayerSelectObject");
             builder.EnableEvent<int, int, int, int, float, float, float>("OnPlayerWeaponShot");
             builder.EnableEvent<int, bool, int>("OnEnterExitModShop");
@@ -120,7 +121,7 @@ namespace SampSharp.Entities.SAMP
             {
                 builder.UseMiddleware<EntityMiddleware>(callback, 0, PlayerType, true);
             }
-            
+
             builder.UseMiddleware<PlayerConnectMiddleware>("OnPlayerConnect");
             builder.UseMiddleware<PlayerDisconnectMiddleware>("OnPlayerDisconnect");
             AddPlayerTarget("OnPlayerSpawn");
@@ -157,7 +158,7 @@ namespace SampSharp.Entities.SAMP
             AddPlayerTarget("OnPlayerGiveDamageActor");
             builder.UseMiddleware<EntityMiddleware>("OnPlayerGiveDamageActor", 1, ActorType, true);
             AddPlayerTarget("OnPlayerClickMap");
-            AddPlayerTarget("OnPlayerClickTextDraw");// TODO: TD id
+            AddPlayerTarget("OnPlayerClickTextDraw"); // TODO: TD id
             AddPlayerTarget("OnPlayerClickPlayerTextDraw"); // TODO: PTD id
             AddPlayerTarget("OnPlayerClickPlayer");
             builder.UseMiddleware<EntityMiddleware>("OnPlayerClickPlayer", 1, PlayerType, true);
@@ -170,7 +171,7 @@ namespace SampSharp.Entities.SAMP
 
             return builder;
         }
-        
+
         /// <summary>
         /// Enables all object related SA:MP events.
         /// </summary>
@@ -185,7 +186,7 @@ namespace SampSharp.Entities.SAMP
             builder.UseMiddleware<PlayerObjectMiddleware>("OnPlayerObjectMoved");
             return builder;
         }
-        
+
         /// <summary>
         /// Enables all RCON related SA:MP events.
         /// </summary>
@@ -198,7 +199,7 @@ namespace SampSharp.Entities.SAMP
 
             return builder;
         }
-        
+
         /// <summary>
         /// Enables all vehicle related SA:MP events.
         /// </summary>
@@ -217,7 +218,7 @@ namespace SampSharp.Entities.SAMP
             builder.EnableEvent<int, int, int>("OnVehicleSirenStateChange");
             builder.EnableEvent<int, int>("OnTrailerUpdate");
             builder.EnableEvent<int, int, int, float, float, float, float, float, float>("OnUnoccupiedVehicleUpdate");
-            
+
             builder.UseMiddleware<EntityMiddleware>("OnVehicleSpawn", 0, VehicleType, true);
             builder.UseMiddleware<EntityMiddleware>("OnVehicleDeath", 0, VehicleType, true);
             builder.UseMiddleware<EntityMiddleware>("OnVehicleDeath", 1, PlayerType, false);

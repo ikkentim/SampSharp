@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2019 Tim Potze
+// Copyright 2020 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,8 @@ namespace SampSharp.Entities
     public static class EcsBuilderExtensions
     {
         /// <summary>
-        /// Adds the system with the specified type <typeparamref name="T" />. The specified type must be available in the service provider.
+        /// Adds the system with the specified type <typeparamref name="T" />. The specified type must be available in the service
+        /// provider.
         /// </summary>
         /// <typeparam name="T">Type of the system.</typeparam>
         /// <param name="builder">The builder.</param>

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2019 Tim Potze
+// Copyright 2020 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -464,7 +464,8 @@ namespace SampSharp.Entities.SAMP.Components
                 if (_variableCollection != null)
                     return _variableCollection;
 
-                var proxy = NativeObjectProxyFactory.CreateInstance<VariableCollection.PlayerVariableCollectionNatives>();
+                var proxy =
+                    NativeObjectProxyFactory.CreateInstance<VariableCollection.PlayerVariableCollectionNatives>();
                 proxy.PlayerId = Entity.Id;
 
                 return _variableCollection = new VariableCollection(proxy);
@@ -805,7 +806,8 @@ namespace SampSharp.Entities.SAMP.Components
         }
 
         /// <summary>
-        /// Get this player's current game time. Set by <see cref="IServerService.SetWorldTime" />, or by <see cref="ToggleClock" />.
+        /// Get this player's current game time. Set by <see cref="IServerService.SetWorldTime" />, or by
+        /// <see cref="ToggleClock" />.
         /// </summary>
         /// <param name="hour">The variable to store the hour in, passed by reference.</param>
         /// <param name="minutes">The variable to store the minutes in, passed by reference.</param>
@@ -1597,7 +1599,9 @@ namespace SampSharp.Entities.SAMP.Components
             if (@object == null) throw new ArgumentNullException(nameof(@object));
 
             if (@object.GetComponent<NativeObject>() != null)
+            {
                 GetComponent<NativePlayer>().AttachCameraToObject(@object.Id);
+            }
             else
             {
                 var playerObject = @object.GetComponent<NativePlayerObject>();
@@ -1657,7 +1661,10 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Place an icon/marker on this player's map. Can be used to mark locations such as banks and hospitals to players.
         /// </summary>
-        /// <param name="iconId">The player's icon identifier, ranging from 0 to 99. This means there is a maximum of 100 map icons.</param>
+        /// <param name="iconId">
+        /// The player's icon identifier, ranging from 0 to 99. This means there is a maximum of 100 map
+        /// icons.
+        /// </param>
         /// <param name="position">The position to place the map icon at.</param>
         /// <param name="type">The type of the marker.</param>
         /// <param name="color">The color of the marker.</param>

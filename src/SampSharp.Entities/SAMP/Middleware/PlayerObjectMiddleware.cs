@@ -27,7 +27,9 @@ namespace SampSharp.Entities.SAMP.Middleware
         public object Invoke(EventContext context, IEntityManager entityManager)
         {
             var playerEntity = entityManager.Get(SampEntities.GetPlayerId((int) context.Arguments[0]));
-            var objectEntity = entityManager.Get(SampEntities.GetPlayerObjectId((int) context.Arguments[0], (int) context.Arguments[1]));
+            var objectEntity =
+                entityManager.Get(
+                    SampEntities.GetPlayerObjectId((int) context.Arguments[0], (int) context.Arguments[1]));
 
             if (playerEntity == null || objectEntity == null)
                 return null;
