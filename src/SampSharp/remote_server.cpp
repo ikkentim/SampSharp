@@ -293,9 +293,10 @@ void remote_server::disconnect(const char *context, bool expected) {
     }
     else if (STATUS_ISSET(status_client_disconnecting)) {
         log_info("Client disconnected.");
-        intermission_.signal_disconnect();
 
         STATUS_UNSET(status_client_started | status_client_disconnecting);
+        intermission_.signal_disconnect();
+
         natives_.clear();
         callbacks_.clear();
     }
@@ -304,9 +305,10 @@ void remote_server::disconnect(const char *context, bool expected) {
             context = "";
         }
         log_error("Unexpected disconnect of client. %s", context);
+        
+        STATUS_UNSET(status_client_started);
         intermission_.signal_error();
 
-        STATUS_UNSET(status_client_started);
         natives_.clear();
         callbacks_.clear();
     }
