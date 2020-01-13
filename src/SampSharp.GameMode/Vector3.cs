@@ -468,14 +468,14 @@ namespace SampSharp.GameMode
         /// <returns>Transformed <see cref="Vector3" />.</returns>
         public static Vector3 Transform(Vector3 value, Quaternion rotation)
         {
-            var x = 2*(rotation.Y*value.Z - rotation.Z*value.Y);
-            var y = 2*(rotation.Z*value.X - rotation.X*value.Z);
-            var z = 2*(rotation.X*value.Y - rotation.Y*value.X);
+            var x = 2*(rotation.Z*value.Z - rotation.W*value.Y);
+            var y = 2*(rotation.W*value.X - rotation.Y*value.Z);
+            var z = 2*(rotation.Y*value.Y - rotation.Z*value.X);
 
             return new Vector3(
-                value.X + x*rotation.W + (rotation.Y*z - rotation.Z*y),
-                value.Y + y*rotation.W + (rotation.Z*x - rotation.X*z),
-                value.Z + z*rotation.W + (rotation.X*y - rotation.Y*x));
+                value.X + x*-rotation.X + (rotation.Z*z - rotation.W*y),
+                value.Y + y*-rotation.X + (rotation.W*x - rotation.Y*z),
+                value.Z + z*-rotation.X + (rotation.Y*y - rotation.Z*x));
         }
 
         /// <summary>
