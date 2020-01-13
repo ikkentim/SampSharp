@@ -37,13 +37,18 @@ namespace TestMode
             player.Kick();
         }
 
-        [Command("f")]
-        public static void F(BasePlayer p)
+        [Command("quattest")]
+        public static void QuatTestCommand(BasePlayer player)
         {
-            // TODO: Fix in plugin
-            Server.SendRconCommand("unloadfs intermission");
-            Server.SendRconCommand("unloadfs intermission");
-            Server.SendRconCommand("unloadfs intermission");
+            var v = player.Vehicle;
+            if (v == null) return;
+
+            var q1 = v.GetRotationQuat();
+            var m = Matrix.CreateFromQuaternion(q1);
+            var q2 = m.Rotation;
+
+            player.SendClientMessage("1: " + q1.ToVector4());
+            player.SendClientMessage("2: " + q2.ToVector4());
         }
 
         [Command("rear")]
