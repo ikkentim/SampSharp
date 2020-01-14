@@ -23,14 +23,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// </summary>
     public class GangZone : Component
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GangZone" /> class.
-        /// </summary>
-        /// <param name="minX">The minimum x.</param>
-        /// <param name="minY">The minimum y.</param>
-        /// <param name="maxX">The maximum x.</param>
-        /// <param name="maxY">The maximum y.</param>
-        public GangZone(float minX, float minY, float maxX, float maxY)
+        private GangZone(float minX, float minY, float maxX, float maxY)
         {
             MinX = minX;
             MaxX = maxX;

@@ -29,6 +29,7 @@ namespace TestMode.Entities.Systems
 {
     public class TestSystem : ISystem
     {
+        private TextDraw _welcome;
         private GangZone _zone;
 
         [Event]
@@ -56,6 +57,13 @@ namespace TestMode.Entities.Systems
             var green = Color.Green;
             green.A = 128;
             worldService.CreateTextLabel("text", green, new Vector3(10, 10, 10), 1000);
+
+            _welcome = worldService.CreateTextDraw(new Vector2(20, 40), "Hello, world");
+            _welcome.Alignment = TextDrawAlignment.Left;
+            _welcome.Font = TextDrawFont.Diploma;
+            _welcome.Proportional = true;
+            Console.WriteLine("TD pos: " + _welcome.Position);
+            Console.WriteLine(_welcome.Entity.Id.ToString());
 
             var ctx = SynchronizationContext.Current;
             Task.Run(() =>
@@ -223,6 +231,8 @@ namespace TestMode.Entities.Systems
             player.AddComponent<TestComponent>();
 
             _zone.Show(player);
+            _welcome.Show(player);
+
             vehiclesRepository.FooForPlayer(player);
         }
 

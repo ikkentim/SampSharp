@@ -22,8 +22,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// </summary>
     public class PlayerTextLabel : Component
     {
-        /// <inheritdoc />
-        public PlayerTextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld,
+        private PlayerTextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld,
             bool testLos, Entity attachedEntity)
         {
             Text = text;

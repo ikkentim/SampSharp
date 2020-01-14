@@ -19,143 +19,130 @@ using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Entities.SAMP.NativeComponents
 {
-    public class NativeWorld : NativeComponent
+    public class NativeTextDraw : BaseNativeComponent
     {
         [NativeMethod]
-        public virtual int CreateActor(int modelId, float x, float y, float z, float rotation)
+        public virtual bool TextDrawDestroy()
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int CreateVehicle(int vehicleType, float x, float y, float z, float rotation, int color1,
-            int color2, int respawnDelay, bool addSiren = false)
+        public virtual bool TextDrawLetterSize(float x, float y)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int AddStaticVehicleEx(int vehicleType, float x, float y, float z, float rotation, int color1,
-            int color2, int respawnDelay, bool addSiren = false)
+        public virtual bool TextDrawTextSize(float x, float y)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int AddStaticVehicle(int vehicleType, float x, float y, float z, float rotation, int color1,
-            int color2)
+        public virtual bool TextDrawAlignment(int alignment)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int GangZoneCreate(float minX, float minY, float maxX, float maxY)
+        public virtual bool TextDrawColor(int color)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int CreatePickup(int model, int type, float x, float y, float z, int virtualWorld)
+        public virtual bool TextDrawUseBox(bool use)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool AddStaticPickup(int model, int type, float x, float y, float z, int virtualWorld)
+        public virtual bool TextDrawBoxColor(int color)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int CreateObject(int modelId, float x, float y, float z, float rX, float rY, float rZ,
-            float drawDistance)
+        public virtual bool TextDrawSetShadow(int size)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int CreatePlayerObject(int playerid, int modelid, float x, float y, float z, float rX, float rY,
-            float rZ, float drawDistance)
+        public virtual bool TextDrawSetOutline(int size)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int Create3DTextLabel(string text, int color, float x, float y, float z, float drawDistance,
-            int virtualWorld, bool testLos)
+        public virtual bool TextDrawBackgroundColor(int color)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int CreatePlayer3DTextLabel(int playerid, string text, int color, float x, float y, float z,
-            float drawDistance, int attachedplayer, int attachedvehicle, bool testLOS)
-        {
-            throw new NativeNotImplementedException();
-        }
-        
-        [NativeMethod]
-        public virtual int TextDrawCreate(float x, float y, string text)
+        public virtual bool TextDrawFont(int font)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int CreatePlayerTextDraw(int playerid, float x, float y, string text)
+        public virtual bool TextDrawSetProportional(bool set)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool SetObjectsDefaultCameraCol(bool disable)
+        public virtual bool TextDrawSetSelectable(bool set)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod(IdentifiersIndex = 1)]
+        public virtual bool TextDrawShowForPlayer(int playerid)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod(IdentifiersIndex = 1)]
+        public virtual bool TextDrawHideForPlayer(int playerid)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool SendClientMessageToAll(int color, string message)
+        public virtual bool TextDrawSetString(string str)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool SendPlayerMessageToAll(int senderid, string message)
+        public virtual bool TextDrawSetPreviewModel(int modelindex)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool SendDeathMessage(int killer, int killee, int weapon)
+        public virtual bool TextDrawSetPreviewRot(float fRotX, float fRotY, float fRotZ, float fZoom = 1.0f)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool GameTextForAll(string text, int time, int style)
+        public virtual bool TextDrawSetPreviewVehCol(int color1, int color2)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool CreateExplosion(float x, float y, float z, int type, float radius)
+        public virtual bool TextDrawShowForAll()
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool SetWeather(int weatherid)
-        {
-            throw new NativeNotImplementedException();
-        }
-
-        [NativeMethod]
-        public virtual bool SetGravity(float gravity)
-        {
-            throw new NativeNotImplementedException();
-        }
-
-        [NativeMethod]
-        public virtual float GetGravity()
+        public virtual bool TextDrawHideForAll()
         {
             throw new NativeNotImplementedException();
         }

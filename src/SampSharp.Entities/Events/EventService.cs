@@ -117,11 +117,11 @@ namespace SampSharp.Entities
         private void CreateEventsFromAssemblies()
         {
             // Find methods with EventAttribute in any ISystem in any assembly.
-            var events = MethodScanner.Create()
+            var events = AttributeScanner.Create()
                 .IncludeAllAssemblies()
-                .IncludeNonPublicMethods()
+                .IncludeNonPublicMembers()
                 .Implements<ISystem>()
-                .Scan<EventAttribute>();
+                .ScanMethods<EventAttribute>();
 
             // Gather event data, compile invoker and add the data to the events collection.
             foreach (var (method, attribute) in events)

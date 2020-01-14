@@ -22,8 +22,8 @@ namespace SampSharp.Entities.SAMP.Components
     /// </summary>
     public class Pickup : Component
     {
-        /// <inheritdoc />
-        public Pickup(int virtualWorld, int model, int spawnType, Vector3 position)
+        
+        private Pickup(int virtualWorld, int model, int spawnType, Vector3 position)
         {
             VirtualWorld = virtualWorld;
             Model = model;

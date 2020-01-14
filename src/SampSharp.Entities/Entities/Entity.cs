@@ -15,7 +15,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Entities
@@ -149,7 +151,7 @@ namespace SampSharp.Entities
 
             var component = typeof(NativeComponent).IsAssignableFrom(type)
                 ? (Component) NativeObjectProxyFactory.CreateInstance(type, args)
-                : (Component) Activator.CreateInstance(type, args);
+                : (Component) Activator.CreateInstance(type, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, args, null);
             component.Entity = this;
 
             _components.Add(component);

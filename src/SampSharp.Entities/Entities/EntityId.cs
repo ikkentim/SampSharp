@@ -14,6 +14,8 @@
 // limitations under the License.
 
 using System;
+using System.Linq;
+using System.Reflection;
 
 namespace SampSharp.Entities
 {
@@ -58,7 +60,7 @@ namespace SampSharp.Entities
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"(Type = {Type}, Handle = {Handle})";
+            return $"(Type = {EntityTypeNames.GetTypeName(Type)}, Handle = {Handle})";
         }
     }
 }

@@ -24,6 +24,10 @@ namespace SampSharp.Entities.SAMP.Components
     /// </summary>
     public class Vehicle : Component
     {
+        private Vehicle()
+        {
+        }
+
         /// <summary>
         /// Gets or sets the Z angle of this vehicle.
         /// </summary>

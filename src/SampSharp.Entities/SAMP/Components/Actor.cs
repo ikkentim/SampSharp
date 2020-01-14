@@ -23,6 +23,10 @@ namespace SampSharp.Entities.SAMP.Components
     /// </summary>
     public class Actor : Component
     {
+        private Actor()
+        {
+        }
+
         /// <summary>
         /// Gets the facing angle of this actor.
         /// </summary>

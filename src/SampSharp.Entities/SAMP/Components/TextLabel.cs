@@ -22,8 +22,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// </summary>
     public class TextLabel : Component
     {
-        /// <inheritdoc />
-        public TextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld,
+        private TextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld,
             bool testLos)
         {
             Text = text;

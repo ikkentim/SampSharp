@@ -29,6 +29,10 @@ namespace SampSharp.Entities.SAMP.Components
     {
         private VariableCollection _variableCollection;
 
+        private Player()
+        {
+        }
+
         /// <summary>
         /// Gets or sets the name of this player.
         /// </summary>

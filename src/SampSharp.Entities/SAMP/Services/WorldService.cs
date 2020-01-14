@@ -227,6 +227,37 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <inheritdoc />
+        public TextDraw CreateTextDraw(Vector2 position, string text)
+        {
+            var world = World;
+
+            var id = world.GetComponent<NativeWorld>().TextDrawCreate(position.X, position.Y, string.IsNullOrEmpty(text) ? "_" : text);
+
+            var entity = _entityManager.Create(null, SampEntities.GetTextDrawId(id));
+
+            entity.AddComponent<NativeTextDraw>();
+            return entity.AddComponent<TextDraw>(position, text);
+        }
+        
+        /// <inheritdoc />
+        public PlayerTextDraw CreatePlayerTextDraw(Entity player, Vector2 position, string text)
+        {
+            if (player == null) throw new ArgumentNullException(nameof(player));
+
+            if (player.GetComponent<NativePlayer>() == null)
+                throw new ArgumentException("Entity must be of type player", nameof(player));
+
+            var world = World;
+
+            var id = world.GetComponent<NativeWorld>().TextDrawCreate(position.X, position.Y, string.IsNullOrEmpty(text) ? "_" : text);
+
+            var entity = _entityManager.Create(player, SampEntities.GetPlayerTextDrawId(player.Id, id));
+
+            entity.AddComponent<NativePlayerTextDraw>();
+            return entity.AddComponent<PlayerTextDraw>(position, text);
+        }
+
+        /// <inheritdoc />
         public void SetObjectsDefaultCameraCollision(bool disable)
         {
             Native.SetObjectsDefaultCameraCol(disable);

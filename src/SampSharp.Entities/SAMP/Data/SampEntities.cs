@@ -25,47 +25,68 @@ namespace SampSharp.Entities.SAMP
         /// <summary>
         /// The SA:MP actor entity type identifier.
         /// </summary>
+        [EntityType]
         public static readonly Guid ActorType = new Guid("CAD0D9CC-EA4A-4D21-9D8A-DF3BB03F59DD");
 
         /// <summary>
         /// The SA:MP player entity type identifier.
         /// </summary>
+        [EntityType]
         public static readonly Guid PlayerType = new Guid("C96C8A5A-80D6-40EF-9308-4AF28CBE9657");
 
         /// <summary>
         /// The SA:MP vehicle entity type identifier.
         /// </summary>
+        [EntityType]
         public static readonly Guid VehicleType = new Guid("877A5625-9F2A-4C92-BC83-1C6C220A9D05");
 
         /// <summary>
         /// The SA:MP gang zone entity type identifier.
         /// </summary>
+        [EntityType]
         public static readonly Guid GangZoneType = new Guid("D607F200-268E-4614-AEAB-8158067767BA");
 
         /// <summary>
         /// The SA:MP object entity type identifier.
         /// </summary>
+        [EntityType]
         public static readonly Guid ObjectType = new Guid("52F9EC25-82E5-4B17-B19E-76DA67965D87");
 
         /// <summary>
         /// The SA:MP pickup entity type identifier.
         /// </summary>
+        [EntityType]
         public static readonly Guid PickupType = new Guid("16712D3F-8FFF-4871-A0B7-C2A163314E11");
 
         /// <summary>
         /// The SA:MP player object entity type identifier.
         /// </summary>
+        [EntityType]
         public static readonly Guid PlayerObjectType = new Guid("0A728950-C2CD-4379-95E9-B564E1D430ED");
 
         /// <summary>
         /// The SA:MP player text label entity type identifier.
         /// </summary>
+        [EntityType]
         public static readonly Guid PlayerTextLabelType = new Guid("B7B43DE2-6C37-4D78-BBA7-5F394EBAFCD6");
 
         /// <summary>
         /// The SA:MP text label entity type identifier.
         /// </summary>
+        [EntityType]
         public static readonly Guid TextLabelType = new Guid("CD8A9F9B-9207-4E98-870F-1341B61BE06E");
+        
+        /// <summary>
+        /// The SA:MP player text draw entity type identifier.
+        /// </summary>
+        [EntityType]
+        public static readonly Guid PlayerTextDrawType = new Guid("2EBBB103-5FFC-44B2-97A5-FA5295A4BD14");
+
+        /// <summary>
+        /// The SA:MP text draw entity type identifier.
+        /// </summary>
+        [EntityType]
+        public static readonly Guid TextDrawType = new Guid("F7D5A8C9-2066-4BB1-A1A8-4C185C15D95F");
 
         /// <summary>
         /// Gets a actor entity identifier based on an integer actor identifier.
@@ -157,6 +178,27 @@ namespace SampSharp.Entities.SAMP
         public static EntityId GetTextLabelId(int textLabelId)
         {
             return new EntityId(TextLabelType, textLabelId);
+        }
+
+        /// <summary>
+        /// Gets a player text draw entity identifier based on an integer player text draw identifier.
+        /// </summary>
+        /// <param name="playerId">The player identifier.</param>
+        /// <param name="playerTextDrawId">The player text draw identifier.</param>
+        /// <returns>The entity identifier.</returns>
+        public static EntityId GetPlayerTextDrawId(int playerId, int playerTextDrawId)
+        {
+            return new EntityId(PlayerTextDrawType, playerTextDrawId * SampLimits.MaxPlayers + playerId);
+        }
+
+        /// <summary>
+        /// Gets a text draw entity identifier based on an integer text draw identifier.
+        /// </summary>
+        /// <param name="textDrawId">The text draw identifier.</param>
+        /// <returns>The entity identifier.</returns>
+        public static EntityId GetTextDrawId(int textDrawId)
+        {
+            return new EntityId(TextDrawType, textDrawId);
         }
     }
 }

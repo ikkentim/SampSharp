@@ -154,6 +154,23 @@ namespace SampSharp.Entities.SAMP
             float drawDistance, bool testLos = true, Entity attachedTo = null);
 
         /// <summary>
+        /// Creates a textdraw in the world.
+        /// </summary>
+        /// <param name="position">The position of the textdraw.</param>
+        /// <param name="text">The text of the textdraw.</param>
+        /// <returns>The created textdraw.</returns>
+        TextDraw CreateTextDraw(Vector2 position, string text);
+
+        /// <summary>
+        /// Creates the player textdraw in the world.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <param name="position">The position of the textdraw.</param>
+        /// <param name="text">The text of the textdraw.</param>
+        /// <returns>The created player textdraw.</returns>
+        PlayerTextDraw CreatePlayerTextDraw(Entity player, Vector2 position, string text);
+
+        /// <summary>
         /// Allows camera collisions with newly created objects to be disabled by default.
         /// </summary>
         /// <param name="disable">A value indicating whether camera collision with new objects should be disabled.</param>

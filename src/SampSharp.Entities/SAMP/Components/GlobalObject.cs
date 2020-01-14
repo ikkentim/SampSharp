@@ -24,11 +24,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// </summary>
     public class GlobalObject : Component
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GlobalObject" /> class.
-        /// </summary>
-        /// <param name="drawDistance">The draw distance.</param>
-        public GlobalObject(float drawDistance)
+        private GlobalObject(float drawDistance)
         {
             DrawDistance = drawDistance;
         }
