@@ -105,6 +105,12 @@ namespace SampSharp.Entities.SAMP.NativeComponents
         {
             throw new NativeNotImplementedException();
         }
+        
+        [NativeMethod]
+        public virtual int CreateMenu(string title, int columns, float x, float y, float col1width, float col2width = 0.0f)
+        {
+            throw new NativeNotImplementedException();
+        }
 
         [NativeMethod]
         public virtual bool SetObjectsDefaultCameraCol(bool disable)

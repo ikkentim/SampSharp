@@ -22,7 +22,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// <summary>
     /// Represents a component which provides the data and functionality of an object.
     /// </summary>
-    public class GlobalObject : Component
+    public sealed class GlobalObject : Component
     {
         private GlobalObject(float drawDistance)
         {

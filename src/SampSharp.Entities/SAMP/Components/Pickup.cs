@@ -20,7 +20,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// <summary>
     /// Represents a component which provides the data and functionality of a pickup.
     /// </summary>
-    public class Pickup : Component
+    public sealed class Pickup : Component
     {
         
         private Pickup(int virtualWorld, int model, int spawnType, Vector3 position)

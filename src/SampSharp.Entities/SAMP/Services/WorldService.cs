@@ -249,12 +249,27 @@ namespace SampSharp.Entities.SAMP
 
             var world = World;
 
-            var id = world.GetComponent<NativeWorld>().TextDrawCreate(position.X, position.Y, string.IsNullOrEmpty(text) ? "_" : text);
+            var id = world.GetComponent<NativeWorld>().CreatePlayerTextDraw(player.Id, position.X, position.Y, string.IsNullOrEmpty(text) ? "_" : text);
 
             var entity = _entityManager.Create(player, SampEntities.GetPlayerTextDrawId(player.Id, id));
 
             entity.AddComponent<NativePlayerTextDraw>();
             return entity.AddComponent<PlayerTextDraw>(position, text);
+        }
+        
+        /// <inheritdoc />
+        public Menu CreateMenu(string title, Vector2 position, float col0Width, float? col1Width = null)
+        {
+            var world = World;
+
+            var columns = col1Width != null ? 2 : 1;
+
+            var id = world.GetComponent<NativeWorld>().CreateMenu(title, columns, position.X, position.Y, col0Width, col1Width ?? 0.0f);
+
+            var entity = _entityManager.Create(null, SampEntities.GetMenuId(id));
+
+            entity.AddComponent<NativeMenu>();
+            return entity.AddComponent<Menu>(title, columns, position, col0Width, col1Width ?? 0.0f);
         }
 
         /// <inheritdoc />

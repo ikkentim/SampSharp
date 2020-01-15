@@ -81,12 +81,18 @@ namespace SampSharp.Entities.SAMP
         /// </summary>
         [EntityType]
         public static readonly Guid PlayerTextDrawType = new Guid("2EBBB103-5FFC-44B2-97A5-FA5295A4BD14");
-
+        
         /// <summary>
         /// The SA:MP text draw entity type identifier.
         /// </summary>
         [EntityType]
         public static readonly Guid TextDrawType = new Guid("F7D5A8C9-2066-4BB1-A1A8-4C185C15D95F");
+
+        /// <summary>
+        /// The SA:MP menu entity type identifier.
+        /// </summary>
+        [EntityType]
+        public static readonly Guid MenuType = new Guid("0AED0820-6CCF-4ED4-A879-8B161773769E");
 
         /// <summary>
         /// Gets a actor entity identifier based on an integer actor identifier.
@@ -190,7 +196,7 @@ namespace SampSharp.Entities.SAMP
         {
             return new EntityId(PlayerTextDrawType, playerTextDrawId * SampLimits.MaxPlayers + playerId);
         }
-
+        
         /// <summary>
         /// Gets a text draw entity identifier based on an integer text draw identifier.
         /// </summary>
@@ -199,6 +205,16 @@ namespace SampSharp.Entities.SAMP
         public static EntityId GetTextDrawId(int textDrawId)
         {
             return new EntityId(TextDrawType, textDrawId);
+        }
+
+        /// <summary>
+        /// Gets a menu entity identifier based on an integer menu identifier.
+        /// </summary>
+        /// <param name="menuId">The menu identifier.</param>
+        /// <returns>The entity identifier.</returns>
+        public static EntityId GetMenuId(int menuId)
+        {
+            return new EntityId(MenuType, menuId);
         }
     }
 }

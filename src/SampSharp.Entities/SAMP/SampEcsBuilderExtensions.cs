@@ -158,8 +158,8 @@ namespace SampSharp.Entities.SAMP
             AddPlayerTarget("OnPlayerGiveDamageActor");
             builder.UseMiddleware<EntityMiddleware>("OnPlayerGiveDamageActor", 1, ActorType, true);
             AddPlayerTarget("OnPlayerClickMap");
-            AddPlayerTarget("OnPlayerClickTextDraw"); // TODO: TD id
-            AddPlayerTarget("OnPlayerClickPlayerTextDraw"); // TODO: PTD id
+            builder.UseMiddleware<TextDrawClickMiddleware>("OnPlayerClickTextDraw");
+            builder.UseMiddleware<PlayerTextDrawMiddleware>("OnPlayerClickPlayerTextDraw");
             AddPlayerTarget("OnPlayerClickPlayer");
             builder.UseMiddleware<EntityMiddleware>("OnPlayerClickPlayer", 1, PlayerType, true);
             builder.UseMiddleware<PlayerEditObjectMiddleware>("OnPlayerEditObject");

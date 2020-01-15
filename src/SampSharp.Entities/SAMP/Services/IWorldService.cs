@@ -171,6 +171,16 @@ namespace SampSharp.Entities.SAMP
         PlayerTextDraw CreatePlayerTextDraw(Entity player, Vector2 position, string text);
 
         /// <summary>
+        /// Creates the menu in this world.
+        /// </summary>
+        /// <param name="title">The title of the menu.</param>
+        /// <param name="position">The position of the menu.</param>
+        /// <param name="col0Width">Width of the left column.</param>
+        /// <param name="col1Width">Width of the right column or null if the menu should only have one column.</param>
+        /// <returns>The created menu.</returns>
+        Menu CreateMenu(string title, Vector2 position, float col0Width, float? col1Width = null);
+
+        /// <summary>
         /// Allows camera collisions with newly created objects to be disabled by default.
         /// </summary>
         /// <param name="disable">A value indicating whether camera collision with new objects should be disabled.</param>

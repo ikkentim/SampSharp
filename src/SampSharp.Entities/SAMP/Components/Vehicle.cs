@@ -22,7 +22,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// <summary>
     /// Represents a component which provides the data and functionality of a vehicle.
     /// </summary>
-    public class Vehicle : Component
+    public sealed class Vehicle : Component
     {
         private Vehicle()
         {

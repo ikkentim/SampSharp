@@ -21,7 +21,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// <summary>
     /// Represents a component which provides the data and functionality of an actor.
     /// </summary>
-    public class Actor : Component
+    public sealed class Actor : Component
     {
         private Actor()
         {

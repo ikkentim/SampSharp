@@ -94,6 +94,12 @@ namespace SampSharp.Entities
             @event.Invoke = invoke;
         }
 
+        /// <inheritdoc />
+        public object Invoke(string name, params object[] args)
+        {
+            return BuildInvoke(name)(args);
+        }
+
         private object Invoke(EventContext context)
         {
             object result = null;
@@ -188,7 +194,7 @@ namespace SampSharp.Entities
                 }
             };
         }
-
+        
         private Func<object[], object> BuildInvoke(string name)
         {
             var context = new EventContextImpl();

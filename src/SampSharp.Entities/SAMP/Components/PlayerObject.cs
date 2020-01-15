@@ -22,7 +22,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// <summary>
     /// Represents a component which provides the data and functionality of a player object.
     /// </summary>
-    public class PlayerObject : Component
+    public sealed class PlayerObject : Component
     {
         private PlayerObject(float drawDistance)
         {

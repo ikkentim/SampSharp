@@ -31,6 +31,7 @@ namespace TestMode.Entities.Systems
     {
         private TextDraw _welcome;
         private GangZone _zone;
+        private Menu _menu;
 
         [Event]
         public void OnGameModeInit(IVehicleRepository vehiclesRepository,  IWorldService worldService, IServerService serverService) 
@@ -64,6 +65,11 @@ namespace TestMode.Entities.Systems
             _welcome.Proportional = true;
             Console.WriteLine("TD pos: " + _welcome.Position);
             Console.WriteLine(_welcome.Entity.Id.ToString());
+
+            _menu = worldService.CreateMenu("Test menu", new Vector2(200, 300), 100);
+            _menu.AddItem("Hello!!!");
+            _menu.AddItem("Hello!!");
+            _menu.AddItem("Hello!");
 
             var ctx = SynchronizationContext.Current;
             Task.Run(() =>
@@ -103,6 +109,11 @@ namespace TestMode.Entities.Systems
         [Event]
         public async Task<bool> OnPlayerCommandText(Player player, string text, IDialogService dialogService, IWorldService worldService, IEntityManager entityManager)
         {
+            if (text == "/menu")
+            {
+                _menu.Show(player.Entity);
+                return true;
+            }
             if (text == "/addcomponent")
             {
                 if(player.GetComponent<TestComponent>() == null)

@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using SampSharp.Entities.SAMP.NativeComponents;
 
 namespace SampSharp.Entities.SAMP.Components
@@ -20,8 +21,12 @@ namespace SampSharp.Entities.SAMP.Components
     /// <summary>
     /// Represents a component which provides the data and functionality of a 3D text label.
     /// </summary>
-    public class TextLabel : Component
+    public sealed class TextLabel : Component
     {
+        private Entity _attachedEntity;
+        private string _text;
+        private Color _color;
+
         private TextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld,
             bool testLos)
         {
@@ -34,14 +39,30 @@ namespace SampSharp.Entities.SAMP.Components
         }
 
         /// <summary>
-        /// Gets the color of this text label.
+        /// Gets or sets the color of this text label.
         /// </summary>
-        public Color Color { get; }
+        public Color Color
+        {
+            get => _color;
+            set
+            {
+                _color = value;
+                GetComponent<NativeTextLabel>().Update3DTextLabelText(value, Text);
+            }
+        }
 
         /// <summary>
-        /// Gets the text of this text label.
+        /// Gets or sets the text of this text label.
         /// </summary>
-        public string Text { get; }
+        public string Text
+        {
+            get => _text;
+            set
+            {
+                _text = value;
+                GetComponent<NativeTextLabel>().Update3DTextLabelText(Color, value ?? string.Empty);
+            }
+        }
 
         /// <summary>
         /// Gets the position of this text label.
@@ -49,12 +70,12 @@ namespace SampSharp.Entities.SAMP.Components
         public Vector3 Position { get; }
 
         /// <summary>
-        /// Gets the draw distance.
+        /// Gets the draw distance of this text label.
         /// </summary>
         public float DrawDistance { get; }
 
         /// <summary>
-        /// Gets the virtual world.
+        /// Gets the virtual world of this text label.
         /// </summary>
         public int VirtualWorld { get; }
 
@@ -64,9 +85,32 @@ namespace SampSharp.Entities.SAMP.Components
         public bool TestLos { get; }
 
         /// <summary>
-        /// Gets the attached entity.
+        /// Gets or sets the offset at which this text label is attached to an entity.
         /// </summary>
-        public Entity AttachedEntity { get; } // TODO: Implement
+        public Vector3 AttachOffset { get; set; }
+
+        /// <summary>
+        /// Gets or sets the attached entity (player or vehicle).
+        /// </summary>
+        public Entity AttachedEntity
+        {
+            get =>  _attachedEntity;
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value)); // TODO: Can detach maybe?
+
+                if (value.GetComponent<NativePlayer>() != null)
+                    GetComponent<NativeTextLabel>()
+                        .Attach3DTextLabelToPlayer(value.Id, AttachOffset.X, AttachOffset.Y, AttachOffset.Z);
+                else if (value.GetComponent<NativeVehicle>() != null)
+                    GetComponent<NativeTextLabel>()
+                        .Attach3DTextLabelToVehicle(value.Id, AttachOffset.X, AttachOffset.Y, AttachOffset.Z);
+                else
+                    throw new ArgumentException("Value should be a player or vehicle", nameof(value));
+                _attachedEntity = value;
+            }
+        }
 
         /// <inheritdoc />
         protected override void OnDestroyComponent()

@@ -25,7 +25,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// <summary>
     /// Represents a component which provides the data and functionality of a player.
     /// </summary>
-    public class Player : Component
+    public sealed class Player : Component
     {
         private VariableCollection _variableCollection;
 

@@ -21,7 +21,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// <summary>
     /// Represents a component which provides the data and functionality of a per-player textdraw.
     /// </summary>
-    public class PlayerTextDraw : Component
+    public sealed class PlayerTextDraw : Component
     {
         private TextDrawAlignment _alignment = TextDrawAlignment.Left;
         private Color _backColor = Color.Black;

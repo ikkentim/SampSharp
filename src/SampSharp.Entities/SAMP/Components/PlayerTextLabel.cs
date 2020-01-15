@@ -20,7 +20,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// <summary>
     /// Represents a component which provides the data and functionality of a player 3D text label.
     /// </summary>
-    public class PlayerTextLabel : Component
+    public sealed class PlayerTextLabel : Component
     {
         private PlayerTextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld,
             bool testLos, Entity attachedEntity)

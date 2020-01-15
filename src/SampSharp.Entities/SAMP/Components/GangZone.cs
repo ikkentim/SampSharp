@@ -21,7 +21,7 @@ namespace SampSharp.Entities.SAMP.Components
     /// <summary>
     /// Represents a component which provides the data and functionality of a gang zone.
     /// </summary>
-    public class GangZone : Component
+    public sealed class GangZone : Component
     {
         private GangZone(float minX, float minY, float maxX, float maxY)
         {
