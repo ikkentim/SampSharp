@@ -30,12 +30,15 @@ namespace TestMode.Entities
             services
                 .AddTransient<IVehicleRepository, VehicleRepository>()
                 .AddTransient<IFunnyService, FunnyService>()
+                .AddScoped<IScopedFunnyService, FunnyService>()
                 .AddSystem<TestSystem>();
         }
 
         public void Configure(IEcsBuilder builder)
         {
-            builder.EnableSampEvents();
+            builder.EnableSampEvents()
+                .EnableEventScope("OnPlayerConnect")
+                .EnableEventScope("OnPlayerText");
 
             // Load middlewares:
             // Can also be loaded by systems which are IConfiguringSystem

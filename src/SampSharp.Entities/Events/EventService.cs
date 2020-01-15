@@ -19,7 +19,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Core;
 using SampSharp.Core.Logging;
 using SampSharp.Entities.Utilities;
@@ -164,7 +163,6 @@ namespace SampSharp.Entities
                     {
                         // Other types are provided trough Dependency Injection.
                         source.ServiceType = type;
-                        @event.HasDependencies = true;
                     }
                 }
 
@@ -207,20 +205,9 @@ namespace SampSharp.Entities
                 if (!_events.TryGetValue(name, out var @event))
                     return null;
 
-                IServiceScope scope = null;
-                if (@event.HasDependencies)
-                {
-                    scope = _serviceProvider.CreateScope();
-                    context.SetEventServices(scope.ServiceProvider);
-                }
-                else
-                {
-                    context.SetEventServices(_serviceProvider);
-                }
+                context.SetEventServices(_serviceProvider);
 
                 var result = @event.Invoke(context);
-
-                scope?.Dispose();
 
                 switch (result)
                 {
@@ -228,7 +215,7 @@ namespace SampSharp.Entities
                         return !task.IsCompleted ? null : (object) task.Result;
                     case Task<int> task:
                         return !task.IsCompleted ? null : (object) task.Result;
-                    case Task task:
+                    case Task _:
                         return null;
                     default:
                         return result;
@@ -359,8 +346,6 @@ namespace SampSharp.Entities
 
             public readonly List<Func<EventDelegate, EventDelegate>> Middleware =
                 new List<Func<EventDelegate, EventDelegate>>();
-
-            public bool HasDependencies;
 
             public EventDelegate Invoke;
 

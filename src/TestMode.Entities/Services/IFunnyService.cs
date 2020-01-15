@@ -13,12 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using SampSharp.Entities;
 
 namespace TestMode.Entities.Services
 {
     public interface IFunnyService
     {
+        Guid FunnyGuid { get; }
         string MakePlayerNameFunny(Entity player);
     }
 }

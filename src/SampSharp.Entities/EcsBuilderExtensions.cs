@@ -31,5 +31,16 @@ namespace SampSharp.Entities
         {
             return builder.UseSystem(typeof(T));
         }
+
+        /// <summary>
+        /// Enabled a Dependency Injection scope for the event with the specified <paramref name="name"/>.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="name">The name of the event to add the scope to.</param>
+        /// <returns>The builder.</returns>
+        public static IEcsBuilder EnableEventScope(this IEcsBuilder builder, string name)
+        {
+            return builder.UseMiddleware<EventScopeMiddleware>(name);
+        }
     }
 }

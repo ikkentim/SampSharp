@@ -30,8 +30,8 @@ namespace SampSharp.Entities.SAMP.Components
         private TextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld,
             bool testLos)
         {
-            Text = text;
-            Color = color;
+            _text = text;
+            _color = color;
             Position = position;
             DrawDistance = drawDistance;
             VirtualWorld = virtualWorld;
