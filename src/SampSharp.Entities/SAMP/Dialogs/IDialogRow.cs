@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP.Dialogs
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Provides the functionality of a dialog row

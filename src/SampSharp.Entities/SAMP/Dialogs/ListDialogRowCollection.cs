@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP.Dialogs
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Represents a collection of dialog rows of type <see cref="ListDialogRow" />.

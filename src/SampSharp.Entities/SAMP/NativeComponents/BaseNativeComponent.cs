@@ -17,7 +17,7 @@ using SampSharp.Core.Natives.NativeObjects;
 
 #pragma warning disable 1591
 
-namespace SampSharp.Entities.SAMP.NativeComponents
+namespace SampSharp.Entities.SAMP
 {
     [NativeObjectIdentifiers("Id")]
     public abstract class BaseNativeComponent : NativeComponent

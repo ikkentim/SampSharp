@@ -18,7 +18,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SampSharp.Entities.SAMP.Dialogs
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Represents a collection of dialog rows.

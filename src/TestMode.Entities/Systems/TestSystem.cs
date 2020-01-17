@@ -20,9 +20,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
-using SampSharp.Entities.SAMP.Components;
-using SampSharp.Entities.SAMP.Definitions;
-using SampSharp.Entities.SAMP.Dialogs;
 using TestMode.Entities.Components;
 using TestMode.Entities.Services;
 

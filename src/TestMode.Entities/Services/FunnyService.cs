@@ -15,7 +15,7 @@
 
 using System;
 using SampSharp.Entities;
-using SampSharp.Entities.SAMP.Components;
+using SampSharp.Entities.SAMP;
 
 namespace TestMode.Entities.Services
 {

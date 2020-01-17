@@ -13,10 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.Entities.SAMP.Components;
-using SampSharp.Entities.SAMP.NativeComponents;
-
-namespace SampSharp.Entities.SAMP.Middleware
+namespace SampSharp.Entities.SAMP
 {
     internal class PlayerConnectMiddleware
     {

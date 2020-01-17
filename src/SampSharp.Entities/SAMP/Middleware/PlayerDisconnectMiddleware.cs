@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP.Middleware
+namespace SampSharp.Entities.SAMP
 {
     internal class PlayerDisconnectMiddleware
     {

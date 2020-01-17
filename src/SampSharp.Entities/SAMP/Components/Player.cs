@@ -17,10 +17,8 @@ using System;
 using System.Linq;
 using System.Net;
 using SampSharp.Core.Natives.NativeObjects;
-using SampSharp.Entities.SAMP.Definitions;
-using SampSharp.Entities.SAMP.NativeComponents;
 
-namespace SampSharp.Entities.SAMP.Components
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Represents a component which provides the data and functionality of a player.

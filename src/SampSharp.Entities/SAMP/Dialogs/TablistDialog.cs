@@ -16,9 +16,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using SampSharp.Entities.SAMP.Definitions;
 
-namespace SampSharp.Entities.SAMP.Dialogs
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Represents a dialog with a list of selectable rows with columns.

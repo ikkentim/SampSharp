@@ -15,9 +15,8 @@
 
 using System;
 using System.Threading.Tasks;
-using SampSharp.Entities.SAMP.NativeComponents;
 
-namespace SampSharp.Entities.SAMP.Dialogs
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Provides dialog functionality.

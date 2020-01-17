@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP.Dialogs
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Represents a row in a <see cref="TablistDialog" />

@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP.Definitions
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Contains all detectable keys.

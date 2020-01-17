@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP.Middleware
+namespace SampSharp.Entities.SAMP
 {
     internal class ArgumentsOverrideEventContext : EventContext
     {

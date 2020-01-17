@@ -14,9 +14,8 @@
 // limitations under the License.
 
 using System;
-using SampSharp.Entities.SAMP.NativeComponents;
 
-namespace SampSharp.Entities.SAMP.Components
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Represents a component which provides the data and functionality of a gang zone.

@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using SampSharp.Core.Natives.NativeObjects;
-using SampSharp.Entities.SAMP.Definitions;
 
 namespace SampSharp.Entities.SAMP
 {

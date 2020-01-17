@@ -14,9 +14,6 @@
 // limitations under the License.
 
 using System;
-using SampSharp.Entities.SAMP.Components;
-using SampSharp.Entities.SAMP.Definitions;
-using SampSharp.Entities.SAMP.NativeComponents;
 
 namespace SampSharp.Entities.SAMP
 {

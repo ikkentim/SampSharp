@@ -18,7 +18,7 @@ using SampSharp.Core.Natives.NativeObjects;
 
 #pragma warning disable 1591
 
-namespace SampSharp.Entities.SAMP.NativeComponents
+namespace SampSharp.Entities.SAMP
 {
     [SuppressMessage("ReSharper", "IdentifierTypo")]
     public class NativeObject : BaseNativeComponent

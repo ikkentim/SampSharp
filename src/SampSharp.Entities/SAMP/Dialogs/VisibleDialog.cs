@@ -14,10 +14,8 @@
 // limitations under the License.
 
 using System;
-using SampSharp.Entities.SAMP.Definitions;
-using SampSharp.Entities.SAMP.NativeComponents;
 
-namespace SampSharp.Entities.SAMP.Dialogs
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// A component which contains the data of the currently visible dialog.

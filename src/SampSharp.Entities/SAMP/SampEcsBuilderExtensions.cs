@@ -14,8 +14,6 @@
 // limitations under the License.
 
 using Microsoft.Extensions.DependencyInjection;
-using SampSharp.Entities.SAMP.Middleware;
-using SampSharp.Entities.SAMP.NativeComponents;
 using static SampSharp.Entities.SAMP.SampEntities;
 
 namespace SampSharp.Entities.SAMP
@@ -141,7 +139,7 @@ namespace SampSharp.Entities.SAMP
             AddPlayerTarget("OnPlayerLeaveRaceCheckpoint");
             AddPlayerTarget("OnPlayerRequestSpawn");
             AddPlayerTarget("OnPlayerPickUpPickup");
-            builder.UseMiddleware<EntityMiddleware>("OnPlayerPickUpPickup", 1, PickupType, true);
+            builder.UseMiddleware<EntityMiddleware>("OnPlayerPickUpPickup", 1, SampEntities.PickupType, true);
             AddPlayerTarget("OnPlayerSelectedMenuRow");
             AddPlayerTarget("OnPlayerExitedMenu");
             AddPlayerTarget("OnPlayerInteriorChange");
@@ -182,7 +180,7 @@ namespace SampSharp.Entities.SAMP
             builder.EnableEvent<int>("OnObjectMoved");
             builder.EnableEvent<int, int>("OnPlayerObjectMoved");
 
-            builder.UseMiddleware<EntityMiddleware>("OnObjectMoved", 0, ObjectType, true);
+            builder.UseMiddleware<EntityMiddleware>("OnObjectMoved", 0, SampEntities.ObjectType, true);
             builder.UseMiddleware<PlayerObjectMiddleware>("OnPlayerObjectMoved");
             return builder;
         }

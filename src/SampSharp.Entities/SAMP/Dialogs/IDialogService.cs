@@ -16,7 +16,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace SampSharp.Entities.SAMP.Dialogs
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Provides the functionality for showing dialogs to players.

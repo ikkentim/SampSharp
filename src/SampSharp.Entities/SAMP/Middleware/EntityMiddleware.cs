@@ -15,7 +15,7 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP.Middleware
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Represents a middleware which replaces an integer entity id with an entity in the arguments of an event.

@@ -13,10 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.Entities.SAMP.Definitions;
-using SampSharp.Entities.SAMP.NativeComponents;
-
-namespace SampSharp.Entities.SAMP.Components
+namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Represents a component which provides the data and functionality of a per-player textdraw.

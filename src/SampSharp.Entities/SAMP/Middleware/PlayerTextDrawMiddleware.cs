@@ -1,4 +1,4 @@
-﻿namespace SampSharp.Entities.SAMP.Middleware
+﻿namespace SampSharp.Entities.SAMP
 {
     internal class PlayerTextDrawMiddleware
     {
