@@ -315,11 +315,11 @@ namespace SampSharp.Entities.SAMP
             var yy = quaternion.Y * quaternion.Y;
             var zz = quaternion.Z * quaternion.Z;
             var xy = quaternion.X * quaternion.Y;
-            var zw = quaternion.Z * quaternion.W;
+            var zw = -quaternion.Z * quaternion.W;
             var zx = quaternion.Z * quaternion.X;
-            var yw = quaternion.Y * quaternion.W;
+            var yw = -quaternion.Y * quaternion.W;
             var yz = quaternion.Y * quaternion.Z;
-            var xw = quaternion.X * quaternion.W;
+            var xw = -quaternion.X * quaternion.W;
 
             return new Matrix(
                 1f - 2f * (yy + zz), 2f * (xy + zw), 2f * (zx - yw), 0f,

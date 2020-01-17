@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
+using SampSharp.GameMode.Helpers;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
@@ -20,6 +22,92 @@ namespace TestMode
             player.Kick();
         }
 
+        
+        [Command("quattest")]
+        public static void QuatTestCommand(BasePlayer player)
+        {
+            var v = player.Vehicle;
+            if (v == null) return;
+
+            var q1 = v.GetRotationQuat();
+            var m = Matrix.CreateFromQuaternion(q1);
+            var q2 = m.Rotation;
+
+            player.SendClientMessage("1: " + q1.ToVector4());
+            player.SendClientMessage("2: " + q2.ToVector4());
+        }
+
+        [Command("rear")]
+        public static async void RearCommand(BasePlayer player)
+        {
+            var labels = new List<TextLabel>();
+
+            foreach (var vehicle in BaseVehicle.All)
+            {
+                var model = vehicle.Model;
+
+                var size = BaseVehicle.GetModelInfo(model, VehicleModelInfoType.Size);
+                var bumper = BaseVehicle.GetModelInfo(model, VehicleModelInfoType.RearBumperZ);
+                var offset = new Vector3(0, -size.Y / 2, bumper.Z);
+
+                var rotation = vehicle.GetRotationQuat();
+
+                //rotation = new Quaternion(-rotation.X, -rotation.Y, -rotation.Z, rotation.W);
+
+                var mRotation = rotation.LengthSquared > 10000 // Unoccupied vehicle updates corrupt the internal vehicle world matrix
+                    ? Matrix.CreateRotationZ(MathHelper.ToRadians(vehicle.Angle))
+                    : Matrix.CreateFromQuaternion(rotation);
+
+                var matrix = Matrix.CreateTranslation(offset) *
+                             mRotation *
+                             Matrix.CreateTranslation(vehicle.Position);
+
+                var point = matrix.Translation;
+
+                labels.Add(new TextLabel("[x]", Color.Blue, point, 100, 0, false));
+            }
+            
+            await Task.Delay(10000);
+
+            foreach(var l in labels)
+                l.Dispose();
+            
+        }
+        
+        [Command("rear2")]
+        public static async void Rear2Command(BasePlayer player)
+        {
+            var labels = new List<TextLabel>();
+
+            foreach (var vehicle in BaseVehicle.All)
+            {
+                var model = vehicle.Model;
+
+                var size = BaseVehicle.GetModelInfo(model, VehicleModelInfoType.Size);
+                var bumper = BaseVehicle.GetModelInfo(model, VehicleModelInfoType.RearBumperZ);
+                var offset = new Vector3(0, -size.Y / 2, bumper.Z);
+
+                var rotation = vehicle.GetRotationQuat();
+
+                //rotation = new Quaternion(-rotation.X, -rotation.Y, -rotation.Z, rotation.W);
+
+                var point = vehicle.Position + Vector3.Transform(offset, rotation);
+
+                labels.Add(new TextLabel("[x]", Color.Red, point, 100, 0, false));
+            }
+            
+            await Task.Delay(10000);
+
+            foreach(var l in labels)
+                l.Dispose();
+            
+        }
+
+        [Command("spawnat")]
+        public static void SpawnCommand(BasePlayer player, VehicleModelType type, float x, float y, float z, float a)
+        {
+            BaseVehicle.Create(type, new Vector3(x, y, z), a, -1, -1);
+        }
 
         [Command("spawn")]
         public static void SpawnCommand(BasePlayer player, VehicleModelType type)
