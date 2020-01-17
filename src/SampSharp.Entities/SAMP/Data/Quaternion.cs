@@ -33,7 +33,7 @@ namespace SampSharp.Entities.SAMP
         public float Y { get; }
 
         /// <summary>
-        /// Gets the z-coordinate of this <see cref="Quaternion" />.
+        /// Gets the z-oordinate of this <see cref="Quaternion" />.
         /// </summary>
         public float Z { get; }
 
@@ -150,48 +150,52 @@ namespace SampSharp.Entities.SAMP
             if (scale > 0.0f)
             {
                 sqrt = (float) Math.Sqrt(scale + 1.0f);
-                var w = sqrt*0.5f;
-                sqrt = 0.5f/sqrt;
+                var w = sqrt * 0.5f;
+                sqrt = 0.5f / sqrt;
 
                 return new Quaternion(
-                    w,
-                    -(matrix.M23 - matrix.M32) * sqrt,
-                    -(matrix.M31 - matrix.M13) * sqrt,
-                    -(matrix.M12 - matrix.M21) * sqrt
+                    (matrix.M23 - matrix.M32) * sqrt,
+                    (matrix.M31 - matrix.M13) * sqrt,
+                    (matrix.M12 - matrix.M21) * sqrt,
+                    w
                 );
             }
-            if ((matrix.M11 >= matrix.M22) && (matrix.M11 >= matrix.M33))
+
+            if (matrix.M11 >= matrix.M22 && matrix.M11 >= matrix.M33)
             {
                 sqrt = (float) Math.Sqrt(1.0f + matrix.M11 - matrix.M22 - matrix.M33);
-                half = 0.5f/sqrt;
+                half = 0.5f / sqrt;
 
                 return new Quaternion(
-                    (matrix.M23 - matrix.M32) * half,
-                    -0.5f * sqrt,
-                    -(matrix.M12 + matrix.M21) * half,
-                    -(matrix.M13 + matrix.M31) * half
+                    0.5f * sqrt,
+                    (matrix.M12 + matrix.M21) * half,
+                    (matrix.M13 + matrix.M31) * half,
+                    (matrix.M23 - matrix.M32) * half
                 );
             }
+
             if (matrix.M22 > matrix.M33)
             {
                 sqrt = (float) Math.Sqrt(1.0f + matrix.M22 - matrix.M11 - matrix.M33);
-                half = 0.5f/sqrt;
+                half = 0.5f / sqrt;
 
                 return new Quaternion(
-                    (matrix.M31 - matrix.M13) * half,
-                    -(matrix.M21 + matrix.M12) * half,
-                    -0.5f * sqrt,
-                    -(matrix.M32 + matrix.M23) * half
-                );
+                        (matrix.M21 + matrix.M12) * half,
+                        0.5f * sqrt,
+                        (matrix.M32 + matrix.M23) * half,
+                        (matrix.M31 - matrix.M13) * half
+                    )
+                    ;
             }
+
             sqrt = (float) Math.Sqrt(1.0f + matrix.M33 - matrix.M11 - matrix.M22);
-            half = 0.5f/sqrt;
+            half = 0.5f / sqrt;
 
             return new Quaternion(
-                (matrix.M12 - matrix.M21) * half,
-                -(matrix.M31 + matrix.M13) * half,
-                -(matrix.M32 + matrix.M23) * half,
-                -0.5f * sqrt
+                (matrix.M31 + matrix.M13) * half,
+                (matrix.M32 + matrix.M23) * half,
+                0.5f * sqrt,
+                (matrix.M12 - matrix.M21) * half
             );
         }
 
