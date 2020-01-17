@@ -15,25 +15,23 @@
 
 using SampSharp.Core.Natives.NativeObjects;
 
-#pragma warning disable 1591
-
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities
 {
     /// <summary>
-    /// Provides SA:MP natives for the <see cref="VehicleInfoService" />.
+    /// Provides a proxy object around a native object of type <typeparamref name="T" />.
     /// </summary>
-    public class VehicleInfoServiceNative
+    /// <typeparam name="T">The type of the native object for which a proxy object should be provided.</typeparam>
+    public class NativeProxy<T> : INativeProxy<T> where T : class
     {
-        [NativeMethod]
-        public virtual int GetVehicleComponentType(int component)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NativeProxy{T}" /> class.
+        /// </summary>
+        public NativeProxy()
         {
-            throw new NativeNotImplementedException();
+            Instance = NativeObjectProxyFactory.CreateInstance<T>();
         }
 
-        [NativeMethod]
-        public virtual bool GetVehicleModelInfo(int model, int infoType, out float X, out float Y, out float Z)
-        {
-            throw new NativeNotImplementedException();
-        }
+        /// <inheritdoc />
+        public T Instance { get; }
     }
 }

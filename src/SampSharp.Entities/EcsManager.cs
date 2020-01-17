@@ -91,6 +91,7 @@ namespace SampSharp.Entities
                     .AddSingleton<IWorldService, WorldService>()
                     .AddSingleton<IVehicleInfoService, VehicleInfoService>()
                     .AddTransient<IDialogService, DialogService>()
+                    .AddTransient(typeof(INativeProxy<>), typeof(NativeProxy<>))
                     .AddSystem<DialogSystem>()
             );
         }

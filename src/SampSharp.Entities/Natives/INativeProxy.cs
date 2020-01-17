@@ -13,27 +13,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.Core.Natives.NativeObjects;
-
-#pragma warning disable 1591
-
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities
 {
     /// <summary>
-    /// Provides SA:MP natives for the <see cref="VehicleInfoService" />.
+    /// Provides a proxy object around a native object of type <typeparamref name="T"/>.
     /// </summary>
-    public class VehicleInfoServiceNative
+    /// <typeparam name="T">The type of the native object for which a proxy object should be provided.</typeparam>
+    public interface INativeProxy<out T> where T : class
     {
-        [NativeMethod]
-        public virtual int GetVehicleComponentType(int component)
-        {
-            throw new NativeNotImplementedException();
-        }
-
-        [NativeMethod]
-        public virtual bool GetVehicleModelInfo(int model, int infoType, out float X, out float Y, out float Z)
-        {
-            throw new NativeNotImplementedException();
-        }
+        /// <summary>
+        /// Gets the native object proxy instance.
+        /// </summary>
+        T Instance { get; }
     }
 }

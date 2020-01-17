@@ -34,10 +34,9 @@ namespace SampSharp.Entities.SAMP
         private readonly VehicleInfoServiceNative _native;
 
         /// <inheritdoc />
-        public VehicleInfoService()
+        public VehicleInfoService(INativeProxy<VehicleInfoServiceNative> nativeProxy)
         {
-            // TODO: Use some form of DI for native wrappers
-            _native = NativeObjectProxyFactory.CreateInstance<VehicleInfoServiceNative>();
+            _native = nativeProxy.Instance;
         }
 
         /// <inheritdoc />

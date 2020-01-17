@@ -36,11 +36,10 @@ namespace SampSharp.Entities.SAMP
         private readonly IEntityManager _entityManager;
 
         /// <inheritdoc />
-        public ServerService(IEntityManager entityManager)
+        public ServerService(IEntityManager entityManager, INativeProxy<VariableCollection.ServerVariableCollectionNatives> nativeProxy)
         {
             _entityManager = entityManager;
-            Variables = new VariableCollection(NativeObjectProxyFactory
-                .CreateInstance<VariableCollection.ServerVariableCollectionNatives>());
+            Variables = new VariableCollection(nativeProxy.Instance);
         }
 
         private NativeServer Native => _entityManager.Get(ServerId).GetComponent<NativeServer>();

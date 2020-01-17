@@ -194,6 +194,7 @@ namespace SampSharp.Entities
         {
             var context = new EventContextImpl();
             context.SetName(name);
+            context.SetEventServices(_serviceProvider);
 
             return args =>
             {
@@ -201,8 +202,6 @@ namespace SampSharp.Entities
 
                 if (!_events.TryGetValue(name, out var @event))
                     return null;
-
-                context.SetEventServices(_serviceProvider);
 
                 var result = @event.Invoke(context);
 

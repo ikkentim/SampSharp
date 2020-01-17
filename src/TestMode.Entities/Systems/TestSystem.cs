@@ -32,7 +32,7 @@ namespace TestMode.Entities.Systems
         private Menu _menu;
 
         [Event]
-        public void OnGameModeInit(IVehicleRepository vehiclesRepository,  IWorldService worldService, IServerService serverService) 
+        public void OnGameModeInit(IVehicleRepository vehiclesRepository,  IWorldService worldService, IServerService serverService, IVehicleInfoService vehicleInfoService) 
         {
             // Event methods have dependency injection alongside the arguments
 
@@ -81,6 +81,9 @@ namespace TestMode.Entities.Systems
             });
 
             serverService.SetGameModeText("SampSharp.Entities");
+
+            var size = vehicleInfoService.GetModelInfo(VehicleModelType.AT400, VehicleModelInfoType.Size);
+            Console.WriteLine($"AT400 size {size}");
         }
 
         [Event]
