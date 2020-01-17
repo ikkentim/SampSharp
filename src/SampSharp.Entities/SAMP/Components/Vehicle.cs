@@ -397,6 +397,18 @@ namespace SampSharp.Entities.SAMP.Components
             }
             set => GetComponent<NativeVehicle>().SetVehiclePos(value.X, value.Y, value.Z);
         }
+        
+        /// <summary>
+        /// Gets this vehicle's rotation on all axis as a quaternion.
+        /// </summary>
+        public Quaternion RotationQuaternion
+        {
+            get
+            {
+                GetComponent<NativeVehicle>().GetVehicleRotationQuat(out var w, out var x, out var y, out var z);
+                return new Quaternion(x, y, z, w);
+            }
+        }
 
         /// <summary>
         /// This function can be used to calculate the distance (as a float) between this vehicle and
@@ -424,30 +436,6 @@ namespace SampSharp.Entities.SAMP.Components
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             return GetComponent<NativeVehicle>().IsVehicleStreamedIn(player.Id);
-        }
-
-        /// <summary>
-        /// Returns this vehicle's rotation on all axis as a quaternion.
-        /// </summary>
-        /// <param name="w">A float variable in which to store the first quaternion angle, passed by reference.</param>
-        /// <param name="x">A float variable in which to store the second quaternion angle, passed by reference.</param>
-        /// <param name="y">A float variable in which to store the third quaternion angle, passed by reference.</param>
-        /// <param name="z">A float variable in which to store the fourth quaternion angle, passed by reference.</param>
-        public void GetRotationQuaternion(out float w, out float x, out float y,
-            out float z)
-        {
-            GetComponent<NativeVehicle>().GetVehicleRotationQuat(out w, out x, out y, out z);
-        }
-
-        /// <summary>
-        /// Returns this vehicle's rotation on all axis as a quaternion.
-        /// </summary>
-        /// <returns>The rotation in a <see cref="Quaternion" /> structure.</returns>
-        public Quaternion GetRotationQuaternion()
-        {
-            // TODO: To property
-            GetRotationQuaternion(out var x, out var y, out var z, out var w);
-            return new Quaternion(x, y, z, w);
         }
 
         /// <summary>

@@ -35,8 +35,6 @@ namespace SampSharp.Entities.SAMP
         /// </summary>
         public static readonly EntityId WorldId = new EntityId(WorldType, 0);
 
-        // TODO: Handling of invalid IDs (SA-MP entity limits)
-
         private readonly IEntityManager _entityManager;
 
         /// <summary>

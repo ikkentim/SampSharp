@@ -1490,8 +1490,7 @@ namespace SampSharp.Entities.SAMP.Components
         }
 
         /// <summary>
-        /// Stops all the recordings that had been started with <see cref="StartRecordingPlayerData" /> for this
-        /// <see cref="Entity" />.
+        /// Stops all the recordings that had been started with <see cref="StartRecordingPlayerData" /> for this player.
         /// </summary>
         public void StopRecordingPlayerData()
         {
