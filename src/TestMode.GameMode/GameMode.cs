@@ -31,7 +31,7 @@ namespace TestMode
             base.OnInitialized(e);
             
             Console.WriteLine("The game mode has loaded.");
-            AddPlayerClass(0, new Vector3(10, 10, 20), 0);
+            AddPlayerClass(0, Vector3.Zero, 0);
 
             var sampleVehicle = BaseVehicle.Create(VehicleModelType.Alpha, Vector3.One * 10, 0, -1, -1);
 
