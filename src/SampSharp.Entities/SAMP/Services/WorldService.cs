@@ -72,6 +72,9 @@ namespace SampSharp.Entities.SAMP
             var id = world.GetComponent<NativeWorld>()
                 .CreateActor(modelId, position.X, position.Y, position.Z, rotation);
 
+            if (id == NativeActor.InvalidId)
+                throw new EntityCreationException();
+
             var entity = _entityManager.Create(world, SampEntities.GetActorId(id));
 
             entity.AddComponent<NativeActor>();
@@ -86,6 +89,9 @@ namespace SampSharp.Entities.SAMP
 
             var id = world.GetComponent<NativeWorld>().CreateVehicle((int) type, position.X, position.Y, position.Z,
                 rotation, color1, color2, respawnDelay, addSiren);
+            
+            if (id == NativeVehicle.InvalidId)
+                throw new EntityCreationException();
 
             var entity = _entityManager.Create(world, SampEntities.GetVehicleId(id));
 
@@ -104,6 +110,9 @@ namespace SampSharp.Entities.SAMP
                     rotation, color1, color2)
                 : world.GetComponent<NativeWorld>().AddStaticVehicleEx((int) type, position.X, position.Y, position.Z,
                     rotation, color1, color2, respawnDelay, addSiren);
+            
+            if (id == NativeVehicle.InvalidId)
+                throw new EntityCreationException();
 
             var entity = _entityManager.Create(world, SampEntities.GetVehicleId(id));
 
@@ -119,6 +128,9 @@ namespace SampSharp.Entities.SAMP
             var id = world.GetComponent<NativeWorld>().GangZoneCreate(minX, minY, maxX, maxY);
 
             var entity = _entityManager.Create(world, SampEntities.GetGangZoneId(id));
+            
+            if (id == NativeGangZone.InvalidId)
+                throw new EntityCreationException();
 
             entity.AddComponent<NativeGangZone>();
             return entity.AddComponent<GangZone>(minX, minY, maxX, maxY);
@@ -131,6 +143,9 @@ namespace SampSharp.Entities.SAMP
 
             var id = world.GetComponent<NativeWorld>()
                 .CreatePickup(model, type, position.X, position.Y, position.Z, virtualWorld);
+            
+            if (id == NativePickup.InvalidId)
+                throw new EntityCreationException();
 
             var entity = _entityManager.Create(world, SampEntities.GetPickupId(id));
 
@@ -154,6 +169,9 @@ namespace SampSharp.Entities.SAMP
 
             var id = world.GetComponent<NativeWorld>().CreateObject(modelId, position.X, position.Y, position.Z,
                 rotation.X, rotation.Y, rotation.Z, drawDistance);
+            
+            if (id == NativeObject.InvalidId)
+                throw new EntityCreationException();
 
             var entity = _entityManager.Create(world, SampEntities.GetObjectId(id));
 
@@ -167,13 +185,16 @@ namespace SampSharp.Entities.SAMP
         {
             if (player == null) throw new ArgumentNullException(nameof(player));
 
-            if (player.GetComponent<NativePlayer>() == null)
-                throw new ArgumentException("Entity must be of type player", nameof(player));
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             var world = World;
 
             var id = world.GetComponent<NativeWorld>().CreatePlayerObject(player.Id, modelId, position.X, position.Y,
                 position.Z, rotation.X, rotation.Y, rotation.Z, drawDistance);
+            
+            if (id == NativePlayerObject.InvalidId)
+                throw new EntityCreationException();
 
             var entity = _entityManager.Create(player, SampEntities.GetPlayerObjectId(player.Id, id));
 
@@ -189,6 +210,9 @@ namespace SampSharp.Entities.SAMP
 
             var id = world.GetComponent<NativeWorld>().Create3DTextLabel(text, color, position.X, position.Y,
                 position.Z, drawDistance, virtualWorld, testLos);
+            
+            if (id == NativeTextLabel.InvalidId)
+                throw new EntityCreationException();
 
             var entity = _entityManager.Create(world, SampEntities.GetTextLabelId(id));
 
@@ -201,24 +225,32 @@ namespace SampSharp.Entities.SAMP
             float drawDistance, bool testLos = true, Entity attachedTo = null)
         {
             if (player == null) throw new ArgumentNullException(nameof(player));
-
-            if (player.GetComponent<NativePlayer>() == null)
-                throw new ArgumentException("Entity must be of type player", nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             var attachPlayer = NativePlayer.InvalidId;
             var attachVehicle = NativeVehicle.InvalidId;
 
-            if (attachedTo?.GetComponent<NativePlayer>() != null)
-                attachPlayer = attachedTo.Id;
-            else if (attachedTo?.GetComponent<NativeVehicle>() != null)
-                attachVehicle = attachedTo.Id;
-            else if (attachedTo != null)
-                throw new ArgumentException("Attach target must be either a player or a vehicle.", nameof(attachedTo));
+            if (attachedTo != null)
+            {
+                if (!player.IsOfAnyType(SampEntities.PlayerType, SampEntities.VehicleType))
+                    throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType,
+                        SampEntities.VehicleType);
+
+                if (attachedTo.IsOfType(SampEntities.PlayerType))
+                    attachPlayer = attachedTo.Id;
+                else
+                    attachVehicle = attachedTo.Id;
+            }
 
             var world = World;
 
             var id = world.GetComponent<NativeWorld>().CreatePlayer3DTextLabel(player.Id, text, color, position.X,
                 position.Y, position.Z, drawDistance, attachPlayer, attachVehicle, testLos);
+            
+            if (id == NativePlayerTextLabel.InvalidId)
+                throw new EntityCreationException();
 
             var entity = _entityManager.Create(player, SampEntities.GetPlayerTextLabelId(player.Id, id));
 
@@ -232,6 +264,9 @@ namespace SampSharp.Entities.SAMP
             var world = World;
 
             var id = world.GetComponent<NativeWorld>().TextDrawCreate(position.X, position.Y, string.IsNullOrEmpty(text) ? "_" : text);
+            
+            if (id == NativeTextDraw.InvalidId)
+                throw new EntityCreationException();
 
             var entity = _entityManager.Create(null, SampEntities.GetTextDrawId(id));
 
@@ -243,13 +278,16 @@ namespace SampSharp.Entities.SAMP
         public PlayerTextDraw CreatePlayerTextDraw(Entity player, Vector2 position, string text)
         {
             if (player == null) throw new ArgumentNullException(nameof(player));
-
-            if (player.GetComponent<NativePlayer>() == null)
-                throw new ArgumentException("Entity must be of type player", nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             var world = World;
 
             var id = world.GetComponent<NativeWorld>().CreatePlayerTextDraw(player.Id, position.X, position.Y, string.IsNullOrEmpty(text) ? "_" : text);
+            
+            if (id == NativePlayerTextDraw.InvalidId)
+                throw new EntityCreationException();
 
             var entity = _entityManager.Create(player, SampEntities.GetPlayerTextDrawId(player.Id, id));
 
@@ -265,6 +303,9 @@ namespace SampSharp.Entities.SAMP
             var columns = col1Width != null ? 2 : 1;
 
             var id = world.GetComponent<NativeWorld>().CreateMenu(title, columns, position.X, position.Y, col0Width, col1Width ?? 0.0f);
+            
+            if (id == NativeMenu.InvalidId)
+                throw new EntityCreationException();
 
             var entity = _entityManager.Create(null, SampEntities.GetMenuId(id));
 
@@ -305,14 +346,27 @@ namespace SampSharp.Entities.SAMP
         /// <inheritdoc />
         public void SendPlayerMessageToPlayer(Entity sender, string message)
         {
+            if (sender == null) throw new ArgumentNullException(nameof(sender));
+
+            if (!sender.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(sender), SampEntities.PlayerType);
+
             Native.SendPlayerMessageToAll(sender.Id, message);
         }
 
         /// <inheritdoc />
-        public void SendDeathMessage(Entity killer, Entity killee, Weapon weapon)
+        public void SendDeathMessage(Entity killer, Entity player, Weapon weapon)
         {
-            Native.SendDeathMessage(killer?.Id ?? NativePlayer.InvalidId, killee?.Id ?? NativePlayer.InvalidId,
-                (int) weapon);
+            if (killer != null && !killer.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(killer), SampEntities.PlayerType);
+
+            if (player == null)
+                throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
+
+            Native.SendDeathMessage(killer?.Id ?? NativePlayer.InvalidId, player.Id, (int) weapon);
         }
 
         /// <inheritdoc />

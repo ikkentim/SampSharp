@@ -14,40 +14,40 @@
 // limitations under the License.
 
 using System;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace SampSharp.Entities
 {
     /// <summary>
-    /// The exception that is thrown when an entity could not be created.
+    /// The exception that is thrown when one of the arguments is of an invalid entity identifier type.
     /// </summary>
     [Serializable]
-    public class EntityCreationException : Exception
+    public class InvalidEntityArgumentException : ArgumentException
     {
-        /// <summary>Initializes a new instance of the <see cref="EntityCreationException" /> class.</summary>
-        public EntityCreationException() : base("The entity could not be created.")
-        {
-        }
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityCreationException" /> class.
+        /// Initializes a new instance of the <see cref="InvalidEntityArgumentException"/> class.
         /// </summary>
-        /// <param name="message">The message that describes the error.</param>
-        public EntityCreationException(string message) : base(message)
+        /// <param name="paramName">Name of the parameter.</param>
+        /// <param name="expectedType">The expected entity identifier type.</param>
+        public InvalidEntityArgumentException(string paramName, Guid expectedType) : base(
+            $"Invalid entity identifier type, expected type to be {EntityTypeNames.GetTypeName(expectedType)}.",
+            paramName)
         {
         }
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityCreationException" /> class.
+        /// Initializes a new instance of the <see cref="InvalidEntityArgumentException"/> class.
         /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="inner">The inner.</param>
-        public EntityCreationException(string message, Exception inner) : base(message, inner)
+        /// <param name="paramName">Name of the parameter.</param>
+        /// <param name="expectedTypes">The expected entity identifier types.</param>
+        public InvalidEntityArgumentException(string paramName, params Guid[] expectedTypes) : base(
+            $"Invalid entity identifier type, expected type to be any of {expectedTypes.Select(EntityTypeNames.GetTypeName)}.",
+            paramName)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityCreationException" /> class.
+        /// Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.
         /// </summary>
         /// <param name="info">
         /// The <see cref="T:System.Runtime.Serialization.SerializationInfo"></see> that holds the serialized
@@ -57,7 +57,7 @@ namespace SampSharp.Entities
         /// The <see cref="T:System.Runtime.Serialization.StreamingContext"></see> that contains contextual
         /// information about the source or destination.
         /// </param>
-        protected EntityCreationException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected InvalidEntityArgumentException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

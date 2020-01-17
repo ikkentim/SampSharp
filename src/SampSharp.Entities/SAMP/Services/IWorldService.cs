@@ -230,10 +230,10 @@ namespace SampSharp.Entities.SAMP
         /// <summary>
         /// Adds a death to the kill feed on the right-hand side of the screen of all players.
         /// </summary>
-        /// <param name="killer">The <see cref="Entity" /> that killer the <paramref name="killee" />.</param>
-        /// <param name="killee">The <see cref="Entity" /> that has been killed.</param>
+        /// <param name="killer">The player that killer the <paramref name="player" />.</param>
+        /// <param name="player">The player that has been killed.</param>
         /// <param name="weapon">The reason for this player's death.</param>
-        void SendDeathMessage(Entity killer, Entity killee, Weapon weapon);
+        void SendDeathMessage(Entity killer, Entity player, Weapon weapon);
 
         /// <summary>
         /// Shows 'game text' (on-screen text) for a certain length of time for all players.

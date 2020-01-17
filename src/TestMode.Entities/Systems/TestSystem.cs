@@ -87,7 +87,7 @@ namespace TestMode.Entities.Systems
         }
 
         [Event]
-        public void OnPlayerWeaponShot(Player player, Weapon weapon, int hitType, Entity hit, float x, float y, float z)
+        public void OnPlayerWeaponShot(Player player, Weapon weapon, BulletHitType _, Entity hit, float x, float y, float z)
         {
             var pos = new Vector3(x, y, z);
             player.SendClientMessage($"You shot {hit} at {pos} with {weapon}");

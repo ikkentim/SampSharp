@@ -21,6 +21,8 @@ namespace SampSharp.Entities.SAMP.NativeComponents
 {
     public class NativePickup : BaseNativeComponent
     {
+        public const int InvalidId = -1;
+
         [NativeMethod]
         public virtual bool DestroyPickup()
         {

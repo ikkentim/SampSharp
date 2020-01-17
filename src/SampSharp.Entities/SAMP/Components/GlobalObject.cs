@@ -174,15 +174,19 @@ namespace SampSharp.Entities.SAMP.Components
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
 
-            if (target.GetComponent<NativePlayer>() != null)
+            if (!target.IsOfAnyType(SampEntities.PlayerType, SampEntities.VehicleType, SampEntities.ObjectType))
+                throw new InvalidEntityArgumentException(nameof(target), SampEntities.PlayerType,
+                    SampEntities.VehicleType, SampEntities.ObjectType);
+
+            if (target.IsOfType(SampEntities.PlayerType))
                 GetComponent<NativeObject>().AttachObjectToPlayer(target.Id, offset.X, offset.Y, offset.Z, rotation.X,
                     rotation.Y,
                     rotation.Z);
-            else if (target.GetComponent<NativePlayer>() != null)
+            else if (target.IsOfType(SampEntities.VehicleType))
                 GetComponent<NativeObject>().AttachObjectToVehicle(target.Id, offset.X, offset.Y, offset.Z, rotation.X,
                     rotation.Y,
                     rotation.Z);
-            else if (target.GetComponent<NativeObject>() != null)
+            else if (target.IsOfType(SampEntities.ObjectType))
                 GetComponent<NativeObject>().AttachObjectToObject(target.Id, offset.X, offset.Y, offset.Z, rotation.X,
                     rotation.Y,
                     rotation.Z, syncRotation);

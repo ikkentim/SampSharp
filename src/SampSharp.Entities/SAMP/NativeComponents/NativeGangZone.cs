@@ -23,6 +23,8 @@ namespace SampSharp.Entities.SAMP.NativeComponents
     [SuppressMessage("ReSharper", "IdentifierTypo")]
     public class NativeGangZone : BaseNativeComponent
     {
+        public const int InvalidId = -1;
+
         [NativeMethod]
         public virtual bool GangZoneDestroy()
         {

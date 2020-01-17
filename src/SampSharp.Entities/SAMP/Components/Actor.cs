@@ -93,6 +93,9 @@ namespace SampSharp.Entities.SAMP.Components
         public bool IsStreamedIn(Entity player)
         {
             if (player == null) throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             return GetComponent<NativeActor>().IsActorStreamedIn(player.Id);
         }

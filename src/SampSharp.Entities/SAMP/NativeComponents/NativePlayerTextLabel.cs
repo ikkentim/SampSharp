@@ -22,6 +22,8 @@ namespace SampSharp.Entities.SAMP.NativeComponents
     [NativeObjectIdentifiers("PlayerId", "Id")]
     public class NativePlayerTextLabel : NativeComponent
     {
+        public const int InvalidId = 0xFFFF;
+
         public int Id { get; private set; }
 
         public int PlayerId { get; private set; }

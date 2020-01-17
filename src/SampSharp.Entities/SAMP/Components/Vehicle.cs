@@ -412,14 +412,18 @@ namespace SampSharp.Entities.SAMP.Components
         }
 
         /// <summary>
-        /// Checks if this vehicle is streamed in for a player.
+        /// Checks if this vehicle is streamed in for the specified <paramref name="player"/>.
         /// </summary>
-        /// <param name="forPlayer">The Player to check.</param>
-        /// <returns>True if this vehicle is streamed in for the specified vehicle; False otherwise.</returns>
-        public bool IsStreamedIn(Entity forPlayer)
+        /// <param name="player">The player to check.</param>
+        /// <returns><c>true</c> if this vehicle is streamed in for the specified vehicle; <c>false</c> otherwise.</returns>
+        public bool IsStreamedIn(Entity player)
         {
-            // TODO: Move to player?
-            return GetComponent<NativeVehicle>().IsVehicleStreamedIn(forPlayer.Id);
+            if (player == null) throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
+
+            return GetComponent<NativeVehicle>().IsVehicleStreamedIn(player.Id);
         }
 
         /// <summary>
@@ -457,6 +461,9 @@ namespace SampSharp.Entities.SAMP.Components
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             GetComponent<NativeVehicle>().SetVehicleParamsForPlayer(player.Id, objective, doorsLocked);
         }

@@ -276,6 +276,10 @@ namespace SampSharp.Entities.SAMP.Components
         public void Show(Entity player)
         {
             if (player == null) throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
+
             GetComponent<NativeTextDraw>().TextDrawShowForPlayer(player.Id);
         }
 
@@ -287,6 +291,10 @@ namespace SampSharp.Entities.SAMP.Components
         public void Hide(Entity player)
         {
             if (player == null) throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
+
             GetComponent<NativeTextDraw>().TextDrawHideForPlayer(player.Id);
         }
 

@@ -21,6 +21,8 @@ namespace SampSharp.Entities.SAMP.NativeComponents
 {
     public class NativeTextDraw : BaseNativeComponent
     {
+        public const int InvalidId = 0xFFFF;
+
         [NativeMethod]
         public virtual bool TextDrawDestroy()
         {

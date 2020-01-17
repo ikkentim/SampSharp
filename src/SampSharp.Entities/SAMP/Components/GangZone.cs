@@ -72,6 +72,9 @@ namespace SampSharp.Entities.SAMP.Components
         public void Show(Entity player)
         {
             if (player == null) throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             GetComponent<NativeGangZone>().GangZoneShowForPlayer(player.Id, Color);
         }
@@ -92,6 +95,9 @@ namespace SampSharp.Entities.SAMP.Components
         public void Hide(Entity player)
         {
             if (player == null) throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             GetComponent<NativeGangZone>().GangZoneHideForPlayer(player.Id);
         }
@@ -113,6 +119,10 @@ namespace SampSharp.Entities.SAMP.Components
         public void Flash(Entity player)
         {
             if (player == null) throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
+
             Flash(player, new Color());
         }
 
@@ -125,6 +135,9 @@ namespace SampSharp.Entities.SAMP.Components
         public void Flash(Entity player, Color color)
         {
             if (player == null) throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             GetComponent<NativeGangZone>().GangZoneFlashForPlayer(player.Id, color);
         }
@@ -146,6 +159,9 @@ namespace SampSharp.Entities.SAMP.Components
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             GetComponent<NativeGangZone>().GangZoneStopFlashForPlayer(player.Id);
         }

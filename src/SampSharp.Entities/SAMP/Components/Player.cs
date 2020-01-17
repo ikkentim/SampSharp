@@ -363,6 +363,41 @@ namespace SampSharp.Entities.SAMP.Components
                 return id == NativeActor.InvalidId ? null : Entity.Manager.Get(SampEntities.GetActorId(id));
             }
         }
+        
+        /// <summary>
+        /// Gets the entity (player, player object, object, vehicle or actor) the camera of this player is pointing at.
+        /// </summary>
+        public Entity CameraTargetEntity
+        {
+            get
+            {
+                var native = GetComponent<NativePlayer>();
+
+                var id = native.GetPlayerCameraTargetActor();
+
+                if(id != NativeActor.InvalidId)
+                    return Entity.Manager.Get(SampEntities.GetActorId(id));
+
+                id = native.GetPlayerCameraTargetPlayer();
+
+                if (id != NativePlayer.InvalidId)
+                    return Entity.Manager.Get(SampEntities.GetPlayerId(id));
+
+                id = native.GetPlayerCameraTargetVehicle();
+
+                if(id != NativeVehicle.InvalidId) 
+                    return Entity.Manager.Get(SampEntities.GetVehicleId(id));
+
+                id = GetComponent<NativePlayer>().GetPlayerCameraTargetObject();
+
+                if (id != NativePlayerObject.InvalidId)
+                    return
+                        Entity.Manager.Get(SampEntities.GetObjectId(id)) ??
+                        Entity.Manager.Get(SampEntities.GetPlayerObjectId(Entity.Id, id));
+
+                return null;
+            }
+        }
 
         /// <summary>
         /// Gets whether this player is currently in any vehicle.
@@ -380,38 +415,25 @@ namespace SampSharp.Entities.SAMP.Components
         public bool InRaceCheckpoint => GetComponent<NativePlayer>().IsPlayerInRaceCheckpoint();
 
         /// <summary>
-        /// Gets the Vehicle that this player is surfing.
+        /// Gets the entity (object or vehicle) that this player is surfing.
         /// </summary>
-        public Entity SurfingVehicle
+        public Entity SurfingEntity
         {
             get
             {
-                var id = GetComponent<NativePlayer>().GetPlayerSurfingVehicleID();
+                var native = GetComponent<NativePlayer>();
+                var id = native.GetPlayerSurfingObjectID();
+
+                var surfing = id == NativeObject.InvalidId
+                    ? null
+                    : Entity.Manager.Get(SampEntities.GetObjectId(id)) ??
+                      Entity.Manager.Get(SampEntities.GetPlayerObjectId(Entity.Id, id));
+
+                if (surfing != null)
+                    return surfing;
+
+                id = native.GetPlayerSurfingVehicleID();
                 return id == NativeVehicle.InvalidId ? null : Entity.Manager.Get(SampEntities.GetVehicleId(id));
-            }
-        }
-
-        /// <summary>
-        /// Gets the object that this player is surfing.
-        /// </summary>
-        public Entity SurfingGlobalObject // TODO: Rename, maybe?
-        {
-            get
-            {
-                var id = GetComponent<NativePlayer>().GetPlayerSurfingObjectID();
-                return id == NativeObject.InvalidId ? null : Entity.Manager.Get(SampEntities.GetObjectId(id));
-            }
-        }
-
-        /// <summary>
-        /// Gets the player object that this player is surfing.
-        /// </summary>
-        public Entity SurfingPlayerObject
-        {
-            get
-            {
-                var id = GetComponent<NativePlayer>().GetPlayerSurfingObjectID();
-                return id == NativeObject.InvalidId ? null : Entity.Manager.Get(SampEntities.GetObjectId(id));
             }
         }
 
@@ -711,6 +733,9 @@ namespace SampSharp.Entities.SAMP.Components
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             return GetComponent<NativePlayer>().IsPlayerStreamedIn(player.Id);
         }
@@ -884,7 +909,9 @@ namespace SampSharp.Entities.SAMP.Components
         public void PlayCrimeReport(Entity suspect, int crime)
         {
             if (suspect == null) throw new ArgumentNullException(nameof(suspect));
-
+            
+            if (!suspect.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(suspect), SampEntities.PlayerType);
 
             GetComponent<NativePlayer>().PlayCrimeReportForPlayer(suspect.Id, crime);
         }
@@ -1039,9 +1066,11 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="seatId">The ID of the seat to put the player in.</param>
         public void PutInVehicle(Entity vehicle, int seatId)
         {
-            // TODO: Ensure vehicle
             if (vehicle == null)
                 throw new ArgumentNullException(nameof(vehicle));
+            
+            if (!vehicle.IsOfType(SampEntities.VehicleType))
+                throw new InvalidEntityArgumentException(nameof(vehicle), SampEntities.VehicleType);
 
             GetComponent<NativePlayer>().PutPlayerInVehicle(vehicle.Id, seatId);
         }
@@ -1052,6 +1081,11 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="vehicle">The vehicle for the player to be put in.</param>
         public void PutInVehicle(Entity vehicle)
         {
+            if (vehicle == null) throw new ArgumentNullException(nameof(vehicle));
+
+            if (!vehicle.IsOfType(SampEntities.VehicleType))
+                throw new InvalidEntityArgumentException(nameof(vehicle), SampEntities.VehicleType);
+
             PutInVehicle(vehicle, 0);
         }
 
@@ -1252,6 +1286,9 @@ namespace SampSharp.Entities.SAMP.Components
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             GetComponent<NativePlayer>().SetPlayerMarkerForPlayer(player.Id, color.ToInteger(ColorFormat.RGBA));
         }
@@ -1271,6 +1308,9 @@ namespace SampSharp.Entities.SAMP.Components
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             GetComponent<NativePlayer>().ShowPlayerNameTagForPlayer(player.Id, show);
         }
@@ -1329,7 +1369,11 @@ namespace SampSharp.Entities.SAMP.Components
         /// <returns>True if player is in the vehicle; False otherwise.</returns>
         public bool IsInVehicle(Entity vehicle)
         {
-            // TODO: ensure vehicle type
+            if (vehicle == null) throw new ArgumentNullException(nameof(vehicle));
+
+            if (!vehicle.IsOfType(SampEntities.VehicleType))
+                throw new InvalidEntityArgumentException(nameof(vehicle), SampEntities.VehicleType);
+
             return GetComponent<NativePlayer>().IsPlayerInVehicle(vehicle.Id);
         }
 
@@ -1367,6 +1411,9 @@ namespace SampSharp.Entities.SAMP.Components
         {
             if (targetPlayer == null)
                 throw new ArgumentNullException(nameof(targetPlayer));
+            
+            if (!targetPlayer.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(targetPlayer), SampEntities.PlayerType);
 
             GetComponent<NativePlayer>().PlayerSpectatePlayer(targetPlayer.Id, (int) mode);
         }
@@ -1383,6 +1430,9 @@ namespace SampSharp.Entities.SAMP.Components
         {
             if (targetPlayer == null)
                 throw new ArgumentNullException(nameof(targetPlayer));
+            
+            if (!targetPlayer.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(targetPlayer), SampEntities.PlayerType);
 
             SpectatePlayer(targetPlayer, SpectateMode.Normal);
         }
@@ -1400,6 +1450,9 @@ namespace SampSharp.Entities.SAMP.Components
         {
             if (targetVehicle == null)
                 throw new ArgumentNullException(nameof(targetVehicle));
+            
+            if (!targetVehicle.IsOfType(SampEntities.VehicleType))
+                throw new InvalidEntityArgumentException(nameof(targetVehicle), SampEntities.VehicleType);
 
             GetComponent<NativePlayer>().PlayerSpectateVehicle(targetVehicle.Id, (int) mode);
         }
@@ -1416,6 +1469,9 @@ namespace SampSharp.Entities.SAMP.Components
         {
             if (targetVehicle == null)
                 throw new ArgumentNullException(nameof(targetVehicle));
+            
+            if (!targetVehicle.IsOfType(SampEntities.VehicleType))
+                throw new InvalidEntityArgumentException(nameof(targetVehicle), SampEntities.VehicleType);
 
             SpectateVehicle(targetVehicle, SpectateMode.Normal);
         }
@@ -1548,9 +1604,11 @@ namespace SampSharp.Entities.SAMP.Components
         /// <param name="message">The message that will be sent.</param>
         public void SendPlayerMessageToPlayer(Entity sender, string message)
         {
-            // TODO: check sender is player
             if (sender == null)
                 throw new ArgumentNullException(nameof(sender));
+            
+            if (!sender.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(sender), SampEntities.PlayerType);
 
             GetComponent<NativePlayer>().SendPlayerMessageToPlayer(sender.Id, message);
         }
@@ -1584,13 +1642,21 @@ namespace SampSharp.Entities.SAMP.Components
         /// <summary>
         /// Adds a death to the kill feed on the right-hand side of the screen of this player.
         /// </summary>
-        /// <param name="killer">The <see cref="Entity" /> that killer the <paramref name="killee" />.</param>
-        /// <param name="killee">The <see cref="Entity" /> that has been killed.</param>
+        /// <param name="killer">The player that killer the <paramref name="player" />.</param>
+        /// <param name="player">The player that has been killed.</param>
         /// <param name="weapon">The reason for this player's death.</param>
-        public void SendDeathMessage(Entity killer, Entity killee, Weapon weapon)
-        {
+        public void SendDeathMessage(Entity killer, Entity player, Weapon weapon)
+        {   
+            if (killer != null && !killer.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(killer), SampEntities.PlayerType);
+
+            if (player == null) throw new ArgumentNullException(nameof(player));
+
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
+
             GetComponent<NativePlayer>()
-                .SendDeathMessageToPlayer(killer?.Id ?? NativePlayer.InvalidId, killee?.Id ?? NativePlayer.InvalidId,
+                .SendDeathMessageToPlayer(killer?.Id ?? NativePlayer.InvalidId, player?.Id ?? NativePlayer.InvalidId,
                     (int) weapon);
         }
 
@@ -1601,8 +1667,11 @@ namespace SampSharp.Entities.SAMP.Components
         public void AttachCameraToObject(Entity @object)
         {
             if (@object == null) throw new ArgumentNullException(nameof(@object));
+            
+            if (!@object.IsOfAnyType(SampEntities.ObjectType, SampEntities.PlayerObjectType))
+                throw new InvalidEntityArgumentException(nameof(@object), SampEntities.ObjectType, SampEntities.PlayerObjectType);
 
-            if (@object.GetComponent<NativeObject>() != null)
+            if (@object.IsOfType(SampEntities.ObjectType))
             {
                 GetComponent<NativePlayer>().AttachCameraToObject(@object.Id);
             }
@@ -1625,14 +1694,16 @@ namespace SampSharp.Entities.SAMP.Components
             if (@object == null)
                 throw new ArgumentNullException(nameof(@object));
 
-            if (@object.GetComponent<NativeObject>() != null)
+            if (!@object.IsOfAnyType(SampEntities.ObjectType, SampEntities.PlayerObjectType))
+                throw new InvalidEntityArgumentException(nameof(@object), SampEntities.ObjectType,
+                    SampEntities.PlayerObjectType);
+
+            if (@object.IsOfType(SampEntities.ObjectType))
                 GetComponent<NativePlayer>().EditObject(@object.Id);
-            else if (@object.GetComponent<NativePlayerObject>() != null)
+            else
                 GetComponent<NativePlayer>()
                     .EditPlayerObject(@object.GetComponent<NativePlayerObject>()
                         .Id); // Need just the player object component of the handle.
-            else
-                throw new ArgumentException("Target must be of type object or player object", nameof(@object));
         }
 
         /// <summary>

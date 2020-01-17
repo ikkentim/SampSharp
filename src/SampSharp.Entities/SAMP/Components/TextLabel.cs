@@ -99,15 +99,16 @@ namespace SampSharp.Entities.SAMP.Components
             {
                 if (value == null)
                     throw new ArgumentNullException(nameof(value)); // TODO: Can detach maybe?
+                
+                if (!value.IsOfAnyType(SampEntities.PlayerType, SampEntities.VehicleType))
+                    throw new InvalidEntityArgumentException(nameof(value), SampEntities.PlayerType, SampEntities.VehicleType);
 
-                if (value.GetComponent<NativePlayer>() != null)
+                if (value.IsOfType(SampEntities.PlayerType))
                     GetComponent<NativeTextLabel>()
                         .Attach3DTextLabelToPlayer(value.Id, AttachOffset.X, AttachOffset.Y, AttachOffset.Z);
-                else if (value.GetComponent<NativeVehicle>() != null)
+                else
                     GetComponent<NativeTextLabel>()
                         .Attach3DTextLabelToVehicle(value.Id, AttachOffset.X, AttachOffset.Y, AttachOffset.Z);
-                else
-                    throw new ArgumentException("Value should be a player or vehicle", nameof(value));
                 _attachedEntity = value;
             }
         }

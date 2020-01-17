@@ -39,10 +39,13 @@ namespace SampSharp.Entities.SAMP.Dialogs
         public void Show<TResponse>(Entity player, IDialog<TResponse> dialog, Action<TResponse> responseHandler)
             where TResponse : struct
         {
+            if (player == null) throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
+
             if (dialog == null)
                 throw new ArgumentNullException(nameof(dialog));
-
-            // TODO: general todo, Check everywhere(all components) where Entity is used for type of entity.
 
             player.Destroy<VisibleDialog>();
 
@@ -66,6 +69,11 @@ namespace SampSharp.Entities.SAMP.Dialogs
         /// <inheritdoc />
         public Task<TResponse> Show<TResponse>(Entity player, IDialog<TResponse> dialog) where TResponse : struct
         {
+            if (player == null) throw new ArgumentNullException(nameof(player));
+            
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
+
             if (dialog == null) throw new ArgumentNullException(nameof(dialog));
 
             var taskCompletionSource = new TaskCompletionSource<TResponse>();

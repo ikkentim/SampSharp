@@ -23,6 +23,8 @@ namespace SampSharp.Entities.SAMP.NativeComponents
     [SuppressMessage("ReSharper", "IdentifierTypo")]
     public class NativeTextLabel : BaseNativeComponent
     {
+        public const int InvalidId = 0xFFFF;
+
         [NativeMethod]
         public virtual int Delete3DTextLabel()
         {
