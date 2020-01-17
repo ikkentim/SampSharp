@@ -19,6 +19,7 @@ namespace SampSharp.Entities.SAMP.Middleware
 {
     internal class PlayerWeaponShotMiddleware
     {
+        private readonly ArgumentsOverrideEventContext _context = new ArgumentsOverrideEventContext(4);
         private readonly EventDelegate _next;
 
         public PlayerWeaponShotMiddleware(EventDelegate next)
@@ -28,7 +29,8 @@ namespace SampSharp.Entities.SAMP.Middleware
 
         public object Invoke(EventContext context, IEntityManager entityManager)
         {
-            var playerEntity = entityManager.Get(SampEntities.GetPlayerId((int) context.Arguments[0]));
+            var inArgs = context.Arguments;
+            var playerEntity = entityManager.Get(SampEntities.GetPlayerId((int) inArgs[0]));
 
             if (playerEntity == null)
                 return null;
@@ -55,11 +57,16 @@ namespace SampSharp.Entities.SAMP.Middleware
                     hit = null;
                     break;
             }
+            
+            _context.BaseContext = context;
 
-            context.Arguments[0] = playerEntity;
-            context.Arguments[3] = hit;
+            var args = _context.Arguments;
+            args[0] = playerEntity;
+            args[1] = inArgs[1]; // weapon
+            args[2] = hit;
+            args[3] = new Vector3((float)inArgs[4], (float)inArgs[5], (float)inArgs[6]); // position
 
-            return _next(context);
+            return _next(_context);
         }
     }
 }

@@ -33,9 +33,6 @@ namespace SampSharp.Entities
     {
         private static readonly Type[] DefaultParameterTypes =
         {
-            typeof(int),
-            typeof(bool),
-            typeof(float),
             typeof(string),
             typeof(Entity)
             // TODO: Callbacks with parameter length are not yet supported
@@ -154,7 +151,7 @@ namespace SampSharp.Entities
                         source.ParameterIndex = argsPtr++;
                         source.ComponentType = type;
                     }
-                    else if (DefaultParameterTypes.Contains(type) || type.IsEnum)
+                    else if (type.IsValueType || DefaultParameterTypes.Contains(type))
                     {
                         // Default types are passed straight trough.
                         source.ParameterIndex = argsPtr++;

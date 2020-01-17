@@ -13,10 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace SampSharp.Entities.SAMP.Middleware
 {
     internal class PlayerEditObjectMiddleware
     {
+        private readonly ArgumentsOverrideEventContext _context = new ArgumentsOverrideEventContext(5);
         private readonly EventDelegate _next;
 
         public PlayerEditObjectMiddleware(EventDelegate next)
@@ -26,13 +29,14 @@ namespace SampSharp.Entities.SAMP.Middleware
 
         public object Invoke(EventContext context, IEntityManager entityManager)
         {
-            var playerEntity = entityManager.Get(SampEntities.GetPlayerId((int) context.Arguments[0]));
+            var inArgs = context.Arguments;
+            var playerEntity = entityManager.Get(SampEntities.GetPlayerId((int) inArgs[0]));
 
             if (playerEntity == null)
                 return null;
 
-            var isPlayerObject = (bool) context.Arguments[1];
-            var objectId = (int) context.Arguments[2];
+            var isPlayerObject = (bool) inArgs[1];
+            var objectId = (int) inArgs[2];
 
             var objectEntity = isPlayerObject
                 ? entityManager.Get(SampEntities.GetPlayerObjectId(playerEntity.Id, objectId))
@@ -41,10 +45,16 @@ namespace SampSharp.Entities.SAMP.Middleware
             if (objectEntity == null)
                 return null;
 
-            context.Arguments[0] = playerEntity;
-            context.Arguments[2] = objectEntity;
+            _context.BaseContext = context;
 
-            return _next(context);
+            var args = _context.Arguments;
+            args[0] = playerEntity;
+            args[1] = objectEntity;
+            args[2] = inArgs[3]; // response
+            args[3] = new Vector3((float)inArgs[4], (float)inArgs[5], (float)inArgs[6]); // position
+            args[4] = new Vector3((float)inArgs[7], (float)inArgs[8], (float)inArgs[9]); // rotation
+
+            return _next(_context);
         }
     }
 }

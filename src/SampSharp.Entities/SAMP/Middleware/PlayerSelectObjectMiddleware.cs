@@ -19,6 +19,7 @@ namespace SampSharp.Entities.SAMP.Middleware
 {
     internal class PlayerSelectObjectMiddleware
     {
+        private readonly ArgumentsOverrideEventContext _context = new ArgumentsOverrideEventContext(3);
         private readonly EventDelegate _next;
 
         public PlayerSelectObjectMiddleware(EventDelegate next)
@@ -43,10 +44,15 @@ namespace SampSharp.Entities.SAMP.Middleware
             if (objectEntity == null)
                 return null;
 
-            context.Arguments[0] = playerEntity;
-            context.Arguments[2] = objectEntity;
+            _context.BaseContext = context;
 
-            return _next(context);
+            _context.Arguments[0] = playerEntity;
+            _context.Arguments[1] = objectEntity;
+            _context.Arguments[2] = context.Arguments[3]; // modelId
+            _context.Arguments[3] = new Vector3((float) context.Arguments[4], (float) context.Arguments[5],
+                (float) context.Arguments[6]); // position
+
+            return _next(_context);
         }
     }
 }

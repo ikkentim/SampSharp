@@ -157,13 +157,13 @@ namespace SampSharp.Entities.SAMP
             builder.UseMiddleware<EntityMiddleware>("OnPlayerGiveDamage", 1, PlayerType, true);
             AddPlayerTarget("OnPlayerGiveDamageActor");
             builder.UseMiddleware<EntityMiddleware>("OnPlayerGiveDamageActor", 1, ActorType, true);
-            AddPlayerTarget("OnPlayerClickMap");
+            builder.UseMiddleware<PlayerClickMapMiddleware>("OnPlayerClickMap");
             builder.UseMiddleware<TextDrawClickMiddleware>("OnPlayerClickTextDraw");
             builder.UseMiddleware<PlayerTextDrawMiddleware>("OnPlayerClickPlayerTextDraw");
             AddPlayerTarget("OnPlayerClickPlayer");
             builder.UseMiddleware<EntityMiddleware>("OnPlayerClickPlayer", 1, PlayerType, true);
             builder.UseMiddleware<PlayerEditObjectMiddleware>("OnPlayerEditObject");
-            AddPlayerTarget("OnPlayerEditAttachedObject");
+            builder.UseMiddleware<PlayerEditAttachedObjectMiddleware>("OnPlayerEditAttachedObject");
             builder.UseMiddleware<PlayerSelectObjectMiddleware>("OnPlayerSelectObject");
             builder.UseMiddleware<PlayerWeaponShotMiddleware>("OnPlayerWeaponShot");
             AddPlayerTarget("OnEnterExitModShop");
@@ -238,8 +238,7 @@ namespace SampSharp.Entities.SAMP
             builder.UseMiddleware<EntityMiddleware>("OnVehicleSirenStateChange", 1, VehicleType, true);
             builder.UseMiddleware<EntityMiddleware>("OnTrailerUpdate", 0, PlayerType, true);
             builder.UseMiddleware<EntityMiddleware>("OnTrailerUpdate", 1, VehicleType, true);
-            builder.UseMiddleware<EntityMiddleware>("OnUnoccupiedVehicleUpdate", 0, VehicleType, true);
-            builder.UseMiddleware<EntityMiddleware>("OnUnoccupiedVehicleUpdate", 1, PlayerType, true);
+            builder.UseMiddleware<UnoccupiedVehicleUpdateMiddleware>("OnUnoccupiedVehicleUpdate");
 
             return builder;
         }

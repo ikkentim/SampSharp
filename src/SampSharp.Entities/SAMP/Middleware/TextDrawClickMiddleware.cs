@@ -1,4 +1,6 @@
-﻿namespace SampSharp.Entities.SAMP.Middleware
+﻿using System;
+
+namespace SampSharp.Entities.SAMP.Middleware
 {
     internal class TextDrawClickMiddleware
     {
