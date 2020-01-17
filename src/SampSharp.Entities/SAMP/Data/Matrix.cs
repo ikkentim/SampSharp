@@ -311,20 +311,20 @@ namespace SampSharp.Entities.SAMP
         /// <returns>The rotation <see cref="Matrix" />.</returns>
         public static Matrix CreateFromQuaternion(Quaternion quaternion)
         {
+            var xx = quaternion.X * quaternion.X;
             var yy = quaternion.Y * quaternion.Y;
             var zz = quaternion.Z * quaternion.Z;
-            var ww = quaternion.W * quaternion.W;
-            var yz = quaternion.Y * quaternion.Z;
-            var wx = quaternion.W * -quaternion.X;
-            var wy = quaternion.W * quaternion.Y;
-            var zx = quaternion.Z * -quaternion.X;
+            var xy = quaternion.X * quaternion.Y;
             var zw = quaternion.Z * quaternion.W;
-            var yx = quaternion.Y * -quaternion.X;
+            var zx = quaternion.Z * quaternion.X;
+            var yw = quaternion.Y * quaternion.W;
+            var yz = quaternion.Y * quaternion.Z;
+            var xw = quaternion.X * quaternion.W;
 
             return new Matrix(
-                1f - 2f * (zz + ww), 2f * (yz + wx), 2f * (wy - zx), 0f,
-                2f * (yz - wx), 1f - 2f * (ww + yy), 2f * (zw + yx), 0f,
-                2f * (wy + zx), 2f * (zw - yx), 1f - 2f * (zz + yy), 0f,
+                1f - 2f * (yy + zz), 2f * (xy + zw), 2f * (zx - yw), 0f,
+                2f * (xy - zw), 1f - 2f * (zz + xx), 2f * (yz + xw), 0f,
+                2f * (zx + yw), 2f * (yz - xw), 1f - 2f * (yy + xx), 0f,
                 0f, 0f, 0f, 1f
             );
         }

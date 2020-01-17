@@ -339,15 +339,15 @@ namespace SampSharp.Entities.SAMP
         /// <returns>Transformed <see cref="Vector2" />.</returns>
         public static Vector2 Transform(Vector2 value, Quaternion rotation)
         {
-            var rot1 = new Vector3(rotation.Y + rotation.Y, rotation.Z + rotation.Z, rotation.W + rotation.W);
-            var rot2 = new Vector3(rotation.Y, rotation.Y, -rotation.X);
-            var rot3 = new Vector3(1, rotation.Z, rotation.W);
-            var rot4 = rot1*rot2;
-            var rot5 = rot1*rot3;
+            var rot1 = new Vector3(rotation.X + rotation.X, rotation.Y + rotation.Y, rotation.Z + rotation.Z);
+            var rot2 = new Vector3(rotation.X, rotation.X, rotation.W);
+            var rot3 = new Vector3(1, rotation.Y, rotation.Z);
+            var rot4 = rot1 * rot2;
+            var rot5 = rot1 * rot3;
 
             return new Vector2(
-                (float) (value.X*(1.0 - rot5.Y - rot5.Z) + value.Y*((double) rot4.Y - rot4.Z)),
-                (float) (value.X*((double) rot4.Y + rot4.Z) + value.Y*(1.0 - rot4.X - rot5.Z))
+                (float) (value.X * (1.0 - rot5.Y - rot5.Z) + value.Y * ((double) rot4.Y - rot4.Z)),
+                (float) (value.X * ((double) rot4.Y + rot4.Z) + value.Y * (1.0 - rot4.X - rot5.Z))
             );
         }
 
