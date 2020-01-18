@@ -18,6 +18,8 @@ using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Core;
 using SampSharp.Core.Logging;
 using SampSharp.Entities.SAMP;
+using SampSharp.Entities.SAMP.Commands;
+using SampSharp.Entities.Utilities;
 
 namespace SampSharp.Entities
 {
@@ -90,6 +92,8 @@ namespace SampSharp.Entities
                     .AddSingleton<IServerService, ServerService>()
                     .AddSingleton<IWorldService, WorldService>()
                     .AddSingleton<IVehicleInfoService, VehicleInfoService>()
+                    .AddSingleton<IPlayerCommandService, PlayerCommandService>()
+                    .AddSingleton<IRconCommandService, RconCommandService>()
                     .AddTransient<IDialogService, DialogService>()
                     .AddTransient(typeof(INativeProxy<>), typeof(NativeProxy<>))
                     .AddSystem<DialogSystem>()

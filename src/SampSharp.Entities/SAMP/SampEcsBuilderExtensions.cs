@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using Microsoft.Extensions.DependencyInjection;
+using SampSharp.Entities.SAMP.Commands;
 using static SampSharp.Entities.SAMP.SampEntities;
 
 namespace SampSharp.Entities.SAMP
@@ -23,15 +24,38 @@ namespace SampSharp.Entities.SAMP
     /// </summary>
     public static class SampEcsBuilderExtensions
     {
+        
+        /// <summary>
+        /// Enables player commands.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns>The builder.</returns>
+        public static IEcsBuilder EnablePlayerCommands(this IEcsBuilder builder)
+        {
+            return builder.UseMiddleware<PlayerCommandProcessingMiddleware>("OnPlayerCommandText");
+        }
+
+        /// <summary>
+        /// Enables RCON commands.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns>The builder.</returns>
+        public static IEcsBuilder EnableRconCommands(this IEcsBuilder builder)
+        {
+            return builder.UseMiddleware<RconCommandProcessingMiddleware>("OnRconCommand");
+        }
+
         internal static IEcsBuilder EnableWorld(this IEcsBuilder builder)
         {
             var server = builder.Services.GetService<IEntityManager>()
                 .Create(null, ServerService.ServerId);
             server.AddComponent<NativeServer>();
+            server.AddComponent<Server>();
 
-            builder.Services.GetService<IEntityManager>()
-                .Create(server, WorldService.WorldId)
-                .AddComponent<NativeWorld>();
+            var world = builder.Services.GetService<IEntityManager>()
+                .Create(server, WorldService.WorldId);
+            world.AddComponent<NativeWorld>();
+            world.AddComponent<World>();
 
             return builder;
         }

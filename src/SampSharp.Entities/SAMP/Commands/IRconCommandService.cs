@@ -15,22 +15,19 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP.Commands
 {
-    internal class ArgumentsOverrideEventContext : EventContext
+    /// <summary>
+    /// Provides the functionality for invoking RCON commands.
+    /// </summary>
+    public interface IRconCommandService
     {
-        private readonly object[] _arguments;
-
-        public ArgumentsOverrideEventContext(int argumentCount)
-        {
-            _arguments = new object[argumentCount];
-        }
-
-        public EventContext BaseContext { get; set; }
-            
-        public override string Name => BaseContext.Name;
-        public override object[] Arguments => _arguments;
-
-        public override IServiceProvider EventServices => BaseContext.EventServices;
+        /// <summary>
+        /// Invokes an RCON command using the specified <paramref name="inputText"/>.
+        /// </summary>
+        /// <param name="services">A service provider.</param>
+        /// <param name="inputText">The input text to be parsed.</param>
+        /// <returns><c>true</c> if the command was handled; otherwise <c>false</c>.</returns>
+        bool Invoke(IServiceProvider services, string inputText);
     }
 }

@@ -13,24 +13,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP.Commands
 {
-    internal class ArgumentsOverrideEventContext : EventContext
+    /// <summary>
+    /// Provides information about a command method.
+    /// </summary>
+    public interface ICommandMethodInfo
     {
-        private readonly object[] _arguments;
-
-        public ArgumentsOverrideEventContext(int argumentCount)
-        {
-            _arguments = new object[argumentCount];
-        }
-
-        public EventContext BaseContext { get; set; }
-            
-        public override string Name => BaseContext.Name;
-        public override object[] Arguments => _arguments;
-
-        public override IServiceProvider EventServices => BaseContext.EventServices;
+        /// <summary>
+        /// Gets the overriden name of the command.
+        /// </summary>
+        string Name { get; }
     }
 }

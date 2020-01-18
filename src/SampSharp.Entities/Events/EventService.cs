@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using SampSharp.Core;
@@ -40,12 +39,6 @@ namespace SampSharp.Entities
             //typeof(bool[]),
             //typeof(float[]),
         };
-
-        private static readonly MethodInfo GetComponentInfo =
-            typeof(Entity).GetMethod(nameof(Entity.GetComponent), BindingFlags.Public | BindingFlags.Instance);
-
-        private static readonly MethodInfo GetServiceInfo =
-            typeof(EventService).GetMethod(nameof(GetService), BindingFlags.NonPublic | BindingFlags.Static);
 
         private readonly Dictionary<string, Event> _events = new Dictionary<string, Event>();
         private readonly IGameModeClient _gameModeClient;
@@ -93,6 +86,7 @@ namespace SampSharp.Entities
         /// <inheritdoc />
         public object Invoke(string name, params object[] args)
         {
+            // TODO Could cache built invokers into a dictionary
             return BuildInvoke(name)(args);
         }
 
@@ -137,7 +131,7 @@ namespace SampSharp.Entities
 
                 var argsPtr = 0; // The current pointer in the event arguments array.
                 var parameterSources = method.GetParameters()
-                    .Select(info => new ParameterSource {Info = info})
+                    .Select(info => new MethodParameterSource(info))
                     .ToArray();
 
                 // Determine the source of each parameter.
@@ -149,7 +143,7 @@ namespace SampSharp.Entities
                     {
                         // Components are provided by the entity in the arguments array of the event.
                         source.ParameterIndex = argsPtr++;
-                        source.ComponentType = type;
+                        source.IsComponent = true;
                     }
                     else if (type.IsValueType || DefaultParameterTypes.Contains(type))
                     {
@@ -159,7 +153,7 @@ namespace SampSharp.Entities
                     else
                     {
                         // Other types are provided trough Dependency Injection.
-                        source.ServiceType = type;
+                        source.IsService = true;
                     }
                 }
 
@@ -168,9 +162,10 @@ namespace SampSharp.Entities
             }
         }
 
-        private InvokerInfo CreateInvoker(MethodInfo method, ParameterSource[] parameterInfos, int callbackParamCount)
+        private InvokerInfo CreateInvoker(MethodInfo method, MethodParameterSource[] parameterInfos,
+            int callbackParamCount)
         {
-            var compiled = Compile(method, parameterInfos);
+            var compiled = MethodInvokerFactory.Compile(method, parameterInfos);
 
             return new InvokerInfo
             {
@@ -185,11 +180,11 @@ namespace SampSharp.Entities
                         return null;
                     }
 
-                    return compiled(instance, args, eventContext);
+                    return compiled(instance, args, eventContext.EventServices);
                 }
             };
         }
-        
+
         private Func<object[], object> BuildInvoke(string name)
         {
             var context = new EventContextImpl();
@@ -219,123 +214,6 @@ namespace SampSharp.Entities
             };
         }
 
-        private static Func<object, object[], EventContext, object> Compile(MethodInfo methodInfo,
-            ParameterSource[] parameterSources)
-        {
-            if (methodInfo.DeclaringType == null)
-                throw new ArgumentException("Method must have declaring type", nameof(methodInfo));
-
-            // Input arguments
-            var instanceArg = Expression.Parameter(typeof(object), "instance");
-            var argsArg = Expression.Parameter(typeof(object[]), "args");
-            var eventContextArg = Expression.Parameter(typeof(EventContext), "eventContext");
-            var entityNull = Expression.Constant(null, typeof(Entity));
-            Expression argsCheckExpression = null;
-
-            var locals = new List<ParameterExpression>();
-            var expressions = new List<Expression>();
-            var methodArguments = new Expression[parameterSources.Length];
-
-            for (var i = 0; i < parameterSources.Length; i++)
-            {
-                var parameterType = parameterSources[i].Info.ParameterType;
-                if (parameterType.IsByRef) throw new NotSupportedException("Reference parameters are not supported");
-
-                if (parameterSources[i].ComponentType != null)
-                {
-                    // Get component from entity
-
-                    // Declare local variables
-                    var entityArg = Expression.Parameter(typeof(Entity), $"entity{i}");
-                    var componentArg = Expression.Parameter(parameterSources[i].ComponentType, $"component{i}");
-                    var componentNull = Expression.Constant(null, parameterSources[i].ComponentType);
-
-                    locals.Add(entityArg);
-                    locals.Add(componentArg);
-
-                    // Constant index in args array
-                    Expression index = Expression.Constant(parameterSources[i].ParameterIndex);
-
-                    // Assign entity from args array to entity variable.
-                    var getEntityExpression = Expression.Assign(entityArg,
-                        Expression.Convert(
-                            Expression.ArrayIndex(argsArg, index),
-                            typeof(Entity)));
-                    expressions.Add(getEntityExpression);
-
-                    // If entity is not null, convert entity to component. Assign component to component variable.
-                    var getComponentInfo = GetComponentInfo.MakeGenericMethod(parameterSources[i].ComponentType);
-                    var getComponentExpression = Expression.Assign(componentArg,
-                        Expression.Condition(
-                            Expression.Equal(entityArg, entityNull),
-                            componentNull,
-                            Expression.Call(entityArg, getComponentInfo)
-                        )
-                    );
-                    expressions.Add(getComponentExpression);
-
-                    // If an entity was provided in the args list, the entity must be convertible to the component. Add
-                    // check for entity to either be null or the component to not be null.
-                    var checkExpression = Expression.OrElse(
-                        Expression.Equal(entityArg, entityNull),
-                        Expression.NotEqual(componentArg, componentNull)
-                    );
-
-                    argsCheckExpression = argsCheckExpression == null
-                        ? checkExpression
-                        : Expression.AndAlso(argsCheckExpression, checkExpression);
-
-                    // Add component variable as the method argument.
-                    methodArguments[i] = componentArg;
-                }
-                else if (parameterSources[i].ServiceType != null)
-                {
-                    // Get service
-                    var getServiceCall = Expression.Call(GetServiceInfo, eventContextArg,
-                        Expression.Constant(parameterType, typeof(Type)));
-                    methodArguments[i] = Expression.Convert(getServiceCall, parameterType);
-                }
-                else if (parameterSources[i].ParameterIndex >= 0)
-                {
-                    // Pass through
-                    Expression index = Expression.Constant(parameterSources[i].ParameterIndex);
-
-                    var getValue = Expression.ArrayIndex(argsArg, index);
-                    methodArguments[i] = Expression.Convert(getValue, parameterType);
-                }
-            }
-
-            var service = Expression.Convert(instanceArg, methodInfo.DeclaringType);
-            Expression body = Expression.Call(service, methodInfo, methodArguments);
-
-
-            if (body.Type == typeof(void))
-                body = Expression.Block(body, Expression.Constant(null));
-            else if (body.Type != typeof(object))
-                body = Expression.Convert(body, typeof(object));
-
-            if (argsCheckExpression != null)
-                body = Expression.Condition(argsCheckExpression, body, Expression.Constant(null));
-
-            if (locals.Count > 0 || expressions.Count > 0)
-            {
-                expressions.Add(body);
-                body = Expression.Block(locals, expressions);
-            }
-
-            var lambda =
-                Expression.Lambda<Func<object, object[], EventContext, object>>(body, instanceArg, argsArg,
-                    eventContextArg);
-
-            return lambda.Compile();
-        }
-
-        private static object GetService(EventContext eventContext, Type type)
-        {
-            var service = eventContext.EventServices.GetService(type);
-            return service ?? throw new InvalidOperationException($"Service of type {type} is not available.");
-        }
-
         private class Event
         {
             public readonly List<InvokerInfo> Invokers = new List<InvokerInfo>();
@@ -355,14 +233,6 @@ namespace SampSharp.Entities
         {
             public Func<object, EventContext, object> Invoke;
             public Type TargetType;
-        }
-
-        private class ParameterSource
-        {
-            public Type ComponentType;
-            public ParameterInfo Info;
-            public int ParameterIndex = -1;
-            public Type ServiceType;
         }
     }
 }

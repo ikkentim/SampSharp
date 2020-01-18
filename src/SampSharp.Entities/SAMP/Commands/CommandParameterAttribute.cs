@@ -15,22 +15,22 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP.Commands
 {
-    internal class ArgumentsOverrideEventContext : EventContext
+    /// <summary>
+    /// An attribute which provides additional information a command parameter.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    public class CommandParameterAttribute : Attribute
     {
-        private readonly object[] _arguments;
+        /// <summary>
+        /// Gets or sets an override value for the name of the parameter.
+        /// </summary>
+        public string Name { get; set; }
 
-        public ArgumentsOverrideEventContext(int argumentCount)
-        {
-            _arguments = new object[argumentCount];
-        }
-
-        public EventContext BaseContext { get; set; }
-            
-        public override string Name => BaseContext.Name;
-        public override object[] Arguments => _arguments;
-
-        public override IServiceProvider EventServices => BaseContext.EventServices;
+        /// <summary>
+        /// Gets or sets an override value for the parser of the parameter.
+        /// </summary>
+        public Type Parser { get; set; }
     }
 }

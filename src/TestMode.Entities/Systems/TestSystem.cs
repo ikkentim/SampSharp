@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2019 Tim Potze
+// Copyright 2020 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
+using SampSharp.Entities.SAMP.Commands;
 using TestMode.Entities.Components;
 using TestMode.Entities.Services;
 
@@ -27,12 +28,39 @@ namespace TestMode.Entities.Systems
 {
     public class TestSystem : ISystem
     {
+        private Menu _menu;
         private TextDraw _welcome;
         private GangZone _zone;
-        private Menu _menu;
+
+        [PlayerCommand]
+        public void SpawnCommand(Player sender, VehicleModelType model, IWorldService worldService)
+        {
+            var vehicle = worldService.CreateVehicle(model, sender.Position + Vector3.Up, 0, -1, -1);
+            sender.PutInVehicle(vehicle.Entity);
+            sender.SendClientMessage($"{model} spawned!");
+        }
+
+        [PlayerCommand]
+        public void TestCommand(Player sender, int a, int b, int c)
+        {
+            sender.SendClientMessage($"Hello, world! {a} {b} {c}");
+        }
+
+        [PlayerCommand]
+        public void Test2Command(Player sender, int a, int b, int c, string d)
+        {
+            sender.SendClientMessage($"Hello, world! {a} {b} {c} {d}");
+        }
+
+        [PlayerCommand]
+        public void Test3Command(Player sender, int a, int b, int c, string d = "a sensible default")
+        {
+            sender.SendClientMessage($"Hello, world! {a} {b} {c} {d}");
+        }
 
         [Event]
-        public void OnGameModeInit(IVehicleRepository vehiclesRepository,  IWorldService worldService, IServerService serverService, IVehicleInfoService vehicleInfoService) 
+        public void OnGameModeInit(IVehicleRepository vehiclesRepository, IWorldService worldService,
+            IServerService serverService, IVehicleInfoService vehicleInfoService)
         {
             // Event methods have dependency injection alongside the arguments
 
@@ -91,147 +119,163 @@ namespace TestMode.Entities.Systems
         {
             player.SendClientMessage($"You shot {hit} at {position} with {weapon}");
         }
+        
+        [RconCommand]
+        public bool RetCommand()
+        {
+            return true;
+        }
+        [RconCommand]
+        public bool RetFalseCommand()
+        {
+            return false;
+        }
+
+        [RconCommand]
+        public bool ErrCommand()
+        {
+            throw new Exception("RCON threw an error");
+        }
+        
+        [RconCommand]
+        public void ArgsCommand(int a, int b, int c)
+        {
+            Console.WriteLine($"{a} {b} {c}");
+        }
 
         [Event]
         public bool OnRconCommand(string cmd)
         {
             Console.WriteLine("RCON");
 
-            if (cmd == "ret")
-                return true;
-
-            if(cmd == "err")
-                throw new Exception("RCON threw an error");
-
             return false;
         }
 
-        [Event]
-        public async Task<bool> OnPlayerCommandText(Player player, string text, IDialogService dialogService, IWorldService worldService, IEntityManager entityManager)
+        [PlayerCommand]
+        public void MenuCommand(Entity sender)
         {
-            if (text == "/menu")
-            {
-                _menu.Show(player.Entity);
-                return true;
-            }
-            if (text == "/addcomponent")
-            {
-                if(player.GetComponent<TestComponent>() == null)
-                    player.Entity.AddComponent<TestComponent>();
+            _menu.Show(sender);
+        }
 
-                player.SendClientMessage("Added TestComponent!");
-                return true;
-            }
-            if (text == "/removecomponent")
-            {
-                player.Entity.Destroy<TestComponent>();
+        [PlayerCommand]
+        public void AddComponentCommand(Player player)
+        {
+            if (player.GetComponent<TestComponent>() == null)
+                player.Entity.AddComponent<TestComponent>();
 
-                player.SendClientMessage("Remove TestComponent!");
-                return true;
-            }
-            if (text == "/getcomponents")
-            {
-                foreach (var comp in player.GetComponents<Component>())
-                    player.SendClientMessage(comp.GetType().FullName);
-                return true;
-            }
-            if (text == "/tablist")
-            {
-                dialogService.Show(player.Entity,
-                    new TablistDialog("Hello", "Left", "right", "Column1", "Column2", "Column3")
-                    {
-                        {"r1c1", "r1c2", "r1c3"},
-                        {new[] {"r2c1", "r2c2", "r2c3"}, @"Tag!!!"},
-                        {"r3c1", "r3c2", $"{Color.Red}r3c3"},
-                    },
-                    r =>
-                    {
-                        player.SendClientMessage(
-                            $"Resp: {r.Response} {r.ItemIndex}: ({string.Join(" ", r.Item?.Columns)},{r.Item?.Tag})");
-                    });
-                player.PlaySound(1083);
-                return true;
-            }
-            if (text == "/list")
-            {
-                dialogService.Show(player.Entity, new ListDialog("Hello", "Left", "right")
+            player.SendClientMessage("Added TestComponent!");
+        }
+
+        [PlayerCommand]
+        public void RemoveComponentCommand(Player player)
+        {
+            player.Entity.Destroy<TestComponent>();
+
+            player.SendClientMessage("Remove TestComponent!");
+        }
+
+        [PlayerCommand]
+        public void GetComponentsCommand(Player player)
+        {
+            foreach (var comp in player.GetComponents<Component>())
+                player.SendClientMessage(comp.GetType().FullName);
+        }
+
+        [PlayerCommand]
+        public void TablistCommand(Player player, IDialogService dialogService)
+        {
+            dialogService.Show(player.Entity,
+                new TablistDialog("Hello", "Left", "right", "Column1", "Column2", "Column3")
                 {
-                    "item1",
-                    "item2",
-                    $"{Color.Red}item3"
-                }, r =>
+                    {"r1c1", "r1c2", "r1c3"},
+                    {new[] {"r2c1", "r2c2", "r2c3"}, @"Tag!!!"},
+                    {"r3c1", "r3c2", $"{Color.Red}r3c3"}
+                },
+                r =>
                 {
-                    player.SendClientMessage($"Resp: {r.Response} {r.ItemIndex}: ({r.Item?.Text},{r.Item?.Tag})");
-
+                    player.SendClientMessage(
+                        $"Resp: {r.Response} {r.ItemIndex}: ({string.Join(" ", r.Item?.Columns)},{r.Item?.Tag})");
                 });
-                player.PlaySound(1083);
-                return true;
-            }
-            if (text == "/dialog")
+            player.PlaySound(1083);
+        }
+
+        [PlayerCommand]
+        public void ListCommand(Player player, IDialogService dialogService)
+        {
+            dialogService.Show(player.Entity, new ListDialog("Hello", "Left", "right")
             {
-                dialogService.Show(player.Entity, new MessageDialog("Hello", "Hello, world! " + DateTime.Now, "Left", "right"), (r) =>
-                {
-                    player.SendClientMessage($"Resp: {r.Response}");
-                });
-                player.PlaySound(1083);
-                return true;
-            }
-            if (text == "/2dialogs")
+                "item1",
+                "item2",
+                $"{Color.Red}item3"
+            }, r => { player.SendClientMessage($"Resp: {r.Response} {r.ItemIndex}: ({r.Item?.Text},{r.Item?.Tag})"); });
+            player.PlaySound(1083);
+        }
+
+        [PlayerCommand]
+        public void DialogCommand(Player player, IDialogService dialogService)
+        {
+            dialogService.Show(player.Entity,
+                new MessageDialog("Hello", "Hello, world! " + DateTime.Now, "Left", "right"),
+                r => { player.SendClientMessage($"Resp: {r.Response}"); });
+            player.PlaySound(1083);
+        }
+
+        [PlayerCommand("2dialogs")]
+        public async void TwoDialogsCommand(Player player, IDialogService dialogService)
+        {
+            dialogService.Show(player.Entity,
+                new MessageDialog("Hello", "Hello, world! " + DateTime.Now, "Left", "right"),
+                r => { player.SendClientMessage($"Resp 1: {r.Response}"); });
+            player.PlaySound(1083);
+
+            await Task.Delay(2000);
+
+            var task = dialogService.Show(player.Entity,
+                new MessageDialog("Hello", "Hello, world! x2 " + DateTime.Now, "Left", "right"));
+            player.PlaySound(1083);
+
+            var r2 = await task;
+            player.SendClientMessage($"Resp 2: {r2.Response}");
+        }
+
+        [PlayerCommand]
+        public void EntitiesCommand(Player player, IEntityManager entityManager)
+        {
+            void Print(int indent, Entity entity)
             {
-                dialogService.Show(player.Entity, new MessageDialog("Hello", "Hello, world! " + DateTime.Now, "Left", "right"), (r) =>
-                {
-                    player.SendClientMessage($"Resp 1: {r.Response}");
-                });
-                player.PlaySound(1083);
+                var ind = string.Concat(Enumerable.Repeat(' ', indent));
 
-                await Task.Delay(2000);
-                
-                var task = dialogService.Show(player.Entity, new MessageDialog("Hello", "Hello, world! x2 " + DateTime.Now, "Left", "right"));
-                player.PlaySound(1083);
+                player.SendClientMessage($"{ind}{entity}");
+                foreach (var com in entity.GetComponents<Component>())
+                    player.SendClientMessage($"{ind}::>{com.GetType().Name}");
 
-                var r2 = await task;
-                player.SendClientMessage($"Resp 2: {r2.Response}");
-
-                return true;
-            }
-            if (text == "/entities")
-            {
-                void Print(int indent, Entity entity)
-                {
-                    var ind = string.Concat(Enumerable.Repeat(' ', indent));
-
-                    player.SendClientMessage($"{ind}{entity}");
-                    foreach (var com in entity.GetComponents<Component>())
-                        player.SendClientMessage($"{ind}::>{com.GetType().Name}");
-
-                    foreach (var child in entity.Children)
-                        Print(indent + 2, child);
-                }
-
-                Print(0, entityManager.Get(WorldService.WorldId));
-                return true;
-            }
-            if (text == "/weapon")
-            {
-                player.GiveWeapon(Weapon.AK47, 100);
-                player.SetArmedWeapon(Weapon.AK47);
-                player.PlaySound(1083);
-                return true;
-            }
-            if (text == "/actor")
-            {
-                worldService.CreateActor(0, player.Position + Vector3.Up, 0);
-                player.SendClientMessage("Actor created!");
-                player.PlaySound(1083);
-                return true;
-            }
-            if (text == "/pos")
-            {
-                player.SendClientMessage(-1, $"You are at {player.Position}");
-                return true;
+                foreach (var child in entity.Children)
+                    Print(indent + 2, child);
             }
 
-            return false;
+            Print(0, entityManager.Get(WorldService.WorldId));
+        }
+
+        [PlayerCommand]
+        public void WeaponCommand(Player player)
+        {
+            player.GiveWeapon(Weapon.AK47, 100);
+            player.SetArmedWeapon(Weapon.AK47);
+            player.PlaySound(1083);
+        }
+
+        [PlayerCommand]
+        public void ActorCommand(Player player, IWorldService worldService)
+        {
+            worldService.CreateActor(0, player.Position + Vector3.Up, 0);
+            player.SendClientMessage("Actor created!");
+            player.PlaySound(1083);
+        }
+
+        [PlayerCommand("pos")]
+        public void PositionCommand(Player player)
+        {
+            player.SendClientMessage(-1, $"You are at {player.Position}");
         }
 
         [Event]
@@ -248,7 +292,8 @@ namespace TestMode.Entities.Systems
         }
 
         [Event]
-        public void OnPlayerConnect(Player player, IScopedFunnyService scoped, IFunnyService transient, IServiceProvider serviceProvider)
+        public void OnPlayerConnect(Player player, IScopedFunnyService scoped, IFunnyService transient,
+            IServiceProvider serviceProvider)
         {
             Console.WriteLine("T: " + transient.FunnyGuid);
             Console.WriteLine("S: " + scoped.FunnyGuid);
@@ -260,7 +305,8 @@ namespace TestMode.Entities.Systems
         }
 
         [Event]
-        public void OnPlayerText(TestComponent test, string text, IScopedFunnyService scoped, IFunnyService transient, IServiceProvider serviceProvider)
+        public void OnPlayerText(TestComponent test, string text, IScopedFunnyService scoped, IFunnyService transient,
+            IServiceProvider serviceProvider)
         {
             Console.WriteLine("T: " + transient.FunnyGuid);
             Console.WriteLine("S: " + scoped.FunnyGuid);

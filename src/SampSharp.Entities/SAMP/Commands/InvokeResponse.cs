@@ -13,24 +13,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP.Commands
 {
-    internal class ArgumentsOverrideEventContext : EventContext
+    /// <summary>
+    /// Contains the types of responses of an invoked command.
+    /// </summary>
+    public enum InvokeResponse
     {
-        private readonly object[] _arguments;
+        /// <summary>
+        /// The command executed successfully.
+        /// </summary>
+        Success,
+        /// <summary>
+        /// The command could not be found.
+        /// </summary>
+        CommandNotFound,
 
-        public ArgumentsOverrideEventContext(int argumentCount)
-        {
-            _arguments = new object[argumentCount];
-        }
-
-        public EventContext BaseContext { get; set; }
-            
-        public override string Name => BaseContext.Name;
-        public override object[] Arguments => _arguments;
-
-        public override IServiceProvider EventServices => BaseContext.EventServices;
+        /// <summary>
+        /// The command was invoked with invalid arguments.
+        /// </summary>
+        InvalidArguments
     }
 }

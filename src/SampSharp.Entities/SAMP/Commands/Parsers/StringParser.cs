@@ -15,22 +15,28 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP.Commands.Parsers
 {
-    internal class ArgumentsOverrideEventContext : EventContext
+    /// <summary>
+    /// A parser for a <see cref="string" /> parameter which consumes all remaining input text.
+    /// </summary>
+    public class StringParser : ICommandParameterParser
     {
-        private readonly object[] _arguments;
-
-        public ArgumentsOverrideEventContext(int argumentCount)
+        /// <inheritdoc />
+        public bool TryParse(IServiceProvider services, ref string inputText, out object result)
         {
-            _arguments = new object[argumentCount];
+            inputText = inputText.TrimStart();
+
+            if (inputText.Length == 0)
+            {
+                result = null;
+                return false;
+            }
+
+            result = inputText;
+            inputText = string.Empty;
+
+            return true;
         }
-
-        public EventContext BaseContext { get; set; }
-            
-        public override string Name => BaseContext.Name;
-        public override object[] Arguments => _arguments;
-
-        public override IServiceProvider EventServices => BaseContext.EventServices;
     }
 }

@@ -15,22 +15,14 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.Utilities
 {
-    internal class ArgumentsOverrideEventContext : EventContext
-    {
-        private readonly object[] _arguments;
-
-        public ArgumentsOverrideEventContext(int argumentCount)
-        {
-            _arguments = new object[argumentCount];
-        }
-
-        public EventContext BaseContext { get; set; }
-            
-        public override string Name => BaseContext.Name;
-        public override object[] Arguments => _arguments;
-
-        public override IServiceProvider EventServices => BaseContext.EventServices;
-    }
+    /// <summary>
+    /// Invoker for an instance method with dependency injection.
+    /// </summary>
+    /// <param name="target">The target instance to invoke the method on.</param>
+    /// <param name="args">The arguments of the method excluding the injected dependencies.</param>
+    /// <param name="services">The service provider from which dependencies are loaded.</param>
+    /// <returns>The result of the method.</returns>
+    public delegate object MethodInvoker(object target, object[] args, IServiceProvider services);
 }
