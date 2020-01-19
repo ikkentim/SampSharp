@@ -29,9 +29,9 @@ namespace SampSharp.Entities.SAMP
         public static readonly Guid ServerType = new Guid("AB9B7255-75A1-4377-B3DC-E55C2F552449");
 
         /// <summary>
-        /// The entity identifier used by the server entity.
+        /// The server entity.
         /// </summary>
-        public static readonly EntityId ServerId = new EntityId(ServerType, 0);
+        public static readonly EntityId Server = new EntityId(ServerType, 0);
 
         private readonly IEntityManager _entityManager;
 
@@ -42,7 +42,7 @@ namespace SampSharp.Entities.SAMP
             Variables = new VariableCollection(nativeProxy.Instance);
         }
 
-        private NativeServer Native => _entityManager.Get(ServerId).GetComponent<NativeServer>();
+        private NativeServer Native => _entityManager.GetComponent<NativeServer>(Server);
 
         /// <inheritdoc />
         public int TickCount => Native.GetTickCount();

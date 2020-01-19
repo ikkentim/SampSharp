@@ -27,10 +27,11 @@ namespace SampSharp.Entities.SAMP
         public object Invoke(EventContext context, IEntityManager entityManager)
         {
             // TODO: Parenting to connection
-            var entity = entityManager.Create(null, SampEntities.GetPlayerId((int) context.Arguments[0]));
+            var entity = SampEntities.GetPlayerId((int) context.Arguments[0]);
 
-            entity.AddComponent<NativePlayer>();
-            entity.AddComponent<Player>();
+            entityManager.Create(entity, WorldService.World);
+            entityManager.AddComponent<NativePlayer>(entity);
+            entityManager.AddComponent<Player>(entity);
 
             context.Arguments[0] = entity;
 

@@ -53,19 +53,19 @@ namespace SampSharp.Entities.SAMP
         /// Gets or sets the the trailer attached to this vehicle.
         /// </summary>
         /// <returns>The trailer attached.</returns>
-        public Entity Trailer
+        public EntityId Trailer
         {
             get
             {
                 var id = GetComponent<NativeVehicle>().GetVehicleTrailer();
-                return id == 0 ? null : Entity.Manager.Get(SampEntities.GetVehicleId(id));
+                return id == 0 ? EntityId.Empty : SampEntities.GetVehicleId(id);
             }
             set
             {
-                if (value == null)
+                if (!value)
                     GetComponent<NativeVehicle>().DetachTrailerFromVehicle();
                 else
-                    value.GetComponent<NativeVehicle>().AttachTrailerToVehicle(Entity.Id);
+                    Manager.GetComponent<NativeVehicle>(value).AttachTrailerToVehicle(Entity);
             }
         }
 
@@ -426,14 +426,12 @@ namespace SampSharp.Entities.SAMP
         /// </summary>
         /// <param name="player">The player to check.</param>
         /// <returns><c>true</c> if this vehicle is streamed in for the specified vehicle; <c>false</c> otherwise.</returns>
-        public bool IsStreamedIn(Entity player)
+        public bool IsStreamedIn(EntityId player)
         {
-            if (player == null) throw new ArgumentNullException(nameof(player));
-            
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            return GetComponent<NativeVehicle>().IsVehicleStreamedIn(player.Id);
+            return GetComponent<NativeVehicle>().IsVehicleStreamedIn(player);
         }
 
         /// <summary>
@@ -442,16 +440,13 @@ namespace SampSharp.Entities.SAMP
         /// <param name="player">The player to set this vehicle's parameters for.</param>
         /// <param name="objective">False to disable the objective or True to show it.</param>
         /// <param name="doorsLocked">False to unlock the doors or True to lock them.</param>
-        public void SetParametersForPlayer(Entity player, bool objective,
+        public void SetParametersForPlayer(EntityId player, bool objective,
             bool doorsLocked)
         {
-            if (player == null)
-                throw new ArgumentNullException(nameof(player));
-            
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            GetComponent<NativeVehicle>().SetVehicleParamsForPlayer(player.Id, objective, doorsLocked);
+            GetComponent<NativeVehicle>().SetVehicleParamsForPlayer(player, objective, doorsLocked);
         }
 
         /// <summary>

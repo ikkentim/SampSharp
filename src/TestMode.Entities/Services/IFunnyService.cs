@@ -21,6 +21,6 @@ namespace TestMode.Entities.Services
     public interface IFunnyService
     {
         Guid FunnyGuid { get; }
-        string MakePlayerNameFunny(Entity player);
+        string MakePlayerNameFunny(EntityId player);
     }
 }

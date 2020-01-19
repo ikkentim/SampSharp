@@ -50,9 +50,9 @@ namespace SampSharp.Entities.SAMP
         /// </summary>
         public object Invoke(EventContext context, IEntityManager entityManager)
         {
-            var entity = entityManager.Get(new EntityId(_entityType, (int) context.Arguments[_index]));
+            var entity = new EntityId(_entityType, (int) context.Arguments[_index]);
 
-            if (entity == null && _isRequired)
+            if (_isRequired && !entityManager.Exists(entity))
                 return null;
 
             context.Arguments[_index] = entity;

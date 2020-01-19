@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using SampSharp.Core.Logging;
+
 namespace SampSharp.Entities.SAMP
 {
     internal class PlayerWeaponShotMiddleware
@@ -28,34 +30,38 @@ namespace SampSharp.Entities.SAMP
         public object Invoke(EventContext context, IEntityManager entityManager)
         {
             var inArgs = context.Arguments;
-            var playerEntity = entityManager.Get(SampEntities.GetPlayerId((int) inArgs[0]));
-
-            if (playerEntity == null)
+            var playerEntity = SampEntities.GetPlayerId((int) inArgs[0]);
+            
+            if (!entityManager.Exists(playerEntity))
                 return null;
 
             var hitType = (int) context.Arguments[2];
             var hitId = (int) context.Arguments[3];
 
-            Entity hit;
+            EntityId hit;
             switch ((BulletHitType) hitType)
             {
                 case BulletHitType.Vehicle:
-                    hit = entityManager.Get(SampEntities.GetVehicleId(hitId));
+                    hit = SampEntities.GetVehicleId(hitId);
                     break;
                 case BulletHitType.Object:
-                    hit = entityManager.Get(SampEntities.GetObjectId(hitId));
+                    hit = SampEntities.GetObjectId(hitId);
                     break;
                 case BulletHitType.Player:
-                    hit = entityManager.Get(SampEntities.GetPlayerId(hitId));
+                    hit = SampEntities.GetPlayerId(hitId);
                     break;
                 case BulletHitType.PlayerObject:
-                    hit = entityManager.Get(SampEntities.GetPlayerObjectId(playerEntity.Id, hitId));
+                    hit = SampEntities.GetPlayerObjectId(playerEntity, hitId);
                     break;
                 default:
-                    hit = null;
+                    hit = default;
                     break;
             }
-            
+
+            // It could be the hit entity does not exist, for instance if it is a player object created by
+            // the streamer plugin. We can't however dismiss this event or else the user will not be able
+            // to handle the event in some other way.
+
             _context.BaseContext = context;
 
             var args = _context.Arguments;

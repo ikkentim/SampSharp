@@ -26,9 +26,9 @@ namespace SampSharp.Entities.SAMP
 
         public object Invoke(EventContext context, IEntityManager entityManager)
         {
-            var entity = entityManager.Get(SampEntities.GetPlayerId((int) context.Arguments[0]));
-
-            if (entity == null)
+            var entity = SampEntities.GetPlayerId((int) context.Arguments[0]);
+            
+            if (!entityManager.Exists(entity))
                 return null;
 
             context.Arguments[0] = entity;

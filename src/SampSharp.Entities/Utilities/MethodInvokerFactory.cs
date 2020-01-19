@@ -26,7 +26,8 @@ namespace SampSharp.Entities.Utilities
     public static class MethodInvokerFactory
     {
         private static readonly MethodInfo GetComponentInfo =
-            typeof(Entity).GetMethod(nameof(Entity.GetComponent), BindingFlags.Public | BindingFlags.Instance);
+            typeof(IEntityManager).GetMethod(nameof(IEntityManager.GetComponent),
+                BindingFlags.Public | BindingFlags.Instance, null, new[] {typeof(EntityId)}, null);
 
         private static readonly MethodInfo GetServiceInfo =
             typeof(MethodInvokerFactory).GetMethod(nameof(GetService),
@@ -48,7 +49,8 @@ namespace SampSharp.Entities.Utilities
             var instanceArg = Expression.Parameter(typeof(object), "instance");
             var argsArg = Expression.Parameter(typeof(object[]), "args");
             var serviceProviderArg = Expression.Parameter(typeof(IServiceProvider), "serviceProvider");
-            var entityNull = Expression.Constant(null, typeof(Entity));
+            var entityManagerArg = Expression.Parameter(typeof(IEntityManager), "entityManager");
+            var entityEmpty = Expression.Constant(EntityId.Empty, typeof(EntityId));
             Expression argsCheckExpression = null;
 
             var locals = new List<ParameterExpression>();
@@ -65,7 +67,7 @@ namespace SampSharp.Entities.Utilities
                     // Get component from entity
 
                     // Declare local variables
-                    var entityArg = Expression.Parameter(typeof(Entity), $"entity{i}");
+                    var entityArg = Expression.Parameter(typeof(EntityId), $"entity{i}");
                     var componentArg = Expression.Parameter(parameterSources[i].Info.ParameterType, $"component{i}");
                     var componentNull = Expression.Constant(null, parameterSources[i].Info.ParameterType);
 
@@ -79,16 +81,16 @@ namespace SampSharp.Entities.Utilities
                     var getEntityExpression = Expression.Assign(entityArg,
                         Expression.Convert(
                             Expression.ArrayIndex(argsArg, index),
-                            typeof(Entity)));
+                            typeof(EntityId)));
                     expressions.Add(getEntityExpression);
 
                     // If entity is not null, convert entity to component. Assign component to component variable.
                     var getComponentInfo = GetComponentInfo.MakeGenericMethod(parameterSources[i].Info.ParameterType);
                     var getComponentExpression = Expression.Assign(componentArg,
                         Expression.Condition(
-                            Expression.Equal(entityArg, entityNull),
+                            Expression.Equal(entityArg, entityEmpty),
                             componentNull,
-                            Expression.Call(entityArg, getComponentInfo)
+                            Expression.Call(entityManagerArg, getComponentInfo, entityArg)
                         )
                     );
                     expressions.Add(getComponentExpression);
@@ -96,7 +98,7 @@ namespace SampSharp.Entities.Utilities
                     // If an entity was provided in the args list, the entity must be convertible to the component. Add
                     // check for entity to either be null or the component to not be null.
                     var checkExpression = Expression.OrElse(
-                        Expression.Equal(entityArg, entityNull),
+                        Expression.Equal(entityArg, entityEmpty),
                         Expression.NotEqual(componentArg, componentNull)
                     );
 
@@ -144,7 +146,7 @@ namespace SampSharp.Entities.Utilities
 
             var lambda =
                 Expression.Lambda<MethodInvoker>(body, instanceArg, argsArg,
-                    serviceProviderArg);
+                    serviceProviderArg, entityManagerArg);
 
             return lambda.Compile();
         }

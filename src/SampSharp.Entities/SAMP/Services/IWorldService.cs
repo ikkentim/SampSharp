@@ -121,7 +121,7 @@ namespace SampSharp.Entities.SAMP
         /// <param name="rotation">The rotation.</param>
         /// <param name="drawDistance">The draw distance.</param>
         /// <returns>The created player object.</returns>
-        PlayerObject CreatePlayerObject(Entity player, int modelId, Vector3 position, Vector3 rotation,
+        PlayerObject CreatePlayerObject(EntityId player, int modelId, Vector3 position, Vector3 rotation,
             float drawDistance);
 
         /// <summary>
@@ -148,8 +148,8 @@ namespace SampSharp.Entities.SAMP
         /// <param name="testLos">if set to <c>true</c> the line of sight is tested to decide whether the label is drawn.</param>
         /// <param name="attachedTo">A player or vehicle to attach the text label to.</param>
         /// <returns>The created text label.</returns>
-        PlayerTextLabel CreatePlayerTextLabel(Entity player, string text, Color color, Vector3 position,
-            float drawDistance, bool testLos = true, Entity attachedTo = null);
+        PlayerTextLabel CreatePlayerTextLabel(EntityId player, string text, Color color, Vector3 position,
+            float drawDistance, bool testLos = true, EntityId attachedTo = default);
 
         /// <summary>
         /// Creates a textdraw in the world.
@@ -166,7 +166,7 @@ namespace SampSharp.Entities.SAMP
         /// <param name="position">The position of the textdraw.</param>
         /// <param name="text">The text of the textdraw.</param>
         /// <returns>The created player textdraw.</returns>
-        PlayerTextDraw CreatePlayerTextDraw(Entity player, Vector2 position, string text);
+        PlayerTextDraw CreatePlayerTextDraw(EntityId player, Vector2 position, string text);
 
         /// <summary>
         /// Creates the menu in this world.
@@ -223,7 +223,7 @@ namespace SampSharp.Entities.SAMP
         /// </summary>
         /// <param name="sender">The player which has sent the message.</param>
         /// <param name="message">The message that will be sent.</param>
-        void SendPlayerMessageToPlayer(Entity sender, string message);
+        void SendPlayerMessageToPlayer(EntityId sender, string message);
 
         /// <summary>
         /// Adds a death to the kill feed on the right-hand side of the screen of all players.
@@ -231,7 +231,7 @@ namespace SampSharp.Entities.SAMP
         /// <param name="killer">The player that killer the <paramref name="player" />.</param>
         /// <param name="player">The player that has been killed.</param>
         /// <param name="weapon">The reason for this player's death.</param>
-        void SendDeathMessage(Entity killer, Entity player, Weapon weapon);
+        void SendDeathMessage(EntityId killer, EntityId player, Weapon weapon);
 
         /// <summary>
         /// Shows 'game text' (on-screen text) for a certain length of time for all players.

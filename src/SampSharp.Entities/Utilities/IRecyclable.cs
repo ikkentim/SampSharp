@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2019 Tim Potze
+// Copyright 2020 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,21 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using SampSharp.Entities;
-
-namespace TestMode.Entities.Services
+namespace SampSharp.Entities.Utilities
 {
-    public class VehicleRepository : IVehicleRepository
+    internal interface IRecyclable
     {
-        public void Foo()
-        {
-            Console.WriteLine("Foo vehicles");
-        }
-
-        public void FooForPlayer(EntityId player)
-        {
-            Console.WriteLine($"Foo vehicles for {player}");
-        }
+        void Reset();
     }
 }

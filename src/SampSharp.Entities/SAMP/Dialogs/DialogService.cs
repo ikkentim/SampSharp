@@ -24,6 +24,8 @@ namespace SampSharp.Entities.SAMP
     /// <seealso cref="IDialogService" />
     public class DialogService : IDialogService
     {
+        private readonly IEntityManager _entityManager;
+
         /// <summary>
         /// The dialog ID used by the dialog service.
         /// </summary>
@@ -35,20 +37,24 @@ namespace SampSharp.Entities.SAMP
         public const int DialogHideId = -1;
 
         /// <inheritdoc />
-        public void Show<TResponse>(Entity player, IDialog<TResponse> dialog, Action<TResponse> responseHandler)
+        public DialogService(IEntityManager entityManager)
+        {
+            _entityManager = entityManager;
+        }
+
+        /// <inheritdoc />
+        public void Show<TResponse>(EntityId player, IDialog<TResponse> dialog, Action<TResponse> responseHandler)
             where TResponse : struct
         {
-            if (player == null) throw new ArgumentNullException(nameof(player));
-            
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             if (dialog == null)
                 throw new ArgumentNullException(nameof(dialog));
 
-            player.Destroy<VisibleDialog>();
+            _entityManager.Destroy<VisibleDialog>(player);
 
-            var native = player.GetComponent<NativePlayer>();
+            var native = _entityManager.GetComponent<NativePlayer>(player);
 
             native.ShowPlayerDialog(DialogId, (int) dialog.Style, dialog.Caption ?? string.Empty,
                 dialog.Content ?? string.Empty, dialog.Button1 ?? string.Empty, dialog.Button2);
@@ -58,18 +64,16 @@ namespace SampSharp.Entities.SAMP
                 var translated = dialog.Translate(result);
                 responseHandler?.Invoke(translated);
 
-                player.Destroy<VisibleDialog>();
+                _entityManager.Destroy<VisibleDialog>(player);
             }
 
-            player.AddComponent<VisibleDialog>(dialog, (Action<DialogResult>) Handler);
+            _entityManager.AddComponent<VisibleDialog>(player, dialog, (Action<DialogResult>) Handler);
         }
 
 
         /// <inheritdoc />
-        public Task<TResponse> Show<TResponse>(Entity player, IDialog<TResponse> dialog) where TResponse : struct
+        public Task<TResponse> Show<TResponse>(EntityId player, IDialog<TResponse> dialog) where TResponse : struct
         {
-            if (player == null) throw new ArgumentNullException(nameof(player));
-            
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 

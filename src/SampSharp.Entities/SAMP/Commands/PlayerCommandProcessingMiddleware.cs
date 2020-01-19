@@ -28,7 +28,7 @@ namespace SampSharp.Entities.SAMP.Commands
             if (EventHelper.IsSuccessResponse(result))
                 return result;
 
-            if (context.Arguments[0] is Entity player &&
+            if (context.Arguments[0] is EntityId player &&
                 context.Arguments[1] is string text)
                 return commandService.Invoke(context.EventServices, player, text);
 

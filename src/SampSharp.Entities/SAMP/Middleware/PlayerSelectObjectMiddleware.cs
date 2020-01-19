@@ -27,20 +27,19 @@ namespace SampSharp.Entities.SAMP
 
         public object Invoke(EventContext context, IEntityManager entityManager)
         {
-            var playerEntity = entityManager.Get(SampEntities.GetPlayerId((int) context.Arguments[0]));
-
-            if (playerEntity == null)
-                return null;
+            var playerEntity = SampEntities.GetPlayerId((int) context.Arguments[0]);
 
             var objectType = (int) context.Arguments[1];
             var objectId = (int) context.Arguments[2];
 
             var objectEntity = objectType == (int) ObjectType.PlayerObject
-                ? entityManager.Get(SampEntities.GetPlayerObjectId(playerEntity.Id, objectId))
-                : entityManager.Get(SampEntities.GetObjectId(objectId));
-
-            if (objectEntity == null)
+                ? SampEntities.GetPlayerObjectId(playerEntity, objectId)
+                : SampEntities.GetObjectId(objectId);
+            
+            if (!entityManager.Exists(playerEntity))
                 return null;
+            
+            // Allow unknown objects to be passed through to the event.
 
             _context.BaseContext = context;
 

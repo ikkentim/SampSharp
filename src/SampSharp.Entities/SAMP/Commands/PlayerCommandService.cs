@@ -26,9 +26,12 @@ namespace SampSharp.Entities.SAMP.Commands
     /// </summary>
     public class PlayerCommandService : CommandServiceBase, IPlayerCommandService
     {
+        private readonly IEntityManager _entityManager;
+
         /// <inheritdoc />
-        public PlayerCommandService() : base(1)
+        public PlayerCommandService(IEntityManager entityManager) : base(entityManager, 1)
         {
+            _entityManager = entityManager;
         }
 
         /// <inheritdoc />
@@ -39,17 +42,17 @@ namespace SampSharp.Entities.SAMP.Commands
 
             // Ensure player is first parameter
             var type = parameters[0].ParameterType;
-            return type == typeof(Entity) || typeof(Component).IsAssignableFrom(type);
+            return type == typeof(EntityId) || typeof(Component).IsAssignableFrom(type);
         }
 
         /// <inheritdoc />
-        public bool Invoke(IServiceProvider services, Entity player, string inputText)
+        public bool Invoke(IServiceProvider services, EntityId player, string inputText)
         {
             var result = Invoke(services, new object[] {player}, inputText);
 
             if (result.Response == InvokeResponse.InvalidArguments)
             {
-                player.GetComponent<Player>()
+                _entityManager.GetComponent<Player>(player)
                     ?.SendClientMessage(result.UsageMessage);
 
                 return true;

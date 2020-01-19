@@ -32,6 +32,8 @@ namespace SampSharp.Entities
                 .IncludeNonPublicMembers()
                 .ScanFields<EntityTypeAttribute>();
 
+            Names[Guid.Empty] = "Empty";
+
             foreach (var (field, attribute) in fields)
             {
                 var name = attribute.Name;

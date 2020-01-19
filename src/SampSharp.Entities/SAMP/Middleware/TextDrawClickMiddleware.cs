@@ -9,16 +9,18 @@
             _next = next;
         }
 
-        public object Invoke(EventContext context, IEntityManager entityManager, IEventService eventService)
+        public object Invoke(EventContext context, IEventService eventService, IEntityManager entityManager)
         {
-            var playerEntity = entityManager.Get(SampEntities.GetPlayerId((int) context.Arguments[0]));
-            var textDrawEntity = entityManager.Get(SampEntities.GetTextDrawId((int) context.Arguments[1]));
-
-            if (playerEntity == null)
+            var playerEntity = SampEntities.GetPlayerId((int) context.Arguments[0]);
+            var textDrawEntity = SampEntities.GetTextDrawId((int) context.Arguments[1]);
+            
+            if (!entityManager.Exists(playerEntity))
                 return null;
+            
+            // Allow unknown text draws to be passed through to the event.
 
             // Forward to OnPlayerCancelTextDraw and cancel continuation OnPlayerClickTextDraw event.
-            if (textDrawEntity == null)
+            if (textDrawEntity == NativeTextDraw.InvalidId)
             {
                 return eventService.Invoke("OnPlayerCancelTextDraw", playerEntity);
             }

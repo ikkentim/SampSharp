@@ -26,7 +26,7 @@ namespace SampSharp.Entities.SAMP
 
         protected override void OnInitializeComponent()
         {
-            Id = Entity.Id;
+            Id = Entity;
         }
     }
 }

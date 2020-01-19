@@ -35,8 +35,8 @@ namespace SampSharp.Entities.SAMP
 
         protected override void OnInitializeComponent()
         {
-            Id = Entity.Id;
-            PlayerId = Entity.Parent.Id;
+            Id = Entity;
+            PlayerId = Parent;
         }
 
         [NativeMethod]

@@ -45,9 +45,9 @@ namespace SampSharp.Entities.SAMP.Commands.Parsers
             var entityManager = services.GetRequiredService<IEntityManager>();
             if (int.TryParse(word, out var intWord))
             {
-                var entity = entityManager.Get(new EntityId(_entityType, intWord));
+                var entity = new EntityId(_entityType, intWord);
 
-                if (entity != null)
+                if (entityManager.Exists(entity))
                 {
                     result = entity;
                     return true;

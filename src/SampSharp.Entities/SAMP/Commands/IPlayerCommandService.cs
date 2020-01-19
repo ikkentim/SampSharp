@@ -14,6 +14,6 @@ namespace SampSharp.Entities.SAMP.Commands
         /// <param name="player">The player for which the command is invoked.</param>
         /// <param name="inputText">The input text to be parsed.</param>
         /// <returns><c>true</c> if the command was handled; otherwise <c>false</c>.</returns>
-        bool Invoke(IServiceProvider services, Entity player, string inputText);
+        bool Invoke(IServiceProvider services, EntityId player, string inputText);
     }
 }

@@ -33,7 +33,6 @@ namespace SampSharp.Entities
         private static readonly Type[] DefaultParameterTypes =
         {
             typeof(string),
-            typeof(Entity)
             // TODO: Callbacks with parameter length are not yet supported
             //typeof(int[]),
             //typeof(bool[]),
@@ -43,14 +42,16 @@ namespace SampSharp.Entities
         private readonly Dictionary<string, Event> _events = new Dictionary<string, Event>();
         private readonly IGameModeClient _gameModeClient;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IEntityManager _entityManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EventService" /> class.
         /// </summary>
-        public EventService(IGameModeClient gameModeClient, IServiceProvider serviceProvider)
+        public EventService(IGameModeClient gameModeClient, IServiceProvider serviceProvider, IEntityManager entityManager)
         {
             _gameModeClient = gameModeClient;
             _serviceProvider = serviceProvider;
+            _entityManager = entityManager;
 
             CreateEventsFromAssemblies();
         }
@@ -180,7 +181,7 @@ namespace SampSharp.Entities
                         return null;
                     }
 
-                    return compiled(instance, args, eventContext.EventServices);
+                    return compiled(instance, args, eventContext.EventServices, _entityManager);
                 }
             };
         }

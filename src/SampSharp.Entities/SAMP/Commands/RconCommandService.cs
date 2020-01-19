@@ -29,7 +29,7 @@ namespace SampSharp.Entities.SAMP.Commands
     public class RconCommandService : CommandServiceBase, IRconCommandService
     {
         /// <inheritdoc />
-        public RconCommandService() : base(0)
+        public RconCommandService(IEntityManager entityManager) : base(entityManager, 0)
         {
         }
 

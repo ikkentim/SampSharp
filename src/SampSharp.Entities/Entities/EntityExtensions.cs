@@ -19,7 +19,7 @@ using System.Linq;
 namespace SampSharp.Entities
 {
     /// <summary>
-    /// Provides extended functionality for the <see cref="Entity" /> class.
+    /// Provides extended functionality for the <see cref="EntityId" /> struct.
     /// </summary>
     public static class EntityExtensions
     {
@@ -33,9 +33,9 @@ namespace SampSharp.Entities
         /// A value indicating whether the entity identifier of the specified <paramref name="entity" /> is of the
         /// specified <paramref name="type" />.
         /// </returns>
-        public static bool IsOfType(this Entity entity, Guid type)
+        public static bool IsOfType(this EntityId entity, Guid type)
         {
-            return entity != null && entity.Id.Type == type;
+            return entity.Type == type;
         }
 
         /// <summary>
@@ -48,9 +48,14 @@ namespace SampSharp.Entities
         /// A value indicating whether the entity identifier of the specified <paramref name="entity" /> is of any of the
         /// specified <paramref name="types" />.
         /// </returns>
-        public static bool IsOfAnyType(this Entity entity, params Guid[] types)
+        public static bool IsOfAnyType(this EntityId entity, params Guid[] types)
         {
-            return entity != null && types != null && Array.IndexOf(types, entity.Id.Type) >= 0;
+            return types != null && Array.IndexOf(types, entity.Type) >= 0;
+        }
+
+        internal static int OrElse(this EntityId entity, int @else)
+        {
+            return !entity ? @else : entity.Handle;
         }
     }
 }

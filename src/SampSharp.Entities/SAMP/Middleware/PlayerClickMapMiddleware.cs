@@ -12,9 +12,9 @@
 
         public object Invoke(EventContext context, IEntityManager entityManager)
         {
-            var playerEntity = entityManager.Get(SampEntities.GetPlayerId((int) context.Arguments[0]));
-
-            if (playerEntity == null)
+            var playerEntity = SampEntities.GetPlayerId((int) context.Arguments[0]);
+            
+            if (!entityManager.Exists(playerEntity))
                 return null;
 
             _context.BaseContext = context;

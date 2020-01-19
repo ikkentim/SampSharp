@@ -26,7 +26,7 @@ namespace SampSharp.Entities
     public class InvalidEntityArgumentException : ArgumentException
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidEntityArgumentException"/> class.
+        /// Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.
         /// </summary>
         /// <param name="paramName">Name of the parameter.</param>
         /// <param name="expectedType">The expected entity identifier type.</param>
@@ -35,8 +35,9 @@ namespace SampSharp.Entities
             paramName)
         {
         }
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidEntityArgumentException"/> class.
+        /// Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.
         /// </summary>
         /// <param name="paramName">Name of the parameter.</param>
         /// <param name="expectedTypes">The expected entity identifier types.</param>

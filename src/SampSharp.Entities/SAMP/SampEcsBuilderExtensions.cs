@@ -47,15 +47,15 @@ namespace SampSharp.Entities.SAMP
 
         internal static IEcsBuilder EnableWorld(this IEcsBuilder builder)
         {
-            var server = builder.Services.GetService<IEntityManager>()
-                .Create(null, ServerService.ServerId);
-            server.AddComponent<NativeServer>();
-            server.AddComponent<Server>();
+            var entityManager = builder.Services.GetService<IEntityManager>();
 
-            var world = builder.Services.GetService<IEntityManager>()
-                .Create(server, WorldService.WorldId);
-            world.AddComponent<NativeWorld>();
-            world.AddComponent<World>();
+            entityManager.Create(ServerService.Server);
+            entityManager.AddComponent<NativeServer>(ServerService.Server);
+            entityManager.AddComponent<Server>(ServerService.Server);
+
+            entityManager.Create(WorldService.World);
+            entityManager.AddComponent<NativeWorld>(WorldService.World);
+            entityManager.AddComponent<World>(WorldService.World);
 
             return builder;
         }
@@ -204,7 +204,7 @@ namespace SampSharp.Entities.SAMP
             builder.EnableEvent<int>("OnObjectMoved");
             builder.EnableEvent<int, int>("OnPlayerObjectMoved");
 
-            builder.UseMiddleware<EntityMiddleware>("OnObjectMoved", 0, SampEntities.ObjectType, true);
+            builder.UseMiddleware<EntityMiddleware>("OnObjectMoved", 0, SampEntities.ObjectType, false);
             builder.UseMiddleware<PlayerObjectMiddleware>("OnPlayerObjectMoved");
             return builder;
         }

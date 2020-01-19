@@ -88,15 +88,12 @@ namespace SampSharp.Entities.SAMP
         /// </summary>
         /// <param name="player">The player.</param>
         /// <returns>True if streamed in; False otherwise.</returns>
-        /// <exception cref="System.ArgumentNullException">player</exception>
-        public bool IsStreamedIn(Entity player)
+        public bool IsStreamedIn(EntityId player)
         {
-            if (player == null) throw new ArgumentNullException(nameof(player));
-            
             if (!player.IsOfType(SampEntities.PlayerType))
-                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
+                return false;
 
-            return GetComponent<NativeActor>().IsActorStreamedIn(player.Id);
+            return GetComponent<NativeActor>().IsActorStreamedIn(player);
         }
 
         /// <summary>

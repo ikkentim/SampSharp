@@ -50,7 +50,7 @@ namespace SampSharp.Entities.SAMP
         /// <inheritdoc />
         protected override void OnDestroyComponent()
         {
-            var component = Entity.GetComponent<NativePlayer>();
+            var component = GetComponent<NativePlayer>();
 
             if (!ResponseReceived)
             {

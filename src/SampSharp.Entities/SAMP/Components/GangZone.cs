@@ -67,15 +67,12 @@ namespace SampSharp.Entities.SAMP
         /// Shows this <see cref="GangZone" /> to the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player.</param>
-        /// <exception cref="System.ArgumentNullException">player</exception>
-        public void Show(Entity player)
+        public void Show(EntityId player)
         {
-            if (player == null) throw new ArgumentNullException(nameof(player));
-            
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            GetComponent<NativeGangZone>().GangZoneShowForPlayer(player.Id, Color);
+            GetComponent<NativeGangZone>().GangZoneShowForPlayer(player, Color);
         }
 
         /// <summary>
@@ -90,15 +87,12 @@ namespace SampSharp.Entities.SAMP
         /// Hides this <see cref="GangZone" /> for the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player.</param>
-        /// <exception cref="System.ArgumentNullException">player</exception>
-        public void Hide(Entity player)
+        public void Hide(EntityId player)
         {
-            if (player == null) throw new ArgumentNullException(nameof(player));
-            
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            GetComponent<NativeGangZone>().GangZoneHideForPlayer(player.Id);
+            GetComponent<NativeGangZone>().GangZoneHideForPlayer(player);
         }
 
         /// <summary>
@@ -114,11 +108,8 @@ namespace SampSharp.Entities.SAMP
         /// Flashes this <see cref="GangZone" /> for the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player.</param>
-        /// <exception cref="System.ArgumentNullException">player</exception>
-        public void Flash(Entity player)
+        public void Flash(EntityId player)
         {
-            if (player == null) throw new ArgumentNullException(nameof(player));
-            
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
@@ -130,15 +121,12 @@ namespace SampSharp.Entities.SAMP
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="color">The color.</param>
-        /// <exception cref="System.ArgumentNullException">player</exception>
-        public void Flash(Entity player, Color color)
+        public void Flash(EntityId player, Color color)
         {
-            if (player == null) throw new ArgumentNullException(nameof(player));
-            
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            GetComponent<NativeGangZone>().GangZoneFlashForPlayer(player.Id, color);
+            GetComponent<NativeGangZone>().GangZoneFlashForPlayer(player, color);
         }
 
         /// <summary>
@@ -153,16 +141,12 @@ namespace SampSharp.Entities.SAMP
         /// Stops this <see cref="GangZone" /> from flash for the specified player.
         /// </summary>
         /// <param name="player">The player.</param>
-        /// <exception cref="System.ArgumentNullException">player</exception>
-        public void StopFlash(Entity player)
+        public void StopFlash(EntityId player)
         {
-            if (player == null)
-                throw new ArgumentNullException(nameof(player));
-            
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            GetComponent<NativeGangZone>().GangZoneStopFlashForPlayer(player.Id);
+            GetComponent<NativeGangZone>().GangZoneStopFlashForPlayer(player);
         }
 
         /// <inheritdoc />

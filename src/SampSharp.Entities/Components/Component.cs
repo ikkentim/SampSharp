@@ -13,82 +13,132 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-
 namespace SampSharp.Entities
 {
     /// <summary>
-    /// Represents a component which can be attached to an <see cref="Entity" />.
+    /// Represents a component which can be attached to an entity.
     /// </summary>
     public abstract class Component
     {
         /// <summary>
-        /// Gets the <see cref="Entities.Entity" /> to which this component has been attached.
+        /// Gets the manager of the entity of this component.
         /// </summary>
-        public Entity Entity { get; internal set; }
+        public IEntityManager Manager { get; internal set; }
+        
+        /// <summary>
+        /// Gets the parent entity of the entity to which this component has been attached.
+        /// </summary>
+        public EntityId Parent => Manager.GetParent(Entity);
 
         /// <summary>
-        /// Gets a component of the specified type <typeparamref name="T" /> attached to the <see cref="Entity" />.
+        /// Gets the entity to which this component has been attached.
+        /// </summary>
+        public EntityId Entity { get; internal set; }
+
+        /// <summary>
+        /// Gets a component of the specified type <typeparamref name="T" /> attached to the entity.
         /// </summary>
         /// <typeparam name="T">The type of the component to find.</typeparam>
         /// <returns>The found component or <c>null</c> if no component of the specified type could be found.</returns>
         public T GetComponent<T>() where T : Component
         {
-            return Entity.GetComponent<T>();
+            return Manager.GetComponent<T>(Entity);
         }
 
         /// <summary>
-        /// Gets all components of the specified type <typeparamref name="T" /> attached to the <see cref="Entity" />.
+        /// Adds a component of the specified type <typeparamref name="T"/> to the entity with the specified constructor <paramref name="args"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the component to add.</typeparam>
+        /// <param name="args">The arguments of the constructor of the component.</param>
+        /// <returns>The created component.</returns>
+        public T AddComponent<T>(params object[] args) where T : Component
+        {
+            return Manager.AddComponent<T>(Entity, args);
+        }
+        
+        /// <summary>
+        /// Adds a component of the specified type <typeparamref name="T"/> to the entity.
+        /// </summary>
+        /// <typeparam name="T">The type of the component to add.</typeparam>
+        /// <returns>The created component.</returns>
+        public T AddComponent<T>() where T : Component
+        {
+            return Manager.AddComponent<T>(Entity);
+        }
+
+        /// <summary>
+        /// Destroys the components of the specified type <typeparamref name="T" /> attached to the entity.
+        /// </summary>
+        /// <typeparam name="T">The type of the components to destroy.</typeparam>
+        public void DestroyComponents<T>() where T : Component
+        {
+            Manager.Destroy<T>(Entity);
+        }
+
+        /// <summary>
+        /// Destroys the entity.
+        /// </summary>
+        public void DestroyEntity()
+        {
+            Manager.Destroy(Entity);
+        }
+
+        /// <summary>
+        /// Destroys this component.
+        /// </summary>
+        public void Destroy()
+        {
+            Manager.Destroy(this);
+        }
+
+        /// <summary>
+        /// Gets all components of the specified type <typeparamref name="T" /> attached to the entity.
         /// </summary>
         /// <typeparam name="T">The type of the components to find.</typeparam>
         /// <returns>A collection of the found components.</returns>
-        public IEnumerable<T> GetComponents<T>() where T : Component
+        public T[] GetComponents<T>() where T : Component
         {
-            return Entity.GetComponents<T>();
+            return Manager.GetComponents<T>(Entity);
         }
 
         /// <summary>
-        /// Gets a component of the specified type <typeparamref name="T" /> attached to a child entity of the
-        /// <see cref="Entity" /> using a depth first search.
+        /// Gets a component of the specified type <typeparamref name="T" /> attached to a child entity of the entity using a depth first search.
         /// </summary>
         /// <typeparam name="T">The type of the component to find.</typeparam>
         /// <returns>The found component or <c>null</c> if no component of the specified type could be found.</returns>
         public T GetComponentInChildren<T>() where T : Component
         {
-            return Entity.GetComponentInChildren<T>();
+            return Manager.GetComponentInChildren<T>(Entity);
         }
 
         /// <summary>
-        /// Gets all components of the specified type <typeparamref name="T" /> attached to a child entity of the
-        /// <see cref="Entity" />.
+        /// Gets all components of the specified type <typeparamref name="T" /> attached to a child entity of the entity.
         /// </summary>
         /// <typeparam name="T">The type of the components to find.</typeparam>
         /// <returns>A collection of the found components.</returns>
-        public IEnumerable<T> GetComponentsInChildren<T>() where T : Component
+        public T[] GetComponentsInChildren<T>() where T : Component
         {
-            return Entity.GetComponentsInChildren<T>();
+            return Manager.GetComponentsInChildren<T>(Entity);
         }
 
         /// <summary>
-        /// Gets a component of the specified type <typeparamref name="T" /> attached to a parent entity of the
-        /// <see cref="Entity" />.
+        /// Gets a component of the specified type <typeparamref name="T" /> attached to a parent entity of the entity.
         /// </summary>
         /// <typeparam name="T">The type of the component to find.</typeparam>
         /// <returns>The found component or <c>null</c> if no component of the specified type could be found.</returns>
         public T GetComponentInParent<T>() where T : Component
         {
-            return Entity.GetComponentInParent<T>();
+            return Manager.GetComponentInParent<T>(Entity);
         }
 
         /// <summary>
-        /// Gets all components of the specified type <typeparamref name="T" /> attached to a parent entity of the
-        /// <see cref="Entity" />.
+        /// Gets all components of the specified type <typeparamref name="T" /> attached to a parent entity of the entity.
         /// </summary>
         /// <typeparam name="T">The type of the components to find.</typeparam>
         /// <returns>A collection of the found components.</returns>
-        public IEnumerable<T> GetComponentsInParent<T>() where T : Component
+        public T[] GetComponentsInParent<T>() where T : Component
         {
-            return Entity.GetComponentsInParent<T>();
+            return Manager.GetComponentsInParent<T>(Entity);
         }
 
         /// <summary>

@@ -13,10 +13,10 @@
         public object Invoke(EventContext context, IEntityManager entityManager)
         {
             var inArgs = context.Arguments;
-            var vehicleEntity = entityManager.Get(SampEntities.GetVehicleId((int) inArgs[0]));
-            var playerEntity = entityManager.Get(SampEntities.GetPlayerId((int) inArgs[1]));
-
-            if (playerEntity == null || vehicleEntity == null)
+            var vehicleEntity = SampEntities.GetVehicleId((int) inArgs[0]);
+            var playerEntity = SampEntities.GetPlayerId((int) inArgs[1]);
+            
+            if (!entityManager.Exists(playerEntity) || !entityManager.Exists(vehicleEntity))
                 return null;
 
             _context.BaseContext = context;

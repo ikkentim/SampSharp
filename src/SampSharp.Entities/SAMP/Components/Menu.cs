@@ -114,28 +114,24 @@ namespace SampSharp.Entities.SAMP
         /// Shows this menu for the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player.</param>
-        public void Show(Entity player)
+        public void Show(EntityId player)
         {
-            if (player == null) throw new ArgumentNullException(nameof(player));
-
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            GetComponent<NativeMenu>().ShowMenuForPlayer(player.Id);
+            GetComponent<NativeMenu>().ShowMenuForPlayer(player);
         }
 
         /// <summary>
         /// Hides this menu for the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player.</param>
-        public void Hide(Entity player)
+        public void Hide(EntityId player)
         {
-            if (player == null) throw new ArgumentNullException(nameof(player));
-
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            GetComponent<NativeMenu>().HideMenuForPlayer(player.Id);
+            GetComponent<NativeMenu>().HideMenuForPlayer(player);
         }
 
         /// <summary>

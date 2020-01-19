@@ -270,30 +270,24 @@ namespace SampSharp.Entities.SAMP
         /// Shows this textdraw for the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player to show this textdraw to.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="player" /> is null.</exception>
-        public void Show(Entity player)
+        public void Show(EntityId player)
         {
-            if (player == null) throw new ArgumentNullException(nameof(player));
-            
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            GetComponent<NativeTextDraw>().TextDrawShowForPlayer(player.Id);
+            GetComponent<NativeTextDraw>().TextDrawShowForPlayer(player);
         }
 
         /// <summary>
         /// Hides this textdraw for the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player to show this textdraw to.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="player" /> is null.</exception>
-        public void Hide(Entity player)
+        public void Hide(EntityId player)
         {
-            if (player == null) throw new ArgumentNullException(nameof(player));
-            
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            GetComponent<NativeTextDraw>().TextDrawHideForPlayer(player.Id);
+            GetComponent<NativeTextDraw>().TextDrawHideForPlayer(player);
         }
 
         /// <inheritdoc />

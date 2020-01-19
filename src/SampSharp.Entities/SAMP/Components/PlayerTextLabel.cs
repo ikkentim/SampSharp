@@ -21,7 +21,7 @@ namespace SampSharp.Entities.SAMP
     public sealed class PlayerTextLabel : Component
     {
         private PlayerTextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld,
-            bool testLos, Entity attachedEntity)
+            bool testLos, EntityId attachedEntity)
         {
             Text = text;
             Color = color;
@@ -65,7 +65,7 @@ namespace SampSharp.Entities.SAMP
         /// <summary>
         /// Gets the attached entity.
         /// </summary>
-        public Entity AttachedEntity { get; }
+        public EntityId AttachedEntity { get; }
 
         /// <inheritdoc />
         protected override void OnDestroyComponent()

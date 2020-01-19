@@ -174,21 +174,17 @@ namespace SampSharp.Entities.SAMP
         /// <param name="target">The player.</param>
         /// <param name="offset">The offset.</param>
         /// <param name="rotation">The rotation.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="target" /> is null.</exception>
-        public void AttachTo(Entity target, Vector3 offset, Vector3 rotation)
+        public void AttachTo(EntityId target, Vector3 offset, Vector3 rotation)
         {
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
-            
             if (!target.IsOfAnyType(SampEntities.PlayerType, SampEntities.VehicleType))
                 throw new InvalidEntityArgumentException(nameof(target), SampEntities.PlayerType, SampEntities.VehicleType);
 
             if (target.IsOfType(SampEntities.PlayerType))
-                GetComponent<NativePlayerObject>().AttachPlayerObjectToPlayer(target.Id, offset.X, offset.Y, offset.Z,
+                GetComponent<NativePlayerObject>().AttachPlayerObjectToPlayer(target, offset.X, offset.Y, offset.Z,
                     rotation.X,
                     rotation.Y, rotation.Z);
             else
-                GetComponent<NativePlayerObject>().AttachPlayerObjectToVehicle(target.Id, offset.X, offset.Y, offset.Z,
+                GetComponent<NativePlayerObject>().AttachPlayerObjectToVehicle(target, offset.X, offset.Y, offset.Z,
                     rotation.X,
                     rotation.Y, rotation.Z);
         }

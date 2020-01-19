@@ -27,15 +27,17 @@ namespace SampSharp.Entities.SAMP.Commands
     /// </summary>
     public abstract class CommandServiceBase
     {
+        private readonly IEntityManager _entityManager;
         private readonly int _prefixParameters;
 
         private readonly Dictionary<string, List<CommandData>> _commands = new Dictionary<string, List<CommandData>>();
 
         /// <inheritdoc />
-        protected CommandServiceBase(int prefixParameters)
+        protected CommandServiceBase(IEntityManager entityManager, int prefixParameters)
         {
             if (prefixParameters < 0) throw new ArgumentOutOfRangeException(nameof(prefixParameters));
 
+            _entityManager = entityManager;
             _prefixParameters = prefixParameters;
 
             CreateCommandsFromAssemblies(prefixParameters);
@@ -123,7 +125,7 @@ namespace SampSharp.Entities.SAMP.Commands
 
                     if (services.GetService(command.SystemType) is ISystem system)
                     {
-                        var commandResult = command.Invoke(system, command.Arguments, services);
+                        var commandResult = command.Invoke(system, command.Arguments, services, _entityManager);
 
                         // Check if execution was successful
                         if (!(commandResult is bool bResult && !bResult) &&

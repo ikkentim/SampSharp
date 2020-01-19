@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,6 +32,48 @@ namespace TestMode.Entities.Systems
         private Menu _menu;
         private TextDraw _welcome;
         private GangZone _zone;
+
+        [PlayerCommand]
+        public async void RearCommand(Player player, IEntityManager entityManager, IWorldService worldService,
+            IVehicleInfoService vehicleInfoService)
+        {
+            var labels = new List<EntityId>();
+
+            foreach (var vehicle in entityManager.GetComponents<Vehicle>())
+            {
+                var model = vehicle.Model;
+
+                var size = vehicleInfoService.GetModelInfo(model, VehicleModelInfoType.Size);
+                var bumper = vehicleInfoService.GetModelInfo(model, VehicleModelInfoType.RearBumperZ);
+                var offset = new Vector3(0, -size.Y / 2, bumper.Z);
+
+                var rotation = vehicle.RotationQuaternion;
+
+                var mRotation =
+                    rotation.LengthSquared >
+                    10000 // Unoccupied vehicle updates corrupt the internal vehicle world matrix
+                        ? Matrix.CreateRotationZ(MathHelper.ToRadians(vehicle.Angle))
+                        : Matrix.CreateFromQuaternion(rotation);
+
+                var matrix = Matrix.CreateTranslation(offset) *
+                             mRotation *
+                             Matrix.CreateTranslation(vehicle.Position);
+
+                var point = matrix.Translation;
+
+                var label = worldService.CreateTextLabel("[x]", Color.Blue, point, 100, 0, false);
+                labels.Add(label.Entity);
+            }
+
+            player.SendClientMessage("Points added");
+
+            await Task.Delay(10000);
+
+            foreach (var l in labels)
+                entityManager.Destroy(l);
+
+            player.SendClientMessage("Points removed");
+        }
 
         [PlayerCommand]
         public void SpawnCommand(Player sender, VehicleModelType model, IWorldService worldService)
@@ -90,7 +133,7 @@ namespace TestMode.Entities.Systems
             _welcome.Font = TextDrawFont.Diploma;
             _welcome.Proportional = true;
             Console.WriteLine("TD pos: " + _welcome.Position);
-            Console.WriteLine(_welcome.Entity.Id.ToString());
+            Console.WriteLine(_welcome.Entity.ToString());
 
             _menu = worldService.CreateMenu("Test menu", new Vector2(200, 300), 100);
             _menu.AddItem("Hello!!!");
@@ -115,7 +158,7 @@ namespace TestMode.Entities.Systems
         }
 
         [Event]
-        public void OnPlayerWeaponShot(Player player, Weapon weapon, Entity hit, Vector3 position)
+        public void OnPlayerWeaponShot(Player player, Weapon weapon, EntityId hit, Vector3 position)
         {
             player.SendClientMessage($"You shot {hit} at {position} with {weapon}");
         }
@@ -152,7 +195,7 @@ namespace TestMode.Entities.Systems
         }
 
         [PlayerCommand]
-        public void MenuCommand(Entity sender)
+        public void MenuCommand(EntityId sender)
         {
             _menu.Show(sender);
         }
@@ -161,7 +204,7 @@ namespace TestMode.Entities.Systems
         public void AddComponentCommand(Player player)
         {
             if (player.GetComponent<TestComponent>() == null)
-                player.Entity.AddComponent<TestComponent>();
+                player.AddComponent<TestComponent>();
 
             player.SendClientMessage("Added TestComponent!");
         }
@@ -169,7 +212,7 @@ namespace TestMode.Entities.Systems
         [PlayerCommand]
         public void RemoveComponentCommand(Player player)
         {
-            player.Entity.Destroy<TestComponent>();
+            player.DestroyComponents<TestComponent>();
 
             player.SendClientMessage("Remove TestComponent!");
         }
@@ -241,19 +284,19 @@ namespace TestMode.Entities.Systems
         [PlayerCommand]
         public void EntitiesCommand(Player player, IEntityManager entityManager)
         {
-            void Print(int indent, Entity entity)
+            void Print(int indent, EntityId entity)
             {
                 var ind = string.Concat(Enumerable.Repeat(' ', indent));
 
                 player.SendClientMessage($"{ind}{entity}");
-                foreach (var com in entity.GetComponents<Component>())
+                foreach (var com in entityManager.GetComponents<Component>(entity))
                     player.SendClientMessage($"{ind}::>{com.GetType().Name}");
 
-                foreach (var child in entity.Children)
+                foreach (var child in entityManager.GetChildren(entity))
                     Print(indent + 2, child);
             }
 
-            Print(0, entityManager.Get(WorldService.WorldId));
+            Print(0, WorldService.World);
         }
 
         [PlayerCommand]
@@ -279,16 +322,16 @@ namespace TestMode.Entities.Systems
         }
 
         [Event]
-        public void OnPlayerConnect(Entity player, IVehicleRepository vehiclesRepository)
+        public void OnPlayerConnect(Player player, IVehicleRepository vehiclesRepository)
         {
-            Console.WriteLine("I connected! " + player.Id);
+            Console.WriteLine("I connected! " + player.Entity);
 
             player.AddComponent<TestComponent>();
 
-            _zone.Show(player);
-            _welcome.Show(player);
+            _zone.Show(player.Entity);
+            _welcome.Show(player.Entity);
 
-            vehiclesRepository.FooForPlayer(player);
+            vehiclesRepository.FooForPlayer(player.Entity);
         }
 
         [Event]

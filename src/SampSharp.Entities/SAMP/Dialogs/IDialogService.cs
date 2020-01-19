@@ -30,7 +30,7 @@ namespace SampSharp.Entities.SAMP
         /// <param name="player">The player to show the dialog to.</param>
         /// <param name="dialog">The dialog to show to the player.</param>
         /// <param name="responseHandler">A handler for the dialog response.</param>
-        void Show<TResponse>(Entity player, IDialog<TResponse> dialog, Action<TResponse> responseHandler)
+        void Show<TResponse>(EntityId player, IDialog<TResponse> dialog, Action<TResponse> responseHandler)
             where TResponse : struct;
 
         /// <summary>
@@ -40,6 +40,6 @@ namespace SampSharp.Entities.SAMP
         /// <param name="player">The player to show the dialog to.</param>
         /// <param name="dialog">The dialog to show to the player.</param>
         /// <returns>The dialog response.</returns>
-        Task<TResponse> Show<TResponse>(Entity player, IDialog<TResponse> dialog) where TResponse : struct;
+        Task<TResponse> Show<TResponse>(EntityId player, IDialog<TResponse> dialog) where TResponse : struct;
     }
 }

@@ -22,7 +22,7 @@ namespace SampSharp.Entities.SAMP
     /// </summary>
     public sealed class TextLabel : Component
     {
-        private Entity _attachedEntity;
+        private EntityId _attachedEntity;
         private string _text;
         private Color _color;
 
@@ -91,23 +91,22 @@ namespace SampSharp.Entities.SAMP
         /// <summary>
         /// Gets or sets the attached entity (player or vehicle).
         /// </summary>
-        public Entity AttachedEntity
+        public EntityId AttachedEntity
         {
             get =>  _attachedEntity;
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException(nameof(value)); // TODO: Can detach maybe?
-                
                 if (!value.IsOfAnyType(SampEntities.PlayerType, SampEntities.VehicleType))
                     throw new InvalidEntityArgumentException(nameof(value), SampEntities.PlayerType, SampEntities.VehicleType);
 
+                // TODO: Can detach maybe if id is empty?
+
                 if (value.IsOfType(SampEntities.PlayerType))
                     GetComponent<NativeTextLabel>()
-                        .Attach3DTextLabelToPlayer(value.Id, AttachOffset.X, AttachOffset.Y, AttachOffset.Z);
+                        .Attach3DTextLabelToPlayer(value, AttachOffset.X, AttachOffset.Y, AttachOffset.Z);
                 else
                     GetComponent<NativeTextLabel>()
-                        .Attach3DTextLabelToVehicle(value.Id, AttachOffset.X, AttachOffset.Y, AttachOffset.Z);
+                        .Attach3DTextLabelToVehicle(value, AttachOffset.X, AttachOffset.Y, AttachOffset.Z);
                 _attachedEntity = value;
             }
         }

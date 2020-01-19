@@ -20,6 +20,6 @@ namespace TestMode.Entities.Services
     public interface IVehicleRepository
     {
         void Foo();
-        void FooForPlayer(Entity player);
+        void FooForPlayer(EntityId player);
     }
 }

@@ -21,11 +21,17 @@ namespace TestMode.Entities.Services
 {
     public class FunnyService : IScopedFunnyService
     {
+        private readonly IEntityManager _entityManager;
         public Guid FunnyGuid { get; } = Guid.NewGuid();
 
-        public string MakePlayerNameFunny(Entity player)
+        public FunnyService(IEntityManager entityManager)
         {
-            var name = player.GetComponent<Player>().Name;
+            _entityManager = entityManager;
+        }
+
+        public string MakePlayerNameFunny(EntityId player)
+        {
+            var name = _entityManager.GetComponent<Player>(player).Name;
 
             var result = string.Empty;
 

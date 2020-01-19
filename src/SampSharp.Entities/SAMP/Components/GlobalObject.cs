@@ -166,26 +166,22 @@ namespace SampSharp.Entities.SAMP
         /// <param name="offset">The offset.</param>
         /// <param name="rotation">The rotation.</param>
         /// <param name="syncRotation">if set to <c>true</c> synchronize rotation with objects attached to.</param>
-        /// <exception cref="System.ArgumentNullException">player</exception>
-        public void AttachTo(Entity target, Vector3 offset, Vector3 rotation, bool syncRotation = false)
+        public void AttachTo(EntityId target, Vector3 offset, Vector3 rotation, bool syncRotation = false)
         {
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
-
             if (!target.IsOfAnyType(SampEntities.PlayerType, SampEntities.VehicleType, SampEntities.ObjectType))
                 throw new InvalidEntityArgumentException(nameof(target), SampEntities.PlayerType,
                     SampEntities.VehicleType, SampEntities.ObjectType);
 
             if (target.IsOfType(SampEntities.PlayerType))
-                GetComponent<NativeObject>().AttachObjectToPlayer(target.Id, offset.X, offset.Y, offset.Z, rotation.X,
+                GetComponent<NativeObject>().AttachObjectToPlayer(target, offset.X, offset.Y, offset.Z, rotation.X,
                     rotation.Y,
                     rotation.Z);
             else if (target.IsOfType(SampEntities.VehicleType))
-                GetComponent<NativeObject>().AttachObjectToVehicle(target.Id, offset.X, offset.Y, offset.Z, rotation.X,
+                GetComponent<NativeObject>().AttachObjectToVehicle(target, offset.X, offset.Y, offset.Z, rotation.X,
                     rotation.Y,
                     rotation.Z);
             else if (target.IsOfType(SampEntities.ObjectType))
-                GetComponent<NativeObject>().AttachObjectToObject(target.Id, offset.X, offset.Y, offset.Z, rotation.X,
+                GetComponent<NativeObject>().AttachObjectToObject(target, offset.X, offset.Y, offset.Z, rotation.X,
                     rotation.Y,
                     rotation.Z, syncRotation);
             else
