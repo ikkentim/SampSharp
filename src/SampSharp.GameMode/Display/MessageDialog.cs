@@ -34,12 +34,9 @@ namespace SampSharp.GameMode.Display
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
         public MessageDialog(string caption, string message, string button1, string button2 = null)
         {
-            if (caption == null) throw new ArgumentNullException(nameof(caption));
-            if (message == null) throw new ArgumentNullException(nameof(message));
-            if (button1 == null) throw new ArgumentNullException(nameof(button1));
-            Caption = caption;
-            Message = message;
-            Button1 = button1;
+            Caption = caption ?? throw new ArgumentNullException(nameof(caption));
+            Message = message ?? throw new ArgumentNullException(nameof(message));
+            Button1 = button1 ?? throw new ArgumentNullException(nameof(button1));
             Button2 = button2;
             Style = DialogStyle.MessageBox;
         }

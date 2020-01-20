@@ -108,9 +108,7 @@ namespace SampSharp.GameMode.Pools
         /// <returns>True on success; False otherwise.</returns>
         public bool RemoveUnidentified(TInstance item)
         {
-            if (item == null) return false;
-
-            return _unidentifiedItems.Remove(item);
+            return item != null && _unidentifiedItems.Remove(item);
         }
 
         /// <summary>

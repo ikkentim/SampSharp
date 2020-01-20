@@ -37,8 +37,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <exception cref="ArgumentNullException"></exception>
         public CommandsManager(BaseMode gameMode)
         {
-            if (gameMode == null) throw new ArgumentNullException(nameof(gameMode));
-            GameMode = gameMode;
+            GameMode = gameMode ?? throw new ArgumentNullException(nameof(gameMode));
         }
 
         #region Implementation of IService

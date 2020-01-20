@@ -61,8 +61,7 @@ namespace SampSharp.GameMode.Controllers
             if (CommandsManager == null)
                 return;
 
-            var player = sender as BasePlayer;
-            if (player == null) return;
+            if (!(sender is BasePlayer player)) return;
 
             e.Success = CommandsManager.Process(e.Text, player);
         }

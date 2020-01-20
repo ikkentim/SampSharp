@@ -37,16 +37,16 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the IP attempting to connect.
         /// </summary>
-        public string IP { get; private set; }
+        public string IP { get; }
 
         /// <summary>
         ///     Gets the password used.
         /// </summary>
-        public string Password { get; private set; }
+        public string Password { get; }
 
         /// <summary>
         ///     Gets a value indicating whether this is a successful login.
         /// </summary>
-        public bool SuccessfulLogin { get; private set; }
+        public bool SuccessfulLogin { get; }
     }
 }

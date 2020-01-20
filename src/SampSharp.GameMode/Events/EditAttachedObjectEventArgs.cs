@@ -49,36 +49,36 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the EditObjectResponse.
         /// </summary>
-        public EditObjectResponse EditObjectResponse { get; private set; }
+        public EditObjectResponse EditObjectResponse { get; }
 
         /// <summary>
         ///     Gets the index of the attached  object.
         /// </summary>
-        public int Index { get; private set; }
+        public int Index { get; }
 
         /// <summary>
         ///     Gets the id of the model.
         /// </summary>
-        public int ModelId { get; private set; }
+        public int ModelId { get; }
 
         /// <summary>
         ///     Gets the Bone the object was attached to.
         /// </summary>
-        public Bone Bone { get; private set; }
+        public Bone Bone { get; }
 
         /// <summary>
         ///     Gets the offset of the attached object.
         /// </summary>
-        public Vector3 Offset { get; private set; }
+        public Vector3 Offset { get; }
 
         /// <summary>
         ///     Gets the rotation of the attached object.
         /// </summary>
-        public Vector3 Rotation { get; private set; }
+        public Vector3 Rotation { get; }
 
         /// <summary>
         ///     Gets the scale of the attached object.
         /// </summary>
-        public Vector3 Scale { get; private set; }
+        public Vector3 Scale { get; }
     }
 }

@@ -42,21 +42,21 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the other player.
         /// </summary>
-        public BasePlayer OtherPlayer { get; private set; }
+        public BasePlayer OtherPlayer { get; }
 
         /// <summary>
         ///     Gets the amount of damage done.
         /// </summary>
-        public float Amount { get; private set; }
+        public float Amount { get; }
 
         /// <summary>
         ///     Gets the Weapon used to damage another player.
         /// </summary>
-        public Weapon Weapon { get; private set; }
+        public Weapon Weapon { get; }
 
         /// <summary>
         ///     Gets the BodyPart shot at.
         /// </summary>
-        public BodyPart BodyPart { get; private set; }
+        public BodyPart BodyPart { get; }
     }
 }

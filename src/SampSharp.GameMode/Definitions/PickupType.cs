@@ -93,6 +93,6 @@ namespace SampSharp.GameMode.Definitions
         /// <summary>
         ///     Disappears after pickup, respawns after death.
         /// </summary>
-        ShowAndRespawnWhenDeath2 = 22,
+        ShowAndRespawnWhenDeath2 = 22
     }
 }

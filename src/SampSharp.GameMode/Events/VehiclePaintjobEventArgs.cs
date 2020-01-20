@@ -36,6 +36,6 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the paintjob identifier.
         /// </summary>
-        public int PaintjobId { get; private set; }
+        public int PaintjobId { get; }
     }
 }

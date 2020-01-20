@@ -77,7 +77,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 throw new ArgumentException("Method has parameter of unknown type", nameof(method));
             }
 
-            PermissionCheckers = (permissionCheckers?.Where(p => p != null).ToArray() ?? new IPermissionChecker[0]);
+            PermissionCheckers = permissionCheckers?.Where(p => p != null).ToArray() ?? new IPermissionChecker[0];
         }
 
         /// <summary>
@@ -130,9 +130,9 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <returns>true if valid; false otherwise.</returns>
         public static bool IsValidCommandMethod(MethodInfo method)
         {
-            return (method.IsStatic && method.GetParameters().Length >= 1 &&
-                    typeof (BasePlayer).GetTypeInfo().IsAssignableFrom(method.GetParameters().First().ParameterType)) ||
-                   (!method.IsStatic && typeof (BasePlayer).GetTypeInfo().IsAssignableFrom(method.DeclaringType));
+            return method.IsStatic && method.GetParameters().Length >= 1 &&
+                   typeof (BasePlayer).GetTypeInfo().IsAssignableFrom(method.GetParameters().First().ParameterType) ||
+                   !method.IsStatic && typeof (BasePlayer).GetTypeInfo().IsAssignableFrom(method.DeclaringType);
         }
 
         private bool GetArguments(string commandText, out object[] arguments)
@@ -273,7 +273,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 if (!name.Matches(commandText, IsCaseIgnored)) continue;
 
                 commandText = commandText.Substring(name.Length);
-                return GetArguments(commandText, out var tmp)
+                return GetArguments(commandText, out _)
                     ? CommandCallableResponse.True
                     : CommandCallableResponse.Optional;
             }

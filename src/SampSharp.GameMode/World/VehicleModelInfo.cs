@@ -262,17 +262,17 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the name of this <see cref="VehicleModelInfo" />.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         ///     Gets the category of this <see cref="VehicleModelInfo" />.
         /// </summary>
-        public VehicleCategory Category { get; private set; }
+        public VehicleCategory Category { get; }
 
         /// <summary>
         ///     Gets the seats number of this <see cref="VehicleModelInfo" />.
         /// </summary>
-        public int SeatCount { get; private set; }
+        public int SeatCount { get; }
 
         /// <summary>
         ///     Gets model information of the given type.

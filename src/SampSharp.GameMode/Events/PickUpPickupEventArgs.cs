@@ -18,7 +18,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events
 {
     /// <summary>
-    ///     Provides data for the <see cref="Pickup.PickUp" /> event.
+    ///     Provides data for the <see cref="World.Pickup.PickUp" /> event.
     /// </summary>
     public class PickUpPickupEventArgs : EventArgs
     {
@@ -36,11 +36,11 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player.
         /// </summary>
-        public BasePlayer Player { get; private set; }
+        public BasePlayer Player { get; }
 
         /// <summary>
         ///     Gets the pickup.
         /// </summary>
-        public Pickup Pickup { get; private set; }
+        public Pickup Pickup { get; }
     }
 }

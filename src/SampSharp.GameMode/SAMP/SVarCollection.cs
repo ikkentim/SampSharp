@@ -58,23 +58,23 @@ namespace SampSharp.GameMode.SAMP
             {
                 if (varname == null) return;
 
-                if (value == null)
+                switch (value)
                 {
-                    Delete(varname);
-                    return;
-                }
-
-                if (value is int)
-                    SVarCollectionInternal.Instance.SetSVarInt(varname, (int) value);
-                else if (value is float)
-                    SVarCollectionInternal.Instance.SetSVarFloat(varname, (float) value);
-                else if (value is bool)
-                    SVarCollectionInternal.Instance.SetSVarInt(varname, (bool) value ? 1 : 0);
-                else
-                {
-                    var s = value as string;
-                    if (s != null)
+                    case null:
+                        Delete(varname);
+                        return;
+                    case int i:
+                        SVarCollectionInternal.Instance.SetSVarInt(varname, i);
+                        break;
+                    case float f:
+                        SVarCollectionInternal.Instance.SetSVarFloat(varname, f);
+                        break;
+                    case bool b:
+                        SVarCollectionInternal.Instance.SetSVarInt(varname, b ? 1 : 0);
+                        break;
+                    case string s:
                         SVarCollectionInternal.Instance.SetSVarString(varname, s);
+                        break;
                 }
             }
         }

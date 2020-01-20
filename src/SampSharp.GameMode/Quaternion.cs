@@ -159,7 +159,7 @@ namespace SampSharp.GameMode
                     w
                 );
             }
-            if ((matrix.M11 >= matrix.M22) && (matrix.M11 >= matrix.M33))
+            if (matrix.M11 >= matrix.M22 && matrix.M11 >= matrix.M33)
             {
                 sqrt = (float) Math.Sqrt(1.0f + matrix.M11 - matrix.M22 - matrix.M33);
                 half = 0.5f/sqrt;
@@ -511,7 +511,7 @@ namespace SampSharp.GameMode
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Quaternion && Equals((Quaternion) obj);
+            return obj is Quaternion quaternion && Equals(quaternion);
         }
 
         /// <summary>

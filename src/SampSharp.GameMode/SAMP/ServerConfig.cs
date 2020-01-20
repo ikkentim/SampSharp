@@ -69,7 +69,7 @@ namespace SampSharp.GameMode.SAMP
         /// </returns>
         public string Get(string key, bool trimSpaces = true)
         {
-            return _values.ContainsKey(key) ? (trimSpaces ? _values[key].Trim() : _values[key]) : null;
+            return _values.ContainsKey(key) ? trimSpaces ? _values[key].Trim() : _values[key] : null;
         }
 
         /// <summary>

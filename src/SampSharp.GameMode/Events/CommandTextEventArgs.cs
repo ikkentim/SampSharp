@@ -34,7 +34,7 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the text sent by the player.
         /// </summary>
-        public string Text { get; private set; }
+        public string Text { get; }
 
         /// <summary>
         ///     Gets or sets whether this command has been handled successfully.

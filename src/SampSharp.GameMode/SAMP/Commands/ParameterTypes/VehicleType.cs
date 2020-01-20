@@ -45,18 +45,16 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
             var word = text.Split(' ').First();
 
             // find a vehicle with a matching id.
-            int id;
-            if (int.TryParse(word, NumberStyles.Integer, CultureInfo.InvariantCulture, out id))
-            {
-                var vehicle = BaseVehicle.Find(id);
-                if (vehicle != null)
-                {
-                    output = vehicle;
-                    commandText = commandText.Substring(word.Length).TrimStart(' ');
-                    return true;
-                }
-            }
-            return false;
+            if (!int.TryParse(word, NumberStyles.Integer, CultureInfo.InvariantCulture, out var id)) 
+                return false;
+
+            var vehicle = BaseVehicle.Find(id);
+            if (vehicle == null)
+                return false;
+
+            output = vehicle;
+            commandText = commandText.Substring(word.Length).TrimStart(' ');
+            return true;
         }
 
         #endregion

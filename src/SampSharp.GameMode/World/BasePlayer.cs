@@ -14,8 +14,6 @@
 // limitations under the License.
 using System;
 using System.Linq;
-using System.Xml;
-using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
@@ -90,7 +88,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets a collections of Player Variables of this Player.
         /// </summary>
-        public PVarCollection PVars { get; private set; }
+        public PVarCollection PVars { get; }
 
         /// <summary>
         ///     Gets a set of KeyHandlers for different key states.

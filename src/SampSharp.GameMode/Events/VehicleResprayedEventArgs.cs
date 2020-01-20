@@ -37,11 +37,11 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the color1.
         /// </summary>
-        public int Color1 { get; private set; }
+        public int Color1 { get; }
 
         /// <summary>
         ///     Gets the color2.
         /// </summary>
-        public int Color2 { get; private set; }
+        public int Color2 { get; }
     }
 }

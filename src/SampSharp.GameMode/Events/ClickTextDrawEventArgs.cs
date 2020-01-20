@@ -38,11 +38,11 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player.
         /// </summary>
-        public BasePlayer Player { get; private set; }
+        public BasePlayer Player { get; }
 
         /// <summary>
         ///     Gets the text draw.
         /// </summary>
-        public TextDraw TextDraw { get; private set; }
+        public TextDraw TextDraw { get; }
     }
 }

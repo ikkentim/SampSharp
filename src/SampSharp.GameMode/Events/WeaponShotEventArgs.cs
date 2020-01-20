@@ -40,17 +40,17 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the weapon.
         /// </summary>
-        public Weapon Weapon { get; private set; }
+        public Weapon Weapon { get; }
 
         /// <summary>
         ///     Gets the type of the bullet hit.
         /// </summary>
-        public BulletHitType BulletHitType { get; private set; }
+        public BulletHitType BulletHitType { get; }
 
         /// <summary>
         ///     Gets the hit identifier.
         /// </summary>
-        public int HitId { get; private set; }
+        public int HitId { get; }
 
         /// <summary>
         ///     Gets or sets whether the bullets should be prevented from causing damage.

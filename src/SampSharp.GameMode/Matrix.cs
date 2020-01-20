@@ -497,8 +497,8 @@ namespace SampSharp.GameMode
         public override bool Equals(object obj)
         {
             var flag = false;
-            if (obj is Matrix)
-                flag = Equals((Matrix) obj);
+            if (obj is Matrix matrix)
+                flag = Equals(matrix);
             return flag;
         }
 

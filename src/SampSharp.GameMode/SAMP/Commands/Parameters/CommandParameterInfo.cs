@@ -33,12 +33,9 @@ namespace SampSharp.GameMode.SAMP.Commands.Parameters
         public CommandParameterInfo(string name, ICommandParameterType commandParameterType, bool isOptional,
             object defaultValue)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (commandParameterType == null) throw new ArgumentNullException(nameof(commandParameterType));
-
-            CommandParameterType = commandParameterType;
+            CommandParameterType = commandParameterType ?? throw new ArgumentNullException(nameof(commandParameterType));
             IsOptional = isOptional;
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             DefaultValue = defaultValue;
         }
 

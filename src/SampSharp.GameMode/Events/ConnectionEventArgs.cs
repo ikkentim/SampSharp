@@ -40,16 +40,16 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the id of the player trying to connect.
         /// </summary>
-        public int PlayerId { get; private set; }
+        public int PlayerId { get; }
 
         /// <summary>
         ///     Gets the ip of this connection.
         /// </summary>
-        public string IpAddress { get; private set; }
+        public string IpAddress { get; }
 
         /// <summary>
         ///     Gets the port of this connection.
         /// </summary>
-        public int Port { get; private set; }
+        public int Port { get; }
     }
 }

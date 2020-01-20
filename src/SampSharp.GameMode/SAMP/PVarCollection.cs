@@ -34,10 +34,7 @@ namespace SampSharp.GameMode.SAMP
         /// <exception cref="System.ArgumentNullException">player</exception>
         public PVarCollection(BasePlayer player)
         {
-            if (player == null)
-                throw new ArgumentNullException(nameof(player));
-
-            _player = player;
+            _player = player ?? throw new ArgumentNullException(nameof(player));
         }
 
         /// <summary>
@@ -74,23 +71,23 @@ namespace SampSharp.GameMode.SAMP
             {
                 if (varname == null || _player == null) return;
 
-                if (value == null)
+                switch (value)
                 {
-                    Delete(varname);
-                    return;
-                }
-
-                if (value is int)
-                    PVarCollectionInternal.Instance.SetPVarInt(_player.Id, varname, (int) value);
-                else if (value is float)
-                    PVarCollectionInternal.Instance.SetPVarFloat(_player.Id, varname, (float) value);
-                else if (value is bool)
-                    PVarCollectionInternal.Instance.SetPVarInt(_player.Id, varname, (bool) value ? 1 : 0);
-                else
-                {
-                    var s = value as string;
-                    if (s != null)
+                    case null:
+                        Delete(varname);
+                        return;
+                    case int i:
+                        PVarCollectionInternal.Instance.SetPVarInt(_player.Id, varname, i);
+                        break;
+                    case float f:
+                        PVarCollectionInternal.Instance.SetPVarFloat(_player.Id, varname, f);
+                        break;
+                    case bool b:
+                        PVarCollectionInternal.Instance.SetPVarInt(_player.Id, varname, b ? 1 : 0);
+                        break;
+                    case string s:
                         PVarCollectionInternal.Instance.SetPVarString(_player.Id, varname, s);
+                        break;
                 }
             }
         }
@@ -131,7 +128,7 @@ namespace SampSharp.GameMode.SAMP
         /// <returns>The variable with the specified varname.</returns>
         public T Get<T>(string varname)
         {
-            if (_player == null) return default(T);
+            if (_player == null) return default;
 
             object value = default(T);
             if (typeof (T) == typeof (int))

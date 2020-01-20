@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using System;
+
 using System.Linq;
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
@@ -36,9 +36,7 @@ namespace SampSharp.GameMode.Controllers
             gameMode.PlayerSelectPlayerObject += (sender, args) => args.Object?.OnSelected(args);
             gameMode.PlayerCleanup += (sender, args) =>
             {
-                var player = sender as BasePlayer;
-
-                if (player == null)
+                if (!(sender is BasePlayer player))
                     return;
 
                 foreach (var obj in PlayerObject.Of(player).ToArray())

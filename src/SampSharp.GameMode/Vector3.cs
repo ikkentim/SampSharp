@@ -641,7 +641,7 @@ namespace SampSharp.GameMode
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Vector3 && Equals((Vector3) obj);
+            return obj is Vector3 vector && Equals(vector);
         }
 
         #endregion

@@ -36,11 +36,9 @@ namespace SampSharp.GameMode.Display
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
         public ListDialog(string caption, string button1, string button2 = null)
         {
-            if (caption == null) throw new ArgumentNullException(nameof(caption));
-            if (button1 == null) throw new ArgumentNullException(nameof(button1));
-            Button1 = button1;
+            Button1 = button1 ?? throw new ArgumentNullException(nameof(button1));
             Button2 = button2;
-            Caption = caption;
+            Caption = caption ?? throw new ArgumentNullException(nameof(caption));
             Style = DialogStyle.List;
         }
 

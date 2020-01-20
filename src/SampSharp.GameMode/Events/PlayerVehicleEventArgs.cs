@@ -35,6 +35,6 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the vehicle.
         /// </summary>
-        public BaseVehicle Vehicle { get; private set; }
+        public BaseVehicle Vehicle { get; }
     }
 }

@@ -34,6 +34,6 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets a value indicating whether the siren is turned on in the new state.
         /// </summary>
-        public bool NewState { get; private set; }
+        public bool NewState { get; }
     }
 }

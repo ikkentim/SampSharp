@@ -103,7 +103,7 @@ namespace SampSharp.GameMode.Display
         ///     Gets an <see cref="IReadOnlyCollection{T}" /> of <see cref="BasePlayer" /> instances which are viewing this
         ///     instance.
         /// </summary>
-        public IReadOnlyCollection<BasePlayer> Viewers { get; private set; }
+        public IReadOnlyCollection<BasePlayer> Viewers { get; }
 
         /// <summary>
         ///     Gets a collection of columns.

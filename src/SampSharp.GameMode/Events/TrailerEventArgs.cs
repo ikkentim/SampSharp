@@ -34,7 +34,7 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player sending the update.
         /// </summary>
-        public BasePlayer Player { get; private set; }
+        public BasePlayer Player { get; }
 
         /// <summary>
         ///     Gets or sets whether to stop the vehicle syncing its position to other players.

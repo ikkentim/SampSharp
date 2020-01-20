@@ -36,6 +36,6 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the reason of the disconnection.
         /// </summary>
-        public DisconnectReason Reason { get; private set; }
+        public DisconnectReason Reason { get; }
     }
 }

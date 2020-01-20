@@ -174,7 +174,7 @@ namespace SampSharp.GameMode
                 extension.PostLoad(this);
         }
 
-        private void AddExtensionToLoadList(Assembly assembly, List<Assembly> load, List<Assembly> loading)
+        private static void AddExtensionToLoadList(Assembly assembly, List<Assembly> load, List<Assembly> loading)
         {
             // Ensure assembly is an extension.
             if (!assembly.GetCustomAttributes<SampSharpExtensionAttribute>().Any())

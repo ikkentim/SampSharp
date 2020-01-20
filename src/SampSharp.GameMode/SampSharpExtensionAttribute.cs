@@ -45,7 +45,7 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Gets the type of the extension.
         /// </summary>
-        public Type Type { get; private set; }
+        public Type Type { get; }
 
         /// <summary>
         ///     Gets the assemblies to load before this extension.

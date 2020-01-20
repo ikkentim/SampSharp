@@ -34,6 +34,6 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the position.
         /// </summary>
-        public Vector3 Position { get; private set; }
+        public Vector3 Position { get; }
     }
 }
