@@ -18,6 +18,7 @@
 - Fixed `Edited` and `Selected` on `GlobalObject` and `PlayerObject` not being fired (#303/#306)
 - Fixed `Color.FromInteger` with `ColorFormat.RGB` returning a value with 0 alpha
 - Fixed conversion from `Color` to `Vector3` not returning decimal values
+- Fixed enum numeric values not being recognized as an command argument if an enum value name contains the numeric value (#274)
 - *breaking* Removed `ObjectModel` enum because it was too big and might not be complete
 
 ### 0.8.0

@@ -92,10 +92,14 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
             // if also testing against underlying values, loop trough every value, convert it to the underlying type and compare.
             if (TestForValue)
             {
-                candidates.AddRange(
-                    typeof (T).GetTypeInfo().GetEnumValues()
+                var valueCandidates =
+                    typeof(T).GetTypeInfo().GetEnumValues()
                         .OfType<object>()
-                        .Where(t => Convert.ChangeType(t, Enum.GetUnderlyingType(typeof (T))).ToString() == word));
+                        .Where(t => Convert.ChangeType(t, Enum.GetUnderlyingType(typeof(T))).ToString() == word)
+                        .ToList();
+
+                if (valueCandidates.Count == 1)
+                    candidates = valueCandidates;
             }
 
             if (candidates.Count == 1)
