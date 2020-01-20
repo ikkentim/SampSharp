@@ -116,7 +116,7 @@ namespace SampSharp.GameMode.SAMP
 
             throw new NotSupportedException("Type " + typeof (T) + " is not supported by SA:MP");
         }
-
+        
         /// <summary>
         ///     Returns the uptime of the actual server in milliseconds.
         /// </summary>
@@ -125,7 +125,16 @@ namespace SampSharp.GameMode.SAMP
         {
             return ServerInternal.Instance.GetTickCount();
         }
-        
+
+        /// <summary>
+        /// Gets the tick rate of the server.
+        /// </summary>
+        /// <remarks>The tick rate is 0 if the server just started.</remarks>
+        public static int GetServerTickRate ()
+        {
+            return ServerInternal.Instance.GetTickCount();
+        }
+
         /// <summary>
         ///     Prints the specified message to the console.
         /// </summary>

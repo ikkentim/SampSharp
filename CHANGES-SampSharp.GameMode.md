@@ -7,6 +7,7 @@
 - Added `BasePlayer.PickUpPickup` event (#319)
 - Added `BasePlayer.CameraTargetPlayerObject` (#320)
 - Added `BasePlayer.SurfingPlayerObject` (#324)
+- Added `Server.GetServerTickRate` (#295)
 - Updated `VehicleModelInfo` to include seat count and a missing entry for ID 611, Utility Trailer (#302)
 - Updated minimum .NET Standard version to 2.0
 - *breaking* Changed `BasePlayer.CameraTargetObject` to `BasePlayer.CameraTargetGlobalObject` (#320)
