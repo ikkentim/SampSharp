@@ -278,7 +278,6 @@ void remote_server::cmd_send_announce() {
         buf);
 
     log_info("Server announcement sent.");
-    log_info("Hi from %s", cwd.c_str());
 }
 
 /** disconnects from client */
