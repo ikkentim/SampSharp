@@ -1347,9 +1347,7 @@ namespace SampSharp.Entities.SAMP
         /// </returns>
         public static explicit operator Vector3(Color value)
         {
-            // ReSharper disable PossibleLossOfFraction
-            return new Vector3(value.R / byte.MaxValue, value.G / byte.MaxValue, value.B / byte.MaxValue);
-            // ReSharper restore PossibleLossOfFraction
+            return new Vector3((float)value.R / byte.MaxValue, (float)value.G / byte.MaxValue, (float)value.B / byte.MaxValue);
         }
 
         #endregion

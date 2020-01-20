@@ -1337,7 +1337,7 @@ namespace SampSharp.GameMode.SAMP
         /// </returns>
         public static explicit operator Vector3(Color value)
         {
-            return new Vector3(value.R/byte.MaxValue, value.G/byte.MaxValue, value.B/byte.MaxValue);
+            return new Vector3((float)value.R/byte.MaxValue, (float)value.G/byte.MaxValue, (float)value.B/byte.MaxValue);
         }
 
         #endregion
