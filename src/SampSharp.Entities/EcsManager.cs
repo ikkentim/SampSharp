@@ -19,7 +19,6 @@ using SampSharp.Core;
 using SampSharp.Core.Logging;
 using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
-using SampSharp.Entities.Utilities;
 
 namespace SampSharp.Entities
 {

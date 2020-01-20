@@ -19,17 +19,15 @@ namespace SampSharp.Entities.SAMP
 {
     internal class ArgumentsOverrideEventContext : EventContext
     {
-        private readonly object[] _arguments;
-
         public ArgumentsOverrideEventContext(int argumentCount)
         {
-            _arguments = new object[argumentCount];
+            Arguments = new object[argumentCount];
         }
 
         public EventContext BaseContext { get; set; }
             
         public override string Name => BaseContext.Name;
-        public override object[] Arguments => _arguments;
+        public override object[] Arguments { get; }
 
         public override IServiceProvider EventServices => BaseContext.EventServices;
     }

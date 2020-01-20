@@ -14,12 +14,15 @@
 // limitations under the License.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Contains all map icons.
     /// </summary>
+    [SuppressMessage("ReSharper", "IdentifierTypo")]
+    [SuppressMessage("ReSharper", "CommentTypo")]
     public enum MapIcon
     {
         /// <summary>

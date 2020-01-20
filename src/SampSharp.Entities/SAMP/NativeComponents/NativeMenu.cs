@@ -23,7 +23,7 @@ namespace SampSharp.Entities.SAMP
     [SuppressMessage("ReSharper", "IdentifierTypo")]
     public class NativeMenu : BaseNativeComponent
     {
-        public const int InvalidId = -1;
+        public const int InvalidId = 255;
 
         [NativeMethod]
         public virtual bool DestroyMenu()
@@ -72,7 +72,5 @@ namespace SampSharp.Entities.SAMP
         {
             throw new NativeNotImplementedException();
         }
-
-        // [NativeMethod] public virtual int GetPlayerMenu(int playerid) TODO move to player
     }
 }

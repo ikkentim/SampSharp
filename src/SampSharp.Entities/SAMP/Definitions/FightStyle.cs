@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace SampSharp.Entities.SAMP
 {
     /// <summary>
@@ -21,6 +23,8 @@ namespace SampSharp.Entities.SAMP
     /// <remarks>
     /// See <see href="http://wiki.sa-mp.com/wiki/Fight_styles">http://wiki.sa-mp.com/wiki/Fight_styles</see>.
     /// </remarks>
+    [SuppressMessage("ReSharper", "IdentifierTypo")]
+    [SuppressMessage("ReSharper", "CommentTypo")]
     public enum FightStyle
     {
         /// <summary>
@@ -29,7 +33,7 @@ namespace SampSharp.Entities.SAMP
         Normal = 4,
 
         /// <summary>
-        /// Borxing fighting style.
+        /// Boxing fighting style.
         /// </summary>
         Boxing = 5,
 

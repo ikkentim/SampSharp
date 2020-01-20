@@ -131,7 +131,7 @@ namespace SampSharp.Entities.SAMP
         }
 
         [NativeMethod]
-        public virtual bool PlayerTextDrawSetPreviewModel(int modelindex)
+        public virtual bool PlayerTextDrawSetPreviewModel(int modelIndex)
         {
             throw new NativeNotImplementedException();
         }

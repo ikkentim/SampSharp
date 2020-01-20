@@ -498,8 +498,8 @@ namespace SampSharp.Entities.SAMP
         public override bool Equals(object obj)
         {
             var flag = false;
-            if (obj is Matrix)
-                flag = Equals((Matrix) obj);
+            if (obj is Matrix matrix)
+                flag = Equals(matrix);
             return flag;
         }
 
@@ -577,23 +577,23 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <summary>
-        /// Creates a new <see cref="Matrix" /> that contains linear interpolation of the values in specified matrixes.
+        /// Creates a new <see cref="Matrix" /> that contains linear interpolation of the values in specified matrices.
         /// </summary>
         /// <param name="matrix1">The first <see cref="Matrix" />.</param>
         /// <param name="matrix2">The second <see cref="Vector2" />.</param>
         /// <param name="amount">Weighting value(between 0.0 and 1.0).</param>
-        /// <returns>>The result of linear interpolation of the specified matrixes.</returns>
+        /// <returns>>The result of linear interpolation of the specified matrices.</returns>
         public static Matrix Lerp(Matrix matrix1, Matrix matrix2, float amount)
         {
             return matrix1 + (matrix2 - matrix1) * amount;
         }
 
         /// <summary>
-        /// Adds two matrixes.
+        /// Adds two matrices.
         /// </summary>
         /// <param name="matrix1">Source <see cref="Matrix" /> on the left of the add sign.</param>
         /// <param name="matrix2">Source <see cref="Matrix" /> on the right of the add sign.</param>
-        /// <returns>Sum of the matrixes.</returns>
+        /// <returns>Sum of the matrices.</returns>
         public static Matrix operator +(Matrix matrix1, Matrix matrix2)
         {
             return new Matrix(
@@ -621,7 +621,7 @@ namespace SampSharp.Entities.SAMP
         /// </summary>
         /// <param name="matrix1">Source <see cref="Matrix" /> on the left of the div sign.</param>
         /// <param name="matrix2">Divisor <see cref="Matrix" /> on the right of the div sign.</param>
-        /// <returns>The result of dividing the matrixes.</returns>
+        /// <returns>The result of dividing the matrices.</returns>
         public static Matrix operator /(Matrix matrix1, Matrix matrix2)
         {
             return new Matrix(
@@ -740,7 +740,7 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <summary>
-        /// Multiplies two matrixes.
+        /// Multiplies two matrices.
         /// </summary>
         /// <param name="matrix1">Source <see cref="Matrix" /> on the left of the mul sign.</param>
         /// <param name="matrix2">Source <see cref="Matrix" /> on the right of the mul sign.</param>

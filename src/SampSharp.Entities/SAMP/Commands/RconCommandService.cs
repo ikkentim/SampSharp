@@ -38,13 +38,11 @@ namespace SampSharp.Entities.SAMP.Commands
         {
             var result = Invoke(services, null, inputText);
 
-            if (result.Response == InvokeResponse.InvalidArguments)
-            {
-                services.GetRequiredService<IGameModeClient>().Print(result.UsageMessage);
-                return true;
-            }
+            if (result.Response != InvokeResponse.InvalidArguments) 
+                return result.Response == InvokeResponse.Success;
 
-            return result.Response == InvokeResponse.Success;
+            services.GetRequiredService<IGameModeClient>().Print(result.UsageMessage);
+            return true;
         }
 
         /// <inheritdoc />

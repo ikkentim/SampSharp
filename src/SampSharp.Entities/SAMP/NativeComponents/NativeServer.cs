@@ -88,15 +88,15 @@ namespace SampSharp.Entities.SAMP
         }
 
         [NativeMethod]
-        public virtual int AddPlayerClass(int modelid, float spawn_x, float spawn_y, float spawn_z, float z_angle,
-            int weapon1, int weapon1_ammo, int weapon2, int weapon2_ammo, int weapon3, int weapon3_ammo)
+        public virtual int AddPlayerClass(int modelId, float spawnX, float spawnY, float spawnZ, float zAngle,
+            int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int AddPlayerClassEx(int teamid, int modelid, float spawn_x, float spawn_y, float spawn_z,
-            float z_angle, int weapon1, int weapon1_ammo, int weapon2, int weapon2_ammo, int weapon3, int weapon3_ammo)
+        public virtual int AddPlayerClassEx(int teamId, int modelId, float spawnX, float spawnY, float spawnZ,
+            float zAngle, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
         {
             throw new NativeNotImplementedException();
         }
@@ -126,13 +126,13 @@ namespace SampSharp.Entities.SAMP
         }
 
         [NativeMethod]
-        public virtual bool LimitGlobalChatRadius(float chat_radius)
+        public virtual bool LimitGlobalChatRadius(float chatRadius)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool LimitPlayerMarkerRadius(float marker_radius)
+        public virtual bool LimitPlayerMarkerRadius(float markerRadius)
         {
             throw new NativeNotImplementedException();
         }
@@ -150,37 +150,37 @@ namespace SampSharp.Entities.SAMP
         }
 
         [NativeMethod]
-        public virtual bool GetNetworkStats(out string retstr, int size)
+        public virtual bool GetNetworkStats(out string retStr, int size)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool BlockIpAddress(string ip_address, int timems)
+        public virtual bool BlockIpAddress(string ipAddress, int timeMs)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool UnBlockIpAddress(string ip_address)
+        public virtual bool UnBlockIpAddress(string ipAddress)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool GetConsoleVarAsString(string varname, out string buffer, int len)
+        public virtual bool GetConsoleVarAsString(string varName, out string buffer, int len)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int GetConsoleVarAsInt(string varname)
+        public virtual int GetConsoleVarAsInt(string varName)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool GetConsoleVarAsBool(string varname)
+        public virtual bool GetConsoleVarAsBool(string varName)
         {
             throw new NativeNotImplementedException();
         }

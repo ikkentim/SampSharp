@@ -26,7 +26,7 @@ namespace SampSharp.Entities.SAMP
         MessageBox = 0,
 
         /// <summary>
-        /// A box with a caption, text, an inputbox and one or two buttons.
+        /// A box with a caption, text, an input box and one or two buttons.
         /// </summary>
         Input = 1,
 
@@ -36,7 +36,7 @@ namespace SampSharp.Entities.SAMP
         List = 2,
 
         /// <summary>
-        /// A box with a caption, text, an password-inputbox and one or two buttons.
+        /// A box with a caption, text, an password input box and one or two buttons.
         /// </summary>
         Password = 3,
 

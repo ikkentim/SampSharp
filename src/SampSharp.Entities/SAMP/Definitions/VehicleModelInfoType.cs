@@ -16,7 +16,7 @@
 namespace SampSharp.Entities.SAMP
 {
     /// <summary>
-    /// Contains all vehiclemodel info types.
+    /// Contains all vehicle model information types.
     /// </summary>
     public enum VehicleModelInfoType
     {

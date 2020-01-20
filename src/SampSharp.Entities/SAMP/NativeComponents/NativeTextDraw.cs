@@ -102,13 +102,13 @@ namespace SampSharp.Entities.SAMP
         }
 
         [NativeMethod(IdentifiersIndex = 1)]
-        public virtual bool TextDrawShowForPlayer(int playerid)
+        public virtual bool TextDrawShowForPlayer(int playerId)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod(IdentifiersIndex = 1)]
-        public virtual bool TextDrawHideForPlayer(int playerid)
+        public virtual bool TextDrawHideForPlayer(int playerId)
         {
             throw new NativeNotImplementedException();
         }
@@ -120,7 +120,7 @@ namespace SampSharp.Entities.SAMP
         }
 
         [NativeMethod]
-        public virtual bool TextDrawSetPreviewModel(int modelindex)
+        public virtual bool TextDrawSetPreviewModel(int modelIndex)
         {
             throw new NativeNotImplementedException();
         }

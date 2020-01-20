@@ -1391,10 +1391,12 @@ namespace SampSharp.Entities.SAMP
         {
             unchecked
             {
+                // ReSharper disable NonReadonlyMemberInGetHashCode
                 var hashCode = R.GetHashCode();
                 hashCode = (hashCode * 397) ^ G.GetHashCode();
                 hashCode = (hashCode * 397) ^ B.GetHashCode();
                 hashCode = (hashCode * 397) ^ A.GetHashCode();
+                // ReSharper restore NonReadonlyMemberInGetHashCode
                 return hashCode;
             }
         }

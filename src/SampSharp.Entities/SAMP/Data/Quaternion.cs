@@ -516,8 +516,8 @@ namespace SampSharp.Entities.SAMP
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            return obj is Quaternion && Equals((Quaternion) obj);
+            if (obj is null) return false;
+            return obj is Quaternion quaternion && Equals(quaternion);
         }
 
         /// <summary>

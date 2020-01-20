@@ -127,10 +127,10 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <inheritdoc />
-        public Pickup CreatePickup(int model, int type, Vector3 position, int virtualWorld = -1)
+        public Pickup CreatePickup(int model, PickupType type, Vector3 position, int virtualWorld = -1)
         {
             var id = _entityManager.GetComponent<NativeWorld>()
-                .CreatePickup(model, type, position.X, position.Y, position.Z, virtualWorld);
+                .CreatePickup(model, (int) type, position.X, position.Y, position.Z, virtualWorld);
             
             if (id == NativePickup.InvalidId)
                 throw new EntityCreationException();
@@ -143,9 +143,9 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <inheritdoc />
-        public bool AddStaticPickup(int model, int type, Vector3 position, int virtualWorld = -1)
+        public bool AddStaticPickup(int model, PickupType type, Vector3 position, int virtualWorld = -1)
         {
-            return Native.AddStaticPickup(model, type, position.X, position.Y, position.Z, virtualWorld);
+            return Native.AddStaticPickup(model, (int) type, position.X, position.Y, position.Z, virtualWorld);
         }
 
         /// <inheritdoc />
@@ -276,7 +276,7 @@ namespace SampSharp.Entities.SAMP
 
             var id = Native.CreateMenu(title, columns, position.X, position.Y, col0Width, col1Width ?? 0.0f);
             
-            if (id == NativeMenu.InvalidId)
+            if (id == -1) // NOT NativeMenu.InvalidId
                 throw new EntityCreationException();
 
             var entity = SampEntities.GetMenuId(id);

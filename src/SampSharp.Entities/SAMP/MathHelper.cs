@@ -90,7 +90,7 @@ namespace SampSharp.Entities.SAMP
         public static float CatmullRom(float value1, float value2, float value3, float value4, float amount)
         {
             // Using formula from http://www.mvps.org/directx/articles/catmull/
-            // Internally using doubles not to lose precission
+            // Internally using doubles not to lose precision
             double amountSquared = amount * amount;
             var amountCubed = amountSquared * amount;
             return (float) (0.5 * (2.0 * value2 +
@@ -154,21 +154,27 @@ namespace SampSharp.Entities.SAMP
         /// <returns>The result of the Hermite spline interpolation.</returns>
         public static float Hermite(float value1, float tangent1, float value2, float tangent2, float amount)
         {
-            // All transformed to double not to lose precission
+            // All transformed to double not to lose precision
             // Otherwise, for high numbers of param:amount the result is NaN instead of Infinity
             double v1 = value1, v2 = value2, t1 = tangent1, t2 = tangent2, s = amount, result;
             var sCubed = s * s * s;
             var sSquared = s * s;
 
-            if (amount == 0f)
-                result = value1;
-            else if (amount == 1f)
-                result = value2;
-            else
-                result = (2 * v1 - 2 * v2 + t2 + t1) * sCubed +
-                         (3 * v2 - 3 * v1 - 2 * t1 - t2) * sSquared +
-                         t1 * s +
-                         v1;
+            switch (amount)
+            {
+                case 0f:
+                    result = value1;
+                    break;
+                case 1f:
+                    result = value2;
+                    break;
+                default:
+                    result = (2 * v1 - 2 * v2 + t2 + t1) * sCubed +
+                             (3 * v2 - 3 * v1 - 2 * t1 - t2) * sSquared +
+                             t1 * s +
+                             v1;
+                    break;
+            }
             return (float) result;
         }
 

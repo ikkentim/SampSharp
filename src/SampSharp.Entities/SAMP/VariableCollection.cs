@@ -26,6 +26,8 @@ namespace SampSharp.Entities.SAMP
     /// </summary>
     public class VariableCollection : IDictionary<string, object>
     {
+        private const int MaxKeyLength = 40;
+
         private readonly IVariableCollectionNatives _native;
 
         internal VariableCollection(IVariableCollectionNatives native)
@@ -42,7 +44,7 @@ namespace SampSharp.Entities.SAMP
 
             for (var i = 0; i <= upper; i++)
             {
-                _native.GetVarNameAtIndex(i, out var varName, 40);
+                _native.GetVarNameAtIndex(i, out var varName, MaxKeyLength + 1);
 
                 if (varName == null)
                     continue;
@@ -71,7 +73,7 @@ namespace SampSharp.Entities.SAMP
         {
             for (var i = _native.GetVarsUpperIndex(); i >= 0; i--)
             {
-                _native.GetVarNameAtIndex(i, out var varName, 40);
+                _native.GetVarNameAtIndex(i, out var varName, MaxKeyLength + 1);
 
                 if (!string.IsNullOrEmpty(varName))
                     _native.DeleteVar(varName);
@@ -92,7 +94,7 @@ namespace SampSharp.Entities.SAMP
 
             for (var i = 0; i <= upper; i++)
             {
-                _native.GetVarNameAtIndex(i, out var varName, 40);
+                _native.GetVarNameAtIndex(i, out var varName, MaxKeyLength + 1);
 
                 if (string.IsNullOrEmpty(varName))
                     continue;
@@ -132,11 +134,11 @@ namespace SampSharp.Entities.SAMP
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
             if (value == null) throw new ArgumentNullException(nameof(value));
-            if (key.Length > 40)
+            if (key.Length > MaxKeyLength)
                 throw new ArgumentOutOfRangeException(nameof(key), key,
-                    "The variable name is longer than the limit of 40.");
+                    $"The variable name is longer than the limit of {MaxKeyLength}.");
 
-            if (_native.GetVarType(key) != 0)
+            if (_native.GetVarType(key) != (int)ServerVarType.None)
                 throw new ArgumentException("An element with the same key already exists in this collection.",
                     nameof(key));
 
@@ -147,14 +149,14 @@ namespace SampSharp.Entities.SAMP
         public bool ContainsKey(string key)
         {
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            return key != null && key.Length <= 40 && _native.GetVarType(key) != 0;
+            return key != null && key.Length <= MaxKeyLength && _native.GetVarType(key) != (int)ServerVarType.None;
         }
 
         /// <inheritdoc />
         public bool Remove(string key)
         {
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            if (key == null || key.Length > 40)
+            if (key == null || key.Length > MaxKeyLength)
                 return false;
 
             return _native.DeleteVar(key);
@@ -164,7 +166,7 @@ namespace SampSharp.Entities.SAMP
         public bool TryGetValue(string key, out object value)
         {
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            if (key == null || key.Length > 40)
+            if (key == null || key.Length > MaxKeyLength)
             {
                 value = null;
                 return false;
@@ -180,9 +182,9 @@ namespace SampSharp.Entities.SAMP
             get
             {
                 if (key == null) throw new ArgumentNullException(nameof(key));
-                if (key.Length > 40)
+                if (key.Length > MaxKeyLength)
                     throw new ArgumentOutOfRangeException(nameof(key), key,
-                        "The variable name is longer than the limit of 40.");
+                        $"The variable name is longer than the limit of {MaxKeyLength}.");
 
                 return Get(key) ?? throw new KeyNotFoundException();
             }
@@ -191,7 +193,7 @@ namespace SampSharp.Entities.SAMP
                 if (key == null) throw new ArgumentNullException(nameof(key));
                 if (key.Length > 40)
                     throw new ArgumentOutOfRangeException(nameof(key), key,
-                        "The variable name is longer than the limit of 40.");
+                        $"The variable name is longer than the limit of {MaxKeyLength}.");
                 if (value == null) throw new ArgumentNullException(nameof(value));
 
                 Set(key, value);
@@ -253,9 +255,9 @@ namespace SampSharp.Entities.SAMP
         public void Set(string varName, int value)
         {
             if (varName == null) throw new ArgumentNullException(nameof(varName));
-            if (varName.Length > 40)
+            if (varName.Length > MaxKeyLength)
                 throw new ArgumentOutOfRangeException(nameof(varName), varName,
-                    "The variable name is longer than the limit of 40.");
+                    $"The variable name is longer than the limit of {MaxKeyLength}.");
             _native.SetVarInt(varName, value);
         }
 
@@ -270,9 +272,9 @@ namespace SampSharp.Entities.SAMP
         public void Set(string varName, string value)
         {
             if (varName == null) throw new ArgumentNullException(nameof(varName));
-            if (varName.Length > 40)
+            if (varName.Length > MaxKeyLength)
                 throw new ArgumentOutOfRangeException(nameof(varName), varName,
-                    "The variable name is longer than the limit of 40.");
+                    $"The variable name is longer than the limit of {MaxKeyLength}.");
 
             if (value == null)
                 _native.DeleteVar(varName);
@@ -291,24 +293,24 @@ namespace SampSharp.Entities.SAMP
         public void Set(string varName, float value)
         {
             if (varName == null) throw new ArgumentNullException(nameof(varName));
-            if (varName.Length > 40)
+            if (varName.Length > MaxKeyLength)
                 throw new ArgumentOutOfRangeException(nameof(varName), varName,
-                    "The variable name is longer than the limit of 40.");
+                    $"The variable name is longer than the limit of {MaxKeyLength}.");
             _native.SetVarFloat(varName, value);
         }
 
         private object Get(string varName)
         {
             if (varName == null) throw new ArgumentNullException(nameof(varName));
-            if (varName.Length > 40)
+            if (varName.Length > MaxKeyLength)
                 return null;
-            switch (_native.GetVarType(varName))
+            switch ((ServerVarType) _native.GetVarType(varName))
             {
-                case 1:
+                case ServerVarType.Int:
                     return GetInt(varName);
-                case 2:
+                case ServerVarType.String:
                     return GetString(varName);
-                case 3:
+                case ServerVarType.Float:
                     return GetFloat(varName);
                 default:
                     return null;
@@ -326,9 +328,9 @@ namespace SampSharp.Entities.SAMP
         public void Set(string varName, object value)
         {
             if (varName == null) throw new ArgumentNullException(nameof(varName));
-            if (varName.Length > 40)
+            if (varName.Length > MaxKeyLength)
                 throw new ArgumentOutOfRangeException(nameof(varName), varName,
-                    "The variable name is longer than the limit of 40.");
+                    $"The variable name is longer than the limit of {MaxKeyLength}.");
 
             if (value == null)
             {
@@ -358,7 +360,7 @@ namespace SampSharp.Entities.SAMP
             var result = 0;
             for (var i = _native.GetVarsUpperIndex(); i >= 0; i--)
             {
-                _native.GetVarNameAtIndex(i, out var varName, 40);
+                _native.GetVarNameAtIndex(i, out var varName, MaxKeyLength + 1);
                 if (!string.IsNullOrEmpty(varName))
                     result++;
             }
@@ -411,7 +413,7 @@ namespace SampSharp.Entities.SAMP
 
                 for (var i = 0; i <= upper; i++)
                 {
-                    _collection._native.GetVarNameAtIndex(i, out var varName, 40);
+                    _collection._native.GetVarNameAtIndex(i, out var varName, MaxKeyLength + 1);
 
                     if (string.IsNullOrEmpty(varName))
                         continue;
@@ -454,7 +456,7 @@ namespace SampSharp.Entities.SAMP
 
                 for (var i = 0; i <= upper; i++)
                 {
-                    _collection._native.GetVarNameAtIndex(i, out var varName, 40);
+                    _collection._native.GetVarNameAtIndex(i, out var varName, MaxKeyLength + 1);
 
                     if (string.IsNullOrEmpty(varName))
                         continue;
@@ -480,7 +482,7 @@ namespace SampSharp.Entities.SAMP
 
             public bool Contains(string item)
             {
-                return item != null && item.Length <= 40 && _collection._native.GetVarType(item) != 0;
+                return item != null && item.Length <= MaxKeyLength && _collection._native.GetVarType(item) != (int)ServerVarType.None;
             }
 
             public void CopyTo(string[] array, int arrayIndex)
@@ -492,7 +494,7 @@ namespace SampSharp.Entities.SAMP
 
                 for (var i = 0; i <= upper; i++)
                 {
-                    _collection._native.GetVarNameAtIndex(i, out var varName, 40);
+                    _collection._native.GetVarNameAtIndex(i, out var varName, MaxKeyLength + 1);
 
                     if (string.IsNullOrEmpty(varName))
                         continue;

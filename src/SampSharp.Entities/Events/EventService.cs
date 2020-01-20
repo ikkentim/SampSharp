@@ -32,7 +32,7 @@ namespace SampSharp.Entities
     {
         private static readonly Type[] DefaultParameterTypes =
         {
-            typeof(string),
+            typeof(string)
             // TODO: Callbacks with parameter length are not yet supported
             //typeof(int[]),
             //typeof(bool[]),
@@ -174,14 +174,12 @@ namespace SampSharp.Entities
                 Invoke = (instance, eventContext) =>
                 {
                     var args = eventContext.Arguments;
-                    if (callbackParamCount != args.Length)
-                    {
-                        CoreLog.Log(CoreLogLevel.Error,
-                            $"Callback parameter count mismatch {callbackParamCount} != {args.Length}");
-                        return null;
-                    }
+                    if (callbackParamCount == args.Length)
+                        return compiled(instance, args, eventContext.EventServices, _entityManager);
 
-                    return compiled(instance, args, eventContext.EventServices, _entityManager);
+                    CoreLog.Log(CoreLogLevel.Error,
+                        $"Callback parameter count mismatch {callbackParamCount} != {args.Length}");
+                    return null;
                 }
             };
         }

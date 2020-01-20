@@ -143,7 +143,7 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <summary>
-        /// Disable a specific row in this menu for all players. It will be greyed-out and can't be selected by players.
+        /// Disable a specific row in this menu for all players. It will be grayed-out and can't be selected by players.
         /// </summary>
         /// <param name="row">The index of the row to disable.</param>
         public void DisableRow(int row)

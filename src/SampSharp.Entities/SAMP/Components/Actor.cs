@@ -90,10 +90,7 @@ namespace SampSharp.Entities.SAMP
         /// <returns>True if streamed in; False otherwise.</returns>
         public bool IsStreamedIn(EntityId player)
         {
-            if (!player.IsOfType(SampEntities.PlayerType))
-                return false;
-
-            return GetComponent<NativeActor>().IsActorStreamedIn(player);
+            return player.IsOfType(SampEntities.PlayerType) && GetComponent<NativeActor>().IsActorStreamedIn(player);
         }
 
         /// <summary>

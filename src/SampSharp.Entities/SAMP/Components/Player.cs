@@ -448,6 +448,18 @@ namespace SampSharp.Entities.SAMP
                 return id == 0 ? EntityId.Empty : SampEntities.GetVehicleId(id);
             }
         }
+        
+        /// <summary>
+        /// Gets the Vehicle this player is currently in.
+        /// </summary>
+        public EntityId Menu
+        {
+            get
+            {
+                var id = GetComponent<NativePlayer>().GetPlayerMenu(); //Returns 0, not NativeVehicle.InvalidId!
+                return id == NativeMenu.InvalidId ? EntityId.Empty : SampEntities.GetMenuId(id);
+            }
+        }
 
         /// <summary>
         /// Gets whether this player is connected to the server.
@@ -731,10 +743,7 @@ namespace SampSharp.Entities.SAMP
         /// <returns>True if the other Player is streamed in for this player, False if not.</returns>
         public bool IsPlayerStreamedIn(EntityId player)
         {
-            if (!player.IsOfType(SampEntities.PlayerType))
-                return false;
-
-            return GetComponent<NativePlayer>().IsPlayerStreamedIn(player);
+            return player.IsOfType(SampEntities.PlayerType) && GetComponent<NativePlayer>().IsPlayerStreamedIn(player);
         }
 
         /// <summary>
@@ -1353,10 +1362,7 @@ namespace SampSharp.Entities.SAMP
         /// <returns>True if player is in the vehicle; False otherwise.</returns>
         public bool IsInVehicle(EntityId vehicle)
         {
-            if (!vehicle.IsOfType(SampEntities.VehicleType))
-                return false;
-
-            return GetComponent<NativePlayer>().IsPlayerInVehicle(vehicle);
+            return vehicle.IsOfType(SampEntities.VehicleType) && GetComponent<NativePlayer>().IsPlayerInVehicle(vehicle);
         }
 
         /// <summary>

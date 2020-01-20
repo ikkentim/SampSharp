@@ -48,17 +48,17 @@ namespace SampSharp.Entities.SAMP.Commands
         /// <inheritdoc />
         public bool Invoke(IServiceProvider services, EntityId player, string inputText)
         {
+            if (!player.IsOfType(SampEntities.PlayerType))
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
+
             var result = Invoke(services, new object[] {player}, inputText);
 
-            if (result.Response == InvokeResponse.InvalidArguments)
-            {
-                _entityManager.GetComponent<Player>(player)
-                    ?.SendClientMessage(result.UsageMessage);
+            if (result.Response != InvokeResponse.InvalidArguments)
+                return result.Response == InvokeResponse.Success;
 
-                return true;
-            }
-
-            return result.Response == InvokeResponse.Success;
+            _entityManager.GetComponent<Player>(player)
+                ?.SendClientMessage(result.UsageMessage);
+            return true;
         }
 
         /// <inheritdoc />

@@ -13,11 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Contains all special actions.
     /// </summary>
+    [SuppressMessage("ReSharper", "IdentifierTypo")]
+    [SuppressMessage("ReSharper", "CommentTypo")]
     public enum SpecialAction
     {
         /// <summary>
@@ -33,7 +37,7 @@ namespace SampSharp.Entities.SAMP
         /// <summary>
         /// Player is using a jetpack.
         /// </summary>
-        Usejetpack = 2,
+        UseJetpack = 2,
 
         /// <summary>
         /// Player is entering a vehicle.
@@ -91,7 +95,7 @@ namespace SampSharp.Entities.SAMP
         DrinkBeer = 20,
 
         /// <summary>
-        /// Player is smokking a cigarette.
+        /// Player is smoking a cigarette.
         /// </summary>
         SmokeCiggy = 21,
 

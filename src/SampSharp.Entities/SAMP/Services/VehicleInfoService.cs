@@ -15,7 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Entities.SAMP
 {
@@ -55,11 +54,11 @@ namespace SampSharp.Entities.SAMP
         /// <inheritdoc />
         public Vector3 GetModelInfo(VehicleModelType vehicleModel, VehicleModelInfoType infoType)
         {
-            if (!_modelInfo.TryGetValue((vehicleModel, infoType), out var result))
-            {
-                _native.GetVehicleModelInfo((int) vehicleModel, (int) infoType, out var x, out var y, out var z);
-                _modelInfo[(vehicleModel, infoType)] = result = new Vector3(x, y, z);
-            }
+            if (_modelInfo.TryGetValue((vehicleModel, infoType), out var result)) 
+                return result;
+
+            _native.GetVehicleModelInfo((int) vehicleModel, (int) infoType, out var x, out var y, out var z);
+            _modelInfo[(vehicleModel, infoType)] = result = new Vector3(x, y, z);
 
             return result;
         }

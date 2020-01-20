@@ -13,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
 namespace SampSharp.Entities.SAMP
 {
     /// <summary>
@@ -57,7 +55,7 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <summary>
-        /// Gets or sets the size of this textdraw box and clickable area.
+        /// Gets or sets the size of this textdraw box and click-able area.
         /// </summary>
         public Vector2 TextSize
         {
@@ -174,7 +172,7 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the font of this textdraw is rendered as a monospace font.
+        /// Gets or sets a value indicating whether the font of this textdraw is rendered as a monospaced font.
         /// </summary>
         public bool Proportional
         {

@@ -52,14 +52,13 @@ namespace SampSharp.Entities.SAMP
         {
             var component = GetComponent<NativePlayer>();
 
-            if (!ResponseReceived)
-            {
-                ResponseReceived = true;
-                Handler(new DialogResult(DialogResponse.RightButtonOrCancel, 0, null));
+            if (ResponseReceived)
+                return;
 
-                component?.ShowPlayerDialog(DialogService.DialogHideId, (int) DialogStyle.MessageBox, " ", " ", " ",
-                    " ");
-            }
+            ResponseReceived = true;
+            Handler(new DialogResult(DialogResponse.RightButtonOrCancel, 0, null));
+
+            component?.ShowPlayerDialog(DialogService.DialogHideId, (int) DialogStyle.MessageBox, " ", " ", " ", " ");
         }
     }
 }

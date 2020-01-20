@@ -22,7 +22,7 @@ namespace SampSharp.Entities.SAMP
     {
         [Event]
         // ReSharper disable once UnusedMember.Local
-        private void OnPlayerDisconnect(VisibleDialog player, int reason)
+        private void OnPlayerDisconnect(VisibleDialog player, DisconnectReason _)
         {
             player.Handler(new DialogResult(DialogResponse.Disconnected, 0, null));
         }

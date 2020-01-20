@@ -13,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.Core.Logging;
-
 namespace SampSharp.Entities.SAMP
 {
     internal class PlayerWeaponShotMiddleware

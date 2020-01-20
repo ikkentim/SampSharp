@@ -31,7 +31,7 @@ namespace SampSharp.Entities.SAMP
         }
 
         [NativeMethod]
-        public virtual bool GetVehicleModelInfo(int model, int infoType, out float X, out float Y, out float Z)
+        public virtual bool GetVehicleModelInfo(int model, int infoType, out float x, out float y, out float z)
         {
             throw new NativeNotImplementedException();
         }

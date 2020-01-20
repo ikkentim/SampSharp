@@ -26,12 +26,12 @@ namespace SampSharp.Entities.SAMP
     public enum CheckpointType
     {
         /// <summary>
-        /// Normal racecheckpoint. (Normal red cilinder)
+        /// Normal race checkpoint. (Normal red cylinder)
         /// </summary>
         Normal = 0,
 
         /// <summary>
-        /// Finish racecheckpoint. (Finish flag in red cilinder)
+        /// Finish race checkpoint. (Finish flag in red cylinder)
         /// </summary>
         Finish = 1,
 
@@ -41,12 +41,12 @@ namespace SampSharp.Entities.SAMP
         Nothing = 2,
 
         /// <summary>
-        /// Air racecheckpoint. (normal red circle in the air)
+        /// Air race checkpoint. (normal red circle in the air)
         /// </summary>
         Air = 3,
 
         /// <summary>
-        /// Finish air racecheckpoint. (Finish flag in red circle in the air)
+        /// Finish air race checkpoint. (Finish flag in red circle in the air)
         /// </summary>
         AirFinish = 4
     }

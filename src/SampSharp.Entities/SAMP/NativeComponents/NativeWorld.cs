@@ -74,7 +74,7 @@ namespace SampSharp.Entities.SAMP
         }
 
         [NativeMethod]
-        public virtual int CreatePlayerObject(int playerid, int modelid, float x, float y, float z, float rX, float rY,
+        public virtual int CreatePlayerObject(int playerId, int modelId, float x, float y, float z, float rX, float rY,
             float rZ, float drawDistance)
         {
             throw new NativeNotImplementedException();
@@ -88,8 +88,8 @@ namespace SampSharp.Entities.SAMP
         }
 
         [NativeMethod]
-        public virtual int CreatePlayer3DTextLabel(int playerid, string text, int color, float x, float y, float z,
-            float drawDistance, int attachedplayer, int attachedvehicle, bool testLOS)
+        public virtual int CreatePlayer3DTextLabel(int playerId, string text, int color, float x, float y, float z,
+            float drawDistance, int attachedPlayer, int attachedVehicle, bool testLos)
         {
             throw new NativeNotImplementedException();
         }
@@ -101,13 +101,13 @@ namespace SampSharp.Entities.SAMP
         }
 
         [NativeMethod]
-        public virtual int CreatePlayerTextDraw(int playerid, float x, float y, string text)
+        public virtual int CreatePlayerTextDraw(int playerId, float x, float y, string text)
         {
             throw new NativeNotImplementedException();
         }
         
         [NativeMethod]
-        public virtual int CreateMenu(string title, int columns, float x, float y, float col1width, float col2width = 0.0f)
+        public virtual int CreateMenu(string title, int columns, float x, float y, float col1Width, float col2Width = 0.0f)
         {
             throw new NativeNotImplementedException();
         }
@@ -125,13 +125,13 @@ namespace SampSharp.Entities.SAMP
         }
 
         [NativeMethod]
-        public virtual bool SendPlayerMessageToAll(int senderid, string message)
+        public virtual bool SendPlayerMessageToAll(int senderId, string message)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool SendDeathMessage(int killer, int killee, int weapon)
+        public virtual bool SendDeathMessage(int killerId, int killeeId, int weapon)
         {
             throw new NativeNotImplementedException();
         }
@@ -149,7 +149,7 @@ namespace SampSharp.Entities.SAMP
         }
 
         [NativeMethod]
-        public virtual bool SetWeather(int weatherid)
+        public virtual bool SetWeather(int weatherId)
         {
             throw new NativeNotImplementedException();
         }

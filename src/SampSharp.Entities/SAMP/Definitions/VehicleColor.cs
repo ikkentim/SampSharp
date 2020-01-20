@@ -13,11 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace SampSharp.Entities.SAMP
 {
     /// <summary>
     /// Contains vehicle colors
     /// </summary>
+    [SuppressMessage("ReSharper", "IdentifierTypo")]
     public enum VehicleColor
     {
         /// <summary>

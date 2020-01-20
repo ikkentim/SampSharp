@@ -218,10 +218,9 @@ namespace SampSharp.Entities.SAMP.Commands
             if(parameter.ParameterType == typeof(Vehicle))
                 return new EntityParser(SampEntities.VehicleType);
 
-            if(parameter.ParameterType.IsEnum)
-                return new EnumParser(parameter.ParameterType);
-
-            return null;
+            return parameter.ParameterType.IsEnum 
+                ? new EnumParser(parameter.ParameterType) 
+                : null;
         }
 
         /// <summary>
@@ -306,20 +305,20 @@ namespace SampSharp.Entities.SAMP.Commands
         {
             var methods = ScanMethods();
 
-            foreach (var method in methods)
+            foreach (var (method, commandInfo) in methods)
             {
                 // Determine command name.
-                var name = method.commandInfo.Name ?? GetCommandName(method.method);
+                var name = commandInfo.Name ?? GetCommandName(method);
                 if (name == null)
                     continue;
 
                 // Validate acceptable return type.
-                if (method.method.ReturnType != typeof(bool) &&
-                    method.method.ReturnType != typeof(int) &&
-                    method.method.ReturnType != typeof(void))
+                if (method.ReturnType != typeof(bool) &&
+                    method.ReturnType != typeof(int) &&
+                    method.ReturnType != typeof(void))
                     continue;
 
-                var methodParameters = method.method.GetParameters();
+                var methodParameters = method.GetParameters();
                 // Determine command parameter types.
                 if (!TryCollectParameters(methodParameters, prefixParameters, out var parameters)) 
                     continue;
@@ -359,8 +358,8 @@ namespace SampSharp.Entities.SAMP.Commands
                 {
                     Arguments = new object[info.Parameters.Length + prefixParameters],
                     Info = info,
-                    Invoke = MethodInvokerFactory.Compile(method.method, parameterSources),
-                    SystemType = method.method.DeclaringType
+                    Invoke = MethodInvokerFactory.Compile(method, parameterSources),
+                    SystemType = method.DeclaringType
                 };
 
                 if (!_commands.TryGetValue(info.Name, out var lst))

@@ -124,31 +124,6 @@ namespace SampSharp.Entities.SAMP
         public Vector2 XY => new Vector2(X, Y);
 
         /// <summary>
-        /// Creates a <see cref="Vector2" /> instance with the Y and X components of this <see cref="Vector3" />.
-        /// </summary>
-        public Vector2 YX => new Vector2(Y, X);
-
-        /// <summary>
-        /// Creates a <see cref="Vector2" /> instance with the X and Z components of this <see cref="Vector3" />.
-        /// </summary>
-        public Vector2 XZ => new Vector2(X, Z);
-
-        /// <summary>
-        /// Creates a <see cref="Vector2" /> instance with the Z and X components of this <see cref="Vector3" />.
-        /// </summary>
-        public Vector2 ZX => new Vector2(Z, X);
-
-        /// <summary>
-        /// Creates a <see cref="Vector2" /> instance with the Y and Z components of this <see cref="Vector3" />.
-        /// </summary>
-        public Vector2 YZ => new Vector2(Y, Z);
-
-        /// <summary>
-        /// Creates a <see cref="Vector2" /> instance with the Z and Y components of this <see cref="Vector3" />.
-        /// </summary>
-        public Vector2 ZY => new Vector2(Z, Y);
-
-        /// <summary>
         /// Returns an empty <see cref="Vector3" />.
         /// </summary>
         public static Vector3 Zero { get; } = new Vector3(0);
@@ -641,7 +616,7 @@ namespace SampSharp.Entities.SAMP
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Vector3 && Equals((Vector3) obj);
+            return obj is Vector3 vector && Equals(vector);
         }
 
         #endregion

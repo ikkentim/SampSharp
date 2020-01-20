@@ -952,5 +952,11 @@ namespace SampSharp.Entities.SAMP
         {
             throw new NativeNotImplementedException();
         }
+
+        [NativeMethod]
+        public virtual int GetPlayerMenu()
+        {
+            throw new NativeNotImplementedException();
+        }
     }
 }

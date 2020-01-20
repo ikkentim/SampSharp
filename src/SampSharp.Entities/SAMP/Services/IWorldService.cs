@@ -89,7 +89,7 @@ namespace SampSharp.Entities.SAMP
         /// <param name="position">The position where the pickup should be spawned.</param>
         /// <param name="virtualWorld">The virtual world ID of the pickup. Use -1 for all worlds.</param>
         /// <returns>The created pickup.</returns>
-        Pickup CreatePickup(int model, int type, Vector3 position, int virtualWorld = -1);
+        Pickup CreatePickup(int model, PickupType type, Vector3 position, int virtualWorld = -1);
 
         /// <summary>
         /// Adds a 'static' pickup to the world. These pickups support weapons, health, armor etc., with the ability to function
@@ -100,7 +100,7 @@ namespace SampSharp.Entities.SAMP
         /// <param name="position">The position where the pickup should be spawned.</param>
         /// <param name="virtualWorld">The virtual world ID of the pickup. Use -1 for all worlds.</param>
         /// <returns>A value indicating whether the pickup has been created successfully.</returns>
-        bool AddStaticPickup(int model, int type, Vector3 position, int virtualWorld = -1);
+        bool AddStaticPickup(int model, PickupType type, Vector3 position, int virtualWorld = -1);
 
         /// <summary>
         /// Creates an object in the world.
