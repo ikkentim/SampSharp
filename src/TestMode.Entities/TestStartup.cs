@@ -31,7 +31,7 @@ namespace TestMode.Entities
                 .AddTransient<IVehicleRepository, VehicleRepository>()
                 .AddTransient<IFunnyService, FunnyService>()
                 .AddScoped<IScopedFunnyService, FunnyService>()
-                .AddSystem<TestSystem>();
+                .AddSystemsInAssembly();
         }
 
         public void Configure(IEcsBuilder builder)
@@ -42,7 +42,7 @@ namespace TestMode.Entities
                 .EnableEventScope("OnPlayerConnect")
                 .EnableEventScope("OnPlayerText");
 
-            // Load middlewares:
+            // Load middleware:
             // Can also be loaded by systems which are IConfiguringSystem
             builder.UseMiddleware("OnGameModeInit", (ctx, next) =>
             {

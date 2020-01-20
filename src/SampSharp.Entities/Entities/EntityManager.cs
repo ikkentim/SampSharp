@@ -27,11 +27,11 @@ namespace SampSharp.Entities
     /// <seealso cref="IEntityManager" />
     public class EntityManager : IEntityManager
     {
-        private readonly RecyclePool<ComponentEntry> _componentPool = new RecyclePool<ComponentEntry>(1000);
+        private readonly RecyclePool<ComponentEntry> _componentPool = new RecyclePool<ComponentEntry>(512);
         private readonly ComponentStore _components = new ComponentStore();
         private readonly Dictionary<EntityId, EntityEntry> _entities = new Dictionary<EntityId, EntityEntry>();
-        private readonly RecyclePool<EntityEntry> _entityPool = new RecyclePool<EntityEntry>(1000);
-        private readonly RecyclePool<ComponentStore> _storePool = new RecyclePool<ComponentStore>(1000);
+        private readonly RecyclePool<EntityEntry> _entityPool = new RecyclePool<EntityEntry>(512);
+        private readonly RecyclePool<ComponentStore> _storePool = new RecyclePool<ComponentStore>(512);
 
         /// <inheritdoc />
         public EntityManager()
@@ -89,7 +89,6 @@ namespace SampSharp.Entities
         /// <inheritdoc />
         public void Destroy<T>(EntityId entity) where T : Component
         {
-            // TODO: Optimize
             foreach (var c in GetComponents<T>(entity))
                 Destroy(c);
         }
@@ -454,7 +453,8 @@ namespace SampSharp.Entities
                 if (_components.TryGetValue(type, out var data))
                 {
                     newEntry.Next = data.Entry;
-                    data.Entry.Previous = newEntry;
+                    if (data.Entry != null)
+                        data.Entry.Previous = newEntry;
                     data.Entry = newEntry;
                     data.Count++;
                     _components[type] = data;
@@ -508,7 +508,7 @@ namespace SampSharp.Entities
                     Add(current, component);
                 } while (current != typeof(Component));
             }
-
+            
             public void Remove(Component component)
             {
                 var current = component.GetType();

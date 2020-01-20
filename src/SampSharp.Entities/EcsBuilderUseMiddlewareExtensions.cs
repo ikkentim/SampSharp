@@ -34,10 +34,10 @@ namespace SampSharp.Entities
         /// <summary>
         /// Adds a middleware to the handler of the event with the specified <paramref name="name" />.
         /// </summary>
-        /// <param name="builder">The builder.</param>
+        /// <param name="builder">The ECS builder to add the middleware to.</param>
         /// <param name="name">The name of the event.</param>
         /// <param name="middleware">The middleware to add to the event.</param>
-        /// <returns>The builder.</returns>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IEcsBuilder UseMiddleware(this IEcsBuilder builder, string name,
             Func<EventContext, Func<object>, object> middleware)
         {
@@ -60,10 +60,10 @@ namespace SampSharp.Entities
         /// specified <paramref name="name" />.
         /// </summary>
         /// <typeparam name="TMiddleware">The type of the middleware.</typeparam>
-        /// <param name="builder">The builder.</param>
+        /// <param name="builder">The ECS builder to add the middleware to.</param>
         /// <param name="name">The name of the event.</param>
         /// <param name="args">The arguments for the constructor of the event.</param>
-        /// <returns>The builder.</returns>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IEcsBuilder UseMiddleware<TMiddleware>(this IEcsBuilder builder, string name,
             params object[] args)
         {
@@ -74,11 +74,11 @@ namespace SampSharp.Entities
         /// Adds a middleware of the specified type <paramref name="middleware" /> to the handler of the event with the specified
         /// <paramref name="name" />.
         /// </summary>
-        /// <param name="builder">The builder.</param>
+        /// <param name="builder">The ECS builder to add the middleware to.</param>
         /// <param name="name">The name of the event.</param>
         /// <param name="middleware">The type of the middleware.</param>
         /// <param name="args">The arguments for the constructor of the event.</param>
-        /// <returns>The builder.</returns>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IEcsBuilder UseMiddleware(this IEcsBuilder builder, string name, Type middleware,
             params object[] args)
         {

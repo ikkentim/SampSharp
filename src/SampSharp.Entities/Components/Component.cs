@@ -23,7 +23,7 @@ namespace SampSharp.Entities
         /// <summary>
         /// Gets the manager of the entity of this component.
         /// </summary>
-        public IEntityManager Manager { get; internal set; }
+        protected internal IEntityManager Manager { get; internal set; }
         
         /// <summary>
         /// Gets the parent entity of the entity to which this component has been attached.

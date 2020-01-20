@@ -49,7 +49,7 @@ namespace SampSharp.Entities.SAMP.Commands
 
         /// <inheritdoc />
         protected override IEnumerable<(MethodInfo method, ICommandMethodInfo commandInfo)> ScanMethods(
-            AttributeScanner scanner)
+            AssemblyScanner scanner)
         {
             return scanner.ScanMethods<RconCommandAttribute>()
                 .Select(r => (r.method, r.attribute as ICommandMethodInfo));

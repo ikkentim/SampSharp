@@ -1620,7 +1620,7 @@ namespace SampSharp.Entities.SAMP
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
             GetComponent<NativePlayer>()
-                .SendDeathMessageToPlayer(killer.OrElse(NativePlayer.InvalidId), player, (int) weapon);
+                .SendDeathMessageToPlayer(killer.HandleOrDefault(NativePlayer.InvalidId), player, (int) weapon);
         }
 
         /// <summary>

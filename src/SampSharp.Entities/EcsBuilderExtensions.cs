@@ -25,8 +25,8 @@ namespace SampSharp.Entities
         /// provider.
         /// </summary>
         /// <typeparam name="T">Type of the system.</typeparam>
-        /// <param name="builder">The builder.</param>
-        /// <returns>The builder.</returns>
+        /// <param name="builder">The ECS builder in which to adds the system.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IEcsBuilder UseSystem<T>(this IEcsBuilder builder) where T : ISystem
         {
             return builder.UseSystem(typeof(T));
@@ -35,9 +35,9 @@ namespace SampSharp.Entities
         /// <summary>
         /// Enabled a Dependency Injection scope for the event with the specified <paramref name="name"/>.
         /// </summary>
-        /// <param name="builder">The builder.</param>
+        /// <param name="builder">The ECS builder in which to enable the scope.</param>
         /// <param name="name">The name of the event to add the scope to.</param>
-        /// <returns>The builder.</returns>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IEcsBuilder EnableEventScope(this IEcsBuilder builder, string name)
         {
             return builder.UseMiddleware<EventScopeMiddleware>(name);

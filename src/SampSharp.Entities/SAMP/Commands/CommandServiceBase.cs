@@ -156,11 +156,11 @@ namespace SampSharp.Entities.SAMP.Commands
         /// <param name="scanner">A scanner which is already limited to members of types which implement <see cref="ISystem"/>.</param>
         /// <returns>The methods which provide commands.</returns>
         protected abstract IEnumerable<(MethodInfo method, ICommandMethodInfo commandInfo)> ScanMethods(
-            AttributeScanner scanner);
+            AssemblyScanner scanner);
 
         private IEnumerable<(MethodInfo method, ICommandMethodInfo commandInfo)> ScanMethods()
         {
-            var scanner = AttributeScanner.Create()
+            var scanner = new AssemblyScanner()
                 .IncludeAllAssemblies()
                 .IncludeNonPublicMembers()
                 .Implements<ISystem>();

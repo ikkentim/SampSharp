@@ -21,10 +21,9 @@ using System.Reflection;
 namespace SampSharp.Entities.Utilities
 {
     /// <summary>
-    /// Represents a utility for scanning for members with specific attributes in loaded assemblies.
+    /// Represents a utility for scanning for types and members with specific attributes in loaded assemblies.
     /// </summary>
-    /// <see cref="AttributeScanner.Create" />
-    public sealed class AttributeScanner
+    public sealed class AssemblyScanner
     {
         private List<Assembly> _assemblies = new List<Assembly>();
         private List<Type> _classAttributes = new List<Type>();
@@ -35,10 +34,6 @@ namespace SampSharp.Entities.Utilities
         private List<Type> _memberAttributes = new List<Type>();
         private bool _includeAbstract;
 
-        private AttributeScanner()
-        {
-        }
-
         private BindingFlags MemberBindingFlags =>
             (_includeInstanceMembers ? BindingFlags.Instance : BindingFlags.Default) |
             (_includeStaticMembers ? BindingFlags.Static : BindingFlags.Default) |
@@ -46,20 +41,11 @@ namespace SampSharp.Entities.Utilities
             (_includeNonPublicMembers ? BindingFlags.NonPublic : BindingFlags.Default);
 
         /// <summary>
-        /// Creates a new scanner.
-        /// </summary>
-        /// <returns>A newly created scanner.</returns>
-        public static AttributeScanner Create()
-        {
-            return new AttributeScanner();
-        }
-
-        /// <summary>
         /// Includes the specified <paramref name="assembly" /> in the scan.
         /// </summary>
         /// <param name="assembly">The assembly to include.</param>
         /// <returns>An updated scanner.</returns>
-        public AttributeScanner IncludeAssembly(Assembly assembly)
+        public AssemblyScanner IncludeAssembly(Assembly assembly)
         {
             if (assembly == null || _assemblies.Contains(assembly))
                 return this;
@@ -77,7 +63,7 @@ namespace SampSharp.Entities.Utilities
         /// the scan.
         /// </param>
         /// <returns>An updated scanner.</returns>
-        public AttributeScanner IncludeReferencedAssemblies(bool skipSystem = true)
+        public AssemblyScanner IncludeReferencedAssemblies(bool skipSystem = true)
         {
             var assemblies = new List<Assembly>();
 
@@ -116,7 +102,7 @@ namespace SampSharp.Entities.Utilities
         /// the scan.
         /// </param>
         /// <returns>An updated scanner.</returns>
-        public AttributeScanner IncludeAllAssemblies(bool skipSystem = true)
+        public AssemblyScanner IncludeAllAssemblies(bool skipSystem = true)
         {
             return IncludeEntryAssembly()
                 .IncludeReferencedAssemblies(skipSystem);
@@ -126,7 +112,7 @@ namespace SampSharp.Entities.Utilities
         /// Includes the entry assembly in the scan.
         /// </summary>
         /// <returns>An updated scanner.</returns>
-        public AttributeScanner IncludeEntryAssembly()
+        public AssemblyScanner IncludeEntryAssembly()
         {
             return IncludeAssembly(Assembly.GetEntryAssembly());
         }
@@ -136,7 +122,7 @@ namespace SampSharp.Entities.Utilities
         /// </summary>
         /// <param name="exclusive">If set to <c>true</c>, only include static members in the scan.</param>
         /// <returns>An updated scanner.</returns>
-        public AttributeScanner IncludeStatic(bool exclusive)
+        public AssemblyScanner IncludeStatic(bool exclusive)
         {
             var result = Clone();
             result._includeStaticMembers = true;
@@ -148,7 +134,7 @@ namespace SampSharp.Entities.Utilities
         /// Includes non-public members in the scan.
         /// </summary>
         /// <returns>An updated scanner.</returns>
-        public AttributeScanner IncludeNonPublicMembers()
+        public AssemblyScanner IncludeNonPublicMembers()
         {
             var result = Clone();
             result._includeNonPublicMembers = true;
@@ -159,7 +145,7 @@ namespace SampSharp.Entities.Utilities
         /// Includes members of abstract classes in the scan.
         /// </summary>
         /// <returns>An updated scanner.</returns>
-        public AttributeScanner IncludeAbstract()
+        public AssemblyScanner IncludeAbstract()
         {
             var result = Clone();
             result._includeAbstract = true;
@@ -171,7 +157,7 @@ namespace SampSharp.Entities.Utilities
         /// </summary>
         /// <typeparam name="T">The class or interface the results of the scan should implement.</typeparam>
         /// <returns>An updated scanner.</returns>
-        public AttributeScanner Implements<T>()
+        public AssemblyScanner Implements<T>()
         {
             var result = Clone();
             result._classImplements.Add(typeof(T));
@@ -183,7 +169,7 @@ namespace SampSharp.Entities.Utilities
         /// </summary>
         /// <typeparam name="T">The type of the attribute the class should have.</typeparam>
         /// <returns>An updated scanner.</returns>
-        public AttributeScanner HasClassAttribute<T>() where T : Attribute
+        public AssemblyScanner HasClassAttribute<T>() where T : Attribute
         {
             var result = Clone();
             result._classAttributes.Add(typeof(T));
@@ -195,7 +181,7 @@ namespace SampSharp.Entities.Utilities
         /// </summary>
         /// <typeparam name="T">The type of the attribute the member should have.</typeparam>
         /// <returns>An updated scanner.</returns>
-        public AttributeScanner HasAttribute<T>() where T : Attribute
+        public AssemblyScanner HasAttribute<T>() where T : Attribute
         {
             var result = Clone();
             result._memberAttributes.Add(typeof(T));
@@ -213,6 +199,30 @@ namespace SampSharp.Entities.Utilities
         private bool ApplyMemberFilter(MemberInfo memberInfo)
         {
             return _memberAttributes.All(a => memberInfo.GetCustomAttribute(a) != null);
+        }
+        
+        /// <summary>
+        /// Runs the scan for methods and provides the attribute <typeparamref name="TAttribute" /> in the results.
+        /// </summary>
+        /// <typeparam name="TAttribute">The type of the attribute.</typeparam>
+        /// <returns>The found methods with their attribute of type <typeparamref name="TAttribute" />.</returns>
+        public IEnumerable<(Type type, TAttribute attribute)> ScanTypes<TAttribute>() where TAttribute : Attribute
+        {
+            return HasClassAttribute<TAttribute>()
+                .ScanTypes()
+                .Select(type => (type, attribute: type.GetCustomAttribute<TAttribute>()));
+        }
+
+        /// <summary>
+        /// Runs the scan for methods.
+        /// </summary>
+        /// <returns>The found methods.</returns>
+        public IEnumerable<Type> ScanTypes()
+        {
+            return _assemblies
+                .SelectMany(a => a.GetTypes())
+                .Where(ApplyTypeFilter)
+                .ToArray();
         }
 
         /// <summary>
@@ -267,9 +277,9 @@ namespace SampSharp.Entities.Utilities
                 .ToArray();
         }
 
-        private AttributeScanner Clone()
+        private AssemblyScanner Clone()
         {
-            return new AttributeScanner
+            return new AssemblyScanner
             {
                 _assemblies = new List<Assembly>(_assemblies),
                 _includeStaticMembers = _includeStaticMembers,

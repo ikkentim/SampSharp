@@ -25,7 +25,7 @@ namespace SampSharp.Entities
 
         static EntityTypeNames()
         {
-            var fields = AttributeScanner.Create()
+            var fields = new AssemblyScanner()
                 .IncludeAllAssemblies()
                 .IncludeStatic(true)
                 .IncludeAbstract()

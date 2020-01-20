@@ -334,7 +334,7 @@ namespace SampSharp.Entities.SAMP
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            Native.SendDeathMessage(killer.OrElse(NativePlayer.InvalidId), player, (int) weapon);
+            Native.SendDeathMessage(killer.HandleOrDefault(NativePlayer.InvalidId), player, (int) weapon);
         }
 
         /// <inheritdoc />

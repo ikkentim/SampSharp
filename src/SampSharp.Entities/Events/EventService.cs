@@ -114,7 +114,7 @@ namespace SampSharp.Entities
         private void CreateEventsFromAssemblies()
         {
             // Find methods with EventAttribute in any ISystem in any assembly.
-            var events = AttributeScanner.Create()
+            var events = new AssemblyScanner()
                 .IncludeAllAssemblies()
                 .IncludeNonPublicMembers()
                 .Implements<ISystem>()
