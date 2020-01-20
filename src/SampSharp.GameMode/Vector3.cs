@@ -121,32 +121,7 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Creates a <see cref="Vector2" /> instance with the X and Y components of this <see cref="Vector3" />.
         /// </summary>
-        public Vector2 XY { get { return new Vector2(X, Y); } }
-        
-        /// <summary>
-        ///     Creates a <see cref="Vector2" /> instance with the Y and X components of this <see cref="Vector3" />.
-        /// </summary>
-        public Vector2 YX { get { return new Vector2(Y, X); } }
-        
-        /// <summary>
-        ///     Creates a <see cref="Vector2" /> instance with the X and Z components of this <see cref="Vector3" />.
-        /// </summary>
-        public Vector2 XZ { get { return new Vector2(X, Z); } }
-        
-        /// <summary>
-        ///     Creates a <see cref="Vector2" /> instance with the Z and X components of this <see cref="Vector3" />.
-        /// </summary>
-        public Vector2 ZX { get { return new Vector2(Z, X); } }
-        
-        /// <summary>
-        ///     Creates a <see cref="Vector2" /> instance with the Y and Z components of this <see cref="Vector3" />.
-        /// </summary>
-        public Vector2 YZ { get { return new Vector2(Y, Z); } }
-        
-        /// <summary>
-        ///     Creates a <see cref="Vector2" /> instance with the Z and Y components of this <see cref="Vector3" />.
-        /// </summary>
-        public Vector2 ZY { get { return new Vector2(Z, Y); } }        
+        public Vector2 XY => new Vector2(X, Y);
 
         /// <summary>
         ///     Returns an empty <see cref="Vector3" />.

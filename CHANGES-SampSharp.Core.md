@@ -1,3 +1,14 @@
+### 0.9.0
+- Added `IGameModeClient.RegisterCallback` overloads which allows the arguments of the callback to be provided as an `object[]` to the specified method
+- Added option to specify the index at which the identifier arguments are located within natives of native objects
+- Added notice to multi-process run mode: "for development purposes only", use hosted hosted mode for production environments
+- Added callback name to the `IGameModeClient.UnhandledException` event
+- Added unhandled exception handling in hosted mode
+- Added unhandled exception handling in multi-process mode for ticks and synchronisations
+- Updated minimum .NET Standard version to 2.0
+- Improved shutdown behaviour of multi-process run mode
+- Removed `GameModeBuilder.BuildWith`
+
 ### 0.8.0
 - Initial version
 

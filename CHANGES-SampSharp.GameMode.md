@@ -1,3 +1,24 @@
+### 0.9.0
+- Added `Vector3.XY` which returns a `Vector2` with the x and y components (#299/#300)
+- Added `Color.Brightness` property (#309)
+- Added `Color.AddGrammaCorrection`, `Color.RemoveGammaCorrection`, `Color.Grayscale` methods (#309)
+- Added `blendAlpha` option to `Color.Lerp`, `Color.Darken` and `Color.Lighten` (#305/#310)
+- Added `Timer.Run` and `Timer.RunOnce` overloads with an `int` or `double` internal in miliseconds. (#315)
+- Added `BasePlayer.PickUpPickup` event (#319)
+- Added `BasePlayer.CameraTargetPlayerObject` (#320)
+- Added `BasePlayer.SurfingPlayerObject` (#324)
+- Updated `VehicleModelInfo` to include seat count and a missing entry for ID 611, Utility Trailer (#302)
+- Updated minimum .NET Standard version to 2.0
+- *breaking* Changed `BasePlayer.CameraTargetObject` to `BasePlayer.CameraTargetGlobalObject` (#320)
+- *breaking* Changed `BasePlayer.SurfingObject` to `BasePlayer.SurfingGlobalObject` (#324)
+- *breaking* Changed `BaseMode.PlayerPickUp` event to have event arguments of type `PickUpPickupEventArgs` and changed the sender of event from the pickup to the player (#319)
+- *breaking* Changed `Pickup.PickUp` event to have event arguments of type `PickUpPickupEventArgs` (#319)
+- Fixed `Quaternion` coordinate system not matching SA-MP coordinate system
+- Fixed `Edited` and `Selected` on `GlobalObject` and `PlayerObject` not being fired (#303/#306)
+- Fixed `Color.FromInteger` with `ColorFormat.RGB` returning a value with 0 alpha
+- Fixed conversion from `Color` to `Vector3` not returning decimal values
+- *breaking* Removed `ObjectModel` enum because it was too big and might not be complete
+
 ### 0.8.0
 - Initial .NET Core version
 - Added `Weapon.Suicide` definition
@@ -7,7 +28,7 @@
 - Added `VehicleColor` enum and `Color.FromVehicleColor` (#270)
 - Added support for `BaseVehicle` or derived types in command parameters (#276)
 - Added `MapIcon` enum (#206/#288)
-- Added `ObjectModel` enum and `PickupType enum (#291)
+- Added `ObjectModel` enum and `PickupType` enum (#291)
 - Changed Dialog.ShowAsync to throw `PlayerDisconnectedException` instead of `TaskCancelledException`
 - Fixed `Dialog.Hide` not working (#212)
 - Fixed `BaseVehicle.CreateStatic(VehicleModelType, Vector3, float, int, int)` overload not creating static vehicle
@@ -17,7 +38,7 @@
 - Added `VehicleColor` enum and `Color.FromVehicleColor` (#270)
 - Added support for `BaseVehicle` or derived types in command parameters (#276)
 - Added `MapIcon` enum (#206/#288)
-- Added `ObjectModel` enum and `PickupType enum (#291)
+- Added `ObjectModel` enum and `PickupType` enum (#291)
 - Fixed `OnPlayerEnterCheckpoint` callback not being processed
 
 ### 0.8.0-alpha8
