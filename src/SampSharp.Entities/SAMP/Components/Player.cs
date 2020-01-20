@@ -1538,7 +1538,7 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <summary>
-        /// This function sends a message to this player with a chosen color in the chat. The whole line in the chatbox will be in
+        /// This function sends a message to this player with a chosen color in the chat. The whole line in the chat box will be in
         /// the set color unless color embedding is used.
         /// </summary>
         /// <param name="color">The color of the message.</param>

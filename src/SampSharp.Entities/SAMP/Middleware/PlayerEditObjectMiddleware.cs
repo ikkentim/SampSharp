@@ -28,7 +28,7 @@ namespace SampSharp.Entities.SAMP
         public object Invoke(EventContext context)
         {
             var inArgs = context.Arguments;
-            EntityId playerEntity = SampEntities.GetPlayerId((int) inArgs[0]);
+            var playerEntity = SampEntities.GetPlayerId((int) inArgs[0]);
             
             var isPlayerObject = (bool) inArgs[1];
             var objectId = (int) inArgs[2];
