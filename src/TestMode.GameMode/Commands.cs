@@ -22,6 +22,74 @@ namespace TestMode
             player.Kick();
         }
 
+        private static TextDraw _td1;
+        private static PlayerTextDraw _td2;
+
+        [Command("tst")]
+        public static async void TdSelTest(BasePlayer player)
+        {
+            _td1?.Dispose();
+            _td2?.Dispose();
+
+            _td1 = new TextDraw(new Vector2(220, 120), "E")
+            {
+                Selectable = true,
+                UseBox = true,
+                BackColor = Color.Green,
+                BoxColor = Color.Blue,
+                Alignment = TextDrawAlignment.Right,
+                IsApplyFixes = true,
+                Proportional = true,
+                Shadow = 3,
+                Font = TextDrawFont.Pricedown,
+                Outline = 2,
+                ForeColor = Color.White,
+                Width = 400f,
+                Height = 400f
+            };
+            _td2 = new PlayerTextDraw(player, new Vector2(220, 180), "Q")
+            {
+                Selectable = true,
+                UseBox = true,
+                BackColor = Color.Green,
+                BoxColor = Color.Blue,
+                Alignment = TextDrawAlignment.Right,
+                IsApplyFixes = true,
+                Proportional = true,
+                Shadow = 3,
+                Font = TextDrawFont.Pricedown,
+                Outline = 2,
+                ForeColor = Color.White,
+                Width = 400f,
+                Height = 400f
+            };
+
+            _td1.Show(player);
+            _td2.Show();
+
+            await Task.Delay(5);
+            player.SelectTextDraw(Color.Red);
+            
+            player.ClickTextDraw += (sender, args) =>
+            {
+                player.SendClientMessage($"Selected TD: {_td1 == args.TextDraw}");
+            };
+            player.ClickPlayerTextDraw += (sender, args) =>
+            {
+                player.SendClientMessage($"Selected PTD: {_td2 == args.PlayerTextDraw}");
+            };
+            player.CancelClickTextDraw += (sender, args) =>
+            {
+                player.SendClientMessage("Canceled TD selection");
+            };
+        }
+
+        [Command("del")]
+        public static void Del(BasePlayer p)
+        {
+            _td1?.Dispose();
+            _td2?.Dispose();
+        }
         
         [Command("quattest")]
         public static void QuatTestCommand(BasePlayer player)
