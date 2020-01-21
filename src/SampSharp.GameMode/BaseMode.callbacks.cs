@@ -494,14 +494,21 @@ namespace SampSharp.GameMode
         [Callback]
         internal bool OnPlayerClickTextDraw(int playerid, int clickedid)
         {
-            var clicked = clickedid == TextDraw.InvalidId ? null : TextDraw.Find(clickedid);
+            if (clickedid == TextDraw.InvalidId)
+            {
+                var player = BasePlayer.FindOrCreate(playerid);
+                OnPlayerCancelClickTextDraw(player, new PlayerEventArgs(player));
+            }
+            else
+            {
+                var clicked = TextDraw.Find(clickedid);
 
-            if (clickedid != TextDraw.InvalidId && clicked == null)
-                return true;
+                if (clicked == null)
+                    return true;
 
-            var player = BasePlayer.FindOrCreate(playerid);
-            OnPlayerClickTextDraw(player, new ClickTextDrawEventArgs(player, clicked));
-
+                var player = BasePlayer.FindOrCreate(playerid);
+                OnPlayerClickTextDraw(player, new ClickTextDrawEventArgs(player, clicked));
+            }
             return true;
         }
 
