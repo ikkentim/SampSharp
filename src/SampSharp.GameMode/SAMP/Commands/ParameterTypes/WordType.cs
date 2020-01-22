@@ -29,17 +29,18 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         /// </summary>
         /// <param name="commandText">The command text.</param>
         /// <param name="output">The output.</param>
+        /// <param name="ignoreUsage">Ignore usage toggle.</param>
         /// <returns>
         ///     true if parsed successfully; false otherwise.
         /// </returns>
-        public bool Parse(ref string commandText, out object output)
+        public bool Parse(ref string commandText, out object output, bool ignoreUsage = false)
         {
             var text = commandText.TrimStart();
 
             if (string.IsNullOrEmpty(text))
             {
                 output = null;
-                return false;
+                return ignoreUsage;
             }
 
             var word = text.Split(' ').First();

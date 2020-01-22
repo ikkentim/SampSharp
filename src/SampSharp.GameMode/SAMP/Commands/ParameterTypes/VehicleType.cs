@@ -31,16 +31,17 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         /// </summary>
         /// <param name="commandText">The command text.</param>
         /// <param name="output">The output.</param>
+        /// <param name="ignoreUsage">Ignore usage toggle.</param>
         /// <returns>
         ///     true if parsed successfully; false otherwise.
         /// </returns>
-        public bool Parse(ref string commandText, out object output)
+        public bool Parse(ref string commandText, out object output, bool ignoreUsage)
         {
             var text = commandText.TrimStart();
             output = null;
 
             if (string.IsNullOrEmpty(text))
-                return false;
+                return ignoreUsage;
 
             var word = text.Split(' ').First();
 
@@ -50,7 +51,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 
             var vehicle = BaseVehicle.Find(id);
             if (vehicle == null)
-                return false;
+                return ignoreUsage;
 
             output = vehicle;
             commandText = commandText.Substring(word.Length).TrimStart(' ');
