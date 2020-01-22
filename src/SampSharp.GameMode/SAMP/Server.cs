@@ -13,9 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
-using System.Diagnostics;
-using System.Linq;
-using SampSharp.GameMode.API;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP
@@ -46,9 +43,11 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Gets the server configuration.
+        ///     Deprecated. Use new ServerConfig(Path.Combine(gameMode.Client.ServerPath, "server.cfg")) instead.
         /// </summary>
-        public static ServerConfig Config => _serverConfig ?? (_serverConfig = new ServerConfig());
+        /// <seealso cref="ServerConfig"/>.
+        [Obsolete("Deprecated. Use new ServerConfig(Path.Combine(gameMode.Client.ServerPath, \"server.cfg\")) instead.")]
+        public static ServerConfig Config => _serverConfig ?? (_serverConfig = new ServerConfig("server.cfg"));
 
         /// <summary>
         ///     Gets the server variables.
@@ -117,7 +116,7 @@ namespace SampSharp.GameMode.SAMP
 
             throw new NotSupportedException("Type " + typeof (T) + " is not supported by SA:MP");
         }
-
+        
         /// <summary>
         ///     Returns the uptime of the actual server in milliseconds.
         /// </summary>
@@ -126,7 +125,16 @@ namespace SampSharp.GameMode.SAMP
         {
             return ServerInternal.Instance.GetTickCount();
         }
-        
+
+        /// <summary>
+        /// Gets the tick rate of the server.
+        /// </summary>
+        /// <remarks>The tick rate is 0 if the server just started.</remarks>
+        public static int GetServerTickRate ()
+        {
+            return ServerInternal.Instance.GetTickCount();
+        }
+
         /// <summary>
         ///     Prints the specified message to the console.
         /// </summary>

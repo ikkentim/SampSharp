@@ -22,7 +22,7 @@ namespace SampSharp.GameMode.Events
     ///     <see cref="BaseMode.VehicleDamageStatusUpdated" />, <see cref="BaseMode.PlayerStreamIn" />,
     ///     <see cref="BaseMode.PlayerStreamOut" />, <see cref="BaseMode.VehicleStreamIn" />,
     ///     <see cref="BaseMode.VehicleStreamOut" />, <see cref="BasePlayer.StreamIn" />, <see cref="BasePlayer.StreamOut" />,
-    ///     <see cref="BaseVehicle.StreamIn" />, <see cref="BaseVehicle.StreamOut" /> or <see cref="Pickup.PickUp" /> event.
+    ///     <see cref="BaseVehicle.StreamIn" /> or <see cref="BaseVehicle.StreamOut" /> event.
     /// </summary>
     public class PlayerEventArgs : EventArgs
     {
@@ -38,6 +38,6 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player involved.
         /// </summary>
-        public BasePlayer Player { get; private set; }
+        public BasePlayer Player { get; }
     }
 }

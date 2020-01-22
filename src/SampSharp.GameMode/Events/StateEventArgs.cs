@@ -37,11 +37,11 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the new state.
         /// </summary>
-        public PlayerState NewState { get; private set; }
+        public PlayerState NewState { get; }
 
         /// <summary>
         ///     Gets the old state.
         /// </summary>
-        public PlayerState OldState { get; private set; }
+        public PlayerState OldState { get; }
     }
 }

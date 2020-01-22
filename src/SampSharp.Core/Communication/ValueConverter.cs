@@ -24,7 +24,6 @@ namespace SampSharp.Core.Communication
     /// </summary>
     public static class ValueConverter
     {
-        // TODO: Endianness is assumed equal to the server. They should be (because both run on the same machine), but the behaviour of .NET is unknown if it respects the machine endianness. Need to check.
         /// <summary>
         ///     Gets the bytes representing the specified value.
         /// </summary>
@@ -252,6 +251,9 @@ namespace SampSharp.Core.Communication
             encoding = encoding ?? Encoding.ASCII;
 
             var terminatorIndex = Array.IndexOf(buffer, (byte)'\0', startIndex);
+            if (terminatorIndex < 0)
+                terminatorIndex = buffer.Length;
+
             return encoding.GetString(buffer, startIndex, terminatorIndex - startIndex);
         }
         

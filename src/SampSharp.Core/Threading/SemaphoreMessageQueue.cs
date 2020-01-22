@@ -19,7 +19,7 @@ using System.Threading;
 namespace SampSharp.Core.Threading
 {
     /// <summary>
-    ///     Represents a message queue for messages sent to a <see cref="SampSharpSyncronizationContext" /> which can be retrieved via a semaphore.
+    ///     Represents a message queue for messages sent to a <see cref="SampSharpSynchronizationContext" /> which can be retrieved via a semaphore.
     /// </summary>
     public class SemaphoreMessageQueue : IMessageQueue
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SampSharp.GameMode.Definitions
+﻿namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
     /// Contains vehicle colors

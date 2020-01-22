@@ -34,7 +34,7 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the id of the class.
         /// </summary>
-        public int ClassId { get; private set; }
+        public int ClassId { get; }
 
         /// <summary>
         ///     Gets or sets whether the player is prevented from spawning.

@@ -48,21 +48,21 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player.
         /// </summary>
-        public BasePlayer Player { get; private set; }
+        public BasePlayer Player { get; }
 
         /// <summary>
         ///     Gets the global object.
         /// </summary>
-        public GlobalObject Object { get; private set; }
+        public GlobalObject Object { get; }
 
         /// <summary>
         ///     Gets the edit object response.
         /// </summary>
-        public EditObjectResponse EditObjectResponse { get; private set; }
+        public EditObjectResponse EditObjectResponse { get; }
 
         /// <summary>
         ///     Gets the rotation.
         /// </summary>
-        public Vector3 Rotation { get; private set; }
+        public Vector3 Rotation { get; }
     }
 }

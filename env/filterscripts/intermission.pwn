@@ -154,9 +154,10 @@ DestroyPlayerResources(playerid)
     SetPlayerTime(playerid, 12, 0);
     
     /* Pools */
-    DESTROY_POOL_PFX(DestroyPlayerObject,MAX_PLAYER_OBJECTS-1,playerid);
-    DESTROY_POOL_PFX_TAG(PlayerTextDrawDestroy, MAX_PLAYER_TEXT_DRAWS-1,playerid,PlayerText:);
-    DESTROY_POOL_PFX_TAG(DeletePlayer3DTextLabel, MAX_3DTEXT_PLAYER-1,playerid,PlayerText3D:);
+    // Disabled: Can cause crashes
+    //DESTROY_POOL_PFX(DestroyPlayerObject,MAX_PLAYER_OBJECTS-1,playerid);
+    //DESTROY_POOL_PFX_TAG(PlayerTextDrawDestroy, MAX_PLAYER_TEXT_DRAWS-1,playerid,PlayerText:);
+    //DESTROY_POOL_PFX_TAG(DeletePlayer3DTextLabel, MAX_3DTEXT_PLAYER-1,playerid,PlayerText3D:);
     
     /* PVar */
     for(new i = GetPVarsUpperIndex(playerid); i >= 0; i--)

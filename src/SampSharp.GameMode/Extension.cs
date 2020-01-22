@@ -13,11 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Reflection;
 using SampSharp.GameMode.Controllers;
 
-namespace SampSharp.GameMode.API
+namespace SampSharp.GameMode
 {
     /// <summary>
     ///     Contains methods for registering SampSharp extensions and represents a simple base class for extensions.

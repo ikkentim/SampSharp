@@ -44,9 +44,15 @@ namespace SampSharp.GameMode.SAMP
             {
                 throw new NativeNotImplementedException();
             }
-
+            
             [NativeMethod]
             public virtual int GetTickCount()
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod]
+            public virtual int GetServerTickRate()
             {
                 throw new NativeNotImplementedException();
             }

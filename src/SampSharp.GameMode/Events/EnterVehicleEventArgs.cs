@@ -44,16 +44,16 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player.
         /// </summary>
-        public BasePlayer Player { get; private set; }
+        public BasePlayer Player { get; }
 
         /// <summary>
         ///     Gets the vehicle.
         /// </summary>
-        public BaseVehicle Vehicle { get; private set; }
+        public BaseVehicle Vehicle { get; }
 
         /// <summary>
         ///     Gets a value indicating whether the <see cref="Player" /> is passenger.
         /// </summary>
-        public bool IsPassenger { get; private set; }
+        public bool IsPassenger { get; }
     }
 }

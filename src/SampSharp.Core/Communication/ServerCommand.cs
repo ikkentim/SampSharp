@@ -23,6 +23,10 @@ namespace SampSharp.Core.Communication
     public enum ServerCommand : byte
     {
         /// <summary>
+        /// No operation.
+        /// </summary>
+        Nop = 0x00,
+        /// <summary>
         ///     An instruction which can be sent to the server to request a <see cref="Pong" />
         /// </summary>
         Ping = 0x01,
@@ -97,6 +101,6 @@ namespace SampSharp.Core.Communication
         /// <summary>
         ///     An announcement sent by the server after connecting to the server.
         /// </summary>
-        Announce = 0x15
+        Announce = 0x15,
     }
 }

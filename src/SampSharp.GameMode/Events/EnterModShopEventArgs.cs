@@ -38,11 +38,11 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets a value indicating whether the player is entering or exiting.
         /// </summary>
-        public EnterExit EnterExit { get; private set; }
+        public EnterExit EnterExit { get; }
 
         /// <summary>
         ///     Gets the interior identifier of the mod shop.
         /// </summary>
-        public int InteriorId { get; private set; }
+        public int InteriorId { get; }
     }
 }

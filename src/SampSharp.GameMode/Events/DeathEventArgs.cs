@@ -37,11 +37,11 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the killer.
         /// </summary>
-        public BasePlayer Killer { get; private set; }
+        public BasePlayer Killer { get; }
 
         /// <summary>
         ///     Gets the reason of the death.
         /// </summary>
-        public Weapon DeathReason { get; private set; }
+        public Weapon DeathReason { get; }
     }
 }

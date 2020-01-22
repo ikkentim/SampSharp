@@ -146,10 +146,7 @@ namespace SampSharp.GameMode.World
         /// <exception cref="System.ArgumentNullException">owner</exception>
         public PlayerObject(BasePlayer owner, int modelid, Vector3 position, Vector3 rotation, float drawDistance)
         {
-            if (owner == null)
-                throw new ArgumentNullException(nameof(owner));
-
-            Owner = owner;
+            Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             DrawDistance = drawDistance;
 
             Id = PlayerObjectInternal.Instance.CreatePlayerObject(owner.Id, modelid, position.X, position.Y, position.Z, rotation.X,

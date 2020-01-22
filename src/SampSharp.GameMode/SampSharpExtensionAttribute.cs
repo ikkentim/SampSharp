@@ -12,13 +12,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using SampSharp.GameMode.API;
 
-namespace SampSharp.GameMode.API
+namespace SampSharp.GameMode
 {
     /// <summary>
     ///     Specifies the extension to load from this assembly.
@@ -45,7 +45,7 @@ namespace SampSharp.GameMode.API
         /// <summary>
         ///     Gets the type of the extension.
         /// </summary>
-        public Type Type { get; private set; }
+        public Type Type { get; }
 
         /// <summary>
         ///     Gets the assemblies to load before this extension.

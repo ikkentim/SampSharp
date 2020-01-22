@@ -33,7 +33,7 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the command passed trough the rcon interface.
         /// </summary>
-        public string Command { get; private set; }
+        public string Command { get; }
 
         /// <summary>
         ///     Gets or sets whether this command has been handled successfully.

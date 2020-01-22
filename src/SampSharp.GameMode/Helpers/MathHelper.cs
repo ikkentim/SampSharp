@@ -99,10 +99,10 @@ namespace SampSharp.GameMode.Helpers
         public static float Clamp(float value, float min, float max)
         {
             // First we check to see if we're greater than the max
-            value = (value > max) ? max : value;
+            value = value > max ? max : value;
 
             // Then we check to see if we're less than the min.
-            value = (value < min) ? min : value;
+            value = value < min ? min : value;
 
             // There's no check to see if min > max.
             return value;
@@ -117,8 +117,8 @@ namespace SampSharp.GameMode.Helpers
         /// <returns>The clamped value.</returns>
         public static int Clamp(int value, int min, int max)
         {
-            value = (value > max) ? max : value;
-            value = (value < min) ? min : value;
+            value = value > max ? max : value;
+            value = value < min ? min : value;
             return value;
         }
 
@@ -150,15 +150,21 @@ namespace SampSharp.GameMode.Helpers
             var sCubed = s*s*s;
             var sSquared = s*s;
 
-            if (amount == 0f)
-                result = value1;
-            else if (amount == 1f)
-                result = value2;
-            else
-                result = (2*v1 - 2*v2 + t2 + t1)*sCubed +
-                         (3*v2 - 3*v1 - 2*t1 - t2)*sSquared +
-                         t1*s +
-                         v1;
+            switch (amount)
+            {
+                case 0f:
+                    result = value1;
+                    break;
+                case 1f:
+                    result = value2;
+                    break;
+                default:
+                    result = (2*v1 - 2*v2 + t2 + t1)*sCubed +
+                             (3*v2 - 3*v1 - 2*t1 - t2)*sSquared +
+                             t1*s +
+                             v1;
+                    break;
+            }
             return (float) result;
         }
 
@@ -300,7 +306,7 @@ namespace SampSharp.GameMode.Helpers
         /// <returns><c>true</c> if <c>value</c> is powered by two; otherwise <c>false</c>.</returns>
         public static bool IsPowerOfTwo(int value)
         {
-            return (value > 0) && ((value & (value - 1)) == 0);
+            return value > 0 && (value & (value - 1)) == 0;
         }
     }
 }

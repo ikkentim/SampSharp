@@ -191,10 +191,7 @@ namespace SampSharp.GameMode.World
         public PlayerTextLabel(BasePlayer owner, string text, Color color, Vector3 position, float drawDistance,
             bool testLOS)
         {
-            if (owner == null)
-                throw new ArgumentNullException(nameof(owner));
-
-            Owner = owner;
+            Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             _color = color;
             _position = position;
             _drawDistance = drawDistance;
@@ -236,13 +233,10 @@ namespace SampSharp.GameMode.World
         public PlayerTextLabel(BasePlayer owner, string text, Color color, Vector3 position, float drawDistance,
             bool testLOS, BasePlayer attachedPlayer)
         {
-            if (owner == null)
-                throw new ArgumentNullException(nameof(owner));
-
             if (attachedPlayer == null)
                 throw new ArgumentNullException(nameof(attachedPlayer));
 
-            Owner = owner;
+            Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             _color = color;
             _position = position;
             _drawDistance = drawDistance;
@@ -285,13 +279,10 @@ namespace SampSharp.GameMode.World
         public PlayerTextLabel(BasePlayer owner, string text, Color color, Vector3 position, float drawDistance,
             bool testLOS, BaseVehicle attachedVehicle)
         {
-            if (owner == null)
-                throw new ArgumentNullException(nameof(owner));
-
             if (attachedVehicle == null)
                 throw new ArgumentNullException(nameof(attachedVehicle));
 
-            Owner = owner;
+            Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             _color = color;
             _position = position;
             _drawDistance = drawDistance;

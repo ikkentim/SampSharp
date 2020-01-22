@@ -36,6 +36,6 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the row.
         /// </summary>
-        public int Row { get; private set; }
+        public int Row { get; }
     }
 }

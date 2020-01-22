@@ -53,22 +53,22 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the minimum x value for this <see cref="GangZone" />.
         /// </summary>
-        public virtual float MinX { get; private set; }
+        public virtual float MinX { get; }
 
         /// <summary>
         ///     Gets the minimum y value for this <see cref="GangZone" />.
         /// </summary>
-        public virtual float MinY { get; private set; }
+        public virtual float MinY { get; }
 
         /// <summary>
         ///     Gets the maximum x value for this <see cref="GangZone" />.
         /// </summary>
-        public virtual float MaxX { get; private set; }
+        public virtual float MaxX { get; }
 
         /// <summary>
         ///     Gets the maximum y value for this <see cref="GangZone" />.
         /// </summary>
-        public virtual float MaxY { get; private set; }
+        public virtual float MaxY { get; }
 
         /// <summary>
         ///     Gets or sets the color of this <see cref="GangZone" />.

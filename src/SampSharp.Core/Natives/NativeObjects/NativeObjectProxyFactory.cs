@@ -22,7 +22,7 @@ using System.Reflection.Emit;
 namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
-    ///     Contains logic for creating natove object proxies.
+    ///     Contains logic for creating native object proxies.
     /// </summary>
     public static class NativeObjectProxyFactory
     {
@@ -38,6 +38,7 @@ namespace SampSharp.Core.Natives.NativeObjects
             var asmName = new AssemblyName("ProxyAssembly");
             var asmBuilder = AssemblyBuilder.DefineDynamicAssembly(asmName, AssemblyBuilderAccess.Run);
             ModuleBuilder = asmBuilder.DefineDynamicModule(asmName.Name + ".dll");
+
         }
 
         /// <summary>
@@ -56,14 +57,22 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// </summary>
         /// <param name="type">The type to create a proxy of.</param>
         /// <param name="arguments">The arguments.</param>
-        /// <returns>The proxy isntance</returns>
+        /// <returns>The proxy instance.</returns>
         public static object CreateInstance(Type type, params object[] arguments)
         {
+            if(type == null)
+                throw new ArgumentNullException(nameof(type));
+
             lock (Lock)
             {
                 // Check already known types.
                 if (KnownTypes.TryGetValue(type, out var outType))
                     return Activator.CreateInstance(outType, arguments);
+                
+                if (!(type.IsNested ? type.IsNestedPublic : type.IsPublic))
+                {
+                    throw new ArgumentException($"Type {type} is not public. Native proxies can only be created for public types.", nameof(type));
+                }
 
                 // Define a type for the native object.
                 var typeBuilder = ModuleBuilder.DefineType(type.Name + "ProxyClass",
@@ -117,7 +126,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                             continue;
 
                         // Generate the method body.
-                        var gen = new NativeObjectILGenerator(native, type, identifiers, new Type[0], get.ReturnType);
+                        var gen = new NativeObjectILGenerator(native, type, identifiers, 0, new Type[0], get.ReturnType);
                         gen.Generate(methodBuilder.GetILGenerator());
 
                         wrapProperty.SetGetMethod(methodBuilder);
@@ -145,7 +154,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                             continue;
 
                         // Generate the method body.
-                        var gen = new NativeObjectILGenerator(native, type, identifiers, new[] { property.PropertyType }, typeof(void));
+                        var gen = new NativeObjectILGenerator(native, type, identifiers, 0, new[] { property.PropertyType }, typeof(void));
                         gen.Generate(methodBuilder.GetILGenerator());
 
                         wrapProperty.SetSetMethod(methodBuilder);
@@ -170,12 +179,17 @@ namespace SampSharp.Core.Natives.NativeObjects
                     var name = attr.Function ?? method.Name;
                     var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
                     var sizes = attr.Lengths;
+                    var idIndex = Math.Max(0, attr.IdentifiersIndex);
 
                     // Find the native.
-                    var native = InternalStorage.RunningClient.NativeLoader.Load(name, sizes,
-                        Enumerable.Repeat(typeof(int), attr.IgnoreIdentifiers ? 0 : objectIdentifiers.Length)
-                            .Concat(argTypes)
-                            .ToArray());
+                    var nativeArgTypes = !attr.IgnoreIdentifiers && objectIdentifiers.Length > 0
+                        ? argTypes.Take(idIndex)
+                            .Concat(Enumerable.Repeat(typeof(int), objectIdentifiers.Length))
+                            .Concat(argTypes.Skip(idIndex))
+                            .ToArray()
+                        : argTypes;
+
+                    var native = InternalStorage.RunningClient.NativeLoader.Load(name, sizes, nativeArgTypes);
 
                     if (native == null)
                         continue;
@@ -189,7 +203,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                     var il = methodBuilder.GetILGenerator();
 
                     var gen = new NativeObjectILGenerator(native, type,
-                        attr.IgnoreIdentifiers ? new string[0] : objectIdentifiers, argTypes,
+                        attr.IgnoreIdentifiers ? new string[0] : objectIdentifiers, idIndex, argTypes,
                         method.ReturnType);
                     gen.Generate(il);
 

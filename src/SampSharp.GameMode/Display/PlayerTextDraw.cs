@@ -95,13 +95,10 @@ namespace SampSharp.GameMode.Display
         /// <param name="owner">The owner of the player-textdraw.</param>
         public PlayerTextDraw(BasePlayer owner)
         {
-            if (owner == null)
-                throw new ArgumentNullException(nameof(owner));
-
             IsApplyFixes = true;
             AutoDestroy = true;
 
-            Owner = owner;
+            Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             _text = "_";
         }
 

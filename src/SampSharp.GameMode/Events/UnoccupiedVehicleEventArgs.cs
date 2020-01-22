@@ -41,17 +41,17 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the passenger seat.
         /// </summary>
-        public int PassengerSeat { get; private set; }
+        public int PassengerSeat { get; }
 
         /// <summary>
         ///     Gets the new position.
         /// </summary>
-        public Vector3 NewPosition { get; private set; }
+        public Vector3 NewPosition { get; }
 
         /// <summary>
         ///     Gets the new velocity.
         /// </summary>
-        public Vector3 NewVelocity { get; private set; }
+        public Vector3 NewVelocity { get; }
 
         /// <summary>
         ///     Gets or sets whether to stop the vehicle syncing its position to other players.

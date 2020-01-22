@@ -1,7 +1,7 @@
 namespace SampSharp.Core.Threading
 {
     /// <summary>
-    ///     Represents a message queue for messages sent to a <see cref="SampSharpSyncronizationContext" />.
+    ///     Represents a message queue for messages sent to a <see cref="SampSharpSynchronizationContext" />.
     /// </summary>
     public interface IMessageQueue
     {

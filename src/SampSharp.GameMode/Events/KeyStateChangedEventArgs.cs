@@ -41,7 +41,7 @@ namespace SampSharp.GameMode.Events
         /// <value>
         ///     The new keys.
         /// </value>
-        public Keys NewKeys { get; private set; }
+        public Keys NewKeys { get; }
 
         /// <summary>
         ///     Gets the old keys.
@@ -49,6 +49,6 @@ namespace SampSharp.GameMode.Events
         /// <value>
         ///     The old keys.
         /// </value>
-        public Keys OldKeys { get; private set; }
+        public Keys OldKeys { get; }
     }
 }

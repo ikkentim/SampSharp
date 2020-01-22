@@ -183,10 +183,10 @@ namespace SampSharp.GameMode
         public event EventHandler<EventArgs> PlayerObjectMoved;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerPickUpPickup(Pickup,PlayerEventArgs)" /> callback is being called.
+        ///     Occurs when the <see cref="OnPlayerPickUpPickup(BasePlayer,PickUpPickupEventArgs)" /> callback is being called.
         ///     Called when a player picks up a pickup created with <see cref="Pickup" />.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> PlayerPickUpPickup;
+        public event EventHandler<PickUpPickupEventArgs> PlayerPickUpPickup;
 
         /// <summary>
         ///     Occurs when the <see cref="OnVehicleMod(BaseVehicle,VehicleModEventArgs)" /> callback is being called.
@@ -357,7 +357,7 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerClickTextDraw(BasePlayer,ClickTextDrawEventArgs)" /> callback is being called.
-        ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
+        ///     This callback is called when a player clicks on a textdraw. It is not called when player cancels the select mode (ESC).
         /// </summary>
         /// <remarks>
         ///     The clickable area is defined by <see cref="TextDraw.Width" /> and <see cref="TextDraw.Height" />.
@@ -365,13 +365,18 @@ namespace SampSharp.GameMode
         public event EventHandler<ClickTextDrawEventArgs> PlayerClickTextDraw;
 
         /// <summary>
-        ///     Occurs when the <see cref="OnPlayerClickPlayerTextDraw(BasePlayer,ClickPlayerTextDrawEventArgs)" /> callback is
-        ///     being
-        ///     called.
-        ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
-        ///     mode (ESC) - however, <see cref="OnPlayerClickTextDraw(BasePlayer,ClickTextDrawEventArgs)" /> is.
+        /// Occurs when the <see cref="OnPlayerClickPlayerTextDraw(BasePlayer,ClickPlayerTextDrawEventArgs)" /> callback is
+        /// being called. This callback is called when a player clicks on a player-textdraw. It is not called when player cancels
+        /// the select mode (ESC).
         /// </summary>
         public event EventHandler<ClickPlayerTextDrawEventArgs> PlayerClickPlayerTextDraw;
+
+        /// <summary>
+        ///     Occurs when the <see cref="OnPlayerCancelClickTextDraw(BasePlayer, PlayerEventArgs)" /> callback is being called.
+        ///     This callback is called when a player cancels the textdraw select mode(ESC).
+        /// </summary>
+        public event EventHandler<PlayerEventArgs> PlayerCancelClickTextDraw;
+
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerClickPlayer(BasePlayer, ClickPlayerEventArgs)" /> callback is being called.
@@ -692,11 +697,11 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Raises the <see cref="PlayerPickUpPickup" /> event.
         /// </summary>
-        /// <param name="pickup">The pickup triggering the event.</param>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        protected virtual void OnPlayerPickUpPickup(Pickup pickup, PlayerEventArgs e)
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="PickUpPickupEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerPickUpPickup(BasePlayer player, PickUpPickupEventArgs e)
         {
-            PlayerPickUpPickup?.Invoke(pickup, e);
+            PlayerPickUpPickup?.Invoke(player, e);
         }
 
         /// <summary>
@@ -927,6 +932,17 @@ namespace SampSharp.GameMode
         {
             PlayerClickPlayerTextDraw?.Invoke(player, e);
         }
+
+        /// <summary>
+        ///     Raises the <see cref="PlayerCancelClickTextDraw" /> event.
+        /// </summary>
+        /// <param name="player">The player triggering the event.</param>
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        protected virtual void OnPlayerCancelClickTextDraw(BasePlayer player, PlayerEventArgs e)
+        {
+            PlayerCancelClickTextDraw?.Invoke(player, e);
+        }
+
 
         /// <summary>
         ///     Raises the <see cref="PlayerClickPlayer" /> event.

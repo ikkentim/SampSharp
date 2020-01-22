@@ -17,9 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using SampSharp.Core.Callbacks;
-using SampSharp.Core.Communication.Clients;
 using SampSharp.Core.Natives;
 
 namespace SampSharp.Core
@@ -40,6 +38,11 @@ namespace SampSharp.Core
         INativeLoader NativeLoader { get; set; }
 
         /// <summary>
+        ///     Gets the path to the server directory.
+        /// </summary>
+        string ServerPath { get; }
+
+        /// <summary>
         ///     Occurs when an exception is unhandled during the execution of a callback or tick.
         /// </summary>
         event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
@@ -54,6 +57,18 @@ namespace SampSharp.Core
         /// <param name="parameters">The parameters of the callback.</param>
         void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters);
         
+        /// <summary>
+        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
+        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
+        /// </summary>
+        /// <param name="name">The name af the callback to register.</param>
+        /// <param name="target">The target on which to invoke the method.</param>
+        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
+        /// <param name="parameters">The parameters of the callback.</param>
+        /// <param name="parameterTypes">The types of the parameters.</param>
+        void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters,
+            Type[] parameterTypes);
+
         /// <summary>
         ///     Prints the specified text to the server console.
         /// </summary>
@@ -73,7 +88,6 @@ namespace SampSharp.Core
         /// <param name="data">The data buffer to be used.</param>
         /// <returns>The response from the native.</returns>
         byte[] InvokeNative(IEnumerable<byte> data);
-
 
         /// <summary>
         ///     Shuts down the server after the current callback has been processed.

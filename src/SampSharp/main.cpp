@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2018 Tim Potze
+// Copyright 2020 Tim Potze
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,8 +25,6 @@
 #include "logging.h"
 #include "hosted_server.h"
 
-using sampgdk::logprintf;
-
 server *svr = NULL;
 commsvr *com = NULL;
 plugin *plg = NULL;
@@ -35,7 +33,7 @@ void print_info() {
     log_print("");
     log_print("SampSharp Plugin");
     log_print("----------------");
-    log_print("v%s, (C)2014-2018 Tim Potze", PLUGIN_VERSION_STR);
+    log_print("v%s, (C)2014-2020 Tim Potze", PLUGIN_VERSION_STR);
     log_print("");
 }
 
@@ -109,7 +107,6 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload() {
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
-    sampgdk::ProcessTick();
     if (svr) {
         svr->tick();
     }

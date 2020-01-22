@@ -339,9 +339,9 @@ namespace SampSharp.GameMode
         /// <returns>Transformed <see cref="Vector2" />.</returns>
         public static Vector2 Transform(Vector2 value, Quaternion rotation)
         {
-            var rot1 = new Vector3(rotation.X + rotation.X, rotation.Y + rotation.Y, rotation.Z + rotation.Z);
-            var rot2 = new Vector3(rotation.X, rotation.X, rotation.W);
-            var rot3 = new Vector3(1, rotation.Y, rotation.Z);
+            var rot1 = new Vector3(-rotation.X - rotation.X, -rotation.Y - rotation.Y, -rotation.Z - rotation.Z);
+            var rot2 = new Vector3(-rotation.X, -rotation.X, rotation.W);
+            var rot3 = new Vector3(1, -rotation.Y, -rotation.Z);
             var rot4 = rot1*rot2;
             var rot5 = rot1*rot3;
 
@@ -492,7 +492,7 @@ namespace SampSharp.GameMode
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Vector2 && Equals((Vector2) obj);
+            return obj is Vector2 vector && Equals(vector);
         }
 
         /// <summary>

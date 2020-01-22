@@ -41,13 +41,11 @@ namespace SampSharp.GameMode.Display
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
         public TablistDialog(string caption, int columnCount, string button1, string button2 = null)
         {
-            if (caption == null) throw new ArgumentNullException(nameof(caption));
-            if (button1 == null) throw new ArgumentNullException(nameof(button1));
             if (columnCount <= 0)
                 throw new ArgumentOutOfRangeException(nameof(columnCount), "must be greater than 0");
 
-            Caption = caption;
-            Button1 = button1;
+            Caption = caption ?? throw new ArgumentNullException(nameof(caption));
+            Button1 = button1 ?? throw new ArgumentNullException(nameof(button1));
             Button2 = button2;
             _columnCount = columnCount;
             Style = DialogStyle.Tablist;
@@ -65,11 +63,8 @@ namespace SampSharp.GameMode.Display
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
         public TablistDialog(string caption, IEnumerable<string> columns, string button1, string button2 = null)
         {
-            if (caption == null) throw new ArgumentNullException(nameof(caption));
-            if (button1 == null) throw new ArgumentNullException(nameof(button1));
-
-            Caption = caption;
-            Button1 = button1;
+            Caption = caption ?? throw new ArgumentNullException(nameof(caption));
+            Button1 = button1 ?? throw new ArgumentNullException(nameof(button1));
             Button2 = button2;
             if (columns == null) throw new ArgumentNullException(nameof(columns));
             Style = DialogStyle.TablistHeaders;
@@ -324,10 +319,10 @@ namespace SampSharp.GameMode.Display
                 var row = value.ToArray();
 
                 if (row.Length != _columnCount)
-                    throw new ArgumentException($"Row must contain {_columnCount} cells.", "item");
+                    throw new ArgumentException($"Row must contain {_columnCount} cells.", nameof(value));
 
                 if (row.Any(cell => cell.Contains('\t')))
-                    throw new ArgumentException("No cell can contain a TAB character.", "item");
+                    throw new ArgumentException("No cell can contain a TAB character.", nameof(value));
                 _rows[index] = string.Join("\t", row);
             }
         }

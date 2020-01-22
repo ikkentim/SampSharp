@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Pools;
 
@@ -35,9 +36,22 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnPickUp" /> is being called.
-        ///     Called when a player picks up a pickup created with <see cref="Create" />
+        ///     Called when a player picks up a pickup.
         /// </summary>
-        public event EventHandler<PlayerEventArgs> PickUp;
+        public event EventHandler<PickUpPickupEventArgs> PickUp;
+        
+        /// <summary>
+        ///     Creates a <see cref="Pickup" />.
+        /// </summary>
+        /// <param name="model">The model of the pickup.</param>
+        /// <param name="type">The pickup spawn type.</param>
+        /// <param name="position">The position where the pickup should be spawned.</param>
+        /// <param name="virtualWorld">The virtual world ID of the pickup. Use -1 for all worlds.</param>
+        /// <returns>The created pickup or null if it cannot be created.</returns>
+        public static Pickup Create(int model, PickupType type, Vector3 position, int virtualWorld = -1)
+        {
+            return Create(model, (int) type, position, virtualWorld);
+        }
 
         /// <summary>
         ///     Creates a <see cref="Pickup" />.
@@ -91,8 +105,8 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Raises the <see cref="PickUp" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnPickUp(PlayerEventArgs e)
+        /// <param name="e">An <see cref="PickUpPickupEventArgs" /> that contains the event data. </param>
+        public virtual void OnPickUp(PickUpPickupEventArgs e)
         {
             PickUp?.Invoke(this, e);
         }

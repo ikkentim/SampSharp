@@ -117,6 +117,11 @@ namespace SampSharp.GameMode
         ///     Gets the Z component of this <see cref="Vector3" />.
         /// </summary>
         public float Z { get; }
+        
+        /// <summary>
+        ///     Creates a <see cref="Vector2" /> instance with the X and Y components of this <see cref="Vector3" />.
+        /// </summary>
+        public Vector2 XY => new Vector2(X, Y);
 
         /// <summary>
         ///     Returns an empty <see cref="Vector3" />.
@@ -438,14 +443,14 @@ namespace SampSharp.GameMode
         /// <returns>Transformed <see cref="Vector3" />.</returns>
         public static Vector3 Transform(Vector3 value, Quaternion rotation)
         {
-            var x = 2*(rotation.Y*value.Z - rotation.Z*value.Y);
-            var y = 2*(rotation.Z*value.X - rotation.X*value.Z);
-            var z = 2*(rotation.X*value.Y - rotation.Y*value.X);
+            var x = 2*(-rotation.Y*value.Z + rotation.Z*value.Y);
+            var y = 2*(-rotation.Z*value.X + rotation.X*value.Z);
+            var z = 2*(-rotation.X*value.Y + rotation.Y*value.X);
 
             return new Vector3(
-                value.X + x*rotation.W + (rotation.Y*z - rotation.Z*y),
-                value.Y + y*rotation.W + (rotation.Z*x - rotation.X*z),
-                value.Z + z*rotation.W + (rotation.X*y - rotation.Y*x));
+                value.X + x*rotation.W + (-rotation.Y*z + rotation.Z*y),
+                value.Y + y*rotation.W + (-rotation.Z*x + rotation.X*z),
+                value.Z + z*rotation.W + (-rotation.X*y + rotation.Y*x));
         }
 
         /// <summary>
@@ -611,7 +616,7 @@ namespace SampSharp.GameMode
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Vector3 && Equals((Vector3) obj);
+            return obj is Vector3 vector && Equals(vector);
         }
 
         #endregion

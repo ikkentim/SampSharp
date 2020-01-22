@@ -40,8 +40,7 @@ namespace SampSharp.GameMode.Tools
             var taskCompletionSource = new TaskCompletionSource<TArguments>();
             _completionSources[key] = taskCompletionSource;
 
-            var disposable = key as Disposable;
-            if (disposable != null)
+            if (key is Disposable disposable)
                 disposable.Disposed += disposable_Disposed;
 
             return await taskCompletionSource.Task;
@@ -86,8 +85,7 @@ namespace SampSharp.GameMode.Tools
         {
             _completionSources.Remove(key);
 
-            var disposable = key as Disposable;
-            if (disposable != null)
+            if (key is Disposable disposable)
                 disposable.Disposed -= disposable_Disposed;
 
             _completionSources.Remove(key);

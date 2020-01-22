@@ -42,11 +42,11 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Gets or sets the caption of this column.
         /// </summary>
-        public string Caption { get; private set; }
+        public string Caption { get; }
 
         /// <summary>
         ///     Gets or sets the width if this column.
         /// </summary>
-        public float Width { get; private set; }
+        public float Width { get; }
     }
 }

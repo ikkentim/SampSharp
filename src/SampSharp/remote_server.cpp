@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "logging.h"
+#include "pathutil.h"
 
 #define DEBUG_PAUSE_TIMEOUT         (5)
 #define DEBUG_PAUSE_TICK_INTERVAL   (7)
@@ -74,6 +75,7 @@ remote_server::~remote_server() {
 #pragma region Commands
 
 CMD_DEFINE(cmd_ping) {
+    log_debug("Sending pong");
     communication_->send(CMD_PONG, 0, NULL);
 }
 
@@ -103,18 +105,23 @@ CMD_DEFINE(cmd_find_native) {
 CMD_DEFINE(cmd_invoke_native) {
     uint32_t txlen = LEN_NETBUF;
     uint8_t *buftx = buftx_;
-
-    // copy callerid to output buffer
-    *(uint16_t *)buftx = *(uint16_t *)buf;
+    uint16_t callerid = *(uint16_t *)buf;
+    uint16_t* calleridptr = (uint16_t *)buftx;
 
     buf += sizeof(uint16_t);
-    buftx += sizeof(uint16_t);
+    buftx += sizeof(uint16_t); // reserve callerid space
     buflen -= sizeof(uint16_t);
     txlen -= sizeof(uint16_t);
 
     natives_.invoke(buf, buflen, buftx, &txlen);
     log_debug("Native invoked with %d buflen, response has %d buflen", buflen, txlen);
     txlen += sizeof(uint16_t);
+    
+    // copy callerid to output buffer after the native was executed because the
+    // native might invoke callbacks which in turn may cause this function
+    // to be executed again, causing the value to be overwritten.
+    *calleridptr = callerid;
+
     communication_->send(CMD_RESPONSE, txlen, buftx_);
 }
 
@@ -256,16 +263,21 @@ bool remote_server::connect() {
     return true;
 }
 
-/** sends the server annoucement to the client */
+/** sends the server announcement to the client */
 void remote_server::cmd_send_announce() {
     /* send version */
-    uint32_t info[2];
-    info[0] = PLUGIN_PROTOCOL_VERSION;
-    info[1] = PLUGIN_VERSION;
+    uint8_t buf[sizeof(uint32_t) * 2 + 260];
+    ((uint32_t *)buf)[0] = PLUGIN_PROTOCOL_VERSION;
+    ((uint32_t *)buf)[1] = PLUGIN_VERSION;
 
-    communication_->send(CMD_ANNOUNCE, sizeof(info), (uint8_t *)info);
+    std::string cwd;
+    get_cwd(cwd);
 
-    log_info("Server annoucement sent.");
+    memcpy(buf + sizeof(uint32_t) * 2, cwd.c_str(), cwd.length());
+    communication_->send(CMD_ANNOUNCE, sizeof(uint32_t) * 2 + cwd.length(),
+        buf);
+
+    log_info("Server announcement sent.");
 }
 
 /** disconnects from client */
@@ -280,9 +292,10 @@ void remote_server::disconnect(const char *context, bool expected) {
     }
     else if (STATUS_ISSET(status_client_disconnecting)) {
         log_info("Client disconnected.");
-        intermission_.signal_disconnect();
 
         STATUS_UNSET(status_client_started | status_client_disconnecting);
+        intermission_.signal_disconnect();
+
         natives_.clear();
         callbacks_.clear();
     }
@@ -291,9 +304,10 @@ void remote_server::disconnect(const char *context, bool expected) {
             context = "";
         }
         log_error("Unexpected disconnect of client. %s", context);
+        
+        STATUS_UNSET(status_client_started);
         intermission_.signal_error();
 
-        STATUS_UNSET(status_client_started);
         natives_.clear();
         callbacks_.clear();
     }

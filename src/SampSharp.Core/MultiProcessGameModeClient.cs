@@ -49,9 +49,11 @@ namespace SampSharp.Core
         private bool _running;
         private bool _shuttingDown;
         private bool _canTick;
-        private SampSharpSyncronizationContext _syncronizationContext;
+        private SampSharpSynchronizationContext _synchronizationContext;
         private DateTime _lastSend;
         private ushort _callerIndex;
+        private Task _mainRoutine;
+        private Task _networkingRoutine;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MultiProcessGameModeClient" /> class.
@@ -83,11 +85,20 @@ namespace SampSharp.Core
         {
             switch (data.Command)
             {
+                case ServerCommand.Nop:
+                    break;
                 case ServerCommand.Tick:
                     if (!_canTick)
                         break;
 
-                    _gameModeProvider.Tick();
+                    try
+                    {
+                        _gameModeProvider.Tick();
+                    }
+                    catch (Exception e)
+                    {
+                        OnUnhandledException(new UnhandledExceptionEventArgs("Tick", e));
+                    }
 
                     // The server expects at least a message every 5 seconds or else the debug pause
                     // detector kicks in. Send one at least every 3 to be safe.
@@ -140,7 +151,7 @@ namespace SampSharp.Core
                         }
                         catch (Exception e)
                         {
-                            OnUnhandledException(new UnhandledExceptionEventArgs(e));
+                            OnUnhandledException(new UnhandledExceptionEventArgs(name, e));
                         }
 
                         Send(ServerCommand.Response,
@@ -226,14 +237,13 @@ namespace SampSharp.Core
                         Send(ServerCommand.Reconnect, null);
 
                         // Give the server time to receive the reconnect signal.
-                        // TODO: This is an ugly freeze/comms-deadlock fix.
                         Thread.Sleep(100);
 
                         CleanUp();
                     }
                     break;
                 default:
-                    CoreLog.Log(CoreLogLevel.Error, $"Unknown command {data.Command} recieved with {data.Data?.Length.ToString() ?? "NULL"} data");
+                    CoreLog.Log(CoreLogLevel.Error, $"Unknown command {data.Command} received with {data.Data?.Length.ToString() ?? "NULL"} data");
                     CoreLog.Log(CoreLogLevel.Debug, Environment.StackTrace);
                     break;
             }
@@ -247,7 +257,7 @@ namespace SampSharp.Core
             _messagePump.Dispose();
         }
 
-        private static bool VerifyVersionData(ServerCommandData data)
+        private bool VerifyVersionData(ServerCommandData data)
         {
             CoreLog.Log(CoreLogLevel.Debug, $"Received {data.Command} while waiting for server announcement.");
             if (data.Command == ServerCommand.Announce)
@@ -264,6 +274,8 @@ namespace SampSharp.Core
                     return false;
                 }
                 CoreLog.Log(CoreLogLevel.Info, $"Connected to version {pluginVersion.ToString(3)} via protocol {protocolVersion}");
+                
+                ServerPath = ValueConverter.ToString(data.Data, 8, Encoding.ASCII);
 
                 return true;
             }
@@ -273,21 +285,36 @@ namespace SampSharp.Core
 
         private async void Initialize()
         {
+            _mainThread = Thread.CurrentThread.ManagedThreadId;
+
             CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Client");
             CoreLog.Log(CoreLogLevel.Initialisation, "-------------------------");
-            CoreLog.Log(CoreLogLevel.Initialisation, $"v{CoreVersion.Version.ToString(3)}, (C)2014-2018 Tim Potze");
+            CoreLog.Log(CoreLogLevel.Initialisation, $"v{CoreVersion.Version.ToString(3)}, (C)2014-2020 Tim Potze");
+            CoreLog.Log(CoreLogLevel.Initialisation, "Multi-process run mode is active. FOR DEVELOPMENT PURPOSES ONLY!");
+            CoreLog.Log(CoreLogLevel.Initialisation, "Run your server in hosted run mode for production environments. See https://sampsharp.net/running-in-production for more information.");
             CoreLog.Log(CoreLogLevel.Initialisation, "");
 
-            _mainThread = Thread.CurrentThread.ManagedThreadId;
-            _running = true;
+            AppDomain.CurrentDomain.ProcessExit += (sender, args) =>
+            {
+                CoreLog.Log(CoreLogLevel.Info, "Shutdown signal received");
+                ShutDown();
+
+                if (_mainRoutine != null && !_mainRoutine.IsCompleted)
+                    _mainRoutine.Wait();
+
+                if (_networkingRoutine != null && !_networkingRoutine.IsCompleted)
+                    _networkingRoutine.Wait();
+            };           
 
             CoreLog.Log(CoreLogLevel.Info, $"Connecting to the server via {CommunicationClient}...");
             await CommunicationClient.Connect();
 
+            _running = true;
+
             CoreLog.Log(CoreLogLevel.Info, "Set up networking routine...");
             StartNetworkingRoutine();
 
-            CoreLog.Log(CoreLogLevel.Info, "Connected! Waiting for server annoucement...");
+            CoreLog.Log(CoreLogLevel.Info, "Connected! Waiting for server announcement...");
             ServerCommandData data;
 
             do
@@ -300,14 +327,14 @@ namespace SampSharp.Core
             if (!VerifyVersionData(data))
                 return;
 
-            CoreLog.Log(CoreLogLevel.Info, "Initialializing game mode provider...");
+            CoreLog.Log(CoreLogLevel.Info, "Initializing game mode provider...");
             _gameModeProvider.Initialize(this);
 
             CoreLog.Log(CoreLogLevel.Info, "Sending start signal to server...");
             Send(ServerCommand.Start, new[] { (byte) _startBehaviour });
 
             CoreLog.Log(CoreLogLevel.Info, "Set up main routine...");
-            MainRoutine();
+            _mainRoutine = MainRoutine();
         }
 
         private void AssertRunning()
@@ -323,7 +350,7 @@ namespace SampSharp.Core
 
         #region Routines
 
-        private async void MainRoutine()
+        private async Task MainRoutine()
         {
             while (_running)
             {
@@ -361,7 +388,7 @@ namespace SampSharp.Core
 
         private void StartNetworkingRoutine()
         {
-            Task.Run(() => NetworkingRoutine().ConfigureAwait(false));
+            _networkingRoutine = Task.Run(() => NetworkingRoutine().ConfigureAwait(false));
         }
 
         #endregion
@@ -389,7 +416,7 @@ namespace SampSharp.Core
             if (IsOnMainThread)
                 Send(command, data);
             else
-                _syncronizationContext.Send(ctx => Send(command, data), null);
+                _synchronizationContext.Send(ctx => Send(command, data), null);
         }
 
         private ServerCommandData SendAndWait(ServerCommand command, IEnumerable<byte> data, Func<ServerCommandData, bool> accept = null)
@@ -414,7 +441,7 @@ namespace SampSharp.Core
                 return SendAndWait(command, data, accept);
 
             var responseData = default(ServerCommandData);
-            _syncronizationContext.Send(ctx => responseData = SendAndWait(command, data, accept), null);
+            _synchronizationContext.Send(ctx => responseData = SendAndWait(command, data, accept), null);
             return responseData;
         }
 
@@ -436,7 +463,7 @@ namespace SampSharp.Core
             }
             else
             {
-                _syncronizationContext.Send(ctx =>
+                _synchronizationContext.Send(ctx =>
                 {
                     _pongs.Enqueue(pong);
 
@@ -456,18 +483,23 @@ namespace SampSharp.Core
 
             return _callerIndex;
         }
-
-        #region Implementation of IGameModeClient
-
+        
         /// <summary>
-        ///     Gets the communicaton client.
+        ///     Gets the communication client.
         /// </summary>
         public ICommunicationClient CommunicationClient { get; }
+
+        #region Implementation of IGameModeClient
 
         /// <summary>
         ///     Gets or sets the native loader to be used to load natives.
         /// </summary>
         public INativeLoader NativeLoader { get; set; }
+
+        /// <summary>
+        ///     Gets the path to the server directory.
+        /// </summary>
+        public string ServerPath { get; private set; }
 
         /// <summary>
         ///     Occurs when an exception is unhandled during the execution of a callback or tick.
@@ -492,26 +524,63 @@ namespace SampSharp.Core
 
             if (!Callback.IsValidReturnType(methodInfo.ReturnType))
                 throw new CallbackRegistrationException("The method uses an unsupported return type");
+            
+            var callback = new Callback(target, methodInfo, name, this);
 
-            _callbacks[name] = new Callback(target, methodInfo, name, parameters, this);
+            if(!callback.MatchesParameters(parameters))
+                throw new CallbackRegistrationException("The method does not match the specified parameters.");
+            
+            _callbacks[name] = callback;
 
             SendOnMainThread(ServerCommand.RegisterCall, ValueConverter.GetBytes(name, Encoding)
                 .Concat(parameters.SelectMany(c => c.GetBytes()))
                 .Concat(new[] { (byte) ServerCommandArgument.Terminator }));
         }
-        
+
+        /// <summary>
+        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
+        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
+        /// </summary>
+        /// <param name="name">The name af the callback to register.</param>
+        /// <param name="target">The target on which to invoke the method.</param>
+        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
+        /// <param name="parameters">The parameters of the callback.</param>
+        /// <param name="parameterTypes">The types of the parameters.</param>
+        public void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters, Type[] parameterTypes)
+        {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (target == null) throw new ArgumentNullException(nameof(target));
+            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
+            if (parameterTypes == null) throw new ArgumentNullException(nameof(parameterTypes));
+
+            AssertRunning();
+
+            if (!Callback.IsValidReturnType(methodInfo.ReturnType))
+                throw new CallbackRegistrationException("The method uses an unsupported return type");
+            
+            var callback = new Callback(target, methodInfo, name, parameterTypes, this);
+
+            if(!callback.MatchesParameters(parameters))
+                throw new CallbackRegistrationException("The method does not match the specified parameters.");
+            
+            _callbacks[name] = callback;
+
+            SendOnMainThread(ServerCommand.RegisterCall, ValueConverter.GetBytes(name, Encoding)
+                .Concat(parameters.SelectMany(c => c.GetBytes()))
+                .Concat(new[] { (byte) ServerCommandArgument.Terminator }));
+        }
+
         /// <summary>
         ///     Prints the specified text to the server console.
         /// </summary>
         /// <param name="text">The text to print to the server console.</param>
         public void Print(string text)
         {
-            AssertRunning();
-
             if (text == null)
                 text = string.Empty;
 
-            SendOnMainThread(ServerCommand.Print, ValueConverter.GetBytes(text, Encoding));
+            if (_running)
+                SendOnMainThread(ServerCommand.Print, ValueConverter.GetBytes(text, Encoding));
         }
 
         /// <summary>
@@ -541,12 +610,18 @@ namespace SampSharp.Core
         public byte[] InvokeNative(IEnumerable<byte> data)
         {
             var caller = GetCallerId();
+            
+            //CoreLog.LogVerbose("Caller: {0}, \n{1}", caller, Environment.StackTrace);
+
             data = ValueConverter.GetBytes(caller).Concat(data);
             var response = SendAndWaitOnMainThread(ServerCommand.InvokeNative, data, d =>
             {
                 return d.Command != ServerCommand.Response ||
                            (d.Data != null && d.Data.Length >= 2 && ValueConverter.ToUInt16(d.Data, 0) == caller);
             });
+
+           //CoreLog.LogVerbose("RESPONSE for Caller: {0}", caller);
+
             return response.Data.Skip(2).ToArray(); // TODO: Optimize GC allocations
         }
 
@@ -561,10 +636,10 @@ namespace SampSharp.Core
             CommunicationClient.Send(ServerCommand.Disconnect, null);
 
             // Give the server time to receive the reconnect signal.
-            // TODO: Unexpected behaviour if called from outside a callback (because shuttingDown hook is inside callback handler).
-            // TODO: This is an ugly fix.
             Thread.Sleep(100);
+
             _shuttingDown = true;
+            _commandWaitQueue.Release(new ServerCommandData(ServerCommand.Nop, new byte[0]));
         }
 
         #endregion
@@ -583,18 +658,18 @@ namespace SampSharp.Core
 
             InternalStorage.RunningClient = this;
 
-            // Prepare the syncronization context
+            // Prepare the synchronization context
             var queue = new SemaphoreMessageQueue();
-            _syncronizationContext = new SampSharpSyncronizationContext(queue);
+            _synchronizationContext = new SampSharpSynchronizationContext(queue);
             _messagePump = new MessagePump(queue);
 
-            SynchronizationContext.SetSynchronizationContext(_syncronizationContext);
+            SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
 
             // Initialize the game mode and start the main routine
             Initialize();
 
             // Pump new tasks
-            _messagePump.Pump(e => OnUnhandledException(new UnhandledExceptionEventArgs(e)));
+            _messagePump.Pump(e => OnUnhandledException(new UnhandledExceptionEventArgs("async", e)));
 
             // Clean up
             InternalStorage.RunningClient = null;

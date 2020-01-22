@@ -48,16 +48,16 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Gets the text displayed in the first column.
         /// </summary>
-        public string Column1Text { get; private set; }
+        public string Column1Text { get; }
 
         /// <summary>
         ///     Gets the text displayed in the second column.
         /// </summary>
-        public string Column2Text { get; private set; }
+        public string Column2Text { get; }
 
         /// <summary>
         ///     Gets whether this row is disabled.
         /// </summary>
-        public bool Disabled { get; private set; }
+        public bool Disabled { get; }
     }
 }

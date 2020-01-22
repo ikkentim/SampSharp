@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageIconUrl>https://github.com/ikkentim/SampSharp/raw/master/sampsharp.png</PackageIconUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/ikkentim/SampSharp/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/ikkentim/SampSharp</PackageProjectUrl>
@@ -69,9 +69,6 @@
     </Compile>
     <Compile Update="SAMP\Server.Internal.cs">
       <DependentUpon>Server.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Tools\MapAndreas.Internal.cs">
-      <DependentUpon>MapAndreas.cs</DependentUpon>
     </Compile>
     <Compile Update="World\Actor.Internal.cs">
       <DependentUpon>Actor.cs</DependentUpon>

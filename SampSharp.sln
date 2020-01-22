@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampSharp", "src\SampSharp\SampSharp.vcxproj", "{39908193-8E5A-42EC-B71B-5D457CE87823}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampSharp.Core", "src\SampS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampSharp.GameMode", "src\SampSharp.GameMode\SampSharp.GameMode.csproj", "{153D7525-B36F-4DB9-B5B6-483915C84A7E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMode.DotNetCore", "src\TestMode.DotNetCore\TestMode.DotNetCore.csproj", "{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMode.GameMode", "src\TestMode.GameMode\TestMode.GameMode.csproj", "{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6B10DCD1-5FFB-4B21-AF82-1906E6AF7119}"
 	ProjectSection(SolutionItems) = preProject
@@ -23,13 +23,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6B10DCD1
 		build.cake = build.cake
 		build.ps1 = build.ps1
 		build.sh = build.sh
+		CHANGES-plugin.md = CHANGES-plugin.md
 		CHANGES-SampSharp.Core.md = CHANGES-SampSharp.Core.md
+		CHANGES-SampSharp.Entities.md = CHANGES-SampSharp.Entities.md
 		CHANGES-SampSharp.GameMode.md = CHANGES-SampSharp.GameMode.md
 		premake4.lua = premake4.lua
 		env\server.cfg = env\server.cfg
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMode.DotNetFramework", "src\TestMode.DotNetFramework\TestMode.DotNetFramework.csproj", "{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampSharp.Entities", "src\SampSharp.Entities\SampSharp.Entities.csproj", "{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMode.Entities", "src\TestMode.Entities\TestMode.Entities.csproj", "{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,18 +92,30 @@ Global
 		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Win32.ActiveCfg = Release|Any CPU
 		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}.Release|Win32.Build.0 = Release|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Debug|Win32.Build.0 = Debug|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Win32.ActiveCfg = Release|Any CPU
-		{9CEDB6C4-0F4F-4989-8C14-621B71D72B3E}.Release|Win32.Build.0 = Release|Any CPU
+		{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}.Debug|Win32.Build.0 = Debug|Any CPU
+		{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}.Release|Win32.ActiveCfg = Release|Any CPU
+		{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}.Release|Win32.Build.0 = Release|Any CPU
+		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Debug|Win32.Build.0 = Debug|Any CPU
+		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Release|Win32.ActiveCfg = Release|Any CPU
+		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

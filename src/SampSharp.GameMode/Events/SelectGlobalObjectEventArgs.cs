@@ -46,17 +46,17 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player.
         /// </summary>
-        public BasePlayer Player { get; private set; }
+        public BasePlayer Player { get; }
 
         /// <summary>
         ///     Gets the global object.
         /// </summary>
-        public GlobalObject Object { get; private set; }
+        public GlobalObject Object { get; }
 
         /// <summary>
         ///     Gets the model identifier.
         /// </summary>
-        public int ModelId { get; private set; }
+        public int ModelId { get; }
     }
 
     /// <summary>
@@ -84,16 +84,16 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player.
         /// </summary>
-        public BasePlayer Player { get; private set; }
+        public BasePlayer Player { get; }
 
         /// <summary>
         ///     Gets the player object.
         /// </summary>
-        public PlayerObject Object { get; private set; }
+        public PlayerObject Object { get; }
 
         /// <summary>
         ///     Gets the model identifier.
         /// </summary>
-        public int ModelId { get; private set; }
+        public int ModelId { get; }
     }
 }

@@ -84,7 +84,7 @@ namespace SampSharp.GameMode.World
                 return GlobalObjectInternal.Instance.GetObjectModel(Id);
             }
         }
-
+        
         /// <summary>
         ///     Gets the draw distance of this IGameObject.
         /// </summary>

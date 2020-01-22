@@ -37,11 +37,11 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the new interior.
         /// </summary>
-        public int NewInterior { get; private set; }
+        public int NewInterior { get; }
 
         /// <summary>
         ///     Gets the old interior.
         /// </summary>
-        public int OldInterior { get; private set; }
+        public int OldInterior { get; }
     }
 }

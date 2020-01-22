@@ -35,3 +35,4 @@ bool dir_exists(const char *path);
 bool file_exists(const char *path);
 bool get_directory(const char *absolute_path, std::string &directory);
 bool get_absolute_path(const char* path, std::string &absolute_path);
+void get_cwd(std::string &directory);

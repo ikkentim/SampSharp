@@ -45,26 +45,26 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the player sending this response.
         /// </summary>
-        public BasePlayer Player { get; private set; }
+        public BasePlayer Player { get; }
 
         /// <summary>
         ///     Gets the id of dialog of this response.
         /// </summary>
-        public int DialogId { get; private set; }
+        public int DialogId { get; }
 
         /// <summary>
         ///     Gets the button clicked for this response.
         /// </summary>
-        public DialogButton DialogButton { get; private set; }
+        public DialogButton DialogButton { get; }
 
         /// <summary>
         ///     Gets the index of the listitem clicked for this response.
         /// </summary>
-        public int ListItem { get; private set; }
+        public int ListItem { get; }
 
         /// <summary>
         ///     Gets the inputtext of this response.
         /// </summary>
-        public string InputText { get; private set; }
+        public string InputText { get; }
     }
 }

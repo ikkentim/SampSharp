@@ -37,8 +37,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// <exception cref="ArgumentNullException"></exception>
         public CommandsManager(BaseMode gameMode)
         {
-            if (gameMode == null) throw new ArgumentNullException(nameof(gameMode));
-            GameMode = gameMode;
+            GameMode = gameMode ?? throw new ArgumentNullException(nameof(gameMode));
         }
 
         #region Implementation of IService
@@ -134,7 +133,21 @@ namespace SampSharp.GameMode.SAMP.Commands
             var groups =
                 type.GetTypeInfo()
                     .GetCustomAttributes<CommandGroupAttribute>()
-                    .SelectMany(a => a.Paths)
+                    .SelectMany(a =>
+                    {
+                        var paths = a.Paths;
+
+                        if (paths.Length == 0)
+                        {
+                            var name = type.Name.ToLower();
+                            if (name.EndsWith("commandgroup"))
+                                name = name.Substring(0, name.Length - 12);
+
+                            paths = new[] {name};
+                        }
+
+                        return paths;
+                    })
                     .Select(g => g.Trim())
                     .Where(g => !string.IsNullOrEmpty(g)).ToArray();
 
@@ -152,6 +165,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             if (count == 0)
                 foreach (var g in groups)
                     yield return g;
+            
         }
 
         private static IEnumerable<string> GetCommandGroupPaths(MethodInfo method)
@@ -258,13 +272,26 @@ namespace SampSharp.GameMode.SAMP.Commands
             {
                 var attribute = method.GetCustomAttribute<CommandAttribute>();
 
+                var names = attribute.Names;
+
+                if (names.Length == 0)
+                {
+                    var name = attribute.IgnoreCase ? method.Name.ToLower() : method.Name;
+                    names = new[]
+                    {
+                        name.EndsWith("command") || name.EndsWith("Command")
+                            ? name.Substring(0, name.Length - 7)
+                            : name
+                    };
+                }
+
                 var commandPaths =
                     GetCommandGroupPaths(method)
-                        .SelectMany(g => attribute.Names.Select(n => new CommandPath(g, n)))
+                        .SelectMany(g => names.Select(n => new CommandPath(g, n)))
                         .ToList();
 
                 if (commandPaths.Count == 0)
-                    commandPaths.AddRange(attribute.Names.Select(n => new CommandPath(n)));
+                    commandPaths.AddRange(names.Select(n => new CommandPath(n)));
 
                 if (!string.IsNullOrWhiteSpace(attribute.Shortcut))
                     commandPaths.Add(new CommandPath(attribute.Shortcut));

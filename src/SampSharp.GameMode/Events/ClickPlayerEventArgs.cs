@@ -37,11 +37,11 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Gets the clicked player.
         /// </summary>
-        public BasePlayer ClickedPlayer { get; private set; }
+        public BasePlayer ClickedPlayer { get; }
 
         /// <summary>
         ///     Gets the PlayerClickSource of this event.
         /// </summary>
-        public PlayerClickSource PlayerClickSource { get; private set; }
+        public PlayerClickSource PlayerClickSource { get; }
     }
 }

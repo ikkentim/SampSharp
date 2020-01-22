@@ -14,9 +14,6 @@
 // limitations under the License.
 using System;
 using System.Linq;
-using System.Xml;
-using SampSharp.GameMode.API;
-using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Events;
@@ -91,7 +88,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets a collections of Player Variables of this Player.
         /// </summary>
-        public PVarCollection PVars { get; private set; }
+        public PVarCollection PVars { get; }
 
         /// <summary>
         ///     Gets a set of KeyHandlers for different key states.
@@ -381,7 +378,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the GlobalObject the camera of this player is pointing at.
         /// </summary>
-        public virtual GlobalObject CameraTargetObject
+        public virtual GlobalObject CameraTargetGlobalObject
         {
             get
             {
@@ -389,6 +386,20 @@ namespace SampSharp.GameMode.World
 
                 var id = PlayerInternal.Instance.GetPlayerCameraTargetObject(Id);
                 return id == GlobalObject.InvalidId ? null : GlobalObject.Find(id);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the PlayerObject the camera of this player is pointing at.
+        /// </summary>
+        public virtual PlayerObject CameraTargetPlayerObject
+        {
+            get
+            {
+                AssertNotDisposed();
+
+                var id = PlayerInternal.Instance.GetPlayerCameraTargetObject(Id);
+                return id == PlayerObject.InvalidId ? null : PlayerObject.Find(this, id);
             }
         }
 
@@ -464,12 +475,24 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets the <see cref="GlobalObject" /> that this Player is surfing.
         /// </summary>
-        public virtual GlobalObject SurfingObject
+        public virtual GlobalObject SurfingGlobalObject
         {
             get
             {
                 var objectid = PlayerInternal.Instance.GetPlayerSurfingObjectID(Id);
                 return objectid == GlobalObject.InvalidId ? null : GlobalObject.Find(objectid);
+            }
+        }
+        
+        /// <summary>
+        ///     Gets the <see cref="PlayerObject" /> that this Player is surfing.
+        /// </summary>
+        public virtual PlayerObject SurfingPlayerObject
+        {
+            get
+            {
+                var objectid = PlayerInternal.Instance.GetPlayerSurfingObjectID(Id);
+                return objectid == PlayerObject.InvalidId ? null : PlayerObject.Find(this, objectid);
             }
         }
 
@@ -830,7 +853,8 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnClickTextDraw" /> is being called.
-        ///     This callback is called when a player clicks on a textdraw.
+        ///     This callback is called when a player clicks on a textdraw. It is not called when player cancels the select
+        ///     mode (ESC)
         /// </summary>
         /// <remarks>
         ///     The clickable area is defined by <see cref="TextDraw.Width" /> and <see cref="TextDraw.Width" />. The x and y
@@ -840,17 +864,17 @@ namespace SampSharp.GameMode.World
         public event EventHandler<ClickTextDrawEventArgs> ClickTextDraw;
 
         /// <summary>
+        ///     Occurs when the <see cref="OnClickPlayerTextDraw" /> is being called.
+        ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
+        ///     mode (ESC).
+        /// </summary>
+        public event EventHandler<ClickPlayerTextDrawEventArgs> ClickPlayerTextDraw;
+
+        /// <summary>
         ///     Occurs when the <see cref="OnCancelClickTextDraw" /> is being called.
         ///     This callback is called when a player cancels the textdraw select mode(ESC).
         /// </summary>
-        public event EventHandler<EventArgs> CancelClickTextDraw;
-
-        /// <summary>
-        ///     Occurs when the <see cref="OnClickPlayerTextDraw" /> is being called.
-        ///     This callback is called when a player clicks on a player-textdraw. It is not called when player cancels the select
-        ///     mode (ESC) - however, <see cref="OnClickTextDraw" /> is.
-        /// </summary>
-        public event EventHandler<ClickPlayerTextDrawEventArgs> ClickPlayerTextDraw;
+        public event EventHandler<PlayerEventArgs> CancelClickTextDraw;
 
         /// <summary>
         ///     Occurs when the <see cref="OnClickPlayer" /> is being called.
@@ -905,6 +929,12 @@ namespace SampSharp.GameMode.World
         ///     Others: the fX, fY and fZ are offsets from the center of hitid.
         /// </remarks>
         public event EventHandler<WeaponShotEventArgs> WeaponShot;
+
+        /// <summary>
+        ///     Occurs when the <see cref="OnPickUpPickup" /> is being called.
+        ///     This callback is called when a player picks up a pickup.
+        /// </summary>
+        public event EventHandler<PickUpPickupEventArgs> PickUpPickup;
 
         #endregion
 
@@ -1655,38 +1685,6 @@ namespace SampSharp.GameMode.World
                 throw new ArgumentNullException(nameof(player));
 
             PlayerInternal.Instance.ShowPlayerNameTagForPlayer(Id, player.Id, show);
-        }
-
-        /// <summary>
-        ///     This function allows you to place your own icons on the map, enabling you to emphasize the locations of banks,
-        ///     airports or whatever else you want. A total of 63 icons are available in GTA: San Andreas, all of which can be used
-        ///     using this function. You can also specify the color of the icon, which allows you to change the square icon (ID:
-        ///     0).
-        /// </summary>
-        /// <param name="iconid">The player's icon ID, ranging from 0 to 99, to be used in <see cref="RemoveMapIcon" />.</param>
-        /// <param name="position">The coordinates of the place where you want the icon to be.</param>
-        /// <param name="markertype">The icon to set.</param>
-        /// <param name="color">The color of the icon, this should only be used with the square icon (ID: 0).</param>
-        /// <param name="style">The style of icon.</param>
-        /// <returns>True if it was successful, False otherwise (e.g. the player isn't connected).</returns>
-        public virtual bool SetMapIcon(int iconid, Vector3 position, PlayerMarkersMode markertype, Color color,
-            MapIconType style)
-        {
-            AssertNotDisposed();
-
-            return PlayerInternal.Instance.SetPlayerMapIcon(Id, iconid, position.X, position.Y, position.Z, (int) markertype, color,
-                (int) style);
-        }
-
-        /// <summary>
-        ///     Removes a map icon that was set earlier for this <see cref="BasePlayer" />.
-        /// </summary>
-        /// <param name="iconid">The ID of the icon to remove. This is the second parameter of <see cref="SetMapIcon" />.</param>
-        public virtual void RemoveMapIcon(int iconid)
-        {
-            AssertNotDisposed();
-
-            PlayerInternal.Instance.RemovePlayerMapIcon(Id, iconid);
         }
 
         /// <summary>
@@ -2444,21 +2442,21 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Raises the <see cref="CancelClickTextDraw" /> event.
-        /// </summary>
-        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
-        public virtual void OnCancelClickTextDraw(EventArgs e)
-        {
-            CancelClickTextDraw?.Invoke(this, e);
-        }
-
-        /// <summary>
         ///     Raises the <see cref="ClickPlayerTextDraw" /> event.
         /// </summary>
         /// <param name="e">An <see cref="ClickPlayerTextDrawEventArgs" /> that contains the event data. </param>
         public virtual void OnClickPlayerTextDraw(ClickPlayerTextDrawEventArgs e)
         {
             ClickPlayerTextDraw?.Invoke(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="CancelClickTextDraw" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PlayerEventArgs" /> that contains the event data. </param>
+        public virtual void OnCancelClickTextDraw(PlayerEventArgs e)
+        {
+            CancelClickTextDraw?.Invoke(this, e);
         }
 
         /// <summary>
@@ -2522,6 +2520,15 @@ namespace SampSharp.GameMode.World
         public virtual void OnWeaponShot(WeaponShotEventArgs e)
         {
             WeaponShot?.Invoke(this, e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="PickUpPickup" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="PickUpPickupEventArgs" /> that contains the event data. </param>
+        public virtual void OnPickUpPickup(PickUpPickupEventArgs e)
+        {
+            PickUpPickup?.Invoke(this, e);
         }
 
         #endregion

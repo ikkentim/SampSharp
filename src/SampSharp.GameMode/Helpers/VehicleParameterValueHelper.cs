@@ -29,7 +29,7 @@ namespace SampSharp.GameMode.Helpers
         /// <returns>The resulting boolean.</returns>
         public static bool ToBool(this VehicleParameterValue value, bool defaultValue = false)
         {
-            return value == VehicleParameterValue.Unset ? defaultValue : (value == VehicleParameterValue.On);
+            return value == VehicleParameterValue.Unset ? defaultValue : value == VehicleParameterValue.On;
         }
 
         /// <summary>
