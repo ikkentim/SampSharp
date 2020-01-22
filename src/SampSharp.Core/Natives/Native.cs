@@ -101,17 +101,18 @@ namespace SampSharp.Core.Natives
                 return 0;
             }
 
+            var result = ValueConverter.ToInt32(response, 0);
             var respPos = 4;
             for (var i = 0; i < Parameters.Length; i++)
             {
                 length = GetLength(i, arguments);
 
-                var value = Parameters[i].GetReferenceArgument(response, ref respPos, length, _gameModeClient);
+                var value = Parameters[i].GetReferenceArgument(response, ref respPos, length, result, _gameModeClient);
                 if (value != null)
                     arguments[i] = value;
             }
 
-            return ValueConverter.ToInt32(response, 0);
+            return result;
         }
 
         private int GetLength(int parameterIndex, object[] arguments)

@@ -9,6 +9,7 @@
 - Improved shutdown behaviour of multi-process run mode
 - Removed `GameModeBuilder.BuildWith`
 - Fixed `GameModeBuilder.RedirectConsoleOutput` causing errors during startup in multi-process mode
+- Fixed garbage strings being returned when no string is set to out string parameters (#323)
 
 ### 0.8.0
 - Initial version

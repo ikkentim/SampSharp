@@ -150,9 +150,10 @@ namespace SampSharp.Core.Natives
         /// <param name="response">The response to extract the value from.</param>
         /// <param name="index">The current top of the response.</param>
         /// <param name="length">The length of the argument.</param>
+        /// <param name="nativeResult">The result of the invoked native</param>
         /// <param name="gameModeClient">The game mode client.</param>
         /// <returns>The referenced value.</returns>
-        public object GetReferenceArgument(byte[] response, ref int index, int length, IGameModeClient gameModeClient)
+        public object GetReferenceArgument(byte[] response, ref int index, int length, int nativeResult, IGameModeClient gameModeClient)
         {
             object result = null;
             switch (Type)
@@ -173,6 +174,9 @@ namespace SampSharp.Core.Natives
                     var str = ValueConverter.ToString(response, index, gameModeClient.Encoding);
                     result = str;
                     index += str.Length + 1;
+
+                    if (nativeResult == 0) 
+                        result = string.Empty;
                     break;
                 case NativeParameterType.Int32ArrayReference:
                 {
