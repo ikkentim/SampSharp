@@ -15,6 +15,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.SAMP;
@@ -42,6 +43,12 @@ namespace TestMode
             foreach (var kv in cfg)
             {
                 Console.WriteLine(kv.Key + " " + kv.Value);
+            }
+
+            var values = Enum.GetValues(typeof(Weapon)).OfType<Weapon>().ToList();
+            foreach (Weapon weapon in values.TakeLast(10))
+            {
+                Console.WriteLine($"{weapon}({(int)weapon}) :: {Server.GetWeaponName(weapon)}");
             }
         }
 

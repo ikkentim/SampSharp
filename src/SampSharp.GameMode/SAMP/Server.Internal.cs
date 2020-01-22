@@ -104,6 +104,12 @@ namespace SampSharp.GameMode.SAMP
             {
                 throw new NativeNotImplementedException();
             }
+            
+            [NativeMethod]
+            public virtual bool GetWeaponName(int weaponid, out string retstr, int size)
+            {
+                throw new NativeNotImplementedException();
+            }
         }
 #pragma warning restore CS1591
     }

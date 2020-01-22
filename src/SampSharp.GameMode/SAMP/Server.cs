@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP
@@ -198,6 +199,33 @@ namespace SampSharp.GameMode.SAMP
         public static void SetWorldTime(int hour)
         {
             ServerInternal.Instance.SetWorldTime(hour);
+        }
+
+        /// <summary>
+        /// Gets the name of the specified weapon.
+        /// </summary>
+        /// <param name="weapon">The weapon to get the name of.</param>
+        /// <returns>The name of the weapon.</returns>
+        public static string GetWeaponName(Weapon weapon)
+        {
+            switch (weapon)
+            {
+                case Weapon.Unarmed:
+                    return "Unarmed";
+                case Weapon.HelicopterBlades:
+                    return "Helicopter blades";
+                case Weapon.FakePistol:
+                    return "Fake Pistol";
+                case Weapon.Moltov:
+                    return "Molotov Cocktail";
+                case Weapon.NightVisionGoggles:
+                    return "Night Vision Goggles";
+                case Weapon.ThermalGoggles:
+                    return "Thermal Goggles";
+                default:
+                    ServerInternal.Instance.GetWeaponName((int) weapon, out var retstr, 32);
+                    return string.IsNullOrEmpty(retstr) ? weapon.ToString() : retstr;
+            }
         }
     }
 }
