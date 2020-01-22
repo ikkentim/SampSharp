@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2020 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using System.Linq;
 using System.Reflection;
@@ -19,16 +20,16 @@ using System.Reflection;
 namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 {
     /// <summary>
-    ///     Represents an enum command parameter.
+    ///     Represents a nullable enum command parameter.
     /// </summary>
     /// <typeparam name="T">The enum type.</typeparam>
-    public class EnumType<T> : ICommandParameterType where T : struct, IConvertible
+    public class NullableEnumType<T> : ICommandParameterType where T : struct, IConvertible
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="EnumType{T}" /> class.
         /// </summary>
         /// <exception cref="System.ArgumentException">T must be an enumerated type</exception>
-        public EnumType()
+        public NullableEnumType()
         {
             if (!typeof (T).GetTypeInfo().IsEnum)
                 throw new ArgumentException("T must be an enumerated type");
@@ -105,12 +106,12 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 
             if (candidates.Count == 1)
             {
-                output = candidates.First();
+                output = new T?((T)candidates.First());
                 commandText = commandText.Substring(word.Length).TrimStart(' ');
                 return true;
             }
 
-            return false;
+            return true;
         }
 
         #endregion

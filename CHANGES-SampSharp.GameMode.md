@@ -9,6 +9,7 @@
 - Added `BasePlayer.SurfingPlayerObject` (#324)
 - Added `Server.GetServerTickRate` (#295)
 - Added automatic detection for command and command group names (#273)
+- Added command parameter attribute `NullableParam` to indicate a `BasePlayer` or `BaseVehicle` argument is allowed to be null, enum values can be marked as nullable by using nullable enums like `VehicleModelType?` (#268/#290)
 - *breaking* Added `PlayerCancelClickTextDraw` event which is called when player presses ESC while selecting textdraws, `PlayerClickTextDraw` is no longer called when ESC is pressed (#304/#321)
 - Updated `VehicleModelInfo` to include seat count and a missing entry for ID 611, Utility Trailer (#302)
 - Updated minimum .NET Standard version to 2.0
@@ -16,7 +17,6 @@
 - *breaking* Changed `BasePlayer.SurfingObject` to `BasePlayer.SurfingGlobalObject` (#324)
 - *breaking* Changed `BaseMode.PlayerPickUp` event to have event arguments of type `PickUpPickupEventArgs` and changed the sender of event from the pickup to the player (#319)
 - *breaking* Changed `Pickup.PickUp` event to have event arguments of type `PickUpPickupEventArgs` (#319)
-
 - Fixed `Quaternion` coordinate system not matching SA-MP coordinate system
 - Fixed `Edited` and `Selected` on `GlobalObject` and `PlayerObject` not being fired (#303/#306)
 - Fixed `Color.FromInteger` with `ColorFormat.RGB` returning a value with 0 alpha

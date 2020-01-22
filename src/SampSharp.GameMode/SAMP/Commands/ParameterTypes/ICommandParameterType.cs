@@ -25,8 +25,8 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         /// </summary>
         /// <param name="commandText">The command text.</param>
         /// <param name="output">The output.</param>
-        /// <param name="ignoreUsage">Ignore usage toggle.</param>
+        /// <param name="isNullable">A value indicating whether the result is allowed to be null when an entity referenced by the argument could not be found.</param>
         /// <returns>true if parsed successfully; false otherwise.</returns>
-        bool Parse(ref string commandText, out object output, bool ignoreUsage = false);
+        bool Parse(ref string commandText, out object output, bool isNullable = false);
     }
 }

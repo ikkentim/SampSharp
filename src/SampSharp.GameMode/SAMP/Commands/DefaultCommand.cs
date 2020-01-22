@@ -141,8 +141,7 @@ namespace SampSharp.GameMode.SAMP.Commands
             var index = 0;
             foreach (var parameter in Parameters)
             {
-                var ignoreUsage = parameter.IgnoreUsage;
-                if (!parameter.CommandParameterType.Parse(ref commandText, out var arg, ignoreUsage))
+                if (!parameter.CommandParameterType.Parse(ref commandText, out var arg, parameter.IsNullable))
                 {
                     if (!parameter.IsOptional)
                         return false;
@@ -190,7 +189,17 @@ namespace SampSharp.GameMode.SAMP.Commands
                 
             if (typeof (BaseVehicle).GetTypeInfo().IsAssignableFrom(parameter.ParameterType))
                 return new VehicleType();
-                
+
+            if (parameter.ParameterType.IsConstructedGenericType &&
+                parameter.ParameterType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                var genericParams = parameter.ParameterType.GetGenericArguments();
+
+                if(genericParams.Length == 1 && genericParams[0].IsEnum)
+                    return
+                        Activator.CreateInstance(typeof (NullableEnumType<>).MakeGenericType(genericParams[0]))
+                            as ICommandParameterType;
+            }
             if (parameter.ParameterType.GetTypeInfo().IsEnum)
                 return
                     Activator.CreateInstance(typeof (EnumType<>).MakeGenericType(parameter.ParameterType))

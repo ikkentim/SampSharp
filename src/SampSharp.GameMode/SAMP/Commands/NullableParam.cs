@@ -22,6 +22,5 @@ namespace SampSharp.GameMode.SAMP.Commands
     [AttributeUsage(AttributeTargets.Parameter)]
     public class NullableParamAttribute : Attribute
     {
-       
     }
 }

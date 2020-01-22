@@ -20,6 +20,12 @@ namespace TestMode
             player.SendClientMessage("default name command");
         }
 
+        [Command]
+        public static void DefaultGroupCommand(BasePlayer player)
+        {
+            player.SendClientMessage("Group contains: /defaultgroup defaultname");
+        }
+
         [CommandGroup]
         internal class DefaultGroupCommandGroup
         {
@@ -194,15 +200,23 @@ namespace TestMode
         }
 
         [Command("spawn")]
+        public static void SpawnCommand(BasePlayer player, VehicleModelType? type)
+        {
+            if (type == null)
+            {
+                player.SendClientMessage("That's not a valid vehicle model");
+                return;
+            }
+
+            var vehicle = BaseVehicle.Create(type.Value, player.Position + Vector3.Up, player.Angle, -1, -1);
+            player.PutInVehicle(vehicle);
+        }
+        
+        [Command("spawn2")]
         public static void SpawnCommand(BasePlayer player, VehicleModelType type)
         {
             var vehicle = BaseVehicle.Create(type, player.Position + Vector3.Up, player.Angle, -1, -1);
             player.PutInVehicle(vehicle);
-            vehicle.GetDamageStatus(out var panels, out var doors, out var lights, out var tires);
-            Console.WriteLine(panels.ToString());
-            Console.WriteLine(doors.ToString());
-            Console.WriteLine(lights.ToString());
-            Console.WriteLine(tires.ToString());
         }
 
         [Command("status")]

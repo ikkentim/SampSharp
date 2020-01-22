@@ -31,11 +31,11 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         /// </summary>
         /// <param name="commandText">The command text.</param>
         /// <param name="output">The output.</param>
-        /// <param name="ignoreUsage">Ignore usage toggle.</param>
+        /// <param name="isNullable">A value indicating whether the result is allowed to be null when an entity referenced by the argument could not be found.</param>
         /// <returns>
         ///     true if parsed successfully; false otherwise.
         /// </returns>
-        public bool Parse(ref string commandText, out object output, bool ignoreUsage = false)
+        public bool Parse(ref string commandText, out object output, bool isNullable)
         {
             var text = commandText.TrimStart();
             output = null;
@@ -75,23 +75,18 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
             if (candidates.Count > 1)
                 candidates = candidates.Where(p => p.Name == word).ToList();
 
-            if (candidates.Count == 1)
+            if (candidates.Count == 1 || isNullable)
             {
-                output = candidates.First();
-
                 commandText = word.Length == commandText.Length
                     ? string.Empty
                     : commandText.Substring(word.Length).TrimStart(' ');
-                return true;
-            }
-            
-            if (ignoreUsage)
-            {
-                output = null;
-                return true;
             }
 
-            return false;
+            if (candidates.Count != 1) 
+                return isNullable;
+
+            output = candidates.First();
+            return true;
         }
 
         #endregion
