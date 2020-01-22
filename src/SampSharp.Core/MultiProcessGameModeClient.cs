@@ -285,14 +285,14 @@ namespace SampSharp.Core
 
         private async void Initialize()
         {
+            _mainThread = Thread.CurrentThread.ManagedThreadId;
+
             CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Client");
             CoreLog.Log(CoreLogLevel.Initialisation, "-------------------------");
             CoreLog.Log(CoreLogLevel.Initialisation, $"v{CoreVersion.Version.ToString(3)}, (C)2014-2020 Tim Potze");
             CoreLog.Log(CoreLogLevel.Initialisation, "Multi-process run mode is active. FOR DEVELOPMENT PURPOSES ONLY!");
             CoreLog.Log(CoreLogLevel.Initialisation, "Run your server in hosted run mode for production environments. See https://sampsharp.net/running-in-production for more information.");
             CoreLog.Log(CoreLogLevel.Initialisation, "");
-
-            _mainThread = Thread.CurrentThread.ManagedThreadId;
 
             AppDomain.CurrentDomain.ProcessExit += (sender, args) =>
             {
@@ -576,12 +576,11 @@ namespace SampSharp.Core
         /// <param name="text">The text to print to the server console.</param>
         public void Print(string text)
         {
-            AssertRunning();
-
             if (text == null)
                 text = string.Empty;
 
-            SendOnMainThread(ServerCommand.Print, ValueConverter.GetBytes(text, Encoding));
+            if (_running)
+                SendOnMainThread(ServerCommand.Print, ValueConverter.GetBytes(text, Encoding));
         }
 
         /// <summary>

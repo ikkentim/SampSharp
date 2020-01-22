@@ -8,6 +8,7 @@
 - Updated minimum .NET Standard version to 2.0
 - Improved shutdown behaviour of multi-process run mode
 - Removed `GameModeBuilder.BuildWith`
+- Fixed `GameModeBuilder.RedirectConsoleOutput` causing errors during startup in multi-process mode
 
 ### 0.8.0
 - Initial version

@@ -28,6 +28,7 @@ namespace TestMode
             new GameModeBuilder()
                 .Use<GameMode>()
                 .UseLogLevel(CoreLogLevel.Verbose)
+                .RedirectConsoleOutput()
                 .UseExitBehaviour(GameModeExitBehaviour.ShutDown)
                 .UseStartBehaviour(GameModeStartBehaviour.FakeGmx)
                 .Run();
