@@ -13,9 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Reflection;
-using System.Threading;
 using SampSharp.Core;
 using SampSharp.Core.Logging;
 
@@ -27,8 +24,7 @@ namespace TestMode
         {
             new GameModeBuilder()
                 .Use<GameMode>()
-                .UseLogLevel(CoreLogLevel.Verbose)
-                .RedirectConsoleOutput()
+                .UseLogLevel(CoreLogLevel.Debug)
                 .UseExitBehaviour(GameModeExitBehaviour.ShutDown)
                 .UseStartBehaviour(GameModeStartBehaviour.FakeGmx)
                 .Run();

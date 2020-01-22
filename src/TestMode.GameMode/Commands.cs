@@ -14,6 +14,22 @@ namespace TestMode
 {
     internal class Commands
     {
+        [Command]
+        public static void DefaultNameCommand(BasePlayer player)
+        {
+            player.SendClientMessage("default name command");
+        }
+
+        [CommandGroup]
+        internal class DefaultGroupCommandGroup
+        {
+            [Command]
+            public static void DefaultNameCommand(BasePlayer player)
+            {
+                player.SendClientMessage("default group default name command");
+            }
+        }
+
         [Command("kickme")]
         public static async void KickMeCommand(BasePlayer player)
         {

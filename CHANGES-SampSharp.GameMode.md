@@ -8,6 +8,7 @@
 - Added `BasePlayer.CameraTargetPlayerObject` (#320)
 - Added `BasePlayer.SurfingPlayerObject` (#324)
 - Added `Server.GetServerTickRate` (#295)
+- Added automatic detection for command and command group names (#273)
 - *breaking* Added `PlayerCancelClickTextDraw` event which is called when player presses ESC while selecting textdraws, `PlayerClickTextDraw` is no longer called when ESC is pressed (#304/#321)
 - Updated `VehicleModelInfo` to include seat count and a missing entry for ID 611, Utility Trailer (#302)
 - Updated minimum .NET Standard version to 2.0
