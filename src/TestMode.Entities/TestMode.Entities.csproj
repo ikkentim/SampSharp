@@ -5,6 +5,10 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\env\gamemode</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\SampSharp.Core\SampSharp.Core.csproj" />
     <ProjectReference Include="..\SampSharp.Entities\SampSharp.Entities.csproj" />
