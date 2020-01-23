@@ -22,54 +22,43 @@ namespace SampSharp.Entities.SAMP
     /// </summary>
     public class ServerService : IServerService
     {
-        /// <summary>
-        /// The type of a server entity.
-        /// </summary>
-        public static readonly Guid ServerType = new Guid("AB9B7255-75A1-4377-B3DC-E55C2F552449");
-
-        /// <summary>
-        /// The server entity.
-        /// </summary>
-        public static readonly EntityId Server = new EntityId(ServerType, 0);
-
-        private readonly IEntityManager _entityManager;
+        private readonly ServerServiceNative _native;
 
         /// <inheritdoc />
-        public ServerService(IEntityManager entityManager, INativeProxy<VariableCollection.ServerVariableCollectionNatives> nativeProxy)
+        public ServerService(INativeProxy<ServerServiceNative> nativeProxy,
+            INativeProxy<VariableCollection.ServerVariableCollectionNatives> serverVariablesNativeProxy)
         {
-            _entityManager = entityManager;
-            Variables = new VariableCollection(nativeProxy.Instance);
+            _native = nativeProxy.Instance;
+            Variables = new VariableCollection(serverVariablesNativeProxy.Instance);
         }
 
-        private NativeServer Native => _entityManager.GetComponent<NativeServer>(Server);
+        /// <inheritdoc />
+        public int TickCount => _native.GetTickCount();
 
         /// <inheritdoc />
-        public int TickCount => Native.GetTickCount();
+        public int MaxPlayers => _native.GetMaxPlayers();
 
         /// <inheritdoc />
-        public int MaxPlayers => Native.GetMaxPlayers();
+        public int PlayerPoolSize => _native.GetPlayerPoolSize();
 
         /// <inheritdoc />
-        public int PlayerPoolSize => Native.GetPlayerPoolSize();
-
-        /// <inheritdoc />
-        public int VehiclePoolSize => Native.GetVehiclePoolSize();
+        public int VehiclePoolSize => _native.GetVehiclePoolSize();
 
         /// <inheritdoc />
         public VariableCollection Variables { get; }
 
         /// <inheritdoc />
-        public int ActorPoolSize => Native.GetActorPoolSize();
+        public int ActorPoolSize => _native.GetActorPoolSize();
 
         /// <inheritdoc />
-        public int TickRate => Native.GetServerTickRate();
+        public int TickRate => _native.GetServerTickRate();
 
         /// <inheritdoc />
         public string NetworkStats
         {
             get
             {
-                Native.GetNetworkStats(out var buffer, 1024);
+                _native.GetNetworkStats(out var buffer, 1024);
                 return buffer;
             }
         }
@@ -77,37 +66,37 @@ namespace SampSharp.Entities.SAMP
         /// <inheritdoc />
         public void SetGameModeText(string text)
         {
-            Native.SetGameModeText(text);
+            _native.SetGameModeText(text);
         }
 
         /// <inheritdoc />
         public void SetTeamCount(int count)
         {
-            Native.SetTeamCount(count);
+            _native.SetTeamCount(count);
         }
 
         /// <inheritdoc />
         public void ShowNameTags(bool show)
         {
-            Native.ShowNameTags(show);
+            _native.ShowNameTags(show);
         }
 
         /// <inheritdoc />
         public void ShowPlayerMarkers(PlayerMarkersMode mode)
         {
-            Native.ShowPlayerMarkers((int) mode);
+            _native.ShowPlayerMarkers((int) mode);
         }
 
         /// <inheritdoc />
         public void GameModeExit()
         {
-            Native.GameModeExit();
+            _native.GameModeExit();
         }
 
         /// <inheritdoc />
         public void SetWorldTime(int hour)
         {
-            Native.SetWorldTime(hour);
+            _native.SetWorldTime(hour);
         }
 
         /// <inheritdoc />
@@ -115,7 +104,7 @@ namespace SampSharp.Entities.SAMP
             int weapon1Ammo = 0, Weapon weapon2 = Weapon.Unarmed, int weapon2Ammo = 0, Weapon weapon3 = Weapon.Unarmed,
             int weapon3Ammo = 0)
         {
-            return Native.AddPlayerClass(modelId, spawnPosition.X, spawnPosition.Y, spawnPosition.Z, angle,
+            return _native.AddPlayerClass(modelId, spawnPosition.X, spawnPosition.Y, spawnPosition.Z, angle,
                 (int) weapon1, weapon1Ammo, (int) weapon2, weapon2Ammo, (int) weapon3, weapon3Ammo);
         }
 
@@ -124,99 +113,99 @@ namespace SampSharp.Entities.SAMP
             Weapon weapon1 = Weapon.Unarmed, int weapon1Ammo = 0, Weapon weapon2 = Weapon.Unarmed, int weapon2Ammo = 0,
             Weapon weapon3 = Weapon.Unarmed, int weapon3Ammo = 0)
         {
-            return Native.AddPlayerClassEx(teamId, modelId, spawnPosition.X, spawnPosition.Y, spawnPosition.Z, angle,
+            return _native.AddPlayerClassEx(teamId, modelId, spawnPosition.X, spawnPosition.Y, spawnPosition.Z, angle,
                 (int) weapon1, weapon1Ammo, (int) weapon2, weapon2Ammo, (int) weapon3, weapon3Ammo);
         }
 
         /// <inheritdoc />
         public void EnableVehicleFriendlyFire()
         {
-            Native.EnableVehicleFriendlyFire();
+            _native.EnableVehicleFriendlyFire();
         }
 
         /// <inheritdoc />
         public void UsePlayerPedAnims()
         {
-            Native.UsePlayerPedAnims();
+            _native.UsePlayerPedAnims();
         }
 
         /// <inheritdoc />
         public void DisableInteriorEnterExits()
         {
-            Native.DisableInteriorEnterExits();
+            _native.DisableInteriorEnterExits();
         }
 
         /// <inheritdoc />
         public void SetNameTagDrawDistance(float distance = 70.0f)
         {
-            Native.SetNameTagDrawDistance(distance);
+            _native.SetNameTagDrawDistance(distance);
         }
 
         /// <inheritdoc />
         public void LimitGlobalChatRadius(float chatRadius)
         {
-            Native.LimitGlobalChatRadius(chatRadius);
+            _native.LimitGlobalChatRadius(chatRadius);
         }
 
         /// <inheritdoc />
         public void LimitPlayerMarkerRadius(float markerRadius)
         {
-            Native.LimitPlayerMarkerRadius(markerRadius);
+            _native.LimitPlayerMarkerRadius(markerRadius);
         }
 
         /// <inheritdoc />
         public void ConnectNpc(string name, string script)
         {
-            Native.ConnectNPC(name, script);
+            _native.ConnectNPC(name, script);
         }
 
         /// <inheritdoc />
         public void SendRconCommand(string command)
         {
-            Native.SendRconCommand(command);
+            _native.SendRconCommand(command);
         }
 
         /// <inheritdoc />
         public void BlockIpAddress(string ipAddress, TimeSpan time = default)
         {
-            Native.BlockIpAddress(ipAddress, (int) time.TotalMilliseconds);
+            _native.BlockIpAddress(ipAddress, (int) time.TotalMilliseconds);
         }
 
         /// <inheritdoc />
         public void UnBlockIpAddress(string ipAddress)
         {
-            Native.UnBlockIpAddress(ipAddress);
+            _native.UnBlockIpAddress(ipAddress);
         }
 
         /// <inheritdoc />
         public string GetConsoleVarAsString(string variableName)
         {
-            Native.GetConsoleVarAsString(variableName, out var buffer, 1024);
+            _native.GetConsoleVarAsString(variableName, out var buffer, 1024);
             return buffer;
         }
 
         /// <inheritdoc />
         public int GetConsoleVarAsInt(string variableName)
         {
-            return Native.GetConsoleVarAsInt(variableName);
+            return _native.GetConsoleVarAsInt(variableName);
         }
 
         /// <inheritdoc />
         public bool GetConsoleVarAsBool(string variableName)
         {
-            return Native.GetConsoleVarAsBool(variableName);
+            return _native.GetConsoleVarAsBool(variableName);
         }
 
         /// <inheritdoc />
         public void ManualVehicleEngineAndLights()
         {
-            Native.ManualVehicleEngineAndLights();
+            _native.ManualVehicleEngineAndLights();
         }
 
         /// <inheritdoc />
         public void EnableStuntBonus(bool enable)
         {
-            Native.EnableStuntBonusForAll(enable);
+            _native.EnableStuntBonusForAll(enable);
         }
     }
 }

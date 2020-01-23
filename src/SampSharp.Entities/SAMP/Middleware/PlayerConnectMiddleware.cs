@@ -29,7 +29,7 @@ namespace SampSharp.Entities.SAMP
             // TODO: Parenting to connection
             var entity = SampEntities.GetPlayerId((int) context.Arguments[0]);
 
-            entityManager.Create(entity, WorldService.World);
+            entityManager.Create(entity);
             entityManager.AddComponent<NativePlayer>(entity);
             entityManager.AddComponent<Player>(entity);
 

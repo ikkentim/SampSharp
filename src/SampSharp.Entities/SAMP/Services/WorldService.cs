@@ -22,53 +22,43 @@ namespace SampSharp.Entities.SAMP
     /// </summary>
     public class WorldService : IWorldService
     {
-        /// <summary>
-        /// The type of a world entity.
-        /// </summary>
-        public static readonly Guid WorldType = new Guid("DD999ED7-9935-4F66-9CDC-E77484AF6BB8");
-
-        /// <summary>
-        /// The world entity.
-        /// </summary>
-        public static readonly EntityId World = new EntityId(WorldType, 0);
-
         private readonly IEntityManager _entityManager;
+        private readonly WorldServiceNative _native;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorldService" /> class.
         /// </summary>
-        public WorldService(IEntityManager entityManager)
+        public WorldService(IEntityManager entityManager, INativeProxy<WorldServiceNative> nativeProxy)
         {
             _entityManager = entityManager;
+            _native = nativeProxy.Instance;
         }
-
-        private NativeWorld Native => _entityManager.GetComponent<NativeWorld>(World);
 
         /// <inheritdoc />
         public float Gravity
         {
-            get => Native.GetGravity();
+            get => _native.GetGravity();
             set
             {
                 if (value < -50 || value > 50)
                     throw new ArgumentOutOfRangeException(nameof(value), value,
                         "Value must be between -50.0 and 50.0.");
 
-                Native.SetGravity(value);
+                _native.SetGravity(value);
             }
         }
 
         /// <inheritdoc />
-        public Actor CreateActor(int modelId, Vector3 position, float rotation)
+        public Actor CreateActor(int modelId, Vector3 position, float rotation, EntityId parent = default)
         {
-            var id = Native
+            var id = _native
                 .CreateActor(modelId, position.X, position.Y, position.Z, rotation);
 
             if (id == NativeActor.InvalidId)
                 throw new EntityCreationException();
 
             var entity = SampEntities.GetActorId(id);
-            _entityManager.Create(entity, World);
+            _entityManager.Create(entity, parent);
 
             _entityManager.AddComponent<NativeActor>(entity);
             return _entityManager.AddComponent<Actor>(entity);
@@ -76,16 +66,16 @@ namespace SampSharp.Entities.SAMP
 
         /// <inheritdoc />
         public Vehicle CreateVehicle(VehicleModelType type, Vector3 position, float rotation, int color1, int color2,
-            int respawnDelay = -1, bool addSiren = false)
+            int respawnDelay = -1, bool addSiren = false, EntityId parent = default)
         {
-            var id = Native.CreateVehicle((int) type, position.X, position.Y, position.Z,
+            var id = _native.CreateVehicle((int) type, position.X, position.Y, position.Z,
                 rotation, color1, color2, respawnDelay, addSiren);
             
             if (id == NativeVehicle.InvalidId)
                 throw new EntityCreationException();
 
             var entity = SampEntities.GetVehicleId(id);
-            _entityManager.Create(entity, World);
+            _entityManager.Create(entity, parent);
 
             _entityManager.AddComponent<NativeVehicle>(entity);
             return _entityManager.AddComponent<Vehicle>(entity);
@@ -93,50 +83,49 @@ namespace SampSharp.Entities.SAMP
 
         /// <inheritdoc />
         public Vehicle CreateStaticVehicle(VehicleModelType type, Vector3 position, float rotation, int color1,
-            int color2, int respawnDelay = -1, bool addSiren = false)
+            int color2, int respawnDelay = -1, bool addSiren = false, EntityId parent = default)
         {
             var id = respawnDelay == -1 && !addSiren
-                ? Native.AddStaticVehicle((int) type, position.X, position.Y, position.Z,
+                ? _native.AddStaticVehicle((int) type, position.X, position.Y, position.Z,
                     rotation, color1, color2)
-                : Native.AddStaticVehicleEx((int) type, position.X, position.Y, position.Z,
+                : _native.AddStaticVehicleEx((int) type, position.X, position.Y, position.Z,
                     rotation, color1, color2, respawnDelay, addSiren);
             
             if (id == NativeVehicle.InvalidId)
                 throw new EntityCreationException();
 
             var entity = SampEntities.GetVehicleId(id);
-            _entityManager.Create(entity, World);
+            _entityManager.Create(entity, parent);
 
             _entityManager.AddComponent<NativeVehicle>(entity);
             return _entityManager.AddComponent<Vehicle>(entity);
         }
 
         /// <inheritdoc />
-        public GangZone CreateGangZone(float minX, float minY, float maxX, float maxY)
+        public GangZone CreateGangZone(float minX, float minY, float maxX, float maxY, EntityId parent = default)
         {
-            var id = Native.GangZoneCreate(minX, minY, maxX, maxY);
+            var id = _native.GangZoneCreate(minX, minY, maxX, maxY);
 
             if (id == NativeGangZone.InvalidId)
                 throw new EntityCreationException();
 
             var entity = SampEntities.GetGangZoneId(id);
-            _entityManager.Create(entity, World);
+            _entityManager.Create(entity, parent);
             
             _entityManager.AddComponent<NativeGangZone>(entity);
             return _entityManager.AddComponent<GangZone>(entity, minX, minY, maxX, maxY);
         }
 
         /// <inheritdoc />
-        public Pickup CreatePickup(int model, PickupType type, Vector3 position, int virtualWorld = -1)
+        public Pickup CreatePickup(int model, PickupType type, Vector3 position, int virtualWorld = -1, EntityId parent = default)
         {
-            var id = _entityManager.GetComponent<NativeWorld>()
-                .CreatePickup(model, (int) type, position.X, position.Y, position.Z, virtualWorld);
+            var id = _native.CreatePickup(model, (int) type, position.X, position.Y, position.Z, virtualWorld);
             
             if (id == NativePickup.InvalidId)
                 throw new EntityCreationException();
 
             var entity = SampEntities.GetPickupId(id);
-            _entityManager.Create(entity, World);
+            _entityManager.Create(entity, parent);
 
             _entityManager.AddComponent<NativePickup>(entity);
             return _entityManager.AddComponent<Pickup>(entity, virtualWorld, model, type, position);
@@ -145,20 +134,20 @@ namespace SampSharp.Entities.SAMP
         /// <inheritdoc />
         public bool AddStaticPickup(int model, PickupType type, Vector3 position, int virtualWorld = -1)
         {
-            return Native.AddStaticPickup(model, (int) type, position.X, position.Y, position.Z, virtualWorld);
+            return _native.AddStaticPickup(model, (int) type, position.X, position.Y, position.Z, virtualWorld);
         }
 
         /// <inheritdoc />
-        public GlobalObject CreateObject(int modelId, Vector3 position, Vector3 rotation, float drawDistance)
+        public GlobalObject CreateObject(int modelId, Vector3 position, Vector3 rotation, float drawDistance, EntityId parent = default)
         {
-            var id = Native.CreateObject(modelId, position.X, position.Y, position.Z,
+            var id = _native.CreateObject(modelId, position.X, position.Y, position.Z,
                 rotation.X, rotation.Y, rotation.Z, drawDistance);
             
             if (id == NativeObject.InvalidId)
                 throw new EntityCreationException();
 
             var entity = SampEntities.GetObjectId(id);
-            _entityManager.Create(entity, World);
+            _entityManager.Create(entity, parent);
 
             _entityManager.AddComponent<NativeObject>(entity);
             return _entityManager.AddComponent<GlobalObject>(entity, drawDistance);
@@ -171,7 +160,7 @@ namespace SampSharp.Entities.SAMP
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            var id = Native.CreatePlayerObject(player, modelId, position.X, position.Y,
+            var id = _native.CreatePlayerObject(player, modelId, position.X, position.Y,
                 position.Z, rotation.X, rotation.Y, rotation.Z, drawDistance);
             
             if (id == NativePlayerObject.InvalidId)
@@ -186,16 +175,16 @@ namespace SampSharp.Entities.SAMP
 
         /// <inheritdoc />
         public TextLabel CreateTextLabel(string text, Color color, Vector3 position, float drawDistance,
-            int virtualWorld = 0, bool testLos = true)
+            int virtualWorld = 0, bool testLos = true, EntityId parent = default)
         {
-            var id = Native.Create3DTextLabel(text, color, position.X, position.Y,
+            var id = _native.Create3DTextLabel(text, color, position.X, position.Y,
                 position.Z, drawDistance, virtualWorld, testLos);
             
             if (id == NativeTextLabel.InvalidId)
                 throw new EntityCreationException();
 
             var entity = SampEntities.GetTextLabelId(id);
-            _entityManager.Create(entity, World);
+            _entityManager.Create(entity, parent);
 
             _entityManager.AddComponent<NativeTextLabel>(entity);
             return _entityManager.AddComponent<TextLabel>(entity, text, color, position, drawDistance, virtualWorld, testLos);
@@ -223,7 +212,7 @@ namespace SampSharp.Entities.SAMP
                     attachVehicle = attachedTo;
             }
 
-            var id = Native.CreatePlayer3DTextLabel(player, text, color, position.X,
+            var id = _native.CreatePlayer3DTextLabel(player, text, color, position.X,
                 position.Y, position.Z, drawDistance, attachPlayer, attachVehicle, testLos);
             
             if (id == NativePlayerTextLabel.InvalidId)
@@ -237,15 +226,15 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <inheritdoc />
-        public TextDraw CreateTextDraw(Vector2 position, string text)
+        public TextDraw CreateTextDraw(Vector2 position, string text, EntityId parent = default)
         {
-            var id = Native.TextDrawCreate(position.X, position.Y, string.IsNullOrEmpty(text) ? "_" : text);
+            var id = _native.TextDrawCreate(position.X, position.Y, string.IsNullOrEmpty(text) ? "_" : text);
             
             if (id == NativeTextDraw.InvalidId)
                 throw new EntityCreationException();
 
             var entity = SampEntities.GetTextDrawId(id);
-            _entityManager.Create(entity, World);
+            _entityManager.Create(entity, parent);
 
             _entityManager.AddComponent<NativeTextDraw>(entity);
             return _entityManager.AddComponent<TextDraw>(entity, position, text);
@@ -257,7 +246,7 @@ namespace SampSharp.Entities.SAMP
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            var id = Native.CreatePlayerTextDraw(player, position.X, position.Y, string.IsNullOrEmpty(text) ? "_" : text);
+            var id = _native.CreatePlayerTextDraw(player, position.X, position.Y, string.IsNullOrEmpty(text) ? "_" : text);
             
             if (id == NativePlayerTextDraw.InvalidId)
                 throw new EntityCreationException();
@@ -270,17 +259,17 @@ namespace SampSharp.Entities.SAMP
         }
         
         /// <inheritdoc />
-        public Menu CreateMenu(string title, Vector2 position, float col0Width, float? col1Width = null)
+        public Menu CreateMenu(string title, Vector2 position, float col0Width, float? col1Width = null, EntityId parent = default)
         {
             var columns = col1Width != null ? 2 : 1;
 
-            var id = Native.CreateMenu(title, columns, position.X, position.Y, col0Width, col1Width ?? 0.0f);
+            var id = _native.CreateMenu(title, columns, position.X, position.Y, col0Width, col1Width ?? 0.0f);
             
             if (id == -1) // NOT NativeMenu.InvalidId
                 throw new EntityCreationException();
 
             var entity = SampEntities.GetMenuId(id);
-            _entityManager.Create(entity, World);
+            _entityManager.Create(entity, parent);
 
             _entityManager.AddComponent<NativeMenu>(entity);
             return _entityManager.AddComponent<Menu>(entity, title, columns, position, col0Width, col1Width ?? 0.0f);
@@ -289,13 +278,13 @@ namespace SampSharp.Entities.SAMP
         /// <inheritdoc />
         public void SetObjectsDefaultCameraCollision(bool disable)
         {
-            Native.SetObjectsDefaultCameraCol(disable);
+            _native.SetObjectsDefaultCameraCol(disable);
         }
 
         /// <inheritdoc />
         public void SendClientMessage(Color color, string message)
         {
-            Native.SendClientMessageToAll(color, message);
+            _native.SendClientMessageToAll(color, message);
         }
 
         /// <inheritdoc />
@@ -322,7 +311,7 @@ namespace SampSharp.Entities.SAMP
             if (!sender.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(sender), SampEntities.PlayerType);
 
-            Native.SendPlayerMessageToAll(sender, message);
+            _native.SendPlayerMessageToAll(sender, message);
         }
 
         /// <inheritdoc />
@@ -334,25 +323,25 @@ namespace SampSharp.Entities.SAMP
             if (!player.IsOfType(SampEntities.PlayerType))
                 throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-            Native.SendDeathMessage(killer.HandleOrDefault(NativePlayer.InvalidId), player, (int) weapon);
+            _native.SendDeathMessage(killer.HandleOrDefault(NativePlayer.InvalidId), player, (int) weapon);
         }
 
         /// <inheritdoc />
         public void GameText(string text, int time, int style)
         {
-            Native.GameTextForAll(text, time, style);
+            _native.GameTextForAll(text, time, style);
         }
 
         /// <inheritdoc />
         public void CreateExplosion(Vector3 position, ExplosionType type, float radius)
         {
-            Native.CreateExplosion(position.X, position.Y, position.Z, (int) type, radius);
+            _native.CreateExplosion(position.X, position.Y, position.Z, (int) type, radius);
         }
 
         /// <inheritdoc />
         public void SetWeather(int weather)
         {
-            Native.SetWeather(weather);
+            _native.SetWeather(weather);
         }
     }
 }

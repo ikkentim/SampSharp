@@ -34,8 +34,9 @@ namespace SampSharp.Entities.SAMP
         /// <param name="modelId">The model identifier.</param>
         /// <param name="position">The position of the actor.</param>
         /// <param name="rotation">The rotation of the actor.</param>
+        /// <param name="parent">The parent of the entity to be created.</param>
         /// <returns>The actor component of the newly created entity.</returns>
-        Actor CreateActor(int modelId, Vector3 position, float rotation);
+        Actor CreateActor(int modelId, Vector3 position, float rotation, EntityId parent = default);
 
         /// <summary>
         /// Creates a vehicle in the world.
@@ -50,9 +51,10 @@ namespace SampSharp.Entities.SAMP
         /// vehicle from respawning.
         /// </param>
         /// <param name="addSiren">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
+        /// <param name="parent">The parent of the entity to be created.</param>
         /// <returns> The created vehicle.</returns>
         Vehicle CreateVehicle(VehicleModelType type, Vector3 position, float rotation, int color1, int color2,
-            int respawnDelay = -1, bool addSiren = false);
+            int respawnDelay = -1, bool addSiren = false, EntityId parent = default);
 
         /// <summary>
         /// Creates a static vehicle in the world.
@@ -67,9 +69,10 @@ namespace SampSharp.Entities.SAMP
         /// vehicle from respawning.
         /// </param>
         /// <param name="addSiren">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
+        /// <param name="parent">The parent of the entity to be created.</param>
         /// <returns> The created vehicle.</returns>
         Vehicle CreateStaticVehicle(VehicleModelType type, Vector3 position, float rotation, int color1, int color2,
-            int respawnDelay = -1, bool addSiren = false);
+            int respawnDelay = -1, bool addSiren = false, EntityId parent = default);
 
         /// <summary>
         /// Creates a gang zone in the world.
@@ -78,8 +81,9 @@ namespace SampSharp.Entities.SAMP
         /// <param name="minY">The minimum y.</param>
         /// <param name="maxX">The maximum x.</param>
         /// <param name="maxY">The maximum y.</param>
+        /// <param name="parent">The parent of the entity to be created.</param>
         /// <returns>The created gang zone.</returns>
-        GangZone CreateGangZone(float minX, float minY, float maxX, float maxY);
+        GangZone CreateGangZone(float minX, float minY, float maxX, float maxY, EntityId parent = default);
 
         /// <summary>
         /// Creates a pickup in the world.
@@ -88,8 +92,9 @@ namespace SampSharp.Entities.SAMP
         /// <param name="type">The pickup spawn type.</param>
         /// <param name="position">The position where the pickup should be spawned.</param>
         /// <param name="virtualWorld">The virtual world ID of the pickup. Use -1 for all worlds.</param>
+        /// <param name="parent">The parent of the entity to be created.</param>
         /// <returns>The created pickup.</returns>
-        Pickup CreatePickup(int model, PickupType type, Vector3 position, int virtualWorld = -1);
+        Pickup CreatePickup(int model, PickupType type, Vector3 position, int virtualWorld = -1, EntityId parent = default);
 
         /// <summary>
         /// Adds a 'static' pickup to the world. These pickups support weapons, health, armor etc., with the ability to function
@@ -109,8 +114,9 @@ namespace SampSharp.Entities.SAMP
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
         /// <param name="drawDistance">The draw distance.</param>
+        /// <param name="parent">The parent of the entity to be created.</param>
         /// <returns>The created object.</returns>
-        GlobalObject CreateObject(int modelId, Vector3 position, Vector3 rotation, float drawDistance);
+        GlobalObject CreateObject(int modelId, Vector3 position, Vector3 rotation, float drawDistance, EntityId parent = default);
 
         /// <summary>
         /// Creates a player object in the world.
@@ -133,9 +139,10 @@ namespace SampSharp.Entities.SAMP
         /// <param name="drawDistance">The draw distance.</param>
         /// <param name="virtualWorld">The virtual world.</param>
         /// <param name="testLos">if set to <c>true</c> the line of sight is tested to decide whether the label is drawn.</param>
+        /// <param name="parent">The parent of the entity to be created.</param>
         /// <returns>The created text label.</returns>
         TextLabel CreateTextLabel(string text, Color color, Vector3 position, float drawDistance,
-            int virtualWorld = 0, bool testLos = true);
+            int virtualWorld = 0, bool testLos = true, EntityId parent = default);
 
         /// <summary>
         /// Creates a player text label in the world.
@@ -156,8 +163,9 @@ namespace SampSharp.Entities.SAMP
         /// </summary>
         /// <param name="position">The position of the textdraw.</param>
         /// <param name="text">The text of the textdraw.</param>
+        /// <param name="parent">The parent of the entity to be created.</param>
         /// <returns>The created textdraw.</returns>
-        TextDraw CreateTextDraw(Vector2 position, string text);
+        TextDraw CreateTextDraw(Vector2 position, string text, EntityId parent = default);
 
         /// <summary>
         /// Creates the player textdraw in the world.
@@ -175,8 +183,9 @@ namespace SampSharp.Entities.SAMP
         /// <param name="position">The position of the menu.</param>
         /// <param name="col0Width">Width of the left column.</param>
         /// <param name="col1Width">Width of the right column or null if the menu should only have one column.</param>
+        /// <param name="parent">The parent of the entity to be created.</param>
         /// <returns>The created menu.</returns>
-        Menu CreateMenu(string title, Vector2 position, float col0Width, float? col1Width = null);
+        Menu CreateMenu(string title, Vector2 position, float col0Width, float? col1Width = null, EntityId parent = default);
 
         /// <summary>
         /// Allows camera collisions with newly created objects to be disabled by default.

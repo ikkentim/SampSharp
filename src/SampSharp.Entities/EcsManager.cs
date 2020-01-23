@@ -105,7 +105,6 @@ namespace SampSharp.Entities
                 new EcsBuilder(_serviceProvider)
                     .EnableEvent("OnGameModeInit")
                     .EnableEvent("OnGameModeExit")
-                    .EnableWorld()
             );
         }
     }

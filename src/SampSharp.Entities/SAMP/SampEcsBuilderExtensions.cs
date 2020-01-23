@@ -45,21 +45,6 @@ namespace SampSharp.Entities.SAMP
             return builder.UseMiddleware<RconCommandProcessingMiddleware>("OnRconCommand");
         }
 
-        internal static IEcsBuilder EnableWorld(this IEcsBuilder builder)
-        {
-            var entityManager = builder.Services.GetService<IEntityManager>();
-
-            entityManager.Create(ServerService.Server);
-            entityManager.AddComponent<NativeServer>(ServerService.Server);
-            entityManager.AddComponent<Server>(ServerService.Server);
-
-            entityManager.Create(WorldService.World);
-            entityManager.AddComponent<NativeWorld>(WorldService.World);
-            entityManager.AddComponent<World>(WorldService.World);
-
-            return builder;
-        }
-
         /// <summary>
         /// Enables all actor, player related SA:MP events.
         /// </summary>

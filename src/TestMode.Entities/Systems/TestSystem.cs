@@ -296,7 +296,8 @@ namespace TestMode.Entities.Systems
                     Print(indent + 2, child);
             }
 
-            Print(0, WorldService.World);
+            foreach (var root in entityManager.GetRootEntities())
+                Print(0, root);
         }
 
         [PlayerCommand]
@@ -322,7 +323,7 @@ namespace TestMode.Entities.Systems
         }
 
         [Event]
-        public void OnPlayerConnect(Player player, IVehicleRepository vehiclesRepository)
+        public void OnPlayerConnect(Player player, IVehicleRepository vehiclesRepository, IWorldService worldService)
         {
             Console.WriteLine("I connected! " + player.Entity);
 
@@ -332,6 +333,9 @@ namespace TestMode.Entities.Systems
             _welcome.Show(player.Entity);
 
             vehiclesRepository.FooForPlayer(player.Entity);
+
+            var obj = worldService.CreatePlayerObject(player, 16638, new Vector3(50, 10, 40), Vector3.Zero, 1000);
+            obj.DisableCameraCollisions();
         }
 
         [Event]

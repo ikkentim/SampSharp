@@ -19,7 +19,7 @@ using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Entities.SAMP
 {
-    public class NativeServer : NativeComponent
+    public class ServerServiceNative
     {
         [NativeMethod]
         public virtual int GetTickCount()
