@@ -17,22 +17,23 @@ namespace TestMode
         [Command]
         public static void DefaultNameCommand(BasePlayer player)
         {
-            player.SendClientMessage("default name command");
-        }
-
-        [Command]
-        public static void DefaultGroupCommand(BasePlayer player)
-        {
-            player.SendClientMessage("Group contains: /defaultgroup defaultname");
+            player.SendClientMessage("/defaultname command!");
         }
 
         [CommandGroup]
         internal class DefaultGroupCommandGroup
         {
+            [Command(IsGroupHelp = true)]
+            public static void GroupHelpCommand(BasePlayer player)
+            {
+                player.SendClientMessage("This is help for /defaultgroup!");
+                player.SendClientMessage("Command: /defaultgroup defaultname");
+            }
+
             [Command]
             public static void DefaultNameCommand(BasePlayer player)
             {
-                player.SendClientMessage("default group default name command");
+                player.SendClientMessage("/defaultgroup defaultname command!");
             }
         }
 

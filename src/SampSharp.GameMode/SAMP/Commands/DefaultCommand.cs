@@ -270,11 +270,15 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="commandText">The command text.</param>
+        /// <param name="matchedNameLength">This value is set to the length of the name of this command which the command text was matched with.</param>
         /// <returns>A value indicating whether this instance can be invoked.</returns>
-        public virtual CommandCallableResponse CanInvoke(BasePlayer player, string commandText)
+        public virtual CommandCallableResponse CanInvoke(BasePlayer player, string commandText, out int matchedNameLength)
         {
             if (PermissionCheckers.Where(p => p.Message == null).Any(p => !p.Check(player)))
+            {
+                matchedNameLength = 0;
                 return CommandCallableResponse.False;
+            }
 
             commandText = commandText.TrimStart('/');
 
@@ -282,12 +286,14 @@ namespace SampSharp.GameMode.SAMP.Commands
             {
                 if (!name.Matches(commandText, IsCaseIgnored)) continue;
 
+                matchedNameLength = name.Length;
                 commandText = commandText.Substring(name.Length);
                 return GetArguments(commandText, out _)
                     ? CommandCallableResponse.True
                     : CommandCallableResponse.Optional;
             }
 
+            matchedNameLength = 0;
             return CommandCallableResponse.False;
         }
 

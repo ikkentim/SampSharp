@@ -202,15 +202,31 @@ namespace SampSharp.GameMode.SAMP.Commands
         public ICommand GetCommandForText(BasePlayer player, string commandText)
         {
             ICommand candidate = null;
+            var isFullMath = false;
+            var candidateLength = 0;
 
             foreach (var command in _commands)
             {
-                switch (command.CanInvoke(player, commandText))
+                switch (command.CanInvoke(player, commandText, out var matchedNameLength))
                 {
                     case CommandCallableResponse.True:
-                        return command;
+
+                        if (candidateLength < matchedNameLength)
+                        {
+                            isFullMath = true;
+                            candidateLength = matchedNameLength;
+                            candidate = command;
+                        }
+
+                        break;
+
                     case CommandCallableResponse.Optional:
-                        candidate = command;
+                        if (!isFullMath)
+                        {
+                            candidate = command;
+                            candidateLength = matchedNameLength;
+                        }
+
                         break;
                 }
             }
@@ -273,6 +289,22 @@ namespace SampSharp.GameMode.SAMP.Commands
                 var attribute = method.GetCustomAttribute<CommandAttribute>();
 
                 var names = attribute.Names;
+
+                if (attribute.IsGroupHelp)
+                {
+                    var helpCommandPaths =
+                        GetCommandGroupPaths(method)
+                            .Select(g => new CommandPath(g))
+                            .ToArray();
+
+                    if (helpCommandPaths.Length > 0)
+                    {
+                        Register(helpCommandPaths, attribute.DisplayName, attribute.IgnoreCase,
+                            GetCommandPermissionCheckers(method).ToArray(), method, attribute.UsageMessage);
+                    }
+
+                    continue;
+                }
 
                 if (names.Length == 0)
                 {

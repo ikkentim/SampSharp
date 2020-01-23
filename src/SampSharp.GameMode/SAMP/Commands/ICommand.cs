@@ -26,8 +26,9 @@ namespace SampSharp.GameMode.SAMP.Commands
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="commandText">The command text.</param>
+        /// <param name="matchedNameLength">This value is set to the length of the name of this command which the command text was matched with.</param>
         /// <returns>A value indicating whether this instance can be invoked.</returns>
-        CommandCallableResponse CanInvoke(BasePlayer player, string commandText);
+        CommandCallableResponse CanInvoke(BasePlayer player, string commandText, out int matchedNameLength);
 
         /// <summary>
         ///     Invokes this command.

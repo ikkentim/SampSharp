@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2020 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,18 +12,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 
 namespace SampSharp.GameMode.SAMP.Commands
 {
     /// <summary>
-    ///     Indicates a method is a player command.
+    /// Indicates a method is a player command.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
     public class CommandAttribute : Attribute
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CommandAttribute" /> class.
+        /// Initializes a new instance of the <see cref="CommandAttribute" /> class.
         /// </summary>
         /// <param name="name">The name of the command.</param>
         public CommandAttribute(string name) : this(new[] {name})
@@ -31,7 +32,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CommandAttribute" /> class.
+        /// Initializes a new instance of the <see cref="CommandAttribute" /> class.
         /// </summary>
         /// <param name="names">The names of the command.</param>
         public CommandAttribute(params string[] names)
@@ -41,32 +42,38 @@ namespace SampSharp.GameMode.SAMP.Commands
         }
 
         /// <summary>
-        ///     Gets the names.
+        /// Gets the names.
         /// </summary>
         public string[] Names { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether to ignore the case of the command.
+        /// Gets or sets a value indicating whether this command is a command group help command. The names of this command will be
+        /// ignored, this command will be executed if the command group of this command is run without a specific command.
+        /// </summary>
+        public bool IsGroupHelp { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to ignore the case of the command.
         /// </summary>
         public bool IgnoreCase { get; set; }
 
         /// <summary>
-        ///     Gets or sets the shortcut.
+        /// Gets or sets the shortcut.
         /// </summary>
         public string Shortcut { get; set; }
 
         /// <summary>
-        ///     Gets or sets the display name.
+        /// Gets or sets the display name.
         /// </summary>
         public string DisplayName { get; set; }
 
         /// <summary>
-        ///     Gets or sets the usage message.
+        /// Gets or sets the usage message.
         /// </summary>
         public string UsageMessage { get; set; }
 
         /// <summary>
-        ///     Gets or sets the permission checker type.
+        /// Gets or sets the permission checker type.
         /// </summary>
         public Type PermissionChecker { get; set; }
     }
