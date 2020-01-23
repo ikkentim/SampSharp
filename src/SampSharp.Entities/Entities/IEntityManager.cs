@@ -73,6 +73,12 @@ namespace SampSharp.Entities
         EntityId[] GetChildren(EntityId entity);
 
         /// <summary>
+        /// Gets all root entities with no parent.
+        /// </summary>
+        /// <returns>An array with all entities without a parent.</returns>
+        EntityId[] GetRootEntities();
+
+        /// <summary>
         /// Gets a component of the specified type <typeparamref name="T" /> attached to any entity.
         /// </summary>
         /// <typeparam name="T">The type of the component to find.</typeparam>

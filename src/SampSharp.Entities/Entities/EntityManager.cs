@@ -33,6 +33,9 @@ namespace SampSharp.Entities
         private readonly RecyclePool<EntityEntry> _entityPool = new RecyclePool<EntityEntry>(512);
         private readonly RecyclePool<ComponentStore> _storePool = new RecyclePool<ComponentStore>(512);
 
+        private EntityEntry _firstRoot;
+        private int _rootCount;
+
         /// <inheritdoc />
         public EntityManager()
         {
@@ -71,6 +74,17 @@ namespace SampSharp.Entities
 
                 parentEntry.Child = entry;
                 parentEntry.ChildCount++;
+            }
+            else
+            {
+                if (_firstRoot != null)
+                {
+                    _firstRoot.Previous = entry;
+                    entry.Next = _firstRoot;
+                }
+
+                _rootCount++;
+                _firstRoot = entry;
             }
 
             // Update id association table
@@ -169,7 +183,26 @@ namespace SampSharp.Entities
         {
             return _components.GetAll<T>();
         }
-        
+
+        /// <inheritdoc />
+        public EntityId[] GetRootEntities()
+        {
+            if (_rootCount == 0)
+                return Array.Empty<EntityId>();
+
+            var result = new EntityId[_rootCount];
+
+            var current = _firstRoot;
+            var index = 0;
+            while (current != null)
+            {
+                result[index++] = current.Id;
+                current = current.Next;
+            }
+
+            return result;
+        }
+
         /// <inheritdoc />
         public T GetComponent<T>() where T : Component
         {
@@ -362,6 +395,8 @@ namespace SampSharp.Entities
             if (entry.Previous != null) entry.Previous.Next = entry.Next;
             if (entry.Next != null) entry.Next.Previous = entry.Previous;
             if (entry.Parent != null) entry.Parent.ChildCount--;
+            else _rootCount--;
+            if (_firstRoot == entry) _firstRoot = entry.Next;
             if (entry.Parent?.Child == entry) entry.Parent.Child = entry.Next;
 
             _entityPool.Recycle(entry);
