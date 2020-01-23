@@ -103,7 +103,19 @@ namespace SampSharp.Entities
         {
             return value.Handle;
         }
-        
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="Component"/> to <see cref="EntityId"/>. Returns the entity of the component.
+        /// </summary>
+        /// <param name="component">The component.</param>
+        /// <returns>
+        /// The entity of the component.
+        /// </returns>
+        public static implicit operator EntityId(Component component)
+        {
+            return component?.Entity ?? default;
+        }
+
         /// <summary>
         /// Performs an implicit conversion from <see cref="EntityId" /> to <see cref="bool" />.  Returns <c>true</c> if the
         /// specified <paramref name="value" /> is not of the default empty type.
