@@ -5,8 +5,10 @@
 - Added callback name to the `IGameModeClient.UnhandledException` event
 - Added unhandled exception handling in hosted mode
 - Added unhandled exception handling in multi-process mode for ticks and synchronisations
+- Added `IfHosted` and `IfMultiProcess` methods to `GameModeBuilder`
 - Updated minimum .NET Standard version to 2.0
 - Improved shutdown behaviour of multi-process run mode
+- Changed hosted mode to not automatically redirect console output to the server_log.txt, use `GameModeBuilder.RedirectConsoleOutput()` to reenable logging to the server log
 - Removed `GameModeBuilder.BuildWith`
 - Fixed `GameModeBuilder.RedirectConsoleOutput` causing errors during startup in multi-process mode
 - Fixed garbage strings being returned when no string is set to out string parameters (#323)

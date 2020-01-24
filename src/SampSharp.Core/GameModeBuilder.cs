@@ -222,7 +222,7 @@ namespace SampSharp.Core
         public GameModeBuilder UseHosted()
         {
             _hosted = true;
-            return RedirectConsoleOutput();
+            return this;
         }
 
         /// <summary>
@@ -246,6 +246,33 @@ namespace SampSharp.Core
         public GameModeBuilder UseStartBehaviour(GameModeStartBehaviour startBehaviour)
         {
             _startBehaviour = startBehaviour;
+            return this;
+        }
+        
+        /// <summary>
+        /// Runs the specified <paramref name="action" /> if this game mode builder is configured to run in hosted mode either by
+        /// calling <see cref="UseHosted" /> or by the SA-MP server having started this game mode process in hosted mode.
+        /// </summary>
+        /// <param name="action">The action to run if the game mode builder has been configured to run in hosted mode.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder IfHosted(Action<GameModeBuilder> action)
+        {
+            if (_hosted)
+                action?.Invoke(this);
+            return this;
+        }
+
+
+        /// <summary>
+        /// Runs the specified <paramref name="action" /> if this game mode builder is not configured to run in hosted mode either by
+        /// calling <see cref="UseHosted" /> or by the SA-MP server having started this game mode process in hosted mode.
+        /// </summary>
+        /// <param name="action">The action to run if the game mode builder has been configured to run in multi process mode.</param>
+        /// <returns>The updated game mode configuration builder.</returns>
+        public GameModeBuilder IfMultiProcess(Action<GameModeBuilder> action)
+        {
+            if (!_hosted)
+                action?.Invoke(this);
             return this;
         }
 
@@ -321,7 +348,7 @@ namespace SampSharp.Core
             
             for (int i = 0; i < args.Length; i++)
             {
-                string option = null;
+                string option;
                 string value;
                 if (args[i].Length < 2 || !args[i].StartsWith("-"))
                     continue;
