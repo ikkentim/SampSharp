@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace SampSharp.Entities
 {
@@ -25,54 +26,98 @@ namespace SampSharp.Entities
     /// <seealso cref="ISystemRegistry" />
     public class SystemRegistry : ISystemRegistry
     {
-        private readonly Dictionary<Type, CacheEntry> _data = new Dictionary<Type, CacheEntry>
+        private readonly IServiceProvider _serviceProvider;
+
+        private Dictionary<Type, ISystem[]> _data;
+
+        public SystemRegistry(IServiceProvider serviceProvider)
         {
-            {typeof(ISystem), new CacheEntry()}
-        };
-
-        /// <inheritdoc />
-        public void Add(Type type)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-
-            if (!typeof(ISystem).IsAssignableFrom(type))
-                throw new ArgumentException("Type must implement ISystem", nameof(type));
-
-            if (_data[typeof(ISystem)].All.Contains(type))
-                return;
-
-            foreach (var kv in _data.Where(kv => kv.Key.IsAssignableFrom(type)))
-                kv.Value.All.Add(type);
+            _serviceProvider = serviceProvider;
         }
 
         /// <inheritdoc />
-        public IEnumerable<Type> Get(Type type, bool cache = false)
+        public void SetAndLock(Type[] types)
         {
-            if (type == null) throw new ArgumentNullException(nameof(type));
+            if (types == null) throw new ArgumentNullException(nameof(types));
+            if(_data != null) throw new SystemRegistryException("The system registry has been locked an cannot be modified.");
 
-            if (_data.TryGetValue(type, out var entry))
-                return entry.ReadOnly;
+            var data = new Dictionary<Type, HashSet<ISystem>>();
 
-            if (!cache)
-                return _data[typeof(ISystem)].All.Where(type.IsAssignableFrom);
-
-            entry = new CacheEntry();
-            entry.All.AddRange(_data[typeof(ISystem)].All.Where(type.IsAssignableFrom));
-            _data[type] = entry;
-
-            return entry.ReadOnly;
-        }
-
-        private class CacheEntry
-        {
-            public CacheEntry()
+            foreach (var type in types)
             {
-                ReadOnly = All.AsReadOnly();
+                if(!(_serviceProvider.GetService(type) is ISystem instance))
+                    throw new SystemRegistryException($"System of type {type} could not be found in the service provider.");
+
+                var currentType = type;
+
+                while (currentType != null && currentType != typeof(object))
+                {
+                    if (!data.TryGetValue(currentType, out var set))
+                        data[currentType] = set = new HashSet<ISystem>();
+
+                    set.Add(instance);
+
+                    currentType = currentType.BaseType;
+                }
+
+                foreach (var interfaceType in type.GetInterfaces().Where(t => typeof(ISystem).IsAssignableFrom(t)))
+                {
+                    if (!data.TryGetValue(interfaceType, out var set))
+                        data[interfaceType] = set = new HashSet<ISystem>();
+
+                    set.Add(instance);
+                }
             }
+            
+            // Convert hash sets to arrays.
+            _data = new Dictionary<Type, ISystem[]>();
+            foreach (var kv in data)
+            {
+                _data[kv.Key] = kv.Value.ToArray();
+            }
+        }
 
-            public List<Type> All { get; } = new List<Type>();
+        public ISystem[] Get(Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
 
-            public IReadOnlyCollection<Type> ReadOnly { get; }
+            if (!_data.TryGetValue(type, out var value))
+                return Array.Empty<ISystem>();
+
+            var result = new ISystem[value.Length];
+            Array.Copy(value, result, value.Length);
+            return result;
+        }
+
+        public TSystem[] Get<TSystem>() where TSystem : ISystem
+        {
+            if (!_data.TryGetValue(typeof(TSystem), out var value))
+                return Array.Empty<TSystem>();
+
+            var result = new TSystem[value.Length];
+            Array.Copy(value, result, value.Length);
+            return result;
+        }
+    }
+
+    [Serializable]
+    public class SystemRegistryException : Exception
+    {
+        public SystemRegistryException()
+        {
+        }
+
+        public SystemRegistryException(string message) : base(message)
+        {
+        }
+
+        public SystemRegistryException(string message, Exception inner) : base(message, inner)
+        {
+        }
+
+        protected SystemRegistryException(SerializationInfo info,
+            StreamingContext context) : base(info, context)
+        {
         }
     }
 }

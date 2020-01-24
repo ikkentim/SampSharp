@@ -56,15 +56,5 @@ namespace SampSharp.Entities
 
             return this;
         }
-
-        /// <inheritdoc />
-        public IEcsBuilder UseSystem(Type systemType)
-        {
-            if (systemType == null) throw new ArgumentNullException(nameof(systemType));
-
-            _systemRegistry.Add(systemType);
-
-            return this;
-        }
     }
 }

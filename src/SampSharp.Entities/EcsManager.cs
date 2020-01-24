@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Core;
 using SampSharp.Core.Logging;
@@ -30,6 +31,7 @@ namespace SampSharp.Entities
         private readonly IStartup _startup;
         private IServiceProvider _serviceProvider;
         private ISystemRegistry _systemRegistry;
+        private ITickingSystem[] _tickingSystems;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EcsManager" /> class.
@@ -61,26 +63,32 @@ namespace SampSharp.Entities
 
             _serviceProvider = services.BuildServiceProvider();
             _systemRegistry = _serviceProvider.GetRequiredService<ISystemRegistry>();
+            
+            Configure();
 
             AddWrappedSystemTypes();
-
-            Configure();
         }
 
         /// <inheritdoc />
         public void Tick()
         {
-            var types = _systemRegistry.Get(typeof(ITickingSystem));
-
-            foreach (var type in types)
-                if (_serviceProvider.GetService(type) is ITickingSystem system)
-                    system.Tick();
+            // Don't user foreach for performance reasons
+            // ReSharper disable once ForCanBeConvertedToForeach
+            for (var i = 0; i < _tickingSystems.Length; i++)
+            {
+                _tickingSystems[i].Tick();
+            }
         }
-
+        
         private void AddWrappedSystemTypes()
         {
-            foreach (var wrapper in _serviceProvider.GetServices<SystemTypeWrapper>())
-                _systemRegistry.Add(wrapper.Type);
+            var types = _serviceProvider
+                .GetServices<SystemTypeWrapper>()
+                .Select(w => w.Type)
+                .ToArray();
+
+            _systemRegistry.SetAndLock(types);
+            _tickingSystems = _systemRegistry.Get<ITickingSystem>();
         }
 
         private void Configure(IServiceCollection services)

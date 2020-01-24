@@ -15,6 +15,7 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using TestMode.Entities.Services;
@@ -56,6 +57,32 @@ namespace TestMode.Entities
                     return null;
                 return next();
             });
+
+            WarmUpNativeObjects();
+        }
+
+        private void WarmUpNativeObjects()
+        {
+            // Warm up native objects for profiling purposes
+
+            // Components
+            NativeObjectProxyFactory.CreateInstance<NativeActor>();
+            NativeObjectProxyFactory.CreateInstance<NativeGangZone>();
+            NativeObjectProxyFactory.CreateInstance<NativeMenu>();
+            NativeObjectProxyFactory.CreateInstance<NativeObject>();
+            NativeObjectProxyFactory.CreateInstance<NativePickup>();
+            NativeObjectProxyFactory.CreateInstance<NativePlayer>();
+            NativeObjectProxyFactory.CreateInstance<NativePlayerObject>();
+            NativeObjectProxyFactory.CreateInstance<NativePlayerTextDraw>();
+            NativeObjectProxyFactory.CreateInstance<NativePlayerTextLabel>();
+            NativeObjectProxyFactory.CreateInstance<NativeTextDraw>();
+            NativeObjectProxyFactory.CreateInstance<NativeTextLabel>();
+            NativeObjectProxyFactory.CreateInstance<NativeVehicle>();
+
+            // Services
+            NativeObjectProxyFactory.CreateInstance<ServerServiceNative>();
+            NativeObjectProxyFactory.CreateInstance<VehicleInfoServiceNative>();
+            NativeObjectProxyFactory.CreateInstance<WorldServiceNative>();
         }
     }
 }

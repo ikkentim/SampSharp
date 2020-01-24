@@ -24,17 +24,23 @@ namespace SampSharp.Entities
     public interface ISystemRegistry
     {
         /// <summary>
-        /// Adds the specified type of system to this registry.
+        /// Sets the systems available in this registry and locks further changes to the registry.
         /// </summary>
-        /// <param name="type">The type of the system.</param>
-        void Add(Type type);
+        /// <param name="types">The types of systems which should be available in the registry.</param>
+        void SetAndLock(Type[] types);
 
         /// <summary>
         /// Gets all types of systems of the specified <paramref name="type" />.
         /// </summary>
-        /// <param name="type">The type of the system to get.</param>
-        /// <param name="cache">If <c>true</c>, enable caching of the system type for future retrieval.</param>
-        /// <returns>The systems of the specified type.</returns>
-        IEnumerable<Type> Get(Type type, bool cache = false);
+        /// <param name="type">The type of the systems to get.</param>
+        /// <returns>An array of the systems of the specified type.</returns>
+        ISystem[] Get(Type type);
+
+        /// <summary>
+        /// Gets all types of systems of the specified <typeparamref name="TSystem"/>.
+        /// </summary>
+        /// <typeparam name="TSystem">The type of the systems to get.</typeparam>
+        /// <returns>An array of the systems of the specified type.</returns>
+        TSystem[] Get<TSystem>() where TSystem : ISystem;
     }
 }
