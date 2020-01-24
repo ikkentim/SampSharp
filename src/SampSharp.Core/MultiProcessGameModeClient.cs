@@ -43,6 +43,7 @@ namespace SampSharp.Core
         private readonly IGameModeProvider _gameModeProvider;
         private readonly Queue<PongReceiver> _pongs = new Queue<PongReceiver>();
         private readonly GameModeStartBehaviour _startBehaviour;
+        private readonly StreamWriter _console;
         private int _mainThread;
         private MessagePump _messagePump;
         private bool _initReceived;
@@ -69,6 +70,7 @@ namespace SampSharp.Core
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
             CommunicationClient = communicationClient ?? throw new ArgumentNullException(nameof(communicationClient));
             NativeLoader = new NativeLoader(this);
+            _console = new StreamWriter(Console.OpenStandardOutput()) {AutoFlush = true};
         }
 
         /// <summary>
@@ -578,6 +580,8 @@ namespace SampSharp.Core
         {
             if (text == null)
                 text = string.Empty;
+
+            _console.WriteLine(text);
 
             if (_running)
                 SendOnMainThread(ServerCommand.Print, ValueConverter.GetBytes(text, Encoding));

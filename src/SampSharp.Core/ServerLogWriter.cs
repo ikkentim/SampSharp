@@ -12,7 +12,6 @@ namespace SampSharp.Core
     public class ServerLogWriter : TextWriter
     {
         private readonly IGameModeClient _gameModeClient;
-        private readonly StreamWriter _console;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ServerLogWriter"/> class.
@@ -22,8 +21,6 @@ namespace SampSharp.Core
         public ServerLogWriter(IGameModeClient gameModeClient)
         {
             _gameModeClient = gameModeClient ?? throw new ArgumentNullException(nameof(gameModeClient));
-            _console = new StreamWriter(Console.OpenStandardOutput());
-            _console.AutoFlush = true;
         }
 
         /// <summary>
@@ -239,8 +236,6 @@ namespace SampSharp.Core
                     Write(value.ToString());
                     break;
             }
-
-            _console.Write(value);
         }
 
         /// <summary>
@@ -260,8 +255,6 @@ namespace SampSharp.Core
                 }
                 _gameModeClient.Print(line);
             }
-
-            _console.WriteLine(value);
         }
 
         /// <summary>
