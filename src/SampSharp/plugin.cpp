@@ -86,6 +86,13 @@ bool plugin::config_validate() {
     if(coreclr.length() > 0 && gamemode.length() > 0) {
         state_set(STATE_HOSTED);
     }
+    
+#if SAMPSHARP_WINDOWS
+    char* cmdline = GetCommandLineA();
+    if(cmdline && strstr(cmdline, "--multi-process-mode")) {
+        state_unset(STATE_HOSTED);
+    }
+#endif
 
     if(!(state() & STATE_HOSTED)) {
         state_set(STATE_CONFIG_VALID);
