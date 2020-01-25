@@ -29,6 +29,10 @@ namespace SampSharp.Core
         private int _mainThread;
         private int _rconThread = int.MinValue;
         private bool _running;
+        private byte[] _publicCallBuffer = new byte[1024 * 6];
+        private IntPtr _buffer;
+        private IntPtr _buffer1K;
+        private int _txBufferLength;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MultiProcessGameModeClient" /> class.
@@ -42,6 +46,8 @@ namespace SampSharp.Core
             _startBehaviour = startBehaviour;
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
             NativeLoader = new NativeLoader(this);
+            _buffer = Marshal.AllocHGlobal(_txBufferLength = 1024 * 6);
+            _buffer1K = Marshal.AllocHGlobal(1024);
 
             ServerPath = AppContext.BaseDirectory;
         }
@@ -108,11 +114,12 @@ namespace SampSharp.Core
 
                 if (_callbacks.TryGetValue(name, out var callback))
                 {
-                    // TODO: Optimize
-                    var arr = new byte[length];
-                    Marshal.Copy(data, arr, 0, length);
+                    while (_publicCallBuffer.Length < length)
+                        _publicCallBuffer = new byte[_publicCallBuffer.Length * 2];
 
-                    return callback.Invoke(arr, 0) ?? 1;
+                    Marshal.Copy(data, _publicCallBuffer, 0, length);
+
+                    return callback.Invoke(_publicCallBuffer, 0) ?? 1;
                 }
             }
             catch (Exception e)
@@ -176,16 +183,29 @@ namespace SampSharp.Core
                 .Concat(parameters.SelectMany(c => c.GetBytes()))
                 .Concat(new[] { (byte) ServerCommandArgument.Terminator }).ToArray();
             
-            // TODO: Only call on main thread
-            var ptr = Marshal.AllocHGlobal(data.Length);
-            Marshal.Copy(data, 0, ptr, data.Length);
-
             if (IsOnMainThread)
-                Interop.RegisterCallback(ptr);
+            {
+                EnsureBufferSize(data.Length);
+                Marshal.Copy(data, 0, _buffer, data.Length);
+                Interop.RegisterCallback(_buffer);
+            }
             else
-                _synchronizationContext.Send(ctx => Interop.RegisterCallback(ptr), null);
+                _synchronizationContext.Send(ctx =>
+                {
+                    EnsureBufferSize(data.Length);
+                    Marshal.Copy(data, 0, _buffer, data.Length);
+                    Interop.RegisterCallback(_buffer);
+                }, null);
+        }
 
-            Marshal.FreeHGlobal(ptr);
+        private void EnsureBufferSize(int length)
+        {
+            if (_txBufferLength >= length)
+                return;
+            
+            Marshal.FreeHGlobal(_buffer);
+            while (_txBufferLength < length) _txBufferLength *= 2;
+            _buffer = Marshal.AllocHGlobal(_txBufferLength);
         }
         
         /// <summary>
@@ -221,16 +241,20 @@ namespace SampSharp.Core
                 .Concat(parameters.SelectMany(c => c.GetBytes()))
                 .Concat(new[] { (byte) ServerCommandArgument.Terminator }).ToArray();
             
-            // TODO: Only call on main thread
-            var ptr = Marshal.AllocHGlobal(data.Length);
-            Marshal.Copy(data, 0, ptr, data.Length);
-
             if (IsOnMainThread)
-                Interop.RegisterCallback(ptr);
+            {
+                EnsureBufferSize(data.Length);
+                Marshal.Copy(data, 0, _buffer, data.Length);
+                Interop.RegisterCallback(_buffer);
+            }
             else
-                _synchronizationContext.Send(ctx => Interop.RegisterCallback(ptr), null);
+                _synchronizationContext.Send(ctx =>
+                {
+                    EnsureBufferSize(data.Length);
+                    Marshal.Copy(data, 0, _buffer, data.Length);
+                    Interop.RegisterCallback(_buffer);
+                }, null);
 
-            Marshal.FreeHGlobal(ptr);
         }
         
         /// <summary>
@@ -267,26 +291,31 @@ namespace SampSharp.Core
         /// <returns>The response from the native.</returns>
         public byte[] InvokeNative(IEnumerable<byte> data)
         {
-            // TODO: Only call on main thread
-            // TODO: Optimize
+            // TODO: Optimize byte array allocations
             var adata = data.ToArray();
-            var inbuf = Marshal.AllocHGlobal(adata.Length);
-            Marshal.Copy(adata, 0, inbuf, adata.Length);
 
-            var outbuf = Marshal.AllocHGlobal(1024);// TODO proper allocation/ global buf
-            int outlen = 1024;
-            
+            var outlen = 1024;
+            var response = new byte[outlen];
+
             if (IsOnMainThread)
-                Interop.InvokeNative(inbuf, adata.Length, outbuf, ref outlen);
+            {
+                EnsureBufferSize(adata.Length);
+                Marshal.Copy(adata, 0, _buffer, adata.Length);
+                Interop.InvokeNative(_buffer, adata.Length, _buffer1K, ref outlen);
+                Marshal.Copy(_buffer1K, response, 0, outlen);
+            }
             else
-                _synchronizationContext.Send(ctx => Interop.InvokeNative(inbuf, adata.Length, outbuf, ref outlen), null);
+                _synchronizationContext.Send(ctx =>
+                    {
+                        EnsureBufferSize(adata.Length);
+                        Marshal.Copy(adata, 0, _buffer, adata.Length);
+                        Interop.InvokeNative(_buffer, adata.Length, _buffer1K, ref outlen);
+                        Marshal.Copy(_buffer1K, response, 0, outlen);
+                    },
+                    null);
 
-            var outarr = new byte[outlen];
-            Marshal.Copy(outbuf, outarr, 0, outlen);
 
-            Marshal.FreeHGlobal(inbuf);
-            Marshal.FreeHGlobal(outbuf);
-            return outarr;
+            return response;
         }
 
         /// <summary>

@@ -8,6 +8,7 @@
 - Added `IfHosted` and `IfMultiProcess` methods to `GameModeBuilder`
 - Updated minimum .NET Standard version to 2.0
 - Improved shutdown behaviour of multi-process run mode
+- Improved number of memory allocations during handling of callbacks and native calls in hosted run mode
 - Changed hosted mode to not automatically redirect console output to the server_log.txt, use `GameModeBuilder.RedirectConsoleOutput()` to reenable logging to the server log
 - Removed `GameModeBuilder.BuildWith`
 - Fixed `GameModeBuilder.RedirectConsoleOutput` causing errors during startup in multi-process mode

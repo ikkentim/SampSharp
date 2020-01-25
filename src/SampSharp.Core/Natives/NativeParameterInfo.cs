@@ -41,6 +41,8 @@ namespace SampSharp.Core.Natives
         {
             Type = type;
             LengthIndex = lengthIndex;
+            RequiresLength = CalcRequiresLength(type);
+            ArgumentType = CalcCommandArgument(type);
         }
 
         /// <summary>
@@ -51,6 +53,8 @@ namespace SampSharp.Core.Natives
         {
             Type = type;
             LengthIndex = 0;
+            RequiresLength = CalcRequiresLength(type);
+            ArgumentType = CalcCommandArgument(type);
         }
 
         /// <summary>
@@ -61,32 +65,31 @@ namespace SampSharp.Core.Natives
         /// <summary>
         ///     Gets the type as a <see cref="ServerCommandArgument" />.
         /// </summary>
-        public ServerCommandArgument ArgumentType
+        public ServerCommandArgument ArgumentType { get; }
+
+        private static ServerCommandArgument CalcCommandArgument(NativeParameterType type)
         {
-            get
+            var value = ServerCommandArgument.Terminator;
+
+            switch (type & ArgumentMask)
             {
-                var value = ServerCommandArgument.Terminator;
-
-                switch (Type & ArgumentMask)
-                {
-                    case NativeParameterType.Int32:
-                    case NativeParameterType.Single:
-                    case NativeParameterType.Bool:
-                        value = ServerCommandArgument.Value;
-                        break;
-                    case NativeParameterType.String:
-                        value = ServerCommandArgument.String;
-                        break;
-                }
-
-                if (Type.HasFlag(NativeParameterType.Array))
-                    value = ServerCommandArgument.Array;
-
-                if (Type.HasFlag(NativeParameterType.Reference))
-                    value |= ServerCommandArgument.Reference;
-
-                return value;
+                case NativeParameterType.Int32:
+                case NativeParameterType.Single:
+                case NativeParameterType.Bool:
+                    value = ServerCommandArgument.Value;
+                    break;
+                case NativeParameterType.String:
+                    value = ServerCommandArgument.String;
+                    break;
             }
+
+            if (type.HasFlag(NativeParameterType.Array))
+                value = ServerCommandArgument.Array;
+
+            if (type.HasFlag(NativeParameterType.Reference))
+                value |= ServerCommandArgument.Reference;
+
+            return value;
         }
 
         /// <summary>
@@ -121,23 +124,15 @@ namespace SampSharp.Core.Natives
         /// <summary>
         ///     Gets a value indicating whether the parameter info requires length information.
         /// </summary>
-        public bool RequiresLength => IsArray || IsReference && !IsValue;
+        public bool RequiresLength { get; }
 
-        /// <summary>
-        ///     Gets a value indicating whether this parameter is an array.
-        /// </summary>
-        private bool IsArray => Type.HasFlag(NativeParameterType.Array);
-
-        /// <summary>
-        ///     Gets a value indicating whether this parameter is a reference.
-        /// </summary>
-        private bool IsReference => Type.HasFlag(NativeParameterType.Reference);
-
-        /// <summary>
-        ///     Gets a value indicating whether this parameter is a value.
-        /// </summary>
-        public bool IsValue => Type.HasFlag(NativeParameterType.Int32) || Type.HasFlag(NativeParameterType.Single) ||
-                               Type.HasFlag(NativeParameterType.Bool);
+        private static bool CalcRequiresLength(NativeParameterType type)
+        {
+            var isArray = type.HasFlag(NativeParameterType.Array);
+            var isReference = type.HasFlag(NativeParameterType.Reference);
+            var isValue = (type & (NativeParameterType.Int32 | NativeParameterType.Single | NativeParameterType.Bool)) != 0;
+            return isArray || isReference && !isValue;
+        }
 
         /// <summary>
         ///     Gets the index of the length parameter specifying the length of this parameter.
