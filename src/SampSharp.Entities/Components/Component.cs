@@ -36,6 +36,11 @@ namespace SampSharp.Entities
         public EntityId Entity { get; internal set; }
 
         /// <summary>
+        /// Gets a value indicating whether this component is alive (has not been destroyed).
+        /// </summary>
+        public bool IsComponentAlive { get; private set; } = true;
+
+        /// <summary>
         /// Gets a component of the specified type <typeparamref name="T" /> attached to the entity.
         /// </summary>
         /// <typeparam name="T">The type of the component to find.</typeparam>
@@ -163,6 +168,43 @@ namespace SampSharp.Entities
         internal void DestroyComponent()
         {
             OnDestroyComponent();
+            IsComponentAlive = false;
+        }
+        
+        /// <summary>
+        /// Implements the operator true. Returns <c>true</c> if the specified <paramref name="component"/> is alive.
+        /// </summary>
+        /// <param name="component">The component.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <paramref name="component"/> is alive; <c>false</c> otherwise.
+        /// </returns>
+        public static bool operator true(Component component)
+        {
+            return component != null && component.IsComponentAlive;
+        }
+
+        /// <summary>
+        /// Implements the operator false. Returns <c>true</c> if the specified <paramref name="component"/> is not alive.
+        /// </summary>
+        /// <param name="component">The component.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <paramref name="component"/> is not alive; <c>false</c> otherwise.
+        /// </returns>
+        public static bool operator false(Component component)
+        {
+            return component == null || !component.IsComponentAlive;
+        }
+        
+        /// <summary>
+        /// Implements the operator !. Returns <c>true</c> if the specified <paramref name="component" /> is not alive.
+        /// </summary>
+        /// <param name="component">The component.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <paramref name="component" /> is not alive; otherwise <c>false</c>.
+        /// </returns>
+        public static bool operator !(Component component)
+        {
+            return component == null || !component.IsComponentAlive;
         }
     }
 }

@@ -462,12 +462,6 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <summary>
-        /// Gets whether this player is connected to the server.
-        /// </summary>
-        public bool IsConnected => GetComponent<NativePlayer>().IsPlayerConnected();
-
-
-        /// <summary>
         /// Gets or sets the rotation of this player.
         /// </summary>
         /// <remarks>

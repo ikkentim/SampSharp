@@ -349,6 +349,16 @@ namespace TestMode.Entities.Systems
             Console.WriteLine("T2: " + t2);
             Console.WriteLine("S2: " + s2);
             player.SendClientMessage($"Hey there, {player.Name}");
+            KeepSayingHello(player);
+        }
+        
+        private async void KeepSayingHello(Player player)
+        {
+            while (player)
+            {
+                player.SendClientMessage("HI!");
+                await Task.Delay(30000);
+            }
         }
 
         [Event]
