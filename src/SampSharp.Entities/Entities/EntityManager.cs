@@ -29,12 +29,18 @@ namespace SampSharp.Entities
     {
         private readonly RecyclePool<ComponentEntry> _componentPool = new RecyclePool<ComponentEntry>(512);
         private readonly ComponentStore _components = new ComponentStore();
-        private readonly Dictionary<EntityId, EntityEntry> _entities = new Dictionary<EntityId, EntityEntry>();
+        private readonly Dictionary<EntityId, EntityEntry> _entities = new Dictionary<EntityId, EntityEntry>(new EntityIdEqualityComparer());
         private readonly RecyclePool<EntityEntry> _entityPool = new RecyclePool<EntityEntry>(512);
         private readonly RecyclePool<ComponentStore> _storePool = new RecyclePool<ComponentStore>(512);
-
+        private readonly HashSet<EntityId> _entityIds = new HashSet<EntityId>(new EntityIdEqualityComparer());
         private EntityEntry _firstRoot;
         private int _rootCount;
+
+        private class EntityIdEqualityComparer : IEqualityComparer<EntityId>
+        {
+            public bool Equals(EntityId x, EntityId y) => x.Handle == y.Handle && x.Type == y.Type;
+            public int GetHashCode(EntityId obj) => obj.GetHashCode();
+        }
 
         /// <inheritdoc />
         public EntityManager()
@@ -88,6 +94,7 @@ namespace SampSharp.Entities
             }
 
             // Update id association table
+            _entityIds.Add(entity);
             _entities[entity] = entry;
         }
 
@@ -163,7 +170,7 @@ namespace SampSharp.Entities
         /// <inheritdoc />
         public bool Exists(EntityId entity)
         {
-            return _entities.ContainsKey(entity);
+            return _entityIds.Contains(entity);
         }
 
         /// <inheritdoc />
@@ -400,6 +407,8 @@ namespace SampSharp.Entities
             if (entry.Parent?.Child == entry) entry.Parent.Child = entry.Next;
 
             _entityPool.Recycle(entry);
+            _entities.Remove(entry.Id);
+            _entityIds.Remove(entry.Id);
         }
 
         private class ComponentStore : IRecyclable
