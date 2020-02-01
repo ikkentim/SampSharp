@@ -90,6 +90,11 @@ namespace SampSharp.Core
                 case ServerCommand.Nop:
                     break;
                 case ServerCommand.Tick:
+                    // The server expects at least a message every 5 seconds or else the debug pause
+                    // detector kicks in. Send one at least every 3 to be safe.
+                    if (DateTime.UtcNow - _lastSend > TimeSpan.FromSeconds(3))
+                        Send(ServerCommand.Alive, null);
+
                     if (!_canTick)
                         break;
 
@@ -101,11 +106,6 @@ namespace SampSharp.Core
                     {
                         OnUnhandledException(new UnhandledExceptionEventArgs("Tick", e));
                     }
-
-                    // The server expects at least a message every 5 seconds or else the debug pause
-                    // detector kicks in. Send one at least every 3 to be safe.
-                    if (DateTime.UtcNow - _lastSend > TimeSpan.FromSeconds(3))
-                        Send(ServerCommand.Alive, null);
 
                     break;
                 case ServerCommand.Pong:
