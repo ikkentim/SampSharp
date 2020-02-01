@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using SampSharp.Entities.Annotations;
 
 namespace SampSharp.Entities.SAMP
 {
@@ -208,6 +209,7 @@ namespace SampSharp.Entities.SAMP
         /// <param name="color">The color of the message.</param>
         /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        [StringFormatMethod("messageFormat")]
         void SendClientMessage(Color color, string messageFormat, params object[] args);
 
         /// <summary>
@@ -223,6 +225,7 @@ namespace SampSharp.Entities.SAMP
         /// </summary>
         /// <param name="messageFormat">The composite format string of the text that will be displayed (max 144 characters).</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        [StringFormatMethod("messageFormat")]
         void SendClientMessage(string messageFormat, params object[] args);
 
         /// <summary>

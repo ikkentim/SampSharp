@@ -19,7 +19,6 @@ using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using TestMode.Entities.Services;
-using TestMode.Entities.Systems;
 
 namespace TestMode.Entities
 {

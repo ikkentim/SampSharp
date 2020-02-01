@@ -14,14 +14,15 @@
 // limitations under the License.
 
 using System;
+using SampSharp.Entities.Annotations;
 
 namespace SampSharp.Entities
 {
     /// <summary>
     /// Indicates a method is to be invoked when an event occurs.
     /// </summary>
-    /// <seealso cref="System.Attribute" />
     [AttributeUsage(AttributeTargets.Method)]
+    [MeansImplicitUse]
     public class EventAttribute : Attribute
     {
         /// <summary>
