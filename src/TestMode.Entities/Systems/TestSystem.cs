@@ -34,6 +34,12 @@ namespace TestMode.Entities.Systems
         private GangZone _zone;
 
         [PlayerCommand]
+        public void UnusedCommand(UnusedComponent sender)
+        {
+            Console.WriteLine("How did he manage to call this?! " + sender);
+        }
+
+        [PlayerCommand]
         public async void RearCommand(Player player, IEntityManager entityManager, IWorldService worldService,
             IVehicleInfoService vehicleInfoService)
         {

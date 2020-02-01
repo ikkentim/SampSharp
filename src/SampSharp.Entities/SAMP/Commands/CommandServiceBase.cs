@@ -358,7 +358,7 @@ namespace SampSharp.Entities.SAMP.Commands
                 {
                     Arguments = new object[info.Parameters.Length + prefixParameters],
                     Info = info,
-                    Invoke = MethodInvokerFactory.Compile(method, parameterSources),
+                    Invoke = MethodInvokerFactory.Compile(method, parameterSources, false),
                     SystemType = method.DeclaringType
                 };
 

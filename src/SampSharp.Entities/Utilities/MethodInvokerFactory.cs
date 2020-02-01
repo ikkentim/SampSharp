@@ -32,15 +32,16 @@ namespace SampSharp.Entities.Utilities
         private static readonly MethodInfo GetServiceInfo =
             typeof(MethodInvokerFactory).GetMethod(nameof(GetService),
                 BindingFlags.NonPublic | BindingFlags.Static);
-        
+
         /// <summary>
         /// Compiles the invoker for the specified method.
         /// </summary>
         /// <param name="methodInfo">The method information.</param>
         /// <param name="parameterSources">The sources of the parameters.</param>
+        /// <param name="uninvokedReturnValue">The value returned if the method is not invoked when a parameter could not be converted to the correct component.</param>
         /// <returns>The method invoker.</returns>
         public static MethodInvoker Compile(MethodInfo methodInfo,
-            MethodParameterSource[] parameterSources)
+            MethodParameterSource[] parameterSources, object uninvokedReturnValue = null)
         {
             if (methodInfo.DeclaringType == null)
                 throw new ArgumentException("Method must have declaring type", nameof(methodInfo));
@@ -136,7 +137,7 @@ namespace SampSharp.Entities.Utilities
                 body = Expression.Convert(body, typeof(object));
 
             if (argsCheckExpression != null)
-                body = Expression.Condition(argsCheckExpression, body, Expression.Constant(null));
+                body = Expression.Condition(argsCheckExpression, body, Expression.Constant(uninvokedReturnValue, typeof(object)));
 
             if (locals.Count > 0 || expressions.Count > 0)
             {
