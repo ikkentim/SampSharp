@@ -1,3 +1,6 @@
+### 0.9.1
+- Fixed GMX startup behaviour not reconnecting to the SA-MP server properly
+
 ### 0.9.0
 - Added `IGameModeClient.RegisterCallback` overloads which allows the arguments of the callback to be provided as an `object[]` to the specified method
 - Added option to specify the index at which the identifier arguments are located within natives of native objects
