@@ -12,7 +12,7 @@ using SampSharp.GameMode.World;
 
 namespace TestMode
 {
-    internal class Commands
+    internal static class Commands
     {
         [Command]
         public static void DefaultNameCommand(BasePlayer player)

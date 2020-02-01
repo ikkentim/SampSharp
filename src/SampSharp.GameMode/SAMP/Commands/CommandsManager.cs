@@ -270,7 +270,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 var method in
                     assembly.GetTypes()
                         // Get all classes in the specified assembly.
-                        .Where(type => !type.GetTypeInfo().IsInterface && type.GetTypeInfo().IsClass && !type.GetTypeInfo().IsAbstract)
+                        .Where(type => !type.GetTypeInfo().IsInterface && type.GetTypeInfo().IsClass)
                         // Select the methods in the type.
                         .SelectMany(
                             type =>
