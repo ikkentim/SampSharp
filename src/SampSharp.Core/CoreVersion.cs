@@ -25,7 +25,7 @@ namespace SampSharp.Core
         /// <summary>
         ///     Gets the version of the SampSharp.Core package.
         /// </summary>
-        public static Version Version { get; } = new Version(0, 9, 0);
+        public static Version Version { get; } = new Version(0, 9, 1);
 
         /// <summary>
         ///     Gets the version of the communication protocol used to communicate with the SampSharp server.
