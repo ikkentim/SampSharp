@@ -1,3 +1,6 @@
+### 0.9.1
+- Removed unused `PlayerDisconnectReason` enum in favour of `DisconnectReason` enum (#330)
+
 ### 0.9.0
 - Added `Vector3.XY` which returns a `Vector2` with the x and y components (#299/#300)
 - Added `Color.Brightness` property (#309)
