@@ -95,8 +95,6 @@ CMD_DEFINE(cmd_find_native) {
     // copy callerid to output buffer
     *(uint16_t *)buftx_ = *(uint16_t *)buf;
 
-    log_debug("Find native w/%d data", buflen - sizeof(uint16_t));
-
     *(int32_t *)(buftx_ + sizeof(uint16_t)) = natives_.get_handle((char *)(buf + sizeof(uint16_t)));
     
     communication_->send(CMD_RESPONSE, sizeof(int32_t) + sizeof(uint16_t), buftx_);
@@ -114,7 +112,6 @@ CMD_DEFINE(cmd_invoke_native) {
     txlen -= sizeof(uint16_t);
 
     natives_.invoke(buf, buflen, buftx, &txlen);
-    log_debug("Native invoked with %d buflen, response has %d buflen", buflen, txlen);
     txlen += sizeof(uint16_t);
     
     // copy callerid to output buffer after the native was executed because the
