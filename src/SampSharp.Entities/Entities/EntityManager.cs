@@ -530,7 +530,7 @@ namespace SampSharp.Entities
                     if (entry.Previous != null)
                         entry.Previous.Next = entry.Next;
                     if (entry.Next != null)
-                        entry.Next.Next = entry.Previous;
+                        entry.Next.Previous = entry.Previous;
 
                     ComponentPool.Recycle(entry);
                     data.Count--;
@@ -557,6 +557,7 @@ namespace SampSharp.Entities
             {
                 var current = component.GetType();
                 
+                // Remove the component in every type list
                 Remove(current, component);
                 do
                 {
