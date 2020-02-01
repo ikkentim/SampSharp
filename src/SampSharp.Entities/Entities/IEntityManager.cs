@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Diagnostics.Contracts;
+
 namespace SampSharp.Entities
 {
     /// <summary>
@@ -70,12 +72,14 @@ namespace SampSharp.Entities
         /// </summary>
         /// <param name="entity">The entity to get the children of.</param>
         /// <returns>An array with the entities of which the parent is the specified <paramref name="entity" />.</returns>
+        [Pure]
         EntityId[] GetChildren(EntityId entity);
 
         /// <summary>
         /// Gets all root entities with no parent.
         /// </summary>
         /// <returns>An array with all entities without a parent.</returns>
+        [Pure]
         EntityId[] GetRootEntities();
 
         /// <summary>
@@ -83,6 +87,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <typeparam name="T">The type of the component to find.</typeparam>
         /// <returns>The found component or <c>null</c> if no component of the specified type could be found.</returns>
+        [Pure]
         T GetComponent<T>() where T : Component;
 
         /// <summary>
@@ -90,6 +95,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <typeparam name="T">The type of the component to find.</typeparam>
         /// <returns>The found component or <c>null</c> if no component of the specified type could be found.</returns>
+        [Pure]
         T GetComponent<T>(EntityId entity) where T : Component;
 
         /// <summary>
@@ -98,6 +104,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <typeparam name="T">The type of the component to find.</typeparam>
         /// <returns>The found component or <c>null</c> if no component of the specified type could be found.</returns>
+        [Pure]
         T GetComponentInChildren<T>(EntityId entity) where T : Component;
 
         /// <summary>
@@ -106,6 +113,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <typeparam name="T">The type of the component to find.</typeparam>
         /// <returns>The found component or <c>null</c> if no component of the specified type could be found.</returns>
+        [Pure]
         T GetComponentInParent<T>(EntityId entity) where T : Component;
 
         /// <summary>
@@ -113,6 +121,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <typeparam name="T">The type of the components to find.</typeparam>
         /// <returns>A collection of the found components.</returns>
+        [Pure]
         T[] GetComponents<T>() where T : Component;
 
         /// <summary>
@@ -121,6 +130,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <typeparam name="T">The type of the components to find.</typeparam>
         /// <returns>A collection of the found components.</returns>
+        [Pure]
         T[] GetComponents<T>(EntityId entity) where T : Component;
 
         /// <summary>
@@ -129,6 +139,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <typeparam name="T">The type of the components to find.</typeparam>
         /// <returns>A collection of the found components.</returns>
+        [Pure]
         T[] GetComponentsInChildren<T>(EntityId entity) where T : Component;
 
         /// <summary>
@@ -137,6 +148,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <typeparam name="T">The type of the components to find.</typeparam>
         /// <returns>A collection of the found components.</returns>
+        [Pure]
         T[] GetComponentsInParent<T>(EntityId entity) where T : Component;
 
         /// <summary>
@@ -147,6 +159,7 @@ namespace SampSharp.Entities
         /// The parent entity of the specified <paramref name="entity" />. <see cref="EntityId.Empty" /> is returned if
         /// the specified <paramref name="entity" /> does not have a parent.
         /// </returns>
+        [Pure]
         EntityId GetParent(EntityId entity);
 
         /// <summary>
@@ -154,6 +167,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <param name="entity">The entity to check its existence of.</param>
         /// <returns><c>true</c> if the specified <paramref name="entity" /> exists; otherwise <c>false</c>.</returns>
+        [Pure]
         bool Exists(EntityId entity);
     }
 }

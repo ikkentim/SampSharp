@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Diagnostics.Contracts;
+
 namespace SampSharp.Entities
 {
     /// <summary>
@@ -45,6 +47,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <typeparam name="T">The type of the component to find.</typeparam>
         /// <returns>The found component or <c>null</c> if no component of the specified type could be found.</returns>
+        [Pure]
         public T GetComponent<T>() where T : Component
         {
             return Manager.GetComponent<T>(Entity);
@@ -101,6 +104,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <typeparam name="T">The type of the components to find.</typeparam>
         /// <returns>A collection of the found components.</returns>
+        [Pure]
         public T[] GetComponents<T>() where T : Component
         {
             return Manager.GetComponents<T>(Entity);
@@ -111,6 +115,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <typeparam name="T">The type of the component to find.</typeparam>
         /// <returns>The found component or <c>null</c> if no component of the specified type could be found.</returns>
+        [Pure]
         public T GetComponentInChildren<T>() where T : Component
         {
             return Manager.GetComponentInChildren<T>(Entity);
@@ -121,6 +126,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <typeparam name="T">The type of the components to find.</typeparam>
         /// <returns>A collection of the found components.</returns>
+        [Pure]
         public T[] GetComponentsInChildren<T>() where T : Component
         {
             return Manager.GetComponentsInChildren<T>(Entity);
@@ -131,6 +137,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <typeparam name="T">The type of the component to find.</typeparam>
         /// <returns>The found component or <c>null</c> if no component of the specified type could be found.</returns>
+        [Pure]
         public T GetComponentInParent<T>() where T : Component
         {
             return Manager.GetComponentInParent<T>(Entity);
@@ -141,6 +148,7 @@ namespace SampSharp.Entities
         /// </summary>
         /// <typeparam name="T">The type of the components to find.</typeparam>
         /// <returns>A collection of the found components.</returns>
+        [Pure]
         public T[] GetComponentsInParent<T>() where T : Component
         {
             return Manager.GetComponentsInParent<T>(Entity);

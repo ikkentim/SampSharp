@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using SampSharp.Entities.Annotations;
 
 namespace SampSharp.Entities.SAMP.Commands
 {
@@ -21,6 +22,7 @@ namespace SampSharp.Entities.SAMP.Commands
     /// An attribute which indicates the method is invokable as a RCON command.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
+    [MeansImplicitUse]
     public class RconCommandAttribute : Attribute, ICommandMethodInfo
     {
         /// <summary>
