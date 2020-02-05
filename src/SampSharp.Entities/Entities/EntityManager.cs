@@ -486,7 +486,7 @@ namespace SampSharp.Entities
             {
                 return !_components.TryGetValue(typeof(T), out var data)
                     ? null
-                    : (T)data.Entry.Component;
+                    : data.Entry?.Component as T;
             }
 
             private void Add(Type type, Component component)
@@ -531,6 +531,8 @@ namespace SampSharp.Entities
                         entry.Previous.Next = entry.Next;
                     if (entry.Next != null)
                         entry.Next.Previous = entry.Previous;
+                    if (data.Entry == entry)
+                        data.Entry = entry.Next;
 
                     ComponentPool.Recycle(entry);
                     data.Count--;

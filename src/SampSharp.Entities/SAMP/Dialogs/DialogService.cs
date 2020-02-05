@@ -58,15 +58,17 @@ namespace SampSharp.Entities.SAMP
 
             native.ShowPlayerDialog(DialogId, (int) dialog.Style, dialog.Caption ?? string.Empty,
                 dialog.Content ?? string.Empty, dialog.Button1 ?? string.Empty, dialog.Button2);
+            
 
             void Handler(DialogResult result)
             {
+                // Destroy the visible dialog component before the dialog handler might replace it with a new dialog.
+                _entityManager.Destroy<VisibleDialog>(player);
+
                 var translated = dialog.Translate(result);
                 responseHandler?.Invoke(translated);
-
-                _entityManager.Destroy<VisibleDialog>(player);
             }
-
+            
             _entityManager.AddComponent<VisibleDialog>(player, dialog, (Action<DialogResult>) Handler);
         }
 
