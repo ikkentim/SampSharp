@@ -1,3 +1,6 @@
+### 0.9.2
+- No changes
+
 ### 0.9.1
 - Fixed GMX startup behaviour not reconnecting to the SA-MP server properly
 
