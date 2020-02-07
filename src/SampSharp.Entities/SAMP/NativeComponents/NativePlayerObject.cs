@@ -35,7 +35,7 @@ namespace SampSharp.Entities.SAMP
 
         protected override void OnInitializeComponent()
         {
-            Id = Entity;
+            Id = Entity / SampLimits.MaxPlayers;
             PlayerId = Parent;
         }
 

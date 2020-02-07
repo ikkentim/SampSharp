@@ -34,6 +34,18 @@ namespace TestMode.Entities.Systems
         private GangZone _zone;
 
         [PlayerCommand]
+        public void HelloPlayerCommand(Player player, IWorldService worldService)
+        {
+            var welcome = worldService.CreatePlayerTextDraw(player, new Vector2(100, 80), "Hello, Player");
+            welcome.Alignment = TextDrawAlignment.Left;
+            welcome.Font = TextDrawFont.Diploma;
+            welcome.Proportional = true;
+            welcome.LetterSize = new Vector2(1, 1.2f);
+            welcome.Show();
+            player.SendClientMessage("Show see msg now...");
+        }
+
+        [PlayerCommand]
         public void EntityManagerBugCommand(Player player, IDialogService dialogService)
         {
             // test for issue #333 

@@ -1,3 +1,6 @@
+### 0.9.3
+- Fixed player- textdraws, labels and objects not working as intended
+
 ### 0.9.2
 - Fixed exception thrown when trying to destroy all components twice (#333)
 - Fixed dialog response not being handled if the dialog was shown as a response to another dialog
