@@ -196,6 +196,7 @@ namespace SampSharp.GameMode.World
             _position = position;
             _drawDistance = drawDistance;
             _testLOS = testLOS;
+            _text = text;
 
             Id = PlayerTextLabelInternal.Instance.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z,
                 drawDistance,
@@ -241,6 +242,8 @@ namespace SampSharp.GameMode.World
             _position = position;
             _drawDistance = drawDistance;
             _testLOS = testLOS;
+            _text = text;
+            _attachedPlayer = attachedPlayer;
 
             Id = PlayerTextLabelInternal.Instance.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z,
                 drawDistance,
@@ -287,6 +290,8 @@ namespace SampSharp.GameMode.World
             _position = position;
             _drawDistance = drawDistance;
             _testLOS = testLOS;
+            _text = text;
+            _attachedVehicle = attachedVehicle;
 
             Id = PlayerTextLabelInternal.Instance.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z,
                 drawDistance,
