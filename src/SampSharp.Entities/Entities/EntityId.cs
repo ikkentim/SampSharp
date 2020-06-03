@@ -25,7 +25,7 @@ namespace SampSharp.Entities
         /// <summary>
         /// An empty entity identifier.
         /// </summary>
-        public static readonly EntityId Empty = new EntityId();
+        public static readonly EntityId Empty = new EntityId(Guid.Empty, 65535);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityId" /> struct.
@@ -55,6 +55,9 @@ namespace SampSharp.Entities
         /// <returns></returns>
         public bool Equals(EntityId other)
         {
+            if(Handle == 65535 && other.Handle == Handle)
+                return true;
+                
             return Type.Equals(other.Type) && (Handle == other.Handle || Type == Guid.Empty);
         }
 
