@@ -87,8 +87,8 @@ namespace SampSharp.Entities.SAMP.Commands
         private static string CommandText(CommandInfo command)
         {
             return command.Parameters.Length == 0
-                ? $"Usage: /{command.Name}"
-                : $"Usage: /{command.Name} " + string.Join(" ",
+                ? $"Usage: /{command.DisplayName}"
+                : $"Usage: /{command.DisplayName} " + string.Join(" ",
                       command.Parameters.Select(arg => arg.IsRequired ? $"[{arg.Name}]" : $"<{arg.Name}>"));
         }
 

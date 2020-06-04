@@ -36,12 +36,24 @@ namespace SampSharp.Entities.SAMP.Commands
         /// Initializes a new instance of the <see cref="RconCommandAttribute"/> class.
         /// </summary>
         /// <param name="name">The overridden name of the command.</param>
-        public RconCommandAttribute(string name)
+        public RconCommandAttribute(string name) : this(new[] { name })
+        { 
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RconCommandAttribute"/> class.
+        /// </summary>
+        /// <param name="names">The overridden name of the command.</param>
+        public RconCommandAttribute(params string[] names)
         {
-            Name = name;
+            Names = names;
+            IgnoreCase = true;
         }
 
         /// <inheritdoc />
-        public string Name { get; set; }
+        public string[] Names { get; set; }
+
+        /// <inheritdoc />
+        public bool IgnoreCase { get; set; }        
     }
 }

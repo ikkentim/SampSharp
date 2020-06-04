@@ -21,8 +21,13 @@ namespace SampSharp.Entities.SAMP.Commands
     public interface ICommandMethodInfo
     {
         /// <summary>
-        /// Gets the overriden name of the command.
+        /// Gets the overriden names of the command.
         /// </summary>
-        string Name { get; }
+        string[] Names { get; }
+
+        /// <summary>
+        /// Gets whether the case is ignored or not.
+        /// </summary>
+        bool IgnoreCase { get; }
     }
 }

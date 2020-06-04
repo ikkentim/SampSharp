@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Linq;
+
 namespace SampSharp.Entities.SAMP.Commands
 {
     /// <summary>
@@ -23,18 +25,30 @@ namespace SampSharp.Entities.SAMP.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandInfo" /> class.
         /// </summary>
-        /// <param name="name">The name of the command.</param>
+        /// <param name="names">The names of the command.</param>
         /// <param name="parameters">The parameters of the command.</param>
-        public CommandInfo(string name, CommandParameterInfo[] parameters)
+        /// <param name="ignoreCase">Ignore the names case</param>
+        public CommandInfo(string[] names, CommandParameterInfo[] parameters, bool ignoreCase)
         {
-            Name = name;
+            Names = names;
             Parameters = parameters;
+            IgnoreCase = ignoreCase;
         }
 
         /// <summary>
-        /// Gets the name of this command.
+        /// Gets the names of this command.
         /// </summary>
-        public string Name { get; }
+        public string[] Names { get; }
+
+        /// <summary>
+        /// Gets whether the command names case are ignored.
+        /// </summary>
+        public bool IgnoreCase { get; }
+
+        /// <summary>
+        /// Gets the display name of this command.
+        /// </summary>
+        public string DisplayName { get => Names.OrderByDescending(n => n.Length).First(); }
 
         /// <summary>
         /// Gets the parameters of this command.
