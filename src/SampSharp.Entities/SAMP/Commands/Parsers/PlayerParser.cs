@@ -47,9 +47,28 @@ namespace SampSharp.Entities.SAMP.Commands.Parsers
                 }
             }
 
-            // TODO: Name check
-            result = null;
-            return false;
+            var players = entityManager.GetComponents<Player>();
+            EntityId bestCandidate = null;
+
+            foreach (Player player in players)
+            {
+                if (player.Name.Equals(word, StringComparison.OrdinalIgnoreCase))
+                {
+                    result = player.Entity;
+                    return true;
+                }
+
+                if (player.Name.ToLower().StartsWith(word.ToLower()))
+                {
+                    if (bestCandidate == null)
+                        bestCandidate = player.Entity;
+                    else if (player.Entity.Handle < bestCandidate.Handle)
+                        bestCandidate = player.Entity;
+                }
+            }
+
+            result = bestCandidate;
+            return bestCandidate != null;
         }
     }
 }
