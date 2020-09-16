@@ -31,7 +31,7 @@ namespace SampSharp.Entities
         /// <param name="paramName">Name of the parameter.</param>
         /// <param name="expectedType">The expected entity identifier type.</param>
         public InvalidEntityArgumentException(string paramName, Guid expectedType) : base(
-            $"Invalid entity identifier type, expected type to be {EntityTypeNames.GetTypeName(expectedType)}.",
+            $"Invalid entity identifier type, expected type to be {EntityTypeRegistry.GetTypeName(expectedType)}.",
             paramName)
         {
         }
@@ -42,7 +42,7 @@ namespace SampSharp.Entities
         /// <param name="paramName">Name of the parameter.</param>
         /// <param name="expectedTypes">The expected entity identifier types.</param>
         public InvalidEntityArgumentException(string paramName, params Guid[] expectedTypes) : base(
-            $"Invalid entity identifier type, expected type to be any of {expectedTypes.Select(EntityTypeNames.GetTypeName)}.",
+            $"Invalid entity identifier type, expected type to be any of {expectedTypes.Select(EntityTypeRegistry.GetTypeName)}.",
             paramName)
         {
         }

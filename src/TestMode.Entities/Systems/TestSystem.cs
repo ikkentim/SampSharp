@@ -34,6 +34,33 @@ namespace TestMode.Entities.Systems
         private GangZone _zone;
 
         [PlayerCommand]
+        public void Die(Player player)
+        {
+            player.Health = 0;
+            player.SendClientMessage("You're dead!");
+        }
+
+        [Event]
+        public void OnPlayerDeath(Player player, Player killer, Weapon reason)
+        {
+            if (killer == null)
+            {
+                // If the player killed itself, remove their money.
+                player.ResetMoney();
+            }
+            else
+            {
+                // If the player was killed, give their money to the killer.
+                var money = player.Money;
+                if (money > 0)
+                {
+                    killer.GiveMoney(money);
+                    player.ResetMoney();
+                }
+            }
+        }
+
+        [PlayerCommand]
         public void HelloPlayerCommand(Player player, IWorldService worldService)
         {
             var welcome = worldService.CreatePlayerTextDraw(player, new Vector2(100, 80), "Hello, Player");

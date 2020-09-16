@@ -35,14 +35,21 @@ namespace SampSharp.Entities
         /// Initializes a new instance of the <see cref="EntityTypeAttribute" /> class.
         /// </summary>
         /// <param name="name">The name of the entity type.</param>
-        public EntityTypeAttribute(string name)
+        /// <param name="invalidHandle">The default handle is used to indicate an invalid instance of this entity.</param>
+        public EntityTypeAttribute(string name, int invalidHandle = -1)
         {
             Name = name;
+            InvalidHandle = invalidHandle;
         }
 
         /// <summary>
         /// Gets or sets the name of the entity type.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default handle is used to indicate an invalid instance of this entity.
+        /// </summary>
+        public int InvalidHandle { get; set; } = -1;
     }
 }

@@ -19,11 +19,12 @@ using SampSharp.Entities.Utilities;
 
 namespace SampSharp.Entities
 {
-    internal static class EntityTypeNames
+    internal static class EntityTypeRegistry
     {
         private static readonly Dictionary<Guid, string> Names = new Dictionary<Guid, string>();
+        private static readonly Dictionary<Guid, int> InvalidHandles = new Dictionary<Guid, int>();
 
-        static EntityTypeNames()
+        static EntityTypeRegistry()
         {
             var fields = new AssemblyScanner()
                 .IncludeAllAssemblies()
@@ -45,15 +46,25 @@ namespace SampSharp.Entities
                 }
 
                 if (field.GetValue(null) is Guid g)
+                {
                     Names[g] = name;
+                    InvalidHandles[g] = attribute.InvalidHandle;
+                }
             }
         }
-
+        
         public static string GetTypeName(Guid type)
         {
             return Names.TryGetValue(type, out var name)
                 ? name
                 : type.ToString();
+        }
+
+        public static int GetTypeInvalidHandle(Guid type)
+        {
+            return InvalidHandles.TryGetValue(type, out var handle)
+                ? handle
+                : -1;
         }
     }
 }

@@ -49,12 +49,27 @@ namespace SampSharp.Entities
         public int Handle { get; }
 
         /// <summary>
+        /// Gets a value indicating whether this handle is invalid.
+        /// </summary>
+        public bool IsInvalidHandle => EntityTypeRegistry.GetTypeInvalidHandle(Type) == Handle;
+
+        /// <summary>
+        /// Gets a value indicating whether this handle is empty.
+        /// </summary>
+        public bool IsEmpty => Type == Guid.Empty;
+
+        /// <summary>
         /// Determines whether the specified <paramref name="other" /> value, is equal to this value.
         /// </summary>
         /// <param name="other">The other.</param>
         /// <returns></returns>
         public bool Equals(EntityId other)
         {
+            if (IsEmpty && other.IsInvalidHandle || other.IsEmpty && IsInvalidHandle)
+            {
+                return true;
+            }
+
             return Type.Equals(other.Type) && (Handle == other.Handle || Type == Guid.Empty);
         }
 
@@ -87,9 +102,9 @@ namespace SampSharp.Entities
         /// <inheritdoc />
         public override string ToString()
         {
-            return !this
+            return IsEmpty
                 ? "(Empty)"
-                : $"(Type = {EntityTypeNames.GetTypeName(Type)}, Handle = {Handle})";
+                : $"(Type = {EntityTypeRegistry.GetTypeName(Type)}, Handle = {(IsInvalidHandle ? "Invalid" : Handle.ToString())})";
         }
         
         /// <summary>
@@ -118,41 +133,41 @@ namespace SampSharp.Entities
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="EntityId" /> to <see cref="bool" />.  Returns <c>true</c> if the
-        /// specified <paramref name="value" /> is not of the default empty type.
+        /// specified <paramref name="value" /> is not of the default empty type and does not have an invalid handle.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>
-        /// <c>true</c> if the specified <paramref name="value" /> is not of the default empty type; otherwise <c>false</c>.
+        /// <c>true</c> if the specified <paramref name="value" /> is not of the default empty type and does not have an invalid handle; otherwise <c>false</c>.
         /// </returns>
         public static implicit operator bool(EntityId value)
         {
-            return value.Type != Guid.Empty;
+            return !value.IsEmpty && !value.IsInvalidHandle;
         }
 
         /// <summary>
         /// Implements the operator true. Returns <c>true</c> if the specified <paramref name="value" /> is not of the default
-        /// empty type.
+        /// empty type and does not have an invalid handle.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>
-        /// <c>true</c> if the specified <paramref name="value" /> is not of the default empty type; otherwise <c>false</c>.
+        /// <c>true</c> if the specified <paramref name="value" /> is not of the default empty type and does not have an invalid handle; otherwise <c>false</c>.
         /// </returns>
         public static bool operator true(EntityId value)
         {
-            return value.Type != Guid.Empty;
+            return !value.IsEmpty && !value.IsInvalidHandle;
         }
 
         /// <summary>
         /// Implements the operator false. Returns <c>true</c> if the specified <paramref name="value" /> is of the default empty
-        /// type.
+        /// type or has an invalid handle.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>
-        /// <c>true</c> if the specified <paramref name="value" /> is of the default empty type; otherwise <c>false</c>.
+        /// <c>true</c> if the specified <paramref name="value" /> is of the default empty type or has an invalid handle; otherwise <c>false</c>.
         /// </returns>
         public static bool operator false(EntityId value)
         {
-            return value.Type == Guid.Empty;
+            return value.IsEmpty || value.IsInvalidHandle;
         }
         
         /// <summary>
@@ -182,15 +197,15 @@ namespace SampSharp.Entities
         }
 
         /// <summary>
-        /// Implements the operator !. Returns <c>true</c> if the specified <paramref name="value" /> is of the default empty type.
+        /// Implements the operator !. Returns <c>true</c> if the specified <paramref name="value" /> is of the default empty type or has an invalid handle.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>
-        /// <c>true</c> if the specified <paramref name="value" /> is of the default empty type; otherwise <c>false</c>.
+        /// <c>true</c> if the specified <paramref name="value" /> is of the default empty type or has an invalid handle; otherwise <c>false</c>.
         /// </returns>
         public static bool operator !(EntityId value)
         {
-            return value.Type == Guid.Empty;
+            return value.IsEmpty || value.IsInvalidHandle;
         }
     }
 }
