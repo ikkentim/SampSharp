@@ -42,6 +42,8 @@ namespace TestMode.Entities
                 .EnableEventScope("OnPlayerConnect")
                 .EnableEventScope("OnPlayerText");
 
+            builder.EnableEvent<int, int>("TestCallback");
+
             // Load middleware:
             // Can also be loaded by systems which are IConfiguringSystem
             builder.UseMiddleware("OnGameModeInit", (ctx, next) =>
