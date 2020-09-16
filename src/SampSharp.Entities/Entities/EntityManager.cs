@@ -181,6 +181,7 @@ namespace SampSharp.Entities
             if (!_entities.TryGetValue(component.Entity, out var entityEntry))
                 throw new EntityNotFoundException(nameof(component));
 
+            component.DestroyComponent();
             entityEntry.Components.Remove(component);
             _components.Remove(component);
         }
