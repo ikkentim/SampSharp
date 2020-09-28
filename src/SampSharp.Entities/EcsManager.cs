@@ -102,9 +102,11 @@ namespace SampSharp.Entities
                     .AddSingleton<IVehicleInfoService, VehicleInfoService>()
                     .AddSingleton<IPlayerCommandService, PlayerCommandService>()
                     .AddSingleton<IRconCommandService, RconCommandService>()
+                    .AddSingleton<ITimerService>(s => s.GetRequiredService<TimerSystem>())
                     .AddTransient<IDialogService, DialogService>()
                     .AddTransient(typeof(INativeProxy<>), typeof(NativeProxy<>))
                     .AddSystem<DialogSystem>()
+                    .AddSystem<TimerSystem>()
             );
         }
 

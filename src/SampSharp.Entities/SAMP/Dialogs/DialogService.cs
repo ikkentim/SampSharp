@@ -36,7 +36,6 @@ namespace SampSharp.Entities.SAMP
         /// </summary>
         public const int DialogHideId = -1;
 
-        /// <inheritdoc />
         public DialogService(IEntityManager entityManager)
         {
             _entityManager = entityManager;

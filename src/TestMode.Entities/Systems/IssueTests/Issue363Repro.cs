@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Entities;
 
-namespace TestMode.Entities.Systems
+namespace TestMode.Entities.Systems.IssueTests
 {
-    public class TestCallbackErrorSystem : ISystem
+    public class Issue363ReproServerCrash : ISystem
     {
         [Event]
         public void TestCallback(int a, int b)
@@ -18,7 +16,8 @@ namespace TestMode.Entities.Systems
         public void OnGameModeInit(INativeProxy<TestNatives> m)
         {
             Console.WriteLine("About to call a remote func!");
-            m.Instance.CallRemoteFunction("TestCallback", "ddd", 1, 2, 3);
+            // TODO: This can crash; need to investigate.
+            //m.Instance.CallRemoteFunction("TestCallback", "ddd", 1, 2, 3);
         }
 
         public class TestNatives

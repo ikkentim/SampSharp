@@ -15,9 +15,9 @@
 
 using SampSharp.Entities;
 
-namespace TestMode.Entities.Systems
+namespace TestMode.Entities.Systems.Tests
 {
-    public class TestTickSystem : ITickingSystem
+    public class SystemTicking : ITickingSystem
     {
         public void Tick()
         {
