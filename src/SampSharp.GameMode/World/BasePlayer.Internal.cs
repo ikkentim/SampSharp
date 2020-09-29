@@ -911,8 +911,12 @@ namespace SampSharp.GameMode.World
             {
                 throw new NativeNotImplementedException();
             }
-
-
+            
+            [NativeMethod]
+            public virtual bool CancelEdit(int playerid)
+            {
+                throw new NativeNotImplementedException();
+            }
         }
 #pragma warning restore CS1591
     }

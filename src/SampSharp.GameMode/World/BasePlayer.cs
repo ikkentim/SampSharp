@@ -2172,6 +2172,14 @@ namespace SampSharp.GameMode.World
             PlayerInternal.Instance.SendDeathMessage(killer?.Id ?? InvalidId, killee?.Id ?? InvalidId, (int) weapon);
         }
 
+        /// <summary>
+        /// Cancels object editing mode for this player.
+        /// </summary>
+        public void CancelEdit()
+        {
+            PlayerInternal.Instance.CancelEdit(Id);
+        }
+
         #endregion
 
         #region Event raisers
