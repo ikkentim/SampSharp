@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using SampSharp.GameMode;
@@ -30,28 +31,40 @@ namespace TestMode
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
-            
+
             Console.WriteLine("The game mode has loaded.");
             AddPlayerClass(0, Vector3.Zero, 0);
 
-            var sampleVehicle = BaseVehicle.Create(VehicleModelType.Alpha, Vector3.One * 10, 0, -1, -1);
-
-            Console.WriteLine("Spawned sample vehicle " + sampleVehicle.Model);
-
-            var cfg = new ServerConfig(Path.Combine(Client.ServerPath, "server.cfg"));
-
-            foreach (var kv in cfg)
-            {
-                Console.WriteLine(kv.Key + " " + kv.Value);
-            }
-
-            var values = Enum.GetValues(typeof(Weapon)).OfType<Weapon>().ToList();
-            foreach (Weapon weapon in values.TakeLast(10))
-            {
-                Console.WriteLine($"{weapon}({(int)weapon}) :: {Server.GetWeaponName(weapon)}");
-            }
+ 
+            RunPerformanceBenchmark();
         }
 
         #endregion
+
+        private void RunPerformanceBenchmark()
+        {
+            var v = BaseVehicle.Create(VehicleModelType.BMX, Vector3.One, 0, 0, 0);
+
+            Timer x = new Timer(2000, true, true);
+
+            void PerfTest()
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                for (int i = 0; i < 400000; i++)
+                {
+                    v.GetParameters(out VehicleParameterValue e, out var l, out var a, out var d, out var b, out var z, out var o);
+                }
+                sw.Stop();
+                Console.WriteLine("TestMultiple={0}", sw.Elapsed.TotalMilliseconds);
+            }
+
+            PerfTest();
+
+            x.Tick += (sender, args) =>
+            {
+                PerfTest();
+            };
+        }
     }
 }

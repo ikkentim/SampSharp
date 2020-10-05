@@ -134,7 +134,7 @@ namespace SampSharp.Core.Communication.Clients
             if (dataBytes != null)
                 _stream.Write(dataBytes, 0, dataBytes.Length);
 
-            _stream.Flush(); // TODO should I flush?
+            _stream.Flush();
         }
 
         /// <summary>

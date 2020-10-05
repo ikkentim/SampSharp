@@ -108,7 +108,7 @@ namespace SampSharp.Core
             {
                 if (name == "OnRconCommand")
                 {
-                    // TODO: Not sure if this will cause issues.
+                    // RCON can be processed by the SA-MP server on a different thread. Mark thread as additional main thread.
                     _rconThread = Thread.CurrentThread.ManagedThreadId;
                 }
 
