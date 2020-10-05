@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using SampSharp.Core.CodePages;
@@ -148,6 +149,30 @@ namespace SampSharp.Core
         public GameModeBuilder UseEncoding(Stream stream)
         {
             return UseEncoding(CodePageEncoding.Load(stream));
+        }
+
+        /// <summary>
+        /// Uses the encoding code page.
+        /// </summary>
+        /// <param name="pageName">Name of the page.</param>
+        /// <returns></returns>
+        public GameModeBuilder UseEncodingCodePage(string pageName)
+        {
+            if (pageName == null) throw new ArgumentNullException(nameof(pageName));
+
+            var type = typeof(CodePageEncoding);
+
+            var name = $"{type.Namespace}.data.{pageName.ToLowerInvariant()}.dat";
+
+            using (var stream = type.Assembly.GetManifestResourceStream(name))
+            {
+                if (stream == null)
+                {
+                    throw new GameModeBuilderException($"Code page with name {pageName} is not available.");
+                }
+                var encoding = CodePageEncoding.Deserialize(stream);
+                return UseEncoding(encoding);
+            }
         }
 
         #endregion

@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,115 @@ namespace SampSharp.Core.CodePages
 
         private CodePageEncoding()
         {
+        }
+
+        /// <summary>
+        /// Gets a read-only conversion table.
+        /// </summary>
+        public IReadOnlyDictionary<char, ushort> ConversionTable => new ReadOnlyDictionary<char, ushort>(_uniToCp);
+ 
+        /// <summary>
+        /// Serializes the specified code page to the specified stream.
+        /// </summary>
+        /// <param name="codePage">The code page to serialize.</param>
+        /// <param name="stream">The stream to serialize the code page to.</param>
+        public static void Serialize(CodePageEncoding codePage, Stream stream)
+        {
+            if (codePage == null) throw new ArgumentNullException(nameof(codePage));
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
+
+            var buffer = new byte[1024];
+
+            buffer[0] = codePage._hasDoubleByteChars ? (byte)1 : (byte)0;
+            
+            var length = codePage._cpToUni.Count;
+            var lengthBytes = BitConverter.GetBytes(length);
+            Array.Copy(lengthBytes, 0, buffer, 1, 4);
+
+            var head = 5;
+
+            void Flush()
+            {
+                if (head == 0)
+                    return;
+
+                stream.Write(buffer, 0, head);
+                head = 0;
+            }
+
+            foreach (var kv in codePage._cpToUni)
+            {
+                if (head + 4 > buffer.Length)
+                    Flush();
+
+                var val = (ushort) kv.Value;
+
+                var keyL = (byte) (kv.Key & 0xff);
+                var keyH = (byte) (kv.Key >> 8);
+
+                var valL = (byte) (val & 0xff);
+                var valH = (byte) (val >> 8);
+                
+                buffer[head++] = keyL;
+                buffer[head++] = keyH;
+                buffer[head++] = valL;
+                buffer[head++] = valH;
+            }
+
+            Flush();
+        }
+
+        /// <summary>
+        /// Deserializes a code page.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <returns>The deserialized code page.</returns>
+        public static CodePageEncoding Deserialize(Stream stream)
+        {
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
+
+            var result = new CodePageEncoding();
+
+            result._hasDoubleByteChars = stream.ReadByte() != 0;
+
+            var buffer = new byte[4 * 256];
+            stream.Read(buffer, 0, 4);
+
+            var length = BitConverter.ToInt32(buffer, 0);
+
+            var i = 0;
+            var head = 0;
+
+            void Read()
+            {
+                var max = (length - i) * 4;
+                var rd = Math.Min(max, buffer.Length);
+
+                if (rd != 0)
+                    stream.Read(buffer, 0, rd);
+
+                head = 0;
+            }
+
+            Read();
+
+            for (; i < length; i++)
+            {
+                if (head == buffer.Length)
+                    Read();
+
+                var keyL = buffer[head++];
+                var keyH = buffer[head++];
+                var valL = buffer[head++];
+                var valH = buffer[head++];
+
+                var key = (ushort)(keyL | (keyH << 8));
+                var val = (char)(ushort)(valL | (valH << 8));
+                result._cpToUni[key] = val;
+                result._uniToCp[val] = key;
+            }
+
+            return result;
         }
 
         /// <summary>
