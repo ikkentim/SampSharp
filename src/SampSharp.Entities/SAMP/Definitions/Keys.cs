@@ -22,7 +22,7 @@ namespace SampSharp.Entities.SAMP
     /// Contains all detectable keys.
     /// </summary>
     /// <remarks>
-    /// See <see href="http://wiki.sa-mp.com/wiki/Keys">http://wiki.sa-mp.com/wiki/Keys</see>.
+    /// See <see href="https://www.open.mp/docs/scripting/resources/keys">https://www.open.mp/docs/scripting/resources/keys</see>.
     /// </remarks>
     [Flags]
     [SuppressMessage("ReSharper", "CommentTypo")]

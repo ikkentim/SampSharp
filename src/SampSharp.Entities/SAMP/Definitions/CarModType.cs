@@ -21,7 +21,7 @@ namespace SampSharp.Entities.SAMP
     /// Contains all modification types of vehicles.
     /// </summary>
     /// <remarks>
-    /// See <see href="http://wiki.sa-mp.com/wiki/Componentslots">http://wiki.sa-mp.com/wiki/Componentslots</see>.
+    /// See <see href="https://www.open.mp/docs/scripting/resources/carcomponentid">https://www.open.mp/docs/scripting/resources/carcomponentid</see>.
     /// </remarks>
     [SuppressMessage("ReSharper", "IdentifierTypo")]
     [SuppressMessage("ReSharper", "CommentTypo")]

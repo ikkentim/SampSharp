@@ -19,7 +19,7 @@ namespace SampSharp.Entities.SAMP
     /// Contains all map icon styles.
     /// </summary>
     /// <remarks>
-    /// See <see href="http://wiki.sa-mp.com/wiki/MapIconStyle">http://wiki.sa-mp.com/wiki/MapIconStyle</see>.
+    /// See <see href="https://www.open.mp/docs/scripting/resources/mapiconstyles">https://www.open.mp/docs/scripting/resources/mapiconstyles</see>.
     /// </remarks>
     public enum MapIconType
     {

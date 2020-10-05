@@ -18,7 +18,7 @@ namespace SampSharp.GameMode.Definitions
     ///     Contains every bone in a player's body.
     /// </summary>
     /// <remarks>
-    ///     See <see href="http://wiki.sa-mp.com/wiki/Bones">http://wiki.sa-mp.com/wiki/Bones</see>.
+    ///     See <see href="https://www.open.mp/docs/scripting/resources/boneid">https://www.open.mp/docs/scripting/resources/boneid</see>.
     /// </remarks>
     public enum Bone
     {

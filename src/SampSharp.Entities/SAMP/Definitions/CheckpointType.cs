@@ -20,7 +20,7 @@ namespace SampSharp.Entities.SAMP
     /// </summary>
     /// <remarks>
     /// See
-    /// <see href="http://wiki.sa-mp.com/wiki/SetPlayerRaceCheckpoint">http://wiki.sa-mp.com/wiki/SetPlayerRaceCheckpoint</see>
+    /// <see href="https://www.open.mp/docs/scripting/functions/SetPlayerRaceCheckpoint">https://www.open.mp/docs/scripting/functions/SetPlayerRaceCheckpoint</see>
     /// .
     /// </remarks>
     public enum CheckpointType

@@ -21,7 +21,7 @@ namespace SampSharp.Entities.SAMP
     /// Contains all fighting styles.
     /// </summary>
     /// <remarks>
-    /// See <see href="http://wiki.sa-mp.com/wiki/Fight_styles">http://wiki.sa-mp.com/wiki/Fight_styles</see>.
+    /// See <see href="https://www.open.mp/docs/scripting/resources/fightingstyles">https://www.open.mp/docs/scripting/resources/fightingstyles</see>.
     /// </remarks>
     [SuppressMessage("ReSharper", "IdentifierTypo")]
     [SuppressMessage("ReSharper", "CommentTypo")]

@@ -19,7 +19,7 @@ namespace SampSharp.Entities.SAMP
     /// Contains all available body parts.
     /// </summary>
     /// <remarks>
-    /// See <see href="http://wiki.sa-mp.com/wiki/BodyParts">http://wiki.sa-mp.com/wiki/BodyParts</see>.
+    /// See <see href="https://www.open.mp/docs/scripting/resources/bodyparts">https://www.open.mp/docs/scripting/resources/bodyparts</see>.
     /// </remarks>
     public enum BodyPart
     {
