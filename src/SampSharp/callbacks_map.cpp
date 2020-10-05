@@ -185,6 +185,7 @@ bool callbacks_map::fill_call_buffer(AMX *amx, const char *name,
     if (params[0] / sizeof(cell) != i) {
         log_error("Callback parameters count mismatch for %s. Expecting %d but "
             "received %d parameters.", name, params_count, i);
+        return false;
     }
 
     *len = call_len;
