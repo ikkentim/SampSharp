@@ -5,13 +5,12 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using SampSharp.Core.Callbacks;
 using SampSharp.Core.Communication;
-using SampSharp.Core.Communication.Clients;
 using SampSharp.Core.Hosting;
 using SampSharp.Core.Logging;
 using SampSharp.Core.Natives;
+using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Core.Threading;
 
 namespace SampSharp.Core
@@ -46,6 +45,7 @@ namespace SampSharp.Core
             _startBehaviour = startBehaviour;
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
             NativeLoader = new NativeLoader(this);
+            NativeObjectProxyFactory = new NativeHandleBasedNativeObjectProxyFactory(this);
             _buffer = Marshal.AllocHGlobal(_txBufferLength = 1024 * 6);
             _buffer1K = Marshal.AllocHGlobal(1024);
 
@@ -140,7 +140,10 @@ namespace SampSharp.Core
         /// <summary>
         ///     Gets or sets the native loader to be used to load natives.
         /// </summary>
-        public INativeLoader NativeLoader { get; set; }
+        public INativeLoader NativeLoader { get; }
+
+        /// <inheritdoc />
+        public INativeObjectProxyFactory NativeObjectProxyFactory { get; }
 
         /// <summary>
         ///     Gets the path to the server directory.

@@ -1,3 +1,6 @@
+### 0.10.0
+- Updated to .NET Standard 2.1
+
 ### 0.9.3
 - Fixed player- textdraws, labels and objects not working as intended
 

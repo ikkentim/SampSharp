@@ -1,3 +1,8 @@
+### 0.10.0
+- Added `IGameModeClient.NativeObjectProxyFactory`
+- Updated to .NET Standard 2.1
+- Removed setter from `IGameModeClient.NativeLoader`
+
 ### 0.9.3
 - No changes
 

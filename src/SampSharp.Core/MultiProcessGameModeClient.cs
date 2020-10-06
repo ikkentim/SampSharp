@@ -26,6 +26,7 @@ using SampSharp.Core.Communication;
 using SampSharp.Core.Communication.Clients;
 using SampSharp.Core.Logging;
 using SampSharp.Core.Natives;
+using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Core.Threading;
 
 namespace SampSharp.Core
@@ -70,6 +71,7 @@ namespace SampSharp.Core
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
             CommunicationClient = communicationClient ?? throw new ArgumentNullException(nameof(communicationClient));
             NativeLoader = new NativeLoader(this);
+            NativeObjectProxyFactory = new NativeHandleBasedNativeObjectProxyFactory(this);
             _console = new StreamWriter(Console.OpenStandardOutput()) {AutoFlush = true};
         }
 
@@ -500,7 +502,10 @@ namespace SampSharp.Core
         /// <summary>
         ///     Gets or sets the native loader to be used to load natives.
         /// </summary>
-        public INativeLoader NativeLoader { get; set; }
+        public INativeLoader NativeLoader { get; }
+
+        /// <inheritdoc />
+        public INativeObjectProxyFactory NativeObjectProxyFactory { get; }
 
         /// <summary>
         ///     Gets the path to the server directory.

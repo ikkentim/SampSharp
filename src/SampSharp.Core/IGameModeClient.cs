@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Text;
 using SampSharp.Core.Callbacks;
 using SampSharp.Core.Natives;
+using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Core
 {
@@ -33,9 +34,14 @@ namespace SampSharp.Core
         Encoding Encoding { get; }
         
         /// <summary>
-        ///     Gets or sets the native loader to be used to load natives.
+        ///     Gets the native loader to be used to load natives.
         /// </summary>
-        INativeLoader NativeLoader { get; set; }
+        INativeLoader NativeLoader { get; }
+
+        /// <summary>
+        /// Gets the factory for creating native object proxies.
+        /// </summary>
+        INativeObjectProxyFactory NativeObjectProxyFactory { get; }
 
         /// <summary>
         ///     Gets the path to the server directory.

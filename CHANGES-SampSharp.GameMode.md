@@ -1,3 +1,6 @@
+### 0.10.0
+- Updated to .NET Standard 2.1
+
 ### 0.9.1
 - Removed unused `PlayerDisconnectReason` enum in favour of `DisconnectReason` enum (#330)
 

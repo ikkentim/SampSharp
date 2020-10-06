@@ -27,6 +27,6 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// <summary>
         ///     Gets the singleton instance of native object <typeparamref name="T" />.
         /// </summary>
-        public static T Instance => _instance ?? (_instance = NativeObjectProxyFactory.CreateInstance<T>());
+        public static T Instance => _instance ??= NativeObjectProxyFactory.CreateInstance<T>();
     }
 }
