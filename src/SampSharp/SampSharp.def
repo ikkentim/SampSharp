@@ -8,3 +8,5 @@ EXPORTS
     sampsharp_get_native_handle
     sampsharp_invoke_native
     sampsharp_register_callback
+    sampsharp_fast_native_find
+    sampsharp_fast_native_invoke

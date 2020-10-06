@@ -140,3 +140,11 @@ SAMPSHARP_EXPORT void SAMPSHARP_CALL sampsharp_register_callback(uint8_t *buf) {
         hosting->register_callback(buf);
     }
 }
+
+SAMPSHARP_EXPORT void *SAMPSHARP_CALL sampsharp_fast_native_find(const char *name) {
+    return (void *)sampgdk_FindNative(name);
+}
+
+SAMPSHARP_EXPORT int SAMPSHARP_CALL sampsharp_fast_native_invoke(void *native, const char *format, void **args) {
+    return sampgdk_InvokeNativeArray((AMX_NATIVE)native, format, args);
+}
