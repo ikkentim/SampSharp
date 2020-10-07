@@ -18,7 +18,7 @@ using System;
 namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
-    ///     Indicates a method should be proxied by the <see cref="NativeObjectIlGenerator" />.
+    ///     Indicates a method should be proxied by the <see cref="NativeHandleBasedNativeObjectIlGenerator" />.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
     public class NativeMethodAttribute : Attribute

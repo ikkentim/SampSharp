@@ -24,14 +24,14 @@ namespace SampSharp.Core.Natives.NativeObjects
     ///     A generator for native object instances. This class can be used to generate a method for invoking a specific native
     ///     with a number of predefined identifiers stored within the class the method is a member of.
     /// </summary>
-    public class NativeObjectIlGenerator : NativeILGenerator
+    internal class NativeHandleBasedProxyGenerator
     {
         private readonly string[] _identifiers;
         private readonly int _identifierIndex;
         private readonly Type _nativeObjectType;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="NativeObjectIlGenerator" /> class.
+        ///     Initializes a new instance of the <see cref="NativeHandleBasedProxyGenerator" /> class.
         /// </summary>
         /// <param name="native">The native.</param>
         /// <param name="nativeObjectType">Type of the native object.</param>
@@ -40,7 +40,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// <param name="parameterTypes">The parameter types.</param>
         /// <param name="returnType">Type of the return.</param>
         /// <exception cref="ArgumentNullException">Thrown if nativeObjectType or identifiers is null.</exception>
-        public NativeObjectIlGenerator(INative native, Type nativeObjectType, string[] identifiers, int identifierIndex,
+        public NativeHandleBasedProxyGenerator(INative native, Type nativeObjectType, string[] identifiers, int identifierIndex,
             Type[] parameterTypes, Type returnType)
         {
             if (parameterTypes == null) throw new ArgumentNullException(nameof(parameterTypes));

@@ -27,6 +27,7 @@ using SampSharp.Core.Communication.Clients;
 using SampSharp.Core.Logging;
 using SampSharp.Core.Natives;
 using SampSharp.Core.Natives.NativeObjects;
+using SampSharp.Core.Natives.NativeObjects.NativeHandles;
 using SampSharp.Core.Threading;
 
 namespace SampSharp.Core
