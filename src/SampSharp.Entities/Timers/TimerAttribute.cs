@@ -1,4 +1,5 @@
 ﻿using System;
+using SampSharp.Entities.Annotations;
 
 namespace SampSharp.Entities
 {
@@ -6,6 +7,7 @@ namespace SampSharp.Entities
     /// An attribute which indicates the method should be invoked at a specified interval.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
+    [MeansImplicitUse]
     public class TimerAttribute : Attribute
     {
         /// <summary>
