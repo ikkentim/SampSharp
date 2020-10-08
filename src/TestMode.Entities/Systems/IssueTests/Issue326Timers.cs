@@ -11,10 +11,10 @@ namespace TestMode.Entities.Systems.IssueTests
         private readonly Stopwatch _stopwatch2 = new Stopwatch();
         private int _readonlyTicks;
 
-        [Timer(10000)]
-        public void Every10Sec(IServerService serverService)
+        [Timer(60000)]
+        public void Every60Sec(IServerService serverService)
         {
-            Console.WriteLine($"Every 10 seconds timer! {_stopwatch1.Elapsed}, tick rate: {serverService.TickRate}");
+            Console.WriteLine($"Every 60 seconds timer! {_stopwatch1.Elapsed}, tick rate: {serverService.TickRate}");
             _stopwatch1.Restart();
         }
 
@@ -27,14 +27,14 @@ namespace TestMode.Entities.Systems.IssueTests
             TimerReference timer = null;
             timer = timerService.Start(_ =>
             {
-                if (++_readonlyTicks == 5)
+                if (++_readonlyTicks == 3)
                 {
                     Console.WriteLine("Stop timer");
                     timerService.Stop(timer);
                 }
-                Console.WriteLine($"Manual timer! {_stopwatch2.Elapsed}");
+                Console.WriteLine($"Manual timer {_stopwatch2.Elapsed}");
                 _stopwatch2.Restart();
-            }, TimeSpan.FromSeconds(1.5));
+            }, TimeSpan.FromSeconds(0.1));
         }
     }
 }

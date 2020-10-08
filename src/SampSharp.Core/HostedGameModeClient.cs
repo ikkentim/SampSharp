@@ -46,7 +46,7 @@ namespace SampSharp.Core
             _startBehaviour = startBehaviour;
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
             NativeLoader = new NativeLoader(this);
-            NativeObjectProxyFactory = new NativeHandleBasedNativeObjectProxyFactory(this);
+            NativeObjectProxyFactory = new NativeHandleBasedNativeObjectProxyFactory(NativeLoader);
             _buffer = Marshal.AllocHGlobal(_txBufferLength = 1024 * 6);
             _buffer1K = Marshal.AllocHGlobal(1024);
 

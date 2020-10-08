@@ -72,7 +72,7 @@ namespace SampSharp.Core
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
             CommunicationClient = communicationClient ?? throw new ArgumentNullException(nameof(communicationClient));
             NativeLoader = new NativeLoader(this);
-            NativeObjectProxyFactory = new NativeHandleBasedNativeObjectProxyFactory(this);
+            NativeObjectProxyFactory = new NativeHandleBasedNativeObjectProxyFactory(NativeLoader);
             _console = new StreamWriter(Console.OpenStandardOutput()) {AutoFlush = true};
         }
 

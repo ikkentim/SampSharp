@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Core.Natives.NativeObjects
+namespace SampSharp.Core.Natives.NativeObjects.NativeHandles
 {
     /// <summary>
     ///     Contains simple wrapper methods for invoking handles of natives with a set of arguments. These methods are used by

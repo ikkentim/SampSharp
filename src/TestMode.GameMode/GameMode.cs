@@ -20,7 +20,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Text;
+using SampSharp.Core.Communication;
 using SampSharp.Core.Hosting;
+using SampSharp.Core.Natives.NativeObjects;
+using SampSharp.Core.Natives.NativeObjects.FastNatives;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.SAMP;
@@ -28,7 +31,7 @@ using SampSharp.GameMode.World;
 
 namespace TestMode
 {
-    internal class GameMode : BaseMode
+    public class GameMode : BaseMode
     {
         #region Overrides of BaseMode
         
@@ -45,71 +48,43 @@ namespace TestMode
 
         #endregion
 
-        private ReadOnlySpan<char> Testing(string inp, out Encoding enc, out int len)
+        private unsafe void CallThat(IntPtr native, int id)
         {
-            enc = Client.Encoding ?? Encoding.ASCII;
-            var result = inp.AsSpan();
-            len = enc.GetByteCount(result) + 1;
-            return result;
-        }
+            Span<int> data = stackalloc int[16];
+            // 0-7: pointers to cells   [8]
+            // 8: id cell               [1]
+            // 9-15: out cells          [7]
 
-        private unsafe void RunPerformanceBenchmark()
+            fixed (int* ptData = &data.GetPinnableReference())
+            {
+                for (var j = 0; j < 8; j++)// set points for all 8 args
+                {
+                    data[j] = (int) (IntPtr) (ptData + 8 + j);
+                }
+
+                data[8] = id;
+
+                Interop.FastNativeInvoke(native, "dRRRRRRR", ptData);
+            }
+        }
+        
+        private void RunPerformanceBenchmark()
         {
             var v = BaseVehicle.Create(VehicleModelType.BMX, Vector3.One, 0, 0, 0);
-
-            var id = v.Id;
-            var native = Interop.FastNativeFind("GetVehicleParamsEx");
             
+            var native = Interop.FastNativeFind("GetVehicleParamsEx");
 
             Timer x = new Timer(2000, true, true);
 
-            
-            var nativeSetGameModeText = Interop.FastNativeFind("SetGameModeText");
-            
-            Span<int> dataSetGameModeText = stackalloc int[16];
-            var test = "TestValue";
-
-            var text = Testing(test, out var enc, out var len);
-            Span<byte> zzz = stackalloc byte[len];
-            zzz[len - 1] = 0;
-            enc.GetBytes(text, zzz);
-
-            fixed (int* ptXData = &dataSetGameModeText.GetPinnableReference())
-            fixed (byte* xp = &zzz.GetPinnableReference())
-            {
-                dataSetGameModeText[0] = (int) (IntPtr) xp;
-                Interop.FastNativeInvoke(nativeSetGameModeText, "s", ptXData);
-            }
-
-            void CallThat()
-            {
-                Span<int> data = stackalloc int[16];
-                // 0-7: pointers to cells   [8]
-                // 8: id cell               [1]
-                // 9-15: out cells          [7]
-
-                fixed (int* ptData = &data.GetPinnableReference())
-                {
-                    for (var j = 0; j < 8; j++)// set points for all 8 args
-                    {
-                        data[j] = (int) (IntPtr) (ptData + 8 + j);
-                    }
-
-                    data[8] = id;
-
-                    Interop.FastNativeInvoke(native, "dRRRRRRR", ptData);
-                }
-            }
-
+            var id = v.Id;
+  
             void PerfTest()
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 for (int i = 0; i < 400000; i++)
                 {
-                    CallThat();
-
-                    //v.GetParameters(out VehicleParameterValue e, out var l, out var a, out var d, out var b, out var z, out var o);
+                    CallThat(native, id);
                 }
                 sw.Stop();
                 Console.WriteLine("TestMultiple={0}", sw.Elapsed.TotalMilliseconds);

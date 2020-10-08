@@ -18,7 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace SampSharp.Core.Natives.NativeObjects
+namespace SampSharp.Core.Natives.NativeObjects.NativeHandles
 {
     /// <summary>
     ///     A generator for native object instances. This class can be used to generate a method for invoking a specific native

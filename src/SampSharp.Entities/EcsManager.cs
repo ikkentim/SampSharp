@@ -59,6 +59,7 @@ namespace SampSharp.Entities
             var services = new ServiceCollection();
             services.AddSingleton(client);
             services.AddSingleton(client.NativeLoader);
+            services.AddSingleton(client.NativeObjectProxyFactory);
             Configure(services);
 
             _serviceProvider = services.BuildServiceProvider();
