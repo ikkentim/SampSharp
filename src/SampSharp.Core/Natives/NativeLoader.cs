@@ -15,6 +15,8 @@
 
 using System;
 using System.Collections.Generic;
+using SampSharp.Core.Natives.NativeObjects;
+using SampSharp.Core.Natives.NativeObjects.NativeHandles;
 
 namespace SampSharp.Core.Natives
 {
@@ -34,9 +36,13 @@ namespace SampSharp.Core.Natives
         public NativeLoader(IGameModeClient gameModeClient)
         {
             _gameModeClient = gameModeClient ?? throw new ArgumentNullException(nameof(gameModeClient));
+            ProxyFactory = new NativeHandleBasedNativeObjectProxyFactory(gameModeClient, this);
         }
 
         #region Implementation of INativeLoader
+
+        /// <inheritdoc />
+        public INativeObjectProxyFactory ProxyFactory { get; }
 
         /// <summary>
         ///     Loads a native with the specified name.

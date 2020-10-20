@@ -35,7 +35,7 @@ namespace SampSharp.Core
     /// <summary>
     ///     Represents a SampSharp game mode client for remote SA-MP servers.
     /// </summary>
-    public sealed class MultiProcessGameModeClient : IGameModeClient, IGameModeRunner
+    public sealed class MultiProcessGameModeClient : IGameModeClient, IGameModeRunner, ISynchronizationProvider
     {
         private static readonly byte[] AOne = { 1 };
         private static readonly byte[] AZero = { 0 };
@@ -72,7 +72,6 @@ namespace SampSharp.Core
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
             CommunicationClient = communicationClient ?? throw new ArgumentNullException(nameof(communicationClient));
             NativeLoader = new NativeLoader(this);
-            NativeObjectProxyFactory = new NativeHandleBasedNativeObjectProxyFactory(NativeLoader);
             _console = new StreamWriter(Console.OpenStandardOutput()) {AutoFlush = true};
         }
 
@@ -505,8 +504,7 @@ namespace SampSharp.Core
         /// </summary>
         public INativeLoader NativeLoader { get; }
 
-        /// <inheritdoc />
-        public INativeObjectProxyFactory NativeObjectProxyFactory { get; }
+        public ISynchronizationProvider SynchronizationProvider => this;
 
         /// <summary>
         ///     Gets the path to the server directory.
@@ -696,6 +694,18 @@ namespace SampSharp.Core
         ///     Gets the client of this game mode runner.
         /// </summary>
         public IGameModeClient Client => this;
+
+        #endregion
+        
+
+        #region Implementation of ISynchronizationProvider
+
+        public bool InvokeRequired => !IsOnMainThread;
+
+        public void Invoke(Action action)
+        {
+            _synchronizationContext.Send(ctx => action(), null);
+        }
 
         #endregion
     }

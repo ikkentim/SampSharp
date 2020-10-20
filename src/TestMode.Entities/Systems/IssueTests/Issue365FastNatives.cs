@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using SampSharp.Core;
 using SampSharp.Core.Communication;
 using SampSharp.Core.Hosting;
@@ -18,6 +20,7 @@ namespace TestMode.Entities.Systems.IssueTests
         private int _testVehicleId;
         private IntPtr _nativeGetVehicleParamsEx;
         private TestingFastNative _fastProxy;
+
         public Issue365FastNatives(IGameModeClient client)
         {
             _client = client;
@@ -36,14 +39,26 @@ namespace TestMode.Entities.Systems.IssueTests
             _nativeGetVehicleParamsEx = Interop.FastNativeFind("GetVehicleParamsEx");
             _testVehicleId = worldService.CreateVehicle(VehicleModelType.BMX, Vector3.One, 0, 0, 0).Entity.Handle;
 
-            var fastFactory = new FastNativeBasedNativeObjectProxyFactory();
+            var fastFactory = new FastNativeBasedNativeObjectProxyFactory(_client);
             var handleProxy = NativeObjectProxyFactory.CreateInstance<TestingFastNative>();
             var fastProxy = (TestingFastNative)fastFactory.CreateInstance(typeof(TestingFastNative));
             _fastProxy = fastProxy;
 
             // Call IsPlayerConnected
-            Console.WriteLine("IsPlayerConnected fast: " + fastProxy.IsPlayerConnected(0));
-            Console.WriteLine("IsPlayerConnected handle: " + handleProxy.IsPlayerConnected(0));
+            timerService.Start(_ =>
+            {
+                Console.WriteLine("RequiresInvoke: " + ((ISynchronizationProvider)_client).InvokeRequired);
+                Console.WriteLine("IsPlayerConnected fast: " + fastProxy.IsPlayerConnected(0));
+                Console.WriteLine("IsPlayerConnected handle: " + handleProxy.IsPlayerConnected(0));
+
+                Task.Run(() =>
+                {
+                    Console.WriteLine("TASK.RequiresInvoke: " + ((ISynchronizationProvider)_client).InvokeRequired);
+                    Console.WriteLine("TASK.IsPlayerConnected fast: " + fastProxy.IsPlayerConnected(0));
+                    Console.WriteLine("TASK.IsPlayerConnected handle: " + handleProxy.IsPlayerConnected(0));
+                });
+            }, TimeSpan.FromSeconds(1));
+
 
             // Call CreateVehicle native
             var testPosition = new Vector3(65.13f, 123.123f, 555.555f);
@@ -236,8 +251,17 @@ namespace TestMode.Entities.Systems.IssueTests
             }
         }
 
-        public class TestingFastNative
+        public class BaseNativeClass
         {
+            // public string Prop1 { get; }
+            // public string Prop2 { get; }
+            //
+            // public BaseNativeClass(string prop1, string prop2)
+            // {
+            //     Prop1 = prop1;
+            //     Prop2 = prop2;
+            // }
+
             [NativeMethod]
             public virtual int IsPlayerConnected(int id)
             {
@@ -267,6 +291,29 @@ namespace TestMode.Entities.Systems.IssueTests
             {
                 throw new NativeNotImplementedException();
             }
+        }
+        public class TestingFastNative : BaseNativeClass
+        {
+            // private IGameModeClient _gameModeClient;
+            // private ISynchronizationProvider _synchronizationProvider;
+            // public TestingFastNative(IGameModeClient gameModeClient, string prop1, string prop2) : base(prop1, prop2)
+            // {
+            //     _gameModeClient = gameModeClient;
+            // }
+
+            // public unsafe override int IsPlayerConnected(int id)
+            // {
+            //     int* data = stackalloc int[2];
+            //     data[0] = NativeUtils.IntPointerToInt(data + 1);
+            //     data[1] = id;
+            //
+            //     if (_synchronizationProvider.InvokeRequired)
+            //     {
+            //         return NativeUtils.SynchronizeInvoke(_synchronizationProvider, new IntPtr(999), "d", data);
+            //     }
+            //
+            //     return Interop.FastNativeInvoke(new IntPtr(999), "d", data);
+            // }
         }
     }
 }

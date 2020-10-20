@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
@@ -11,12 +12,29 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 {
     public class FastNativeBasedNativeObjectProxyFactory : NativeObjectProxyFactoryBase
     {
-        public FastNativeBasedNativeObjectProxyFactory() : base("ProxyAssemblyFast")
+        private readonly IGameModeClient _gameModeClient;
+
+        public FastNativeBasedNativeObjectProxyFactory(IGameModeClient gameModeClient) : base(gameModeClient, "ProxyAssemblyFast")
         {
+            _gameModeClient = gameModeClient;
+        }
+
+        protected override object[] GetProxyConstructorArgs()
+        {
+            return new object[] {_gameModeClient.SynchronizationProvider};
+        }
+
+        protected override FieldInfo[] GetProxyFields(TypeBuilder typeBuilder)
+        {
+            var syncField = typeBuilder.DefineField("_synchronizationProvider", typeof(ISynchronizationProvider), FieldAttributes.Private);
+            return new[]
+            {
+                (FieldInfo) syncField
+            };
         }
 
         protected override MethodBuilder CreateMethodBuilder(string nativeName, Type proxyType, uint[] nativeArgumentLengths,
-            TypeBuilder typeBuilder, MethodInfo method, string[] identifierPropertyNames, int idIndex)
+            TypeBuilder typeBuilder, MethodInfo method, string[] identifierPropertyNames, int idIndex, FieldInfo[] proxyFields)
         {
             // Define the method.
             var idCount = identifierPropertyNames.Length;
@@ -123,12 +141,36 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                 }
             }
             
+
+            // if (_synchronizationProvider.InvokeRequired)
+            ilGenerator.Emit(OpCodes.Ldarg_0);
+            ilGenerator.Emit(OpCodes.Ldfld, proxyFields[0]);
+            ilGenerator.EmitCall(OpCodes.Callvirt, PropertyGetter<ISynchronizationProvider>(x => x.InvokeRequired), null);
+            
+            var elseLabel = ilGenerator.DefineLabel();
+            var endifLabel = ilGenerator.DefineLabel();
+            ilGenerator.Emit(OpCodes.Brfalse, elseLabel);
+
+            // NativeUtils.SynchronizeInvoke(_synchronizationProvider, new IntPtr($0), format, ptr);
+            ilGenerator.Emit(OpCodes.Ldarg_0);
+            ilGenerator.Emit(OpCodes.Ldfld, proxyFields[0]);
+            ilGenerator.Emit(OpCodes.Ldc_I4, (int)native);
+            ilGenerator.Emit(OpCodes.Newobj, typeof(IntPtr).GetConstructor(new []{typeof(int)}));
+            ilGenerator.Emit(OpCodes.Ldstr, formatString);
+            ilGenerator.Emit(OpCodes.Ldloc_0);
+            ilGenerator.EmitCall(OpCodes.Call, Util(nameof(NativeUtils.SynchronizeInvoke)), null);
+            ilGenerator.Emit(OpCodes.Br_S, endifLabel);
+
+            ilGenerator.MarkLabel(elseLabel);
             // SampSharp.Core.Hosting.Interop.FastNativeInvoke(new IntPtr($0), format, ptr);
             ilGenerator.Emit(OpCodes.Ldc_I4, (int)native);
             ilGenerator.Emit(OpCodes.Newobj, typeof(IntPtr).GetConstructor(new []{typeof(int)}));
             ilGenerator.Emit(OpCodes.Ldstr, formatString);
             ilGenerator.Emit(OpCodes.Ldloc_0);
             ilGenerator.EmitCall(OpCodes.Call, typeof(Interop).GetMethod(nameof(Interop.FastNativeInvoke)), null);
+            ilGenerator.Emit(OpCodes.Br_S, endifLabel);
+
+            ilGenerator.MarkLabel(endifLabel);
 
             // Emit out param assignment
             // TODO: Do not allocate big strings/arrays on stack
@@ -168,10 +210,15 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 
             return methodBuilder;
         }
-
+        
         private static MethodInfo Util(string utilName)
         {
             return typeof(NativeUtils).GetMethod(utilName);
+        }
+
+        private static MethodInfo PropertyGetter<T>(Expression<Func<T, object>> expr)
+        {
+            return ((PropertyInfo) ((MemberExpression)((UnaryExpression) expr.Body).Operand).Member).GetMethod;
         }
 
         private static void EmitCast(ILGenerator ilGenerator, Type targetType)

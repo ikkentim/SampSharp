@@ -1,4 +1,5 @@
 ﻿using System;
+using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Core.Natives
 {
@@ -7,6 +8,11 @@ namespace SampSharp.Core.Natives
     /// </summary>
     public interface INativeLoader
     {
+        /// <summary>
+        /// Gets the factory for creating native object proxies.
+        /// </summary>
+        INativeObjectProxyFactory ProxyFactory { get; }
+
         /// <summary>
         ///     Loads a native with the specified name.
         /// </summary>

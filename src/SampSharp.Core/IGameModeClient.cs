@@ -38,10 +38,7 @@ namespace SampSharp.Core
         /// </summary>
         INativeLoader NativeLoader { get; }
 
-        /// <summary>
-        /// Gets the factory for creating native object proxies.
-        /// </summary>
-        INativeObjectProxyFactory NativeObjectProxyFactory { get; }
+        ISynchronizationProvider SynchronizationProvider { get; }
 
         /// <summary>
         ///     Gets the path to the server directory.
@@ -99,5 +96,13 @@ namespace SampSharp.Core
         ///     Shuts down the server after the current callback has been processed.
         /// </summary>
         void ShutDown();
+    }
+
+    public interface ISynchronizationProvider
+    {
+        public bool InvokeRequired { get; }
+
+        public void Invoke(Action action);
+
     }
 }

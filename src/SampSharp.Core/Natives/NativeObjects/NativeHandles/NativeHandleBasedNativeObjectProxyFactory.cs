@@ -8,13 +8,13 @@ namespace SampSharp.Core.Natives.NativeObjects.NativeHandles
     {
         private readonly INativeLoader _nativeLoader;
 
-        public NativeHandleBasedNativeObjectProxyFactory(INativeLoader nativeLoader) : base("ProxyAssembly")
+        public NativeHandleBasedNativeObjectProxyFactory(IGameModeClient gameModeClient, INativeLoader nativeLoader) : base(gameModeClient, "ProxyAssembly")
         {
             _nativeLoader = nativeLoader;
         }
 
         protected override MethodBuilder CreateMethodBuilder(string nativeName, Type proxyType, uint[] nativeArgumentLengths,
-            TypeBuilder typeBuilder, MethodInfo method, string[] identifierPropertyNames, int idIndex)
+            TypeBuilder typeBuilder, MethodInfo method, string[] identifierPropertyNames, int idIndex, FieldInfo[] proxyFields)
         {
             // Define the method.
             var idCount = identifierPropertyNames.Length;

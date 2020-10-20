@@ -19,7 +19,7 @@ namespace SampSharp.Core
     /// <summary>
     ///     Represents a SampSharp game mode client for hosted game modes.
     /// </summary>
-    public sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner
+    public sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, ISynchronizationProvider
     {
         private readonly Dictionary<string, Callback> _callbacks = new Dictionary<string, Callback>();
         private NoWaitMessageQueue _messageQueue;
@@ -46,7 +46,6 @@ namespace SampSharp.Core
             _startBehaviour = startBehaviour;
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
             NativeLoader = new NativeLoader(this);
-            NativeObjectProxyFactory = new NativeHandleBasedNativeObjectProxyFactory(NativeLoader);
             _buffer = Marshal.AllocHGlobal(_txBufferLength = 1024 * 6);
             _buffer1K = Marshal.AllocHGlobal(1024);
 
@@ -143,8 +142,7 @@ namespace SampSharp.Core
         /// </summary>
         public INativeLoader NativeLoader { get; }
 
-        /// <inheritdoc />
-        public INativeObjectProxyFactory NativeObjectProxyFactory { get; }
+        public ISynchronizationProvider SynchronizationProvider => this;
 
         /// <summary>
         ///     Gets the path to the server directory.
@@ -369,6 +367,17 @@ namespace SampSharp.Core
         ///     Gets the client of this game mode runner.
         /// </summary>
         public IGameModeClient Client => this;
+
+        #endregion
+
+        #region Implementation of ISynchronizationProvider
+
+        public bool InvokeRequired => !IsOnMainThread;
+
+        public void Invoke(Action action)
+        {
+            _synchronizationContext.Send(ctx => action(), null);
+        }
 
         #endregion
     }
