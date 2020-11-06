@@ -23,12 +23,23 @@
 #include "pipesvr_win32.h"
 #include "dsock_unix.h"
 #include "tcp_unix.h"
+#include "testing.h"
 
 /* amxplugin's reference */
 // ReSharper disable once CppInconsistentNaming
 extern void *pAMXFunctions;
 
 typedef int(*amx_call)(char *function_name);
+
+extern "C" const AMX_NATIVE_INFO native_list[] = {
+#ifndef  DISABLE_TEST_NATIVES
+    { "sampsharptest_inout", test_inout },
+    { "sampsharptest_inrefout", test_inrefout },
+    { "sampsharptest_inoutstr", test_inoutstr },
+    { "sampsharptest_inoutarr", test_inoutarr },
+#endif
+    { NULL, NULL }
+};
 
 plugin::plugin(void **pp_data) :
     config_(ConfigReader("server.cfg")) {
@@ -176,3 +187,8 @@ plugin_state plugin::state_unset(const plugin_state flag) {
 plugin_state plugin::state_reset() {
     return state_ = STATE_NONE;
 }
+
+int plugin::amx_load(AMX* amx) {
+    return amx_Register(amx, native_list, -1);
+}
+

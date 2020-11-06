@@ -15,6 +15,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using SampSharp.Core.Communication;
 
 namespace SampSharp.Core.Natives
@@ -37,24 +41,27 @@ namespace SampSharp.Core.Natives
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="lengthIndex">Index of the length.</param>
-        public NativeParameterInfo(NativeParameterType type, uint lengthIndex)
+        /// <param name="isOutput">A value indicating whether this parameter has no input.</param>
+        public NativeParameterInfo(NativeParameterType type, uint lengthIndex, bool isOutput)
         {
             Type = type;
             LengthIndex = lengthIndex;
-            RequiresLength = CalcRequiresLength(type);
             ArgumentType = CalcCommandArgument(type);
+            IsOutput = isOutput;
+
         }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="NativeParameterInfo" /> struct.
         /// </summary>
         /// <param name="type">The type.</param>
-        public NativeParameterInfo(NativeParameterType type)
+        /// <param name="isOutput">A value indicating whether this parameter has no input.</param>
+        public NativeParameterInfo(NativeParameterType type, bool isOutput)
         {
             Type = type;
             LengthIndex = 0;
-            RequiresLength = CalcRequiresLength(type);
             ArgumentType = CalcCommandArgument(type);
+            IsOutput = isOutput;
         }
 
         /// <summary>
@@ -96,12 +103,13 @@ namespace SampSharp.Core.Natives
         ///     Returns a <see cref="NativeParameterInfo" /> for the specified <paramref name="type" />.
         /// </summary>
         /// <param name="type">The type.</param>
+        /// <param name="isOutput">A value indicating whether the parameter has no input.</param>
         /// <returns>A struct for the type.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">
         ///     Thrown if <paramref name="type" /> is not a valid native parameter
         ///     type.
         /// </exception>
-        public static NativeParameterInfo ForType(Type type)
+        public static NativeParameterInfo ForType(Type type, bool isOutput = false)
         {
             var isByRef = type.IsByRef;
             var elementType = isByRef ? type.GetElementType() : type;
@@ -118,26 +126,23 @@ namespace SampSharp.Core.Natives
             if (isArray) parameterType |= NativeParameterType.Array;
             if (isByRef) parameterType |= NativeParameterType.Reference;
 
-            return new NativeParameterInfo(parameterType);
+            return new NativeParameterInfo(parameterType, isByRef && isOutput);
         }
 
         /// <summary>
         ///     Gets a value indicating whether the parameter info requires length information.
         /// </summary>
-        public bool RequiresLength { get; }
-
-        private static bool CalcRequiresLength(NativeParameterType type)
-        {
-            var isArray = type.HasFlag(NativeParameterType.Array);
-            var isReference = type.HasFlag(NativeParameterType.Reference);
-            var isValue = (type & (NativeParameterType.Int32 | NativeParameterType.Single | NativeParameterType.Bool)) != 0;
-            return isArray || isReference && !isValue;
-        }
+        public bool RequiresLength => Type.HasFlag(NativeParameterType.Array) || Type == NativeParameterType.StringReference;
 
         /// <summary>
         ///     Gets the index of the length parameter specifying the length of this parameter.
         /// </summary>
         public uint LengthIndex { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this parameter has no input.
+        /// </summary>
+        public bool IsOutput { get; }
 
         /// <summary>
         ///     Returns the referenced value returned by a native.
@@ -316,6 +321,69 @@ namespace SampSharp.Core.Natives
             }
 
             throw new ArgumentException("Value is of invalid type", nameof(value));
+        }
+        
+        // TODO: Docs or move
+        public static NativeParameterInfo[] ForTypes(Type[] parameterTypes, uint[] sizes)
+        {
+            return ForTypesInner(parameterTypes.Select(t => (t, t.IsByRef)).ToArray(), sizes);
+        }
+
+        public static NativeParameterInfo[] ForTypes(ParameterInfo[] parameterTypes, uint[] sizes)
+        {
+            return ForTypesInner(parameterTypes.Select(t => (t.ParameterType, t.IsOut)).ToArray(), sizes);
+        }
+
+        private static NativeParameterInfo[] ForTypesInner((Type type, bool isOut)[] parameterTypes, uint[] sizes)
+        {
+            if (parameterTypes == null || parameterTypes.Length == 0)
+                return Array.Empty<NativeParameterInfo>();
+
+            var parameters = new List<NativeParameterInfo>();
+
+            var usedSizes = new List<uint>();
+            var sizeIndex = 0;
+
+            // Construct the parameters and sizes array.
+            for (var i = 0; i < parameterTypes.Length; i++)
+            {
+                var (type, isOut) = parameterTypes[i];
+                var info = ForType(type, isOut);
+
+                if (info.RequiresLength)
+                {
+                    if (sizes == null || sizes.Length == 0)
+                    {
+                        uint? size = null;
+                        for (var j = (uint) i + 1; j < parameterTypes.Length; j++)
+                        {
+                            if (usedSizes.Contains(j)) continue;
+
+                            var jInfo = ForType(parameterTypes[j].type);
+                            if (jInfo.Type == NativeParameterType.Int32)
+                            {
+                                usedSizes.Add(j);
+                                size = j;
+                                break;
+                            }
+                        }
+
+                        if (size == null)
+                            throw new ArgumentException("Missing sizes information", nameof(sizes));
+
+                        info = new NativeParameterInfo(info.Type, size.Value, isOut);
+                    }
+                    else if (sizeIndex >= sizes.Length)
+                        throw new ArgumentException("Missing sizes information", nameof(sizes));
+                    else
+                        info = new NativeParameterInfo(info.Type, sizes[sizeIndex++], isOut);
+                }
+
+
+                parameters.Add(info);
+            }
+
+            return parameters.ToArray();
         }
     }
 }

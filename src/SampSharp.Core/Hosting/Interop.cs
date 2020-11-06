@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 namespace SampSharp.Core.Hosting
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public class Interop
+    internal class Interop
     {
         [DllImport("SampSharp", EntryPoint = "sampsharp_print", CallingConvention = CallingConvention.StdCall)]
         public static extern void Print(string message);
@@ -38,7 +38,7 @@ namespace SampSharp.Core.Hosting
         public static extern IntPtr FastNativeFind(string name);
 
         [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_invoke", CallingConvention = CallingConvention.StdCall)]
-        public static unsafe extern int FastNativeInvoke(IntPtr native, string format, int* args);
+        public static extern unsafe int FastNativeInvoke(IntPtr native, string format, int* args);
 
         public static int PublicCall(string name, IntPtr argumentsPtr, int length)
         {

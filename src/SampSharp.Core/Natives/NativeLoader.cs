@@ -54,51 +54,9 @@ namespace SampSharp.Core.Natives
         public INative Load(string name, uint[] sizes, Type[] parameterTypes)
         {
             if (parameterTypes == null) throw new ArgumentNullException(nameof(parameterTypes));
-            var parameters = new List<NativeParameterInfo>();
+            var parameters = NativeParameterInfo.ForTypes(parameterTypes, sizes);
 
-            var usedSizes = new List<uint>();
-            var sizeIndex = 0;
-
-            // Construct the parameters and sizes array.
-            for (var i = 0; i < parameterTypes.Length; i++)
-            {
-                var type = parameterTypes[i];
-                var info = NativeParameterInfo.ForType(type);
-
-                if (info.RequiresLength)
-                {
-                    if (sizes == null || sizes.Length == 0)
-                    {
-                        uint? size = null;
-                        for (var j = (uint) i + 1; j < parameterTypes.Length; j++)
-                        {
-                            if (usedSizes.Contains(j)) continue;
-
-                            var jInfo = NativeParameterInfo.ForType(parameterTypes[j]);
-                            if (jInfo.Type == NativeParameterType.Int32)
-                            {
-                                usedSizes.Add(j);
-                                size = j;
-                                break;
-                            }
-                        }
-
-                        if (size == null)
-                            throw new ArgumentException("Missing sizes information", nameof(sizes));
-
-                        info = new NativeParameterInfo(info.Type, size.Value);
-                    }
-                    else if (sizeIndex >= sizes.Length)
-                        throw new ArgumentException("Missing sizes information", nameof(sizes));
-                    else
-                        info = new NativeParameterInfo(info.Type, sizes[sizeIndex++]);
-                }
-
-
-                parameters.Add(info);
-            }
-
-            return Load(name, parameters.ToArray());
+            return Load(name, parameters);
         }
 
         /// <summary>

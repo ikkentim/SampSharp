@@ -52,7 +52,6 @@ namespace SampSharp.Core.Natives
         ///     A reference to a value.
         /// </summary>
         Reference = 1 << 5,
-
         /// <summary>
         ///     A reference to an <see cref="int" />.
         /// </summary>
@@ -101,6 +100,11 @@ namespace SampSharp.Core.Natives
         /// <summary>
         ///     A reference to an array of <see cref="bool" />.
         /// </summary>
-        BoolArrayReference = Bool | Array | Reference
+        BoolArrayReference = Bool | Array | Reference,
+
+        /// <summary>
+        /// A mask for any value type.
+        /// </summary>
+        ValueTypeMask = Int32 | Single | Bool
     }
 }

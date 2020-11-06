@@ -67,7 +67,8 @@ namespace SampSharp.Core.Natives.NativeObjects
             }
 
             // Define a type for the native object.
-            var typeBuilder = _moduleBuilder.DefineType(type.Name + "ProxyClass",
+            
+            var typeBuilder = _moduleBuilder.DefineType(type.Name + "ProxyClass" + Guid.NewGuid().ToString().Substring(0, 8),
                 TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.Class, type);
 
             // Add default constructor.
@@ -119,7 +120,7 @@ namespace SampSharp.Core.Natives.NativeObjects
             }
 
             // Store the newly created type and return and instance of it.
-            return didWrapAnything ? typeBuilder.CreateTypeInfo().AsType() : type;
+            return didWrapAnything || proxyFields.Length > 0 ? typeBuilder.CreateTypeInfo().AsType() : type;
         }
 
         private void AddConstructor(Type type, TypeBuilder typeBuilder, FieldInfo[] proxyFields)

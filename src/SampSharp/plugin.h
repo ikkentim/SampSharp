@@ -17,6 +17,7 @@
 
 #include <string>
 #include <inttypes.h>
+#include <sampgdk/sampgdk.h>
 #include "ConfigReader.h"
 #include "commsvr.h"
 
@@ -42,6 +43,8 @@ public:
     plugin_state state_set(plugin_state flag);
     plugin_state state_unset(plugin_state flag);
     plugin_state state_reset();
+    
+    int amx_load(AMX *amx);
 
 private:
     void** data_;

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using SampSharp.Core;
-using SampSharp.Core.Communication;
 using SampSharp.Core.Hosting;
 using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Core.Natives.NativeObjects.FastNatives;
@@ -25,41 +24,133 @@ namespace TestMode.Entities.Systems.IssueTests
         {
             _client = client;
         }
+        
+        private void TestInOutInt(TestNatives test)
+        {
+            if(test.InOutInt(471) != 471)
+                throw new Exception("arg mismatch");
+        }
+        
+        private void TestInRefOutInt(TestNatives test)
+        {
+            if(1 != test.InRefOutInt(789, out var b) || b != 789)
+                throw new Exception("arg mismatch");
+        }
+        private void TestInOutString(TestNatives test)
+        {
+            if(1 != test.InOutString("foo bar", out var b, 32) || b != "foo bar")
+                throw new Exception("arg mismatch");
+        }
+        // private void TestInOutArray(TestNatives test)
+        // {
+        //     var arr = new[] {5, 9, 1};
+        //     
+        //     if (1 != test.InOutIntArray(arr, out var b, 3) || !arr.SequenceEqual(b))
+        //         throw new Exception("arg mismatch");
+        // }
+
+        private void RunTests(INativeObjectProxyFactory factory)
+        {
+            var testNatives = (TestNatives)factory.CreateInstance(typeof(TestNatives));
+
+            var tests = new Expression<Action<TestNatives>>[]
+            {
+                x => TestInOutInt(x),
+                x => TestInRefOutInt(x),
+                x => TestInOutString(x),
+                // x => TestInOutArray(x)
+            };
+
+            foreach (var test in tests)
+            {
+                var result = "ok";
+                try
+                {
+                    test.Compile()(testNatives);
+                }
+                catch (Exception e)
+                {
+                    result = e.Message;
+                }
+
+                Console.WriteLine($"Test {((MethodCallExpression)(test.Body)).Method.Name}... {result}");
+            }
+        }
+
+        private void ThreadingTest(TestingFastNative fastProxy, TestingFastNative handleProxy)
+        {
+            Console.WriteLine("RequiresInvoke: " + ((ISynchronizationProvider)_client).InvokeRequired);
+            Console.WriteLine("IsPlayerConnected fast: " + fastProxy.IsPlayerConnected(0));
+            Console.WriteLine("IsPlayerConnected handle: " + handleProxy.IsPlayerConnected(0));
+
+            Task.Run(() =>
+            {
+                Console.WriteLine("TASK.RequiresInvoke: " + ((ISynchronizationProvider)_client).InvokeRequired);
+                Console.WriteLine("TASK.IsPlayerConnected fast: " + fastProxy.IsPlayerConnected(0));
+                Console.WriteLine("TASK.IsPlayerConnected handle: " + handleProxy.IsPlayerConnected(0));
+            });
+        }
 
         [Event]
-        public void OnGameModeInit(IWorldService worldService, IEntityManager entityManager, INativeObjectProxyFactory proxyFactory, ITimerService timerService)
+        public void OnGameModeInit(IWorldService worldService, IEntityManager entityManager,
+            INativeObjectProxyFactory proxyFactory, ITimerService timerService)
         {
             // Only test FastNative performance if FastNative is not activated
             if (proxyFactory is FastNativeBasedNativeObjectProxyFactory)
                 return;
-
-            //timerService.Start(_ => BenchmarkRunTimer(), TimeSpan.FromSeconds(2));
-            timerService.Start(_ => BenchmarkRunTimerProxy(), TimeSpan.FromSeconds(2));
-
+            
+            // Benchmarking
+            var fastFactory = new FastNativeBasedNativeObjectProxyFactory(_client);
+            var fastProxy = (TestingFastNative) fastFactory.CreateInstance(typeof(TestingFastNative));
+            _fastProxy = fastProxy;
             _nativeGetVehicleParamsEx = Interop.FastNativeFind("GetVehicleParamsEx");
             _testVehicleId = worldService.CreateVehicle(VehicleModelType.BMX, Vector3.One, 0, 0, 0).Entity.Handle;
+            //timerService.Start(_ => BenchmarkRunTimer(), TimeSpan.FromSeconds(2));
+            timerService.Start(_ => BenchmarkRunTimerProxy(), TimeSpan.FromSeconds(2));
+            
+            // Test native features
+            Console.WriteLine("TEST WITH HANDLE FACTORY:");
+            // RunTests(proxyFactory);
+            Console.WriteLine("TEST WITH FAST FACTORY:");
+            RunTests(fastFactory);
 
-            var fastFactory = new FastNativeBasedNativeObjectProxyFactory(_client);
-            var handleProxy = NativeObjectProxyFactory.CreateInstance<TestingFastNative>();
-            var fastProxy = (TestingFastNative)fastFactory.CreateInstance(typeof(TestingFastNative));
-            _fastProxy = fastProxy;
+            // Threading test
+            // timerService.Start(_ => ThreadingTest(fastProxy, handleProxy), TimeSpan.FromSeconds(15));
 
-            // Call IsPlayerConnected
-            timerService.Start(_ =>
+            // Multiple calls test
+            InvokeVehicleNatives(entityManager, fastProxy);
+
+            GetNetworkStats(out string x, 500);
+            Console.WriteLine(x);
+        }
+        
+        private unsafe int GetNetworkStats(out string name, int strlen)
+        {
+            var data = stackalloc int[5];
+
+            if(strlen <= 0)
+                throw new ArgumentOutOfRangeException(nameof(strlen));
+
+            var nameBuf = strlen < 128 ? stackalloc byte[strlen] : new Span<byte>(new byte[strlen]);
+
+            fixed (byte* nameBufPin = nameBuf)
             {
-                Console.WriteLine("RequiresInvoke: " + ((ISynchronizationProvider)_client).InvokeRequired);
-                Console.WriteLine("IsPlayerConnected fast: " + fastProxy.IsPlayerConnected(0));
-                Console.WriteLine("IsPlayerConnected handle: " + handleProxy.IsPlayerConnected(0));
+                data[0] = (int) (IntPtr) nameBufPin;
+                data[1] = NativeUtils.IntPointerToInt(data + 2);
 
-                Task.Run(() =>
-                {
-                    Console.WriteLine("TASK.RequiresInvoke: " + ((ISynchronizationProvider)_client).InvokeRequired);
-                    Console.WriteLine("TASK.IsPlayerConnected fast: " + fastProxy.IsPlayerConnected(0));
-                    Console.WriteLine("TASK.IsPlayerConnected handle: " + handleProxy.IsPlayerConnected(0));
-                });
-            }, TimeSpan.FromSeconds(1));
+                data[2] = strlen;
 
+                var p = Interop.FastNativeFind("GetNetworkStats");
+                var result = Interop.FastNativeInvoke(p, "S[*1]d", data);
 
+                name = NativeUtils.GetString(nameBuf);
+
+                return result;
+            }
+        }
+
+        private static void InvokeVehicleNatives(IEntityManager entityManager, TestingFastNative fastProxy)
+        {
             // Call CreateVehicle native
             var testPosition = new Vector3(65.13f, 123.123f, 555.555f);
             var fastVehicleId = fastProxy.CreateVehicle((int) VehicleModelType.Landstalker, testPosition.X,
@@ -72,21 +163,17 @@ namespace TestMode.Entities.Systems.IssueTests
             entityManager.AddComponent<NativeVehicle>(entity);
             var fastVehicleComp = entityManager.AddComponent<Vehicle>(entity);
 
-            Console.WriteLine($"Created vehicle {fastVehicleId} position {fastVehicleComp.Position}; matches? {(fastVehicleComp.Position == testPosition)}");
+            Console.WriteLine(
+                $"Created vehicle {fastVehicleId} position {fastVehicleComp.Position}; matches? {(fastVehicleComp.Position == testPosition)}");
 
             // Call GetVehiclePos
+            Console.WriteLine("GOGO GetVehiclePos");
             var ret = fastProxy.GetVehiclePos(fastVehicleId, out var x, out var y, out var z);
+            Console.WriteLine("DONE GetVehiclePos");
             var getPos = new Vector3(x, y, z);
             Console.WriteLine($"get pos ({ret}): {getPos} matches? {(testPosition == getPos)}");
-            
-            // Test immediate call to SetGameModeText
-            // var nativeSetGameModeText = Interop.FastNativeFind("SetGameModeText");
-            // SetGameModeTextCall(nativeSetGameModeText, "TestValue");
-
-            // Test via proxy
-            fastProxy.SetGameModeText("TestValueViaProxy");
         }
-        
+
         public void BenchmarkRunTimer()
         {
             Stopwatch sw = new Stopwatch();
@@ -95,6 +182,7 @@ namespace TestMode.Entities.Systems.IssueTests
             {
                 InitialPerformanceTestNativeCall(_nativeGetVehicleParamsEx, _testVehicleId);
             }
+
             sw.Stop();
             Console.WriteLine("TestMultiple={0}", sw.Elapsed.TotalMilliseconds);
         }
@@ -108,6 +196,7 @@ namespace TestMode.Entities.Systems.IssueTests
                 _fastProxy.GetVehicleParamsEx(_testVehicleId, out var _, out var _, out var _, out var _, out var _,
                     out var _, out var _);
             }
+
             sw.Stop();
             Console.WriteLine("TestMultiple={0}", sw.Elapsed.TotalMilliseconds);
         }
@@ -119,83 +208,7 @@ namespace TestMode.Entities.Systems.IssueTests
             len = enc.GetByteCount(result) + 1;
             return result;
         }
-        
-        private unsafe int GetVehiclePosStackBased(int id, out float x, out float y, out float z)
-        {
-            // prototype to inspect IL code for developing code generator
-            var data = stackalloc int[8];
-            
-            data[0] = NativeUtils.IntPointerToInt(data + 4);
-            data[1] = NativeUtils.IntPointerToInt(data + 5);
-            data[2] = NativeUtils.IntPointerToInt(data + 6);
-            data[3] = NativeUtils.IntPointerToInt(data + 7);
-            data[4] = id;
 
-            var result = Interop.FastNativeInvoke(new IntPtr(9999), "dRRR", data);
-
-            x = ValueConverter.ToSingle(data[5]);
-            y = ValueConverter.ToSingle(data[6]);
-            z = ValueConverter.ToSingle(data[7]);
-
-            return result;
-        }
-
-        private unsafe void IsPlayerConnectedSpanBased(int id)
-        {
-            // prototype to inspect IL code for developing code generator
-            Span<int> data = stackalloc int[2];
-
-            fixed (int* ptr = &data.GetPinnableReference())
-            {
-                data[0] = NativeUtils.IntPointerToInt(ptr + 1);
-                data[1] = id;
-
-                Interop.FastNativeInvoke(new IntPtr(9999), "d", ptr);
-            }
-        }
-        
-        private unsafe int IsPlayerConnectedStackBased(int id)
-        {
-            // prototype to inspect IL code for developing code generator
-            var data = stackalloc int[2];
-
-            data[0] = NativeUtils.IntPointerToInt(data + 1);
-            data[1] = id;
-
-            return Interop.FastNativeInvoke(new IntPtr(9999), "d", data);
-        }
-
-        private unsafe void GetPlayerHealthSpanBased(int id, out float health)
-        {
-            // prototype to inspect IL code for developing code generator
-            Span<int> data = stackalloc int[4];
-
-            fixed (int* ptr = &data.GetPinnableReference())
-            {
-                data[0] = NativeUtils.IntPointerToInt(ptr + 2);
-                data[1] = NativeUtils.IntPointerToInt(ptr + 3);
-                data[2] = id;
-
-                Interop.FastNativeInvoke(new IntPtr(9999), "dR", ptr);
-                
-                health = ValueConverter.ToSingle(data[3]);
-            }
-        }
-
-        private unsafe void GetPlayerHealthStackBased(int id, out float health)
-        {
-            // prototype to inspect IL code for developing code generator
-            var data = stackalloc int[4];
-
-            data[0] = NativeUtils.IntPointerToInt(data + 2);
-            data[1] = NativeUtils.IntPointerToInt(data + 3);
-            data[2] = id;
-
-            Interop.FastNativeInvoke(new IntPtr(9999), "dR", data);
-            
-            health = ValueConverter.ToSingle(data[3]);
-        }
-        
         private unsafe void SetGameModeTextCall(IntPtr nativeSetGameModeText, string textString)
         {
             // concept test with string parameters
@@ -214,20 +227,6 @@ namespace TestMode.Entities.Systems.IssueTests
             }
         }
 
-        private unsafe void SetGameModeTextCallStackBase(string textString)
-        {
-            // prototype to inspect IL code for developing code generator
-            var data = stackalloc int[1];
-
-            var len = NativeUtils.GetByteCount(textString);
-            var textBytes = stackalloc byte[len];
-            NativeUtils.GetBytes(textString, textBytes, len);
-
-
-            data[0] = NativeUtils.BytePointerToInt(textBytes);
-
-            Interop.FastNativeInvoke(new IntPtr(9999), "s", data);
-        }
 
         private unsafe void InitialPerformanceTestNativeCall(IntPtr native, int id)
         {
@@ -240,7 +239,7 @@ namespace TestMode.Entities.Systems.IssueTests
             // Fixing not needed because data is allocated on stack, but cannot get a pointer without calling GetPinnableRefererence?
             fixed (int* ptData = &data.GetPinnableReference())
             {
-                for (var j = 0; j < 8; j++)// set points for all 8 args
+                for (var j = 0; j < 8; j++) // set points for all 8 args
                 {
                     data[j] = (int) (IntPtr) (ptData + 8 + j);
                 }
@@ -253,15 +252,6 @@ namespace TestMode.Entities.Systems.IssueTests
 
         public class BaseNativeClass
         {
-            // public string Prop1 { get; }
-            // public string Prop2 { get; }
-            //
-            // public BaseNativeClass(string prop1, string prop2)
-            // {
-            //     Prop1 = prop1;
-            //     Prop2 = prop2;
-            // }
-
             [NativeMethod]
             public virtual int IsPlayerConnected(int id)
             {
@@ -269,11 +259,12 @@ namespace TestMode.Entities.Systems.IssueTests
             }
 
             [NativeMethod]
-            public virtual int CreateVehicle(int type, float x, float y, float z, float r, int color1, int color2, int respawnDelay, int hasSiren)
+            public virtual int CreateVehicle(int type, float x, float y, float z, float r, int color1, int color2,
+                int respawnDelay, int hasSiren)
             {
                 throw new NativeNotImplementedException();
             }
-            
+
             [NativeMethod]
             public virtual int GetVehiclePos(int vehicleId, out float x, out float y, out float z)
             {
@@ -285,35 +276,55 @@ namespace TestMode.Entities.Systems.IssueTests
             {
                 throw new NativeNotImplementedException();
             }
-            
+
             [NativeMethod]
-            public virtual int GetVehicleParamsEx(int vehicleid, out int a1, out int a2, out int a3, out int a4, out int a5, out int a6, out int a7)
+            public virtual int GetVehicleParamsEx(int vehicleid, out int a1, out int a2, out int a3, out int a4,
+                out int a5, out int a6, out int a7)
             {
                 throw new NativeNotImplementedException();
             }
         }
+
         public class TestingFastNative : BaseNativeClass
         {
-            // private IGameModeClient _gameModeClient;
-            // private ISynchronizationProvider _synchronizationProvider;
-            // public TestingFastNative(IGameModeClient gameModeClient, string prop1, string prop2) : base(prop1, prop2)
-            // {
-            //     _gameModeClient = gameModeClient;
-            // }
+        }
 
-            // public unsafe override int IsPlayerConnected(int id)
+        public class TestNatives
+        {
+            [NativeMethod(Function = "sampsharptest_inout")]
+            public virtual int InOutInt(int a)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod(Function = "sampsharptest_inrefout")]
+            public virtual int InRefOutInt(int a, out int b)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            [NativeMethod(2, Function = "sampsharptest_inoutstr")]
+            public virtual int InOutString(string a, out string b, int blen)
+            {
+                throw new NativeNotImplementedException();
+            }
+
+            // [NativeMethod(2, 2, Function = "sampsharptest_inoutarr")]
+            // public virtual int InOutIntArray(int[] a, out int[] b, int ablen)
             // {
-            //     int* data = stackalloc int[2];
-            //     data[0] = NativeUtils.IntPointerToInt(data + 1);
-            //     data[1] = id;
-            //
-            //     if (_synchronizationProvider.InvokeRequired)
-            //     {
-            //         return NativeUtils.SynchronizeInvoke(_synchronizationProvider, new IntPtr(999), "d", data);
-            //     }
-            //
-            //     return Interop.FastNativeInvoke(new IntPtr(999), "d", data);
+            //     throw new NativeNotImplementedException();
             // }
         }
+
+        internal class Interop
+        {
+            // For fast native development testing; SampSharp.Core's Interop is internal.
+            [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_find", CallingConvention = CallingConvention.StdCall)]
+            public static extern IntPtr FastNativeFind(string name);
+
+            [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_invoke", CallingConvention = CallingConvention.StdCall)]
+            public static extern unsafe int FastNativeInvoke(IntPtr native, string format, int* args);
+        }
     }
+
 }

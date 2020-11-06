@@ -2,6 +2,8 @@ EXPORTS
     Supports
     Load
     Unload
+    AmxLoad
+    AmxUnload
     ProcessTick
     OnPublicCall
     sampsharp_print

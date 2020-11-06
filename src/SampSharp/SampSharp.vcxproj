@@ -57,7 +57,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;LOG_DEBUG;_DEBUG;_WINDOWS;_USRDLL;SAMPGDK_AMALGAMATION;SAMPGDK_CPP_WRAPPERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;LOG_DEBUG_N;_DEBUG;_WINDOWS;_USRDLL;SAMPGDK_AMALGAMATION;SAMPGDK_CPP_WRAPPERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>includes;includes/sdk;includes/sdk/amx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>false</SDLCheck>
       <BrowseInformation>true</BrowseInformation>
@@ -117,6 +117,7 @@
     <ClCompile Include="remote_server.cpp" />
     <ClCompile Include="sock_unix.cpp" />
     <ClCompile Include="tcp_unix.cpp" />
+    <ClCompile Include="testing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks_map.h" />
@@ -137,6 +138,7 @@
     <ClInclude Include="server.h" />
     <ClInclude Include="sock_unix.h" />
     <ClInclude Include="tcp_unix.h" />
+    <ClInclude Include="testing.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="message_queue.h" />
     <ClInclude Include="natives_map.h" />

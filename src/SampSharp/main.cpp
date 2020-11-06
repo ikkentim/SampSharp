@@ -76,7 +76,7 @@ void start_server() {
 }
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
-    return sampgdk::Supports() | SUPPORTS_PROCESS_TICK;
+    return sampgdk::Supports() | SUPPORTS_PROCESS_TICK | SUPPORTS_AMX_NATIVES;
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
@@ -104,6 +104,18 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload() {
     com = NULL;
     
     sampgdk::Unload();
+}
+
+PLUGIN_EXPORT int PLUGIN_CALL AmxLoad(AMX* amx) {
+    if(plg) {
+        return plg->amx_load(amx);
+    }
+
+    return 1;
+}
+
+PLUGIN_EXPORT int PLUGIN_CALL AmxUnload(AMX* amx) {
+    return 1;
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {

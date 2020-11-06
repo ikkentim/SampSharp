@@ -222,7 +222,7 @@ namespace SampSharp.Core
                 new[]
                 {
                     NativeParameterInfo.ForType(typeof(int)),
-                    new NativeParameterInfo(NativeParameterType.StringReference, 2),
+                    new NativeParameterInfo(NativeParameterType.StringReference, 2, true),
                     NativeParameterInfo.ForType(typeof(int)),
                 });
 
