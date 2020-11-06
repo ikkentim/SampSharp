@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 namespace SampSharp.Core.Hosting
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    internal class Interop
+    public class Interop
     {
         [DllImport("SampSharp", EntryPoint = "sampsharp_print", CallingConvention = CallingConvention.StdCall)]
         public static extern void Print(string message);

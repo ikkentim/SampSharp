@@ -315,16 +315,6 @@ namespace TestMode.Entities.Systems.IssueTests
             //     throw new NativeNotImplementedException();
             // }
         }
-
-        internal class Interop
-        {
-            // For fast native development testing; SampSharp.Core's Interop is internal.
-            [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_find", CallingConvention = CallingConvention.StdCall)]
-            public static extern IntPtr FastNativeFind(string name);
-
-            [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_invoke", CallingConvention = CallingConvention.StdCall)]
-            public static extern unsafe int FastNativeInvoke(IntPtr native, string format, int* args);
-        }
     }
 
 }

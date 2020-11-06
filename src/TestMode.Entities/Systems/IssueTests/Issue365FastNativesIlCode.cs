@@ -1,7 +1,7 @@
 ﻿using System;
 using SampSharp.Core.Communication;
+using SampSharp.Core.Hosting;
 using SampSharp.Core.Natives.NativeObjects.FastNatives;
-using Interop = TestMode.Entities.Systems.IssueTests.Issue365FastNatives.Interop;
 namespace TestMode.Entities.Systems.IssueTests
 {
     /// <remarks>

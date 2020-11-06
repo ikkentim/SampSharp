@@ -8,6 +8,7 @@ namespace SampSharp.Core.Natives.NativeObjects
 {
     public abstract class NativeObjectProxyFactoryBase : INativeObjectProxyFactory
     {
+        private int _typeNumber;
         private readonly IGameModeClient _gameModeClient;
         private readonly Dictionary<Type, Type> _knownTypes = new Dictionary<Type, Type>();
         private readonly ModuleBuilder _moduleBuilder;
@@ -68,7 +69,7 @@ namespace SampSharp.Core.Natives.NativeObjects
 
             // Define a type for the native object.
             
-            var typeBuilder = _moduleBuilder.DefineType(type.Name + "ProxyClass" + Guid.NewGuid().ToString().Substring(0, 8),
+            var typeBuilder = _moduleBuilder.DefineType($"{type.Name}ProxyClass_{++_typeNumber}",
                 TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.Class, type);
 
             // Add default constructor.

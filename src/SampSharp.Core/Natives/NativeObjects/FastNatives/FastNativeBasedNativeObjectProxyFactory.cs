@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading;
-using SampSharp.Core.Communication;
 using SampSharp.Core.Hosting;
 
 namespace SampSharp.Core.Natives.NativeObjects.FastNatives
@@ -97,7 +95,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             // if (_synchronizationProvider.InvokeRequired)
             ilGenerator.Emit(OpCodes.Ldarg_0);
             ilGenerator.Emit(OpCodes.Ldfld, proxyFields[0]);
-            ilGenerator.EmitCall(OpCodes.Callvirt, PropertyGetter<ISynchronizationProvider>(x => x.InvokeRequired), null);
+            ilGenerator.EmitPropertyGetterCall<ISynchronizationProvider>(OpCodes.Callvirt, x => x.InvokeRequired);
 
             var elseLabel = ilGenerator.DefineLabel();
             var endifLabel = ilGenerator.DefineLabel();
@@ -110,7 +108,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             ilGenerator.Emit(OpCodes.Newobj, typeof(IntPtr).GetConstructor(new[] {typeof(int)}));
             ilGenerator.Emit(OpCodes.Ldstr, formatString);
             ilGenerator.Emit(OpCodes.Ldloc_0);
-            ilGenerator.EmitCall(OpCodes.Call, Util(nameof(NativeUtils.SynchronizeInvoke)), null);
+            ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.SynchronizeInvoke));
 
             // else
             ilGenerator.Emit(OpCodes.Br_S, endifLabel);
@@ -121,7 +119,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             ilGenerator.Emit(OpCodes.Newobj, typeof(IntPtr).GetConstructor(new[] {typeof(int)}));
             ilGenerator.Emit(OpCodes.Ldstr, formatString);
             ilGenerator.Emit(OpCodes.Ldloc_0);
-            ilGenerator.EmitCall(OpCodes.Call, typeof(Interop).GetMethod(nameof(Interop.FastNativeInvoke)), null);
+            ilGenerator.EmitCall(typeof(Interop), nameof(Interop.FastNativeInvoke));
 
             // endif
             ilGenerator.Emit(OpCodes.Br_S, endifLabel);
@@ -156,7 +154,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     ilGenerator.Emit(OpCodes.Ldloc_0);
                     ilGenerator.Emit(OpCodes.Ldc_I4, dataIndex * 4); // + 1 (* 4 bytes)
                     ilGenerator.Emit(OpCodes.Add);
-                    ilGenerator.EmitCall(OpCodes.Call, Util(nameof(NativeUtils.IntPointerToInt)), null);
+                    ilGenerator.EmitCall(OpCodes.Call, typeof(NativeUtils), nameof(NativeUtils.IntPointerToInt));
                     ilGenerator.Emit(OpCodes.Stind_I4);
 
                     if (!param.IsOutput)
@@ -168,11 +166,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                         ilGenerator.Emit(OpCodes.Ldc_I4, dataIndex * 4);
                         ilGenerator.Emit(OpCodes.Add);
                         ilGenerator.Emit(OpCodes.Ldarg, i + 1); // arg0=this, arg1=1st arg
-
-                        var converter = ConverterToInt32(param.Type);
-                        if (converter != null)
-                            ilGenerator.EmitCall(OpCodes.Call, converter, null);
-
+                        EmitConvertToInt(ilGenerator, param.Type);
                         ilGenerator.Emit(OpCodes.Stind_I4);
                     }
 
@@ -185,7 +179,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 
                     // int byteCount = NativeUtils.GetByteCount(textString);
                     ilGenerator.Emit(OpCodes.Ldarg, i + 1);
-                    ilGenerator.EmitCall(OpCodes.Call, Util(nameof(NativeUtils.GetByteCount)), null);
+                    ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.GetByteCount));
                     ilGenerator.Emit(OpCodes.Stloc, strLen);
 
                     // TODO: use heap if big
@@ -199,13 +193,13 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     ilGenerator.Emit(OpCodes.Ldarg, i + 1);
                     ilGenerator.Emit(OpCodes.Ldloc, strBuffer);
                     ilGenerator.Emit(OpCodes.Ldloc, strLen);
-                    ilGenerator.EmitCall(OpCodes.Call, Util(nameof(NativeUtils.GetBytes)), null);
+                    ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.GetBytes));
 
                     // data[i] = NativeUtils.BytePointerToInt(strBuffer);
                     EmitBufferLocation();
 
                     ilGenerator.Emit(OpCodes.Ldloc, strBuffer);
-                    ilGenerator.EmitCall(OpCodes.Call, Util(nameof(NativeUtils.BytePointerToInt)), null);
+                    ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.BytePointerToInt));
                     ilGenerator.Emit(OpCodes.Stind_I4);
                 }
                 else if (param.Type == NativeParameterType.StringReference)
@@ -235,8 +229,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     var strBufPtr = ilGenerator.DeclareLocal(typeof(byte*));
 
                     ilGenerator.Emit(OpCodes.Ldloca, strBuf);
-                    ilGenerator.EmitCall(OpCodes.Call, typeof(Span<byte>)
-                        .GetMethod(nameof(Span<byte>.GetPinnableReference)), null);
+                    ilGenerator.EmitCall(typeof(Span<byte>), nameof(Span<byte>.GetPinnableReference));
                     ilGenerator.Emit(OpCodes.Stloc, strBufPinned);
                     ilGenerator.Emit(OpCodes.Ldloc, strBufPinned);
                     ilGenerator.Emit(OpCodes.Conv_U);
@@ -245,7 +238,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     // data[i] = NativeUtils.BytePointerToInt(strBufPtr);
                     EmitBufferLocation();
                     ilGenerator.Emit(OpCodes.Ldloc, strBufPtr);
-                    ilGenerator.EmitCall(OpCodes.Call, Util(nameof(NativeUtils.BytePointerToInt)), null);
+                    ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.BytePointerToInt));
                     ilGenerator.Emit(OpCodes.Stind_I4);
                 }
                 else if (param.Type.HasFlag(NativeParameterType.Array))
@@ -293,32 +286,6 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             ilGenerator.Emit(OpCodes.Call, typeof(Span<byte>).GetConstructor(new[]{typeof(byte[])}));
             ilGenerator.Emit(OpCodes.Br_S, labelDone);
 
-            // IL_001d: ldarg.3
-            // IL_001e: ldc.i4 128
-            // IL_0023: bge.s IL_003b
-            //
-            // IL_0025: ldarg.3
-            // IL_0026: stloc.s 4
-
-            // IL_0028: ldloc.s 4
-            // IL_002a: conv.u
-            // IL_002b: localloc
-            // IL_002d: ldloc.s 4
-            // IL_002f: newobj instance void valuetype [System.Runtime]System.Span`1<uint8>::.ctor(void*, int32)
-            // IL_0034: stloc.s 5
-            // IL_0036: ldloc.s 5
-            // IL_0038: stloc.3
-            // IL_0039: br.s IL_0048
-            //
-            // IL_003b: ldloca.s 3
-            // IL_003d: ldarg.3
-            // IL_003e: newarr [System.Runtime]System.Byte
-            // Span<byte> bytes = span;
-            // IL_0043: call instance void valuetype [System.Runtime]System.Span`1<uint8>::.ctor(!0[])
-            //
-            // IL_0048: ldloc.3
-            // IL_0049: stloc.1
-
             ilGenerator.MarkLabel(labelDone);
             return span;
         }
@@ -343,14 +310,14 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                         switch (param.Type)
                         {
                             case NativeParameterType.SingleReference:
-                                ilGenerator.EmitCall(OpCodes.Call, ConverterToSingle(), null);
+                                ilGenerator.EmitConvert<int,float>();
                                 ilGenerator.Emit(OpCodes.Stind_R4);
                                 break;
                             case NativeParameterType.Int32Reference:
                                 ilGenerator.Emit(OpCodes.Stind_I4);
                                 break;
                             case NativeParameterType.BoolReference:
-                                ilGenerator.EmitCall(OpCodes.Call, ConverterToBool(), null);
+                                ilGenerator.EmitConvert<int,bool>();
                                 ilGenerator.Emit(OpCodes.Stind_I1);
                                 break;
                             default:
@@ -378,38 +345,12 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             }
         }
         
-        private static MethodInfo Util(string utilName)
-        {
-            return typeof(NativeUtils).GetMethod(utilName);
-        }
-
-        private static MethodInfo ConverterToInt32(NativeParameterType type)
+        private static void EmitConvertToInt(ILGenerator ilGenerator, NativeParameterType type)
         {
             if (type.HasFlag(NativeParameterType.Single))
-                return ConverterToInt32<float>();
+                ilGenerator.EmitConvert<float,int>();
             if (type.HasFlag(NativeParameterType.Bool))
-                return ConverterToInt32<bool>();
-            return null;
-        }
-
-        private static MethodInfo ConverterToInt32<T>()
-        {
-            return typeof(ValueConverter).GetMethod(nameof(ValueConverter.ToInt32), new []{typeof(T)});
-        }
-
-        private static MethodInfo ConverterToSingle()
-        {
-            return typeof(ValueConverter).GetMethod(nameof(ValueConverter.ToSingle), new []{typeof(int)});
-        }
-
-        private static MethodInfo ConverterToBool()
-        {
-            return typeof(ValueConverter).GetMethod(nameof(ValueConverter.ToBoolean), new []{typeof(int)});
-        }
-
-        private static MethodInfo PropertyGetter<T>(Expression<Func<T, object>> expr)
-        {
-            return ((PropertyInfo) ((MemberExpression)((UnaryExpression) expr.Body).Operand).Member).GetMethod;
+                ilGenerator.EmitConvert<bool,int>();
         }
 
         private static void EmitCast(ILGenerator ilGenerator, Type targetType)
@@ -417,9 +358,9 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             if (targetType == typeof(void))
                 ilGenerator.Emit(OpCodes.Pop);
             else if (targetType == typeof(bool))
-                ilGenerator.EmitCall(OpCodes.Call, ConverterToBool(), null);
+                ilGenerator.EmitConvert<int,bool>();
             else if (targetType == typeof(float))
-                ilGenerator.EmitCall(OpCodes.Call, ConverterToSingle(), null);
+                ilGenerator.EmitConvert<int,float>();
             else if (targetType == typeof(int))
             {
                 // nop
