@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 
-namespace SampSharp.Core.Natives.NativeObjects.FastNatives
+namespace SampSharp.Core.Natives.NativeObjects
 {
     internal class IlGeneratorDebugger
     {

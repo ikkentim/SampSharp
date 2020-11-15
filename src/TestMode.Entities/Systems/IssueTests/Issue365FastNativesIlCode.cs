@@ -75,7 +75,9 @@ namespace TestMode.Entities.Systems.IssueTests
             }
         }
 
-        private unsafe int GetVehiclePosStackBased(int id, out float x, out float y, out float z)
+        public int VehicleId { get; set; }
+
+        private unsafe int GetVehiclePosStackBased(out float x, out float y, out float z)
         {
             var data = stackalloc int[8];
 
@@ -83,7 +85,7 @@ namespace TestMode.Entities.Systems.IssueTests
             data[1] = NativeUtils.IntPointerToInt(data + 5);
             data[2] = NativeUtils.IntPointerToInt(data + 6);
             data[3] = NativeUtils.IntPointerToInt(data + 7);
-            data[4] = id;
+            data[4] = VehicleId;
 
             var result = Interop.FastNativeInvoke(new IntPtr(9999), "dRRR", data);
 

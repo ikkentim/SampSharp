@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using SampSharp.Core.Communication;
 
-namespace SampSharp.Core.Natives.NativeObjects.FastNatives
+namespace SampSharp.Core.Natives.NativeObjects
 {
     internal static class IlGeneratorExtensions
     {
@@ -15,19 +15,21 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 
         public static void EmitCall(this ILGenerator ilGenerator, MethodInfo methodInfo)
         {
-            ilGenerator.EmitCall(OpCodes.Call, methodInfo);
+            ilGenerator.EmitCall(methodInfo.IsFinal || !methodInfo.IsVirtual ? OpCodes.Call : OpCodes.Callvirt,
+                methodInfo);
         }
-        
+
         public static void EmitCall(this ILGenerator ilGenerator, OpCode opCode, Type type, string methodName)
         {
             ilGenerator.EmitCall(opCode, type.GetMethod(methodName));
         }
 
-        public static void EmitCall(this ILGenerator ilGenerator, OpCode opCode, Type type, string methodName, params Type[] types)
+        public static void EmitCall(this ILGenerator ilGenerator, OpCode opCode, Type type, string methodName,
+            params Type[] types)
         {
             ilGenerator.EmitCall(opCode, type.GetMethod(methodName, types));
         }
-        
+
         public static void EmitCall(this ILGenerator ilGenerator, Type type, string methodName, params Type[] types)
         {
             ilGenerator.EmitCall(type.GetMethod(methodName, types));
@@ -37,13 +39,14 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
         {
             ilGenerator.EmitCall(type.GetMethod(methodName));
         }
-        
-        public static void EmitPropertyGetterCall<T>(this ILGenerator ilGenerator, OpCode opCode, Expression<Func<T, object>> property)
+
+        public static void EmitPropertyGetterCall<T>(this ILGenerator ilGenerator, OpCode opCode,
+            Expression<Func<T, object>> property)
         {
             ilGenerator.EmitCall(opCode,
                 ((PropertyInfo) ((MemberExpression) ((UnaryExpression) property.Body).Operand).Member).GetMethod);
         }
-        
+
         public static void EmitConvert<TFrom, TTo>(this ILGenerator ilGenerator)
         {
             string methodName = null;
@@ -59,7 +62,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 
             if (methodName == null)
                 throw new Exception("Unsupported types");
-            
+
             ilGenerator.EmitCall(typeof(ValueConverter), methodName, typeof(TFrom));
         }
     }

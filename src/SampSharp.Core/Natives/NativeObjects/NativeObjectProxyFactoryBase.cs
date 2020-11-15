@@ -13,7 +13,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         private readonly Dictionary<Type, Type> _knownTypes = new Dictionary<Type, Type>();
         private readonly ModuleBuilder _moduleBuilder;
         private readonly object _lock = new object();
-
+        
         protected NativeObjectProxyFactoryBase(IGameModeClient gameModeClient, string assemblyName)
         {
             _gameModeClient = gameModeClient;
@@ -22,6 +22,7 @@ namespace SampSharp.Core.Natives.NativeObjects
             _moduleBuilder = asmBuilder.DefineDynamicModule(asmName.Name + ".dll");
         }
 
+        /// <inheritdoc />
         public object CreateInstance(Type type, params object[] arguments)
         {
             if(type == null)
@@ -48,15 +49,12 @@ namespace SampSharp.Core.Natives.NativeObjects
         
         protected virtual object[] GetProxyConstructorArgs()
         {
-            return new object[] {_gameModeClient};
+            return new object[0];
         }
 
         protected virtual FieldInfo[] GetProxyFields(TypeBuilder typeBuilder)
         {
-            var gameModeClientField =//TODO: Unused field
-                typeBuilder.DefineField("_gameModeClient", typeof(IGameModeClient), FieldAttributes.Private);
-
-            return new[] {(FieldInfo) gameModeClientField};
+            return new FieldInfo[0];
         }
 
         private Type GenerateProxyType(Type type)
@@ -131,7 +129,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                 //.method public hidebysig specialname rtspecialname 
                 // instance void 
                 var constructorParams = baseConstructor.GetParameters();
-                var paramTypes = new[] {typeof(IGameModeClient)}
+                var paramTypes = proxyFields.Select(f => f.FieldType)
                     .Concat(constructorParams.Select(p => p.ParameterType))
                     .ToArray();
                 var attributes = MethodAttributes.HideBySig | MethodAttributes.Public | MethodAttributes.SpecialName |
@@ -207,33 +205,106 @@ namespace SampSharp.Core.Natives.NativeObjects
             return true;
         }
 
-        protected MethodAttributes GetMethodOverrideAttributes(MethodInfo method)
+        private MethodBuilder CreateMethodBuilder(string nativeName, Type proxyType,
+            uint[] nativeArgumentLengths,
+            TypeBuilder typeBuilder, MethodInfo method, string[] identifierPropertyNames, int idIndex,
+            FieldInfo[] proxyFields)
         {
-            return (method.IsPublic ? MethodAttributes.Public : MethodAttributes.Family) |
-                   MethodAttributes.ReuseSlot |
-                   MethodAttributes.Virtual |
-                   MethodAttributes.HideBySig;
+            return CreateMethodBuilder(typeBuilder,
+                CreateContext(nativeName, proxyType, nativeArgumentLengths, method, identifierPropertyNames, idIndex,
+                    proxyFields));
         }
 
-        protected Type[] GetMethodParameters(MethodInfo method)
+        private NativeIlGenContext CreateContext(string nativeName, Type proxyType,
+            uint[] nativeArgumentLengths, MethodInfo method, string[] identifierPropertyNames, int idIndex,
+            FieldInfo[] proxyFields)
         {
-            return method.GetParameters()
+            var methodParameters = method.GetParameters();
+            identifierPropertyNames ??= Array.Empty<string>();
+
+            // Seed parameters array with indices
+            var parameters = new NativeIlGenParam[methodParameters.Length + identifierPropertyNames.Length];
+            for (var i = 0; i < parameters.Length; i++)
+            {
+                parameters[i] = new NativeIlGenParam
+                {
+                    Index = i
+                };
+            }
+
+            // Populate identifier parameters
+            for (var i = 0; i < identifierPropertyNames.Length; i++)
+            {
+                parameters[idIndex + i].Property = proxyType.GetProperty(identifierPropertyNames[i],
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            }
+
+            // Populate method parameter based parameters
+            var lengthIndex = 0;
+            for (var i = 0; i < methodParameters.Length; i++)
+            {
+                var methodParameter = methodParameters[i];
+                var paramIndex = i >= idIndex ? i + identifierPropertyNames.Length : i;
+                var parameter = parameters[paramIndex];
+
+                parameter.Parameter = methodParameter;
+
+                if (parameter.RequiresLength)
+                {
+                    if (nativeArgumentLengths.Length > 0)
+                    {
+                        if(nativeArgumentLengths.Length == lengthIndex)
+                            throw new Exception("No length provided for native argument");
+
+                        parameter.LengthParam = parameters[nativeArgumentLengths[lengthIndex++]];
+                    }
+                }
+            }
+
+            // Find length parameters for arrays and string refs
+            if (nativeArgumentLengths.Length == 0)
+            {
+                for (var i = 0; i < parameters.Length; i++)
+                {
+                    if (parameters[i].RequiresLength)
+                    {
+                        for (var j = i + 1; j < parameters.Length; j++)
+                        {
+                            if (parameters[j].Type == NativeParameterType.Int32 && !parameters[j].IsLengthParam)
+                            {
+                                parameters[j].IsLengthParam = true;
+                                parameters[i].LengthParam = parameters[j];
+                                break;
+                            }
+                        }
+
+                        if (parameters[i].LengthParam == null)
+                            throw new Exception("No length provided for native argument");
+                    }
+                }
+            }
+
+            var methodParameterTypes = method.GetParameters()
                 .Select(p => p.ParameterType)
                 .ToArray();
+
+            var methodOverrideAttributes =
+                (method.IsPublic ? MethodAttributes.Public : MethodAttributes.Family) |
+                MethodAttributes.ReuseSlot |
+                MethodAttributes.Virtual |
+                MethodAttributes.HideBySig;
+
+            return new NativeIlGenContext
+            {
+                NativeName = nativeName,
+                BaseMethod = method,
+                ProxyGeneratedFields = proxyFields,
+                Parameters = parameters,
+                MethodParameterTypes = methodParameterTypes,
+                MethodOverrideAttributes = methodOverrideAttributes
+            };
         }
 
-        protected Type[] GetNativeParameters(Type[] methodParameters, int idIndex, int idCount)
-        {
-            return idCount > 0
-                ? methodParameters.Take(idIndex)
-                    .Concat(Enumerable.Repeat(typeof(int), idCount))
-                    .Concat(methodParameters.Skip(idIndex))
-                    .ToArray()
-                : methodParameters;
-        }
-
-        protected abstract MethodBuilder CreateMethodBuilder(string nativeName, Type proxyType,
-            uint[] nativeArgumentLengths,
-            TypeBuilder typeBuilder, MethodInfo method, string[] identifierPropertyNames, int idIndex, FieldInfo[] proxyFields);
+        protected abstract MethodBuilder CreateMethodBuilder(TypeBuilder typeBuilder, NativeIlGenContext context);
     }
 }
