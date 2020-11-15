@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using SampSharp.Core.Communication;
 using SampSharp.Core.Hosting;
 
 namespace SampSharp.Core.Natives.NativeObjects.FastNatives
@@ -49,6 +50,81 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             synchronizationProvider.Invoke(() =>
                 result = Interop.FastNativeInvoke(native, format, data));
             return result;
+        }
+
+        public static Span<int> ArrayToIntSpan(Array array, int length)
+        {
+            if (array == null)
+                return new int[length];
+
+            if (array.Length < length)
+            {
+                throw new Exception("Array length does not match length specified in length argument");
+            }
+
+            Span<int> result;
+            switch (array)
+            {
+                case int[] a:
+                    return new Span<int>(a, 0, length);
+                case float[] a:
+                    result = new int[length];
+                    for (var i = 0; i < length; i++)
+                        result[i] = ValueConverter.ToInt32(a[i]);
+                    return result;
+                case bool[] a:
+                    result = new int[length];
+                    for (var i = 0; i < length; i++)
+                        result[i] = ValueConverter.ToInt32(a[i]);
+                    return result;
+                default:
+                    throw new Exception("Unsupported array type");
+            }
+        }
+
+        public static T[] IntSpanToArray<T>(Array array, Span<int> span)
+        {
+            array ??= new T[span.Length];
+
+            if (!(array is T[] result))
+            {
+                throw new Exception("Array is not of specified type");
+            }
+            
+            if (array.Length < span.Length)
+            {
+                throw new Exception("Array length does not match length of native result");
+            }
+            
+            if(typeof(T) == typeof(int))
+                CopySpan(span, (int[])(object)result);
+            else if(typeof(T) == typeof(float))
+                CopySpan(span, (float[])(object)result);
+            else if(typeof(T) == typeof(bool))
+                CopySpan(span, (bool[])(object)result);
+            else
+                throw new Exception("Unsupported parameter type");
+
+            return result;
+        }
+        
+        private static void CopySpan(Span<int> span, int[] arr)
+        {
+            span.CopyTo(new Span<int>(arr));
+        }
+        private static void CopySpan(Span<int> span, float[] arr)
+        {
+            for (var i = 0; i < span.Length; i++)
+            {
+                arr[i] = ValueConverter.ToSingle(span[i]);
+            }
+        }
+        private static void CopySpan(Span<int> span, bool[] arr)
+        {
+            for (var i = 0; i < span.Length; i++)
+            {
+                arr[i] = ValueConverter.ToBoolean(span[i]);
+            }
         }
     }
 }

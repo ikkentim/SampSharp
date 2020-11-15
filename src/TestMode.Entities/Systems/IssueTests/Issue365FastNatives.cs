@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -41,13 +42,27 @@ namespace TestMode.Entities.Systems.IssueTests
             if(1 != test.InOutString("foo bar", out var b, 32) || b != "foo bar")
                 throw new Exception("arg mismatch");
         }
-        // private void TestInOutArray(TestNatives test)
-        // {
-        //     var arr = new[] {5, 9, 1};
-        //     
-        //     if (1 != test.InOutIntArray(arr, out var b, 3) || !arr.SequenceEqual(b))
-        //         throw new Exception("arg mismatch");
-        // }
+        private void TestInOutIntArray(TestNatives test)
+        {
+            var arr = new[] {5, 9, 1};
+            
+            if (1 != test.InOutIntArray(arr, out var b, 3) || !arr.SequenceEqual(b))
+                throw new Exception("arg mismatch");
+        }
+        private void TestInOutBoolArray(TestNatives test)
+        {
+            var arr = new[] {true, false, true};
+            
+            if (1 != test.InOutBoolArray(arr, out var b, 3) || !arr.SequenceEqual(b))
+                throw new Exception("arg mismatch");
+        }
+        private void TestInOutFloatArray(TestNatives test)
+        {
+            var arr = new[] {5.4544f, 881.121f, 7789.1123f};
+            
+            if (1 != test.InOutFloatArray(arr, out var b, 3) || !arr.SequenceEqual(b))
+                throw new Exception("arg mismatch");
+        }
 
         private void RunTests(INativeObjectProxyFactory factory)
         {
@@ -58,7 +73,9 @@ namespace TestMode.Entities.Systems.IssueTests
                 x => TestInOutInt(x),
                 x => TestInRefOutInt(x),
                 x => TestInOutString(x),
-                // x => TestInOutArray(x)
+                x => TestInOutIntArray(x),
+                x => TestInOutBoolArray(x),
+                x => TestInOutFloatArray(x),
             };
 
             foreach (var test in tests)
@@ -110,7 +127,7 @@ namespace TestMode.Entities.Systems.IssueTests
             
             // Test native features
             Console.WriteLine("TEST WITH HANDLE FACTORY:");
-            // RunTests(proxyFactory);
+            RunTests(proxyFactory);
             Console.WriteLine("TEST WITH FAST FACTORY:");
             RunTests(fastFactory);
 
@@ -308,12 +325,22 @@ namespace TestMode.Entities.Systems.IssueTests
             {
                 throw new NativeNotImplementedException();
             }
-
-            // [NativeMethod(2, 2, Function = "sampsharptest_inoutarr")]
-            // public virtual int InOutIntArray(int[] a, out int[] b, int ablen)
-            // {
-            //     throw new NativeNotImplementedException();
-            // }
+            
+            [NativeMethod(2, 2, Function = "sampsharptest_inoutarr")]
+            public virtual int InOutIntArray(int[] a, out int[] b, int ablen)
+            {
+                throw new NativeNotImplementedException();
+            }
+            [NativeMethod(2, 2, Function = "sampsharptest_inoutarr")]
+            public virtual int InOutBoolArray(bool[] a, out bool[] b, int ablen)
+            {
+                throw new NativeNotImplementedException();
+            }
+            [NativeMethod(2, 2, Function = "sampsharptest_inoutarr")]
+            public virtual int InOutFloatArray(float[] a, out float[] b, int ablen)
+            {
+                throw new NativeNotImplementedException();
+            }
         }
     }
 

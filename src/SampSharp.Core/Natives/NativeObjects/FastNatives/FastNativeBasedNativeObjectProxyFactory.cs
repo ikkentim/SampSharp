@@ -13,7 +13,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
     /// </summary>
     public class FastNativeBasedNativeObjectProxyFactory : NativeObjectProxyFactoryBase
     {
-        private const int MaxStackAllocSize = 128;
+        private const int MaxStackAllocSize = 256;
         private readonly IGameModeClient _gameModeClient;
         
         /// <inheritdoc />
@@ -136,7 +136,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                 }
 
                 var param = context.Parameters[i];
-                if ((param.Type & NativeParameterType.ValueTypeMask) != 0) // in/out int/float
+                if ((param.Type & NativeParameterType.ValueTypeMask) != 0 && !param.Type.HasFlag(NativeParameterType.Array)) // in/out int/float
                 {
                     // data[i] = NativeUtils.IntPointerToInt(ptr + dataIndex);
                     EmitBufferLocation();
@@ -196,13 +196,13 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 
                     // data[i] = NativeUtils.BytePointerToInt(strBuffer);
                     EmitBufferLocation(); // data[i]
-                    EmitSpanToPointer(ilGenerator, strBufferSpan);
+                    EmitByteSpanToPointer(ilGenerator, strBufferSpan);
                     ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.BytePointerToInt));
                     ilGenerator.Emit(OpCodes.Stind_I4);
                 }
                 else if (param.Type == NativeParameterType.StringReference)
                 {
-                    EmitThrowOnOutOfRangeLength(ilGenerator, param);
+                    EmitThrowOnOutOfRangeLength(ilGenerator, param.LengthParam);
 
                     // var strBuf = stackalloc/new byte[...]
                     var strBuf = EmitSpanAlloc(ilGenerator, param.LengthParam.Index + 1);
@@ -210,7 +210,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 
                     // data[i] = NativeUtils.BytePointerToInt(strBufPtr);
                     EmitBufferLocation(); // data[i]
-                    EmitSpanToPointer(ilGenerator, strBuf);
+                    EmitByteSpanToPointer(ilGenerator, strBuf);
                     ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.BytePointerToInt));
                     ilGenerator.Emit(OpCodes.Stind_I4);
                 }
@@ -221,7 +221,28 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                         throw new Exception("Unsupported identifier property type");
                     }
 
-                    throw new NotImplementedException("Arrays not implemented");
+                    EmitThrowOnOutOfRangeLength(ilGenerator, param.LengthParam);
+
+                    // var arraySpan = NativeUtils.ArrayToIntSpan(array/null,len)
+                    var arraySpan = ilGenerator.DeclareLocal(typeof(Span<int>));
+                    if (param.Parameter.IsOut)
+                        ilGenerator.Emit(OpCodes.Ldnull);
+                    else
+                        ilGenerator.Emit(OpCodes.Ldarg, param.Index + 1);
+                    ilGenerator.Emit(OpCodes.Ldarg, param.LengthParam.Index + 1);
+                    ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.ArrayToIntSpan));
+                    ilGenerator.Emit(OpCodes.Stloc, arraySpan);
+                    
+                    // data[i] = NativeUtils.BytePointerToInt(strBufPtr);
+                    EmitBufferLocation(); // data[i]
+                    EmitIntSpanToPointer(ilGenerator, arraySpan);
+                    ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.IntPointerToInt));
+                    ilGenerator.Emit(OpCodes.Stind_I4);
+                    
+                    if (param.Type.HasFlag(NativeParameterType.Reference))
+                    {
+                        paramBuffers[i] = arraySpan;
+                    }
                 }
                 else
                 {
@@ -229,47 +250,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                 }
             }
         }
-
-        private static void EmitSpanToPointer(ILGenerator ilGenerator, LocalBuilder strBuf)
-        {
-            var local = EmitSpanToPointerLocal(ilGenerator, strBuf);
-            ilGenerator.Emit(OpCodes.Ldloc, local);
-        }
-
-        private static LocalBuilder EmitSpanToPointerLocal(ILGenerator ilGenerator, LocalBuilder strBuf)
-        {
-            // fixed(byte* strBufPtr = strBuf)
-            var strBufPinned = ilGenerator.DeclareLocal(typeof(byte*), true);
-            var strBufPtr = ilGenerator.DeclareLocal(typeof(byte*));
-
-            ilGenerator.Emit(OpCodes.Ldloca, strBuf);
-            ilGenerator.EmitCall(typeof(Span<byte>), nameof(Span<byte>.GetPinnableReference));
-            ilGenerator.Emit(OpCodes.Stloc, strBufPinned);
-            ilGenerator.Emit(OpCodes.Ldloc, strBufPinned);
-            ilGenerator.Emit(OpCodes.Conv_U);
-            ilGenerator.Emit(OpCodes.Stloc, strBufPtr);
-            return strBufPtr;
-        }
-
-        private static void EmitThrowOnOutOfRangeLength(ILGenerator ilGenerator, NativeIlGenParam param)
-        {
-            // if (strlen <= 0)
-            ilGenerator.Emit(OpCodes.Ldarg, param.LengthParam.Index + 1);
-            ilGenerator.Emit(OpCodes.Ldc_I4_0);
-            ilGenerator.Emit(OpCodes.Cgt);
-            ilGenerator.Emit(OpCodes.Ldc_I4_0);
-            ilGenerator.Emit(OpCodes.Ceq);
-            var falseLabel = ilGenerator.DefineLabel();
-            ilGenerator.Emit(OpCodes.Brfalse, falseLabel);
-
-            // throw new ArgumentOutOfRangeException("strlen");
-            ilGenerator.Emit(OpCodes.Ldstr, param.LengthParam.Name);
-            ilGenerator.Emit(OpCodes.Newobj,
-                typeof(ArgumentOutOfRangeException).GetConstructor(new[] {typeof(string)}));
-            ilGenerator.Emit(OpCodes.Throw);
-            ilGenerator.MarkLabel(falseLabel);
-        }
-
+        
         private static void EmitOutParamAssignment(ILGenerator ilGenerator, NativeIlGenContext context, LocalBuilder[] paramBuffers)
         {
             var dataIndex = context.Parameters.Length;
@@ -277,7 +258,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             {
                 var param = context.Parameters[i];
 
-                if ((param.Type & NativeParameterType.ValueTypeMask) != 0)
+                if ((param.Type & NativeParameterType.ValueTypeMask) != 0 && !param.Type.HasFlag(NativeParameterType.Array))
                 {
                     if (param.Type.HasFlag(NativeParameterType.Reference))
                     {
@@ -306,7 +287,21 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     }   
                     dataIndex++;
                 }
-                else if (param.Type == NativeParameterType.String)
+                else if (param.Type.HasFlag(NativeParameterType.Array | NativeParameterType.Reference))
+                {
+                    // argI = NativeUtils.IntSpanToArray<int>((Array)null, span);
+                    ilGenerator.Emit(OpCodes.Ldarg, param.Index + 1);
+                    if (param.Parameter.IsOut)
+                        ilGenerator.Emit(OpCodes.Ldnull);
+                    else
+                        ilGenerator.Emit(OpCodes.Ldarg, param.Index + 1);
+                    ilGenerator.Emit(OpCodes.Ldloc, paramBuffers[i]);
+                    var method = typeof(NativeUtils).GetMethod(nameof(NativeUtils.IntSpanToArray))
+                        .MakeGenericMethod(param.InputType.GetElementType().GetElementType());
+                    ilGenerator.EmitCall(method);
+                    ilGenerator.Emit(OpCodes.Stind_Ref);
+                }
+                else if (param.Type == NativeParameterType.String || param.Type.HasFlag(NativeParameterType.Array))
                 {
                     // uses own buffer
                 }
@@ -341,6 +336,55 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             {
                 throw new Exception("Unsupported return type of native");
             }
+        }
+
+        private static void EmitByteSpanToPointer(ILGenerator ilGenerator, LocalBuilder span)
+        {
+            // fixed(byte* strBufPtr = span)
+            var bufferPinned = ilGenerator.DeclareLocal(typeof(byte*), true);
+            var bufferPointer = ilGenerator.DeclareLocal(typeof(byte*));
+
+            ilGenerator.Emit(OpCodes.Ldloca, span);
+            ilGenerator.EmitCall(typeof(Span<byte>), nameof(Span<byte>.GetPinnableReference));
+            ilGenerator.Emit(OpCodes.Stloc, bufferPinned);
+            ilGenerator.Emit(OpCodes.Ldloc, bufferPinned);
+            ilGenerator.Emit(OpCodes.Conv_U);
+            ilGenerator.Emit(OpCodes.Stloc, bufferPointer);
+            ilGenerator.Emit(OpCodes.Ldloc, bufferPointer);
+        }
+
+        private static void EmitIntSpanToPointer(ILGenerator ilGenerator, LocalBuilder span)
+        {
+            // fixed(byte* strBufPtr = span)
+            var strBufPinned = ilGenerator.DeclareLocal(typeof(int*), true);
+            var strBufPtr = ilGenerator.DeclareLocal(typeof(int*));
+
+            ilGenerator.Emit(OpCodes.Ldloca, span);
+            ilGenerator.EmitCall(typeof(Span<int>), nameof(Span<int>.GetPinnableReference));
+            ilGenerator.Emit(OpCodes.Stloc, strBufPinned);
+            ilGenerator.Emit(OpCodes.Ldloc, strBufPinned);
+            ilGenerator.Emit(OpCodes.Conv_U);
+            ilGenerator.Emit(OpCodes.Stloc, strBufPtr);
+            ilGenerator.Emit(OpCodes.Ldloc, strBufPtr);
+        }
+
+        private static void EmitThrowOnOutOfRangeLength(ILGenerator ilGenerator, NativeIlGenParam param)
+        {
+            // if (strlen <= 0)
+            ilGenerator.Emit(OpCodes.Ldarg, param.Index + 1);
+            ilGenerator.Emit(OpCodes.Ldc_I4_0);
+            ilGenerator.Emit(OpCodes.Cgt);
+            ilGenerator.Emit(OpCodes.Ldc_I4_0);
+            ilGenerator.Emit(OpCodes.Ceq);
+            var falseLabel = ilGenerator.DefineLabel();
+            ilGenerator.Emit(OpCodes.Brfalse, falseLabel);
+
+            // throw new ArgumentOutOfRangeException("strlen");
+            ilGenerator.Emit(OpCodes.Ldstr, param.Name);
+            ilGenerator.Emit(OpCodes.Newobj,
+                typeof(ArgumentOutOfRangeException).GetConstructor(new[] {typeof(string)}));
+            ilGenerator.Emit(OpCodes.Throw);
+            ilGenerator.MarkLabel(falseLabel);
         }
 
         private static void EmitConvertToInt(ILGenerator ilGenerator, NativeParameterType type)

@@ -22,6 +22,38 @@ namespace TestMode.Entities.Systems.IssueTests
             y = x;
         }
 
+        
+        public unsafe int NativeArrayOut(out int[] arr, int len)
+        {
+            var data = stackalloc int[3];
+
+            if(len <= 0)
+                throw new ArgumentOutOfRangeException(nameof(len));
+
+            var arrBuf = NativeUtils.ArrayToIntSpan(null, len);
+
+            fixed (int* pinned = arrBuf)
+            {
+                data[0] = NativeUtils.IntPointerToInt(pinned);
+                data[1] = NativeUtils.IntPointerToInt(data + 2);
+                data[2] = len;
+
+
+                var result = Interop.FastNativeInvoke(new IntPtr(9999), "A[*1]d", data);
+
+                arr = NativeUtils.IntSpanToArray<int>(null, arrBuf);
+
+                return result;
+            }
+        }
+
+        public Span<int> CastArray(int[] a)
+        {
+            var spn = NativeUtils.ArrayToIntSpan(a, a.Length);
+
+            return spn;
+        }
+
         public unsafe int GetPlayerNameB(int playerid, out string name, int strlen)
         {
             var data = stackalloc int[5];
