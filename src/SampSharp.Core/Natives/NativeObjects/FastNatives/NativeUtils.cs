@@ -28,6 +28,12 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             enc.GetBytes(input.AsSpan(), new Span<byte>(ptr, len));
             ptr[len - 1] = 0;
         }
+        public static unsafe void GetBytes2(string input, Span<byte> output)
+        {
+            var enc = InternalStorage.RunningClient.Encoding ?? Encoding.ASCII;
+            enc.GetBytes(input.AsSpan(), output);
+            output[^1] = 0;
+        }
 
         public static string GetString(Span<byte> bytes)
         {
