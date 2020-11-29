@@ -1924,11 +1924,11 @@ bool sampgdk_callback_invoke(AMX *amx,
     bool stop = false;
 
     func = sampgdk_plugin_get_symbol(plugin, callback_filter->func_name);
-    printf("pre %s %d %d\n", name, callback_filter->func_name, callback_filter2->func_name);
+    //printf("pre %s %d %d\n", name, callback_filter->func_name, callback_filter2->func_name);
     if (func != NULL) {
       do_call = ((_sampgdk_callback_filter)func)(amx, name, params, retval);
     }
-    printf("post %s %d %d\n", name, callback_filter->func_name, callback_filter2->func_name);
+    //printf("post %s %d %d\n", name, callback_filter->func_name, callback_filter2->func_name);
 
     /* callback_filter2 is similar to callback_filter except it can stop
      * propagation of public call to other plugins. It was added for backwards
