@@ -179,19 +179,5 @@ namespace TestMode.Entities.Systems.IssueTests
 
             health = ValueConverter.ToSingle(data[3]);
         }
-
-        private unsafe void SetGameModeTextCallStackBase(string textString)
-        {
-            var data = stackalloc int[1];
-
-            var len = NativeUtils.GetByteCount(textString);
-            var textBytes = stackalloc byte[len];
-            NativeUtils.GetBytes(textString, textBytes, len);
-
-
-            data[0] = NativeUtils.BytePointerToInt(textBytes);
-
-            Interop.FastNativeInvoke(new IntPtr(9999), "s", data);
-        }
     }
 }

@@ -9,7 +9,7 @@ namespace SampSharp.Core.Natives.NativeObjects.NativeHandles
     {
         private readonly INativeLoader _nativeLoader;
 
-        public NativeHandleBasedNativeObjectProxyFactory(IGameModeClient gameModeClient, INativeLoader nativeLoader) : base(gameModeClient, "ProxyAssembly")
+        public NativeHandleBasedNativeObjectProxyFactory(INativeLoader nativeLoader) : base("ProxyAssembly")
         {
             _nativeLoader = nativeLoader;
         }

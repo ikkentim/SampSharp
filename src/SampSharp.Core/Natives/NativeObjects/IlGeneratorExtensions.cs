@@ -65,5 +65,21 @@ namespace SampSharp.Core.Natives.NativeObjects
 
             ilGenerator.EmitCall(typeof(ValueConverter), methodName, typeof(TFrom));
         }
+
+        public static void Emit(this ILGenerator ilGenerator, OpCode opCode, ParameterInfo paramInfo)
+        {
+            ilGenerator.Emit(opCode, (IsStatic(paramInfo.Member) ? 0 : 1) + paramInfo.Position);
+        }
+
+        private static bool IsStatic(MemberInfo member)
+        {
+            return member switch
+            {
+                MethodBase m when m.IsStatic => true,
+                MethodBase _ => false,
+                PropertyInfo p => IsStatic(p.GetAccessors(true)[0]),
+                _ => throw new Exception("Unknown member type")
+            };
+        }
     }
 }

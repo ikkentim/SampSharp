@@ -6,17 +6,22 @@ using System.Reflection.Emit;
 
 namespace SampSharp.Core.Natives.NativeObjects
 {
+    /// <summary>
+    /// Represents a base implementation of a native object proxy factory.
+    /// </summary>
     public abstract class NativeObjectProxyFactoryBase : INativeObjectProxyFactory
     {
         private int _typeNumber;
-        private readonly IGameModeClient _gameModeClient;
         private readonly Dictionary<Type, Type> _knownTypes = new Dictionary<Type, Type>();
         private readonly ModuleBuilder _moduleBuilder;
         private readonly object _lock = new object();
-        
-        protected NativeObjectProxyFactoryBase(IGameModeClient gameModeClient, string assemblyName)
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NativeObjectProxyFactoryBase"/> class.
+        /// </summary>
+        /// <param name="assemblyName">Name of the dynamic assembly.</param>
+        protected NativeObjectProxyFactoryBase(string assemblyName)
         {
-            _gameModeClient = gameModeClient;
             var asmName = new AssemblyName(assemblyName);
             var asmBuilder = AssemblyBuilder.DefineDynamicAssembly(asmName, AssemblyBuilderAccess.Run);
             _moduleBuilder = asmBuilder.DefineDynamicModule(asmName.Name + ".dll");
@@ -42,17 +47,26 @@ namespace SampSharp.Core.Natives.NativeObjects
             }
         }
 
-        protected virtual object CreateProxyInstance(Type proxyType, object[] arguments)
+        private object CreateProxyInstance(Type proxyType, object[] arguments)
         {
             return Activator.CreateInstance(proxyType, GetProxyConstructorArgs().Concat(arguments).ToArray());
         }
-        
+
+        /// <summary>
+        /// Gets additional constructor arguments prepended to every constructor call of proxies.
+        /// </summary>
+        /// <returns>The additional constructor arguments.</returns>
         protected virtual object[] GetProxyConstructorArgs()
         {
             return new object[0];
         }
 
-        protected virtual FieldInfo[] GetProxyFields(TypeBuilder typeBuilder)
+        /// <summary>
+        /// Defines additional fields in the proxy type.
+        /// </summary>
+        /// <param name="typeBuilder">The type builder for the proxy.</param>
+        /// <returns>The defined proxy fields.</returns>
+        protected virtual FieldInfo[] DefineProxyFields(TypeBuilder typeBuilder)
         {
             return new FieldInfo[0];
         }
@@ -71,7 +85,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                 TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.Class, type);
 
             // Add default constructor.
-            var proxyFields = GetProxyFields(typeBuilder);
+            var proxyFields = DefineProxyFields(typeBuilder);
             AddConstructor(type, typeBuilder, proxyFields);
 
             // Get the common identifiers for the native object.
@@ -305,6 +319,12 @@ namespace SampSharp.Core.Natives.NativeObjects
             };
         }
 
+        /// <summary>
+        /// Creates a method builder for building an implementation of a native calling method.
+        /// </summary>
+        /// <param name="typeBuilder">The type builder to create the method in.</param>
+        /// <param name="context">The IL generation context.</param>
+        /// <returns>Create created method builder.</returns>
         protected abstract MethodBuilder CreateMethodBuilder(TypeBuilder typeBuilder, NativeIlGenContext context);
     }
 }

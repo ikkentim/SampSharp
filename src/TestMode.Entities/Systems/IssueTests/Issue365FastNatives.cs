@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using SampSharp.Core;
@@ -32,6 +31,13 @@ namespace TestMode.Entities.Systems.IssueTests
                 throw new Exception("arg mismatch");
         }
         
+        private void TestInIdOutInt(TestNatives test)
+        {
+            test.Identifier = 5515;
+            if(test.InIdOutRef(out var a) != 1 || a != 5515)
+                throw new Exception("arg mismatch");
+        }
+
         private void TestInRefOutInt(TestNatives test)
         {
             if(1 != test.InRefOutInt(789, out var b) || b != 789)
@@ -76,6 +82,7 @@ namespace TestMode.Entities.Systems.IssueTests
                 x => TestInOutIntArray(x),
                 x => TestInOutBoolArray(x),
                 x => TestInOutFloatArray(x),
+                x => TestInIdOutInt(x),
             };
 
             foreach (var test in tests)
@@ -123,7 +130,7 @@ namespace TestMode.Entities.Systems.IssueTests
             _nativeGetVehicleParamsEx = Interop.FastNativeFind("GetVehicleParamsEx");
             _testVehicleId = worldService.CreateVehicle(VehicleModelType.BMX, Vector3.One, 0, 0, 0).Entity.Handle;
             //timerService.Start(_ => BenchmarkRunTimer(), TimeSpan.FromSeconds(2));
-            timerService.Start(_ => BenchmarkRunTimerProxy(), TimeSpan.FromSeconds(2));
+            //timerService.Start(_ => BenchmarkRunTimerProxy(), TimeSpan.FromSeconds(2));
             
             // Test native features
             Console.WriteLine("TEST WITH HANDLE FACTORY:");
@@ -135,37 +142,9 @@ namespace TestMode.Entities.Systems.IssueTests
             // timerService.Start(_ => ThreadingTest(fastProxy, handleProxy), TimeSpan.FromSeconds(15));
 
             // Multiple calls test
-            InvokeVehicleNatives(entityManager, fastProxy);
-
-            GetNetworkStats(out string x, 500);
-            Console.WriteLine(x);
+           InvokeVehicleNatives(entityManager, fastProxy);
         }
         
-        private unsafe int GetNetworkStats(out string name, int strlen)
-        {
-            var data = stackalloc int[5];
-
-            if(strlen <= 0)
-                throw new ArgumentOutOfRangeException(nameof(strlen));
-
-            var nameBuf = strlen < 128 ? stackalloc byte[strlen] : new Span<byte>(new byte[strlen]);
-
-            fixed (byte* nameBufPin = nameBuf)
-            {
-                data[0] = (int) (IntPtr) nameBufPin;
-                data[1] = NativeUtils.IntPointerToInt(data + 2);
-
-                data[2] = strlen;
-
-                var p = Interop.FastNativeFind("GetNetworkStats");
-                var result = Interop.FastNativeInvoke(p, "S[*1]d", data);
-
-                name = NativeUtils.GetString(nameBuf);
-
-                return result;
-            }
-        }
-
         private static void InvokeVehicleNatives(IEntityManager entityManager, TestingFastNative fastProxy)
         {
             // Call CreateVehicle native
@@ -184,9 +163,7 @@ namespace TestMode.Entities.Systems.IssueTests
                 $"Created vehicle {fastVehicleId} position {fastVehicleComp.Position}; matches? {(fastVehicleComp.Position == testPosition)}");
 
             // Call GetVehiclePos
-            Console.WriteLine("GOGO GetVehiclePos");
             var ret = fastProxy.GetVehiclePos(fastVehicleId, out var x, out var y, out var z);
-            Console.WriteLine("DONE GetVehiclePos");
             var getPos = new Vector3(x, y, z);
             Console.WriteLine($"get pos ({ret}): {getPos} matches? {(testPosition == getPos)}");
         }
@@ -267,7 +244,7 @@ namespace TestMode.Entities.Systems.IssueTests
             }
         }
 
-        public class BaseNativeClass
+        public class TestingFastNative
         {
             [NativeMethod]
             public virtual int IsPlayerConnected(int id)
@@ -302,41 +279,46 @@ namespace TestMode.Entities.Systems.IssueTests
             }
         }
 
-        public class TestingFastNative : BaseNativeClass
-        {
-        }
-
+        [NativeObjectIdentifiers(nameof(Identifier))]
         public class TestNatives
         {
-            [NativeMethod(Function = "sampsharptest_inout")]
+            public int Identifier { get; set; }
+
+            [NativeMethod(true, Function = "sampsharptest_inout")]
             public virtual int InOutInt(int a)
             {
                 throw new NativeNotImplementedException();
             }
-
-            [NativeMethod(Function = "sampsharptest_inrefout")]
+            
+            [NativeMethod(true, Function = "sampsharptest_inrefout")]
             public virtual int InRefOutInt(int a, out int b)
             {
                 throw new NativeNotImplementedException();
             }
+            
+            [NativeMethod(Function = "sampsharptest_inrefout")]
+            public virtual int InIdOutRef(out int b)
+            {
+                throw new NativeNotImplementedException();
+            }
 
-            [NativeMethod(2, Function = "sampsharptest_inoutstr")]
+            [NativeMethod(true, 2, Function = "sampsharptest_inoutstr")]
             public virtual int InOutString(string a, out string b, int blen)
             {
                 throw new NativeNotImplementedException();
             }
             
-            [NativeMethod(2, 2, Function = "sampsharptest_inoutarr")]
+            [NativeMethod(true, 2, 2, Function = "sampsharptest_inoutarr")]
             public virtual int InOutIntArray(int[] a, out int[] b, int ablen)
             {
                 throw new NativeNotImplementedException();
             }
-            [NativeMethod(2, 2, Function = "sampsharptest_inoutarr")]
+            [NativeMethod(true, 2, 2, Function = "sampsharptest_inoutarr")]
             public virtual int InOutBoolArray(bool[] a, out bool[] b, int ablen)
             {
                 throw new NativeNotImplementedException();
             }
-            [NativeMethod(2, 2, Function = "sampsharptest_inoutarr")]
+            [NativeMethod(true, 2, 2, Function = "sampsharptest_inoutarr")]
             public virtual int InOutFloatArray(float[] a, out float[] b, int ablen)
             {
                 throw new NativeNotImplementedException();

@@ -2,6 +2,9 @@
 
 namespace SampSharp.Core.Natives.NativeObjects
 {
+    /// <summary>
+    /// Provides the methods of a native object proxy factory.
+    /// </summary>
     public interface INativeObjectProxyFactory
     {
         /// <summary>

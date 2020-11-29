@@ -39,10 +39,11 @@ namespace SampSharp.Core.Natives
             _gameModeClient = gameModeClient ?? throw new ArgumentNullException(nameof(gameModeClient));
 
 
-            ProxyFactory = //gameModeClient is HostedGameModeClient
-                //? (INativeObjectProxyFactory) new FastNativeBasedNativeObjectProxyFactory(gameModeClient)
-                // : 
-            new NativeHandleBasedNativeObjectProxyFactory(gameModeClient, this);
+            ProxyFactory = 
+                gameModeClient is HostedGameModeClient
+                ? (INativeObjectProxyFactory) new FastNativeBasedNativeObjectProxyFactory(gameModeClient)
+                :
+                new NativeHandleBasedNativeObjectProxyFactory(this);
         }
 
         #region Implementation of INativeLoader
@@ -60,10 +61,11 @@ namespace SampSharp.Core.Natives
         public INative Load(string name, uint[] sizes, Type[] parameterTypes)
         {
             if (parameterTypes == null) throw new ArgumentNullException(nameof(parameterTypes));
-            var parameters = NativeParameterInfo.ForTypes(parameterTypes, sizes);
+            var parameters = ForTypes(parameterTypes, sizes);
 
             return Load(name, parameters);
         }
+
 
         /// <summary>
         ///     Loads a native with the specified name.
@@ -110,5 +112,58 @@ namespace SampSharp.Core.Natives
         }
 
         #endregion
+
+        private static NativeParameterInfo[] ForTypes(Type[] parameterTypes, uint[] sizes)
+        {
+            if (parameterTypes.Length == 0)
+                return Array.Empty<NativeParameterInfo>();
+
+            var parameters = new List<NativeParameterInfo>();
+
+            var usedSizes = new List<uint>();
+            var sizeIndex = 0;
+
+            // Construct the parameters and sizes array.
+            for (var i = 0; i < parameterTypes.Length; i++)
+            {
+                var type = parameterTypes[i];
+                var isOut = type.IsByRef;
+                var info = NativeParameterInfo.ForType(type, isOut);
+
+                if (info.RequiresLength)
+                {
+                    if (sizes == null || sizes.Length == 0)
+                    {
+                        uint? size = null;
+                        for (var j = (uint) i + 1; j < parameterTypes.Length; j++)
+                        {
+                            if (usedSizes.Contains(j)) continue;
+
+                            var jInfo = NativeParameterInfo.ForType(parameterTypes[j]);
+                            if (jInfo.Type == NativeParameterType.Int32)
+                            {
+                                usedSizes.Add(j);
+                                size = j;
+                                break;
+                            }
+                        }
+
+                        if (size == null)
+                            throw new ArgumentException("Missing sizes information", nameof(sizes));
+
+                        info = new NativeParameterInfo(info.Type, size.Value, isOut);
+                    }
+                    else if (sizeIndex >= sizes.Length)
+                        throw new ArgumentException("Missing sizes information", nameof(sizes));
+                    else
+                        info = new NativeParameterInfo(info.Type, sizes[sizeIndex++], isOut);
+                }
+
+
+                parameters.Add(info);
+            }
+
+            return parameters.ToArray();
+        }
     }
 }
