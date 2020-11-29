@@ -164,15 +164,14 @@ namespace SampSharp.Core
 
             var name = $"{type.Namespace}.data.{pageName.ToLowerInvariant()}.dat";
 
-            using (var stream = type.Assembly.GetManifestResourceStream(name))
+            using var stream = type.Assembly.GetManifestResourceStream(name);
+
+            if (stream == null)
             {
-                if (stream == null)
-                {
-                    throw new GameModeBuilderException($"Code page with name {pageName} is not available.");
-                }
-                var encoding = CodePageEncoding.Deserialize(stream);
-                return UseEncoding(encoding);
+                throw new GameModeBuilderException($"Code page with name {pageName} is not available.");
             }
+            var encoding = CodePageEncoding.Deserialize(stream);
+            return UseEncoding(encoding);
         }
 
         #endregion
@@ -502,7 +501,7 @@ namespace SampSharp.Core
         {
             if (_hosted)
             {
-                return new HostedGameModeClient(_startBehaviour, _gameModeProvider, _encoding);
+                return new HostedGameModeClient(_gameModeProvider, _encoding);
             }
             else
             {

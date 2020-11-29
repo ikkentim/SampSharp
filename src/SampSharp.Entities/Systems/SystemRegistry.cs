@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 
 namespace SampSharp.Entities
 {
@@ -30,6 +29,9 @@ namespace SampSharp.Entities
 
         private Dictionary<Type, ISystem[]> _data;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SystemRegistry"/> class.
+        /// </summary>
         public SystemRegistry(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
@@ -76,7 +78,8 @@ namespace SampSharp.Entities
                 _data[kv.Key] = kv.Value.ToArray();
             }
         }
-
+        
+        /// <inheritdoc />
         public ISystem[] Get(Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
@@ -88,7 +91,8 @@ namespace SampSharp.Entities
             Array.Copy(value, result, value.Length);
             return result;
         }
-
+        
+        /// <inheritdoc />
         public TSystem[] Get<TSystem>() where TSystem : ISystem
         {
             if (!_data.TryGetValue(typeof(TSystem), out var value))
@@ -97,27 +101,6 @@ namespace SampSharp.Entities
             var result = new TSystem[value.Length];
             Array.Copy(value, result, value.Length);
             return result;
-        }
-    }
-
-    [Serializable]
-    public class SystemRegistryException : Exception
-    {
-        public SystemRegistryException()
-        {
-        }
-
-        public SystemRegistryException(string message) : base(message)
-        {
-        }
-
-        public SystemRegistryException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        protected SystemRegistryException(SerializationInfo info,
-            StreamingContext context) : base(info, context)
-        {
         }
     }
 }

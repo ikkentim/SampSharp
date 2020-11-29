@@ -499,31 +499,19 @@ namespace SampSharp.Core
 
         #region Implementation of IGameModeClient
 
-        /// <summary>
-        ///     Gets or sets the native loader to be used to load natives.
-        /// </summary>
+        /// <inheritdoc />
         public INativeLoader NativeLoader { get; }
-
+        
+        /// <inheritdoc />
         public ISynchronizationProvider SynchronizationProvider => this;
-
-        /// <summary>
-        ///     Gets the path to the server directory.
-        /// </summary>
+        
+        /// <inheritdoc />
         public string ServerPath { get; private set; }
-
-        /// <summary>
-        ///     Occurs when an exception is unhandled during the execution of a callback or tick.
-        /// </summary>
+        
+        /// <inheritdoc />
         public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
-
-        /// <summary>
-        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
-        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
-        /// </summary>
-        /// <param name="name">The name af the callback to register.</param>
-        /// <param name="target">The target on which to invoke the method.</param>
-        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
-        /// <param name="parameters">The parameters of the callback.</param>
+        
+        /// <inheritdoc />
         public void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -546,16 +534,8 @@ namespace SampSharp.Core
                 .Concat(parameters.SelectMany(c => c.GetBytes()))
                 .Concat(new[] { (byte) ServerCommandArgument.Terminator }));
         }
-
-        /// <summary>
-        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
-        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
-        /// </summary>
-        /// <param name="name">The name af the callback to register.</param>
-        /// <param name="target">The target on which to invoke the method.</param>
-        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
-        /// <param name="parameters">The parameters of the callback.</param>
-        /// <param name="parameterTypes">The types of the parameters.</param>
+        
+        /// <inheritdoc />
         public void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters, Type[] parameterTypes)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -579,11 +559,8 @@ namespace SampSharp.Core
                 .Concat(parameters.SelectMany(c => c.GetBytes()))
                 .Concat(new[] { (byte) ServerCommandArgument.Terminator }));
         }
-
-        /// <summary>
-        ///     Prints the specified text to the server console.
-        /// </summary>
-        /// <param name="text">The text to print to the server console.</param>
+        
+        /// <inheritdoc />
         public void Print(string text)
         {
             if (text == null)
@@ -594,12 +571,8 @@ namespace SampSharp.Core
             if (_running)
                 SendOnMainThread(ServerCommand.Print, ValueConverter.GetBytes(text, Encoding));
         }
-
-        /// <summary>
-        ///     Gets the handle of the native with the specified <paramref name="name" />.
-        /// </summary>
-        /// <param name="name">The name of the native.</param>
-        /// <returns>The handle of the native with the specified <paramref name="name" />.</returns>
+        
+        /// <inheritdoc />
         public int GetNativeHandle(string name)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -613,12 +586,8 @@ namespace SampSharp.Core
             
             return ValueConverter.ToInt32(data.Data, 2);
         }
-
-        /// <summary>
-        ///     Invokes a native using the specified <paramref name="data" /> buffer.
-        /// </summary>
-        /// <param name="data">The data buffer to be used.</param>
-        /// <returns>The response from the native.</returns>
+        
+        /// <inheritdoc />
         public byte[] InvokeNative(IEnumerable<byte> data)
         {
             var caller = GetCallerId();
@@ -636,10 +605,8 @@ namespace SampSharp.Core
 
             return response.Data.Skip(2).ToArray(); // TODO: Optimize GC allocations
         }
-
-        /// <summary>
-        ///     Shuts down the server after the current callback has been processed.
-        /// </summary>
+        
+        /// <inheritdoc />
         public void ShutDown()
         {
             if (_shuttingDown || !_running)
@@ -657,12 +624,8 @@ namespace SampSharp.Core
         #endregion
 
         #region Implementation of IGameModeRunner
-
-        /// <summary>
-        ///     Runs this game mode client.
-        /// </summary>
-        /// <returns>true if shut down by the game mode, false otherwise.</returns>
-        /// <exception cref="Exception">Thrown if a game mode is already running.</exception>
+        
+        /// <inheritdoc />
         public bool Run()
         {
             if (InternalStorage.RunningClient != null)
@@ -689,20 +652,20 @@ namespace SampSharp.Core
 
             return _shuttingDown;
         }
-
-        /// <summary>
-        ///     Gets the client of this game mode runner.
-        /// </summary>
+        
+        /// <inheritdoc />
         public IGameModeClient Client => this;
 
         #endregion
         
 
         #region Implementation of ISynchronizationProvider
-
-        public bool InvokeRequired => !IsOnMainThread;
-
-        public void Invoke(Action action)
+        
+        /// <inheritdoc />
+        bool ISynchronizationProvider.InvokeRequired => !IsOnMainThread;
+        
+        /// <inheritdoc />
+        void ISynchronizationProvider.Invoke(Action action)
         {
             _synchronizationContext.Send(ctx => action(), null);
         }

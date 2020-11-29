@@ -36,6 +36,9 @@ namespace SampSharp.Entities.SAMP
         /// </summary>
         public const int DialogHideId = -1;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DialogService"/> class.
+        /// </summary>
         public DialogService(IEntityManager entityManager)
         {
             _entityManager = entityManager;

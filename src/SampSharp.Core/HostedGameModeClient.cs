@@ -24,26 +24,23 @@ namespace SampSharp.Core
         private readonly Dictionary<string, Callback> _callbacks = new Dictionary<string, Callback>();
         private NoWaitMessageQueue _messageQueue;
         private SampSharpSynchronizationContext _synchronizationContext;
-        private readonly GameModeStartBehaviour _startBehaviour;
         private readonly IGameModeProvider _gameModeProvider;
         private int _mainThread;
         private int _rconThread = int.MinValue;
         private bool _running;
         private byte[] _publicCallBuffer = new byte[1024 * 6];
         private IntPtr _buffer;
-        private IntPtr _buffer1K;
+        private readonly IntPtr _buffer1K;
         private int _txBufferLength;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MultiProcessGameModeClient" /> class.
         /// </summary>
-        /// <param name="startBehaviour">The start method.</param>
         /// <param name="gameModeProvider">The game mode provider.</param>
         /// <param name="encoding">The encoding to use when en/decoding text messages sent to/from the server.</param>
-        public HostedGameModeClient(GameModeStartBehaviour startBehaviour, IGameModeProvider gameModeProvider, Encoding encoding)
+        public HostedGameModeClient(IGameModeProvider gameModeProvider, Encoding encoding)
         {
             Encoding = encoding;
-            _startBehaviour = startBehaviour;
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
             NativeLoader = new NativeLoader(this);
             _buffer = Marshal.AllocHGlobal(_txBufferLength = 1024 * 6);
@@ -129,39 +126,35 @@ namespace SampSharp.Core
 
             return 1;
         }
+        
+        private void EnsureBufferSize(int length)
+        {
+            if (_txBufferLength >= length)
+                return;
+            
+            Marshal.FreeHGlobal(_buffer);
+            while (_txBufferLength < length) _txBufferLength *= 2;
+            _buffer = Marshal.AllocHGlobal(_txBufferLength);
+        }
 
         #region Implementation of IGameModeClient
 
-        /// <summary>
-        ///     Gets the default encoding to use when translating server messages.
-        /// </summary>
+        /// <inheritdoc />
         public Encoding Encoding { get; }
         
-        /// <summary>
-        ///     Gets or sets the native loader to be used to load natives.
-        /// </summary>
+        /// <inheritdoc />
         public INativeLoader NativeLoader { get; }
-
+        
+        /// <inheritdoc />
         public ISynchronizationProvider SynchronizationProvider => this;
-
-        /// <summary>
-        ///     Gets the path to the server directory.
-        /// </summary>
+        
+        /// <inheritdoc />
         public string ServerPath { get; private set; }
-
-        /// <summary>
-        ///     Occurs when an exception is unhandled during the execution of a callback or tick.
-        /// </summary>
+        
+        /// <inheritdoc />
         public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
         
-        /// <summary>
-        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
-        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
-        /// </summary>
-        /// <param name="name">The name af the callback to register.</param>
-        /// <param name="target">The target on which to invoke the method.</param>
-        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
-        /// <param name="parameters">The parameters of the callback.</param>
+        /// <inheritdoc />
         public void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -200,25 +193,7 @@ namespace SampSharp.Core
                 }, null);
         }
 
-        private void EnsureBufferSize(int length)
-        {
-            if (_txBufferLength >= length)
-                return;
-            
-            Marshal.FreeHGlobal(_buffer);
-            while (_txBufferLength < length) _txBufferLength *= 2;
-            _buffer = Marshal.AllocHGlobal(_txBufferLength);
-        }
-        
-        /// <summary>
-        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
-        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
-        /// </summary>
-        /// <param name="name">The name af the callback to register.</param>
-        /// <param name="target">The target on which to invoke the method.</param>
-        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
-        /// <param name="parameters">The parameters of the callback.</param>
-        /// <param name="parameterTypes">The types of the parameters.</param>
+        /// <inheritdoc />
         public void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters, Type[] parameterTypes)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -259,10 +234,7 @@ namespace SampSharp.Core
 
         }
         
-        /// <summary>
-        ///     Prints the specified text to the server console.
-        /// </summary>
-        /// <param name="text">The text to print to the server console.</param>
+        /// <inheritdoc />
         public void Print(string text)
         {
             if (IsOnMainThread)
@@ -270,12 +242,8 @@ namespace SampSharp.Core
             else
                 _synchronizationContext.Send(ctx => Interop.Print(text), null);
         }
-
-        /// <summary>
-        ///     Gets the handle of the native with the specified <paramref name="name" />.
-        /// </summary>
-        /// <param name="name">The name of the native.</param>
-        /// <returns>The handle of the native with the specified <paramref name="name" />.</returns>
+        
+        /// <inheritdoc />
         public int GetNativeHandle(string name)
         {
             if (IsOnMainThread)
@@ -285,12 +253,8 @@ namespace SampSharp.Core
             _synchronizationContext.Send(ctx => result = Interop.GetNativeHandle(name), null);
             return result;
         }
-
-        /// <summary>
-        ///     Invokes a native using the specified <paramref name="data" /> buffer.
-        /// </summary>
-        /// <param name="data">The data buffer to be used.</param>
-        /// <returns>The response from the native.</returns>
+        
+        /// <inheritdoc />
         public byte[] InvokeNative(IEnumerable<byte> data)
         {
             // TODO: Optimize byte array allocations
@@ -319,10 +283,8 @@ namespace SampSharp.Core
 
             return response;
         }
-
-        /// <summary>
-        ///     Shuts down the server after the current callback has been processed.
-        /// </summary>
+        
+        /// <inheritdoc />
         public void ShutDown()
         {
             throw new NotImplementedException();
@@ -331,12 +293,8 @@ namespace SampSharp.Core
         #endregion
 
         #region Implementation of IGameModeRunner
-
-        /// <summary>
-        ///     Runs the game mode of this runner.
-        /// </summary>
-        /// <returns>true if shut down by the game mode, false otherwise.</returns>
-        /// <exception cref="Exception">Thrown if a game mode is already running.</exception>
+        
+        /// <inheritdoc />
         public bool Run()
         {
             InternalStorage.RunningClient = this;
@@ -362,19 +320,19 @@ namespace SampSharp.Core
 
             return true;
         }
-
-        /// <summary>
-        ///     Gets the client of this game mode runner.
-        /// </summary>
+        
+        /// <inheritdoc />
         public IGameModeClient Client => this;
 
         #endregion
 
         #region Implementation of ISynchronizationProvider
-
-        public bool InvokeRequired => !IsOnMainThread;
-
-        public void Invoke(Action action)
+        
+        /// <inheritdoc />
+        bool ISynchronizationProvider.InvokeRequired => !IsOnMainThread;
+        
+        /// <inheritdoc />
+        void ISynchronizationProvider.Invoke(Action action)
         {
             _synchronizationContext.Send(ctx => action(), null);
         }

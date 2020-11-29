@@ -38,7 +38,7 @@ namespace SampSharp.Core
             if (_result == null)
                 await _ponger.Task;
 
-            return _result ?? default(TimeSpan);
+            return _result ?? default;
         }
 
         /// <summary>

@@ -37,7 +37,10 @@ namespace SampSharp.Core
         ///     Gets the native loader to be used to load natives.
         /// </summary>
         INativeLoader NativeLoader { get; }
-
+        
+        /// <summary>
+        /// Gets the provider which can be used for synchronizing a call to the main thread.
+        /// </summary>
         ISynchronizationProvider SynchronizationProvider { get; }
 
         /// <summary>
@@ -96,13 +99,5 @@ namespace SampSharp.Core
         ///     Shuts down the server after the current callback has been processed.
         /// </summary>
         void ShutDown();
-    }
-
-    public interface ISynchronizationProvider
-    {
-        public bool InvokeRequired { get; }
-
-        public void Invoke(Action action);
-
     }
 }

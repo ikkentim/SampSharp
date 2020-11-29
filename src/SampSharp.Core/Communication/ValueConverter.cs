@@ -84,10 +84,10 @@ namespace SampSharp.Core.Communication
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
-            encoding = encoding ?? Encoding.ASCII;
+            encoding ??= Encoding.ASCII;
 
             var bytes = new byte[encoding.GetByteCount(value) + 1];
-            bytes[bytes.Length - 1] = (byte) '\0';
+            bytes[^1] = (byte) '\0';
             encoding.GetBytes(value, 0, value.Length, bytes, 0);
             return bytes;
         }
@@ -248,7 +248,7 @@ namespace SampSharp.Core.Communication
         /// <returns>The <see cref="string" /> read from the specified buffer.</returns>
         public static string ToString(byte[] buffer, int startIndex, Encoding encoding)
         {
-            encoding = encoding ?? Encoding.ASCII;
+            encoding ??= Encoding.ASCII;
 
             var terminatorIndex = Array.IndexOf(buffer, (byte)'\0', startIndex);
             if (terminatorIndex < 0)
