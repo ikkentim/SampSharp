@@ -42,8 +42,7 @@ namespace TestMode
             Console.WriteLine("The game mode has loaded.");
             AddPlayerClass(0, Vector3.Zero, 0);
 
-
-            // RunPerformanceBenchmark();
+            RunPerformanceBenchmark();
         }
 
         #endregion
@@ -70,31 +69,56 @@ namespace TestMode
         
         private void RunPerformanceBenchmark()
         {
-            var v = BaseVehicle.Create(VehicleModelType.BMX, Vector3.One, 0, 0, 0);
+            var vehicle = BaseVehicle.Create(VehicleModelType.BMX, Vector3.One, 0, 0, 0);
             
             var native = Interop.FastNativeFind("GetVehicleParamsEx");
 
-            Timer x = new Timer(2000, true, true);
+            var timer = new Timer(2000, true, true);
 
-            var id = v.Id;
+            var id = vehicle.Id;
   
             void PerfTest()
             {
-                Stopwatch sw = new Stopwatch();
+                var sw = new Stopwatch();
                 sw.Start();
                 for (int i = 0; i < 400000; i++)
                 {
                     CallThat(native, id);
                 }
                 sw.Stop();
-                Console.WriteLine("TestMultiple={0}", sw.Elapsed.TotalMilliseconds);
+                Console.WriteLine("BestPossible={0}", sw.Elapsed.TotalMilliseconds);
+                sw.Reset();
+                sw.Start();
+                for (var i = 0; i < 400000; i++)
+                {
+                    vehicle.GetParameters(out VehicleParameterValue a, out _, out _, out _, out _, out _, out _);
+                }
+
+                sw.Stop();
+                Console.WriteLine("ViaOOWrapper={0}", sw.Elapsed.TotalMilliseconds);
+                sw.Reset();
+
+                var proxy = BaseVehicle.VehicleInternal.Instance;
+                sw.Start();
+                for (var i = 0; i < 400000; i++)
+                {
+                    proxy.GetVehicleParamsEx(id, out _, out _, out _, out _, out _, out _, out _);
+                }
+
+                sw.Stop();
+                Console.WriteLine("ViaDirectProxy={0}", sw.Elapsed.TotalMilliseconds);
+                sw.Reset();
             }
 
             PerfTest();
 
-            x.Tick += (sender, args) =>
+            var benchRuns = 50;
+            timer.Tick += (sender, args) =>
             {
                 PerfTest();
+
+                if (--benchRuns == 0)
+                    timer.IsRunning = false;
             };
         }
     }
