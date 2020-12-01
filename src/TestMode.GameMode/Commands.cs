@@ -14,10 +14,47 @@ namespace TestMode
 {
     internal static class Commands
     {
+        [CommandGroup("test", "t")]
+        internal class GroupHelpTest 
+        {
+            // Issue 361 test
+            [Command(IsGroupHelp = true)]
+            public static void TestHelpCommand(BasePlayer client)
+            {
+                client.SendClientMessage(-1, "/(t)est <option>");
+                client.SendClientMessage(-1, "optionOne");
+            }
+
+            [Command("optionOne", UsageMessage = "/(t)est optionOne <text>")]
+            public static void TestOptionOneCommand(BasePlayer client, string text)
+            {
+                //
+                client.SendClientMessage($"optionOne '{text}'!");
+            }
+        }
+
         [Command]
         public static void DefaultNameCommand(BasePlayer player)
         {
             player.SendClientMessage("/defaultname command!");
+        }
+
+        [Command]
+        public static void ListPlayersCommand(BasePlayer player)
+        {
+            // Issue 372 test
+            player.SendClientMessage($"Players available: {BasePlayer.GetAll<BasePlayer>().Count()}");
+            try
+            {
+                foreach (var p in BasePlayer.GetAll<BasePlayer>())
+                {
+                    player.SendClientMessage("Player: " + p.Name);
+                }
+            }
+            catch (Exception e)
+            {
+                player.SendClientMessage(Color.Red, e.Message);
+            }
         }
 
         [CommandGroup]

@@ -42,7 +42,7 @@ namespace TestMode
             Console.WriteLine("The game mode has loaded.");
             AddPlayerClass(0, Vector3.Zero, 0);
 
-            RunPerformanceBenchmark();
+            // RunPerformanceBenchmark();
         }
 
         #endregion

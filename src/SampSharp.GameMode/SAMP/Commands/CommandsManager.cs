@@ -80,6 +80,22 @@ namespace SampSharp.GameMode.SAMP.Commands
         {
             return new DefaultCommand(commandPaths, displayName, ignoreCase, permissionCheckers, method, usageMessage);
         }
+        
+        /// <summary>
+        ///     Creates a help command.
+        /// </summary>
+        /// <param name="commandPaths">The command paths.</param>
+        /// <param name="displayName">The display name.</param>
+        /// <param name="ignoreCase">if set to <c>true</c> ignore the case the command.</param>
+        /// <param name="permissionCheckers">The permission checkers.</param>
+        /// <param name="method">The method.</param>
+        /// <param name="usageMessage">The usage message.</param>
+        /// <returns>The created command</returns>
+        protected virtual ICommand CreateHelpCommand(CommandPath[] commandPaths, string displayName, bool ignoreCase,
+            IPermissionChecker[] permissionCheckers, MethodInfo method, string usageMessage)
+        {
+            return new DefaultHelpCommand(commandPaths, displayName, ignoreCase, permissionCheckers, method, usageMessage);
+        }
 
         private static IPermissionChecker CreatePermissionChecker(Type type)
         {
@@ -299,8 +315,8 @@ namespace SampSharp.GameMode.SAMP.Commands
 
                     if (helpCommandPaths.Length > 0)
                     {
-                        Register(helpCommandPaths, attribute.DisplayName, attribute.IgnoreCase,
-                            GetCommandPermissionCheckers(method).ToArray(), method, attribute.UsageMessage);
+                        Register(CreateHelpCommand(helpCommandPaths, attribute.DisplayName, attribute.IgnoreCase,
+                            GetCommandPermissionCheckers(method).ToArray(), method, attribute.UsageMessage));
                     }
 
                     continue;
