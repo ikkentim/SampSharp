@@ -74,6 +74,20 @@ namespace TestMode
             }
         }
 
+        [Command("rob", "rb")]
+        private static void RobCommand(BasePlayer sender, BasePlayer victim)
+        {
+            // omitted
+            sender.SendClientMessage("Rob with victim");
+        }
+
+        [Command("rob", "rb")]
+        private static void RobCommand(BasePlayer sender)
+        {
+            // omitted
+            sender.SendClientMessage("Rob without victim");
+        }
+
         [Command("kickme")]
         public static async void KickMeCommand(BasePlayer player)
         {

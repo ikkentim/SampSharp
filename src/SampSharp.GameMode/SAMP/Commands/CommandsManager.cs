@@ -227,7 +227,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 {
                     case CommandCallableResponse.True:
 
-                        if (candidateLength < matchedNameLength)
+                        if (candidateLength < matchedNameLength || candidateLength == matchedNameLength && !isFullMath)
                         {
                             isFullMath = true;
                             candidateLength = matchedNameLength;
@@ -237,7 +237,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                         break;
 
                     case CommandCallableResponse.Optional:
-                        if (!isFullMath)
+                        if (candidateLength < matchedNameLength)
                         {
                             candidate = command;
                             candidateLength = matchedNameLength;

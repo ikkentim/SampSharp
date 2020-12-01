@@ -135,16 +135,22 @@ namespace SampSharp.GameMode.SAMP.Commands
                    !method.IsStatic && typeof (BasePlayer).GetTypeInfo().IsAssignableFrom(method.DeclaringType);
         }
 
-        private bool GetArguments(string commandText, out object[] arguments)
+        private bool GetArguments(string commandText, out object[] arguments, out int argumentsTextLength)
         {
             arguments = new object[Parameters.Length];
+            argumentsTextLength = 0;
             var index = 0;
+            var textLength = commandText.Length;
             foreach (var parameter in Parameters)
             {
+                
                 if (!parameter.CommandParameterType.Parse(ref commandText, out var arg, parameter.IsNullable))
                 {
                     if (!parameter.IsOptional)
+                    {
+                        argumentsTextLength = textLength - commandText.Length;
                         return false;
+                    }
 
                     arguments[index] = parameter.DefaultValue;
                 }
@@ -156,6 +162,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 index++;
             }
 
+            argumentsTextLength = textLength - commandText.Length;
             return true;
         }
 
@@ -288,7 +295,9 @@ namespace SampSharp.GameMode.SAMP.Commands
 
                 matchedNameLength = name.Length;
                 commandText = commandText.Substring(name.Length);
-                return GetArguments(commandText, out _)
+                var result = GetArguments(commandText, out _, out var argumentsLength);
+                matchedNameLength += argumentsLength;
+                return result
                     ? CommandCallableResponse.True
                     : CommandCallableResponse.Optional;
             }
@@ -320,7 +329,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             commandText = commandText.Substring(name.Value.Length).Trim();
 
-            if (!GetArguments(commandText, out var arguments))
+            if (!GetArguments(commandText, out var arguments, out _))
                 return SendUsageMessage(player);
 
             var result = Method.Invoke(IsMethodMemberOfPlayer ? player : null,
