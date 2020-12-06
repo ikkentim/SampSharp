@@ -17,13 +17,13 @@ namespace TestMode.Entities.Systems.IssueTests
         {
             Console.WriteLine("About to call a remote func!");
             // TODO: This can crash; need to investigate.
-            //m.Instance.CallRemoteFunction("TestCallback", "ddd", 1, 2, 3);
+            m.Instance.CallRemoteFunction("TestCallback", "dd", 1, 2);
         }
 
         public class TestNatives
         {
             [NativeMethod]
-            public virtual void CallRemoteFunction(string name, string format, int a, int b, int c)
+            public virtual void CallRemoteFunction(string name, string format, int a, int b)
             {
                 throw new NativeNotImplementedException();
             }
