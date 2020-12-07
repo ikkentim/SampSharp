@@ -27,6 +27,8 @@ namespace SampSharp.GameMode.World
     /// </summary>
     public partial class BasePlayer : IdentifiedPool<BasePlayer>, IWorldObject
     {
+        internal bool IsNpcOverride { get; set; }
+
         /// <summary>
         ///     Identifier indicating the handle is invalid.
         /// </summary>
@@ -546,7 +548,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Gets whether this Player is an actual player or an NPC.
         /// </summary>
-        public virtual bool IsNPC => PlayerInternal.Instance.IsPlayerNPC(Id);
+        public virtual bool IsNPC => IsNpcOverride || PlayerInternal.Instance.IsPlayerNPC(Id);
 
         /// <summary>
         ///     Gets whether this Player is logged into RCON.

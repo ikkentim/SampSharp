@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
+using System.Runtime.InteropServices;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
@@ -180,7 +181,9 @@ namespace SampSharp.GameMode.SAMP
                 return null;
 
             ServerInternal.Instance.ConnectNPC(name, script);
-            return BasePlayer.FindOrCreate(id);
+            var result = BasePlayer.FindOrCreate(id);
+            result.IsNpcOverride = true;
+            return result;
         }
 
         /// <summary>
