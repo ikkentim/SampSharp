@@ -37,6 +37,15 @@ void print_info() {
     log_print("");
 }
 
+void print_deprecation_warning() {
+    log_print("--------- NOTICE -----------");
+    log_print("SampSharp is currently running in development mode (also known as multi-process");
+    log_print("mode). The development mode has been deprecated and will be removed in a future");
+    log_print(" version of SampSharp. See https://github.com/ikkentim/SampSharp/issues/374 for");
+    log_print(" more information about this change.");
+    log_print("----------------------------");
+}
+
 void start_server() {
     if(!(plg->state() & STATE_INITIALIZED)) {
         /* workaround for SA-MP error which prevents OnRconCommand from working
@@ -64,6 +73,8 @@ void start_server() {
         svr = new hosted_server(coreclr.c_str(), gamemode.c_str());
     }
     else {
+        print_deprecation_warning();
+
         com = plg->create_commsvr();
         
         if (com) {
