@@ -1899,13 +1899,6 @@ bool sampgdk_callback_invoke(AMX *amx,
 
   assert(amx != NULL);
 
-  callback = _sampgdk_callback_find(name);
-  callback_filter = _sampgdk_callback_find(":OnPublicCall");
-  callback_filter2 = _sampgdk_callback_find(":OnPublicCall2");
-
-  assert(callback_filter != NULL);
-  assert(callback_filter2 != NULL);
-
   if (paramcount > _SAMPGDK_CALLBACK_MAX_ARGS) {
     sampgdk_log_error("Too many callback arguments (at most %d allowed)",
                       _SAMPGDK_CALLBACK_MAX_ARGS);
@@ -1922,13 +1915,13 @@ bool sampgdk_callback_invoke(AMX *amx,
     void *func;
     bool do_call = true;
     bool stop = false;
-
+    
+    callback_filter = _sampgdk_callback_find(":OnPublicCall");
+    assert(callback_filter != NULL);
     func = sampgdk_plugin_get_symbol(plugin, callback_filter->func_name);
-    //printf("pre %s %d %d\n", name, callback_filter->func_name, callback_filter2->func_name);
     if (func != NULL) {
       do_call = ((_sampgdk_callback_filter)func)(amx, name, params, retval);
     }
-    //printf("post %s %d %d\n", name, callback_filter->func_name, callback_filter2->func_name);
 
     /* callback_filter2 is similar to callback_filter except it can stop
      * propagation of public call to other plugins. It was added for backwards
@@ -1936,6 +1929,8 @@ bool sampgdk_callback_invoke(AMX *amx,
      *
      * callback_filter2's return value overrides that of callback_filter.
      */
+    callback_filter2 = _sampgdk_callback_find(":OnPublicCall2");
+    assert(callback_filter2 != NULL);
     func = sampgdk_plugin_get_symbol(plugin, callback_filter2->func_name);
     if (func != NULL) {
       do_call = !((_sampgdk_callback_filter2)func)(amx,
@@ -1948,10 +1943,12 @@ bool sampgdk_callback_invoke(AMX *amx,
     if (stop) {
       return false;
     }
+
+    callback = _sampgdk_callback_find(name);
     if (!do_call || callback == NULL || callback->handler == NULL) {
       continue;
     }
-
+    
     func = sampgdk_plugin_get_symbol(plugin, callback->func_name);
     if (func != NULL
         && !((sampgdk_callback)callback->handler)(amx, func, retval)) {
