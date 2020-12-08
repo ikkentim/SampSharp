@@ -1,0 +1,19 @@
+name: Cake
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run the Cake script
+        uses: cake-build/cake-action@v1
+        with:
+          script-path: build.cake
+
