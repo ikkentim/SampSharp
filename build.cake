@@ -1,9 +1,6 @@
 #load "./cake/SharpBuild.cake"
 
-var build = new SharpBuild(Context, "ikkentim", "SampSharp",
-    "SampSharp.Core",
-    "SampSharp.GameMode",
-    "SampSharp.Entities");
+var build = new SharpBuild(Context, "SampSharp.Core", "SampSharp.GameMode", "SampSharp.Entities");
 
 Task("Clean")
     .Does(() => build.Clean());
@@ -21,7 +18,7 @@ Task("Pack")
     .Does(() => build.Pack());
 
 Task("Publish")
-    .WithCriteria(() => build.IsAppVeyorTag)
+    .WithCriteria(() => build.IsCiWithTag)
     .IsDependentOn("Pack")
     .Does(() => build.Publish());
 
