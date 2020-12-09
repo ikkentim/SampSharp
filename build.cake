@@ -11,10 +11,7 @@ Task("Restore")
 Task("Build")
     .IsDependentOn("Clean")
     .IsDependentOn("Restore")
-    .Does(() => {
-        Information($"Building with TagName: {build.TagName}");
-        build.Build();
-    });
+    .Does(() => build.Build());
     
 Task("Pack")
     .IsDependentOn("Build")
