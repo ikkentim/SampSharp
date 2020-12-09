@@ -2,10 +2,10 @@ name: Cake
 on:
   push:
     branches: [ master ]
+    paths-ignore: [ '*.md' ]
   pull_request:
     branches: [ master ]
-
-  workflow_dispatch:
+    paths-ignore: [ '*.md' ]
 
 jobs:
   build:
@@ -17,6 +17,9 @@ jobs:
 
       - name: Checkout submodules
         uses: textbook/git-checkout-submodule-action@master
+
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@2008f912f56e61277eefaac6d1888b750582aa16
 
       - name: Run the Cake script
         uses: cake-build/cake-action@v1
