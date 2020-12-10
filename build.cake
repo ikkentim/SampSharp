@@ -25,7 +25,7 @@ Task("Publish")
 Task("Default")
     .IsDependentOn("Build");
 
-Task("AppVeyor")
+Task("CI")
     .IsDependentOn("Publish");
 
 RunTarget(Argument("target", "Default"));

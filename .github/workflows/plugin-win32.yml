@@ -1,26 +1,15 @@
-name: Cake
+name: Plugin (win32)
 on:
   push:
     branches: [ master ]
     paths:
-      - src/**
-      - SampSharp.sln
-      - CHANGES-*.md
-      - cake
-      - build.cake
-    paths-ignore:
       - src/SampSharp/**
+      - SampSharp.sln
   pull_request:
     branches: [ master ]
     paths:
-      - src/**
-      - SampSharp.sln
-      - CHANGES-*.md
-      - cake
-      - build.cake
-    paths-ignore:
       - src/SampSharp/**
-
+      - SampSharp.sln
 jobs:
   build:
     runs-on: windows-latest
@@ -29,23 +18,14 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
-      - name: Checkout submodules
-        run: git submodule update --init --recursive
-
       - name: Setup MSBuild.exe
         uses: microsoft/setup-msbuild@v1.0.2
-
+        
       - name: Build plugin
         run: msbuild.exe SampSharp.sln /target:SampSharp -p:Configuration="Release"
-
-      - name: Run the Cake script
-        uses: cake-build/cake-action@v1
-        with:
-          script-path: build.cake
-          target: CI
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: nuget-packages
-          path: bin/Release/*.nupkg
+          name: plugin-bin
+          path: bin/

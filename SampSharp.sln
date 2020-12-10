@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampSharp", "src\SampSharp\SampSharp.vcxproj", "{39908193-8E5A-42EC-B71B-5D457CE87823}"
-	ProjectSection(ProjectDependencies) = postProject
-		{AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5} = {AAF5CF0F-5B39-4122-B2A2-E7D5910CB4D5}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampSharp.Core", "src\SampSharp.Core\SampSharp.Core.csproj", "{7B9345A8-80F3-43E3-B3E1-B3E3B45B8B0F}"
 EndProject
