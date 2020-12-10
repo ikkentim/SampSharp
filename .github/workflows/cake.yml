@@ -10,7 +10,7 @@ on:
       - CHANGES-*.md
       - cake
       - build.cake
-      
+
   pull_request:
     branches: [ master ]
     paths:
@@ -45,4 +45,8 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: nuget-packages
-          path: bin/Release/*.nupkg
+          path: |
+            bin/Release/*.nupkg
+            bin/**/*.dll
+            bin/**/*.pdb
+            bin/**/*.xml
