@@ -4,22 +4,20 @@ on:
     branches: [ master ]
     paths:
       - src/**
+      - '!src/SampSharp/**'
       - SampSharp.sln
       - CHANGES-*.md
       - cake
       - build.cake
-    paths-ignore:
-      - src/SampSharp/**
   pull_request:
     branches: [ master ]
     paths:
       - src/**
+      - '!src/SampSharp/**'
       - SampSharp.sln
       - CHANGES-*.md
       - cake
       - build.cake
-    paths-ignore:
-      - src/SampSharp/**
 
 jobs:
   build:
