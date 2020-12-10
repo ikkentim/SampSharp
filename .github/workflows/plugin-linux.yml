@@ -1,4 +1,4 @@
-name: Plugin (win32)
+name: Plugin (Linux)
 on:
   push:
     branches: [ master ]
@@ -22,8 +22,8 @@ jobs:
 
       - name: Install deps
         run: |
-        sudo apt-get update -y -qq
-        sudo apt-get install -y -qq gcc-multilib g++-multilib
+          sudo apt-get update -y -qq
+          sudo apt-get install -y -qq gcc-multilib g++-multilib
         
       - name: Build plugin
         run: make
