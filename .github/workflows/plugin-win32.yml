@@ -3,11 +3,13 @@ on:
   push:
     branches: [ master ]
     paths:
+      - .github/workflows
       - src/SampSharp/**
       - SampSharp.sln
   pull_request:
     branches: [ master ]
     paths:
+      - .github/workflows
       - src/SampSharp/**
       - SampSharp.sln
 jobs:
