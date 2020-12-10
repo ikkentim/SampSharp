@@ -6,12 +6,16 @@ on:
       - .github/workflows
       - src/SampSharp/**
       - SampSharp.sln
+
   pull_request:
     branches: [ master ]
     paths:
       - .github/workflows
       - src/SampSharp/**
       - SampSharp.sln
+
+  workflow_dispatch:
+  
 jobs:
   build:
     runs-on: ubuntu-latest

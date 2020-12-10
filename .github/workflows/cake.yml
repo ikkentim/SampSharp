@@ -10,6 +10,7 @@ on:
       - CHANGES-*.md
       - cake
       - build.cake
+      
   pull_request:
     branches: [ master ]
     paths:
@@ -20,6 +21,8 @@ on:
       - CHANGES-*.md
       - cake
       - build.cake
+
+  workflow_dispatch:
 
 jobs:
   build:
