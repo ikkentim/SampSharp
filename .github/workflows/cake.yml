@@ -32,12 +32,6 @@ jobs:
       - name: Checkout submodules
         run: git submodule update --init --recursive
 
-      - name: Setup MSBuild.exe
-        uses: microsoft/setup-msbuild@v1.0.2
-
-      - name: Build plugin
-        run: msbuild.exe SampSharp.sln /target:SampSharp -p:Configuration="Release"
-
       - name: Run the Cake script
         uses: cake-build/cake-action@v1
         with:
