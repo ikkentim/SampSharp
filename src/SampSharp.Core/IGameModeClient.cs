@@ -86,6 +86,7 @@ namespace SampSharp.Core
         /// </summary>
         /// <param name="name">The name of the native.</param>
         /// <returns>The handle of the native with the specified <paramref name="name" />.</returns>
+        [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
         int GetNativeHandle(string name);
 
         /// <summary>
@@ -93,11 +94,13 @@ namespace SampSharp.Core
         /// </summary>
         /// <param name="data">The data buffer to be used.</param>
         /// <returns>The response from the native.</returns>
+        [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
         byte[] InvokeNative(IEnumerable<byte> data);
 
         /// <summary>
         ///     Shuts down the server after the current callback has been processed.
         /// </summary>
+        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
         void ShutDown();
     }
 }

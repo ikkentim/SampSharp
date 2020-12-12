@@ -6,6 +6,7 @@ namespace SampSharp.Core.Natives
     /// <summary>
     ///     Contains the functionality of a native function loader.
     /// </summary>
+    [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
     public interface INativeLoader
     {
         /// <summary>

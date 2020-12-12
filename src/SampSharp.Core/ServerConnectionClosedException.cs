@@ -20,6 +20,7 @@ namespace SampSharp.Core
     /// <summary>
     /// Represents errors that occur when the connection between an <see cref="IGameModeClient"/> instance and the server disappeared.
     /// </summary>
+    [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
     public class ServerConnectionClosedException : Exception
     {
         /// <summary>

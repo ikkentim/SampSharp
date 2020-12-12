@@ -13,11 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace SampSharp.Core.Communication
 {
     /// <summary>
     ///     Holds data send by the server.
     /// </summary>
+    [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
     public struct ServerCommandData
     {
         /// <summary>

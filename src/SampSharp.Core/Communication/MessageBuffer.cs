@@ -21,6 +21,7 @@ namespace SampSharp.Core.Communication
     /// <summary>
     ///     A buffer of data which can be translated into server messages.
     /// </summary>
+    [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
     public class MessageBuffer
     {
         private readonly Queue<byte> _queue = new Queue<byte>(1000);

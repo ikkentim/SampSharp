@@ -15,10 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using SampSharp.Core.Communication;
 
 namespace SampSharp.Core.Natives
@@ -26,6 +22,7 @@ namespace SampSharp.Core.Natives
     /// <summary>
     ///     Contains information about a native's parameter.
     /// </summary>
+    [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
     public struct NativeParameterInfo
     {
         /// <summary>

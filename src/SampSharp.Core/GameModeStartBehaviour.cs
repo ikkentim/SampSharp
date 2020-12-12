@@ -18,6 +18,7 @@ namespace SampSharp.Core
     /// <summary>
     ///     Contains methods of attaching the game mode to the server.
     /// </summary>
+    [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
     public enum GameModeStartBehaviour : byte
     {
         /// <summary>

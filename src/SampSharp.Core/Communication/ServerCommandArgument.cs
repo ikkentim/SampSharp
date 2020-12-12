@@ -21,6 +21,7 @@ namespace SampSharp.Core.Communication
     ///     Contains the possible SampShap server command argument types.
     /// </summary>
     [Flags]
+    [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
     public enum ServerCommandArgument : byte
     {
         /// <summary>

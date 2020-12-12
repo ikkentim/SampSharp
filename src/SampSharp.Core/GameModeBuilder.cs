@@ -63,6 +63,7 @@ namespace SampSharp.Core
         /// </summary>
         /// <param name="communicationClient">The communication client.</param>
         /// <returns>The updated game mode configuration builder.</returns>
+        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
         public GameModeBuilder UseCommunicationClient(ICommunicationClient communicationClient)
         {
             _communicationClient = communicationClient ?? throw new ArgumentNullException(nameof(communicationClient));
@@ -75,6 +76,7 @@ namespace SampSharp.Core
         /// </summary>
         /// <param name="pipeName">Name of the pipe.</param>
         /// <returns>The updated game mode configuration builder.</returns>
+        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
         public GameModeBuilder UsePipe(string pipeName)
         {
             if (pipeName == null) throw new ArgumentNullException(nameof(pipeName));
@@ -87,6 +89,7 @@ namespace SampSharp.Core
         /// </summary>
         /// <param name="path">The path to the domain socket file.</param>
         /// <returns>The updated game mode configuration builder.</returns>
+        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
         public GameModeBuilder UseUnixDomainSocket(string path)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
@@ -98,6 +101,7 @@ namespace SampSharp.Core
         /// </summary>
         /// <param name="port">The port on which to connect.</param>
         /// <returns>The updated game mode configuration builder.</returns>
+        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
         public GameModeBuilder UseTcpClient(int port)
         {
             return UseCommunicationClient(new TcpCommunicationClient(DefaultTcpIp, port));
@@ -109,6 +113,7 @@ namespace SampSharp.Core
         /// <param name="host">The host to which to connect.</param>
         /// <param name="port">The port on which to connect.</param>
         /// <returns>The updated game mode configuration builder.</returns>
+        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
         public GameModeBuilder UseTcpClient(string host, int port)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
@@ -243,6 +248,7 @@ namespace SampSharp.Core
         ///     Indicate the game mode will be hosted in the SA-MP server process.
         /// </summary>
         /// <returns>The updated game mode configuration builder.</returns>
+        [Obsolete("Multi-process mode is deprecated and will be removed in a future release. There is no longer a need to call this method.")]
         public GameModeBuilder UseHosted()
         {
             _hosted = true;
@@ -255,6 +261,7 @@ namespace SampSharp.Core
         /// <param name="exitBehaviour">The exit behaviour.</param>
         /// <remarks>The exit behaviour is ignored when using a hosted game mode environment.</remarks>
         /// <returns>The updated game mode configuration builder.</returns>
+        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
         public GameModeBuilder UseExitBehaviour(GameModeExitBehaviour exitBehaviour)
         {
             _exitBehaviour = exitBehaviour;
@@ -267,6 +274,7 @@ namespace SampSharp.Core
         /// </summary>
         /// <param name="startBehaviour">The start behaviour.</param>
         /// <returns>The updated game mode configuration builder.</returns>
+        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
         public GameModeBuilder UseStartBehaviour(GameModeStartBehaviour startBehaviour)
         {
             _startBehaviour = startBehaviour;
@@ -279,6 +287,7 @@ namespace SampSharp.Core
         /// </summary>
         /// <param name="action">The action to run if the game mode builder has been configured to run in hosted mode.</param>
         /// <returns>The updated game mode configuration builder.</returns>
+        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
         public GameModeBuilder IfHosted(Action<GameModeBuilder> action)
         {
             if (_hosted)
@@ -293,6 +302,7 @@ namespace SampSharp.Core
         /// </summary>
         /// <param name="action">The action to run if the game mode builder has been configured to run in multi process mode.</param>
         /// <returns>The updated game mode configuration builder.</returns>
+        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
         public GameModeBuilder IfMultiProcess(Action<GameModeBuilder> action)
         {
             if (!_hosted)

@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.Collections.Concurrent;
 using System.Threading;
 
@@ -21,6 +22,7 @@ namespace SampSharp.Core.Threading
     /// <summary>
     ///     Represents a message queue for messages sent to a <see cref="SampSharpSynchronizationContext" /> which can be retrieved via a semaphore.
     /// </summary>
+    [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
     public class SemaphoreMessageQueue : IMessageQueue
     {
         private readonly ConcurrentQueue<SendOrPostCallbackItem> _queue = new ConcurrentQueue<SendOrPostCallbackItem>();

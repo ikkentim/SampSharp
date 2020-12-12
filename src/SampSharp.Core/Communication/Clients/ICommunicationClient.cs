@@ -22,6 +22,7 @@ namespace SampSharp.Core.Communication.Clients
     /// <summary>
     ///     Contains the methods a of a communication client used by the SampSharp client to communicate with the server.
     /// </summary>
+    [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
     public interface ICommunicationClient : IDisposable
     {
         /// <summary>

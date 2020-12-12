@@ -20,6 +20,7 @@ namespace SampSharp.Core.Communication
     /// <summary>
     ///     Contains the server commands which can be sent to and received from the SampSharp server.
     /// </summary>
+    [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
     public enum ServerCommand : byte
     {
         /// <summary>

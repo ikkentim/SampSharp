@@ -1,8 +1,11 @@
-﻿namespace SampSharp.Core.Natives
+﻿using System;
+
+namespace SampSharp.Core.Natives
 {
     /// <summary>
     ///     Contains the definition of a native.
     /// </summary>
+    [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
     public interface INative
     {
         /// <summary>

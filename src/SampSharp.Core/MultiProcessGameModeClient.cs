@@ -26,8 +26,6 @@ using SampSharp.Core.Communication;
 using SampSharp.Core.Communication.Clients;
 using SampSharp.Core.Logging;
 using SampSharp.Core.Natives;
-using SampSharp.Core.Natives.NativeObjects;
-using SampSharp.Core.Natives.NativeObjects.NativeHandles;
 using SampSharp.Core.Threading;
 
 namespace SampSharp.Core
@@ -35,6 +33,7 @@ namespace SampSharp.Core
     /// <summary>
     ///     Represents a SampSharp game mode client for remote SA-MP servers.
     /// </summary>
+    [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
     public sealed class MultiProcessGameModeClient : IGameModeClient, IGameModeRunner, ISynchronizationProvider
     {
         private static readonly byte[] AOne = { 1 };
