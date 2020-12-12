@@ -453,6 +453,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 
         private static string GenerateCallFormat(NativeIlGenContext context)
         {
+            // context. ReferenceIndices
             var formatStringBuilder = new StringBuilder();
             foreach (var param in context.Parameters)
             {
@@ -461,7 +462,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     case NativeParameterType.Int32:
                     case NativeParameterType.Single:
                     case NativeParameterType.Bool:
-                        formatStringBuilder.Append("d");
+                        formatStringBuilder.Append(param.IsReferenceInput ? "r" : "d");
                         break;
                     case NativeParameterType.Int32Reference:
                     case NativeParameterType.SingleReference:

@@ -34,6 +34,11 @@ namespace SampSharp.Core.Natives.NativeObjects
         public bool IsLengthParam { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this native parameter is an input value by reference.
+        /// </summary>
+        public bool IsReferenceInput { get; set; }
+
+        /// <summary>
         /// Gets the name of this native parameter.
         /// </summary>
         public string Name => Parameter?.Name ?? Property?.Name;

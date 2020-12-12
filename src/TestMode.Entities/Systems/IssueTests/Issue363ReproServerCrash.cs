@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Entities;
 
@@ -22,7 +23,7 @@ namespace TestMode.Entities.Systems.IssueTests
 
         public class TestNatives
         {
-            [NativeMethod]
+            [NativeMethod(ReferenceIndices = new[] {2, 3})]
             public virtual void CallRemoteFunction(string name, string format, int a, int b)
             {
                 throw new NativeNotImplementedException();

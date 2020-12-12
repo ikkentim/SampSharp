@@ -68,5 +68,10 @@ namespace SampSharp.Core.Natives.NativeObjects
         ///     Gets the lengths of special arguments.
         /// </summary>
         public uint[] Lengths { get; }
+
+        /// <summary>
+        /// Gets indices of parameters which should be passed by reference instead of input values.
+        /// </summary>
+        public int[] ReferenceIndices { get; set; }
     }
 }

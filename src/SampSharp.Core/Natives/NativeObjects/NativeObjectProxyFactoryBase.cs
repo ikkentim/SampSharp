@@ -180,7 +180,7 @@ namespace SampSharp.Core.Natives.NativeObjects
             var idIndex = Math.Max(0, attr.IdentifiersIndex);
 
             var result = CreateMethodBuilder(name, type, attr.Lengths ?? Array.Empty<uint>(), typeBuilder, method,
-                attr.IgnoreIdentifiers ? Array.Empty<string>() : objectIdentifiers, idIndex, proxyFields);
+                attr.IgnoreIdentifiers ? Array.Empty<string>() : objectIdentifiers, idIndex, proxyFields, attr.ReferenceIndices);
             return result != null;
         }
 
@@ -196,14 +196,14 @@ namespace SampSharp.Core.Natives.NativeObjects
             {
                 var nativeName = propertyAttribute.GetFunction ?? $"Get{property.Name}";
                 var argLengths = propertyAttribute.GetLengths ?? Array.Empty<uint>();
-                getMethodBuilder = CreateMethodBuilder(nativeName, type, argLengths, typeBuilder, get, identifiers, 0, proxyFields);
+                getMethodBuilder = CreateMethodBuilder(nativeName, type, argLengths, typeBuilder, get, identifiers, 0, proxyFields, null);
             }
 
             if (set != null)
             {
                 var nativeName = propertyAttribute.SetFunction ?? $"Set{property.Name}";
                 var argLengths = propertyAttribute.SetLengths ?? Array.Empty<uint>();
-                setMethodBuilder = CreateMethodBuilder(nativeName, type, argLengths, typeBuilder, set, identifiers, 0, proxyFields);
+                setMethodBuilder = CreateMethodBuilder(nativeName, type, argLengths, typeBuilder, set, identifiers, 0, proxyFields, null);
             }
 
             if (getMethodBuilder == null && setMethodBuilder == null)
@@ -222,16 +222,16 @@ namespace SampSharp.Core.Natives.NativeObjects
         private MethodBuilder CreateMethodBuilder(string nativeName, Type proxyType,
             uint[] nativeArgumentLengths,
             TypeBuilder typeBuilder, MethodInfo method, string[] identifierPropertyNames, int idIndex,
-            FieldInfo[] proxyFields)
+            FieldInfo[] proxyFields, int[] referenceIndices)
         {
             return CreateMethodBuilder(typeBuilder,
                 CreateContext(nativeName, proxyType, nativeArgumentLengths, method, identifierPropertyNames, idIndex,
-                    proxyFields));
+                    proxyFields, referenceIndices));
         }
 
         private NativeIlGenContext CreateContext(string nativeName, Type proxyType,
             uint[] nativeArgumentLengths, MethodInfo method, string[] identifierPropertyNames, int idIndex,
-            FieldInfo[] proxyFields)
+            FieldInfo[] proxyFields, int[] referenceIndices)
         {
             var methodParameters = method.GetParameters();
             identifierPropertyNames ??= Array.Empty<string>();
@@ -261,6 +261,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                 var paramIndex = i >= idIndex ? i + identifierPropertyNames.Length : i;
                 var parameter = parameters[paramIndex];
 
+                parameter.IsReferenceInput = referenceIndices != null && referenceIndices.Contains(i);
                 parameter.Parameter = methodParameter;
 
                 if (parameter.RequiresLength)
