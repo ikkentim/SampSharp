@@ -25,6 +25,8 @@ hosted_server *hosting = NULL;
 hosted_server::hosted_server(const char *clr_dir, const char* exe_path) {
     int retval;
     unsigned int exitcode;
+
+    log_info("Initializing .NET runtime...");
     if((retval = app_.initialize(clr_dir, exe_path, "SampSharp Host")) < 0) {
         log_error("Failed to initialize CoreCLR runtime. Error %d.", retval);
         return;
@@ -32,13 +34,14 @@ hosted_server::hosted_server(const char *clr_dir, const char* exe_path) {
 
     if((retval = app_.create_delegate(INTEROP_LIB, INTEROP_CLASS, "Tick",
         (void **)&tick_)) < 0) {
-        log_warning("Failed to load Tick delegate. Error %d.", retval);
+        log_error("Failed to load Tick delegate. Error %d.", retval);
     }
     if((retval = app_.create_delegate(INTEROP_LIB, INTEROP_CLASS, "PublicCall",
         (void **)&public_call_)) < 0) {
-        log_warning("Failed to load PublicCall delegate. Error %d.", retval);
+        log_error("Failed to load PublicCall delegate. Error %d.", retval);
     }
 
+    log_info("Starting game mode host...");
     hosting = this;
     const char *args[1];
     args[0] = "--hosted";
@@ -97,6 +100,8 @@ void hosted_server::public_call(AMX *amx, const char *name, cell *params,
 }
 
 void hosted_server::print(const char* msg) const {
+    // log the message as an argument of log_print to avoid errors/crashes
+    // when the message contains %-symbols.
     log_print("%s", msg);
 }
 
