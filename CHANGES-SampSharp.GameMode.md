@@ -1,5 +1,12 @@
 ### 0.10.0
+- Added `BasePlayer.CancelEdit` (#362)
+- Added `BasePlayer.SetMapIcon` and `BasePlayer.RemoveMapIcon` (#364)
 - Updated to .NET Standard 2.1
+- Updated documentation links from SA-MP wiki to open.mp docs
+- Fixed `PlayerTextLabel.Text`, `PlayerTextLabel.AttachedPlayer` and `PlayerTextLabel.AttachedVehicle` not being set
+- Fixed command group help commands not being invoked in some cases (#361)
+- Fixed command overloading not working in some cases (#344)
+- Fixed `BasePlayer.IsNPC` not returning `true` when the NPC has not yet connected (#346)
 
 ### 0.9.1
 - Removed unused `PlayerDisconnectReason` enum in favour of `DisconnectReason` enum (#330)

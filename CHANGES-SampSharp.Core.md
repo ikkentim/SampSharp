@@ -1,7 +1,11 @@
 ### 0.10.0
+- Added support for "fastnative" calls, this improves time consumed by calls to native functions by 95% (#365)
 - Added `IGameModeClient.NativeObjectProxyFactory`
+- Added option `NativeMethodAttribute.ReferenceIndices` which provides the option to invoke a native with input parameters which should be passed by reference.
+- Added embedded codepages into the library which are available through `GameModeBuilder.UseEncodingCodePage(string pageName)`
 - Updated to .NET Standard 2.1
 - Removed setter from `IGameModeClient.NativeLoader`
+- Deprecated multi-process mode and native-handle related types and methods
 
 ### 0.9.3
 - No changes

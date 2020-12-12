@@ -70,7 +70,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         public uint[] Lengths { get; }
 
         /// <summary>
-        /// Gets indices of parameters which should be passed by reference instead of input values.
+        /// Gets or sets indices of parameters which should be passed by reference instead of input values.
         /// </summary>
         public int[] ReferenceIndices { get; set; }
     }
