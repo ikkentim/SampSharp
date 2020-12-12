@@ -13,7 +13,6 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
     public class FastNativeBasedNativeObjectProxyFactory : NativeObjectProxyFactoryBase
     {
         private const int MaxStackAllocSize = 256;
-        private const bool DebugLogOutBuffer = false;
         private readonly IGameModeClient _gameModeClient;
         
         /// <inheritdoc />
@@ -78,16 +77,6 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 
             EmitInParamAssignment(ilGenerator, context, out var paramBuffers);
             EmitInvokeNative(ilGenerator, native, context);
-
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            if (DebugLogOutBuffer)
-            {
-                ilGenerator.Emit(OpCodes.Ldloc_0);
-                ilGenerator.Emit(OpCodes.Ldc_I4, stackSize);
-                ilGenerator.Emit(OpCodes.Ldstr, context.NativeName);
-                ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.DebugLogBuffer));
-            }
-
             EmitOutParamAssignment(ilGenerator, context, paramBuffers);
             EmitReturnCast(ilGenerator, context);
 

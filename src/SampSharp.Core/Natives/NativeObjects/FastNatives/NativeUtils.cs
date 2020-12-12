@@ -152,14 +152,6 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             return result;
         }
 
-        public static unsafe void DebugLogBuffer(int* ptr, int len, string name)
-        {
-            var i = 0;
-            var span = new Span<int>(ptr, len);
-            CoreLog.LogDebug($"Buffer {name} (Length={span.Length})");
-            foreach (var n in span) CoreLog.LogDebug($"{name}[{i++}]: {((int)(IntPtr)n):X8}");
-        }
-
         private static void CopySpan(Span<int> span, int[] arr)
         {
             span.CopyTo(new Span<int>(arr));

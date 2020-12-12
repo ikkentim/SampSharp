@@ -21,12 +21,8 @@ namespace SampSharp.Core.Natives.NativeObjects
         public MethodInfo BaseMethod
         {
             get => _baseMethod;
-            set { _baseMethod = value;
-                Debug = value?.Name;
-            }
+            set => _baseMethod = value;
         }
-
-        public string Debug { get; set; }
 
         /// <summary>
         /// Gets or sets the parameters of the native.
