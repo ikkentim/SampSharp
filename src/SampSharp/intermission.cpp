@@ -21,24 +21,11 @@ extern void *pAMXFunctions;
 
 intermission::intermission(plugin *plg) :
     on_(false),
-    enable_(true),
     plg_(plg){
 
     std::string value;
     plg->config()->GetOptionAsString("intermission", value);
-    if (value.length() > 0) {
-        value = StringUtil::TrimString(value);
-        value = StringUtil::ToLower(value);
-        if (!value.compare("on") || !value.compare("yes") || !value.compare("true")) {
-            enable_ = true;
-        }
-        else if (!value.compare("off") || !value.compare("no") || !value.compare("false")) {
-                enable_ = false;
-            }
-        else {
-            enable_ = !!atoi(value.c_str());
-        }
-    }
+    enable_ = StringUtil::ToBool(value, true);
 }
 
 

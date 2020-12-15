@@ -1,6 +1,8 @@
 ### 0.10.0
+- Added automatic coreclr and gamemode detection
 - Added support for "fastnative" calls (#365)
 - Added callback name to "Callback parameters count mismatch" error (#342)
+- Changed hosted mode to be the default, multi-process mode can be enabled with the `use_multi_process_mode=1` server setting
 - Fixed a possible server crash when a callback is handled with an unexpected parameter cound
 - Fixed a possible server crash when calling the `CallRemoveFunction` native (#363)
 

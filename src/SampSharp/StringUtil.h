@@ -61,4 +61,26 @@ struct StringUtil
         std::transform(s.begin(), s.end(), s.begin(), __to_lower);
         return s;
     }
+
+    static inline bool EndsWith(std::string const & value, std::string const & ending) {
+        if (ending.size() > value.size()) return false;
+        return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+    }
+
+    static inline bool ToBool(std::string value, bool def) {
+        value = TrimString(value);
+        value = ToLower(value);
+
+        if(value.length() == 0)
+            return def;
+
+        if (!value.compare("on") || !value.compare("yes") || !value.compare("true")) {
+            return true;
+        }
+        else if (!value.compare("off") || !value.compare("no") || !value.compare("false")) {
+                return false;
+        }
+       
+       return !!atoi(value.c_str());
+    }
 };

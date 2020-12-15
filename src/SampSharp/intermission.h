@@ -30,5 +30,5 @@ public:
 private:
     plugin *plg_;
     bool on_;
-    bool enable_;
+    bool enable_ = true;
 };

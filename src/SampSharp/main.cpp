@@ -64,13 +64,7 @@ void start_server() {
     }
 
     if(plg->state() & STATE_HOSTED) {
-        std::string coreclr;
-        std::string gamemode;
-
-        plg->config("coreclr", coreclr);
-        plg->config("gamemode", gamemode);
-
-        svr = new hosted_server(coreclr.c_str(), gamemode.c_str());
+        svr = new hosted_server(plg->get_coreclr()->c_str(), plg->get_gamemode()->c_str());
     }
     else {
         print_deprecation_warning();

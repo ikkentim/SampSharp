@@ -16,6 +16,7 @@
 #pragma once
 
 #include <string>
+#include <filesystem>
 #include <inttypes.h>
 #include <sampgdk/sampgdk.h>
 #include "ConfigReader.h"
@@ -43,11 +44,19 @@ public:
     plugin_state state_set(plugin_state flag);
     plugin_state state_unset(plugin_state flag);
     plugin_state state_reset();
-    
+    std::string *get_coreclr();
+    std::string *get_gamemode();
+
     int amx_load(AMX *amx);
 
 private:
+    bool detect_coreclr(std::string &value);
+    bool detect_coreclr(std::string &value, std::filesystem::path path);
+    bool detect_gamemode(std::string &value);
+    bool detect_gamemode(std::string &value, std::filesystem::path path);
     void** data_;
     ConfigReader config_;
     plugin_state state_ = STATE_NONE;
+    std::string coreclr_;
+    std::string gamemode_;
 };
