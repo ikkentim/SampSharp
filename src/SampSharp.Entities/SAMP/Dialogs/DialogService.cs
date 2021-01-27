@@ -59,7 +59,7 @@ namespace SampSharp.Entities.SAMP
             var native = _entityManager.GetComponent<NativePlayer>(player);
 
             native.ShowPlayerDialog(DialogId, (int) dialog.Style, dialog.Caption ?? string.Empty,
-                dialog.Content ?? string.Empty, dialog.Button1 ?? string.Empty, dialog.Button2);
+                dialog.Content ?? string.Empty, dialog.Button1 ?? string.Empty, dialog.Button2 ?? string.Empty);
             
 
             void Handler(DialogResult result)
