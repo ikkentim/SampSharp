@@ -58,6 +58,26 @@ namespace SampSharp.GameMode.World
         ///     Maximum length of the text in a chat bubble.
         /// </summary>
         public const int MaxChatBubbleLength = 144;
+
+        /// <summary>
+        ///     Finds a <see cref="BasePlayer"/> from the given <paramref name="name"/>
+        /// </summary>
+        /// <param name="name">The name of the BasePlayer to find</param>
+        /// <returns>The found BasePlayer</returns>
+        public static BasePlayer FindByName(string name)
+        {
+            BasePlayer result = null;
+            for (int i = 0; i < Server.MaxPlayers; i++)
+            {
+                if (BasePlayer.Find(i) != null)
+                {
+                    BasePlayer p = BasePlayer.Find(i);
+                    if (p.Name.Equals(name))
+                        result = p;
+                }
+            }
+            return result;
+        }
         
         #region Constructors
 
