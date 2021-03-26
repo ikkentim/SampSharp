@@ -160,7 +160,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Connect an NPC to the server.
+        ///     Connects an NPC to the server.
         /// </summary>
         /// <param name="name">The name the NPC should connect as. Must follow the same rules as normal player names.</param>
         /// <param name="script">The NPC script name that is located in the npcmodes folder (without the .amx extension).</param>
@@ -177,7 +177,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Set the world weather for all players.
+        ///     Sets the world weather for all players.
         /// </summary>
         /// <param name="weatherid">The weather to set.</param>
         public static void SetWeather(int weatherid)

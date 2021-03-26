@@ -14,9 +14,6 @@
 // limitations under the License.
 using SampSharp.GameMode.Events;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 using static SampSharp.GameMode.SAMP.Server;
 
 namespace SampSharp.GameMode.World
@@ -37,11 +34,24 @@ namespace SampSharp.GameMode.World
         /// <param name="script">The NPC script name that is located in the npcmodes folder (without the .amx extension).</param>
         public NPC(string name, string script)
         {
+            this.Name = name;
+            BaseMode.Instance.PlayerConnected += (p, e) => this.OnNPCConnect(p as BasePlayer);
             ServerInternal.Instance.ConnectNPC(name, script);
-            Name = name;
-            this.FindInstance();
         }
+        #endregion
 
+        #region Callbacks
+
+        private void OnNPCConnect(BasePlayer p)
+        {
+            if(p.Name.Equals(Name) && p.IsNPC)
+            {
+                PlayerInstance = p;
+                Connected?.Invoke(this, new NPCConnectionEventArgs(p));
+            }
+
+        }
+        
         #endregion
 
         #region Properties
@@ -58,32 +68,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Occurs when the NPC instance has been connected
         /// </summary>
-        public EventHandler<ConnectionEventArgs> Connected;
-
-        #endregion
-
-        #region Methods
-
-        private void FindInstance()
-        {
-            Thread t = new Thread(new ThreadStart(() => {
-                BasePlayer player;
-                while(PlayerInstance == null)
-                {
-                    for(int i=0; i < ServerInternal.Instance.GetMaxPlayers(); i++)
-                    {
-                        player = BasePlayer.Find(i);
-                        if (player == null) continue;
-                        if (player.Name.Equals(Name) && player.IsConnected && player.IsNPC)
-                        {
-                            PlayerInstance = player;
-                            Connected?.Invoke(this, new ConnectionEventArgs(player.Id, player.IP, -1));
-                        }
-                    }
-                }
-            }));
-            t.Start();
-        }
+        public event EventHandler<NPCConnectionEventArgs> Connected;
 
         #endregion
     }
