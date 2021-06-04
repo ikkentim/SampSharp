@@ -9,7 +9,7 @@ CXX=g++
 SRCDIR=src/SampSharp
 BINDIR=bin
 OBJDIR=bin/obj
-FLAGS= -I$(SRCDIR)/includes -I$(SRCDIR)/includes/sdk -I$(SRCDIR)/includes/sdk/amx -DNDEBUG -DLINUX -D_GNU_SOURCE -DSAMPGDK_AMALGAMATION
+FLAGS= -O2 -fvisibility=hidden -fvisibility-inlines-hidden -I$(SRCDIR)/includes -I$(SRCDIR)/includes/sdk -I$(SRCDIR)/includes/sdk/amx -DNDEBUG -DLINUX -D_GNU_SOURCE -DSAMPGDK_AMALGAMATION
 CFLAGS= -m32
 CXXFLAGS=-std=c++17 -m32
 LDFLAGS=-shared
