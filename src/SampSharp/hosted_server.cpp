@@ -147,7 +147,7 @@ SAMPSHARP_EXPORT void SAMPSHARP_CALL sampsharp_register_callback(uint8_t *buf) {
     }
 }
 
-SAMPSHARP_EXPORT void *SAMPSHARP_CALL sampsharp_fast_native_find(const char *name) {
+SAMPSHARP_EXPORT void SAMPSHARP_CALL *sampsharp_fast_native_find(const char *name) {
     assert(name != nullptr);
     return (void *)sampgdk_FindNative(name);
 }
