@@ -1,0 +1,18 @@
+{
+    "user": "ikkentim",
+    "repo": "SampSharp",
+    "resources": [
+        {
+            "name": "^SampSharp-(.+).zip$",
+            "platform": "linux",
+            "archive": true,
+            "plugins": ["plugins/libSampSharp.so"]
+        },
+        {
+            "name": "^SampSharp-(.+).zip$",
+            "platform": "windows",
+            "archive": true,
+            "plugins": ["plugins/SampSharp.dll"]
+        }
+    ]
+}
