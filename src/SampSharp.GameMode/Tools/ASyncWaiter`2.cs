@@ -64,8 +64,9 @@ namespace SampSharp.GameMode.Tools
             if (key == null) throw new ArgumentNullException(nameof(key));
             if (!_completionSources.ContainsKey(key)) return;
 
-            _completionSources[key].SetResult(arguments);
+            var task = _completionSources[key];
             Remove(key);
+            task.SetResult(arguments);
         }
 
         /// <summary>
@@ -77,8 +78,9 @@ namespace SampSharp.GameMode.Tools
             if (key == null) throw new ArgumentNullException(nameof(key));
             if (!_completionSources.ContainsKey(key)) return;
 
-            _completionSources[key].TrySetCanceled();
+            var task = _completionSources[key];
             Remove(key);
+            task.TrySetCanceled();
         }
 
         private void Remove(TKey key)
