@@ -116,13 +116,7 @@ namespace SampSharp.GameMode.World
                 PlayerInternal.Instance.GetPlayerName(Id, out var name, MaxNameLength);
                 return name;
             }
-            set
-            {
-                if(PlayerInternal.Instance.SetPlayerName(Id, value) == -1)
-                {
-                    throw new Exception("The name is already in use, too long or has invalid characters.");
-                }
-            }
+            set => PlayerInternal.Instance.SetPlayerName(Id, value);
         }
 
         /// <summary>
