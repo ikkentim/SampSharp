@@ -218,7 +218,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         public ICommand GetCommandForText(BasePlayer player, string commandText)
         {
             ICommand candidate = null;
-            var isFullMath = false;
+            var isFullMatch = false;
             var candidateLength = 0;
 
             foreach (var command in _commands)
@@ -227,9 +227,9 @@ namespace SampSharp.GameMode.SAMP.Commands
                 {
                     case CommandCallableResponse.True:
 
-                        if (candidateLength < matchedNameLength || candidateLength == matchedNameLength && !isFullMath)
+                        if (candidateLength < matchedNameLength || candidateLength == matchedNameLength && !isFullMatch)
                         {
-                            isFullMath = true;
+                            isFullMatch = true;
                             candidateLength = matchedNameLength;
                             candidate = command;
                         }

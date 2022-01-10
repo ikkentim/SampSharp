@@ -37,13 +37,13 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         /// </returns>
         public bool Parse(ref string commandText, out object output, bool isNullable)
         {
-            var text = commandText.TrimStart();
+            commandText = commandText.TrimStart();
             output = null;
 
-            if (string.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(commandText))
                 return false;
 
-            var word = text.Split(' ').First();
+            var word = commandText.Split(' ').First();
 
             // find a vehicle with a matching id.
             if (!int.TryParse(word, NumberStyles.Integer, CultureInfo.InvariantCulture, out var id)) 

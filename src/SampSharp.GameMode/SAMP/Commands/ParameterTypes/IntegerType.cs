@@ -39,14 +39,14 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         /// </returns>
         public bool Parse(ref string commandText, out object output, bool isNullable)
         {
-            var text = commandText.TrimStart();
+            commandText = commandText.TrimStart();
             output = null;
 
-            if (string.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(commandText))
                 return false;
 
 
-            var word = text.Split(' ').First();
+            var word = commandText.Split(' ').First();
 
 
             // Regular base 10 numbers (eg. 14143)
