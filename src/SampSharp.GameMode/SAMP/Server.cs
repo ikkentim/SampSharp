@@ -214,7 +214,7 @@ namespace SampSharp.GameMode.SAMP
                 case Weapon.NightVisionGoggles:
                     return "Night Vision Goggles";
                 case Weapon.ThermalGoggles:
-                    return "Therml Goggles";
+                    return "Thermal Goggles";
                 default:
                     ServerInternal.Instance.GetWeaponName((int) weapon, out var retstr, 32);
                     return string.IsNullOrEmpty(retstr) ? weapon.ToString() : retstr;
