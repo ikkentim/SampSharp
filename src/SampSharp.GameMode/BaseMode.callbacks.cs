@@ -399,8 +399,12 @@ namespace SampSharp.GameMode
         [Callback]
         internal bool OnPlayerStreamIn(int playerid, int forplayerid)
         {
-            OnPlayerStreamIn(BasePlayer.FindOrCreate(playerid),
-                new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
+            var player = BasePlayer.Find(playerid);
+
+            if (player == null)
+                return true;
+
+            OnPlayerStreamIn(player, new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
 
             return true;
         }
@@ -408,9 +412,13 @@ namespace SampSharp.GameMode
         [Callback]
         internal bool OnPlayerStreamOut(int playerid, int forplayerid)
         {
-            OnPlayerStreamOut(BasePlayer.FindOrCreate(playerid),
-                new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
+            var player = BasePlayer.Find(playerid);
 
+            if (player == null)
+                return true;
+  
+            OnPlayerStreamOut(player, new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
+            
             return true;
         }
 
