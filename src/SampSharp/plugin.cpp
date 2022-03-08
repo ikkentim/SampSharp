@@ -269,7 +269,7 @@ bool plugin::detect_gamemode(std::string &value, fs::path path) {
     }
 
     // Check for version numbers in subdirectories
-    std::regex const regex_version {R"(^netcoreapp([0-9])+\.([0-9])+$)"}; 
+    std::regex const regex_version {R"(^net[coreapp]?([0-9])+\.([0-9])+$)"}; 
  
     int best_version_number = 0;
     fs::path best_version;
