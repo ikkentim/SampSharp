@@ -64,3 +64,20 @@ cell test_varargs(AMX *amx, cell *params) {
 #endif
     return 1;
 }
+
+cell test_varargs2(AMX *amx, cell *params) {
+#ifdef ENABLE_TEST_LOGGING 
+    log_info("test_varargs2 len=%d", params[0]);
+    
+    log_info("test_varargs2 arg[0]=%d", params[1]);
+    log_info("test_varargs2 arg[1]=%d", params[2]);
+
+    for (unsigned int i = 2; i < params[0] / sizeof(cell); i++) {
+        cell *addr;
+        amx_GetAddr(amx, params[i + 1], &addr);
+
+        log_info("test_varargs2 arg[%d]=%d", i, *addr);
+    }
+#endif
+    return 1;
+}
