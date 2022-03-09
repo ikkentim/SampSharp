@@ -58,7 +58,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// <returns>The additional constructor arguments.</returns>
         protected virtual object[] GetProxyConstructorArgs()
         {
-            return new object[0];
+            return Array.Empty<object>();
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// <returns>The defined proxy fields.</returns>
         protected virtual FieldInfo[] DefineProxyFields(TypeBuilder typeBuilder)
         {
-            return new FieldInfo[0];
+            return Array.Empty<FieldInfo>();
         }
 
         private Type GenerateProxyType(Type type)
@@ -76,7 +76,7 @@ namespace SampSharp.Core.Natives.NativeObjects
             if (!(type.IsNested ? type.IsNestedPublic : type.IsPublic))
             {
                 throw new ArgumentException(
-                    $"Type {type} is not public. Native proxies can only be created for public types.", nameof(type));
+                    $"Type '{type}' is not public. Native proxies can only be created for public types.", nameof(type));
             }
 
             // Define a type for the native object.
@@ -90,7 +90,7 @@ namespace SampSharp.Core.Natives.NativeObjects
 
             // Get the common identifiers for the native object.
             var objectIdentifiers = type.GetCustomAttribute<NativeObjectIdentifiersAttribute>()?.Identifiers ??
-                                    new string[0];
+                                    Array.Empty<string>();
 
             // Keep track of whether any method or property has been wrapped in a proxy method.
             var didWrapAnything = false;
@@ -235,7 +235,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         {
             var methodParameters = method.GetParameters();
             identifierPropertyNames ??= Array.Empty<string>();
-
+            
             // Seed parameters array with indices
             var parameters = new NativeIlGenParam[methodParameters.Length + identifierPropertyNames.Length];
             for (var i = 0; i < parameters.Length; i++)
@@ -316,7 +316,8 @@ namespace SampSharp.Core.Natives.NativeObjects
                 ProxyGeneratedFields = proxyFields,
                 Parameters = parameters,
                 MethodParameterTypes = methodParameterTypes,
-                MethodOverrideAttributes = methodOverrideAttributes
+                MethodOverrideAttributes = methodOverrideAttributes,
+                HasVarArgs = parameters.Any(x=> x.Type == NativeParameterType.VarArgs)
             };
         }
 

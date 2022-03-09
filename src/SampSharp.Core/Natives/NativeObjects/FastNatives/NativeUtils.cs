@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Text;
 using SampSharp.Core.Communication;
 using SampSharp.Core.Hosting;
@@ -150,6 +151,64 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                 throw new Exception("Unsupported parameter type");
 
             return result;
+        }
+        
+        /// <summary>
+        /// Assigns variable arguments values to the specified buffers.
+        /// </summary>
+        /// <param name="args">The arguments buffer.</param>
+        /// <param name="values">The values buffer.</param>
+        /// <param name="varArgs">The variable arguments.</param>
+        /// <param name="argOffset">The offset in the arguments buffer at which the varargs start.</param>
+        /// <param name="valueOffset">The offset in the values buffer at which the varargs start.</param>
+        public static unsafe void SetVarArgsValues(int* args, int* values, object[] varArgs, int argOffset, int valueOffset)
+        {
+            for (var i = 0; i < varArgs.Length; i++)
+            {
+                args[argOffset + i] = IntPointerToInt((int *)((byte*)values + (valueOffset + i) * 4)); // 4 bytes per cell
+
+                var value = varArgs[i];
+
+                if (value is int intValue)
+                {
+                    values[valueOffset + i] = intValue;
+                }
+                else if (value is bool boolValue)
+                {
+                    values[valueOffset + i] = ValueConverter.ToInt32(boolValue);
+                }
+                else if (value is float floatValue)
+                {
+                    values[valueOffset + i] = ValueConverter.ToInt32(floatValue);
+                }
+                else
+                {
+                    // unknown type.
+                    values[valueOffset + i] = 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Appends the format for specified variable arguments to the specified format.
+        /// </summary>
+        /// <param name="format">The format to append to.</param>
+        /// <param name="varArgs">The variable arguments for which to append formatting.</param>
+        /// <returns>The complete arguments format.</returns>
+        public static string AppendVarArgsFormat(string format, object[] varArgs)
+        {
+            if (varArgs.Length == 0)
+            {
+                return format;
+            }
+
+            return string.Create(format.Length + varArgs.Length, format, (result, state) =>
+            {
+                for (var i = 0; i < result.Length; i++)
+                {
+                    result[i] = i < state.Length ? state[i] : 'r';
+                }
+            });
         }
 
         private static void CopySpan(Span<int> span, int[] arr)

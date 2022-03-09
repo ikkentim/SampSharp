@@ -38,6 +38,13 @@
 #  define SAMPSHARP_EXPORT
 #endif
 
+#if defined DEBUG || defined _DEBUG
+#  define ENABLE_TEST_LOGGING
+#  define LOG_DEBUG
+#else
+#  define DISABLE_TEST_NATIVES
+#endif
+
 #if SAMPSHARP_WINDOWS
 #  define SAMPSHARP_CALL __stdcall
 #  define SAMPSHARP_CALL_PTR *SAMPSHARP_CALL

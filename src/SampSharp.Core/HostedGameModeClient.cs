@@ -10,6 +10,7 @@ using SampSharp.Core.Communication;
 using SampSharp.Core.Hosting;
 using SampSharp.Core.Logging;
 using SampSharp.Core.Natives;
+using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Core.Threading;
 
 namespace SampSharp.Core
@@ -142,7 +143,10 @@ namespace SampSharp.Core
         
         /// <inheritdoc />
         public INativeLoader NativeLoader { get; }
-        
+
+        /// <inheritdoc />
+        public INativeObjectProxyFactory NativeObjectProxyFactory => NativeLoader.ProxyFactory;
+
         /// <inheritdoc />
         public ISynchronizationProvider SynchronizationProvider => this;
         

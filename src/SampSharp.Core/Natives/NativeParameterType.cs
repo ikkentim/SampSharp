@@ -52,6 +52,12 @@ namespace SampSharp.Core.Natives
         ///     A reference to a value.
         /// </summary>
         Reference = 1 << 5,
+
+        /// <summary>
+        ///     Variable arguments.
+        /// </summary>
+        VarArgs = 1 << 6,
+
         /// <summary>
         ///     A reference to an <see cref="int" />.
         /// </summary>
