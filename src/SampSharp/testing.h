@@ -20,3 +20,6 @@ cell test_inoutarr(AMX *amx, cell *params);
 
 // native sampsharptest_varargs({Float,_}:...);
 cell test_varargs(AMX *amx, cell *params);
+
+// native sampsharptest_varargs2(a, b, {Float,_}:...);
+cell test_varargs2(AMX *amx, cell *params);

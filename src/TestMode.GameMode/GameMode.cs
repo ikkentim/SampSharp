@@ -38,6 +38,12 @@ namespace TestMode
         {
             throw new NativeNotImplementedException();
         }
+
+        [NativeMethod(Function = "sampsharptest_varargs2")]
+        public virtual void TestVarArgs2(int a, bool b, params object[] args)
+        {
+            throw new NativeNotImplementedException();
+        }
     }
 
     public class GameMode : BaseMode
@@ -56,6 +62,7 @@ namespace TestMode
             
             var test = NativeObjectProxyFactory.CreateInstance<VarArgsNativeObj>();
             test.TestVarArgs(1, 2, 3);
+            test.TestVarArgs2(1, true, 3.234f, 9, true, 2f);
         }
 
         #endregion
