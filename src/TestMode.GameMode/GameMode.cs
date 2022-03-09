@@ -31,6 +31,15 @@ using SampSharp.GameMode.World;
 
 namespace TestMode
 {
+    public class VarArgsNativeObj
+    {
+        [NativeMethod(Function = "sampsharptest_varargs")]
+        public virtual void TestVarArgs(params object[] args)
+        {
+            throw new NativeNotImplementedException();
+        }
+    }
+
     public class GameMode : BaseMode
     {
         #region Overrides of BaseMode
@@ -44,10 +53,13 @@ namespace TestMode
 
             // RunPerformanceBenchmark();
             // .
+            
+            var test = NativeObjectProxyFactory.CreateInstance<VarArgsNativeObj>();
+            test.TestVarArgs(1, 2, 3);
         }
 
         #endregion
-
+        
         private unsafe void CallThat(IntPtr native, int id)
         {
             Span<int> data = stackalloc int[16];

@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "platforms.h"
+
 void log_debug2(const char *format, ...);
 
 /** prints text to the output */

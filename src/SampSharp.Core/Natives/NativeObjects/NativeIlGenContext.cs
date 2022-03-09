@@ -28,6 +28,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// Gets or sets the parameters of the native.
         /// </summary>
         public NativeIlGenParam[] Parameters { get; set; }
+
         /// <summary>
         /// Gets or sets the fields generated for the proxy.
         /// </summary>
@@ -42,5 +43,10 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// Gets or sets the method attributes to be used to override the base method implementation.
         /// </summary>
         public MethodAttributes MethodOverrideAttributes { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this native has variable arguments.
+        /// </summary>
+        public bool HasVarArgs { get; set; }
     }
 }

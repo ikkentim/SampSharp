@@ -1,5 +1,6 @@
 #include "testing.h"
 #include <cstring>
+#include "platforms.h"
 #include "logging.h"
 
 cell test_inout(AMX *amx, cell *params) {
@@ -46,6 +47,20 @@ cell test_inoutarr(AMX *amx, cell *params) {
    
 #ifdef ENABLE_TEST_LOGGING 
     log_info("test_inoutarr ablen=%d", params[3]);
+#endif
+    return 1;
+}
+
+cell test_varargs(AMX *amx, cell *params) {
+#ifdef ENABLE_TEST_LOGGING 
+    log_info("test_varargs len=%d", params[0]);
+
+    for (unsigned int i = 0; i < params[0] / sizeof(cell); i++) {
+        cell *addr;
+        amx_GetAddr(amx, params[i + 1], &addr);
+
+        log_info("test_varargs arg[%d]=%d", i, *addr);
+    }
 #endif
     return 1;
 }

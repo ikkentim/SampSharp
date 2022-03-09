@@ -36,8 +36,14 @@ namespace SampSharp.Core
         /// <summary>
         ///     Gets the native loader to be used to load natives.
         /// </summary>
+        [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
         INativeLoader NativeLoader { get; }
         
+        /// <summary>
+        /// Gets the factory for native method wrapper objects.
+        /// </summary>
+        INativeObjectProxyFactory NativeObjectProxyFactory { get; }
+
         /// <summary>
         /// Gets the provider which can be used for synchronizing a call to the main thread.
         /// </summary>

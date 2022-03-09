@@ -41,7 +41,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// <returns>The proxy instance.</returns>
         public static object CreateInstance(Type type, params object[] arguments)
         {
-            return InternalStorage.RunningClient.NativeLoader.ProxyFactory.CreateInstance(type, arguments);
+            return InternalStorage.RunningClient.NativeObjectProxyFactory.CreateInstance(type, arguments);
         }
     }
 }

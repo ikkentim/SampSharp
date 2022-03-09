@@ -16,6 +16,11 @@ namespace SampSharp.Core.Natives.NativeObjects.NativeHandles
         
         protected override MethodBuilder CreateMethodBuilder(TypeBuilder typeBuilder, NativeIlGenContext context)
         {
+            if (context.HasVarArgs)
+            {
+                throw new NotSupportedException("VarArgs not supported in NativeHandleBasedNativeObjectProxyFactory.");
+            }
+
             // Find the native.
             var sizes = context.Parameters
                 .Select(p => p.LengthParam)
@@ -38,7 +43,7 @@ namespace SampSharp.Core.Natives.NativeObjects.NativeHandles
             return methodBuilder;
         }
 
-        private  void Generate(ILGenerator ilGenerator, NativeIlGenContext context, INative native)
+        private void Generate(ILGenerator ilGenerator, NativeIlGenContext context, INative native)
         {
             var argsLocal = GenerateArgsArray(ilGenerator, context);
 

@@ -17,3 +17,6 @@ cell test_inoutstr(AMX *amx, cell *params);
 
 // native sampsharptest_inoutarr(const a[], b[], ablen = sizeof a);
 cell test_inoutarr(AMX *amx, cell *params);
+
+// native sampsharptest_varargs({Float,_}:...);
+cell test_varargs(AMX *amx, cell *params);

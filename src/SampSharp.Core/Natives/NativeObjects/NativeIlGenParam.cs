@@ -8,6 +8,9 @@ namespace SampSharp.Core.Natives.NativeObjects
     /// </summary>
     public class NativeIlGenParam
     {
+        private ParameterInfo _parameter;
+        private PropertyInfo _property;
+
         /// <summary>
         /// Gets or sets the index of this native parameter.
         /// </summary>
@@ -16,12 +19,44 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// <summary>
         /// Gets or sets the method parameter of this native parameter.
         /// </summary>
-        public ParameterInfo Parameter { get; set; }
+        public ParameterInfo Parameter
+        {
+            get => _parameter;
+            set
+            {
+                if (value != null)
+                {
+                    _property = null;
+
+                    if (value.ParameterType.IsArray && value.GetCustomAttribute<ParamArrayAttribute>() != null)
+                    {
+                        Type = NativeParameterType.VarArgs;
+                    }
+                    else
+                    {
+                        Type = NativeParameterInfo.ForType(value.ParameterType).Type;
+                    }
+                }
+                _parameter = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the index property of this native parameter.
         /// </summary>
-        public PropertyInfo Property { get; set; }
+        public PropertyInfo Property
+        {
+            get => _property;
+            set
+            {
+                if (value != null)
+                {
+                    _parameter = null;
+                    Type = NativeParameterInfo.ForType(value.PropertyType).Type;
+                }
+                _property = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the length parameter of this native parameter.
@@ -50,7 +85,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// <summary>
         /// Gets the type of this native parameter.
         /// </summary>
-        public NativeParameterType Type => NativeParameterInfo.ForType(Property?.PropertyType ?? Parameter.ParameterType).Type;
+        public NativeParameterType Type { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether this native parameter requires a length.

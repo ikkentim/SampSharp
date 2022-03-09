@@ -173,7 +173,7 @@ namespace SampSharp.Core
 
             if (stream == null)
             {
-                throw new GameModeBuilderException($"Code page with name {pageName} is not available.");
+                throw new GameModeBuilderException($"Code page with name '{pageName}' is not available.");
             }
             var encoding = CodePageEncoding.Deserialize(stream);
             return UseEncoding(encoding);
