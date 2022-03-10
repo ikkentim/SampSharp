@@ -27,7 +27,7 @@ jobs:
       run: dotnet build SampSharp.sln /p:CiVersion=${VERSION} --configuration Release --no-restore
 
     - name: Pack
-      run: dotnet pack --configuration Release --no-build --output bin
+      run: dotnet pack SampSharp.sln --configuration Release --no-build --output bin
 
     - name: Push
       run: |
