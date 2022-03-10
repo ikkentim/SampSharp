@@ -7,7 +7,6 @@ on:
   
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -27,7 +26,7 @@ jobs:
     - name: Build
       run: dotnet build SampSharp.sln /p:CiVersion=${VERSION} --configuration Release --no-restore
 
-   - name: Pack
+    - name: Pack
       run: dotnet pack --configuration Release --no-build --output bin
 
     - name: Push
