@@ -40,7 +40,8 @@ extern "C" const AMX_NATIVE_INFO native_list[] = {
     { "sampsharptest_inoutstr", test_inoutstr },
     { "sampsharptest_inoutarr", test_inoutarr },
     { "sampsharptest_varargs", test_varargs },
-    { "sampsharptest_varargs2", test_varargs2 },
+    { "sampsharptest_varargs_mix", test_varargs_mix },
+    { "sampsharptest_varargs_str", test_varargs_str },
 #endif
     { NULL, NULL }
 };

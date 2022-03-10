@@ -277,8 +277,8 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     ilGenerator.Emit(OpCodes.Ldloc, strBufferSpan);
                     ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.GetBytes));
 
-                    // data[i] = NativeUtils.BytePointerToInt(strBuffer);
-                    EmitBufferLocation(); // data[i]
+                    // args[i] = NativeUtils.BytePointerToInt(strBuffer);
+                    EmitBufferLocation(); // args[i]
                     EmitByteSpanToPointer(ilGenerator, strBufferSpan);
                     ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.BytePointerToInt));
                     ilGenerator.Emit(OpCodes.Stind_I4);
@@ -291,8 +291,8 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     var strBuf = EmitSpanAlloc(ilGenerator, param.LengthParam.Parameter);
                     paramBuffers[i] = strBuf;
 
-                    // data[i] = NativeUtils.BytePointerToInt(strBufPtr);
-                    EmitBufferLocation(); // data[i]
+                    // args[i] = NativeUtils.BytePointerToInt(strBufPtr);
+                    EmitBufferLocation(); // args[i]
                     EmitByteSpanToPointer(ilGenerator, strBuf);
                     ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.BytePointerToInt));
                     ilGenerator.Emit(OpCodes.Stind_I4);
@@ -316,7 +316,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.ArrayToIntSpan));
                     ilGenerator.Emit(OpCodes.Stloc, arraySpan);
                     
-                    // values[i] = NativeUtils.BytePointerToInt(strBufPtr);
+                    // args[i] = NativeUtils.BytePointerToInt(strBufPtr);
                     EmitBufferLocation(); // args[i]
                     EmitIntSpanToPointer(ilGenerator, arraySpan);
                     ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.IntPointerToInt));
@@ -329,15 +329,20 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                 }
                 else if (param.Type == NativeParameterType.VarArgs)
                 {
-                    // NativeUtils.SetVarArgsValues(args, values, varArgs, i, valueIndex);
+                    // var vContext = new VarArgsContext();
+                    var vContext = ilGenerator.DeclareLocal(typeof(VarArgsState));
+                    paramBuffers[i] = vContext;
+                    ilGenerator.Emit(OpCodes.Newobj, typeof(VarArgsState).GetConstructor(Array.Empty<Type>()));
+                    ilGenerator.Emit(OpCodes.Stloc, vContext);
+                    
+                    // NativeUtils.SetVarArgsValues(args, values, varArgs, i, valueIndex, vContext);
                     ilGenerator.Emit(OpCodes.Ldloc_0);
                     ilGenerator.Emit(OpCodes.Ldloc_1);
                     ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
                     ilGenerator.Emit(OpCodes.Ldc_I4, i);
                     ilGenerator.Emit(OpCodes.Ldc_I4, valueIndex);
+                    ilGenerator.Emit(OpCodes.Ldloc, vContext);
                     ilGenerator.EmitCall(OpCodes.Call, typeof(NativeUtils), nameof(NativeUtils.SetVarArgsValues));
-
-                    // In Pawn variadic functions always take their variable arguments (those represented by "...") by reference. This means that for such functions you have to use the 'r' specifier where you would normally use 'b', 'i' 'd' or 'f'.
                 }
                 else
                 {
@@ -408,7 +413,13 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     ilGenerator.EmitCall(OpCodes.Call, typeof(NativeUtils).GetMethod(nameof(NativeUtils.GetString)), null);
                     ilGenerator.Emit(OpCodes.Stind_Ref);
                 }
-                else if(param.Type != NativeParameterType.VarArgs)
+                else if (param.Type == NativeParameterType.VarArgs)
+                {
+                    // vContext.Dispose();
+                    ilGenerator.Emit(OpCodes.Ldloc, paramBuffers[i]);
+                    ilGenerator.EmitCall(OpCodes.Callvirt, typeof(VarArgsState), nameof(VarArgsState.Dispose));
+                }
+                else
                 {
                     throw new Exception("Unknown native parameter type");
                 }

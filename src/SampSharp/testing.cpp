@@ -65,18 +65,33 @@ cell test_varargs(AMX *amx, cell *params) {
     return 1;
 }
 
-cell test_varargs2(AMX *amx, cell *params) {
+cell test_varargs_mix(AMX *amx, cell *params) {
 #ifdef ENABLE_TEST_LOGGING 
-    log_info("test_varargs2 len=%d", params[0]);
+    log_info("test_varargs_mix len=%d", params[0]);
     
-    log_info("test_varargs2 arg[0]=%d", params[1]);
-    log_info("test_varargs2 arg[1]=%d", params[2]);
+    log_info("test_varargs_mix arg[0]=%d", params[1]);
+    log_info("test_varargs_mix arg[1]=%d", params[2]);
 
     for (unsigned int i = 2; i < params[0] / sizeof(cell); i++) {
         cell *addr;
         amx_GetAddr(amx, params[i + 1], &addr);
 
-        log_info("test_varargs2 arg[%d]=%d", i, *addr);
+        log_info("test_varargs_mix arg[%d]=%d", i, *addr);
+    }
+#endif
+    return 1;
+}
+
+cell test_varargs_str(AMX *amx, cell *params) {
+#ifdef ENABLE_TEST_LOGGING 
+    log_info("test_varargs_str len=%d", params[0]);
+    
+    for (unsigned int i = 0; i < params[0] / sizeof(cell); i++) {
+        char *str;
+
+        amx_StrParam(amx, params[i + 1], str);
+        
+        log_info("test_varargs_str arg[%d]=%s", i, str);
     }
 #endif
     return 1;
