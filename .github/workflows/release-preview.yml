@@ -1,4 +1,4 @@
-name: dotnet
+name: release-preview
 
 on:
   push:

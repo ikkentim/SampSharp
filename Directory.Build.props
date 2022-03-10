@@ -2,7 +2,7 @@
   <PropertyGroup>
     <IsTestProject>$(MSBuildProjectName.Contains('Tests'))</IsTestProject>
     <IsTestMode>$(MSBuildProjectName.Contains('TestMode.'))</IsTestMode>
-    <IsLibrary Condition="'$(IsTestMode)' != 'True' and '$(IsTestProject)' != 'True'">True</IsLibrary>
+    <IsLibrary Condition="'$(IsTestMode)' != 'True' and '$(IsTestProject)' != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">True</IsLibrary>
   </PropertyGroup>
 
   <PropertyGroup Label="Code analysis">
@@ -19,20 +19,38 @@
   <PropertyGroup Label="Configure default AssemblyInfo">
     <Company>Tim Potze</Company>
     <Authors>Tim Potze</Authors>
-    <Copyright>Tim Potze (c) 2014-$([System.DateTime]::UtcNow.ToString(yyyy))</Copyright>
-
-    <Version>0.0.0-localbuild</Version>
-    <AssemblyVersion>0.0.0</AssemblyVersion>
+    <Copyright>Copyright (c) Tim Potze 2014-$([System.DateTime]::UtcNow.ToString(yyyy))</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 
   <PropertyGroup Label="Configure default package info">
     <PackageIconUrl>https://github.com/ikkentim/SampSharp/raw/master/sampsharp.png</PackageIconUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/ikkentim/SampSharp/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/ikkentim/SampSharp</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>gta samp sampsharp</PackageTags>
     <PackageId>$(AssemblyName)</PackageId>
     <Product>$(AssemblyName)</Product>
-    <PackageReleaseNotes>placeholder</PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Versioning">
+    <VersionPrefix>0.0.0</VersionPrefix>
+    <VersionSuffix>local</VersionSuffix>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(CiVersion)' != ''" Label="Versioning CI">
+    <VersionPrefix>$(CiVersion.Split('-', 2)[0])</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <VersionSuffix Condition="$(CiVersion.Contains('-'))">$(CiVersion.Split('-', 2)[1])</VersionSuffix>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Symbols">
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup Label="SourceLink">
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
@@ -41,13 +59,12 @@
 
   <PropertyGroup Condition="'$(IsLibrary)' == 'True'">
     <OutputPath>..\..\bin\$(Configuration)\</OutputPath>
-    <DocumentationFile>$(OutputPath)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsTestMode)' == 'True' and '$(Configuration)'=='Debug'">
     <OutputPath>..\..\env\gamemode</OutputPath>
   </PropertyGroup>
-  <!-- <Import Condition="'$(IsTestProject)' != 'True'" Project="$(MSBuildThisFileDirectory)\build\Versioning.targets"/> -->
 
   <!-- common analyzers used in this solution -->
   <Choose>
