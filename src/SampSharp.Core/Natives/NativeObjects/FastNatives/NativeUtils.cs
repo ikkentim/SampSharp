@@ -152,7 +152,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 
             return result;
         }
-        
+
         /// <summary>
         /// Assigns variable arguments values to the specified buffers.
         /// </summary>
@@ -161,34 +161,72 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
         /// <param name="varArgs">The variable arguments.</param>
         /// <param name="argOffset">The offset in the arguments buffer at which the varargs start.</param>
         /// <param name="valueOffset">The offset in the values buffer at which the varargs start.</param>
-        public static unsafe void SetVarArgsValues(int* args, int* values, object[] varArgs, int argOffset, int valueOffset)
+        /// <param name="state">The state of the variable arguments.</param>
+        public static unsafe void SetVarArgsValues(int* args, int* values, object[] varArgs, int argOffset, int valueOffset, VarArgsState state)
         {
             for (var i = 0; i < varArgs.Length; i++)
             {
-                args[argOffset + i] = IntPointerToInt((int *)((byte*)values + (valueOffset + i) * 4)); // 4 bytes per cell
+                void SetArgPointerToValue()
+                {
+                    args[argOffset + i] = IntPointerToInt((int*)((byte*)values + (valueOffset + i) * 4)); // 4 bytes per cell
+                }
 
                 var value = varArgs[i];
 
                 if (value is int intValue)
                 {
+                    SetArgPointerToValue();
                     values[valueOffset + i] = intValue;
                 }
                 else if (value is bool boolValue)
                 {
+                    SetArgPointerToValue();
                     values[valueOffset + i] = ValueConverter.ToInt32(boolValue);
                 }
                 else if (value is float floatValue)
                 {
+                    SetArgPointerToValue();
                     values[valueOffset + i] = ValueConverter.ToInt32(floatValue);
+                }
+                else if (value is string strValue)
+                {
+                    var byteCount = GetByteCount(strValue);
+                    var strBuffer = new byte[byteCount];
+                    GetBytes(strValue, strBuffer);
+                    var address = state.PinBuffer(strBuffer);
+
+                    args[argOffset + i] = address;
+                }
+                else if (value is int[] intArray)
+                {
+                    var address = state.PinBuffer(intArray);
+                    args[argOffset + i] = address;
+                }
+                else if (value is float[] floatArray)
+                {
+                    var address = state.PinBuffer(floatArray);
+                    args[argOffset + i] = address;
+                }
+                else if (value is bool[] boolArray)
+                {
+                    var boolInts = new int[boolArray.Length];
+                    for (var j = 0; j < boolArray.Length; j++)
+                    {
+                        boolInts[j] = boolArray[j] ? 1 : 0;
+                    }
+
+                    var address = state.PinBuffer(boolInts);
+                    args[argOffset + i] = address;
                 }
                 else
                 {
-                    // unknown type.
+                    // unknown type handle like an integer with value 0.
+                    SetArgPointerToValue();
                     values[valueOffset + i] = 0;
                 }
             }
         }
-
+        
         /// <summary>
         /// Appends the format for specified variable arguments to the specified format.
         /// </summary>
@@ -202,13 +240,27 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                 return format;
             }
 
-            return string.Create(format.Length + varArgs.Length, format, (result, state) =>
+            var sb = new StringBuilder(format);
+
+            foreach (var value in varArgs)
             {
-                for (var i = 0; i < result.Length; i++)
+                if (value is Array array)
                 {
-                    result[i] = i < state.Length ? state[i] : 'r';
+                    sb.AppendFormat("a[{0}]", array.Length);
                 }
-            });
+                else if (value is string)
+                {
+                    sb.Append('s');
+                }
+                else
+                {
+                    // "In Pawn variadic functions always take their variable arguments (those represented by "...") by reference. This
+                    // means that for such functions you have to use the 'r' specifier where you would normally use 'b', 'i' 'd' or 'f'."
+                    sb.Append('r');
+                }
+            }
+
+            return sb.ToString();
         }
 
         private static void CopySpan(Span<int> span, int[] arr)
