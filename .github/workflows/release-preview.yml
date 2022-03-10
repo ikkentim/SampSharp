@@ -32,10 +32,7 @@ jobs:
     - name: Push
       run: |
         dotnet nuget push bin/SampSharp.Core.${VERSION}.nupkg --source https://nuget.pkg.github.com/ikkentim/index.json --api-key ${GITHUB_TOKEN}
-        dotnet nuget push bin/SampSharp.Core.${VERSION}.snupkg --source https://nuget.pkg.github.com/ikkentim/index.json --api-key ${GITHUB_TOKEN}
         dotnet nuget push bin/SampSharp.GameMode.${VERSION}.nupkg --source https://nuget.pkg.github.com/ikkentim/index.json --api-key ${GITHUB_TOKEN}
-        dotnet nuget push bin/SampSharp.GameMode.${VERSION}.snupkg --source https://nuget.pkg.github.com/ikkentim/index.json --api-key ${GITHUB_TOKEN}
         dotnet nuget push bin/SampSharp.Entities.${VERSION}.nupkg --source https://nuget.pkg.github.com/ikkentim/index.json --api-key ${GITHUB_TOKEN}
-        dotnet nuget push bin/SampSharp.Entities.${VERSION}.snupkg --source https://nuget.pkg.github.com/ikkentim/index.json --api-key ${GITHUB_TOKEN}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
