@@ -1,0 +1,38 @@
+name: dotnet
+
+on:
+  push:
+    tags:
+    - "[0-9]+.[0-9]+.[0-9]+-.+"
+  
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set VERSION variable from tag
+      run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore SampSharp.sln
+
+    - name: Build
+      run: dotnet build SampSharp.sln /p:CiVersion=${VERSION} --configuration Release --no-restore
+
+   - name: Pack
+      run: dotnet pack --configuration Release --no-build --output bin
+
+    - name: Push
+      run: |
+        dotnet nuget push bin/*.nupkg --source https://nuget.pkg.github.com/ikkentim/index.json --api-key ${GITHUB_TOKEN}
+        dotnet nuget push bin/*.snupkg --source https://nuget.pkg.github.com/ikkentim/index.json --api-key ${GITHUB_TOKEN}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
