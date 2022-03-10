@@ -12,11 +12,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6B10DCD1-5FFB-4B21-AF82-1906E6AF7119}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		build.cake = build.cake
-		CHANGES-plugin.md = CHANGES-plugin.md
-		CHANGES-SampSharp.Core.md = CHANGES-SampSharp.Core.md
-		CHANGES-SampSharp.Entities.md = CHANGES-SampSharp.Entities.md
-		CHANGES-SampSharp.GameMode.md = CHANGES-SampSharp.GameMode.md
 		Directory.build.props = Directory.build.props
 		env\server.cfg = env\server.cfg
 	EndProjectSection
