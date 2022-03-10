@@ -1,43 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <PackageIconUrl>https://github.com/ikkentim/SampSharp/raw/master/sampsharp.png</PackageIconUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/ikkentim/SampSharp/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/ikkentim/SampSharp</PackageProjectUrl>
-    <PackageId>SampSharp.GameMode</PackageId>
     <Title>SampSharp GameMode Framework</Title>
     <Description>A framework for writing SA-MP game modes in C#.</Description>
-    <Product>SampSharp.GameMode</Product>
-    <Company>Tim Potze</Company>
-    <Authors>Tim Potze</Authors>
-    <Copyright>Tim Potze</Copyright>
-    <Version>0.0.0-localbuild</Version>
-    <AssemblyVersion>0.0.0</AssemblyVersion>
-    <FileVersion>0.0.0</FileVersion>
-    <PackageReleaseNotes>placeholder</PackageReleaseNotes>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\bin\Debug\</OutputPath>
-    <DocumentationFile>..\..\bin\Debug\netstandard1.5\SampSharp.GameMode.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\bin\Release\</OutputPath>
-    <DocumentationFile>..\..\bin\Release\netstandard1.5\SampSharp.GameMode.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
@@ -45,72 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SampSharp.Core\SampSharp.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="BaseMode.callbacks.cs">
-      <DependentUpon>BaseMode.cs</DependentUpon>
-    </Compile>
-    <Compile Update="BaseMode.events.cs">
-      <DependentUpon>BaseMode.cs</DependentUpon>
-    </Compile>
-    <Compile Update="BaseMode.functions.cs">
-      <DependentUpon>BaseMode.cs</DependentUpon>
-    </Compile>
-    <Compile Update="BaseMode.Internal.cs">
-      <DependentUpon>BaseMode.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Display\Dialog.Internal.cs">
-      <DependentUpon>Dialog.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Display\Menu.Internal.cs">
-      <DependentUpon>Menu.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Display\PlayerTextDraw.Internal.cs">
-      <DependentUpon>PlayerTextDraw.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Display\TextDraw.Internal.cs">
-      <DependentUpon>TextDraw.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Factories\BaseVehicleFactory.Internal.cs">
-      <DependentUpon>BaseVehicleFactory.cs</DependentUpon>
-    </Compile>
-    <Compile Update="SAMP\PVarCollection.Internal.cs">
-      <DependentUpon>PVarCollection.cs</DependentUpon>
-    </Compile>
-    <Compile Update="SAMP\Server.Internal.cs">
-      <DependentUpon>Server.cs</DependentUpon>
-    </Compile>
-    <Compile Update="World\Actor.Internal.cs">
-      <DependentUpon>Actor.cs</DependentUpon>
-    </Compile>
-    <Compile Update="World\BasePlayer.Internal.cs">
-      <DependentUpon>BasePlayer.cs</DependentUpon>
-    </Compile>
-    <Compile Update="World\BaseVehicle.Internal.cs">
-      <DependentUpon>BaseVehicle.cs</DependentUpon>
-    </Compile>
-    <Compile Update="World\GangZone.Internal.cs">
-      <DependentUpon>GangZone.cs</DependentUpon>
-    </Compile>
-    <Compile Update="World\GlobalObject.Internal.cs">
-      <DependentUpon>GlobalObject.cs</DependentUpon>
-    </Compile>
-    <Compile Update="World\Pickup.Internal.cs">
-      <DependentUpon>Pickup.cs</DependentUpon>
-    </Compile>
-    <Compile Update="World\PlayerObject.Internal.cs">
-      <DependentUpon>PlayerObject.cs</DependentUpon>
-    </Compile>
-    <Compile Update="World\PlayerTextLabel.Internal.cs">
-      <DependentUpon>PlayerTextLabel.cs</DependentUpon>
-    </Compile>
-    <Compile Update="World\TextLabel.Internal.cs">
-      <DependentUpon>TextLabel.cs</DependentUpon>
-    </Compile>
-    <Compile Update="World\VehicleModelInfo.Internal.cs">
-      <DependentUpon>VehicleModelInfo.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
 
 </Project>

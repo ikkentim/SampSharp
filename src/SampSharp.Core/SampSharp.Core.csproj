@@ -1,137 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <PackageIconUrl>https://github.com/ikkentim/SampSharp/raw/master/sampsharp.png</PackageIconUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/ikkentim/SampSharp/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/ikkentim/SampSharp</PackageProjectUrl>
-    <PackageId>SampSharp.Core</PackageId>
     <Title>SampSharp Server Core</Title>
     <Description>The core library of SampSharp which manages the communication with the SA-MP server.</Description>
-    <Product>SampSharp.Core</Product>
-    <Company>Tim Potze</Company>
-    <Authors>Tim Potze</Authors>
-    <Copyright>Tim Potze</Copyright>
-    <Version>0.0.0-localbuild</Version>
-    <AssemblyVersion>0.0.0</AssemblyVersion>
-    <PackageReleaseNotes>placeholder</PackageReleaseNotes>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>..\..\bin\Debug\netstandard1.5\SampSharp.Core.xml</DocumentationFile>
-    <OutputPath>..\..\bin\Debug\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\bin\Release\</OutputPath>
-    <DocumentationFile>..\..\bin\Release\netstandard1.5\SampSharp.Core.xml</DocumentationFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-  </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="CodePages\data\8859-1.dat" />
-    <None Remove="CodePages\data\8859-10.dat" />
-    <None Remove="CodePages\data\8859-11.dat" />
-    <None Remove="CodePages\data\8859-13.dat" />
-    <None Remove="CodePages\data\8859-14.dat" />
-    <None Remove="CodePages\data\8859-15.dat" />
-    <None Remove="CodePages\data\8859-16.dat" />
-    <None Remove="CodePages\data\8859-2.dat" />
-    <None Remove="CodePages\data\8859-3.dat" />
-    <None Remove="CodePages\data\8859-4.dat" />
-    <None Remove="CodePages\data\8859-5.dat" />
-    <None Remove="CodePages\data\8859-6.dat" />
-    <None Remove="CodePages\data\8859-7.dat" />
-    <None Remove="CodePages\data\8859-8.dat" />
-    <None Remove="CodePages\data\8859-9.dat" />
-    <None Remove="CodePages\data\cp1250.dat" />
-    <None Remove="CodePages\data\cp1251.dat" />
-    <None Remove="CodePages\data\cp1252.dat" />
-    <None Remove="CodePages\data\cp1253.dat" />
-    <None Remove="CodePages\data\cp1254.dat" />
-    <None Remove="CodePages\data\cp1255.dat" />
-    <None Remove="CodePages\data\cp1256.dat" />
-    <None Remove="CodePages\data\cp1257.dat" />
-    <None Remove="CodePages\data\cp1258.dat" />
-    <None Remove="CodePages\data\cp437.dat" />
-    <None Remove="CodePages\data\cp737.dat" />
-    <None Remove="CodePages\data\cp775.dat" />
-    <None Remove="CodePages\data\cp850.dat" />
-    <None Remove="CodePages\data\cp852.dat" />
-    <None Remove="CodePages\data\cp855.dat" />
-    <None Remove="CodePages\data\cp857.dat" />
-    <None Remove="CodePages\data\cp860.dat" />
-    <None Remove="CodePages\data\cp861.dat" />
-    <None Remove="CodePages\data\cp862.dat" />
-    <None Remove="CodePages\data\cp863.dat" />
-    <None Remove="CodePages\data\cp864.dat" />
-    <None Remove="CodePages\data\cp865.dat" />
-    <None Remove="CodePages\data\cp866.dat" />
-    <None Remove="CodePages\data\cp869.dat" />
-    <None Remove="CodePages\data\cp874.dat" />
-    <None Remove="CodePages\data\cp932.dat" />
-    <None Remove="CodePages\data\cp936.dat" />
-    <None Remove="CodePages\data\cp949.dat" />
-    <None Remove="CodePages\data\cp950.dat" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="CodePages\data\8859-1.dat" />
-    <EmbeddedResource Include="CodePages\data\8859-10.dat" />
-    <EmbeddedResource Include="CodePages\data\8859-11.dat" />
-    <EmbeddedResource Include="CodePages\data\8859-13.dat" />
-    <EmbeddedResource Include="CodePages\data\8859-14.dat" />
-    <EmbeddedResource Include="CodePages\data\8859-15.dat" />
-    <EmbeddedResource Include="CodePages\data\8859-16.dat" />
-    <EmbeddedResource Include="CodePages\data\8859-2.dat" />
-    <EmbeddedResource Include="CodePages\data\8859-3.dat" />
-    <EmbeddedResource Include="CodePages\data\8859-4.dat" />
-    <EmbeddedResource Include="CodePages\data\8859-5.dat" />
-    <EmbeddedResource Include="CodePages\data\8859-6.dat" />
-    <EmbeddedResource Include="CodePages\data\8859-7.dat" />
-    <EmbeddedResource Include="CodePages\data\8859-8.dat" />
-    <EmbeddedResource Include="CodePages\data\8859-9.dat" />
-    <EmbeddedResource Include="CodePages\data\cp1250.dat" />
-    <EmbeddedResource Include="CodePages\data\cp1251.dat" />
-    <EmbeddedResource Include="CodePages\data\cp1252.dat" />
-    <EmbeddedResource Include="CodePages\data\cp1253.dat" />
-    <EmbeddedResource Include="CodePages\data\cp1254.dat" />
-    <EmbeddedResource Include="CodePages\data\cp1255.dat" />
-    <EmbeddedResource Include="CodePages\data\cp1256.dat" />
-    <EmbeddedResource Include="CodePages\data\cp1257.dat" />
-    <EmbeddedResource Include="CodePages\data\cp1258.dat" />
-    <EmbeddedResource Include="CodePages\data\cp437.dat" />
-    <EmbeddedResource Include="CodePages\data\cp737.dat" />
-    <EmbeddedResource Include="CodePages\data\cp775.dat" />
-    <EmbeddedResource Include="CodePages\data\cp850.dat" />
-    <EmbeddedResource Include="CodePages\data\cp852.dat" />
-    <EmbeddedResource Include="CodePages\data\cp855.dat" />
-    <EmbeddedResource Include="CodePages\data\cp857.dat" />
-    <EmbeddedResource Include="CodePages\data\cp860.dat" />
-    <EmbeddedResource Include="CodePages\data\cp861.dat" />
-    <EmbeddedResource Include="CodePages\data\cp862.dat" />
-    <EmbeddedResource Include="CodePages\data\cp863.dat" />
-    <EmbeddedResource Include="CodePages\data\cp864.dat" />
-    <EmbeddedResource Include="CodePages\data\cp865.dat" />
-    <EmbeddedResource Include="CodePages\data\cp866.dat" />
-    <EmbeddedResource Include="CodePages\data\cp869.dat" />
-    <EmbeddedResource Include="CodePages\data\cp874.dat" />
-    <EmbeddedResource Include="CodePages\data\cp932.dat" />
-    <EmbeddedResource Include="CodePages\data\cp936.dat" />
-    <EmbeddedResource Include="CodePages\data\cp949.dat" />
-    <EmbeddedResource Include="CodePages\data\cp950.dat" />
+    <EmbeddedResource Include="CodePages\data\*.dat" />
   </ItemGroup>
 
   <ItemGroup>

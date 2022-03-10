@@ -15,21 +15,14 @@
 
 using System;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices;
-using System.Text;
-using SampSharp.Core.Communication;
 using SampSharp.Core.Hosting;
 using SampSharp.Core.Natives.NativeObjects;
-using SampSharp.Core.Natives.NativeObjects.FastNatives;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 
-namespace TestMode
+namespace TestMode.GameMode
 {
     public class VarArgsNativeObj
     {

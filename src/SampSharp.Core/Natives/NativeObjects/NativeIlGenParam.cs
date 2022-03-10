@@ -78,7 +78,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// </summary>
         public string Name => Parameter?.Name ?? Property?.Name;
         /// <summary>
-        /// Gets the type of the method parameter or index property of this native paramter.
+        /// Gets the type of the method parameter or index property of this native parameter.
         /// </summary>
         public Type InputType => Parameter?.ParameterType ?? Property.PropertyType;
 

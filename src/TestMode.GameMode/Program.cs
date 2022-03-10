@@ -14,9 +14,8 @@
 // limitations under the License.
 
 using SampSharp.Core;
-using SampSharp.Core.Logging;
 
-namespace TestMode
+namespace TestMode.GameMode
 {
     internal class Program
     {
