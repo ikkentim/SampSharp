@@ -33,7 +33,7 @@ void print_info() {
     log_print("");
     log_print("SampSharp Plugin");
     log_print("----------------");
-    log_print("v%s, (C)2014-2020 Tim Potze", PLUGIN_VERSION_STR);
+    log_print("v%s, (C)2014-2022 Tim Potze", PLUGIN_VERSION_STR);
     log_print("");
 }
 

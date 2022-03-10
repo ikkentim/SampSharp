@@ -10,7 +10,7 @@ using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
-namespace TestMode
+namespace TestMode.GameMode
 {
     internal static class Commands
     {

@@ -1,0 +1,68 @@
+<Project>
+  <PropertyGroup>
+    <IsTestProject>$(MSBuildProjectName.Contains('Tests'))</IsTestProject>
+    <IsTestMode>$(MSBuildProjectName.Contains('TestMode.'))</IsTestMode>
+    <IsLibrary Condition="'$(IsTestMode)' != 'True' and '$(IsTestProject)' != 'True'">True</IsLibrary>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Code analysis">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
+    <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Configure default AssemblyInfo">
+    <Company>Tim Potze</Company>
+    <Authors>Tim Potze</Authors>
+    <Copyright>Tim Potze (c) 2014-$([System.DateTime]::UtcNow.ToString(yyyy))</Copyright>
+
+    <Version>0.0.0-localbuild</Version>
+    <AssemblyVersion>0.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Configure default package info">
+    <PackageIconUrl>https://github.com/ikkentim/SampSharp/raw/master/sampsharp.png</PackageIconUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/ikkentim/SampSharp/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ikkentim/SampSharp</PackageProjectUrl>
+    <PackageId>$(AssemblyName)</PackageId>
+    <Product>$(AssemblyName)</Product>
+    <PackageReleaseNotes>placeholder</PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsLibrary)' == 'True'">
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <OutputPath>..\..\bin\$(Configuration)\</OutputPath>
+    <DocumentationFile>$(OutputPath)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsTestMode)' == 'True' and '$(Configuration)'=='Debug'">
+    <TargetFramework>net6.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <OutputPath>..\..\env\gamemode</OutputPath>
+  </PropertyGroup>
+  <!-- <Import Condition="'$(IsTestProject)' != 'True'" Project="$(MSBuildThisFileDirectory)\build\Versioning.targets"/> -->
+
+  <!-- common analyzers used in this solution -->
+  <Choose>
+    <When Condition="'$(IsTestProject)' != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">
+      <ItemGroup>
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.32.0.39516">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+      </ItemGroup>
+    </When>
+  </Choose>
+
+</Project>

@@ -556,7 +556,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     case NativeParameterType.Single:
                     case NativeParameterType.Bool:
                         formatStringBuilder.Append(param.IsReferenceInput ? "r" : "d");
-                        break;
+                       break;
                     case NativeParameterType.Int32Reference:
                     case NativeParameterType.SingleReference:
                     case NativeParameterType.BoolReference:
