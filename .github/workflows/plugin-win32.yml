@@ -1,18 +1,19 @@
 name: Plugin (win32)
+
 on:
   push:
     branches: [ master ]
     paths:
-      - .github/workflows
+      - .github/workflows/plugin-win32.yml
       - src/SampSharp/**
       - SampSharp.sln
       
   pull_request:
     branches: [ master ]
     paths:
-      - .github/workflows
+      - .github/workflows/plugin-win32.yml
       - src/SampSharp/**
-      - SampSharp.sln
+      - SampSharp.Plugin.sln
 
   workflow_dispatch:
 
@@ -21,14 +22,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Setup MSBuild.exe
         uses: microsoft/setup-msbuild@v1.0.2
         
       - name: Build plugin
-        run: msbuild.exe SampSharp.sln /target:SampSharp -p:Configuration="Release"
+        run: msbuild.exe SampSharp.Plugin.sln -p:Configuration="Release"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2

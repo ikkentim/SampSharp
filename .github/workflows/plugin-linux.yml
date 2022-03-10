@@ -1,18 +1,19 @@
 name: Plugin (Linux)
+
 on:
   push:
     branches: [ master ]
     paths:
-      - .github/workflows
+      - .github/workflows/plugin-linux.yml
       - src/SampSharp/**
-      - SampSharp.sln
+      - Makefile
 
   pull_request:
     branches: [ master ]
     paths:
-      - .github/workflows
+      - .github/workflows/plugin-linux.yml
       - src/SampSharp/**
-      - SampSharp.sln
+      - Makefile
 
   workflow_dispatch:
   
@@ -21,8 +22,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Install deps
         run: |
