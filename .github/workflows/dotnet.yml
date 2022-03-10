@@ -3,9 +3,24 @@ name: dotnet
 on:
   push:
     branches: [ master ]
+    paths:
+      - .github/workflows/dotnet.yml
+      - src/**
+      - '!src/SampSharp/**'
+      - SampSharp.sln
+      - Makefile
+
   pull_request:
     branches: [ master ]
+    paths:
+      - .github/workflows/dotnet.yml
+      - src/**
+      - '!src/SampSharp/**'
+      - SampSharp.sln
+      - Makefile
 
+  workflow_dispatch:
+  
 jobs:
   build:
 
@@ -13,11 +28,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
+
     - name: Restore dependencies
       run: dotnet restore SampSharp.sln
+
     - name: Build
       run: dotnet build SampSharp.sln --configuration Release --no-restore
