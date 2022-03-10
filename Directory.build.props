@@ -40,14 +40,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsLibrary)' == 'True'">
-    <TargetFramework>netstandard2.1</TargetFramework>
     <OutputPath>..\..\bin\$(Configuration)\</OutputPath>
     <DocumentationFile>$(OutputPath)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsTestMode)' == 'True' and '$(Configuration)'=='Debug'">
-    <TargetFramework>net6.0</TargetFramework>
-    <OutputType>Exe</OutputType>
     <OutputPath>..\..\env\gamemode</OutputPath>
   </PropertyGroup>
   <!-- <Import Condition="'$(IsTestProject)' != 'True'" Project="$(MSBuildThisFileDirectory)\build\Versioning.targets"/> -->
