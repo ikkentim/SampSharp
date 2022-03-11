@@ -5,6 +5,7 @@
 - Updated documentation links from SA-MP wiki to open.mp docs
 - Fixed `OnDestroyComponent` not being called when the component is destroyed, but the entities remains alive (#358)
 - Fixed an error which could occur when event's occur with IDs of entities which don't exist, but aren't 0 (#355, #353, #352, #350)
+- Fixed exception thrown when a dialog is shown with no `null` button2 text (#376)
 
 ### 0.9.3
 - Fixed player- textdraws, labels and objects not working as intended

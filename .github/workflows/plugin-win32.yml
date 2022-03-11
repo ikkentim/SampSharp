@@ -8,6 +8,9 @@ on:
       - src/SampSharp/**
       - SampSharp.sln
       
+    tags:
+    - "*"
+    
   pull_request:
     branches: [ master ]
     paths:
