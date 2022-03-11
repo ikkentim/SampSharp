@@ -3,8 +3,9 @@
 - Added support for "fastnative" calls (#365)
 - Added callback name to "Callback parameters count mismatch" error (#342)
 - Changed hosted mode to be the default, multi-process mode can be enabled with the `use_multi_process_mode=1` server setting
-- Fixed a possible server crash when a callback is handled with an unexpected parameter cound
+- Fixed a possible server crash when a callback is handled with an unexpected parameter count
 - Fixed a possible server crash when calling the `CallRemoveFunction` native (#363)
+- Codepage files are no longer provided in the plugin release package. Codepages are available as embedded resources in SampSharp.Core via the `GameModeBuilder.UseEncodingCodePage` method. The codepage files are available in [the codepages repository](https://github.com/SampSharp/codepages) if you still need these files for some reason.
 
 ### 0.9.0
 - Updated sampgdk to 4.6.2
