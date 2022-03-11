@@ -1,5 +1,6 @@
 ### 0.10.0
 - Added support for "fastnative" calls, this improves time consumed by calls to native functions by 95% (#365)
+- Added support for varargs in "fastnative" calls (#260)
 - Added `IGameModeClient.NativeObjectProxyFactory`
 - Added option `NativeMethodAttribute.ReferenceIndices` which provides the option to invoke a native with input parameters which should be passed by reference.
 - Added embedded codepages into the library which are available through `GameModeBuilder.UseEncodingCodePage(string pageName)`

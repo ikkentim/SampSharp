@@ -1,21 +1,27 @@
 <Project>
+  <!-- Detect project kind -->
   <PropertyGroup>
     <IsTestProject>$(MSBuildProjectName.Contains('Tests'))</IsTestProject>
     <IsTestMode>$(MSBuildProjectName.Contains('TestMode.'))</IsTestMode>
     <IsLibrary Condition="'$(IsTestMode)' != 'True' and '$(IsTestProject)' != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">True</IsLibrary>
   </PropertyGroup>
 
-  <PropertyGroup Label="Code analysis">
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
-    <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
-    <AnalysisLevel>latest</AnalysisLevel>
+  <!-- Build configuration -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(IsLibrary)' == 'True'">
+    <OutputPath>..\..\bin\$(Configuration)\</OutputPath>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsTestMode)' == 'True' and '$(Configuration)'=='Debug'">
+    <OutputPath>..\..\env\gamemode</OutputPath>
+  </PropertyGroup>
+
+  <!-- Configuration for packages -->
   <PropertyGroup Label="Configure default AssemblyInfo">
     <Company>Tim Potze</Company>
     <Authors>Tim Potze</Authors>
@@ -23,7 +29,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 
-  <PropertyGroup Label="Configure default package info">
+  <PropertyGroup Label="Configure default package info" Condition="'$(IsLibrary)' == 'True'">
     <PackageIconUrl>https://github.com/ikkentim/SampSharp/raw/master/sampsharp.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/ikkentim/SampSharp</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -44,7 +50,27 @@
     <VersionSuffix Condition="$(CiVersion.Contains('-'))">$(CiVersion.Split('-', 2)[1])</VersionSuffix>
   </PropertyGroup>
 
-  <PropertyGroup Label="Symbols">
+  <!-- Code analysis -->
+  <PropertyGroup Label="Configure code analysis">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
+    <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(IsTestProject)' != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">
+      <PackageReference Include="SonarAnalyzer.CSharp" Version="8.32.0.39516">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      </PackageReference>
+  </ItemGroup>
+
+  <!-- Symbols / source linking  -->
+  <PropertyGroup Label="Symbols" Condition="'$(IsLibrary)' == 'True'">
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
@@ -53,30 +79,12 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
+  <ItemGroup Condition="'$(IsLibrary)' == 'True'">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(IsLibrary)' == 'True'">
-    <OutputPath>..\..\bin\$(Configuration)\</OutputPath>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(IsTestMode)' == 'True' and '$(Configuration)'=='Debug'">
-    <OutputPath>..\..\env\gamemode</OutputPath>
-  </PropertyGroup>
-
-  <!-- common analyzers used in this solution -->
-  <Choose>
-    <When Condition="'$(IsTestProject)' != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">
-      <ItemGroup>
-        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.32.0.39516">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
-      </ItemGroup>
-    </When>
-  </Choose>
 
 </Project>

@@ -7,6 +7,8 @@
 - Fixed command group help commands not being invoked in some cases (#361)
 - Fixed command overloading not working in some cases (#344)
 - Fixed `BasePlayer.IsNPC` not returning `true` when the NPC has not yet connected (#346)
+- Fixed typo in `Server.GetWeaponName` result for `Weapon.ThermalGoggles` (#380)
+- Fixed a problem which caused successive calls to `ShowAsync` not to show the dialog (#384, #389)
 
 ### 0.9.1
 - Removed unused `PlayerDisconnectReason` enum in favour of `DisconnectReason` enum (#330)

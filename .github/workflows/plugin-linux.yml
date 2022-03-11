@@ -8,6 +8,9 @@ on:
       - src/SampSharp/**
       - Makefile
 
+    tags:
+    - "*"
+    
   pull_request:
     branches: [ master ]
     paths:
