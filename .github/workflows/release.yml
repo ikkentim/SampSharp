@@ -30,4 +30,4 @@ jobs:
       run: dotnet pack SampSharp.sln --configuration Release --no-build --output bin
 
     - name: Push
-      run: dotnet nuget push bin/*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --skip-duplicate
+      run: dotnet nuget push bin/*.nupkg --source="https://api.nuget.org/v3/index.json" --api-key ${{secrets.NUGET_API_KEY}} --skip-duplicate
