@@ -53,7 +53,11 @@ namespace TestMode.GameMode
             base.OnInitialized(e);
 
             Console.WriteLine("The game mode has loaded.");
-            AddPlayerClass(0, Vector3.Zero, 0);
+            AddPlayerClass(0, new Vector3(1482.9055, 1504.2122, 10.5474), 0);
+
+            BaseVehicle.Create(VehicleModelType.BF400, new Vector3(1489.9055, 1520.2122, 11), 0, 3, 3);
+            BaseVehicle.Create(VehicleModelType.Banshee, new Vector3(1449.9055, 1520.2122, 11), 0, 3, 3);
+            BaseVehicle.Create(VehicleModelType.Cabbie, new Vector3(1449.9055, 1550.2122, 11), 0, 3, 3);
 
             // RunPerformanceBenchmark();
             // .

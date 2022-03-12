@@ -16,14 +16,13 @@
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.World;
 
-namespace TestMode.GameMode
+namespace TestMode.GameMode;
+
+[PooledType]
+public class Vehicle : BaseVehicle
 {
-    [PooledType]
-    public class Player : BasePlayer
+    public override string ToString()
     {
-        public override string ToString()
-        {
-            return $"ID: {Id}, Name: {Name}";
-        }
+        return $"ID: {Id}, Model: {ModelInfo.Name}";
     }
 }
