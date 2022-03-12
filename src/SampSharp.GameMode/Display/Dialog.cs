@@ -149,12 +149,12 @@ namespace SampSharp.GameMode.Display
             
             return await _aSyncWaiter.Result(player);
         }
-
+        
         /// <summary>
         ///     Raises the <see cref="Response" /> event.
         /// </summary>
         /// <param name="e">An <see cref="DialogResponseEventArgs" /> that contains the event data. </param>
-        public void OnResponse(DialogResponseEventArgs e)
+        public virtual void OnResponse(DialogResponseEventArgs e)
         {
             if (OpenDialogs.ContainsKey(e.Player.Id))
                 OpenDialogs.Remove(e.Player.Id);
