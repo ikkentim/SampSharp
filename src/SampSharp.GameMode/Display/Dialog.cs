@@ -29,8 +29,8 @@ namespace SampSharp.GameMode.Display
     {
         private const int DialogId = 10000;
         private const int DialogHideId = -1;
-        private static readonly Dictionary<int, Dialog> OpenDialogs = new Dictionary<int, Dialog>();
-        private readonly ASyncPlayerWaiter<DialogResponseEventArgs> _aSyncWaiter = new ASyncPlayerWaiter<DialogResponseEventArgs>();
+        protected static readonly Dictionary<int, Dialog> OpenDialogs = new Dictionary<int, Dialog>();
+        protected readonly ASyncPlayerWaiter<DialogResponseEventArgs> _aSyncWaiter = new ASyncPlayerWaiter<DialogResponseEventArgs>();
 
         #region Properties of Dialog
 
@@ -154,7 +154,7 @@ namespace SampSharp.GameMode.Display
         ///     Raises the <see cref="Response" /> event.
         /// </summary>
         /// <param name="e">An <see cref="DialogResponseEventArgs" /> that contains the event data. </param>
-        public void OnResponse(DialogResponseEventArgs e)
+        public virtual void OnResponse(DialogResponseEventArgs e)
         {
             if (OpenDialogs.ContainsKey(e.Player.Id))
                 OpenDialogs.Remove(e.Player.Id);

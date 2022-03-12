@@ -1162,7 +1162,30 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        /// Returns an Color representation of the specified VehicleColor.
+        ///     Returns the name of this Color if exists, otherwise returns a <see cref="string" /> representation of this Color.
+        /// </summary>
+        /// <param name="defaultColorFormat">The format to use to convert the color to a string if the color is not a default color.</param>
+        /// <returns>A <see cref="string" /> containing the name or a representation of this Color.</returns>
+        public string ToLiteralString(ColorFormat defaultColorFormat = ColorFormat.RGB)
+        {
+            foreach(System.Reflection.PropertyInfo p in this.GetType().GetProperties())
+            {
+                if(p.CanRead && p.GetMethod.IsStatic)
+                {
+                    object pValue = p.GetValue(this);
+                    Color c = (pValue is Color color) ? color : new Color((byte)pValue);
+
+                    if (c == this)
+                    {
+                        return p.Name;
+                    }
+                }
+            }
+            return "0x" + ToInteger(defaultColorFormat).ToString("X6");
+        }
+
+        /// <summary>
+        ///     Returns an Color representation of the specified VehicleColor.
         /// </summary>
         /// <param name="vehicleColor">Color of vehicle</param>
         /// <returns>A Color representation of the input.</returns>

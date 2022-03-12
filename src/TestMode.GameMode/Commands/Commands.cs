@@ -10,7 +10,7 @@ using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
-namespace TestMode
+namespace TestMode.Commands
 {
     internal static class Commands
     {
@@ -119,7 +119,7 @@ namespace TestMode
                 Outline = 2,
                 ForeColor = Color.White,
                 Width = 400f,
-                Height = 400f
+                Height = 10f
             };
             _td2 = new PlayerTextDraw(player, new Vector2(220, 180), "Q")
             {
@@ -135,7 +135,7 @@ namespace TestMode
                 Outline = 2,
                 ForeColor = Color.White,
                 Width = 400f,
-                Height = 400f
+                Height = 10f
             };
 
             _td1.Show(player);
