@@ -18,8 +18,9 @@ The SampSharp .NET packages provided are available on NuGet.org and contains all
 Examples
 --------
 Some example gamemodes are available here:
-- [GrandLarc](https://github.com/ikkentim/SampSharp-grandlarc) - SA-MP default gamemode ported to C#
-- [RiverShell](https://github.com/ikkentim/SampSharp-rivershell) - Another SA-MP default gamemode ported to C#
+- [GrandLarc (GM)](https://github.com/SampSharp/sample-gm-grandlarc) - SA-MP default gamemode "grandlarc" ported to C# using SampSharp.GameMode
+- [GrandLarc (ECS)](https://github.com/SampSharp/sample-ecs-grandlarc) - SA-MP default gamemode "grandlarc" ported to C# using SampSharp.Entities
+- [RiverShell (GM)](https://github.com/SampSharp/sample-gm-rivershell) - SA-MP default gamemode "rivershell" ported to C# using SampSharp.GameMode
 
 Libraries
 ---------
