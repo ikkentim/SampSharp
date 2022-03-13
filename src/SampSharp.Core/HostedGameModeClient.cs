@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -45,7 +46,7 @@ namespace SampSharp.Core
             _buffer = Marshal.AllocHGlobal(_txBufferLength = 1024 * 6);
             _buffer1K = Marshal.AllocHGlobal(1024);
 
-            ServerPath = AppContext.BaseDirectory;
+            ServerPath = Directory.GetCurrentDirectory();
         }
 
         /// <summary>
