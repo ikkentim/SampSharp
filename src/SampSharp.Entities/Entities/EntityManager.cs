@@ -393,6 +393,7 @@ namespace SampSharp.Entities
             while (component != null)
             {
                 component.Component.DestroyComponent();
+                _components.Remove(component.Component);
 
                 component = component.Next;
             }
@@ -407,9 +408,9 @@ namespace SampSharp.Entities
             if (_firstRoot == entry) _firstRoot = entry.Next;
             if (entry.Parent?.Child == entry) entry.Parent.Child = entry.Next;
 
-            _entityPool.Recycle(entry);
             _entities.Remove(entry.Id);
             _entityIds.Remove(entry.Id);
+            _entityPool.Recycle(entry);
         }
 
         private class ComponentStore : IRecyclable
