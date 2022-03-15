@@ -9,14 +9,8 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Header Files\stream">
-      <UniqueIdentifier>{06019d57-60c8-444f-ab17-7458652ac248}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\coreclr">
       <UniqueIdentifier>{2b9b74fd-6a3a-4752-9e3c-d1874b855da1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\stream">
-      <UniqueIdentifier>{33dc5ef0-a29a-4c58-aeb3-d81f27b03ab5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\coreclr">
       <UniqueIdentifier>{aa1b71ad-cffd-4d25-912c-f2e92c962f0d}</UniqueIdentifier>
@@ -35,15 +29,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="callbacks_map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="natives_map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="intermission.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -56,25 +41,7 @@
     <ClCompile Include="coreclr_app.cpp">
       <Filter>Source Files\coreclr</Filter>
     </ClCompile>
-    <ClCompile Include="tcp_unix.cpp">
-      <Filter>Source Files\stream</Filter>
-    </ClCompile>
-    <ClCompile Include="sock_unix.cpp">
-      <Filter>Source Files\stream</Filter>
-    </ClCompile>
-    <ClCompile Include="pipesvr_w32.cpp">
-      <Filter>Source Files\stream</Filter>
-    </ClCompile>
-    <ClCompile Include="dsock_unix.cpp">
-      <Filter>Source Files\stream</Filter>
-    </ClCompile>
-    <ClCompile Include="message_queue.cpp">
-      <Filter>Source Files\stream</Filter>
-    </ClCompile>
-    <ClCompile Include="remote_server.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hosted_server.cpp">
+    <ClCompile Include="coreclrserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="testing.cpp">
@@ -91,19 +58,7 @@
     <ClInclude Include="platforms.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="callbacks_map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="natives_map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="command.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="intermission.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="plugin.h">
@@ -115,21 +70,6 @@
     <ClInclude Include="pathutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tcp_unix.h">
-      <Filter>Header Files\stream</Filter>
-    </ClInclude>
-    <ClInclude Include="sock_unix.h">
-      <Filter>Header Files\stream</Filter>
-    </ClInclude>
-    <ClInclude Include="pipesvr_win32.h">
-      <Filter>Header Files\stream</Filter>
-    </ClInclude>
-    <ClInclude Include="dsock_unix.h">
-      <Filter>Header Files\stream</Filter>
-    </ClInclude>
-    <ClInclude Include="commsvr.h">
-      <Filter>Header Files\stream</Filter>
-    </ClInclude>
     <ClInclude Include="coreclr_app.h">
       <Filter>Header Files\coreclr</Filter>
     </ClInclude>
@@ -139,16 +79,7 @@
     <ClInclude Include="mscoree.h">
       <Filter>Header Files\coreclr</Filter>
     </ClInclude>
-    <ClInclude Include="message_queue.h">
-      <Filter>Header Files\stream</Filter>
-    </ClInclude>
-    <ClInclude Include="remote_server.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="server.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="hosted_server.h">
+    <ClInclude Include="coreclrserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="json.h">

@@ -18,16 +18,19 @@
 #include <string.h>
 #include <iostream>
 #include <sampgdk/sampgdk.h>
-#include "remote_server.h"
 #include "version.h"
 #include "plugin.h"
 #include "coreclr_app.h"
 #include "logging.h"
-#include "hosted_server.h"
+#include "coreclrserver.h"
+#include "testing.h"
 
-server *svr = NULL;
-commsvr *com = NULL;
+coreclrserver *svr = NULL;
 plugin *plg = NULL;
+
+/* amxplugin's reference */
+// ReSharper disable once CppInconsistentNaming
+extern void *pAMXFunctions;
 
 void print_info() {
     log_print("");
@@ -37,47 +40,24 @@ void print_info() {
     log_print("");
 }
 
-void print_deprecation_warning() {
-    log_print("--------- NOTICE -----------");
-    log_print("SampSharp is currently running in development mode (also known as multi-process");
-    log_print("mode). The development mode has been deprecated and will be removed in a future");
-    log_print(" version of SampSharp. See https://github.com/ikkentim/SampSharp/issues/374 for");
-    log_print(" more information about this change.");
-    log_print("----------------------------");
-}
-
 void start_server() {
-    if(!(plg->state() & STATE_INITIALIZED)) {
-        /* workaround for SA-MP error which prevents OnRconCommand from working
-         * without a filterscript which implements it
-         */
-        sampgdk_SendRconCommand("loadfs empty");
-
-        print_info();
-
-        plg->state_set(STATE_INITIALIZED);
+    if(!plg->is_config_valid()) {
+	    return;
     }
+    
+    /* workaround for SA-MP error which prevents OnRconCommand from working
+     * without a filterscript which implements it
+     */
+    sampgdk_SendRconCommand("loadfs empty");
 
+    print_info();
+    
     if(svr) {
         delete svr;
         svr = NULL;
     }
-
-    if(plg->state() & STATE_HOSTED) {
-        svr = new hosted_server(plg->get_coreclr()->c_str(), plg->get_gamemode()->c_str());
-    }
-    else {
-        print_deprecation_warning();
-
-        com = plg->create_commsvr();
-        
-        if (com) {
-            std::string debug_str;
-
-            plg->config("com_debug", debug_str);
-            svr = new remote_server(plg, com, debug_str == "1" || debug_str == "true");
-        }
-    }
+    
+    svr = new coreclrserver(plg->get_coreclr()->c_str(), plg->get_gamemode()->c_str());
 }
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
@@ -88,35 +68,27 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     if (!sampgdk::Load(ppData)) {
         return false;
     }
-
-    plg = new plugin(ppData);
+    
+    pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
+    plg = new plugin();
 
     /* validate the server config is fit for running SampSharp */
     return plg && plg->config_validate();
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
-    if (com) {
-        com->disconnect();
-    }
-    
+
     delete svr;
-    delete com;
     delete plg;
     
-    plg = NULL;
-    svr = NULL;
-    com = NULL;
+    plg = nullptr;
+    svr = nullptr;
     
     sampgdk::Unload();
 }
 
 PLUGIN_EXPORT int PLUGIN_CALL AmxLoad(AMX* amx) {
-    if(plg) {
-        return plg->amx_load(amx);
-    }
-
-    return 1;
+    return register_test_natives(amx);
 }
 
 PLUGIN_EXPORT int PLUGIN_CALL AmxUnload(AMX* amx) {
@@ -131,12 +103,11 @@ PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     cell *params, cell *retval) {
-    if (!plg || !(plg->state() & STATE_CONFIG_VALID)) {
+    if (!plg || !plg->is_config_valid()) {
         return true;
     }
-    if (!svr &&
-        (plg->state() & (STATE_HOSTED | STATE_SWAPPING)) !=
-        (STATE_HOSTED | STATE_SWAPPING)) {
+
+    if (!svr) {
         start_server();
     }
 

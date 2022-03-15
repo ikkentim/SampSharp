@@ -19,45 +19,16 @@
 #include "logging.h"
 #include "coreclr_app.h"
 #include "StringUtil.h"
-#include "pipesvr_win32.h"
-#include "dsock_unix.h"
-#include "tcp_unix.h"
-#include "testing.h"
 #include <regex>
 
 namespace fs = std::filesystem;
 
-/* amxplugin's reference */
-// ReSharper disable once CppInconsistentNaming
-extern void *pAMXFunctions;
-
-typedef int(*amx_call)(char *function_name);
-
-extern "C" const AMX_NATIVE_INFO native_list[] = {
-#ifndef  DISABLE_TEST_NATIVES
-    { "sampsharptest_inout", test_inout },
-    { "sampsharptest_inrefout", test_inrefout },
-    { "sampsharptest_inoutstr", test_inoutstr },
-    { "sampsharptest_inoutarr", test_inoutarr },
-    { "sampsharptest_varargs", test_varargs },
-    { "sampsharptest_varargs_mix", test_varargs_mix },
-    { "sampsharptest_varargs_str", test_varargs_str },
-#endif
-    { NULL, NULL }
-};
-
-plugin::plugin(void **pp_data) :
+plugin::plugin() :
     config_(ConfigReader("server.cfg")) {
-    data_ = pp_data;
-    pAMXFunctions = pp_data[PLUGIN_DATA_AMX_EXPORTS];
 }
 
 ConfigReader *plugin::config() {
     return &config_;
-}
-
-int plugin::filterscript_call(const char * function_name) const {
-    return ((amx_call)data_[PLUGIN_DATA_CALLPUBLIC_FS])((char *)function_name);
 }
 
 void plugin::config(const std::string &name, std::string &value) const {
@@ -69,11 +40,9 @@ bool plugin::config_validate() {
         coreclr,
         coreclr_path,
         gamemode,
-        skip_empty_check,
-        use_multi_process_mode;
+        skip_empty_check;
 
     config("skip_empty_check", skip_empty_check);
-
     if(!StringUtil::ToBool(skip_empty_check, false)) {
     /* check whether gamemodeN values contain acceptable values. */
         for (int i = 0; i < 15; i++) {
@@ -101,26 +70,11 @@ bool plugin::config_validate() {
             }
         }
     }
-    
-    config("use_multi_process_mode", use_multi_process_mode);
-
-    if(StringUtil::ToBool(use_multi_process_mode, false)) {
-        state_set(STATE_CONFIG_VALID);
-        return true;
-    }
-#if SAMPSHARP_WINDOWS
-    char* cmdline = GetCommandLineA();
-    if(cmdline && strstr(cmdline, "--multi-process-mode")) {
-        state_set(STATE_CONFIG_VALID);
-        return true;
-    }
-#endif
-    
+     
     config("coreclr", coreclr);
     config("gamemode", gamemode);
     
     // Verify hosting config values.
-    
     if(!exists(fs::path(coreclr) / CORECLR_LIB) && !detect_coreclr(coreclr)) {
         log_error("Invalid coreclr directory specified in server.cfg.");
 
@@ -145,8 +99,8 @@ bool plugin::config_validate() {
 
     coreclr_ = coreclr;
     gamemode_ = gamemode;
-
-    state_set(STATE_HOSTED | STATE_CONFIG_VALID);
+    configvalid_ = true;
+    
     return true; 
 }
 
@@ -313,60 +267,12 @@ bool plugin::detect_gamemode(std::string &value, fs::path path) {
     return false;
 }
 
-commsvr *plugin::create_commsvr() const {
-    std::string 
-        type,
-        value;
-
-    commsvr *com = NULL;
-
-    if(state() & STATE_HOSTED) {
-        return com;
-    }
-
-    config("com_type", type);
-    
-    #if SAMPSHARP_LINUX
-    if (!type.compare("tcp")) {
-        std::string ip, port;
-        config("com_ip", ip);
-        config("com_port", port);
-        uint16_t portnum = atoi(port.c_str());
-
-        com = new tcp_unix(ip.c_str(), portnum);
-    }
-    #endif
-
-    if(!com) {
-    #if SAMPSHARP_WINDOWS
-        config("com_pipe", value);
-        com = new pipesvr_win32(value.c_str());
-    #elif SAMPSHARP_LINUX
-        config("com_dsock", value);
-        com = new dsock_unix(value.c_str());
-    #endif
-    }
-
-    return com;
+bool plugin::is_running() const {
+	return running_;
 }
 
-plugin_state plugin::state() const {
-    return state_;
+bool plugin::is_config_valid() const {
+	return configvalid_;
 }
 
-plugin_state plugin::state_set(const plugin_state flag) {
-    return state_ |= flag;
-}
-
-plugin_state plugin::state_unset(const plugin_state flag) {
-    return state_ &= ~flag;
-}
-
-plugin_state plugin::state_reset() {
-    return state_ = STATE_NONE;
-}
-
-int plugin::amx_load(AMX* amx) {
-    return amx_Register(amx, native_list, -1);
-}
 

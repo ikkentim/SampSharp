@@ -31,14 +31,7 @@ namespace SampSharp.Core.Hosting
         /// <param name="message">The message.</param>
         [DllImport("SampSharp", EntryPoint = "sampsharp_print", CallingConvention = CallingConvention.StdCall)]
         public static extern void Print(string message);
-
-        /// <summary>
-        /// Registers a callback in the SampSharp plugin.
-        /// </summary>
-        /// <param name="data">The callback data.</param>
-        [DllImport("SampSharp", EntryPoint = "sampsharp_register_callback", CallingConvention = CallingConvention.StdCall)]
-        public static extern void RegisterCallback(IntPtr data);
-
+        
         /// <summary>
         /// Gets the handle of a native.
         /// </summary>
@@ -77,11 +70,16 @@ namespace SampSharp.Core.Hosting
         [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_invoke", CallingConvention = CallingConvention.StdCall)]
         public static extern unsafe int FastNativeInvoke(IntPtr native, string format, int* args);
 
-        internal static int PublicCall(string name, IntPtr argumentsPtr, int length)
+        internal static int PublicCall(IntPtr amx, string name, IntPtr @params, IntPtr retval)
         {
-            var client = InternalStorage.RunningClient as HostedGameModeClient;
+            // AMX *amx, const char *name, cell *params, cell *retval
 
-            return client?.PublicCall(name, argumentsPtr, length) ?? 1;
+            Console.WriteLine($"!!! PublicCall: {name}");
+
+            return 1;
+            //var client = InternalStorage.RunningClient as HostedGameModeClient;
+
+            //return client?.PublicCall(name, argumentsPtr, length) ?? 1;
         }
 
         internal static void Tick()

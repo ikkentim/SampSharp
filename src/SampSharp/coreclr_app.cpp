@@ -89,8 +89,7 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path,
     coreclr_dll.append(DIR_SEPARATOR);
     coreclr_dll.append(CORECLR_LIB);
 
-    if (coreclr_dll.length() >= PATH_MAX)
-    {
+    if (coreclr_dll.length() >= PATH_MAX) {
         log_error("Absolute path to libcoreclr.so too long.");
         return -1;
     }

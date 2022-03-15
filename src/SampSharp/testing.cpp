@@ -3,6 +3,47 @@
 #include "platforms.h"
 #include "logging.h"
 
+
+// native sampsharptest_inout(a);
+cell test_inout(AMX *amx, cell *params);
+
+// native sampsharptest_inrefout(a, &b);
+cell test_inrefout(AMX *amx, cell *params);
+
+// native sampsharptest_inoutstr(const a[], b[], blen = sizeof b);
+cell test_inoutstr(AMX *amx, cell *params);
+
+// native sampsharptest_inoutarr(const a[], b[], ablen = sizeof a);
+cell test_inoutarr(AMX *amx, cell *params);
+
+// native sampsharptest_varargs({Float,_}:...);
+cell test_varargs(AMX *amx, cell *params);
+
+// native sampsharptest_varargs_mix(a, b, {Float,_}:...);
+cell test_varargs_mix(AMX *amx, cell *params);
+
+// native sampsharptest_varargs_str({_}:...);
+cell test_varargs_str(AMX *amx, cell *params);
+
+extern "C" const AMX_NATIVE_INFO native_list[] = {
+    { "sampsharptest_inout", test_inout },
+    { "sampsharptest_inrefout", test_inrefout },
+    { "sampsharptest_inoutstr", test_inoutstr },
+    { "sampsharptest_inoutarr", test_inoutarr },
+    { "sampsharptest_varargs", test_varargs },
+    { "sampsharptest_varargs_mix", test_varargs_mix },
+    { "sampsharptest_varargs_str", test_varargs_str },
+    { NULL, NULL }
+};
+
+int register_test_natives(AMX* amx) {
+#ifdef DISABLE_TEST_NATIVES
+    return 1;
+#else
+    return amx_Register(amx, native_list, -1);
+#endif
+}
+
 cell test_inout(AMX *amx, cell *params) {
 #ifdef ENABLE_TEST_LOGGING
     log_info("test_inout %d", params[1]);

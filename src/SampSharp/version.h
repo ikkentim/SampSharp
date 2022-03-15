@@ -19,7 +19,6 @@
 #define PLUGIN_VERSION_MINOR        10
 #define PLUGIN_VERSION_PATCH        0
 #define PLUGIN_VERSION_ALPHA        1
-#define PLUGIN_PROTOCOL_VERSION     5
 
 #define __PLUGIN_STRINGIZE(x)       #x
 #define __PLUGIN_STRINGIZEX(x)      __PLUGIN_STRINGIZE(x)

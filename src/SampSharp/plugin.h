@@ -20,43 +20,29 @@
 #include <inttypes.h>
 #include <sampgdk/sampgdk.h>
 #include "ConfigReader.h"
-#include "commsvr.h"
-
-#define STATE_NONE          0x00
-#define STATE_CONFIG_VALID  0x01
-#define STATE_HOSTED        0x02
-#define STATE_SWAPPING      0x04
-#define STATE_INITIALIZED   0x08
-
-typedef uint8_t plugin_state;
 
 class plugin
 {
 public:
-    plugin(void **pp_data);
-    int filterscript_call(const char *function_name) const;
+    plugin();
     ConfigReader *config();
     void config(const std::string &name, std::string &value) const;
     bool config_validate();
-    commsvr *create_commsvr() const;
+    bool is_running() const;
+    bool is_config_valid() const;
 
-    plugin_state state() const;
-    plugin_state state_set(plugin_state flag);
-    plugin_state state_unset(plugin_state flag);
-    plugin_state state_reset();
     std::string *get_coreclr();
     std::string *get_gamemode();
-
-    int amx_load(AMX *amx);
-
+    
 private:
     bool detect_coreclr(std::string &value);
     bool detect_coreclr(std::string &value, std::filesystem::path path);
     bool detect_gamemode(std::string &value);
     bool detect_gamemode(std::string &value, std::filesystem::path path);
-    void** data_;
+
+    bool configvalid_;
+    bool running_;
     ConfigReader config_;
-    plugin_state state_ = STATE_NONE;
     std::string coreclr_;
     std::string gamemode_;
 };

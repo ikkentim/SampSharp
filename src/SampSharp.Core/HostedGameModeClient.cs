@@ -176,7 +176,7 @@ namespace SampSharp.Core
                 throw new CallbackRegistrationException("The method does not match the specified parameters.");
 
             _callbacks[name] = callback;
-
+/*
             var data = ValueConverter.GetBytes(name, Encoding)
                 .Concat(parameters.SelectMany(c => c.GetBytes()))
                 .Concat(new[] { (byte) ServerCommandArgument.Terminator }).ToArray();
@@ -193,7 +193,7 @@ namespace SampSharp.Core
                     EnsureBufferSize(data.Length);
                     Marshal.Copy(data, 0, _buffer, data.Length);
                     Interop.RegisterCallback(_buffer);
-                }, null);
+                }, null);*/
         }
 
         /// <inheritdoc />
@@ -217,6 +217,7 @@ namespace SampSharp.Core
 
             _callbacks[name] = callback;
 
+            /*
             var data = ValueConverter.GetBytes(name, Encoding)
                 .Concat(parameters.SelectMany(c => c.GetBytes()))
                 .Concat(new[] { (byte) ServerCommandArgument.Terminator }).ToArray();
@@ -233,7 +234,7 @@ namespace SampSharp.Core
                     EnsureBufferSize(data.Length);
                     Marshal.Copy(data, 0, _buffer, data.Length);
                     Interop.RegisterCallback(_buffer);
-                }, null);
+                }, null);*/
 
         }
         
