@@ -17,31 +17,27 @@
 
 #include <string>
 #include <filesystem>
-#include <inttypes.h>
-#include <sampgdk/sampgdk.h>
 #include "ConfigReader.h"
 
 class plugin
 {
 public:
     plugin();
-    ConfigReader *config();
-    void config(const std::string &name, std::string &value) const;
     bool config_validate();
-    bool is_running() const;
     bool is_config_valid() const;
 
     std::string *get_coreclr();
     std::string *get_gamemode();
     
 private:
+    void config(const std::string &name, std::string &value) const;
+
     bool detect_coreclr(std::string &value);
     bool detect_coreclr(std::string &value, std::filesystem::path path);
     bool detect_gamemode(std::string &value);
     bool detect_gamemode(std::string &value, std::filesystem::path path);
 
     bool configvalid_;
-    bool running_;
     ConfigReader config_;
     std::string coreclr_;
     std::string gamemode_;

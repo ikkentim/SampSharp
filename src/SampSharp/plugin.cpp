@@ -14,21 +14,16 @@
 // limitations under the License.
 
 #include "plugin.h"
-#include <sampgdk/sampgdk.h>
-#include "platforms.h"
 #include "logging.h"
-#include "coreclr_app.h"
 #include "StringUtil.h"
 #include <regex>
 
+#define CORECLR_LIB "coreclr.dll" //todo
+
 namespace fs = std::filesystem;
 
-plugin::plugin() :
-    config_(ConfigReader("server.cfg")) {
-}
-
-ConfigReader *plugin::config() {
-    return &config_;
+plugin::plugin() : configvalid_(false),
+                   config_(ConfigReader("server.cfg")) {
 }
 
 void plugin::config(const std::string &name, std::string &value) const {
@@ -267,12 +262,6 @@ bool plugin::detect_gamemode(std::string &value, fs::path path) {
     return false;
 }
 
-bool plugin::is_running() const {
-	return running_;
-}
-
 bool plugin::is_config_valid() const {
 	return configvalid_;
 }
-
-

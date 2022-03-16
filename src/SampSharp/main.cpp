@@ -20,12 +20,11 @@
 #include <sampgdk/sampgdk.h>
 #include "version.h"
 #include "plugin.h"
-#include "coreclr_app.h"
 #include "logging.h"
-#include "coreclrserver.h"
+#include "gmhost.h"
 #include "testing.h"
 
-coreclrserver *svr = NULL;
+gmhost *svr = NULL;
 plugin *plg = NULL;
 
 /* amxplugin's reference */
@@ -57,7 +56,7 @@ void start_server() {
         svr = NULL;
     }
     
-    svr = new coreclrserver(plg->get_coreclr()->c_str(), plg->get_gamemode()->c_str());
+    svr = new gmhost(plg->get_coreclr()->c_str(), plg->get_gamemode()->c_str());
 }
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
@@ -71,13 +70,13 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     
     pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
     plg = new plugin();
-
+    
     /* validate the server config is fit for running SampSharp */
     return plg && plg->config_validate();
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
-
+    log_info("Unload!!!");
     delete svr;
     delete plg;
     
@@ -116,3 +115,4 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     }
     return true;
 }
+

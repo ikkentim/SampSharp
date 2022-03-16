@@ -16,32 +16,38 @@
 #pragma once
 
 #include <sampgdk/sampgdk.h>
-#include "coreclr_app.h"
 #include <mutex>
-#include <inttypes.h>
 
-#define LEN_CBBUF (1024 * 16)
+// Header files copied from https://github.com/dotnet/core-setup
+#include "delegates.h"
+#include "hostfxr.h"
 
-typedef void (CORECLR_CALL *tick_ptr)();
 
-typedef int32_t (CORECLR_CALL *public_call_ptr)(void *amx, const char *name, void *params, void *retval);
+typedef unsigned long thread_id;
 
-class coreclrserver {
+typedef void (CORECLR_DELEGATE_CALLTYPE *tick_fn)();
+typedef void (CORECLR_DELEGATE_CALLTYPE *public_call_fn)(void *amx, const char *name, uint32_t namelen, void *params, void *retval);
+
+class gmhost {
 public:
-    coreclrserver(const char *clr_dir, const char* exe_path);
-    ~coreclrserver();
-    void tick() const;
+    gmhost(const char *hostfxr_dir, const char* gamemode_path);
+    ~gmhost();
+    void tick();
     void public_call(AMX *amx, const char *name, cell *params, cell *retval);
 
 private:
-    /** the running game mode CLR instance */
-    coreclr_app app_;
+    thread_id main_thread_;
+
+    bool rcon_;
+    // hostfxr exports
+    hostfxr_close_fn close_fptr_;
+
+    /** handle to .NET host */
+    hostfxr_handle handle_;
+
+    tick_fn tick_;
+    public_call_fn public_call_;
+    
     /** lock for callbacks/ticks */
     std::recursive_mutex mutex_;
-    /** pointer to the tick CLR function */
-    tick_ptr tick_ = NULL;
-    /** pointer to the public call CLR function */
-    public_call_ptr public_call_ = NULL;
-    /** indicates whether the game mode is running */
-    bool running_ = false;
 };

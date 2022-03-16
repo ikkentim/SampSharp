@@ -13,7 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using SampSharp.Core;
+using SampSharp.Core.Hosting;
 using SampSharp.Core.Logging;
 using SampSharp.Entities;
 
@@ -23,6 +25,10 @@ namespace TestMode.Entities
     {
         private static void Main(string[] args)
         {
+            Console.WriteLine("TestMode.Entities.Program.Main!!!!! " + string.Join(" ", args));
+
+            Interop.State = 9001;
+            return;
             new GameModeBuilder()
                 .UseStartBehaviour(GameModeStartBehaviour.FakeGmx)
                 .IfHosted(b => b.RedirectConsoleOutput())

@@ -102,10 +102,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConfigReader.cpp" />
-    <ClCompile Include="coreclr_app.cpp" />
-    <ClCompile Include="coreclrserver.cpp" />
+    <ClCompile Include="gmhost.cpp" />
     <ClCompile Include="includes\sampgdk\sampgdk.c" />
     <ClCompile Include="includes\sdk\amxplugin.cpp" />
+    <ClCompile Include="interop.cpp" />
     <ClCompile Include="logging.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pathutil.cpp" />
@@ -114,12 +114,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConfigReader.h" />
-    <ClInclude Include="coreclrhost.h" />
-    <ClInclude Include="coreclr_app.h" />
-    <ClInclude Include="coreclrserver.h" />
+    <ClInclude Include="gmhost.h" />
+    <ClInclude Include="delegates.h" />
+    <ClInclude Include="hostfxr.h" />
     <ClInclude Include="json.h" />
     <ClInclude Include="logging.h" />
-    <ClInclude Include="mscoree.h" />
     <ClInclude Include="pathutil.h" />
     <ClInclude Include="plugin.h" />
     <ClInclude Include="testing.h" />

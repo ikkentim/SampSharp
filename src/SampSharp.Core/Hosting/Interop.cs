@@ -15,6 +15,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace SampSharp.Core.Hosting
@@ -88,5 +89,32 @@ namespace SampSharp.Core.Hosting
 
             client?.Tick();
         }
+
+
+
+        
+        [UnmanagedCallersOnly]
+        internal static void OnTick()
+        {
+            // Console.Write("tick");
+        }
+        [UnmanagedCallersOnly]
+        internal static unsafe void OnPublicCall(IntPtr amx, IntPtr name, int nameLength, IntPtr @params, IntPtr retval)
+        {
+            var nomre = new Span<char>(name.ToPointer(), nameLength);
+            
+            Console.WriteLine("public call to " + nomre.ToString());
+        }
+
+        
+        [UnmanagedCallersOnly]
+        public static void CustomEntryPointUnmanaged(int argA, int argB)
+        {
+            Console.WriteLine($">>> {argA} {argB} " + State);
+            
+            Console.WriteLine("entry '" +  (Assembly.GetEntryAssembly()?.ToString() ?? "NO ENTRY!!!") + "'");
+        }
+
+        public static int State { get; set; }
     }
 }

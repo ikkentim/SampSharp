@@ -12,9 +12,6 @@
     <Filter Include="Header Files\coreclr">
       <UniqueIdentifier>{2b9b74fd-6a3a-4752-9e3c-d1874b855da1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\coreclr">
-      <UniqueIdentifier>{aa1b71ad-cffd-4d25-912c-f2e92c962f0d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConfigReader.cpp">
@@ -38,13 +35,13 @@
     <ClCompile Include="pathutil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="coreclr_app.cpp">
-      <Filter>Source Files\coreclr</Filter>
-    </ClCompile>
-    <ClCompile Include="coreclrserver.cpp">
+    <ClCompile Include="gmhost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="testing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="interop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -70,16 +67,7 @@
     <ClInclude Include="pathutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="coreclr_app.h">
-      <Filter>Header Files\coreclr</Filter>
-    </ClInclude>
-    <ClInclude Include="coreclrhost.h">
-      <Filter>Header Files\coreclr</Filter>
-    </ClInclude>
-    <ClInclude Include="mscoree.h">
-      <Filter>Header Files\coreclr</Filter>
-    </ClInclude>
-    <ClInclude Include="coreclrserver.h">
+    <ClInclude Include="gmhost.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="json.h">
@@ -87,6 +75,12 @@
     </ClInclude>
     <ClInclude Include="testing.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="delegates.h">
+      <Filter>Header Files\coreclr</Filter>
+    </ClInclude>
+    <ClInclude Include="hostfxr.h">
+      <Filter>Header Files\coreclr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
