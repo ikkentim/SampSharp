@@ -18,12 +18,16 @@
 #include "StringUtil.h"
 #include <regex>
 
-#define CORECLR_LIB "coreclr.dll" //todo
-
-namespace fs = std::filesystem;
-
-plugin::plugin() : configvalid_(false),
+plugin::plugin() : host_(nullptr),
+				   configvalid_(false),
                    config_(ConfigReader("server.cfg")) {
+}
+
+plugin::~plugin() {
+	if(host_) {
+		delete host_;
+        host_ = nullptr;
+	}
 }
 
 void plugin::config(const std::string &name, std::string &value) const {
@@ -32,12 +36,16 @@ void plugin::config(const std::string &name, std::string &value) const {
 
 bool plugin::config_validate() {
     std::string
-        coreclr,
-        coreclr_path,
         gamemode,
-        skip_empty_check;
+        skip_empty_check,
+		hostfxr,
+		gamemode_base;
 
     config("skip_empty_check", skip_empty_check);
+    config("hostfxr", hostfxr);
+    config("gamemode", gamemode);
+    config("gamemode_base", gamemode_base);
+
     if(!StringUtil::ToBool(skip_empty_check, false)) {
     /* check whether gamemodeN values contain acceptable values. */
         for (int i = 0; i < 15; i++) {
@@ -66,200 +74,33 @@ bool plugin::config_validate() {
         }
     }
      
-    config("coreclr", coreclr);
-    config("gamemode", gamemode);
-    
-    // Verify hosting config values.
-    if(!exists(fs::path(coreclr) / CORECLR_LIB) && !detect_coreclr(coreclr)) {
-        log_error("Invalid coreclr directory specified in server.cfg.");
-
-        if(coreclr.length() > 0) {
-            if(!is_directory(fs::path(coreclr))) {
-                log_error("Directory could not be found.");
-            } else if(!exists(fs::path(coreclr) / CORECLR_LIB)) {
-                log_error(CORECLR_LIB " could not be found.");
-            }
-        }
-        return false;
+    if(!locator_.locate(hostfxr, gamemode_base, gamemode)) {
+	    return false;
     }
-
     
-    if(!exists(fs::path(gamemode)) && !detect_gamemode(gamemode)) {
-        log_error("Invalid gamemode specified in server.cfg.");
-        return false;
-    }
-
-    log_info("Runtime path: %s", coreclr.c_str());
-    log_info("Game mode path: %s", gamemode.c_str());
-
-    coreclr_ = coreclr;
-    gamemode_ = gamemode;
     configvalid_ = true;
     
     return true; 
 }
 
-std::string *plugin::get_gamemode() {
-    return &gamemode_;
-}
-
-std::string *plugin::get_coreclr() {
-    return &coreclr_;
-}
-
-bool plugin::detect_coreclr(std::string &value, fs::path path) {
-    if(!is_directory(path)) {
-        return false;
-    }
-
-    if(value.length() > 0 && detect_coreclr(value, path / value)) {
-        return true;
-    }
-
-    log_debug("Checking for runtime in %s...", path.string().c_str());
-
-    // Check for corelib in current directory
-    if(exists(path / CORECLR_LIB)) {
-        value = absolute(path).string();
-        return true;
-    }
-
-    // Check for version numbers in subdirectories
-    std::regex const regex_version {R"(^([0-9])+\.([0-9])+\.([0-9])+$)"}; 
- 
-    int best_version_number = 0;
-    fs::path best_version;
-    for (const auto & entry : fs::directory_iterator(path)) {
-        if(!entry.is_directory()) {
-            continue;
-        }
-
-        fs::path entry_path = entry.path();
-        std::string entry_dirname = entry_path.filename().string();
-        
-        std::smatch match;
-        if(std::regex_match(entry_dirname, match, regex_version) && exists(entry_path / CORECLR_LIB)) {
-            int version_number = stoi(match[1]) * 1000000 + stoi(match[2]) * 1000 + stoi(match[3]);
-
-            if(version_number > best_version_number) {
-                best_version = entry_path;
-                best_version_number = version_number;
-            }
-        }
-    }
-
-    // If a version number was found, use this directory
-    if(detect_coreclr(value, best_version)) {
-        return true;
-    }
-
-    // Check every subdirectory
-    for (const auto & entry : fs::directory_iterator(path)) {
-        if(entry.is_directory() && detect_coreclr(value, entry.path())) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool plugin::detect_coreclr(std::string &value) {
-    return
-        detect_coreclr(value, "runtime") ||
-        detect_coreclr(value, "dotnet");
-}
-
-bool plugin::detect_gamemode(std::string &value) {
-    std::string gamemode_base;
-    config("gamemode_base", gamemode_base);
-
-    return
-        detect_gamemode(value, gamemode_base) ||
-        detect_gamemode(value, "gamemode") ||
-        detect_gamemode(value, "gamemodes");
-}
-
-bool plugin::detect_gamemode(std::string &value, fs::path path) {
-    if(!is_directory(path)) {
-        return false;
+bool plugin::start() {
+    if(!is_config_valid()) {
+	    return false;
     }
     
-    log_debug("Checking for game mode in %s...", path.string().c_str());
+	const auto host = new gmhost(locator_.get_hostfxr(), locator_.get_gamemode());
 
-    // Check for runtimeconfigs
-    std::vector<fs::path> runtimeconfigs;
-    for (const auto & entry : fs::directory_iterator(path)) {
-        if(StringUtil::EndsWith(entry.path().string(), ".runtimeconfig.json")) {
-            runtimeconfigs.push_back(entry.path());
-        }
-    }
-
-    if(!runtimeconfigs.empty()) {
-        // Find specified game mode file
-        if(value.length() > 0) {
-           for (auto runtimeconfig : runtimeconfigs) {
-               if(StringUtil::ToLower(runtimeconfig.filename().string()) == StringUtil::ToLower(value + ".runtimeconfig.json")) {
-                   fs::path gm_path = runtimeconfig.replace_extension().replace_extension(".dll");
-                   if(exists(gm_path)) {
-                       value = absolute(gm_path).string();
-                       return true;
-                   }
-               }
-           }
-        }
-
-        // Find the only game mode in directory
-        else if(runtimeconfigs.size() == 1)
-        {
-            fs::path gm_path = runtimeconfigs[0].replace_extension().replace_extension(".dll");
-
-            if(exists(gm_path)) {
-                value = absolute(gm_path).string();
-                return true;
-            }
-        }
-    }
-
-    // Check for version numbers in subdirectories
-    std::regex const regex_version {R"(^net[coreapp]?([0-9])+\.([0-9])+$)"}; 
- 
-    int best_version_number = 0;
-    fs::path best_version;
-    for (const auto & entry : fs::directory_iterator(path)) {
-        if(!entry.is_directory()) {
-            continue;
-        }
-
-        fs::path entry_path = entry.path();
-        std::string entry_dirname = entry_path.filename().string();
-        
-        std::smatch match;
-        if(std::regex_match(entry_dirname, match, regex_version)) {
-            int version_number = stoi(match[1]) * 1000 + stoi(match[2]);
-
-            if(version_number > best_version_number) {
-                best_version = entry_path;
-                best_version_number = version_number;
-            }
-        }
-    }
-
-    if(detect_gamemode(value, best_version)) {
-        return true;
-    }
-
-    // Check any subdirectories
-    if(runtimeconfigs.empty()) {
-         for (const auto & entry : fs::directory_iterator(path)) {
-            if(detect_gamemode(value, entry.path())) {
-                return true;
-            }
-        }
-
+    if(!host->start()) {
+	    delete host;
         return false;
     }
 
-    return false;
+    host_ = host;
+    return true;
+}
+
+gmhost *plugin::host() const {
+	return host_;
 }
 
 bool plugin::is_config_valid() const {

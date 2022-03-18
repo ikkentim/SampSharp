@@ -34,9 +34,3 @@
 #else
 #  define PLUGIN_VERSION_STR          __PLUGIN_VERSION_STR
 #endif
-
-#define PLUGIN_VERSION              ( \
-                                        (PLUGIN_VERSION_MAJOR << 16) | \
-                                        (PLUGIN_VERSION_MINOR << 8) | \
-                                        (PLUGIN_VERSION_PATCH) | \
-                                        (PLUGIN_VERSION_ALPHA << 24))

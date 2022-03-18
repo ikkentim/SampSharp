@@ -14,9 +14,7 @@
 // limitations under the License.
 
 #include <fstream>
-#include <assert.h>
-#include <string.h>
-#include <iostream>
+#include <cassert>
 #include <sampgdk/sampgdk.h>
 #include "version.h"
 #include "plugin.h"
@@ -24,8 +22,9 @@
 #include "gmhost.h"
 #include "testing.h"
 
-gmhost *svr = NULL;
-plugin *plg = NULL;
+plugin *plg = nullptr;
+gmhost *host = nullptr;
+bool start_attempted = false;
 
 /* amxplugin's reference */
 // ReSharper disable once CppInconsistentNaming
@@ -44,19 +43,19 @@ void start_server() {
 	    return;
     }
     
-    /* workaround for SA-MP error which prevents OnRconCommand from working
-     * without a filterscript which implements it
-     */
-    sampgdk_SendRconCommand("loadfs empty");
-
     print_info();
-    
-    if(svr) {
-        delete svr;
-        svr = NULL;
-    }
-    
-    svr = new gmhost(plg->get_coreclr()->c_str(), plg->get_gamemode()->c_str());
+
+    plg->start();
+}
+
+void try_start_server() {
+	if(plg && plg->is_config_valid() && !start_attempted && !plg->host()) {
+		if(plg->start()) {
+			host = plg->host();
+		}
+
+        start_attempted = true;
+	}
 }
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
@@ -76,12 +75,8 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
-    log_info("Unload!!!");
-    delete svr;
     delete plg;
-    
     plg = nullptr;
-    svr = nullptr;
     
     sampgdk::Unload();
 }
@@ -95,23 +90,19 @@ PLUGIN_EXPORT int PLUGIN_CALL AmxUnload(AMX* amx) {
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
-    if (svr) {
-        svr->tick();
+    if (host) {
+        host->tick();
     }
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     cell *params, cell *retval) {
-    if (!plg || !plg->is_config_valid()) {
-        return true;
+    if (!host) {
+        try_start_server();
     }
 
-    if (!svr) {
-        start_server();
-    }
-
-    if (svr) {
-        svr->public_call(amx, name, params, retval);
+    if (host) {
+        host->public_call(amx, name, params, retval);
     }
     return true;
 }

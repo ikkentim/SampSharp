@@ -106,6 +106,7 @@
     <ClCompile Include="includes\sampgdk\sampgdk.c" />
     <ClCompile Include="includes\sdk\amxplugin.cpp" />
     <ClCompile Include="interop.cpp" />
+    <ClCompile Include="liblocator.cpp" />
     <ClCompile Include="logging.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pathutil.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="delegates.h" />
     <ClInclude Include="hostfxr.h" />
     <ClInclude Include="json.h" />
+    <ClInclude Include="liblocator.h" />
     <ClInclude Include="logging.h" />
     <ClInclude Include="pathutil.h" />
     <ClInclude Include="plugin.h" />

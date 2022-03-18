@@ -17,28 +17,29 @@
 
 #include <sampgdk/sampgdk.h>
 #include <mutex>
+#include <filesystem>
 
 // Header files copied from https://github.com/dotnet/core-setup
 #include "delegates.h"
 #include "hostfxr.h"
 
-
-typedef unsigned long thread_id;
+namespace fs = std::filesystem;
 
 typedef void (CORECLR_DELEGATE_CALLTYPE *tick_fn)();
-typedef void (CORECLR_DELEGATE_CALLTYPE *public_call_fn)(void *amx, const char *name, uint32_t namelen, void *params, void *retval);
+typedef void (CORECLR_DELEGATE_CALLTYPE *public_call_fn)(void *amx, const char *name, void *params, void *retval);
 
 class gmhost {
 public:
-    gmhost(const char *hostfxr_dir, const char* gamemode_path);
+    gmhost(fs::path hostfxr_path, fs::path gamemode_path);
     ~gmhost();
+    bool start();
     void tick();
     void public_call(AMX *amx, const char *name, cell *params, cell *retval);
 
 private:
-    thread_id main_thread_;
+    fs::path hostfxr_path_;
+    fs::path gamemode_path;
 
-    bool rcon_;
     // hostfxr exports
     hostfxr_close_fn close_fptr_;
 
@@ -50,4 +51,6 @@ private:
     
     /** lock for callbacks/ticks */
     std::recursive_mutex mutex_;
+
+    void close_handle();
 };

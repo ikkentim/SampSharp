@@ -29,146 +29,149 @@
 #  define STR(s) s
 #endif
 
-void *load_library(const char_t *);
-void *get_export(void *, const char *);
-thread_id get_cur_thread();
+void* load_library(const char_t*);
+void* get_export(void*, const char*);
 
-gmhost::gmhost(const char *hostfxr_dir, const char* gamemode_path) : main_thread_(get_cur_thread()),
-														             rcon_(false),
-																	 handle_(nullptr),
-                                                                     tick_(nullptr),
-																	 public_call_(nullptr) {
-	const auto buffer = STR("D:\\projects\\sampsharp\\env\\runtime\\host\\fxr\\6.0.3\\hostfxr.dll");
-    
-	// Load hostfxr and get desired exports
-    void *lib = load_library(buffer);
-    const auto get_delegate_fptr = (hostfxr_get_runtime_delegate_fn)get_export(lib, "hostfxr_get_runtime_delegate");
-    close_fptr_ = (hostfxr_close_fn)get_export(lib, "hostfxr_close");
-    const auto run_fptr = (hostfxr_run_app_fn)get_export(lib, "hostfxr_run_app");
-    const auto init_fptr = (hostfxr_initialize_for_dotnet_command_line_fn)get_export(lib, "hostfxr_initialize_for_dotnet_command_line");
-
-    if(!(init_fptr && run_fptr && get_delegate_fptr && close_fptr_)) {
-    	log_error("Failed to load hostfxr exports.");
-        return; 
-    }
-
-    // Initialize hostfxr
-    std::string gm = gamemode_path;
-    std::wstring wgm = std::wstring(gm.begin(), gm.end());
-    
-    const char_t *startarg[] = {
-        wgm.c_str()
-    };
-
-    int rc = init_fptr(1, startarg, nullptr, &handle_);
-
-    if(rc != 0 || !handle_) {
-	    log_error("Failed to initialize hostfxr. Status: %d", rc);
-        return;
-    }
-    
-    // Get interop pointers
-    get_function_pointer_fn get_function_pointer;
-    rc = get_delegate_fptr(handle_, hdt_get_function_pointer, (void **)&get_function_pointer);
-
-    if(rc != 0 || !get_function_pointer) {
-        log_error("Failed to get delegate hdt_get_function_pointer");
-	    return;
-    }
-
-    log_info("step 1");
-
-    const auto interop = STR("SampSharp.Core.Hosting.Interop, SampSharp.Core");
-
-    rc = get_function_pointer(interop, STR("OnTick"), UNMANAGEDCALLERSONLY_METHOD, nullptr, nullptr, (void**)&tick_);
-    
-    log_info("step 2");
-
-    if(rc != 0 || !tick_) {
-        log_error("Failed to get pointer to OnTick function");
-	    return;
-    }
-
-    get_function_pointer(interop, STR("OnPublicCall"), UNMANAGEDCALLERSONLY_METHOD, nullptr, nullptr, (void**)&public_call_);
-  
-    log_info("step 3");
-
-    if(rc != 0 || !public_call_) {
-        log_error("Failed to get pointer to OnPublicCall function");
-	    return;
-    }
-
-    // Run managed assembly
-    rc = run_fptr(handle_);
-
-    log_info("main ran");
-
-    if(rc != 0) {
-        log_error("Failed to start managed assembly: %d", rc);
-	    return;
-    }
-
-    log_info("Game mode host running.");
-}
+gmhost::gmhost(fs::path hostfxr_path, fs::path gamemode_path) : hostfxr_path_(std::move(hostfxr_path)),
+                                                                gamemode_path(std::move(gamemode_path)),
+                                                                close_fptr_(nullptr),
+                                                                handle_(nullptr),
+                                                                tick_(nullptr),
+                                                                public_call_(nullptr) {}
 
 gmhost::~gmhost() {
-    if(close_fptr_ && handle_) {
-        log_info("Closing handle");
-	    close_fptr_(handle_);
-        handle_ = nullptr;
-    }
+	close_handle();
 }
 
-void gmhost::tick() {
-    if(rcon_)
-    {
-        // public_call_(nullptr, "OnRconCommand", nullptr, nullptr);
-        // rcon_=false;
-    }
-	if(tick_) {
-        // mutex_.lock();
-		tick_();
-        // mutex_.unlock();
+bool gmhost::start() {
+	// Extract assembly name from path to runtimeconfig.
+	const std::string filename = gamemode_path.filename().string();
+	const std::string assembly_name = filename.substr(0, filename.length() - 4); // remove ".dll"
+
+
+	// Load hostfxr and get desired exports
+	const std::wstring libnamew = absolute(hostfxr_path_).wstring();
+
+	void* lib = load_library(libnamew.c_str());
+
+	const auto get_delegate_fptr = (hostfxr_get_runtime_delegate_fn)get_export(lib, "hostfxr_get_runtime_delegate");
+	const auto run_fptr = (hostfxr_run_app_fn)get_export(lib, "hostfxr_run_app");
+	const auto init_fptr = (hostfxr_initialize_for_runtime_config_fn)get_export(
+		lib, "hostfxr_initialize_for_runtime_config");
+	const auto init2_fptr = (hostfxr_initialize_for_dotnet_command_line_fn)get_export(
+		lib, "hostfxr_initialize_for_dotnet_command_line");
+	close_fptr_ = (hostfxr_close_fn)get_export(lib, "hostfxr_close");
+
+	if (!(init_fptr && run_fptr && get_delegate_fptr && close_fptr_)) {
+		log_error("Failed to load hostfxr exports.");
+		return false;
+	}
+
+	// Initialize hostfxr
+	const std::wstring wgm = absolute(gamemode_path).wstring();
+
+	const char_t* aaa[] = {
+		wgm.c_str()
+	};
+	int rc = init2_fptr(1, aaa, nullptr, &handle_);
+	//int rc = init_fptr(wgm.c_str(), nullptr, &handle_);
+
+	if (rc != 0 || !handle_) {
+		log_error("Failed to initialize hostfxr (error code %d)", rc);
+		close_handle();
+		return false;
+	}
+
+	// Get interop pointers
+	get_function_pointer_fn get_function_pointer;
+	rc = get_delegate_fptr(handle_, hdt_get_function_pointer, (void**)&get_function_pointer);
+
+	if (rc != 0 || !get_function_pointer) {
+		log_error("Failed to get delegate hdt_get_function_pointer (error code %d)", rc);
+		close_handle();
+		return false;
+	}
+
+	const auto interop = STR("SampSharp.Core.Hosting.Interop, SampSharp.Core");
+
+	rc = get_function_pointer(interop, STR("OnTick"), UNMANAGEDCALLERSONLY_METHOD, nullptr, nullptr, (void**)&tick_);
+
+	if (rc != 0 || !tick_) {
+		log_error("Failed to get pointer to OnTick function (error code %d)", rc);
+		close_handle();
+		return false;
+	}
+
+	rc = get_function_pointer(interop, STR("OnPublicCall"),
+	                          STR("SampSharp.Core.Hosting.Interop+PublicCallDelegate, SampSharp.Core"), nullptr,
+	                          nullptr, (void**)&public_call_);
+	// rc = get_function_pointer(interop, STR("OnPublicCall"), UNMANAGEDCALLERSONLY_METHOD, nullptr, nullptr, (void**)&public_call_);
+
+	if (rc != 0 || !public_call_) {
+		log_error("Failed to get pointer to OnPublicCall function (error code %d)", rc);
+		close_handle();
+		return false;
+	}
+
+	// hostfxr_run_app starts and shuts down the runtime. we'll use our Interop library as a workaround.
+	typedef bool (CORECLR_DELEGATE_CALLTYPE *entry_point_fn)(char* assembly);
+	entry_point_fn entry_point;
+	rc = get_function_pointer(interop, STR("InvokeEntryPoint"),
+	                          STR("SampSharp.Core.Hosting.Interop+EntryPointDelegate, SampSharp.Core"), nullptr,
+	                          nullptr, (void**)&entry_point);
+
+	if (rc != 0) {
+		log_error("Failed to get pointer to InvokeEntryPoint (error code %d)", rc);
+		close_handle();
+		return false;
+	}
+
+	// Run managed assembly
+	if(!entry_point(const_cast<char*>(assembly_name.c_str()))) {
+		log_error("Failed to load game mode.");
+		return false;
+	}
+	else {
+		log_info("Game mode host running.");
+		return true;
 	}
 }
 
-void gmhost::public_call(AMX *amx, const char *name, cell *params,
-    cell *retval) {
-    if(public_call_) {
-        if(get_cur_thread() == main_thread_) {
-	         log_info("pub call %s", name);
-   
-	        //mutex_.lock();
-	        log_info("mut lock");
+void gmhost::close_handle() {
+	if (close_fptr_ && handle_) {
+		close_fptr_(handle_);
+		handle_ = nullptr;
+	}
+}
 
-	        public_call_(static_cast<void*>(amx), name, strlen(name), static_cast<void*>(params), static_cast<void*>(retval));
-	        
-	        log_info("mut unlock");
-	        //mutex_.unlock();
+void gmhost::tick() {
+	if (tick_) {
+		mutex_.lock();
+		tick_();
+		mutex_.unlock();
+	}
+}
 
-	        log_info("pub call completed"); 
-        } else {
-	        log_error("Call to %s not on main thread", name);
-        }
-    }
+void gmhost::public_call(AMX* amx, const char* name, cell* params, cell* retval) {
+	if (public_call_) {
+		mutex_.lock();
+		public_call_((void*)amx, name, (void*)params, (void*)retval);
+		mutex_.unlock();
+	}
 }
 
 
 #if SAMPSHARP_WINDOWS
-void *load_library(const char_t *path)
-{
-    HMODULE h = ::LoadLibraryW(path);
-    assert(h != nullptr);
-    return (void*)h;
+void* load_library(const char_t* path) {
+	const HMODULE h = LoadLibraryW(path);
+	assert(h != nullptr);
+	return (void*)h;
 }
-void *get_export(void *h, const char *name)
-{
-    void *f = ::GetProcAddress((HMODULE)h, name);
-    assert(f != nullptr);
-    return f;
-}
-thread_id get_cur_thread() {
-	return GetCurrentThreadId();
+
+void* get_export(void* h, const char* name) {
+	const auto f = (void*)GetProcAddress((HMODULE)h, name);
+	assert(f != nullptr);
+	return f;
 }
 #elif SAMPSHARP_LINUX
 void *load_library(const char_t *path)

@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Reflection;
 using SampSharp.Core;
 using SampSharp.Core.Hosting;
 using SampSharp.Core.Logging;
@@ -26,8 +27,7 @@ namespace TestMode.Entities
         private static void Main(string[] args)
         {
             Console.WriteLine("TestMode.Entities.Program.Main!!!!! " + string.Join(" ", args));
-
-            Interop.State = 9001;
+            
             return;
             new GameModeBuilder()
                 .UseStartBehaviour(GameModeStartBehaviour.FakeGmx)

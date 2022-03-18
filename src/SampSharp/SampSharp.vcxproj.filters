@@ -44,6 +44,9 @@
     <ClCompile Include="interop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="liblocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConfigReader.h">
@@ -81,6 +84,9 @@
     </ClInclude>
     <ClInclude Include="hostfxr.h">
       <Filter>Header Files\coreclr</Filter>
+    </ClInclude>
+    <ClInclude Include="liblocator.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

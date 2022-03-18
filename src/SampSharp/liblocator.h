@@ -17,26 +17,23 @@
 
 #include <string>
 #include <filesystem>
-#include "ConfigReader.h"
-#include "gmhost.h"
-#include "liblocator.h"
 
-class plugin
+namespace fs = std::filesystem;
+
+class liblocator
 {
 public:
-    plugin();
-    ~plugin();
+    bool locate(const std::string& hostfxr_hint, const std::string& gamemode_dir_hint, const std::string& gamemode);
 
-    gmhost *host() const;
-    bool start();
-    bool config_validate();
-    bool is_config_valid() const;
+    fs::path get_hostfxr();
+    fs::path get_gamemode();
     
 private:
-    void config(const std::string &name, std::string &value) const;
-
-    gmhost* host_;
-    liblocator locator_;
-    bool configvalid_;
-    ConfigReader config_;
+    bool detect_hostfxr(fs::path &result, const fs::path& search_path);
+    bool detect_hostfxr(fs::path &result, const std::string &path_hint);
+    bool detect_gamemode(fs::path &result, const std::string &search_name, const fs::path &search_path);
+	bool detect_gamemode(const std::string &dir_hint, const std::string &name, fs::path &result);
+    
+    fs::path hostfxr_;
+    fs::path gamemode_;
 };

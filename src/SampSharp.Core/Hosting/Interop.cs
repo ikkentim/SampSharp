@@ -15,8 +15,10 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace SampSharp.Core.Hosting
 {
@@ -26,6 +28,9 @@ namespace SampSharp.Core.Hosting
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class Interop
     {
+        internal delegate bool EntryPointDelegate(string assemblyName);
+        internal delegate void PublicCallDelegate(IntPtr amx, string name, IntPtr pars, IntPtr retval);
+
         /// <summary>
         /// Prints the specified message to the SA:MP server log.
         /// </summary>
@@ -70,51 +75,34 @@ namespace SampSharp.Core.Hosting
         /// <returns>The return value of the native.</returns>
         [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_invoke", CallingConvention = CallingConvention.StdCall)]
         public static extern unsafe int FastNativeInvoke(IntPtr native, string format, int* args);
-
-        internal static int PublicCall(IntPtr amx, string name, IntPtr @params, IntPtr retval)
-        {
-            // AMX *amx, const char *name, cell *params, cell *retval
-
-            Console.WriteLine($"!!! PublicCall: {name}");
-
-            return 1;
-            //var client = InternalStorage.RunningClient as HostedGameModeClient;
-
-            //return client?.PublicCall(name, argumentsPtr, length) ?? 1;
-        }
-
-        internal static void Tick()
-        {
-            var client = InternalStorage.RunningClient as HostedGameModeClient;
-
-            client?.Tick();
-        }
-
-
-
         
         [UnmanagedCallersOnly]
         internal static void OnTick()
         {
+            // var client = InternalStorage.RunningClient as HostedGameModeClient;
+            // client?.Tick();
             // Console.Write("tick");
         }
-        [UnmanagedCallersOnly]
-        internal static unsafe void OnPublicCall(IntPtr amx, IntPtr name, int nameLength, IntPtr @params, IntPtr retval)
+
+        internal static bool InvokeEntryPoint(string assemblyName)
         {
-            var nomre = new Span<char>(name.ToPointer(), nameLength);
-            
-            Console.WriteLine("public call to " + nomre.ToString());
+            try
+            {
+                var dmn = Thread.GetDomain();
+                dmn.ExecuteAssemblyByName(assemblyName, Array.Empty<string>());
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
         }
 
-        
-        [UnmanagedCallersOnly]
-        public static void CustomEntryPointUnmanaged(int argA, int argB)
+        internal static void OnPublicCall(IntPtr amx, string name, IntPtr pars, IntPtr retval)
         {
-            Console.WriteLine($">>> {argA} {argB} " + State);
-            
-            Console.WriteLine("entry '" +  (Assembly.GetEntryAssembly()?.ToString() ?? "NO ENTRY!!!") + "'");
+            Console.WriteLine("public call to " + name);
         }
-
-        public static int State { get; set; }
     }
 }

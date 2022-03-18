@@ -31,7 +31,7 @@
 struct StringUtil
 {
     struct is_not_space {
-        bool operator()(char c) {
+        bool operator()(const char c) const {
             return !(c == ' ' || c == '\r' || c == '\n' || c == '\t');
         }
     };
@@ -52,13 +52,13 @@ struct StringUtil
         return TrimStringLeft(TrimStringRight(s));
     }
 
-    static char __to_lower(char in) {
+    static char to_lower(char in) {
         if (in <= 'Z' && in >= 'A')
             return in - ('Z' - 'z');
         return in;
     }
     static inline std::string ToLower(std::string s) {
-        std::transform(s.begin(), s.end(), s.begin(), __to_lower);
+        std::transform(s.begin(), s.end(), s.begin(), to_lower);
         return s;
     }
 
