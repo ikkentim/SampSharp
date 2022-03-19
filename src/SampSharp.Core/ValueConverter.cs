@@ -104,11 +104,6 @@ namespace SampSharp.Core.Communication
             if (buffer == null) throw new ArgumentNullException(nameof(buffer));
 
             return BitConverter.ToInt32(buffer, startIndex);
-
-            /*return (buffer[index] << 0) |
-                   (buffer[index + 1] << 8) |
-                   (buffer[index + 2] << 16) |
-                   (buffer[index + 3] << 24);*/
         }
 
         /// <summary>
@@ -143,11 +138,6 @@ namespace SampSharp.Core.Communication
             if (buffer == null) throw new ArgumentNullException(nameof(buffer));
 
             return BitConverter.ToUInt32(buffer, startIndex);
-
-            /*return ((uint)buffer[index] << 0) |
-                   ((uint)buffer[index + 1] << 8) |
-                   ((uint)buffer[index + 2] << 16) |
-                   ((uint)buffer[index + 3] << 24);*/
         }
         
         /// <summary>
@@ -162,7 +152,6 @@ namespace SampSharp.Core.Communication
             if (buffer == null) throw new ArgumentNullException(nameof(buffer));
 
             return BitConverter.ToUInt16(buffer, startIndex);
-
         }
 
         /// <summary>

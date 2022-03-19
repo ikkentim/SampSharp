@@ -58,7 +58,7 @@ namespace SampSharp.Core
         ///     Occurs when an exception is unhandled during the execution of a callback or tick.
         /// </summary>
         event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
-        
+
         /// <summary>
         ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
         ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
@@ -66,47 +66,23 @@ namespace SampSharp.Core
         /// <param name="name">The name af the callback to register.</param>
         /// <param name="target">The target on which to invoke the method.</param>
         /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
-        /// <param name="parameters">The parameters of the callback.</param>
-        void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters);
-        
-        /// <summary>
-        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
-        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
-        /// </summary>
-        /// <param name="name">The name af the callback to register.</param>
-        /// <param name="target">The target on which to invoke the method.</param>
-        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
-        /// <param name="parameters">The parameters of the callback.</param>
         /// <param name="parameterTypes">The types of the parameters.</param>
-        void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters,
-            Type[] parameterTypes);
+        /// <param name="lengthIndices">The indices at which the length for the current parameter can be found. If null, we'll assume the next parameter contains the length for the current parameter.</param>
+        void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[] parameterTypes, uint?[] lengthIndices = null);
+
+        /// <summary>
+        /// Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
+        /// <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
+        /// </summary>
+        /// <param name="name">The name af the callback to register.</param>
+        /// <param name="target">The target on which to invoke the method.</param>
+        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
+        void RegisterCallback(string name, object target, MethodInfo methodInfo);
 
         /// <summary>
         ///     Prints the specified text to the server console.
         /// </summary>
         /// <param name="text">The text to print to the server console.</param>
         void Print(string text);
-
-        /// <summary>
-        ///     Gets the handle of the native with the specified <paramref name="name" />.
-        /// </summary>
-        /// <param name="name">The name of the native.</param>
-        /// <returns>The handle of the native with the specified <paramref name="name" />.</returns>
-        [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
-        int GetNativeHandle(string name);
-
-        /// <summary>
-        ///     Invokes a native using the specified <paramref name="data" /> buffer.
-        /// </summary>
-        /// <param name="data">The data buffer to be used.</param>
-        /// <returns>The response from the native.</returns>
-        [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
-        byte[] InvokeNative(IEnumerable<byte> data);
-
-        /// <summary>
-        ///     Shuts down the server after the current callback has been processed.
-        /// </summary>
-        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
-        void ShutDown();
     }
 }

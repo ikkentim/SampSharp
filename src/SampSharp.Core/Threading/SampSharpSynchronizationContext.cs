@@ -14,70 +14,41 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Concurrent;
 using System.Threading;
 
 namespace SampSharp.Core.Threading
 {
-    /// <summary>
-    ///     Represents a synchronization context for the SampSharp main thread.
-    /// </summary>
-    /// <seealso cref="SynchronizationContext" />
-    public class SampSharpSynchronizationContext : SynchronizationContext
+    internal class SampSharpSynchronizationContext : SynchronizationContext
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="SampSharpSynchronizationContext" /> class.
-        /// </summary>
-        public SampSharpSynchronizationContext(IMessageQueue messageQueue)
-        {
-            MessageQueue = messageQueue ?? throw new ArgumentNullException(nameof(messageQueue));
-        }
-
-        /// <summary>
-        /// Gets the message queue to which calls are enqueued.
-        /// </summary>
-        public IMessageQueue MessageQueue { get; }
+        private readonly ConcurrentQueue<SendOrPostCallbackItem> _queue = new();
         
-        #region Overrides of SynchronizationContext
-
-        /// <summary>
-        ///     When overridden in a derived class, dispatches a synchronous message to a synchronization context.
-        /// </summary>
-        /// <param name="d">The <see cref="SendOrPostCallback" /> delegate to call.</param>
-        /// <param name="state">The object passed to the delegate. </param>
         public override void Send(SendOrPostCallback d, object state)
         {
             var item = new SendOrPostCallbackItem(d, state, ExecutionType.Send);
-            MessageQueue.PushMessage(item);
+            _queue.Enqueue(item);
 
             item.ExecutionCompleteWaitHandle.WaitOne();
 
             if (item.ExecutedWithException)
                 throw item.Exception;
         }
+
+        public void HandleQueue(Action<SendOrPostCallbackItem> handle)
+        {
+            while (_queue.TryDequeue(out var item))
+            {
+                handle(item);
+            }
+        }
         
-        /// <summary>
-        ///     When overridden in a derived class, dispatches an asynchronous message to a synchronization context.
-        /// </summary>
-        /// <param name="d">The <see cref="SendOrPostCallback" /> delegate to call.</param>
-        /// <param name="state">The object passed to the delegate.</param>
         public override void Post(SendOrPostCallback d, object state)
         {
             // Queue the item and don't wait for its execution. 
-            // TODO: This is risky because an unhandled exception will terminate the main thread. Use with caution.
             var item = new SendOrPostCallbackItem(d, state, ExecutionType.Post);
-            MessageQueue.PushMessage(item);
+            _queue.Enqueue(item);
         }
 
-        /// <summary>
-        ///     When overridden in a derived class, creates a copy of the synchronization context.
-        /// </summary>
-        /// <returns>A new <see cref="SynchronizationContext" /> object.</returns>
-        public override SynchronizationContext CreateCopy()
-        {
-            // Do not copy
-            return this;
-        }
-
-        #endregion
+        public override SynchronizationContext CreateCopy() => this; // no copy support
     }
 }

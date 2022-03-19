@@ -156,7 +156,7 @@ namespace SampSharp.GameMode.Pools
         }
 
         /// <summary>
-        ///     An overloadable point for initialization logic which requires the <see cref="Id"/> to be set.
+        ///     An overloadable point for initialization logic which requires the <see cref="Id" /> to be set.
         /// </summary>
         protected virtual void Initialize()
         {

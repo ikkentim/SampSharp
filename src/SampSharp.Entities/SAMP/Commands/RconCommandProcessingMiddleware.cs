@@ -18,7 +18,7 @@ using SampSharp.Core.Logging;
 namespace SampSharp.Entities.SAMP.Commands
 {
     /// <summary>
-    /// Represents a middleware which lets unhandled OnRconCommand events be processed by the <see cref="IRconCommandService"/>.
+    /// Represents a middleware which lets unhandled OnRconCommand events be processed by the <see cref="IRconCommandService" />.
     /// </summary>
     public class RconCommandProcessingMiddleware
     {

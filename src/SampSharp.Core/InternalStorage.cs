@@ -23,6 +23,7 @@ namespace SampSharp.Core
         /// <summary>
         ///     The currently running client.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S2223:Non-constant static fields should not be visible", Justification = "Need an internal state.")]
         public static IGameModeClient RunningClient;
     }
 }

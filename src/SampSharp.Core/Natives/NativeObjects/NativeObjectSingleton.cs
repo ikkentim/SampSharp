@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
@@ -20,9 +22,12 @@ namespace SampSharp.Core.Natives.NativeObjects
     ///     type.
     /// </summary>
     /// <typeparam name="T">The native object type.</typeparam>
+    [SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Generic factory class")]
+    [SuppressMessage("Major Code Smell", "S2743:Static fields should not be used in generic types", Justification = "Generic factory class")]
     public abstract class NativeObjectSingleton<T> where T : NativeObjectSingleton<T>
     {
         private static T _instance;
+
 
         /// <summary>
         ///     Gets the singleton instance of native object <typeparamref name="T" />.

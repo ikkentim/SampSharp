@@ -108,12 +108,12 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Gets or sets whether this <see cref="Timer"/> is repeating.
+        ///     Gets or sets whether this <see cref="Timer" /> is repeating.
         /// </summary>
         public bool IsRepeating { get; set; }
 
         /// <summary>
-        ///     Gets or sets whether this <see cref="Timer"/> is running.
+        ///     Gets or sets whether this <see cref="Timer" /> is running.
         /// </summary>
         public bool IsRunning
         {

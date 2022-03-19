@@ -43,8 +43,8 @@ namespace SampSharp.Entities
         /// Initializes a new instance of the <see cref="EventSignatureException" /> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="inner">The inner.</param>
-        public EventSignatureException(string message, Exception inner) : base(message, inner)
+        /// <param name="innerException">The inner exception.</param>
+        public EventSignatureException(string message, Exception innerException) : base(message, innerException)
         {
         }
 

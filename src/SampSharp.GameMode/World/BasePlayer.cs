@@ -1896,7 +1896,7 @@ namespace SampSharp.GameMode.World
         /// <param name="iconId">The icon identifier.</param>
         /// <param name="position">The position of the map icon.</param>
         /// <param name="markerType">Type of the map icon marker.</param>
-        /// <param name="color">The color of the map icon marker (for <see cref="MapIcon.ColoredSquareTriangleDynamic"/>).</param>
+        /// <param name="color">The color of the map icon marker (for <see cref="MapIcon.ColoredSquareTriangleDynamic" />).</param>
         /// <param name="markerStyle">The marker style.</param>
         public virtual void SetMapIcon(int iconId, Vector3 position, MapIcon markerType, Color color = default, MapIconType markerStyle = 0)
         {
@@ -1905,7 +1905,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Removes a map icon that was set earlier for this player using <see cref="SetMapIcon"/>.
+        /// Removes a map icon that was set earlier for this player using <see cref="SetMapIcon" />.
         /// </summary>
         /// <param name="iconId">The icon identifier.</param>
         public virtual void RemoveMapIcon(int iconId)

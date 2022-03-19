@@ -47,7 +47,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Deprecated. Use new ServerConfig(Path.Combine(gameMode.Client.ServerPath, "server.cfg")) instead.
         /// </summary>
-        /// <seealso cref="ServerConfig"/>.
+        /// <seealso cref="ServerConfig" />.
         [Obsolete("Deprecated. Use new ServerConfig(Path.Combine(gameMode.Client.ServerPath, \"server.cfg\")) instead.")]
         public static ServerConfig Config => _serverConfig ?? (_serverConfig = new ServerConfig("server.cfg"));
 

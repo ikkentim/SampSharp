@@ -22,9 +22,15 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
     /// <summary>
     /// Provides a state for variable arguments handling of native calls.
     /// </summary>
-    public class VarArgsState : IDisposable
+    public sealed class VarArgsState : IDisposable
     {
         private List<GCHandle> _pinnedHandles;
+
+        /// <inheritdoc />
+        ~VarArgsState()
+        {
+            DisposeHandles();
+        }
 
         /// <summary>
         /// Pins a buffer which will be freed once this state is disposed of.
@@ -43,8 +49,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             return ptr.ToInt32();
         }
 
-        /// <inheritdoc />
-        public void Dispose()
+        private void DisposeHandles()
         {
             if (_pinnedHandles == null)
             {
@@ -57,6 +62,13 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             }
 
             _pinnedHandles = null;
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            DisposeHandles();
+            GC.SuppressFinalize(this);
         }
     }
 }

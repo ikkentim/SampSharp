@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,17 +13,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.Core;
+using System.Reflection;
 
-namespace TestMode.GameMode
+namespace SampSharp.Core;
+
+public static class SampSharpInfo
 {
-    internal class Program
+    internal static Assembly _entryAssembly;
+
+    public static Assembly GetEntryAssembly()
     {
-        private static void Main(string[] args)
-        {
-            new GameModeBuilder()
-                .Use<GameMode>()
-                .Run();
-        }
+        return _entryAssembly;
     }
 }

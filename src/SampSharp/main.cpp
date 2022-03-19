@@ -38,18 +38,10 @@ void print_info() {
     log_print("");
 }
 
-void start_server() {
-    if(!plg->is_config_valid()) {
-	    return;
-    }
-    
-    print_info();
-
-    plg->start();
-}
-
 void try_start_server() {
 	if(plg && plg->is_config_valid() && !start_attempted && !plg->host()) {
+        print_info();
+
 		if(plg->start()) {
 			host = plg->host();
 		}
@@ -98,9 +90,10 @@ PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
 PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     cell *params, cell *retval) {
     if (!host) {
+        sampgdk_SendRconCommand("loadfs empty");
         try_start_server();
     }
-
+    
     if (host) {
         host->public_call(amx, name, params, retval);
     }

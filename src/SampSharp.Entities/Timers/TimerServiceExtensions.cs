@@ -6,12 +6,12 @@ using SampSharp.Entities.Utilities;
 namespace SampSharp.Entities
 {
     /// <summary>
-    /// Provides extended methods for <see cref="ITimerService"/>.
+    /// Provides extended methods for <see cref="ITimerService" />.
     /// </summary>
     public static class TimerServiceExtensions
     {
         /// <summary>
-        /// Starts a timer with the specified <paramref name="interval"/>. The specified <paramref name="method"/> will be invoked on the specified <paramref name="target"/> each timer tick.
+        /// Starts a timer with the specified <paramref name="interval" />. The specified <paramref name="method" /> will be invoked on the specified <paramref name="target" /> each timer tick.
         /// </summary>
         /// <param name="timerService">The timer service.</param>
         /// <param name="target">The target on which to tick.</param>

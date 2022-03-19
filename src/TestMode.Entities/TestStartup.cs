@@ -55,7 +55,7 @@ namespace TestMode.Entities
             builder.UseMiddleware("OnPlayerText", (ctx, next) =>
             {
                 if (ctx.Arguments[1] is string txt && txt.Contains("I dislike SampSharp"))
-                    return null;
+                    return false;
                 return next();
             });
 

@@ -31,10 +31,10 @@ namespace SampSharp.Entities.SAMP.Commands
         public static readonly InvokeResult Success = new InvokeResult(InvokeResponse.Success);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvokeResult"/> struct.
+        /// Initializes a new instance of the <see cref="InvokeResult" /> struct.
         /// </summary>
         /// <param name="response">The response.</param>
-        /// <param name="usageMessage">The usage message. This value should only be provided when <paramref name="response"/> is equal to <see cref="InvokeResponse.InvalidArguments"/>.</param>
+        /// <param name="usageMessage">The usage message. This value should only be provided when <paramref name="response" /> is equal to <see cref="InvokeResponse.InvalidArguments" />.</param>
         public InvokeResult(InvokeResponse response, string usageMessage = null)
         {
             Response = response;
@@ -47,7 +47,7 @@ namespace SampSharp.Entities.SAMP.Commands
         public InvokeResponse Response { get; }
 
         /// <summary>
-        /// Gets the usage message. This value is only available when <see cref="Response"/> is equal to <see cref="InvokeResponse.InvalidArguments"/>.
+        /// Gets the usage message. This value is only available when <see cref="Response" /> is equal to <see cref="InvokeResponse.InvalidArguments" />.
         /// </summary>
         public string UsageMessage { get; }
     }

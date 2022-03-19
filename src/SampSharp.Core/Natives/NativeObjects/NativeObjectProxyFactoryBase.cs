@@ -9,7 +9,9 @@ namespace SampSharp.Core.Natives.NativeObjects
     /// <summary>
     /// Represents a base implementation of a native object proxy factory.
     /// </summary>
-    public abstract class NativeObjectProxyFactoryBase : INativeObjectProxyFactory
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "code generation")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "documentation for code generator")]
+    internal abstract class NativeObjectProxyFactoryBase : INativeObjectProxyFactory
     {
         private int _typeNumber;
         private readonly Dictionary<Type, Type> _knownTypes = new Dictionary<Type, Type>();
@@ -17,7 +19,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         private readonly object _lock = new object();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NativeObjectProxyFactoryBase"/> class.
+        /// Initializes a new instance of the <see cref="NativeObjectProxyFactoryBase" /> class.
         /// </summary>
         /// <param name="assemblyName">Name of the dynamic assembly.</param>
         protected NativeObjectProxyFactoryBase(string assemblyName)
@@ -119,7 +121,7 @@ namespace SampSharp.Core.Natives.NativeObjects
             foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
             {
                 // Make sure the method is virtual, public and not protected.
-                if (!method.IsVirtual || !method.IsPublic && !method.IsFamily)
+                if (!method.IsVirtual || (!method.IsPublic && !method.IsFamily))
                     continue;
 
                 // Find the attribute containing details about the method.
@@ -131,12 +133,12 @@ namespace SampSharp.Core.Natives.NativeObjects
                 if (WrapMethod(type, attr, method, objectIdentifiers, typeBuilder, proxyFields))
                     didWrapAnything = true;
             }
-
+            
             // Store the newly created type and return and instance of it.
-            return didWrapAnything || proxyFields.Length > 0 ? typeBuilder.CreateTypeInfo().AsType() : type;
+            return didWrapAnything || proxyFields.Length > 0 ? typeBuilder.CreateTypeInfo()!.AsType() : type;
         }
 
-        private void AddConstructor(Type type, TypeBuilder typeBuilder, FieldInfo[] proxyFields)
+        private static void AddConstructor(Type type, TypeBuilder typeBuilder, FieldInfo[] proxyFields)
         {
             foreach (var baseConstructor in type.GetConstructors())
             {
@@ -229,7 +231,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                     proxyFields, referenceIndices));
         }
 
-        private NativeIlGenContext CreateContext(string nativeName, Type proxyType,
+        private static NativeIlGenContext CreateContext(string nativeName, Type proxyType,
             uint[] nativeArgumentLengths, MethodInfo method, string[] identifierPropertyNames, int idIndex,
             FieldInfo[] proxyFields, int[] referenceIndices)
         {
@@ -264,15 +266,12 @@ namespace SampSharp.Core.Natives.NativeObjects
                 parameter.IsReferenceInput = referenceIndices != null && referenceIndices.Contains(i);
                 parameter.Parameter = methodParameter;
 
-                if (parameter.RequiresLength)
+                if (parameter.RequiresLength && nativeArgumentLengths.Length > 0)
                 {
-                    if (nativeArgumentLengths.Length > 0)
-                    {
-                        if(nativeArgumentLengths.Length == lengthIndex)
-                            throw new Exception("No length provided for native argument");
+                    if(nativeArgumentLengths.Length == lengthIndex)
+                        throw new InvalidOperationException("No length provided for native argument");
 
-                        parameter.LengthParam = parameters[nativeArgumentLengths[lengthIndex++]];
-                    }
+                    parameter.LengthParam = parameters[nativeArgumentLengths[lengthIndex++]];
                 }
             }
 
@@ -294,7 +293,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                         }
 
                         if (parameters[i].LengthParam == null)
-                            throw new Exception("No length provided for native argument");
+                            throw new InvalidOperationException("No length provided for native argument");
                     }
                 }
             }

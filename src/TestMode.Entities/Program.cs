@@ -28,10 +28,8 @@ namespace TestMode.Entities
         {
             Console.WriteLine("TestMode.Entities.Program.Main!!!!! " + string.Join(" ", args));
             
-            return;
             new GameModeBuilder()
-                .UseStartBehaviour(GameModeStartBehaviour.FakeGmx)
-                .IfHosted(b => b.RedirectConsoleOutput())
+                .RedirectConsoleOutput()
                 .UseEcs<TestStartup>()
                 .Run();
         }

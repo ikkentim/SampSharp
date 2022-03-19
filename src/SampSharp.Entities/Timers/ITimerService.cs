@@ -8,7 +8,7 @@ namespace SampSharp.Entities
     public interface ITimerService
     {
         /// <summary>
-        /// Starts a timer with the specified <paramref name="interval"/> and <paramref name="action"/>.
+        /// Starts a timer with the specified <paramref name="interval" /> and <paramref name="action" />.
         /// </summary>
         /// <param name="action">The action to perform each timer tick.</param>
         /// <param name="interval">The interval at which to tick.</param>

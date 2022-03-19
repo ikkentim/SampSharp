@@ -120,7 +120,7 @@ namespace SampSharp.Entities
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="Component"/> to <see cref="EntityId"/>. Returns the entity of the component.
+        /// Performs an implicit conversion from <see cref="Component" /> to <see cref="EntityId" />. Returns the entity of the component.
         /// </summary>
         /// <param name="component">The component.</param>
         /// <returns>

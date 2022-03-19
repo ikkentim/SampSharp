@@ -28,10 +28,8 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// <typeparam name="T">The type to create a proxy of.</typeparam>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The proxy instance.</returns>
-        public static T CreateInstance<T>(params object[] arguments) where T : class
-        {
-            return CreateInstance(typeof(T), arguments) as T;
-        }
+        public static T CreateInstance<T>(params object[] arguments) where T : class =>
+            CreateInstance(typeof(T), arguments) as T;
 
         /// <summary>
         ///     Creates a proxy instance of the specified <paramref name="type" />.
@@ -39,9 +37,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// <param name="type">The type to create a proxy of.</param>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The proxy instance.</returns>
-        public static object CreateInstance(Type type, params object[] arguments)
-        {
-            return InternalStorage.RunningClient.NativeObjectProxyFactory.CreateInstance(type, arguments);
-        }
+        public static object CreateInstance(Type type, params object[] arguments) =>
+            InternalStorage.RunningClient.NativeObjectProxyFactory.CreateInstance(type, arguments);
     }
 }

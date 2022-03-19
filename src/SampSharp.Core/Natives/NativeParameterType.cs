@@ -21,6 +21,7 @@ namespace SampSharp.Core.Natives
     ///     Contains possible types for a parameter of a native function.
     /// </summary>
     [Flags]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1720:Identifier contains type name", Justification = "Enumeration represents types types.")]
     public enum NativeParameterType : byte
     {
         /// <summary>

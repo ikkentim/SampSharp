@@ -29,7 +29,7 @@ namespace SampSharp.GameMode.Controllers
         private readonly List<Timer> _activeTimers = new List<Timer>();
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="TimerController"/> class.
+        ///     Initializes a new instance of the <see cref="TimerController" /> class.
         /// </summary>
         public TimerController()
         {

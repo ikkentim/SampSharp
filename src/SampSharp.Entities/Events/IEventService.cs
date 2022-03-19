@@ -37,7 +37,7 @@ namespace SampSharp.Entities
         void UseMiddleware(string name, Func<EventDelegate, EventDelegate> middleware);
 
         /// <summary>
-        /// Invokes the event with the specified <paramref name="name"/> and <paramref name="arguments"/>.
+        /// Invokes the event with the specified <paramref name="name" /> and <paramref name="arguments" />.
         /// </summary>
         /// <param name="name">The name of the event.</param>
         /// <param name="arguments">The arguments of the event.</param>

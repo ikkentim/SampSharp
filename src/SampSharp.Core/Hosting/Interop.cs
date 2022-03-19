@@ -14,8 +14,6 @@
 // limitations under the License.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -25,11 +23,10 @@ namespace SampSharp.Core.Hosting
     /// <summary>
     /// Contains interop functions for the SampSharp plugin.
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class Interop
     {
         internal delegate bool EntryPointDelegate(string assemblyName);
-        internal delegate void PublicCallDelegate(IntPtr amx, string name, IntPtr pars, IntPtr retval);
+        internal delegate void PublicCallDelegate(IntPtr amx, string name, IntPtr parameters, IntPtr retval);
 
         /// <summary>
         /// Prints the specified message to the SA:MP server log.
@@ -38,26 +35,6 @@ namespace SampSharp.Core.Hosting
         [DllImport("SampSharp", EntryPoint = "sampsharp_print", CallingConvention = CallingConvention.StdCall)]
         public static extern void Print(string message);
         
-        /// <summary>
-        /// Gets the handle of a native.
-        /// </summary>
-        /// <param name="name">The name of the native.</param>
-        /// <returns>The handle of the native</returns>
-        [DllImport("SampSharp", EntryPoint = "sampsharp_get_native_handle", CallingConvention = CallingConvention.StdCall)]
-        [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
-        public static extern int GetNativeHandle(string name);
-
-        /// <summary>
-        /// Invokes a native by a handle.
-        /// </summary>
-        /// <param name="inbuf">The input buffer.</param>
-        /// <param name="inlen">The input buffer length.</param>
-        /// <param name="outbuf">The output buffer.</param>
-        /// <param name="outlen">The output buffer length.</param>
-        [DllImport("SampSharp", EntryPoint = "sampsharp_invoke_native", CallingConvention = CallingConvention.StdCall)]
-        [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
-        public static extern void InvokeNative(IntPtr inbuf, int inlen, IntPtr outbuf, ref int outlen);
-
         /// <summary>
         /// Gets a pointer to a native.
         /// </summary>
@@ -76,12 +53,41 @@ namespace SampSharp.Core.Hosting
         [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_invoke", CallingConvention = CallingConvention.StdCall)]
         public static extern unsafe int FastNativeInvoke(IntPtr native, string format, int* args);
         
+        [DllImport("SampSharp", EntryPoint = "sampsharp_get_plugin_version", CallingConvention = CallingConvention.StdCall)]
+        private static extern uint GetPluginVersionInternal();
+
+        [DllImport("SampSharp", EntryPoint = "sampsharp_get_addr", CallingConvention = CallingConvention.StdCall)]
+        public static extern IntPtr GetAddress(IntPtr amx, IntPtr amxAddress);
+
+        [DllImport("SampSharp", EntryPoint = "sampsharp_get_string", CallingConvention = CallingConvention.StdCall)]
+        public static extern int GetString(IntPtr physicalAddress, IntPtr destination, uint destinationLength);
+
+        [DllImport("SampSharp", EntryPoint = "sampsharp_get_string_len", CallingConvention = CallingConvention.StdCall)]
+        public static extern int GetStringLength(IntPtr physicalAddress);
+
+        internal static Version GetPluginVersion()
+        {
+            try
+            {
+                var num = GetPluginVersionInternal();
+
+                var major = (int)(0xff & (num >> 24));
+                var minor = (int)(0xff & (num >> 16));
+                var build = (int)(0xff & (num >> 8));
+
+                return new Version(major, minor, build, 0);
+            }
+            catch (EntryPointNotFoundException)
+            {
+                return new Version(0, 0, 0, 0);
+            }
+        }
+
         [UnmanagedCallersOnly]
         internal static void OnTick()
         {
-            // var client = InternalStorage.RunningClient as HostedGameModeClient;
-            // client?.Tick();
-            // Console.Write("tick");
+            var client = InternalStorage.RunningClient as HostedGameModeClient;
+            client?.Tick();
         }
 
         internal static bool InvokeEntryPoint(string assemblyName)
@@ -89,6 +95,7 @@ namespace SampSharp.Core.Hosting
             try
             {
                 var dmn = Thread.GetDomain();
+                SampSharpInfo._entryAssembly = Assembly.Load(assemblyName);
                 dmn.ExecuteAssemblyByName(assemblyName, Array.Empty<string>());
 
                 return true;
@@ -100,9 +107,10 @@ namespace SampSharp.Core.Hosting
             }
         }
 
-        internal static void OnPublicCall(IntPtr amx, string name, IntPtr pars, IntPtr retval)
+        internal static void OnPublicCall(IntPtr amx, string name, IntPtr parameters, IntPtr retval)
         {
-            Console.WriteLine("public call to " + name);
+            var client = InternalStorage.RunningClient as HostedGameModeClient;
+            client?.PublicCall(amx, name, parameters, retval);
         }
     }
 }

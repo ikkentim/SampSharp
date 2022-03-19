@@ -15,19 +15,9 @@
 
 namespace SampSharp.Core.Threading
 {
-    /// <summary>
-    ///     Contains execution types of messages provided to the <see cref="SampSharpSynchronizationContext" />.
-    /// </summary>
-    public enum ExecutionType
+    internal enum ExecutionType
     {
-        /// <summary>
-        ///     The message has been posted.
-        /// </summary>
         Post,
-
-        /// <summary>
-        ///     The message has been sent.
-        /// </summary>
         Send
     }
 }

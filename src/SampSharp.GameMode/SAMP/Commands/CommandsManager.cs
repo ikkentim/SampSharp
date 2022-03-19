@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         private readonly List<ICommand> _commands = new List<ICommand>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CommandsManager"/> class.
+        /// Initializes a new instance of the <see cref="CommandsManager" /> class.
         /// </summary>
         /// <param name="gameMode">The game mode.</param>
         /// <exception cref="ArgumentNullException"></exception>

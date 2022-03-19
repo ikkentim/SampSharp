@@ -26,14 +26,14 @@ namespace SampSharp.Entities.SAMP.Commands
     public class RconCommandAttribute : Attribute, ICommandMethodInfo
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RconCommandAttribute"/> class.
+        /// Initializes a new instance of the <see cref="RconCommandAttribute" /> class.
         /// </summary>
         public RconCommandAttribute()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RconCommandAttribute"/> class.
+        /// Initializes a new instance of the <see cref="RconCommandAttribute" /> class.
         /// </summary>
         /// <param name="name">The overridden name of the command.</param>
         public RconCommandAttribute(string name)

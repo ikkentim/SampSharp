@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SampSharp.Core;
 
 namespace SampSharp.Entities.Utilities
 {
@@ -114,7 +115,7 @@ namespace SampSharp.Entities.Utilities
         /// <returns>An updated scanner.</returns>
         public AssemblyScanner IncludeEntryAssembly()
         {
-            return IncludeAssembly(Assembly.GetEntryAssembly());
+            return IncludeAssembly(SampSharpInfo.GetEntryAssembly());
         }
 
         /// <summary>

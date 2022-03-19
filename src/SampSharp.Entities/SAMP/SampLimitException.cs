@@ -21,7 +21,6 @@ namespace SampSharp.Entities.SAMP
     /// <summary>
     /// Represents an error which occurs when an entity or object could not be created because a SA-MP limit was reached.
     /// </summary>
-    /// <seealso cref="System.Exception" />
     [Serializable]
     public class SampLimitException : Exception
     {
@@ -52,14 +51,8 @@ namespace SampSharp.Entities.SAMP
         /// <summary>
         /// Initializes a new instance of the <see cref="SampLimitException" /> class.
         /// </summary>
-        /// <param name="info">
-        /// The <see cref="T:System.Runtime.Serialization.SerializationInfo"></see> that holds the serialized
-        /// object data about the exception being thrown.
-        /// </param>
-        /// <param name="context">
-        /// The <see cref="T:SampSharp.Entities.SAMP.SampLimitException"></see> that contains contextual
-        /// information about the source or destination.
-        /// </param>
+        /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="SampLimitException" /> that contains contextual information about the source or destination.</param>
         protected SampLimitException(SerializationInfo info,
             StreamingContext context) : base(info, context)
         {

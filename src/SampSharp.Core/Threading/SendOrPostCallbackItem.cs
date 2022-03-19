@@ -18,22 +18,13 @@ using System.Threading;
 
 namespace SampSharp.Core.Threading
 {
-    /// <summary>
-    ///     Represents an item enqueued to a <see cref="SampSharpSynchronizationContext" />.
-    /// </summary>
-    public class SendOrPostCallbackItem
+    internal class SendOrPostCallbackItem
     {
-        private readonly ManualResetEvent _asyncWaitHandle = new ManualResetEvent(false);
+        private readonly ManualResetEvent _asyncWaitHandle = new(false);
         private readonly ExecutionType _executionType;
         private readonly SendOrPostCallback _method;
         private readonly object _state;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="SendOrPostCallbackItem" /> class.
-        /// </summary>
-        /// <param name="callback">The callback.</param>
-        /// <param name="state">The state.</param>
-        /// <param name="type">The type.</param>
+        
         internal SendOrPostCallbackItem(SendOrPostCallback callback,
             object state, ExecutionType type)
         {
@@ -41,25 +32,13 @@ namespace SampSharp.Core.Threading
             _state = state;
             _executionType = type;
         }
-
-        /// <summary>
-        ///     Gets the exception thrown during the execution of this item.
-        /// </summary>
+        
         public Exception Exception { get; private set; }
-
-        /// <summary>
-        ///     Gets a value indicating whether an exception was thrown during the execution of this item.
-        /// </summary>
+        
         public bool ExecutedWithException => Exception != null;
-
-        /// <summary>
-        ///     Gets the wait handle for the completion of the execution of this item.
-        /// </summary>
+        
         public WaitHandle ExecutionCompleteWaitHandle => _asyncWaitHandle;
-
-        /// <summary>
-        ///     Executes this item.
-        /// </summary>
+        
         public void Execute()
         {
             if (_executionType == ExecutionType.Send)
@@ -78,7 +57,9 @@ namespace SampSharp.Core.Threading
                 }
             }
             else
+            {
                 _method(_state);
+            }
         }
     }
 }

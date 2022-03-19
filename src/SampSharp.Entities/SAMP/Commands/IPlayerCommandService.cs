@@ -8,7 +8,7 @@ namespace SampSharp.Entities.SAMP.Commands
     public interface IPlayerCommandService
     {
         /// <summary>
-        /// Invokes a player command using the specified <paramref name="inputText"/> for the specified <paramref name="player"/>.
+        /// Invokes a player command using the specified <paramref name="inputText" /> for the specified <paramref name="player" />.
         /// </summary>
         /// <param name="services">A service provider.</param>
         /// <param name="player">The player for which the command is invoked.</param>

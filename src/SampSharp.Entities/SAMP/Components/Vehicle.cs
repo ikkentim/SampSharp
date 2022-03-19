@@ -422,7 +422,7 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <summary>
-        /// Checks if this vehicle is streamed in for the specified <paramref name="player"/>.
+        /// Checks if this vehicle is streamed in for the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player to check.</param>
         /// <returns><c>true</c> if this vehicle is streamed in for the specified vehicle; <c>false</c> otherwise.</returns>

@@ -3,7 +3,7 @@
 namespace SampSharp.Entities.SAMP.Commands
 {
     /// <summary>
-    /// Represents a middleware which lets unhandled OnPlayerCommandText events be processed by the <see cref="IPlayerCommandService"/>.
+    /// Represents a middleware which lets unhandled OnPlayerCommandText events be processed by the <see cref="IPlayerCommandService" />.
     /// </summary>
     public class PlayerCommandProcessingMiddleware
     {

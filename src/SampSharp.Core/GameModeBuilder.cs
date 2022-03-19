@@ -22,7 +22,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using SampSharp.Core.CodePages;
-using SampSharp.Core.Communication.Clients;
 using SampSharp.Core.Logging;
 
 namespace SampSharp.Core
@@ -32,100 +31,24 @@ namespace SampSharp.Core
     /// </summary>
     public sealed class GameModeBuilder
     {
-        private ICommunicationClient _communicationClient;
-        private GameModeExitBehaviour _exitBehaviour = GameModeExitBehaviour.ShutDown;
         private IGameModeProvider _gameModeProvider;
         private bool _redirectConsoleOutput;
-        private GameModeStartBehaviour _startBehaviour = GameModeStartBehaviour.Gmx;
         private Encoding _encoding;
-        private bool _hosted;
         private TextWriter _logWriter;
         private bool _logWriterSet;
         
-        private const string DefaultUnixDomainSocketPath = "/tmp/SampSharp";
-        private const string DefaultPipeName = "SampSharp";
-        private const string DefaultTcpIp = "127.0.0.1";
-        private const int DefaultTcpPort = 8888;
-
-
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GameModeBuilder"/> class.
+        ///     Initializes a new instance of the <see cref="GameModeBuilder" /> class.
         /// </summary>
         public GameModeBuilder()
         {
             ParseArguments();
         }
-
-        #region Communication
         
-        /// <summary>
-        ///     Use the specified communication client to communicate with the SampSharp server.
-        /// </summary>
-        /// <param name="communicationClient">The communication client.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
-        public GameModeBuilder UseCommunicationClient(ICommunicationClient communicationClient)
-        {
-            _communicationClient = communicationClient ?? throw new ArgumentNullException(nameof(communicationClient));
-
-            return this;
-        }
-
-        /// <summary>
-        ///     Use a named pipe with the specified <paramref name="pipeName" /> to communicate with the SampSharp server.
-        /// </summary>
-        /// <param name="pipeName">Name of the pipe.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
-        public GameModeBuilder UsePipe(string pipeName)
-        {
-            if (pipeName == null) throw new ArgumentNullException(nameof(pipeName));
-            return UseCommunicationClient(new NamedPipeClient(pipeName));
-        }
-        
-        /// <summary>
-        ///     Use an unix domain socket with a file at the specified <paramref name="path" /> to communicate with the SampSharp
-        ///     server.
-        /// </summary>
-        /// <param name="path">The path to the domain socket file.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
-        public GameModeBuilder UseUnixDomainSocket(string path)
-        {
-            if (path == null) throw new ArgumentNullException(nameof(path));
-            return UseCommunicationClient(new UnixDomainSocketCommunicationClient(path));
-        }
-
-        /// <summary>
-        ///     Use a TCP client to communicate with the SampSharp server on localhost.
-        /// </summary>
-        /// <param name="port">The port on which to connect.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
-        public GameModeBuilder UseTcpClient(int port)
-        {
-            return UseCommunicationClient(new TcpCommunicationClient(DefaultTcpIp, port));
-        }
-
-        /// <summary>
-        ///     Use a TCP client to communicate with the SampSharp server.
-        /// </summary>
-        /// <param name="host">The host to which to connect.</param>
-        /// <param name="port">The port on which to connect.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
-        public GameModeBuilder UseTcpClient(string host, int port)
-        {
-            if (host == null) throw new ArgumentNullException(nameof(host));
-            return UseCommunicationClient(new TcpCommunicationClient(host, port));
-        }
-
-        #endregion
-
         #region Encoding
 
         /// <summary>
-        ///     Use the specified <paramref name="encoding"/> when en/decoding text messages sent to/from the server.
+        ///     Use the specified <paramref name="encoding" /> when en/decoding text messages sent to/from the server.
         /// </summary>
         /// <param name="encoding">The encoding to use when en/decoding text messages send to/from the server.</param>
         /// <returns>The updated game mode configuration builder.</returns>
@@ -136,7 +59,7 @@ namespace SampSharp.Core
         }
 
         /// <summary>
-        ///     Use the code page described by the file at the specified <paramref name="path"/> when en/decoding text messages sent to/from the server.
+        ///     Use the code page described by the file at the specified <paramref name="path" /> when en/decoding text messages sent to/from the server.
         /// </summary>
         /// <param name="path">The path to the code page file.</param>
         /// <returns>The updated game mode configuration builder.</returns>
@@ -147,14 +70,11 @@ namespace SampSharp.Core
         }
 
         /// <summary>
-        ///     Use the code page described by the specified <paramref name="stream"/> when en/decoding text messages sent to/from the server.
+        ///     Use the code page described by the specified <paramref name="stream" /> when en/decoding text messages sent to/from the server.
         /// </summary>
         /// <param name="stream">The stream containing the code page definition.</param>
         /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder UseEncoding(Stream stream)
-        {
-            return UseEncoding(CodePageEncoding.Load(stream));
-        }
+        public GameModeBuilder UseEncoding(Stream stream) => UseEncoding(CodePageEncoding.Load(stream));
 
         /// <summary>
         /// Uses the encoding code page.
@@ -199,10 +119,8 @@ namespace SampSharp.Core
         /// </summary>
         /// <typeparam name="TGameMode">The type of the game mode to use.</typeparam>
         /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder Use<TGameMode>() where TGameMode : IGameModeProvider
-        {
-            return Use(Activator.CreateInstance<TGameMode>());
-        }
+        public GameModeBuilder Use<TGameMode>() where TGameMode : IGameModeProvider =>
+            Use(Activator.CreateInstance<TGameMode>());
 
         #endregion
         
@@ -243,82 +161,12 @@ namespace SampSharp.Core
         }
 
         #endregion
-
-        /// <summary>
-        ///     Indicate the game mode will be hosted in the SA-MP server process.
-        /// </summary>
-        /// <returns>The updated game mode configuration builder.</returns>
-        [Obsolete("Multi-process mode is deprecated and will be removed in a future release. There is no longer a need to call this method.")]
-        public GameModeBuilder UseHosted()
-        {
-            _hosted = true;
-            return this;
-        }
-
-        /// <summary>
-        ///     Sets the behaviour used once a OnGameModeExit call has been received.
-        /// </summary>
-        /// <param name="exitBehaviour">The exit behaviour.</param>
-        /// <remarks>The exit behaviour is ignored when using a hosted game mode environment.</remarks>
-        /// <returns>The updated game mode configuration builder.</returns>
-        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
-        public GameModeBuilder UseExitBehaviour(GameModeExitBehaviour exitBehaviour)
-        {
-            _exitBehaviour = exitBehaviour;
-            return this;
-        }
-
-
-        /// <summary>
-        ///     Use the specified start method when attaching to the server.
-        /// </summary>
-        /// <param name="startBehaviour">The start behaviour.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
-        public GameModeBuilder UseStartBehaviour(GameModeStartBehaviour startBehaviour)
-        {
-            _startBehaviour = startBehaviour;
-            return this;
-        }
         
-        /// <summary>
-        /// Runs the specified <paramref name="action" /> if this game mode builder is configured to run in hosted mode either by
-        /// calling <see cref="UseHosted" /> or by the SA-MP server having started this game mode process in hosted mode.
-        /// </summary>
-        /// <param name="action">The action to run if the game mode builder has been configured to run in hosted mode.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
-        public GameModeBuilder IfHosted(Action<GameModeBuilder> action)
-        {
-            if (_hosted)
-                action?.Invoke(this);
-            return this;
-        }
-
-
-        /// <summary>
-        /// Runs the specified <paramref name="action" /> if this game mode builder is not configured to run in hosted mode either by
-        /// calling <see cref="UseHosted" /> or by the SA-MP server having started this game mode process in hosted mode.
-        /// </summary>
-        /// <param name="action">The action to run if the game mode builder has been configured to run in multi process mode.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
-        public GameModeBuilder IfMultiProcess(Action<GameModeBuilder> action)
-        {
-            if (!_hosted)
-                action?.Invoke(this);
-            return this;
-        }
-
         /// <summary>
         ///     Run the game mode using the build configuration stored in this instance.
         /// </summary>
         public void Run()
         {
-            ApplyDefaults();
-
-            if (!_hosted && _communicationClient == null)
-                throw new GameModeBuilderException("No communication client has been specified");
             if (_gameModeProvider == null)
                 throw new GameModeBuilderException("No game mode provider has been specified");
 
@@ -343,32 +191,16 @@ namespace SampSharp.Core
             var logWriter = _logWriter;
 
             if (!_logWriterSet)
+            {
                 logWriter = redirectWriter != null
-                    ? (TextWriter) redirectWriter
+                    ? redirectWriter
                     : new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
+            }
 
             CoreLog.TextWriter = logWriter;
 
             // Run game mode runner
-            if (_hosted)
-            {
-                // Ignore exit behaviours for hosted environments.
-                runner.Run();
-            }
-            else
-            {
-                do
-                {
-                    // If true is returned, the runner wants to shut down.
-                    if (runner.Run())
-                        break;
-                } while (_exitBehaviour == GameModeExitBehaviour.Restart);
-
-                if (redirect)
-                    Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
-            }
-
-            _gameModeProvider.Dispose();
+            runner.Run();
         }
 
         private void ParseArguments()
@@ -380,14 +212,14 @@ namespace SampSharp.Core
                 return;
             }
             
-            for (int i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
                 string option;
                 string value;
-                if (args[i].Length < 2 || !args[i].StartsWith("-"))
+                if (args[i].Length < 2 || !args[i].StartsWith("-", StringComparison.InvariantCulture))
                     continue;
 
-                if (args[i].StartsWith("--"))
+                if (args[i].StartsWith("--", StringComparison.InvariantCulture))
                 {
                     option = args[i];
                     value = args.Length > i + 1
@@ -397,70 +229,25 @@ namespace SampSharp.Core
                 else
                 {
                     option = args[i].Substring(0, 2);
-                    value = args[i].Length > 2
-                        ? args[i].Substring(2)
-                        : args.Length > i + 1
+
+                    if (args[i].Length > 2)
+                    {
+                        value = args[i].Substring(2);
+                    }
+                    else
+                    {
+                        value = args.Length > i + 1
                             ? args[i + 1]
                             : null;
+                    }
                 }
 
                 switch (option)
                 {
-                    case "--hosted":
-                    case "-h":
-                        UseHosted();
-                        break;
+
                     case "--redirect-console-output":
                     case "-r":
                         RedirectConsoleOutput();
-                        break;
-                    case "--pipe":
-                    case "-p":
-                        if (value != null && !value.StartsWith("-"))
-                        {
-                            UsePipe(value);
-                            i++;
-                        }
-                        else
-                        {
-                            UsePipe(DefaultPipeName);
-                        }
-                        break;
-                    case "--unix":
-                    case "-u":
-                        if (value != null && !value.StartsWith("-"))
-                        {
-                            UseUnixDomainSocket(value);
-                            i++;
-                        }
-                        else
-                        {
-                            UseUnixDomainSocket(DefaultUnixDomainSocketPath);
-                        }
-                        break;
-                    case "--tcp":
-                        var ip = DefaultTcpIp;
-                        var port = DefaultTcpPort;
-
-                        if (value != null && !value.StartsWith("-"))
-                        {
-                            var colon = value.IndexOf(":", StringComparison.Ordinal);
-
-                            if (colon < 0)
-                            {
-                                if (IPAddress.TryParse(value.Substring(0, colon), out var addr) && addr.AddressFamily == AddressFamily.InterNetwork)
-                                    ip = value.Substring(0, colon);
-                                int.TryParse(value.Substring(colon + 1), out port);
-                            }
-                            else
-                            {
-                                int.TryParse(value, out port);
-                            }
-
-                            i++;
-                        }
-
-                        UseTcpClient(ip, port);
                         break;
                     case "--log-level":
                     case "-l":
@@ -472,51 +259,13 @@ namespace SampSharp.Core
 
                         i++;
                         break;
-                    case "--start-behaviour":
-                    case "-s":
-                        if (value == null)
-                            break;
-
-                        if (Enum.TryParse<GameModeStartBehaviour>(value, out var startBehaviour))
-                            UseStartBehaviour(startBehaviour);
-
-                        i++;
-                        break;
-                    case "--exit-behaviour":
-                    case "-e":
-                        if (value == null)
-                            break;
-
-                        if (Enum.TryParse<GameModeExitBehaviour>(value, out var exitBehaviour))
-                            UseExitBehaviour(exitBehaviour);
-
-                        i++;
-                        break;
                 }
-            }
-        }
-
-        private void ApplyDefaults()
-        {
-            if (_communicationClient == null && !_hosted)
-            {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                    _communicationClient = new UnixDomainSocketCommunicationClient(DefaultUnixDomainSocketPath);
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                    _communicationClient = new NamedPipeClient(DefaultPipeName);
             }
         }
 
         private IGameModeRunner Build()
         {
-            if (_hosted)
-            {
-                return new HostedGameModeClient(_gameModeProvider, _encoding);
-            }
-            else
-            {
-                return new MultiProcessGameModeClient(_communicationClient, _startBehaviour, _gameModeProvider, _encoding);
-            }
+            return new HostedGameModeClient(_gameModeProvider, _encoding);
         }
     }
 }

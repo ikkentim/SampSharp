@@ -50,12 +50,12 @@ namespace SampSharp.Core.Callbacks
         /// <summary>
         ///     The parameter contains a value (either of <see cref="int" />, <see cref="float" /> or <see cref="bool" />).
         /// </summary>
-        public static CallbackParameterInfo Value => new CallbackParameterInfo(CallbackParameterType.Value, 0);
+        public static CallbackParameterInfo Value => new(CallbackParameterType.Value, 0);
 
         /// <summary>
         ///     The parameter contains a <see cref="string" /> value.
         /// </summary>
-        public static CallbackParameterInfo String => new CallbackParameterInfo(CallbackParameterType.String, 0);
+        public static CallbackParameterInfo String => new(CallbackParameterType.String, 0);
 
         /// <summary>
         ///     The parameter contains an array (of element type <see cref="int" />, <see cref="float" /> or <see cref="bool" />)
@@ -67,27 +67,6 @@ namespace SampSharp.Core.Callbacks
         public static CallbackParameterInfo Array(uint lengthIndex)
         {
             return new CallbackParameterInfo(CallbackParameterType.Array, lengthIndex);
-        }
-
-        /// <summary>
-        ///     Gets the byte representation of the parameter info.
-        /// </summary>
-        /// <returns>The bytes.</returns>
-        public IEnumerable<byte> GetBytes()
-        {
-            switch (Type)
-            {
-                case CallbackParameterType.Value:
-                case CallbackParameterType.String:
-                    return new[] { (byte) Type };
-                case CallbackParameterType.Array:
-                    var result = new byte[5];
-                    result[0] = (byte) Type;
-                    ValueConverter.GetBytes(LengthIndex).CopyTo(result, 1);
-                    return result;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(Type));
-            }
         }
     }
 }

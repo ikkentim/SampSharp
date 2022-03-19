@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace SampSharp.Core.CodePages
@@ -27,8 +26,8 @@ namespace SampSharp.Core.CodePages
     /// </summary>
     public sealed class CodePageEncoding : Encoding
     {
-        private readonly Dictionary<ushort, char> _cpToUni = new Dictionary<ushort, char>();
-        private readonly Dictionary<char, ushort> _uniToCp = new Dictionary<char, ushort>();
+        private readonly Dictionary<ushort, char> _cpToUni = new();
+        private readonly Dictionary<char, ushort> _uniToCp = new();
         private bool _hasDoubleByteChars;
 
         private CodePageEncoding()
@@ -105,12 +104,12 @@ namespace SampSharp.Core.CodePages
             result._hasDoubleByteChars = stream.ReadByte() != 0;
 
             var buffer = new byte[4 * 256];
-            stream.Read(buffer, 0, 4);
+            _ = stream.Read(buffer, 0, 4);
 
             var length = BitConverter.ToInt32(buffer, 0);
 
             var i = 0;
-            var head = 0;
+            int head;
 
             void Read()
             {
@@ -154,52 +153,52 @@ namespace SampSharp.Core.CodePages
             if (stream == null) throw new ArgumentNullException(nameof(stream));
 
             var result = new CodePageEncoding();
-            using (var reader = new StreamReader(stream))
+            using var reader = new StreamReader(stream);
+
+            while (!reader.EndOfStream)
             {
-                while (!reader.EndOfStream)
+                var line = reader.ReadLine()!;
+
+                var ln = line.Trim();
+
+                if (ln.StartsWith("#", StringComparison.InvariantCulture))
+                    continue;
+                    
+                var spl = ln.Split(new []{' ', '\t'}, StringSplitOptions.RemoveEmptyEntries);
+
+                string from = null, to = null;
+                foreach (var p in spl)
                 {
-                    var line = reader.ReadLine();
+                    if (p.StartsWith("#", StringComparison.InvariantCulture))
+                        break;
 
-                    var ln = line.Trim();
-
-                    if (ln.StartsWith("#"))
-                        continue;
-
-                    var spl = ln.Split(' ', '\t');
-
-                    string from = null, to = null;
-                    foreach (var p in spl)
+                    if (from == null)
                     {
-                        if (p.StartsWith("#"))
-                            break;
-
-                        if (from == null)
-                        {
-                            from = p;
-                        }
-                        else
-                        {
-                            to = p;
-                            break;
-                        }
+                        from = p;
                     }
-
-                    if (string.IsNullOrWhiteSpace(from) || string.IsNullOrWhiteSpace(to))
-                        continue;
-
-                    try
+                    else
                     {
-                        var fromNum = System.Convert.ToUInt16(from, 16);
-                        var toNum = System.Convert.ToUInt16(to, 16);
+                        to = p;
+                        break;
+                    }
+                }
 
-                        if (fromNum > 0xff)
-                            result._hasDoubleByteChars = true;
-                        result._cpToUni[fromNum] = (char) toNum;
-                        result._uniToCp[(char) toNum] = fromNum;
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                    }
+                if (string.IsNullOrWhiteSpace(from) || string.IsNullOrWhiteSpace(to))
+                    continue;
+
+                try
+                {
+                    var fromNum = System.Convert.ToUInt16(from, 16);
+                    var toNum = System.Convert.ToUInt16(to, 16);
+
+                    if (fromNum > 0xff)
+                        result._hasDoubleByteChars = true;
+                    result._cpToUni[fromNum] = (char) toNum;
+                    result._uniToCp[(char) toNum] = fromNum;
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    // ignore like if parsing fails
                 }
             }
 

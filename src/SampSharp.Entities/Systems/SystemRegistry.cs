@@ -30,7 +30,7 @@ namespace SampSharp.Entities
         private Dictionary<Type, ISystem[]> _data;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SystemRegistry"/> class.
+        /// Initializes a new instance of the <see cref="SystemRegistry" /> class.
         /// </summary>
         public SystemRegistry(IServiceProvider serviceProvider)
         {

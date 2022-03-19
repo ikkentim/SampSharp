@@ -54,7 +54,7 @@ namespace SampSharp.Entities
         }
 
         /// <summary>
-        /// Adds a component of the specified type <typeparamref name="T"/> to the entity with the specified constructor <paramref name="args"/>.
+        /// Adds a component of the specified type <typeparamref name="T" /> to the entity with the specified constructor <paramref name="args" />.
         /// </summary>
         /// <typeparam name="T">The type of the component to add.</typeparam>
         /// <param name="args">The arguments of the constructor of the component.</param>
@@ -65,7 +65,7 @@ namespace SampSharp.Entities
         }
         
         /// <summary>
-        /// Adds a component of the specified type <typeparamref name="T"/> to the entity.
+        /// Adds a component of the specified type <typeparamref name="T" /> to the entity.
         /// </summary>
         /// <typeparam name="T">The type of the component to add.</typeparam>
         /// <returns>The created component.</returns>
@@ -180,11 +180,11 @@ namespace SampSharp.Entities
         }
         
         /// <summary>
-        /// Implements the operator true. Returns <c>true</c> if the specified <paramref name="component"/> is alive.
+        /// Implements the operator true. Returns <c>true</c> if the specified <paramref name="component" /> is alive.
         /// </summary>
         /// <param name="component">The component.</param>
         /// <returns>
-        /// <c>true</c> if the specified <paramref name="component"/> is alive; <c>false</c> otherwise.
+        /// <c>true</c> if the specified <paramref name="component" /> is alive; <c>false</c> otherwise.
         /// </returns>
         public static bool operator true(Component component)
         {
@@ -192,11 +192,11 @@ namespace SampSharp.Entities
         }
 
         /// <summary>
-        /// Implements the operator false. Returns <c>true</c> if the specified <paramref name="component"/> is not alive.
+        /// Implements the operator false. Returns <c>true</c> if the specified <paramref name="component" /> is not alive.
         /// </summary>
         /// <param name="component">The component.</param>
         /// <returns>
-        /// <c>true</c> if the specified <paramref name="component"/> is not alive; <c>false</c> otherwise.
+        /// <c>true</c> if the specified <paramref name="component" /> is not alive; <c>false</c> otherwise.
         /// </returns>
         public static bool operator false(Component component)
         {

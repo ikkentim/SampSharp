@@ -13,31 +13,7 @@ namespace SampSharp.Core.Natives
         /// Gets the factory for creating native object proxies.
         /// </summary>
         INativeObjectProxyFactory ProxyFactory { get; }
-
-        /// <summary>
-        ///     Loads a native with the specified name.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="sizes">The references to the parameter which contains the size of array parameters.</param>
-        /// <param name="parameterTypes">The parameter types.</param>
-        /// <returns>The loaded native.</returns>
-        INative Load(string name, uint[] sizes, Type[] parameterTypes);
-
-        /// <summary>
-        ///     Loads a native with the specified name.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns>The loaded native.</returns>
-        INative Load(string name, NativeParameterInfo[] parameters);
-
-        /// <summary>
-        ///     Gets the native with the specified handle.
-        /// </summary>
-        /// <param name="handle">The handle of the native.</param>
-        /// <returns>The native.</returns>
-        INative Get(int handle);
-
+        
         /// <summary>
         ///     Checks whether a native with the specified <paramref name="name" /> exists.
         /// </summary>

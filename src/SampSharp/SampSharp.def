@@ -9,3 +9,7 @@ EXPORTS
     sampsharp_print
     sampsharp_fast_native_find
     sampsharp_fast_native_invoke
+    sampsharp_get_plugin_version
+    sampsharp_get_addr
+    sampsharp_get_string
+    sampsharp_get_string_len

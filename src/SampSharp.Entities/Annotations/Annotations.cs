@@ -108,7 +108,7 @@ internal sealed class ItemCanBeNullAttribute : Attribute { }
   /// <summary>
   /// Indicates that the marked method builds string by the format pattern and (optional) arguments.
   /// The parameter, which contains the format string, should be given in constructor. The format string
-  /// should be in <see cref="string.Format(IFormatProvider,string,object[])"/>-like form.
+  /// should be in <see cref="string.Format(IFormatProvider,string,object[])" />-like form.
   /// </summary>
   /// <example><code>
   /// [StringFormatMethod("message")]
@@ -177,7 +177,7 @@ internal sealed class ValueProviderAttribute : Attribute
   /// <summary>
   /// Indicates that the function argument should be a string literal and match one
   /// of the parameters of the caller function. For example, ReSharper annotates
-  /// the parameter of <see cref="System.ArgumentNullException"/>.
+  /// the parameter of <see cref="System.ArgumentNullException" />.
   /// </summary>
   /// <example><code>
   /// void Foo(string param) {
@@ -395,9 +395,9 @@ internal sealed class UsedImplicitlyAttribute : Attribute
   }
 
   /// <summary>
-  /// Can be applied to attributes, type parameters, and parameters of a type assignable from <see cref="System.Type"/> .
-  /// When applied to an attribute, the decorated attribute behaves the same as <see cref="UsedImplicitlyAttribute"/>.
-  /// When applied to a type parameter or to a parameter of type <see cref="System.Type"/>,  indicates that the corresponding type
+  /// Can be applied to attributes, type parameters, and parameters of a type assignable from <see cref="System.Type" /> .
+  /// When applied to an attribute, the decorated attribute behaves the same as <see cref="UsedImplicitlyAttribute" />.
+  /// When applied to a type parameter or to a parameter of type <see cref="System.Type" />,  indicates that the corresponding type
   /// is used implicitly.
   /// </summary>
   [AttributeUsage(AttributeTargets.Class | AttributeTargets.GenericParameter | AttributeTargets.Parameter)]
@@ -425,7 +425,7 @@ internal sealed class MeansImplicitUseAttribute : Attribute
 
   /// <summary>
   /// Specify the details of implicitly used symbol when it is marked
-  /// with <see cref="MeansImplicitUseAttribute"/> or <see cref="UsedImplicitlyAttribute"/>.
+  /// with <see cref="MeansImplicitUseAttribute" /> or <see cref="UsedImplicitlyAttribute" />.
   /// </summary>
   [Flags]
 internal enum ImplicitUseKindFlags
@@ -446,7 +446,7 @@ internal enum ImplicitUseKindFlags
 
   /// <summary>
   /// Specify what is considered to be used implicitly when marked
-  /// with <see cref="MeansImplicitUseAttribute"/> or <see cref="UsedImplicitlyAttribute"/>.
+  /// with <see cref="MeansImplicitUseAttribute" /> or <see cref="UsedImplicitlyAttribute" />.
   /// </summary>
   [Flags]
 internal enum ImplicitUseTargetFlags
@@ -504,7 +504,7 @@ internal sealed class PureAttribute : Attribute { }
   /// <remarks>
   /// Methods decorated with this attribute (in contrast to pure methods) might change state,
   /// but make no sense without using their return value. <br/>
-  /// Similarly to <see cref="PureAttribute"/>, this attribute
+  /// Similarly to <see cref="PureAttribute" />, this attribute
   /// will help detecting usages of the method when the return value in not used.
   /// Additionally, you can optionally specify a custom message, which will be used when showing warnings, e.g.
   /// <code>[MustUseReturnValue("Use the return value to...")]</code>.
@@ -568,7 +568,7 @@ internal sealed class PathReferenceAttribute : Attribute
   /// Template method body can contain valid source code and/or special comments starting with '$'.
   /// Text inside these comments is added as source code when the template is applied. Template parameters
   /// can be used either as additional method parameters or as identifiers wrapped in two '$' signs.
-  /// Use the <see cref="MacroAttribute"/> attribute to specify macros for parameters.
+  /// Use the <see cref="MacroAttribute" /> attribute to specify macros for parameters.
   /// </remarks>
   /// <example>
   /// In this example, the 'forEach' method is a source template available over all values
@@ -590,9 +590,9 @@ internal sealed class SourceTemplateAttribute : Attribute { }
   /// </summary>
   /// <remarks>
   /// You can apply the attribute on the whole method or on any of its additional parameters. The macro expression
-  /// is defined in the <see cref="MacroAttribute.Expression"/> property. When applied on a method, the target
-  /// template parameter is defined in the <see cref="MacroAttribute.Target"/> property. To apply the macro silently
-  /// for the parameter, set the <see cref="MacroAttribute.Editable"/> property value = -1.
+  /// is defined in the <see cref="MacroAttribute.Expression" /> property. When applied on a method, the target
+  /// template parameter is defined in the <see cref="MacroAttribute.Target" /> property. To apply the macro silently
+  /// for the parameter, set the <see cref="MacroAttribute.Editable" /> property value = -1.
   /// </remarks>
   /// <example>
   /// Applying the attribute on a source template method:
@@ -634,7 +634,7 @@ internal sealed class MacroAttribute : Attribute
 
     /// <summary>
     /// Identifies the target parameter of a <see cref="SourceTemplateAttribute">source template</see> if the
-    /// <see cref="MacroAttribute"/> is applied on a template method.
+    /// <see cref="MacroAttribute" /> is applied on a template method.
     /// </summary>
     [CanBeNull] public string Target { get; set; }
   }
@@ -886,7 +886,7 @@ internal sealed class RazorSectionAttribute : Attribute { }
   /// <summary>
   /// Indicates how method, constructor invocation, or property access
   /// over collection type affects the contents of the collection.
-  /// Use <see cref="CollectionAccessType"/> to specify the access type.
+  /// Use <see cref="CollectionAccessType" /> to specify the access type.
   /// </summary>
   /// <remarks>
   /// Using this attribute only makes sense if all collection methods are marked with this attribute.
@@ -922,7 +922,7 @@ internal sealed class CollectionAccessAttribute : Attribute
   }
 
   /// <summary>
-  /// Provides a value for the <see cref="CollectionAccessAttribute"/> to define
+  /// Provides a value for the <see cref="CollectionAccessAttribute" /> to define
   /// how the collection method invocation affects the contents of the collection.
   /// </summary>
   [Flags]
@@ -941,14 +941,14 @@ internal enum CollectionAccessType
   /// <summary>
   /// Indicates that the marked method is assertion method, i.e. it halts the control flow if
   /// one of the conditions is satisfied. To set the condition, mark one of the parameters with
-  /// <see cref="AssertionConditionAttribute"/> attribute.
+  /// <see cref="AssertionConditionAttribute" /> attribute.
   /// </summary>
   [AttributeUsage(AttributeTargets.Method)]
 internal sealed class AssertionMethodAttribute : Attribute { }
 
   /// <summary>
   /// Indicates the condition parameter of the assertion method. The method itself should be
-  /// marked by <see cref="AssertionMethodAttribute"/> attribute. The mandatory argument of
+  /// marked by <see cref="AssertionMethodAttribute" /> attribute. The mandatory argument of
   /// the attribute is the assertion type.
   /// </summary>
   [AttributeUsage(AttributeTargets.Parameter)]
@@ -1043,7 +1043,7 @@ internal sealed class XamlItemsControlAttribute : Attribute { }
   /// </summary>
   /// <remarks>
   /// Property should have the tree ancestor of the <c>ItemsControl</c> type or
-  /// marked with the <see cref="XamlItemsControlAttribute"/> attribute.
+  /// marked with the <see cref="XamlItemsControlAttribute" /> attribute.
   /// </remarks>
   [AttributeUsage(AttributeTargets.Property)]
 internal sealed class XamlItemBindingOfItemsControlAttribute : Attribute { }
