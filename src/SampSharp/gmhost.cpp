@@ -43,6 +43,20 @@ gmhost::~gmhost() {
 	close_handle();
 }
 
+#if SAMPSHARP_WINDOWS
+typedef std::wstring plat_string;
+
+plat_string path_to_plat_string(const fs::path &path) {
+	return absolute(path).wstring();
+}
+#elif SAMPSHARP_LINUX
+typedef std::string plat_string;
+
+plat_string path_to_plat_string(const fs::path &path) {
+	return absolute(path).string();
+}
+#endif
+
 bool gmhost::start() {
 	// Extract assembly name from path to runtimeconfig.
 	const std::string filename = gamemode_path.filename().string();
@@ -50,7 +64,7 @@ bool gmhost::start() {
 
 
 	// Load hostfxr and get desired exports
-	const std::wstring libnamew = absolute(hostfxr_path_).wstring();
+	const plat_string libnamew = path_to_plat_string(hostfxr_path_);
 
 	void* lib = load_library(libnamew.c_str());
 
@@ -68,7 +82,7 @@ bool gmhost::start() {
 	}
 
 	// Initialize hostfxr
-	const std::wstring wgm = absolute(gamemode_path).wstring();
+	const plat_string wgm = path_to_plat_string(gamemode_path);
 
 	const char_t* aaa[] = {
 		wgm.c_str()

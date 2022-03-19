@@ -18,9 +18,11 @@
 #include "StringUtil.h"
 #include <regex>
 
-#include "ConfigReader.h"
-
-#define HOSTFXR_LIB "hostfxr.dll" // todo multiplat
+#if SAMPSHARP_WINDOWS
+#define HOSTFXR_LIB "hostfxr.dll"
+#elif SAMPSHARP_LINUX
+#define HOSTFXR_LIB "libhostfxr.so"
+#endif
 
 bool liblocator::locate(const std::string &hostfxr_hint, const std::string &gamemode_dir_hint, const std::string &gamemode) {
     // Verify hosting config values.
