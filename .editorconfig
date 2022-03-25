@@ -1,5 +1,11 @@
 root = true
 
+[*.{h,c,hpp,cpp,def}]
+indent_size = 4
+indent_style = space
+end_of_line = lf
+insert_final_newline = false
+
 # Project files
 [*.{csproj,targets,props}]
 indent_size = 2

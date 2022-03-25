@@ -26,10 +26,10 @@
 
 class remote_server;
 class pipesvr_win32 :
-	public commsvr {
+    public commsvr {
 public:
-	pipesvr_win32(const char *pipe_name);
-	~pipesvr_win32();
+    pipesvr_win32(const char *pipe_name);
+    ~pipesvr_win32();
     COMMSVR_DECL_PUB();
 
 private:

@@ -12,8 +12,8 @@ cell test_inout(AMX *amx, cell *params) {
 
 cell test_inrefout(AMX *amx, cell *params) {
     cell *address;
-	amx_GetAddr(amx, params[2], &address);
-	*address = params[1];
+    amx_GetAddr(amx, params[2], &address);
+    *address = params[1];
     
 #ifdef ENABLE_TEST_LOGGING
     log_info("test_inrefout %d", params[1]);
@@ -26,8 +26,8 @@ cell test_inoutstr(AMX *amx, cell *params) {
     amx_StrParam(amx, params[1], str);
 
     cell *address = NULL;
-	amx_GetAddr(amx, params[2], &address);
-	amx_SetString(address, str, 0, 0, static_cast<size_t>(params[3]));
+    amx_GetAddr(amx, params[2], &address);
+    amx_SetString(address, str, 0, 0, static_cast<size_t>(params[3]));
    
 #ifdef ENABLE_TEST_LOGGING 
     log_info("test_inoutstr %s, blen=%d", str, params[3]);
