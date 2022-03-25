@@ -1,4 +1,7 @@
-### 0.10.0
+### 0.10.0-alpha2
+- Added `ListDialog<T>` (#383, #395)
+
+### 0.10.0-alpha1
 - Added `BasePlayer.CancelEdit` (#362)
 - Added `BasePlayer.SetMapIcon` and `BasePlayer.RemoveMapIcon` (#364)
 - Updated to .NET Standard 2.1

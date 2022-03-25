@@ -1,4 +1,7 @@
-### 0.10.0
+### 0.10.0-alpha2
+- Added coreclr detection based on `SAMPSHARP_RUNTIME` environment variable
+
+### 0.10.0-alpha1
 - Added automatic coreclr and gamemode detection
 - Added support for "fastnative" calls (#365)
 - Added callback name to "Callback parameters count mismatch" error (#342)

@@ -1,4 +1,7 @@
-### 0.10.0
+### 0.10.0-alpha2
+- Fixed HostedGameModeClient.ServerPath not returning correct path
+
+### 0.10.0-alpha1
 - Added support for "fastnative" calls, this improves time consumed by calls to native functions by 95% (#365)
 - Added support for varargs in "fastnative" calls (#260)
 - Added `IGameModeClient.NativeObjectProxyFactory`
