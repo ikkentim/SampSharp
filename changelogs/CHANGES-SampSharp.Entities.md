@@ -1,4 +1,7 @@
-### 0.10.0
+### 0.10.0-alpha2
+- Fixed components not being removed from global component registry when destroying an entity
+
+### 0.10.0-alpha1
 - Added support for  player names as command arguments (#354)
 - Added timers (#326)
 - Updated to .NET Standard 2.1
