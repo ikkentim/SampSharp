@@ -215,12 +215,10 @@ bool plugin::detect_coreclr(std::string &value, fs::path path) {
 }
 
 bool plugin::detect_coreclr(std::string &value) {
-    char runtime[256];
-    size_t runtime_len;
-    getenv_s(&runtime_len, runtime, 256, "SAMPSHARP_RUNTIME");
+    const auto runtime = getenv("SAMPSHARP_RUNTIME");
     
     return
-        runtime_len > 0 && runtime_len < 256 && detect_coreclr(value, runtime) ||
+        runtime && strlen(runtime) > 0 && detect_coreclr(value, runtime) ||
         detect_coreclr(value, "runtime") ||
         detect_coreclr(value, "dotnet");
 }
