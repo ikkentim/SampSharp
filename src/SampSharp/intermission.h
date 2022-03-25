@@ -20,8 +20,8 @@
 class intermission
 {
 public:
-	intermission(plugin *plg);
-	~intermission();
+    intermission(plugin *plg);
+    ~intermission();
     bool is_on();
     void set_on(bool on);
     void signal_starting();

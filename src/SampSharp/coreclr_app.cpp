@@ -179,105 +179,105 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path,
 
     module_ = LoadLibraryExW(wcoreclr_dll.c_str(), nullptr, 0);
 
-	if (!module_)
-	{
-		log_error("CoreCLR.dll could not be found.");
-		return -1;
-	}
+    if (!module_)
+    {
+        log_error("CoreCLR.dll could not be found.");
+        return -1;
+    }
 
 
     const FnGetCLRRuntimeHost get_clr_runtime_host = FnGetCLRRuntimeHost(
         ::GetProcAddress(module_, "GetCLRRuntimeHost"));
 
-	if (!get_clr_runtime_host)
-	{
-		log_error("GetCLRRuntimeHost not found.");
-		return -1;
-	}
+    if (!get_clr_runtime_host)
+    {
+        log_error("GetCLRRuntimeHost not found.");
+        return -1;
+    }
 
-	// Get the hosting interface
-	HRESULT hr = get_clr_runtime_host(IID_ICLRRuntimeHost2, reinterpret_cast<IUnknown**>(&host_));
+    // Get the hosting interface
+    HRESULT hr = get_clr_runtime_host(IID_ICLRRuntimeHost2, reinterpret_cast<IUnknown**>(&host_));
 
-	if (FAILED(hr))
-	{
-		log_error("Failed to get ICLRRuntimeHost2 instance. Error code:%x.", hr);
-		return -1;
-	}
+    if (FAILED(hr))
+    {
+        log_error("Failed to get ICLRRuntimeHost2 instance. Error code:%x.", hr);
+        return -1;
+    }
 
 
     hr = host_->SetStartupFlags(
-		static_cast<STARTUP_FLAGS>(
-			// STARTUP_SERVER_GC |								// Use server GC
-			// STARTUP_LOADER_OPTIMIZATION_MULTI_DOMAIN |		// Maximize domain-neutral loading
-			// STARTUP_LOADER_OPTIMIZATION_MULTI_DOMAIN_HOST |	// Domain-neutral loading for strongly-named assemblies
-			STARTUP_CONCURRENT_GC |						// Use concurrent GC
-			STARTUP_SINGLE_APPDOMAIN |					// All code executes in the default AppDomain
-																		// (required to use the runtimeHost->ExecuteAssembly helper function)
-			STARTUP_LOADER_OPTIMIZATION_SINGLE_DOMAIN	// Prevents domain-neutral loading
-		)
-	);
+        static_cast<STARTUP_FLAGS>(
+            // STARTUP_SERVER_GC |                                // Use server GC
+            // STARTUP_LOADER_OPTIMIZATION_MULTI_DOMAIN |        // Maximize domain-neutral loading
+            // STARTUP_LOADER_OPTIMIZATION_MULTI_DOMAIN_HOST |    // Domain-neutral loading for strongly-named assemblies
+            STARTUP_CONCURRENT_GC |                        // Use concurrent GC
+            STARTUP_SINGLE_APPDOMAIN |                    // All code executes in the default AppDomain
+                                                                        // (required to use the runtimeHost->ExecuteAssembly helper function)
+            STARTUP_LOADER_OPTIMIZATION_SINGLE_DOMAIN    // Prevents domain-neutral loading
+        )
+    );
 
     if (FAILED(hr))
-	{
-		log_error("Failed to set startup flags. Error code:%x.", hr);
-		return -1;
-	}
+    {
+        log_error("Failed to set startup flags. Error code:%x.", hr);
+        return -1;
+    }
 
-	// Starting the runtime will initialize the JIT, GC, loader, etc.
-	hr = host_->Start();
-	if (FAILED(hr))
-	{
-		log_error("Failed to start the runtime. Error code:%x.", hr);
-		return -1;
-	}
+    // Starting the runtime will initialize the JIT, GC, loader, etc.
+    hr = host_->Start();
+    if (FAILED(hr))
+    {
+        log_error("Failed to start the runtime. Error code:%x.", hr);
+        return -1;
+    }
 
     const int app_domain_flags =
-		// APPDOMAIN_FORCE_TRIVIAL_WAIT_OPERATIONS |		// Do not pump messages during wait
-		// APPDOMAIN_SECURITY_SANDBOXED |					// Causes assemblies not from the TPA list to be loaded as partially trusted
-		APPDOMAIN_ENABLE_PLATFORM_SPECIFIC_APPS |			// Enable platform-specific assemblies to run
-		APPDOMAIN_ENABLE_PINVOKE_AND_CLASSIC_COMINTEROP |	// Allow PInvoking from non-TPA assemblies
-		APPDOMAIN_DISABLE_TRANSPARENCY_ENFORCEMENT;			// Entirely disables transparency checks
+        // APPDOMAIN_FORCE_TRIVIAL_WAIT_OPERATIONS |        // Do not pump messages during wait
+        // APPDOMAIN_SECURITY_SANDBOXED |                    // Causes assemblies not from the TPA list to be loaded as partially trusted
+        APPDOMAIN_ENABLE_PLATFORM_SPECIFIC_APPS |            // Enable platform-specific assemblies to run
+        APPDOMAIN_ENABLE_PINVOKE_AND_CLASSIC_COMINTEROP |    // Allow PInvoking from non-TPA assemblies
+        APPDOMAIN_DISABLE_TRANSPARENCY_ENFORCEMENT;            // Entirely disables transparency checks
 
     // Setup key/value pairs for AppDomain  properties
-	const wchar_t* propertyKeys[] = {
-		L"TRUSTED_PLATFORM_ASSEMBLIES",
-		L"APP_PATHS",
-		L"APP_NI_PATHS",
-		L"NATIVE_DLL_SEARCH_DIRECTORIES",
-		L"PLATFORM_RESOURCE_ROOTS",
-		L"AppDomainCompatSwitch"
-	};
+    const wchar_t* propertyKeys[] = {
+        L"TRUSTED_PLATFORM_ASSEMBLIES",
+        L"APP_PATHS",
+        L"APP_NI_PATHS",
+        L"NATIVE_DLL_SEARCH_DIRECTORIES",
+        L"PLATFORM_RESOURCE_ROOTS",
+        L"AppDomainCompatSwitch"
+    };
 
     std::wstring wtpa_list = std::wstring(tpa_list.begin(), tpa_list.end());
     std::wstring wnative_search_dirs = std::wstring(native_search_dirs.begin(), native_search_dirs.end());
 
-	// Property values which were constructed in step 5
-	const wchar_t* propertyValues[] = {
-		wtpa_list.c_str(),
-		wapp_dir.c_str(),
-		wapp_dir.c_str(),
-		wnative_search_dirs.c_str(),
-		 wapp_dir.c_str(),
-		L"UseLatestBehaviorWhenTFMNotSpecified"
-	};
+    // Property values which were constructed in step 5
+    const wchar_t* propertyValues[] = {
+        wtpa_list.c_str(),
+        wapp_dir.c_str(),
+        wapp_dir.c_str(),
+        wnative_search_dirs.c_str(),
+         wapp_dir.c_str(),
+        L"UseLatestBehaviorWhenTFMNotSpecified"
+    };
 
 
-	// Create the AppDomain
-	hr = host_->CreateAppDomainWithManager(
-		wapp_domain_friendly_name.c_str(),
-		app_domain_flags,
-		nullptr,
-		nullptr,
-		sizeof(propertyKeys)/sizeof(wchar_t*),
-		propertyKeys,
-		propertyValues,
-		&domain_id_);
+    // Create the AppDomain
+    hr = host_->CreateAppDomainWithManager(
+        wapp_domain_friendly_name.c_str(),
+        app_domain_flags,
+        nullptr,
+        nullptr,
+        sizeof(propertyKeys)/sizeof(wchar_t*),
+        propertyKeys,
+        propertyValues,
+        &domain_id_);
 
-	if (FAILED(hr))
-	{
-		log_error("Failed to create AppDomain. Error code:%x.", hr);
-		return -1;
-	}
+    if (FAILED(hr))
+    {
+        log_error("Failed to create AppDomain. Error code:%x.", hr);
+        return -1;
+    }
 
     return 0;
 #endif
@@ -377,38 +377,38 @@ int coreclr_app::construct_tpa(const char *directory, std::string &tpa_list) {
     closedir(dir);
 #elif SAMPSHARP_WINDOWS
     const wchar_t *tpaExtensions[] = {
-		L"*.dll",
-		L"*.exe",
-		L"*.winmd"
-	};
+        L"*.dll",
+        L"*.exe",
+        L"*.winmd"
+    };
 
-	for (int i = 0; i < _countof(tpaExtensions); i++)
-	{
-		// Construct the file name search pattern
-		wchar_t searchPath[PATH_MAX];
+    for (int i = 0; i < _countof(tpaExtensions); i++)
+    {
+        // Construct the file name search pattern
+        wchar_t searchPath[PATH_MAX];
         mbstowcs_s(NULL, searchPath, directory, PATH_MAX);
-		wcscat_s(searchPath, PATH_MAX, L"\\");
-		wcscat_s(searchPath, PATH_MAX, tpaExtensions[i]);
+        wcscat_s(searchPath, PATH_MAX, L"\\");
+        wcscat_s(searchPath, PATH_MAX, tpaExtensions[i]);
 
-		// Find files matching the search pattern
-		WIN32_FIND_DATAW find;
-		HANDLE fhandle = FindFirstFileW(searchPath, &find);
+        // Find files matching the search pattern
+        WIN32_FIND_DATAW find;
+        HANDLE fhandle = FindFirstFileW(searchPath, &find);
 
-		if (fhandle != INVALID_HANDLE_VALUE)
-		{
-			do
-			{
+        if (fhandle != INVALID_HANDLE_VALUE)
+        {
+            do
+            {
                 std::wstring wname = std::wstring(find.cFileName);
 
                 tpa_list.append(std::string(directory));
                 tpa_list.append(DIR_SEPARATOR);
                 tpa_list.append(std::string(wname.begin(), wname.end()));
-				tpa_list.append(TPA_DELIMITER);
-			}
-			while (FindNextFileW(fhandle, &find));
-			FindClose(fhandle);
-		}
-	}
+                tpa_list.append(TPA_DELIMITER);
+            }
+            while (FindNextFileW(fhandle, &find));
+            FindClose(fhandle);
+        }
+    }
 #endif
     return 0;
 }
@@ -561,8 +561,8 @@ int coreclr_app::release()
 #elif SAMPSHARP_WINDOWS
     // TODO? Other errors???
     host_->UnloadAppDomain(domain_id_, true);
-	host_->Stop();
-	retval = host_->Release();
+    host_->Stop();
+    retval = host_->Release();
 
     if(module_) {
         FreeLibrary(module_);
@@ -627,7 +627,7 @@ int coreclr_app::execute_assembly(int argc, const char** argv, unsigned int* exi
     }
 
     // Execute
-	DWORD dexit_code = -1;
+    DWORD dexit_code = -1;
     const DWORD retval = host_->ExecuteAssembly(domain_id_, wabs_exe_path.c_str(), argc, (const wchar_t **)wargv, &dexit_code);
 
     *exit_code = dexit_code;

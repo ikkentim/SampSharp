@@ -157,7 +157,7 @@ bool get_absolute_path(const char *path, std::string &absolute_path) {
     wchar_t wpath[PATH_MAX];
     mbstowcs_s(nullptr, wpath, cpath, PATH_MAX);
 
-	GetFullPathNameW(wpath, PATH_MAX, wreal_path, nullptr);
+    GetFullPathNameW(wpath, PATH_MAX, wreal_path, nullptr);
 
     std::wstring wreal_path_s(wreal_path);
     absolute_path = std::string(wreal_path_s.begin(), wreal_path_s.end());
