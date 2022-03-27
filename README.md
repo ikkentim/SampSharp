@@ -22,7 +22,10 @@ Some example gamemodes are available here:
 - [GrandLarc (ECS)](https://github.com/SampSharp/sample-ecs-grandlarc) - SA-MP default gamemode "grandlarc" ported to C# using SampSharp.Entities
 - [RiverShell (GM)](https://github.com/SampSharp/sample-gm-rivershell) - SA-MP default gamemode "rivershell" ported to C# using SampSharp.GameMode
 
-Libraries
----------
-Some useful SampSharp libraries:
-- [Streamer](https://github.com/ikkentim/SampSharp-streamer) - SampSharp object-oriented wrapper around streamer plugin.
+Building SampSharp
+------------------
+In order to build the .NET libraries you can simply open and build `SampSharp.sln` using Visual Studio 2022, or you can build it from the command line using dotnet (version 6 or newer) `dotnet publish SampSharp.sln --configuration Release`.
+
+To build the plugin on Windows, build `SampSharp.Plugin.sln` with Visual Studio 2022. You'll need to have the "Desktop development with C++" workload installed using Visal Studio Installer.
+
+To build the plugin on Linux you'll at least need to have the packages `make gcc g++ gcc-multilib g++-multilib` installed. Run `make` to build the plugin.
