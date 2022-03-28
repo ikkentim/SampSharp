@@ -213,8 +213,11 @@ namespace SampSharp.Core.Natives.NativeObjects
             var wrapProperty = typeBuilder.DefineProperty(property.Name, PropertyAttributes.None, property.PropertyType,
                 Type.EmptyTypes);
 
-            wrapProperty.SetGetMethod(getMethodBuilder);
-            wrapProperty.SetSetMethod(setMethodBuilder);
+            if(getMethodBuilder != null)
+                wrapProperty.SetGetMethod(getMethodBuilder);
+
+            if(setMethodBuilder != null)
+                wrapProperty.SetSetMethod(setMethodBuilder);
             
             return true;
         }
