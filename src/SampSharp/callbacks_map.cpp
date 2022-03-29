@@ -16,7 +16,6 @@
 #include "callbacks_map.h"
 #include <assert.h>
 #include <string.h>
-#include "remote_server.h"
 #include "logging.h"
 
 #define ARG_TERM    0x00

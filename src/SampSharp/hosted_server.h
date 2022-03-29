@@ -18,7 +18,6 @@
 #include "server.h"
 #include <sampgdk/sampgdk.h>
 #include "coreclr_app.h"
-#include "natives_map.h"
 #include "callbacks_map.h"
 #include <mutex>
 #include <inttypes.h>
@@ -38,9 +37,6 @@ public:
     void tick() override;
     void public_call(AMX *amx, const char *name, cell *params, cell *retval) override;
     void print(const char *msg) const;
-    int get_native_handle(const char *name);
-    void invoke_native(uint8_t *inbuf, uint32_t inlen, uint8_t *outbuf,
-        uint32_t *outlen);
     void register_callback(uint8_t *buf);
 
 private:
@@ -50,8 +46,6 @@ private:
     uint8_t buf_[LEN_CBBUF];
     /** map of registered callbacks */
     callbacks_map callbacks_;
-    /** map of registred native functions */
-    natives_map natives_;
     /** lock for callbacks/ticks */
     std::recursive_mutex mutex_;
     /** pointer to the tick CLR function */

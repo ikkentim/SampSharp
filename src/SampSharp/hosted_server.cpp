@@ -105,15 +105,6 @@ void hosted_server::print(const char* msg) const {
     log_print("%s", msg);
 }
 
-int hosted_server::get_native_handle(const char* name) {
-    return natives_.get_handle(name);
-}
-
-void hosted_server::invoke_native(uint8_t *inbuf, uint32_t inlen,
-    uint8_t *outbuf, uint32_t *outlen) {
-    natives_.invoke(inbuf, inlen, outbuf, outlen);
-}
-
 void hosted_server::register_callback(uint8_t* buf) {
     log_debug("Register callback %s", buf);
     callbacks_.register_buffer(buf);
@@ -122,22 +113,6 @@ void hosted_server::register_callback(uint8_t* buf) {
 SAMPSHARP_EXPORT void SAMPSHARP_CALL sampsharp_print(const char *msg) {
     if(hosting) {
         hosting->print(msg);
-    }
-}
-
-SAMPSHARP_EXPORT int SAMPSHARP_CALL sampsharp_get_native_handle(
-    const char *name) {
-    if(hosting) {
-        return hosting->get_native_handle(name);
-    }
-
-    return NATIVE_NOT_FOUND;
-}
-
-SAMPSHARP_EXPORT void SAMPSHARP_CALL sampsharp_invoke_native(uint8_t *inbuf,
-    uint32_t inlen, uint8_t *outbuf, uint32_t *outlen) {
-    if(hosting) {
-        hosting->invoke_native(inbuf, inlen, outbuf, outlen);
     }
 }
 

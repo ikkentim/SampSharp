@@ -18,7 +18,6 @@
 #include <string.h>
 #include <iostream>
 #include <sampgdk/sampgdk.h>
-#include "remote_server.h"
 #include "version.h"
 #include "plugin.h"
 #include "coreclr_app.h"
@@ -26,7 +25,6 @@
 #include "hosted_server.h"
 
 server *svr = NULL;
-commsvr *com = NULL;
 plugin *plg = NULL;
 
 void print_info() {
@@ -35,15 +33,6 @@ void print_info() {
     log_print("----------------");
     log_print("v%s, (C)2014-2022 Tim Potze", PLUGIN_VERSION_STR);
     log_print("");
-}
-
-void print_deprecation_warning() {
-    log_print("--------- NOTICE -----------");
-    log_print("SampSharp is currently running in development mode (also known as multi-process");
-    log_print("mode). The development mode has been deprecated and will be removed in a future");
-    log_print(" version of SampSharp. See https://github.com/ikkentim/SampSharp/issues/374 for");
-    log_print(" more information about this change.");
-    log_print("----------------------------");
 }
 
 void start_server() {
@@ -62,22 +51,8 @@ void start_server() {
         delete svr;
         svr = NULL;
     }
-
-    if(plg->state() & STATE_HOSTED) {
-        svr = new hosted_server(plg->get_coreclr()->c_str(), plg->get_gamemode()->c_str());
-    }
-    else {
-        print_deprecation_warning();
-
-        com = plg->create_commsvr();
-        
-        if (com) {
-            std::string debug_str;
-
-            plg->config("com_debug", debug_str);
-            svr = new remote_server(plg, com, debug_str == "1" || debug_str == "true");
-        }
-    }
+    
+    svr = new hosted_server(plg->get_coreclr()->c_str(), plg->get_gamemode()->c_str());
 }
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
@@ -96,17 +71,11 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
-    if (com) {
-        com->disconnect();
-    }
-    
     delete svr;
-    delete com;
     delete plg;
     
     plg = NULL;
     svr = NULL;
-    com = NULL;
     
     sampgdk::Unload();
 }
@@ -134,9 +103,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     if (!plg || !(plg->state() & STATE_CONFIG_VALID)) {
         return true;
     }
-    if (!svr &&
-        (plg->state() & (STATE_HOSTED | STATE_SWAPPING)) !=
-        (STATE_HOSTED | STATE_SWAPPING)) {
+    if (!svr) {
         start_server();
     }
 
