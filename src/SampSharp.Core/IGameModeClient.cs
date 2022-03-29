@@ -34,12 +34,6 @@ namespace SampSharp.Core
         Encoding Encoding { get; }
         
         /// <summary>
-        ///     Gets the native loader to be used to load natives.
-        /// </summary>
-        [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
-        INativeLoader NativeLoader { get; }
-        
-        /// <summary>
         /// Gets the factory for native method wrapper objects.
         /// </summary>
         INativeObjectProxyFactory NativeObjectProxyFactory { get; }
@@ -86,27 +80,5 @@ namespace SampSharp.Core
         /// </summary>
         /// <param name="text">The text to print to the server console.</param>
         void Print(string text);
-
-        /// <summary>
-        ///     Gets the handle of the native with the specified <paramref name="name" />.
-        /// </summary>
-        /// <param name="name">The name of the native.</param>
-        /// <returns>The handle of the native with the specified <paramref name="name" />.</returns>
-        [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
-        int GetNativeHandle(string name);
-
-        /// <summary>
-        ///     Invokes a native using the specified <paramref name="data" /> buffer.
-        /// </summary>
-        /// <param name="data">The data buffer to be used.</param>
-        /// <returns>The response from the native.</returns>
-        [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
-        byte[] InvokeNative(IEnumerable<byte> data);
-
-        /// <summary>
-        ///     Shuts down the server after the current callback has been processed.
-        /// </summary>
-        [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
-        void ShutDown();
     }
 }

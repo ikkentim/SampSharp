@@ -13,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.Core.Communication;
-
 namespace SampSharp.Core.Callbacks
 {
     /// <summary>
@@ -25,16 +23,16 @@ namespace SampSharp.Core.Callbacks
         /// <summary>
         ///     A value (either of <see cref="int" />, <see cref="float" /> or <see cref="bool" />).
         /// </summary>
-        Value = ServerCommandArgument.Value,
+        Value = 1,
 
         /// <summary>
         ///     An array (of element type <see cref="int" />, <see cref="float" /> or <see cref="bool" />).
         /// </summary>
-        Array = ServerCommandArgument.Array,
+        Array = 2,
 
         /// <summary>
         ///     A string.
         /// </summary>
-        String = ServerCommandArgument.String
+        String = 4
     }
 }

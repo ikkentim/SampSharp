@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Reflection;
 using System.Text;
-using SampSharp.Core.Communication;
 using SampSharp.Core.Hosting;
-using SampSharp.Core.Logging;
 
 namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 {

@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using SampSharp.Core.Callbacks;
-using SampSharp.Core.Communication;
 using SampSharp.Core.Hosting;
 using SampSharp.Core.Logging;
 using SampSharp.Core.Natives;
 using SampSharp.Core.Natives.NativeObjects;
+using SampSharp.Core.Natives.NativeObjects.FastNatives;
 using SampSharp.Core.Threading;
 
 namespace SampSharp.Core
@@ -34,7 +34,7 @@ namespace SampSharp.Core
         private int _txBufferLength;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MultiProcessGameModeClient" /> class.
+        ///     Initializes a new instance of the <see cref="HostedGameModeClient" /> class.
         /// </summary>
         /// <param name="gameModeProvider">The game mode provider.</param>
         /// <param name="encoding">The encoding to use when en/decoding text messages sent to/from the server.</param>
@@ -42,7 +42,7 @@ namespace SampSharp.Core
         {
             Encoding = encoding;
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
-            NativeLoader = new NativeLoader(this);
+            NativeObjectProxyFactory = new FastNativeBasedNativeObjectProxyFactory(this);
             _buffer = Marshal.AllocHGlobal(_txBufferLength = 1024 * 6);
             _buffer1K = Marshal.AllocHGlobal(1024);
 
@@ -143,10 +143,7 @@ namespace SampSharp.Core
         public Encoding Encoding { get; }
         
         /// <inheritdoc />
-        public INativeLoader NativeLoader { get; }
-
-        /// <inheritdoc />
-        public INativeObjectProxyFactory NativeObjectProxyFactory => NativeLoader.ProxyFactory;
+        public INativeObjectProxyFactory NativeObjectProxyFactory { get; }
 
         /// <inheritdoc />
         public ISynchronizationProvider SynchronizationProvider => this;
@@ -179,7 +176,7 @@ namespace SampSharp.Core
 
             var data = ValueConverter.GetBytes(name, Encoding)
                 .Concat(parameters.SelectMany(c => c.GetBytes()))
-                .Concat(new[] { (byte) ServerCommandArgument.Terminator }).ToArray();
+                .Concat(new[] { (byte) 0 }).ToArray();
             
             if (IsOnMainThread)
             {
@@ -219,7 +216,7 @@ namespace SampSharp.Core
 
             var data = ValueConverter.GetBytes(name, Encoding)
                 .Concat(parameters.SelectMany(c => c.GetBytes()))
-                .Concat(new[] { (byte) ServerCommandArgument.Terminator }).ToArray();
+                .Concat(new[] { (byte) 0 }).ToArray();
             
             if (IsOnMainThread)
             {
@@ -246,53 +243,6 @@ namespace SampSharp.Core
                 _synchronizationContext.Send(ctx => Interop.Print(text), null);
         }
         
-        /// <inheritdoc />
-        public int GetNativeHandle(string name)
-        {
-            if (IsOnMainThread)
-                return Interop.GetNativeHandle(name);
-
-            var result = 0;
-            _synchronizationContext.Send(ctx => result = Interop.GetNativeHandle(name), null);
-            return result;
-        }
-        
-        /// <inheritdoc />
-        public byte[] InvokeNative(IEnumerable<byte> data)
-        {
-            // TODO: Optimize byte array allocations
-            var adata = data.ToArray();
-
-            var outlen = 1024;
-            var response = new byte[outlen];
-
-            if (IsOnMainThread)
-            {
-                EnsureBufferSize(adata.Length);
-                Marshal.Copy(adata, 0, _buffer, adata.Length);
-                Interop.InvokeNative(_buffer, adata.Length, _buffer1K, ref outlen);
-                Marshal.Copy(_buffer1K, response, 0, outlen);
-            }
-            else
-                _synchronizationContext.Send(ctx =>
-                    {
-                        EnsureBufferSize(adata.Length);
-                        Marshal.Copy(adata, 0, _buffer, adata.Length);
-                        Interop.InvokeNative(_buffer, adata.Length, _buffer1K, ref outlen);
-                        Marshal.Copy(_buffer1K, response, 0, outlen);
-                    },
-                    null);
-
-
-            return response;
-        }
-        
-        /// <inheritdoc />
-        public void ShutDown()
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
         #region Implementation of IGameModeRunner

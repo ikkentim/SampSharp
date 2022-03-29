@@ -23,8 +23,6 @@ namespace TestMode.GameMode
         {
             new GameModeBuilder()
                 .Use<GameMode>()
-                .UseExitBehaviour(GameModeExitBehaviour.ShutDown)
-                .UseStartBehaviour(GameModeStartBehaviour.FakeGmx)
                 .Run();
         }
     }

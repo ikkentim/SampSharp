@@ -38,27 +38,7 @@ namespace SampSharp.Core.Hosting
         /// <param name="data">The callback data.</param>
         [DllImport("SampSharp", EntryPoint = "sampsharp_register_callback", CallingConvention = CallingConvention.StdCall)]
         public static extern void RegisterCallback(IntPtr data);
-
-        /// <summary>
-        /// Gets the handle of a native.
-        /// </summary>
-        /// <param name="name">The name of the native.</param>
-        /// <returns>The handle of the native</returns>
-        [DllImport("SampSharp", EntryPoint = "sampsharp_get_native_handle", CallingConvention = CallingConvention.StdCall)]
-        [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
-        public static extern int GetNativeHandle(string name);
-
-        /// <summary>
-        /// Invokes a native by a handle.
-        /// </summary>
-        /// <param name="inbuf">The input buffer.</param>
-        /// <param name="inlen">The input buffer length.</param>
-        /// <param name="outbuf">The output buffer.</param>
-        /// <param name="outlen">The output buffer length.</param>
-        [DllImport("SampSharp", EntryPoint = "sampsharp_invoke_native", CallingConvention = CallingConvention.StdCall)]
-        [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
-        public static extern void InvokeNative(IntPtr inbuf, int inlen, IntPtr outbuf, ref int outlen);
-
+        
         /// <summary>
         /// Gets a pointer to a native.
         /// </summary>

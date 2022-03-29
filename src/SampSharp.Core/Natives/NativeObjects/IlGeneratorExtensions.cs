@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
-using SampSharp.Core.Communication;
 
 namespace SampSharp.Core.Natives.NativeObjects
 {
