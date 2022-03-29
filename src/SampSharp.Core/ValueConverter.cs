@@ -17,7 +17,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace SampSharp.Core.Communication
+namespace SampSharp.Core
 {
     /// <summary>
     ///     Contains methods for converting byte arrays to values, values to byte arrays and values to other values.

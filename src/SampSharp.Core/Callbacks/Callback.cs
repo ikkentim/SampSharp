@@ -16,7 +16,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using SampSharp.Core.Communication;
 
 namespace SampSharp.Core.Callbacks
 {

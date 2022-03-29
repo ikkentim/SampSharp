@@ -1,5 +1,5 @@
 ﻿using System;
-using SampSharp.Core.Communication;
+using SampSharp.Core;
 using SampSharp.Core.Hosting;
 using SampSharp.Core.Natives.NativeObjects.FastNatives;
 namespace TestMode.Entities.Systems.IssueTests

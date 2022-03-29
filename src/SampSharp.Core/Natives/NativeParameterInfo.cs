@@ -15,7 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using SampSharp.Core.Communication;
 
 namespace SampSharp.Core.Natives
 {
@@ -43,7 +42,6 @@ namespace SampSharp.Core.Natives
         {
             Type = type;
             LengthIndex = lengthIndex;
-            ArgumentType = CalcCommandArgument(type);
             IsOutput = isOutput;
 
         }
@@ -57,7 +55,6 @@ namespace SampSharp.Core.Natives
         {
             Type = type;
             LengthIndex = 0;
-            ArgumentType = CalcCommandArgument(type);
             IsOutput = isOutput;
         }
 
@@ -65,37 +62,7 @@ namespace SampSharp.Core.Natives
         ///     Gets the type.
         /// </summary>
         public NativeParameterType Type { get; }
-
-        /// <summary>
-        ///     Gets the type as a <see cref="ServerCommandArgument" />.
-        /// </summary>
-        public ServerCommandArgument ArgumentType { get; }
-
-        private static ServerCommandArgument CalcCommandArgument(NativeParameterType type)
-        {
-            var value = ServerCommandArgument.Terminator;
-
-            switch (type & ArgumentMask)
-            {
-                case NativeParameterType.Int32:
-                case NativeParameterType.Single:
-                case NativeParameterType.Bool:
-                    value = ServerCommandArgument.Value;
-                    break;
-                case NativeParameterType.String:
-                    value = ServerCommandArgument.String;
-                    break;
-            }
-
-            if (type.HasFlag(NativeParameterType.Array))
-                value = ServerCommandArgument.Array;
-
-            if (type.HasFlag(NativeParameterType.Reference))
-                value |= ServerCommandArgument.Reference;
-
-            return value;
-        }
-
+        
         /// <summary>
         ///     Returns a <see cref="NativeParameterInfo" /> for the specified <paramref name="type" />.
         /// </summary>
@@ -140,184 +107,5 @@ namespace SampSharp.Core.Natives
         /// Gets a value indicating whether this parameter has no input.
         /// </summary>
         public bool IsOutput { get; }
-
-        /// <summary>
-        ///     Returns the referenced value returned by a native.
-        /// </summary>
-        /// <param name="response">The response to extract the value from.</param>
-        /// <param name="index">The current top of the response.</param>
-        /// <param name="length">The length of the argument.</param>
-        /// <param name="nativeResult">The result of the invoked native</param>
-        /// <param name="gameModeClient">The game mode client.</param>
-        /// <returns>The referenced value.</returns>
-        public object GetReferenceArgument(byte[] response, ref int index, int length, int nativeResult, IGameModeClient gameModeClient)
-        {
-            object result = null;
-            switch (Type)
-            {
-                case NativeParameterType.Int32Reference:
-                    result = ValueConverter.ToInt32(response, index);
-                    index += 4;
-                    break;
-                case NativeParameterType.SingleReference:
-                    result = ValueConverter.ToSingle(response, index);
-                    index += 4;
-                    break;
-                case NativeParameterType.BoolReference:
-                    result = ValueConverter.ToBoolean(response, index);
-                    index += 4;
-                    break;
-                case NativeParameterType.StringReference:
-                    var str = ValueConverter.ToString(response, index, gameModeClient.Encoding);
-                    result = str;
-                    index += str.Length + 1;
-
-                    if (nativeResult == 0) 
-                        result = string.Empty;
-                    break;
-                case NativeParameterType.Int32ArrayReference:
-                {
-                    //var len =  ValueConverter.ToInt32(response, index);
-                    //index += 4;
-                    var arr = new int[length];
-                    for (var i = 0; i < length; i++)
-                    {
-                        arr[i] = ValueConverter.ToInt32(response, index);
-                        index += 4;
-                    }
-
-                    result = arr;
-                    break;
-                }
-                case NativeParameterType.SingleArrayReference:
-                {
-                    //var len = ValueConverter.ToInt32(response, index);
-                    //index += 4;
-                    var arr = new float[length];
-                    for (var i = 0; i < length; i++)
-                    {
-                        arr[i] = ValueConverter.ToSingle(response, index);
-                        index += 4;
-                    }
-
-                    result = arr;
-                    break;
-                }
-                case NativeParameterType.BoolArrayReference:
-                {
-                    //var len = ValueConverter.ToInt32(response, index);
-                    //index += 4;
-                    var arr = new bool[length];
-                    for (var i = 0; i < length; i++)
-                    {
-                        arr[i] = ValueConverter.ToBoolean(response, index);
-                        index += 4;
-                    }
-
-                    result = arr;
-                    break;
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        ///     Converts the value to a collection of bytes according to this parameter.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="length">The length.</param>
-        /// <param name="gameModeClient">The game mode client.</param>
-        /// <returns>A collection of bytes.</returns>
-        public IEnumerable<byte> GetBytes(object value, int length, IGameModeClient gameModeClient)
-        {
-            switch (Type)
-            {
-                case NativeParameterType.Int32:
-                case NativeParameterType.Int32Reference:
-                    if (value is int v)
-                        return ValueConverter.GetBytes(v);
-                    else if (value == null)
-                        return ValueConverter.GetBytes(0);
-                    break;
-                case NativeParameterType.Single:
-                case NativeParameterType.SingleReference:
-                    if (value is float f)
-                        return ValueConverter.GetBytes(f);
-                    else if (value == null)
-                        return ValueConverter.GetBytes(0.0f);
-                    break;
-                case NativeParameterType.Bool:
-                case NativeParameterType.BoolReference:
-                    if (value is bool b)
-                        return ValueConverter.GetBytes(b);
-                    else if (value == null)
-                        return ValueConverter.GetBytes(false);
-                    break;
-                case NativeParameterType.String:
-                    if (value is string s)
-                        return ValueConverter.GetBytes(s, gameModeClient.Encoding);
-                    else if (value == null)
-                        return ValueConverter.GetBytes("", gameModeClient.Encoding);
-                    break;
-                case NativeParameterType.StringReference:
-                case NativeParameterType.Int32ArrayReference:
-                case NativeParameterType.SingleArrayReference:
-                case NativeParameterType.BoolArrayReference:
-                    if (length < 1)
-                        throw new ArgumentOutOfRangeException(nameof(length));
-                    return ValueConverter.GetBytes(length);
-                case NativeParameterType.Int32Array:
-                    if (value is int[] ai)
-                    {
-                        if (length < 1)
-                            throw new ArgumentOutOfRangeException(nameof(length));
-
-                        var array = new byte[length * 4 + 4];
-                        ValueConverter.GetBytes(length).CopyTo(array, 0);
-                        for (var i = 0; i < length; i++)
-                        {
-                            ValueConverter.GetBytes(ai[i]).CopyTo(array, 4 + i * 4);
-                        }
-
-                        return array;
-                    }
-                    break;
-                case NativeParameterType.SingleArray:
-                    if (value is float[] af)
-                    {
-                        if (length < 1)
-                            throw new ArgumentOutOfRangeException(nameof(length));
-
-                        var array = new byte[length * 4 + 4];
-                        ValueConverter.GetBytes(length).CopyTo(array, 0);
-                        for (var i = 0; i < length; i++)
-                        {
-                            ValueConverter.GetBytes(af[i]).CopyTo(array, 4 + i * 4);
-                        }
-
-                        return array;
-                    }
-                    break;
-                case NativeParameterType.BoolArray:
-                    if (value is bool[] ab)
-                    {
-                        if (length < 1)
-                            throw new ArgumentOutOfRangeException(nameof(length));
-
-                        var array = new byte[length * 4 + 4];
-                        ValueConverter.GetBytes(length).CopyTo(array, 0);
-                        for (var i = 0; i < length; i++)
-                        {
-                            ValueConverter.GetBytes(ab[i]).CopyTo(array, 4 + i * 4);
-                        }
-
-                        return array;
-                    }
-                    break;
-            }
-
-            throw new ArgumentException("Value is of invalid type", nameof(value));
-        }
     }
 }
