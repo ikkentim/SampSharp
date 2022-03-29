@@ -19,9 +19,6 @@
 #include "logging.h"
 #include "coreclr_app.h"
 #include "StringUtil.h"
-#include "pipesvr_win32.h"
-#include "dsock_unix.h"
-#include "tcp_unix.h"
 #include "testing.h"
 #include <regex>
 
@@ -146,7 +143,7 @@ bool plugin::config_validate() {
     coreclr_ = coreclr;
     gamemode_ = gamemode;
 
-    state_set(STATE_HOSTED | STATE_CONFIG_VALID);
+    state_set(STATE_CONFIG_VALID);
     return true; 
 }
 
@@ -314,43 +311,6 @@ bool plugin::detect_gamemode(std::string &value, fs::path path) {
     }
 
     return false;
-}
-
-commsvr *plugin::create_commsvr() const {
-    std::string 
-        type,
-        value;
-
-    commsvr *com = NULL;
-
-    if(state() & STATE_HOSTED) {
-        return com;
-    }
-
-    config("com_type", type);
-    
-    #if SAMPSHARP_LINUX
-    if (!type.compare("tcp")) {
-        std::string ip, port;
-        config("com_ip", ip);
-        config("com_port", port);
-        uint16_t portnum = atoi(port.c_str());
-
-        com = new tcp_unix(ip.c_str(), portnum);
-    }
-    #endif
-
-    if(!com) {
-    #if SAMPSHARP_WINDOWS
-        config("com_pipe", value);
-        com = new pipesvr_win32(value.c_str());
-    #elif SAMPSHARP_LINUX
-        config("com_dsock", value);
-        com = new dsock_unix(value.c_str());
-    #endif
-    }
-
-    return com;
 }
 
 plugin_state plugin::state() const {
