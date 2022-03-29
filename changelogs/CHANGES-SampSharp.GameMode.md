@@ -1,3 +1,16 @@
+### 0.10.0
+- Added `BasePlayer.CancelEdit` (#362)
+- Added `BasePlayer.SetMapIcon` and `BasePlayer.RemoveMapIcon` (#364)
+- Added `ListDialog<T>` (#383, #395)
+- Updated to .NET Standard 2.1
+- Updated documentation links from SA-MP wiki to open.mp docs
+- Fixed `PlayerTextLabel.Text`, `PlayerTextLabel.AttachedPlayer` and `PlayerTextLabel.AttachedVehicle` not being set
+- Fixed command group help commands not being invoked in some cases (#361)
+- Fixed command overloading not working in some cases (#344)
+- Fixed `BasePlayer.IsNPC` not returning `true` when the NPC has not yet connected (#346)
+- Fixed typo in `Server.GetWeaponName` result for `Weapon.ThermalGoggles` (#380)
+- Fixed a problem which caused successive calls to `ShowAsync` not to show the dialog (#384, #389)
+
 ### 0.10.0-alpha2
 - Added `ListDialog<T>` (#383, #395)
 

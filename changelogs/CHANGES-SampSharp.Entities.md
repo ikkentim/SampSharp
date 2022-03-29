@@ -1,3 +1,13 @@
+### 0.10.0
+- Added support for  player names as command arguments (#354)
+- Added timers (#326)
+- Updated to .NET Standard 2.1
+- Updated documentation links from SA-MP wiki to open.mp docs
+- Fixed `OnDestroyComponent` not being called when the component is destroyed, but the entities remains alive (#358)
+- Fixed an error which could occur when event's occur with IDs of entities which don't exist, but aren't 0 (#355, #353, #352, #350)
+- Fixed exception thrown when a dialog is shown with no `null` button2 text (#376)
+- Fixed components not being removed from global component registry when destroying an entity
+
 ### 0.10.0-alpha2
 - Fixed components not being removed from global component registry when destroying an entity
 
