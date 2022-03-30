@@ -15,6 +15,7 @@
 
 using System;
 using System.Diagnostics;
+using SampSharp.Core.Callbacks;
 using SampSharp.Core.Hosting;
 using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.GameMode;
@@ -24,21 +25,10 @@ using SampSharp.GameMode.World;
 
 namespace TestMode.GameMode
 {
-    public class VarArgsNativeObj
+    public class BenchmarkNatives
     {
-        [NativeMethod(Function = "sampsharptest_varargs")]
-        public virtual void TestVarArgs(params object[] args)
-        {
-            throw new NativeNotImplementedException();
-        }
-        [NativeMethod(Function = "sampsharptest_varargs_mix")]
-        public virtual void TestVarArgsMix(int a, bool b, params object[] args)
-        {
-            throw new NativeNotImplementedException();
-        }
-
-        [NativeMethod(Function = "sampsharptest_varargs_str")]
-        public virtual void TestVarArgsString(params object[] args)
+        [NativeMethod] 
+        public virtual void CallRemoteFunction(string func, string format, params object[] args)
         {
             throw new NativeNotImplementedException();
         }
@@ -46,8 +36,8 @@ namespace TestMode.GameMode
 
     public class GameMode : BaseMode
     {
-        #region Overrides of BaseMode
-        
+        private (string, int, float)? _benchStore;
+
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
@@ -59,90 +49,51 @@ namespace TestMode.GameMode
             BaseVehicle.Create(VehicleModelType.Banshee, new Vector3(1449.9055, 1520.2122, 11), 0, 3, 3);
             BaseVehicle.Create(VehicleModelType.Cabbie, new Vector3(1449.9055, 1550.2122, 11), 0, 3, 3);
 
-            // RunPerformanceBenchmark();
-            // .
-            
-            var test = NativeObjectProxyFactory.CreateInstance<VarArgsNativeObj>();
-            test.TestVarArgs(1, 2, 3);
-            test.TestVarArgsMix(1, true, 3.234f, 9, true, 2f);
-            test.TestVarArgsString("hello", "world");
-        }
+            var natives = NativeObjectProxyFactory.CreateInstance<BenchmarkNatives>();
+            var args = new object[] { "stringValue", 4321, 23.665f };
+            var sw = new Stopwatch();
 
-        #endregion
-        
-        private unsafe void CallThat(IntPtr native, int id)
-        {
-            Span<int> data = stackalloc int[16];
-            // 0-7: pointers to cells   [8]
-            // 8: id cell               [1]
-            // 9-15: out cells          [7]
 
-            fixed (int* ptData = &data.GetPinnableReference())
+            const int maxRuns = 10;
+            const int runCallCount = 100_000;
+
+            var totalElapsed = TimeSpan.Zero;
+            for (var j = 0; j <= maxRuns; j++)
             {
-                for (var j = 0; j < 8; j++)// set points for all 8 args
+                Console.WriteLine($"Bench run {j}/{maxRuns}");
+                if (j == 0) Console.WriteLine("(warmup)");
+
+                sw.Restart();
+
+                for (var i = 0; i < runCallCount; i++)
                 {
-                    data[j] = (int) (IntPtr) (ptData + 8 + j);
-                }
+                    natives.CallRemoteFunction("BenchmarkCallback", "sdf", args);
 
-                data[8] = id;
+                    // validate
+                    
+                    if (!_benchStore.HasValue || _benchStore.Value.Item1 != "stringValue" ||
+                        _benchStore.Value.Item2 != 4321 || Math.Abs(_benchStore.Value.Item3 - 23.665f) > 0.001f)
+                    {
+                        throw new InvalidOperationException("native call failed!");
+                    }
 
-                Interop.FastNativeInvoke(native, "dRRRRRRR", ptData);
-            }
-        }
-        
-        private void RunPerformanceBenchmark()
-        {
-            var vehicle = BaseVehicle.Create(VehicleModelType.BMX, Vector3.One, 0, 0, 0);
-            
-            var native = Interop.FastNativeFind("GetVehicleParamsEx");
-
-            var timer = new Timer(2000, true, true);
-
-            var id = vehicle.Id;
-  
-            void PerfTest()
-            {
-                var sw = new Stopwatch();
-                sw.Start();
-                for (int i = 0; i < 400000; i++)
-                {
-                    CallThat(native, id);
-                }
-                sw.Stop();
-                Console.WriteLine("BestPossible={0}", sw.Elapsed.TotalMilliseconds);
-                sw.Reset();
-                sw.Start();
-                for (var i = 0; i < 400000; i++)
-                {
-                    vehicle.GetParameters(out VehicleParameterValue a, out _, out _, out _, out _, out _, out _);
+                    _benchStore = null;
                 }
 
                 sw.Stop();
-                Console.WriteLine("ViaOOWrapper={0}", sw.Elapsed.TotalMilliseconds);
-                sw.Reset();
 
-                var proxy = BaseVehicle.VehicleInternal.Instance;
-                sw.Start();
-                for (var i = 0; i < 400000; i++)
-                {
-                    proxy.GetVehicleParamsEx(id, out _, out _, out _, out _, out _, out _, out _);
-                }
-
-                sw.Stop();
-                Console.WriteLine("ViaDirectProxy={0}", sw.Elapsed.TotalMilliseconds);
-                sw.Reset();
+                if (j > 0)
+                    totalElapsed += sw.Elapsed;
+                Console.WriteLine($"{runCallCount} calls took {sw.Elapsed}");
             }
 
-            PerfTest();
+            Console.WriteLine($"AVG of {totalElapsed / maxRuns}");
+        }
 
-            var benchRuns = 50;
-            timer.Tick += (sender, args) =>
-            {
-                PerfTest();
-
-                if (--benchRuns == 0)
-                    timer.IsRunning = false;
-            };
+        [Callback]
+        public void BenchmarkCallback(string stringValue, int intValue, float floatValue)
+        {
+            _benchStore = (stringValue, intValue, floatValue);
         }
     }
 }
