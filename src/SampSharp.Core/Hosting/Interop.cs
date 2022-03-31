@@ -38,8 +38,26 @@ namespace SampSharp.Core.Hosting
         /// <param name="data">The callback data.</param>
         [DllImport("SampSharp", EntryPoint = "sampsharp_register_callback", CallingConvention = CallingConvention.StdCall)]
         public static extern void RegisterCallback(IntPtr data);
+       
+        /// <summary>
+        /// Gets a pointer to a native.
+        /// </summary>
+        /// <param name="name">The name of the native.</param>
+        /// <returns>A pointer to a native.</returns>
+        [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_find", CallingConvention = CallingConvention.StdCall)]
+        public static extern IntPtr FastNativeFind(string name);
         
-        public static int FastNativeInvoke(IntPtr native, string format, int* args)
+        /// <summary>
+        /// Invokes a native by a pointer.
+        /// </summary>
+        /// <param name="native">The pointer to the native.</param>
+        /// <param name="format">The format of the arguments.</param>
+        /// <param name="args">A pointer to the arguments array.</param>
+        /// <returns>The return value of the native.</returns>
+        [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_invoke", CallingConvention = CallingConvention.StdCall)]
+        public static extern unsafe int FastNativeInvoke(IntPtr native, string format, int* args);
+
+        public static int FastNativeInvokeViaApi(IntPtr native, string format, int* args)
         {
             var bytes = Encoding.ASCII.GetByteCount(format);
             var formatSt = stackalloc byte[bytes];
@@ -48,7 +66,7 @@ namespace SampSharp.Core.Hosting
             return api->InvokeNative(native.ToPointer(), (char *)formatSt, args);
         }
 
-        public static IntPtr FastNativeFind(string name)
+        public static IntPtr FastNativeFindViaApi(string name)
         {
             var bytes = Encoding.ASCII.GetByteCount(name);
             var nameStack = stackalloc byte[bytes];

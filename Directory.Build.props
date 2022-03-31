@@ -18,7 +18,6 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsTestMode)' == 'True'">
-    <!--  and '$(Configuration)'=='Debug'"> -->
     <OutputPath>..\..\env\gamemode</OutputPath>
   </PropertyGroup>
 
