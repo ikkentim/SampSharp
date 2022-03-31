@@ -20,7 +20,6 @@ using SampSharp.Core.Hosting;
 using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 
 namespace TestMode.GameMode
@@ -43,19 +42,25 @@ namespace TestMode.GameMode
             base.OnInitialized(e);
 
             Console.WriteLine("The game mode has loaded.");
+            
             AddPlayerClass(0, new Vector3(1482.9055, 1504.2122, 10.5474), 0);
 
             BaseVehicle.Create(VehicleModelType.BF400, new Vector3(1489.9055, 1520.2122, 11), 0, 3, 3);
             BaseVehicle.Create(VehicleModelType.Banshee, new Vector3(1449.9055, 1520.2122, 11), 0, 3, 3);
             BaseVehicle.Create(VehicleModelType.Cabbie, new Vector3(1449.9055, 1550.2122, 11), 0, 3, 3);
+            
+            Console.WriteLine("Bench start");
+            RunCallbackBenchmark();
+        }
 
+        private void RunCallbackBenchmark()
+        {
             var natives = NativeObjectProxyFactory.CreateInstance<BenchmarkNatives>();
             var args = new object[] { "stringValue", 4321, 23.665f };
             var sw = new Stopwatch();
-
-
+            
             const int maxRuns = 10;
-            const int runCallCount = 100_000;
+            const int runCallCount = 1_000_000;
 
             var totalElapsed = TimeSpan.Zero;
             for (var j = 0; j <= maxRuns; j++)
