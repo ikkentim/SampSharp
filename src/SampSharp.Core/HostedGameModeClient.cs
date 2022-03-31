@@ -21,6 +21,8 @@ namespace SampSharp.Core
     /// </summary>
     public sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, ISynchronizationProvider
     {
+        private readonly Dictionary<string, NewCallback> _newCallbacks = new();
+
         private readonly Dictionary<string, Callback> _callbacks = new Dictionary<string, Callback>();
         private NoWaitMessageQueue _messageQueue;
         private SampSharpSynchronizationContext _synchronizationContext;
@@ -98,9 +100,31 @@ namespace SampSharp.Core
                 OnUnhandledException(new UnhandledExceptionEventArgs("Tick", e));
             }
         }
+        
+        internal void PublicCall(IntPtr amx, string name, IntPtr parameters, IntPtr retval)
+        {
+            try
+            {
+                if (name == "OnRconCommand")
+                {
+                    // RCON can be processed by the SA-MP server on a different thread. Mark thread as additional main thread.
+                    _rconThread = Environment.CurrentManagedThreadId;
+                }
+
+                if (_newCallbacks.TryGetValue(name, out var callback))
+                {
+                    callback.Invoke(amx, parameters, retval);
+                }
+            }
+            catch (Exception e)
+            {
+                OnUnhandledException(new UnhandledExceptionEventArgs(name, e));
+            }
+        }
 
         internal int PublicCall(string name, IntPtr data, int length)
         {
+            throw new NotImplementedException();
             try
             {
                 if (name == "OnRconCommand")
@@ -154,6 +178,38 @@ namespace SampSharp.Core
         /// <inheritdoc />
         public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
         
+        public void RegisterCallback(string name, object target, MethodInfo methodInfo)
+        {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
+
+            AssertRunning();
+            
+            if (_callbacks.ContainsKey(name))
+            {
+                throw new CallbackRegistrationException($"Duplicate callback registration for '{name}'");
+            }
+
+            _newCallbacks[name] = NewCallback.For(target, methodInfo);
+        }
+
+        public void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[] parameterTypes, uint?[] lengthIndices)
+        {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
+
+            AssertRunning();
+
+            if (_callbacks.ContainsKey(name))
+            {
+                throw new CallbackRegistrationException($"Duplicate callback registration for '{name}'");
+            }
+
+            _newCallbacks[name] = NewCallback.For(target, methodInfo, parameterTypes, lengthIndices);
+        }
+
+
+        /*
         /// <inheritdoc />
         public void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters)
         {
@@ -233,6 +289,8 @@ namespace SampSharp.Core
                 }, null);
 
         }
+
+        */
         
         /// <inheritdoc />
         public void Print(string text)

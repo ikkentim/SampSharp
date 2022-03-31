@@ -120,6 +120,7 @@
     <ClInclude Include="coreclrhost.h" />
     <ClInclude Include="coreclr_app.h" />
     <ClInclude Include="hosted_server.h" />
+    <ClInclude Include="interop.h" />
     <ClInclude Include="json.h" />
     <ClInclude Include="logging.h" />
     <ClInclude Include="mscoree.h" />

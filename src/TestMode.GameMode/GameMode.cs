@@ -20,7 +20,6 @@ using SampSharp.Core.Hosting;
 using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 
 namespace TestMode.GameMode
@@ -64,7 +63,7 @@ namespace TestMode.GameMode
             var sw = new Stopwatch();
             
             const int maxRuns = 10;
-            const int runCallCount = 100_000;
+            const int runCallCount = 1_000_000;
 
             var totalElapsed = TimeSpan.Zero;
             for (var j = 0; j <= maxRuns; j++)

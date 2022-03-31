@@ -24,11 +24,10 @@
 #include "logging.h"
 #include "hosted_server.h"
 #include "testing.h"
+#include "interop.h"
 
 server *svr = NULL;
 plugin *plg = NULL;
-
-void sampsharp_api_setup(void **plugin_data);
 
 void print_info() {
     log_print("");
@@ -81,7 +80,8 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload() {
     
     plg = NULL;
     svr = NULL;
-    
+
+    sampsharp_api_cleanup();
     sampgdk::Unload();
 }
 
@@ -94,9 +94,10 @@ PLUGIN_EXPORT int PLUGIN_CALL AmxUnload(AMX* amx) {
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
-    if (svr) {
+    api_tick();
+    /*if (svr) {
         svr->tick();
-    }
+    }*/
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
@@ -107,9 +108,11 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     if (!svr) {
         start_server();
     }
-
+    
+    api_public_call(amx, name, params, retval);
+    /*
     if (svr) {
         svr->public_call(amx, name, params, retval);
-    }
+    }*/
     return true;
 }
