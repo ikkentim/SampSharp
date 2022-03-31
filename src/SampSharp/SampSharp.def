@@ -10,3 +10,4 @@ EXPORTS
     sampsharp_register_callback
     sampsharp_fast_native_find
     sampsharp_fast_native_invoke
+    sampsharp_get_api

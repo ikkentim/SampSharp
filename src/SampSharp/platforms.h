@@ -39,10 +39,8 @@
 #endif
 
 #if defined DEBUG || defined _DEBUG
-#  define ENABLE_TEST_LOGGING
+#  define ENABLE_TEST_NATIVES
 #  define LOG_DEBUG
-#else
-#  define DISABLE_TEST_NATIVES
 #endif
 
 #if SAMPSHARP_WINDOWS

@@ -23,9 +23,12 @@
 #include "coreclr_app.h"
 #include "logging.h"
 #include "hosted_server.h"
+#include "testing.h"
 
 server *svr = NULL;
 plugin *plg = NULL;
+
+void sampsharp_api_setup(void **plugin_data);
 
 void print_info() {
     log_print("");
@@ -64,6 +67,8 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
         return false;
     }
 
+    sampsharp_api_setup(ppData);
+
     plg = new plugin(ppData);
 
     /* validate the server config is fit for running SampSharp */
@@ -81,11 +86,7 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload() {
 }
 
 PLUGIN_EXPORT int PLUGIN_CALL AmxLoad(AMX* amx) {
-    if(plg) {
-        return plg->amx_load(amx);
-    }
-
-    return 1;
+    return load_test_natives(amx);
 }
 
 PLUGIN_EXPORT int PLUGIN_CALL AmxUnload(AMX* amx) {

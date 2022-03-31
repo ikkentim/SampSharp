@@ -17,7 +17,8 @@
     <IsPackable>true</IsPackable>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(IsTestMode)' == 'True' and '$(Configuration)'=='Debug'">
+  <PropertyGroup Condition="'$(IsTestMode)' == 'True'">
+    <!--  and '$(Configuration)'=='Debug'"> -->
     <OutputPath>..\..\env\gamemode</OutputPath>
   </PropertyGroup>
 
@@ -40,7 +41,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsLibrary)' == 'True'">
-    <None Include="$(MSBuildThisFileDirectory)\art\sampsharp.png" Pack="true" PackagePath="\"/>
+    <None Include="$(MSBuildThisFileDirectory)\art\sampsharp.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <PropertyGroup Label="Versioning">

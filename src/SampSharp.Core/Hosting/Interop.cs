@@ -14,24 +14,16 @@
 // limitations under the License.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace SampSharp.Core.Hosting
 {
     /// <summary>
     /// Contains interop functions for the SampSharp plugin.
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public class Interop
+    public static unsafe class Interop
     {
-        /// <summary>
-        /// Prints the specified message to the SA:MP server log.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        [DllImport("SampSharp", EntryPoint = "sampsharp_print", CallingConvention = CallingConvention.StdCall)]
-        public static extern void Print(string message);
-
         /// <summary>
         /// Registers a callback in the SampSharp plugin.
         /// </summary>
@@ -39,23 +31,71 @@ namespace SampSharp.Core.Hosting
         [DllImport("SampSharp", EntryPoint = "sampsharp_register_callback", CallingConvention = CallingConvention.StdCall)]
         public static extern void RegisterCallback(IntPtr data);
         
-        /// <summary>
-        /// Gets a pointer to a native.
-        /// </summary>
-        /// <param name="name">The name of the native.</param>
-        /// <returns>A pointer to a native.</returns>
-        [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_find", CallingConvention = CallingConvention.StdCall)]
-        public static extern IntPtr FastNativeFind(string name);
+        public static int FastNativeInvoke(IntPtr native, string format, int* args)
+        {
+            var bytes = Encoding.ASCII.GetByteCount(format);
+            var formatSt = stackalloc byte[bytes];
+            Encoding.ASCII.GetBytes(format, new Span<byte>(formatSt, bytes));
 
-        /// <summary>
-        /// Invokes a native by a pointer.
-        /// </summary>
-        /// <param name="native">The pointer to the native.</param>
-        /// <param name="format">The format of the arguments.</param>
-        /// <param name="args">A pointer to the arguments array.</param>
-        /// <returns>The return value of the native.</returns>
-        [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_invoke", CallingConvention = CallingConvention.StdCall)]
-        public static extern unsafe int FastNativeInvoke(IntPtr native, string format, int* args);
+            return api->InvokeNative(native.ToPointer(), (char *)formatSt, args);
+        }
+
+        public static IntPtr FastNativeFind(string name)
+        {
+            var bytes = Encoding.ASCII.GetByteCount(name);
+            var nameStack = stackalloc byte[bytes];
+            Encoding.ASCII.GetBytes(name, new Span<byte>(nameStack, bytes));
+
+            return (IntPtr)api->FindNative((char *)nameStack);
+        }
+
+        public static void Print(string txt)
+        {
+            var format = stackalloc byte[3];
+            format[0] = 0x25; // "%s\0"
+            format[1] = 0x73;
+            format[2] = 0x00;
+            
+            var bytes = Encoding.ASCII.GetByteCount(txt);
+
+            if (bytes < 200)
+            {
+                var txtStack = stackalloc byte[bytes];
+                Encoding.ASCII.GetBytes(txt, new Span<byte>(txtStack, bytes));
+                api->PluginData->Logprintf((char *)format, (char *)txtStack);
+            }
+            else
+            {
+                var ptr = Marshal.StringToHGlobalAnsi(txt);
+
+                try
+                {
+                    api->PluginData->Logprintf((char *)format, (char *)ptr.ToPointer());
+                }
+                finally
+                {
+                    Marshal.FreeHGlobal(ptr);
+                }
+            }
+        }
+
+        private static SampSharpApi* api;
+
+        [DllImport("SampSharp", EntryPoint = "sampsharp_get_api", CallingConvention = CallingConvention.StdCall)]
+        private static extern SampSharpApi* GetApi();
+        
+        
+        public static void Testing()
+        {
+            Console.WriteLine("testing things");
+            
+            Print("hello worlddd");
+        }
+        
+        internal static void Init()
+        {
+            api = GetApi();
+        }
 
         internal static int PublicCall(string name, IntPtr argumentsPtr, int length)
         {

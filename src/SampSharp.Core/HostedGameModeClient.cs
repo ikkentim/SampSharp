@@ -251,6 +251,7 @@ namespace SampSharp.Core
         public bool Run()
         {
             InternalStorage.RunningClient = this;
+            Interop.Init();
 
             // Prepare the syncronization context
             _messageQueue = new NoWaitMessageQueue();

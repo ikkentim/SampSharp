@@ -43,8 +43,6 @@ public:
     std::string *get_coreclr();
     std::string *get_gamemode();
 
-    int amx_load(AMX *amx);
-
 private:
     bool detect_coreclr(std::string &value);
     bool detect_coreclr(std::string &value, std::filesystem::path path);
