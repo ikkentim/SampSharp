@@ -1,228 +1,230 @@
-﻿using System;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace SampSharp.Core.Hosting;
 
 [StructLayout(LayoutKind.Sequential)]
+[SuppressMessage("ReSharper", "CommentTypo")]
+[SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "ReSharper")]
 public readonly unsafe struct AmxExport
 {
     /// <summary>
-    /// typedef uint16_t * AMXAPI (*amx_Align16_t)(uint16_t *v);
+    /// typedef uint16_t * (*amx_Align16_t)(uint16_t *v);
     /// </summary>
     public readonly delegate* unmanaged <ushort*, ushort*> Align16;
 
     /// <summary>
-    /// typedef uint32_t * AMXAPI (*amx_Align32_t)(uint32_t *v);
+    /// typedef uint32_t * (*amx_Align32_t)(uint32_t *v);
     /// </summary>
     public readonly delegate* unmanaged <uint*, uint*> Align32;
 
     /// <summary>
-    /// typedef uint64_t * AMXAPI (*amx_Align64_t)(uint64_t *v);
+    /// typedef uint64_t * (*amx_Align64_t)(uint64_t *v);
     /// </summary>
     public readonly delegate* unmanaged <ulong*, ulong*> Align64;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_Allot_t)(AMX *amx, int cells, cell *amx_addr, cell **phys_addr);
+    /// typedef int (*amx_Allot_t)(AMX *amx, int cells, cell *amx_addr, cell **phys_addr);
     /// </summary>
     public readonly delegate* unmanaged <void*, int, void*, void**, int> Allot;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_Callback_t)(AMX *amx, cell index, cell *result, cell *params);
+    /// typedef int (*amx_Callback_t)(AMX *amx, cell index, cell *result, cell *params);
     /// </summary>
     public readonly delegate* unmanaged <void*, int, void*, void*, int> Callback;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_Cleanup_t)(AMX *amx);
+    /// typedef int (*amx_Cleanup_t)(AMX *amx);
     /// </summary>
-    public readonly IntPtr Cleanup;
+    public readonly delegate* unmanaged <void*, int> Cleanup;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_Clone_t)(AMX *amxClone, AMX *amxSource, void *data);
+    /// typedef int (*amx_Clone_t)(AMX *amxClone, AMX *amxSource, void *data);
     /// </summary>
-    public readonly IntPtr Clone;
+    public readonly delegate* unmanaged <void*, void*, void *, int> Clone;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_Exec_t)(AMX *amx, cell *retval, int index);
+    /// typedef int (*amx_Exec_t)(AMX *amx, cell *retval, int index);
     /// </summary>
-    public readonly IntPtr Exec;
+    public readonly delegate* unmanaged <void*, void *, int, int> Exec;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_FindNative_t)(AMX *amx, const char *name, int *index);
+    /// typedef int (*amx_FindNative_t)(AMX *amx, const char *name, int *index);
     /// </summary>
-    public readonly IntPtr FindNative;
+    public readonly delegate* unmanaged <void*, char*, int*, int> FindNative;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_FindPublic_t)(AMX *amx, const char *funcname, int *index);
+    /// typedef int (*amx_FindPublic_t)(AMX *amx, const char *funcname, int *index);
     /// </summary>
-    public readonly IntPtr FindPublic;
+    public readonly delegate* unmanaged <void*, char*, int*, int> FindPublic;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_FindPubVar_t)(AMX *amx, const char *varname, cell *amx_addr);
+    /// typedef int (*amx_FindPubVar_t)(AMX *amx, const char *varname, cell *amx_addr);
     /// </summary>
-    public readonly IntPtr FindPubVar;
+    public readonly delegate* unmanaged <void*, char*, void *, int> FindPubVar;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_FindTagId_t)(AMX *amx, cell tag_id, char *tagname);
+    /// typedef int (*amx_FindTagId_t)(AMX *amx, cell tag_id, char *tagname);
     /// </summary>
-    public readonly IntPtr FindTagId;
+    public readonly delegate* unmanaged <void*, int, char*, int> FindTagId;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_Flags_t)(AMX *amx,uint16_t *flags);
+    /// typedef int (*amx_Flags_t)(AMX *amx,uint16_t *flags);
     /// </summary>
-    public readonly IntPtr Flags;
+    public readonly delegate* unmanaged <void*, ushort *, int> Flags;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_GetAddr_t)(AMX *amx,cell amx_addr,cell **phys_addr);
+    /// typedef int (*amx_GetAddr_t)(AMX *amx,cell amx_addr,cell **phys_addr);
     /// </summary>
-    public readonly IntPtr GetAddr;
+    public readonly delegate* unmanaged <void*, int, void **, int> GetAddr;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_GetNative_t)(AMX *amx, int index, char *funcname);
+    /// typedef int (*amx_GetNative_t)(AMX *amx, int index, char *funcname);
     /// </summary>
-    public readonly IntPtr GetNative;
+    public readonly delegate* unmanaged <void*, int, char*, int> GetNative;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_GetPublic_t)(AMX *amx, int index, char *funcname);
+    /// typedef int (*amx_GetPublic_t)(AMX *amx, int index, char *funcname);
     /// </summary>
-    public readonly IntPtr GetPublic;
+    public readonly delegate* unmanaged <void*, int, char*, int> GetPublic;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_GetPubVar_t)(AMX *amx, int index, char *varname, cell *amx_addr);
+    /// typedef int (*amx_GetPubVar_t)(AMX *amx, int index, char *varname, cell *amx_addr);
     /// </summary>
-    public readonly IntPtr GetPubVar;
+    public readonly delegate* unmanaged <void*, int, char*, void*, int> GetPubVar;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_GetString_t)(char *dest,const cell *source, int use_wchar, size_t size);
+    /// typedef int (*amx_GetString_t)(char *dest,const cell *source, int use_wchar, size_t size);
     /// </summary>
-    public readonly IntPtr GetString;
+    public readonly delegate* unmanaged <void*, void*, int, int, int> GetString;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_GetTag_t)(AMX *amx, int index, char *tagname, cell *tag_id);
+    /// typedef int (*amx_GetTag_t)(AMX *amx, int index, char *tagname, cell *tag_id);
     /// </summary>
-    public readonly IntPtr GetTag;
+    public readonly delegate* unmanaged <void*, int, char*, void *, int> GetTag;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_GetUserData_t)(AMX *amx, long tag, void **ptr);
+    /// typedef int (*amx_GetUserData_t)(AMX *amx, long tag, void **ptr);
     /// </summary>
-    public readonly IntPtr GetUserData;
+    public readonly delegate* unmanaged <void*, long, void**, int> GetUserData;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_Init_t)(AMX *amx, void *program);
+    /// typedef int (*amx_Init_t)(AMX *amx, void *program);
     /// </summary>
-    public readonly IntPtr Init;
+    public readonly delegate* unmanaged <void*, void*, int> Init;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_InitJIT_t)(AMX *amx, void *reloc_table, void *native_code);
+    /// typedef int (*amx_InitJIT_t)(AMX *amx, void *reloc_table, void *native_code);
     /// </summary>
-    public readonly IntPtr InitJIT;
+    public readonly delegate* unmanaged <void*, void*, void*, int> InitJIT;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_MemInfo_t)(AMX *amx, long *codesize, long *datasize, long *stackheap);
+    /// typedef int (*amx_MemInfo_t)(AMX *amx, long *codesize, long *datasize, long *stackheap);
     /// </summary>
-    public readonly IntPtr MemInfo;
+    public readonly delegate* unmanaged <void*, long*, long*, long*, int> MemInfo;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_NameLength_t)(AMX *amx, int *length);
+    /// typedef int (*amx_NameLength_t)(AMX *amx, int *length);
     /// </summary>
-    public readonly IntPtr NameLength;
+    public readonly delegate* unmanaged <void*, int*, int> NameLength;
 
     /// <summary>
     /// typedef AMX_NATIVE_INFO *  AMXAPI (*amx_NativeInfo_t)(const char *name, AMX_NATIVE func);
     /// </summary>
-    public readonly IntPtr NativeInfo;
+    public readonly delegate* unmanaged <char*, void*, int> NativeInfo;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_NumNatives_t)(AMX *amx, int *number);
+    /// typedef int (*amx_NumNatives_t)(AMX *amx, int *number);
     /// </summary>
-    public readonly IntPtr NumNatives;
+    public readonly delegate* unmanaged <void*, int*, int> NumNatives;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_NumPublics_t)(AMX *amx, int *number);
+    /// typedef int (*amx_NumPublics_t)(AMX *amx, int *number);
     /// </summary>
-    public readonly IntPtr NumPublics;
+    public readonly delegate* unmanaged <void*, int*, int> NumPublics;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_NumPubVars_t)(AMX *amx, int *number);
+    /// typedef int (*amx_NumPubVars_t)(AMX *amx, int *number);
     /// </summary>
-    public readonly IntPtr NumPubVars;
+    public readonly delegate* unmanaged <void*, int*, int> NumPubVars;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_NumTags_t)(AMX *amx, int *number);
+    /// typedef int (*amx_NumTags_t)(AMX *amx, int *number);
     /// </summary>
-    public readonly IntPtr NumTags;
+    public readonly delegate* unmanaged <void*, int*, int> NumTags;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_Push_t)(AMX *amx, cell value);
+    /// typedef int (*amx_Push_t)(AMX *amx, cell value);
     /// </summary>
-    public readonly IntPtr Push;
+    public readonly delegate* unmanaged <void*, int, int> Push;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_PushArray_t)(AMX *amx, cell *amx_addr, cell **phys_addr, const cell array[], int numcells);
+    /// typedef int (*amx_PushArray_t)(AMX *amx, cell *amx_addr, cell **phys_addr, const cell array[], int numcells);
     /// </summary>
-    public readonly IntPtr PushArray;
+    public readonly delegate* unmanaged <void*, void*, void**, void*, int, int> PushArray;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_PushString_t)(AMX *amx, cell *amx_addr, cell **phys_addr, const char *string, int pack, int use_wchar);
+    /// typedef int (*amx_PushString_t)(AMX *amx, cell *amx_addr, cell **phys_addr, const char *string, int pack, int use_wchar);
     /// </summary>
-    public readonly IntPtr PushString;
+    public readonly delegate* unmanaged <void*, void*, void**, char*, int,int, int> PushString;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_RaiseError_t)(AMX *amx, int error);
+    /// typedef int (*amx_RaiseError_t)(AMX *amx, int error);
     /// </summary>
-    public readonly IntPtr RaiseError;
+    public readonly delegate* unmanaged <void*, int, int> RaiseError;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_Register_t)(AMX *amx, const AMX_NATIVE_INFO *nativelist, int number);
+    /// typedef int (*amx_Register_t)(AMX *amx, const AMX_NATIVE_INFO *nativelist, int number);
     /// </summary>
-    public readonly IntPtr Register;
+    public readonly delegate* unmanaged <void*, void*, int, int> Register;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_Release_t)(AMX *amx, cell amx_addr);
+    /// typedef int (*amx_Release_t)(AMX *amx, cell amx_addr);
     /// </summary>
-    public readonly IntPtr Release;
+    public readonly delegate* unmanaged <void*, int, int> Release;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_SetCallback_t)(AMX *amx, AMX_CALLBACK callback);
+    /// typedef int (*amx_SetCallback_t)(AMX *amx, AMX_CALLBACK callback);
     /// </summary>
-    public readonly IntPtr SetCallback;
+    public readonly delegate* unmanaged <void*, void*, int> SetCallback;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_SetDebugHook_t)(AMX *amx, AMX_DEBUG debug);
+    /// typedef int (*amx_SetDebugHook_t)(AMX *amx, AMX_DEBUG debug);
     /// </summary>
-    public readonly IntPtr SetDebugHook;
+    public readonly delegate* unmanaged <void*, void*, int> SetDebugHook;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_SetString_t)(cell *dest, const char *source, int pack, int use_wchar, size_t size);
+    /// typedef int (*amx_SetString_t)(cell *dest, const char *source, int pack, int use_wchar, size_t size);
     /// </summary>
-    public readonly IntPtr SetString;
+    public readonly delegate* unmanaged <void*, char*, int, int, int, int> SetString;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_SetUserData_t)(AMX *amx, long tag, void *ptr);
+    /// typedef int (*amx_SetUserData_t)(AMX *amx, long tag, void *ptr);
     /// </summary>
-    public readonly IntPtr SetUserData;
+    public readonly delegate* unmanaged <void*, long, void*, int> SetUserData;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_StrLen_t)(const cell *cstring, int *length);
+    /// typedef int (*amx_StrLen_t)(const cell *cstring, int *length);
     /// </summary>
-    public readonly IntPtr StrLen;
+    public readonly delegate* unmanaged <void*, int*, int> StrLen;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_UTF8Check_t)(const char *string, int *length);
+    /// typedef int (*amx_UTF8Check_t)(const char *string, int *length);
     /// </summary>
-    public readonly IntPtr UTF8Check;
+    public readonly delegate* unmanaged <char*, int*, int> UTF8Check;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_UTF8Get_t)(const char *string, const char **endptr, cell *value);
+    /// typedef int (*amx_UTF8Get_t)(const char *string, const char **endptr, cell *value);
     /// </summary>
-    public readonly IntPtr UTF8Get;
+    public readonly delegate* unmanaged <char*, char**, void*, int> UTF8Get;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_UTF8Len_t)(const cell *cstr, int *length);
+    /// typedef int (*amx_UTF8Len_t)(const cell *cstr, int *length);
     /// </summary>
-    public readonly IntPtr UTF8Len;
+    public readonly delegate* unmanaged <void*, int*, int> UTF8Len;
 
     /// <summary>
-    /// typedef int  AMXAPI (*amx_UTF8Put_t)(char *string, char **endptr, int maxchars, cell value);
+    /// typedef int (*amx_UTF8Put_t)(char *string, char **endptr, int maxchars, cell value);
     /// </summary>
-    public readonly IntPtr UTF8Put;
+    public readonly delegate* unmanaged <char*, char**, int, int, int> UTF8Put;
 }

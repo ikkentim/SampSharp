@@ -10,23 +10,25 @@ public readonly unsafe struct PluginData
     /// void (*logprintf)(char* format, ...)
     /// c# doesn't support varargs. Use this function with arguments ("%s", "your text here")
     /// </summary>
-    public readonly delegate* unmanaged[Stdcall] <char *, char *, void> Logprintf;
-            
-    private readonly IntPtr Placeholder1;
-    private readonly IntPtr Placeholder2;
-    private readonly IntPtr Placeholder3;
-    private readonly IntPtr Placeholder4;
-    private readonly IntPtr Placeholder5;
-    private readonly IntPtr Placeholder6;
-    private readonly IntPtr Placeholder7;
-    private readonly IntPtr Placeholder8;
-    private readonly IntPtr Placeholder9;
-    private readonly IntPtr PlaceholderA;
-    private readonly IntPtr PlaceholderB;
-    private readonly IntPtr PlaceholderC;
-    private readonly IntPtr PlaceholderD;
-    private readonly IntPtr PlaceholderE;
-    private readonly IntPtr PlaceholderF;
+    public readonly delegate* unmanaged <char *, char *, void> Logprintf;
+
+#pragma warning disable S1144 // Unused private types or members should be removed
+    private readonly IntPtr _placeholder1;
+    private readonly IntPtr _placeholder2;
+    private readonly IntPtr _placeholder3;
+    private readonly IntPtr _placeholder4;
+    private readonly IntPtr _placeholder5;
+    private readonly IntPtr _placeholder6;
+    private readonly IntPtr _placeholder7;
+    private readonly IntPtr _placeholder8;
+    private readonly IntPtr _placeholder9;
+    private readonly IntPtr _placeholderA;
+    private readonly IntPtr _placeholderB;
+    private readonly IntPtr _placeholderC;
+    private readonly IntPtr _placeholderD;
+    private readonly IntPtr _placeholderE;
+    private readonly IntPtr _placeholderF;
+#pragma warning restore S1144 // Unused private types or members should be removed
 
     /// <summary>
     /// void* AmxFunctionTable[]
@@ -35,9 +37,9 @@ public readonly unsafe struct PluginData
     /// <summary>
     /// int (*AmxCallPublicFilterScript)(char *szFunctionName)
     /// </summary>
-    public readonly IntPtr CallPublicFs;
+    public readonly delegate* unmanaged <char *, int> CallPublicFs;
     /// <summary>
     /// int (*AmxCallPublicGameMode)(char *szFunctionName)
     /// </summary>
-    public readonly IntPtr CallPublicGm;
+    public readonly delegate* unmanaged <char *, int> CallPublicGm;
 }
