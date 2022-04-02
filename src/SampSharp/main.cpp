@@ -14,12 +14,11 @@
 // limitations under the License.
 
 #include <fstream>
-#include <string.h>
 #include <iostream>
 #include <sampgdk/sampgdk.h>
+#include <plugincommon.h>
 #include "version.h"
 #include "plugin.h"
-#include "coreclr_app.h"
 #include "logging.h"
 #include "hosted_server.h"
 #include "testing.h"
@@ -27,6 +26,8 @@
 
 hosted_server *svr = NULL;
 plugin *plg = NULL;
+
+extern void *pAMXFunctions;
 
 void print_info() {
     log_print("");
@@ -65,6 +66,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
         return false;
     }
 
+    pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
     sampsharp_api_setup(ppData);
 
     plg = new plugin();
@@ -93,7 +95,7 @@ PLUGIN_EXPORT int PLUGIN_CALL AmxUnload(AMX* amx) {
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
-    api_tick();
+    sampsharp_api_tick();
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
@@ -105,6 +107,6 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
         start_server();
     }
     
-    api_public_call(amx, name, params, retval);
+    sampsharp_api_public_call(amx, name, params, retval);
     return true;
 }

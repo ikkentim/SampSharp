@@ -26,7 +26,7 @@
 #include <string>
 #include "pathutil.h"
 #include "logging.h"
-#include "json.h"
+#include <json/json.h>
 #if SAMPSHARP_LINUX
 #  include <dirent.h>
 #  include <dlfcn.h>

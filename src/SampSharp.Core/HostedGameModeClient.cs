@@ -21,8 +21,7 @@ namespace SampSharp.Core
     /// </summary>
     public sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, ISynchronizationProvider
     {
-        private readonly Dictionary<string, NewCallback> _newCallbacks = new();
-        
+        private readonly Dictionary<string, Callback> _newCallbacks = new();
         private NoWaitMessageQueue _messageQueue;
         private SampSharpSynchronizationContext _synchronizationContext;
         private readonly IGameModeProvider _gameModeProvider;
@@ -51,7 +50,7 @@ namespace SampSharp.Core
         {
             get
             {
-                var id = Thread.CurrentThread.ManagedThreadId;
+                var id = Environment.CurrentManagedThreadId;
                 return _mainThread == id || _rconThread == id;
             }
         }
@@ -131,7 +130,8 @@ namespace SampSharp.Core
         
         /// <inheritdoc />
         public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
-        
+
+        /// <inheritdoc />
         public void RegisterCallback(string name, object target, MethodInfo methodInfo)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -144,9 +144,10 @@ namespace SampSharp.Core
                 throw new CallbackRegistrationException($"Duplicate callback registration for '{name}'");
             }
 
-            _newCallbacks[name] = NewCallback.For(target, methodInfo);
+            _newCallbacks[name] = Callback.For(target, methodInfo);
         }
 
+        /// <inheritdoc />
         public void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[] parameterTypes, uint?[] lengthIndices)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -159,7 +160,7 @@ namespace SampSharp.Core
                 throw new CallbackRegistrationException($"Duplicate callback registration for '{name}'");
             }
 
-            _newCallbacks[name] = NewCallback.For(target, methodInfo, parameterTypes, lengthIndices);
+            _newCallbacks[name] = Callback.For(target, methodInfo, parameterTypes, lengthIndices);
         }
         
         /// <inheritdoc />
@@ -187,7 +188,7 @@ namespace SampSharp.Core
 
             SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
             
-            _mainThread = Thread.CurrentThread.ManagedThreadId;
+            _mainThread = Environment.CurrentManagedThreadId;
             _running = true;
 
             var version = Assembly.GetExecutingAssembly().GetName().Version!;

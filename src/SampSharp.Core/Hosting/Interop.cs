@@ -26,7 +26,7 @@ namespace SampSharp.Core.Hosting
     /// </summary>
     public static unsafe class Interop
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0032:Use auto property", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0032:Use auto property", Justification = "Performance optimization")]
         private static SampSharpApi* _api;
         
         /// <summary>
@@ -96,14 +96,14 @@ namespace SampSharp.Core.Hosting
             var buffer = bytes < 200 ? stackalloc byte[bytes] : new byte[bytes];
 
             NativeUtils.GetBytes(message, buffer);
-
+            
             fixed (byte* ptr = &buffer.GetPinnableReference())
             {
                 _api->PluginData->Logprintf((char*)format, (char*)ptr);
             }
         }
 
-        [DllImport("SampSharp", EntryPoint = "sampsharp_get_api", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("SampSharp", EntryPoint = "sampsharp_api_initialize", CallingConvention = CallingConvention.StdCall)]
         private static extern SampSharpApi* InitializeApi(void *publicCall, void *tick);
 
         /// <summary>

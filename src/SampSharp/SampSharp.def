@@ -8,4 +8,4 @@ EXPORTS
     OnPublicCall
     sampsharp_fast_native_find
     sampsharp_fast_native_invoke
-    sampsharp_get_api
+    sampsharp_api_initialize

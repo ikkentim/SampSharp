@@ -2,8 +2,6 @@
 #include <sampgdk/sampgdk.h>
 #include "platforms.h"
 
-extern void *pAMXFunctions;
-
 struct sampsharp_api_t {
     void **plugin_data;
     void *find_native;
@@ -28,19 +26,19 @@ void sampsharp_api_cleanup() {
     bound_tick = nullptr;
 }
 
-void api_public_call(AMX *amx, const char *name, cell *params, cell *retval) {
+void sampsharp_api_public_call(AMX *amx, const char *name, cell *params, cell *retval) {
     if(bound_public_call) {
         bound_public_call(amx, name, params, retval);
     }
 }
 
-void api_tick() {
+void sampsharp_api_tick() {
     if(bound_tick) {
         bound_tick();
     }
 }
 
-SAMPSHARP_EXPORT void SAMPSHARP_CALL_PTR sampsharp_get_api(api_public_call_t *public_call, api_tick_t* tick) {
+SAMPSHARP_EXPORT void SAMPSHARP_CALL_PTR sampsharp_api_initialize(api_public_call_t *public_call, api_tick_t* tick) {
     bound_public_call = public_call;
     bound_tick = tick;
     return &sampsharp_api;

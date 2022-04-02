@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Text;
+using SampSharp.Core.Hosting;
 
-namespace SampSharp.Core.Hosting;
+namespace SampSharp.Core.Callbacks;
 
-internal class NewCallbackParameterString : INewCallbackParameter
+internal class CallbackParameterString : ICallbackParameter
 {
-    public static readonly NewCallbackParameterString Instance = new();
+    public static readonly CallbackParameterString Instance = new();
 
     public unsafe object GetValue(IntPtr amx, IntPtr parameter)
     {

@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using SampSharp.Core.Callbacks;
 using SampSharp.Core.Logging;
 
-namespace SampSharp.Core.Hosting;
+namespace SampSharp.Core.Callbacks;
 
-internal class NewCallback
+internal class Callback
 {
-    private readonly INewCallbackParameter[] _parameters;
+    private readonly ICallbackParameter[] _parameters;
     private readonly object _target;
     private readonly object[] _parametersBuffer;
     private readonly FastMethodInfo _fastMethod;
     private readonly object[] _wrapBuffer;
 
-    public NewCallback(INewCallbackParameter[] parameters, object target, MethodInfo method, bool wrapped)
+    public Callback(ICallbackParameter[] parameters, object target, MethodInfo method, bool wrapped)
     {
         _parameters = parameters;
         _parametersBuffer = new object[parameters.Length];
@@ -26,52 +25,52 @@ internal class NewCallback
         if (wrapped) _wrapBuffer = new object[] { _parametersBuffer };
     }
 
-    private static INewCallbackParameter ParameterForType1(Type type)
+    private static ICallbackParameter ParameterForType1(Type type)
     {
         if (type == typeof(int))
         {
-            return NewCallbackParameterInt.Instance;
+            return CallbackParameterInt.Instance;
         }
 
         if (type == typeof(bool))
         {
-            return NewCallbackParameterBoolean.Instance;
+            return CallbackParameterBoolean.Instance;
         }
 
         if (type == typeof(float))
         {
-            return NewCallbackParameterSingle.Instance;
+            return CallbackParameterSingle.Instance;
         }
 
         if (type == typeof(string))
         {
-            return NewCallbackParameterString.Instance;
+            return CallbackParameterString.Instance;
         }
 
         return null;
     }
 
-    private static INewCallbackParameter ParameterForType2(Type type, int offset)
+    private static ICallbackParameter ParameterForType2(Type type, int offset)
     {
         if (type == typeof(int[]))
         {
-            return new NewCallbackParameterIntArray(offset);
+            return new CallbackParameterIntArray(offset);
         }
 
         if (type == typeof(bool[]))
         {
-            return new NewCallbackParameterBooleanArray(offset);
+            return new CallbackParameterBooleanArray(offset);
         }
 
         if (type == typeof(float[]))
         {
-            return new NewCallbackParameterSingleArray(offset);
+            return new CallbackParameterSingleArray(offset);
         }
 
         return null;
     }
 
-    public static NewCallback For(object target, MethodInfo method, Type[] parameterTypes = null,
+    public static Callback For(object target, MethodInfo method, Type[] parameterTypes = null,
         uint?[] lengthIndices = null)
     {
         var wrapped = false;
@@ -111,7 +110,7 @@ internal class NewCallback
             }
         }
 
-        var parameters = new INewCallbackParameter[parameterTypes.Length];
+        var parameters = new ICallbackParameter[parameterTypes.Length];
 
         if (lengthIndices != null && lengthIndices.Length != parameterTypes.Length)
         {
@@ -152,10 +151,10 @@ internal class NewCallback
             throw new CallbackRegistrationException("Unknown callback parameter type.");
         }
 
-        return new NewCallback(parameters, target, method, true);
+        return new Callback(parameters, target, method, true);
     }
 
-    public static NewCallback For(object target, MethodInfo method)
+    public static Callback For(object target, MethodInfo method)
     {
         var methodParameters = method.GetParameters();
         var parameters = methodParameters.Select(parameter =>
@@ -190,7 +189,7 @@ internal class NewCallback
             })
             .ToArray();
 
-        return new NewCallback(parameters, target, method, false);
+        return new Callback(parameters, target, method, false);
     }
 
     public class FastMethodInfo

@@ -1,12 +1,13 @@
 ﻿using System;
+using SampSharp.Core.Hosting;
 
-namespace SampSharp.Core.Hosting;
+namespace SampSharp.Core.Callbacks;
 
-internal class NewCallbackParameterSingleArray : INewCallbackParameter
+internal class CallbackParameterSingleArray : ICallbackParameter
 {
     private readonly int _lengthOffset;
 
-    public NewCallbackParameterSingleArray(int lengthOffset)
+    public CallbackParameterSingleArray(int lengthOffset)
     {
         _lengthOffset = lengthOffset;
     }
