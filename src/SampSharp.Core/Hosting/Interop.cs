@@ -110,16 +110,16 @@ namespace SampSharp.Core.Hosting
         /// Gets the contents of the SampSharp plugin API.
         /// </summary>
         public static SampSharpApi* Api => _api;
-        
+
         internal static void Initialize()
         {
-            var ptr = (delegate* unmanaged[Stdcall] <IntPtr, sbyte*, IntPtr, IntPtr, void>)&PublicCall;
-            var ptrTick = (delegate* unmanaged[Stdcall]<void>)&Tick;
+            var ptr = (delegate* unmanaged[Cdecl] <IntPtr, sbyte*, IntPtr, IntPtr, void>)&PublicCall;
+            var ptrTick = (delegate* unmanaged[Cdecl] <void>)&Tick;
 
             _api = InitializeApi(ptr, ptrTick);
         }
 
-        [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
+        [UnmanagedCallersOnly(CallConvs = new[]{typeof(CallConvCdecl)})]
         private static void PublicCall(IntPtr amx, sbyte *name, IntPtr parameters, IntPtr retval)
         {
             var client = InternalStorage.RunningClient as HostedGameModeClient;
@@ -127,8 +127,8 @@ namespace SampSharp.Core.Hosting
             var nameStr = Marshal.PtrToStringAnsi((IntPtr)name);
             client?.PublicCall(amx, nameStr, parameters, retval);
         }
-
-        [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
+        
+        [UnmanagedCallersOnly(CallConvs = new[]{typeof(CallConvCdecl)})]
         private static void Tick()
         {
             var client = InternalStorage.RunningClient as HostedGameModeClient;

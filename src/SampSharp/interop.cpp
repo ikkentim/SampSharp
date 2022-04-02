@@ -8,8 +8,8 @@ struct sampsharp_api_t {
     void *invoke_native;
 } sampsharp_api;
 
-typedef void SAMPSHARP_CALL api_public_call_t(AMX *amx, const char *name, cell *params, cell *retval);
-typedef void SAMPSHARP_CALL api_tick_t();
+typedef void api_public_call_t(AMX *amx, const char *name, cell *params, cell *retval);
+typedef void api_tick_t();
 
 api_public_call_t *bound_public_call = nullptr;
 api_tick_t *bound_tick = nullptr;
