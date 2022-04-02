@@ -51,22 +51,22 @@ public readonly unsafe struct AmxExport
     /// <summary>
     /// typedef int (*amx_FindNative_t)(AMX *amx, const char *name, int *index);
     /// </summary>
-    public readonly delegate* unmanaged <void*, char*, int*, int> FindNative;
+    public readonly delegate* unmanaged <void*, void*, int*, int> FindNative;
 
     /// <summary>
     /// typedef int (*amx_FindPublic_t)(AMX *amx, const char *funcname, int *index);
     /// </summary>
-    public readonly delegate* unmanaged <void*, char*, int*, int> FindPublic;
+    public readonly delegate* unmanaged <void*, byte*, int*, int> FindPublic;
 
     /// <summary>
     /// typedef int (*amx_FindPubVar_t)(AMX *amx, const char *varname, cell *amx_addr);
     /// </summary>
-    public readonly delegate* unmanaged <void*, char*, void *, int> FindPubVar;
+    public readonly delegate* unmanaged <void*, byte*, void *, int> FindPubVar;
 
     /// <summary>
     /// typedef int (*amx_FindTagId_t)(AMX *amx, cell tag_id, char *tagname);
     /// </summary>
-    public readonly delegate* unmanaged <void*, int, char*, int> FindTagId;
+    public readonly delegate* unmanaged <void*, int, byte*, int> FindTagId;
 
     /// <summary>
     /// typedef int (*amx_Flags_t)(AMX *amx,uint16_t *flags);
@@ -81,17 +81,17 @@ public readonly unsafe struct AmxExport
     /// <summary>
     /// typedef int (*amx_GetNative_t)(AMX *amx, int index, char *funcname);
     /// </summary>
-    public readonly delegate* unmanaged <void*, int, char*, int> GetNative;
+    public readonly delegate* unmanaged <void*, int, byte*, int> GetNative;
 
     /// <summary>
     /// typedef int (*amx_GetPublic_t)(AMX *amx, int index, char *funcname);
     /// </summary>
-    public readonly delegate* unmanaged <void*, int, char*, int> GetPublic;
+    public readonly delegate* unmanaged <void*, int, byte*, int> GetPublic;
 
     /// <summary>
     /// typedef int (*amx_GetPubVar_t)(AMX *amx, int index, char *varname, cell *amx_addr);
     /// </summary>
-    public readonly delegate* unmanaged <void*, int, char*, void*, int> GetPubVar;
+    public readonly delegate* unmanaged <void*, int, byte*, void*, int> GetPubVar;
 
     /// <summary>
     /// typedef int (*amx_GetString_t)(char *dest,const cell *source, int use_wchar, size_t size);
@@ -101,7 +101,7 @@ public readonly unsafe struct AmxExport
     /// <summary>
     /// typedef int (*amx_GetTag_t)(AMX *amx, int index, char *tagname, cell *tag_id);
     /// </summary>
-    public readonly delegate* unmanaged <void*, int, char*, void *, int> GetTag;
+    public readonly delegate* unmanaged <void*, int, byte*, void *, int> GetTag;
 
     /// <summary>
     /// typedef int (*amx_GetUserData_t)(AMX *amx, long tag, void **ptr);
@@ -131,7 +131,7 @@ public readonly unsafe struct AmxExport
     /// <summary>
     /// typedef AMX_NATIVE_INFO *  AMXAPI (*amx_NativeInfo_t)(const char *name, AMX_NATIVE func);
     /// </summary>
-    public readonly delegate* unmanaged <char*, void*, int> NativeInfo;
+    public readonly delegate* unmanaged <byte*, void*, int> NativeInfo;
 
     /// <summary>
     /// typedef int (*amx_NumNatives_t)(AMX *amx, int *number);
@@ -166,7 +166,7 @@ public readonly unsafe struct AmxExport
     /// <summary>
     /// typedef int (*amx_PushString_t)(AMX *amx, cell *amx_addr, cell **phys_addr, const char *string, int pack, int use_wchar);
     /// </summary>
-    public readonly delegate* unmanaged <void*, void*, void**, char*, int,int, int> PushString;
+    public readonly delegate* unmanaged <void*, void*, void**, byte*, int,int, int> PushString;
 
     /// <summary>
     /// typedef int (*amx_RaiseError_t)(AMX *amx, int error);
@@ -196,7 +196,7 @@ public readonly unsafe struct AmxExport
     /// <summary>
     /// typedef int (*amx_SetString_t)(cell *dest, const char *source, int pack, int use_wchar, size_t size);
     /// </summary>
-    public readonly delegate* unmanaged <void*, char*, int, int, int, int> SetString;
+    public readonly delegate* unmanaged <void*, byte*, int, int, int, int> SetString;
 
     /// <summary>
     /// typedef int (*amx_SetUserData_t)(AMX *amx, long tag, void *ptr);
@@ -211,12 +211,12 @@ public readonly unsafe struct AmxExport
     /// <summary>
     /// typedef int (*amx_UTF8Check_t)(const char *string, int *length);
     /// </summary>
-    public readonly delegate* unmanaged <char*, int*, int> UTF8Check;
+    public readonly delegate* unmanaged <byte*, int*, int> UTF8Check;
 
     /// <summary>
     /// typedef int (*amx_UTF8Get_t)(const char *string, const char **endptr, cell *value);
     /// </summary>
-    public readonly delegate* unmanaged <char*, char**, void*, int> UTF8Get;
+    public readonly delegate* unmanaged <byte*, byte**, void*, int> UTF8Get;
 
     /// <summary>
     /// typedef int (*amx_UTF8Len_t)(const cell *cstr, int *length);
@@ -226,5 +226,5 @@ public readonly unsafe struct AmxExport
     /// <summary>
     /// typedef int (*amx_UTF8Put_t)(char *string, char **endptr, int maxchars, cell value);
     /// </summary>
-    public readonly delegate* unmanaged <char*, char**, int, int, int> UTF8Put;
+    public readonly delegate* unmanaged <byte*, byte**, int, int, int> UTF8Put;
 }

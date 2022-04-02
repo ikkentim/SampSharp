@@ -101,7 +101,6 @@
     <None Include="SampSharp.def" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="callbacks_map.cpp" />
     <ClCompile Include="ConfigReader.cpp" />
     <ClCompile Include="coreclr_app.cpp" />
     <ClCompile Include="hosted_server.cpp" />
@@ -115,7 +114,6 @@
     <ClCompile Include="testing.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="callbacks_map.h" />
     <ClInclude Include="ConfigReader.h" />
     <ClInclude Include="coreclrhost.h" />
     <ClInclude Include="coreclr_app.h" />
@@ -126,7 +124,6 @@
     <ClInclude Include="mscoree.h" />
     <ClInclude Include="pathutil.h" />
     <ClInclude Include="plugin.h" />
-    <ClInclude Include="server.h" />
     <ClInclude Include="testing.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="platforms.h" />

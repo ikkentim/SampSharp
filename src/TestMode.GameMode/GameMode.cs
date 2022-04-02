@@ -15,6 +15,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Threading.Channels;
 using SampSharp.Core.Callbacks;
 using SampSharp.Core.Hosting;
 using SampSharp.Core.Natives.NativeObjects;
@@ -41,17 +42,16 @@ namespace TestMode.GameMode
         {
             base.OnInitialized(e);
 
-            Console.WriteLine("The game mode has loaded.");
+            Client.UnhandledException += (sender, args) => Console.WriteLine($"ERROR! {args.Exception}");
 
-            Console.WriteLine("foo");
+            Console.WriteLine("The game mode has loaded.");
+            
             AddPlayerClass(0, new Vector3(1482.9055, 1504.2122, 10.5474), 0);
 
             BaseVehicle.Create(VehicleModelType.BF400, new Vector3(1489.9055, 1520.2122, 11), 0, 3, 3);
             BaseVehicle.Create(VehicleModelType.Banshee, new Vector3(1449.9055, 1520.2122, 11), 0, 3, 3);
             BaseVehicle.Create(VehicleModelType.Cabbie, new Vector3(1449.9055, 1550.2122, 11), 0, 3, 3);
-
-            Interop.Testing();
-
+            
             Console.WriteLine("Bench start");
             RunCallbackBenchmark();
         }

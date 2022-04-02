@@ -23,24 +23,14 @@
 
 namespace fs = std::filesystem;
 
-/* amxplugin's reference */
-// ReSharper disable once CppInconsistentNaming
-extern void *pAMXFunctions;
-
 typedef int(*amx_call)(char *function_name);
 
-plugin::plugin(void **pp_data) :
+plugin::plugin() :
     config_(ConfigReader("server.cfg")) {
-    data_ = pp_data;
-    pAMXFunctions = pp_data[PLUGIN_DATA_AMX_EXPORTS];
 }
 
 ConfigReader *plugin::config() {
     return &config_;
-}
-
-int plugin::filterscript_call(const char * function_name) const {
-    return ((amx_call)data_[PLUGIN_DATA_CALLPUBLIC_FS])((char *)function_name);
 }
 
 void plugin::config(const std::string &name, std::string &value) const {
@@ -52,8 +42,7 @@ bool plugin::config_validate() {
         coreclr,
         coreclr_path,
         gamemode,
-        skip_empty_check,
-        use_multi_process_mode;
+        skip_empty_check;
 
     config("skip_empty_check", skip_empty_check);
 
@@ -84,20 +73,6 @@ bool plugin::config_validate() {
             }
         }
     }
-    
-    config("use_multi_process_mode", use_multi_process_mode);
-
-    if(StringUtil::ToBool(use_multi_process_mode, false)) {
-        state_set(STATE_CONFIG_VALID);
-        return true;
-    }
-#if SAMPSHARP_WINDOWS
-    char* cmdline = GetCommandLineA();
-    if(cmdline && strstr(cmdline, "--multi-process-mode")) {
-        state_set(STATE_CONFIG_VALID);
-        return true;
-    }
-#endif
     
     config("coreclr", coreclr);
     config("gamemode", gamemode);

@@ -9,6 +9,6 @@ public readonly unsafe struct SampSharpApi
     /// The plugin data provided to the SampSharp plugin by SA-MP.
     /// </summary>
     public readonly PluginData* PluginData;
-    public readonly delegate* unmanaged[Stdcall] <char*, void*> FindNative;
-    public readonly delegate* unmanaged[Stdcall] <void*, char*, int*, int> InvokeNative;
+    public readonly delegate* unmanaged[Stdcall] <byte*, void*> FindNative;
+    public readonly delegate* unmanaged[Stdcall] <void*, byte*, int*, int> InvokeNative;
 }

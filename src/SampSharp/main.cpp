@@ -14,7 +14,6 @@
 // limitations under the License.
 
 #include <fstream>
-#include <assert.h>
 #include <string.h>
 #include <iostream>
 #include <sampgdk/sampgdk.h>
@@ -26,7 +25,7 @@
 #include "testing.h"
 #include "interop.h"
 
-server *svr = NULL;
+hosted_server *svr = NULL;
 plugin *plg = NULL;
 
 void print_info() {
@@ -68,7 +67,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 
     sampsharp_api_setup(ppData);
 
-    plg = new plugin(ppData);
+    plg = new plugin();
 
     /* validate the server config is fit for running SampSharp */
     return plg && plg->config_validate();
@@ -95,9 +94,6 @@ PLUGIN_EXPORT int PLUGIN_CALL AmxUnload(AMX* amx) {
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
     api_tick();
-    /*if (svr) {
-        svr->tick();
-    }*/
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
@@ -110,9 +106,5 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     }
     
     api_public_call(amx, name, params, retval);
-    /*
-    if (svr) {
-        svr->public_call(amx, name, params, retval);
-    }*/
     return true;
 }

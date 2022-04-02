@@ -29,9 +29,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="callbacks_map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -64,9 +61,6 @@
     <ClInclude Include="platforms.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="callbacks_map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -87,9 +81,6 @@
     </ClInclude>
     <ClInclude Include="mscoree.h">
       <Filter>Header Files\coreclr</Filter>
-    </ClInclude>
-    <ClInclude Include="server.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="hosted_server.h">
       <Filter>Header Files</Filter>

@@ -10,7 +10,7 @@ public readonly unsafe struct PluginData
     /// void (*logprintf)(char* format, ...)
     /// c# doesn't support varargs. Use this function with arguments ("%s", "your text here")
     /// </summary>
-    public readonly delegate* unmanaged <char *, char *, void> Logprintf;
+    public readonly delegate* unmanaged <char*, char*, void> Logprintf;
 
 #pragma warning disable S1144 // Unused private types or members should be removed
     private readonly IntPtr _placeholder1;
@@ -34,12 +34,14 @@ public readonly unsafe struct PluginData
     /// void* AmxFunctionTable[]
     /// </summary>
     public readonly AmxExport* AmxExports;
+
     /// <summary>
     /// int (*AmxCallPublicFilterScript)(char *szFunctionName)
     /// </summary>
-    public readonly delegate* unmanaged <char *, int> CallPublicFs;
+    public readonly delegate* unmanaged <byte*, int> CallPublicFs;
+
     /// <summary>
     /// int (*AmxCallPublicGameMode)(char *szFunctionName)
     /// </summary>
-    public readonly delegate* unmanaged <char *, int> CallPublicGm;
+    public readonly delegate* unmanaged <byte*, int> CallPublicGm;
 }

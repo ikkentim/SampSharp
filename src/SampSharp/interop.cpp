@@ -46,11 +46,6 @@ SAMPSHARP_EXPORT void SAMPSHARP_CALL_PTR sampsharp_get_api(api_public_call_t *pu
     return &sampsharp_api;
 }
 
-SAMPSHARP_EXPORT void SAMPSHARP_CALL sampsharp_print(const char *msg) {
-    // todo: skip sampgdk
-    sampgdk_logprintf("%s", msg);
-}
-
 SAMPSHARP_EXPORT void SAMPSHARP_CALL_PTR sampsharp_fast_native_find(const char *name) {
     assert(name != nullptr);
     return (void *)sampgdk_FindNative(name);

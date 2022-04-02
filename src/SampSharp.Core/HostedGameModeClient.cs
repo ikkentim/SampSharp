@@ -22,18 +22,13 @@ namespace SampSharp.Core
     public sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, ISynchronizationProvider
     {
         private readonly Dictionary<string, NewCallback> _newCallbacks = new();
-
-        private readonly Dictionary<string, Callback> _callbacks = new Dictionary<string, Callback>();
+        
         private NoWaitMessageQueue _messageQueue;
         private SampSharpSynchronizationContext _synchronizationContext;
         private readonly IGameModeProvider _gameModeProvider;
         private int _mainThread;
         private int _rconThread = int.MinValue;
         private bool _running;
-        private byte[] _publicCallBuffer = new byte[1024 * 6];
-        private IntPtr _buffer;
-        private readonly IntPtr _buffer1K;
-        private int _txBufferLength;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="HostedGameModeClient" /> class.
@@ -45,8 +40,6 @@ namespace SampSharp.Core
             Encoding = encoding;
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
             NativeObjectProxyFactory = new FastNativeBasedNativeObjectProxyFactory(this);
-            _buffer = Marshal.AllocHGlobal(_txBufferLength = 1024 * 6);
-            _buffer1K = Marshal.AllocHGlobal(1024);
 
             ServerPath = Directory.GetCurrentDirectory();
         }
@@ -121,46 +114,7 @@ namespace SampSharp.Core
                 OnUnhandledException(new UnhandledExceptionEventArgs(name, e));
             }
         }
-
-        internal int PublicCall(string name, IntPtr data, int length)
-        {
-            throw new NotImplementedException();
-            try
-            {
-                if (name == "OnRconCommand")
-                {
-                    // RCON can be processed by the SA-MP server on a different thread. Mark thread as additional main thread.
-                    _rconThread = Thread.CurrentThread.ManagedThreadId;
-                }
-
-                if (_callbacks.TryGetValue(name, out var callback))
-                {
-                    while (_publicCallBuffer.Length < length)
-                        _publicCallBuffer = new byte[_publicCallBuffer.Length * 2];
-
-                    Marshal.Copy(data, _publicCallBuffer, 0, length);
-
-                    return callback.Invoke(_publicCallBuffer, 0) ?? 1;
-                }
-            }
-            catch (Exception e)
-            {
-                OnUnhandledException(new UnhandledExceptionEventArgs(name, e));
-            }
-
-            return 1;
-        }
         
-        private void EnsureBufferSize(int length)
-        {
-            if (_txBufferLength >= length)
-                return;
-            
-            Marshal.FreeHGlobal(_buffer);
-            while (_txBufferLength < length) _txBufferLength *= 2;
-            _buffer = Marshal.AllocHGlobal(_txBufferLength);
-        }
-
         #region Implementation of IGameModeClient
 
         /// <inheritdoc />
@@ -185,7 +139,7 @@ namespace SampSharp.Core
 
             AssertRunning();
             
-            if (_callbacks.ContainsKey(name))
+            if (_newCallbacks.ContainsKey(name))
             {
                 throw new CallbackRegistrationException($"Duplicate callback registration for '{name}'");
             }
@@ -200,97 +154,13 @@ namespace SampSharp.Core
 
             AssertRunning();
 
-            if (_callbacks.ContainsKey(name))
+            if (_newCallbacks.ContainsKey(name))
             {
                 throw new CallbackRegistrationException($"Duplicate callback registration for '{name}'");
             }
 
             _newCallbacks[name] = NewCallback.For(target, methodInfo, parameterTypes, lengthIndices);
         }
-
-
-        /*
-        /// <inheritdoc />
-        public void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters)
-        {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (target == null) throw new ArgumentNullException(nameof(target));
-            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
-            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
-
-            AssertRunning();
-
-            if (!Callback.IsValidReturnType(methodInfo.ReturnType))
-                throw new CallbackRegistrationException("The method uses an unsupported return type");
-
-            var callback = new Callback(target, methodInfo, name, this);
-
-            if(!callback.MatchesParameters(parameters))
-                throw new CallbackRegistrationException("The method does not match the specified parameters.");
-
-            _callbacks[name] = callback;
-
-            var data = ValueConverter.GetBytes(name, Encoding)
-                .Concat(parameters.SelectMany(c => c.GetBytes()))
-                .Concat(new[] { (byte) 0 }).ToArray();
-            
-            if (IsOnMainThread)
-            {
-                EnsureBufferSize(data.Length);
-                Marshal.Copy(data, 0, _buffer, data.Length);
-                Interop.RegisterCallback(_buffer);
-            }
-            else
-                _synchronizationContext.Send(ctx =>
-                {
-                    EnsureBufferSize(data.Length);
-                    Marshal.Copy(data, 0, _buffer, data.Length);
-                    Interop.RegisterCallback(_buffer);
-                }, null);
-        }
-
-        /// <inheritdoc />
-        public void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters, Type[] parameterTypes)
-        {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (target == null) throw new ArgumentNullException(nameof(target));
-            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
-            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
-            if (parameterTypes == null) throw new ArgumentNullException(nameof(parameterTypes));
-
-            AssertRunning();
-
-            if (!Callback.IsValidReturnType(methodInfo.ReturnType))
-                throw new CallbackRegistrationException("The method uses an unsupported return type");
-
-            var callback = new Callback(target, methodInfo, name, parameterTypes, this);
-
-            if(!callback.MatchesParameters(parameters))
-                throw new CallbackRegistrationException("The method does not match the specified parameters.");
-
-            _callbacks[name] = callback;
-
-            var data = ValueConverter.GetBytes(name, Encoding)
-                .Concat(parameters.SelectMany(c => c.GetBytes()))
-                .Concat(new[] { (byte) 0 }).ToArray();
-            
-            if (IsOnMainThread)
-            {
-                EnsureBufferSize(data.Length);
-                Marshal.Copy(data, 0, _buffer, data.Length);
-                Interop.RegisterCallback(_buffer);
-            }
-            else
-                _synchronizationContext.Send(ctx =>
-                {
-                    EnsureBufferSize(data.Length);
-                    Marshal.Copy(data, 0, _buffer, data.Length);
-                    Interop.RegisterCallback(_buffer);
-                }, null);
-
-        }
-
-        */
         
         /// <inheritdoc />
         public void Print(string text)
@@ -309,9 +179,9 @@ namespace SampSharp.Core
         public bool Run()
         {
             InternalStorage.RunningClient = this;
-            Interop.Init();
+            Interop.Initialize();
 
-            // Prepare the syncronization context
+            // Prepare the synchronization context
             _messageQueue = new NoWaitMessageQueue();
             _synchronizationContext = new SampSharpSynchronizationContext(_messageQueue);
 
@@ -320,9 +190,10 @@ namespace SampSharp.Core
             _mainThread = Thread.CurrentThread.ManagedThreadId;
             _running = true;
 
+            var version = Assembly.GetExecutingAssembly().GetName().Version!;
             CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Client");
             CoreLog.Log(CoreLogLevel.Initialisation, "-------------------------");
-            CoreLog.Log(CoreLogLevel.Initialisation, $"v{CoreVersion.Version.ToString(3)}, (C)2014-2020 Tim Potze");
+            CoreLog.Log(CoreLogLevel.Initialisation, $"v{version.ToString(3)} (C)2014-2022 Tim Potze");
             CoreLog.Log(CoreLogLevel.Initialisation, "Hosted run mode is active.");
             CoreLog.Log(CoreLogLevel.Initialisation, "");
             

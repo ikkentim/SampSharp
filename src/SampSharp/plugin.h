@@ -30,8 +30,7 @@ typedef uint8_t plugin_state;
 class plugin
 {
 public:
-    plugin(void **pp_data);
-    int filterscript_call(const char *function_name) const;
+    plugin();
     ConfigReader *config();
     void config(const std::string &name, std::string &value) const;
     bool config_validate();
@@ -48,7 +47,6 @@ private:
     bool detect_coreclr(std::string &value, std::filesystem::path path);
     bool detect_gamemode(std::string &value);
     bool detect_gamemode(std::string &value, std::filesystem::path path);
-    void** data_;
     ConfigReader config_;
     plugin_state state_ = STATE_NONE;
     std::string coreclr_;
