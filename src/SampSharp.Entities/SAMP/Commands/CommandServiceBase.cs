@@ -85,11 +85,22 @@ namespace SampSharp.Entities.SAMP.Commands
             inputText = inputText.Substring(name.Length);
 
             // Find commands with the name
-            if (!_commands.TryGetValue(name, out var commands))
+            if (!_commands.TryGetValue(name.ToLower(), out var commands))
                 return InvokeResult.CommandNotFound;
 
             foreach (var command in commands)
             {
+                if (!command.Info.IgnoreCase)
+                {
+                    for(int i = 0; i < command.Info.Names.Length; i++)
+                    {
+                        if (command.Info.Names[i] == name)
+                            break;
+                        if( i == command.Info.Names.Length - 1)
+                            return InvokeResult.CommandNotFound;
+                    }
+                }
+
                 var cmdInput = inputText;
 
                 // Parse the command arguments using the parsers provided by the command
@@ -171,8 +182,8 @@ namespace SampSharp.Entities.SAMP.Commands
         private static string CommandText(CommandInfo command)
         {
             return command.Parameters.Length == 0
-                ? $"Usage: {command.Name}"
-                : $"Usage: {command.Name} " + string.Join(" ",
+                ? $"Usage: {command.DisplayName}"
+                : $"Usage: {command.DisplayName} " + string.Join(" ",
                       command.Parameters.Select(arg => arg.IsRequired ? $"[{arg.Name}]" : $"<{arg.Name}>"));
         }
 
@@ -307,9 +318,9 @@ namespace SampSharp.Entities.SAMP.Commands
 
             foreach (var (method, commandInfo) in methods)
             {
-                // Determine command name.
-                var name = commandInfo.Name ?? GetCommandName(method);
-                if (name == null)
+                // Determine command names.
+                var names = commandInfo.Names ?? new[] { GetCommandName(method) };
+                if (names == null)
                     continue;
 
                 // Validate acceptable return type.
@@ -323,7 +334,7 @@ namespace SampSharp.Entities.SAMP.Commands
                 if (!TryCollectParameters(methodParameters, prefixParameters, out var parameters)) 
                     continue;
 
-                var info = new CommandInfo(name, parameters);
+                var info = new CommandInfo(names, parameters, commandInfo.IgnoreCase);
 
                 var argsPtr = 0; // The current pointer in the event arguments array.
                 var parameterSources = methodParameters
@@ -362,10 +373,13 @@ namespace SampSharp.Entities.SAMP.Commands
                     SystemType = method.DeclaringType
                 };
 
-                if (!_commands.TryGetValue(info.Name, out var lst))
-                    lst = _commands[info.Name] = new List<CommandData>();
-
-                lst.Add(data);
+                foreach(string name in info.Names)
+                {
+                    if (!_commands.TryGetValue(name.ToLower(), out var lst))
+                        lst = _commands[name.ToLower()] = new List<CommandData>();
+                
+                    lst.Add(data);
+                }
             }
         }
 

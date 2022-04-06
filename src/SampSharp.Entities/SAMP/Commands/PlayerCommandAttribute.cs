@@ -21,12 +21,25 @@ namespace SampSharp.Entities.SAMP.Commands
         /// Initializes a new instance of the <see cref="PlayerCommandAttribute"/> class.
         /// </summary>
         /// <param name="name">The overridden name of the command.</param>
-        public PlayerCommandAttribute(string name)
+        public PlayerCommandAttribute(string name) : this(new[] { name })
         {
-            Name = name;
+            
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlayerCommandAttribute"/> class.
+        /// </summary>
+        /// <param name="names">The overridden names of the command.</param>      
+        public PlayerCommandAttribute(params string[] names)
+        {
+            Names = names;
+            IgnoreCase = true;
         }
 
         /// <inheritdoc />
-        public string Name { get; set; }
+        public string[] Names { get; set; }
+
+        /// <inheritdoc />
+        public bool IgnoreCase { get; set; }
     }
 }
