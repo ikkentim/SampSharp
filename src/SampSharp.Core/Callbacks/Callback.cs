@@ -1,327 +1,296 @@
-// SampSharp
-// Copyright 2017 Tim Potze
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
+using SampSharp.Core.Logging;
 
-namespace SampSharp.Core.Callbacks
+namespace SampSharp.Core.Callbacks;
+
+internal class Callback
 {
-    /// <summary>
-    ///     Represents a public call (callback).
-    /// </summary>
-    internal class Callback
+    private readonly ICallbackParameter[] _parameters;
+    private readonly object _target;
+    private readonly object[] _parametersBuffer;
+    private readonly FastMethodInfo _fastMethod;
+    private readonly object[] _wrapBuffer;
+
+    public Callback(ICallbackParameter[] parameters, object target, MethodInfo method, bool wrapped)
     {
-        private readonly IGameModeClient _gameModeClient;
-        private readonly MethodInfo _methodInfo;
-        private readonly ParameterType[] _parameterTypes;
-        private readonly object[] _parameterValues;
-        private readonly object[] _parametersContainer;
-        private readonly object _target;
+        _parameters = parameters;
+        _parametersBuffer = new object[parameters.Length];
+        _target = target;
+        _fastMethod = new FastMethodInfo(method);
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Callback" /> class.
-        /// </summary>
-        /// <param name="target">The target to invoke the method on.</param>
-        /// <param name="methodInfo">The information about the method to invoke.</param>
-        /// <param name="name">The name of the callback.</param>
-        /// <param name="gameModeClient">The game mode client.</param>
-        public Callback(object target, MethodInfo methodInfo, string name, IGameModeClient gameModeClient)
+        if (wrapped) _wrapBuffer = new object[] { _parametersBuffer };
+    }
+
+    public ICallbackParameter[] Parameters => _parameters;
+
+    private static bool IsSupportedParameterType(Type type)
+    {
+        return type == typeof(int) || type == typeof(float) || type == typeof(bool) || type == typeof(int[]) ||
+               type == typeof(float[]) || type == typeof(bool[]) || type == typeof(string);
+    }
+
+    private static ICallbackParameter ParameterForType1(Type type)
+    {
+        if (type == typeof(int))
         {
-            _gameModeClient = gameModeClient ?? throw new ArgumentNullException(nameof(gameModeClient));
-            _target = target ?? throw new ArgumentNullException(nameof(target));
-            _methodInfo = methodInfo ?? throw new ArgumentNullException(nameof(methodInfo));
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-
-            var parameterInfos = methodInfo.GetParameters();
-            _parameterValues = new object[parameterInfos.Length];
-            _parameterTypes = new ParameterType[parameterInfos.Length];
-
-            for (var i = 0; i < parameterInfos.Length; i++)
-            {
-                _parameterTypes[i] = GetParameterType(parameterInfos[i].ParameterType);
-            }
+            return CallbackParameterInt.Instance;
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Callback" /> class.
-        /// </summary>
-        /// <param name="target">The target to invoke the method on.</param>
-        /// <param name="methodInfo">The information about the method to invoke.</param>
-        /// <param name="name">The name of the callback.</param>
-        /// <param name="parameterTypes">The types of the parameters.</param>
-        /// <param name="gameModeClient">The game mode client.</param>
-        public Callback(object target, MethodInfo methodInfo, string name, Type[] parameterTypes, IGameModeClient gameModeClient)
+        if (type == typeof(bool))
         {
-            _gameModeClient = gameModeClient ?? throw new ArgumentNullException(nameof(gameModeClient));
-            _target = target ?? throw new ArgumentNullException(nameof(target));
-            _methodInfo = methodInfo ?? throw new ArgumentNullException(nameof(methodInfo));
-            Name = name ?? throw new ArgumentNullException(nameof(name));
+            return CallbackParameterBoolean.Instance;
+        }
 
-            var parameterInfos = methodInfo.GetParameters();
-            _parameterValues = new object[parameterTypes.Length];
-            _parameterTypes = new ParameterType[parameterTypes.Length];
+        if (type == typeof(float))
+        {
+            return CallbackParameterSingle.Instance;
+        }
 
+        if (type == typeof(string))
+        {
+            return CallbackParameterString.Instance;
+        }
 
-            // Verify the parameters match the method info
-            if (parameterInfos.Length == 1 && parameterInfos[0].ParameterType == typeof(object[]))
+        return null;
+    }
+
+    private static ICallbackParameter ParameterForType2(Type type, int offset)
+    {
+        if (type == typeof(int[]))
+        {
+            return new CallbackParameterIntArray(offset);
+        }
+
+        if (type == typeof(bool[]))
+        {
+            return new CallbackParameterBooleanArray(offset);
+        }
+
+        if (type == typeof(float[]))
+        {
+            return new CallbackParameterSingleArray(offset);
+        }
+
+        return null;
+    }
+
+    public static Callback For(object target, MethodInfo method, Type[] parameterTypes = null,
+        uint?[] lengthIndices = null)
+    {
+        var wrapped = false;
+        var methodParameters = method.GetParameters();
+        if (methodParameters.Length == 1 && methodParameters[0].ParameterType == typeof(object[]))
+        {
+            wrapped = true;
+        }
+
+        if (wrapped)
+        {
+            parameterTypes ??= Type.EmptyTypes;
+        }
+        else
+        {
+            if (parameterTypes == null)
             {
-                _parametersContainer = new object[1];
+                parameterTypes = methodParameters.Select(x => x.ParameterType).ToArray();
             }
             else
             {
-                if (parameterTypes.Where((t, i) => t != parameterInfos[i].ParameterType).Any())
+                if (parameterTypes.Length != methodParameters.Length)
                 {
-                    throw new CallbackRegistrationException(
-                        "The specified parameters does not match the parameters of the specified method.");
+                    throw new InvalidOperationException(
+                        "Value does not match method parameters. The specified method should either only accept an array of objects, or the parameterTypes value should be null or match the method parameters.");
                 }
-            }
-
-            for (var i = 0; i < parameterTypes.Length; i++)
-            {
-                _parameterTypes[i] = GetParameterType(parameterTypes[i]);
+                for (var i = 0; i < parameterTypes.Length; i++)
+                {
+                    if (parameterTypes[i] != methodParameters[i].ParameterType)
+                    {
+                        throw new InvalidOperationException(
+                            $"Type at index {i} does not match the method parameters. The specified method should either only accept an array of objects, or the parameterTypes value should be null or match the method parameters.");
+                    }
+                }
             }
         }
 
-        /// <summary>
-        ///     Gets the name of the callback.
-        /// </summary>
-        public string Name { get; }
+        var parameters = new ICallbackParameter[parameterTypes.Length];
 
-        /// <summary>
-        ///     Invokes the callback with the specified arguments buffer.
-        /// </summary>
-        /// <param name="buffer">The buffer.</param>
-        /// <param name="startIndex">The start index.</param>
-        /// <returns>The value returned by the callback.</returns>
-        public int? Invoke(byte[] buffer, int startIndex)
+        if (lengthIndices != null && lengthIndices.Length != parameterTypes.Length)
         {
-            if (buffer == null) throw new ArgumentNullException(nameof(buffer));
+            throw new InvalidOperationException("lengthIndices length must be same as parameterTypes length");
+        }
 
-            var bufferIndex = startIndex;
-            for (var i = 0; i < _parameterTypes.Length; i++)
+        for (var i = 0; i < parameterTypes.Length; i++)
+        {
+            if (!IsSupportedParameterType(parameterTypes[i]))
             {
-                var parameterType = _parameterTypes[i];
-
-                int length;
-                int value;
-                switch (parameterType)
-                {
-                    case ParameterType.Int:
-                        value = ValueConverter.ToInt32(buffer, bufferIndex);
-                        bufferIndex += 4;
-                        _parameterValues[i] = value;
-                        break;
-                    case ParameterType.Single:
-                        value = ValueConverter.ToInt32(buffer, bufferIndex);
-                        bufferIndex += 4;
-                        _parameterValues[i] = ValueConverter.ToSingle(value);
-                        break;
-                    case ParameterType.Bool:
-                        value = ValueConverter.ToInt32(buffer, bufferIndex);
-                        bufferIndex += 4;
-                        _parameterValues[i] = ValueConverter.ToBoolean(value);
-                        break;
-                    case ParameterType.IntArray:
-                        length = ValueConverter.ToInt32(buffer, bufferIndex);
-                        bufferIndex += 4;
-                        var intArray = new int[length];
-                        _parameterValues[i] = intArray;
-
-                        for (var j = 0; j < length; j++)
-                        {
-                            intArray[j] = ValueConverter.ToInt32(buffer, bufferIndex + j * 4);
-                        }
-
-                        bufferIndex += length * 4;
-
-                        break;
-                    case ParameterType.SingleArray:
-                        length = ValueConverter.ToInt32(buffer, bufferIndex);
-                        bufferIndex += 4;
-                        var singleArray = new float[length];
-                        _parameterValues[i] = singleArray;
-
-                        for (var j = 0; j < length; j++)
-                        {
-                            singleArray[j] = ValueConverter.ToSingle(buffer, bufferIndex + j * 4);
-                        }
-
-                        bufferIndex += length * 4;
-
-                        break;
-                    case ParameterType.BoolArray:
-                        length = ValueConverter.ToInt32(buffer, bufferIndex);
-                        bufferIndex += 4;
-                        var boolArray = new bool[length];
-                        _parameterValues[i] = boolArray;
-
-                        for (var j = 0; j < length; j++)
-                        {
-                            boolArray[j] = ValueConverter.ToBoolean(buffer, bufferIndex + j * 4);
-                        }
-
-                        bufferIndex += length * 4;
-
-                        break;
-                    case ParameterType.String:
-                        var stringValue = ValueConverter.ToString(buffer, bufferIndex, _gameModeClient.Encoding);
-                        bufferIndex += stringValue.Length + 1;
-                        _parameterValues[i] = stringValue;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                throw new InvalidOperationException($"Unsupported parameter type '{parameterTypes[i]}' at index {i}");
             }
 
-            object[] parameters;
-            if (_parametersContainer != null)
+            parameters[i] = ParameterForType1(parameterTypes[i]);
+
+            if (parameters[i] != null)
             {
-                _parametersContainer[0] = _parameterValues;
-                parameters = _parametersContainer;
+                continue;
+            }
+
+            var indexNullable = (int?)lengthIndices?[i];
+
+            if (indexNullable == null && !wrapped)
+            {
+                var attribute = methodParameters[i].GetCustomAttribute<ParameterLengthAttribute>();
+                indexNullable = (int?)attribute?.Index;
+            }
+            
+            var index = indexNullable ?? (i + 1);
+            var offset = index - i;
+
+            if (index >= parameterTypes.Length || index < 0)
+            {
+                throw new InvalidOperationException("Callback parameter length index out of bounds.");
+            }
+
+            if (parameterTypes[index] != typeof(int))
+            {
+                throw new InvalidOperationException(
+                    $"Expected an integer argument at index {index} for the parameter at index {i}.");
+            }
+
+            parameters[i] = ParameterForType2(parameterTypes[i], offset);
+
+            if (parameters[i] != null)
+            {
+                continue;
+            }
+
+            throw new InvalidOperationException("Unknown callback parameter type.");
+        }
+
+        return new Callback(parameters, target, method, true);
+    }
+    
+    /*
+    public static Callback For(object target, MethodInfo method)
+    {
+        var methodParameters = method.GetParameters();
+        var parameters = methodParameters.Select(parameter =>
+            {
+                var par = ParameterForType1(parameter.ParameterType);
+
+                if (par != null)
+                {
+                    return par;
+                }
+
+                var attribute = parameter.GetCustomAttribute<ParameterLengthAttribute>();
+                var index = (int?)attribute?.Index ?? parameter.Position + 1;
+                var offset = index - parameter.Position;
+
+
+                if (index >= methodParameters.Length)
+                {
+                    throw new InvalidOperationException("Callback parameter length index out of bounds.");
+                }
+
+                par = ParameterForType2(parameter.ParameterType, offset);
+
+                if (par != null)
+                {
+                    return par;
+                }
+
+                throw new InvalidOperationException("Unknown callback parameter type.");
+            })
+            .ToArray();
+
+        return new Callback(parameters, target, method, false);
+    }
+
+    // */
+
+    public class FastMethodInfo
+    {
+        private delegate object ReturnValueDelegate(object instance, object[] arguments);
+        private delegate void VoidDelegate(object instance, object[] arguments);
+
+        public FastMethodInfo(MethodInfo methodInfo)
+        {
+            var instanceExpression = Expression.Parameter(typeof(object), "instance");
+            var argumentsExpression = Expression.Parameter(typeof(object[]), "arguments");
+            var argumentExpressions = new List<Expression>();
+            var parameterInfos = methodInfo.GetParameters();
+            for (var i = 0; i < parameterInfos.Length; ++i)
+            {
+                var parameterInfo = parameterInfos[i];
+                argumentExpressions.Add(Expression.Convert(Expression.ArrayIndex(argumentsExpression, Expression.Constant(i)), parameterInfo.ParameterType));
+            }
+            var callExpression = Expression.Call(!methodInfo.IsStatic ? Expression.Convert(instanceExpression, methodInfo.ReflectedType ?? methodInfo.DeclaringType!) : null, methodInfo, argumentExpressions);
+            if (callExpression.Type == typeof(void))
+            {
+                var voidDelegate = Expression.Lambda<VoidDelegate>(callExpression, instanceExpression, argumentsExpression).Compile();
+                Delegate = (instance, arguments) => { voidDelegate(instance, arguments); return null; };
             }
             else
-            {
-                parameters = _parameterValues;
-            }
-
-            var result = _methodInfo.Invoke(_target, parameters);
-
-            switch (result)
-            {
-                case int intValue:
-                    return intValue;
-                case float singleValue:
-                    return ValueConverter.ToInt32(singleValue);
-                case bool boolValue:
-                    return ValueConverter.ToInt32(boolValue);
-                default:
-                    return null;
-            }
+                Delegate = Expression.Lambda<ReturnValueDelegate>(Expression.Convert(callExpression, typeof(object)), instanceExpression, argumentsExpression).Compile();
         }
 
-        /// <summary>
-        ///     Determines whether the specified type is a valid value type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns><c>true</c> if the specified type is a valid value type; otherwise, <c>false</c>.</returns>
-        public static bool IsValidValueType(Type type)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
+        private ReturnValueDelegate Delegate { get; }
 
-            return type == typeof(int) || type == typeof(float) || type == typeof(bool);
+        public object Invoke(object instance, object[] arguments)
+        {
+            return Delegate(instance, arguments);
+        }
+    }
+
+    public unsafe void Invoke(IntPtr amx, IntPtr parameters, IntPtr retval)
+    {
+        var paramCount = *(int*)parameters.ToPointer() / 4; // cell size
+
+        if (paramCount != _parameters.Length)
+        {
+            CoreLog.Log(CoreLogLevel.Error,
+                $"Callback parameter mismatch. Expected {_parameters.Length} but received {paramCount} parameters.");
+            return;
         }
 
-        /// <summary>
-        ///     Determines whether the specified type is a valid array type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns><c>true</c> if the specified type is a valid array type; otherwise, <c>false</c>.</returns>
-        public static bool IsValidArrayType(Type type)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
+        var args = _parametersBuffer;
 
-            return type.IsArray && !type.IsByRef && type.HasElementType && IsValidValueType(type.GetElementType());
+        for (var i = 0; i < paramCount; i++)
+        {
+            var param = _parameters[i];
+            args[i] = param.GetValue(amx, IntPtr.Add(parameters, 4 + (4 * i)));
         }
 
-        /// <summary>
-        ///     Determines whether the specified type is a valid string type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns><c>true</c> if the specified type is a valid string type; otherwise, <c>false</c>.</returns>
-        public static bool IsValidStringType(Type type)
+        if (_wrapBuffer != null)
         {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-
-            return type == typeof(string);
-        }
-
-        /// <summary>
-        ///     Determines whether the specified type is a valid return type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns><c>true</c> if the specified type is a valid return type; otherwise, <c>false</c>.</returns>
-        public static bool IsValidReturnType(Type type)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-
-            return type == typeof(void) || type == typeof(object) || IsValidValueType(type);
-        }
-
-        /// <summary>
-        ///     Returns a value indicating whether the specified callback parameter information matches the parameters of this callbacks.
-        /// </summary>
-        /// <param name="infos">The callback parameter information.</param>
-        /// <returns><c>true</c> if the specified information matches this callback; otherwise, <c>false</c>.</returns>
-        public bool MatchesParameters(CallbackParameterInfo[] infos)
-        {
-            if (infos == null) throw new ArgumentNullException(nameof(infos));
-
-            if (infos.Length != _parameterTypes.Length)
-                return false;
-
-            return !infos.Where((t, i) => !TypeMatches(_parameterTypes[i], t.Type)).Any();
+            args = _wrapBuffer;
         }
         
-        private static bool TypeMatches(ParameterType parameterType, CallbackParameterType callbackParameterType)
+        var result = _fastMethod.Invoke(_target, args);
+
+        if (retval != IntPtr.Zero)
         {
-            switch (callbackParameterType)
-            {
-                case CallbackParameterType.Array:
-                    return parameterType == ParameterType.BoolArray || parameterType == ParameterType.IntArray ||
-                           parameterType == ParameterType.SingleArray;
-                case CallbackParameterType.Value:
-                    return parameterType == ParameterType.Bool || parameterType == ParameterType.Int ||
-                           parameterType == ParameterType.Single;
-                case CallbackParameterType.String:
-                    return parameterType == ParameterType.String;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            *(int*)retval = ObjectToInt(result);
         }
 
-        private ParameterType GetParameterType(Type type)
+        // to avoid holding on to handles, clear buffer
+        for (var i = 0; i < paramCount; i++)
         {
-            if (type == typeof(int))
-                return ParameterType.Int;
-            if (type == typeof(float))
-                return ParameterType.Single;
-            if (type == typeof(bool))
-                return ParameterType.Bool;
-            if (type == typeof(int[]))
-                return ParameterType.Int;
-            if (type == typeof(float[]))
-                return ParameterType.SingleArray;
-            if (type == typeof(bool[]))
-                return ParameterType.BoolArray;
-            if (type == typeof(string))
-                return ParameterType.String;
-
-            throw new CallbackRegistrationException($"Parameter type {type} is unsupported.");
+            _parametersBuffer[i] = null;
         }
+    }
 
-        private enum ParameterType
+    private static int ObjectToInt(object obj)
+    {
+        return obj switch
         {
-            Int,
-            Single,
-            Bool,
-            IntArray,
-            SingleArray,
-            BoolArray,
-            String
-        }
-
+            bool value => value ? 1 : 0,
+            int value => value,
+            float value => ValueConverter.ToInt32(value),
+            _ => 1
+        };
     }
 }

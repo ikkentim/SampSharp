@@ -53,27 +53,32 @@ namespace SampSharp.Core
         /// </summary>
         event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
         
-        /// <summary>
-        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
-        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
-        /// </summary>
-        /// <param name="name">The name af the callback to register.</param>
-        /// <param name="target">The target on which to invoke the method.</param>
-        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
-        /// <param name="parameters">The parameters of the callback.</param>
-        void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters);
-        
-        /// <summary>
-        ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
-        ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
-        /// </summary>
-        /// <param name="name">The name af the callback to register.</param>
-        /// <param name="target">The target on which to invoke the method.</param>
-        /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
-        /// <param name="parameters">The parameters of the callback.</param>
-        /// <param name="parameterTypes">The types of the parameters.</param>
-        void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters,
-            Type[] parameterTypes);
+        // /// <summary>
+        // ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
+        // ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
+        // /// </summary>
+        // /// <param name="name">The name af the callback to register.</param>
+        // /// <param name="target">The target on which to invoke the method.</param>
+        // /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
+        // /// <param name="parameters">The parameters of the callback.</param>
+        // void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters);
+
+        // /// <summary>
+        // ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
+        // ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
+        // /// </summary>
+        // /// <param name="name">The name af the callback to register.</param>
+        // /// <param name="target">The target on which to invoke the method.</param>
+        // /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
+        // /// <param name="parameters">The parameters of the callback.</param>
+        // /// <param name="parameterTypes">The types of the parameters.</param>
+        // void RegisterCallback(string name, object target, MethodInfo methodInfo, CallbackParameterInfo[] parameters,
+        //    Type[] parameterTypes);
+
+        void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[] parameterTypes,
+            uint?[] lengthIndices);
+
+        void RegisterCallback(string name, object target, MethodInfo methodInfo);
 
         /// <summary>
         ///     Prints the specified text to the server console.

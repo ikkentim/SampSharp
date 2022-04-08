@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampSharp.Entities", "src\S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMode.Entities", "src\TestMode.Entities\TestMode.Entities.csproj", "{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampSharp.Core.UnitTests", "src\SampSharp.Core.UnitTests\SampSharp.Core.UnitTests.csproj", "{791B7ABD-43B4-436A-8E55-DA573B102E86}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,18 @@ Global
 		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Release|Win32.ActiveCfg = Release|Any CPU
 		{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}.Release|Win32.Build.0 = Release|Any CPU
+		{791B7ABD-43B4-436A-8E55-DA573B102E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{791B7ABD-43B4-436A-8E55-DA573B102E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{791B7ABD-43B4-436A-8E55-DA573B102E86}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{791B7ABD-43B4-436A-8E55-DA573B102E86}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{791B7ABD-43B4-436A-8E55-DA573B102E86}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{791B7ABD-43B4-436A-8E55-DA573B102E86}.Debug|Win32.Build.0 = Debug|Any CPU
+		{791B7ABD-43B4-436A-8E55-DA573B102E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{791B7ABD-43B4-436A-8E55-DA573B102E86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{791B7ABD-43B4-436A-8E55-DA573B102E86}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{791B7ABD-43B4-436A-8E55-DA573B102E86}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{791B7ABD-43B4-436A-8E55-DA573B102E86}.Release|Win32.ActiveCfg = Release|Any CPU
+		{791B7ABD-43B4-436A-8E55-DA573B102E86}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

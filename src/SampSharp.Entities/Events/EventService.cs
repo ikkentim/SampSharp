@@ -63,7 +63,7 @@ namespace SampSharp.Entities
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
             var handler = BuildInvoke(name);
-            _gameModeClient.RegisterCallback(name, handler.Target, handler.Method, parameters);
+            _gameModeClient.RegisterCallback(name, handler.Target, handler.Method, parameters, null);
         }
 
         /// <inheritdoc />

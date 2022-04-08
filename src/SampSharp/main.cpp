@@ -14,18 +14,20 @@
 // limitations under the License.
 
 #include <fstream>
-#include <assert.h>
-#include <string.h>
 #include <iostream>
 #include <sampgdk/sampgdk.h>
+#include <plugincommon.h>
 #include "version.h"
 #include "plugin.h"
-#include "coreclr_app.h"
 #include "logging.h"
 #include "hosted_server.h"
+#include "testing.h"
+#include "interop.h"
 
-server *svr = NULL;
+hosted_server *svr = NULL;
 plugin *plg = NULL;
+
+extern void *pAMXFunctions;
 
 void print_info() {
     log_print("");
@@ -64,7 +66,10 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
         return false;
     }
 
-    plg = new plugin(ppData);
+    pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
+    sampsharp_api_setup(ppData);
+
+    plg = new plugin();
 
     /* validate the server config is fit for running SampSharp */
     return plg && plg->config_validate();
@@ -76,16 +81,13 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload() {
     
     plg = NULL;
     svr = NULL;
-    
+
+    sampsharp_api_cleanup();
     sampgdk::Unload();
 }
 
 PLUGIN_EXPORT int PLUGIN_CALL AmxLoad(AMX* amx) {
-    if(plg) {
-        return plg->amx_load(amx);
-    }
-
-    return 1;
+    return load_test_natives(amx);
 }
 
 PLUGIN_EXPORT int PLUGIN_CALL AmxUnload(AMX* amx) {
@@ -93,9 +95,7 @@ PLUGIN_EXPORT int PLUGIN_CALL AmxUnload(AMX* amx) {
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
-    if (svr) {
-        svr->tick();
-    }
+    sampsharp_api_tick();
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
@@ -106,9 +106,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     if (!svr) {
         start_server();
     }
-
-    if (svr) {
-        svr->public_call(amx, name, params, retval);
-    }
+    
+    sampsharp_api_public_call(amx, name, params, retval);
     return true;
 }

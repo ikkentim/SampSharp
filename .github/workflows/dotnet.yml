@@ -38,4 +38,7 @@ jobs:
       run: dotnet restore SampSharp.sln
 
     - name: Build
-      run: dotnet build SampSharp.sln --configuration Release --no-restore
+      run: dotnet build SampSharp.sln --no-restore
+      
+    - name: Test
+      run: dotnet test SampSharp.sln --no-build --verbosity normal

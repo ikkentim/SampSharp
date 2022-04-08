@@ -15,8 +15,7 @@
 
 #include "logging.h"
 #include <cstdarg>
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
 #include <sampgdk/sampgdk.h>
 #include "platforms.h"
 

@@ -23,6 +23,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore SampSharp.sln
 
+    - name: Test
+      run: dotnet test SampSharp.sln /p:CiVersion=${VERSION} --no-restore
+
     - name: Build
       run: dotnet build SampSharp.sln /p:CiVersion=${VERSION} --configuration Release --no-restore
 

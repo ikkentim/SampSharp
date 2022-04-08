@@ -19,42 +19,18 @@
 #include "logging.h"
 #include "coreclr_app.h"
 #include "StringUtil.h"
-#include "testing.h"
 #include <regex>
 
 namespace fs = std::filesystem;
 
-/* amxplugin's reference */
-// ReSharper disable once CppInconsistentNaming
-extern void *pAMXFunctions;
-
 typedef int(*amx_call)(char *function_name);
 
-extern "C" const AMX_NATIVE_INFO native_list[] = {
-#ifndef  DISABLE_TEST_NATIVES
-    { "sampsharptest_inout", test_inout },
-    { "sampsharptest_inrefout", test_inrefout },
-    { "sampsharptest_inoutstr", test_inoutstr },
-    { "sampsharptest_inoutarr", test_inoutarr },
-    { "sampsharptest_varargs", test_varargs },
-    { "sampsharptest_varargs_mix", test_varargs_mix },
-    { "sampsharptest_varargs_str", test_varargs_str },
-#endif
-    { NULL, NULL }
-};
-
-plugin::plugin(void **pp_data) :
+plugin::plugin() :
     config_(ConfigReader("server.cfg")) {
-    data_ = pp_data;
-    pAMXFunctions = pp_data[PLUGIN_DATA_AMX_EXPORTS];
 }
 
 ConfigReader *plugin::config() {
     return &config_;
-}
-
-int plugin::filterscript_call(const char * function_name) const {
-    return ((amx_call)data_[PLUGIN_DATA_CALLPUBLIC_FS])((char *)function_name);
 }
 
 void plugin::config(const std::string &name, std::string &value) const {
@@ -66,8 +42,7 @@ bool plugin::config_validate() {
         coreclr,
         coreclr_path,
         gamemode,
-        skip_empty_check,
-        use_multi_process_mode;
+        skip_empty_check;
 
     config("skip_empty_check", skip_empty_check);
 
@@ -98,20 +73,6 @@ bool plugin::config_validate() {
             }
         }
     }
-    
-    config("use_multi_process_mode", use_multi_process_mode);
-
-    if(StringUtil::ToBool(use_multi_process_mode, false)) {
-        state_set(STATE_CONFIG_VALID);
-        return true;
-    }
-#if SAMPSHARP_WINDOWS
-    char* cmdline = GetCommandLineA();
-    if(cmdline && strstr(cmdline, "--multi-process-mode")) {
-        state_set(STATE_CONFIG_VALID);
-        return true;
-    }
-#endif
     
     config("coreclr", coreclr);
     config("gamemode", gamemode);
@@ -328,8 +289,3 @@ plugin_state plugin::state_unset(const plugin_state flag) {
 plugin_state plugin::state_reset() {
     return state_ = STATE_NONE;
 }
-
-int plugin::amx_load(AMX* amx) {
-    return amx_Register(amx, native_list, -1);
-}
-
