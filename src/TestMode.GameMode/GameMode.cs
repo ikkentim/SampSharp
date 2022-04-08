@@ -15,6 +15,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Threading.Channels;
 using SampSharp.Core.Callbacks;
 using SampSharp.Core.Hosting;
 using SampSharp.Core.Natives.NativeObjects;
@@ -40,6 +41,8 @@ namespace TestMode.GameMode
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
+
+            Client.UnhandledException += (sender, args) => Console.WriteLine($"ERROR! {args.Exception}");
 
             Console.WriteLine("The game mode has loaded.");
             

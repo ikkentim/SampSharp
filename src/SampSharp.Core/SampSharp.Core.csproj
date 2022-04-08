@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Title>SampSharp Server Core</Title>
     <Description>The core library of SampSharp which manages the communication with the SA-MP server.</Description>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

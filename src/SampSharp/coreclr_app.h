@@ -18,9 +18,9 @@
 #include <string>
 #include "platforms.h"
 #if SAMPSHARP_LINUX
-#  include "coreclrhost.h"
+#  include <coreclr/coreclrhost.h>
 #elif SAMPSHARP_WINDOWS
-#  include "mscoree.h"
+#  include <coreclr/mscoree.h>
 #endif
 
 #if SAMPSHARP_LINUX

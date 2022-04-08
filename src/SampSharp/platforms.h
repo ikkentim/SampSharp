@@ -39,22 +39,16 @@
 #endif
 
 #if defined DEBUG || defined _DEBUG
-#  define ENABLE_TEST_LOGGING
+#  define ENABLE_TEST_NATIVES
 #  define LOG_DEBUG
-#else
-#  define DISABLE_TEST_NATIVES
 #endif
 
 #if SAMPSHARP_WINDOWS
 #  define SAMPSHARP_CALL __stdcall
 #  define SAMPSHARP_CALL_PTR *SAMPSHARP_CALL
-#  define sampsharp_strcat(dest, len, src) strcat_s(dest, len, src)
-#  define sampsharp_sprintf(dest, len, format, ...) sprintf_s(dest, len, format, ##__VA_ARGS__)
 #elif SAMPSHARP_LINUX
 #  define SAMPSHARP_CALL __attribute__((visibility("default")))
 #  define SAMPSHARP_CALL_PTR SAMPSHARP_CALL *
-#  define sampsharp_strcat(dest, len, src) strcat(dest, src)
-#  define sampsharp_sprintf(dest, len, format, ...) sprintf(dest, format, ##__VA_ARGS__)
 #else
 #error Unsupported platform
 #endif
