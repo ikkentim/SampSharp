@@ -134,17 +134,7 @@ namespace SampSharp.Core
         /// <inheritdoc />
         public void RegisterCallback(string name, object target, MethodInfo methodInfo)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
-
-            AssertRunning();
-            
-            if (_newCallbacks.ContainsKey(name))
-            {
-                throw new CallbackRegistrationException($"Duplicate callback registration for '{name}'");
-            }
-
-            _newCallbacks[name] = Callback.For(target, methodInfo);
+            RegisterCallback(name, target, methodInfo, null, null);
         }
 
         /// <inheritdoc />
@@ -160,7 +150,14 @@ namespace SampSharp.Core
                 throw new CallbackRegistrationException($"Duplicate callback registration for '{name}'");
             }
 
-            _newCallbacks[name] = Callback.For(target, methodInfo, parameterTypes, lengthIndices);
+            try
+            {
+                _newCallbacks[name] = Callback.For(target, methodInfo, parameterTypes, lengthIndices);
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new CallbackRegistrationException($"Failed to register callback '{name}'. {e.Message}", e);
+            }
         }
         
         /// <inheritdoc />

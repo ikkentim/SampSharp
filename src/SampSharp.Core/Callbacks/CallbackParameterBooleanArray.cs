@@ -3,14 +3,16 @@ using SampSharp.Core.Hosting;
 
 namespace SampSharp.Core.Callbacks;
 
-internal class CallbackParameterBooleanArray : ICallbackParameter
+internal class CallbackParameterBooleanArray : ICallbackArrayParameter
 {
     private readonly int _lengthOffset;
-
+    
     public CallbackParameterBooleanArray(int lengthOffset)
     {
         _lengthOffset = lengthOffset;
     }
+
+    public int LengthOffset => _lengthOffset;
 
     public unsafe object GetValue(IntPtr amx, IntPtr parameter)
     {

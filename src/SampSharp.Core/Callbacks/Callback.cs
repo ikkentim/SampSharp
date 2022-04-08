@@ -25,6 +25,14 @@ internal class Callback
         if (wrapped) _wrapBuffer = new object[] { _parametersBuffer };
     }
 
+    public ICallbackParameter[] Parameters => _parameters;
+
+    private static bool IsSupportedParameterType(Type type)
+    {
+        return type == typeof(int) || type == typeof(float) || type == typeof(bool) || type == typeof(int[]) ||
+               type == typeof(float[]) || type == typeof(bool[]) || type == typeof(string);
+    }
+
     private static ICallbackParameter ParameterForType1(Type type)
     {
         if (type == typeof(int))
@@ -94,17 +102,15 @@ internal class Callback
             {
                 if (parameterTypes.Length != methodParameters.Length)
                 {
-                    throw new ArgumentException(
-                        "Value does not match method parameters. The specified method should either only accept an array of objects, or the value should be should be null or match the method parameters.",
-                        nameof(parameterTypes));
+                    throw new InvalidOperationException(
+                        "Value does not match method parameters. The specified method should either only accept an array of objects, or the parameterTypes value should be null or match the method parameters.");
                 }
                 for (var i = 0; i < parameterTypes.Length; i++)
                 {
                     if (parameterTypes[i] != methodParameters[i].ParameterType)
                     {
-                        throw new ArgumentException(
-                            $"Type at index {i} does not match the method parameters. The specified method should either only accept an array of objects, or the value should be should be null or match the method parameters.",
-                            nameof(parameterTypes));
+                        throw new InvalidOperationException(
+                            $"Type at index {i} does not match the method parameters. The specified method should either only accept an array of objects, or the parameterTypes value should be null or match the method parameters.");
                     }
                 }
             }
@@ -114,12 +120,16 @@ internal class Callback
 
         if (lengthIndices != null && lengthIndices.Length != parameterTypes.Length)
         {
-            throw new ArgumentException("lengthIndices length must be same as parameterTypes length",
-                nameof(lengthIndices));
+            throw new InvalidOperationException("lengthIndices length must be same as parameterTypes length");
         }
 
         for (var i = 0; i < parameterTypes.Length; i++)
         {
+            if (!IsSupportedParameterType(parameterTypes[i]))
+            {
+                throw new InvalidOperationException($"Unsupported parameter type '{parameterTypes[i]}' at index {i}");
+            }
+
             parameters[i] = ParameterForType1(parameterTypes[i]);
 
             if (parameters[i] != null)
@@ -127,7 +137,15 @@ internal class Callback
                 continue;
             }
 
-            var index = (int?)lengthIndices?[i] ?? (i + 1);
+            var indexNullable = (int?)lengthIndices?[i];
+
+            if (indexNullable == null && !wrapped)
+            {
+                var attribute = methodParameters[i].GetCustomAttribute<ParameterLengthAttribute>();
+                indexNullable = (int?)attribute?.Index;
+            }
+            
+            var index = indexNullable ?? (i + 1);
             var offset = index - i;
 
             if (index >= parameterTypes.Length || index < 0)
@@ -137,8 +155,8 @@ internal class Callback
 
             if (parameterTypes[index] != typeof(int))
             {
-                throw new ArgumentException(
-                    $"Expected an int argument at index {index} for the parameter at index {i}.", nameof(method));
+                throw new InvalidOperationException(
+                    $"Expected an integer argument at index {index} for the parameter at index {i}.");
             }
 
             parameters[i] = ParameterForType2(parameterTypes[i], offset);
@@ -148,12 +166,13 @@ internal class Callback
                 continue;
             }
 
-            throw new CallbackRegistrationException("Unknown callback parameter type.");
+            throw new InvalidOperationException("Unknown callback parameter type.");
         }
 
         return new Callback(parameters, target, method, true);
     }
-
+    
+    /*
     public static Callback For(object target, MethodInfo method)
     {
         var methodParameters = method.GetParameters();
@@ -166,9 +185,7 @@ internal class Callback
                     return par;
                 }
 
-                var attribute =
-                    CustomAttributeExtensions
-                        .GetCustomAttribute<ParameterLengthAttribute>((ParameterInfo)parameter);
+                var attribute = parameter.GetCustomAttribute<ParameterLengthAttribute>();
                 var index = (int?)attribute?.Index ?? parameter.Position + 1;
                 var offset = index - parameter.Position;
 
@@ -185,12 +202,14 @@ internal class Callback
                     return par;
                 }
 
-                throw new CallbackRegistrationException("Unknown callback parameter type.");
+                throw new InvalidOperationException("Unknown callback parameter type.");
             })
             .ToArray();
 
         return new Callback(parameters, target, method, false);
     }
+
+    // */
 
     public class FastMethodInfo
     {
@@ -237,7 +256,7 @@ internal class Callback
             return;
         }
 
-        var args = _parametersBuffer;// new object[paramCount];
+        var args = _parametersBuffer;
 
         for (var i = 0; i < paramCount; i++)
         {
@@ -249,9 +268,7 @@ internal class Callback
         {
             args = _wrapBuffer;
         }
-
-            
-        // var result = _method.Invoke(_target, args);
+        
         var result = _fastMethod.Invoke(_target, args);
 
         if (retval != IntPtr.Zero)

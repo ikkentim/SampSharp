@@ -8,9 +8,9 @@ public readonly unsafe struct PluginData
 {
     /// <summary>
     /// void (*logprintf)(char* format, ...)
-    /// c# doesn't support varargs. Use this function with arguments ("%s", "your text here")
+    /// C# doesn't support interop with varargs. Use this function with arguments ("%s", "your text here")
     /// </summary>
-    public readonly delegate* unmanaged <char*, char*, void> Logprintf;
+    public readonly delegate* unmanaged <byte*, byte*, void> Logprintf;
 
 #pragma warning disable S1144 // Unused private types or members should be removed
     private readonly IntPtr _placeholder1;

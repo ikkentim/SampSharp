@@ -29,6 +29,13 @@ namespace SampSharp.Core.Hosting
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0032:Use auto property", Justification = "Performance optimization")]
         private static SampSharpApi* _api;
         
+        internal delegate SampSharpApi* InteropInitializeDelegate(void *publicCall, void *tick);
+        
+        /// <summary>
+        /// Gets the contents of the SampSharp plugin API.
+        /// </summary>
+        public static SampSharpApi* Api => _api;
+
         /// <summary>
         /// Gets a pointer to a native.
         /// </summary>
@@ -45,7 +52,7 @@ namespace SampSharp.Core.Hosting
         /// <param name="args">A pointer to the arguments array.</param>
         /// <returns>The return value of the native.</returns>
         [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_invoke", CallingConvention = CallingConvention.StdCall)]
-        public static extern unsafe int FastNativeInvoke(IntPtr native, string format, int* args);
+        public static extern int FastNativeInvoke(IntPtr native, string format, int* args);
         
         /// <summary>
         /// Invokes a native by a pointer.
@@ -99,24 +106,24 @@ namespace SampSharp.Core.Hosting
             
             fixed (byte* ptr = &buffer.GetPinnableReference())
             {
-                _api->PluginData->Logprintf((char*)format, (char*)ptr);
+                _api->PluginData->Logprintf(format, ptr);
             }
         }
 
         [DllImport("SampSharp", EntryPoint = "sampsharp_api_initialize", CallingConvention = CallingConvention.StdCall)]
         private static extern SampSharpApi* InitializeApi(void *publicCall, void *tick);
 
-        /// <summary>
-        /// Gets the contents of the SampSharp plugin API.
-        /// </summary>
-        public static SampSharpApi* Api => _api;
-
         internal static void Initialize()
+        {
+            Initialize(InitializeApi);
+        }
+
+        internal static void Initialize(InteropInitializeDelegate initializer)
         {
             var ptr = (delegate* unmanaged[Cdecl] <IntPtr, sbyte*, IntPtr, IntPtr, void>)&PublicCall;
             var ptrTick = (delegate* unmanaged[Cdecl] <void>)&Tick;
 
-            _api = InitializeApi(ptr, ptrTick);
+            _api = initializer(ptr, ptrTick);
         }
 
         [UnmanagedCallersOnly(CallConvs = new[]{typeof(CallConvCdecl)})]
@@ -136,4 +143,5 @@ namespace SampSharp.Core.Hosting
             client?.Tick();
         }
     }
+    
 }
