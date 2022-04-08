@@ -18,7 +18,8 @@ public class HostedGameModeClientTests
         var result = 0;
             
         var sut = new HostedGameModeClient(Mock.Of<IGameModeProvider>(), Encoding.ASCII);
-
+        sut.InitializeForTesting();
+        
         // act
         sut.RegisterCallback("OnTesting", handler.Target, handler.Method);
             
@@ -29,5 +30,21 @@ public class HostedGameModeClientTests
 
         // assert
         result.ShouldBe(321);
+    }
+
+    [Fact]
+    public unsafe void RegisterCallback_should_throw_when_game_mode_not_running()
+    {
+        // arrange
+        var handler = () => { };
+
+        var args = new[] { 0 };
+        var result = 0;
+            
+        var sut = new HostedGameModeClient(Mock.Of<IGameModeProvider>(), Encoding.ASCII);
+
+        // act
+        Should.Throw<GameModeNotRunningException>(() =>
+            sut.RegisterCallback("OnTesting", handler.Target, handler.Method));
     }
 }

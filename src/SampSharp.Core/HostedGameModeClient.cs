@@ -114,6 +114,11 @@ namespace SampSharp.Core
             }
         }
         
+        internal void InitializeForTesting()
+        {
+            _running = true;
+        }
+
         #region Implementation of IGameModeClient
 
         /// <inheritdoc />
@@ -201,7 +206,7 @@ namespace SampSharp.Core
 
             return true;
         }
-        
+
         /// <inheritdoc />
         public IGameModeClient Client => this;
 

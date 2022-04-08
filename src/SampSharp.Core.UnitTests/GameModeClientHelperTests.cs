@@ -3,11 +3,13 @@ using System.Text;
 using Moq;
 using SampSharp.Core.Callbacks;
 using Shouldly;
+using Xunit;
 
 namespace SampSharp.Core.UnitTests;
 
 public class GameModeClientHelperTests
 {
+    [Fact]
     public unsafe void RegisterCallbacksInObject_should_register_all_callbacks()
     {
         // arrange
@@ -16,6 +18,7 @@ public class GameModeClientHelperTests
         var result2 = 0;
             
         var sut = new HostedGameModeClient(Mock.Of<IGameModeProvider>(), Encoding.ASCII);
+        sut.InitializeForTesting();
 
         // act
         sut.RegisterCallbacksInObject(this);
