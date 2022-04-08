@@ -169,48 +169,9 @@ internal class Callback
             throw new InvalidOperationException("Unknown callback parameter type.");
         }
 
-        return new Callback(parameters, target, method, true);
+        return new Callback(parameters, target, method, wrapped);
     }
     
-    /*
-    public static Callback For(object target, MethodInfo method)
-    {
-        var methodParameters = method.GetParameters();
-        var parameters = methodParameters.Select(parameter =>
-            {
-                var par = ParameterForType1(parameter.ParameterType);
-
-                if (par != null)
-                {
-                    return par;
-                }
-
-                var attribute = parameter.GetCustomAttribute<ParameterLengthAttribute>();
-                var index = (int?)attribute?.Index ?? parameter.Position + 1;
-                var offset = index - parameter.Position;
-
-
-                if (index >= methodParameters.Length)
-                {
-                    throw new InvalidOperationException("Callback parameter length index out of bounds.");
-                }
-
-                par = ParameterForType2(parameter.ParameterType, offset);
-
-                if (par != null)
-                {
-                    return par;
-                }
-
-                throw new InvalidOperationException("Unknown callback parameter type.");
-            })
-            .ToArray();
-
-        return new Callback(parameters, target, method, false);
-    }
-
-    // */
-
     public class FastMethodInfo
     {
         private delegate object ReturnValueDelegate(object instance, object[] arguments);
