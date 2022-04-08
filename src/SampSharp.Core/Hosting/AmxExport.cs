@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace SampSharp.Core.Hosting;
 
+/// <summary>
+/// Provdes AMX functions exported by SA-MP.
+/// </summary>
 [StructLayout(LayoutKind.Sequential)]
 [SuppressMessage("ReSharper", "CommentTypo")]
 [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "ReSharper")]

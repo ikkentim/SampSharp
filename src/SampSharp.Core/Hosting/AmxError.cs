@@ -15,34 +15,138 @@
 
 namespace SampSharp.Core.Hosting;
 
+/// <summary>
+/// Contains error codes used by Pawn AMX.
+/// </summary>
 public enum AmxError
 {
-    AMX_ERR_NONE,
-    /* reserve the first 15 error codes for exit codes of the abstract machine */
-    AMX_ERR_EXIT,         /* forced exit */
-    AMX_ERR_ASSERT,       /* assertion failed */
-    AMX_ERR_STACKERR,     /* stack/heap collision */
-    AMX_ERR_BOUNDS,       /* index out of bounds */
-    AMX_ERR_MEMACCESS,    /* invalid memory access */
-    AMX_ERR_INVINSTR,     /* invalid instruction */
-    AMX_ERR_STACKLOW,     /* stack underflow */
-    AMX_ERR_HEAPLOW,      /* heap underflow */
-    AMX_ERR_CALLBACK,     /* no callback, or invalid callback */
-    AMX_ERR_NATIVE,       /* native function failed */
-    AMX_ERR_DIVIDE,       /* divide by zero */
-    AMX_ERR_SLEEP,        /* go into sleepmode - code can be restarted */
-    AMX_ERR_INVSTATE,     /* invalid state for this access */
+    /// <summary>
+    /// No error.
+    /// </summary>
+    None,
 
-    AMX_ERR_MEMORY = 16,  /* out of memory */
-    AMX_ERR_FORMAT,       /* invalid file format */
-    AMX_ERR_VERSION,      /* file is for a newer version of the AMX */
-    AMX_ERR_NOTFOUND,     /* function not found */
-    AMX_ERR_INDEX,        /* invalid index parameter (bad entry point) */
-    AMX_ERR_DEBUG,        /* debugger cannot run */
-    AMX_ERR_INIT,         /* AMX not initialized (or doubly initialized) */
-    AMX_ERR_USERDATA,     /* unable to set user data field (table full) */
-    AMX_ERR_INIT_JIT,     /* cannot initialize the JIT */
-    AMX_ERR_PARAMS,       /* parameter error */
-    AMX_ERR_DOMAIN,       /* domain error, expression result does not fit in range */
-    AMX_ERR_GENERAL,      /* general error (unknown or unspecific error) */
+    /// <summary>
+    /// Exit code: forced exit.
+    /// </summary>
+    Exit,
+
+    /// <summary>
+    /// Exit code: assertion failed.
+    /// </summary>
+    Assert,
+
+    /// <summary>
+    /// Exit code: stack/heap collision.
+    /// </summary>
+    Stackerr,
+
+    /// <summary>
+    /// Exit code: index out of bounds.
+    /// </summary>
+    Bounds,
+
+    /// <summary>
+    /// Exit code: invalid memory access.
+    /// </summary>
+    Memaccess,
+
+    /// <summary>
+    /// Exit code: invalid instruction.
+    /// </summary>
+    Invinstr,
+
+    /// <summary>
+    /// Exit code: stack underflow.
+    /// </summary>
+    Stacklow,
+
+    /// <summary>
+    /// Exit code: heap underflow.
+    /// </summary>
+    Heaplow,
+
+    /// <summary>
+    /// Exit code: no callback, or invalid callback.
+    /// </summary>
+    Callback,
+
+    /// <summary>
+    /// Exit code: native function failed
+    /// </summary>
+    Native,
+
+    /// <summary>
+    /// Exit code: divide by zero
+    /// </summary>
+    Divide,
+
+    /// <summary>
+    /// Exit code: go into sleepmode - code can be restarted
+    /// </summary>
+    Sleep,
+
+    /// <summary>
+    /// Exit code: invalid state for this access
+    /// </summary>
+    Invstate,
+
+    /// <summary>
+    /// Out of memory.
+    /// </summary>
+    Memory = 16,
+
+    /// <summary>
+    /// Invalid file format.
+    /// </summary>
+    Format,
+
+    /// <summary>
+    /// File is for a newer version of the AMX.
+    /// </summary>
+    Version,
+
+    /// <summary>
+    /// Function not found.
+    /// </summary>
+    Notfound,
+
+    /// <summary>
+    /// Invalid index parameter (bad entry point).
+    /// </summary>
+    Index,
+
+    /// <summary>
+    /// Debugger cannot run.
+    /// </summary>
+    Debug,
+
+    /// <summary>
+    /// AMX not initialized (or doubly initialized).
+    /// </summary>
+    Init,
+
+    /// <summary>
+    /// Unable to set user data field (table full)
+    /// </summary>
+    Userdata,
+
+    /// <summary>
+    /// Cannot initialize the JIT.
+    /// </summary>
+    InitJit,
+
+    /// <summary>
+    /// Parameter error.
+    /// </summary>
+    Params,
+
+    /// <summary>
+    /// Domain error, expression result does not fit in range.
+    /// </summary>
+    Domain,
+
+    /// <summary>
+    /// General error (unknown or unspecific error).
+    /// </summary>
+    General,
 }

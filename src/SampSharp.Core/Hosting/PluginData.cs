@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace SampSharp.Core.Hosting;
 
+/// <summary>
+/// Provides data exposed to the SampSharp plugin by SA-MP.
+/// </summary>
 [StructLayout(LayoutKind.Sequential)]
 public readonly unsafe struct PluginData
 {

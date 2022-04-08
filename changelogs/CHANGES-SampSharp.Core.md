@@ -1,3 +1,6 @@
+### 0.11.0
+- Improved performance of callbacks by 25%-30% (#399, #401)
+
 ### 0.10.0
 - Added support for "fastnative" calls, this improves time consumed by calls to native functions by 95% (#365)
 - Added support for varargs in "fastnative" calls (#260)
