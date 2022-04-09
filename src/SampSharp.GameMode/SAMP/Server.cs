@@ -160,34 +160,24 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Connect an NPC to the server.
+        ///     Connects an NPC to the server.
         /// </summary>
         /// <param name="name">The name the NPC should connect as. Must follow the same rules as normal player names.</param>
         /// <param name="script">The NPC script name that is located in the npcmodes folder (without the .amx extension).</param>
         /// <returns>
-        ///     An instance of <see cref="BasePlayer" /> based on the first available player slot. If no slots are available,
-        ///     null.
+        ///     An instance of <see cref="NPC" />
         /// </returns>
-        public static BasePlayer ConnectNPC(string name, string script)
+        public static NPC ConnectNPC(string name, string script)
         {
-            var id = -1;
-            var max = MaxPlayers;
+            if (BasePlayer.FindByName(name) != null)
+                throw new Exception($"The name \"{name}\" is already used in game");
 
-            for (var i = 0; i < max; i++)
-                if (!ServerInternal.Instance.IsPlayerConnected(i))
-                    id = i;
-
-            if (id == -1)
-                return null;
-
-            ServerInternal.Instance.ConnectNPC(name, script);
-            var result = BasePlayer.FindOrCreate(id);
-            result.IsNpcOverride = true;
-            return result;
+            NPC npc = new NPC(name, script);
+            return npc;
         }
 
         /// <summary>
-        ///     Set the world weather for all players.
+        ///     Sets the world weather for all players.
         /// </summary>
         /// <param name="weatherid">The weather to set.</param>
         public static void SetWeather(int weatherid)
