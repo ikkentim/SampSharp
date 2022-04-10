@@ -35,14 +35,6 @@ namespace SampSharp.Core.Hosting
         /// Gets the contents of the SampSharp plugin API.
         /// </summary>
         public static SampSharpApi* Api => _api;
-
-        /// <summary>
-        /// Gets a pointer to a native.
-        /// </summary>
-        /// <param name="name">The name of the native.</param>
-        /// <returns>A pointer to a native.</returns>
-        [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_find", CallingConvention = CallingConvention.StdCall)]
-        public static extern IntPtr FastNativeFind(string name);
         
         /// <summary>
         /// Invokes a native by a pointer.
@@ -51,24 +43,15 @@ namespace SampSharp.Core.Hosting
         /// <param name="format">The format of the arguments.</param>
         /// <param name="args">A pointer to the arguments array.</param>
         /// <returns>The return value of the native.</returns>
-        [DllImport("SampSharp", EntryPoint = "sampsharp_fast_native_invoke", CallingConvention = CallingConvention.StdCall)]
-        public static extern int FastNativeInvoke(IntPtr native, string format, int* args);
-        
-        /// <summary>
-        /// Invokes a native by a pointer.
-        /// </summary>
-        /// <param name="native">The pointer to the native.</param>
-        /// <param name="format">The format of the arguments.</param>
-        /// <param name="args">A pointer to the arguments array.</param>
-        /// <returns>The return value of the native.</returns>
-        private static int FastNativeInvokeViaApi(IntPtr native, string format, int* args)
+        public static int FastNativeInvoke(IntPtr native, string format, int* args)
         {
-            // TODO: Make this replace FastNativeInvoke
-            var bytes = Encoding.ASCII.GetByteCount(format);
-            var formatSt = stackalloc byte[bytes];
-            Encoding.ASCII.GetBytes(format, new Span<byte>(formatSt, bytes));
+            var bytes = Encoding.ASCII.GetByteCount(format) + 1;
+            var formatPtr = stackalloc byte[bytes];
+            var formatSpan = new Span<byte>(formatPtr, bytes);
+            Encoding.ASCII.GetBytes(format, formatSpan);
+            formatSpan[^1] = 0;
 
-            return _api->InvokeNative((void*)native, formatSt, args);
+            return _api->InvokeNative((void*)native, formatPtr, args);
         }
         
         /// <summary>
@@ -76,14 +59,14 @@ namespace SampSharp.Core.Hosting
         /// </summary>
         /// <param name="name">The name of the native.</param>
         /// <returns>A pointer to a native.</returns>
-        private static IntPtr FastNativeFindViaApi(string name)
+        public static IntPtr FastNativeFind(string name)
         {
-            // TODO: Make this replace FastNativeFind
-            var bytes = Encoding.ASCII.GetByteCount(name);
-            var nameStack = stackalloc byte[bytes];
-            Encoding.ASCII.GetBytes(name, new Span<byte>(nameStack, bytes));
-
-            return (IntPtr)_api->FindNative(nameStack);
+            var bytes = Encoding.ASCII.GetByteCount(name) + 1;
+            var namePtr = stackalloc byte[bytes];
+            var nameSpan = new Span<byte>(namePtr, bytes);
+            Encoding.ASCII.GetBytes(name, nameSpan);
+            nameSpan[^1] = 0;
+            return (IntPtr)_api->FindNative(namePtr);
         }
         
         /// <summary>

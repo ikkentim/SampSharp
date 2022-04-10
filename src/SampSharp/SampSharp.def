@@ -6,6 +6,4 @@ EXPORTS
     AmxUnload
     ProcessTick
     OnPublicCall
-    sampsharp_fast_native_find
-    sampsharp_fast_native_invoke
     sampsharp_api_initialize
