@@ -16,14 +16,14 @@
 using System;
 using System.Threading;
 
-namespace SampSharp.Core.Threading
+namespace SampSharp.Core
 {
     /// <summary>
     ///     Represents an item enqueued to a <see cref="SampSharpSynchronizationContext" />.
     /// </summary>
-    public class SendOrPostCallbackItem
+    internal class SendOrPostCallbackItem
     {
-        private readonly ManualResetEvent _asyncWaitHandle = new ManualResetEvent(false);
+        private readonly ManualResetEvent _asyncWaitHandle = new(false);
         private readonly ExecutionType _executionType;
         private readonly SendOrPostCallback _method;
         private readonly object _state;

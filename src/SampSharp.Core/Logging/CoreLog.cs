@@ -21,7 +21,7 @@ using System.Text;
 namespace SampSharp.Core.Logging
 {
     /// <summary>
-    ///     Contains simply utility methods used by SampSharp for logging.
+    ///     Contains simple utility methods used by SampSharp for logging.
     /// </summary>
     public static class CoreLog
     {

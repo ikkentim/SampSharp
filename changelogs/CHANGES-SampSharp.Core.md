@@ -1,4 +1,5 @@
 ### 0.11.0
+- Added `TaskHelper.SwitchToMainThread` (#402)
 - Improved performance of callbacks by 25%-30% (#399, #401)
 
 ### 0.10.0

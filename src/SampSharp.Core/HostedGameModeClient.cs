@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using SampSharp.Core.Callbacks;
 using SampSharp.Core.Hosting;
 using SampSharp.Core.Logging;
-using SampSharp.Core.Natives;
 using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Core.Natives.NativeObjects.FastNatives;
-using SampSharp.Core.Threading;
 
 namespace SampSharp.Core
 {

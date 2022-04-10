@@ -13,12 +13,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Core.Threading
+namespace SampSharp.Core
 {
     /// <summary>
     ///     Contains execution types of messages provided to the <see cref="SampSharpSynchronizationContext" />.
     /// </summary>
-    public enum ExecutionType
+    internal enum ExecutionType
     {
         /// <summary>
         ///     The message has been posted.
