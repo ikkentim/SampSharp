@@ -177,7 +177,16 @@ namespace SampSharp.Core
             }
 
             InternalStorage.SetRunningClient(this);
-            Interop.Initialize();
+
+            try
+            {
+                Interop.Initialize();
+            }
+            catch(InvalidOperationException e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
 
             // Prepare the synchronization context
             _messageQueue = new NoWaitMessageQueue();
@@ -195,8 +204,6 @@ namespace SampSharp.Core
             CoreLog.Log(CoreLogLevel.Initialisation, "Hosted run mode is active.");
             CoreLog.Log(CoreLogLevel.Initialisation, "");
             
-            // TODO: Verify plugin version
-
             _gameModeProvider.Initialize(this);
             
             return true;

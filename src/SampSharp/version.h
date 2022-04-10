@@ -17,7 +17,7 @@
 
 #define PLUGIN_VERSION_MAJOR        0
 #define PLUGIN_VERSION_MINOR        11
-#define PLUGIN_VERSION_PATCH        1
+#define PLUGIN_VERSION_PATCH        0
 #define PLUGIN_VERSION_ALPHA        0
 
 #define __PLUGIN_STRINGIZE(x)       #x

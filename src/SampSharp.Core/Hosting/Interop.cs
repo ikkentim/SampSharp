@@ -106,7 +106,15 @@ namespace SampSharp.Core.Hosting
             var ptr = (delegate* unmanaged[Cdecl] <IntPtr, sbyte*, IntPtr, IntPtr, void>)&PublicCall;
             var ptrTick = (delegate* unmanaged[Cdecl] <void>)&Tick;
 
-            _api = initializer(ptr, ptrTick);
+            var api = initializer(ptr, ptrTick);
+
+            if ((IntPtr)api != IntPtr.Zero && api->Size < sizeof(SampSharpApi))
+            {
+                throw new InvalidOperationException(
+                    "The SampSharp plugin API is older than the .NET libraries. Please update your SampSharp plugin.");
+            }
+
+            _api = api;
         }
 
         [UnmanagedCallersOnly(CallConvs = new[]{typeof(CallConvCdecl)})]

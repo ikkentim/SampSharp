@@ -3,6 +3,7 @@
 #include "platforms.h"
 
 struct sampsharp_api_t {
+    size_t size;
     void **plugin_data;
     void *find_native;
     void *invoke_native;
@@ -15,6 +16,7 @@ api_public_call_t *bound_public_call = nullptr;
 api_tick_t *bound_tick = nullptr;
 
 void sampsharp_api_setup(void **plugin_data) {
+    sampsharp_api.size = sizeof(sampsharp_api);
     sampsharp_api.plugin_data = plugin_data;
     sampsharp_api.find_native = (void *)sampgdk_FindNative;
     sampsharp_api.invoke_native = (void *)sampgdk_InvokeNativeArray;

@@ -11,6 +11,7 @@ namespace SampSharp.Core.UnitTests.TestHelpers
         [StructLayout(LayoutKind.Sequential)]
         public unsafe struct SampSharpApiRw
         {
+            public uint Size;
             public PluginDataRw* PluginData;
             public delegate* unmanaged[Stdcall] <byte*, void*> FindNative;
             public delegate* unmanaged[Stdcall] <void*, byte*, int*, int> InvokeNative;
