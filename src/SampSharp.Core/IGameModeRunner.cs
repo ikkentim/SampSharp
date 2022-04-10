@@ -25,8 +25,7 @@ namespace SampSharp.Core
         /// <summary>
         ///     Runs the game mode of this runner.
         /// </summary>
-        /// <returns>true if shut down by the game mode, false otherwise.</returns>
-        /// <exception cref="Exception">Thrown if a game mode is already running.</exception>
+        /// <returns><c>true</c> on success; <c>false</c> otherwise.</returns>
         bool Run();
 
         /// <summary>

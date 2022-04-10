@@ -14,10 +14,7 @@
 // limitations under the License.
 
 using System;
-using System.IO;
 using System.Text;
-using SampSharp.Core.CodePages;
-using SampSharp.Core.Logging;
 
 namespace SampSharp.Core
 {
@@ -27,13 +24,20 @@ namespace SampSharp.Core
     public sealed class GameModeBuilder
     {
         private IGameModeProvider _gameModeProvider;
-        private bool _redirectConsoleOutput;
         private Encoding _encoding;
-        private TextWriter _logWriter;
-        private bool _logWriterSet;
         
-        #region Encoding
+        private GameModeRunnerFactory _create;
+        private GameModeRunnerRun _run;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameModeBuilder"/> class.
+        /// </summary>
+        public GameModeBuilder()
+        {
+            _create = Build;
+            _run = InnerRun;
+        }
+        
         /// <summary>
         ///     Use the specified <paramref name="encoding"/> when en/decoding text messages sent to/from the server.
         /// </summary>
@@ -44,55 +48,7 @@ namespace SampSharp.Core
             _encoding = encoding ?? throw new ArgumentNullException(nameof(encoding));
             return this;
         }
-
-        /// <summary>
-        ///     Use the code page described by the file at the specified <paramref name="path"/> when en/decoding text messages sent to/from the server.
-        /// </summary>
-        /// <param name="path">The path to the code page file.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder UseEncoding(string path)
-        {
-            if (path == null) throw new ArgumentNullException(nameof(path));
-            return UseEncoding(CodePageEncoding.Load(path));
-        }
-
-        /// <summary>
-        ///     Use the code page described by the specified <paramref name="stream"/> when en/decoding text messages sent to/from the server.
-        /// </summary>
-        /// <param name="stream">The stream containing the code page definition.</param>
-        /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder UseEncoding(Stream stream)
-        {
-            return UseEncoding(CodePageEncoding.Load(stream));
-        }
-
-        /// <summary>
-        /// Uses the encoding code page.
-        /// </summary>
-        /// <param name="pageName">Name of the page.</param>
-        /// <returns></returns>
-        public GameModeBuilder UseEncodingCodePage(string pageName)
-        {
-            if (pageName == null) throw new ArgumentNullException(nameof(pageName));
-
-            var type = typeof(CodePageEncoding);
-
-            var name = $"{type.Namespace}.data.{pageName.ToLowerInvariant()}.dat";
-
-            using var stream = type.Assembly.GetManifestResourceStream(name);
-
-            if (stream == null)
-            {
-                throw new GameModeBuilderException($"Code page with name '{pageName}' is not available.");
-            }
-            var encoding = CodePageEncoding.Deserialize(stream);
-            return UseEncoding(encoding);
-        }
-
-        #endregion
         
-        #region Game Mode Provider
-
         /// <summary>
         ///     Use the specified game mode.
         /// </summary>
@@ -113,90 +69,54 @@ namespace SampSharp.Core
         {
             return Use(Activator.CreateInstance<TGameMode>());
         }
-
-        #endregion
         
         /// <summary>
-        ///     Redirect the console output to the server.
+        /// Adds a build action to the game mode builder.
         /// </summary>
+        /// <param name="action">The action to add.</param>
         /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder RedirectConsoleOutput()
+        public GameModeBuilder AddBuildAction(Func<GameModeRunnerFactory, IGameModeRunner> action)
         {
-            _redirectConsoleOutput = true;
+            var next = _create;
+            _create = () => action(next);
+
             return this;
         }
-
-        #region Logging
-
+      
         /// <summary>
-        ///     Uses the specified log level as the maximum level which is written to the log by SampSharp.
+        /// Adds a run action to the game mode builder.
         /// </summary>
-        /// <param name="logLevel">The log level.</param>
+        /// <param name="action">The action to add.</param>
         /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder UseLogLevel(CoreLogLevel logLevel)
+        public GameModeBuilder AddRunAction(Action<IGameModeRunner, GameModeRunnerRun> action)
         {
-            CoreLog.LogLevel = logLevel;
+            var next = _run;
+            _run = runner => action(runner, next);
+
             return this;
         }
 
-        /// <summary>
-        ///     Uses the specified text writer to log SampSharp log messages to.
-        /// </summary>
-        /// <param name="textWriter">The text writer to log SampSharp log messages to.</param>
-        /// <remarks>If a null value is specified as text writer, no log messages will appear.</remarks>
-        /// <returns>The updated game mode configuration builder.</returns>
-        public GameModeBuilder UseLogWriter(TextWriter textWriter)
-        {
-            _logWriter = textWriter;
-            _logWriterSet = true;
-            return this;
-        }
-
-        #endregion
-        
         /// <summary>
         ///     Run the game mode using the build configuration stored in this instance.
         /// </summary>
         public void Run()
         {
-            if (_gameModeProvider == null)
-                throw new GameModeBuilderException("No game mode provider has been specified");
+            var runner = _create() ??
+                         throw new GameModeBuilderException("No game mode runner was created by the builder.");
 
-            var redirect = _redirectConsoleOutput;
-
-            // Build the game mode runner
-            var runner = Build();
-
-            if (runner == null)
-                return;
-
-            // Redirect console output
-            ServerLogWriter redirectWriter = null;
-            
-            if (redirect)
-            {
-                redirectWriter = new ServerLogWriter(runner.Client);
-                Console.SetOut(redirectWriter);
-            }
-
-            // Set framework log writer
-            var logWriter = _logWriter;
-
-            if (!_logWriterSet)
-            {
-                logWriter = redirectWriter != null
-                    ? (TextWriter) redirectWriter
-                    : new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
-            }
-
-            CoreLog.TextWriter = logWriter;
-
-            // Run game mode runner
-            runner.Run();
+            _run(runner);
         }
         
+        private void InnerRun(IGameModeRunner runner)
+        {
+            runner.Run();
+        }
+
         private IGameModeRunner Build()
-        { 
+        {
+            if (_gameModeProvider == null)
+                throw new GameModeBuilderException("No game mode provider has been specified.");
+
             return new HostedGameModeClient(_gameModeProvider, _encoding);
         }
     }

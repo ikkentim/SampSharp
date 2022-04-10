@@ -67,7 +67,7 @@ namespace SampSharp.Core.Logging
         [DebuggerHidden]
         public static void Log(CoreLogLevel level, string message)
         {
-            var tw = TextWriter;
+            var tw = TextWriter ?? Console.Out;
             if (tw != null && (LogLevel >= level || level == CoreLogLevel.Initialisation))
             {
                  tw.WriteLine(level == CoreLogLevel.Initialisation ? message : $"[SampSharp:{GetLevelName(level)}] {message}");
