@@ -8,8 +8,6 @@ namespace SampSharp.Core.Natives.NativeObjects
     /// </summary>
     public class NativeIlGenContext
     {
-        private MethodInfo _baseMethod;
-
         /// <summary>
         /// Gets or sets the name of the native to be called.
         /// </summary>
@@ -18,11 +16,7 @@ namespace SampSharp.Core.Natives.NativeObjects
         /// <summary>
         /// Gets or sets the base method of the proxy type to by overridden.
         /// </summary>
-        public MethodInfo BaseMethod
-        {
-            get => _baseMethod;
-            set => _baseMethod = value;
-        }
+        public MethodInfo BaseMethod { get; set; }
 
         /// <summary>
         /// Gets or sets the parameters of the native.

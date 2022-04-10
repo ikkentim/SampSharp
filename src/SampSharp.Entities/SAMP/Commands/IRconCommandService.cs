@@ -23,7 +23,7 @@ namespace SampSharp.Entities.SAMP.Commands
     public interface IRconCommandService
     {
         /// <summary>
-        /// Invokes an RCON command using the specified <paramref name="inputText"/>.
+        /// Invokes an RCON command using the specified <paramref name="inputText" />.
         /// </summary>
         /// <param name="services">A service provider.</param>
         /// <param name="inputText">The input text to be parsed.</param>

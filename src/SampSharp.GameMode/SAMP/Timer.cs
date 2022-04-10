@@ -108,12 +108,12 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Gets or sets whether this <see cref="Timer"/> is repeating.
+        ///     Gets or sets whether this <see cref="Timer" /> is repeating.
         /// </summary>
         public bool IsRepeating { get; set; }
 
         /// <summary>
-        ///     Gets or sets whether this <see cref="Timer"/> is running.
+        ///     Gets or sets whether this <see cref="Timer" /> is running.
         /// </summary>
         public bool IsRunning
         {
@@ -127,10 +127,10 @@ namespace SampSharp.GameMode.SAMP
                 {
                     _lastTick = DateTime.UtcNow;
                     NextTick = _lastTick + _interval;
-                    TimerController.Instance.AddTimer(this);
+                    TimerController._instance.AddTimer(this);
                 }
                 else
-                    TimerController.Instance.RemoveTimer(this);
+                    TimerController._instance.RemoveTimer(this);
             }
         }
 

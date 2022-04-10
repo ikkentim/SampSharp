@@ -33,11 +33,13 @@ namespace TestMode.Entities.Services
         {
             var name = _entityManager.GetComponent<Player>(player).Name;
 
-            var result = string.Empty;
-
-            for (var i = name.Length - 1; i >= 0; i--) result += name[i];
-
-            return result;
+            return string.Create(name.Length, name, (span, orig) =>
+            {
+                for (var i = 0; i < orig.Length; i++)
+                {
+                    span[i] = orig[orig.Length - 1 - i];
+                }
+            });
         }
     }
 }

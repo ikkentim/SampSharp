@@ -26,10 +26,11 @@ namespace SampSharp.GameMode.Pools
     ///     Keeps track of a pool of identifyable instances.
     /// </summary>
     /// <typeparam name="TInstance">Base type of instances to keep track of.</typeparam>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "By design")]
     public abstract class IdentifiedPool<TInstance> : Disposable, IIdentifiable
         where TInstance : IdentifiedPool<TInstance>
     {
-        private static readonly PoolContainer<TInstance> Container = new PoolContainer<TInstance>();
+        private static readonly PoolContainer<TInstance> _container = new();
         private int _id;
 
 
@@ -39,19 +40,19 @@ namespace SampSharp.GameMode.Pools
         protected IdentifiedPool()
         {
             _id = PoolContainer<TInstance>.UnidentifiedId;
-            Container.Add(_id, (TInstance) this);
+            _container.Add(_id, (TInstance) this);
         }
 
         /// <summary>
         ///     The type to initialize when adding an instance to this pool by id.
         /// </summary>
-        // ReSharper disable once StaticMemberInGenericType
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2743:Static fields should not be used in generic types", Justification = "By design")]
         public static Type InstanceType { get; private set; }
 
         /// <summary>
         ///     Gets a collection containing all instances.
         /// </summary>
-        public static IEnumerable<TInstance> All => Container.ToArray();
+        public static IEnumerable<TInstance> All => _container.ToArray();
 
         /// <summary>
         ///     Gets the identifier of this instance.
@@ -62,9 +63,9 @@ namespace SampSharp.GameMode.Pools
             protected set
             {
                 if (_id == PoolContainer<TInstance>.UnidentifiedId)
-                    Container.MoveUnidentified((TInstance) this, value);
+                    _container.MoveUnidentified((TInstance) this, value);
                 else
-                    Container.Move(_id, value);
+                    _container.Move(_id, value);
                 _id = value;
             }
         }
@@ -75,9 +76,9 @@ namespace SampSharp.GameMode.Pools
         protected override void Dispose(bool disposing)
         {
             if (_id == PoolContainer<TInstance>.UnidentifiedId)
-                Container.RemoveUnidentified((TInstance) this);
+                _container.RemoveUnidentified((TInstance) this);
             else
-                Container.Remove(_id);
+                _container.Remove(_id);
         }
 
         /// <summary>
@@ -89,8 +90,8 @@ namespace SampSharp.GameMode.Pools
         {
             if (item == null) return false;
             return item.Id == PoolContainer<TInstance>.UnidentifiedId
-                ? Container.ContainsUnidentified(item)
-                : Container.Contains(item.Id);
+                ? _container.ContainsUnidentified(item)
+                : _container.Contains(item.Id);
         }
 
         /// <summary>
@@ -136,7 +137,7 @@ namespace SampSharp.GameMode.Pools
         /// <returns>The found instance.</returns>
         public static TInstance Find(int id)
         {
-            return Container.Get(id);
+            return _container.Get(id);
         }
 
         /// <summary>
@@ -147,7 +148,7 @@ namespace SampSharp.GameMode.Pools
         public static TInstance Create(int id)
         {
             if (InstanceType == null)
-                throw new Exception($"No instance type has yet been registered to the {typeof(IdentifiedPool<TInstance>)} pool.");
+                throw new InvalidOperationException($"No instance type has yet been registered to the {typeof(IdentifiedPool<TInstance>)} pool.");
 
             var instance = (TInstance)Activator.CreateInstance(InstanceType);
             instance.Id = id;
@@ -156,7 +157,7 @@ namespace SampSharp.GameMode.Pools
         }
 
         /// <summary>
-        ///     An overloadable point for initialization logic which requires the <see cref="Id"/> to be set.
+        ///     An overload-able point for initialization logic which requires the <see cref="Id" /> to be set.
         /// </summary>
         protected virtual void Initialize()
         {

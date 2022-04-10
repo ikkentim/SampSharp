@@ -31,7 +31,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         private readonly List<ICommand> _commands = new List<ICommand>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CommandsManager"/> class.
+        /// Initializes a new instance of the <see cref="CommandsManager" /> class.
         /// </summary>
         /// <param name="gameMode">The game mode.</param>
         /// <exception cref="ArgumentNullException"></exception>
@@ -280,6 +280,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         ///     Loads all tagged commands from the specified <paramref name="assembly" />.
         /// </summary>
         /// <param name="assembly">The assembly to load the commands from.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Commands can live in type of any visibility")]
         public virtual void RegisterCommands(Assembly assembly)
         {
             foreach (

@@ -248,6 +248,24 @@ dotnet_diagnostic.S1135.severity = warning
 # Justification: We're deprecating a lot of our own methods right now 
 dotnet_diagnostic.CS0618.severity = none
 
+# S3881: Fix this implementation of 'IDisposable' to conform to the dispose pattern.	
+# Justification: Let implementation decide whether to use dispose pattern.
+dotnet_diagnostic.S3881.severity = none
+
+# S3453: Classes should not have only "private" constructors
+# Justification: We use types with factory methods
+dotnet_diagnostic.S3453.severity = none
+
+[**TestMode**/**.cs]
+
+# CA1822: Mark members as static
+# Justification: ECS system events
+dotnet_diagnostic.CA1822.severity = none
+
+# S3218: Inner class members should not shadow outer class "static" or type members
+# Justification: command systems "default" groups commands
+dotnet_diagnostic.S3218.severity = none
+
 [**Tests/**.cs]
 
 # Test projects

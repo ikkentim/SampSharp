@@ -47,7 +47,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Deprecated. Use new ServerConfig(Path.Combine(gameMode.Client.ServerPath, "server.cfg")) instead.
         /// </summary>
-        /// <seealso cref="ServerConfig"/>.
+        /// <seealso cref="ServerConfig" />.
         [Obsolete("Deprecated. Use new ServerConfig(Path.Combine(gameMode.Client.ServerPath, \"server.cfg\")) instead.")]
         public static ServerConfig Config => _serverConfig ?? (_serverConfig = new ServerConfig("server.cfg"));
 
@@ -144,7 +144,7 @@ namespace SampSharp.GameMode.SAMP
         public static void Print(string message)
         {
             if(BaseMode.Instance == null || BaseMode.Instance.Client == null)
-                throw new Exception("The game mode has not yet been initialized.");
+                throw new InvalidOperationException("The game mode has not yet been initialized.");
             
             BaseMode.Instance.Client.Print(message);
         }

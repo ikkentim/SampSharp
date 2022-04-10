@@ -35,7 +35,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         /// <returns>
         ///     true if parsed successfully; false otherwise.
         /// </returns>
-        public bool Parse(ref string commandText, out object output, bool isNullable)
+        public bool Parse(ref string commandText, out object output, bool isNullable = false)
         {
             var text = commandText.TrimStart();
             output = null;

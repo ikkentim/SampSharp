@@ -85,10 +85,10 @@ namespace SampSharp.Entities
         }
 
         /// <inheritdoc />
-        public object Invoke(string name, params object[] args)
+        public object Invoke(string name, params object[] arguments)
         {
             // TODO Could cache built invokers into a dictionary
-            return BuildInvoke(name)(args);
+            return BuildInvoke(name)(arguments);
         }
 
         private object Invoke(EventContext context)
@@ -213,12 +213,11 @@ namespace SampSharp.Entities
             };
         }
 
-        private class Event
+        private sealed class Event
         {
-            public readonly List<InvokerInfo> Invokers = new List<InvokerInfo>();
+            public readonly List<InvokerInfo> Invokers = new();
 
-            public readonly List<Func<EventDelegate, EventDelegate>> Middleware =
-                new List<Func<EventDelegate, EventDelegate>>();
+            public readonly List<Func<EventDelegate, EventDelegate>> Middleware = new();
 
             public EventDelegate Invoke;
 
@@ -228,7 +227,7 @@ namespace SampSharp.Entities
             }
         }
 
-        private class InvokerInfo
+        private sealed class InvokerInfo
         {
             public Func<object, EventContext, object> Invoke;
             public Type TargetType;

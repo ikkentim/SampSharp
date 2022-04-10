@@ -15,9 +15,7 @@
 
 using System;
 using System.Diagnostics;
-using System.Threading.Channels;
 using SampSharp.Core.Callbacks;
-using SampSharp.Core.Hosting;
 using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Definitions;
@@ -52,10 +50,7 @@ namespace TestMode.GameMode
             BaseVehicle.Create(VehicleModelType.Banshee, new Vector3(1449.9055, 1520.2122, 11), 0, 3, 3);
             BaseVehicle.Create(VehicleModelType.Cabbie, new Vector3(1449.9055, 1550.2122, 11), 0, 3, 3);
             
-            return;
-
-            Console.WriteLine("Bench start");
-            RunCallbackBenchmark();
+            //RunCallbackBenchmark()
         }
 
         private void RunCallbackBenchmark()

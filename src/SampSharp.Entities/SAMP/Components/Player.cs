@@ -424,11 +424,17 @@ namespace SampSharp.Entities.SAMP
                 var native = GetComponent<NativePlayer>();
                 var id = native.GetPlayerSurfingObjectID();
 
-                var surfing = id == NativeObject.InvalidId
-                    ? EntityId.Empty
-                    : Manager.Exists(SampEntities.GetObjectId(id))
+                EntityId surfing;
+                if (id == NativeObject.InvalidId)
+                {
+                    surfing = EntityId.Empty;
+                }
+                else
+                {
+                    surfing = Manager.Exists(SampEntities.GetObjectId(id))
                         ? SampEntities.GetObjectId(id)
                         : SampEntities.GetPlayerObjectId(Entity, id);
+                }
 
                 if (surfing)
                     return surfing;
@@ -1504,35 +1510,6 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <summary>
-        /// Kicks this player from the server. They will have to quit the game and re-connect if they wish
-        /// to
-        /// continue playing.
-        /// </summary>
-        public void Kick()
-        {
-            GetComponent<NativePlayer>().Kick();
-        }
-
-        /// <summary>
-        /// Ban this player. The ban will be IP-based, and be saved in the samp.ban file in the server's root directory.
-        /// <see cref="Ban(string)" /> allows you to ban with a reason, while you can ban and unban IPs using the RCON banip and
-        /// unbanip commands.
-        /// </summary>
-        public void Ban()
-        {
-            GetComponent<NativePlayer>().Ban();
-        }
-
-        /// <summary>
-        /// Ban this player with a reason.
-        /// </summary>
-        /// <param name="reason">The reason for the ban.</param>
-        public void Ban(string reason)
-        {
-            GetComponent<NativePlayer>().BanEx(reason);
-        }
-
-        /// <summary>
         /// This function sends a message to this player with a chosen color in the chat. The whole line in the chat box will be in
         /// the set color unless color embedding is used.
         /// </summary>
@@ -1565,6 +1542,33 @@ namespace SampSharp.Entities.SAMP
         public void SendClientMessage(string messageFormat, params object[] args)
         {
             SendClientMessage(Color.White, string.Format(messageFormat, args));
+        }
+
+        /// <summary>
+        /// Kicks this player from the server. They will have to quit the game and re-connect if they wish to continue playing.
+        /// </summary>
+        public void Kick()
+        {
+            GetComponent<NativePlayer>().Kick();
+        }
+
+        /// <summary>
+        /// Ban this player. The ban will be IP-based, and be saved in the samp.ban file in the server's root directory.
+        /// <see cref="Ban(string)" /> allows you to ban with a reason, while you can ban and unban IPs using the RCON banip and
+        /// unbanip commands.
+        /// </summary>
+        public void Ban()
+        {
+            GetComponent<NativePlayer>().Ban();
+        }
+
+        /// <summary>
+        /// Ban this player with a reason.
+        /// </summary>
+        /// <param name="reason">The reason for the ban.</param>
+        public void Ban(string reason)
+        {
+            GetComponent<NativePlayer>().BanEx(reason);
         }
 
         /// <summary>

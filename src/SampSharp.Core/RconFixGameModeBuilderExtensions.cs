@@ -4,7 +4,7 @@ using SampSharp.Core.Natives.NativeObjects;
 namespace SampSharp.Core;
 
 /// <summary>
-/// Provides extended functionality for <see cref="GameModeBuilder"/> for configuring a fix for handing RCON commands.
+/// Provides extended functionality for <see cref="GameModeBuilder" /> for configuring a fix for handing RCON commands.
 /// </summary>
 public static class RconFixGameModeBuilderExtensions
 {

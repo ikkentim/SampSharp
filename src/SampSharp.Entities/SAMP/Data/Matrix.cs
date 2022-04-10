@@ -212,7 +212,7 @@ namespace SampSharp.Entities.SAMP
                     case 15:
                         return M44;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        throw new ArgumentOutOfRangeException(nameof(index));
                 }
             }
         }

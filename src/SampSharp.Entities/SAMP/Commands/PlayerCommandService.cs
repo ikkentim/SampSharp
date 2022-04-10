@@ -62,16 +62,16 @@ namespace SampSharp.Entities.SAMP.Commands
         }
 
         /// <inheritdoc />
-        protected override bool ValidateInputText(ref string input)
+        protected override bool ValidateInputText(ref string inputText)
         {
-            if (!base.ValidateInputText(ref input))
+            if (!base.ValidateInputText(ref inputText))
                 return false;
 
             // Player commands must start with a slash.
-            if (!input.StartsWith("/") || input.Length <= 1)
+            if (!inputText.StartsWith("/") || inputText.Length <= 1)
                 return false;
 
-            input = input.Substring(1);
+            inputText = inputText.Substring(1);
 
             return true;
         }
@@ -86,10 +86,13 @@ namespace SampSharp.Entities.SAMP.Commands
 
         private static string CommandText(CommandInfo command)
         {
-            return command.Parameters.Length == 0
-                ? $"Usage: /{command.Name}"
-                : $"Usage: /{command.Name} " + string.Join(" ",
-                      command.Parameters.Select(arg => arg.IsRequired ? $"[{arg.Name}]" : $"<{arg.Name}>"));
+            if (command.Parameters.Length == 0)
+            {
+                return $"Usage: /{command.Name}";
+            }
+
+            return $"Usage: /{command.Name} " + string.Join(" ",
+                command.Parameters.Select(arg => arg.IsRequired ? $"[{arg.Name}]" : $"<{arg.Name}>"));
         }
 
         /// <inheritdoc />

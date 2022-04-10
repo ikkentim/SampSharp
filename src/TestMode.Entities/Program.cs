@@ -14,12 +14,11 @@
 // limitations under the License.
 
 using SampSharp.Core;
-using SampSharp.Core.Logging;
 using SampSharp.Entities;
 
 namespace TestMode.Entities
 {
-    internal class Program
+    internal static class Program
     {
         private static void Main(string[] args)
         {

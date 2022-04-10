@@ -43,8 +43,8 @@ namespace SampSharp.Entities
         /// Initializes a new instance of the <see cref="EventSignatureException" /> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="inner">The inner.</param>
-        public EventSignatureException(string message, Exception inner) : base(message, inner)
+        /// <param name="innerException">The inner exception.</param>
+        public EventSignatureException(string message, Exception innerException) : base(message, innerException)
         {
         }
 
@@ -52,11 +52,11 @@ namespace SampSharp.Entities
         /// Initializes a new instance of the <see cref="EventSignatureException" /> class.
         /// </summary>
         /// <param name="info">
-        /// The <see cref="T:System.Runtime.Serialization.SerializationInfo"></see> that holds the serialized
+        /// The <see cref="SerializationInfo" /> that holds the serialized
         /// object data about the exception being thrown.
         /// </param>
         /// <param name="context">
-        /// The <see cref="T:System.Runtime.Serialization.StreamingContext"></see> that contains contextual
+        /// The <see cref="StreamingContext" /> that contains contextual
         /// information about the source or destination.
         /// </param>
         protected EventSignatureException(SerializationInfo info, StreamingContext context) : base(info, context)

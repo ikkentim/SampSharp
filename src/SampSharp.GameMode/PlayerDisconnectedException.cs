@@ -14,12 +14,14 @@
 // limitations under the License.
 
 using System;
+using System.Runtime.Serialization;
 
 namespace SampSharp.GameMode
 {
     /// <summary>
     ///     Represents errors which occur if a player disconnects during a certain procedure.
     /// </summary>
+    [Serializable]
     public class PlayerDisconnectedException : Exception
     {
         /// <summary>Initializes a new instance of the <see cref="T:PlayerDisconnectedException" /> class.</summary>
@@ -46,6 +48,15 @@ namespace SampSharp.GameMode
         ///     Visual Basic) if no inner exception is specified.
         /// </param>
         public PlayerDisconnectedException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlayerDisconnectedException"/> class.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
+        protected PlayerDisconnectedException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

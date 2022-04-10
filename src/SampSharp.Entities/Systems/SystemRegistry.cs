@@ -30,7 +30,7 @@ namespace SampSharp.Entities
         private Dictionary<Type, ISystem[]> _data;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SystemRegistry"/> class.
+        /// Initializes a new instance of the <see cref="SystemRegistry" /> class.
         /// </summary>
         public SystemRegistry(IServiceProvider serviceProvider)
         {
@@ -47,6 +47,9 @@ namespace SampSharp.Entities
 
             foreach (var type in types)
             {
+                if (type == null)
+                    continue;
+
                 if(!(_serviceProvider.GetService(type) is ISystem instance))
                     throw new SystemRegistryException($"System of type {type} could not be found in the service provider.");
 

@@ -1916,7 +1916,7 @@ namespace SampSharp.GameMode.World
         /// <param name="iconId">The icon identifier.</param>
         /// <param name="position">The position of the map icon.</param>
         /// <param name="markerType">Type of the map icon marker.</param>
-        /// <param name="color">The color of the map icon marker (for <see cref="MapIcon.ColoredSquareTriangleDynamic"/>).</param>
+        /// <param name="color">The color of the map icon marker (for <see cref="MapIcon.ColoredSquareTriangleDynamic" />).</param>
         /// <param name="markerStyle">The marker style.</param>
         public virtual void SetMapIcon(int iconId, Vector3 position, MapIcon markerType, Color color = default, MapIconType markerStyle = 0)
         {
@@ -1925,7 +1925,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        /// Removes a map icon that was set earlier for this player using <see cref="SetMapIcon"/>.
+        /// Removes a map icon that was set earlier for this player using <see cref="SetMapIcon" />.
         /// </summary>
         /// <param name="iconId">The icon identifier.</param>
         public virtual void RemoveMapIcon(int iconId)
@@ -1957,42 +1957,6 @@ namespace SampSharp.GameMode.World
             {
                 PlayerInternal.Instance.SendClientMessage(Id, color.ToInteger(ColorFormat.RGBA), message);
             }
-        }
-
-        /// <summary>
-        ///     Kicks this <see cref="BasePlayer" /> from the server. They will have to quit the game and re-connect if they wish
-        ///     to
-        ///     continue playing.
-        /// </summary>
-        public virtual void Kick()
-        {
-            AssertNotDisposed();
-
-            PlayerInternal.Instance.Kick(Id);
-        }
-
-        /// <summary>
-        ///     Ban this <see cref="BasePlayer" />. The ban will be IP-based, and be saved in the samp.ban file in the
-        ///     server's root directory. <see cref="Ban(string)" /> allows you to ban with a reason, while you can ban and unban
-        ///     IPs
-        ///     using the RCON banip and unbanip commands.
-        /// </summary>
-        public virtual void Ban()
-        {
-            AssertNotDisposed();
-
-            PlayerInternal.Instance.Ban(Id);
-        }
-
-        /// <summary>
-        ///     Ban this <see cref="BasePlayer" /> with a reason.
-        /// </summary>
-        /// <param name="reason">The reason for the ban.</param>
-        public virtual void Ban(string reason)
-        {
-            AssertNotDisposed();
-
-            PlayerInternal.Instance.BanEx(Id, reason);
         }
 
         /// <summary>
@@ -2079,6 +2043,42 @@ namespace SampSharp.GameMode.World
         public static void SendClientMessageToAll(string messageFormat, params object[] args)
         {
             SendClientMessageToAll(DefaultClientMessageColor, string.Format(messageFormat, args));
+        }
+
+        /// <summary>
+        ///     Kicks this <see cref="BasePlayer" /> from the server. They will have to quit the game and re-connect if they wish
+        ///     to
+        ///     continue playing.
+        /// </summary>
+        public virtual void Kick()
+        {
+            AssertNotDisposed();
+
+            PlayerInternal.Instance.Kick(Id);
+        }
+
+        /// <summary>
+        ///     Ban this <see cref="BasePlayer" />. The ban will be IP-based, and be saved in the samp.ban file in the
+        ///     server's root directory. <see cref="Ban(string)" /> allows you to ban with a reason, while you can ban and unban
+        ///     IPs
+        ///     using the RCON banip and unbanip commands.
+        /// </summary>
+        public virtual void Ban()
+        {
+            AssertNotDisposed();
+
+            PlayerInternal.Instance.Ban(Id);
+        }
+
+        /// <summary>
+        ///     Ban this <see cref="BasePlayer" /> with a reason.
+        /// </summary>
+        /// <param name="reason">The reason for the ban.</param>
+        public virtual void Ban(string reason)
+        {
+            AssertNotDisposed();
+
+            PlayerInternal.Instance.BanEx(Id, reason);
         }
 
         /// <summary>

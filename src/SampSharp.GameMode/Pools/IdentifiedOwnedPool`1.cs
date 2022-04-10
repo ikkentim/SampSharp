@@ -27,15 +27,13 @@ namespace SampSharp.GameMode.Pools
     /// </summary>
     /// <typeparam name="TInstance">Base type of instances to keep track of.</typeparam>
     /// <typeparam name="TOwner">Base type of the owner</typeparam>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "By design")]
     public abstract class IdentifiedOwnedPool<TInstance, TOwner> : Disposable, IIdentifiable, IOwnable<TOwner>
         where TInstance : IdentifiedOwnedPool<TInstance, TOwner>
         where TOwner : class, IIdentifiable
     {
-        private static readonly PoolContainer<TInstance> UnownedContainer = new PoolContainer<TInstance>();
-
-        private static readonly Dictionary<TOwner, PoolContainer<TInstance>> Containers =
-            new Dictionary<TOwner, PoolContainer<TInstance>>();
-
+        private static readonly PoolContainer<TInstance> _unownedContainer = new();
+        private static readonly Dictionary<TOwner, PoolContainer<TInstance>> _containers = new();
         private int _id;
         private TOwner _owner;
 
@@ -45,20 +43,22 @@ namespace SampSharp.GameMode.Pools
         protected IdentifiedOwnedPool()
         {
             _id = PoolContainer<TInstance>.UnidentifiedId;
-            UnownedContainer.Add(_id, (TInstance) this);
+            _unownedContainer.Add(_id, (TInstance) this);
         }
+
 
         /// <summary>
         ///     The type to initialize when adding an instance to this pool by id.
         /// </summary>
-        // ReSharper disable once StaticMemberInGenericType
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2743:Static fields should not be used in generic types", Justification = "By design")]
         protected static Type InstanceType { get; private set; }
+
 
         /// <summary>
         ///     Gets a collection containing all instances.
         /// </summary>
         public static IEnumerable<TInstance> All
-            => Containers.SelectMany(c => c.Value).Concat(UnownedContainer).ToArray();
+            => _containers.SelectMany(c => c.Value).Concat(_unownedContainer).ToArray();
 
         /// <summary>
         ///     Gets the identifier of this instance.
@@ -92,19 +92,19 @@ namespace SampSharp.GameMode.Pools
                 if (_owner == null)
                 {
                     if (_id == PoolContainer<TInstance>.UnidentifiedId)
-                        UnownedContainer.RemoveUnidentified((TInstance) this);
+                        _unownedContainer.RemoveUnidentified((TInstance) this);
                     else
-                        UnownedContainer.Remove(_id);
+                        _unownedContainer.Remove(_id);
                 }
                 else
                 {
                     if (_id == PoolContainer<TInstance>.UnidentifiedId)
-                        Containers[_owner].RemoveUnidentified((TInstance) this);
+                        _containers[_owner].RemoveUnidentified((TInstance) this);
                     else
-                        Containers[_owner].Remove(_id);
+                        _containers[_owner].Remove(_id);
 
-                    if (!Containers[_owner].Any())
-                        Containers.Remove(_owner);
+                    if (!_containers[_owner].Any())
+                        _containers.Remove(_owner);
                 }
 
                 GetPool(value).Add(_id, (TInstance) this);
@@ -115,10 +115,10 @@ namespace SampSharp.GameMode.Pools
 
         private static PoolContainer<TInstance> GetPool(TOwner owner, bool createIfNotExists = true)
         {
-            if (owner == null) return UnownedContainer;
+            if (owner == null) return _unownedContainer;
 
-            if (!Containers.TryGetValue(owner, out var pool) && createIfNotExists)
-                pool = Containers[owner] = new PoolContainer<TInstance>();
+            if (!_containers.TryGetValue(owner, out var pool) && createIfNotExists)
+                pool = _containers[owner] = new PoolContainer<TInstance>();
 
             return pool;
         }
@@ -137,7 +137,7 @@ namespace SampSharp.GameMode.Pools
                 pool.Remove(_id);
 
             if (_id != PoolContainer<TInstance>.UnidentifiedId && !pool.Any())
-                Containers.Remove(_owner);
+                _containers.Remove(_owner);
         }
 
         /// <summary>
@@ -178,16 +178,6 @@ namespace SampSharp.GameMode.Pools
         }
 
         /// <summary>
-        ///     Gets a collection of instanced owned by the specified owner.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <returns>A collection of instanced owned by the specified owner</returns>
-        public static IEnumerable<TInstance> Of(TOwner owner)
-        {
-            return (IEnumerable<TInstance>) GetPool(owner, false) ?? new TInstance[0];
-        }
-
-        /// <summary>
         ///     Registers the type to use when initializing new instances.
         /// </summary>
         /// <param name="type">The type.</param>
@@ -201,6 +191,16 @@ namespace SampSharp.GameMode.Pools
 
             CoreLog.Log(CoreLogLevel.Debug, $"Type {type} registered to pool.");
             InstanceType = type;
+        }
+        
+        /// <summary>
+        ///     Gets a collection of instanced owned by the specified owner.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <returns>A collection of instanced owned by the specified owner</returns>
+        public static IEnumerable<TInstance> Of(TOwner owner)
+        {
+            return (IEnumerable<TInstance>) GetPool(owner, false) ?? new TInstance[0];
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace SampSharp.GameMode.Pools
         public static TInstance Create(TOwner owner, int id)
         {
             if(InstanceType == null)
-                throw new Exception($"No instance type has yet been registered to the {typeof(IdentifiedOwnedPool<TInstance,TOwner>)} pool.");
+                throw new InvalidOperationException($"No instance type has yet been registered to the {typeof(IdentifiedOwnedPool<TInstance,TOwner>)} pool.");
 
             var instance = (TInstance) Activator.CreateInstance(InstanceType);
             instance.Owner = owner;
@@ -235,7 +235,7 @@ namespace SampSharp.GameMode.Pools
         }
 
         /// <summary>
-        ///     An overloadable point for initialization logic which requires the <see cref="Id"/> and the <see cref="Owner"/> to be set.
+        ///     An overloadable point for initialization logic which requires the <see cref="Id" /> and the <see cref="Owner" /> to be set.
         /// </summary>
         protected virtual void Initialize()
         {

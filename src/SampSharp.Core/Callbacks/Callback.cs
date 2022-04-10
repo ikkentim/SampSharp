@@ -125,53 +125,61 @@ internal class Callback
 
         for (var i = 0; i < parameterTypes.Length; i++)
         {
-            if (!IsSupportedParameterType(parameterTypes[i]))
-            {
-                throw new InvalidOperationException($"Unsupported parameter type '{parameterTypes[i]}' at index {i}");
-            }
-
-            parameters[i] = ParameterForType1(parameterTypes[i]);
-
-            if (parameters[i] != null)
-            {
-                continue;
-            }
-
-            var indexNullable = (int?)lengthIndices?[i];
-
-            if (indexNullable == null && !wrapped)
-            {
-                var attribute = methodParameters[i].GetCustomAttribute<ParameterLengthAttribute>();
-                indexNullable = (int?)attribute?.Index;
-            }
-            
-            var index = indexNullable ?? (i + 1);
-            var offset = index - i;
-
-            if (index >= parameterTypes.Length || index < 0)
-            {
-                throw new InvalidOperationException("Callback parameter length index out of bounds.");
-            }
-
-            if (parameterTypes[index] != typeof(int))
-            {
-                throw new InvalidOperationException(
-                    $"Expected an integer argument at index {index} for the parameter at index {i}.");
-            }
-
-            parameters[i] = ParameterForType2(parameterTypes[i], offset);
-
-            if (parameters[i] != null)
-            {
-                continue;
-            }
-
-            throw new InvalidOperationException("Unknown callback parameter type.");
+            GetParameter(parameterTypes, lengthIndices, i, parameters, wrapped, methodParameters);
         }
 
         return new Callback(parameters, target, method, wrapped);
     }
-    
+
+    private static void GetParameter(Type[] parameterTypes, uint?[] lengthIndices, int index, ICallbackParameter[] parameters,
+        bool wrapped, ParameterInfo[] methodParameters)
+    {
+        if (!IsSupportedParameterType(parameterTypes[index]))
+        {
+            throw new InvalidOperationException($"Unsupported parameter type '{parameterTypes[index]}' at index {index}");
+        }
+
+        var parameter = ParameterForType1(parameterTypes[index]);
+
+        if (parameter != null)
+        {
+            parameters[index] = parameter;
+            return;
+        }
+
+        var lengthIndexNullable = (int?)lengthIndices?[index];
+
+        if (lengthIndexNullable == null && !wrapped)
+        {
+            var attribute = methodParameters[index].GetCustomAttribute<ParameterLengthAttribute>();
+            lengthIndexNullable = (int?)attribute?.Index;
+        }
+
+        var lengthIndex = lengthIndexNullable ?? (index + 1);
+        var lengthIndexOffset = lengthIndex - index;
+
+        if (lengthIndex >= parameterTypes.Length || lengthIndex < 0)
+        {
+            throw new InvalidOperationException("Callback parameter length index out of bounds.");
+        }
+
+        if (parameterTypes[lengthIndex] != typeof(int))
+        {
+            throw new InvalidOperationException(
+                $"Expected an integer argument at index {lengthIndex} for the parameter at index {index}.");
+        }
+
+        parameter = ParameterForType2(parameterTypes[index], lengthIndexOffset);
+
+        if (parameter != null)
+        {
+            parameters[index] = parameter;
+            return;
+        }
+
+        throw new InvalidOperationException("Unknown callback parameter type.");
+    }
+
     public class FastMethodInfo
     {
         private delegate object ReturnValueDelegate(object instance, object[] arguments);

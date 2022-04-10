@@ -9,17 +9,17 @@ using SampSharp.GameMode.World;
 
 namespace TestMode.GameMode
 {
-    public class BenchmarkCommands
+    public static class BenchmarkCommands
     {
         [Command("benchmark")]
         public static void BenchmarkCommand(BasePlayer player, int runs = 10)
         {
-            Stopwatch sw = new Stopwatch();
-            List<TimeSpan> time = new List<TimeSpan>();
+            var sw = new Stopwatch();
+            var time = new List<TimeSpan>();
 
             player.SendClientMessage("Benchmark starting...");
             
-            VehicleModelInfo inf = VehicleModelInfo.ForVehicle(VehicleModelType.AT400);
+            var inf = VehicleModelInfo.ForVehicle(VehicleModelType.AT400);
 
             for (var i = 0; i < runs; i++)
             {
@@ -29,13 +29,13 @@ namespace TestMode.GameMode
 
                 for (var j = 0; j < 1000; j++)
                 {
-                    var netstat = Server.NetworkStats;
+                    _ = Server.NetworkStats;
                     Server.SetWeather(10);
                     Server.SetWorldTime(14);
-                    var plnam = player.Name;
+                    _ = player.Name;
                     player.GetAnimationName(out var lib, out var name);
-                    var offset = inf[VehicleModelInfoType.FrontSeat];
-                    var ppos = player.Position;
+                    _ = inf[VehicleModelInfoType.FrontSeat];
+                    _ = player.Position;
                 }
 
                 sw.Stop();

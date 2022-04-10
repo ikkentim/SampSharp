@@ -221,12 +221,12 @@ namespace SampSharp.GameMode.Display
 
             if (Columns == null || Columns.Count == 0)
             {
-                throw new Exception("This menu contains no columns");
+                throw new InvalidOperationException("This menu contains no columns");
             }
 
             if (Rows == null || Rows.Count == 0)
             {
-                throw new Exception("This menu contains no rows");
+                throw new InvalidOperationException("This menu contains no rows");
             }
 
             Id = MenuInternal.Instance.CreateMenu(Title, Columns.Count, Position.X, Position.Y,

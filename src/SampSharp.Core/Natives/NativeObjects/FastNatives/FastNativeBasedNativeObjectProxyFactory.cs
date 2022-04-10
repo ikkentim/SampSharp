@@ -10,6 +10,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
     /// <summary>
     /// Represents a factory for native proxies based on fast native interop.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "Documentation for generated IL code.")]
     public class FastNativeBasedNativeObjectProxyFactory : NativeObjectProxyFactoryBase
     {
         private const int MaxStackAllocSize = 256;
@@ -59,11 +60,11 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             // Will be using direct reference to loc_0 for optimized calls to data buffer
             var args = ilGenerator.DeclareLocal(typeof(int*));
             if (args.LocalIndex != 0)
-                throw new Exception("args should be local 0");
-
+                throw new InvalidOperationException("args should be local 0");
+            
             var values = ilGenerator.DeclareLocal(typeof(int*));
             if (values.LocalIndex != 1)
-                throw new Exception("values should be local 1");
+                throw new InvalidOperationException("values should be local 1");
 
             // Args buffer will contain all param references
             // Values buffer will contain all value type values.
@@ -259,7 +260,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                 {
                     if (param.Property != null)
                     {
-                        throw new Exception("Unsupported identifier property type");
+                        throw new InvalidOperationException("Unsupported identifier property type");
                     }
 
                     var strLen = ilGenerator.DeclareLocal(typeof(int));
@@ -301,7 +302,8 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                 {
                     if (param.Property != null)
                     {
-                        throw new Exception("Unsupported identifier property type");
+
+                        throw new InvalidOperationException("Unsupported identifier property type");
                     }
 
                     EmitThrowOnOutOfRangeLength(ilGenerator, param.LengthParam);
@@ -346,7 +348,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                 }
                 else
                 {
-                    throw new Exception("Unknown native parameter type");
+                    throw new InvalidOperationException("Unknown native parameter type");
                 }
             }
         }
@@ -382,7 +384,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                                 ilGenerator.Emit(OpCodes.Stind_I1);
                                 break;
                             default:
-                                throw new Exception("Unknown native parameter type");
+                                throw new InvalidOperationException("Unknown native parameter type");
                         }
                     }   
                     valueIndex++;
@@ -421,7 +423,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                 }
                 else
                 {
-                    throw new Exception("Unknown native parameter type");
+                    throw new InvalidOperationException("Unknown native parameter type");
                 }
             }
         }
@@ -440,7 +442,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             }
             else
             {
-                throw new Exception("Unsupported return type of native");
+                throw new InvalidOperationException("Unsupported return type of native");
             }
         }
 
@@ -582,7 +584,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                         // format appened at runtime
                         break;
                     default:
-                        throw new Exception("Unknown parameter type");
+                        throw new InvalidOperationException("Unknown parameter type");
                 }
             }
 

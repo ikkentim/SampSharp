@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace SampSharp.GameMode.SAMP.Commands
@@ -71,17 +72,15 @@ namespace SampSharp.GameMode.SAMP.Commands
             if (commandText.Length < Length)
                 return false;
 
-            // The command text is longer than the full name.
-            if (commandText.Length > Length)
+            // The command text is longer than the full name and the next character in the command text must be a space.
+            if (commandText.Length > Length && commandText[Length] != ' ')
             {
-                // The next character in the command text must be a space.
-                if (commandText[Length] != ' ')
                     return false;
             }
 
             // The substring of the command text matches the full name.
             return ignoreCase
-                ? commandText.Substring(0, Length).ToLower() == FullName.ToLower()
+                ? commandText.Substring(0, Length).ToLower(CultureInfo.InvariantCulture) == FullName.ToLower(CultureInfo.InvariantCulture)
                 : commandText.Substring(0, Length) == FullName;
         }
 

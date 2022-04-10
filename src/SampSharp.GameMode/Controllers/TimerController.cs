@@ -25,15 +25,16 @@ namespace SampSharp.GameMode.Controllers
     [Controller]
     public class TimerController : IEventListener
     {
-        internal static TimerController Instance;
-        private readonly List<Timer> _activeTimers = new List<Timer>();
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S2223:Non-constant static fields should not be visible", Justification = "By design")]
+        internal static TimerController _instance;
+        private readonly List<Timer> _activeTimers = new();
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="TimerController"/> class.
+        ///     Initializes a new instance of the <see cref="TimerController" /> class.
         /// </summary>
         public TimerController()
         {
-            Instance = this;
+            SetActiveInstance(this);
         }
 
         internal void AddTimer(Timer timer)
@@ -78,6 +79,11 @@ namespace SampSharp.GameMode.Controllers
                     timer.PerformTick();
                 }
             }
+        }
+
+        private static void SetActiveInstance(TimerController controller)
+        {
+            _instance = controller;
         }
     }
 }

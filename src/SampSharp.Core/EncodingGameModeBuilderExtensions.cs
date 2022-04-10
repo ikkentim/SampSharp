@@ -5,13 +5,13 @@ using SampSharp.Core.CodePages;
 namespace SampSharp.Core;
 
 /// <summary>
-/// Provides extended functionality for <see cref="GameModeBuilder"/> for configuring the active encoding.
+/// Provides extended functionality for <see cref="GameModeBuilder" /> for configuring the active encoding.
 /// </summary>
 public static class EncodingGameModeBuilderExtensions
 {
     
     /// <summary>
-    ///     Use the code page described by the file at the specified <paramref name="path"/> when en/decoding text messages sent to/from the server.
+    ///     Use the code page described by the file at the specified <paramref name="path" /> when en/decoding text messages sent to/from the server.
     /// </summary>
     /// <param name="builder">The game mode builder.</param>
     /// <param name="path">The path to the code page file.</param>
@@ -23,7 +23,7 @@ public static class EncodingGameModeBuilderExtensions
     }
 
     /// <summary>
-    ///     Use the code page described by the specified <paramref name="stream"/> when en/decoding text messages sent to/from the server.
+    ///     Use the code page described by the specified <paramref name="stream" /> when en/decoding text messages sent to/from the server.
     /// </summary>
     /// <param name="builder">The game mode builder.</param>
     /// <param name="stream">The stream containing the code page definition.</param>

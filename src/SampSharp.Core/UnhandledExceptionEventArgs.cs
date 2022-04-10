@@ -3,12 +3,12 @@
 namespace SampSharp.Core
 {
     /// <summary>
-    ///     Provides data for the <see cref="IGameModeClient.UnhandledException"/> event.
+    ///     Provides data for the <see cref="IGameModeClient.UnhandledException" /> event.
     /// </summary>
     public class UnhandledExceptionEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="UnhandledExceptionEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="UnhandledExceptionEventArgs" /> class.
         /// </summary>
         /// <param name="callbackName">The name of the callback during which the exception was thrown.</param>
         /// <param name="exception">The exception.</param>

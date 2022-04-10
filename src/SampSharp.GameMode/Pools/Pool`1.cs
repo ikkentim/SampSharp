@@ -29,13 +29,14 @@ namespace SampSharp.GameMode.Pools
         /// <summary>
         ///     The instances alive in this pool.
         /// </summary>
-        // ReSharper disable once StaticMemberInGenericType
-        protected static readonly List<Pool<TInstance>> Instances = new List<Pool<TInstance>>();
-        
+        protected static readonly List<Pool<TInstance>> Instances = new();
+
+
         /// <summary>
-        ///     A Locker for tread-saving this pool.
+        ///     The internal lock of this pool.
         /// </summary>
-        protected static object Lock = new object();
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2743:Static fields should not be used in generic types", Justification = "By design")]
+        protected static readonly object Lock = new();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Pool{T}" /> class.
@@ -51,6 +52,7 @@ namespace SampSharp.GameMode.Pools
         /// <summary>
         ///     Gets a <see cref="IEnumerable{T}" /> containing all instances of type.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "By design")]
         public static IEnumerable<TInstance> All
         {
             get

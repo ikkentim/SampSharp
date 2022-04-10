@@ -11,14 +11,14 @@ namespace SampSharp.Entities.SAMP.Commands
     public class PlayerCommandAttribute : Attribute, ICommandMethodInfo
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerCommandAttribute"/> class.
+        /// Initializes a new instance of the <see cref="PlayerCommandAttribute" /> class.
         /// </summary>
         public PlayerCommandAttribute()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerCommandAttribute"/> class.
+        /// Initializes a new instance of the <see cref="PlayerCommandAttribute" /> class.
         /// </summary>
         /// <param name="name">The overridden name of the command.</param>
         public PlayerCommandAttribute(string name)

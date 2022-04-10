@@ -33,7 +33,7 @@ namespace SampSharp.GameMode.Tools
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>The arguments passed to the <see cref="Fire" /> method.</returns>
-        public virtual async Task<TArguments> Result(TKey key)
+        public virtual Task<TArguments> Result(TKey key)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
 
@@ -41,17 +41,17 @@ namespace SampSharp.GameMode.Tools
             _completionSources[key] = taskCompletionSource;
 
             if (key is Disposable disposable)
-                disposable.Disposed += disposable_Disposed;
+                disposable.Disposed += OnDisposableDisposed;
 
-            return await taskCompletionSource.Task;
+            return taskCompletionSource.Task;
         }
 
-        private void disposable_Disposed(object sender, EventArgs e)
+        private void OnDisposableDisposed(object sender, EventArgs e)
         {
-            if (!(sender is TKey)) return;
-
-            var key = (TKey)sender;
-            Cancel(key);
+            if (sender is TKey key)
+            {
+                Cancel(key);
+            }
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace SampSharp.GameMode.Tools
             _completionSources.Remove(key);
 
             if (key is Disposable disposable)
-                disposable.Disposed -= disposable_Disposed;
+                disposable.Disposed -= OnDisposableDisposed;
 
             _completionSources.Remove(key);
         }

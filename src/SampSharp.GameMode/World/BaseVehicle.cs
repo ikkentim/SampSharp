@@ -647,7 +647,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Returns this <see cref="BaseVehicle" />'s rotation on all axis as a quaternion.
         /// </summary>
-        /// <returns>The rotation in a <see cref="Quaternion"/> structure.</returns>
+        /// <returns>The rotation in a <see cref="Quaternion" /> structure.</returns>
         public virtual Quaternion GetRotationQuat()
         {
             AssertNotDisposed();
