@@ -19,7 +19,7 @@ namespace SampSharp.Entities.SAMP
     /// Contains all types of things bullets can hit.
     /// </summary>
     /// <remarks>
-    /// See <see href="https://www.open.mp/docs/scripting/resources/bullethittypes"></see>.
+    /// See <see href="https://www.open.mp/docs/scripting/resources/bullethittypes" />.
     /// </remarks>
     public enum BulletHitType
     {

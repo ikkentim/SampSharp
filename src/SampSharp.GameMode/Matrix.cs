@@ -211,7 +211,7 @@ namespace SampSharp.GameMode
                     case 15:
                         return M44;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        throw new ArgumentOutOfRangeException(nameof(index));
                 }
             }
         }

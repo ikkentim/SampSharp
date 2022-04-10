@@ -27,22 +27,18 @@ namespace SampSharp.Entities
     /// <seealso cref="IEntityManager" />
     public class EntityManager : IEntityManager
     {
-        private readonly RecyclePool<ComponentEntry> _componentPool = new RecyclePool<ComponentEntry>(512);
-        private readonly ComponentStore _components = new ComponentStore();
-        private readonly Dictionary<EntityId, EntityEntry> _entities = new Dictionary<EntityId, EntityEntry>(new EntityIdEqualityComparer());
-        private readonly RecyclePool<EntityEntry> _entityPool = new RecyclePool<EntityEntry>(512);
-        private readonly RecyclePool<ComponentStore> _storePool = new RecyclePool<ComponentStore>(512);
-        private readonly HashSet<EntityId> _entityIds = new HashSet<EntityId>(new EntityIdEqualityComparer());
+        private readonly RecyclePool<ComponentEntry> _componentPool = new(512);
+        private readonly ComponentStore _components = new();
+        private readonly Dictionary<EntityId, EntityEntry> _entities = new(new EntityIdEqualityComparer());
+        private readonly RecyclePool<EntityEntry> _entityPool = new(512);
+        private readonly RecyclePool<ComponentStore> _storePool = new(512);
+        private readonly HashSet<EntityId> _entityIds = new(new EntityIdEqualityComparer());
         private EntityEntry _firstRoot;
         private int _rootCount;
 
-        private class EntityIdEqualityComparer : IEqualityComparer<EntityId>
-        {
-            public bool Equals(EntityId x, EntityId y) => x.Handle == y.Handle && x.Type == y.Type;
-            public int GetHashCode(EntityId obj) => obj.GetHashCode();
-        }
-
-        /// <inheritdoc />
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityManager" /> class.
+        /// </summary>
         public EntityManager()
         {
             _components.ComponentPool = _componentPool;
@@ -71,8 +67,8 @@ namespace SampSharp.Entities
             if (parentEntry != null)
             {
                 if (parentEntry.Child?.Previous != null)
-                    throw new Exception("Invalid entity store state");
-
+                    throw new InvalidOperationException("Invalid entity store state");
+                
                 // Attach to siblings if present
                 entry.Next = parentEntry.Child;
                 if (parentEntry.Child != null)
@@ -113,8 +109,23 @@ namespace SampSharp.Entities
             foreach (var c in GetComponents<T>(entity))
                 Destroy(c);
         }
+        
+        /// <inheritdoc />
+        public void Destroy(Component component)
+        {
+            if (component == null) throw new ArgumentNullException(nameof(component));
+
+            if (!_entities.TryGetValue(component.Entity, out var entityEntry))
+                throw new EntityNotFoundException(nameof(component));
+
+            component.DestroyComponent();
+            entityEntry.Components.Remove(component);
+            _components.Remove(component);
+        }
+
 
         /// <inheritdoc />
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "User supplied type must be instantiated")]
         public T AddComponent<T>(EntityId entity, params object[] args) where T : Component
         {
             if (!_entities.TryGetValue(entity, out var entityEntry))
@@ -137,6 +148,7 @@ namespace SampSharp.Entities
         }
         
         /// <inheritdoc />
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "User supplied type must be instantiated")]
         public T AddComponent<T>(EntityId entity) where T : Component
         {
             if (!_entities.TryGetValue(entity, out var entityEntry))
@@ -174,25 +186,6 @@ namespace SampSharp.Entities
         }
 
         /// <inheritdoc />
-        public void Destroy(Component component)
-        {
-            if (component == null) throw new ArgumentNullException(nameof(component));
-
-            if (!_entities.TryGetValue(component.Entity, out var entityEntry))
-                throw new EntityNotFoundException(nameof(component));
-
-            component.DestroyComponent();
-            entityEntry.Components.Remove(component);
-            _components.Remove(component);
-        }
-        
-        /// <inheritdoc />
-        public T[] GetComponents<T>() where T : Component
-        {
-            return _components.GetAll<T>();
-        }
-
-        /// <inheritdoc />
         public EntityId[] GetRootEntities()
         {
             if (_rootCount == 0)
@@ -218,15 +211,6 @@ namespace SampSharp.Entities
         }
         
         /// <inheritdoc />
-        public T[] GetComponents<T>(EntityId entity) where T : Component
-        {
-            if (!_entities.TryGetValue(entity, out var entityEntry))
-                throw new EntityNotFoundException(nameof(entity));
-
-            return entityEntry.Components.GetAll<T>();
-        }
-        
-        /// <inheritdoc />
         public T GetComponent<T>(EntityId entity) where T : Component
         {
             if (!_entities.TryGetValue(entity, out var entityEntry))
@@ -235,6 +219,21 @@ namespace SampSharp.Entities
             return entityEntry.Components.Get<T>();
         }
         
+        /// <inheritdoc />
+        public T[] GetComponents<T>() where T : Component
+        {
+            return _components.GetAll<T>();
+        }
+
+        /// <inheritdoc />
+        public T[] GetComponents<T>(EntityId entity) where T : Component
+        {
+            if (!_entities.TryGetValue(entity, out var entityEntry))
+                throw new EntityNotFoundException(nameof(entity));
+
+            return entityEntry.Components.GetAll<T>();
+        }
+
         /// <inheritdoc />
         public T[] GetComponentsInParent<T>(EntityId entity) where T : Component
         {
@@ -413,9 +412,9 @@ namespace SampSharp.Entities
             _entityPool.Recycle(entry);
         }
 
-        private class ComponentStore : IRecyclable
+        private sealed class ComponentStore : IRecyclable
         {
-            private readonly Dictionary<Type, Data> _components = new Dictionary<Type, Data>();
+            private readonly Dictionary<Type, Data> _components = new();
 
             public RecyclePool<ComponentEntry> ComponentPool;
             public ComponentEntry First => _components.TryGetValue(typeof(Component), out var data) ? data.Entry : null;
@@ -579,7 +578,7 @@ namespace SampSharp.Entities
             }
         }
 
-        private class ComponentEntry : IRecyclable
+        private sealed class ComponentEntry : IRecyclable
         {
             public Component Component;
             public ComponentEntry Next;
@@ -593,7 +592,7 @@ namespace SampSharp.Entities
             }
         }
 
-        private class EntityEntry : IRecyclable
+        private sealed class EntityEntry : IRecyclable
         {
             public EntityEntry Child;
             public int ChildCount;
@@ -612,6 +611,12 @@ namespace SampSharp.Entities
                 Child = null;
                 ChildCount = 0;
             }
+        }
+
+        private sealed class EntityIdEqualityComparer : IEqualityComparer<EntityId>
+        {
+            public bool Equals(EntityId x, EntityId y) => x.Handle == y.Handle && x.Type == y.Type;
+            public int GetHashCode(EntityId obj) => obj.GetHashCode();
         }
     }
 }

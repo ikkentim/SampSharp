@@ -54,7 +54,7 @@ namespace SampSharp.Entities
             }
         }
 
-        private class EventContextScoped : EventContext
+        private sealed class EventContextScoped : EventContext
         {
             public EventContext BaseContext { get; set; }
             public IServiceScope Scope { get; set; }

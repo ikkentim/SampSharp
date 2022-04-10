@@ -1,13 +1,11 @@
-﻿using SampSharp.GameMode.Definitions;
+﻿using System.Collections.Generic;
+using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace TestMode.Commands
+namespace TestMode.GameMode.Commands
 {
     internal static class DialogCommands
     {

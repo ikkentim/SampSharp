@@ -216,7 +216,7 @@ namespace SampSharp.GameMode.SAMP.Commands
         }
 
         /// <summary>
-        /// Sends the usage message to the specified <paramref name="player"/>.
+        /// Sends the usage message to the specified <paramref name="player" />.
         /// </summary>
         /// <param name="player">The player.</param>
         /// <returns>True on success, false otherwise.</returns>

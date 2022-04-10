@@ -22,41 +22,41 @@ namespace SampSharp.GameMode.Definitions
         /// <summary>
         ///     The Well Stacked Pizza Co.
         /// </summary>
-        public static string PizzaStack = "FDPIZA";
+        public const string PizzaStack = "FDPIZA";
 
         /// <summary>
         ///     Burger Shot.
         /// </summary>
-        public static string BurgerShot = "FDBURG";
+        public const string BurgerShot = "FDBURG";
 
         /// <summary>
         ///     Cluckin' Bell.
         /// </summary>
-        public static string CluckinBell = "FDCHICK";
+        public const string CluckinBell = "FDCHICK";
 
         /// <summary>
         ///     Ammunation 1.
         /// </summary>
-        public static string Ammunation1 = "AMMUN1";
+        public const string Ammunation1 = "AMMUN1";
 
         /// <summary>
         ///     Ammunation 2.
         /// </summary>
-        public static string Ammunation2 = "AMMUN2";
+        public const string Ammunation2 = "AMMUN2";
 
         /// <summary>
         ///     Ammunation 3.
         /// </summary>
-        public static string Ammunation3 = "AMMUN3";
+        public const string Ammunation3 = "AMMUN3";
 
         /// <summary>
         ///     Ammunation 4.
         /// </summary>
-        public static string Ammunation4 = "AMMUN4";
+        public const string Ammunation4 = "AMMUN4";
 
         /// <summary>
         ///     Ammunation 5.
         /// </summary>
-        public static string Ammunation5 = "AMMUN5";
+        public const string Ammunation5 = "AMMUN5";
     }
 }

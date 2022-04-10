@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Globalization;
 
 namespace SampSharp.Entities
 {
@@ -102,9 +103,13 @@ namespace SampSharp.Entities
         /// <inheritdoc />
         public override string ToString()
         {
-            return IsEmpty
-                ? "(Empty)"
-                : $"(Type = {EntityTypeRegistry.GetTypeName(Type)}, Handle = {(IsInvalidHandle ? "Invalid" : Handle.ToString())})";
+            if (IsEmpty)
+            {
+                return "(Empty)";
+            }
+
+            return
+                $"(Type = {EntityTypeRegistry.GetTypeName(Type)}, Handle = {(IsInvalidHandle ? "Invalid" : Handle.ToString(CultureInfo.InvariantCulture))})";
         }
         
         /// <summary>
@@ -120,7 +125,7 @@ namespace SampSharp.Entities
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="Component"/> to <see cref="EntityId"/>. Returns the entity of the component.
+        /// Performs an implicit conversion from <see cref="Component" /> to <see cref="EntityId" />. Returns the entity of the component.
         /// </summary>
         /// <param name="component">The component.</param>
         /// <returns>

@@ -594,32 +594,34 @@ namespace SampSharp.GameMode
         internal bool OnPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY,
             float fZ)
         {
-            switch ((ObjectType) type)
+            switch ((ObjectType)type)
             {
                 case ObjectType.GlobalObject:
-                {
-                    var @object = GlobalObject.FindOrCreate(objectid);
+                    {
+                        var @object = GlobalObject.FindOrCreate(objectid);
 
-                    if (@object == null)
-                        return true;
+                        if (@object == null)
+                            return true;
 
                         var player = BasePlayer.FindOrCreate(playerid);
 
-                        OnPlayerSelectGlobalObject(player,     new SelectGlobalObjectEventArgs(player, @object, modelid,  new Vector3(fX, fY, fZ)));
-                    break;
-                }
+                        OnPlayerSelectGlobalObject(player,
+                            new SelectGlobalObjectEventArgs(player, @object, modelid, new Vector3(fX, fY, fZ)));
+                        break;
+                    }
                 case ObjectType.PlayerObject:
                     {
                         var player = BasePlayer.FindOrCreate(playerid);
 
                         var @object = PlayerObject.FindOrCreate(player, objectid);
 
-                    if (@object == null)
-                        return true;
+                        if (@object == null)
+                            return true;
 
-                    OnPlayerSelectPlayerObject(player,  new SelectPlayerObjectEventArgs(player, @object, modelid,  new Vector3(fX, fY, fZ)));
-                    break;
-                }
+                        OnPlayerSelectPlayerObject(player,
+                            new SelectPlayerObjectEventArgs(player, @object, modelid, new Vector3(fX, fY, fZ)));
+                        break;
+                    }
             }
 
             return true;

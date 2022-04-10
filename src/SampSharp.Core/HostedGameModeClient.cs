@@ -143,7 +143,7 @@ namespace SampSharp.Core
         }
 
         /// <inheritdoc />
-        public void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[] parameterTypes, uint?[] lengthIndices)
+        public void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[] parameterTypes, uint?[] lengthIndices = null)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
@@ -173,11 +173,11 @@ namespace SampSharp.Core
             else
                 _synchronizationContext.Send(ctx => Interop.Print(text), null);
         }
-        
+
         #endregion
 
         #region Implementation of IGameModeRunner
-        
+
         /// <inheritdoc />
         public bool Run()
         {
@@ -186,7 +186,7 @@ namespace SampSharp.Core
                 return true;
             }
 
-            InternalStorage.RunningClient = this;
+            InternalStorage.SetRunningClient(this);
             Interop.Initialize();
 
             // Prepare the synchronization context

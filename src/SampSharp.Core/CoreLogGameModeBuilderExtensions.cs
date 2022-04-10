@@ -4,7 +4,7 @@ using SampSharp.Core.Logging;
 namespace SampSharp.Core;
 
 /// <summary>
-/// Provides extended functionality for <see cref="GameModeBuilder"/> for configuring the internal SampSharp logger.
+/// Provides extended functionality for <see cref="GameModeBuilder" /> for configuring the internal SampSharp logger.
 /// </summary>
 public static class CoreLogGameModeBuilderExtensions
 {

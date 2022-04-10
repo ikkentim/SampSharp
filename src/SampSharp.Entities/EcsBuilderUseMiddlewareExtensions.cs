@@ -26,7 +26,8 @@ namespace SampSharp.Entities
     /// </summary>
     public static class EcsBuilderUseMiddlewareExtensions
     {
-        private static readonly MethodInfo GetServiceInfo =
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Member of own type")]
+        private static readonly MethodInfo _getServiceInfo =
             typeof(EcsBuilderUseMiddlewareExtensions).GetMethod(nameof(GetService),
                 BindingFlags.NonPublic | BindingFlags.Static);
 
@@ -139,7 +140,7 @@ namespace SampSharp.Entities
                     Expression.Constant(parameterType, typeof(Type))
                 };
 
-                var getServiceCall = Expression.Call(GetServiceInfo, parameterTypeExpression);
+                var getServiceCall = Expression.Call(_getServiceInfo, parameterTypeExpression);
                 methodArguments[i] = Expression.Convert(getServiceCall, parameterType);
             }
 

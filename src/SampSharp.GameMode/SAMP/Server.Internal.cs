@@ -19,6 +19,7 @@ namespace SampSharp.GameMode.SAMP
     public static partial class Server
     {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S3218:Inner class members should not shadow outer class \"static\" or type members", Justification = "Native function declarations")]
         public class ServerInternal : NativeObjectSingleton<ServerInternal>
         {
             [NativeMethod]

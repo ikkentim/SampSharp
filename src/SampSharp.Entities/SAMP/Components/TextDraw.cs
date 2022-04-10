@@ -255,15 +255,7 @@ namespace SampSharp.Entities.SAMP
         {
             GetComponent<NativeTextDraw>().TextDrawShowForAll();
         }
-
-        /// <summary>
-        /// Hides this textdraw for all connected players.
-        /// </summary>
-        public void Hide()
-        {
-            GetComponent<NativeTextDraw>().TextDrawHideForAll();
-        }
-
+        
         /// <summary>
         /// Shows this textdraw for the specified <paramref name="player" />.
         /// </summary>
@@ -276,6 +268,14 @@ namespace SampSharp.Entities.SAMP
             GetComponent<NativeTextDraw>().TextDrawShowForPlayer(player);
         }
 
+        /// <summary>
+        /// Hides this textdraw for all connected players.
+        /// </summary>
+        public void Hide()
+        {
+            GetComponent<NativeTextDraw>().TextDrawHideForAll();
+        }
+        
         /// <summary>
         /// Hides this textdraw for the specified <paramref name="player" />.
         /// </summary>

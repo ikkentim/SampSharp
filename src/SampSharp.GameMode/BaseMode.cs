@@ -178,7 +178,7 @@ namespace SampSharp.GameMode
         {
             // Ensure assembly is an extension.
             if (!assembly.GetCustomAttributes<SampSharpExtensionAttribute>().Any())
-                throw new Exception($"Assembly {assembly} is not an extension");
+                throw new InvalidOperationException($"Assembly {assembly} is not an extension");
 
             // Check if assembly is already in the load list.
             if (load.Contains(assembly))
@@ -186,7 +186,7 @@ namespace SampSharp.GameMode
 
             // Already in loading chain? (circular dependency detected).
             if (loading.Contains(assembly))
-                throw new Exception($"Circular extension dependency detected: {assembly}");
+                throw new InvalidOperationException($"Circular extension dependency detected: {assembly}");
 
             loading.Add(assembly);
 

@@ -60,7 +60,7 @@ namespace SampSharp.Core.Natives.NativeObjects
             }
 
             if (methodName == null)
-                throw new Exception("Unsupported types");
+                throw new InvalidOperationException("Unsupported types");
 
             ilGenerator.EmitCall(typeof(ValueConverter), methodName, typeof(TFrom));
         }
@@ -77,7 +77,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                 MethodBase m when m.IsStatic => true,
                 MethodBase _ => false,
                 PropertyInfo p => IsStatic(p.GetAccessors(true)[0]),
-                _ => throw new Exception("Unknown member type")
+                _ => throw new InvalidOperationException("Unknown member type")
             };
         }
     }

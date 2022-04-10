@@ -20,7 +20,7 @@ namespace SampSharp.Entities
         private bool _didInitialize;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TimerSystem"/> class.
+        /// Initializes a new instance of the <see cref="TimerSystem" /> class.
         /// </summary>
         public TimerSystem(IServiceProvider serviceProvider)
         {

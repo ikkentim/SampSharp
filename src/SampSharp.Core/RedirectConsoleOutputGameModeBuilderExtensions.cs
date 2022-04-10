@@ -3,7 +3,7 @@ using System;
 namespace SampSharp.Core;
 
 /// <summary>
-/// Provides extended functionality for <see cref="GameModeBuilder"/> for configuring console output redirection.
+/// Provides extended functionality for <see cref="GameModeBuilder" /> for configuring console output redirection.
 /// </summary>
 public static class RedirectConsoleOutputGameModeBuilderExtensions
 {

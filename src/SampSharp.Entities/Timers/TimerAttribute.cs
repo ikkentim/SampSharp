@@ -11,7 +11,7 @@ namespace SampSharp.Entities
     public class TimerAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TimerAttribute"/> class.
+        /// Initializes a new instance of the <see cref="TimerAttribute" /> class.
         /// </summary>
         /// <param name="interval">The interval of the timer.</param>
         public TimerAttribute(double interval)

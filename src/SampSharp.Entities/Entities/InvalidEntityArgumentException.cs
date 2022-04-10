@@ -51,11 +51,11 @@ namespace SampSharp.Entities
         /// Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.
         /// </summary>
         /// <param name="info">
-        /// The <see cref="T:System.Runtime.Serialization.SerializationInfo"></see> that holds the serialized
+        /// The <see cref="SerializationInfo" /> that holds the serialized
         /// object data about the exception being thrown.
         /// </param>
         /// <param name="context">
-        /// The <see cref="T:System.Runtime.Serialization.StreamingContext"></see> that contains contextual
+        /// The <see cref="StreamingContext" /> that contains contextual
         /// information about the source or destination.
         /// </param>
         protected InvalidEntityArgumentException(SerializationInfo info, StreamingContext context) : base(info, context)

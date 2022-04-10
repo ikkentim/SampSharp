@@ -23,35 +23,36 @@ namespace SampSharp.GameMode
     /// </summary>
     public class GameModeServiceContainer : IServiceProvider
     {
-        private readonly Dictionary<Type, IService> _services = new Dictionary<Type, IService>();
+        private readonly Dictionary<Type, IService> _services = new();
 
-        #region Implementation of IGameServiceProvider
-
-        /// <summary>
-        ///     Gets the service object of the specified type.
-        /// </summary>
-        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <returns>
-        ///     A service object of type <paramref name="serviceType" />.-or- null if there is no service object of type
-        ///     <paramref name="serviceType" />.
-        /// </returns>
-        /// <exception cref="System.ArgumentNullException">serviceType</exception>
+        /// <inheritdoc />
         public object GetService(Type serviceType)
         {
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
 
             return _services.ContainsKey(serviceType) ? _services[serviceType] : null;
         }
-
-        #endregion
-
+        
+        /// <summary>
+        ///     Gets the service object of the specified type.
+        /// </summary>
+        /// <typeparam name="TServiceType">The type of service object to get.</typeparam>
+        /// <returns>
+        ///     A service object of type <typeparamref name="TServiceType" />.-or- null if there is no service object of type
+        ///     <typeparamref name="TServiceType" />
+        /// </returns>
+        public TServiceType GetService<TServiceType>() where TServiceType : IService
+        {
+            return (TServiceType) GetService(typeof (TServiceType));
+        }
+        
         /// <summary>
         ///     Adds the service of the specified <paramref name="serviceType" />.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="service">The service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="serviceType"/> or <paramref name="service"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="serviceType"/> must be of type IService</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="serviceType" /> or <paramref name="service" /> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="serviceType" /> must be of type IService</exception>
         public void AddService(Type serviceType, IService service)
         {
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
@@ -69,24 +70,12 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="service">The service.</param>
         /// <typeparam name="TServiceType">Type of the service.</typeparam>
-        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="service"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="service" /> is null.</exception>
         /// <exception cref="System.ArgumentException">serviceType must be of type IService</exception>
         public void AddService<TServiceType>(TServiceType service) where TServiceType : IService
         {
             AddService(typeof (TServiceType), service);
         }
 
-        /// <summary>
-        ///     Gets the service object of the specified type.
-        /// </summary>
-        /// <typeparam name="TServiceType">The type of service object to get.</typeparam>
-        /// <returns>
-        ///     A service object of type <typeparamref name="TServiceType" />.-or- null if there is no service object of type
-        ///     <typeparamref name="TServiceType" />
-        /// </returns>
-        public TServiceType GetService<TServiceType>() where TServiceType : IService
-        {
-            return (TServiceType) GetService(typeof (TServiceType));
-        }
     }
 }

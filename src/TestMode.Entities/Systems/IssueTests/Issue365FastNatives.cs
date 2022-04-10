@@ -25,49 +25,49 @@ namespace TestMode.Entities.Systems.IssueTests
             _client = client;
         }
         
-        private void TestInOutInt(TestNatives test)
+        private static void TestInOutInt(TestNatives test)
         {
             if(test.InOutInt(471) != 471)
-                throw new Exception("arg mismatch");
+                throw new InvalidOperationException("arg mismatch");
         }
         
-        private void TestInIdOutInt(TestNatives test)
+        private static void TestInIdOutInt(TestNatives test)
         {
             test.Identifier = 5515;
             if(test.InIdOutRef(out var a) != 1 || a != 5515)
-                throw new Exception("arg mismatch");
+                throw new InvalidOperationException("arg mismatch");
         }
 
-        private void TestInRefOutInt(TestNatives test)
+        private static void TestInRefOutInt(TestNatives test)
         {
             if(1 != test.InRefOutInt(789, out var b) || b != 789)
-                throw new Exception("arg mismatch");
+                throw new InvalidOperationException("arg mismatch");
         }
-        private void TestInOutString(TestNatives test)
+        private static void TestInOutString(TestNatives test)
         {
             if(1 != test.InOutString("foo bar", out var b, 32) || b != "foo bar")
-                throw new Exception("arg mismatch");
+                throw new InvalidOperationException("arg mismatch");
         }
-        private void TestInOutIntArray(TestNatives test)
+        private static void TestInOutIntArray(TestNatives test)
         {
             var arr = new[] {5, 9, 1};
             
             if (1 != test.InOutIntArray(arr, out var b, 3) || !arr.SequenceEqual(b))
-                throw new Exception("arg mismatch");
+                throw new InvalidOperationException("arg mismatch");
         }
-        private void TestInOutBoolArray(TestNatives test)
+        private static void TestInOutBoolArray(TestNatives test)
         {
             var arr = new[] {true, false, true};
             
             if (1 != test.InOutBoolArray(arr, out var b, 3) || !arr.SequenceEqual(b))
-                throw new Exception("arg mismatch");
+                throw new InvalidOperationException("arg mismatch");
         }
-        private void TestInOutFloatArray(TestNatives test)
+        private static void TestInOutFloatArray(TestNatives test)
         {
             var arr = new[] {5.4544f, 881.121f, 7789.1123f};
             
             if (1 != test.InOutFloatArray(arr, out var b, 3) || !arr.SequenceEqual(b))
-                throw new Exception("arg mismatch");
+                throw new InvalidOperationException("arg mismatch");
         }
 
         private void RunTests(INativeObjectProxyFactory factory)
@@ -129,8 +129,8 @@ namespace TestMode.Entities.Systems.IssueTests
             _fastProxy = fastProxy;
             _nativeGetVehicleParamsEx = Interop.FastNativeFind("GetVehicleParamsEx");
             _testVehicleId = worldService.CreateVehicle(VehicleModelType.BMX, Vector3.One, 0, 0, 0).Entity.Handle;
-            //timerService.Start(_ => BenchmarkRunTimer(), TimeSpan.FromSeconds(2));
-            //timerService.Start(_ => BenchmarkRunTimerProxy(), TimeSpan.FromSeconds(2));
+            // disabled: timerService.Start(_ => BenchmarkRunTimer(), TimeSpan.FromSeconds(2))
+            // disabled: timerService.Start(_ => BenchmarkRunTimerProxy(), TimeSpan.FromSeconds(2))
             
             // Test native features
             Console.WriteLine("TEST WITH HANDLE FACTORY:");
@@ -139,7 +139,7 @@ namespace TestMode.Entities.Systems.IssueTests
             RunTests(fastFactory);
 
             // Threading test
-            // timerService.Start(_ => ThreadingTest(fastProxy, handleProxy), TimeSpan.FromSeconds(15));
+            // disabled: timerService.Start(_ => ThreadingTest(fastProxy, handleProxy), TimeSpan.FromSeconds(15))
 
             // Multiple calls test
            InvokeVehicleNatives(entityManager, fastProxy);

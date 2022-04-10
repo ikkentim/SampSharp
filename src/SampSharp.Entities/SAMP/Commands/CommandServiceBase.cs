@@ -54,14 +54,14 @@ namespace SampSharp.Entities.SAMP.Commands
         }
 
         /// <summary>
-        /// Invokes a command based on the specified <paramref name="inputText"/>.
+        /// Invokes a command based on the specified <paramref name="inputText" />.
         /// </summary>
         /// <param name="services">A service provider.</param>
         /// <param name="prefix">The prefix.</param>
         /// <param name="inputText">The inputText.</param>
         /// <returns>The result</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="prefix"/> is null when it must contain values.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="prefix"/> is empty when it must contain values.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="prefix" /> is null when it must contain values.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="prefix" /> is empty when it must contain values.</exception>
         protected InvokeResult Invoke(IServiceProvider services, object[] prefix, string inputText)
         {
             if (_prefixParameters > 0 && prefix == null)
@@ -151,9 +151,9 @@ namespace SampSharp.Entities.SAMP.Commands
         }
 
         /// <summary>
-        /// Scans for methods in <see cref="ISystem"/> which should be considered to be compiled as a command.
+        /// Scans for methods in <see cref="ISystem" /> which should be considered to be compiled as a command.
         /// </summary>
-        /// <param name="scanner">A scanner which is already limited to members of types which implement <see cref="ISystem"/>.</param>
+        /// <param name="scanner">A scanner which is already limited to members of types which implement <see cref="ISystem" />.</param>
         /// <returns>The methods which provide commands.</returns>
         protected abstract IEnumerable<(MethodInfo method, ICommandMethodInfo commandInfo)> ScanMethods(
             AssemblyScanner scanner);
@@ -170,14 +170,17 @@ namespace SampSharp.Entities.SAMP.Commands
         
         private static string CommandText(CommandInfo command)
         {
-            return command.Parameters.Length == 0
-                ? $"Usage: {command.Name}"
-                : $"Usage: {command.Name} " + string.Join(" ",
-                      command.Parameters.Select(arg => arg.IsRequired ? $"[{arg.Name}]" : $"<{arg.Name}>"));
+            if (command.Parameters.Length == 0)
+            {
+                return $"Usage: {command.Name}";
+            }
+
+            return $"Usage: {command.Name} " + string.Join(" ",
+                command.Parameters.Select(arg => arg.IsRequired ? $"[{arg.Name}]" : $"<{arg.Name}>"));
         }
 
         /// <summary>
-        /// Gets the usage message for one or multiple specified <paramref name="commands"/>. 
+        /// Gets the usage message for one or multiple specified <paramref name="commands" />. 
         /// </summary>
         /// <param name="commands">The commands to get the usage message for. If multiple commands are supplied they can be assumed to be multiple overloads of the same command.</param>
         /// <returns>The usage message for the commands.</returns>
@@ -189,7 +192,7 @@ namespace SampSharp.Entities.SAMP.Commands
         }
         
         /// <summary>
-        /// Creates the parameter parser for the parameter at the specified <paramref name="index"/> in the <paramref name="parameters"/> array..
+        /// Creates the parameter parser for the parameter at the specified <paramref name="index" /> in the <paramref name="parameters" /> array..
         /// </summary>
         /// <param name="parameters">An array which contains all parameters.</param>
         /// <param name="index">The index of the parameter to get the parser for.</param>
@@ -369,7 +372,7 @@ namespace SampSharp.Entities.SAMP.Commands
             }
         }
 
-        private class CommandData
+        private sealed class CommandData
         {
             public object[] Arguments;
             public CommandInfo Info;

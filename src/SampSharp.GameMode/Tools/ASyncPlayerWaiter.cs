@@ -4,7 +4,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Tools
 {
     /// <summary>
-    ///     Contains methods for awaiting calls. Throws <see cref="PlayerDisconnectedException"/> if the player has disconnected.
+    ///     Contains methods for awaiting calls. Throws <see cref="PlayerDisconnectedException" /> if the player has disconnected.
     /// </summary>
     /// <typeparam name="TArguments"></typeparam>
     public class ASyncPlayerWaiter<TArguments> : ASyncWaiter<BasePlayer, TArguments>

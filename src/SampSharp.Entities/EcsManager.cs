@@ -46,6 +46,7 @@ namespace SampSharp.Entities
         /// <inheritdoc />
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
         }
 
         /// <inheritdoc />

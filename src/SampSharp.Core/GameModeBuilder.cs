@@ -30,7 +30,7 @@ namespace SampSharp.Core
         private GameModeRunnerRun _run;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameModeBuilder"/> class.
+        /// Initializes a new instance of the <see cref="GameModeBuilder" /> class.
         /// </summary>
         public GameModeBuilder()
         {
@@ -39,7 +39,7 @@ namespace SampSharp.Core
         }
         
         /// <summary>
-        ///     Use the specified <paramref name="encoding"/> when en/decoding text messages sent to/from the server.
+        ///     Use the specified <paramref name="encoding" /> when en/decoding text messages sent to/from the server.
         /// </summary>
         /// <param name="encoding">The encoding to use when en/decoding text messages send to/from the server.</param>
         /// <returns>The updated game mode configuration builder.</returns>

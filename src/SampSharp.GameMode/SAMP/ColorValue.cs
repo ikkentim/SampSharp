@@ -25,7 +25,7 @@ namespace SampSharp.GameMode.SAMP
         private readonly ColorFormat _fallbackFormat;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorValue"/> struct.
+        /// Initializes a new instance of the <see cref="ColorValue" /> struct.
         /// </summary>
         /// <param name="value">The color value.</param>
         /// <param name="fallbackFormat">The fallback format used when the value is does not have a known name.</param>
@@ -41,7 +41,7 @@ namespace SampSharp.GameMode.SAMP
         public Color Value { get; }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="ColorValue"/> to <see cref="Color"/>.
+        /// Performs an implicit conversion from <see cref="ColorValue" /> to <see cref="Color" />.
         /// </summary>
         /// <param name="value">The value t convert.</param>
         /// <returns>

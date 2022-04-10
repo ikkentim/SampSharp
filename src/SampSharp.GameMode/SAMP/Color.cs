@@ -1245,20 +1245,20 @@ namespace SampSharp.GameMode.SAMP
             {
                 case ColorFormat.ARGB:
                     b = (byte) (color & 0xFF);
-                    g = (byte) ((color >>= 8) & 0xFF);
-                    r = (byte) ((color >>= 8) & 0xFF);
-                    a = (byte) ((color >> 8) & 0xFF);
+                    g = (byte) ((color >> 8) & 0xFF);
+                    r = (byte) ((color >> 16) & 0xFF);
+                    a = (byte) ((color >> 24) & 0xFF);
                     break;
                 case ColorFormat.RGBA:
                     a = (byte) (color & 0xFF);
-                    b = (byte) ((color >>= 8) & 0xFF);
-                    g = (byte) ((color >>= 8) & 0xFF);
-                    r = (byte) ((color >> 8) & 0xFF);
+                    b = (byte) ((color >> 8) & 0xFF);
+                    g = (byte) ((color >> 16) & 0xFF);
+                    r = (byte) ((color >> 24) & 0xFF);
                     break;
                 case ColorFormat.RGB:
                     b = (byte) (color & 0xFF);
-                    g = (byte) ((color >>= 8) & 0xFF);
-                    r = (byte) ((color >> 8) & 0xFF);
+                    g = (byte) ((color >> 8) & 0xFF);
+                    r = (byte) ((color >> 16) & 0xFF);
                     a = (byte) 0xFF;
                     break;
             }

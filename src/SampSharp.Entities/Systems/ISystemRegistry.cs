@@ -37,7 +37,7 @@ namespace SampSharp.Entities
         ISystem[] Get(Type type);
 
         /// <summary>
-        /// Gets all types of systems of the specified <typeparamref name="TSystem"/>.
+        /// Gets all types of systems of the specified <typeparamref name="TSystem" />.
         /// </summary>
         /// <typeparam name="TSystem">The type of the systems to get.</typeparam>
         /// <returns>An array of the systems of the specified type.</returns>

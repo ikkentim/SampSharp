@@ -4,6 +4,7 @@ using SampSharp.Entities.SAMP.Commands;
 
 namespace TestMode.Entities.Systems.Tests
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S3400:Methods should not return constants", Justification = "Testing purposes")]
     public class SystemRconCommandTest : ISystem
     {
         [RconCommand]
@@ -21,7 +22,7 @@ namespace TestMode.Entities.Systems.Tests
         [RconCommand]
         public bool ErrCommand()
         {
-            throw new Exception("RCON threw an error");
+            throw new InvalidOperationException("RCON threw an error");
         }
 
         [RconCommand]

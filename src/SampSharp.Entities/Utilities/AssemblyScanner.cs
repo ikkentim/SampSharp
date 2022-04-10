@@ -25,15 +25,16 @@ namespace SampSharp.Entities.Utilities
     /// </summary>
     public sealed class AssemblyScanner
     {
-        private List<Assembly> _assemblies = new List<Assembly>();
-        private List<Type> _classAttributes = new List<Type>();
-        private List<Type> _classImplements = new List<Type>();
+        private List<Assembly> _assemblies = new();
+        private List<Type> _classAttributes = new();
+        private List<Type> _classImplements = new();
         private bool _includeInstanceMembers = true;
         private bool _includeNonPublicMembers;
         private bool _includeStaticMembers;
-        private List<Type> _memberAttributes = new List<Type>();
+        private List<Type> _memberAttributes = new();
         private bool _includeAbstract;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Searching for members of any visibility (when specified by user)")]
         private BindingFlags MemberBindingFlags =>
             (_includeInstanceMembers ? BindingFlags.Instance : BindingFlags.Default) |
             (_includeStaticMembers ? BindingFlags.Static : BindingFlags.Default) |

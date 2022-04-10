@@ -25,11 +25,12 @@ namespace SampSharp.Entities.Utilities
     /// </summary>
     public static class MethodInvokerFactory
     {
-        private static readonly MethodInfo GetComponentInfo =
+        private static readonly MethodInfo _getComponentInfo =
             typeof(IEntityManager).GetMethod(nameof(IEntityManager.GetComponent),
                 BindingFlags.Public | BindingFlags.Instance, null, new[] {typeof(EntityId)}, null);
 
-        private static readonly MethodInfo GetServiceInfo =
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Member of own type")]
+        private static readonly MethodInfo _getServiceInfo =
             typeof(MethodInvokerFactory).GetMethod(nameof(GetService),
                 BindingFlags.NonPublic | BindingFlags.Static);
 
@@ -86,7 +87,7 @@ namespace SampSharp.Entities.Utilities
                     expressions.Add(getEntityExpression);
 
                     // If entity is not null, convert entity to component. Assign component to component variable.
-                    var getComponentInfo = GetComponentInfo.MakeGenericMethod(parameterSources[i].Info.ParameterType);
+                    var getComponentInfo = _getComponentInfo.MakeGenericMethod(parameterSources[i].Info.ParameterType);
                     var getComponentExpression = Expression.Assign(componentArg,
                         Expression.Condition(
                             Expression.Equal(entityArg, entityEmpty),
@@ -113,7 +114,7 @@ namespace SampSharp.Entities.Utilities
                 else if (parameterSources[i].IsService)
                 {
                     // Get service
-                    var getServiceCall = Expression.Call(GetServiceInfo, serviceProviderArg,
+                    var getServiceCall = Expression.Call(_getServiceInfo, serviceProviderArg,
                         Expression.Constant(parameterType, typeof(Type)));
                     methodArguments[i] = Expression.Convert(getServiceCall, parameterType);
                 }

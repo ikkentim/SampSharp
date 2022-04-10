@@ -53,11 +53,11 @@ namespace SampSharp.Entities
         }
 
         /// <summary>
-        /// Returns the handle of the entity or the specified <paramref name="default"/> value if the entity is empty.
+        /// Returns the handle of the entity or the specified <paramref name="default" /> value if the entity is empty.
         /// </summary>
         /// <param name="entity">The entity to get the handle of.</param>
         /// <param name="default">The default value to return if the specified entity is empty.</param>
-        /// <returns>The handle of entity or the specified <paramref name="default"/> value if the entity is empty.</returns>
+        /// <returns>The handle of entity or the specified <paramref name="default" /> value if the entity is empty.</returns>
         public static int HandleOrDefault(this EntityId entity, int @default)
         {
             return !entity ? @default : entity.Handle;

@@ -277,6 +277,24 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
+        ///     Attaches this <see cref="GlobalObject" /> to the specified <paramref name="globalObject" />.
+        /// </summary>
+        /// <param name="globalObject">The global object.</param>
+        /// <param name="offset">The offset.</param>
+        /// <param name="rotation">The rotation.</param>
+        /// <param name="syncRotation">if set to <c>true</c> synchronize rotation.</param>
+        /// <exception cref="System.ArgumentNullException">globalObject</exception>
+        public virtual void AttachTo(GlobalObject globalObject, Vector3 offset, Vector3 rotation,
+            bool syncRotation = false)
+        {
+            if (globalObject == null)
+                throw new ArgumentNullException(nameof(globalObject));
+
+            GlobalObjectInternal.Instance.AttachObjectToObject(Id, globalObject.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
+                rotation.Z, syncRotation);
+        }
+
+        /// <summary>
         ///     Attaches a player's camera to this GlobalObject.
         /// </summary>
         /// <param name="player">The player whose camera to attach to this GlobalObject.</param>
@@ -317,24 +335,6 @@ namespace SampSharp.GameMode.World
             base.Dispose(disposing);
 
             GlobalObjectInternal.Instance.DestroyObject(Id);
-        }
-
-        /// <summary>
-        ///     Attaches this <see cref="GlobalObject" /> to the specified <paramref name="globalObject" />.
-        /// </summary>
-        /// <param name="globalObject">The global object.</param>
-        /// <param name="offset">The offset.</param>
-        /// <param name="rotation">The rotation.</param>
-        /// <param name="syncRotation">if set to <c>true</c> synchronize rotation.</param>
-        /// <exception cref="System.ArgumentNullException">globalObject</exception>
-        public virtual void AttachTo(GlobalObject globalObject, Vector3 offset, Vector3 rotation,
-            bool syncRotation = false)
-        {
-            if (globalObject == null)
-                throw new ArgumentNullException(nameof(globalObject));
-
-            GlobalObjectInternal.Instance.AttachObjectToObject(Id, globalObject.Id, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y,
-                rotation.Z, syncRotation);
         }
 
         /// <summary>

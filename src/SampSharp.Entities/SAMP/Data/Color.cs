@@ -15,6 +15,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace SampSharp.Entities.SAMP
@@ -43,19 +44,6 @@ namespace SampSharp.Entities.SAMP
             0x640D1BFF, 0xA3ADC6FF, 0x695853FF, 0x9B8B80FF, 0x620B1CFF, 0x5B5D5EFF, 0x624428FF, 0x731827FF, 0x1B376DFF,
             0xEC6AAEFF
         };
-
-        #region Overrides of ValueType
-
-        /// <summary>
-        /// Returns a <see cref="string" /> representation of this Color.
-        /// </summary>
-        /// <returns>A <see cref="string" /> representation of this Color.</returns>
-        public override string ToString()
-        {
-            return ToString(ColorFormat.RGB);
-        }
-
-        #endregion
 
         #region Constructors
 
@@ -1103,20 +1091,20 @@ namespace SampSharp.Entities.SAMP
             {
                 case ColorFormat.ARGB:
                     b = (byte) (color & 0xFF);
-                    g = (byte) ((color >>= 8) & 0xFF);
-                    r = (byte) ((color >>= 8) & 0xFF);
-                    a = (byte) ((color >> 8) & 0xFF);
+                    g = (byte) ((color >> 8) & 0xFF);
+                    r = (byte) ((color >> 16) & 0xFF);
+                    a = (byte) ((color >> 24) & 0xFF);
                     break;
                 case ColorFormat.RGBA:
                     a = (byte) (color & 0xFF);
-                    b = (byte) ((color >>= 8) & 0xFF);
-                    g = (byte) ((color >>= 8) & 0xFF);
-                    r = (byte) ((color >> 8) & 0xFF);
+                    b = (byte) ((color >> 8) & 0xFF);
+                    g = (byte) ((color >> 16) & 0xFF);
+                    r = (byte) ((color >> 24) & 0xFF);
                     break;
                 case ColorFormat.RGB:
                     b = (byte) (color & 0xFF);
-                    g = (byte) ((color >>= 8) & 0xFF);
-                    r = (byte) ((color >> 8) & 0xFF);
+                    g = (byte) ((color >> 8) & 0xFF);
+                    r = (byte) ((color >> 16) & 0xFF);
                     a = 0xFF;
                     break;
             }
@@ -1160,9 +1148,9 @@ namespace SampSharp.Entities.SAMP
             switch (colorFormat)
             {
                 case ColorFormat.RGB:
-                    return "{" + ToInteger(colorFormat).ToString("X6") + "}";
+                    return "{" + ToInteger(colorFormat).ToString("X6", CultureInfo.InvariantCulture) + "}";
                 default:
-                    return "{" + ToInteger(colorFormat).ToString("X8") + "}";
+                    return "{" + ToInteger(colorFormat).ToString("X8", CultureInfo.InvariantCulture) + "}";
             }
         }
 
@@ -1262,6 +1250,19 @@ namespace SampSharp.Entities.SAMP
         public Color Grayscale()
         {
             return new Color(Brightness, Brightness, Brightness, A / (float) byte.MaxValue);
+        }
+
+        #endregion
+        
+        #region Overrides of ValueType
+
+        /// <summary>
+        /// Returns a <see cref="string" /> representation of this Color.
+        /// </summary>
+        /// <returns>A <see cref="string" /> representation of this Color.</returns>
+        public override string ToString()
+        {
+            return ToString(ColorFormat.RGB);
         }
 
         #endregion

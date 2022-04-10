@@ -25,7 +25,7 @@ namespace SampSharp.Entities
     public class EntityNotFoundException : ArgumentException
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityNotFoundException"/> class.
+        /// Initializes a new instance of the <see cref="EntityNotFoundException" /> class.
         /// </summary>
         /// <param name="paramName">Name of the parameter.</param>
         public EntityNotFoundException(string paramName) : base("The specified entity could not be found.", paramName)
@@ -33,7 +33,7 @@ namespace SampSharp.Entities
         }
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityNotFoundException"/> class.
+        /// Initializes a new instance of the <see cref="EntityNotFoundException" /> class.
         /// </summary>
         /// <param name="info">The object that holds the serialized object data.</param>
         /// <param name="context">The contextual information about the source or destination.</param>

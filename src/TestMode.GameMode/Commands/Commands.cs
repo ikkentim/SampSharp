@@ -10,12 +10,12 @@ using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
-namespace TestMode.Commands
+namespace TestMode.GameMode.Commands
 {
     internal static class Commands
     {
         [CommandGroup("test", "t")]
-        internal class GroupHelpTest 
+        internal static class GroupHelpTest 
         {
             // Issue 361 test
             [Command(IsGroupHelp = true)]
@@ -58,7 +58,7 @@ namespace TestMode.Commands
         }
 
         [CommandGroup]
-        internal class DefaultGroupCommandGroup
+        internal static class DefaultGroupCommandGroup
         {
             [Command(IsGroupHelp = true)]
             public static void GroupHelpCommand(BasePlayer player)
@@ -193,9 +193,7 @@ namespace TestMode.Commands
                 var offset = new Vector3(0, -size.Y / 2, bumper.Z);
 
                 var rotation = vehicle.GetRotationQuat();
-
-                //rotation = new Quaternion(-rotation.X, -rotation.Y, -rotation.Z, rotation.W);
-
+                
                 var mRotation = rotation.LengthSquared > 10000 // Unoccupied vehicle updates corrupt the internal vehicle world matrix
                     ? Matrix.CreateRotationZ(MathHelper.ToRadians(vehicle.Angle))
                     : Matrix.CreateFromQuaternion(rotation);
@@ -230,9 +228,7 @@ namespace TestMode.Commands
                 var offset = new Vector3(0, -size.Y / 2, bumper.Z);
 
                 var rotation = vehicle.GetRotationQuat();
-
-                //rotation = new Quaternion(-rotation.X, -rotation.Y, -rotation.Z, rotation.W);
-
+                
                 var point = vehicle.Position + Vector3.Transform(offset, rotation);
 
                 labels.Add(new TextLabel("[x]", Color.Red, point, 100, 0, false));
@@ -272,18 +268,21 @@ namespace TestMode.Commands
         }
 
         [Command("status")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1854:Unused assignments should be removed", Justification = "Testing generated IL code")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0018:Inline variable declaration", Justification = "Testing generated IL code")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "Testing generated IL code")]
         public static void StatusCommand(BasePlayer player, int vehicleid)
         {
             var vehicle = BaseVehicle.Find(vehicleid);
-            int panels = 99;
-            int doors = 100;
-            int lights = 101;
-            int tires = 102;
+            var panels = 99;
+            var doors = 100;
+            var lights = 101;
+            var tires = 102;
             vehicle.GetDamageStatus(out panels, out doors, out lights, out tires);
-            Console.WriteLine(panels.ToString());
-            Console.WriteLine(doors.ToString());
-            Console.WriteLine(lights.ToString());
-            Console.WriteLine(tires.ToString());
+            Console.WriteLine(panels);
+            Console.WriteLine(doors);
+            Console.WriteLine(lights);
+            Console.WriteLine(tires);
         }
 
         [Command("setstatus")]
@@ -293,10 +292,10 @@ namespace TestMode.Commands
             vehicle.SetDoorsParameters(true, true, true, true);
 
             vehicle.GetDamageStatus(out var panels, out var doors, out var lights, out var tires);
-            Console.WriteLine(panels.ToString());
-            Console.WriteLine(doors.ToString());
-            Console.WriteLine(lights.ToString());
-            Console.WriteLine(tires.ToString());
+            Console.WriteLine(panels);
+            Console.WriteLine(doors);
+            Console.WriteLine(lights);
+            Console.WriteLine(tires);
         }
 
         [Command("give")]

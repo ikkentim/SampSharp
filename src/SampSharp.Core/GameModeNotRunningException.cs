@@ -14,12 +14,14 @@
 // limitations under the License.
 
 using System;
+using System.Runtime.Serialization;
 
 namespace SampSharp.Core
 {
     /// <summary>
     ///     An error thrown if the game mode is not running when game mode-specific methods are called.
     /// </summary>
+    [Serializable]
     public class GameModeNotRunningException : Exception
     {
         /// <summary>
@@ -41,8 +43,17 @@ namespace SampSharp.Core
         ///     Initializes a new instance of the <see cref="GameModeNotRunningException" /> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="inner">The inner.</param>
-        public GameModeNotRunningException(string message, Exception inner) : base(message, inner)
+        /// <param name="innerException">The inner exception.</param>
+        public GameModeNotRunningException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameModeNotRunningException" /> class.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
+        protected GameModeNotRunningException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

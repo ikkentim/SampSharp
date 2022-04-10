@@ -83,10 +83,12 @@ namespace SampSharp.GameMode.Tools
                 throw new ObjectDisposedException(GetType().FullName);
         }
 
+
         /// <summary>
         ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <param name="disposing">Whether managed resources should be disposed.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S2953:Methods named \"Dispose\" should implement \"IDisposable.Dispose\"", Justification = "By design")]
         protected abstract void Dispose(bool disposing);
 
         private void OnDisposed(bool disposing)

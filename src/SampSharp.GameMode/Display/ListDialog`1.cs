@@ -67,7 +67,7 @@ namespace SampSharp.GameMode.Display
         /// Adds a collection of items to the list items.
         /// </summary>
         /// <param name="items">The items.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="items"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="items" /> is null.</exception>
         public void AddItems(IEnumerable<T> items)
         {
             if (items == null) throw new ArgumentNullException(nameof(items));

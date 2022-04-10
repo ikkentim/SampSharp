@@ -164,15 +164,15 @@ namespace SampSharp.Core.CodePages
 
                     var ln = line.Trim();
 
-                    if (ln.StartsWith("#"))
+                    if (ln.StartsWith("#", StringComparison.InvariantCulture))
                         continue;
 
-                    var spl = ln.Split(' ', '\t');
+                    var spl = ln.Split(new []{' ', '\t'});
 
                     string from = null, to = null;
                     foreach (var p in spl)
                     {
-                        if (p.StartsWith("#"))
+                        if (p.StartsWith("#", StringComparison.InvariantCulture))
                             break;
 
                         if (from == null)

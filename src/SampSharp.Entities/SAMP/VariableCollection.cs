@@ -298,25 +298,7 @@ namespace SampSharp.Entities.SAMP
                     $"The variable name is longer than the limit of {MaxKeyLength}.");
             _native.SetVarFloat(varName, value);
         }
-
-        private object Get(string varName)
-        {
-            if (varName == null) throw new ArgumentNullException(nameof(varName));
-            if (varName.Length > MaxKeyLength)
-                return null;
-            switch ((ServerVarType) _native.GetVarType(varName))
-            {
-                case ServerVarType.Int:
-                    return GetInt(varName);
-                case ServerVarType.String:
-                    return GetString(varName);
-                case ServerVarType.Float:
-                    return GetFloat(varName);
-                default:
-                    return null;
-            }
-        }
-
+        
         /// <summary>
         /// Sets and replaces the value of the variable with the specified <paramref name="varName" /> with the specified
         /// <paramref name="value" />.
@@ -355,6 +337,24 @@ namespace SampSharp.Entities.SAMP
             }
         }
 
+        private object Get(string varName)
+        {
+            if (varName == null) throw new ArgumentNullException(nameof(varName));
+            if (varName.Length > MaxKeyLength)
+                return null;
+            switch ((ServerVarType) _native.GetVarType(varName))
+            {
+                case ServerVarType.Int:
+                    return GetInt(varName);
+                case ServerVarType.String:
+                    return GetString(varName);
+                case ServerVarType.Float:
+                    return GetFloat(varName);
+                default:
+                    return null;
+            }
+        }
+
         private int CountVars()
         {
             var result = 0;
@@ -368,7 +368,7 @@ namespace SampSharp.Entities.SAMP
             return result;
         }
 
-        private class ValueCollection : ICollection<object>
+        private sealed class ValueCollection : ICollection<object>
         {
             private readonly VariableCollection _collection;
 
@@ -441,7 +441,7 @@ namespace SampSharp.Entities.SAMP
             public bool IsReadOnly { get; } = true;
         }
 
-        private class KeyCollection : ICollection<string>
+        private sealed class KeyCollection : ICollection<string>
         {
             private readonly VariableCollection _collection;
 
@@ -602,7 +602,7 @@ namespace SampSharp.Entities.SAMP
         public class ServerVariableCollectionNatives : IVariableCollectionNatives
         {
             [NativeMethod(Function = "SetSVarInt")]
-            public virtual bool SetVarInt(string varName, int intValue)
+            public virtual bool SetVarInt(string varName, int value)
             {
                 throw new NativeNotImplementedException();
             }
@@ -614,19 +614,19 @@ namespace SampSharp.Entities.SAMP
             }
 
             [NativeMethod(Function = "SetSVarString")]
-            public virtual bool SetVarString(string varName, string stringValue)
+            public virtual bool SetVarString(string varName, string value)
             {
                 throw new NativeNotImplementedException();
             }
 
             [NativeMethod(Function = "GetSVarString")]
-            public virtual bool GetVarString(string varName, out string stringReturn, int len)
+            public virtual bool GetVarString(string varName, out string value, int size)
             {
                 throw new NativeNotImplementedException();
             }
 
             [NativeMethod(Function = "SetSVarFloat")]
-            public virtual bool SetVarFloat(string varName, float floatValue)
+            public virtual bool SetVarFloat(string varName, float value)
             {
                 throw new NativeNotImplementedException();
             }
@@ -650,7 +650,7 @@ namespace SampSharp.Entities.SAMP
             }
 
             [NativeMethod(Function = "GetSVarNameAtIndex")]
-            public virtual bool GetVarNameAtIndex(int index, out string retVarName, int retLen)
+            public virtual bool GetVarNameAtIndex(int index, out string varName, int size)
             {
                 throw new NativeNotImplementedException();
             }

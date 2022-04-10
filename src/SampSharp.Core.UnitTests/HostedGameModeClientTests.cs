@@ -37,10 +37,7 @@ public class HostedGameModeClientTests
     {
         // arrange
         var handler = () => { };
-
-        var args = new[] { 0 };
-        var result = 0;
-            
+        
         var sut = new HostedGameModeClient(Mock.Of<IGameModeProvider>(), Encoding.ASCII);
 
         // act
