@@ -39,11 +39,6 @@ void print_info() {
 
 void start_server() {
     if(!(plg->state() & STATE_INITIALIZED)) {
-        /* workaround for SA-MP error which prevents OnRconCommand from working
-         * without a filterscript which implements it
-         */
-        sampgdk_SendRconCommand("loadfs empty");
-
         print_info();
 
         plg->state_set(STATE_INITIALIZED);
