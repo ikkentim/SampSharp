@@ -33,15 +33,15 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         /// </returns>
         public bool Parse(ref string commandText, out object output, bool isNullable = false)
         {
-            var text = commandText.TrimStart();
+            commandText = commandText.TrimStart();
 
-            if (string.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(commandText))
             {
                 output = null;
                 return false;
             }
 
-            var word = text.Split(' ').First();
+            var word = commandText.Split(' ').First();
 
             commandText = commandText.Substring(word.Length).TrimStart(' ');
 
