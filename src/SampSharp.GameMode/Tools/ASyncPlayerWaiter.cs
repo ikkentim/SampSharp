@@ -9,8 +9,6 @@ namespace SampSharp.GameMode.Tools
     /// <typeparam name="TArguments"></typeparam>
     public class ASyncPlayerWaiter<TArguments> : ASyncWaiter<BasePlayer, TArguments>
     {
-        #region Overrides of ASyncWaiter<TKey,TArguments>
-
         /// <summary>
         ///     Waits for the <see cref="ASyncWaiter{TKey,TArguments}.Fire" /> to be called with the specified <paramref name="key" />.
         /// </summary>
@@ -27,7 +25,5 @@ namespace SampSharp.GameMode.Tools
                 throw new PlayerDisconnectedException("The player has left the server.", e);
             }
         }
-
-        #endregion
     }
 }

@@ -40,14 +40,10 @@ namespace SampSharp.GameMode.SAMP.Commands
             GameMode = gameMode ?? throw new ArgumentNullException(nameof(gameMode));
         }
 
-        #region Implementation of IService
-
         /// <summary>
         ///     Gets the game mode.
         /// </summary>
         public BaseMode GameMode { get; }
-
-        #endregion
 
         /// <summary>
         ///     Registers the specified command.
@@ -250,8 +246,6 @@ namespace SampSharp.GameMode.SAMP.Commands
             return candidate;
         }
 
-        #region Implementation of ICommandsManager
-
         /// <summary>
         ///     Gets a read-only collection of all registered commands.
         /// </summary>
@@ -374,7 +368,5 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             return command != null && command.Invoke(player, commandText);
         }
-
-        #endregion
     }
 }

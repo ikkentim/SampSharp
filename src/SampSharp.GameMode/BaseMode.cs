@@ -36,9 +36,7 @@ namespace SampSharp.GameMode
         ///     Gets the instance.
         /// </summary>
         public static BaseMode Instance { get; private set; }
-
-        #region Constructors
-
+        
         /// <summary>
         ///     Initializes a new instance of the <see cref="BaseMode" /> class.
         /// </summary>
@@ -46,8 +44,6 @@ namespace SampSharp.GameMode
         {
             Instance = this;
         }
-        
-        #endregion
         
         /// <summary>
         ///     Gets the collection of controllers loaded.
@@ -261,9 +257,7 @@ namespace SampSharp.GameMode
             Client.RegisterCallbacksInObject(extension);
             _extensions.Add(extension);
         }
-
-        #region Overrides of Disposable
-
+        
         /// <summary>
         ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -275,11 +269,7 @@ namespace SampSharp.GameMode
                 _controllers.Dispose();
             }
         }
-
-        #endregion
-
-        #region Implementation of IGameModeProvider
-
+        
         /// <summary>
         ///     Initializes the game mode with the specified game mode client.
         /// </summary>
@@ -301,7 +291,5 @@ namespace SampSharp.GameMode
         {
             OnTick(EventArgs.Empty);
         }
-
-        #endregion
     }
 }

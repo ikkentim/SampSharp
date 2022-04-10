@@ -498,8 +498,6 @@ namespace SampSharp.GameMode
             return !left.Equals(right);
         }
 
-        #region Equality members
-
         /// <summary>
         ///     Returns the hash code for this instance.
         /// </summary>
@@ -542,8 +540,6 @@ namespace SampSharp.GameMode
             if (ReferenceEquals(null, obj)) return false;
             return obj is Vector4 vector && Equals(vector);
         }
-
-        #endregion
 
         /// <summary>
         ///     Returns the fully qualified type name of this instance.

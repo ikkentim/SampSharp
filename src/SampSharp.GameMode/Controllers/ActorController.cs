@@ -22,8 +22,6 @@ namespace SampSharp.GameMode.Controllers
     [Controller]
     public class ActorController : ITypeProvider, IEventListener
     {
-        #region Implementation of IEventListener
-
         /// <summary>
         ///     Registers the events this <see cref="IEventListener" /> wants to listen to.
         /// </summary>
@@ -34,11 +32,7 @@ namespace SampSharp.GameMode.Controllers
             gameMode.ActorStreamIn += (sender, args) => (sender as Actor)?.OnStreamIn(args);
             gameMode.ActorStreamOut += (sender, args) => (sender as Actor)?.OnStreamOut(args);
         }
-
-        #endregion
-
-        #region Implementation of ITypeProvider
-
+        
         /// <summary>
         ///     Registers types this <see cref="ITypeProvider" /> requires the system to use.
         /// </summary>
@@ -46,7 +40,5 @@ namespace SampSharp.GameMode.Controllers
         {
             Actor.Register<Actor>();
         }
-
-        #endregion
     }
 }

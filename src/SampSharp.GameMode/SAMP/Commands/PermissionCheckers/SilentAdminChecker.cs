@@ -21,8 +21,6 @@ namespace SampSharp.GameMode.SAMP.Commands.PermissionCheckers
     /// </summary>
     public class SilentAdminChecker : IPermissionChecker
     {
-        #region Implementation of IPermissionChecker
-
         /// <summary>
         ///     Gets the message displayed when the player is denied permission.
         /// </summary>
@@ -34,7 +32,5 @@ namespace SampSharp.GameMode.SAMP.Commands.PermissionCheckers
         /// <param name="player">The player.</param>
         /// <returns>true if allowed; false if denied.</returns>
         public bool Check(BasePlayer player) => player.IsAdmin;
-
-        #endregion
     }
 }

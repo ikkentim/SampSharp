@@ -27,9 +27,7 @@ namespace SampSharp.Core
         ///     When overridden in a derived class, returns the character encoding in which the output is written.
         /// </summary>
         public override Encoding Encoding => Encoding.ASCII;
-
-        #region WriteLine
-
+        
         /// <summary>
         ///     Writes a character followed by a line terminator to the text string or stream.
         /// </summary>
@@ -211,11 +209,7 @@ namespace SampSharp.Core
         {
             Write(value);
         }
-
-        #endregion
-
-        #region Write
-
+        
         /// <summary>
         ///     Writes a character to the text string or stream.
         /// </summary>
@@ -409,11 +403,7 @@ namespace SampSharp.Core
         {
             Write(value.ToString());
         }
-
-        #endregion
-
-        #region Async
-
+        
         // TODO: Improve Async variants
         /// <summary>
         ///     Writes a character to the text string or stream asynchronously.
@@ -501,7 +491,5 @@ namespace SampSharp.Core
         {
             return new Task(() => WriteLine(value));
         }
-
-        #endregion
     }
 }

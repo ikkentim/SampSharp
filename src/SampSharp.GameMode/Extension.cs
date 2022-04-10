@@ -23,8 +23,6 @@ namespace SampSharp.GameMode
     /// </summary>
     public abstract class Extension : IExtension
     {
-        #region Implementation of IExtension
-
         /// <summary>
         ///     Loads services provided by this extensions.
         /// </summary>
@@ -50,7 +48,5 @@ namespace SampSharp.GameMode
         public virtual void PostLoad(BaseMode gameMode)
         {
         }
-
-        #endregion
     }
 }

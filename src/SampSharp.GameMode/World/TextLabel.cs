@@ -33,18 +33,12 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public const int Max = 1024;
 
-        #region Fields
-
         private Color _color;
         private float _drawDistance;
         private Vector3 _position;
         private bool _testLOS;
         private string _text;
         private int _virtualWorld;
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         ///     Gets or sets the color of this <see cref="TextLabel" />.
@@ -133,10 +127,6 @@ namespace SampSharp.GameMode.World
             }
         }
 
-        #endregion
-
-        #region Constructors
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="TextLabel" /> class.
         /// </summary>
@@ -183,10 +173,6 @@ namespace SampSharp.GameMode.World
         {
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -229,7 +215,5 @@ namespace SampSharp.GameMode.World
 
             TextLabelInternal.Instance.Attach3DTextLabelToVehicle(Id, vehicle.Id, offset.X, offset.Y, offset.Z);
         }
-
-        #endregion
     }
 }

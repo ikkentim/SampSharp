@@ -219,9 +219,7 @@ namespace SampSharp.Core.CodePages
         {
             return Load(File.OpenRead(path), codePage);
         }
-
-        #region Overrides of Encoding
-
+        
         /// <inheritdoc />
         public override int GetByteCount(char[] chars, int index, int count)
         {
@@ -356,7 +354,5 @@ namespace SampSharp.Core.CodePages
         {
             return _hasDoubleByteChars ? byteCount / 2 : byteCount;
         }
-
-        #endregion
     }
 }

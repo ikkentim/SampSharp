@@ -33,8 +33,6 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public const int Max = 1024;
 
-        #region Methods
-
         /// <summary>
         ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -46,10 +44,6 @@ namespace SampSharp.GameMode.World
             PlayerTextLabelInternal.Instance.DeletePlayer3DTextLabel(Owner.Id, Id);
         }
 
-        #endregion
-
-        #region Fields
-
         private BasePlayer _attachedPlayer;
         private BaseVehicle _attachedVehicle;
 
@@ -58,10 +52,6 @@ namespace SampSharp.GameMode.World
         private Vector3 _position;
         private bool _testLOS;
         private string _text;
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         ///     Gets or sets the color of this <see cref="PlayerTextLabel" />.
@@ -173,10 +163,6 @@ namespace SampSharp.GameMode.World
                     AttachedVehicle?.Id ?? BaseVehicle.InvalidId, TestLOS);
             }
         }
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlayerTextLabel" /> class.
@@ -312,7 +298,5 @@ namespace SampSharp.GameMode.World
             : this(owner, text, color, position, drawDistance, true, attachedVehicle)
         {
         }
-
-        #endregion
     }
 }

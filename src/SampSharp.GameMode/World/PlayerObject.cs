@@ -35,8 +35,6 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public const int Max = 1000;
 
-        #region Properties
-
         /// <summary>
         ///     Gets the rotation of this <see cref="IGameObject" />.
         /// </summary>
@@ -90,10 +88,6 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual float DrawDistance { get; }
 
-        #endregion
-
-        #region Events
-
         /// <summary>
         ///     Occurs when the <see cref="OnMoved" /> callback is being called.
         ///     This callback is called when an object is moved after <see cref="Move(Vector3,float)" /> (when it stops moving).
@@ -111,10 +105,6 @@ namespace SampSharp.GameMode.World
         ///     This callback is called when a player ends object edition mode.
         /// </summary>
         public event EventHandler<EditPlayerObjectEventArgs> Edited;
-
-        #endregion
-
-        #region Constructor
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlayerObject" /> class.
@@ -153,10 +143,6 @@ namespace SampSharp.GameMode.World
                 rotation.Y,
                 rotation.Z, drawDistance);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         ///     Moves this <see cref="IGameObject" /> to the given position and rotation with the given speed.
@@ -338,10 +324,6 @@ namespace SampSharp.GameMode.World
             PlayerObjectInternal.Instance.SelectObject(player.Id);
         }
 
-        #endregion
-
-        #region Event raisers
-
         /// <summary>
         ///     Raises the <see cref="Moved" /> event.
         /// </summary>
@@ -368,7 +350,5 @@ namespace SampSharp.GameMode.World
         {
             Edited?.Invoke(this, e);
         }
-
-        #endregion
     }
 }

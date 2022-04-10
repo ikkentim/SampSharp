@@ -100,8 +100,6 @@ namespace SampSharp.GameMode.World
             PickupInternal.Instance.DestroyPickup(Id);
         }
 
-        #region Events
-
         /// <summary>
         ///     Raises the <see cref="PickUp" /> event.
         /// </summary>
@@ -110,10 +108,6 @@ namespace SampSharp.GameMode.World
         {
             PickUp?.Invoke(this, e);
         }
-
-        #endregion
-        
-        #region Properties
 
         /// <summary>
         ///     Gets the virtual world assigned to this <see cref="Pickup" />.
@@ -134,7 +128,5 @@ namespace SampSharp.GameMode.World
         ///     Gets the position of this <see cref="Pickup" />.
         /// </summary>
         public Vector3 Position { get; private set; }
-
-        #endregion
     }
 }

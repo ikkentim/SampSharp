@@ -38,8 +38,6 @@ namespace SampSharp.GameMode.Controllers
             gameMode.PlayerCommandText += gameMode_PlayerCommandText;
         }
 
-        #region Implementation of IGameServiceProvider
-
         /// <summary>
         ///     Registers the services this controller provides.
         /// </summary>
@@ -53,8 +51,6 @@ namespace SampSharp.GameMode.Controllers
             // Register commands in game mode.
             CommandsManager.RegisterCommands(gameMode.GetType());
         }
-
-        #endregion
 
         private void gameMode_PlayerCommandText(object sender, CommandTextEventArgs e)
         {

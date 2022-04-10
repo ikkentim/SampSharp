@@ -25,8 +25,6 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         private static readonly char[] Base10Characters = "1234567890,.-".ToCharArray();
         private static readonly char[] Base16Characters = "1234567890abcdef".ToCharArray();
 
-        #region Implementation of ICommandParameterType
-
         /// <summary>
         ///     Gets the value for the occurance of this parameter type at the start of the commandText. The processed text will be
         ///     removed from the commandText.
@@ -76,7 +74,5 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 
             return false;
         }
-
-        #endregion
     }
 }

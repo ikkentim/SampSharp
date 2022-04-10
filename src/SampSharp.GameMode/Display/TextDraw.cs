@@ -38,17 +38,11 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public const int Max = 2048;
 
-        #region Events
-
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw(BasePlayer,ClickTextDrawEventArgs)" /> is being called.
         ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
         /// </summary>
         public event EventHandler<ClickTextDrawEventArgs> Click;
-
-        #endregion
-
-        #region Event raisers
 
         /// <summary>
         ///     Raises the <see cref="Click" /> event.
@@ -58,10 +52,6 @@ namespace SampSharp.GameMode.Display
         {
             Click?.Invoke(this, e);
         }
-
-        #endregion
-
-        #region Fields
 
         private readonly List<BasePlayer> _playersShownTo = new List<BasePlayer>();
 
@@ -85,10 +75,6 @@ namespace SampSharp.GameMode.Display
         private string _text;
         private bool? _useBox;
         private float? _width;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="TextDraw" /> class.
@@ -132,10 +118,6 @@ namespace SampSharp.GameMode.Display
         {
             _foreColor = foreColor;
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         ///     Gets or sets whether SA-MP fixes should be applied.
@@ -442,10 +424,6 @@ namespace SampSharp.GameMode.Display
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -580,7 +558,5 @@ namespace SampSharp.GameMode.Display
             foreach (var p in _playersShownTo.AsReadOnly())
                 Show(p);
         }
-
-        #endregion
     }
 }

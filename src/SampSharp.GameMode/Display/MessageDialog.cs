@@ -41,14 +41,10 @@ namespace SampSharp.GameMode.Display
             Style = DialogStyle.MessageBox;
         }
 
-        #region Overrides of Dialog
-
         /// <summary>
         ///     Gets the Info displayed.
         /// </summary>
         protected override string Info => Message;
-
-        #endregion
 
         /// <summary>
         ///     Gets or sets the message in the dialog.

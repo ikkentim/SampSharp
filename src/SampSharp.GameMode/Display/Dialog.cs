@@ -31,17 +31,11 @@ namespace SampSharp.GameMode.Display
         private const int DialogHideId = -1;
         private static readonly Dictionary<int, Dialog> OpenDialogs = new Dictionary<int, Dialog>();
         private readonly ASyncPlayerWaiter<DialogResponseEventArgs> _aSyncWaiter = new ASyncPlayerWaiter<DialogResponseEventArgs>();
-
-        #region Properties of Dialog
-
+        
         /// <summary>
         ///     Gets all opened dialogs.
         /// </summary>
         public static IEnumerable<Dialog> All => OpenDialogs.Values;
-
-        #endregion
-
-        #region Methods of Dialog
 
         /// <summary>
         ///     Hides all dialogs for the specified <paramref name="player" />.
@@ -75,11 +69,7 @@ namespace SampSharp.GameMode.Display
 
             return OpenDialogs.ContainsKey(player.Id) ? OpenDialogs[player.Id] : null;
         }
-
-        #endregion
-
-        #region Implementation of IDialog
-
+        
         /// <summary>
         ///     Gets or sets the style.
         /// </summary>
@@ -163,7 +153,5 @@ namespace SampSharp.GameMode.Display
 
             Response?.Invoke(this, e);
         }
-
-        #endregion
     }
 }

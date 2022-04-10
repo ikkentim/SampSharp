@@ -185,8 +185,22 @@ namespace SampSharp.GameMode.SAMP
             [new Color(0xFF, 0xFF, 0x00, 0xFF)] = "Yellow",
             [new Color(0x9A, 0xCD, 0x32, 0xFF)] = "YellowGreen",
         };
-
-        #region Overrides of ValueType
+        
+        /// <summary>
+        ///     Returns a <see cref="string" /> representation of this Color.
+        /// </summary>
+        /// <param name="colorFormat">The format to use to convert the color to a string.</param>
+        /// <returns>A <see cref="string" /> representation of this Color.</returns>
+        public string ToString(ColorFormat colorFormat)
+        {
+            switch (colorFormat)
+            {
+                case ColorFormat.RGB:
+                    return "{" + ToInteger(colorFormat).ToString("X6") + "}";
+                default:
+                    return "{" + ToInteger(colorFormat).ToString("X8") + "}";
+            }
+        }
 
         /// <summary>
         ///     Returns a <see cref="string" /> representation of this Color.
@@ -196,10 +210,6 @@ namespace SampSharp.GameMode.SAMP
         {
             return ToString(ColorFormat.RGB);
         }
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         ///     Initializes a new instance of the Color struct.
@@ -324,10 +334,6 @@ namespace SampSharp.GameMode.SAMP
             B = c.B;
             A = c.A;
         }
-
-        #endregion
-
-        #region Defaults
 
         /// <summary>
         ///     Gets a system-defined color that has an ARGB value of #FFF0F8FF.
@@ -1172,10 +1178,6 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         public static Color YellowGreen { get; } = new Color(0x9A, 0xCD, 0x32, 0xFF);
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         ///     Gets the red value of this Color.
         /// </summary>
@@ -1200,10 +1202,6 @@ namespace SampSharp.GameMode.SAMP
         ///     Gets the brightness of this Color.
         /// </summary>
         public float Brightness => 0.212655f * R + 0.715158f * G + 0.072187f * B;
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         ///     Returns an Integer representation of this Color.
@@ -1289,22 +1287,6 @@ namespace SampSharp.GameMode.SAMP
             var isValidHexNumber = Regex.IsMatch(input, hexPattern, RegexOptions.IgnoreCase);
 
             return isValidHexNumber ? FromInteger(Convert.ToUInt32(input, 16), colorFormat) : White;
-        }
-
-        /// <summary>
-        ///     Returns a <see cref="string" /> representation of this Color.
-        /// </summary>
-        /// <param name="colorFormat">The format to use to convert the color to a string.</param>
-        /// <returns>A <see cref="string" /> representation of this Color.</returns>
-        public string ToString(ColorFormat colorFormat)
-        {
-            switch (colorFormat)
-            {
-                case ColorFormat.RGB:
-                    return "{" + ToInteger(colorFormat).ToString("X6") + "}";
-                default:
-                    return "{" + ToInteger(colorFormat).ToString("X8") + "}";
-            }
         }
 
         /// <summary>
@@ -1412,10 +1394,6 @@ namespace SampSharp.GameMode.SAMP
             return new Color(Brightness, Brightness, Brightness, A / (float)byte.MaxValue);
         }
 
-        #endregion
-
-        #region Operators
-
         /// <summary>
         ///     Cast a Color to an integer.
         /// </summary>
@@ -1497,10 +1475,6 @@ namespace SampSharp.GameMode.SAMP
             return new Vector3((float)value.R/byte.MaxValue, (float)value.G/byte.MaxValue, (float)value.B/byte.MaxValue);
         }
 
-        #endregion
-
-        #region Equality members
-
         /// <summary>
         ///     Indicates whether this instance and a specified object are equal.
         /// </summary>
@@ -1545,7 +1519,5 @@ namespace SampSharp.GameMode.SAMP
                 return hashCode;
             }
         }
-        
-        #endregion
     }
 }

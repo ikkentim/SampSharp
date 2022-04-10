@@ -69,14 +69,10 @@ namespace SampSharp.GameMode.Display
 
             _items.AddRange(items);
         }
-
-        #region Overrides of Dialog
-
+        
         /// <summary>
         ///     Gets the info displayed in the box.
         /// </summary>
         protected override string Info => string.Join("\n", Items);
-
-        #endregion
     }
 }

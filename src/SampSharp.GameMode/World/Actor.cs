@@ -124,8 +124,6 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public static int PoolSize => ActorInternal.Instance.GetActorPoolSize();
 
-        #region Implementation of IWorldObject
-
         /// <summary>
         ///     Gets the position of this <see cref="Actor" />.
         /// </summary>
@@ -144,8 +142,6 @@ namespace SampSharp.GameMode.World
                 ActorInternal.Instance.SetActorPos(Id, value.X, value.Y, value.Z);
             }
         }
-
-        #endregion
 
         /// <summary>
         ///     Occurs when this <see cref="Actor" /> is being streamed in for a player.
@@ -255,8 +251,6 @@ namespace SampSharp.GameMode.World
             PlayerGiveDamage?.Invoke(this, args);
         }
 
-        #region Overrides of Pool<GtaPlayer>
-
         /// <summary>
         ///     Removes this instance from the pool.
         /// </summary>
@@ -265,7 +259,5 @@ namespace SampSharp.GameMode.World
             ActorInternal.Instance.DestroyActor(Id);
             base.Dispose(disposing);
         }
-
-        #endregion
     }
 }

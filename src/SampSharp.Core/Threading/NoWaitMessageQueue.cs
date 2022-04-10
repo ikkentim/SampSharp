@@ -8,9 +8,7 @@ namespace SampSharp.Core
     internal class NoWaitMessageQueue : IMessageQueue
     { 
         private readonly ConcurrentQueue<SendOrPostCallbackItem> _queue = new ConcurrentQueue<SendOrPostCallbackItem>();
-
-        #region Implementation of IMessageQueue
-
+        
         /// <summary>
         ///     Pushes the specified item onto this instance.
         /// </summary>
@@ -19,9 +17,7 @@ namespace SampSharp.Core
         {
             _queue.Enqueue(item);
         }
-
-        #endregion
-
+        
         /// <summary>
         /// Pops a message from the queue.
         /// </summary>

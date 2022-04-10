@@ -250,8 +250,6 @@ namespace SampSharp.GameMode.SAMP.Commands
             return true;
         }
 
-        #region Overrides of Object
-
         /// <summary>
         ///     Returns a string that represents the current object.
         /// </summary>
@@ -267,10 +265,6 @@ namespace SampSharp.GameMode.SAMP.Commands
                        string.Join(" ", Parameters.Select(p => p.IsOptional ? $"<{p.Name}>" : $"[{p.Name}]"));
             return name;
         }
-
-        #endregion
-
-        #region Implementation of ICommand
 
         /// <summary>
         ///     Determines whether this instance can be invoked by the specified player.
@@ -337,7 +331,5 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             return result as bool? ?? true;
         }
-
-        #endregion
     }
 }

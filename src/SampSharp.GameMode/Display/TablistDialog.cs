@@ -73,8 +73,6 @@ namespace SampSharp.GameMode.Display
             _columnCount = _columns.Length;
         }
 
-        #region Overrides of Dialog
-
         /// <summary>
         ///     Gets the info displayed in the box.
         /// </summary>
@@ -87,8 +85,6 @@ namespace SampSharp.GameMode.Display
             }
         }
 
-        #endregion
-
         /// <summary>
         ///     Adds a row with the specified cells.
         /// </summary>
@@ -97,8 +93,6 @@ namespace SampSharp.GameMode.Display
         {
             Add(cells as IEnumerable<string>);
         }
-
-        #region Implementation of IEnumerable
 
         /// <summary>
         ///     Returns an enumerator that iterates through the collection.
@@ -121,10 +115,6 @@ namespace SampSharp.GameMode.Display
         {
             return GetEnumerator();
         }
-
-        #endregion
-
-        #region Implementation of ICollection<IEnumerable<string>>
 
         /// <summary>
         ///     Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
@@ -247,10 +237,6 @@ namespace SampSharp.GameMode.Display
         /// </returns>
         public bool IsReadOnly => false;
 
-        #endregion
-
-        #region Implementation of IList<IEnumerable<string>>
-
         /// <summary>
         ///     Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1" />.
         /// </summary>
@@ -326,7 +312,5 @@ namespace SampSharp.GameMode.Display
                 _rows[index] = string.Join("\t", row);
             }
         }
-
-        #endregion
     }
 }
