@@ -86,8 +86,6 @@ namespace SampSharp.GameMode.Display
             return await _aSyncWaiter.Result(player);
         }
 
-        #region Overrides of Dialog
-
         /// <summary>
         ///     Gets the info displayed in the box.
         /// </summary>
@@ -119,7 +117,5 @@ namespace SampSharp.GameMode.Display
 
             Response?.Invoke(this, e);
         }
-
-        #endregion
     }
 }

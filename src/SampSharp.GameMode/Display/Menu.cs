@@ -28,8 +28,6 @@ namespace SampSharp.GameMode.Display
     {
         private readonly List<BasePlayer> _viewers = new List<BasePlayer>();
 
-        #region Constructors
-
         /// <summary>
         ///     Initializes a new instance of the Menu class.
         /// </summary>
@@ -47,18 +45,10 @@ namespace SampSharp.GameMode.Display
             Viewers = _viewers.AsReadOnly();
         }
 
-        #endregion
-
-        #region Implementation of IIdentifiable
-
         /// <summary>
         ///     Gets the Identity of this <see cref="IIdentifiable" />.
         /// </summary>
         public int Id { get; private set; }
-
-        #endregion
-
-        #region Implementation of IDisposable
 
         /// <summary>
         ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -71,10 +61,6 @@ namespace SampSharp.GameMode.Display
             base.Dispose(disposing);
         }
 
-        #endregion
-
-        #region Constants of Menu
-
         /// <summary>
         ///     Identifier indicating the handle is invalid.
         /// </summary>
@@ -84,10 +70,6 @@ namespace SampSharp.GameMode.Display
         ///     Maximum number of menus which can exist.
         /// </summary>
         public const int Max = 128;
-
-        #endregion
-
-        #region Implementation of IMenu
 
         /// <summary>
         ///     Gets the title.
@@ -211,10 +193,6 @@ namespace SampSharp.GameMode.Display
             Response?.Invoke(player, e);
         }
 
-        #endregion
-
-        #region Methods of Menu
-
         private void Create()
         {
             Destroy();
@@ -268,7 +246,5 @@ namespace SampSharp.GameMode.Display
                 Id = InvalidId;
             }
         }
-
-        #endregion
     }
 }

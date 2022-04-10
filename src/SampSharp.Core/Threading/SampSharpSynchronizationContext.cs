@@ -37,8 +37,6 @@ namespace SampSharp.Core
         /// </summary>
         public IMessageQueue MessageQueue { get; }
         
-        #region Overrides of SynchronizationContext
-
         /// <summary>
         ///     When overridden in a derived class, dispatches a synchronous message to a synchronization context.
         /// </summary>
@@ -77,7 +75,5 @@ namespace SampSharp.Core
             // Do not copy
             return this;
         }
-
-        #endregion
     }
 }

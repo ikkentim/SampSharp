@@ -34,9 +34,7 @@ namespace SampSharp.Entities.SAMP
         {
             GetComponent<NativePickup>().DestroyPickup();
         }
-
-        #region Properties
-
+        
         /// <summary>
         /// Gets the virtual world assigned to this <see cref="Pickup" />.
         /// </summary>
@@ -56,7 +54,5 @@ namespace SampSharp.Entities.SAMP
         /// Gets the position of this <see cref="Pickup" />.
         /// </summary>
         public Vector3 Position { get; }
-
-        #endregion
     }
 }

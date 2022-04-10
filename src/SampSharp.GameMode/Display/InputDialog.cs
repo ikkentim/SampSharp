@@ -41,16 +41,12 @@ namespace SampSharp.GameMode.Display
             Button2 = button2;
             Style = isPassword ? DialogStyle.Password : DialogStyle.Input;
         }
-
-        #region Overrides of Dialog
-
+        
         /// <summary>
         ///     Gets the Info displayed.
         /// </summary>
         protected override string Info => Message;
-
-        #endregion
-
+        
         /// <summary>
         ///     Gets or sets the message in the dialog.
         /// </summary>

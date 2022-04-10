@@ -103,8 +103,6 @@ namespace SampSharp.GameMode.SAMP
             _values[key] = value;
         }
 
-        #region Implementation of IEnumerable
-
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
@@ -118,7 +116,5 @@ namespace SampSharp.GameMode.SAMP
         {
             return GetEnumerator();
         }
-
-        #endregion
     }
 }

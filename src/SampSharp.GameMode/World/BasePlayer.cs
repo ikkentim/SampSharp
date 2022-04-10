@@ -58,8 +58,6 @@ namespace SampSharp.GameMode.World
         ///     Maximum length of the text in a chat bubble.
         /// </summary>
         public const int MaxChatBubbleLength = 144;
-        
-        #region Constructors
 
         /// <summary>
         ///     Initializes the <see cref="BasePlayer" /> class.
@@ -77,10 +75,6 @@ namespace SampSharp.GameMode.World
             PVars = new PVarCollection(this);
             Key = new KeyChangeHandlerSet();
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         ///     Gets or sets the default color of a client message.
@@ -101,10 +95,6 @@ namespace SampSharp.GameMode.World
         ///     Gets the size of the players pool.
         /// </summary>
         public static int PoolSize => PlayerInternal.Instance.GetPlayerPoolSize();
-
-        #endregion
-
-        #region Players properties
 
         /// <summary>
         ///     Gets or sets the name of this Player.
@@ -541,10 +531,6 @@ namespace SampSharp.GameMode.World
             set => PlayerInternal.Instance.SetPlayerPos(Id, value.X, value.Y, value.Z);
         }
 
-        #endregion
-
-        #region SAMP properties
-
         /// <summary>
         ///     Gets whether this Player is an actual player or an NPC.
         /// </summary>
@@ -647,10 +633,6 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual ConnectionStatus ConnectionStatus => (ConnectionStatus)PlayerInternal.Instance.GetConnectionStatus(Id);
 
-
-        #endregion
-
-        #region Events
 
         /// <summary>
         ///     Occurs when the <see cref="OnConnected" /> is being called.
@@ -937,10 +919,6 @@ namespace SampSharp.GameMode.World
         ///     This callback is called when a player picks up a pickup.
         /// </summary>
         public event EventHandler<PickUpPickupEventArgs> PickUpPickup;
-
-        #endregion
-
-        #region Players natives
 
         /// <summary>
         ///     This function can be used to change the spawn information of a specific player. It allows you to automatically set
@@ -1913,10 +1891,6 @@ namespace SampSharp.GameMode.World
             PlayerInternal.Instance.RemovePlayerMapIcon(Id, iconId);
         }
 
-        #endregion
-
-        #region SAMP natives
-
         /// <summary>
         ///     This function sends a message to this <see cref="BasePlayer" /> with a chosen color in the chat. The whole line in
         ///     the chat box will be
@@ -2202,10 +2176,6 @@ namespace SampSharp.GameMode.World
         {
             PlayerInternal.Instance.CancelEdit(Id);
         }
-
-        #endregion
-
-        #region Event raisers
 
         /// <summary>
         ///     Raises the <see cref="Connected" /> event.
@@ -2561,7 +2531,5 @@ namespace SampSharp.GameMode.World
         {
             PickUpPickup?.Invoke(this, e);
         }
-
-        #endregion
     }
 }

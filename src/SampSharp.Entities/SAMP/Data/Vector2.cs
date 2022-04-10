@@ -468,9 +468,7 @@ namespace SampSharp.Entities.SAMP
         {
             return !left.Equals(right);
         }
-
-        #region Equality members
-
+        
         /// <summary>
         /// Indicates whether this instance and a specified object are equal.
         /// </summary>
@@ -509,9 +507,7 @@ namespace SampSharp.Entities.SAMP
                 return (X.GetHashCode() * 397) ^ Y.GetHashCode();
             }
         }
-
-        #endregion
-
+        
         /// <summary>
         /// Returns the fully qualified type name of this instance.
         /// </summary>

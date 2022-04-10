@@ -37,18 +37,12 @@ namespace SampSharp.GameMode.Display
         /// </summary>
         public const int Max = 256;
 
-        #region Events
-
         /// <summary>
         ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw(BasePlayer,ClickPlayerTextDrawEventArgs)" /> is
         ///     being called.
         ///     This callback is called when a player clicks on a player-textdraw.
         /// </summary>
         public event EventHandler<ClickPlayerTextDrawEventArgs> Click;
-
-        #endregion
-
-        #region Event raisers
 
         /// <summary>
         ///     Raises the <see cref="Click" /> event.
@@ -58,10 +52,6 @@ namespace SampSharp.GameMode.Display
         {
             Click?.Invoke(this, e);
         }
-
-        #endregion
-
-        #region Fields
 
         private TextDrawAlignment? _alignment;
         private Color? _backColor;
@@ -84,10 +74,6 @@ namespace SampSharp.GameMode.Display
         private bool? _useBox;
         private bool _visible;
         private float? _width;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
@@ -140,10 +126,6 @@ namespace SampSharp.GameMode.Display
         {
             _foreColor = foreColor;
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         ///     Gets or sets whether SA-MP fixes should be applied.
@@ -456,10 +438,6 @@ namespace SampSharp.GameMode.Display
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -563,7 +541,5 @@ namespace SampSharp.GameMode.Display
         {
             if (_visible) Show();
         }
-
-        #endregion
     }
 }

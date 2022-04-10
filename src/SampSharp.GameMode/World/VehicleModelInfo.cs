@@ -22,8 +22,6 @@ namespace SampSharp.GameMode.World
     /// </summary>
     public partial struct VehicleModelInfo
     {
-        #region Fields
-
         private static readonly VehicleModelInfo[] VehicleModelInfos =
         {
             new VehicleModelInfo(400, "Landstalker", VehicleCategory.OffRoad, 4),
@@ -239,8 +237,6 @@ namespace SampSharp.GameMode.World
             new VehicleModelInfo(610, "Farm Trailer", VehicleCategory.Trailer, 0),
             new VehicleModelInfo(611, "Utility Trailer", VehicleCategory.Trailer, 0)
         };
-
-        #endregion
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="VehicleModelInfo" /> class.

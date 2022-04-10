@@ -84,8 +84,6 @@ namespace SampSharp.GameMode.SAMP.Commands
                 : commandText.Substring(0, Length) == FullName;
         }
 
-        #region Overrides of ValueType
-
         /// <summary>
         ///     Returns the fully qualified type name of this instance.
         /// </summary>
@@ -96,7 +94,5 @@ namespace SampSharp.GameMode.SAMP.Commands
         {
             return FullName;
         }
-
-        #endregion
     }
 }

@@ -21,8 +21,6 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
     /// </summary>
     public class WordType : ICommandParameterType
     {
-        #region Implementation of ICommandParameterType
-
         /// <summary>
         ///     Gets the value for the occurance of this parameter type at the start of the commandText. The processed text will be
         ///     removed from the commandText.
@@ -50,7 +48,5 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
             output = word;
             return true;
         }
-
-        #endregion
     }
 }

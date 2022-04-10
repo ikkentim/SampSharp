@@ -114,9 +114,7 @@ namespace SampSharp.Core
         {
             _running = true;
         }
-
-        #region Implementation of IGameModeClient
-
+        
         /// <inheritdoc />
         public Encoding Encoding { get; }
         
@@ -169,11 +167,7 @@ namespace SampSharp.Core
             else
                 _synchronizationContext.Send(ctx => Interop.Print(text), null);
         }
-
-        #endregion
-
-        #region Implementation of IGameModeRunner
-
+        
         /// <inheritdoc />
         public bool Run()
         {
@@ -210,10 +204,6 @@ namespace SampSharp.Core
 
         /// <inheritdoc />
         public IGameModeClient Client => this;
-
-        #endregion
-
-        #region Implementation of ISynchronizationProvider
         
         /// <inheritdoc />
         bool ISynchronizationProvider.InvokeRequired => !IsOnMainThread;
@@ -223,7 +213,5 @@ namespace SampSharp.Core
         {
             _synchronizationContext.Send(ctx => action(), null);
         }
-
-        #endregion
     }
 }

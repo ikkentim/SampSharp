@@ -44,9 +44,7 @@ namespace SampSharp.Entities.SAMP
             0x640D1BFF, 0xA3ADC6FF, 0x695853FF, 0x9B8B80FF, 0x620B1CFF, 0x5B5D5EFF, 0x624428FF, 0x731827FF, 0x1B376DFF,
             0xEC6AAEFF
         };
-
-        #region Constructors
-
+        
         /// <summary>
         /// Initializes a new instance of the Color struct.
         /// </summary>
@@ -170,11 +168,7 @@ namespace SampSharp.Entities.SAMP
             B = c.B;
             A = c.A;
         }
-
-        #endregion
-
-        #region Defaults
-
+        
         /// <summary>
         /// Gets a system-defined color that has an ARGB value of #FFF0F8FF.
         /// </summary>
@@ -1017,11 +1011,7 @@ namespace SampSharp.Entities.SAMP
         /// Gets a system-defined color that has an ARGB value of #FF9ACD32.
         /// </summary>
         public static Color YellowGreen { get; } = new Color(0x9A, 0xCD, 0x32, 0xFF);
-
-        #endregion
-
-        #region Properties
-
+        
         /// <summary>
         /// Gets or sets the red value of this Color.
         /// </summary>
@@ -1046,11 +1036,7 @@ namespace SampSharp.Entities.SAMP
         /// Gets the brightness of this Color.
         /// </summary>
         public float Brightness => 0.212655f * R + 0.715158f * G + 0.072187f * B;
-
-        #endregion
-
-        #region Methods
-
+        
         /// <summary>
         /// Returns an Integer representation of this Color.
         /// </summary>
@@ -1136,22 +1122,6 @@ namespace SampSharp.Entities.SAMP
             var isValidHexNumber = Regex.IsMatch(input, hexPattern, RegexOptions.IgnoreCase);
 
             return isValidHexNumber ? FromInteger(Convert.ToUInt32(input, 16), colorFormat) : White;
-        }
-
-        /// <summary>
-        /// Returns a <see cref="string" /> representation of this Color.
-        /// </summary>
-        /// <param name="colorFormat">The format to use to convert the color to a string.</param>
-        /// <returns>A <see cref="string" /> representation of this Color.</returns>
-        public string ToString(ColorFormat colorFormat)
-        {
-            switch (colorFormat)
-            {
-                case ColorFormat.RGB:
-                    return "{" + ToInteger(colorFormat).ToString("X6", CultureInfo.InvariantCulture) + "}";
-                default:
-                    return "{" + ToInteger(colorFormat).ToString("X8", CultureInfo.InvariantCulture) + "}";
-            }
         }
 
         /// <summary>
@@ -1251,10 +1221,22 @@ namespace SampSharp.Entities.SAMP
         {
             return new Color(Brightness, Brightness, Brightness, A / (float) byte.MaxValue);
         }
-
-        #endregion
         
-        #region Overrides of ValueType
+        /// <summary>
+        /// Returns a <see cref="string" /> representation of this Color.
+        /// </summary>
+        /// <param name="colorFormat">The format to use to convert the color to a string.</param>
+        /// <returns>A <see cref="string" /> representation of this Color.</returns>
+        public string ToString(ColorFormat colorFormat)
+        {
+            switch (colorFormat)
+            {
+                case ColorFormat.RGB:
+                    return "{" + ToInteger(colorFormat).ToString("X6", CultureInfo.InvariantCulture) + "}";
+                default:
+                    return "{" + ToInteger(colorFormat).ToString("X8", CultureInfo.InvariantCulture) + "}";
+            }
+        }
 
         /// <summary>
         /// Returns a <see cref="string" /> representation of this Color.
@@ -1264,11 +1246,7 @@ namespace SampSharp.Entities.SAMP
         {
             return ToString(ColorFormat.RGB);
         }
-
-        #endregion
-
-        #region Operators
-
+        
         /// <summary>
         /// Cast a Color to an integer.
         /// </summary>
@@ -1350,11 +1328,7 @@ namespace SampSharp.Entities.SAMP
         {
             return new Vector3((float)value.R / byte.MaxValue, (float)value.G / byte.MaxValue, (float)value.B / byte.MaxValue);
         }
-
-        #endregion
-
-        #region Equality members
-
+        
         /// <summary>
         /// Indicates whether this instance and a specified object are equal.
         /// </summary>
@@ -1399,7 +1373,5 @@ namespace SampSharp.Entities.SAMP
                 return hashCode;
             }
         }
-
-        #endregion
     }
 }

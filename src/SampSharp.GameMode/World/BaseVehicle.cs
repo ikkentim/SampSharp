@@ -38,8 +38,6 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public const int Max = 2000;
 
-        #region Properties
-
         /// <summary>
         ///     Gets an instance of <see cref="VehicleModelInfo" /> about this <see cref="BaseVehicle" />.
         /// </summary>
@@ -65,10 +63,6 @@ namespace SampSharp.GameMode.World
         ///     Gets the size of the vehicles pool.
         /// </summary>
         public static int PoolSize => VehicleInternal.Instance.GetVehiclePoolSize();
-
-        #endregion
-
-        #region Vehicles native properties
 
         /// <summary>
         ///     Gets whether this <see cref="BaseVehicle" /> has been created and still is alive.
@@ -445,10 +439,6 @@ namespace SampSharp.GameMode.World
             set => VehicleInternal.Instance.SetVehiclePos(Id, value.X, value.Y, value.Z);
         }
 
-        #endregion
-
-        #region Events
-
         /// <summary>
         ///     Occurs when the <see cref="OnSpawn" /> is being called.
         ///     This callback is called when <see cref="BaseVehicle" /> spawns.
@@ -534,10 +524,6 @@ namespace SampSharp.GameMode.World
         ///     This callback is called when this <see cref="BaseVehicle" />'s siren is toggled.
         /// </summary>
         public event EventHandler<SirenStateEventArgs> SirenStateChanged;
-
-        #endregion
-
-        #region Vehicles natives
 
         /// <summary>
         ///     This function can be used to calculate the distance (as a float) between this <see cref="BaseVehicle" /> and
@@ -1075,10 +1061,6 @@ namespace SampSharp.GameMode.World
                 VehicleInternal.Instance.DestroyVehicle(Id);
         }
 
-        #endregion
-
-        #region Event raisers
-
         /// <summary>
         ///     Raises the <see cref="Spawn" /> event.
         /// </summary>
@@ -1195,7 +1177,5 @@ namespace SampSharp.GameMode.World
         {
             SirenStateChanged?.Invoke(this, args);
         }
-
-        #endregion
     }
 }
