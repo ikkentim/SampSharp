@@ -289,7 +289,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     EmitThrowOnOutOfRangeLength(ilGenerator, param.LengthParam);
 
                     // var strBuf = stackalloc/new byte[...]
-                    var strBuf = EmitSpanAlloc(ilGenerator, param.LengthParam.Parameter);
+                    var strBuf = EmitSpanAllocForStringRef(ilGenerator, param.LengthParam.Parameter);
                     paramBuffers[i] = strBuf;
 
                     // args[i] = NativeUtils.BytePointerToInt(strBufPtr);
@@ -318,7 +318,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.ArrayToIntSpan));
                     ilGenerator.Emit(OpCodes.Stloc, arraySpan);
                     
-                    // args[i] = NativeUtils.BytePointerToInt(strBufPtr);
+                    // args[i] = NativeUtils.IntPointerToInt(arraySpan);
                     EmitBufferLocation(); // args[i]
                     EmitIntSpanToPointer(ilGenerator, arraySpan);
                     ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.IntPointerToInt));
@@ -503,9 +503,15 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                 ilGenerator.EmitConvert<bool,int>();
         }
 
-        private static LocalBuilder EmitSpanAlloc(ILGenerator ilGenerator, ParameterInfo lengthArg)
+        private static LocalBuilder EmitSpanAllocForStringRef(ILGenerator ilGenerator, ParameterInfo lengthArg)
         {
-            return EmitSpanAlloc(ilGenerator, () => ilGenerator.Emit(OpCodes.Ldarg, lengthArg));
+            // multiply by cell size
+            return EmitSpanAlloc(ilGenerator, () =>
+            {
+                ilGenerator.Emit(OpCodes.Ldarg, lengthArg);
+                ilGenerator.Emit(OpCodes.Ldc_I4_4);
+                ilGenerator.Emit(OpCodes.Mul);
+            });
         }
 
         private static LocalBuilder EmitSpanAlloc(ILGenerator ilGenerator, LocalBuilder length)
