@@ -30,7 +30,7 @@ namespace SampSharp.Core.UnitTests.Hosting
             _printfMessage = null;
 
             var pluginData = new InteropStructs.PluginDataRw { Logprintf = &PrintfUnmanaged };
-            var api = new InteropStructs.SampSharpApiRw { PluginData = &pluginData };
+            var api = new InteropStructs.SampSharpApiRw { Size = (uint)sizeof(InteropStructs.SampSharpApiRw), PluginData = &pluginData };
 
             using var gmScope = new GameModeClientScope(Mock.Of<IGameModeClient>());
             using var apiScope = new ApiScope(&api);

@@ -9,6 +9,10 @@ namespace SampSharp.Core.Hosting;
 public readonly unsafe struct SampSharpApi
 {
     /// <summary>
+    /// The size of the <see cref="SampSharpApi"/> struct. Used for versioning.
+    /// </summary>
+    public readonly uint Size;
+    /// <summary>
     /// The plugin data provided to the SampSharp plugin by SA-MP.
     /// </summary>
     public readonly PluginData* PluginData;
