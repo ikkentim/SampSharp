@@ -20,7 +20,6 @@ namespace SampSharp.Core
     /// <summary>
     ///     An error thrown if the game mode is not running when game mode-specific methods are called.
     /// </summary>
-    [Obsolete("Multi-process mode is deprecated and will be removed in a future release.")]
     public class GameModeNotRunningException : Exception
     {
         /// <summary>

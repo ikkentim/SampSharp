@@ -1,5 +1,5 @@
-﻿// SampSharp
-// Copyright 2017 Tim Potze
+// SampSharp
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,22 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.IO;
-using System.Text;
-using SampSharp.Core;
-using SampSharp.Core.Logging;
+namespace SampSharp.Core;
 
-namespace TestMode.GameMode
-{
-    internal class Program
-    {
-        private static void Main(string[] args)
-        {
-            new GameModeBuilder()
-                .ApplyRconFix()
-                .Use<GameMode>()
-                .Run();
-        }
-    }
-}
+/// <summary>
+/// A function which runs a game mode runner.
+/// </summary>
+/// <returns>The created game mode runner.</returns>
+public delegate void GameModeRunnerRun(IGameModeRunner runner);

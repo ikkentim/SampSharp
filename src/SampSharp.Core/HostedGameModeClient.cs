@@ -181,6 +181,11 @@ namespace SampSharp.Core
         /// <inheritdoc />
         public bool Run()
         {
+            if (_running)
+            {
+                return true;
+            }
+
             InternalStorage.RunningClient = this;
             Interop.Initialize();
 
@@ -203,7 +208,7 @@ namespace SampSharp.Core
             // TODO: Verify plugin version
 
             _gameModeProvider.Initialize(this);
-
+            
             return true;
         }
 

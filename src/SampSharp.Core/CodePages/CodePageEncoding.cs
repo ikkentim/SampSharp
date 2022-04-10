@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace SampSharp.Core.CodePages
@@ -27,8 +26,9 @@ namespace SampSharp.Core.CodePages
     /// </summary>
     public sealed class CodePageEncoding : Encoding
     {
-        private readonly Dictionary<ushort, char> _cpToUni = new Dictionary<ushort, char>();
-        private readonly Dictionary<char, ushort> _uniToCp = new Dictionary<char, ushort>();
+        private int _codePage = -1;
+        private readonly Dictionary<ushort, char> _cpToUni = new();
+        private readonly Dictionary<char, ushort> _uniToCp = new();
         private bool _hasDoubleByteChars;
 
         private CodePageEncoding()
@@ -39,7 +39,10 @@ namespace SampSharp.Core.CodePages
         /// Gets a read-only conversion table.
         /// </summary>
         public IReadOnlyDictionary<char, ushort> ConversionTable => new ReadOnlyDictionary<char, ushort>(_uniToCp);
- 
+
+        /// <inheritdoc />
+        public override int CodePage => _codePage;
+
         /// <summary>
         /// Serializes the specified code page to the specified stream.
         /// </summary>
@@ -95,14 +98,13 @@ namespace SampSharp.Core.CodePages
         /// Deserializes a code page.
         /// </summary>
         /// <param name="stream">The stream.</param>
+        /// <param name="codePage">The code page identifier of the contents of the stream or -1 if the encoding in the stream does not represent a numbered code page.</param>
         /// <returns>The deserialized code page.</returns>
-        public static CodePageEncoding Deserialize(Stream stream)
+        public static CodePageEncoding Deserialize(Stream stream, int codePage = -1)
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
 
-            var result = new CodePageEncoding();
-
-            result._hasDoubleByteChars = stream.ReadByte() != 0;
+            var result = new CodePageEncoding { _codePage = codePage, _hasDoubleByteChars = stream.ReadByte() != 0 };
 
             var buffer = new byte[4 * 256];
             stream.Read(buffer, 0, 4);
@@ -110,8 +112,7 @@ namespace SampSharp.Core.CodePages
             var length = BitConverter.ToInt32(buffer, 0);
 
             var i = 0;
-            var head = 0;
-
+            int head;
             void Read()
             {
                 var max = (length - i) * 4;
@@ -148,12 +149,13 @@ namespace SampSharp.Core.CodePages
         ///     Creates a new <see cref="CodePageEncoding" /> instance based on the data provided by the specified stream.
         /// </summary>
         /// <param name="stream">The steam to load the code page encoding from.</param>
+        /// <param name="codePage">The code page identifier of the contents of the stream or -1 if the encoding in the stream does not represent a numbered code page.</param>
         /// <returns>The newly created encoding instance.</returns>
-        public static CodePageEncoding Load(Stream stream)
+        public static CodePageEncoding Load(Stream stream, int codePage = -1)
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
 
-            var result = new CodePageEncoding();
+            var result = new CodePageEncoding { _codePage = codePage };
             using (var reader = new StreamReader(stream))
             {
                 while (!reader.EndOfStream)
@@ -199,6 +201,7 @@ namespace SampSharp.Core.CodePages
                     }
                     catch (ArgumentOutOfRangeException)
                     {
+                        //
                     }
                 }
             }
@@ -210,34 +213,16 @@ namespace SampSharp.Core.CodePages
         ///     Creates a new <see cref="CodePageEncoding" /> instance based on the data provided by the specified stream.
         /// </summary>
         /// <param name="path">The path to the code page file to load the code page encoding from.</param>
+        /// <param name="codePage">The code page identifier of the contents of the stream or -1 if the encoding in the stream does not represent a numbered code page.</param>
         /// <returns>The newly created encoding instance.</returns>
-        public static CodePageEncoding Load(string path)
+        public static CodePageEncoding Load(string path, int codePage = -1)
         {
-            return Load(File.OpenRead(path));
+            return Load(File.OpenRead(path), codePage);
         }
 
         #region Overrides of Encoding
 
-        /// <summary>
-        ///     When overridden in a derived class, calculates the number of bytes produced by encoding a set of characters
-        ///     from the specified character array.
-        /// </summary>
-        /// <returns>The number of bytes produced by encoding the specified characters.</returns>
-        /// <param name="chars">The character array containing the set of characters to encode. </param>
-        /// <param name="index">The index of the first character to encode. </param>
-        /// <param name="count">The number of characters to encode. </param>
-        /// <exception cref="T:System.ArgumentNullException">
-        ///     <paramref name="chars" /> is null.
-        /// </exception>
-        /// <exception cref="T:System.ArgumentOutOfRangeException">
-        ///     <paramref name="index" /> or <paramref name="count" /> is less than zero.-or- <paramref name="index" /> and
-        ///     <paramref name="count" /> do not denote a valid range in <paramref name="chars" />.
-        /// </exception>
-        /// <exception cref="T:System.Text.EncoderFallbackException">
-        ///     A fallback occurred (see Character Encoding in the .NET
-        ///     Framework for complete explanation)-and-<see cref="P:System.Text.Encoding.EncoderFallback" /> is set to
-        ///     <see cref="T:System.Text.EncoderExceptionFallback" />.
-        /// </exception>
+        /// <inheritdoc />
         public override int GetByteCount(char[] chars, int index, int count)
         {
             if (count == 0)
@@ -254,34 +239,8 @@ namespace SampSharp.Core.CodePages
 
             return result;
         }
-
-        /// <summary>
-        ///     When overridden in a derived class, encodes a set of characters from the specified character array into the
-        ///     specified byte array.
-        /// </summary>
-        /// <returns>The actual number of bytes written into <paramref name="bytes" />.</returns>
-        /// <param name="chars">The character array containing the set of characters to encode. </param>
-        /// <param name="charIndex">The index of the first character to encode. </param>
-        /// <param name="charCount">The number of characters to encode. </param>
-        /// <param name="bytes">The byte array to contain the resulting sequence of bytes. </param>
-        /// <param name="byteIndex">The index at which to start writing the resulting sequence of bytes. </param>
-        /// <exception cref="T:System.ArgumentNullException">
-        ///     <paramref name="chars" /> is null.-or- <paramref name="bytes" /> is null.
-        /// </exception>
-        /// <exception cref="T:System.ArgumentOutOfRangeException">
-        ///     <paramref name="charIndex" /> or <paramref name="charCount" /> or <paramref name="byteIndex" /> is less than
-        ///     zero.-or- <paramref name="charIndex" /> and <paramref name="charCount" /> do not denote a valid range in
-        ///     <paramref name="chars" />.-or- <paramref name="byteIndex" /> is not a valid index in <paramref name="bytes" />.
-        /// </exception>
-        /// <exception cref="T:System.ArgumentException">
-        ///     <paramref name="bytes" /> does not have enough capacity from <paramref name="byteIndex" /> to the end of the array
-        ///     to accommodate the resulting bytes.
-        /// </exception>
-        /// <exception cref="T:System.Text.EncoderFallbackException">
-        ///     A fallback occurred (see Character Encoding in the .NET
-        ///     Framework for complete explanation)-and-<see cref="P:System.Text.Encoding.EncoderFallback" /> is set to
-        ///     <see cref="T:System.Text.EncoderExceptionFallback" />.
-        /// </exception>
+        
+        /// <inheritdoc />
         public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
         {
             if (chars == null) throw new ArgumentNullException(nameof(chars));
@@ -326,27 +285,8 @@ namespace SampSharp.Core.CodePages
 
             return result;
         }
-
-        /// <summary>
-        ///     When overridden in a derived class, calculates the number of characters produced by decoding a sequence of
-        ///     bytes from the specified byte array.
-        /// </summary>
-        /// <returns>The number of characters produced by decoding the specified sequence of bytes.</returns>
-        /// <param name="bytes">The byte array containing the sequence of bytes to decode. </param>
-        /// <param name="index">The index of the first byte to decode. </param>
-        /// <param name="count">The number of bytes to decode. </param>
-        /// <exception cref="T:System.ArgumentNullException">
-        ///     <paramref name="bytes" /> is null.
-        /// </exception>
-        /// <exception cref="T:System.ArgumentOutOfRangeException">
-        ///     <paramref name="index" /> or <paramref name="count" /> is less than zero.-or- <paramref name="index" /> and
-        ///     <paramref name="count" /> do not denote a valid range in <paramref name="bytes" />.
-        /// </exception>
-        /// <exception cref="T:System.Text.DecoderFallbackException">
-        ///     A fallback occurred (see Character Encoding in the .NET
-        ///     Framework for complete explanation)-and-<see cref="P:System.Text.Encoding.DecoderFallback" /> is set to
-        ///     <see cref="T:System.Text.DecoderExceptionFallback" />.
-        /// </exception>
+        
+        /// <inheritdoc />
         public override int GetCharCount(byte[] bytes, int index, int count)
         {
             if (bytes == null) throw new ArgumentNullException(nameof(bytes));
@@ -369,33 +309,7 @@ namespace SampSharp.Core.CodePages
             return result;
         }
 
-        /// <summary>
-        ///     When overridden in a derived class, decodes a sequence of bytes from the specified byte array into the
-        ///     specified character array.
-        /// </summary>
-        /// <returns>The actual number of characters written into <paramref name="chars" />.</returns>
-        /// <param name="bytes">The byte array containing the sequence of bytes to decode. </param>
-        /// <param name="byteIndex">The index of the first byte to decode. </param>
-        /// <param name="byteCount">The number of bytes to decode. </param>
-        /// <param name="chars">The character array to contain the resulting set of characters. </param>
-        /// <param name="charIndex">The index at which to start writing the resulting set of characters. </param>
-        /// <exception cref="T:System.ArgumentNullException">
-        ///     <paramref name="bytes" /> is null.-or- <paramref name="chars" /> is null.
-        /// </exception>
-        /// <exception cref="T:System.ArgumentOutOfRangeException">
-        ///     <paramref name="byteIndex" /> or <paramref name="byteCount" /> or <paramref name="charIndex" /> is less than
-        ///     zero.-or- <paramref name="byteIndex" /> and <paramref name="byteCount" /> do not denote a valid range in
-        ///     <paramref name="bytes" />.-or- <paramref name="charIndex" /> is not a valid index in <paramref name="chars" />.
-        /// </exception>
-        /// <exception cref="T:System.ArgumentException">
-        ///     <paramref name="chars" /> does not have enough capacity from <paramref name="charIndex" /> to the end of the array
-        ///     to accommodate the resulting characters.
-        /// </exception>
-        /// <exception cref="T:System.Text.DecoderFallbackException">
-        ///     A fallback occurred (see Character Encoding in the .NET
-        ///     Framework for complete explanation)-and-<see cref="P:System.Text.Encoding.DecoderFallback" /> is set to
-        ///     <see cref="T:System.Text.DecoderExceptionFallback" />.
-        /// </exception>
+        /// <inheritdoc />
         public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex)
         {
             if (bytes == null) throw new ArgumentNullException(nameof(bytes));
@@ -431,39 +345,13 @@ namespace SampSharp.Core.CodePages
             return result;
         }
 
-        /// <summary>
-        ///     When overridden in a derived class, calculates the maximum number of bytes produced by encoding the specified
-        ///     number of characters.
-        /// </summary>
-        /// <returns>The maximum number of bytes produced by encoding the specified number of characters.</returns>
-        /// <param name="charCount">The number of characters to encode. </param>
-        /// <exception cref="T:System.ArgumentOutOfRangeException">
-        ///     <paramref name="charCount" /> is less than zero.
-        /// </exception>
-        /// <exception cref="T:System.Text.EncoderFallbackException">
-        ///     A fallback occurred (see Character Encoding in the .NET
-        ///     Framework for complete explanation)-and-<see cref="P:System.Text.Encoding.EncoderFallback" /> is set to
-        ///     <see cref="T:System.Text.EncoderExceptionFallback" />.
-        /// </exception>
+        /// <inheritdoc />
         public override int GetMaxByteCount(int charCount)
         {
             return _hasDoubleByteChars ? charCount * 2 : charCount;
         }
 
-        /// <summary>
-        ///     When overridden in a derived class, calculates the maximum number of characters produced by decoding the
-        ///     specified number of bytes.
-        /// </summary>
-        /// <returns>The maximum number of characters produced by decoding the specified number of bytes.</returns>
-        /// <param name="byteCount">The number of bytes to decode. </param>
-        /// <exception cref="T:System.ArgumentOutOfRangeException">
-        ///     <paramref name="byteCount" /> is less than zero.
-        /// </exception>
-        /// <exception cref="T:System.Text.DecoderFallbackException">
-        ///     A fallback occurred (see Character Encoding in the .NET
-        ///     Framework for complete explanation)-and-<see cref="P:System.Text.Encoding.DecoderFallback" /> is set to
-        ///     <see cref="T:System.Text.DecoderExceptionFallback" />.
-        /// </exception>
+        /// <inheritdoc />
         public override int GetMaxCharCount(int byteCount)
         {
             return _hasDoubleByteChars ? byteCount / 2 : byteCount;
