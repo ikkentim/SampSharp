@@ -1,3 +1,6 @@
+### 0.10.1
+- Fixed a possible crash when calling natives which return a string
+
 ### 0.10.0
 - Added support for "fastnative" calls, this improves time consumed by calls to native functions by 95% (#365)
 - Added support for varargs in "fastnative" calls (#260)
