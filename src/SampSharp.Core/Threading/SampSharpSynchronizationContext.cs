@@ -16,13 +16,13 @@
 using System;
 using System.Threading;
 
-namespace SampSharp.Core.Threading
+namespace SampSharp.Core
 {
     /// <summary>
     ///     Represents a synchronization context for the SampSharp main thread.
     /// </summary>
     /// <seealso cref="SynchronizationContext" />
-    public class SampSharpSynchronizationContext : SynchronizationContext
+    internal class SampSharpSynchronizationContext : SynchronizationContext
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="SampSharpSynchronizationContext" /> class.

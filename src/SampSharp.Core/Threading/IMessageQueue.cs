@@ -1,9 +1,9 @@
-namespace SampSharp.Core.Threading
+namespace SampSharp.Core
 {
     /// <summary>
     ///     Represents a message queue for messages sent to a <see cref="SampSharpSynchronizationContext" />.
     /// </summary>
-    public interface IMessageQueue
+    internal interface IMessageQueue
     {
         /// <summary>
         ///     Pushes the specified item onto this instance.
