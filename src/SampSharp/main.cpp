@@ -17,6 +17,7 @@
 #include <sstream>
 #include <sampgdk/sampgdk.h>
 #include "config_cfg.h"
+#include "config_win.h"
 #include "version.h"
 #include "logging.h"
 #include "testing.h"
@@ -106,7 +107,15 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
 
     log_info("v%s, (C)2014-2022 Tim Potze", PLUGIN_VERSION_STR);
 
+#if SAMPSHARP_WINDOWS
+    config_cfg cfg2;
+
+    // decorate config with command line arguments
+    config_win cfg(&cfg2);
+#elif SAMPSHARP_LINUX
     config_cfg cfg;
+#endif
+
     locator loc(&cfg);
 
     if(!validate_config(&cfg)) {

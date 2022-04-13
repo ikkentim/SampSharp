@@ -101,7 +101,9 @@
     <None Include="SampSharp.def" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="config.cpp" />
     <ClCompile Include="config_cfg.cpp" />
+    <ClCompile Include="config_win.cpp" />
     <ClCompile Include="coreclr_app.cpp" />
     <ClCompile Include="includes\sampgdk\sampgdk.c" />
     <ClCompile Include="includes\sdk\amxplugin.cpp" />
@@ -116,6 +118,7 @@
   <ItemGroup>
     <ClInclude Include="config.h" />
     <ClInclude Include="config_cfg.h" />
+    <ClInclude Include="config_win.h" />
     <ClInclude Include="coreclr_app.h" />
     <ClInclude Include="interop.h" />
     <ClInclude Include="locator.h" />
