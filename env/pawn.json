@@ -1,0 +1,21 @@
+{
+	"user": "ikkentim",
+	"repo": "sampsharp",
+	"local": true,
+	"runtime": {
+		"version": "0.3.7",
+		"mode": "server",
+		"port": 7777,
+		"hostname": "SampSharp.dev",
+		"weburl": "www.sampsharp.net",
+		"gamemodetext": "Development",
+		"announce": false,
+		"lanmode": false,
+		"rcon": true,
+		"rcon_password": "sampsharp",
+		"extra": {
+			"gamemode0": "empty",
+			"plugins": "sampsharp"
+		}
+	}
+}
