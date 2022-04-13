@@ -14,11 +14,10 @@
 // limitations under the License.
 
 #pragma once
+#include <string>
 
-#include <sampgdk/sampgdk.h>
-
-// SampSharp proves a small number of natives which can be used for testing functionality
-// related to invoking natives, processing the return value of the natives and handling of
-// references in native parameters.
-
-int load_test_natives(AMX* amx);
+class config {
+public:
+    virtual bool get_config_string(std::string name, std::string &result) = 0;
+    virtual bool get_config_bool(std::string name, bool &result) = 0;
+};

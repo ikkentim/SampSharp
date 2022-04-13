@@ -9,30 +9,15 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Source Files\deps">
+      <UniqueIdentifier>{42e6ff68-9725-46d0-a1e1-a9291f773ed9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConfigReader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="includes\sdk\amxplugin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="includes\sampgdk\sampgdk.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="plugin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="logging.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pathutil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hosted_server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="testing.cpp">
@@ -44,12 +29,27 @@
     <ClCompile Include="coreclr_app.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="locator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="config_cfg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="nethost_coreclr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\sdk\amxplugin.cpp">
+      <Filter>Source Files\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\sampgdk\sampgdk.c">
+      <Filter>Source Files\deps</Filter>
+    </ClCompile>
+    <ClCompile Include="strutil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConfigReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StringUtil.h">
+    <ClInclude Include="strutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="platforms.h">
@@ -58,16 +58,7 @@
     <ClInclude Include="version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="plugin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="logging.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pathutil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="hosted_server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="testing.h">
@@ -77,6 +68,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="coreclr_app.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="locator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="config_cfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nethost.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nethost_coreclr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

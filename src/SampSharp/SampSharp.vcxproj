@@ -101,30 +101,31 @@
     <None Include="SampSharp.def" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConfigReader.cpp" />
+    <ClCompile Include="config_cfg.cpp" />
     <ClCompile Include="coreclr_app.cpp" />
-    <ClCompile Include="hosted_server.cpp" />
     <ClCompile Include="includes\sampgdk\sampgdk.c" />
     <ClCompile Include="includes\sdk\amxplugin.cpp" />
     <ClCompile Include="interop.cpp" />
+    <ClCompile Include="locator.cpp" />
     <ClCompile Include="logging.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="pathutil.cpp" />
-    <ClCompile Include="plugin.cpp" />
+    <ClCompile Include="nethost_coreclr.cpp" />
+    <ClCompile Include="strutil.cpp" />
     <ClCompile Include="testing.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConfigReader.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="config_cfg.h" />
     <ClInclude Include="coreclr_app.h" />
-    <ClInclude Include="hosted_server.h" />
     <ClInclude Include="interop.h" />
+    <ClInclude Include="locator.h" />
     <ClInclude Include="logging.h" />
-    <ClInclude Include="pathutil.h" />
-    <ClInclude Include="plugin.h" />
+    <ClInclude Include="nethost.h" />
+    <ClInclude Include="nethost_coreclr.h" />
     <ClInclude Include="testing.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="platforms.h" />
-    <ClInclude Include="StringUtil.h" />
+    <ClInclude Include="strutil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

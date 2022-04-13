@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2018 Tim Potze
+// Copyright 2022 Tim Potze
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,14 +19,16 @@
 #include <cstring>
 #include <string.h>
 #include <assert.h>
+#include <filesystem>
 #include <limits.h>
 #include <fstream>
 #include <vector>
 #include <set>
 #include <string>
-#include "pathutil.h"
+#include "platforms.h"
 #include "logging.h"
 #include <json/json.h>
+
 #if SAMPSHARP_LINUX
 #  include <dirent.h>
 #  include <dlfcn.h>
@@ -40,6 +42,17 @@
 #    include <sys/sysctl.h>
 #  endif
 #endif
+
+#if SAMPSHARP_LINUX
+#  define __DIR_SEPARATOR_FORWARD
+#endif
+
+#ifdef __DIR_SEPARATOR_FORWARD
+#  define DIR_SEPARATOR "/"
+#else
+#  define DIR_SEPARATOR "\\"
+#endif
+
 
 #if !defined(PATH_MAX) && defined(MAX_PATH)
 #  define PATH_MAX MAX_PATH
@@ -65,29 +78,20 @@ bool coreclr_app::load_symbol(void *coreclr_lib, const char *symbol,
 
 int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path,
     const char* app_domain_friendly_name) {
-    std::string abs_exe_path;
-    if(!get_absolute_path(exe_path, abs_exe_path)) {
-        log_error("Failed to get absolute executable path.");
-        return -1;
-    }
+    std::filesystem::path exe_path_p = exe_path;
+    std::filesystem::path clr_dir_p = clr_dir_c;
 
-    abs_exe_path_ = abs_exe_path;
+    exe_path_p = absolute(exe_path_p);
+    clr_dir_p = absolute(clr_dir_p);
 
-    std::string app_dir;
-    if(!get_directory(abs_exe_path.c_str(), app_dir)) {
-        log_error("Failed to get app path.");
-        return -1;
-    }
+    std::filesystem::path app_dir_p = exe_path_p.parent_path();
+    std::filesystem::path coreclr_dll_p = clr_dir_p / CORECLR_LIB;
 
-    std::string clr_dir;
-    if(!get_absolute_path(clr_dir_c, clr_dir)) {
-        log_error("Failed to get absolute clr path.");
-        return -1;
-    }
+    abs_exe_path_ = exe_path_p.string();
 
-    std::string coreclr_dll((clr_dir));
-    coreclr_dll.append(DIR_SEPARATOR);
-    coreclr_dll.append(CORECLR_LIB);
+    std::string app_dir = app_dir_p.string();
+    std::string clr_dir = clr_dir_p.string();
+    std::string coreclr_dll = coreclr_dll_p.string();
 
     if (coreclr_dll.length() >= PATH_MAX)
     {
@@ -98,15 +102,14 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path,
     // Construct tpa
     std::string tpa_list;
 
-    tpa_list = abs_exe_path;
+    tpa_list = abs_exe_path_;
     tpa_list.append(TPA_DELIMITER);
 
     construct_tpa(clr_dir.c_str(), tpa_list);
-    add_deps_to_tpa(abs_exe_path, tpa_list);
+    add_deps_to_tpa(abs_exe_path_, tpa_list);
 
     // Construct native search directory paths
-    std::string plugins_dir;
-    get_absolute_path("plugins", plugins_dir);
+    std::string plugins_dir = absolute(std::filesystem::path("plugins")).string();
     std::string native_search_dirs(app_dir);
     native_search_dirs.append(TPA_DELIMITER);
     native_search_dirs.append(clr_dir);
@@ -162,7 +165,7 @@ int coreclr_app::initialize(const char *clr_dir_c, const char* exe_path,
     };
 
     return coreclr_initialize_(
-        abs_exe_path.c_str(),
+        abs_exe_path_.c_str(),
         app_domain_friendly_name,
         sizeof(property_keys) / sizeof(property_keys[0]),
         property_keys,
@@ -386,7 +389,7 @@ int coreclr_app::construct_tpa(const char *directory, std::string &tpa_list) {
     {
         // Construct the file name search pattern
         wchar_t searchPath[PATH_MAX];
-        mbstowcs_s(NULL, searchPath, directory, PATH_MAX);
+        mbstowcs_s(nullptr, searchPath, directory, PATH_MAX);
         wcscat_s(searchPath, PATH_MAX, L"\\");
         wcscat_s(searchPath, PATH_MAX, tpaExtensions[i]);
 
@@ -400,9 +403,14 @@ int coreclr_app::construct_tpa(const char *directory, std::string &tpa_list) {
             {
                 std::wstring wname = std::wstring(find.cFileName);
 
+                std::string name(wname.length(), 0);
+                std::transform(wname.begin(), wname.end(), name.begin(), [] (wchar_t c) {
+                    return (char)c;
+                });
+
                 tpa_list.append(std::string(directory));
                 tpa_list.append(DIR_SEPARATOR);
-                tpa_list.append(std::string(wname.begin(), wname.end()));
+                tpa_list.append(name);
                 tpa_list.append(TPA_DELIMITER);
             }
             while (FindNextFileW(fhandle, &find));
@@ -415,31 +423,38 @@ int coreclr_app::construct_tpa(const char *directory, std::string &tpa_list) {
 
 void coreclr_app::add_deps_to_tpa(std::string abs_exe_path,
     std::string &tpa_list) {
-    if(!path_has_extension(abs_exe_path.c_str(), ".dll")) {
+    if(std::filesystem::path(abs_exe_path).extension() != ".dll") {
         return;
     }
 
+    std::filesystem::path runtimeconfig_path_p;
     std::string runtimeconfig_path;
     std::string deps_path;
 
     // Find runtime config
-    path_change_extension(abs_exe_path.c_str(), ".runtimeconfig.dev.json",
-        runtimeconfig_path);
+    runtimeconfig_path_p = abs_exe_path;
+    runtimeconfig_path_p = runtimeconfig_path_p.replace_extension(".runtimeconfig.dev.json");
 
-    if(!file_exists(runtimeconfig_path.c_str())) {
-        path_change_extension(abs_exe_path.c_str(), ".runtimeconfig.json",
-            runtimeconfig_path);
+    if(!exists(runtimeconfig_path_p)) {
+    runtimeconfig_path_p = abs_exe_path;
+    runtimeconfig_path_p = runtimeconfig_path_p.replace_extension(".runtimeconfig.json");
     }
-
-    if(!file_exists(runtimeconfig_path.c_str())) {
+    
+    if(!exists(runtimeconfig_path_p)) {
         return;
     }
+
+    runtimeconfig_path = runtimeconfig_path_p.string();
 
     // Find deps file
-    path_change_extension(abs_exe_path.c_str(), ".deps.json", deps_path);
-    if(!file_exists(deps_path.c_str())) {
+    std::filesystem::path deps_path_p(abs_exe_path);
+    deps_path_p = deps_path_p.replace_extension(".deps.json");
+
+    if(!exists(deps_path_p)) {
         return;
     }
+
+    deps_path = deps_path_p.string();
 
     log_debug("runtimeconfig path: %s", runtimeconfig_path.c_str());
     log_debug("deps path: %s", deps_path.c_str());
@@ -473,26 +488,23 @@ void coreclr_app::add_deps_to_tpa(std::string abs_exe_path,
 
     // Find probing paths
     json::JSON runtimeconfig = json::JSON::Load(runtimeconfig_json);
-
-    if(!runtimeconfig.hasKey("runtimeOptions") ||
-        !runtimeconfig["runtimeOptions"].hasKey("additionalProbingPaths")) {
-        return;
-    }
-
-    json::JSON probes =
-        runtimeconfig["runtimeOptions"]["additionalProbingPaths"];
-
-    if(!JSON_IS(probes, Array)) {
-        return;
-    }
-
+    
     std::vector<std::string> probing_paths;
-    for(const auto& path_obj : probes.ArrayRange()) {
-        std::string path = path_obj.ToString();
-        if(dir_exists(path.c_str())) {
-            probing_paths.push_back(path);
 
-            log_debug("Probe path found: %s", path.c_str());
+    if(runtimeconfig.hasKey("runtimeOptions") && runtimeconfig["runtimeOptions"].hasKey("additionalProbingPaths")) {
+        json::JSON probes =
+            runtimeconfig["runtimeOptions"]["additionalProbingPaths"];
+
+        if(JSON_IS(probes, Array)) {
+            for(const auto& path_obj : probes.ArrayRange()) {
+                std::string path = path_obj.ToString();
+                
+                if(is_directory(std::filesystem::path(path))) {
+                    probing_paths.push_back(path);
+
+                    log_debug("Probe path found: %s", path.c_str());
+                }
+            }
         }
     }
 
@@ -530,11 +542,11 @@ void coreclr_app::add_deps_to_tpa(std::string abs_exe_path,
 
         for(const auto& runtime_obj : obj.second["runtime"].ObjectRange()) {
             for(const auto& probing_path : probing_paths) {
-                std::string path;
-                path_append(probing_path.c_str(), lib_path.c_str(), path);
-                path_append(path.c_str(), runtime_obj.first.c_str(), path);
+                std::filesystem::path path_p = std::filesystem::path(probing_path) / lib_path / runtime_obj.first;
+      
+                if(exists(path_p)) {
+                    std::string path = absolute(path_p).string();
 
-                if(file_exists(path.c_str())) {
                     log_debug("Found dependency %s", path.c_str());
 
                     tpa_list.append(path);
@@ -562,11 +574,11 @@ int coreclr_app::release()
     // TODO? Other errors???
     host_->UnloadAppDomain(domain_id_, true);
     host_->Stop();
-    retval = host_->Release();
+    retval = (int)host_->Release();
 
     if(module_) {
         FreeLibrary(module_);
-        module_ = NULL;
+        module_ = nullptr;
     }
 #endif
 

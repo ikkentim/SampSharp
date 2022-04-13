@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2018 Tim Potze
+// Copyright 2022 Tim Potze
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,18 +14,13 @@
 // limitations under the License.
 
 #pragma once
+#include "config.h"
+#include "locator.h"
 
-#include "coreclr_app.h"
-
-/** a CLR hosted game mode server */
-class hosted_server {
+class nethost {
 public:
-    hosted_server(const char *clr_dir, const char* exe_path);
-    ~hosted_server();
-
-private:
-    /** the running game mode CLR instance */
-    coreclr_app app_;
-    /** indicates whether the game mode is running */
-    bool running_ = false;
+    virtual ~nethost() = default;
+    virtual bool setup(locator *locator, config* cfg) = 0;
+    virtual void start() = 0;
+    virtual void stop() = 0;
 };

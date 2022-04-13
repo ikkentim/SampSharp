@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,43 +13,54 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <fstream>
-#include <iostream>
+#include <sstream>
 #include <sampgdk/sampgdk.h>
-#include <plugincommon.h>
+#include "config_cfg.h"
 #include "version.h"
-#include "plugin.h"
 #include "logging.h"
-#include "hosted_server.h"
 #include "testing.h"
 #include "interop.h"
+#include "nethost_coreclr.h"
 
-hosted_server *svr = NULL;
-plugin *plg = NULL;
+nethost *host = nullptr;
+bool started = false;
 
 extern void *pAMXFunctions;
 
-void print_info() {
-    log_print("");
-    log_print("SampSharp Plugin");
-    log_print("----------------");
-    log_print("v%s, (C)2014-2022 Tim Potze", PLUGIN_VERSION_STR);
-    log_print("");
-}
-
-void start_server() {
-    if(!(plg->state() & STATE_INITIALIZED)) {
-        print_info();
-
-        plg->state_set(STATE_INITIALIZED);
-    }
-
-    if(svr) {
-        delete svr;
-        svr = NULL;
+bool validate_config(config *cfg) {
+    bool skip;
+    if(cfg->get_config_bool("skip_empty_check", skip) && skip) {
+        return true;
     }
     
-    svr = new hosted_server(plg->get_coreclr()->c_str(), plg->get_gamemode()->c_str());
+    /* check whether gamemodeN values contain acceptable values. */
+    for (int i = 0; i < 15; i++) {
+        std::ostringstream gamemode_key;
+        std::string gamemode_value;
+
+        gamemode_key << "gamemode";
+        gamemode_key << i;
+
+        const bool exists = cfg->get_config_string(gamemode_key.str(), gamemode_value);
+        const bool is_empty = gamemode_value == "empty" || gamemode_value.rfind("empty ") == 0;
+
+        if (i == 0 && !is_empty) {
+            log_error("Can not load sampsharp if a non-SampSharp gamemode is set to load.");
+            log_error("Please ensure you set 'gamemode0 empty 1' in your server.cfg file.");
+            log_error("To override this behaviour add 'skip_empty_check 1' to your server.cfg file.");
+            return false;
+        }
+
+        if (i > 0 && exists) {
+            log_error("Can not load sampsharp if a non-SampSharp gamemode is set to load.");
+            log_error("Please ensure you only specify one script gamemode, namely 'gamemode0"
+                "empty 1' in your server.cfg file.");
+            log_error("To override this behaviour add 'skip_empty_check 1' to your server.cfg file.");
+            return false;
+        }
+    }
+
+    return true;
 }
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports() {
@@ -60,22 +71,33 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData) {
     if (!sampgdk::Load(ppData)) {
         return false;
     }
-
+    
     pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
     sampsharp_api_setup(ppData);
 
-    plg = new plugin();
+    log_info("v%s, (C)2014-2022 Tim Potze", PLUGIN_VERSION_STR);
 
-    /* validate the server config is fit for running SampSharp */
-    return plg && plg->config_validate();
+    config_cfg cfg;
+    locator loc(&cfg);
+
+    if(!validate_config(&cfg)) {
+        return false;
+    }
+    
+    host = new nethost_coreclr();
+
+    if(!host->setup(&loc, &cfg)) {
+        delete host;
+        host = nullptr;
+        return false;
+    }
+    
+    return true;
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload() {
-    delete svr;
-    delete plg;
-    
-    plg = NULL;
-    svr = NULL;
+    delete host;
+    host = nullptr;
 
     sampsharp_api_cleanup();
     sampgdk::Unload();
@@ -95,11 +117,9 @@ PLUGIN_EXPORT void PLUGIN_CALL ProcessTick() {
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPublicCall(AMX *amx, const char *name,
     cell *params, cell *retval) {
-    if (!plg || !(plg->state() & STATE_CONFIG_VALID)) {
-        return true;
-    }
-    if (!svr) {
-        start_server();
+    if(!started && host) {
+        started = true;
+        host->start();
     }
     
     sampsharp_api_public_call(amx, name, params, retval);
