@@ -14,11 +14,14 @@
 // limitations under the License.
 
 #pragma once
+#include "config.h"
+#include <map>
 
-#include <sampgdk/sampgdk.h>
-
-// SampSharp proves a small number of natives which can be used for testing functionality
-// related to invoking natives, processing the return value of the natives and handling of
-// references in native parameters.
-
-int load_test_natives(AMX* amx);
+class config_cfg final : public config {
+ public:
+    config_cfg();
+    bool get_config_string(std::string name, std::string &result) override;
+    bool get_config_bool(std::string name, bool &result) override;
+private:
+    std::map<std::string, std::string> values_;
+};

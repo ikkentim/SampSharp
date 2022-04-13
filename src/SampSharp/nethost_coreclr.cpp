@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2018 Tim Potze
+// Copyright 2022 Tim Potze
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,27 +13,49 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "hosted_server.h"
+#include "nethost_coreclr.h"
 #include "logging.h"
-#include <assert.h>
 
-#define INTEROP_LIB "SampSharp.Core"
-#define INTEROP_CLASS INTEROP_LIB ".Hosting.Interop"
+nethost_coreclr::~nethost_coreclr() {
+    release();
+}
 
-hosted_server *hosting = nullptr;
+bool nethost_coreclr::setup(locator *locator, config* cfg) {
+    coreclr_ = locator->get_coreclr();
+    gamemode_ = locator->get_gamemode();
 
-hosted_server::hosted_server(const char *clr_dir, const char* exe_path) {
+    if(coreclr_.empty() || !exists(coreclr_)) {
+        log_error("Invalid coreclr directory specified in server.cfg.");
+        return false;
+    }
+    
+    
+    if(gamemode_.empty() || !exists(gamemode_)) {
+        log_error("Invalid gamemode specified in server.cfg.");
+        return false;
+    }
+
+    log_info("Gamemode: %s", gamemode_.string().c_str());
+    log_info("CoreCLR: %s", coreclr_.string().c_str());
+    return true;
+}
+
+void nethost_coreclr::start() {
     int retval;
     unsigned int exitcode;
 
+    const auto clr_dir = (coreclr_.parent_path()).string();
+    const auto exe_path = (gamemode_).string();
+
     log_info("Initializing .NET runtime...");
-    if((retval = app_.initialize(clr_dir, exe_path, "SampSharp Host")) < 0) {
+    if((retval = app_.initialize(clr_dir.c_str(), exe_path.c_str(), "SampSharp Host")) < 0) {
         log_error("Failed to initialize CoreCLR runtime. Error %d.", retval);
         return;
     }
+
+    host_init_ = true;
     
     log_info("Starting game mode host...");
-    hosting = this;
     const char *args[1];
     args[0] = "--hosted";
 
@@ -51,10 +73,13 @@ hosted_server::hosted_server(const char *clr_dir, const char* exe_path) {
     running_ = true;
 }
 
-hosted_server::~hosted_server() {
-    app_.release();
+void nethost_coreclr::stop() {
+    release();
+}
 
-    if(hosting == this) {
-        hosting = NULL;
-    }
+void nethost_coreclr::release() {
+     if(host_init_) {
+        app_.release();
+        host_init_ = false;
+    }   
 }

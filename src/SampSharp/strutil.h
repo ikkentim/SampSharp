@@ -13,12 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <string>
+
 #pragma once
 
-#include <sampgdk/sampgdk.h>
-
-// SampSharp proves a small number of natives which can be used for testing functionality
-// related to invoking natives, processing the return value of the natives and handling of
-// references in native parameters.
-
-int load_test_natives(AMX* amx);
+/** case insensitive string comparing */
+bool iequals(const std::string& a, const std::string& b);

@@ -1,4 +1,4 @@
-###
+### 0.11.0
 - Added interop API (#399, #401)
 - Removed callback registration (#399, #401)
 
