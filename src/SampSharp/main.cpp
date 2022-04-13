@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <fstream>
 #include <sstream>
 #include <sampgdk/sampgdk.h>
 #include "config_cfg.h"
@@ -26,6 +27,32 @@ nethost *host = nullptr;
 bool started = false;
 
 extern void *pAMXFunctions;
+
+void write_empty_gamemode() {
+    if(fs::exists("gamemodes/empty.amx")) {
+        return;
+    }
+
+    log_info("Writing gamemodes/empty.amx to disk");
+
+    if(!fs::exists("gamemodes")) {
+        fs::create_directory("gamemodes");
+    }
+
+    std::fstream fout;
+    fout.open("gamemodes/empty.amx", std::ios::binary | std::ios::out);
+
+    // compiled bytecode for script: main() return;
+    const uint8_t empty_amx[] = {
+        0x45, 0x00, 0x00, 0x00, 0xE0, 0xF1, 0x08, 0x08, 0x04, 0x00, 0x08, 0x00, 0x3C, 0x00, 0x00, 0x00, 
+        0x54, 0x00, 0x00, 0x00, 0x54, 0x00, 0x00, 0x00, 0x54, 0x40, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 
+        0x38, 0x00, 0x00, 0x00, 0x38, 0x00, 0x00, 0x00, 0x38, 0x00, 0x00, 0x00, 0x38, 0x00, 0x00, 0x00, 
+        0x38, 0x00, 0x00, 0x00, 0x38, 0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00, 0x80, 0x78, 0x00, 0x2E, 
+        0x81, 0x09, 0x80, 0x59, 0x30};
+
+    fout.write((const char *)empty_amx, sizeof(empty_amx));
+    fout.close();
+}
 
 bool validate_config(config *cfg) {
     bool skip;
@@ -59,6 +86,8 @@ bool validate_config(config *cfg) {
             return false;
         }
     }
+
+    write_empty_gamemode();
 
     return true;
 }

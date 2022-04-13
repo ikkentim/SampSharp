@@ -20,6 +20,7 @@ server_log.txt
 /npcmodes/
 /runtime/
 /filterscripts/
+/gamemodes/
 
 # Config file
 server.cfg
