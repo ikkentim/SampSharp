@@ -16,7 +16,6 @@
 #include "config_cfg.h"
 #include <fstream>
 #include <sstream>
-#include "strutil.h"
 
 static void trim(std::string& s) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
@@ -49,7 +48,6 @@ config_cfg::config_cfg() {
 }
 
 bool config_cfg::get_config_string(std::string name, std::string& result) {
-
     const auto iterator = values_.find(name);
 
     if (iterator == values_.end()) {
@@ -57,24 +55,5 @@ bool config_cfg::get_config_string(std::string name, std::string& result) {
     }
 
     result = iterator->second;
-    return true;
-}
-
-bool config_cfg::get_config_bool(std::string name, bool& result) {
-    std::string value;
-    if (!get_config_string(name, value)) {
-        return false;
-    }
-
-    if (iequals(value, "on") || iequals(value, "yes") || iequals(value, "true")) {
-        result = true;
-        return true;
-    }
-    if (iequals(value, "off") || iequals(value, "no") || iequals(value, "false")) {
-        result = false;
-        return true;
-    }
-
-    result = !!atoi(value.c_str());
     return true;
 }

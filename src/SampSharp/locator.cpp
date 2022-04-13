@@ -26,14 +26,13 @@
 #  define CORECLR_LIB "libcoreclr.so"
 #endif
 
-locator::locator(config* cfg) : cfg_(cfg) {
-}
+locator::locator(config* cfg) : cfg_(cfg) {}
 
 fs::path locator::get_hostfxr() {
     std::string hint;
     fs::path result;
 
-    cfg_->get_config_string("coreclr", hint) || 
+    cfg_->get_config_string("coreclr", hint) ||
         cfg_->get_config_string("runtime", hint);
 
     detect_lib(result, hint, HOSTFXR_LIB);
@@ -56,29 +55,29 @@ fs::path locator::get_gamemode() {
     fs::path result;
     cfg_->get_config_string("gamemode", gamemode);
     cfg_->get_config_string("gamemode_base", base);
-    
+
     detect_gamemode(base, gamemode, result);
 
     return result;
 }
 
-bool locator::detect_lib(fs::path &result, const fs::path& search_path, const std::string &lib) {
-	if(!is_directory(search_path)) {
-		return false;
+bool locator::detect_lib(fs::path& result, const fs::path& search_path, const std::string& lib) {
+    if (!is_directory(search_path)) {
+        return false;
     }
-    
+
     log_debug("Checking for lib in %s...", search_path.string().c_str());
 
     // Check in current directory
     const fs::path check_path = search_path / lib;
-    if(exists(check_path)) {
+    if (exists(check_path)) {
         result = check_path;
         return true;
     }
 
     // Check every subdirectory
-    for (const auto &entry : fs::directory_iterator(search_path)) {
-        if(entry.is_directory() && detect_lib(result, entry.path(), lib)) {
+    for (const auto& entry : fs::directory_iterator(search_path)) {
+        if (entry.is_directory() && detect_lib(result, entry.path(), lib)) {
             return true;
         }
     }
@@ -86,90 +85,101 @@ bool locator::detect_lib(fs::path &result, const fs::path& search_path, const st
     return false;
 }
 
-bool locator::detect_lib(fs::path &result, const std::string &path_hint, const std::string &lib) {
-    if(!path_hint.empty()) {
-		const fs::path hint = path_hint;
+bool locator::detect_lib(fs::path& result, const std::string& path_hint, const std::string& lib) {
+    if (!path_hint.empty()) {
+        const fs::path hint = path_hint;
 
-        
-        if(hint.filename() == lib && exists(hint)){
+
+        if (hint.filename() == lib && exists(hint)) {
             result = hint;
-	        return true;
+            return true;
         }
 
-        if(is_directory(hint) && detect_lib(result, fs::path("runtime"), lib)) {
+        if (is_directory(hint) && detect_lib(result, fs::path("runtime"), lib)) {
             return true;
         }
     }
 
-	return
+    return
         detect_lib(result, fs::path("runtime"), lib) ||
         detect_lib(result, fs::path("dotnet"), lib);
 }
 
-bool locator::detect_gamemode(fs::path &result, const std::string &search_name, const fs::path &search_path) {
-	if(!is_directory(search_path)) {
-		return false;
+bool is_runtime_config(const fs::path& path, const std::string& search_name) {
+    if(search_name.length() == 0) {
+        return path.extension() == ".json" && path.stem().extension() == ".runtimeconfig";
     }
-    
+
+    return iequals(path.filename().string(), search_name);
+}
+
+bool locator::detect_gamemode(fs::path& result, const std::string& search_name, const fs::path& search_path) {
+    if (!is_directory(search_path)) {
+        return false;
+    }
+
     log_debug("Checking for game mode in %s...", search_path.string().c_str());
 
     // Check in current directory
-    for (const auto &entry : fs::directory_iterator(search_path)) {
-        if(iequals(entry.path().filename().string(), search_name)) {
+    for (const auto& entry : fs::directory_iterator(search_path)) {
+
+        if (entry.is_regular_file() && is_runtime_config(entry.path(), search_name)) {
             fs::path rc_path = entry.path();
             fs::path dll_path = rc_path
-                .replace_extension("")
-                .replace_extension(".dll"); // .runtimeconfig.json -> .dll
+                                .replace_extension("")
+                                .replace_extension(".dll"); // .runtimeconfig.json -> .dll
 
-            if(exists(dll_path)) {
-	            result = dll_path;
-	            return true;
+            if (exists(dll_path)) {
+                result = dll_path;
+                return true;
             }
         }
     }
 
     // If directory contains subdirectories for different runtime versions, pick the newest
-    std::regex const regex_version {R"(^net[coreapp]?([0-9])+\.([0-9])+$)"}; 
- 
+    std::regex const regex_version{R"(^net[coreapp]?([0-9])+\.([0-9])+$)"};
+
     int best_version_number = 0;
     fs::path best_version;
-    for (const auto & entry : fs::directory_iterator(search_path)) {
-        if(!entry.is_directory()) {
+    for (const auto& entry : fs::directory_iterator(search_path)) {
+        if (!entry.is_directory()) {
             continue;
         }
 
         fs::path entry_path = entry.path();
         std::string entry_dirname = entry_path.filename().string();
         std::smatch match;
-        if(std::regex_match(entry_dirname, match, regex_version)) {
+        if (std::regex_match(entry_dirname, match, regex_version)) {
             int version_number = stoi(match[1]) * 1000 + stoi(match[2]);
 
-            if(version_number > best_version_number) {
+            if (version_number > best_version_number) {
                 best_version = entry_path;
                 best_version_number = version_number;
             }
         }
     }
-    
-    if(!best_version.empty() && detect_gamemode(result, search_name, best_version)) {
+
+    if (!best_version.empty() && detect_gamemode(result, search_name, best_version)) {
         return true;
     }
 
     // Check every subdirectory
-    for (const auto & entry : fs::directory_iterator(search_path)) {
-        if(entry.is_directory() && detect_gamemode(result, search_name, entry.path())) {
+    for (const auto& entry : fs::directory_iterator(search_path)) {
+        if (entry.is_directory() && detect_gamemode(result, search_name, entry.path())) {
             return true;
         }
     }
 
-    return false;	
+    return false;
 }
 
-bool locator::detect_gamemode(const std::string &dir_hint, const std::string &name, fs::path &result) {
-    const auto search_name = name + ".runtimeconfig.json";
+bool locator::detect_gamemode(const std::string& dir_hint, const std::string& name, fs::path& result) {
+    const auto search_name = name.length() == 0
+                                 ? ""
+                                 : name + ".runtimeconfig.json";
 
-	return
-		(dir_hint.length() > 0 && detect_gamemode(result, search_name, dir_hint)) ||
+    return
+        (dir_hint.length() > 0 && detect_gamemode(result, search_name, dir_hint)) ||
         detect_gamemode(result, search_name, "gamemode") ||
         detect_gamemode(result, search_name, "gamemodes");
 }

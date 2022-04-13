@@ -13,14 +13,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#pragma once
 #include "config.h"
-#include <map>
+#include "strutil.h"
 
-class config_cfg final : public config {
- public:
-    config_cfg();
-    bool get_config_string(std::string name, std::string &result) override;
-private:
-    std::map<std::string, std::string> values_;
-};
+bool config::get_config_bool(std::string name, bool& result) {
+    std::string value;
+    if (!get_config_string(name, value)) {
+        return false;
+    }
+
+    if (iequals(value, "on") || iequals(value, "yes") || iequals(value, "true")) {
+        result = true;
+        return true;
+    }
+    if (iequals(value, "off") || iequals(value, "no") || iequals(value, "false")) {
+        result = false;
+        return true;
+    }
+
+    result = !!atoi(value.c_str());
+    return true;
+}

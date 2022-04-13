@@ -17,10 +17,11 @@
 #include "config.h"
 #include <map>
 
-class config_cfg final : public config {
+class config_win final : public config {
  public:
-    config_cfg();
+    config_win(config *inner);
     bool get_config_string(std::string name, std::string &result) override;
 private:
     std::map<std::string, std::string> values_;
+    config * inner_;
 };

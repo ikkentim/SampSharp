@@ -47,6 +47,12 @@
     <ClCompile Include="strutil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="config_win.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="strutil.h">
@@ -83,6 +89,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="nethost_coreclr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="config_win.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

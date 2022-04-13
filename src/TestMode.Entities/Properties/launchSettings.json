@@ -1,8 +1,9 @@
 {
   "profiles": {
-      "samp-server": {
+    "samp-server": {
       "commandName": "Executable",
       "executablePath": ".\\samp-server.exe",
+      "commandLineArgs": "--gamemode TestMode.Entities",
       "workingDirectory": "..\\..\\env\\"
     }
   }

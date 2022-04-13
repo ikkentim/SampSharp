@@ -19,5 +19,5 @@
 class config {
 public:
     virtual bool get_config_string(std::string name, std::string &result) = 0;
-    virtual bool get_config_bool(std::string name, bool &result) = 0;
+    virtual bool get_config_bool(std::string name, bool &result);
 };
