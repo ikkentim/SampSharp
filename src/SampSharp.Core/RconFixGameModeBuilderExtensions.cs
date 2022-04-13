@@ -43,7 +43,10 @@ public static class RconFixGameModeBuilderExtensions
 
     private static void ApplyRconFix(IGameModeClient cli)
     {
-        var fsPath = Path.Combine(cli.ServerPath, "filterscripts", "_rconfix.amx");
+        var fsDirectory = Path.Combine(cli.ServerPath, "filterscripts");
+        var fsPath = Path.Combine(fsDirectory, "_rconfix.amx");
+
+        Directory.CreateDirectory(fsDirectory);
 
         if (!File.Exists(fsPath))
         {
