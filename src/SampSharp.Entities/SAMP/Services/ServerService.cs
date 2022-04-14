@@ -24,7 +24,9 @@ namespace SampSharp.Entities.SAMP
     {
         private readonly ServerServiceNative _native;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerService"/> class.
+        /// </summary>
         public ServerService(INativeProxy<ServerServiceNative> nativeProxy,
             INativeProxy<VariableCollection.ServerVariableCollectionNatives> serverVariablesNativeProxy)
         {

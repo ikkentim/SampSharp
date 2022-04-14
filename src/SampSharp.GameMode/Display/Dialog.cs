@@ -14,6 +14,7 @@
 // limitations under the License.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Events;
@@ -25,17 +26,38 @@ namespace SampSharp.GameMode.Display
     /// <summary>
     ///     Represents a SA:MP dialog.
     /// </summary>
+    [SuppressMessage("Minor Code Smell", "S2292:Trivial properties should be auto-implemented", Justification = "Used in order to prevent call to virtual members in constructor via direct assignment of backing field.")]
     public abstract partial class Dialog
     {
         private const int DialogId = 10000;
         private const int DialogHideId = -1;
-        private static readonly Dictionary<int, Dialog> OpenDialogs = new Dictionary<int, Dialog>();
-        private readonly ASyncPlayerWaiter<DialogResponseEventArgs> _aSyncWaiter = new ASyncPlayerWaiter<DialogResponseEventArgs>();
-        
+        private static readonly Dictionary<int, Dialog> _openDialogs = new();
+        private readonly ASyncPlayerWaiter<DialogResponseEventArgs> _aSyncWaiter = new();
+        private DialogStyle _style;
+        private string _button1;
+        private string _button2;
+        private string _caption;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Dialog"/> class.
+        /// </summary>
+        /// <param name="style">The style of the dialog.</param>
+        /// <param name="caption">The caption of the dialog.</param>
+        /// <param name="button1">The text of the left button.</param>
+        /// <param name="button2">The text of the right button.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="caption"/> or <paramref name="button1"/> is null.</exception>
+        protected Dialog(DialogStyle style, string caption, string button1, string button2)
+        {
+            _style = style;
+            _caption = caption?? throw new ArgumentNullException(nameof(caption));
+            _button1 = button1?? throw new ArgumentNullException(nameof(button1)); 
+            _button2 = button2;
+        }
+
         /// <summary>
         ///     Gets all opened dialogs.
         /// </summary>
-        public static IEnumerable<Dialog> All => OpenDialogs.Values;
+        public static IEnumerable<Dialog> All => _openDialogs.Values;
 
         /// <summary>
         ///     Hides all dialogs for the specified <paramref name="player" />.
@@ -50,7 +72,7 @@ namespace SampSharp.GameMode.Display
 
             if (openDialog == null) return;
 
-            OpenDialogs.Remove(player.Id);
+            _openDialogs.Remove(player.Id);
 
             openDialog._aSyncWaiter.Cancel(player);
 
@@ -67,13 +89,18 @@ namespace SampSharp.GameMode.Display
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            return OpenDialogs.ContainsKey(player.Id) ? OpenDialogs[player.Id] : null;
+            return _openDialogs.ContainsKey(player.Id) ? _openDialogs[player.Id] : null;
         }
-        
+
+
         /// <summary>
         ///     Gets or sets the style.
         /// </summary>
-        public virtual DialogStyle Style { get; set; }
+        public virtual DialogStyle Style
+        {
+            get => _style;
+            set => _style = value;
+        }
 
         /// <summary>
         ///     Gets or sets the caption.
@@ -82,7 +109,11 @@ namespace SampSharp.GameMode.Display
         ///     The length of the caption can not exceed more than 64 characters before it
         ///     starts to cut off.
         /// </remarks>
-        public virtual string Caption { get; set; }
+        public virtual string Caption
+        {
+            get => _caption;
+            set => _caption = value;
+        }
 
         /// <summary>
         ///     Gets the info displayed in the box.
@@ -92,7 +123,11 @@ namespace SampSharp.GameMode.Display
         /// <summary>
         ///     Gets or sets the text on the left button.
         /// </summary>
-        public virtual string Button1 { get; set; }
+        public virtual string Button1
+        {
+            get => _button1;
+            set => _button1 = value;
+        }
 
         /// <summary>
         ///     Gets or sets the text on the right button.
@@ -100,7 +135,11 @@ namespace SampSharp.GameMode.Display
         /// <remarks>
         ///     Leave it blank to hide it.
         /// </remarks>
-        public virtual string Button2 { get; set; }
+        public virtual string Button2
+        {
+            get => _button2;
+            set => _button2 = value;
+        }
 
         /// <summary>
         ///     Occurs when a player responds to a dialog by either clicking a button, pressing ENTER/ESC or double-clicking a list
@@ -121,7 +160,7 @@ namespace SampSharp.GameMode.Display
             Hide(player);
 
             // Store this dialog as the opened dialog.
-            OpenDialogs[player.Id] = this;
+            _openDialogs[player.Id] = this;
 
 
             // Show the dialog to the player.
@@ -146,8 +185,8 @@ namespace SampSharp.GameMode.Display
         /// <param name="e">An <see cref="DialogResponseEventArgs" /> that contains the event data. </param>
         public virtual void OnResponse(DialogResponseEventArgs e)
         {
-            if (OpenDialogs.ContainsKey(e.Player.Id))
-                OpenDialogs.Remove(e.Player.Id);
+            if (_openDialogs.ContainsKey(e.Player.Id))
+                _openDialogs.Remove(e.Player.Id);
 
             _aSyncWaiter.Fire(e.Player, e);
 

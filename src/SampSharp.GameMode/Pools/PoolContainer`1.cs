@@ -30,8 +30,8 @@ namespace SampSharp.GameMode.Pools
         /// </summary>
         public const int UnidentifiedId = -1;
 
-        private readonly Dictionary<int, TInstance> _identifiedItems = new Dictionary<int, TInstance>();
-        private readonly List<TInstance> _unidentifiedItems = new List<TInstance>();
+        private readonly Dictionary<int, TInstance> _identifiedItems = new();
+        private readonly List<TInstance> _unidentifiedItems = new();
 
         /// <summary>
         ///     Gets the unidentified items.

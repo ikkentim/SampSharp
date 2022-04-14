@@ -116,7 +116,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Initializes a new instance of the <see cref="GlobalObject" /> class.
         /// </summary>
-        /// <param name="modelid">The modelid.</param>
+        /// <param name="modelid">The model identifier.</param>
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
         /// <param name="drawDistance">The draw distance.</param>
@@ -131,7 +131,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Initializes a new instance of the <see cref="GlobalObject" /> class.
         /// </summary>
-        /// <param name="modelid">The modelid.</param>
+        /// <param name="modelid">The model identifier.</param>
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
         public GlobalObject(int modelid, Vector3 position, Vector3 rotation) : this(modelid, position, rotation, 0)
@@ -178,7 +178,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="materialindex">The material index on the object to change.</param>
         /// <param name="modelid">
-        ///     The modelid on which the replacement texture is located. Use 0 for alpha. Use -1 to change the
+        ///     The model identifier on which the replacement texture is located. Use 0 for alpha. Use -1 to change the
         ///     material color without altering the texture.
         /// </param>
         /// <param name="txdname">The name of the txd file which contains the replacement texture (use "none" if not required).</param>
@@ -300,7 +300,7 @@ namespace SampSharp.GameMode.World
         ///     Removes the specified object.
         /// </summary>
         /// <param name="player">The player.</param>
-        /// <param name="modelid">The modelid.</param>
+        /// <param name="modelid">The model identifier.</param>
         /// <param name="position">The position.</param>
         /// <param name="radius">The radius.</param>
         /// <exception cref="System.ArgumentNullException">player</exception>

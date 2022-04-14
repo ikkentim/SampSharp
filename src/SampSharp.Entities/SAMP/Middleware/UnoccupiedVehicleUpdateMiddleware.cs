@@ -2,7 +2,7 @@
 {
     internal class UnoccupiedVehicleUpdateMiddleware
     {
-        private readonly ArgumentsOverrideEventContext _context = new ArgumentsOverrideEventContext(5);
+        private readonly ArgumentsOverrideEventContext _context = new(5);
         private readonly EventDelegate _next;
 
         public UnoccupiedVehicleUpdateMiddleware(EventDelegate next)

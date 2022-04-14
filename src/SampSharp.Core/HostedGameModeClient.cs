@@ -125,7 +125,7 @@ namespace SampSharp.Core
         public ISynchronizationProvider SynchronizationProvider => this;
         
         /// <inheritdoc />
-        public string ServerPath { get; private set; }
+        public string ServerPath { get; }
         
         /// <inheritdoc />
         public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
@@ -133,7 +133,7 @@ namespace SampSharp.Core
         /// <inheritdoc />
         public void RegisterCallback(string name, object target, MethodInfo methodInfo)
         {
-            RegisterCallback(name, target, methodInfo, null, null);
+            RegisterCallback(name, target, methodInfo, null);
         }
 
         /// <inheritdoc />
@@ -165,7 +165,7 @@ namespace SampSharp.Core
             if (IsOnMainThread)
                 Interop.Print(text);
             else
-                _synchronizationContext.Send(ctx => Interop.Print(text), null);
+                _synchronizationContext.Send(_ => Interop.Print(text), null);
         }
         
         /// <inheritdoc />
@@ -218,7 +218,7 @@ namespace SampSharp.Core
         /// <inheritdoc />
         void ISynchronizationProvider.Invoke(Action action)
         {
-            _synchronizationContext.Send(ctx => action(), null);
+            _synchronizationContext.Send(_ => action(), null);
         }
     }
 }

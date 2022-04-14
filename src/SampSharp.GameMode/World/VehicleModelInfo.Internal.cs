@@ -16,7 +16,7 @@ using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.GameMode.World
 {
-    public partial struct VehicleModelInfo
+    public readonly partial struct VehicleModelInfo
     {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public class VehicleModelInfoInternal : NativeObjectSingleton<VehicleModelInfoInternal>

@@ -74,7 +74,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="materialindex">The material index on the object to change.</param>
         /// <param name="modelid">
-        ///     The modelid on which the replacement texture is located. Use 0 for alpha. Use -1 to change the
+        ///     The model identifier on which the replacement texture is located. Use 0 for alpha. Use -1 to change the
         ///     material color without altering the texture.
         /// </param>
         /// <param name="txdname">The name of the txd file which contains the replacement texture (use "none" if not required).</param>

@@ -32,13 +32,10 @@ namespace SampSharp.GameMode.Display
         /// <param name="message">The text to display in the main dialog. Use \n to start a new line and \t to tabulate.</param>
         /// <param name="button1">The text on the left button.</param>
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-        public MessageDialog(string caption, string message, string button1, string button2 = null)
+        public MessageDialog(string caption, string message, string button1, string button2 = null) : base(
+            DialogStyle.MessageBox, caption, button1, button2)
         {
-            Caption = caption ?? throw new ArgumentNullException(nameof(caption));
             Message = message ?? throw new ArgumentNullException(nameof(message));
-            Button1 = button1 ?? throw new ArgumentNullException(nameof(button1));
-            Button2 = button2;
-            Style = DialogStyle.MessageBox;
         }
 
         /// <summary>

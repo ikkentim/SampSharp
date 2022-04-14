@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -11,8 +12,11 @@ using SampSharp.Core.Natives.NativeObjects.FastNatives;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 
+// ReSharper disable UnusedMember.Local
+// ReSharper disable StringLiteralTypo
 namespace TestMode.Entities.Systems.IssueTests
 {
+    [SuppressMessage("Major Code Smell", "S1144:Unused private types or members should be removed", Justification = "Test code")]
     public class Issue365FastNatives : ISystem
     {
         private readonly IGameModeClient _client;
@@ -202,7 +206,7 @@ namespace TestMode.Entities.Systems.IssueTests
             len = enc.GetByteCount(result) + 1;
             return result;
         }
-
+        
         private unsafe void SetGameModeTextCall(IntPtr nativeSetGameModeText, string textString)
         {
             // concept test with string parameters
@@ -230,7 +234,7 @@ namespace TestMode.Entities.Systems.IssueTests
             // 8: id cell               [1]
             // 9-15: out cells          [7]
 
-            // Fixing not needed because data is allocated on stack, but cannot get a pointer without calling GetPinnableRefererence?
+            // Fixing not needed because data is allocated on stack, but cannot get a pointer without calling GetPinnableReference?
             fixed (int* ptData = &data.GetPinnableReference())
             {
                 for (var j = 0; j < 8; j++) // set points for all 8 args

@@ -1,28 +1,18 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using SampSharp.Core;
 using SampSharp.Core.Hosting;
 using SampSharp.Core.Natives.NativeObjects.FastNatives;
+
+// ReSharper disable UnusedMember.Local
 namespace TestMode.Entities.Systems.IssueTests
 {
     /// <remarks>
     /// prototype to inspect IL code for developing code generator
     /// </remarks>
+    [SuppressMessage("Major Code Smell", "S1144:Unused private types or members should be removed", Justification = "Test code")]
     public class Issue365FastNativesIlCode
     {
-        private void Move(float x, out float y)
-        {
-            y = x;
-        }
-        private void Move(bool x, out bool y)
-        {
-            y = x;
-        }
-        private void Move(int x, out int y)
-        {
-            y = x;
-        }
-
-        
         public unsafe int NativeArrayOut(out int[] arr, int len)
         {
             var data = stackalloc int[3];

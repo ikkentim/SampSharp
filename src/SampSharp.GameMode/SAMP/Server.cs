@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
-using System.Runtime.InteropServices;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.World;
 
@@ -49,12 +48,12 @@ namespace SampSharp.GameMode.SAMP
         /// </summary>
         /// <seealso cref="ServerConfig" />.
         [Obsolete("Deprecated. Use new ServerConfig(Path.Combine(gameMode.Client.ServerPath, \"server.cfg\")) instead.")]
-        public static ServerConfig Config => _serverConfig ?? (_serverConfig = new ServerConfig("server.cfg"));
+        public static ServerConfig Config => _serverConfig ??= new ServerConfig("server.cfg");
 
         /// <summary>
         ///     Gets the server variables.
         /// </summary>
-        public static SVarCollection Variables => _varCollection ?? (_varCollection = new SVarCollection());
+        public static SVarCollection Variables => _varCollection ??= new SVarCollection();
 
         /// <summary>
         ///     Blocks an IP address from further communication with the server
@@ -120,9 +119,9 @@ namespace SampSharp.GameMode.SAMP
         }
         
         /// <summary>
-        ///     Returns the uptime of the actual server in milliseconds.
+        ///     Returns the up-time of the actual server in milliseconds.
         /// </summary>
-        /// <returns>Uptime of the SA:MP server(NOT the physical box).</returns>
+        /// <returns>Up-time of the SA:MP server(NOT the physical machine).</returns>
         public static int GetTickCount()
         {
             return ServerInternal.Instance.GetTickCount();

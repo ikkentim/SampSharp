@@ -34,7 +34,7 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Gets or sets the <see cref="object" /> with the specified varname.
+        ///     Gets or sets the <see cref="object" /> with the specified <paramref name="varname"/>.
         /// </summary>
         public object this[string varname]
         {
@@ -108,11 +108,11 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Gets the variable with the specified varname.
+        ///     Gets the variable with the specified <paramref name="varname"/>.
         /// </summary>
         /// <typeparam name="T">The type of the variable.</typeparam>
-        /// <param name="varname">The varname.</param>
-        /// <returns>The variable with the specified varname.</returns>
+        /// <param name="varname">The name of the variable.</param>
+        /// <returns>The variable with the specified name.</returns>
         public T Get<T>(string varname)
         {
             object value = default(T);
@@ -131,9 +131,9 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Checks whether a variable with the specified varname exists.
+        ///     Checks whether a variable with the specified name exists.
         /// </summary>
-        /// <param name="varname">The varname.</param>
+        /// <param name="varname">The variable name.</param>
         /// <returns>True if the variable exists; False otherwise.</returns>
         public bool Exists(string varname)
         {
@@ -143,7 +143,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Gets the type of the variable with the given <paramref name="varname" />.
         /// </summary>
-        /// <param name="varname">The varname.</param>
+        /// <param name="varname">The name of the variable.</param>
         /// <returns>The type of the variable.</returns>
         public Type GetType(string varname)
         {
@@ -172,9 +172,9 @@ namespace SampSharp.GameMode.SAMP
         }
 
         /// <summary>
-        ///     Deletes the specified varname.
+        ///     Deletes the specified variable.
         /// </summary>
-        /// <param name="varname">The varname.</param>
+        /// <param name="varname">The name of the variable.</param>
         /// <returns>True on success; False otherwise.</returns>
         public bool Delete(string varname)
         {

@@ -29,8 +29,8 @@ namespace SampSharp.GameMode.Display
     /// </summary>
     public class ListDialog<T> : Dialog
     {
-        private readonly List<T> _items = new List<T>();
-        private readonly ASyncPlayerWaiter<DialogResponseEventArgs<T>> _aSyncWaiter = new ASyncPlayerWaiter<DialogResponseEventArgs<T>>();
+        private readonly List<T> _items = new();
+        private readonly ASyncPlayerWaiter<DialogResponseEventArgs<T>> _aSyncWaiter = new();
 
         /// <summary>
         ///     Initializes a new instance of the Dialog class.
@@ -41,12 +41,9 @@ namespace SampSharp.GameMode.Display
         /// </param>
         /// <param name="button1">The text on the left button.</param>
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-        public ListDialog(string caption, string button1, string button2 = null)
+        public ListDialog(string caption, string button1, string button2 = null) : base(DialogStyle.List, caption,
+            button1, button2)
         {
-            Button1 = button1 ?? throw new ArgumentNullException(nameof(button1));
-            Button2 = button2;
-            Caption = caption ?? throw new ArgumentNullException(nameof(caption));
-            Style = DialogStyle.List;
         }
 
         /// <summary>

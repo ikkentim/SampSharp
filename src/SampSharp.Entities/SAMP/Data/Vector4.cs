@@ -20,7 +20,7 @@ namespace SampSharp.Entities.SAMP
     /// <summary>
     /// Represents a 4D vector.
     /// </summary>
-    public struct Vector4 : IEquatable<Vector4>
+    public readonly struct Vector4 : IEquatable<Vector4>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector4" /> struct.
@@ -87,32 +87,32 @@ namespace SampSharp.Entities.SAMP
         /// <summary>
         /// Returns an empty <see cref="Vector4" />.
         /// </summary>
-        public static Vector4 Zero { get; } = new Vector4(0, 0, 0, 0);
+        public static Vector4 Zero { get; } = new(0, 0, 0, 0);
 
         /// <summary>
         /// Returns a <see cref="Vector4" /> with each component set to 1.
         /// </summary>
-        public static Vector4 One { get; } = new Vector4(1, 1, 1, 1);
+        public static Vector4 One { get; } = new(1, 1, 1, 1);
 
         /// <summary>
         /// Returns a <see cref="Vector4" /> with components 1, 0, 0, 0.
         /// </summary>
-        public static Vector4 UnitX { get; } = new Vector4(1, 0, 0, 0);
+        public static Vector4 UnitX { get; } = new(1, 0, 0, 0);
 
         /// <summary>
         /// Returns a <see cref="Vector4" /> with components 0, 1, 0, 0.
         /// </summary>
-        public static Vector4 UnitY { get; } = new Vector4(0, 1, 0, 0);
+        public static Vector4 UnitY { get; } = new(0, 1, 0, 0);
 
         /// <summary>
         /// Returns a <see cref="Vector4" /> with components 0, 0, 1, 0.
         /// </summary>
-        public static Vector4 UnitZ { get; } = new Vector4(0, 0, 1, 0);
+        public static Vector4 UnitZ { get; } = new(0, 0, 1, 0);
 
         /// <summary>
         /// Returns a <see cref="Vector4" /> with components 0, 0, 0, 1.
         /// </summary>
-        public static Vector4 UnitW { get; } = new Vector4(0, 0, 0, 1);
+        public static Vector4 UnitW { get; } = new(0, 0, 0, 1);
 
         /// <summary>
         /// Gets the length of this <see cref="Vector4" />.

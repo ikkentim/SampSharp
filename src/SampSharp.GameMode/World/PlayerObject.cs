@@ -117,7 +117,7 @@ namespace SampSharp.GameMode.World
         ///     Initializes a new instance of the <see cref="PlayerObject" /> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
-        /// <param name="modelid">The modelid.</param>
+        /// <param name="modelid">The model identifier.</param>
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
         public PlayerObject(BasePlayer owner, int modelid, Vector3 position, Vector3 rotation)
@@ -129,7 +129,7 @@ namespace SampSharp.GameMode.World
         ///     Initializes a new instance of the <see cref="PlayerObject" /> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
-        /// <param name="modelid">The modelid.</param>
+        /// <param name="modelid">The model identifier.</param>
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
         /// <param name="drawDistance">The draw distance.</param>
@@ -192,7 +192,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="materialindex">The material index on the object to change.</param>
         /// <param name="modelid">
-        ///     The modelid on which the replacement texture is located. Use 0 for alpha. Use -1 to change the
+        ///     The model identifier on which the replacement texture is located. Use 0 for alpha. Use -1 to change the
         ///     material color without altering the texture.
         /// </param>
         /// <param name="txdname">The name of the txd file which contains the replacement texture (use "none" if not required).</param>

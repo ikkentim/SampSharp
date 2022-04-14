@@ -5,6 +5,8 @@ using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
+// ReSharper disable StringLiteralTypo
+
 namespace TestMode.GameMode.Commands
 {
     internal static class DialogCommands
@@ -13,9 +15,9 @@ namespace TestMode.GameMode.Commands
         public static void MsgDialogTestCommand(BasePlayer player)
         {
             var msgDialog = new MessageDialog("caption", "message", "Ok", "Close");
-            msgDialog.Response += (sender, e) =>
+            msgDialog.Response += (_, _) =>
             {
-                player.SendClientMessage($"Dialog closed");
+                player.SendClientMessage("Dialog closed");
             };
             msgDialog.Show(player);
         }
@@ -24,7 +26,7 @@ namespace TestMode.GameMode.Commands
         public static void InputDialogTestCommand(BasePlayer player)
         {
             var inputDialog = new InputDialog("caption", "message", false, "Ok", "Close");
-            inputDialog.Response += (sender, e) =>
+            inputDialog.Response += (_, e) =>
             {
                 player.SendClientMessage($"Dialog closed, input text is \"{e.InputText}\"");
             };
@@ -50,7 +52,7 @@ namespace TestMode.GameMode.Commands
                     listDialog.AddItem("option 1");
                     listDialog.AddItem("option 2");
                     listDialog.AddItem("option 3");
-                    listDialog.Response += (sender, e) =>
+                    listDialog.Response += (_, e) =>
                     {
                         player.SendClientMessage($"Dialog closed, selected value is \"{e.ListItem}\"");
                     };
@@ -62,7 +64,7 @@ namespace TestMode.GameMode.Commands
                     var listDialog = new ListDialog("String options", "Select", "Close");
                     var options = new List<string> { "option 10", "option 11", "option 12" };
                     listDialog.AddItems(options);
-                    listDialog.Response += (sender, e) =>
+                    listDialog.Response += (_, e) =>
                     {
                         player.SendClientMessage($"Dialog closed, selected value is \"{e.ListItem}\"");
                     };
@@ -80,7 +82,7 @@ namespace TestMode.GameMode.Commands
                     listDialog.AddItem("option 1");
                     listDialog.AddItem("option 2");
                     listDialog.AddItem("option 3");
-                    listDialog.Response += (sender, e) =>
+                    listDialog.Response += (_, e) =>
                     {
                         player.SendClientMessage($"Dialog closed, selected value is \"{e.ItemValue}\"");
                     };
@@ -92,7 +94,7 @@ namespace TestMode.GameMode.Commands
                     var listDialog = new ListDialog<string>("String options", "Select", "Close");
                     var options = new List<string> { "option 10", "option 11", "option 12" };
                     listDialog.AddItems(options);
-                    listDialog.Response += (sender, e) =>
+                    listDialog.Response += (_, e) =>
                     {
                         player.SendClientMessage($"Dialog closed, selected value is \"{e.ItemValue}\"");
                     };
@@ -112,7 +114,7 @@ namespace TestMode.GameMode.Commands
                     listDialog.AddItem(VehicleModelType.FreightFlatTrailerTrain);
                     listDialog.AddItem(VehicleModelType.Ambulance);
                     listDialog.AddItem(VehicleModelType.Dune);
-                    listDialog.Response += (sender, e) =>
+                    listDialog.Response += (_, e) =>
                     {
                         player.SendClientMessage($"Dialog closed, selected model is \"{e.ItemValue}\"");
                     };
@@ -123,7 +125,7 @@ namespace TestMode.GameMode.Commands
                 {
                     var listDialog = new ListDialog<BaseVehicle>("Vehicles", "Select", "Close");
                     listDialog.AddItems(BaseVehicle.All);
-                    listDialog.Response += (sender, e) =>
+                    listDialog.Response += (_, e) =>
                     {
                         var veh = e.ItemValue;
                         player.PutInVehicle(veh);
@@ -141,7 +143,7 @@ namespace TestMode.GameMode.Commands
                 {
                     var listDialog = new ListDialog<BasePlayer>("Players", "Select", "Close");
                     listDialog.AddItem(BasePlayer.Find(0));
-                    listDialog.Response += (sender, e) =>
+                    listDialog.Response += (_, e) =>
                     {
                         player.SendClientMessage($"Dialog closed, selected player is \"{e.ItemValue.Name}\"");
                     };
@@ -152,7 +154,7 @@ namespace TestMode.GameMode.Commands
                 {
                     var listDialog = new ListDialog<BasePlayer>("Players", "Select", "Close");
                     listDialog.AddItems(BasePlayer.All);
-                    listDialog.Response += (sender, e) =>
+                    listDialog.Response += (_, e) =>
                     {
                         player.SendClientMessage($"Dialog closed, selected player is \"{e.ItemValue.Name}\"");
                     };
@@ -172,7 +174,7 @@ namespace TestMode.GameMode.Commands
                     listDialog.AddItem(new ColorValue(Color.DarkGray));
                     listDialog.AddItem(new ColorValue(Color.Turquoise));
                     listDialog.AddItem(new ColorValue(new Color(1, 125, 14)));
-                    listDialog.Response += (sender, e) =>
+                    listDialog.Response += (_, e) =>
                     {
                         player.SendClientMessage($"Dialog closed, selected value is {e.ItemValue}: \"{e.ItemValue}{Color.White}\"");
                     };
@@ -203,7 +205,7 @@ namespace TestMode.GameMode.Commands
                         new(new Color(54, 26, 178))
                     };
                     listDialog.AddItems(colors);
-                    listDialog.Response += (sender, e) =>
+                    listDialog.Response += (_, e) =>
                     {
                         player.SendClientMessage($"Dialog closed, selected value is {e.ListItem}: \"{e.ItemValue}{Color.White}\"");
                     };
@@ -223,7 +225,7 @@ namespace TestMode.GameMode.Commands
                     listDialog.AddItem(null);
                     listDialog.AddItem(new ColorValue(Color.Turquoise));
                     listDialog.AddItem(new ColorValue(new Color(1, 125, 14)));
-                    listDialog.Response += (sender, e) =>
+                    listDialog.Response += (_, e) =>
                     {
                         player.SendClientMessage($"Dialog closed, selected value is {e.ListItem}: \"{e.ItemValue}{Color.White}\"");
                     };

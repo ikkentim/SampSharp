@@ -149,7 +149,7 @@ namespace SampSharp.Entities.SAMP
         public bool ContainsKey(string key)
         {
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            return key != null && key.Length <= MaxKeyLength && _native.GetVarType(key) != (int)ServerVarType.None;
+            return key is { Length: <= MaxKeyLength } && _native.GetVarType(key) != (int)ServerVarType.None;
         }
 
         /// <inheritdoc />
@@ -482,7 +482,7 @@ namespace SampSharp.Entities.SAMP
 
             public bool Contains(string item)
             {
-                return item != null && item.Length <= MaxKeyLength && _collection._native.GetVarType(item) != (int)ServerVarType.None;
+                return item is { Length: <= MaxKeyLength } && _collection._native.GetVarType(item) != (int)ServerVarType.None;
             }
 
             public void CopyTo(string[] array, int arrayIndex)

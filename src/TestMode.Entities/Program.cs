@@ -20,7 +20,7 @@ namespace TestMode.Entities
 {
     internal static class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
             new GameModeBuilder()
                 .UseEcs<TestStartup>()

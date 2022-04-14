@@ -28,7 +28,7 @@ namespace TestMode.GameMode
         {
             base.OnInitialized(e);
 
-            Client.UnhandledException += (sender, args) => Console.WriteLine($"ERROR! {args.Exception}");
+            Client.UnhandledException += (_, args) => Console.WriteLine($"ERROR! {args.Exception}");
 
             Console.WriteLine("The game mode has loaded.");
             

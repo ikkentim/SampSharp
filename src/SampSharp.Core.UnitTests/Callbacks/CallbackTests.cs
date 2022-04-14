@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using SampSharp.Core.Callbacks;
-using SampSharp.Core.Hosting;
-using SampSharp.Core.Natives.NativeObjects.FastNatives;
-using SampSharp.Core.UnitTests.TestHelpers;
 using Shouldly;
 using Xunit;
 
@@ -42,7 +36,7 @@ namespace SampSharp.Core.UnitTests.Callbacks
             var sut = Callback.For(handler.Target, handler.Method);
 
             // assert
-            var param = sut.Parameters[parameterIndex].ShouldBeAssignableTo<ICallbackArrayParameter>();
+            var param = sut.Parameters[parameterIndex].ShouldBeAssignableTo<ICallbackArrayParameter>()!;
             param.LengthOffset.ShouldBe(expectedLengthOffset);
         }
 
@@ -130,7 +124,7 @@ namespace SampSharp.Core.UnitTests.Callbacks
             var handler = (int _, double _) => { };
 
             // act
-            var ex = Should.Throw<InvalidOperationException>(() => Callback.For(handler.Target, handler.Method, null, null)); // todo remove null, null params
+            var ex = Should.Throw<InvalidOperationException>(() => Callback.For(handler.Target, handler.Method));
             
             // assert
             ex.Message.ShouldContain("unsupported");
@@ -162,7 +156,7 @@ namespace SampSharp.Core.UnitTests.Callbacks
             var sut = Callback.For(handler.Target, handler.Method, types, lengths);
             
             // assert
-            var param = sut.Parameters[1].ShouldBeAssignableTo<ICallbackArrayParameter>();
+            var param = sut.Parameters[1].ShouldBeAssignableTo<ICallbackArrayParameter>()!;
             param.LengthOffset.ShouldBe(2);
         }
         

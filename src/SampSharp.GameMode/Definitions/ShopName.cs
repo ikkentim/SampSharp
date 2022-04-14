@@ -15,7 +15,7 @@
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Contains all shopnames.
+    ///     Contains all shop names.
     /// </summary>
     public static class ShopName
     {

@@ -40,7 +40,7 @@ namespace SampSharp.GameMode.Definitions
         Convertible = 4,
 
         /// <summary>
-        ///     Industrials.
+        ///     Industrial vehicles.
         /// </summary>
         Industrial = 5,
 

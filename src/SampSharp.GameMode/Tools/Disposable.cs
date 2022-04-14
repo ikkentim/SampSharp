@@ -39,7 +39,7 @@ namespace SampSharp.GameMode.Tools
         {
             if (IsDisposed)
             {
-                //We've been desposed already. Abort further disposure.
+                //We've been disposed already. Abort further dispose call.
                 return;
             }
             //Dispose all native and managed resources.
@@ -48,7 +48,7 @@ namespace SampSharp.GameMode.Tools
             //Remember we've been disposed.
             IsDisposed = true;
 
-            //Suppress finalisation; We already disposed our  resources.
+            //Suppress finalization; We already disposed our  resources.
             GC.SuppressFinalize(this);
         }
 
@@ -59,7 +59,7 @@ namespace SampSharp.GameMode.Tools
         {
             if (IsDisposed)
             {
-                //We've been desposed already. Abort further disposure.
+                //We've been disposed already. Abort further dispose call.
                 return;
             }
 
@@ -69,7 +69,7 @@ namespace SampSharp.GameMode.Tools
         }
 
         /// <summary>
-        ///     Occurs when this isntance has been disposed.
+        ///     Occurs when this instance has been disposed.
         /// </summary>
         public event EventHandler Disposed;
 

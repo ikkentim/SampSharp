@@ -5,7 +5,7 @@ namespace SampSharp.Core.UnitTests.TestHelpers;
 
 public unsafe class ApiScope : IDisposable
 {
-    private SampSharpApi* _api;
+    private readonly SampSharpApi* _api;
         
     public ApiScope(SampSharpApi* api)
     {

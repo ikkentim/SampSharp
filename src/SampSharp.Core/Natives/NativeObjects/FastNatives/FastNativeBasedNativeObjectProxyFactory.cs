@@ -5,6 +5,7 @@ using System.Reflection.Emit;
 using System.Text;
 using SampSharp.Core.Hosting;
 
+// ReSharper disable CommentTypo
 namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 {
     /// <summary>
@@ -153,7 +154,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             ilGenerator.Emit(OpCodes.Ret);
         }
            
-        private static void EmitInvokeNative(ILGenerator ilGenerator, IntPtr native, NativeIlGenContext context)
+        private static unsafe void EmitInvokeNative(ILGenerator ilGenerator, IntPtr native, NativeIlGenContext context)
         {
             var formatString = GenerateCallFormat(context);
             // if (_synchronizationProvider.InvokeRequired)
@@ -180,7 +181,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             ilGenerator.Emit(OpCodes.Ldarg_0);
             ilGenerator.Emit(OpCodes.Ldfld, context.ProxyGeneratedFields[0]);
             ilGenerator.Emit(OpCodes.Ldc_I4, (int) native);
-            ilGenerator.Emit(OpCodes.Newobj, typeof(IntPtr).GetConstructor(new[] {typeof(int)}));
+            ilGenerator.Emit(OpCodes.Newobj, typeof(IntPtr).GetConstructor(new[] {typeof(int)})!);
             ilGenerator.Emit(OpCodes.Ldstr, formatString);
             EmitFormatVarArgs();
             ilGenerator.Emit(OpCodes.Ldloc_0);
@@ -192,7 +193,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 
             // SampSharp.Core.Hosting.Interop.FastNativeInvoke(new IntPtr($0), format, ptr);
             ilGenerator.Emit(OpCodes.Ldc_I4, (int) native);
-            ilGenerator.Emit(OpCodes.Newobj, typeof(IntPtr).GetConstructor(new[] {typeof(int)}));
+            ilGenerator.Emit(OpCodes.Newobj, typeof(IntPtr).GetConstructor(new[] {typeof(int)})!);
             ilGenerator.Emit(OpCodes.Ldstr, formatString);
             EmitFormatVarArgs();
             ilGenerator.Emit(OpCodes.Ldloc_0);
@@ -203,7 +204,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             ilGenerator.MarkLabel(endifLabel);
         }
 
-        private static void EmitInParamAssignment(ILGenerator ilGenerator, NativeIlGenContext context, out LocalBuilder[] paramBuffers)
+        private static unsafe void EmitInParamAssignment(ILGenerator ilGenerator, NativeIlGenContext context, out LocalBuilder[] paramBuffers)
         {
             paramBuffers = new LocalBuilder[context.Parameters.Length];
 
@@ -334,7 +335,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     // var vContext = new VarArgsContext();
                     var vContext = ilGenerator.DeclareLocal(typeof(VarArgsState));
                     paramBuffers[i] = vContext;
-                    ilGenerator.Emit(OpCodes.Newobj, typeof(VarArgsState).GetConstructor(Array.Empty<Type>()));
+                    ilGenerator.Emit(OpCodes.Newobj, typeof(VarArgsState).GetConstructor(Array.Empty<Type>())!);
                     ilGenerator.Emit(OpCodes.Stloc, vContext);
                     
                     // NativeUtils.SetVarArgsValues(args, values, varArgs, i, valueIndex, vContext);
@@ -398,8 +399,8 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     else
                         ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
                     ilGenerator.Emit(OpCodes.Ldloc, paramBuffers[i]);
-                    var method = typeof(NativeUtils).GetMethod(nameof(NativeUtils.IntSpanToArray))
-                        .MakeGenericMethod(param.InputType.GetElementType().GetElementType());
+                    var method = typeof(NativeUtils).GetMethod(nameof(NativeUtils.IntSpanToArray))!
+                        .MakeGenericMethod(param.InputType.GetElementType()!.GetElementType()!);
                     ilGenerator.EmitCall(method);
                     ilGenerator.Emit(OpCodes.Stind_Ref);
                 }
@@ -412,7 +413,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     // paramStr = NativeUtils.GetString(strBuf);
                     ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
                     ilGenerator.Emit(OpCodes.Ldloc, paramBuffers[i]);
-                    ilGenerator.EmitCall(OpCodes.Call, typeof(NativeUtils).GetMethod(nameof(NativeUtils.GetString)), null);
+                    ilGenerator.EmitCall(OpCodes.Call, typeof(NativeUtils).GetMethod(nameof(NativeUtils.GetString))!, null);
                     ilGenerator.Emit(OpCodes.Stind_Ref);
                 }
                 else if (param.Type == NativeParameterType.VarArgs)
@@ -490,7 +491,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             // throw new ArgumentOutOfRangeException("strlen");
             ilGenerator.Emit(OpCodes.Ldstr, param.Name);
             ilGenerator.Emit(OpCodes.Newobj,
-                typeof(ArgumentOutOfRangeException).GetConstructor(new[] {typeof(string)}));
+                typeof(ArgumentOutOfRangeException).GetConstructor(new[] {typeof(string)})!);
             ilGenerator.Emit(OpCodes.Throw);
             ilGenerator.MarkLabel(falseLabel);
         }
@@ -535,7 +536,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             ilGenerator.Emit(OpCodes.Conv_U);
             ilGenerator.Emit(OpCodes.Localloc);
             loadLength();
-            ilGenerator.Emit(OpCodes.Newobj, typeof(Span<byte>).GetConstructor(new[] {typeof(void*), typeof(int)}));
+            ilGenerator.Emit(OpCodes.Newobj, typeof(Span<byte>).GetConstructor(new[] {typeof(void*), typeof(int)})!);
             ilGenerator.Emit(OpCodes.Stloc, span);
             var labelDone = ilGenerator.DefineLabel();
             ilGenerator.Emit(OpCodes.Br, labelDone);
@@ -545,7 +546,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             ilGenerator.Emit(OpCodes.Ldloca, span);
             loadLength();
             ilGenerator.Emit(OpCodes.Newarr, typeof(byte));
-            ilGenerator.Emit(OpCodes.Call, typeof(Span<byte>).GetConstructor(new[]{typeof(byte[])}));
+            ilGenerator.Emit(OpCodes.Call, typeof(Span<byte>).GetConstructor(new[]{typeof(byte[])})!);
             ilGenerator.Emit(OpCodes.Br, labelDone);
 
             ilGenerator.MarkLabel(labelDone);
@@ -587,7 +588,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                         formatStringBuilder.Append($"A[*{param.LengthParam.Index}]");
                         break;
                     case NativeParameterType.VarArgs:
-                        // format appened at runtime
+                        // format apended at runtime
                         break;
                     default:
                         throw new InvalidOperationException("Unknown parameter type");

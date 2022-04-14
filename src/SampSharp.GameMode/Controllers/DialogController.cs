@@ -37,7 +37,7 @@ namespace SampSharp.GameMode.Controllers
                 Dialog.GetOpenDialog(player)?.OnResponse(args);
             };
 
-            gameMode.PlayerDisconnected += (sender, args) =>
+            gameMode.PlayerDisconnected += (sender, _) =>
             {
                 if (!(sender is BasePlayer player))
                     return;

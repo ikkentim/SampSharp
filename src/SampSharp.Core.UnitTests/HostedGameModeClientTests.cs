@@ -33,7 +33,7 @@ public class HostedGameModeClientTests
     }
 
     [Fact]
-    public unsafe void RegisterCallback_should_throw_when_game_mode_not_running()
+    public void RegisterCallback_should_throw_when_game_mode_not_running()
     {
         // arrange
         var handler = () => { };

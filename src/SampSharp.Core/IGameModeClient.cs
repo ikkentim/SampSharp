@@ -14,11 +14,8 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using SampSharp.Core.Callbacks;
-using SampSharp.Core.Natives;
 using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Core

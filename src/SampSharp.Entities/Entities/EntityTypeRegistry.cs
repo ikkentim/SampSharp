@@ -21,8 +21,8 @@ namespace SampSharp.Entities
 {
     internal static class EntityTypeRegistry
     {
-        private static readonly Dictionary<Guid, string> Names = new Dictionary<Guid, string>();
-        private static readonly Dictionary<Guid, int> InvalidHandles = new Dictionary<Guid, int>();
+        private static readonly Dictionary<Guid, string> Names = new();
+        private static readonly Dictionary<Guid, int> InvalidHandles = new();
 
         static EntityTypeRegistry()
         {

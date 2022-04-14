@@ -12,14 +12,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+using System.Diagnostics.CodeAnalysis;
 using SampSharp.Core.Natives.NativeObjects;
 
+// ReSharper disable MemberHidesStaticFromOuterClass
 namespace SampSharp.GameMode.SAMP
 {
     public static partial class Server
     {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S3218:Inner class members should not shadow outer class \"static\" or type members", Justification = "Native function declarations")]
+        [SuppressMessage("Critical Code Smell", "S3218:Inner class members should not shadow outer class \"static\" or type members", Justification = "Native function declarations")]
         public class ServerInternal : NativeObjectSingleton<ServerInternal>
         {
             [NativeMethod]
@@ -57,7 +60,8 @@ namespace SampSharp.GameMode.SAMP
             {
                 throw new NativeNotImplementedException();
             }
-
+            
+            // ReSharper disable once InconsistentNaming
             [NativeMethod]
             public virtual bool ConnectNPC(string name, string script)
             {

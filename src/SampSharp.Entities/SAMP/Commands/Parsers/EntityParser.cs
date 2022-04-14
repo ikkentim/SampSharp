@@ -24,9 +24,11 @@ namespace SampSharp.Entities.SAMP.Commands.Parsers
     public class EntityParser : ICommandParameterParser
     {
         private readonly Guid _entityType;
-        private readonly WordParser _wordParser = new WordParser();
+        private readonly WordParser _wordParser = new();
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityParser"/> class.
+        /// </summary>
         public EntityParser(Guid entityType)
         {
             _entityType = entityType;

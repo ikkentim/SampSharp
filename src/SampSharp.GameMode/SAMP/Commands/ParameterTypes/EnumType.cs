@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -43,7 +44,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         public bool TestForValue { get; set; }
 
         /// <summary>
-        ///     Gets the value for the occurance of this parameter type at the start of the commandText. The processed text will be
+        ///     Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be
         ///     removed from the commandText.
         /// </summary>
         /// <param name="commandText">The command text.</param>
@@ -61,28 +62,28 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
                 return false;
 
             var word = text.Split(' ').First();
-            var lowerWord = word.ToLower();
+            var lowerWord = word.ToLower(CultureInfo.InvariantCulture);
 
-            // find all candiates containing the input word, case insensitive.
+            // find all candidates containing the input word, case insensitive.
             var candidates =
                 typeof (T).GetTypeInfo().GetEnumValues()
                     .OfType<object>()
-                    .Where(v => v.ToString().ToLower().Contains(lowerWord))
+                    .Where(v => v.ToString()!.Contains(lowerWord, StringComparison.InvariantCultureIgnoreCase))
                     .ToList();
 
-            // in case of ambiguities find all candiates containing the input word, case sensitive.
+            // in case of ambiguities find all candidates containing the input word, case sensitive.
             if (candidates.Count > 1)
             {
-                candidates = candidates.Where(v => v.ToString().Contains(word)).ToList();
+                candidates = candidates.Where(v => v.ToString()!.Contains(word, StringComparison.InvariantCultureIgnoreCase)).ToList();
             }
 
-            // in case of ambiguities find all candiates matching exactly the input word, case insensitive.
+            // in case of ambiguities find all candidates matching exactly the input word, case insensitive.
             if (candidates.Count > 1)
             {
-                candidates = candidates.Where(v => v.ToString().ToLower() == lowerWord).ToList();
+                candidates = candidates.Where(v => v.ToString()!.ToLower(CultureInfo.InvariantCulture) == lowerWord).ToList();
             }
 
-            // in case of ambiguities find all candiates matching exactly the input word, case sensitive.
+            // in case of ambiguities find all candidates matching exactly the input word, case sensitive.
             if (candidates.Count > 1)
             {
                 candidates = candidates.Where(v => v.ToString() == word).ToList();
@@ -94,7 +95,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
                 var valueCandidates =
                     typeof(T).GetTypeInfo().GetEnumValues()
                         .OfType<object>()
-                        .Where(t => Convert.ChangeType(t, Enum.GetUnderlyingType(typeof(T))).ToString() == word)
+                        .Where(t => Convert.ChangeType(t, Enum.GetUnderlyingType(typeof(T)), CultureInfo.InvariantCulture).ToString() == word)
                         .ToList();
 
                 if (valueCandidates.Count == 1)

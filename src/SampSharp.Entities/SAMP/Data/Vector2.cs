@@ -20,7 +20,7 @@ namespace SampSharp.Entities.SAMP
     /// <summary>
     /// Represents a 2D vector.
     /// </summary>
-    public struct Vector2 : IEquatable<Vector2>
+    public readonly struct Vector2 : IEquatable<Vector2>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector2" /> struct.
@@ -75,22 +75,22 @@ namespace SampSharp.Entities.SAMP
         /// <summary>
         /// Returns an empty <see cref="Vector2" />.
         /// </summary>
-        public static Vector2 Zero { get; } = new Vector2(0);
+        public static Vector2 Zero { get; } = new(0);
 
         /// <summary>
         /// Returns a <see cref="Vector2" /> with each component set to 1.
         /// </summary>
-        public static Vector2 One { get; } = new Vector2(1);
+        public static Vector2 One { get; } = new(1);
 
         /// <summary>
         /// Returns a <see cref="Vector2" /> with components 1, 0.
         /// </summary>
-        public static Vector2 UnitX { get; } = new Vector2(1, 0);
+        public static Vector2 UnitX { get; } = new(1, 0);
 
         /// <summary>
         /// Returns a <see cref="Vector2" /> with components 0, 1.
         /// </summary>
-        public static Vector2 UnitY { get; } = new Vector2(0, 1);
+        public static Vector2 UnitY { get; } = new(0, 1);
 
         /// <summary>
         /// Gets the length of this <see cref="Vector2" />.

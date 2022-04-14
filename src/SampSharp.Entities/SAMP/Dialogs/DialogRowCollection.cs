@@ -26,7 +26,7 @@ namespace SampSharp.Entities.SAMP
     /// <typeparam name="T">The type of the dialog rows.</typeparam>
     public class DialogRowCollection<T> : IEnumerable<T> where T : IDialogRow
     {
-        private readonly List<T> _rows = new List<T>();
+        private readonly List<T> _rows = new();
 
         /// <summary>
         /// Gets the raw text as it is send to SA:MP.
@@ -83,7 +83,7 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <summary>
-        /// Removes the first occurence of the specified row to the list.
+        /// Removes the first occurrence of the specified row to the list.
         /// </summary>
         public virtual bool Remove(T row)
         {

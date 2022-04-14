@@ -21,7 +21,7 @@ namespace TestMode.Entities.Systems.Tests
                 r =>
                 {
                     player.SendClientMessage(
-                        $"Resp: {r.Response} {r.ItemIndex}: ({string.Join(" ", r.Item?.Columns)},{r.Item?.Tag})");
+                        $"Resp: {r.Response} {r.ItemIndex}: ({string.Join(" ", r.Item?.Columns!)},{r.Item?.Tag})");
                 });
             player.PlaySound(1083);
         }

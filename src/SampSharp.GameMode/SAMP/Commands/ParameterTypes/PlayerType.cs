@@ -24,7 +24,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
     public class PlayerType : ICommandParameterType
     {
         /// <summary>
-        ///     Gets the value for the occurance of this parameter type at the start of the commandText. The processed text will be
+        ///     Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be
         ///     removed from the commandText.
         /// </summary>
         /// <param name="commandText">The command text.</param>
@@ -57,19 +57,19 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
 
             var lowerWord = word.ToLower();
 
-            // find all candiates containing the input word, case insensitive.
+            // find all candidates containing the input word, case insensitive.
             var candidates = BasePlayer.All.Where(p => p.Name.ToLower().Contains(lowerWord))
                 .ToList();
 
-            // in case of ambiguities find all candiates containing the input word, case sensitive.
+            // in case of ambiguities find all candidates containing the input word, case sensitive.
             if (candidates.Count > 1)
                 candidates = candidates.Where(p => p.Name.Contains(word)).ToList();
 
-            // in case of ambiguities find all candiates matching exactly the input word, case insensitive.
+            // in case of ambiguities find all candidates matching exactly the input word, case insensitive.
             if (candidates.Count > 1)
                 candidates = candidates.Where(p => p.Name.ToLower() == lowerWord).ToList();
 
-            // in case of ambiguities find all candiates matching exactly the input word, case sensitive.
+            // in case of ambiguities find all candidates matching exactly the input word, case sensitive.
             if (candidates.Count > 1)
                 candidates = candidates.Where(p => p.Name == word).ToList();
 

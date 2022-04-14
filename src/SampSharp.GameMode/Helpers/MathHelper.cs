@@ -17,7 +17,7 @@ using System;
 namespace SampSharp.GameMode.Helpers
 {
     /// <summary>
-    ///     Contains commonly used precalculated values and mathematical operations.
+    ///     Contains commonly used pre-calculated values and mathematical operations.
     /// </summary>
     public static class MathHelper
     {
@@ -80,7 +80,7 @@ namespace SampSharp.GameMode.Helpers
         /// <returns>A position that is the result of the Catmull-Rom interpolation.</returns>
         public static float CatmullRom(float value1, float value2, float value3, float value4, float amount) {
             // Using formula from http://www.mvps.org/directx/articles/catmull/
-            // Internally using doubles not to lose precission
+            // Internally using doubles not to lose precision
             double amountSquared = amount * amount;
             var amountCubed = amountSquared * amount;
             return (float)(0.5 * (2.0 * value2 +
@@ -144,7 +144,7 @@ namespace SampSharp.GameMode.Helpers
         /// <returns>The result of the Hermite spline interpolation.</returns>
         public static float Hermite(float value1, float tangent1, float value2, float tangent2, float amount)
         {
-            // All transformed to double not to lose precission
+            // All transformed to double not to lose precision
             // Otherwise, for high numbers of param:amount the result is NaN instead of Infinity
             double v1 = value1, v2 = value2, t1 = tangent1, t2 = tangent2, s = amount, result;
             var sCubed = s*s*s;

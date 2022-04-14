@@ -31,8 +31,8 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="gameMode">The running GameMode.</param>
         public virtual void RegisterEvents(BaseMode gameMode)
         {
-            gameMode.PlayerClickPlayerTextDraw += (sender, args) => args.PlayerTextDraw?.OnClick(args);
-            gameMode.PlayerCleanup += (sender, args) =>
+            gameMode.PlayerClickPlayerTextDraw += (_, args) => args.PlayerTextDraw?.OnClick(args);
+            gameMode.PlayerCleanup += (sender, _) =>
             {
                 var player = sender as BasePlayer;
                 foreach (var textdraw in PlayerTextDraw.Of(player).ToArray())

@@ -52,7 +52,7 @@ namespace SampSharp.Entities
         /// <inheritdoc />
         public void Initialize(IGameModeClient client)
         {
-            client.UnhandledException += (sender, args) =>
+            client.UnhandledException += (_, args) =>
             {
                 CoreLog.Log(CoreLogLevel.Error, "Unhandled exception: " + args.Exception);
             };

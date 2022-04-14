@@ -33,7 +33,7 @@ namespace SampSharp.Core
         }
 
         /// <summary>
-        /// Gets the message queue to which calls are enqueued.
+        /// Gets the message queue to which calls are en-queued.
         /// </summary>
         public IMessageQueue MessageQueue { get; }
         
@@ -61,7 +61,6 @@ namespace SampSharp.Core
         public override void Post(SendOrPostCallback d, object state)
         {
             // Queue the item and don't wait for its execution. 
-            // TODO: This is risky because an unhandled exception will terminate the main thread. Use with caution.
             var item = new SendOrPostCallbackItem(d, state, ExecutionType.Post);
             MessageQueue.PushMessage(item);
         }

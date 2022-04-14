@@ -409,7 +409,7 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         public virtual Vector3 Rotation
         {
-            get => new Vector3(0, 0, Angle);
+            get => new(0, 0, Angle);
             set => VehicleInternal.Instance.SetVehicleZAngle(Id, value.Z);
         }
 
@@ -494,7 +494,7 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnUnoccupiedUpdate" /> is being called.
-        ///     This callback is called everytime this <see cref="BaseVehicle" /> updates the server with their status while it is
+        ///     This callback is called every time this <see cref="BaseVehicle" /> updates the server with their status while it is
         ///     unoccupied.
         /// </summary>
         public event EventHandler<UnoccupiedVehicleEventArgs> UnoccupiedUpdate;
@@ -644,7 +644,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Set the parameters of this <see cref="BaseVehicle" /> for a <see cref="BasePlayer" />.
         /// </summary>
-        /// <param name="player">The <see cref="BasePlayer" /> to set this vehicles's parameters for.</param>
+        /// <param name="player">The <see cref="BasePlayer" /> to set this vehicle's parameters for.</param>
         /// <param name="objective">False to disable the objective or True to show it.</param>
         /// <param name="doorslocked">False to unlock the doors or True to lock them.</param>
         public virtual void SetParametersForPlayer(BasePlayer player, bool objective,
@@ -756,8 +756,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="driver">if set to <c>true</c> the driver side door is open.</param>
         /// <param name="passenger">if set to <c>true</c> the passenger side door is open.</param>
-        /// <param name="backleft">if set to <c>true</c> the backleft door is open.</param>
-        /// <param name="backright">if set to <c>true</c> the backright door is open.</param>
+        /// <param name="backleft">if set to <c>true</c> the back left door is open.</param>
+        /// <param name="backright">if set to <c>true</c> the back right door is open.</param>
         public virtual void SetDoorsParameters(bool driver, bool passenger, bool backleft, bool backright)
         {
             AssertNotDisposed();
@@ -770,8 +770,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="driver">if on the driver side door is open.</param>
         /// <param name="passenger">if on the passenger side door is open.</param>
-        /// <param name="backleft">if on the backleft door is open.</param>
-        /// <param name="backright">if on the backright door is open.</param>
+        /// <param name="backleft">if on the back left door is open.</param>
+        /// <param name="backright">if on the back right door is open.</param>
         public virtual void SetDoorsParameters(VehicleParameterValue driver, VehicleParameterValue passenger,
             VehicleParameterValue backleft, VehicleParameterValue backright)
         {
@@ -785,8 +785,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="driver">if on the driver side door is open.</param>
         /// <param name="passenger">if on the passenger side door is open.</param>
-        /// <param name="backleft">if on the backleft door is open.</param>
-        /// <param name="backright">if on the backright door is open.</param>
+        /// <param name="backleft">if on the back left door is open.</param>
+        /// <param name="backright">if on the back right door is open.</param>
         public virtual void GetDoorsParameters(out VehicleParameterValue driver, out VehicleParameterValue passenger,
             out VehicleParameterValue backleft, out VehicleParameterValue backright)
         {
@@ -804,8 +804,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="driver">if true the driver side door is open.</param>
         /// <param name="passenger">if true the passenger side door is open.</param>
-        /// <param name="backleft">if true the backleft door is open.</param>
-        /// <param name="backright">if true the backright door is open.</param>
+        /// <param name="backleft">if true the back left door is open.</param>
+        /// <param name="backright">if true the back right door is open.</param>
         public virtual void GetDoorsParameters(out bool driver, out bool passenger, out bool backleft,
             out bool backright)
         {
@@ -823,8 +823,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="driver">if set to <c>true</c> the driver side window is closed.</param>
         /// <param name="passenger">if set to <c>true</c> the passenger side window is closed.</param>
-        /// <param name="backleft">if set to <c>true</c> the backleft window is closed.</param>
-        /// <param name="backright">if set to <c>true</c> the backright window is closed.</param>
+        /// <param name="backleft">if set to <c>true</c> the back left window is closed.</param>
+        /// <param name="backright">if set to <c>true</c> the back right window is closed.</param>
         public virtual void SetWindowsParameters(bool driver, bool passenger, bool backleft, bool backright)
         {
             AssertNotDisposed();
@@ -838,8 +838,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="driver">if on the driver side window is closed.</param>
         /// <param name="passenger">if on the passenger side window is closed.</param>
-        /// <param name="backleft">if on the backleft window is closed.</param>
-        /// <param name="backright">if on the backright window is closed.</param>
+        /// <param name="backleft">if on the back left window is closed.</param>
+        /// <param name="backright">if on the back right window is closed.</param>
         public virtual void SetWindowsParameters(VehicleParameterValue driver, VehicleParameterValue passenger,
             VehicleParameterValue backleft, VehicleParameterValue backright)
         {
@@ -853,8 +853,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="driver">if on the driver side window is closed.</param>
         /// <param name="passenger">if on the passenger side window is closed.</param>
-        /// <param name="backleft">if on the backleft window is closed.</param>
-        /// <param name="backright">if on the backright window is closed.</param>
+        /// <param name="backleft">if on the back left window is closed.</param>
+        /// <param name="backright">if on the back right window is closed.</param>
         public virtual void GetWindowsParameters(out VehicleParameterValue driver, out VehicleParameterValue passenger,
             out VehicleParameterValue backleft, out VehicleParameterValue backright)
         {
@@ -872,8 +872,8 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="driver">if true the driver side window is closed.</param>
         /// <param name="passenger">if true the passenger side window is closed.</param>
-        /// <param name="backleft">if true the backleft window is closed.</param>
-        /// <param name="backright">if true the backright window is closed.</param>
+        /// <param name="backleft">if true the back left window is closed.</param>
+        /// <param name="backright">if true the back right window is closed.</param>
         public virtual void GetWindowsParameters(out bool driver, out bool passenger, out bool backleft,
             out bool backright)
         {
@@ -953,7 +953,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Set this <see cref="BaseVehicle" />'s numberplate, which supports olor embedding.
+        ///     Set this <see cref="BaseVehicle" />'s numberplate, which supports color embedding.
         /// </summary>
         /// <param name="numberplate">The text that should be displayed on the numberplate. Color Embedding> is supported.</param>
         public virtual void SetNumberPlate(string numberplate)

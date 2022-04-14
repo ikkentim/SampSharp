@@ -23,7 +23,7 @@ namespace SampSharp.Entities
     /// </summary>
     public class EventScopeMiddleware
     {
-        private readonly EventContextScoped _context = new EventContextScoped();
+        private readonly EventContextScoped _context = new();
         private readonly EventDelegate _next;
 
         /// <summary>
@@ -40,18 +40,17 @@ namespace SampSharp.Entities
         /// </summary>
         public object Invoke(EventContext context)
         {
-            using (var scope = context.EventServices.CreateScope())
-            {
-                _context.BaseContext = context;
-                _context.Scope = scope;
+            using var scope = context.EventServices.CreateScope();
 
-                var result = _next(_context);
+            _context.BaseContext = context;
+            _context.Scope = scope;
 
-                _context.BaseContext = null;
-                _context.Scope = null;
+            var result = _next(_context);
 
-                return result;
-            }
+            _context.BaseContext = null;
+            _context.Scope = null;
+
+            return result;
         }
 
         private sealed class EventContextScoped : EventContext

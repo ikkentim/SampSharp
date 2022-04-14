@@ -26,67 +26,67 @@ namespace SampSharp.GameMode.Definitions
     public enum Keys
     {
         /// <summary>
-        ///     The action key. (Default: Tab, onfoot. ALT GR / LCTRL / NUM 0, invehicle)
+        ///     The action key. (Default: Tab, on-foot. ALT GR / L-CTRL / NUM 0, in-vehicle)
         /// </summary>
         Action = 1,
 
         /// <summary>
-        ///     The crouch key. (Default: C, onfoot, H / CAPSLOCK, invehicle)
+        ///     The crouch key. (Default: C, on-foot, H / CAPS-LOCK, in-vehicle)
         /// </summary>
         Crouch = 2,
 
         /// <summary>
-        ///     The fire key. (Default: LCTRL / LMB, onfoot. LALT, invehicle)
+        ///     The fire key. (Default: L-CTRL / LMB, on-foot. L-ALT, in-vehicle)
         /// </summary>
         Fire = 4,
 
         /// <summary>
-        ///     The sprint key. (Default: SPACE, onfoot. W, invehicle)
+        ///     The sprint key. (Default: SPACE, on-foot. W, in-vehicle)
         /// </summary>
         Sprint = 8,
 
         /// <summary>
-        ///     Secondary attack key. (Default: ENTER, onfoot. ENTER, invehicle)
+        ///     Secondary attack key. (Default: ENTER, on-foot. ENTER, in-vehicle)
         /// </summary>
         SecondaryAttack = 16,
 
         /// <summary>
-        ///     Jump key. (Default: LSHIFT, onfoot)
+        ///     Jump key. (Default: L-SHIFT, on-foot)
         /// </summary>
         Jump = 32,
 
         /// <summary>
-        ///     Look right key. (Default: E, invehicle)
+        ///     Look right key. (Default: E, in-vehicle)
         /// </summary>
         LookRight = 64,
 
         /// <summary>
-        ///     Handbrake key. (Default: RMB, onfoot. SPACE, invehicle)
+        ///     Handbrake key. (Default: RMB, on-foot. SPACE, in-vehicle)
         /// </summary>
         Handbrake = 128,
 
         /// <summary>
-        ///     Aim key. (Default: RMB, onfoot. SPACE, invehicle)
+        ///     Aim key. (Default: RMB, on-foot. SPACE, in-vehicle)
         /// </summary>
         Aim = 128,
 
         /// <summary>
-        ///     Look left key. (Default: Q, invehicle)
+        ///     Look left key. (Default: Q, in-vehicle)
         /// </summary>
         LookLeft = 256,
 
         /// <summary>
-        ///     Submission key. (Default: NUM 1 / MMB, onfoot. 2 / NUM +, invehicle)
+        ///     Submission key. (Default: NUM 1 / MMB, on-foot. 2 / NUM +, in-vehicle)
         /// </summary>
         Submission = 512,
 
         /// <summary>
-        ///     Look behind key, look left + look right combined. (Default: NUM 1 / MMB, onfoot. 2, invehicle)
+        ///     Look behind key, look left + look right combined. (Default: NUM 1 / MMB, on-foot. 2, in-vehicle)
         /// </summary>
         LookBehind = 512,
 
         /// <summary>
-        ///     Walk key. (Default: LALT, onfoot)
+        ///     Walk key. (Default: L-ALT, on-foot)
         /// </summary>
         Walk = 1024,
 
@@ -121,7 +121,7 @@ namespace SampSharp.GameMode.Definitions
         No = 131072,
 
         /// <summary>
-        ///     Controll back key. (Default: H)
+        ///     Control back key. (Default: H)
         /// </summary>
         CtrlBack = 262144
     }

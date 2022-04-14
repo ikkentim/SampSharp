@@ -220,16 +220,13 @@ namespace SampSharp.GameMode.World
         public PlayerTextLabel(BasePlayer owner, string text, Color color, Vector3 position, float drawDistance,
             bool testLOS, BasePlayer attachedPlayer)
         {
-            if (attachedPlayer == null)
-                throw new ArgumentNullException(nameof(attachedPlayer));
-
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             _color = color;
             _position = position;
             _drawDistance = drawDistance;
             _testLOS = testLOS;
             _text = text;
-            _attachedPlayer = attachedPlayer;
+            _attachedPlayer = attachedPlayer ?? throw new ArgumentNullException(nameof(attachedPlayer));
 
             Id = PlayerTextLabelInternal.Instance.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z,
                 drawDistance,
@@ -268,16 +265,13 @@ namespace SampSharp.GameMode.World
         public PlayerTextLabel(BasePlayer owner, string text, Color color, Vector3 position, float drawDistance,
             bool testLOS, BaseVehicle attachedVehicle)
         {
-            if (attachedVehicle == null)
-                throw new ArgumentNullException(nameof(attachedVehicle));
-
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             _color = color;
             _position = position;
             _drawDistance = drawDistance;
             _testLOS = testLOS;
             _text = text;
-            _attachedVehicle = attachedVehicle;
+            _attachedVehicle = attachedVehicle ?? throw new ArgumentNullException(nameof(attachedVehicle));
 
             Id = PlayerTextLabelInternal.Instance.CreatePlayer3DTextLabel(owner.Id, text, color, position.X, position.Y, position.Z,
                 drawDistance,

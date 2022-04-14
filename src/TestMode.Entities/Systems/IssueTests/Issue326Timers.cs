@@ -7,8 +7,8 @@ namespace TestMode.Entities.Systems.IssueTests
 {
     public class Issue326Timers : ISystem
     {
-        private readonly Stopwatch _stopwatch1 = new Stopwatch();
-        private readonly Stopwatch _stopwatch2 = new Stopwatch();
+        private readonly Stopwatch _stopwatch1 = new();
+        private readonly Stopwatch _stopwatch2 = new();
         private int _readonlyTicks;
 
         [Timer(60000)]
@@ -24,14 +24,14 @@ namespace TestMode.Entities.Systems.IssueTests
             _stopwatch1.Start();
             _stopwatch2.Start();
 
-            TimerReference timer = null;
-            timer = timerService.Start(_ =>
+            timerService.Start((_, timer) =>
             {
                 if (++_readonlyTicks == 3)
                 {
                     Console.WriteLine("Stop timer");
                     timerService.Stop(timer);
                 }
+
                 Console.WriteLine($"Manual timer {_stopwatch2.Elapsed}");
                 _stopwatch2.Restart();
             }, TimeSpan.FromSeconds(0.1));

@@ -15,7 +15,7 @@
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Contains all specating modes.
+    ///     Contains all spectating modes.
     /// </summary>
     public enum SpectateMode
     {

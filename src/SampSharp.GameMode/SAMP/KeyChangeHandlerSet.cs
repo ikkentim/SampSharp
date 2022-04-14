@@ -18,7 +18,7 @@ using SampSharp.GameMode.Tools;
 namespace SampSharp.GameMode.SAMP
 {
     /// <summary>
-    ///     Contains a set of KeyHandlers for different keystates.
+    ///     Contains a set of KeyHandlers for different key states.
     /// </summary>
     public class KeyChangeHandlerSet
     {

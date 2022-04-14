@@ -25,14 +25,15 @@ namespace SampSharp.Entities.SAMP
     /// <seealso cref="IVehicleInfoService" />
     public class VehicleInfoService : IVehicleInfoService
     {
-        private readonly Dictionary<int, int> _componentType = new Dictionary<int, int>();
+        private readonly Dictionary<int, int> _componentType = new();
 
-        private readonly Dictionary<(VehicleModelType, VehicleModelInfoType), Vector3> _modelInfo =
-            new Dictionary<(VehicleModelType, VehicleModelInfoType), Vector3>();
+        private readonly Dictionary<(VehicleModelType, VehicleModelInfoType), Vector3> _modelInfo = new();
 
         private readonly VehicleInfoServiceNative _native;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VehicleInfoService"/> class.
+        /// </summary>
         public VehicleInfoService(INativeProxy<VehicleInfoServiceNative> nativeProxy)
         {
             _native = nativeProxy.Instance;

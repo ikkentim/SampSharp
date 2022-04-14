@@ -13,7 +13,7 @@ namespace TestMode.Entities.Systems.IssueTests
             var dialog = new MessageDialog("Welcome", "Welcome on my server!", "Continue");
 
             dialogService.Show(player.Entity, dialog,
-                async r =>
+                async _ =>
                 {
                     var dialog2 = new InputDialog
                     {

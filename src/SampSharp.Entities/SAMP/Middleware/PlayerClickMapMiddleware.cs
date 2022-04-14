@@ -2,7 +2,7 @@
 {
     internal class PlayerClickMapMiddleware
     {
-        private readonly ArgumentsOverrideEventContext _context = new ArgumentsOverrideEventContext(2);
+        private readonly ArgumentsOverrideEventContext _context = new(2);
         private readonly EventDelegate _next;
 
         public PlayerClickMapMiddleware(EventDelegate next)

@@ -25,7 +25,7 @@ namespace SampSharp.GameMode.SAMP
     /// </summary>
     public class ServerConfig : IEnumerable<KeyValuePair<string, string>>
     {
-        private readonly Dictionary<string, string> _values = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _values = new();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ServerConfig" /> class.

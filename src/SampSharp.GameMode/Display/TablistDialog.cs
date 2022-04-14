@@ -27,7 +27,7 @@ namespace SampSharp.GameMode.Display
     {
         private readonly int _columnCount;
         private readonly string[] _columns;
-        private readonly List<string> _rows = new List<string>();
+        private readonly List<string> _rows = new();
 
         /// <summary>
         ///     Initializes a new instance of the Dialog class.
@@ -39,16 +39,13 @@ namespace SampSharp.GameMode.Display
         /// <param name="columnCount">The column count.</param>
         /// <param name="button1">The text on the left button.</param>
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-        public TablistDialog(string caption, int columnCount, string button1, string button2 = null)
+        public TablistDialog(string caption, int columnCount, string button1, string button2 = null) : base(
+            DialogStyle.Tablist, caption, button1, button2)
         {
             if (columnCount <= 0)
                 throw new ArgumentOutOfRangeException(nameof(columnCount), "must be greater than 0");
 
-            Caption = caption ?? throw new ArgumentNullException(nameof(caption));
-            Button1 = button1 ?? throw new ArgumentNullException(nameof(button1));
-            Button2 = button2;
             _columnCount = columnCount;
-            Style = DialogStyle.Tablist;
         }
 
         /// <summary>
@@ -61,13 +58,10 @@ namespace SampSharp.GameMode.Display
         /// <param name="columns">The columns.</param>
         /// <param name="button1">The text on the left button.</param>
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-        public TablistDialog(string caption, IEnumerable<string> columns, string button1, string button2 = null)
+        public TablistDialog(string caption, IEnumerable<string> columns, string button1, string button2 = null) : base(
+            DialogStyle.TablistHeaders, caption, button1, button2)
         {
-            Caption = caption ?? throw new ArgumentNullException(nameof(caption));
-            Button1 = button1 ?? throw new ArgumentNullException(nameof(button1));
-            Button2 = button2;
             if (columns == null) throw new ArgumentNullException(nameof(columns));
-            Style = DialogStyle.TablistHeaders;
 
             _columns = columns.ToArray();
             _columnCount = _columns.Length;

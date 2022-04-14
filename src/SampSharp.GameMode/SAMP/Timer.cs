@@ -32,7 +32,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Initializes a new instance of the Timer class and starts the timer.
         /// </summary>
-        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="interval">The interval in milliseconds.</param>
         /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
         public Timer(double interval, bool isRepeating)
             : this(interval, isRepeating, true)
@@ -42,7 +42,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Initializes a new instance of the Timer class.
         /// </summary>
-        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="interval">The interval in milliseconds.</param>
         /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
         /// <param name="running">Whether the timer is running.</param>
         public Timer(double interval, bool isRepeating, bool running)
@@ -53,7 +53,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Initializes a new instance of the Timer class and starts the timer.
         /// </summary>
-        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="interval">The interval in milliseconds.</param>
         /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
         public Timer(int interval, bool isRepeating) : this(interval, isRepeating, true)
         {
@@ -62,7 +62,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Initializes a new instance of the Timer class.
         /// </summary>
-        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="interval">The interval in milliseconds.</param>
         /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
         /// <param name="running">Whether the timer is running.</param>
         public Timer(int interval, bool isRepeating, bool running)
@@ -150,14 +150,14 @@ namespace SampSharp.GameMode.SAMP
         public static Timer Run(TimeSpan interval, Action action)
         {
             var t = new Timer(interval, true, true);
-            t.Tick += (sender, args) => action();
+            t.Tick += (_, _) => action();
             return t;
         }
         
         /// <summary>
         ///     Runs the specified action repeatedly with the specified interval.
         /// </summary>
-        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="interval">The interval in milliseconds.</param>
         /// <param name="action">The action.</param>
         /// <returns>The created timer.</returns>
         public static Timer Run(double interval, Action action)
@@ -168,7 +168,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Runs the specified action repeatedly with the specified interval.
         /// </summary>
-        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="interval">The interval in milliseconds.</param>
         /// <param name="action">The action.</param>
         /// <returns>The created timer.</returns>
         public static Timer Run(int interval, Action action)
@@ -185,14 +185,14 @@ namespace SampSharp.GameMode.SAMP
         public static Timer RunOnce(TimeSpan interval, Action action)
         {
             var t = new Timer(interval, false, true);
-            t.Tick += (sender, args) => action();
+            t.Tick += (_, _) => action();
             return t;
         }
         
         /// <summary>
         ///     Runs the specified action once after the specified interval.
         /// </summary>
-        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="interval">The interval in milliseconds.</param>
         /// <param name="action">The action.</param>
         /// <returns>The created timer.</returns>
         public static Timer RunOnce(double interval, Action action)
@@ -203,7 +203,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         ///     Runs the specified action once after the specified interval.
         /// </summary>
-        /// <param name="interval">The interval in miliseconds.</param>
+        /// <param name="interval">The interval in milliseconds.</param>
         /// <param name="action">The action.</param>
         /// <returns>The created timer.</returns>
         public static Timer RunOnce(int interval, Action action)

@@ -27,7 +27,7 @@ namespace SampSharp.GameMode.Controllers
     /// </summary>
     public class ControllerCollection : Disposable, IEnumerable<IController>
     {
-        private readonly List<IController> _controllers = new List<IController>();
+        private readonly List<IController> _controllers = new();
 
         /// <summary>
         ///     Returns an enumerator that iterates through this collection.
@@ -70,7 +70,7 @@ namespace SampSharp.GameMode.Controllers
 
             if (overrides.Any())
                 CoreLog.Log(CoreLogLevel.Debug,
-                    $"{controller} overrides {string.Join(", ", (object[]) overrides)}");
+                    $"{controller} overrides {string.Join(", ", overrides.Select(x => (object)x))}");
 
             foreach (var c in overrides)
                 Remove(c);

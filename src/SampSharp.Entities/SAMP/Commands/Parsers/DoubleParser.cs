@@ -22,7 +22,7 @@ namespace SampSharp.Entities.SAMP.Commands.Parsers
     /// </summary>
     public class DoubleParser : ICommandParameterParser
     {
-        private readonly WordParser _wordParser = new WordParser();
+        private readonly WordParser _wordParser = new();
 
         /// <inheritdoc />
         public bool TryParse(IServiceProvider services, ref string inputText, out object result)

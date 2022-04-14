@@ -29,7 +29,7 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="gameMode">The running GameMode.</param>
         public virtual void RegisterEvents(BaseMode gameMode)
         {
-            gameMode.PlayerPickUpPickup += (sender, args) => args.Pickup?.OnPickUp(args);
+            gameMode.PlayerPickUpPickup += (_, args) => args.Pickup?.OnPickUp(args);
         }
 
         /// <summary>

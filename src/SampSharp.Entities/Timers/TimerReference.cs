@@ -19,7 +19,7 @@ namespace SampSharp.Entities
         /// <summary>
         /// Gets the time span until the next tick of this timer.
         /// </summary>
-        public TimeSpan NextTick => new TimeSpan(Info.NextTick - Stopwatch.GetTimestamp());
+        public TimeSpan NextTick => new(Info.NextTick - Stopwatch.GetTimestamp());
 
         internal TimerInfo Info { get; set; }
 

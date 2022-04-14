@@ -25,13 +25,11 @@ namespace SampSharp.Entities
     public class EcsBuilder : IEcsBuilder
     {
         private readonly IEventService _eventService;
-        private readonly ISystemRegistry _systemRegistry;
 
         internal EcsBuilder(IServiceProvider services)
         {
             Services = services ?? throw new ArgumentNullException(nameof(services));
-
-            _systemRegistry = services.GetRequiredService<ISystemRegistry>();
+            
             _eventService = services.GetRequiredService<IEventService>();
         }
 

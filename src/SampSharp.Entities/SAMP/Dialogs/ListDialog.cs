@@ -40,7 +40,7 @@ namespace SampSharp.Entities.SAMP
         /// <summary>
         /// Gets the rows of this dialog.
         /// </summary>
-        public ListDialogRowCollection Rows { get; } = new ListDialogRowCollection();
+        public ListDialogRowCollection Rows { get; } = new();
 
         DialogStyle IDialog.Style => DialogStyle.List;
 

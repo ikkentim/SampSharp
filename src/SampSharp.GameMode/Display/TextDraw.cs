@@ -53,7 +53,7 @@ namespace SampSharp.GameMode.Display
             Click?.Invoke(this, e);
         }
 
-        private readonly List<BasePlayer> _playersShownTo = new List<BasePlayer>();
+        private readonly List<BasePlayer> _playersShownTo = new();
 
         private TextDrawAlignment? _alignment;
         private Color? _backColor;
@@ -231,7 +231,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets whether to proporionally space the characters of this textdraw.
+        ///     Gets or sets whether to proportionally space the characters of this textdraw.
         /// </summary>
         public virtual bool Proportional
         {
@@ -290,7 +290,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the width of this textdraw's box.
+        ///     Gets or sets the width of this textdraws box.
         /// </summary>
         public virtual float Width
         {
@@ -305,7 +305,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the height of this textdraw's box.
+        ///     Gets or sets the height of this textdraws box.
         /// </summary>
         public virtual float Height
         {
@@ -350,7 +350,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the previewmodel to draw on this textdraw.
+        ///     Gets or sets the preview model to draw on this textdraw.
         /// </summary>
         public virtual int PreviewModel
         {
@@ -365,7 +365,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the rotation of this textdraw's previewmodel.
+        ///     Gets or sets the rotation of this textdraws preview model.
         /// </summary>
         public virtual Vector3 PreviewRotation
         {
@@ -380,7 +380,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the zoom level of this textdraw's previewmodel.
+        ///     Gets or sets the zoom level of this textdraws preview model.
         /// </summary>
         public virtual float PreviewZoom
         {
@@ -395,7 +395,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the primary vehicle color of this textdraw's previewmodel.
+        ///     Gets or sets the primary vehicle color of this textdraws preview model.
         /// </summary>
         public virtual int PreviewPrimaryColor
         {
@@ -410,7 +410,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the secondary vehicle color of this textdraw's previewmodel.
+        ///     Gets or sets the secondary vehicle color of this textdraws preview model.
         /// </summary>
         public virtual int PreviewSecondaryColor
         {

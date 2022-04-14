@@ -14,6 +14,8 @@
 // limitations under the License.
 using SampSharp.Core.Natives.NativeObjects;
 
+// ReSharper disable MemberHidesStaticFromOuterClass
+// ReSharper disable StringLiteralTypo
 namespace SampSharp.GameMode.World
 {
     public partial class BasePlayer

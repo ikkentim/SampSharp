@@ -33,8 +33,8 @@ namespace SampSharp.GameMode.Controllers
             //Register all vehicle events
             gameMode.VehicleSpawned += (sender, args) => (sender as BaseVehicle)?.OnSpawn(args);
             gameMode.VehicleDied += (sender, args) => (sender as BaseVehicle)?.OnDeath(args);
-            gameMode.PlayerEnterVehicle += (sender, args) => args.Vehicle?.OnPlayerEnter(args);
-            gameMode.PlayerExitVehicle += (sender, args) => args.Vehicle?.OnPlayerExit(args);
+            gameMode.PlayerEnterVehicle += (_, args) => args.Vehicle?.OnPlayerEnter(args);
+            gameMode.PlayerExitVehicle += (_, args) => args.Vehicle?.OnPlayerExit(args);
             gameMode.VehicleMod += (sender, args) => (sender as BaseVehicle)?.OnMod(args);
             gameMode.VehiclePaintjobApplied += (sender, args) => (sender as BaseVehicle)?.OnPaintjobApplied(args);
             gameMode.VehicleResprayed += (sender, args) => (sender as BaseVehicle)?.OnResprayed(args);
