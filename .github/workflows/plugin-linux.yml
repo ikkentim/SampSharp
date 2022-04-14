@@ -18,8 +18,6 @@ on:
       - src/SampSharp/**
       - Makefile
 
-  workflow_dispatch:
-  
 jobs:
   build:
     runs-on: ubuntu-latest

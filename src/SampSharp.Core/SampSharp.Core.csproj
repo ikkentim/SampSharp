@@ -11,11 +11,4 @@
     <EmbeddedResource Include="CodePages\data\*.dat" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.IO.Pipes" Version="4.3.0" />
-    <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
-    <PackageReference Include="System.Reflection.Emit.ILGeneration" Version="4.3.0" />
-    <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
-  </ItemGroup>
-
 </Project>
