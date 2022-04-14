@@ -1,7 +1,7 @@
 <Project>
   <!-- Detect project kind -->
   <PropertyGroup>
-    <IsTestProject>$(MSBuildProjectName.Contains('Tests'))</IsTestProject>
+    <IsTestProject>$(MSBuildProjectName.Contains('.UnitTests'))</IsTestProject>
     <IsTestMode>$(MSBuildProjectName.Contains('TestMode.'))</IsTestMode>
     <IsLibrary Condition="'$(IsTestMode)' != 'True' and '$(IsTestProject)' != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">True</IsLibrary>
   </PropertyGroup>
@@ -12,13 +12,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsLibrary)' == 'True'">
-    <OutputPath>..\..\bin\$(Configuration)\</OutputPath>
+    <OutputPath>..\..\bin\$(MSBuildProjectName)\$(Configuration)\</OutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsTestMode)' == 'True'">
-    <OutputPath>..\..\env\gamemode</OutputPath>
+    <OutputPath>..\..\env\gamemode\$(MSBuildProjectName)</OutputPath>
   </PropertyGroup>
 
   <!-- Configuration for packages -->
@@ -67,7 +67,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsTestProject)' != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">
-      <PackageReference Include="SonarAnalyzer.CSharp" Version="8.32.0.39516">
+      <PackageReference Include="SonarAnalyzer.CSharp" Version="8.37.0.45539">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       </PackageReference>

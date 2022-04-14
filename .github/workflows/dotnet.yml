@@ -19,8 +19,6 @@ on:
       - SampSharp.sln
       - Makefile
 
-  workflow_dispatch:
-  
 jobs:
   build:
 

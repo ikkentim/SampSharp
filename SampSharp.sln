@@ -13,14 +13,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6B10DCD1
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		Directory.build.props = Directory.build.props
-		env\server.cfg = env\server.cfg
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampSharp.Entities", "src\SampSharp.Entities\SampSharp.Entities.csproj", "{DBADB3D5-8B69-416C-9A97-0A9767DFBC7A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMode.Entities", "src\TestMode.Entities\TestMode.Entities.csproj", "{9ADD7452-9B5A-42FF-BAA0-AFBC93BE711A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampSharp.Core.UnitTests", "src\SampSharp.Core.UnitTests\SampSharp.Core.UnitTests.csproj", "{791B7ABD-43B4-436A-8E55-DA573B102E86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampSharp.Core.UnitTests", "src\SampSharp.Core.UnitTests\SampSharp.Core.UnitTests.csproj", "{791B7ABD-43B4-436A-8E55-DA573B102E86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
