@@ -2,7 +2,7 @@
 {
     internal class PlayerEditAttachedObjectMiddleware
     {
-        private readonly ArgumentsOverrideEventContext _context = new ArgumentsOverrideEventContext(8);
+        private readonly ArgumentsOverrideEventContext _context = new(8);
         private readonly EventDelegate _next;
 
         public PlayerEditAttachedObjectMiddleware(EventDelegate next)

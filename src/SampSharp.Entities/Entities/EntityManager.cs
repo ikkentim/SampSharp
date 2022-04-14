@@ -134,7 +134,7 @@ namespace SampSharp.Entities
             var component = typeof(NativeComponent).IsAssignableFrom(typeof(T))
                 ? NativeObjectProxyFactory.CreateInstance<T>(args)
                 : (T)Activator.CreateInstance(typeof(T),
-                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, args, null);
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, args, null)!;
 
             component.Entity = entity;
             component.Manager = this;
@@ -157,7 +157,7 @@ namespace SampSharp.Entities
             var component = typeof(NativeComponent).IsAssignableFrom(typeof(T))
                 ? NativeObjectProxyFactory.CreateInstance<T>()
                 : (T)Activator.CreateInstance(typeof(T),
-                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, null, null);
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, null, null)!;
             
             component.Entity = entity;
             component.Manager = this;

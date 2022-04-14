@@ -225,7 +225,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         public virtual Color Color
         {
-            get => new Color(PlayerInternal.Instance.GetPlayerColor(Id));
+            get => new(PlayerInternal.Instance.GetPlayerColor(Id));
             set => PlayerInternal.Instance.SetPlayerColor(Id, value);
         }
 
@@ -514,7 +514,7 @@ namespace SampSharp.GameMode.World
         /// </remarks>
         public virtual Vector3 Rotation
         {
-            get => new Vector3(0, 0, Angle);
+            get => new(0, 0, Angle);
             set => Angle = value.Z;
         }
 
@@ -574,7 +574,7 @@ namespace SampSharp.GameMode.World
         }
 
         /// <summary>
-        ///     Gets this Player's GPCI string.
+        ///     Gets this Player's global computer identifier string.
         /// </summary>
         public virtual string GPCI
         {
@@ -660,7 +660,7 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnDeath" /> is being called.
-        ///     This callback is triggered when the gamemode starts.
+        ///     This callback is triggered when the game mode starts.
         /// </summary>
         public event EventHandler<DeathEventArgs> Died;
 
@@ -775,7 +775,7 @@ namespace SampSharp.GameMode.World
 
         /// <summary>
         ///     Occurs when the <see cref="OnUpdate" /> is being called.
-        ///     This callback is called everytime a client/player updates the server with their status.
+        ///     This callback is called every time a client/player updates the server with their status.
         /// </summary>
         /// <remarks>
         ///     This callback is called very frequently per second per player, only use it when you know what it's meant for.
@@ -841,7 +841,7 @@ namespace SampSharp.GameMode.World
         ///     mode (ESC)
         /// </summary>
         /// <remarks>
-        ///     The clickable area is defined by <see cref="TextDraw.Width" /> and <see cref="TextDraw.Width" />. The x and y
+        ///     The click-able area is defined by <see cref="TextDraw.Width" /> and <see cref="TextDraw.Width" />. The x and y
         ///     parameters passed to that
         ///     function must not be zero or negative.
         /// </remarks>
@@ -910,7 +910,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <remarks>
         ///     <see cref="BulletHitType.None" />: the fX, fY and fZ parameters are normal coordinates;
-        ///     Others: the fX, fY and fZ are offsets from the center of hitid.
+        ///     Others: the fX, fY and fZ are offsets from the center of hit object.
         /// </remarks>
         public event EventHandler<WeaponShotEventArgs> WeaponShot;
 
@@ -930,11 +930,11 @@ namespace SampSharp.GameMode.World
         /// <param name="position">The player's spawn position.</param>
         /// <param name="rotation">The direction in which the player needs to be facing after spawning.</param>
         /// <param name="weapon1">The first spawn-weapon for the player.</param>
-        /// <param name="weapon1Ammo">The amount of ammunition for the primary spawnweapon.</param>
+        /// <param name="weapon1Ammo">The amount of ammunition for the primary spawn weapon.</param>
         /// <param name="weapon2">The second spawn-weapon for the player.</param>
-        /// <param name="weapon2Ammo">The amount of ammunition for the second spawnweapon.</param>
+        /// <param name="weapon2Ammo">The amount of ammunition for the second spawn weapon.</param>
         /// <param name="weapon3">The third spawn-weapon for the player.</param>
-        /// <param name="weapon3Ammo">The amount of ammunition for the third spawnweapon.</param>
+        /// <param name="weapon3Ammo">The amount of ammunition for the third spawn weapon.</param>
         public virtual void SetSpawnInfo(int team, int skin, Vector3 position, float rotation,
             Weapon weapon1 = Weapon.None,
             int weapon1Ammo = 0, Weapon weapon2 = Weapon.None, int weapon2Ammo = 0, Weapon weapon3 = Weapon.None,
@@ -1222,7 +1222,7 @@ namespace SampSharp.GameMode.World
         ///     crime.
         /// </summary>
         /// <param name="suspect">The suspect player which will be described in the crime report.</param>
-        /// <param name="crime">The crime ID, which will be reported as a 10-code (i.e. 10-16 if 16 was passed as the crimeid).</param>
+        /// <param name="crime">The crime ID, which will be reported as a 10-code (i.e. 10-16 if 16 was passed as the crime ID).</param>
         public virtual void PlayCrimeReport(BasePlayer suspect, int crime)
         {
             if (suspect == null) throw new ArgumentNullException(nameof(suspect));
@@ -1238,8 +1238,8 @@ namespace SampSharp.GameMode.World
         ///     The url to play. Valid formats are mp3 and ogg/vorbis. A link to a .pls (playlist) file will play
         ///     that playlist.
         /// </param>
-        /// <param name="position">The position at which to play the audio. Has no effect unless usepos is set to True.</param>
-        /// <param name="distance">The distance over which the audio will be heard. Has no effect unless usepos is set to True.</param>
+        /// <param name="position">The position at which to play the audio.</param>
+        /// <param name="distance">The distance over which the audio will be heard.</param>
         public virtual void PlayAudioStream(string url, Vector3 position, float distance)
         {
             AssertNotDisposed();
@@ -1386,7 +1386,7 @@ namespace SampSharp.GameMode.World
         /// <param name="text">The text to display.</param>
         /// <param name="color">The text color.</param>
         /// <param name="drawdistance">The distance from where players are able to see the chat bubble.</param>
-        /// <param name="expiretime">The time in miliseconds the bubble should be displayed for.</param>
+        /// <param name="expiretime">The time in milliseconds the bubble should be displayed for.</param>
         public virtual void SetChatBubble(string text, Color color, float drawdistance,
             int expiretime)
         {
@@ -1492,7 +1492,7 @@ namespace SampSharp.GameMode.World
         /// </param>
         /// <param name="freeze">Will freeze the player in position after the animation finishes.</param>
         /// <param name="time">Timer in milliseconds. For a never ending loop it should be 0.</param>
-        /// <param name="forcesync">Set to True to force playerid to sync animation with other players in all instances</param>
+        /// <param name="forcesync">Set to <c>true</c> to force  the player to sync animation with other players in all instances.</param>
         public virtual void ApplyAnimation(string animlib, string animname, float fDelta, bool loop, bool lockx,
             bool locky, bool freeze, int time, bool forcesync)
         {
@@ -1836,7 +1836,7 @@ namespace SampSharp.GameMode.World
         /// </summary>
         /// <param name="recordtype">The type of recording.</param>
         /// <param name="recordname">
-        ///     Name of the file which will hold the recorded data. It will be saved in scriptfiles, with an
+        ///     Name of the file which will hold the recorded data. It will be saved in "scriptfiles" directory with an
         ///     automatically added .rec extension.
         /// </param>
         public virtual void StartRecordingPlayerData(PlayerRecordingType recordtype, string recordname)
@@ -1894,7 +1894,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     This function sends a message to this <see cref="BasePlayer" /> with a chosen color in the chat. The whole line in
         ///     the chat box will be
-        ///     in the set color unless colour embedding is used.
+        ///     in the set color unless color embedding is used.
         /// </summary>
         /// <param name="color">The color of the message.</param>
         /// <param name="message">The text that will be displayed.</param>
@@ -2015,7 +2015,7 @@ namespace SampSharp.GameMode.World
         ///     Ban this <see cref="BasePlayer" />. The ban will be IP-based, and be saved in the samp.ban file in the
         ///     server's root directory. <see cref="Ban(string)" /> allows you to ban with a reason, while you can ban and unban
         ///     IPs
-        ///     using the RCON banip and unbanip commands.
+        ///     using the RCON "banip" and "unbanip" commands.
         /// </summary>
         public virtual void Ban()
         {
@@ -2041,7 +2041,7 @@ namespace SampSharp.GameMode.World
         ///     but can only be seen by <paramref name="receiver" />. The line will start with the this Player's name in his color,
         ///     followed by the <paramref name="message" /> in white.
         /// </summary>
-        /// <param name="receiver">The <see cref="BasePlayer" /> who will recieve the message</param>
+        /// <param name="receiver">The <see cref="BasePlayer" /> who will receive the message</param>
         /// <param name="message">The message that will be sent.</param>
         public virtual void SendPlayerMessageToPlayer(BasePlayer receiver, string message)
         {
@@ -2121,7 +2121,7 @@ namespace SampSharp.GameMode.World
         /// <param name="type">The type of explosion.</param>
         /// <param name="radius">The explosion radius.</param>
         /// <param name="interior">The interior of the explosion.</param>
-        /// <param name="virtualworld">The virtualworld of the explosion.</param>
+        /// <param name="virtualworld">The virtual world of the explosion.</param>
         public static void CreateExplosionForAll(Vector3 position, ExplosionType type, float radius, int interior,
             int virtualworld)
         {

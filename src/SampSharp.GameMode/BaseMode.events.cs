@@ -24,13 +24,13 @@ namespace SampSharp.GameMode
     {
         /// <summary>
         ///     Occurs when the <see cref="OnInitialized" /> callback is being called.
-        ///     This callback is triggered when the gamemode starts.
+        ///     This callback is triggered when the game mode starts.
         /// </summary>
         public event EventHandler<EventArgs> Initialized;
 
         /// <summary>
         ///     Occurs when the <see cref="OnExited" /> callback is being called.
-        ///     This callback is called when a gamemode ends.
+        ///     This callback is called when a game mode ends.
         /// </summary>
         public event EventHandler<EventArgs> Exited;
 
@@ -65,7 +65,7 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerDied" /> callback is being called.
-        ///     This callback is triggered when the gamemode starts.
+        ///     This callback is triggered when the game mode starts.
         /// </summary>
         public event EventHandler<DeathEventArgs> PlayerDied;
 
@@ -230,7 +230,7 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     Occurs when the <see cref="OnUnoccupiedVehicleUpdated" /> callback is being called.
-        ///     This callback is called everytime an unoccupied vehicle updates the server with their status.
+        ///     This callback is called every time an unoccupied vehicle updates the server with their status.
         /// </summary>
         /// <remarks>
         ///     This callback is called very frequently per second per unoccupied vehicle. You should refrain from implementing
@@ -268,7 +268,7 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     Occurs when the <see cref="OnRconLoginAttempt(RconLoginAttemptEventArgs)" /> callback is being called.
-        ///     This callback is called when someone tries to login to RCON, succesful or not.
+        ///     This callback is called when someone tries to login to RCON, successful or not.
         /// </summary>
         /// <remarks>
         ///     This callback is only called when /rcon login is used.
@@ -277,7 +277,7 @@ namespace SampSharp.GameMode
 
         /// <summary>
         ///     Occurs when the <see cref="OnPlayerUpdate(BasePlayer,PlayerUpdateEventArgs)" /> callback is being called.
-        ///     This callback is called everytime a client/player updates the server with their status.
+        ///     This callback is called every time a client/player updates the server with their status.
         /// </summary>
         /// <remarks>
         ///     This callback is called very frequently per second per player, only use it when you know what it's meant for.
@@ -360,7 +360,7 @@ namespace SampSharp.GameMode
         ///     This callback is called when a player clicks on a textdraw. It is not called when player cancels the select mode (ESC).
         /// </summary>
         /// <remarks>
-        ///     The clickable area is defined by <see cref="TextDraw.Width" /> and <see cref="TextDraw.Height" />.
+        ///     The click-able area is defined by <see cref="TextDraw.Width" /> and <see cref="TextDraw.Height" />.
         /// </remarks>
         public event EventHandler<ClickTextDrawEventArgs> PlayerClickTextDraw;
 
@@ -1017,7 +1017,7 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Raises the <see cref="IncomingConnection" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="ConnectionEventArgs" /> that contains the event dEventArgsata. </param>
+        /// <param name="e">An <see cref="ConnectionEventArgs" /> that contains the event data. </param>
         protected virtual void OnIncomingConnection(ConnectionEventArgs e)
         {
             IncomingConnection?.Invoke(this, e);

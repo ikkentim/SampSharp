@@ -20,7 +20,7 @@ namespace SampSharp.GameMode.SAMP
     /// <summary>
     /// Represents a human readable color. The string representation of this value provides the name of the color value or a hexadecimal formatted representation of the value.
     /// </summary>
-    public struct ColorValue
+    public readonly struct ColorValue
     {
         private readonly ColorFormat _fallbackFormat;
 
@@ -43,7 +43,7 @@ namespace SampSharp.GameMode.SAMP
         /// <summary>
         /// Performs an implicit conversion from <see cref="ColorValue" /> to <see cref="Color" />.
         /// </summary>
-        /// <param name="value">The value t convert.</param>
+        /// <param name="value">The value to convert.</param>
         /// <returns>
         /// The result of the conversion.
         /// </returns>

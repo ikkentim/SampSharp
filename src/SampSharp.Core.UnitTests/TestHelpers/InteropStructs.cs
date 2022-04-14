@@ -23,21 +23,21 @@ namespace SampSharp.Core.UnitTests.TestHelpers
             public delegate* unmanaged <byte*, byte*, void> Logprintf;
 
 #pragma warning disable S1144 // Unused private types or members should be removed
-            private IntPtr _placeholder1;
-            private IntPtr _placeholder2;
-            private IntPtr _placeholder3;
-            private IntPtr _placeholder4;
-            private IntPtr _placeholder5;
-            private IntPtr _placeholder6;
-            private IntPtr _placeholder7;
-            private IntPtr _placeholder8;
-            private IntPtr _placeholder9;
-            private IntPtr _placeholderA;
-            private IntPtr _placeholderB;
-            private IntPtr _placeholderC;
-            private IntPtr _placeholderD;
-            private IntPtr _placeholderE;
-            private IntPtr _placeholderF;
+            private readonly IntPtr _placeholder1;
+            private readonly IntPtr _placeholder2;
+            private readonly IntPtr _placeholder3;
+            private readonly IntPtr _placeholder4;
+            private readonly IntPtr _placeholder5;
+            private readonly IntPtr _placeholder6;
+            private readonly IntPtr _placeholder7;
+            private readonly IntPtr _placeholder8;
+            private readonly IntPtr _placeholder9;
+            private readonly IntPtr _placeholderA;
+            private readonly IntPtr _placeholderB;
+            private readonly IntPtr _placeholderC;
+            private readonly IntPtr _placeholderD;
+            private readonly IntPtr _placeholderE;
+            private readonly IntPtr _placeholderF;
 #pragma warning restore S1144 // Unused private types or members should be removed
 
             public AmxExportRw* AmxExports;

@@ -58,12 +58,12 @@ namespace SampSharp.GameMode.Events
         public DialogButton DialogButton { get; }
 
         /// <summary>
-        ///     Gets the index of the listitem clicked for this response.
+        ///     Gets the index of the list item clicked for this response.
         /// </summary>
         public int ListItem { get; }
 
         /// <summary>
-        ///     Gets the inputtext of this response.
+        ///     Gets the input text of this response.
         /// </summary>
         public string InputText { get; }
     }

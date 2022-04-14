@@ -78,9 +78,9 @@ namespace SampSharp.Entities.Utilities
                 foreach (var assemblyRef in asm.GetReferencedAssemblies())
                 {
                     if (skipSystem &&
-                        (assemblyRef.Name.StartsWith("System") ||
-                         assemblyRef.Name.StartsWith("Microsoft") ||
-                         assemblyRef.Name.StartsWith("netstandard")))
+                        (assemblyRef.Name!.StartsWith("System", StringComparison.InvariantCulture) ||
+                         assemblyRef.Name.StartsWith("Microsoft", StringComparison.InvariantCulture) ||
+                         assemblyRef.Name.StartsWith("netstandard", StringComparison.InvariantCulture)))
                         continue;
 
                     AddToScan(Assembly.Load(assemblyRef));

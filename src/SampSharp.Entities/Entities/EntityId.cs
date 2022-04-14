@@ -21,12 +21,12 @@ namespace SampSharp.Entities
     /// <summary>
     /// Represents an identifier of an entity.
     /// </summary>
-    public struct EntityId
+    public readonly struct EntityId
     {
         /// <summary>
         /// An empty entity identifier.
         /// </summary>
-        public static readonly EntityId Empty = new EntityId();
+        public static readonly EntityId Empty = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityId" /> struct.

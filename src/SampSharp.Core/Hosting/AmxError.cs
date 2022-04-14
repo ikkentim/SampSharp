@@ -81,7 +81,7 @@ public enum AmxError
     Divide,
 
     /// <summary>
-    /// Exit code: go into sleepmode - code can be restarted
+    /// Exit code: go into sleep mode - code can be restarted
     /// </summary>
     Sleep,
 

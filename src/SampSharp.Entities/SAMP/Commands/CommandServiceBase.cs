@@ -30,9 +30,11 @@ namespace SampSharp.Entities.SAMP.Commands
         private readonly IEntityManager _entityManager;
         private readonly int _prefixParameters;
 
-        private readonly Dictionary<string, List<CommandData>> _commands = new Dictionary<string, List<CommandData>>();
+        private readonly Dictionary<string, List<CommandData>> _commands = new();
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandServiceBase"/> class.
+        /// </summary>
         protected CommandServiceBase(IEntityManager entityManager, int prefixParameters)
         {
             if (prefixParameters < 0) throw new ArgumentOutOfRangeException(nameof(prefixParameters));
@@ -128,8 +130,7 @@ namespace SampSharp.Entities.SAMP.Commands
                         var commandResult = command.Invoke(system, command.Arguments, services, _entityManager);
 
                         // Check if execution was successful
-                        if (!(commandResult is bool bResult && !bResult) &&
-                            !(commandResult is int iResult && iResult == 0)) result = true;
+                        if (commandResult is not false && commandResult is not 0) result = true;
                     }
                 }
                 else
@@ -206,7 +207,7 @@ namespace SampSharp.Entities.SAMP.Commands
 
             if (parameter.ParameterType == typeof(string))
                 return index == parameters.Length - 1
-                    ? (ICommandParameterParser) new StringParser()
+                    ? new StringParser()
                     : new WordParser();
             
             if(parameter.ParameterType == typeof(float))

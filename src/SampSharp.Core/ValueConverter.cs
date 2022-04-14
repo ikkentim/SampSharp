@@ -262,17 +262,5 @@ namespace SampSharp.Core
             [FieldOffset(0)]
             public float single;
         }
-        /// <summary>
-        ///     A struct to immediately cast <see cref="short" /> or <see cref="ushort" /> values.
-        /// </summary>
-        [StructLayout(LayoutKind.Explicit)]
-        private struct ValueUnion16
-        {
-            [FieldOffset(0)]
-            public short int16;
-
-            [FieldOffset(0)]
-            public readonly ushort uint16;
-        }
     }
 }

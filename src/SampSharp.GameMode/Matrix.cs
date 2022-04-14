@@ -19,7 +19,7 @@ namespace SampSharp.GameMode
     /// <summary>
     ///     Represents the right-handed 4x4 floating point matrix, which can store translation, scale and rotation information.
     /// </summary>
-    public struct Matrix : IEquatable<Matrix>
+    public readonly struct Matrix : IEquatable<Matrix>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="Matrix" /> struct.
@@ -227,7 +227,7 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Returns the identity matrix.
         /// </summary>
-        public static Matrix Identity { get; } = new Matrix(1f, 0f, 0f, 0f,
+        public static Matrix Identity { get; } = new(1f, 0f, 0f, 0f,
             0f, 1f, 0f, 0f,
             0f, 0f, 1f, 0f,
             0f, 0f, 0f, 1f);
@@ -236,32 +236,32 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Gets the down vector formed from the third row -M31, -M32, -M33 elements.
         /// </summary>
-        public Vector3 Down => new Vector3(-M31, -M32, -M33);
+        public Vector3 Down => new(-M31, -M32, -M33);
 
         /// <summary>
         ///     Gets the upper vector formed from the third row M31, M32, M33 elements.
         /// </summary>
-        public Vector3 Up => new Vector3(M31, M32, M33);
+        public Vector3 Up => new(M31, M32, M33);
 
         /// <summary>
         ///     Gets the forward vector formed from the second row M21, M22, M23 elements.
         /// </summary>
-        public Vector3 Forward => new Vector3(M21, M22, M23);
+        public Vector3 Forward => new(M21, M22, M23);
 
         /// <summary>
         ///     Gets the backward vector formed from the second row -M21, -M22, -M23 elements.
         /// </summary>
-        public Vector3 Backward => new Vector3(-M21, -M22, -M23);
+        public Vector3 Backward => new(-M21, -M22, -M23);
 
         /// <summary>
         ///     The left vector formed from the first row -M11, -M12, -M13 elements.
         /// </summary>
-        public Vector3 Left => new Vector3(-M11, -M12, -M13);
+        public Vector3 Left => new(-M11, -M12, -M13);
 
         /// <summary>
         ///     Gets the right vector formed from the first row M11, M12, M13 elements.
         /// </summary>
-        public Vector3 Right => new Vector3(M11, M12, M13);
+        public Vector3 Right => new(M11, M12, M13);
 
         /// <summary>
         ///     Gets the rotation stored in this matrix.
@@ -271,12 +271,12 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Gets the position stored in this matrix.
         /// </summary>
-        public Vector3 Translation => new Vector3(M41, M42, M43);
+        public Vector3 Translation => new(M41, M42, M43);
 
         /// <summary>
         ///     Gets the scale stored in this matrix.
         /// </summary>
-        public Vector3 Scale => new Vector3(M11, M22, M33);
+        public Vector3 Scale => new(M11, M22, M33);
 
         /// <summary>
         ///     Creates a new <see cref="Matrix" /> which contains the rotation moment around specified axis.
@@ -560,23 +560,23 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Creates a new <see cref="Matrix" /> that contains linear interpolation of the values in specified matrixes.
+        ///     Creates a new <see cref="Matrix" /> that contains linear interpolation of the values in specified matrices.
         /// </summary>
         /// <param name="matrix1">The first <see cref="Matrix" />.</param>
         /// <param name="matrix2">The second <see cref="Vector2" />.</param>
         /// <param name="amount">Weighting value(between 0.0 and 1.0).</param>
-        /// <returns>>The result of linear interpolation of the specified matrixes.</returns>
+        /// <returns>>The result of linear interpolation of the specified matrices.</returns>
         public static Matrix Lerp(Matrix matrix1, Matrix matrix2, float amount)
         {
             return matrix1 + (matrix2 - matrix1)*amount;
         }
 
         /// <summary>
-        ///     Adds two matrixes.
+        ///     Adds two matrices.
         /// </summary>
         /// <param name="matrix1">Source <see cref="Matrix" /> on the left of the add sign.</param>
         /// <param name="matrix2">Source <see cref="Matrix" /> on the right of the add sign.</param>
-        /// <returns>Sum of the matrixes.</returns>
+        /// <returns>Sum of the matrices.</returns>
         public static Matrix operator +(Matrix matrix1, Matrix matrix2)
         {
             return new Matrix(
@@ -604,7 +604,7 @@ namespace SampSharp.GameMode
         /// </summary>
         /// <param name="matrix1">Source <see cref="Matrix" /> on the left of the div sign.</param>
         /// <param name="matrix2">Divisor <see cref="Matrix" /> on the right of the div sign.</param>
-        /// <returns>The result of dividing the matrixes.</returns>
+        /// <returns>The result of dividing the matrices.</returns>
         public static Matrix operator /(Matrix matrix1, Matrix matrix2)
         {
             return new Matrix(
@@ -723,7 +723,7 @@ namespace SampSharp.GameMode
         }
 
         /// <summary>
-        ///     Multiplies two matrixes.
+        ///     Multiplies two matrices.
         /// </summary>
         /// <param name="matrix1">Source <see cref="Matrix" /> on the left of the mul sign.</param>
         /// <param name="matrix2">Source <see cref="Matrix" /> on the right of the mul sign.</param>

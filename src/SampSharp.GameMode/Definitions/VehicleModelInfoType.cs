@@ -15,7 +15,7 @@
 namespace SampSharp.GameMode.Definitions
 {
     /// <summary>
-    ///     Contains all vehiclemodel info types.
+    ///     Contains all vehicle model info types.
     /// </summary>
     public enum VehicleModelInfoType
     {

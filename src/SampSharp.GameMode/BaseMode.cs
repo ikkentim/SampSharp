@@ -29,8 +29,8 @@ namespace SampSharp.GameMode
     /// </summary>
     public abstract partial class BaseMode : Disposable, IGameModeProvider
     {
-        private readonly ControllerCollection _controllers = new ControllerCollection();
-        private readonly List<IExtension> _extensions = new List<IExtension>();
+        private readonly ControllerCollection _controllers = new();
+        private readonly List<IExtension> _extensions = new();
 
         /// <summary>
         ///     Gets the instance.
@@ -53,7 +53,7 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     Gets the <see cref="GameModeServiceContainer" /> holding all the service providers attached to the game mode.
         /// </summary>
-        public virtual GameModeServiceContainer Services { get; } = new GameModeServiceContainer();
+        public virtual GameModeServiceContainer Services { get; } = new();
 
         /// <summary>
         ///     Gets the game mode client.
@@ -61,7 +61,7 @@ namespace SampSharp.GameMode
         public IGameModeClient Client { get; private set; }
 
         /// <summary>
-        ///     Autoloads the controllers in the specified assembly.
+        ///     Auto-loads the controllers in the specified assembly.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
         public void AutoloadControllersForAssembly(Assembly assembly)
@@ -71,7 +71,7 @@ namespace SampSharp.GameMode
                             typeof (IController).GetTypeInfo().IsAssignableFrom(t) &&
                             t.GetTypeInfo().GetCustomAttribute<ControllerAttribute>() != null))
             {
-                CoreLog.Log(CoreLogLevel.Debug, $"Autoloading type {type}...");
+                CoreLog.Log(CoreLogLevel.Debug, $"Auto-loading type {type}...");
                 _controllers.Override(Activator.CreateInstance(type) as IController);
             }
         }
@@ -109,19 +109,19 @@ namespace SampSharp.GameMode
                 if (types.Any(t => t == poolType || poolType.GetTypeInfo().IsAssignableFrom(t)))
                 {
                     CoreLog.Log(CoreLogLevel.Debug,
-                        $"Pool of type {poolType} is not autoloaded because a subclass of it will already be loaded.");
+                        $"Pool of type {poolType} is not auto-loaded because a subclass of it will already be loaded.");
                     continue;
                 }
 
-                // Remove all types in types where type is supertype of poolType.
+                // Remove all types in types where type is parent type of poolType.
                 foreach (var t in types.Where(t => t.GetTypeInfo().IsAssignableFrom(poolType)).ToArray())
                 {
                     CoreLog.Log(CoreLogLevel.Debug,
-                        $"No longer autoloading type {poolType} because a subclass of it is going to be loaded.");
+                        $"No longer auto-loading type {poolType} because a subclass of it is going to be loaded.");
                     types.Remove(t);
                 }
 
-                CoreLog.Log(CoreLogLevel.Debug, $"Autoloading pool of type {poolType}.");
+                CoreLog.Log(CoreLogLevel.Debug, $"Auto-loading pool of type {poolType}.");
                 types.Add(poolType);
             }
 
@@ -140,11 +140,11 @@ namespace SampSharp.GameMode
 
                 if (pool == null)
                 {
-                    CoreLog.Log(CoreLogLevel.Debug, $"Skipped autoloading pool of type {type} because it's not a subtype of a pool.");
+                    CoreLog.Log(CoreLogLevel.Debug, $"Skipped auto-loading pool of type {type} because it's not a subtype of a pool.");
                     continue;
                 }
 
-                pool.GetTypeInfo().GetMethod("Register", new[] {typeof (Type)}).Invoke(null, new object[] {type});
+                pool.GetTypeInfo().GetMethod("Register", new[] {typeof (Type)})!.Invoke(null, new object[] {type});
             }
         }
 

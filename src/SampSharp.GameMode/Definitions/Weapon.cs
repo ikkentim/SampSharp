@@ -30,7 +30,7 @@ namespace SampSharp.GameMode.Definitions
         Unarmed = 0,
 
         /// <summary>
-        ///     Brask knuckles.
+        ///     Brass knuckles.
         /// </summary>
         Brassknuckle = 1,
 
@@ -40,7 +40,7 @@ namespace SampSharp.GameMode.Definitions
         Golfclub = 2,
 
         /// <summary>
-        ///     Nitestick.
+        ///     Nite stick.
         /// </summary>
         Nitestick = 3,
 
@@ -65,7 +65,7 @@ namespace SampSharp.GameMode.Definitions
         Poolstick = 7,
 
         /// <summary>
-        ///     Katana (sword).
+        ///     Katana sword.
         /// </summary>
         Katana = 8,
 
@@ -115,7 +115,7 @@ namespace SampSharp.GameMode.Definitions
         Teargas = 17,
 
         /// <summary>
-        ///     Molotov Cockail.
+        ///     Molotov Cocktail.
         /// </summary>
         Moltov = 18,
 
@@ -140,7 +140,7 @@ namespace SampSharp.GameMode.Definitions
         Shotgun = 25,
 
         /// <summary>
-        ///     Sawnoff Shotgun.
+        ///     Sawn-off Shotgun.
         /// </summary>
         Sawedoff = 26,
 
@@ -275,12 +275,12 @@ namespace SampSharp.GameMode.Definitions
         Collision = 54,
 
         /// <summary>
-        ///     Connected. (use with deathmessages)
+        ///     Connected. (use with death messages)
         /// </summary>
         Connect = 200,
 
         /// <summary>
-        ///     Disconnected. (use with deathmessages)
+        ///     Disconnected. (use with death messages)
         /// </summary>
         Disconnect = 201,
 

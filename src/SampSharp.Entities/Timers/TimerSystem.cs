@@ -15,7 +15,7 @@ namespace SampSharp.Entities
         private static readonly TimeSpan LowInterval = TimeSpan.FromSeconds(1.0 / 50); // 10 server ticks
         private readonly IServiceProvider _serviceProvider;
         
-        private readonly List<TimerInfo> _timers = new List<TimerInfo>();
+        private readonly List<TimerInfo> _timers = new();
         private long _lastTick;
         private bool _didInitialize;
 
@@ -38,6 +38,12 @@ namespace SampSharp.Entities
         /// <inheritdoc />
         public TimerReference Start(Action<IServiceProvider> action, TimeSpan interval)
         {
+            return Start((sp, _) => action(sp), interval);
+        }
+        
+        /// <inheritdoc />
+        public TimerReference Start(Action<IServiceProvider, TimerReference> action, TimeSpan interval)
+        {
             if (action == null) throw new ArgumentNullException(nameof(action));
 
             if(!IsValidInterval(interval))
@@ -45,15 +51,18 @@ namespace SampSharp.Entities
 
             var invoker = new TimerInfo
             {
-                Invoke = () => action(_serviceProvider),
                 IsActive = true,
                 IntervalTicks = interval.Ticks,
                 NextTick = Stopwatch.GetTimestamp() + interval.Ticks
             };
 
+            var reference = new TimerReference(invoker, null, null);
+
+            invoker.Invoke = () => action(_serviceProvider, reference);
+
             _timers.Add(invoker);
 
-            return new TimerReference(invoker, null, null);
+            return reference;
         }
 
         [Event]
@@ -123,7 +132,7 @@ namespace SampSharp.Entities
                     continue;
                 }
 
-                var service = _serviceProvider.GetService(method.DeclaringType);
+                var service = _serviceProvider.GetService(method.DeclaringType!);
 
                 if (service == null)
                 {

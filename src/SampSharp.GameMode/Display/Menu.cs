@@ -26,7 +26,7 @@ namespace SampSharp.GameMode.Display
     /// </summary>
     public partial class Menu : Pool<Menu>
     {
-        private readonly List<BasePlayer> _viewers = new List<BasePlayer>();
+        private readonly List<BasePlayer> _viewers = new();
 
         /// <summary>
         ///     Initializes a new instance of the Menu class.

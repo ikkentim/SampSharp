@@ -21,7 +21,7 @@ namespace SampSharp.GameMode.SAMP.Commands
     /// <summary>
     /// Represents a single path to a command.
     /// </summary>
-    public struct CommandPath
+    public readonly struct CommandPath
     {
         /// <summary>
         ///     Gets the group.

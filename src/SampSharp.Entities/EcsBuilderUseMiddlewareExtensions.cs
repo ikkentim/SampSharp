@@ -146,7 +146,7 @@ namespace SampSharp.Entities
 
             Expression middlewareInstanceArg = instanceArg;
             if (methodInfo.DeclaringType != typeof(T))
-                middlewareInstanceArg = Expression.Convert(middlewareInstanceArg, methodInfo.DeclaringType);
+                middlewareInstanceArg = Expression.Convert(middlewareInstanceArg, methodInfo.DeclaringType!);
 
             var body = Expression.Call(middlewareInstanceArg, methodInfo, methodArguments);
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Entities;
 

@@ -161,7 +161,7 @@ namespace SampSharp.GameMode.World
         /// <summary>
         ///     Creates a new <see cref="Actor" />.
         /// </summary>
-        /// <param name="modelid">The modelid.</param>
+        /// <param name="modelid">The model identifier.</param>
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
         /// <returns>The instance of the actor.</returns>
@@ -198,11 +198,7 @@ namespace SampSharp.GameMode.World
         /// <param name="locky">if set to <c>true</c> allow this Actor to move it's y-coordinate.</param>
         /// <param name="freeze">if set to <c>true</c> freeze this Actor at the end of the animation.</param>
         /// <param name="time">The amount of time (in milliseconds) to play the animation.</param>
-        /// <exception cref="System.ArgumentNullException">
-        ///     animlib
-        ///     or
-        ///     animname
-        /// </exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="library"/> or <paramref name="name"/> is null.</exception>
         public void ApplyAnimation(string library, string name, float fDelta, bool loop, bool lockx, bool locky,
             bool freeze, int time)
         {

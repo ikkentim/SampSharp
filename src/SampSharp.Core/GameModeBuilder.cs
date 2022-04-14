@@ -61,7 +61,7 @@ namespace SampSharp.Core
         }
 
         /// <summary>
-        ///     Use the gamemode of the specified <typeparamref name="TGameMode" /> type.
+        ///     Use the game mode of the specified <typeparamref name="TGameMode" /> type.
         /// </summary>
         /// <typeparam name="TGameMode">The type of the game mode to use.</typeparam>
         /// <returns>The updated game mode configuration builder.</returns>

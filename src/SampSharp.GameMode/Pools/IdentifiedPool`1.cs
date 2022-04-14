@@ -23,7 +23,7 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Pools
 {
     /// <summary>
-    ///     Keeps track of a pool of identifyable instances.
+    ///     Keeps track of a pool of identifiable instances.
     /// </summary>
     /// <typeparam name="TInstance">Base type of instances to keep track of.</typeparam>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "By design")]
@@ -150,7 +150,7 @@ namespace SampSharp.GameMode.Pools
             if (InstanceType == null)
                 throw new InvalidOperationException($"No instance type has yet been registered to the {typeof(IdentifiedPool<TInstance>)} pool.");
 
-            var instance = (TInstance)Activator.CreateInstance(InstanceType);
+            var instance = (TInstance)Activator.CreateInstance(InstanceType)!;
             instance.Id = id;
             instance.Initialize();
             return instance;

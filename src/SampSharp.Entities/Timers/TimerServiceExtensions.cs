@@ -26,7 +26,7 @@ namespace SampSharp.Entities
             if(!TimerSystem.IsValidInterval(interval))
                 throw new ArgumentOutOfRangeException(nameof(interval), interval, "The interval should be a nonzero positive value.");
 
-            if(!method.DeclaringType.IsInstanceOfType(target))
+            if(!method.DeclaringType!.IsInstanceOfType(target))
                 throw new ArgumentException("The specified method is not a member of the specified target", nameof(method));
 
             var parameterInfos = method.GetParameters()

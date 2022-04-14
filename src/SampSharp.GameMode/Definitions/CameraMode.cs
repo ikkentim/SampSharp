@@ -75,7 +75,7 @@ namespace SampSharp.GameMode.Definitions
         CameraWeaponAiming = 46,
 
         /// <summary>
-        ///     Heatseeking rochet launcher view.
+        ///     Heat-seeking rocket launcher view.
         /// </summary>
         HeatseekingRocketLauncher = 51,
 

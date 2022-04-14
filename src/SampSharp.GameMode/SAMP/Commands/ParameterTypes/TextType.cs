@@ -20,7 +20,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
     public class TextType : ICommandParameterType
     {
         /// <summary>
-        ///     Gets the value for the occurance of this parameter type at the start of the commandText. The processed text will be
+        ///     Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be
         ///     removed from the commandText.
         /// </summary>
         /// <param name="commandText">The command text.</param>

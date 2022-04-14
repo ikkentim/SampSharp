@@ -188,7 +188,7 @@ namespace SampSharp.Entities
         /// </returns>
         public static bool operator true(Component component)
         {
-            return component != null && component.IsComponentAlive;
+            return component is { IsComponentAlive: true };
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace SampSharp.Entities
         /// </returns>
         public static bool operator false(Component component)
         {
-            return component == null || !component.IsComponentAlive;
+            return component is not { IsComponentAlive: true };
         }
         
         /// <summary>
@@ -212,7 +212,7 @@ namespace SampSharp.Entities
         /// </returns>
         public static bool operator !(Component component)
         {
-            return component == null || !component.IsComponentAlive;
+            return component is not { IsComponentAlive: true };
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using SampSharp.GameMode;
@@ -10,6 +11,8 @@ using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.SAMP.Commands;
 using SampSharp.GameMode.World;
 
+// ReSharper disable MemberHidesStaticFromOuterClass
+// ReSharper disable StringLiteralTypo
 namespace TestMode.GameMode.Commands
 {
     internal static class Commands
@@ -78,7 +81,7 @@ namespace TestMode.GameMode.Commands
         private static void RobCommand(BasePlayer sender, BasePlayer victim)
         {
             // omitted
-            sender.SendClientMessage("Rob with victim");
+            sender.SendClientMessage($"Rob with victim {victim}");
         }
 
         [Command("rob", "rb")]
@@ -144,15 +147,15 @@ namespace TestMode.GameMode.Commands
             await Task.Delay(5);
             player.SelectTextDraw(Color.Red);
             
-            player.ClickTextDraw += (sender, args) =>
+            player.ClickTextDraw += (_, args) =>
             {
                 player.SendClientMessage($"Selected TD: {_td1 == args.TextDraw}");
             };
-            player.ClickPlayerTextDraw += (sender, args) =>
+            player.ClickPlayerTextDraw += (_, args) =>
             {
                 player.SendClientMessage($"Selected PTD: {_td2 == args.PlayerTextDraw}");
             };
-            player.CancelClickTextDraw += (sender, args) =>
+            player.CancelClickTextDraw += (_, _) =>
             {
                 player.SendClientMessage("Canceled TD selection");
             };
@@ -268,9 +271,12 @@ namespace TestMode.GameMode.Commands
         }
 
         [Command("status")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1854:Unused assignments should be removed", Justification = "Testing generated IL code")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0018:Inline variable declaration", Justification = "Testing generated IL code")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "Testing generated IL code")]
+        [SuppressMessage("Major Code Smell", "S1854:Unused assignments should be removed", Justification = "Testing generated IL code")]
+        [SuppressMessage("Style", "IDE0018:Inline variable declaration", Justification = "Testing generated IL code")]
+        [SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "Testing generated IL code")]
+        [SuppressMessage("ReSharper", "RedundantAssignment")]
+        [SuppressMessage("ReSharper", "InlineOutVariableDeclaration")]
+        [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression")]
         public static void StatusCommand(BasePlayer player, int vehicleid)
         {
             var vehicle = BaseVehicle.Find(vehicleid);
@@ -330,7 +336,7 @@ namespace TestMode.GameMode.Commands
         public static async void DialogTest(BasePlayer player)
         {
             var dialog = new MessageDialog("Test dialog", "This message should hide in 2 seconds.", "Don't click me!");
-            dialog.Response += (sender, args) =>
+            dialog.Response += (_, args) =>
             {
                 player.SendClientMessage("You responed to the dialog with button" + args.DialogButton);
             };

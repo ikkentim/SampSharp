@@ -20,7 +20,7 @@ namespace SampSharp.Entities.SAMP
     /// <summary>
     /// Represents a quaternion rotation.
     /// </summary>
-    public struct Quaternion : IEquatable<Quaternion>
+    public readonly struct Quaternion : IEquatable<Quaternion>
     {
         /// <summary>
         /// Gets the x-coordinate of this <see cref="Quaternion" />.
@@ -85,7 +85,7 @@ namespace SampSharp.Entities.SAMP
         /// <summary>
         /// Returns a quaternion representing no rotation.
         /// </summary>
-        public static Quaternion Identity { get; } = new Quaternion(0, 0, 0, 1);
+        public static Quaternion Identity { get; } = new(0, 0, 0, 1);
 
         /// <summary>
         /// Creates a new <see cref="Quaternion" /> that contains concatenation between two quaternion.

@@ -15,6 +15,7 @@
 
 using System;
 
+// ReSharper disable CommentTypo
 namespace SampSharp.GameMode.Definitions
 {
         
@@ -24,7 +25,7 @@ namespace SampSharp.GameMode.Definitions
     public enum MapIcon
     {
         /// <summary>
-        /// Can be used in any colour. Used for Single Player objectives.
+        /// Can be used in any color. Used for Single Player objectives.
         /// </summary>
         ColoredSquareTriangleDynamic = 0,
    
@@ -35,7 +36,7 @@ namespace SampSharp.GameMode.Definitions
         WhiteSquare = 1,
         
         /// <summary>
-        /// Will be used on the minimap by default.
+        /// Will be used on the mini-map by default.
         /// </summary>
         [Obsolete("This element will cause your game to crash if you have map legends enabled while viewing the map", false)] 
         PlayerPosition = 2,

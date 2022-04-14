@@ -26,7 +26,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
         private static readonly char[] Base16Characters = "1234567890abcdef".ToCharArray();
 
         /// <summary>
-        ///     Gets the value for the occurance of this parameter type at the start of the commandText. The processed text will be
+        ///     Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be
         ///     removed from the commandText.
         /// </summary>
         /// <param name="commandText">The command text.</param>
@@ -55,7 +55,7 @@ namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
                 return true;
             }
 
-            // Base 16 (hexidecimal) numbers. Can be prefixed with '0x', '#' or postfixed with 'H' or 'h'.
+            // Base 16 (hexadecimal) numbers. Can be prefixed with '0x', '#' or post-fixed with 'H' or 'h'.
             string base16Word = null;
             if (word.Length > 2 && word.StartsWith("0x"))
                 base16Word = word.Substring(2);

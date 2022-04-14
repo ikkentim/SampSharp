@@ -28,7 +28,7 @@ namespace SampSharp.GameMode.SAMP.Commands
     public class CommandsManager : ICommandsManager
     {
         private static readonly Type[] SupportedReturnTypes = {typeof (bool), typeof (void)};
-        private readonly List<ICommand> _commands = new List<ICommand>();
+        private readonly List<ICommand> _commands = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandsManager" /> class.
@@ -152,7 +152,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                         if (paths.Length == 0)
                         {
                             var name = type.Name.ToLower();
-                            if (name.EndsWith("commandgroup"))
+                            if (name.EndsWith("commandgroup", StringComparison.InvariantCulture))
                                 name = name.Substring(0, name.Length - 12);
 
                             paths = new[] {name};
@@ -297,7 +297,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                         .Where(DefaultCommand.IsValidCommandMethod)
                 )
             {
-                var attribute = method.GetCustomAttribute<CommandAttribute>();
+                var attribute = method.GetCustomAttribute<CommandAttribute>()!;
 
                 var names = attribute.Names;
 

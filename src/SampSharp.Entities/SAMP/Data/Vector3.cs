@@ -20,7 +20,7 @@ namespace SampSharp.Entities.SAMP
     /// <summary>
     /// Represents a 3D vector.
     /// </summary>
-    public struct Vector3 : IEquatable<Vector3>
+    public readonly struct Vector3 : IEquatable<Vector3>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector3" /> struct.
@@ -121,62 +121,62 @@ namespace SampSharp.Entities.SAMP
         /// <summary>
         /// Creates a <see cref="Vector2" /> instance with the X and Y components of this <see cref="Vector3" />.
         /// </summary>
-        public Vector2 XY => new Vector2(X, Y);
+        public Vector2 XY => new(X, Y);
 
         /// <summary>
         /// Returns an empty <see cref="Vector3" />.
         /// </summary>
-        public static Vector3 Zero { get; } = new Vector3(0);
+        public static Vector3 Zero { get; } = new(0);
 
         /// <summary>
         /// Returns a <see cref="Vector3" /> with each component set to 1.
         /// </summary>
-        public static Vector3 One { get; } = new Vector3(1);
+        public static Vector3 One { get; } = new(1);
 
         /// <summary>
         /// Returns a <see cref="Vector3" /> with components 1, 0, 0.
         /// </summary>
-        public static Vector3 UnitX { get; } = new Vector3(1, 0, 0);
+        public static Vector3 UnitX { get; } = new(1, 0, 0);
 
         /// <summary>
         /// Returns a <see cref="Vector3" /> with components 0, 1, 0.
         /// </summary>
-        public static Vector3 UnitY { get; } = new Vector3(0, 1, 0);
+        public static Vector3 UnitY { get; } = new(0, 1, 0);
 
         /// <summary>
         /// Returns a <see cref="Vector3" /> with components 0, 0, 1.
         /// </summary>
-        public static Vector3 UnitZ { get; } = new Vector3(0, 0, 1);
+        public static Vector3 UnitZ { get; } = new(0, 0, 1);
 
         /// <summary>
         /// Returns a <see cref="Vector3" /> with components 0, 0, 1.
         /// </summary>
-        public static Vector3 Up { get; } = new Vector3(0, 0, 1);
+        public static Vector3 Up { get; } = new(0, 0, 1);
 
         /// <summary>
         /// Returns a <see cref="Vector3" /> with components 0, 0, -1.
         /// </summary>
-        public static Vector3 Down { get; } = new Vector3(0, 0, -1);
+        public static Vector3 Down { get; } = new(0, 0, -1);
 
         /// <summary>
         /// Returns a <see cref="Vector3" /> with components -1, 0, 0.
         /// </summary>
-        public static Vector3 Left { get; } = new Vector3(-1, 0, 0);
+        public static Vector3 Left { get; } = new(-1, 0, 0);
 
         /// <summary>
         /// Returns a <see cref="Vector3" /> with components 1, 0, 0.
         /// </summary>
-        public static Vector3 Right { get; } = new Vector3(1, 0, 0);
+        public static Vector3 Right { get; } = new(1, 0, 0);
 
         /// <summary>
         /// Returns a <see cref="Vector3" /> with components 0, 1, 0.
         /// </summary>
-        public static Vector3 Forward { get; } = new Vector3(0, 1, 0);
+        public static Vector3 Forward { get; } = new(0, 1, 0);
 
         /// <summary>
         /// Returns a <see cref="Vector3" /> with components 0, -1, 0.
         /// </summary>
-        public static Vector3 Backward { get; } = new Vector3(0, -1, 0);
+        public static Vector3 Backward { get; } = new(0, -1, 0);
 
         /// <summary>
         /// Gets the length of this <see cref="Vector3" />.

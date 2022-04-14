@@ -77,7 +77,7 @@ namespace SampSharp.GameMode.SAMP.Commands
                 throw new ArgumentException("Method has parameter of unknown type", nameof(method));
             }
 
-            PermissionCheckers = permissionCheckers?.Where(p => p != null).ToArray() ?? new IPermissionChecker[0];
+            PermissionCheckers = permissionCheckers?.Where(p => p != null).ToArray() ?? Array.Empty<IPermissionChecker>();
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace SampSharp.GameMode.SAMP.Commands
 
             if (parameter.ParameterType == typeof (string))
                 return index == count - 1
-                    ? (ICommandParameterType) new TextType()
+                    ? new TextType()
                     : new WordType();
 
             if (parameter.ParameterType == typeof (int))

@@ -200,13 +200,13 @@ namespace SampSharp.GameMode.Pools
         /// <returns>A collection of instanced owned by the specified owner</returns>
         public static IEnumerable<TInstance> Of(TOwner owner)
         {
-            return (IEnumerable<TInstance>) GetPool(owner, false) ?? new TInstance[0];
+            return (IEnumerable<TInstance>) GetPool(owner, false) ?? Array.Empty<TInstance>();
         }
 
         /// <summary>
         ///     Finds an instance with the given <paramref name="id" />".
         /// </summary>
-        /// <param name="owner">The owner of the isntance to find.</param>
+        /// <param name="owner">The owner of the instance to find.</param>
         /// <param name="id">The identity of the instance to find.</param>
         /// <returns>The found instance.</returns>
         public static TInstance Find(TOwner owner, int id)
@@ -227,7 +227,7 @@ namespace SampSharp.GameMode.Pools
             if(InstanceType == null)
                 throw new InvalidOperationException($"No instance type has yet been registered to the {typeof(IdentifiedOwnedPool<TInstance,TOwner>)} pool.");
 
-            var instance = (TInstance) Activator.CreateInstance(InstanceType);
+            var instance = (TInstance)Activator.CreateInstance(InstanceType)!;
             instance.Owner = owner;
             instance.Id = id;
             instance.Initialize();
@@ -235,7 +235,7 @@ namespace SampSharp.GameMode.Pools
         }
 
         /// <summary>
-        ///     An overloadable point for initialization logic which requires the <see cref="Id" /> and the <see cref="Owner" /> to be set.
+        ///     An overload-able point for initialization logic which requires the <see cref="Id" /> and the <see cref="Owner" /> to be set.
         /// </summary>
         protected virtual void Initialize()
         {
@@ -245,7 +245,7 @@ namespace SampSharp.GameMode.Pools
         /// <summary>
         ///     Finds an instance with the given <paramref name="id" /> or initializes a new one.
         /// </summary>
-        /// <param name="owner">The owner of the isntance to find or create.</param>
+        /// <param name="owner">The owner of the instance to find or create.</param>
         /// <param name="id">The identity of the instance to find or create.</param>
         /// <returns>
         ///     The found instance.

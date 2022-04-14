@@ -33,15 +33,12 @@ namespace SampSharp.GameMode.Display
         /// <param name="isPassword">if set to <c>true</c> the input will be hidden on the user's screen.</param>
         /// <param name="button1">The text on the left button.</param>
         /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-        public InputDialog(string caption, string message, bool isPassword, string button1, string button2 = null)
+        public InputDialog(string caption, string message, bool isPassword, string button1, string button2 = null) :
+            base(isPassword ? DialogStyle.Password : DialogStyle.Input, caption, button1, button2)
         {
-            Caption = caption ?? throw new ArgumentNullException(nameof(caption));
             Message = message ?? throw new ArgumentNullException(nameof(message));
-            Button1 = button1 ?? throw new ArgumentNullException(nameof(button1));
-            Button2 = button2;
-            Style = isPassword ? DialogStyle.Password : DialogStyle.Input;
         }
-        
+
         /// <summary>
         ///     Gets the Info displayed.
         /// </summary>

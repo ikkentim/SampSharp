@@ -366,7 +366,7 @@ namespace SampSharp.Entities.SAMP
         /// </remarks>
         public Vector3 Rotation
         {
-            get => new Vector3(0, 0, Angle);
+            get => new(0, 0, Angle);
             set => GetComponent<NativeVehicle>().SetVehicleZAngle(value.Z);
         }
 

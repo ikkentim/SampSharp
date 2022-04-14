@@ -244,7 +244,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets whether to proporionally space the characters of this player-textdraw.
+        ///     Gets or sets whether to proportionally space the characters of this player-textdraw.
         /// </summary>
         public virtual bool Proportional
         {
@@ -303,7 +303,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the width of this player-textdraw's box.
+        ///     Gets or sets the width of this player-textdraws box.
         /// </summary>
         public virtual float Width
         {
@@ -318,7 +318,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the height of this player-textdraw's box.
+        ///     Gets or sets the height of this player-textdraws box.
         /// </summary>
         public virtual float Height
         {
@@ -378,7 +378,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the rotation of this player-textdraw's preview model.
+        ///     Gets or sets the rotation of this player-textdraws preview model.
         /// </summary>
         public virtual Vector3 PreviewRotation
         {
@@ -393,7 +393,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the zoom level of this player-textdraw's preview model.
+        ///     Gets or sets the zoom level of this player-textdraws preview model.
         /// </summary>
         public virtual float PreviewZoom
         {
@@ -409,7 +409,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the primary vehicle color of this player-textdraw's preview model.
+        ///     Gets or sets the primary vehicle color of this player-textdraws preview model.
         /// </summary>
         public virtual int PreviewPrimaryColor
         {
@@ -424,7 +424,7 @@ namespace SampSharp.GameMode.Display
         }
 
         /// <summary>
-        ///     Gets or sets the secondary vehicle color of this player-textdraw's preview model.
+        ///     Gets or sets the secondary vehicle color of this player-textdraws preview model.
         /// </summary>
         public virtual int PreviewSecondaryColor
         {

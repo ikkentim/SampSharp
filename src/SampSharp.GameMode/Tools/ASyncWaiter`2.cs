@@ -25,8 +25,7 @@ namespace SampSharp.GameMode.Tools
     /// <typeparam name="TArguments"></typeparam>
     public class ASyncWaiter<TKey, TArguments>
     {
-        private readonly Dictionary<TKey, TaskCompletionSource<TArguments>> _completionSources =
-            new Dictionary<TKey, TaskCompletionSource<TArguments>>();
+        private readonly Dictionary<TKey, TaskCompletionSource<TArguments>> _completionSources = new();
 
         /// <summary>
         ///     Waits for the <see cref="Fire" /> to be called with the specified <paramref name="key" />.

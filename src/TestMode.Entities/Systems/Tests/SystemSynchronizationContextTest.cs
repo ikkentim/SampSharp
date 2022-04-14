@@ -9,7 +9,7 @@ namespace TestMode.Entities.Systems.Tests
         [Event]
         public void OnGameModeInit()
         {
-            var ctx = SynchronizationContext.Current;
+            var ctx = SynchronizationContext.Current!;
             Task.Run(() =>
             {
                 // ... Run things on a worker thread.

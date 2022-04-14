@@ -33,8 +33,8 @@ namespace SampSharp.Entities
         public static bool IsSuccessResponse(object eventResponse)
         {
             return !(eventResponse == null ||
-                     eventResponse is bool b && !b ||
-                     eventResponse is int i && i == 0 ||
+                     eventResponse is false ||
+                     eventResponse is 0 ||
                      eventResponse is Task<bool> tB && tB.IsCompleted && !tB.Result ||
                      eventResponse is Task<int> tI && tI.IsCompleted && tI.Result == 0);
         }

@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Entities.SAMP.Commands;
 using static SampSharp.Entities.SAMP.SampEntities;
 

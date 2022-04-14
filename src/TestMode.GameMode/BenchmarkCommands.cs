@@ -33,7 +33,7 @@ namespace TestMode.GameMode
                     Server.SetWeather(10);
                     Server.SetWorldTime(14);
                     _ = player.Name;
-                    player.GetAnimationName(out var lib, out var name);
+                    player.GetAnimationName(out _, out _);
                     _ = inf[VehicleModelInfoType.FrontSeat];
                     _ = player.Position;
                 }

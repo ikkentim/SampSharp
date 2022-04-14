@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
+// ReSharper disable CommentTypo
 namespace SampSharp.Core.Natives.NativeObjects
 {
     /// <summary>
@@ -14,9 +15,9 @@ namespace SampSharp.Core.Natives.NativeObjects
     public abstract class NativeObjectProxyFactoryBase : INativeObjectProxyFactory
     {
         private int _typeNumber;
-        private readonly Dictionary<Type, Type> _knownTypes = new Dictionary<Type, Type>();
+        private readonly Dictionary<Type, Type> _knownTypes = new();
         private readonly ModuleBuilder _moduleBuilder;
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NativeObjectProxyFactoryBase" /> class.
@@ -105,7 +106,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                 var set = property.SetMethod;
 
                 // Make sure the property is virtual and not an indexed property.
-                if (!(get?.IsVirtual ?? set.IsVirtual) || property.GetIndexParameters().Length != 0)
+                if (!(get?.IsVirtual ?? set!.IsVirtual) || property.GetIndexParameters().Length != 0)
                     continue;
 
                 // Find the attribute containing details about the property.

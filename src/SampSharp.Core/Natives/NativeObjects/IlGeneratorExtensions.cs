@@ -74,8 +74,8 @@ namespace SampSharp.Core.Natives.NativeObjects
         {
             return member switch
             {
-                MethodBase m when m.IsStatic => true,
-                MethodBase _ => false,
+                MethodBase { IsStatic: true } => true,
+                MethodBase => false,
                 PropertyInfo p => IsStatic(p.GetAccessors(true)[0]),
                 _ => throw new InvalidOperationException("Unknown member type")
             };

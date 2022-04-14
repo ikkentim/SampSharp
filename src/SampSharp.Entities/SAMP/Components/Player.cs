@@ -161,7 +161,7 @@ namespace SampSharp.Entities.SAMP
         /// </summary>
         public Color Color
         {
-            get => new Color(GetComponent<NativePlayer>().GetPlayerColor());
+            get => new(GetComponent<NativePlayer>().GetPlayerColor());
             set => GetComponent<NativePlayer>().SetPlayerColor(value);
         }
 
@@ -476,7 +476,7 @@ namespace SampSharp.Entities.SAMP
         /// </remarks>
         public Vector3 Rotation
         {
-            get => new Vector3(0, 0, Angle);
+            get => new(0, 0, Angle);
             set => Angle = value.Z;
         }
 
@@ -582,7 +582,7 @@ namespace SampSharp.Entities.SAMP
         }
 
         /// <summary>
-        /// Gets this player's GPCI string.
+        /// Gets this player's global computer identifier string.
         /// </summary>
         public string Gpci
         {

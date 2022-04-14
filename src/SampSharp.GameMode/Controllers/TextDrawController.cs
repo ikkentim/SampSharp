@@ -29,7 +29,7 @@ namespace SampSharp.GameMode.Controllers
         /// <param name="gameMode">The running GameMode.</param>
         public virtual void RegisterEvents(BaseMode gameMode)
         {
-            gameMode.PlayerClickTextDraw += (sender, args) => args.TextDraw?.OnClick(args);
+            gameMode.PlayerClickTextDraw += (_, args) => args.TextDraw?.OnClick(args);
         }
 
         /// <summary>

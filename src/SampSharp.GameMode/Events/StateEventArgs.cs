@@ -26,8 +26,8 @@ namespace SampSharp.GameMode.Events
         /// <summary>
         ///     Initializes a new instance of the <see cref="StateEventArgs" /> class.
         /// </summary>
-        /// <param name="newstate">The newstate.</param>
-        /// <param name="oldstate">The oldstate.</param>
+        /// <param name="newstate">The new state.</param>
+        /// <param name="oldstate">The old state.</param>
         public StateEventArgs(PlayerState newstate, PlayerState oldstate)
         {
             NewState = newstate;

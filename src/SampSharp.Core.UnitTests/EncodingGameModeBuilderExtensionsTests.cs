@@ -33,7 +33,7 @@ public class EncodingGameModeBuilderExtensionsTests
         sut.Run();
         
         // assert
-        var client = activeRunner.ShouldBeAssignableTo<IGameModeClient>();
+        var client = activeRunner.ShouldBeAssignableTo<IGameModeClient>()!;
         var encoding = client.Encoding.ShouldBeOfType<CodePageEncoding>();
 
         encoding.CodePage.ShouldBe(865);

@@ -39,7 +39,7 @@ namespace SampSharp.Entities
             //typeof(float[]),
         };
 
-        private readonly Dictionary<string, Event> _events = new Dictionary<string, Event>();
+        private readonly Dictionary<string, Event> _events = new();
         private readonly IGameModeClient _gameModeClient;
         private readonly IServiceProvider _serviceProvider;
         private readonly IEntityManager _entityManager;
@@ -63,7 +63,7 @@ namespace SampSharp.Entities
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
             var handler = BuildInvoke(name);
-            _gameModeClient.RegisterCallback(name, handler.Target, handler.Method, parameters, null);
+            _gameModeClient.RegisterCallback(name, handler.Target, handler.Method, parameters);
         }
 
         /// <inheritdoc />
@@ -202,10 +202,10 @@ namespace SampSharp.Entities
                 switch (result)
                 {
                     case Task<bool> task:
-                        return !task.IsCompleted ? null : (object) task.Result;
+                        return !task.IsCompleted ? null : task.Result;
                     case Task<int> task:
-                        return !task.IsCompleted ? null : (object) task.Result;
-                    case Task _:
+                        return !task.IsCompleted ? null : task.Result;
+                    case Task:
                         return null;
                     default:
                         return result;

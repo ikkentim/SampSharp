@@ -16,7 +16,6 @@
 using System;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using SampSharp.Entities.Annotations;
 using SampSharp.Entities.Utilities;
 
 namespace SampSharp.Entities

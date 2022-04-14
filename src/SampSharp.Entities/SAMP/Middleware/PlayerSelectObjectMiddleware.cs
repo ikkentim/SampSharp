@@ -17,7 +17,7 @@ namespace SampSharp.Entities.SAMP
 {
     internal class PlayerSelectObjectMiddleware
     {
-        private readonly ArgumentsOverrideEventContext _context = new ArgumentsOverrideEventContext(3);
+        private readonly ArgumentsOverrideEventContext _context = new(3);
         private readonly EventDelegate _next;
 
         public PlayerSelectObjectMiddleware(EventDelegate next)

@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System.IO;
-using System.Text;
 using Moq;
 using SampSharp.Core.Logging;
 using Shouldly;

@@ -8,7 +8,7 @@ namespace SampSharp.Core.Natives.NativeObjects
     internal class IlGeneratorDebugger
     {
         private readonly ILGenerator _inner;
-        private readonly StringBuilder _sb = new StringBuilder();
+        private readonly StringBuilder _sb = new();
 
         public IlGeneratorDebugger(ILGenerator inner)
         {

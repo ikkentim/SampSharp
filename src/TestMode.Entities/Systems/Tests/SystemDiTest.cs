@@ -30,8 +30,8 @@ namespace TestMode.Entities.Systems.Tests
         {
             Console.WriteLine("T: " + transient.FunnyGuid);
             Console.WriteLine("S: " + scoped.FunnyGuid);
-            var s2 = serviceProvider.GetService<IScopedFunnyService>().FunnyGuid;
-            var t2 = serviceProvider.GetService<IFunnyService>().FunnyGuid;
+            var s2 = serviceProvider.GetRequiredService<IScopedFunnyService>().FunnyGuid;
+            var t2 = serviceProvider.GetRequiredService<IFunnyService>().FunnyGuid;
             Console.WriteLine("T2: " + t2);
             Console.WriteLine("S2: " + s2);
         }
@@ -42,8 +42,8 @@ namespace TestMode.Entities.Systems.Tests
         {
             Console.WriteLine("T: " + transient.FunnyGuid);
             Console.WriteLine("S: " + scoped.FunnyGuid);
-            var s2 = serviceProvider.GetService<IScopedFunnyService>().FunnyGuid;
-            var t2 = serviceProvider.GetService<IFunnyService>().FunnyGuid;
+            var s2 = serviceProvider.GetRequiredService<IScopedFunnyService>().FunnyGuid;
+            var t2 = serviceProvider.GetRequiredService<IFunnyService>().FunnyGuid;
             Console.WriteLine("T2: " + t2);
             Console.WriteLine("S2: " + s2);
             Console.WriteLine(test.WelcomingMessage);

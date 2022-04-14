@@ -23,12 +23,12 @@ namespace SampSharp.Entities.SAMP.Commands
         /// <summary>
         /// A command not found result value.
         /// </summary>
-        public static readonly InvokeResult CommandNotFound = new InvokeResult(InvokeResponse.CommandNotFound);
+        public static readonly InvokeResult CommandNotFound = new(InvokeResponse.CommandNotFound);
 
         /// <summary>
         /// The success result value.
         /// </summary>
-        public static readonly InvokeResult Success = new InvokeResult(InvokeResponse.Success);
+        public static readonly InvokeResult Success = new(InvokeResponse.Success);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InvokeResult" /> struct.

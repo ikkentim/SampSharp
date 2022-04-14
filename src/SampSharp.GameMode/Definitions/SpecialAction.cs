@@ -90,7 +90,7 @@ namespace SampSharp.GameMode.Definitions
         DrinkBeer = 20,
 
         /// <summary>
-        ///     Player is smokking a cigarette.
+        ///     Player is smoking a cigarette.
         /// </summary>
         SmokeCiggy = 21,
 

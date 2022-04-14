@@ -156,53 +156,57 @@ namespace SampSharp.Core.CodePages
             if (stream == null) throw new ArgumentNullException(nameof(stream));
 
             var result = new CodePageEncoding { _codePage = codePage };
-            using (var reader = new StreamReader(stream))
+            using var reader = new StreamReader(stream);
+
+            while (!reader.EndOfStream)
             {
-                while (!reader.EndOfStream)
+                var line = reader.ReadLine();
+
+                if (line == null)
                 {
-                    var line = reader.ReadLine();
+                    continue;
+                }
 
-                    var ln = line.Trim();
+                var ln = line.Trim();
 
-                    if (ln.StartsWith("#", StringComparison.InvariantCulture))
-                        continue;
+                if (ln.StartsWith("#", StringComparison.InvariantCulture))
+                    continue;
 
-                    var spl = ln.Split(new []{' ', '\t'});
+                var spl = ln.Split(new[] { ' ', '\t' });
 
-                    string from = null, to = null;
-                    foreach (var p in spl)
+                string from = null, to = null;
+                foreach (var p in spl)
+                {
+                    if (p.StartsWith("#", StringComparison.InvariantCulture))
+                        break;
+
+                    if (from == null)
                     {
-                        if (p.StartsWith("#", StringComparison.InvariantCulture))
-                            break;
-
-                        if (from == null)
-                        {
-                            from = p;
-                        }
-                        else
-                        {
-                            to = p;
-                            break;
-                        }
+                        from = p;
                     }
-
-                    if (string.IsNullOrWhiteSpace(from) || string.IsNullOrWhiteSpace(to))
-                        continue;
-
-                    try
+                    else
                     {
-                        var fromNum = System.Convert.ToUInt16(from, 16);
-                        var toNum = System.Convert.ToUInt16(to, 16);
+                        to = p;
+                        break;
+                    }
+                }
 
-                        if (fromNum > 0xff)
-                            result._hasDoubleByteChars = true;
-                        result._cpToUni[fromNum] = (char) toNum;
-                        result._uniToCp[(char) toNum] = fromNum;
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        //
-                    }
+                if (string.IsNullOrWhiteSpace(from) || string.IsNullOrWhiteSpace(to))
+                    continue;
+
+                try
+                {
+                    var fromNum = System.Convert.ToUInt16(from, 16);
+                    var toNum = System.Convert.ToUInt16(to, 16);
+
+                    if (fromNum > 0xff)
+                        result._hasDoubleByteChars = true;
+                    result._cpToUni[fromNum] = (char) toNum;
+                    result._uniToCp[(char) toNum] = fromNum;
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    //
                 }
             }
 

@@ -46,7 +46,7 @@ namespace TestMode.Entities
 
             // Load middleware:
             // Can also be loaded by systems which are IConfiguringSystem
-            builder.UseMiddleware("OnGameModeInit", (ctx, next) =>
+            builder.UseMiddleware("OnGameModeInit", (_, next) =>
             {
                 Console.WriteLine("I am middleware for OnGameModeInit!");
                 return next();

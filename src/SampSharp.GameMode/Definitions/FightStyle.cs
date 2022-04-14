@@ -28,22 +28,22 @@ namespace SampSharp.GameMode.Definitions
         Normal = 4,
 
         /// <summary>
-        ///     Borxing fighting style.
+        ///     Boxing fighting style.
         /// </summary>
         Boxing = 5,
 
         /// <summary>
-        ///     Kung fu fighting style.
+        ///     Kung-Fu fighting style.
         /// </summary>
         Kungfu = 6,
 
         /// <summary>
-        ///     Kneehead fighting style.
+        ///     Knee-head fighting style.
         /// </summary>
         Kneehead = 7,
 
         /// <summary>
-        ///     Grabkick fighting style.
+        ///     Grab-kick fighting style.
         /// </summary>
         Grabkick = 15,
 

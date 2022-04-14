@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
 
 namespace SampSharp.Core.Natives
 {
@@ -22,7 +21,7 @@ namespace SampSharp.Core.Natives
     ///     Contains information about a native's parameter.
     /// </summary>
     [Obsolete("Native handle based native invocation is deprecated and will be removed in a future version.")]
-    public struct NativeParameterInfo
+    public readonly struct NativeParameterInfo
     {
         /// <summary>
         ///     A mask for all supported argument value types.
@@ -76,7 +75,7 @@ namespace SampSharp.Core.Natives
         public static NativeParameterInfo ForType(Type type, bool isOutput = false)
         {
             var isByRef = type.IsByRef;
-            var elementType = isByRef ? type.GetElementType() : type;
+            var elementType = isByRef ? type.GetElementType()! : type;
             var isArray = elementType.IsArray;
             elementType = isArray ? elementType.GetElementType() : elementType;
 

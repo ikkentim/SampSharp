@@ -49,7 +49,7 @@ namespace SampSharp.GameMode
         /// <summary>
         ///     A function that can be used in <see cref="OnInitialized" /> to enable or disable the players markers,
         ///     which would normally be shown on the radar. If you want to change the marker settings at some other point in the
-        ///     gamemode, have a look at <see cref="BasePlayer.SetPlayerMarker" /> which does exactly that.
+        ///     game mode, have a look at <see cref="BasePlayer.SetPlayerMarker" /> which does exactly that.
         /// </summary>
         /// <param name="mode">The mode you want to use.</param>
         public virtual void ShowPlayerMarkers(PlayerMarkersMode mode)
@@ -111,7 +111,7 @@ namespace SampSharp.GameMode
         /// <remarks>
         ///     You can pass 2 billion here if you like, this function has no effect at all.
         /// </remarks>
-        /// <param name="count">Number of teams the gamemode knows.</param>
+        /// <param name="count">Number of teams the game mode knows.</param>
         public virtual void SetTeamCount(int count)
         {
             BaseModeInternal.Instance.SetTeamCount(count);

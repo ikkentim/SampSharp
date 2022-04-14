@@ -122,7 +122,7 @@ namespace SampSharp.Entities.SAMP
         /// Connect an NPC to the server.
         /// </summary>
         /// <param name="name">The name the NPC should connect as. Must follow the same rules as normal player names.</param>
-        /// <param name="script">The NPC script name that is located in the npcmodes folder (without the .amx extension).</param>
+        /// <param name="script">The NPC script name that is located in the "npcmodes" folder (without the .amx extension).</param>
         void ConnectNpc(string name, string script);
 
         /// <summary>

@@ -16,7 +16,7 @@
 namespace SampSharp.Entities.SAMP
 {
     /// <summary>
-    /// Contains all specating modes.
+    /// Contains all spectating modes.
     /// </summary>
     public enum SpectateMode
     {

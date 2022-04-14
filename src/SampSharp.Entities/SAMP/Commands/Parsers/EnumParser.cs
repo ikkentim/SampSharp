@@ -25,7 +25,7 @@ namespace SampSharp.Entities.SAMP.Commands.Parsers
     {
         private readonly Type _enumType;
 
-        private readonly WordParser _wordParser = new WordParser();
+        private readonly WordParser _wordParser = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumParser" /> class.
