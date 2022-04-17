@@ -1,4 +1,5 @@
 using System.IO;
+using SampSharp.Core.Natives;
 using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Core;

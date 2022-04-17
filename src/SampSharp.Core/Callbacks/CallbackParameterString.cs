@@ -10,8 +10,8 @@ internal class CallbackParameterString : ICallbackParameter
 
     public unsafe object GetValue(IntPtr amx, IntPtr parameter)
     {
-        void* physAddr;
-        Interop.Api->PluginData->AmxExports->GetAddr(amx.ToPointer(), *(int *)parameter, &physAddr);
+        AmxCell* physAddr;
+        Interop.Api->PluginData->AmxExports->GetAddr((Amx*)amx, *(int *)parameter, &physAddr);
 
         if ((IntPtr)physAddr == IntPtr.Zero)
         {

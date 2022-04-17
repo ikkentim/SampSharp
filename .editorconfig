@@ -85,7 +85,7 @@ csharp_style_expression_bodied_constructors = false:silent
 csharp_style_expression_bodied_indexers = when_on_single_line:silent
 csharp_style_expression_bodied_lambdas = true:silent
 csharp_style_expression_bodied_local_functions = false:warning
-csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+csharp_style_expression_bodied_methods = false:suggestion
 csharp_style_expression_bodied_operators = when_on_single_line:silent
 csharp_style_expression_bodied_properties = when_on_single_line:silent
 
@@ -102,7 +102,7 @@ csharp_prefer_static_local_function = true:suggestion
 csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async
 
 # Code-block preferences
-csharp_prefer_braces = true:warning
+csharp_prefer_braces = when_multiline:warning
 csharp_prefer_simple_using_statement = true:suggestion
 
 # Expression-level preferences
@@ -242,6 +242,7 @@ dotnet_naming_style.upper_case.capitalization = all_upper
 dotnet_diagnostic.S1125.severity = none
 
 # S1135: Track uses of "TODO" tags
+# Justification: Keep track of uncompleted work
 dotnet_diagnostic.S1135.severity = warning
 
 # CS0618: Method is obsolete
@@ -255,6 +256,10 @@ dotnet_diagnostic.S3881.severity = none
 # S3453: Classes should not have only "private" constructors
 # Justification: We use types with factory methods
 dotnet_diagnostic.S3453.severity = none
+
+# CA1720: Identifier contains type name
+# Justfication: Interop and type handing makes this diagnostic annoying
+dotnet_diagnostic.CA1720.severity = none
 
 [**TestMode**/**.cs]
 

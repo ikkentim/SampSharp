@@ -17,7 +17,7 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using SampSharp.Core.Natives.NativeObjects.FastNatives;
+using SampSharp.Core.Natives;
 
 namespace SampSharp.Core.Hosting
 {

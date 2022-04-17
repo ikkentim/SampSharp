@@ -16,6 +16,7 @@
 using System;
 using System.Linq;
 using System.Net;
+using SampSharp.Core.Natives;
 using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Entities.Annotations;
 

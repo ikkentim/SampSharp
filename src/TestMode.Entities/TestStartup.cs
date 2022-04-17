@@ -15,6 +15,7 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using SampSharp.Core.Natives;
 using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;

@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using SampSharp.Core;
 using SampSharp.Core.Hosting;
+using SampSharp.Core.Natives;
 using SampSharp.Core.Natives.NativeObjects;
-using SampSharp.Core.Natives.NativeObjects.FastNatives;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 
