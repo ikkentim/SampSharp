@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,16 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SampSharp.Core.Natives;
-using SampSharp.Core.Natives.NativeObjects;
+namespace SampSharp.Core.Hosting;
 
-namespace SampSharp.Entities
+/// <summary>
+/// Dummy struct for typed use of AMX in interop.
+/// </summary>
+public readonly struct Amx
 {
-    /// <summary>
-    /// Represents a <see cref="Component" /> which should be initialized as a native object proxy.
-    /// </summary>
-    /// <seealso cref="NativeObjectProxyFactory" />
-    public abstract class NativeComponent : Component
-    {
-    }
+#pragma warning disable CS0169
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1144:Unused private types or members should be removed", Justification = "Dummy struct")]
+    private readonly int _value;
+#pragma warning restore CS0169
 }

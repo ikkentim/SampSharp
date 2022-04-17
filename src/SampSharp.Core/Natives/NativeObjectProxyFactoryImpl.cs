@@ -1,59 +1,181 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using System.Text;
 using SampSharp.Core.Hosting;
+using SampSharp.Core.Natives.NativeObjects;
 
 // ReSharper disable CommentTypo
-namespace SampSharp.Core.Natives.NativeObjects.FastNatives
+namespace SampSharp.Core.Natives
 {
-    /// <summary>
-    /// Represents a factory for native proxies based on fast native interop.
-    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "Documentation for generated IL code.")]
-    public class FastNativeBasedNativeObjectProxyFactory : NativeObjectProxyFactoryBase
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "IL code generation")]
+    internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
     {
-        private const int MaxStackAllocSize = 256;
-        private readonly IGameModeClient _gameModeClient;
+        private const string AssemblyName = "SampSharpProxyAssembly";
         
-        /// <inheritdoc />
-        public FastNativeBasedNativeObjectProxyFactory(IGameModeClient gameModeClient) : base("ProxyAssemblyFast")
+        private readonly IGameModeClient _gameModeClient;
+        private int _typeNumber;
+        private readonly Dictionary<Type, KnownType> _knownTypes = new();
+        private readonly ModuleBuilder _moduleBuilder;
+        private readonly object _lock = new();
+
+        public NativeObjectProxyFactoryImpl(IGameModeClient gameModeClient)
         {
             _gameModeClient = gameModeClient;
+            
+            var asmName = new AssemblyName(AssemblyName);
+            var asmBuilder = AssemblyBuilder.DefineDynamicAssembly(asmName, AssemblyBuilderAccess.Run);
+            _moduleBuilder = asmBuilder.DefineDynamicModule(asmName.Name + ".dll");
         }
         
-        /// <inheritdoc />
-        protected override object[] GetProxyConstructorArgs()
+        public object CreateInstance(Type type, params object[] arguments)
         {
-            return new object[] {_gameModeClient.SynchronizationProvider};
-        }
-
-        /// <inheritdoc />
-        protected override FieldInfo[] DefineProxyFields(TypeBuilder typeBuilder)
-        {
-            var syncField = typeBuilder.DefineField("_synchronizationProvider", typeof(ISynchronizationProvider), FieldAttributes.Private);
-            return new[]
-            {
-                (FieldInfo) syncField
-            };
-        }
-
-        /// <inheritdoc />
-        protected override MethodBuilder CreateMethodBuilder(TypeBuilder typeBuilder, NativeIlGenContext context)
-        {
-            // Find the native.
-            var native = Interop.FastNativeFind(context.NativeName);
-
-            if (native == IntPtr.Zero)
-                return null;
-
-            var methodBuilder = typeBuilder.DefineMethod(context.BaseMethod.Name, context.MethodOverrideAttributes, context.BaseMethod.ReturnType, context.MethodParameterTypes);
-            var ilGenerator = methodBuilder.GetILGenerator();
+            if(type == null)
+                throw new ArgumentNullException(nameof(type));
             
-            Generate(ilGenerator, native, context);
+            // Check already known types.
+            if (_knownTypes.TryGetValue(type, out var outType))
+                return CreateProxyInstance(outType, arguments);
 
-            return methodBuilder;
+            lock (_lock)
+            {
+                // Double check known types because we're in a lock by now.
+                if (!_knownTypes.TryGetValue(type, out outType))
+                    _knownTypes[type] = outType = GenerateProxyType(type);
+
+                return CreateProxyInstance(outType, arguments);
+            }
+        }
+
+        private object CreateProxyInstance(KnownType proxyType, object[] arguments)
+        {
+
+            return proxyType.IsGenerated
+                ? Activator.CreateInstance(proxyType.Type,
+                    new object[] { _gameModeClient.SynchronizationProvider }.Concat(arguments).ToArray())
+                : Activator.CreateInstance(proxyType.Type, arguments);
+        }
+        
+        private KnownType GenerateProxyType(Type type)
+        {
+            // The generated assembly can only access public types or types which are visible to the generated assembly.
+            if (!(type.IsNested ? type.IsNestedPublic : type.IsPublic) && type.Assembly
+                    .GetCustomAttributes<InternalsVisibleToAttribute>().All(x => x.AssemblyName != AssemblyName))
+            {
+                throw new ArgumentException(
+                    $"Type '{type}' is not public. Native proxies can only be created for public types and types in assemblies which expose their internals to the '{AssemblyName}' assembly using the InternalsVisibleToAttribute.",
+                    nameof(type));
+            }
+
+            // Define a type for the native object. Number the types to avoid name collisions.
+            var typeBuilder = _moduleBuilder.DefineType($"{type.Name}ProxyClass_{++_typeNumber}",
+                TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.Class, type);
+            
+            var syncField = typeBuilder.DefineField("_synchronizationProvider", typeof(ISynchronizationProvider),
+                FieldAttributes.Private);
+            
+            var objectIdentifiers = type.GetCustomAttribute<NativeObjectIdentifiersAttribute>()?.Identifiers ??
+                                    Array.Empty<string>();
+            
+            var didWrapAnything = WrapProperties(type, objectIdentifiers, typeBuilder, syncField) ||
+                                  WrapMethods(type, objectIdentifiers, typeBuilder, syncField);
+
+            // Only return the generated type if we've actually generated any members.
+            if (didWrapAnything)
+            {
+                GenerateConstructors(type, typeBuilder, syncField);
+                
+                // Store the newly created type and return and instance of it.
+                return new KnownType(typeBuilder.CreateTypeInfo()!.AsType(), true);
+            }
+
+            return new KnownType(type, false);
+        }
+
+        private static bool WrapMethods(Type type, string[] objectIdentifiers, TypeBuilder typeBuilder, FieldBuilder syncField)
+        {
+            var result = false;
+            foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+            {
+                // Make sure the method is virtual, public and not protected.
+                if (!method.IsVirtual || (!method.IsPublic && !method.IsFamily))
+                    continue;
+                
+                var attr = method.GetCustomAttribute<NativeMethodAttribute>();
+
+                if (attr == null)
+                    continue;
+
+                if (WrapMethod(type, attr, method, objectIdentifiers, typeBuilder, syncField))
+                    result = true;
+            }
+
+            return result;
+        }
+
+        private static bool WrapProperties(Type type, string[] objectIdentifiers, TypeBuilder typeBuilder, FieldBuilder syncField)
+        {
+            var result = false;
+
+            foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic |
+                                                        BindingFlags.Instance))
+            {
+                var get = property.GetMethod;
+                var set = property.SetMethod;
+
+                // Make sure the property is virtual and not an indexed property.
+                if (!(get?.IsVirtual ?? set!.IsVirtual) || property.GetIndexParameters().Length != 0)
+                    continue;
+                
+                var propertyAttribute = property.GetCustomAttribute<NativePropertyAttribute>();
+
+                if (propertyAttribute == null)
+                    continue;
+
+                if (WrapProperty(type, propertyAttribute, objectIdentifiers, typeBuilder, property, get, set, syncField))
+                    result = true;
+            }
+
+            return result;
+        }
+
+        private static void GenerateConstructors(Type type, TypeBuilder typeBuilder, FieldInfo syncField)
+        {
+            // Implement all constructs from base type. Prepend constructor parameters with synchronizationProvider.
+            foreach (var baseConstructor in type.GetConstructors())
+            {
+                //.method public hidebysig specialname rtspecialname 
+                // instance void 
+                var constructorParams = baseConstructor.GetParameters();
+                var paramTypes = new[] { typeof(ISynchronizationProvider) }
+                    .Concat(constructorParams.Select(p => p.ParameterType))
+                    .ToArray();
+                var attributes = MethodAttributes.HideBySig | MethodAttributes.Public | MethodAttributes.SpecialName |
+                                 MethodAttributes.RTSpecialName;
+                var constructor = typeBuilder.DefineConstructor(attributes, CallingConventions.Standard, paramTypes);
+
+                var ilGenerator = constructor.GetILGenerator();
+
+                // base.ctor(arg2, arg3, ..., argN)
+                ilGenerator.Emit(OpCodes.Ldarg_0);
+                for (var i = 0; i < constructorParams.Length; i++)
+                    ilGenerator.Emit(OpCodes.Ldarg, i + 2); // start at arg2 - arg0 is this, arg1 is synchronization provider
+                ilGenerator.Emit(OpCodes.Call, baseConstructor);
+                
+                // _synchronizationProvider = synchronizationProvider;
+                ilGenerator.Emit(OpCodes.Ldarg_0);
+                ilGenerator.Emit(OpCodes.Ldarg_1);
+                ilGenerator.Emit(OpCodes.Stfld, syncField);
+                
+                // }
+                ilGenerator.Emit(OpCodes.Ret);
+
+            }
         }
 
         private static void Generate(ILGenerator ilGenerator, IntPtr native, NativeIlGenContext context)
@@ -95,19 +217,19 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             // int* args = stackalloc int[n];
             if (varArgsParam != null)
             {
-                // (varArgs * 4) + ((argsCount * 4))
+                // (varArgs * cell.size) + ((argsCount * cell.size))
                 ilGenerator.Emit(OpCodes.Ldarg, varArgsParam.Parameter);
                 ilGenerator.Emit(OpCodes.Ldlen);
                 ilGenerator.Emit(OpCodes.Conv_I4);
-                ilGenerator.Emit(OpCodes.Ldc_I4_4); // 4 bytes per cell
+                ilGenerator.Emit(OpCodes.Ldc_I4, AmxCell.Size);
                 ilGenerator.Emit(OpCodes.Mul);
 
-                ilGenerator.Emit(OpCodes.Ldc_I4, argsCount * 4); //4 bytes per cell
+                ilGenerator.Emit(OpCodes.Ldc_I4, argsCount * AmxCell.Size);
                 ilGenerator.Emit(OpCodes.Add);
             }
             else
             {
-                ilGenerator.Emit(OpCodes.Ldc_I4, argsCount * 4); //4 bytes per cell
+                ilGenerator.Emit(OpCodes.Ldc_I4, argsCount * AmxCell.Size);
             }
 
             ilGenerator.Emit(OpCodes.Conv_U);
@@ -124,20 +246,20 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                         // Need to allocate at least something if the varargs is empty.
                         valueCount++;
                     }
-                    // (varArgs * 4) + ((valueCount * 4))
+                    // (varArgs * cell.size) + ((valueCount * cell.size))
                     // For every vararg value, reserve 2 cells (the argument pointer and the value itself)
                     ilGenerator.Emit(OpCodes.Ldarg, varArgsParam.Parameter);
                     ilGenerator.Emit(OpCodes.Ldlen);
                     ilGenerator.Emit(OpCodes.Conv_I4);
-                    ilGenerator.Emit(OpCodes.Ldc_I4_4); // 4 bytes per cell
+                    ilGenerator.Emit(OpCodes.Ldc_I4, AmxCell.Size);
                     ilGenerator.Emit(OpCodes.Mul);
 
-                    ilGenerator.Emit(OpCodes.Ldc_I4, valueCount * 4); //4 bytes per cell
+                    ilGenerator.Emit(OpCodes.Ldc_I4, valueCount * AmxCell.Size);
                     ilGenerator.Emit(OpCodes.Add);
                 }
                 else
                 {
-                    ilGenerator.Emit(OpCodes.Ldc_I4, valueCount * 4); //4 bytes per cell
+                    ilGenerator.Emit(OpCodes.Ldc_I4, valueCount * AmxCell.Size);
                 }
 
                 ilGenerator.Emit(OpCodes.Conv_U);
@@ -159,7 +281,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             var formatString = GenerateCallFormat(context);
             // if (_synchronizationProvider.InvokeRequired)
             ilGenerator.Emit(OpCodes.Ldarg_0);
-            ilGenerator.Emit(OpCodes.Ldfld, context.ProxyGeneratedFields[0]);
+            ilGenerator.Emit(OpCodes.Ldfld, context.SynchronizationProviderField);
             ilGenerator.EmitPropertyGetterCall<ISynchronizationProvider>(OpCodes.Callvirt, x => x.InvokeRequired);
 
             var elseLabel = ilGenerator.DefineLabel();
@@ -179,8 +301,8 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 
             // NativeUtils.SynchronizeInvoke(_synchronizationProvider, new IntPtr($0), format, ptr);
             ilGenerator.Emit(OpCodes.Ldarg_0);
-            ilGenerator.Emit(OpCodes.Ldfld, context.ProxyGeneratedFields[0]);
-            ilGenerator.Emit(OpCodes.Ldc_I4, (int) native);
+            ilGenerator.Emit(OpCodes.Ldfld, context.SynchronizationProviderField);
+            ilGenerator.Emit(OpCodes.Ldc_I4, native.ToInt32());
             ilGenerator.Emit(OpCodes.Newobj, typeof(IntPtr).GetConstructor(new[] {typeof(int)})!);
             ilGenerator.Emit(OpCodes.Ldstr, formatString);
             EmitFormatVarArgs();
@@ -192,7 +314,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             ilGenerator.MarkLabel(elseLabel);
 
             // SampSharp.Core.Hosting.Interop.FastNativeInvoke(new IntPtr($0), format, ptr);
-            ilGenerator.Emit(OpCodes.Ldc_I4, (int) native);
+            ilGenerator.Emit(OpCodes.Ldc_I4, native.ToInt32());
             ilGenerator.Emit(OpCodes.Newobj, typeof(IntPtr).GetConstructor(new[] {typeof(int)})!);
             ilGenerator.Emit(OpCodes.Ldstr, formatString);
             EmitFormatVarArgs();
@@ -216,7 +338,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     ilGenerator.Emit(OpCodes.Ldloc_0);
                     if (i > 0)
                     {
-                        ilGenerator.Emit(OpCodes.Ldc_I4, i * 4);
+                        ilGenerator.Emit(OpCodes.Ldc_I4, i * AmxCell.Size);
                         ilGenerator.Emit(OpCodes.Add);
                     }
                 }
@@ -228,7 +350,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     EmitBufferLocation();
 
                     ilGenerator.Emit(OpCodes.Ldloc_1);
-                    ilGenerator.Emit(OpCodes.Ldc_I4, valueIndex * 4); // + 1 (* 4 bytes)
+                    ilGenerator.Emit(OpCodes.Ldc_I4, valueIndex * AmxCell.Size);
                     ilGenerator.Emit(OpCodes.Add);
                     ilGenerator.EmitCall(OpCodes.Call, typeof(NativeUtils), nameof(NativeUtils.IntPointerToInt));
                     ilGenerator.Emit(OpCodes.Stind_I4);
@@ -237,7 +359,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     {
                         // values[valueIndex] = Property;
                         ilGenerator.Emit(OpCodes.Ldloc_1);
-                        ilGenerator.Emit(OpCodes.Ldc_I4, valueIndex * 4);
+                        ilGenerator.Emit(OpCodes.Ldc_I4, valueIndex * AmxCell.Size);
                         ilGenerator.Emit(OpCodes.Add);
                         ilGenerator.Emit(OpCodes.Ldarg_0);
                         ilGenerator.EmitCall(param.Property.GetMethod);
@@ -248,7 +370,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     {
                         // values[valueIndex] = argI
                         ilGenerator.Emit(OpCodes.Ldloc_1);
-                        ilGenerator.Emit(OpCodes.Ldc_I4, valueIndex * 4);
+                        ilGenerator.Emit(OpCodes.Ldc_I4, valueIndex * AmxCell.Size);
                         ilGenerator.Emit(OpCodes.Add);
                         ilGenerator.Emit(OpCodes.Ldarg, param.Parameter); // arg0=this, arg1=1st arg
                         EmitConvertToInt(ilGenerator, param.Type);
@@ -272,7 +394,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     ilGenerator.Emit(OpCodes.Stloc, strLen);
 
                     // Span<byte> strBuffer = stackalloc/new byte[...]
-                    var strBufferSpan = EmitSpanAlloc(ilGenerator, strLen);
+                    var strBufferSpan = ilGenerator.EmitSpanAlloc(strLen);
 
                     // NativeUtils.GetBytes(textString, strBuffer);
                     ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
@@ -281,21 +403,21 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 
                     // args[i] = NativeUtils.BytePointerToInt(strBuffer);
                     EmitBufferLocation(); // args[i]
-                    EmitByteSpanToPointer(ilGenerator, strBufferSpan);
+                    ilGenerator.EmitByteSpanToPointer(strBufferSpan);
                     ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.BytePointerToInt));
                     ilGenerator.Emit(OpCodes.Stind_I4);
                 }
                 else if (param.Type == NativeParameterType.StringReference)
                 {
-                    EmitThrowOnOutOfRangeLength(ilGenerator, param.LengthParam);
+                    ilGenerator.EmitThrowOnOutOfRangeLength(param.LengthParam);
 
                     // var strBuf = stackalloc/new byte[...]
-                    var strBuf = EmitSpanAllocForStringRef(ilGenerator, param.LengthParam.Parameter);
+                    var strBuf = ilGenerator.EmitSpanAlloc(param.LengthParam.Parameter, AmxCell.Size);
                     paramBuffers[i] = strBuf;
 
                     // args[i] = NativeUtils.BytePointerToInt(strBufPtr);
                     EmitBufferLocation(); // args[i]
-                    EmitByteSpanToPointer(ilGenerator, strBuf);
+                    ilGenerator.EmitByteSpanToPointer(strBuf);
                     ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.BytePointerToInt));
                     ilGenerator.Emit(OpCodes.Stind_I4);
                 }
@@ -307,7 +429,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                         throw new InvalidOperationException("Unsupported identifier property type");
                     }
 
-                    EmitThrowOnOutOfRangeLength(ilGenerator, param.LengthParam);
+                    ilGenerator.EmitThrowOnOutOfRangeLength(param.LengthParam);
 
                     // var arraySpan = NativeUtils.ArrayToIntSpan(array/null,len)
                     var arraySpan = ilGenerator.DeclareLocal(typeof(Span<int>));
@@ -321,7 +443,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     
                     // args[i] = NativeUtils.IntPointerToInt(arraySpan);
                     EmitBufferLocation(); // args[i]
-                    EmitIntSpanToPointer(ilGenerator, arraySpan);
+                    ilGenerator.EmitIntSpanToPointer(arraySpan);
                     ilGenerator.EmitCall(typeof(NativeUtils), nameof(NativeUtils.IntPointerToInt));
                     ilGenerator.Emit(OpCodes.Stind_I4);
                     
@@ -367,7 +489,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     {
                         ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
                         ilGenerator.Emit(OpCodes.Ldloc_1);
-                        ilGenerator.Emit(OpCodes.Ldc_I4, valueIndex * 4);
+                        ilGenerator.Emit(OpCodes.Ldc_I4, valueIndex * AmxCell.Size);
                         ilGenerator.Emit(OpCodes.Add);
                         ilGenerator.Emit(OpCodes.Ldind_I4);
 
@@ -447,55 +569,6 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             }
         }
 
-        private static void EmitByteSpanToPointer(ILGenerator ilGenerator, LocalBuilder span)
-        {
-            // fixed(byte* strBufPtr = span)
-            var bufferPinned = ilGenerator.DeclareLocal(typeof(byte*), true);
-            var bufferPointer = ilGenerator.DeclareLocal(typeof(byte*));
-
-            ilGenerator.Emit(OpCodes.Ldloca, span);
-            ilGenerator.EmitCall(typeof(Span<byte>), nameof(Span<byte>.GetPinnableReference));
-            ilGenerator.Emit(OpCodes.Stloc, bufferPinned);
-            ilGenerator.Emit(OpCodes.Ldloc, bufferPinned);
-            ilGenerator.Emit(OpCodes.Conv_U);
-            ilGenerator.Emit(OpCodes.Stloc, bufferPointer);
-            ilGenerator.Emit(OpCodes.Ldloc, bufferPointer);
-        }
-
-        private static void EmitIntSpanToPointer(ILGenerator ilGenerator, LocalBuilder span)
-        {
-            // fixed(byte* strBufPtr = span)
-            var strBufPinned = ilGenerator.DeclareLocal(typeof(int*), true);
-            var strBufPtr = ilGenerator.DeclareLocal(typeof(int*));
-
-            ilGenerator.Emit(OpCodes.Ldloca, span);
-            ilGenerator.EmitCall(typeof(Span<int>), nameof(Span<int>.GetPinnableReference));
-            ilGenerator.Emit(OpCodes.Stloc, strBufPinned);
-            ilGenerator.Emit(OpCodes.Ldloc, strBufPinned);
-            ilGenerator.Emit(OpCodes.Conv_U);
-            ilGenerator.Emit(OpCodes.Stloc, strBufPtr);
-            ilGenerator.Emit(OpCodes.Ldloc, strBufPtr);
-        }
-
-        private static void EmitThrowOnOutOfRangeLength(ILGenerator ilGenerator, NativeIlGenParam param)
-        {
-            // if (strlen <= 0)
-            ilGenerator.Emit(OpCodes.Ldarg, param.Parameter);
-            ilGenerator.Emit(OpCodes.Ldc_I4_0);
-            ilGenerator.Emit(OpCodes.Cgt);
-            ilGenerator.Emit(OpCodes.Ldc_I4_0);
-            ilGenerator.Emit(OpCodes.Ceq);
-            var falseLabel = ilGenerator.DefineLabel();
-            ilGenerator.Emit(OpCodes.Brfalse, falseLabel);
-
-            // throw new ArgumentOutOfRangeException("strlen");
-            ilGenerator.Emit(OpCodes.Ldstr, param.Name);
-            ilGenerator.Emit(OpCodes.Newobj,
-                typeof(ArgumentOutOfRangeException).GetConstructor(new[] {typeof(string)})!);
-            ilGenerator.Emit(OpCodes.Throw);
-            ilGenerator.MarkLabel(falseLabel);
-        }
-
         private static void EmitConvertToInt(ILGenerator ilGenerator, NativeParameterType type)
         {
             if (type.HasFlag(NativeParameterType.Single))
@@ -503,56 +576,7 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             if (type.HasFlag(NativeParameterType.Bool))
                 ilGenerator.EmitConvert<bool,int>();
         }
-
-        private static LocalBuilder EmitSpanAllocForStringRef(ILGenerator ilGenerator, ParameterInfo lengthArg)
-        {
-            // multiply by cell size
-            return EmitSpanAlloc(ilGenerator, () =>
-            {
-                ilGenerator.Emit(OpCodes.Ldarg, lengthArg);
-                ilGenerator.Emit(OpCodes.Ldc_I4_4);
-                ilGenerator.Emit(OpCodes.Mul);
-            });
-        }
-
-        private static LocalBuilder EmitSpanAlloc(ILGenerator ilGenerator, LocalBuilder length)
-        {
-            return EmitSpanAlloc(ilGenerator, () => ilGenerator.Emit(OpCodes.Ldloc, length));
-        }
-
-        private static LocalBuilder EmitSpanAlloc(ILGenerator ilGenerator, Action loadLength)
-        {
-            var span = ilGenerator.DeclareLocal(typeof(Span<byte>));
-
-            // Span<byte> span = ((strlen < MaxStackAllocSize) ? stackalloc byte[strlen] : new Span<byte>(new byte[strlen]));
-            // if...
-            loadLength();
-            ilGenerator.Emit(OpCodes.Ldc_I4, MaxStackAllocSize);
-            var labelArrayAlloc = ilGenerator.DefineLabel();
-            ilGenerator.Emit(OpCodes.Bge, labelArrayAlloc);
-
-            // then...
-            loadLength();
-            ilGenerator.Emit(OpCodes.Conv_U);
-            ilGenerator.Emit(OpCodes.Localloc);
-            loadLength();
-            ilGenerator.Emit(OpCodes.Newobj, typeof(Span<byte>).GetConstructor(new[] {typeof(void*), typeof(int)})!);
-            ilGenerator.Emit(OpCodes.Stloc, span);
-            var labelDone = ilGenerator.DefineLabel();
-            ilGenerator.Emit(OpCodes.Br, labelDone);
-
-            // else...
-            ilGenerator.MarkLabel(labelArrayAlloc);
-            ilGenerator.Emit(OpCodes.Ldloca, span);
-            loadLength();
-            ilGenerator.Emit(OpCodes.Newarr, typeof(byte));
-            ilGenerator.Emit(OpCodes.Call, typeof(Span<byte>).GetConstructor(new[]{typeof(byte[])})!);
-            ilGenerator.Emit(OpCodes.Br, labelDone);
-
-            ilGenerator.MarkLabel(labelDone);
-            return span;
-        }
-
+        
         private static string GenerateCallFormat(NativeIlGenContext context)
         {
             // context. ReferenceIndices
@@ -564,28 +588,28 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
                     case NativeParameterType.Int32:
                     case NativeParameterType.Single:
                     case NativeParameterType.Bool:
-                        formatStringBuilder.Append(param.IsReferenceInput ? "r" : "d");
+                        formatStringBuilder.Append(param.IsReferenceInput ? 'r' : 'd');
                        break;
                     case NativeParameterType.Int32Reference:
                     case NativeParameterType.SingleReference:
                     case NativeParameterType.BoolReference:
-                        formatStringBuilder.Append("R");
+                        formatStringBuilder.Append('R');
                         break;
                     case NativeParameterType.String:
-                        formatStringBuilder.Append("s");
+                        formatStringBuilder.Append('s');
                         break;
                     case NativeParameterType.StringReference:
-                        formatStringBuilder.Append($"S[*{param.LengthParam.Index}]");
+                        formatStringBuilder.Append(CultureInfo.InvariantCulture, $"S[*{param.LengthParam.Index}]");
                         break;
                     case NativeParameterType.Int32Array:
                     case NativeParameterType.SingleArray:
                     case NativeParameterType.BoolArray:
-                        formatStringBuilder.Append($"a[*{param.LengthParam.Index}]");
+                        formatStringBuilder.Append(CultureInfo.InvariantCulture, $"a[*{param.LengthParam.Index}]");
                         break;
                     case NativeParameterType.Int32ArrayReference:
                     case NativeParameterType.SingleArrayReference:
                     case NativeParameterType.BoolArrayReference:
-                        formatStringBuilder.Append($"A[*{param.LengthParam.Index}]");
+                        formatStringBuilder.Append(CultureInfo.InvariantCulture, $"A[*{param.LengthParam.Index}]");
                         break;
                     case NativeParameterType.VarArgs:
                         // format apended at runtime
@@ -597,5 +621,172 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
 
             return formatStringBuilder.ToString();
         }
+        
+        private static bool WrapMethod(Type type, NativeMethodAttribute attr, MethodInfo method, string[] objectIdentifiers,
+            TypeBuilder typeBuilder, FieldInfo syncField)
+        {
+            // Determine the details about the native.
+            var name = attr.Function ?? method.Name;
+            var idIndex = Math.Max(0, attr.IdentifiersIndex);
+
+            var result = CreateMethodBuilder(name, type, attr.Lengths ?? Array.Empty<uint>(), typeBuilder, method,
+                attr.IgnoreIdentifiers ? Array.Empty<string>() : objectIdentifiers, idIndex, syncField, attr.ReferenceIndices);
+            return result != null;
+        }
+
+        private static bool WrapProperty(Type type, NativePropertyAttribute propertyAttribute, string[] objectIdentifiers,
+            TypeBuilder typeBuilder, PropertyInfo property, MethodInfo get, MethodInfo set, FieldInfo syncField)
+        {
+            var identifiers = propertyAttribute.IgnoreIdentifiers ? Array.Empty<string>() : objectIdentifiers;
+
+            MethodBuilder getMethodBuilder = null;
+            MethodBuilder setMethodBuilder = null;
+
+            if (get != null)
+            {
+                var nativeName = propertyAttribute.GetFunction ?? $"Get{property.Name}";
+                var argLengths = propertyAttribute.GetLengths ?? Array.Empty<uint>();
+                getMethodBuilder = CreateMethodBuilder(nativeName, type, argLengths, typeBuilder, get, identifiers, 0, syncField, null);
+            }
+
+            if (set != null)
+            {
+                var nativeName = propertyAttribute.SetFunction ?? $"Set{property.Name}";
+                var argLengths = propertyAttribute.SetLengths ?? Array.Empty<uint>();
+                setMethodBuilder = CreateMethodBuilder(nativeName, type, argLengths, typeBuilder, set, identifiers, 0, syncField, null);
+            }
+
+            if (getMethodBuilder == null && setMethodBuilder == null)
+                return false;
+            
+            // Define the wrapping property.
+            var wrapProperty = typeBuilder.DefineProperty(property.Name, PropertyAttributes.None, property.PropertyType,
+                Type.EmptyTypes);
+
+            if(getMethodBuilder != null)
+                wrapProperty.SetGetMethod(getMethodBuilder);
+
+            if(setMethodBuilder != null)
+                wrapProperty.SetSetMethod(setMethodBuilder);
+            
+            return true;
+        }
+        
+        private static MethodBuilder CreateMethodBuilder(string nativeName, Type proxyType,
+            uint[] nativeArgumentLengths,
+            TypeBuilder typeBuilder, MethodInfo method, string[] identifierPropertyNames, int idIndex,
+            FieldInfo syncField, int[] referenceIndices)
+        {
+            return CreateMethodBuilder(typeBuilder,
+                CreateContext(nativeName, proxyType, nativeArgumentLengths, method, identifierPropertyNames, idIndex,
+                    syncField, referenceIndices));
+        }
+
+        private static MethodBuilder CreateMethodBuilder(TypeBuilder typeBuilder, NativeIlGenContext context)
+        {
+            var native = Interop.FastNativeFind(context.NativeName);
+
+            if (native == IntPtr.Zero)
+                return null;
+
+            var methodBuilder = typeBuilder.DefineMethod(context.BaseMethod.Name, context.MethodOverrideAttributes, context.BaseMethod.ReturnType, context.MethodParameterTypes);
+            var ilGenerator = methodBuilder.GetILGenerator();
+            
+            Generate(ilGenerator, native, context);
+
+            return methodBuilder;
+        }
+
+        private static NativeIlGenContext CreateContext(string nativeName, Type proxyType,
+            uint[] nativeArgumentLengths, MethodInfo method, string[] identifierPropertyNames, int idIndex,
+            FieldInfo syncField, int[] referenceIndices)
+        {
+            var methodParameters = method.GetParameters();
+            identifierPropertyNames ??= Array.Empty<string>();
+            
+            // Seed parameters array with indices
+            var parameters = new NativeIlGenParam[methodParameters.Length + identifierPropertyNames.Length];
+            for (var i = 0; i < parameters.Length; i++)
+            {
+                parameters[i] = new NativeIlGenParam
+                {
+                    Index = i
+                };
+            }
+
+            // Populate identifier parameters
+            for (var i = 0; i < identifierPropertyNames.Length; i++)
+            {
+                parameters[idIndex + i].Property = proxyType.GetProperty(identifierPropertyNames[i],
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            }
+
+            // Populate method parameter based parameters
+            var lengthIndex = 0;
+            for (var i = 0; i < methodParameters.Length; i++)
+            {
+                var methodParameter = methodParameters[i];
+                var paramIndex = i >= idIndex ? i + identifierPropertyNames.Length : i;
+                var parameter = parameters[paramIndex];
+
+                parameter.IsReferenceInput = referenceIndices != null && referenceIndices.Contains(i);
+                parameter.Parameter = methodParameter;
+
+                if (parameter.RequiresLength && nativeArgumentLengths.Length > 0)
+                {
+                    if(nativeArgumentLengths.Length == lengthIndex)
+                        throw new InvalidOperationException("No length provided for native argument");
+
+                    parameter.LengthParam = parameters[nativeArgumentLengths[lengthIndex++]];
+                }
+            }
+
+            // Find length parameters for arrays and string refs
+            if (nativeArgumentLengths.Length == 0)
+            {
+                for (var i = 0; i < parameters.Length; i++)
+                {
+                    if (parameters[i].RequiresLength)
+                    {
+                        for (var j = i + 1; j < parameters.Length; j++)
+                        {
+                            if (parameters[j].Type == NativeParameterType.Int32 && !parameters[j].IsLengthParam)
+                            {
+                                parameters[j].IsLengthParam = true;
+                                parameters[i].LengthParam = parameters[j];
+                                break;
+                            }
+                        }
+
+                        if (parameters[i].LengthParam == null)
+                            throw new InvalidOperationException("No length provided for native argument");
+                    }
+                }
+            }
+
+            var methodParameterTypes = method.GetParameters()
+                .Select(p => p.ParameterType)
+                .ToArray();
+
+            var methodOverrideAttributes =
+                (method.IsPublic ? MethodAttributes.Public : MethodAttributes.Family) |
+                MethodAttributes.ReuseSlot |
+                MethodAttributes.Virtual |
+                MethodAttributes.HideBySig;
+
+            return new NativeIlGenContext
+            {
+                NativeName = nativeName,
+                BaseMethod = method,
+                SynchronizationProviderField = syncField,
+                Parameters = parameters,
+                MethodParameterTypes = methodParameterTypes,
+                MethodOverrideAttributes = methodOverrideAttributes,
+                HasVarArgs = parameters.Any(x=> x.Type == NativeParameterType.VarArgs)
+            };
+        }
+
+        
+        private sealed record KnownType(Type Type, bool IsGenerated);
     }
 }

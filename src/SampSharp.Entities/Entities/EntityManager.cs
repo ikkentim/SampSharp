@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using SampSharp.Core.Natives;
 using SampSharp.Core.Natives.NativeObjects;
 using SampSharp.Entities.Utilities;
 

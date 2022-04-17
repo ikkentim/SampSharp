@@ -16,15 +16,15 @@ internal class CallbackParameterIntArray : ICallbackArrayParameter
 
     public unsafe object GetValue(IntPtr amx, IntPtr parameter)
     {
-        int* physAddr;
-        Interop.Api->PluginData->AmxExports->GetAddr((void *)amx, *(int *)parameter, (void**)&physAddr);
+        AmxCell* physAddr;
+        Interop.Api->PluginData->AmxExports->GetAddr((Amx*)amx, *(int *)parameter, &physAddr);
             
         if ((IntPtr)physAddr == IntPtr.Zero)
         {
             return null;
         }
             
-        var len = *(int*)IntPtr.Add(parameter, _lengthOffset * 4); // assuming length is next parameter
+        var len = *(int*)IntPtr.Add(parameter, _lengthOffset * AmxCell.Size);
 
         var result = new int[len];
         new Span<int>(physAddr, len).CopyTo(new Span<int>(result));

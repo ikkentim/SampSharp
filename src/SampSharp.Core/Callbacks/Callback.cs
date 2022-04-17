@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using SampSharp.Core.Hosting;
 using SampSharp.Core.Logging;
 
 namespace SampSharp.Core.Callbacks;
@@ -216,7 +217,7 @@ internal class Callback
 
     public unsafe void Invoke(IntPtr amx, IntPtr parameters, IntPtr retval)
     {
-        var paramCount = *(int*)parameters.ToPointer() / 4; // cell size
+        var paramCount = *(int*)parameters.ToPointer() / AmxCell.Size;
 
         if (paramCount != _parameters.Length)
         {
@@ -230,7 +231,7 @@ internal class Callback
         for (var i = 0; i < paramCount; i++)
         {
             var param = _parameters[i];
-            args[i] = param.GetValue(amx, IntPtr.Add(parameters, 4 + (4 * i)));
+            args[i] = param.GetValue(amx, IntPtr.Add(parameters, AmxCell.Size * (i + 1)));
         }
 
         if (_wrapBuffer != null)

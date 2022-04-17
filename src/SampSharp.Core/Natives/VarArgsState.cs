@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace SampSharp.Core.Natives.NativeObjects.FastNatives
+namespace SampSharp.Core.Natives
 {
     /// <summary>
     /// Provides a state for variable arguments handling of native calls.
@@ -57,6 +57,8 @@ namespace SampSharp.Core.Natives.NativeObjects.FastNatives
             }
 
             _pinnedHandles = null;
+
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -7,8 +7,8 @@ using System.Threading;
 using SampSharp.Core.Callbacks;
 using SampSharp.Core.Hosting;
 using SampSharp.Core.Logging;
+using SampSharp.Core.Natives;
 using SampSharp.Core.Natives.NativeObjects;
-using SampSharp.Core.Natives.NativeObjects.FastNatives;
 
 namespace SampSharp.Core
 {
@@ -34,7 +34,7 @@ namespace SampSharp.Core
         {
             Encoding = encoding;
             _gameModeProvider = gameModeProvider ?? throw new ArgumentNullException(nameof(gameModeProvider));
-            NativeObjectProxyFactory = new FastNativeBasedNativeObjectProxyFactory(this);
+            NativeObjectProxyFactory = new NativeObjectProxyFactoryImpl(this);
 
             ServerPath = Directory.GetCurrentDirectory();
         }

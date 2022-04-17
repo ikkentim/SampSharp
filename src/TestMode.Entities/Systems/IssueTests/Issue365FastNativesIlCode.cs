@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using SampSharp.Core;
 using SampSharp.Core.Hosting;
-using SampSharp.Core.Natives.NativeObjects.FastNatives;
+using SampSharp.Core.Natives;
 
 // ReSharper disable UnusedMember.Local
 namespace TestMode.Entities.Systems.IssueTests

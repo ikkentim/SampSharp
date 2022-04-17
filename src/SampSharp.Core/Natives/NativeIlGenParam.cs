@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Reflection;
 
-namespace SampSharp.Core.Natives.NativeObjects
+namespace SampSharp.Core.Natives
 {
     /// <summary>
     /// Provides information about a native parameter which can be consumed by a proxy factory IL generator.
     /// </summary>
-    public class NativeIlGenParam
+    internal class NativeIlGenParam
     {
         private ParameterInfo _parameter;
         private PropertyInfo _property;
@@ -34,7 +34,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                     }
                     else
                     {
-                        Type = NativeParameterInfo.ForType(value.ParameterType).Type;
+                        Type = GetParameterType(value.ParameterType);
                     }
                 }
                 _parameter = value;
@@ -52,7 +52,7 @@ namespace SampSharp.Core.Natives.NativeObjects
                 if (value != null)
                 {
                     _parameter = null;
-                    Type = NativeParameterInfo.ForType(value.PropertyType).Type;
+                    Type = GetParameterType(value.PropertyType);
                 }
                 _property = value;
             }
@@ -96,6 +96,26 @@ namespace SampSharp.Core.Natives.NativeObjects
         public override string ToString()
         {
             return $"{Name}[{Index}:{Type}{(LengthParam == null ? string.Empty : $", len={LengthParam.Name}")}]";
+        }
+        
+        private static NativeParameterType GetParameterType(Type type)
+        {
+            var isByRef = type.IsByRef;
+            var elementType = isByRef ? type.GetElementType()! : type;
+            var isArray = elementType.IsArray;
+            elementType = isArray ? elementType.GetElementType() : elementType;
+
+            NativeParameterType parameterType;
+            if (elementType == typeof(int)) parameterType = NativeParameterType.Int32;
+            else if (elementType == typeof(float)) parameterType = NativeParameterType.Single;
+            else if (elementType == typeof(bool)) parameterType = NativeParameterType.Bool;
+            else if (elementType == typeof(string)) parameterType = NativeParameterType.String;
+            else throw new ArgumentOutOfRangeException(nameof(type));
+
+            if (isArray) parameterType |= NativeParameterType.Array;
+            if (isByRef) parameterType |= NativeParameterType.Reference;
+
+            return parameterType;
         }
     }
 }

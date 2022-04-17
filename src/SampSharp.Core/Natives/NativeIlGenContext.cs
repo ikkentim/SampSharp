@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Reflection;
 
-namespace SampSharp.Core.Natives.NativeObjects
+namespace SampSharp.Core.Natives
 {
     /// <summary>
     /// Provides information about a native which can be consumed by a proxy factory IL generator.
     /// </summary>
-    public class NativeIlGenContext
+    internal class NativeIlGenContext
     {
         /// <summary>
         /// Gets or sets the name of the native to be called.
@@ -24,9 +24,9 @@ namespace SampSharp.Core.Natives.NativeObjects
         public NativeIlGenParam[] Parameters { get; set; }
 
         /// <summary>
-        /// Gets or sets the fields generated for the proxy.
+        /// Gets or sets the synchronization provider field.
         /// </summary>
-        public FieldInfo[] ProxyGeneratedFields { get; set; }
+        public FieldInfo SynchronizationProviderField { get; set; }
 
         /// <summary>
         /// Gets or sets the base method parameter types.
