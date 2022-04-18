@@ -54,7 +54,7 @@ public readonly unsafe struct AmxExport
     /// <summary>
     /// typedef int (*amx_FindNative_t)(AMX *amx, const char *name, int *index);
     /// </summary>
-    public readonly delegate* unmanaged <void*, void*, int*, int> FindNative;
+    public readonly delegate* unmanaged <Amx*, byte*, int*, int> FindNative;
 
     /// <summary>
     /// typedef int (*amx_FindPublic_t)(AMX *amx, const char *funcname, int *index);
@@ -99,7 +99,7 @@ public readonly unsafe struct AmxExport
     /// <summary>
     /// typedef int (*amx_GetString_t)(char *dest,const cell *source, int use_wchar, size_t size);
     /// </summary>
-    public readonly delegate* unmanaged <void*, AmxCell*, int, int, int> GetString;
+    public readonly delegate* unmanaged <byte*, AmxCell*, int, int, int> GetString;
 
     /// <summary>
     /// typedef int (*amx_GetTag_t)(AMX *amx, int index, char *tagname, cell *tag_id);
