@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,42 +12,42 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-namespace SampSharp.GameMode.Definitions
+
+namespace SampSharp.GameMode.Definitions;
+
+/// <summary>
+///     Contains all dialog styles.
+/// </summary>
+public enum DialogStyle
 {
     /// <summary>
-    ///     Contains all dialog styles.
+    ///     A box with a caption, text and one or two buttons.
     /// </summary>
-    public enum DialogStyle
-    {
-        /// <summary>
-        ///     A box with a caption, text and one or two buttons.
-        /// </summary>
-        MessageBox = 0,
+    MessageBox = 0,
 
-        /// <summary>
-        ///     A box with a caption, text, an input box and one or two buttons.
-        /// </summary>
-        Input = 1,
+    /// <summary>
+    ///     A box with a caption, text, an input box and one or two buttons.
+    /// </summary>
+    Input = 1,
 
-        /// <summary>
-        ///     A box with a caption, a bunch of selectable items and one or two buttons.
-        /// </summary>
-        List = 2,
+    /// <summary>
+    ///     A box with a caption, a bunch of selectable items and one or two buttons.
+    /// </summary>
+    List = 2,
 
-        /// <summary>
-        ///     A box with a caption, text, an password-input box and one or two buttons.
-        /// </summary>
-        Password = 3,
+    /// <summary>
+    ///     A box with a caption, text, an password-input box and one or two buttons.
+    /// </summary>
+    Password = 3,
 
-        /// <summary>
-        ///     A box with a caption, a bunch of selectable rows which contain a number of columns and one or two buttons.
-        /// </summary>
-        Tablist = 4,
+    /// <summary>
+    ///     A box with a caption, a bunch of selectable rows which contain a number of columns and one or two buttons.
+    /// </summary>
+    Tablist = 4,
 
-        /// <summary>
-        ///     A box with a caption, a bunch of selectable rows which contain a number of columns with a header and one or two
-        ///     buttons.
-        /// </summary>
-        TablistHeaders = 5
-    }
+    /// <summary>
+    ///     A box with a caption, a bunch of selectable rows which contain a number of columns with a header and one or two
+    ///     buttons.
+    /// </summary>
+    TablistHeaders = 5
 }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,37 +18,36 @@ using SampSharp.Core.Natives.NativeObjects;
 
 #pragma warning disable 1591
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+[SuppressMessage("ReSharper", "IdentifierTypo")]
+public class NativeTextLabel : BaseNativeComponent
 {
-    [SuppressMessage("ReSharper", "IdentifierTypo")]
-    public class NativeTextLabel : BaseNativeComponent
+    public const int InvalidId = 0xFFFF;
+
+    [NativeMethod]
+    public virtual int Delete3DTextLabel()
     {
-        public const int InvalidId = 0xFFFF;
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual int Delete3DTextLabel()
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual int Update3DTextLabelText(int color, string text)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual int Update3DTextLabelText(int color, string text)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual int Attach3DTextLabelToPlayer(int playerid, float offsetX, float offsetY,
+        float offsetZ)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual int Attach3DTextLabelToPlayer(int playerid, float offsetX, float offsetY,
-            float offsetZ)
-        {
-            throw new NativeNotImplementedException();
-        }
-
-        [NativeMethod]
-        public virtual int Attach3DTextLabelToVehicle(int vehicleid, float offsetX, float offsetY,
-            float offsetZ)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual int Attach3DTextLabelToVehicle(int vehicleid, float offsetX, float offsetY,
+        float offsetZ)
+    {
+        throw new NativeNotImplementedException();
     }
 }

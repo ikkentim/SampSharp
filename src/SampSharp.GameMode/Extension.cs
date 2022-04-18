@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,37 +16,36 @@
 using System.Reflection;
 using SampSharp.GameMode.Controllers;
 
-namespace SampSharp.GameMode
+namespace SampSharp.GameMode;
+
+/// <summary>
+///     Contains methods for registering SampSharp extensions and represents a simple base class for extensions.
+/// </summary>
+public abstract class Extension : IExtension
 {
     /// <summary>
-    ///     Contains methods for registering SampSharp extensions and represents a simple base class for extensions.
+    ///     Loads services provided by this extensions.
     /// </summary>
-    public abstract class Extension : IExtension
+    /// <param name="gameMode">The game mode.</param>
+    public virtual void LoadServices(BaseMode gameMode)
     {
-        /// <summary>
-        ///     Loads services provided by this extensions.
-        /// </summary>
-        /// <param name="gameMode">The game mode.</param>
-        public virtual void LoadServices(BaseMode gameMode)
-        {
-        }
+    }
 
-        /// <summary>
-        ///     Loads controllers provided by this extensions.
-        /// </summary>
-        /// <param name="gameMode">The game mode.</param>
-        /// <param name="controllerCollection">The controller collection.</param>
-        public virtual void LoadControllers(BaseMode gameMode, ControllerCollection controllerCollection)
-        {
-            gameMode.AutoloadControllersForAssembly(GetType().GetTypeInfo().Assembly);
-        }
+    /// <summary>
+    ///     Loads controllers provided by this extensions.
+    /// </summary>
+    /// <param name="gameMode">The game mode.</param>
+    /// <param name="controllerCollection">The controller collection.</param>
+    public virtual void LoadControllers(BaseMode gameMode, ControllerCollection controllerCollection)
+    {
+        gameMode.AutoloadControllersForAssembly(GetType().GetTypeInfo().Assembly);
+    }
 
-        /// <summary>
-        ///     Performs post-load actions.
-        /// </summary>
-        /// <param name="gameMode">The game mode.</param>
-        public virtual void PostLoad(BaseMode gameMode)
-        {
-        }
+    /// <summary>
+    ///     Performs post-load actions.
+    /// </summary>
+    /// <param name="gameMode">The game mode.</param>
+    public virtual void PostLoad(BaseMode gameMode)
+    {
     }
 }

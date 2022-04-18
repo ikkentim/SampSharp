@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2019 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,10 +15,9 @@
 
 using SampSharp.Entities;
 
-namespace TestMode.Entities.Components
+namespace TestMode.Entities.Components;
+
+public class TestComponent : Component
 {
-    public class TestComponent : Component
-    {
-        public string WelcomingMessage => $"WelcomingMessage, {Entity}";
-    }
+    public string WelcomingMessage => $"WelcomingMessage, {Entity}";
 }

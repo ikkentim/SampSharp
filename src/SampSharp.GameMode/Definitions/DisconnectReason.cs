@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-namespace SampSharp.GameMode.Definitions
+
+namespace SampSharp.GameMode.Definitions;
+
+/// <summary>
+///     Contains all reasons for a player to disconnect.
+/// </summary>
+public enum DisconnectReason
 {
     /// <summary>
-    ///     Contains all reasons for a player to disconnect.
+    ///     The Player timed out.
     /// </summary>
-    public enum DisconnectReason
-    {
-        /// <summary>
-        ///     The Player timed out.
-        /// </summary>
-        TimedOut = 0,
+    TimedOut = 0,
 
-        /// <summary>
-        ///     The Player left. (/q(uit) or trough the menu)
-        /// </summary>
-        Left = 1,
+    /// <summary>
+    ///     The Player left. (/q(uit) or trough the menu)
+    /// </summary>
+    Left = 1,
 
-        /// <summary>
-        ///     The Player was kicked or banned.
-        /// </summary>
-        Kicked = 2
-    }
+    /// <summary>
+    ///     The Player was kicked or banned.
+    /// </summary>
+    Kicked = 2
 }

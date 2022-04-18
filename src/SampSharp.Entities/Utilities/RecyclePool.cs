@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,37 +15,36 @@
 
 using System;
 
-namespace SampSharp.Entities.Utilities
+namespace SampSharp.Entities.Utilities;
+
+internal class RecyclePool<T> where T : class, IRecyclable, new()
 {
-    internal class RecyclePool<T> where T : class, IRecyclable, new()
+    private readonly T[] _pool;
+    private int _pointer = -1;
+
+    public RecyclePool(int poolSize)
     {
-        private readonly T[] _pool;
-        private int _pointer = -1;
+        if (poolSize <= 0) throw new ArgumentOutOfRangeException(nameof(poolSize));
+        _pool = new T[poolSize];
+    }
 
-        public RecyclePool(int poolSize)
-        {
-            if (poolSize <= 0) throw new ArgumentOutOfRangeException(nameof(poolSize));
-            _pool = new T[poolSize];
-        }
+    public T New()
+    {
+        return _pointer < 0
+            ? new T()
+            : _pool[_pointer--];
+    }
 
-        public T New()
-        {
-            return _pointer < 0
-                ? new T()
-                : _pool[_pointer--];
-        }
+    public void Recycle(T value)
+    {
+        if (value == null)
+            return;
 
-        public void Recycle(T value)
-        {
-            if (value == null)
-                return;
+        value.Reset();
 
-            value.Reset();
+        if (_pointer >= _pool.Length - 1)
+            return;
 
-            if (_pointer >= _pool.Length - 1)
-                return;
-
-            _pool[++_pointer] = value;
-        }
+        _pool[++_pointer] = value;
     }
 }

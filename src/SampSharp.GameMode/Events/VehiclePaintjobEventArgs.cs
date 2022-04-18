@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,30 +12,30 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Events
+namespace SampSharp.GameMode.Events;
+
+/// <summary>
+///     Provides data for the <see cref="BaseMode.VehiclePaintjobApplied" /> or <see cref="BaseVehicle.PaintjobApplied" />
+///     event.
+/// </summary>
+public class VehiclePaintjobEventArgs : PlayerEventArgs
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.VehiclePaintjobApplied" /> or <see cref="BaseVehicle.PaintjobApplied" />
-    ///     event.
+    ///     Initializes a new instance of the <see cref="VehiclePaintjobEventArgs" /> class.
     /// </summary>
-    public class VehiclePaintjobEventArgs : PlayerEventArgs
+    /// <param name="player">The player.</param>
+    /// <param name="paintjobId">The paintjob identifier.</param>
+    public VehiclePaintjobEventArgs(BasePlayer player, int paintjobId)
+        : base(player)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="VehiclePaintjobEventArgs" /> class.
-        /// </summary>
-        /// <param name="player">The player.</param>
-        /// <param name="paintjobId">The paintjob identifier.</param>
-        public VehiclePaintjobEventArgs(BasePlayer player, int paintjobId)
-            : base(player)
-        {
-            PaintjobId = paintjobId;
-        }
-
-        /// <summary>
-        ///     Gets the paintjob identifier.
-        /// </summary>
-        public int PaintjobId { get; }
+        PaintjobId = paintjobId;
     }
+
+    /// <summary>
+    ///     Gets the paintjob identifier.
+    /// </summary>
+    public int PaintjobId { get; }
 }

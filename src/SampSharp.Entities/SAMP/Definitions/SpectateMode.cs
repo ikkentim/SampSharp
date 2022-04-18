@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,26 +13,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Contains all spectating modes.
+/// </summary>
+public enum SpectateMode
 {
     /// <summary>
-    /// Contains all spectating modes.
+    /// Normal spectating mode.
     /// </summary>
-    public enum SpectateMode
-    {
-        /// <summary>
-        /// Normal spectating mode.
-        /// </summary>
-        Normal = 1,
+    Normal = 1,
 
-        /// <summary>
-        /// Player is looking from a fixed point.
-        /// </summary>
-        Fixed = 2,
+    /// <summary>
+    /// Player is looking from a fixed point.
+    /// </summary>
+    Fixed = 2,
 
-        /// <summary>
-        /// Attached to the side.
-        /// </summary>
-        Side = 3
-    }
+    /// <summary>
+    /// Attached to the side.
+    /// </summary>
+    Side = 3
 }

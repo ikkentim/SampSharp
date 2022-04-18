@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,23 +15,22 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SampSharp.Entities
+namespace SampSharp.Entities;
+
+/// <summary>
+/// Contains the functionality of a class which provides a startup configuration for an EntitySystemComponent game mode.
+/// </summary>
+public interface IStartup
 {
     /// <summary>
-    /// Contains the functionality of a class which provides a startup configuration for an EntitySystemComponent game mode.
+    /// Configures the specified service collection by adding or removing required services.
     /// </summary>
-    public interface IStartup
-    {
-        /// <summary>
-        /// Configures the specified service collection by adding or removing required services.
-        /// </summary>
-        /// <param name="services">The service collection to configure.</param>
-        void Configure(IServiceCollection services);
+    /// <param name="services">The service collection to configure.</param>
+    void Configure(IServiceCollection services);
 
-        /// <summary>
-        /// Configures the specified ECS builder by enabling, disabling and configuring modules in the game mode.
-        /// </summary>
-        /// <param name="builder">The ECS builder to configure.</param>
-        void Configure(IEcsBuilder builder);
-    }
+    /// <summary>
+    /// Configures the specified ECS builder by enabling, disabling and configuring modules in the game mode.
+    /// </summary>
+    /// <param name="builder">The ECS builder to configure.</param>
+    void Configure(IEcsBuilder builder);
 }

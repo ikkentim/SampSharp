@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,43 +16,42 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SampSharp.Entities
+namespace SampSharp.Entities;
+
+/// <summary>
+/// Represents the ECS system builder.
+/// </summary>
+/// <seealso cref="IEcsBuilder" />
+public class EcsBuilder : IEcsBuilder
 {
-    /// <summary>
-    /// Represents the ECS system builder.
-    /// </summary>
-    /// <seealso cref="IEcsBuilder" />
-    public class EcsBuilder : IEcsBuilder
+    private readonly IEventService _eventService;
+
+    internal EcsBuilder(IServiceProvider services)
     {
-        private readonly IEventService _eventService;
-
-        internal EcsBuilder(IServiceProvider services)
-        {
-            Services = services ?? throw new ArgumentNullException(nameof(services));
+        Services = services ?? throw new ArgumentNullException(nameof(services));
             
-            _eventService = services.GetRequiredService<IEventService>();
-        }
+        _eventService = services.GetRequiredService<IEventService>();
+    }
 
-        /// <inheritdoc />
-        public IServiceProvider Services { get; }
+    /// <inheritdoc />
+    public IServiceProvider Services { get; }
 
-        /// <inheritdoc />
-        public IEcsBuilder EnableEvent(string name, Type[] parameters)
-        {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+    /// <inheritdoc />
+    public IEcsBuilder EnableEvent(string name, Type[] parameters)
+    {
+        if (name == null) throw new ArgumentNullException(nameof(name));
+        if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
-            _eventService.EnableEvent(name, parameters);
+        _eventService.EnableEvent(name, parameters);
 
-            return this;
-        }
+        return this;
+    }
 
-        /// <inheritdoc />
-        public IEcsBuilder UseMiddleware(string name, Func<EventDelegate, EventDelegate> middleware)
-        {
-            _eventService.UseMiddleware(name, middleware);
+    /// <inheritdoc />
+    public IEcsBuilder UseMiddleware(string name, Func<EventDelegate, EventDelegate> middleware)
+    {
+        _eventService.UseMiddleware(name, middleware);
 
-            return this;
-        }
+        return this;
     }
 }

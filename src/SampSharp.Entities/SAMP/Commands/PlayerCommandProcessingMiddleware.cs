@@ -1,40 +1,54 @@
-﻿using SampSharp.Core.Logging;
+﻿// SampSharp
+// Copyright 2022 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-namespace SampSharp.Entities.SAMP.Commands
+using SampSharp.Core.Logging;
+
+namespace SampSharp.Entities.SAMP.Commands;
+
+/// <summary>
+/// Represents a middleware which lets unhandled OnPlayerCommandText events be processed by the <see cref="IPlayerCommandService" />.
+/// </summary>
+public class PlayerCommandProcessingMiddleware
 {
+    private readonly EventDelegate _next;
+        
     /// <summary>
-    /// Represents a middleware which lets unhandled OnPlayerCommandText events be processed by the <see cref="IPlayerCommandService" />.
+    /// Initializes a new instance of the <see cref="PlayerCommandProcessingMiddleware" /> class.
     /// </summary>
-    public class PlayerCommandProcessingMiddleware
+    /// <param name="next">The next middleware handler.</param>
+    public PlayerCommandProcessingMiddleware(EventDelegate next)
     {
-        private readonly EventDelegate _next;
+        _next = next;
+    }
         
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerCommandProcessingMiddleware" /> class.
-        /// </summary>
-        /// <param name="next">The next middleware handler.</param>
-        public PlayerCommandProcessingMiddleware(EventDelegate next)
-        {
-            _next = next;
-        }
-        
-        /// <summary>
-        /// Invokes the middleware.
-        /// </summary>
-        public object Invoke(EventContext context, IPlayerCommandService commandService)
-        {
-            var result = _next(context);
+    /// <summary>
+    /// Invokes the middleware.
+    /// </summary>
+    public object Invoke(EventContext context, IPlayerCommandService commandService)
+    {
+        var result = _next(context);
 
-            if (EventHelper.IsSuccessResponse(result))
-                return result;
+        if (EventHelper.IsSuccessResponse(result))
+            return result;
 
-            if (context.Arguments[0] is EntityId player &&
-                context.Arguments[1] is string text)
-                return commandService.Invoke(context.EventServices, player, text);
+        if (context.Arguments[0] is EntityId player &&
+            context.Arguments[1] is string text)
+            return commandService.Invoke(context.EventServices, player, text);
 
-            CoreLog.Log(CoreLogLevel.Error, "Invalid command middleware input argument types!");
-            return null;
+        CoreLog.Log(CoreLogLevel.Error, "Invalid command middleware input argument types!");
+        return null;
 
-        }
     }
 }

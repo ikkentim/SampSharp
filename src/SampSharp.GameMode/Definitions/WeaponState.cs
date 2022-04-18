@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,36 +12,36 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-namespace SampSharp.GameMode.Definitions
+
+namespace SampSharp.GameMode.Definitions;
+
+/// <summary>
+///     Contains all weapon states.
+/// </summary>
+public enum WeaponState
 {
     /// <summary>
-    ///     Contains all weapon states.
+    ///     Unknown state.
     /// </summary>
-    public enum WeaponState
-    {
-        /// <summary>
-        ///     Unknown state.
-        /// </summary>
-        Unknown = -1,
+    Unknown = -1,
 
-        /// <summary>
-        ///     Weapon is out of bullets.
-        /// </summary>
-        NoBullets = 0,
+    /// <summary>
+    ///     Weapon is out of bullets.
+    /// </summary>
+    NoBullets = 0,
 
-        /// <summary>
-        ///     Last bullet in gun.
-        /// </summary>
-        LastBullet = 1,
+    /// <summary>
+    ///     Last bullet in gun.
+    /// </summary>
+    LastBullet = 1,
 
-        /// <summary>
-        ///     More bullets in gun.
-        /// </summary>
-        MoreBullets = 2,
+    /// <summary>
+    ///     More bullets in gun.
+    /// </summary>
+    MoreBullets = 2,
 
-        /// <summary>
-        ///     Weapon is reloading.
-        /// </summary>
-        Reloading = 3
-    }
+    /// <summary>
+    ///     Weapon is reloading.
+    /// </summary>
+    Reloading = 3
 }

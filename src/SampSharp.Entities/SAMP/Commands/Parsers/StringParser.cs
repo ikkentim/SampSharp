@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,28 +15,27 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP.Commands.Parsers
+namespace SampSharp.Entities.SAMP.Commands.Parsers;
+
+/// <summary>
+/// A parser for a <see cref="string" /> parameter which consumes all remaining input text.
+/// </summary>
+public class StringParser : ICommandParameterParser
 {
-    /// <summary>
-    /// A parser for a <see cref="string" /> parameter which consumes all remaining input text.
-    /// </summary>
-    public class StringParser : ICommandParameterParser
+    /// <inheritdoc />
+    public bool TryParse(IServiceProvider services, ref string inputText, out object result)
     {
-        /// <inheritdoc />
-        public bool TryParse(IServiceProvider services, ref string inputText, out object result)
+        inputText = inputText.TrimStart();
+
+        if (inputText.Length == 0)
         {
-            inputText = inputText.TrimStart();
-
-            if (inputText.Length == 0)
-            {
-                result = null;
-                return false;
-            }
-
-            result = inputText;
-            inputText = string.Empty;
-
-            return true;
+            result = null;
+            return false;
         }
+
+        result = inputText;
+        inputText = string.Empty;
+
+        return true;
     }
 }

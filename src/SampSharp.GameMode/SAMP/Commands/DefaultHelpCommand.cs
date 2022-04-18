@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,37 +17,36 @@ using System.Reflection;
 using SampSharp.GameMode.SAMP.Commands.PermissionCheckers;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.SAMP.Commands
+namespace SampSharp.GameMode.SAMP.Commands;
+
+/// <summary>
+/// Represents the default help command for a command group.
+/// </summary>
+public class DefaultHelpCommand : DefaultCommand
 {
     /// <summary>
-    /// Represents the default help command for a command group.
+    /// Initializes a new instance of the <see cref="DefaultHelpCommand" /> class.
     /// </summary>
-    public class DefaultHelpCommand : DefaultCommand
+    /// <param name="names">The names.</param>
+    /// <param name="displayName">The display name.</param>
+    /// <param name="ignoreCase">if set to <c>true</c> ignore the case of the command.</param>
+    /// <param name="permissionCheckers">The permission checkers.</param>
+    /// <param name="method">The method.</param>
+    /// <param name="usageMessage">The usage message.</param>
+    public DefaultHelpCommand(CommandPath[] names, string displayName, bool ignoreCase,
+        IPermissionChecker[] permissionCheckers, MethodInfo method, string usageMessage) : base(names, displayName,
+        ignoreCase, permissionCheckers, method, usageMessage)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultHelpCommand" /> class.
-        /// </summary>
-        /// <param name="names">The names.</param>
-        /// <param name="displayName">The display name.</param>
-        /// <param name="ignoreCase">if set to <c>true</c> ignore the case of the command.</param>
-        /// <param name="permissionCheckers">The permission checkers.</param>
-        /// <param name="method">The method.</param>
-        /// <param name="usageMessage">The usage message.</param>
-        public DefaultHelpCommand(CommandPath[] names, string displayName, bool ignoreCase,
-            IPermissionChecker[] permissionCheckers, MethodInfo method, string usageMessage) : base(names, displayName,
-            ignoreCase, permissionCheckers, method, usageMessage)
-        {
-        }
+    }
 
-        /// <inheritdoc />
-        public override CommandCallableResponse CanInvoke(BasePlayer player, string commandText,
-            out int matchedNameLength)
-        {
-            var result = base.CanInvoke(player, commandText, out matchedNameLength);
+    /// <inheritdoc />
+    public override CommandCallableResponse CanInvoke(BasePlayer player, string commandText,
+        out int matchedNameLength)
+    {
+        var result = base.CanInvoke(player, commandText, out matchedNameLength);
 
-            return result == CommandCallableResponse.False
-                ? result
-                : CommandCallableResponse.Optional;
-        }
+        return result == CommandCallableResponse.False
+            ? result
+            : CommandCallableResponse.Optional;
     }
 }

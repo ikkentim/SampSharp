@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,22 +15,21 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Represents a collection of dialog rows of type <see cref="ListDialogRow" />.
+/// </summary>
+public class ListDialogRowCollection : DialogRowCollection<ListDialogRow>
 {
     /// <summary>
-    /// Represents a collection of dialog rows of type <see cref="ListDialogRow" />.
+    /// Adds a row to the list with the specified <paramref name="text" />.
     /// </summary>
-    public class ListDialogRowCollection : DialogRowCollection<ListDialogRow>
+    /// <param name="text">The text of the row to add.</param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="text" /> is null.</exception>
+    public void Add(string text)
     {
-        /// <summary>
-        /// Adds a row to the list with the specified <paramref name="text" />.
-        /// </summary>
-        /// <param name="text">The text of the row to add.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="text" /> is null.</exception>
-        public void Add(string text)
-        {
-            if (text == null) throw new ArgumentNullException(nameof(text));
-            Add(new ListDialogRow(text));
-        }
+        if (text == null) throw new ArgumentNullException(nameof(text));
+        Add(new ListDialogRow(text));
     }
 }

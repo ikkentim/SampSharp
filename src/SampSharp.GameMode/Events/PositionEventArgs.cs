@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,28 +12,28 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Events
+namespace SampSharp.GameMode.Events;
+
+/// <summary>
+///     Provides data for the <see cref="BaseMode.PlayerClickMap" /> or <see cref="BasePlayer.ClickMap" /> event.
+/// </summary>
+public class PositionEventArgs : EventArgs
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.PlayerClickMap" /> or <see cref="BasePlayer.ClickMap" /> event.
+    ///     Initializes a new instance of the <see cref="PositionEventArgs" /> class.
     /// </summary>
-    public class PositionEventArgs : EventArgs
+    /// <param name="position">The position.</param>
+    public PositionEventArgs(Vector3 position)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PositionEventArgs" /> class.
-        /// </summary>
-        /// <param name="position">The position.</param>
-        public PositionEventArgs(Vector3 position)
-        {
-            Position = position;
-        }
-
-        /// <summary>
-        ///     Gets the position.
-        /// </summary>
-        public Vector3 Position { get; }
+        Position = position;
     }
+
+    /// <summary>
+    ///     Gets the position.
+    /// </summary>
+    public Vector3 Position { get; }
 }

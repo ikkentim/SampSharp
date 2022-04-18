@@ -1,5 +1,5 @@
 // SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,99 +18,98 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes
+namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes;
+
+/// <summary>
+///     Represents a nullable enum command parameter.
+/// </summary>
+/// <typeparam name="T">The enum type.</typeparam>
+public class NullableEnumType<T> : ICommandParameterType where T : struct, IConvertible
 {
     /// <summary>
-    ///     Represents a nullable enum command parameter.
+    ///     Initializes a new instance of the <see cref="EnumType{T}" /> class.
     /// </summary>
-    /// <typeparam name="T">The enum type.</typeparam>
-    public class NullableEnumType<T> : ICommandParameterType where T : struct, IConvertible
+    /// <exception cref="System.ArgumentException">T must be an enumerated type</exception>
+    public NullableEnumType()
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="EnumType{T}" /> class.
-        /// </summary>
-        /// <exception cref="System.ArgumentException">T must be an enumerated type</exception>
-        public NullableEnumType()
-        {
-            if (!typeof (T).GetTypeInfo().IsEnum)
-                throw new ArgumentException("T must be an enumerated type");
+        if (!typeof (T).GetTypeInfo().IsEnum)
+            throw new ArgumentException("T must be an enumerated type");
 
-            TestForValue = true;
+        TestForValue = true;
+    }
+
+    /// <summary>
+    ///     Gets or sets whether input should be matches against the enum values.
+    ///     When False, the input will only be matches against the names.
+    /// </summary>
+    public bool TestForValue { get; set; }
+
+    /// <summary>
+    ///     Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be
+    ///     removed from the commandText.
+    /// </summary>
+    /// <param name="commandText">The command text.</param>
+    /// <param name="output">The output.</param>
+    /// <param name="isNullable">A value indicating whether the result is allowed to be null when an entity referenced by the argument could not be found.</param>
+    /// <returns>
+    ///     true if parsed successfully; false otherwise.
+    /// </returns>
+    public bool Parse(ref string commandText, out object output, bool isNullable = false)
+    {
+        var text = commandText.TrimStart();
+        output = null;
+
+        if (string.IsNullOrEmpty(text))
+            return false;
+
+        var word = text.Split(' ').First();
+        var lowerWord = word.ToLower(CultureInfo.InvariantCulture);
+
+        // find all candidates containing the input word, case insensitive.
+        var candidates =
+            typeof (T).GetTypeInfo().GetEnumValues()
+                .OfType<object>()
+                .Where(v => v.ToString()!.Contains(lowerWord, StringComparison.CurrentCultureIgnoreCase))
+                .ToList();
+
+        // in case of ambiguities find all candidates containing the input word, case sensitive.
+        if (candidates.Count > 1)
+        {
+            candidates = candidates.Where(v => v.ToString()!.Contains(word, StringComparison.InvariantCultureIgnoreCase)).ToList();
         }
 
-        /// <summary>
-        ///     Gets or sets whether input should be matches against the enum values.
-        ///     When False, the input will only be matches against the names.
-        /// </summary>
-        public bool TestForValue { get; set; }
-
-        /// <summary>
-        ///     Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be
-        ///     removed from the commandText.
-        /// </summary>
-        /// <param name="commandText">The command text.</param>
-        /// <param name="output">The output.</param>
-        /// <param name="isNullable">A value indicating whether the result is allowed to be null when an entity referenced by the argument could not be found.</param>
-        /// <returns>
-        ///     true if parsed successfully; false otherwise.
-        /// </returns>
-        public bool Parse(ref string commandText, out object output, bool isNullable = false)
+        // in case of ambiguities find all candidates matching exactly the input word, case insensitive.
+        if (candidates.Count > 1)
         {
-            var text = commandText.TrimStart();
-            output = null;
+            candidates = candidates.Where(v => v.ToString()!.ToLower(CultureInfo.InvariantCulture) == lowerWord).ToList();
+        }
 
-            if (string.IsNullOrEmpty(text))
-                return false;
+        // in case of ambiguities find all candidates matching exactly the input word, case sensitive.
+        if (candidates.Count > 1)
+        {
+            candidates = candidates.Where(v => v.ToString() == word).ToList();
+        }
 
-            var word = text.Split(' ').First();
-            var lowerWord = word.ToLower(CultureInfo.InvariantCulture);
-
-            // find all candidates containing the input word, case insensitive.
-            var candidates =
-                typeof (T).GetTypeInfo().GetEnumValues()
+        // if also testing against underlying values, loop trough every value, convert it to the underlying type and compare.
+        if (TestForValue)
+        {
+            var valueCandidates =
+                typeof(T).GetTypeInfo().GetEnumValues()
                     .OfType<object>()
-                    .Where(v => v.ToString()!.Contains(lowerWord, StringComparison.CurrentCultureIgnoreCase))
+                    .Where(t => Convert.ChangeType(t, Enum.GetUnderlyingType(typeof(T)), CultureInfo.InvariantCulture).ToString() == word)
                     .ToList();
 
-            // in case of ambiguities find all candidates containing the input word, case sensitive.
-            if (candidates.Count > 1)
-            {
-                candidates = candidates.Where(v => v.ToString()!.Contains(word, StringComparison.InvariantCultureIgnoreCase)).ToList();
-            }
+            if (valueCandidates.Count == 1)
+                candidates = valueCandidates;
+        }
 
-            // in case of ambiguities find all candidates matching exactly the input word, case insensitive.
-            if (candidates.Count > 1)
-            {
-                candidates = candidates.Where(v => v.ToString()!.ToLower(CultureInfo.InvariantCulture) == lowerWord).ToList();
-            }
-
-            // in case of ambiguities find all candidates matching exactly the input word, case sensitive.
-            if (candidates.Count > 1)
-            {
-                candidates = candidates.Where(v => v.ToString() == word).ToList();
-            }
-
-            // if also testing against underlying values, loop trough every value, convert it to the underlying type and compare.
-            if (TestForValue)
-            {
-                var valueCandidates =
-                    typeof(T).GetTypeInfo().GetEnumValues()
-                        .OfType<object>()
-                        .Where(t => Convert.ChangeType(t, Enum.GetUnderlyingType(typeof(T)), CultureInfo.InvariantCulture).ToString() == word)
-                        .ToList();
-
-                if (valueCandidates.Count == 1)
-                    candidates = valueCandidates;
-            }
-
-            if (candidates.Count == 1)
-            {
-                output = (T)candidates.First();
-                commandText = commandText.Substring(word.Length).TrimStart(' ');
-                return true;
-            }
-
+        if (candidates.Count == 1)
+        {
+            output = (T)candidates.First();
+            commandText = commandText.Substring(word.Length).TrimStart(' ');
             return true;
         }
+
+        return true;
     }
 }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,31 +13,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Contains all server variable types.
+/// </summary>
+public enum ServerVarType
 {
     /// <summary>
-    /// Contains all server variable types.
+    /// Var does not exist.
     /// </summary>
-    public enum ServerVarType
-    {
-        /// <summary>
-        /// Var does not exist.
-        /// </summary>
-        None = 0,
+    None = 0,
 
-        /// <summary>
-        /// Var as an integer.
-        /// </summary>
-        Int = 1,
+    /// <summary>
+    /// Var as an integer.
+    /// </summary>
+    Int = 1,
 
-        /// <summary>
-        /// Var is a string.
-        /// </summary>
-        String = 2,
+    /// <summary>
+    /// Var is a string.
+    /// </summary>
+    String = 2,
 
-        /// <summary>
-        /// Var is a float.
-        /// </summary>
-        Float = 3
-    }
+    /// <summary>
+    /// Var is a float.
+    /// </summary>
+    Float = 3
 }

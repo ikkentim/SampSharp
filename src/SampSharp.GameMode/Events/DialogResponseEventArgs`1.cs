@@ -16,31 +16,30 @@
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Events
+namespace SampSharp.GameMode.Events;
+
+/// <summary>
+///     Provides data for the <see cref="BaseMode.DialogResponse" />, <see cref="BasePlayer.DialogResponse" /> or
+///     <see cref="Dialog.Response" /> event.
+/// </summary>
+public class DialogResponseEventArgs<T> : DialogResponseEventArgs
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.DialogResponse" />, <see cref="BasePlayer.DialogResponse" /> or
-    ///     <see cref="Dialog.Response" /> event.
+    ///     Initializes a new instance of the DialogResponseEventArgs class.
     /// </summary>
-    public class DialogResponseEventArgs<T> : DialogResponseEventArgs
+    /// <param name="player">The player.</param>
+    /// <param name="dialogid">Id of the dialog.</param>
+    /// <param name="response">Response of the dialog response.</param>
+    /// <param name="listitem">List item of the dialog response.</param>
+    /// <param name="itemValue">The value of the item of the dialog response.</param>
+    /// <param name="inputtext">Input text of the dialog response.</param>
+    public DialogResponseEventArgs(BasePlayer player, int dialogid, int response, int listitem, T itemValue, string inputtext)
+        : base(player, dialogid, response, listitem, inputtext)
     {
-        /// <summary>
-        ///     Initializes a new instance of the DialogResponseEventArgs class.
-        /// </summary>
-        /// <param name="player">The player.</param>
-        /// <param name="dialogid">Id of the dialog.</param>
-        /// <param name="response">Response of the dialog response.</param>
-        /// <param name="listitem">List item of the dialog response.</param>
-        /// <param name="itemValue">The value of the item of the dialog response.</param>
-        /// <param name="inputtext">Input text of the dialog response.</param>
-        public DialogResponseEventArgs(BasePlayer player, int dialogid, int response, int listitem, T itemValue, string inputtext)
-            : base(player, dialogid, response, listitem, inputtext)
-        {
-            ItemValue = itemValue;
-        }
-        /// <summary>
-        ///     Get the value of the item clicked for this response.
-        /// </summary>
-        public T ItemValue { get; }
+        ItemValue = itemValue;
     }
+    /// <summary>
+    ///     Get the value of the item clicked for this response.
+    /// </summary>
+    public T ItemValue { get; }
 }

@@ -15,43 +15,42 @@
 
 using System.Globalization;
 
-namespace SampSharp.GameMode.SAMP
+namespace SampSharp.GameMode.SAMP;
+
+/// <summary>
+/// Represents a human readable color. The string representation of this value provides the name of the color value or a hexadecimal formatted representation of the value.
+/// </summary>
+public readonly struct ColorValue
 {
+    private readonly ColorFormat _fallbackFormat;
+
     /// <summary>
-    /// Represents a human readable color. The string representation of this value provides the name of the color value or a hexadecimal formatted representation of the value.
+    /// Initializes a new instance of the <see cref="ColorValue" /> struct.
     /// </summary>
-    public readonly struct ColorValue
+    /// <param name="value">The color value.</param>
+    /// <param name="fallbackFormat">The fallback format used when the value is does not have a known name.</param>
+    public ColorValue(Color value, ColorFormat fallbackFormat = ColorFormat.RGB)
     {
-        private readonly ColorFormat _fallbackFormat;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorValue" /> struct.
-        /// </summary>
-        /// <param name="value">The color value.</param>
-        /// <param name="fallbackFormat">The fallback format used when the value is does not have a known name.</param>
-        public ColorValue(Color value, ColorFormat fallbackFormat = ColorFormat.RGB)
-        {
-            _fallbackFormat = fallbackFormat;
-            Value = value;
-        }
-
-        /// <summary>
-        /// Gets the color value.
-        /// </summary>
-        public Color Value { get; }
-
-        /// <summary>
-        /// Performs an implicit conversion from <see cref="ColorValue" /> to <see cref="Color" />.
-        /// </summary>
-        /// <param name="value">The value to convert.</param>
-        /// <returns>
-        /// The result of the conversion.
-        /// </returns>
-        public static implicit operator Color(ColorValue value) => value.Value;
-        
-        /// <inheritdoc />
-        public override string ToString() => Value.GetName() ?? GetHexString(Value, _fallbackFormat);
-
-        private static string GetHexString(Color color, ColorFormat colorFormat) => color.ToInteger(colorFormat).ToString(colorFormat == ColorFormat.RGB ? "X6" : "X8", CultureInfo.InvariantCulture);
+        _fallbackFormat = fallbackFormat;
+        Value = value;
     }
+
+    /// <summary>
+    /// Gets the color value.
+    /// </summary>
+    public Color Value { get; }
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="ColorValue" /> to <see cref="Color" />.
+    /// </summary>
+    /// <param name="value">The value to convert.</param>
+    /// <returns>
+    /// The result of the conversion.
+    /// </returns>
+    public static implicit operator Color(ColorValue value) => value.Value;
+        
+    /// <inheritdoc />
+    public override string ToString() => Value.GetName() ?? GetHexString(Value, _fallbackFormat);
+
+    private static string GetHexString(Color color, ColorFormat colorFormat) => color.ToInteger(colorFormat).ToString(colorFormat == ColorFormat.RGB ? "X6" : "X8", CultureInfo.InvariantCulture);
 }

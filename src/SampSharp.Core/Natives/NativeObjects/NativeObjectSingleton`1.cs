@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,22 +13,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Core.Natives.NativeObjects
+namespace SampSharp.Core.Natives.NativeObjects;
+
+/// <summary>
+///     Provides a singleton <see cref="Instance" /> property containing a single instance of the specified native object
+///     type.
+/// </summary>
+/// <typeparam name="T">The native object type.</typeparam>
+public abstract class NativeObjectSingleton<T> where T : NativeObjectSingleton<T>
 {
-    /// <summary>
-    ///     Provides a singleton <see cref="Instance" /> property containing a single instance of the specified native object
-    ///     type.
-    /// </summary>
-    /// <typeparam name="T">The native object type.</typeparam>
-    public abstract class NativeObjectSingleton<T> where T : NativeObjectSingleton<T>
-    {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2743:Static fields should not be used in generic types", Justification = "By design")]
-        private static T _instance;
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2743:Static fields should not be used in generic types", Justification = "By design")]
+    private static T _instance;
         
-        /// <summary>
-        ///     Gets the singleton instance of native object <typeparamref name="T" />.
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "By design")]
-        public static T Instance => _instance ??= NativeObjectProxyFactory.CreateInstance<T>();
-    }
+    /// <summary>
+    ///     Gets the singleton instance of native object <typeparamref name="T" />.
+    /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "By design")]
+    public static T Instance => _instance ??= NativeObjectProxyFactory.CreateInstance<T>();
 }

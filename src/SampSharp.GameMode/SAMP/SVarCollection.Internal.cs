@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,75 +12,75 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using SampSharp.Core.Natives.NativeObjects;
 
-namespace SampSharp.GameMode.SAMP
+namespace SampSharp.GameMode.SAMP;
+
+public partial class SVarCollection
 {
-    public partial class SVarCollection
-    {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public class SVarCollectionInternal : NativeObjectSingleton<SVarCollectionInternal>
+    public class SVarCollectionInternal : NativeObjectSingleton<SVarCollectionInternal>
+    {
+        [NativeMethod]
+        public virtual bool SetSVarInt(string varname, int value)
         {
-            [NativeMethod]
-            public virtual bool SetSVarInt(string varname, int value)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual int GetSVarInt(string varname)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual bool SetSVarString(string varname, string value)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual bool GetSVarString(string varname, out string value, int size)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual bool SetSVarFloat(string varname, float value)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual float GetSVarFloat(string varname)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual bool DeleteSVar(string varname)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual int GetSVarsUpperIndex()
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual bool GetSVarNameAtIndex(int index, out string varname, int size)
-            {
-                throw new NativeNotImplementedException();
-            }
-
-            [NativeMethod]
-            public virtual int GetSVarType(string varname)
-            {
-                throw new NativeNotImplementedException();
-            }
+            throw new NativeNotImplementedException();
         }
-#pragma warning restore CS1591
+
+        [NativeMethod]
+        public virtual int GetSVarInt(string varname)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool SetSVarString(string varname, string value)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool GetSVarString(string varname, out string value, int size)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool SetSVarFloat(string varname, float value)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual float GetSVarFloat(string varname)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool DeleteSVar(string varname)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual int GetSVarsUpperIndex()
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual bool GetSVarNameAtIndex(int index, out string varname, int size)
+        {
+            throw new NativeNotImplementedException();
+        }
+
+        [NativeMethod]
+        public virtual int GetSVarType(string varname)
+        {
+            throw new NativeNotImplementedException();
+        }
     }
+#pragma warning restore CS1591
 }

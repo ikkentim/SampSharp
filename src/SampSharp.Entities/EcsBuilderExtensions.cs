@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,22 +13,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities
+namespace SampSharp.Entities;
+
+/// <summary>
+/// Provides extended functionality for configuring a <see cref="IEcsBuilder" /> instance.
+/// </summary>
+public static class EcsBuilderExtensions
 {
     /// <summary>
-    /// Provides extended functionality for configuring a <see cref="IEcsBuilder" /> instance.
+    /// Enabled a Dependency Injection scope for the event with the specified <paramref name="name" />.
     /// </summary>
-    public static class EcsBuilderExtensions
+    /// <param name="builder">The ECS builder in which to enable the scope.</param>
+    /// <param name="name">The name of the event to add the scope to.</param>
+    /// <returns>A reference to this instance after the operation has completed.</returns>
+    public static IEcsBuilder EnableEventScope(this IEcsBuilder builder, string name)
     {
-        /// <summary>
-        /// Enabled a Dependency Injection scope for the event with the specified <paramref name="name" />.
-        /// </summary>
-        /// <param name="builder">The ECS builder in which to enable the scope.</param>
-        /// <param name="name">The name of the event to add the scope to.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IEcsBuilder EnableEventScope(this IEcsBuilder builder, string name)
-        {
-            return builder.UseMiddleware<EventScopeMiddleware>(name);
-        }
+        return builder.UseMiddleware<EventScopeMiddleware>(name);
     }
 }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,135 +17,134 @@ using SampSharp.Core.Natives.NativeObjects;
 
 #pragma warning disable 1591
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+[NativeObjectIdentifiers("PlayerId", "Id")]
+public class NativePlayerTextDraw : NativeComponent
 {
-    [NativeObjectIdentifiers("PlayerId", "Id")]
-    public class NativePlayerTextDraw : NativeComponent
+    public const int InvalidId = 0xFFFF;
+
+    public int Id { get; private set; }
+
+    public int PlayerId { get; private set; }
+
+    protected override void OnInitializeComponent()
     {
-        public const int InvalidId = 0xFFFF;
+        Id = Entity / SampLimits.MaxPlayers;
+        PlayerId = Parent;
+    }
 
-        public int Id { get; private set; }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawDestroy()
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        public int PlayerId { get; private set; }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawLetterSize(float x, float y)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        protected override void OnInitializeComponent()
-        {
-            Id = Entity / SampLimits.MaxPlayers;
-            PlayerId = Parent;
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawTextSize(float x, float y)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawDestroy()
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawAlignment(int alignment)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawLetterSize(float x, float y)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawColor(int color)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawTextSize(float x, float y)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawUseBox(bool use)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawAlignment(int alignment)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawBoxColor(int color)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawColor(int color)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawSetShadow(int size)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawUseBox(bool use)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawSetOutline(int size)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawBoxColor(int color)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawBackgroundColor(int color)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawSetShadow(int size)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawFont(int font)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawSetOutline(int size)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawSetProportional(bool set)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawBackgroundColor(int color)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawSetSelectable(bool set)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawFont(int font)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawShow()
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawSetProportional(bool set)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawHide()
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawSetSelectable(bool set)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawSetString(string str)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawShow()
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawSetPreviewModel(int modelIndex)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawHide()
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawSetPreviewRot(float fRotX, float fRotY, float fRotZ, float fZoom = 1.0f)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool PlayerTextDrawSetString(string str)
-        {
-            throw new NativeNotImplementedException();
-        }
-
-        [NativeMethod]
-        public virtual bool PlayerTextDrawSetPreviewModel(int modelIndex)
-        {
-            throw new NativeNotImplementedException();
-        }
-
-        [NativeMethod]
-        public virtual bool PlayerTextDrawSetPreviewRot(float fRotX, float fRotY, float fRotZ, float fZoom = 1.0f)
-        {
-            throw new NativeNotImplementedException();
-        }
-
-        [NativeMethod]
-        public virtual bool PlayerTextDrawSetPreviewVehCol(int color1, int color2)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool PlayerTextDrawSetPreviewVehCol(int color1, int color2)
+    {
+        throw new NativeNotImplementedException();
     }
 }

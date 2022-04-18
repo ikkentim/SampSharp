@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,63 +15,62 @@
 
 using System;
 
-namespace SampSharp.Core.Natives.NativeObjects
+namespace SampSharp.Core.Natives.NativeObjects;
+
+/// <summary>
+///     Indicates a method represents a native function.
+/// </summary>
+[AttributeUsage(AttributeTargets.Method)]
+public class NativeMethodAttribute : Attribute
 {
     /// <summary>
-    ///     Indicates a method represents a native function.
+    ///     Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public class NativeMethodAttribute : Attribute
+    public NativeMethodAttribute()
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.
-        /// </summary>
-        public NativeMethodAttribute()
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.
-        /// </summary>
-        /// <param name="lengths">The lengths of special arguments.</param>
-        public NativeMethodAttribute(params uint[] lengths) : this(false, lengths)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.
-        /// </summary>
-        /// <param name="ignoreIdentifiers">if set to <c>true</c> identifiers are ignored.</param>
-        /// <param name="lengths">The lengths.</param>
-        public NativeMethodAttribute(bool ignoreIdentifiers, params uint[] lengths)
-        {
-            IgnoreIdentifiers = ignoreIdentifiers;
-            Lengths = lengths;
-        }
-
-        /// <summary>
-        ///     Gets or sets the function name.
-        /// </summary>
-        public string Function { get; set; }
-
-        /// <summary>
-        ///     Gets a value indicating whether to ignore identifiers.
-        /// </summary>
-        public bool IgnoreIdentifiers { get; }
-
-        /// <summary>
-        /// Gets the parameter index of the identifiers.
-        /// </summary>
-        public int IdentifiersIndex { get; set; }
-
-        /// <summary>
-        ///     Gets the lengths of special arguments.
-        /// </summary>
-        public uint[] Lengths { get; }
-
-        /// <summary>
-        /// Gets or sets indices of parameters which should be passed by reference instead of input values.
-        /// </summary>
-        public int[] ReferenceIndices { get; set; }
     }
+
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.
+    /// </summary>
+    /// <param name="lengths">The lengths of special arguments.</param>
+    public NativeMethodAttribute(params uint[] lengths) : this(false, lengths)
+    {
+    }
+
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.
+    /// </summary>
+    /// <param name="ignoreIdentifiers">if set to <c>true</c> identifiers are ignored.</param>
+    /// <param name="lengths">The lengths.</param>
+    public NativeMethodAttribute(bool ignoreIdentifiers, params uint[] lengths)
+    {
+        IgnoreIdentifiers = ignoreIdentifiers;
+        Lengths = lengths;
+    }
+
+    /// <summary>
+    ///     Gets or sets the function name.
+    /// </summary>
+    public string Function { get; set; }
+
+    /// <summary>
+    ///     Gets a value indicating whether to ignore identifiers.
+    /// </summary>
+    public bool IgnoreIdentifiers { get; }
+
+    /// <summary>
+    /// Gets the parameter index of the identifiers.
+    /// </summary>
+    public int IdentifiersIndex { get; set; }
+
+    /// <summary>
+    ///     Gets the lengths of special arguments.
+    /// </summary>
+    public uint[] Lengths { get; }
+
+    /// <summary>
+    /// Gets or sets indices of parameters which should be passed by reference instead of input values.
+    /// </summary>
+    public int[] ReferenceIndices { get; set; }
 }

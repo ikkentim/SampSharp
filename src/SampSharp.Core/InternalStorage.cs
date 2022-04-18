@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,22 +13,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Core
+namespace SampSharp.Core;
+
+/// <summary>
+///     Storage for some values used internally in <see cref="InternalStorage" />.
+/// </summary>
+internal static class InternalStorage
 {
     /// <summary>
-    ///     Storage for some values used internally in <see cref="InternalStorage" />.
+    ///     The currently running client.
     /// </summary>
-    internal static class InternalStorage
-    {
-        /// <summary>
-        ///     The currently running client.
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S2223:Non-constant static fields should not be visible", Justification = "By design")]
-        public static IGameModeClient RunningClient;
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S2223:Non-constant static fields should not be visible", Justification = "By design")]
+    public static IGameModeClient RunningClient;
         
-        public static void SetRunningClient(IGameModeClient client)
-        {
-            RunningClient = client;
-        }
+    public static void SetRunningClient(IGameModeClient client)
+    {
+        RunningClient = client;
     }
 }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2019 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,15 +16,14 @@
 using SampSharp.Core;
 using SampSharp.Entities;
 
-namespace TestMode.Entities
+namespace TestMode.Entities;
+
+internal static class Program
 {
-    internal static class Program
+    private static void Main()
     {
-        private static void Main()
-        {
-            new GameModeBuilder()
-                .UseEcs<TestStartup>()
-                .Run();
-        }
+        new GameModeBuilder()
+            .UseEcs<TestStartup>()
+            .Run();
     }
 }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,59 +12,59 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using SampSharp.GameMode.Definitions;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Events
+namespace SampSharp.GameMode.Events;
+
+/// <summary>
+///     Provides data for the <see cref="BaseMode.DialogResponse" />, <see cref="BasePlayer.DialogResponse" /> or
+///     <see cref="Dialog.Response" /> event.
+/// </summary>
+public class DialogResponseEventArgs : EventArgs
 {
     /// <summary>
-    ///     Provides data for the <see cref="BaseMode.DialogResponse" />, <see cref="BasePlayer.DialogResponse" /> or
-    ///     <see cref="Dialog.Response" /> event.
+    ///     Initializes a new instance of the DialogResponseEventArgs class.
     /// </summary>
-    public class DialogResponseEventArgs : EventArgs
+    /// <param name="player">The player.</param>
+    /// <param name="dialogid">Id of the dialog.</param>
+    /// <param name="response">Response of the dialog response.</param>
+    /// <param name="listitem">List item of the dialog response.</param>
+    /// <param name="inputtext">Input text of the dialog response.</param>
+    public DialogResponseEventArgs(BasePlayer player, int dialogid, int response, int listitem, string inputtext)
     {
-        /// <summary>
-        ///     Initializes a new instance of the DialogResponseEventArgs class.
-        /// </summary>
-        /// <param name="player">The player.</param>
-        /// <param name="dialogid">Id of the dialog.</param>
-        /// <param name="response">Response of the dialog response.</param>
-        /// <param name="listitem">List item of the dialog response.</param>
-        /// <param name="inputtext">Input text of the dialog response.</param>
-        public DialogResponseEventArgs(BasePlayer player, int dialogid, int response, int listitem, string inputtext)
-        {
-            Player = player;
-            DialogId = dialogid;
-            DialogButton = (DialogButton) response;
-            ListItem = listitem;
-            InputText = inputtext;
-        }
-
-        /// <summary>
-        ///     Gets the player sending this response.
-        /// </summary>
-        public BasePlayer Player { get; }
-
-        /// <summary>
-        ///     Gets the id of dialog of this response.
-        /// </summary>
-        public int DialogId { get; }
-
-        /// <summary>
-        ///     Gets the button clicked for this response.
-        /// </summary>
-        public DialogButton DialogButton { get; }
-
-        /// <summary>
-        ///     Gets the index of the list item clicked for this response.
-        /// </summary>
-        public int ListItem { get; }
-
-        /// <summary>
-        ///     Gets the input text of this response.
-        /// </summary>
-        public string InputText { get; }
+        Player = player;
+        DialogId = dialogid;
+        DialogButton = (DialogButton) response;
+        ListItem = listitem;
+        InputText = inputtext;
     }
+
+    /// <summary>
+    ///     Gets the player sending this response.
+    /// </summary>
+    public BasePlayer Player { get; }
+
+    /// <summary>
+    ///     Gets the id of dialog of this response.
+    /// </summary>
+    public int DialogId { get; }
+
+    /// <summary>
+    ///     Gets the button clicked for this response.
+    /// </summary>
+    public DialogButton DialogButton { get; }
+
+    /// <summary>
+    ///     Gets the index of the list item clicked for this response.
+    /// </summary>
+    public int ListItem { get; }
+
+    /// <summary>
+    ///     Gets the input text of this response.
+    /// </summary>
+    public string InputText { get; }
 }

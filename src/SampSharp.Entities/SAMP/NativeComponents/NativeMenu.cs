@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,59 +18,58 @@ using SampSharp.Core.Natives.NativeObjects;
 
 #pragma warning disable 1591
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+[SuppressMessage("ReSharper", "IdentifierTypo")]
+public class NativeMenu : BaseNativeComponent
 {
-    [SuppressMessage("ReSharper", "IdentifierTypo")]
-    public class NativeMenu : BaseNativeComponent
+    public const int InvalidId = 255;
+
+    [NativeMethod]
+    public virtual bool DestroyMenu()
     {
-        public const int InvalidId = 255;
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool DestroyMenu()
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual int AddMenuItem(int column, string menutext)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual int AddMenuItem(int column, string menutext)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool SetMenuColumnHeader(int column, string columnheader)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool SetMenuColumnHeader(int column, string columnheader)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool ShowMenuForPlayer(int playerid)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool ShowMenuForPlayer(int playerid)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool HideMenuForPlayer(int playerid)
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool HideMenuForPlayer(int playerid)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool IsValidMenu()
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool IsValidMenu()
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool DisableMenu()
+    {
+        throw new NativeNotImplementedException();
+    }
 
-        [NativeMethod]
-        public virtual bool DisableMenu()
-        {
-            throw new NativeNotImplementedException();
-        }
-
-        [NativeMethod]
-        public virtual bool DisableMenuRow(int row)
-        {
-            throw new NativeNotImplementedException();
-        }
+    [NativeMethod]
+    public virtual bool DisableMenuRow(int row)
+    {
+        throw new NativeNotImplementedException();
     }
 }

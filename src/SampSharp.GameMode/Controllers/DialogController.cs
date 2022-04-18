@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,38 +12,38 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Controllers
+namespace SampSharp.GameMode.Controllers;
+
+/// <summary>
+///     A controller processing all dialog actions.
+/// </summary>
+[Controller]
+public class DialogController : IEventListener
 {
     /// <summary>
-    ///     A controller processing all dialog actions.
+    ///     Registers the events this DialogController wants to listen to.
     /// </summary>
-    [Controller]
-    public class DialogController : IEventListener
+    /// <param name="gameMode">The running GameMode.</param>
+    public virtual void RegisterEvents(BaseMode gameMode)
     {
-        /// <summary>
-        ///     Registers the events this DialogController wants to listen to.
-        /// </summary>
-        /// <param name="gameMode">The running GameMode.</param>
-        public virtual void RegisterEvents(BaseMode gameMode)
+        gameMode.DialogResponse += (sender, args) =>
         {
-            gameMode.DialogResponse += (sender, args) =>
-            {
-                if (!(sender is BasePlayer player))
-                    return;
+            if (!(sender is BasePlayer player))
+                return;
 
-                Dialog.GetOpenDialog(player)?.OnResponse(args);
-            };
+            Dialog.GetOpenDialog(player)?.OnResponse(args);
+        };
 
-            gameMode.PlayerDisconnected += (sender, _) =>
-            {
-                if (!(sender is BasePlayer player))
-                    return;
+        gameMode.PlayerDisconnected += (sender, _) =>
+        {
+            if (!(sender is BasePlayer player))
+                return;
 
-                Dialog.Hide(player);
-            };
-        }
+            Dialog.Hide(player);
+        };
     }
 }

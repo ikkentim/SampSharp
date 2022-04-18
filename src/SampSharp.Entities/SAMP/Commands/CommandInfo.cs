@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,32 +13,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP.Commands
+namespace SampSharp.Entities.SAMP.Commands;
+
+/// <summary>
+/// Provides information about a command.
+/// </summary>
+public class CommandInfo
 {
     /// <summary>
-    /// Provides information about a command.
+    /// Initializes a new instance of the <see cref="CommandInfo" /> class.
     /// </summary>
-    public class CommandInfo
+    /// <param name="name">The name of the command.</param>
+    /// <param name="parameters">The parameters of the command.</param>
+    public CommandInfo(string name, CommandParameterInfo[] parameters)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CommandInfo" /> class.
-        /// </summary>
-        /// <param name="name">The name of the command.</param>
-        /// <param name="parameters">The parameters of the command.</param>
-        public CommandInfo(string name, CommandParameterInfo[] parameters)
-        {
-            Name = name;
-            Parameters = parameters;
-        }
-
-        /// <summary>
-        /// Gets the name of this command.
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
-        /// Gets the parameters of this command.
-        /// </summary>
-        public CommandParameterInfo[] Parameters { get; }
+        Name = name;
+        Parameters = parameters;
     }
+
+    /// <summary>
+    /// Gets the name of this command.
+    /// </summary>
+    public string Name { get; }
+
+    /// <summary>
+    /// Gets the parameters of this command.
+    /// </summary>
+    public CommandParameterInfo[] Parameters { get; }
 }

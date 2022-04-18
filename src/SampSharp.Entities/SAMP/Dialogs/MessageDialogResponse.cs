@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,25 +13,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Represents a response to a <see cref="MessageDialog" />.
+/// </summary>
+public struct MessageDialogResponse
 {
     /// <summary>
-    /// Represents a response to a <see cref="MessageDialog" />.
+    /// Initializes a new instance of the <see cref="MessageDialogResponse" /> struct.
     /// </summary>
-    public struct MessageDialogResponse
+    /// <param name="response">The way in which the player has responded to the dialog.</param>
+    public MessageDialogResponse(DialogResponse response)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageDialogResponse" /> struct.
-        /// </summary>
-        /// <param name="response">The way in which the player has responded to the dialog.</param>
-        public MessageDialogResponse(DialogResponse response)
-        {
-            Response = response;
-        }
-
-        /// <summary>
-        /// Gets the way in which the player has responded to the dialog.
-        /// </summary>
-        public DialogResponse Response { get; }
+        Response = response;
     }
+
+    /// <summary>
+    /// Gets the way in which the player has responded to the dialog.
+    /// </summary>
+    public DialogResponse Response { get; }
 }

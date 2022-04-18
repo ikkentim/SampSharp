@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,17 +13,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities
+namespace SampSharp.Entities;
+
+/// <summary>
+/// Contains methods which can be implemented by systems which handle server ticks.
+/// </summary>
+/// <seealso cref="ISystem" />
+public interface ITickingSystem : ISystem
 {
     /// <summary>
-    /// Contains methods which can be implemented by systems which handle server ticks.
+    /// Occurs every server tick.
     /// </summary>
-    /// <seealso cref="ISystem" />
-    public interface ITickingSystem : ISystem
-    {
-        /// <summary>
-        /// Occurs every server tick.
-        /// </summary>
-        void Tick();
-    }
+    void Tick();
 }

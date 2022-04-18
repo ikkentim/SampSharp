@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,46 +12,46 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Tools;
 
-namespace SampSharp.GameMode.Controllers
+namespace SampSharp.GameMode.Controllers;
+
+/// <summary>
+///     A controller processing all textdraw actions.
+/// </summary>
+[Controller]
+public class TextDrawController : Disposable, IEventListener, ITypeProvider
 {
     /// <summary>
-    ///     A controller processing all textdraw actions.
+    ///     Registers the events this TextDrawController wants to listen to.
     /// </summary>
-    [Controller]
-    public class TextDrawController : Disposable, IEventListener, ITypeProvider
+    /// <param name="gameMode">The running GameMode.</param>
+    public virtual void RegisterEvents(BaseMode gameMode)
     {
-        /// <summary>
-        ///     Registers the events this TextDrawController wants to listen to.
-        /// </summary>
-        /// <param name="gameMode">The running GameMode.</param>
-        public virtual void RegisterEvents(BaseMode gameMode)
-        {
-            gameMode.PlayerClickTextDraw += (_, args) => args.TextDraw?.OnClick(args);
-        }
+        gameMode.PlayerClickTextDraw += (_, args) => args.TextDraw?.OnClick(args);
+    }
 
-        /// <summary>
-        ///     Registers types this TextDrawController requires the system to use.
-        /// </summary>
-        public virtual void RegisterTypes()
-        {
-            TextDraw.Register<TextDraw>();
-        }
+    /// <summary>
+    ///     Registers types this TextDrawController requires the system to use.
+    /// </summary>
+    public virtual void RegisterTypes()
+    {
+        TextDraw.Register<TextDraw>();
+    }
 
-        /// <summary>
-        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <param name="disposing">Whether managed resources should be disposed.</param>
-        protected override void Dispose(bool disposing)
+    /// <summary>
+    ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
+    /// </summary>
+    /// <param name="disposing">Whether managed resources should be disposed.</param>
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
         {
-            if (disposing)
+            foreach (var td in PlayerTextDraw.All)
             {
-                foreach (var td in PlayerTextDraw.All)
-                {
-                    td.Dispose();
-                }
+                td.Dispose();
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,48 +12,48 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using SampSharp.GameMode.Tools;
 using SampSharp.GameMode.World;
 
-namespace SampSharp.GameMode.Controllers
+namespace SampSharp.GameMode.Controllers;
+
+/// <summary>
+///     A controller processing all global-object actions.
+/// </summary>
+[Controller]
+public class GlobalObjectController : Disposable, IEventListener, ITypeProvider
 {
     /// <summary>
-    ///     A controller processing all global-object actions.
+    ///     Registers the events this GlobalObjectController wants to listen to.
     /// </summary>
-    [Controller]
-    public class GlobalObjectController : Disposable, IEventListener, ITypeProvider
+    /// <param name="gameMode">The running GameMode.</param>
+    public virtual void RegisterEvents(BaseMode gameMode)
     {
-        /// <summary>
-        ///     Registers the events this GlobalObjectController wants to listen to.
-        /// </summary>
-        /// <param name="gameMode">The running GameMode.</param>
-        public virtual void RegisterEvents(BaseMode gameMode)
-        {
-            gameMode.ObjectMoved += (sender, args) => (sender as GlobalObject)?.OnMoved(args);
-            gameMode.PlayerEditGlobalObject += (_, args) => args.Object?.OnEdited(args);
-            gameMode.PlayerSelectGlobalObject += (_, args) => args.Object?.OnSelected(args);
-        }
+        gameMode.ObjectMoved += (sender, args) => (sender as GlobalObject)?.OnMoved(args);
+        gameMode.PlayerEditGlobalObject += (_, args) => args.Object?.OnEdited(args);
+        gameMode.PlayerSelectGlobalObject += (_, args) => args.Object?.OnSelected(args);
+    }
 
-        /// <summary>
-        ///     Registers types this GlobalObjectController requires the system to use.
-        /// </summary>
-        public virtual void RegisterTypes()
-        {
-            GlobalObject.Register<GlobalObject>();
-        }
+    /// <summary>
+    ///     Registers types this GlobalObjectController requires the system to use.
+    /// </summary>
+    public virtual void RegisterTypes()
+    {
+        GlobalObject.Register<GlobalObject>();
+    }
 
-        /// <summary>
-        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <param name="disposing">Whether managed resources should be disposed.</param>
-        protected override void Dispose(bool disposing)
+    /// <summary>
+    ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
+    /// </summary>
+    /// <param name="disposing">Whether managed resources should be disposed.</param>
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
         {
-            if (disposing)
+            foreach (var o in GlobalObject.All)
             {
-                foreach (var o in GlobalObject.All)
-                {
-                    o.Dispose();
-                }
+                o.Dispose();
             }
         }
     }

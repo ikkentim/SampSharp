@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,49 +13,48 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Contains all available body parts.
+/// </summary>
+/// <remarks>
+/// See <see href="https://www.open.mp/docs/scripting/resources/bodyparts">https://www.open.mp/docs/scripting/resources/bodyparts</see>.
+/// </remarks>
+public enum BodyPart
 {
     /// <summary>
-    /// Contains all available body parts.
+    /// The chest.
     /// </summary>
-    /// <remarks>
-    /// See <see href="https://www.open.mp/docs/scripting/resources/bodyparts">https://www.open.mp/docs/scripting/resources/bodyparts</see>.
-    /// </remarks>
-    public enum BodyPart
-    {
-        /// <summary>
-        /// The chest.
-        /// </summary>
-        Chest = 3,
+    Chest = 3,
 
-        /// <summary>
-        /// The crotch.
-        /// </summary>
-        Crotch = 4,
+    /// <summary>
+    /// The crotch.
+    /// </summary>
+    Crotch = 4,
 
-        /// <summary>
-        /// The left arm.
-        /// </summary>
-        LeftArm = 5,
+    /// <summary>
+    /// The left arm.
+    /// </summary>
+    LeftArm = 5,
 
-        /// <summary>
-        /// The right arm.
-        /// </summary>
-        RightArm = 6,
+    /// <summary>
+    /// The right arm.
+    /// </summary>
+    RightArm = 6,
 
-        /// <summary>
-        /// The left leg.
-        /// </summary>
-        LeftLeg = 7,
+    /// <summary>
+    /// The left leg.
+    /// </summary>
+    LeftLeg = 7,
 
-        /// <summary>
-        /// The right leg.
-        /// </summary>
-        RightLeg = 8,
+    /// <summary>
+    /// The right leg.
+    /// </summary>
+    RightLeg = 8,
 
-        /// <summary>
-        /// The head.
-        /// </summary>
-        Head = 9
-    }
+    /// <summary>
+    /// The head.
+    /// </summary>
+    Head = 9
 }

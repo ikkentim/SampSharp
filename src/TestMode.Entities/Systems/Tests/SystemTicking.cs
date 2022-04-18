@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,13 +15,12 @@
 
 using SampSharp.Entities;
 
-namespace TestMode.Entities.Systems.Tests
+namespace TestMode.Entities.Systems.Tests;
+
+public class SystemTicking : ITickingSystem
 {
-    public class SystemTicking : ITickingSystem
+    public void Tick()
     {
-        public void Tick()
-        {
-            // for testing purposes.
-        }
+        // for testing purposes.
     }
 }

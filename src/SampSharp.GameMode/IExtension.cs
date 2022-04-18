@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,30 +15,29 @@
 
 using SampSharp.GameMode.Controllers;
 
-namespace SampSharp.GameMode
+namespace SampSharp.GameMode;
+
+/// <summary>
+/// Contains methods defining a SampSharp extension.
+/// </summary>
+public interface IExtension
 {
     /// <summary>
-    /// Contains methods defining a SampSharp extension.
+    ///     Loads services provided by this extensions.
     /// </summary>
-    public interface IExtension
-    {
-        /// <summary>
-        ///     Loads services provided by this extensions.
-        /// </summary>
-        /// <param name="gameMode">The game mode.</param>
-        void LoadServices(BaseMode gameMode);
+    /// <param name="gameMode">The game mode.</param>
+    void LoadServices(BaseMode gameMode);
 
-        /// <summary>
-        ///     Loads controllers provided by this extensions.
-        /// </summary>
-        /// <param name="gameMode">The game mode.</param>
-        /// <param name="controllerCollection">The controller collection.</param>
-        void LoadControllers(BaseMode gameMode, ControllerCollection controllerCollection);
+    /// <summary>
+    ///     Loads controllers provided by this extensions.
+    /// </summary>
+    /// <param name="gameMode">The game mode.</param>
+    /// <param name="controllerCollection">The controller collection.</param>
+    void LoadControllers(BaseMode gameMode, ControllerCollection controllerCollection);
 
-        /// <summary>
-        ///     Performs post-load actions.
-        /// </summary>
-        /// <param name="gameMode">The game mode.</param>
-        void PostLoad(BaseMode gameMode);
-    }
+    /// <summary>
+    ///     Performs post-load actions.
+    /// </summary>
+    /// <param name="gameMode">The game mode.</param>
+    void PostLoad(BaseMode gameMode);
 }

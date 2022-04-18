@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,62 +16,61 @@
 using System;
 using System.Linq;
 
-namespace SampSharp.Entities.SAMP.Commands.Parsers
+namespace SampSharp.Entities.SAMP.Commands.Parsers;
+
+/// <summary>
+/// A parser for an <see cref="Enum" /> parameter.
+/// </summary>
+public class EnumParser : ICommandParameterParser
 {
+    private readonly Type _enumType;
+
+    private readonly WordParser _wordParser = new();
+
     /// <summary>
-    /// A parser for an <see cref="Enum" /> parameter.
+    /// Initializes a new instance of the <see cref="EnumParser" /> class.
     /// </summary>
-    public class EnumParser : ICommandParameterParser
+    /// <param name="enumType">Type of the enum.</param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="enumType" /> is null.</exception>
+    /// <exception cref="ArgumentException">Thrown if <paramref name="enumType" /> is not an enum type.</exception>
+    public EnumParser(Type enumType)
     {
-        private readonly Type _enumType;
+        _enumType = enumType ?? throw new ArgumentNullException(nameof(enumType));
 
-        private readonly WordParser _wordParser = new();
+        if (!enumType.IsEnum)
+            throw new ArgumentException("Type must be an enum", nameof(enumType));
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumParser" /> class.
-        /// </summary>
-        /// <param name="enumType">Type of the enum.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="enumType" /> is null.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="enumType" /> is not an enum type.</exception>
-        public EnumParser(Type enumType)
+    /// <inheritdoc />
+    public bool TryParse(IServiceProvider services, ref string inputText, out object result)
+    {
+        if (!_wordParser.TryParse(services, ref inputText, out var subResult) ||
+            !(subResult is string word))
         {
-            _enumType = enumType ?? throw new ArgumentNullException(nameof(enumType));
-
-            if (!enumType.IsEnum)
-                throw new ArgumentException("Type must be an enum", nameof(enumType));
-        }
-
-        /// <inheritdoc />
-        public bool TryParse(IServiceProvider services, ref string inputText, out object result)
-        {
-            if (!_wordParser.TryParse(services, ref inputText, out var subResult) ||
-                !(subResult is string word))
-            {
-                result = null;
-                return false;
-            }
-
-            if (int.TryParse(word, out var intWord) &&
-                Enum.IsDefined(_enumType, intWord))
-            {
-                result = Enum.ToObject(_enumType, intWord);
-                return true;
-            }
-            
-            var lowerWord = word.ToLowerInvariant();
-            var names = Enum.GetNames(_enumType).Where(n => n.ToLowerInvariant().Contains(lowerWord)).ToArray();
-            
-            if (names.Length > 1) 
-                names = Enum.GetNames(_enumType).Where(n => n.Contains(word)).ToArray();
-
-            if (names.Length == 1)
-            {
-                result = Enum.Parse(_enumType, names[0]);
-                return true;
-            }
-
             result = null;
             return false;
         }
+
+        if (int.TryParse(word, out var intWord) &&
+            Enum.IsDefined(_enumType, intWord))
+        {
+            result = Enum.ToObject(_enumType, intWord);
+            return true;
+        }
+            
+        var lowerWord = word.ToLowerInvariant();
+        var names = Enum.GetNames(_enumType).Where(n => n.ToLowerInvariant().Contains(lowerWord)).ToArray();
+            
+        if (names.Length > 1) 
+            names = Enum.GetNames(_enumType).Where(n => n.Contains(word)).ToArray();
+
+        if (names.Length == 1)
+        {
+            result = Enum.Parse(_enumType, names[0]);
+            return true;
+        }
+
+        result = null;
+        return false;
     }
 }

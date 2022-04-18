@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,26 +13,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Contains all textdraw alignments.
+/// </summary>
+public enum TextDrawAlignment
 {
     /// <summary>
-    /// Contains all textdraw alignments.
+    /// Align left.
     /// </summary>
-    public enum TextDrawAlignment
-    {
-        /// <summary>
-        /// Align left.
-        /// </summary>
-        Left = 1,
+    Left = 1,
 
-        /// <summary>
-        /// Align center.
-        /// </summary>
-        Center = 2,
+    /// <summary>
+    /// Align center.
+    /// </summary>
+    Center = 2,
 
-        /// <summary>
-        /// Align right.
-        /// </summary>
-        Right = 3
-    }
+    /// <summary>
+    /// Align right.
+    /// </summary>
+    Right = 3
 }

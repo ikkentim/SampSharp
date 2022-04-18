@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,28 +15,27 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP.Commands.Parsers
+namespace SampSharp.Entities.SAMP.Commands.Parsers;
+
+/// <summary>
+/// A parser for an <see cref="double" /> parameter.
+/// </summary>
+public class DoubleParser : ICommandParameterParser
 {
-    /// <summary>
-    /// A parser for an <see cref="double" /> parameter.
-    /// </summary>
-    public class DoubleParser : ICommandParameterParser
+    private readonly WordParser _wordParser = new();
+
+    /// <inheritdoc />
+    public bool TryParse(IServiceProvider services, ref string inputText, out object result)
     {
-        private readonly WordParser _wordParser = new();
-
-        /// <inheritdoc />
-        public bool TryParse(IServiceProvider services, ref string inputText, out object result)
+        if (!_wordParser.TryParse(services, ref inputText, out var subResult) ||
+            !(subResult is string word) ||
+            !double.TryParse(word, out var num))
         {
-            if (!_wordParser.TryParse(services, ref inputText, out var subResult) ||
-                !(subResult is string word) ||
-                !double.TryParse(word, out var num))
-            {
-                result = null;
-                return false;
-            }
-
-            result = num;
-            return true;
+            result = null;
+            return false;
         }
+
+        result = num;
+        return true;
     }
 }

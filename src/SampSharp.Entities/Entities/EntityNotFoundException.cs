@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,29 +16,28 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace SampSharp.Entities
+namespace SampSharp.Entities;
+
+/// <summary>
+/// The exception that is thrown when an entity could not be found.
+/// </summary>
+[Serializable]
+public class EntityNotFoundException : ArgumentException
 {
     /// <summary>
-    /// The exception that is thrown when an entity could not be found.
+    /// Initializes a new instance of the <see cref="EntityNotFoundException" /> class.
     /// </summary>
-    [Serializable]
-    public class EntityNotFoundException : ArgumentException
+    /// <param name="paramName">Name of the parameter.</param>
+    public EntityNotFoundException(string paramName) : base("The specified entity could not be found.", paramName)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EntityNotFoundException" /> class.
-        /// </summary>
-        /// <param name="paramName">Name of the parameter.</param>
-        public EntityNotFoundException(string paramName) : base("The specified entity could not be found.", paramName)
-        {
-        }
+    }
         
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EntityNotFoundException" /> class.
-        /// </summary>
-        /// <param name="info">The object that holds the serialized object data.</param>
-        /// <param name="context">The contextual information about the source or destination.</param>
-        protected EntityNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EntityNotFoundException" /> class.
+    /// </summary>
+    /// <param name="info">The object that holds the serialized object data.</param>
+    /// <param name="context">The contextual information about the source or destination.</param>
+    protected EntityNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
     }
 }

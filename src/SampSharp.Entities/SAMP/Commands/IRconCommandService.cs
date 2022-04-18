@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,19 +15,18 @@
 
 using System;
 
-namespace SampSharp.Entities.SAMP.Commands
+namespace SampSharp.Entities.SAMP.Commands;
+
+/// <summary>
+/// Provides the functionality for invoking RCON commands.
+/// </summary>
+public interface IRconCommandService
 {
     /// <summary>
-    /// Provides the functionality for invoking RCON commands.
+    /// Invokes an RCON command using the specified <paramref name="inputText" />.
     /// </summary>
-    public interface IRconCommandService
-    {
-        /// <summary>
-        /// Invokes an RCON command using the specified <paramref name="inputText" />.
-        /// </summary>
-        /// <param name="services">A service provider.</param>
-        /// <param name="inputText">The input text to be parsed.</param>
-        /// <returns><c>true</c> if the command was handled; otherwise <c>false</c>.</returns>
-        bool Invoke(IServiceProvider services, string inputText);
-    }
+    /// <param name="services">A service provider.</param>
+    /// <param name="inputText">The input text to be parsed.</param>
+    /// <returns><c>true</c> if the command was handled; otherwise <c>false</c>.</returns>
+    bool Invoke(IServiceProvider services, string inputText);
 }

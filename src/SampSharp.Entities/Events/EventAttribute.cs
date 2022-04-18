@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,19 +16,18 @@
 using System;
 using SampSharp.Entities.Annotations;
 
-namespace SampSharp.Entities
+namespace SampSharp.Entities;
+
+/// <summary>
+/// Indicates a method is to be invoked when an event occurs.
+/// </summary>
+[AttributeUsage(AttributeTargets.Method)]
+[MeansImplicitUse]
+public class EventAttribute : Attribute
 {
     /// <summary>
-    /// Indicates a method is to be invoked when an event occurs.
+    /// Gets or sets the name of the event which should invoke the method. If this value is null, the method name is used as
+    /// the event name.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    [MeansImplicitUse]
-    public class EventAttribute : Attribute
-    {
-        /// <summary>
-        /// Gets or sets the name of the event which should invoke the method. If this value is null, the method name is used as
-        /// the event name.
-        /// </summary>
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
 }

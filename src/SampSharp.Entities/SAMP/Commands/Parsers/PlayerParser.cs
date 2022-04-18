@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,59 +16,58 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SampSharp.Entities.SAMP.Commands.Parsers
+namespace SampSharp.Entities.SAMP.Commands.Parsers;
+
+/// <summary>
+/// A parser for a player parameter.
+/// </summary>
+public class PlayerParser : ICommandParameterParser
 {
-    /// <summary>
-    /// A parser for a player parameter.
-    /// </summary>
-    public class PlayerParser : ICommandParameterParser
+    private readonly WordParser _wordParser = new();
+
+    /// <inheritdoc />
+    public bool TryParse(IServiceProvider services, ref string inputText, out object result)
     {
-        private readonly WordParser _wordParser = new();
-
-        /// <inheritdoc />
-        public bool TryParse(IServiceProvider services, ref string inputText, out object result)
+        if (!_wordParser.TryParse(services, ref inputText, out var subResult) ||
+            !(subResult is string word))
         {
-            if (!_wordParser.TryParse(services, ref inputText, out var subResult) ||
-                !(subResult is string word))
-            {
-                result = null;
-                return false;
-            }
-
-            var entityManager = services.GetRequiredService<IEntityManager>();
-            if (int.TryParse(word, out var intWord))
-            {
-                var entity = SampEntities.GetPlayerId(intWord);
-
-                if (entityManager.Exists(entity))
-                {
-                    result = entity;
-                    return true;
-                }
-            }
-
-            var players = entityManager.GetComponents<Player>();
-            EntityId bestCandidate = null;
-
-            foreach (Player player in players)
-            {
-                if (player.Name.Equals(word, StringComparison.OrdinalIgnoreCase))
-                {
-                    result = player.Entity;
-                    return true;
-                }
-
-                if (player.Name.ToLower().StartsWith(word.ToLower()))
-                {
-                    if (bestCandidate == null)
-                        bestCandidate = player.Entity;
-                    else if (player.Entity.Handle < bestCandidate.Handle)
-                        bestCandidate = player.Entity;
-                }
-            }
-
-            result = bestCandidate;
-            return bestCandidate != null;
+            result = null;
+            return false;
         }
+
+        var entityManager = services.GetRequiredService<IEntityManager>();
+        if (int.TryParse(word, out var intWord))
+        {
+            var entity = SampEntities.GetPlayerId(intWord);
+
+            if (entityManager.Exists(entity))
+            {
+                result = entity;
+                return true;
+            }
+        }
+
+        var players = entityManager.GetComponents<Player>();
+        EntityId bestCandidate = null;
+
+        foreach (Player player in players)
+        {
+            if (player.Name.Equals(word, StringComparison.OrdinalIgnoreCase))
+            {
+                result = player.Entity;
+                return true;
+            }
+
+            if (player.Name.ToLower().StartsWith(word.ToLower()))
+            {
+                if (bestCandidate == null)
+                    bestCandidate = player.Entity;
+                else if (player.Entity.Handle < bestCandidate.Handle)
+                    bestCandidate = player.Entity;
+            }
+        }
+
+        result = bestCandidate;
+        return bestCandidate != null;
     }
 }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,16 +15,15 @@
 
 using SampSharp.Core;
 
-namespace TestMode.GameMode
+namespace TestMode.GameMode;
+
+internal static class Program
 {
-    internal static class Program
+    private static void Main()
     {
-        private static void Main()
-        {
-            new GameModeBuilder()
-                .ApplyRconFix()
-                .Use<GameMode>()
-                .Run();
-        }
+        new GameModeBuilder()
+            .ApplyRconFix()
+            .Use<GameMode>()
+            .Run();
     }
 }

@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,52 +16,51 @@
 using System;
 using System.Collections.Generic;
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+/// <summary>
+/// Represents a provider of information about vehicles using the natives provided by SA:MP in combination with a local
+/// info cache.
+/// </summary>
+/// <seealso cref="IVehicleInfoService" />
+public class VehicleInfoService : IVehicleInfoService
 {
+    private readonly Dictionary<int, int> _componentType = new();
+
+    private readonly Dictionary<(VehicleModelType, VehicleModelInfoType), Vector3> _modelInfo = new();
+
+    private readonly VehicleInfoServiceNative _native;
+
     /// <summary>
-    /// Represents a provider of information about vehicles using the natives provided by SA:MP in combination with a local
-    /// info cache.
+    /// Initializes a new instance of the <see cref="VehicleInfoService"/> class.
     /// </summary>
-    /// <seealso cref="IVehicleInfoService" />
-    public class VehicleInfoService : IVehicleInfoService
+    public VehicleInfoService(INativeProxy<VehicleInfoServiceNative> nativeProxy)
     {
-        private readonly Dictionary<int, int> _componentType = new();
+        _native = nativeProxy.Instance;
+    }
 
-        private readonly Dictionary<(VehicleModelType, VehicleModelInfoType), Vector3> _modelInfo = new();
+    /// <inheritdoc />
+    public CarModType GetComponentType(int componentId)
+    {
+        if (!_componentType.TryGetValue(componentId, out var result))
+            _componentType[componentId] = result = _native.GetVehicleComponentType(componentId);
 
-        private readonly VehicleInfoServiceNative _native;
+        if (result < 0)
+            throw new ArgumentOutOfRangeException(nameof(componentId), componentId,
+                "component is not a valid component identifier.");
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VehicleInfoService"/> class.
-        /// </summary>
-        public VehicleInfoService(INativeProxy<VehicleInfoServiceNative> nativeProxy)
-        {
-            _native = nativeProxy.Instance;
-        }
+        return (CarModType) result;
+    }
 
-        /// <inheritdoc />
-        public CarModType GetComponentType(int componentId)
-        {
-            if (!_componentType.TryGetValue(componentId, out var result))
-                _componentType[componentId] = result = _native.GetVehicleComponentType(componentId);
-
-            if (result < 0)
-                throw new ArgumentOutOfRangeException(nameof(componentId), componentId,
-                    "component is not a valid component identifier.");
-
-            return (CarModType) result;
-        }
-
-        /// <inheritdoc />
-        public Vector3 GetModelInfo(VehicleModelType vehicleModel, VehicleModelInfoType infoType)
-        {
-            if (_modelInfo.TryGetValue((vehicleModel, infoType), out var result)) 
-                return result;
-
-            _native.GetVehicleModelInfo((int) vehicleModel, (int) infoType, out var x, out var y, out var z);
-            _modelInfo[(vehicleModel, infoType)] = result = new Vector3(x, y, z);
-
+    /// <inheritdoc />
+    public Vector3 GetModelInfo(VehicleModelType vehicleModel, VehicleModelInfoType infoType)
+    {
+        if (_modelInfo.TryGetValue((vehicleModel, infoType), out var result)) 
             return result;
-        }
+
+        _native.GetVehicleModelInfo((int) vehicleModel, (int) infoType, out var x, out var y, out var z);
+        _modelInfo[(vehicleModel, infoType)] = result = new Vector3(x, y, z);
+
+        return result;
     }
 }

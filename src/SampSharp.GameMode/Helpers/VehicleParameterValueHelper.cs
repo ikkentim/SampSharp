@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,34 +12,34 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using SampSharp.GameMode.Definitions;
 
-namespace SampSharp.GameMode.Helpers
+namespace SampSharp.GameMode.Helpers;
+
+/// <summary>
+///     Contains helper methods for <see cref="VehicleParameterValue" /> values.
+/// </summary>
+internal static class VehicleParameterValueHelper
 {
     /// <summary>
-    ///     Contains helper methods for <see cref="VehicleParameterValue" /> values.
+    ///     Converts the specified <paramref name="value" /> to a boolean.
     /// </summary>
-    internal static class VehicleParameterValueHelper
+    /// <param name="value">The value.</param>
+    /// <param name="defaultValue">The default (unset) value.</param>
+    /// <returns>The resulting boolean.</returns>
+    public static bool ToBool(this VehicleParameterValue value, bool defaultValue = false)
     {
-        /// <summary>
-        ///     Converts the specified <paramref name="value" /> to a boolean.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="defaultValue">The default (unset) value.</param>
-        /// <returns>The resulting boolean.</returns>
-        public static bool ToBool(this VehicleParameterValue value, bool defaultValue = false)
-        {
-            return value == VehicleParameterValue.Unset ? defaultValue : value == VehicleParameterValue.On;
-        }
+        return value == VehicleParameterValue.Unset ? defaultValue : value == VehicleParameterValue.On;
+    }
 
-        /// <summary>
-        ///     Converts the specified boolean <paramref name="value" /> to a <see cref="VehicleParameterValue" />.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The resulting <see cref="VehicleParameterValue" />.</returns>
-        public static VehicleParameterValue FromBool(bool value)
-        {
-            return value ? VehicleParameterValue.On : VehicleParameterValue.Off;
-        }
+    /// <summary>
+    ///     Converts the specified boolean <paramref name="value" /> to a <see cref="VehicleParameterValue" />.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns>The resulting <see cref="VehicleParameterValue" />.</returns>
+    public static VehicleParameterValue FromBool(bool value)
+    {
+        return value ? VehicleParameterValue.On : VehicleParameterValue.Off;
     }
 }

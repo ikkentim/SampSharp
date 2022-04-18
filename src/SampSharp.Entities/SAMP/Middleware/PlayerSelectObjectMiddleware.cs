@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,43 +13,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace SampSharp.Entities.SAMP
+namespace SampSharp.Entities.SAMP;
+
+internal class PlayerSelectObjectMiddleware
 {
-    internal class PlayerSelectObjectMiddleware
+    private readonly ArgumentsOverrideEventContext _context = new(3);
+    private readonly EventDelegate _next;
+
+    public PlayerSelectObjectMiddleware(EventDelegate next)
     {
-        private readonly ArgumentsOverrideEventContext _context = new(3);
-        private readonly EventDelegate _next;
+        _next = next;
+    }
 
-        public PlayerSelectObjectMiddleware(EventDelegate next)
-        {
-            _next = next;
-        }
+    public object Invoke(EventContext context, IEntityManager entityManager)
+    {
+        var playerEntity = SampEntities.GetPlayerId((int) context.Arguments[0]);
 
-        public object Invoke(EventContext context, IEntityManager entityManager)
-        {
-            var playerEntity = SampEntities.GetPlayerId((int) context.Arguments[0]);
+        var objectType = (int) context.Arguments[1];
+        var objectId = (int) context.Arguments[2];
 
-            var objectType = (int) context.Arguments[1];
-            var objectId = (int) context.Arguments[2];
-
-            var objectEntity = objectType == (int) ObjectType.PlayerObject
-                ? SampEntities.GetPlayerObjectId(playerEntity, objectId)
-                : SampEntities.GetObjectId(objectId);
+        var objectEntity = objectType == (int) ObjectType.PlayerObject
+            ? SampEntities.GetPlayerObjectId(playerEntity, objectId)
+            : SampEntities.GetObjectId(objectId);
             
-            if (!entityManager.Exists(playerEntity))
-                return null;
+        if (!entityManager.Exists(playerEntity))
+            return null;
             
-            // Allow unknown objects to be passed through to the event.
+        // Allow unknown objects to be passed through to the event.
 
-            _context.BaseContext = context;
+        _context.BaseContext = context;
 
-            _context.Arguments[0] = playerEntity;
-            _context.Arguments[1] = objectEntity;
-            _context.Arguments[2] = context.Arguments[3]; // modelId
-            _context.Arguments[3] = new Vector3((float) context.Arguments[4], (float) context.Arguments[5],
-                (float) context.Arguments[6]); // position
+        _context.Arguments[0] = playerEntity;
+        _context.Arguments[1] = objectEntity;
+        _context.Arguments[2] = context.Arguments[3]; // modelId
+        _context.Arguments[3] = new Vector3((float) context.Arguments[4], (float) context.Arguments[5],
+            (float) context.Arguments[6]); // position
 
-            return _next(_context);
-        }
+        return _next(_context);
     }
 }

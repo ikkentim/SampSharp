@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2017 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,16 +12,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-namespace SampSharp.GameMode.World
+
+namespace SampSharp.GameMode.World;
+
+/// <summary>
+///     Defines an object that is placed in the world.
+/// </summary>
+public interface IWorldObject
 {
     /// <summary>
-    ///     Defines an object that is placed in the world.
+    ///     Gets the position of this IWorldObject.
     /// </summary>
-    public interface IWorldObject
-    {
-        /// <summary>
-        ///     Gets the position of this IWorldObject.
-        /// </summary>
-        Vector3 Position { get; }
-    }
+    Vector3 Position { get; }
 }

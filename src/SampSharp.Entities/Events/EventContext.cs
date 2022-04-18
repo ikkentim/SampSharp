@@ -1,5 +1,5 @@
 ﻿// SampSharp
-// Copyright 2020 Tim Potze
+// Copyright 2022 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,26 +15,25 @@
 
 using System;
 
-namespace SampSharp.Entities
+namespace SampSharp.Entities;
+
+/// <summary>
+/// Contains context information about a fired event.
+/// </summary>
+public abstract class EventContext
 {
     /// <summary>
-    /// Contains context information about a fired event.
+    /// Gets the name of the event.
     /// </summary>
-    public abstract class EventContext
-    {
-        /// <summary>
-        /// Gets the name of the event.
-        /// </summary>
-        public abstract string Name { get; }
+    public abstract string Name { get; }
 
-        /// <summary>
-        /// Gets the arguments of the event.
-        /// </summary>
-        public abstract object[] Arguments { get; }
+    /// <summary>
+    /// Gets the arguments of the event.
+    /// </summary>
+    public abstract object[] Arguments { get; }
 
-        /// <summary>
-        /// Gets the service provider which can be used for providing services for events.
-        /// </summary>
-        public abstract IServiceProvider EventServices { get; }
-    }
+    /// <summary>
+    /// Gets the service provider which can be used for providing services for events.
+    /// </summary>
+    public abstract IServiceProvider EventServices { get; }
 }
