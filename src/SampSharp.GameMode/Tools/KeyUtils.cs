@@ -18,14 +18,10 @@ using SampSharp.GameMode.Events;
 
 namespace SampSharp.GameMode.Tools;
 
-/// <summary>
-///     Contains methods to check for keypresses.
-/// </summary>
+/// <summary>Contains methods to check for keypresses.</summary>
 public static class KeyUtils
 {
-    /// <summary>
-    ///     Checks if <see cref="Keys" /> have been pressed.
-    /// </summary>
+    /// <summary>Checks if <see cref="Keys" /> have been pressed.</summary>
     /// <param name="newKeys">New <see cref="Keys" />.</param>
     /// <param name="oldKeys">Old <see cref="Keys" />.</param>
     /// <param name="keys">The <see cref="Keys" /> to check for.</param>
@@ -35,9 +31,7 @@ public static class KeyUtils
         return newKeys.HasFlag(keys) && !oldKeys.HasFlag(keys);
     }
 
-    /// <summary>
-    ///     Checks if <see cref="Keys" /> have been pressed.
-    /// </summary>
+    /// <summary>Checks if <see cref="Keys" /> have been pressed.</summary>
     /// <param name="e">The <see cref="KeyStateChangedEventArgs" />.</param>
     /// <param name="keys">The <see cref="Keys" /> to check for.</param>
     /// <returns>Whether the <see cref="Keys" /> have been pressed.</returns>
@@ -46,9 +40,7 @@ public static class KeyUtils
         return HasPressed(e.NewKeys, e.OldKeys, keys);
     }
 
-    /// <summary>
-    ///     Checks if <see cref="Keys" /> have been released.
-    /// </summary>
+    /// <summary>Checks if <see cref="Keys" /> have been released.</summary>
     /// <param name="newKeys">New <see cref="Keys" />.</param>
     /// <param name="oldKeys">Old <see cref="Keys" />.</param>
     /// <param name="keys">The <see cref="Keys" /> to check for.</param>
@@ -58,9 +50,7 @@ public static class KeyUtils
         return !newKeys.HasFlag(keys) && oldKeys.HasFlag(keys);
     }
 
-    /// <summary>
-    ///     Checks if <see cref="Keys" /> have been released.
-    /// </summary>
+    /// <summary>Checks if <see cref="Keys" /> have been released.</summary>
     /// <param name="e">The <see cref="KeyStateChangedEventArgs" />.</param>
     /// <param name="keys">The <see cref="Keys" /> to check for.</param>
     /// <returns>Whether the <see cref="Keys" /> have been released.</returns>
@@ -69,9 +59,7 @@ public static class KeyUtils
         return HasReleased(e.NewKeys, e.OldKeys, keys);
     }
 
-    /// <summary>
-    ///     Checks if <see cref="Keys" /> are being hold.
-    /// </summary>
+    /// <summary>Checks if <see cref="Keys" /> are being hold.</summary>
     /// <param name="newKeys">New <see cref="Keys" />.</param>
     /// <param name="oldKeys">Old <see cref="Keys" />.</param>
     /// <param name="keys">The <see cref="Keys" /> to check for.</param>
@@ -81,9 +69,7 @@ public static class KeyUtils
         return newKeys.HasFlag(keys);
     }
 
-    /// <summary>
-    ///     Checks if <see cref="Keys" /> are being hold.
-    /// </summary>
+    /// <summary>Checks if <see cref="Keys" /> are being hold.</summary>
     /// <param name="e">The <see cref="KeyStateChangedEventArgs" />.</param>
     /// <param name="keys">The <see cref="Keys" /> to check for.</param>
     /// <returns>Whether the <see cref="Keys" /> are being hold.</returns>

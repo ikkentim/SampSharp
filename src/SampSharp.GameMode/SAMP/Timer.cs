@@ -19,9 +19,7 @@ using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.SAMP;
 
-/// <summary>
-///     Represents a SA:MP timer.
-/// </summary>
+/// <summary>Represents a SA:MP timer.</summary>
 public sealed class Timer : Disposable
 {
     private TimeSpan _interval;
@@ -29,59 +27,44 @@ public sealed class Timer : Disposable
     private DateTime _lastTick;
     private bool _isTicking;
 
-    /// <summary>
-    ///     Initializes a new instance of the Timer class and starts the timer.
-    /// </summary>
+    /// <summary>Initializes a new instance of the Timer class and starts the timer.</summary>
     /// <param name="interval">The interval in milliseconds.</param>
     /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
-    public Timer(double interval, bool isRepeating)
-        : this(interval, isRepeating, true)
+    public Timer(double interval, bool isRepeating) : this(interval, isRepeating, true)
     {
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the Timer class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the Timer class.</summary>
     /// <param name="interval">The interval in milliseconds.</param>
     /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
     /// <param name="running">Whether the timer is running.</param>
-    public Timer(double interval, bool isRepeating, bool running)
-        : this(TimeSpan.FromMilliseconds(interval), isRepeating, running)
+    public Timer(double interval, bool isRepeating, bool running) : this(TimeSpan.FromMilliseconds(interval), isRepeating, running)
     {
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the Timer class and starts the timer.
-    /// </summary>
+    /// <summary>Initializes a new instance of the Timer class and starts the timer.</summary>
     /// <param name="interval">The interval in milliseconds.</param>
     /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
     public Timer(int interval, bool isRepeating) : this(interval, isRepeating, true)
     {
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the Timer class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the Timer class.</summary>
     /// <param name="interval">The interval in milliseconds.</param>
     /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
     /// <param name="running">Whether the timer is running.</param>
-    public Timer(int interval, bool isRepeating, bool running)
-        : this(TimeSpan.FromMilliseconds(interval), isRepeating, running)
+    public Timer(int interval, bool isRepeating, bool running) : this(TimeSpan.FromMilliseconds(interval), isRepeating, running)
     {
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the Timer class and starts the timer.
-    /// </summary>
+    /// <summary>Initializes a new instance of the Timer class and starts the timer.</summary>
     /// <param name="interval">The interval.</param>
     /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
     public Timer(TimeSpan interval, bool isRepeating) : this(interval, isRepeating, true)
     {
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the Timer class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the Timer class.</summary>
     /// <param name="interval">The interval.</param>
     /// <param name="isRepeating">Whether to IsRepeating the timer (True); or stop after the first Tick(False).</param>
     /// <param name="running">Whether the timer is running.</param>
@@ -92,9 +75,7 @@ public sealed class Timer : Disposable
         IsRunning = running;
     }
 
-    /// <summary>
-    ///     Gets or sets the interval of this <see cref="Timer" />.
-    /// </summary>
+    /// <summary>Gets or sets the interval of this <see cref="Timer" />.</summary>
     public TimeSpan Interval
     {
         get => _interval;
@@ -107,14 +88,10 @@ public sealed class Timer : Disposable
         }
     }
 
-    /// <summary>
-    ///     Gets or sets whether this <see cref="Timer" /> is repeating.
-    /// </summary>
+    /// <summary>Gets or sets whether this <see cref="Timer" /> is repeating.</summary>
     public bool IsRepeating { get; set; }
 
-    /// <summary>
-    ///     Gets or sets whether this <see cref="Timer" /> is running.
-    /// </summary>
+    /// <summary>Gets or sets whether this <see cref="Timer" /> is running.</summary>
     public bool IsRunning
     {
         get => _isRunning;
@@ -134,16 +111,12 @@ public sealed class Timer : Disposable
         }
     }
 
-    /// <summary>
-    ///     Gets or sets a tag containing about this Timer.
-    /// </summary>
+    /// <summary>Gets or sets a tag containing about this Timer.</summary>
     public object Tag { get; set; }
 
     internal DateTime NextTick { get; private set; }
 
-    /// <summary>
-    ///     Runs the specified action repeatedly with the specified interval.
-    /// </summary>
+    /// <summary>Runs the specified action repeatedly with the specified interval.</summary>
     /// <param name="interval">The interval.</param>
     /// <param name="action">The action.</param>
     /// <returns>The created timer.</returns>
@@ -153,10 +126,8 @@ public sealed class Timer : Disposable
         t.Tick += (_, _) => action();
         return t;
     }
-        
-    /// <summary>
-    ///     Runs the specified action repeatedly with the specified interval.
-    /// </summary>
+
+    /// <summary>Runs the specified action repeatedly with the specified interval.</summary>
     /// <param name="interval">The interval in milliseconds.</param>
     /// <param name="action">The action.</param>
     /// <returns>The created timer.</returns>
@@ -164,10 +135,8 @@ public sealed class Timer : Disposable
     {
         return Run(TimeSpan.FromMilliseconds(interval), action);
     }
-        
-    /// <summary>
-    ///     Runs the specified action repeatedly with the specified interval.
-    /// </summary>
+
+    /// <summary>Runs the specified action repeatedly with the specified interval.</summary>
     /// <param name="interval">The interval in milliseconds.</param>
     /// <param name="action">The action.</param>
     /// <returns>The created timer.</returns>
@@ -176,9 +145,7 @@ public sealed class Timer : Disposable
         return Run(TimeSpan.FromMilliseconds(interval), action);
     }
 
-    /// <summary>
-    ///     Runs the specified action once after the specified interval.
-    /// </summary>
+    /// <summary>Runs the specified action once after the specified interval.</summary>
     /// <param name="interval">The interval.</param>
     /// <param name="action">The action.</param>
     /// <returns>The created timer.</returns>
@@ -188,10 +155,8 @@ public sealed class Timer : Disposable
         t.Tick += (_, _) => action();
         return t;
     }
-        
-    /// <summary>
-    ///     Runs the specified action once after the specified interval.
-    /// </summary>
+
+    /// <summary>Runs the specified action once after the specified interval.</summary>
     /// <param name="interval">The interval in milliseconds.</param>
     /// <param name="action">The action.</param>
     /// <returns>The created timer.</returns>
@@ -199,10 +164,8 @@ public sealed class Timer : Disposable
     {
         return RunOnce(TimeSpan.FromMilliseconds(interval), action);
     }
-        
-    /// <summary>
-    ///     Runs the specified action once after the specified interval.
-    /// </summary>
+
+    /// <summary>Runs the specified action once after the specified interval.</summary>
     /// <param name="interval">The interval in milliseconds.</param>
     /// <param name="action">The action.</param>
     /// <returns>The created timer.</returns>
@@ -211,31 +174,23 @@ public sealed class Timer : Disposable
         return RunOnce(TimeSpan.FromMilliseconds(interval), action);
     }
 
-    /// <summary>
-    ///     Removes this instance from the pool.
-    /// </summary>
+    /// <summary>Removes this instance from the pool.</summary>
     protected override void Dispose(bool disposing)
     {
         IsRunning = false;
     }
 
-    /// <summary>
-    ///     Occurs when the interval has elapsed.
-    /// </summary>
+    /// <summary>Occurs when the interval has elapsed.</summary>
     public event EventHandler Tick;
 
-    /// <summary>
-    ///     Raises the <see cref="Tick" /> event.
-    /// </summary>
+    /// <summary>Raises the <see cref="Tick" /> event.</summary>
     /// <param name="e">A <see cref="System.EventArgs" /> that contains the event data.</param>
     public void OnTick(EventArgs e)
     {
         Tick?.Invoke(this, e);
     }
 
-    /// <summary>
-    ///     Restarts this Timer.
-    /// </summary>
+    /// <summary>Restarts this Timer.</summary>
     public void Restart()
     {
         _lastTick = DateTime.UtcNow;

@@ -26,8 +26,8 @@ internal class PlayerDisconnectMiddleware
 
     public object Invoke(EventContext context, IEntityManager entityManager)
     {
-        var entity = SampEntities.GetPlayerId((int) context.Arguments[0]);
-            
+        var entity = SampEntities.GetPlayerId((int)context.Arguments[0]);
+
         if (!entityManager.Exists(entity))
             return null;
 

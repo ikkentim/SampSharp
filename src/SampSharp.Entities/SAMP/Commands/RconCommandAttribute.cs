@@ -18,23 +18,17 @@ using SampSharp.Entities.Annotations;
 
 namespace SampSharp.Entities.SAMP.Commands;
 
-/// <summary>
-/// An attribute which indicates the method is invokable as a RCON command.
-/// </summary>
+/// <summary>An attribute which indicates the method is invokable as a RCON command.</summary>
 [AttributeUsage(AttributeTargets.Method)]
 [MeansImplicitUse]
 public class RconCommandAttribute : Attribute, ICommandMethodInfo
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="RconCommandAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="RconCommandAttribute" /> class.</summary>
     public RconCommandAttribute()
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="RconCommandAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="RconCommandAttribute" /> class.</summary>
     /// <param name="name">The overridden name of the command.</param>
     public RconCommandAttribute(string name)
     {

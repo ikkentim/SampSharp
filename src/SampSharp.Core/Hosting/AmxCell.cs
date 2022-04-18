@@ -17,45 +17,31 @@ using System.Runtime.InteropServices;
 
 namespace SampSharp.Core.Hosting;
 
-/// <summary>
-/// Represents an AMX cell.
-/// </summary>
+/// <summary>Represents an AMX cell.</summary>
 [StructLayout(LayoutKind.Explicit, Size = Size)]
 public readonly struct AmxCell
 {
-    /// <summary>
-    /// The size of an AMX cell.
-    /// </summary>
+    /// <summary>The size of an AMX cell.</summary>
     public const int Size = 4;
 
     [FieldOffset(0)]
     private readonly int _value;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AmxCell"/> struct.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="AmxCell" /> struct.</summary>
     /// <param name="value">The value.</param>
     public AmxCell(int value) => _value = value;
 
-    /// <summary>
-    /// Performs an implicit conversion from <see cref="AmxCell"/> to <see cref="int"/>.
-    /// </summary>
+    /// <summary>Performs an implicit conversion from <see cref="AmxCell" /> to <see cref="int" />.</summary>
     /// <param name="value">The value.</param>
-    /// <returns>
-    /// The result of the conversion.
-    /// </returns>
+    /// <returns>The result of the conversion.</returns>
     public static implicit operator int(AmxCell value)
     {
         return value._value;
     }
 
-    /// <summary>
-    /// Performs an implicit conversion from <see cref="int"/> to <see cref="AmxCell"/>.
-    /// </summary>
+    /// <summary>Performs an implicit conversion from <see cref="int" /> to <see cref="AmxCell" />.</summary>
     /// <param name="value">The value.</param>
-    /// <returns>
-    /// The result of the conversion.
-    /// </returns>
+    /// <returns>The result of the conversion.</returns>
     public static implicit operator AmxCell(int value)
     {
         return new AmxCell(value);

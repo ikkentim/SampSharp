@@ -45,8 +45,8 @@ internal class Callback
 
     private static bool IsSupportedParameterType(Type type)
     {
-        return type == typeof(int) || type == typeof(float) || type == typeof(bool) || type == typeof(int[]) ||
-               type == typeof(float[]) || type == typeof(bool[]) || type == typeof(string);
+        return type == typeof(int) || type == typeof(float) || type == typeof(bool) || type == typeof(int[]) || type == typeof(float[]) ||
+               type == typeof(bool[]) || type == typeof(string);
     }
 
     private static ICallbackParameter ParameterForType1(Type type)
@@ -94,12 +94,12 @@ internal class Callback
         return null;
     }
 
-    public static Callback For(object target, MethodInfo method, Type[] parameterTypes = null,
-        uint?[] lengthIndices = null)
+    public static Callback For(object target, MethodInfo method, Type[] parameterTypes = null, uint?[] lengthIndices = null)
     {
         var wrapped = false;
         var methodParameters = method.GetParameters();
-        if (methodParameters.Length == 1 && methodParameters[0].ParameterType == typeof(object[]))
+        if (methodParameters.Length == 1 && methodParameters[0]
+                .ParameterType == typeof(object[]))
         {
             wrapped = true;
         }
@@ -112,7 +112,8 @@ internal class Callback
         {
             if (parameterTypes == null)
             {
-                parameterTypes = methodParameters.Select(x => x.ParameterType).ToArray();
+                parameterTypes = methodParameters.Select(x => x.ParameterType)
+                    .ToArray();
             }
             else
             {
@@ -121,9 +122,11 @@ internal class Callback
                     throw new InvalidOperationException(
                         "Value does not match method parameters. The specified method should either only accept an array of objects, or the parameterTypes value should be null or match the method parameters.");
                 }
+
                 for (var i = 0; i < parameterTypes.Length; i++)
                 {
-                    if (parameterTypes[i] != methodParameters[i].ParameterType)
+                    if (parameterTypes[i] != methodParameters[i]
+                            .ParameterType)
                     {
                         throw new InvalidOperationException(
                             $"Type at index {i} does not match the method parameters. The specified method should either only accept an array of objects, or the parameterTypes value should be null or match the method parameters.");
@@ -147,8 +150,8 @@ internal class Callback
         return new Callback(parameters, target, method, wrapped);
     }
 
-    private static void GetParameter(Type[] parameterTypes, uint?[] lengthIndices, int index, ICallbackParameter[] parameters,
-        bool wrapped, ParameterInfo[] methodParameters)
+    private static void GetParameter(Type[] parameterTypes, uint?[] lengthIndices, int index, ICallbackParameter[] parameters, bool wrapped,
+        ParameterInfo[] methodParameters)
     {
         if (!IsSupportedParameterType(parameterTypes[index]))
         {
@@ -167,7 +170,8 @@ internal class Callback
 
         if (lengthIndexNullable == null && !wrapped)
         {
-            var attribute = methodParameters[index].GetCustomAttribute<ParameterLengthAttribute>();
+            var attribute = methodParameters[index]
+                .GetCustomAttribute<ParameterLengthAttribute>();
             lengthIndexNullable = (int?)attribute?.Index;
         }
 
@@ -181,8 +185,7 @@ internal class Callback
 
         if (parameterTypes[lengthIndex] != typeof(int))
         {
-            throw new InvalidOperationException(
-                $"Expected an integer argument at index {lengthIndex} for the parameter at index {index}.");
+            throw new InvalidOperationException($"Expected an integer argument at index {lengthIndex} for the parameter at index {index}.");
         }
 
         parameter = ParameterForType2(parameterTypes[index], lengthIndexOffset);
@@ -199,6 +202,7 @@ internal class Callback
     public class FastMethodInfo
     {
         private delegate object ReturnValueDelegate(object instance, object[] arguments);
+
         private delegate void VoidDelegate(object instance, object[] arguments);
 
         public FastMethodInfo(MethodInfo methodInfo)
@@ -212,14 +216,23 @@ internal class Callback
                 var parameterInfo = parameterInfos[i];
                 argumentExpressions.Add(Expression.Convert(Expression.ArrayIndex(argumentsExpression, Expression.Constant(i)), parameterInfo.ParameterType));
             }
-            var callExpression = Expression.Call(!methodInfo.IsStatic ? Expression.Convert(instanceExpression, methodInfo.ReflectedType ?? methodInfo.DeclaringType!) : null, methodInfo, argumentExpressions);
+
+            var callExpression = Expression.Call(!methodInfo.IsStatic
+                ? Expression.Convert(instanceExpression, methodInfo.ReflectedType ?? methodInfo.DeclaringType!)
+                : null, methodInfo, argumentExpressions);
             if (callExpression.Type == typeof(void))
             {
-                var voidDelegate = Expression.Lambda<VoidDelegate>(callExpression, instanceExpression, argumentsExpression).Compile();
-                Delegate = (instance, arguments) => { voidDelegate(instance, arguments); return null; };
+                var voidDelegate = Expression.Lambda<VoidDelegate>(callExpression, instanceExpression, argumentsExpression)
+                    .Compile();
+                Delegate = (instance, arguments) =>
+                {
+                    voidDelegate(instance, arguments);
+                    return null;
+                };
             }
             else
-                Delegate = Expression.Lambda<ReturnValueDelegate>(Expression.Convert(callExpression, typeof(object)), instanceExpression, argumentsExpression).Compile();
+                Delegate = Expression.Lambda<ReturnValueDelegate>(Expression.Convert(callExpression, typeof(object)), instanceExpression, argumentsExpression)
+                    .Compile();
         }
 
         private ReturnValueDelegate Delegate { get; }
@@ -236,8 +249,7 @@ internal class Callback
 
         if (paramCount != _parameters.Length)
         {
-            CoreLog.Log(CoreLogLevel.Error,
-                $"Callback parameter mismatch. Expected {_parameters.Length} but received {paramCount} parameters.");
+            CoreLog.Log(CoreLogLevel.Error, $"Callback parameter mismatch. Expected {_parameters.Length} but received {paramCount} parameters.");
             return;
         }
 
@@ -253,7 +265,7 @@ internal class Callback
         {
             args = _wrapBuffer;
         }
-        
+
         var result = _fastMethod.Invoke(_target, args);
 
         if (retval != IntPtr.Zero)
@@ -272,7 +284,9 @@ internal class Callback
     {
         return obj switch
         {
-            bool value => value ? 1 : 0,
+            bool value => value
+                ? 1
+                : 0,
             int value => value,
             float value => ValueConverter.ToInt32(value),
             _ => 1

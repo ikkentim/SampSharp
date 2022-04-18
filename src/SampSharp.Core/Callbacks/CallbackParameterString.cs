@@ -26,7 +26,7 @@ internal class CallbackParameterString : ICallbackParameter
     public unsafe object GetValue(IntPtr amx, IntPtr parameter)
     {
         AmxCell* physAddr;
-        Interop.Api->PluginData->AmxExports->GetAddr((Amx*)amx, *(int *)parameter, &physAddr);
+        Interop.Api->PluginData->AmxExports->GetAddr((Amx*)amx, *(int*)parameter, &physAddr);
 
         if ((IntPtr)physAddr == IntPtr.Zero)
         {
@@ -37,8 +37,10 @@ internal class CallbackParameterString : ICallbackParameter
         Interop.Api->PluginData->AmxExports->StrLen(physAddr, &len);
         len++;
 
-        var buf = len < 100 ? stackalloc byte[len] : new byte[len];
-            
+        var buf = len < 100
+            ? stackalloc byte[len]
+            : new byte[len];
+
         fixed (byte* p = &buf.GetPinnableReference())
         {
             Interop.Api->PluginData->AmxExports->GetString(p, physAddr, 0, len);

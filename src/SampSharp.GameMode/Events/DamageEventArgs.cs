@@ -20,14 +20,12 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events;
 
 /// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerTakeDamage" />, <see cref="BaseMode.PlayerGiveDamage" />,
-///     <see cref="BasePlayer.TakeDamage" /> or <see cref="BasePlayer.GiveDamage" /> event.
+/// Provides data for the <see cref="BaseMode.PlayerTakeDamage" />, <see cref="BaseMode.PlayerGiveDamage" />, <see cref="BasePlayer.TakeDamage" /> or
+/// <see cref="BasePlayer.GiveDamage" /> event.
 /// </summary>
 public class DamageEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the DamageEventArgs class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the DamageEventArgs class.</summary>
     /// <param name="otherPlayer">The other player.</param>
     /// <param name="amount">Amount of damage done.</param>
     /// <param name="weapon">Weapon used to damage another.</param>
@@ -40,23 +38,15 @@ public class DamageEventArgs : EventArgs
         BodyPart = bodypart;
     }
 
-    /// <summary>
-    ///     Gets the other player.
-    /// </summary>
+    /// <summary>Gets the other player.</summary>
     public BasePlayer OtherPlayer { get; }
 
-    /// <summary>
-    ///     Gets the amount of damage done.
-    /// </summary>
+    /// <summary>Gets the amount of damage done.</summary>
     public float Amount { get; }
 
-    /// <summary>
-    ///     Gets the Weapon used to damage another player.
-    /// </summary>
+    /// <summary>Gets the Weapon used to damage another player.</summary>
     public Weapon Weapon { get; }
 
-    /// <summary>
-    ///     Gets the BodyPart shot at.
-    /// </summary>
+    /// <summary>Gets the BodyPart shot at.</summary>
     public BodyPart BodyPart { get; }
 }

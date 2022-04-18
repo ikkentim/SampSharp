@@ -73,11 +73,17 @@ internal static class DialogCommands
                 };
                 listDialog.Show(player);
             }
+
             [Command("range")]
             public static void ListDialogRangeTestCommand(BasePlayer player)
             {
                 var listDialog = new ListDialog("String options", "Select", "Close");
-                var options = new List<string> { "option 10", "option 11", "option 12" };
+                var options = new List<string>
+                {
+                    "option 10",
+                    "option 11",
+                    "option 12"
+                };
                 listDialog.AddItems(options);
                 listDialog.Response += (_, e) =>
                 {
@@ -103,11 +109,17 @@ internal static class DialogCommands
                 };
                 listDialog.Show(player);
             }
+
             [Command("range")]
             public static void ListDialogRangeTestCommand(BasePlayer player)
             {
                 var listDialog = new ListDialog<string>("String options", "Select", "Close");
-                var options = new List<string> { "option 10", "option 11", "option 12" };
+                var options = new List<string>
+                {
+                    "option 10",
+                    "option 11",
+                    "option 12"
+                };
                 listDialog.AddItems(options);
                 listDialog.Response += (_, e) =>
                 {
@@ -135,6 +147,7 @@ internal static class DialogCommands
                 };
                 listDialog.Show(player);
             }
+
             [Command("range")]
             public static void ListDialogRangeTestCommand(BasePlayer player)
             {
@@ -164,6 +177,7 @@ internal static class DialogCommands
                 };
                 listDialog.Show(player);
             }
+
             [Command("range")]
             public static void ListDialogRangeTestCommand(BasePlayer player)
             {
@@ -195,6 +209,7 @@ internal static class DialogCommands
                 };
                 listDialog.Show(player);
             }
+
             [Command("item-async")]
             public static async void ListDialogItemTestCommandAsync(BasePlayer player)
             {
@@ -204,19 +219,20 @@ internal static class DialogCommands
                 listDialog.AddItem(new ColorValue(Color.DarkGray));
                 listDialog.AddItem(new ColorValue(Color.Turquoise));
                 listDialog.AddItem(new ColorValue(new Color(1, 125, 14)));
-               
+
                 var result = await listDialog.ShowAsync(player);
                 player.SendClientMessage($"Dialog closed, selected value is {result.ListItem}: \"{result.ItemValue}{Color.White}\"");
             }
+
             [Command("range")]
             public static void ListDialogRangeTestCommand(BasePlayer player)
             {
                 var listDialog = new ListDialog<ColorValue>("Colors", "Select", "Close");
                 var colors = new List<ColorValue>
                 {
-                    new(Color.Chocolate), 
+                    new(Color.Chocolate),
                     new(Color.LightGreen),
-                    new(Color.AliceBlue), 
+                    new(Color.AliceBlue),
                     new(new Color(54, 26, 178))
                 };
                 listDialog.AddItems(colors);

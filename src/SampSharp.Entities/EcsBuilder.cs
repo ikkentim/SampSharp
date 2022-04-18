@@ -18,9 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SampSharp.Entities;
 
-/// <summary>
-/// Represents the ECS system builder.
-/// </summary>
+/// <summary>Represents the ECS system builder.</summary>
 /// <seealso cref="IEcsBuilder" />
 public class EcsBuilder : IEcsBuilder
 {
@@ -29,7 +27,7 @@ public class EcsBuilder : IEcsBuilder
     internal EcsBuilder(IServiceProvider services)
     {
         Services = services ?? throw new ArgumentNullException(nameof(services));
-            
+
         _eventService = services.GetRequiredService<IEventService>();
     }
 

@@ -20,9 +20,7 @@ using System.Reflection;
 
 namespace SampSharp.Entities.Utilities;
 
-/// <summary>
-/// Represents a utility for scanning for types and members with specific attributes in loaded assemblies.
-/// </summary>
+/// <summary>Represents a utility for scanning for types and members with specific attributes in loaded assemblies.</summary>
 public sealed class AssemblyScanner
 {
     private List<Assembly> _assemblies = new();
@@ -34,16 +32,19 @@ public sealed class AssemblyScanner
     private List<Type> _memberAttributes = new();
     private bool _includeAbstract;
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Searching for members of any visibility (when specified by user)")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell",
+        "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields",
+        Justification = "Searching for members of any visibility (when specified by user)")]
     private BindingFlags MemberBindingFlags =>
-        (_includeInstanceMembers ? BindingFlags.Instance : BindingFlags.Default) |
-        (_includeStaticMembers ? BindingFlags.Static : BindingFlags.Default) |
-        BindingFlags.Public |
-        (_includeNonPublicMembers ? BindingFlags.NonPublic : BindingFlags.Default);
+        (_includeInstanceMembers
+            ? BindingFlags.Instance
+            : BindingFlags.Default) | (_includeStaticMembers
+            ? BindingFlags.Static
+            : BindingFlags.Default) | BindingFlags.Public | (_includeNonPublicMembers
+            ? BindingFlags.NonPublic
+            : BindingFlags.Default);
 
-    /// <summary>
-    /// Includes the specified <paramref name="assembly" /> in the scan.
-    /// </summary>
+    /// <summary>Includes the specified <paramref name="assembly" /> in the scan.</summary>
     /// <param name="assembly">The assembly to include.</param>
     /// <returns>An updated scanner.</returns>
     public AssemblyScanner IncludeAssembly(Assembly assembly)
@@ -56,13 +57,8 @@ public sealed class AssemblyScanner
         return result;
     }
 
-    /// <summary>
-    /// Includes the referenced assemblies of the previously included assemblies in the scan.
-    /// </summary>
-    /// <param name="skipSystem">
-    /// If set to <c>true</c>, system assemblies (System.*, Microsoft.*, netstandard) are skipped in
-    /// the scan.
-    /// </param>
+    /// <summary>Includes the referenced assemblies of the previously included assemblies in the scan.</summary>
+    /// <param name="skipSystem">If set to <c>true</c>, system assemblies (System.*, Microsoft.*, netstandard) are skipped in the scan.</param>
     /// <returns>An updated scanner.</returns>
     public AssemblyScanner IncludeReferencedAssemblies(bool skipSystem = true)
     {
@@ -77,10 +73,9 @@ public sealed class AssemblyScanner
 
             foreach (var assemblyRef in asm.GetReferencedAssemblies())
             {
-                if (skipSystem &&
-                    (assemblyRef.Name!.StartsWith("System", StringComparison.InvariantCulture) ||
-                     assemblyRef.Name.StartsWith("Microsoft", StringComparison.InvariantCulture) ||
-                     assemblyRef.Name.StartsWith("netstandard", StringComparison.InvariantCulture)))
+                if (skipSystem && (assemblyRef.Name!.StartsWith("System", StringComparison.InvariantCulture) ||
+                                   assemblyRef.Name.StartsWith("Microsoft", StringComparison.InvariantCulture) ||
+                                   assemblyRef.Name.StartsWith("netstandard", StringComparison.InvariantCulture)))
                     continue;
 
                 AddToScan(Assembly.Load(assemblyRef));
@@ -95,13 +90,8 @@ public sealed class AssemblyScanner
         return result;
     }
 
-    /// <summary>
-    /// Includes the entry assembly and all referenced assemblies in the scan..
-    /// </summary>
-    /// <param name="skipSystem">
-    /// if set to <c>true</c>, system assemblies (System.*, Microsoft.*, netstandard) are skipped in
-    /// the scan.
-    /// </param>
+    /// <summary>Includes the entry assembly and all referenced assemblies in the scan..</summary>
+    /// <param name="skipSystem">if set to <c>true</c>, system assemblies (System.*, Microsoft.*, netstandard) are skipped in the scan.</param>
     /// <returns>An updated scanner.</returns>
     public AssemblyScanner IncludeAllAssemblies(bool skipSystem = true)
     {
@@ -109,18 +99,14 @@ public sealed class AssemblyScanner
             .IncludeReferencedAssemblies(skipSystem);
     }
 
-    /// <summary>
-    /// Includes the entry assembly in the scan.
-    /// </summary>
+    /// <summary>Includes the entry assembly in the scan.</summary>
     /// <returns>An updated scanner.</returns>
     public AssemblyScanner IncludeEntryAssembly()
     {
         return IncludeAssembly(Assembly.GetEntryAssembly());
     }
 
-    /// <summary>
-    /// Includes static members in the scan.
-    /// </summary>
+    /// <summary>Includes static members in the scan.</summary>
     /// <param name="exclusive">If set to <c>true</c>, only include static members in the scan.</param>
     /// <returns>An updated scanner.</returns>
     public AssemblyScanner IncludeStatic(bool exclusive)
@@ -131,9 +117,7 @@ public sealed class AssemblyScanner
         return result;
     }
 
-    /// <summary>
-    /// Includes non-public members in the scan.
-    /// </summary>
+    /// <summary>Includes non-public members in the scan.</summary>
     /// <returns>An updated scanner.</returns>
     public AssemblyScanner IncludeNonPublicMembers()
     {
@@ -141,10 +125,8 @@ public sealed class AssemblyScanner
         result._includeNonPublicMembers = true;
         return result;
     }
-        
-    /// <summary>
-    /// Includes members of abstract classes in the scan.
-    /// </summary>
+
+    /// <summary>Includes members of abstract classes in the scan.</summary>
     /// <returns>An updated scanner.</returns>
     public AssemblyScanner IncludeAbstract()
     {
@@ -153,9 +135,7 @@ public sealed class AssemblyScanner
         return result;
     }
 
-    /// <summary>
-    /// Includes only members of classes which implement <typeparamref name="T" /> in the scan.
-    /// </summary>
+    /// <summary>Includes only members of classes which implement <typeparamref name="T" /> in the scan.</summary>
     /// <typeparam name="T">The class or interface the results of the scan should implement.</typeparam>
     /// <returns>An updated scanner.</returns>
     public AssemblyScanner Implements<T>()
@@ -165,9 +145,7 @@ public sealed class AssemblyScanner
         return result;
     }
 
-    /// <summary>
-    /// Includes only members of classes which have an attribute <typeparamref name="T" />.
-    /// </summary>
+    /// <summary>Includes only members of classes which have an attribute <typeparamref name="T" />.</summary>
     /// <typeparam name="T">The type of the attribute the class should have.</typeparam>
     /// <returns>An updated scanner.</returns>
     public AssemblyScanner HasClassAttribute<T>() where T : Attribute
@@ -177,9 +155,7 @@ public sealed class AssemblyScanner
         return result;
     }
 
-    /// <summary>
-    /// Includes only members which have an attribute <typeparamref name="T" />.
-    /// </summary>
+    /// <summary>Includes only members which have an attribute <typeparamref name="T" />.</summary>
     /// <typeparam name="T">The type of the attribute the member should have.</typeparam>
     /// <returns>An updated scanner.</returns>
     public AssemblyScanner HasAttribute<T>() where T : Attribute
@@ -188,12 +164,10 @@ public sealed class AssemblyScanner
         result._memberAttributes.Add(typeof(T));
         return result;
     }
-        
+
     private bool ApplyTypeFilter(Type type)
     {
-        return type.IsClass &&
-               (_includeAbstract || !type.IsAbstract) &&
-               _classImplements.All(i => i.IsAssignableFrom(type)) &&
+        return type.IsClass && (_includeAbstract || !type.IsAbstract) && _classImplements.All(i => i.IsAssignableFrom(type)) &&
                _classAttributes.All(a => type.GetCustomAttribute(a) != null);
     }
 
@@ -201,10 +175,8 @@ public sealed class AssemblyScanner
     {
         return _memberAttributes.All(a => memberInfo.GetCustomAttribute(a) != null);
     }
-        
-    /// <summary>
-    /// Runs the scan for methods and provides the attribute <typeparamref name="TAttribute" /> in the results.
-    /// </summary>
+
+    /// <summary>Runs the scan for methods and provides the attribute <typeparamref name="TAttribute" /> in the results.</summary>
     /// <typeparam name="TAttribute">The type of the attribute.</typeparam>
     /// <returns>The found methods with their attribute of type <typeparamref name="TAttribute" />.</returns>
     public IEnumerable<(Type type, TAttribute attribute)> ScanTypes<TAttribute>() where TAttribute : Attribute
@@ -214,21 +186,16 @@ public sealed class AssemblyScanner
             .Select(type => (type, attribute: type.GetCustomAttribute<TAttribute>()));
     }
 
-    /// <summary>
-    /// Runs the scan for methods.
-    /// </summary>
+    /// <summary>Runs the scan for methods.</summary>
     /// <returns>The found methods.</returns>
     public IEnumerable<Type> ScanTypes()
     {
-        return _assemblies
-            .SelectMany(a => a.GetTypes())
+        return _assemblies.SelectMany(a => a.GetTypes())
             .Where(ApplyTypeFilter)
             .ToArray();
     }
 
-    /// <summary>
-    /// Runs the scan for methods and provides the attribute <typeparamref name="TAttribute" /> in the results.
-    /// </summary>
+    /// <summary>Runs the scan for methods and provides the attribute <typeparamref name="TAttribute" /> in the results.</summary>
     /// <typeparam name="TAttribute">The type of the attribute.</typeparam>
     /// <returns>The found methods with their attribute of type <typeparamref name="TAttribute" />.</returns>
     public IEnumerable<(MethodInfo method, TAttribute attribute)> ScanMethods<TAttribute>() where TAttribute : Attribute
@@ -238,23 +205,18 @@ public sealed class AssemblyScanner
             .Select(method => (method, attribute: method.GetCustomAttribute<TAttribute>()));
     }
 
-    /// <summary>
-    /// Runs the scan for methods.
-    /// </summary>
+    /// <summary>Runs the scan for methods.</summary>
     /// <returns>The found methods.</returns>
     public IEnumerable<MethodInfo> ScanMethods()
     {
-        return _assemblies
-            .SelectMany(a => a.GetTypes())
+        return _assemblies.SelectMany(a => a.GetTypes())
             .Where(ApplyTypeFilter)
             .SelectMany(t => t.GetMethods(MemberBindingFlags))
             .Where(ApplyMemberFilter)
             .ToArray();
     }
-        
-    /// <summary>
-    /// Runs the scan for fields and provides the attribute <typeparamref name="TAttribute" /> in the results.
-    /// </summary>
+
+    /// <summary>Runs the scan for fields and provides the attribute <typeparamref name="TAttribute" /> in the results.</summary>
     /// <typeparam name="TAttribute">The type of the attribute.</typeparam>
     /// <returns>The found fields with their attribute of type <typeparamref name="TAttribute" />.</returns>
     public IEnumerable<(FieldInfo field, TAttribute attribute)> ScanFields<TAttribute>() where TAttribute : Attribute
@@ -264,14 +226,11 @@ public sealed class AssemblyScanner
             .Select(field => (field, attribute: field.GetCustomAttribute<TAttribute>()));
     }
 
-    /// <summary>
-    /// Runs the scan for fields.
-    /// </summary>
+    /// <summary>Runs the scan for fields.</summary>
     /// <returns>The found fields.</returns>
     public IEnumerable<FieldInfo> ScanFields()
     {
-        return _assemblies
-            .SelectMany(a => a.GetTypes())
+        return _assemblies.SelectMany(a => a.GetTypes())
             .Where(ApplyTypeFilter)
             .SelectMany(t => t.GetFields(MemberBindingFlags))
             .Where(ApplyMemberFilter)

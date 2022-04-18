@@ -23,8 +23,7 @@ public abstract partial class Dialog
     public class DialogInternal : NativeObjectSingleton<DialogInternal>
     {
         [NativeMethod]
-        public virtual bool ShowPlayerDialog(int playerid, int dialogid, int style, string caption, string info,
-            string button1, string button2)
+        public virtual bool ShowPlayerDialog(int playerid, int dialogid, int style, string caption, string info, string button1, string button2)
         {
             throw new NativeNotImplementedException();
         }

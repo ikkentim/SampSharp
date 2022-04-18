@@ -33,7 +33,7 @@ public class CoreLogGameModeBuilderExtensionsTests
         // act
         sut.UseLogLevel(CoreLogLevel.Error);
         sut.Run();
-        
+
         // assert
         CoreLog.LogLevel.ShouldBe(CoreLogLevel.Error);
     }
@@ -50,7 +50,7 @@ public class CoreLogGameModeBuilderExtensionsTests
         // act
         sut.UseLogWriter(writer);
         sut.Run();
-        
+
         // assert
         CoreLog.TextWriter.ShouldBe(writer);
     }

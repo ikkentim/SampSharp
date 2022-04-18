@@ -18,27 +18,19 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerCommandText" /> or <see cref="BasePlayer.CommandText" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.PlayerCommandText" /> or <see cref="BasePlayer.CommandText" /> event.</summary>
 public class CommandTextEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="CommandTextEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="CommandTextEventArgs" /> class.</summary>
     /// <param name="text">The text sent by the player.</param>
     public CommandTextEventArgs(string text)
     {
         Text = text;
     }
 
-    /// <summary>
-    ///     Gets the text sent by the player.
-    /// </summary>
+    /// <summary>Gets the text sent by the player.</summary>
     public string Text { get; }
 
-    /// <summary>
-    ///     Gets or sets whether this command has been handled successfully.
-    /// </summary>
+    /// <summary>Gets or sets whether this command has been handled successfully.</summary>
     public bool Success { get; set; }
 }

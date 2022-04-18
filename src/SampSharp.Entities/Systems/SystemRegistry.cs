@@ -19,9 +19,7 @@ using System.Linq;
 
 namespace SampSharp.Entities;
 
-/// <summary>
-/// Represents a registry which contains all enabled system types.
-/// </summary>
+/// <summary>Represents a registry which contains all enabled system types.</summary>
 /// <seealso cref="ISystemRegistry" />
 public class SystemRegistry : ISystemRegistry
 {
@@ -29,9 +27,7 @@ public class SystemRegistry : ISystemRegistry
 
     private Dictionary<Type, ISystem[]> _data;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SystemRegistry" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="SystemRegistry" /> class.</summary>
     public SystemRegistry(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
@@ -41,7 +37,8 @@ public class SystemRegistry : ISystemRegistry
     public void SetAndLock(Type[] types)
     {
         if (types == null) throw new ArgumentNullException(nameof(types));
-        if(_data != null) throw new SystemRegistryException("The system registry has been locked an cannot be modified.");
+        if (_data != null)
+            throw new SystemRegistryException("The system registry has been locked an cannot be modified.");
 
         var data = new Dictionary<Type, HashSet<ISystem>>();
 
@@ -50,7 +47,7 @@ public class SystemRegistry : ISystemRegistry
             if (type == null)
                 continue;
 
-            if(!(_serviceProvider.GetService(type) is ISystem instance))
+            if (!(_serviceProvider.GetService(type) is ISystem instance))
                 throw new SystemRegistryException($"System of type {type} could not be found in the service provider.");
 
             var currentType = type;
@@ -65,7 +62,8 @@ public class SystemRegistry : ISystemRegistry
                 currentType = currentType.BaseType;
             }
 
-            foreach (var interfaceType in type.GetInterfaces().Where(t => typeof(ISystem).IsAssignableFrom(t)))
+            foreach (var interfaceType in type.GetInterfaces()
+                         .Where(t => typeof(ISystem).IsAssignableFrom(t)))
             {
                 if (!data.TryGetValue(interfaceType, out var set))
                     data[interfaceType] = set = new HashSet<ISystem>();
@@ -73,7 +71,7 @@ public class SystemRegistry : ISystemRegistry
                 set.Add(instance);
             }
         }
-            
+
         // Convert hash sets to arrays.
         _data = new Dictionary<Type, ISystem[]>();
         foreach (var kv in data)
@@ -81,7 +79,7 @@ public class SystemRegistry : ISystemRegistry
             _data[kv.Key] = kv.Value.ToArray();
         }
     }
-        
+
     /// <inheritdoc />
     public ISystem[] Get(Type type)
     {
@@ -94,7 +92,7 @@ public class SystemRegistry : ISystemRegistry
         Array.Copy(value, result, value.Length);
         return result;
     }
-        
+
     /// <inheritdoc />
     public TSystem[] Get<TSystem>() where TSystem : ISystem
     {

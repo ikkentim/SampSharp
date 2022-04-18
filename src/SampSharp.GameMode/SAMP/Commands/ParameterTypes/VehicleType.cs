@@ -19,21 +19,14 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 
-/// <summary>
-///     Represents a vehicle command parameter.
-/// </summary>
+/// <summary>Represents a vehicle command parameter.</summary>
 public class VehicleType : ICommandParameterType
 {
-    /// <summary>
-    ///     Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be
-    ///     removed from the commandText.
-    /// </summary>
+    /// <summary>Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be removed from the commandText.</summary>
     /// <param name="commandText">The command text.</param>
     /// <param name="output">The output.</param>
     /// <param name="isNullable">A value indicating whether the result is allowed to be null when an entity referenced by the argument could not be found.</param>
-    /// <returns>
-    ///     true if parsed successfully; false otherwise.
-    /// </returns>
+    /// <returns>true if parsed successfully; false otherwise.</returns>
     public bool Parse(ref string commandText, out object output, bool isNullable = false)
     {
         var text = commandText.TrimStart();
@@ -42,10 +35,11 @@ public class VehicleType : ICommandParameterType
         if (string.IsNullOrEmpty(text))
             return false;
 
-        var word = text.Split(' ').First();
+        var word = text.Split(' ')
+            .First();
 
         // find a vehicle with a matching id.
-        if (!int.TryParse(word, NumberStyles.Integer, CultureInfo.InvariantCulture, out var id)) 
+        if (!int.TryParse(word, NumberStyles.Integer, CultureInfo.InvariantCulture, out var id))
             return false;
 
         var vehicle = BaseVehicle.Find(id);
@@ -54,7 +48,8 @@ public class VehicleType : ICommandParameterType
         {
             commandText = word.Length == commandText.Length
                 ? string.Empty
-                : commandText.Substring(word.Length).TrimStart(' ');
+                : commandText.Substring(word.Length)
+                    .TrimStart(' ');
         }
 
         if (vehicle == null)

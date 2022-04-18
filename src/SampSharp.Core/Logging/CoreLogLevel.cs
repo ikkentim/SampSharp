@@ -15,38 +15,24 @@
 
 namespace SampSharp.Core.Logging;
 
-/// <summary>
-/// Contains all available log levels.
-/// </summary>
+/// <summary>Contains all available log levels.</summary>
 public enum CoreLogLevel
 {
-    /// <summary>
-    ///     Initialization messages.
-    /// </summary>
+    /// <summary>Initialization messages.</summary>
     Initialisation,
 
-    /// <summary>
-    ///     Erroneous message.
-    /// </summary>
+    /// <summary>Erroneous message.</summary>
     Error,
 
-    /// <summary>
-    ///     Warning message.
-    /// </summary>
+    /// <summary>Warning message.</summary>
     Warning,
 
-    /// <summary>
-    ///     Informative message.
-    /// </summary>
+    /// <summary>Informative message.</summary>
     Info,
 
-    /// <summary>
-    ///     Debug message.
-    /// </summary>
+    /// <summary>Debug message.</summary>
     Debug,
 
-    /// <summary>
-    ///     Verbose message (networking).
-    /// </summary>
+    /// <summary>Verbose message (networking).</summary>
     Verbose,
 }

@@ -17,34 +17,24 @@ using System;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// A component which contains the data of the currently visible dialog.
-/// </summary>
+/// <summary>A component which contains the data of the currently visible dialog.</summary>
 /// <seealso cref="SampSharp.Entities.Component" />
 public class VisibleDialog : Component
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="VisibleDialog" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="VisibleDialog" /> class.</summary>
     public VisibleDialog(IDialog dialog, Action<DialogResult> handler)
     {
         Dialog = dialog ?? throw new ArgumentNullException(nameof(dialog));
         Handler = handler ?? throw new ArgumentNullException(nameof(handler));
     }
 
-    /// <summary>
-    /// Gets the visible dialog.
-    /// </summary>
+    /// <summary>Gets the visible dialog.</summary>
     public IDialog Dialog { get; }
 
-    /// <summary>
-    /// Gets the response handler for the dialog.
-    /// </summary>
+    /// <summary>Gets the response handler for the dialog.</summary>
     public Action<DialogResult> Handler { get; }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether a response has been received.
-    /// </summary>
+    /// <summary>Gets or sets a value indicating whether a response has been received.</summary>
     public bool ResponseReceived { get; set; }
 
     /// <inheritdoc />
@@ -58,6 +48,6 @@ public class VisibleDialog : Component
         ResponseReceived = true;
         Handler(new DialogResult(DialogResponse.RightButtonOrCancel, 0, null));
 
-        component?.ShowPlayerDialog(DialogService.DialogHideId, (int) DialogStyle.MessageBox, " ", " ", " ", " ");
+        component?.ShowPlayerDialog(DialogService.DialogHideId, (int)DialogStyle.MessageBox, " ", " ", " ", " ");
     }
 }

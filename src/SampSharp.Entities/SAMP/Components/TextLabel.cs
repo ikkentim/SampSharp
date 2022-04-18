@@ -15,17 +15,14 @@
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Represents a component which provides the data and functionality of a 3D text label.
-/// </summary>
+/// <summary>Represents a component which provides the data and functionality of a 3D text label.</summary>
 public sealed class TextLabel : Component
 {
     private EntityId _attachedEntity;
     private string _text;
     private Color _color;
 
-    private TextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld,
-        bool testLos)
+    private TextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld, bool testLos)
     {
         _text = text;
         _color = color;
@@ -35,63 +32,49 @@ public sealed class TextLabel : Component
         TestLos = testLos;
     }
 
-    /// <summary>
-    /// Gets or sets the color of this text label.
-    /// </summary>
+    /// <summary>Gets or sets the color of this text label.</summary>
     public Color Color
     {
         get => _color;
         set
         {
             _color = value;
-            GetComponent<NativeTextLabel>().Update3DTextLabelText(value, Text);
+            GetComponent<NativeTextLabel>()
+                .Update3DTextLabelText(value, Text);
         }
     }
 
-    /// <summary>
-    /// Gets or sets the text of this text label.
-    /// </summary>
+    /// <summary>Gets or sets the text of this text label.</summary>
     public string Text
     {
         get => _text;
         set
         {
             _text = value;
-            GetComponent<NativeTextLabel>().Update3DTextLabelText(Color, value ?? string.Empty);
+            GetComponent<NativeTextLabel>()
+                .Update3DTextLabelText(Color, value ?? string.Empty);
         }
     }
 
-    /// <summary>
-    /// Gets the position of this text label.
-    /// </summary>
+    /// <summary>Gets the position of this text label.</summary>
     public Vector3 Position { get; }
 
-    /// <summary>
-    /// Gets the draw distance of this text label.
-    /// </summary>
+    /// <summary>Gets the draw distance of this text label.</summary>
     public float DrawDistance { get; }
 
-    /// <summary>
-    /// Gets the virtual world of this text label.
-    /// </summary>
+    /// <summary>Gets the virtual world of this text label.</summary>
     public int VirtualWorld { get; }
 
-    /// <summary>
-    /// Gets a value indicating whether to test the line of sight.
-    /// </summary>
+    /// <summary>Gets a value indicating whether to test the line of sight.</summary>
     public bool TestLos { get; }
 
-    /// <summary>
-    /// Gets or sets the offset at which this text label is attached to an entity.
-    /// </summary>
+    /// <summary>Gets or sets the offset at which this text label is attached to an entity.</summary>
     public Vector3 AttachOffset { get; set; }
 
-    /// <summary>
-    /// Gets or sets the attached entity (player or vehicle).
-    /// </summary>
+    /// <summary>Gets or sets the attached entity (player or vehicle).</summary>
     public EntityId AttachedEntity
     {
-        get =>  _attachedEntity;
+        get => _attachedEntity;
         set
         {
             if (!value.IsOfAnyType(SampEntities.PlayerType, SampEntities.VehicleType))
@@ -112,6 +95,7 @@ public sealed class TextLabel : Component
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        GetComponent<NativeTextLabel>().Delete3DTextLabel();
+        GetComponent<NativeTextLabel>()
+            .Delete3DTextLabel();
     }
 }

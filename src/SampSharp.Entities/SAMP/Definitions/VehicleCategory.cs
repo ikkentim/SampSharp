@@ -17,90 +17,56 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Contains all vehicle categories.
-/// </summary>
+/// <summary>Contains all vehicle categories.</summary>
 [SuppressMessage("ReSharper", "IdentifierTypo")]
 [SuppressMessage("ReSharper", "CommentTypo")]
 public enum VehicleCategory
 {
-    /// <summary>
-    /// Airplanes.
-    /// </summary>
+    /// <summary>Airplanes.</summary>
     Airplane = 1,
 
-    /// <summary>
-    /// Helicopters.
-    /// </summary>
+    /// <summary>Helicopters.</summary>
     Helicopter = 2,
 
-    /// <summary>
-    /// Bikes.
-    /// </summary>
+    /// <summary>Bikes.</summary>
     Bike = 3,
 
-    /// <summary>
-    /// Convertibles.
-    /// </summary>
+    /// <summary>Convertibles.</summary>
     Convertible = 4,
 
-    /// <summary>
-    /// Industrials.
-    /// </summary>
+    /// <summary>Industrials.</summary>
     Industrial = 5,
 
-    /// <summary>
-    /// Lowriders.
-    /// </summary>
+    /// <summary>Lowriders.</summary>
     Lowrider = 6,
 
-    /// <summary>
-    /// Off Road.
-    /// </summary>
+    /// <summary>Off Road.</summary>
     OffRoad = 7,
 
-    /// <summary>
-    /// Public Service Vehicles.
-    /// </summary>
+    /// <summary>Public Service Vehicles.</summary>
     PublicService = 8,
 
-    /// <summary>
-    /// Saloons.
-    /// </summary>
+    /// <summary>Saloons.</summary>
     Saloon = 9,
 
-    /// <summary>
-    /// Sport Vehicles.
-    /// </summary>
+    /// <summary>Sport Vehicles.</summary>
     Sport = 10,
 
-    /// <summary>
-    /// Station Wagons.
-    /// </summary>
+    /// <summary>Station Wagons.</summary>
     Station = 11,
 
-    /// <summary>
-    /// Boats.
-    /// </summary>
+    /// <summary>Boats.</summary>
     Boat = 12,
 
-    /// <summary>
-    /// Trailers.
-    /// </summary>
+    /// <summary>Trailers.</summary>
     Trailer = 13,
 
-    /// <summary>
-    /// Unique Vehicles.
-    /// </summary>
+    /// <summary>Unique Vehicles.</summary>
     Unique = 14,
 
-    /// <summary>
-    /// RC Vehicles.
-    /// </summary>
+    /// <summary>RC Vehicles.</summary>
     RemoteControl = 15,
 
-    /// <summary>
-    /// Train trailers.
-    /// </summary>
+    /// <summary>Train trailers.</summary>
     TrainTrailer = 16
 }

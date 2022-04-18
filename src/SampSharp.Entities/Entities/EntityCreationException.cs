@@ -18,9 +18,7 @@ using System.Runtime.Serialization;
 
 namespace SampSharp.Entities;
 
-/// <summary>
-/// The exception that is thrown when an entity could not be created.
-/// </summary>
+/// <summary>The exception that is thrown when an entity could not be created.</summary>
 [Serializable]
 public class EntityCreationException : Exception
 {
@@ -29,26 +27,20 @@ public class EntityCreationException : Exception
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EntityCreationException" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EntityCreationException" /> class.</summary>
     /// <param name="message">The message that describes the error.</param>
     public EntityCreationException(string message) : base(message)
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EntityCreationException" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EntityCreationException" /> class.</summary>
     /// <param name="message">The message.</param>
     /// <param name="innerException">The inner exception.</param>
     public EntityCreationException(string message, Exception innerException) : base(message, innerException)
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EntityCreationException" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EntityCreationException" /> class.</summary>
     /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
     /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination. </param>
     protected EntityCreationException(SerializationInfo info, StreamingContext context) : base(info, context)

@@ -18,15 +18,11 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     A controller processing all dialog actions.
-/// </summary>
+/// <summary>A controller processing all dialog actions.</summary>
 [Controller]
 public class DialogController : IEventListener
 {
-    /// <summary>
-    ///     Registers the events this DialogController wants to listen to.
-    /// </summary>
+    /// <summary>Registers the events this DialogController wants to listen to.</summary>
     /// <param name="gameMode">The running GameMode.</param>
     public virtual void RegisterEvents(BaseMode gameMode)
     {
@@ -35,7 +31,8 @@ public class DialogController : IEventListener
             if (!(sender is BasePlayer player))
                 return;
 
-            Dialog.GetOpenDialog(player)?.OnResponse(args);
+            Dialog.GetOpenDialog(player)
+                ?.OnResponse(args);
         };
 
         gameMode.PlayerDisconnected += (sender, _) =>

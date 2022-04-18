@@ -18,9 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SampSharp.Entities.SAMP.Commands.Parsers;
 
-/// <summary>
-/// A parser for a player parameter.
-/// </summary>
+/// <summary>A parser for a player parameter.</summary>
 public class PlayerParser : ICommandParameterParser
 {
     private readonly WordParser _wordParser = new();
@@ -28,8 +26,7 @@ public class PlayerParser : ICommandParameterParser
     /// <inheritdoc />
     public bool TryParse(IServiceProvider services, ref string inputText, out object result)
     {
-        if (!_wordParser.TryParse(services, ref inputText, out var subResult) ||
-            !(subResult is string word))
+        if (!_wordParser.TryParse(services, ref inputText, out var subResult) || !(subResult is string word))
         {
             result = null;
             return false;
@@ -58,7 +55,8 @@ public class PlayerParser : ICommandParameterParser
                 return true;
             }
 
-            if (player.Name.ToLower().StartsWith(word.ToLower()))
+            if (player.Name.ToLower()
+                .StartsWith(word.ToLower()))
             {
                 if (bestCandidate == null)
                     bestCandidate = player.Entity;

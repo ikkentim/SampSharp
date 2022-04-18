@@ -17,50 +17,34 @@ using System;
 
 namespace SampSharp.Core.Natives.NativeObjects;
 
-/// <summary>
-///     Indicates a property represents a native setter/getter.
-/// </summary>
+/// <summary>Indicates a property represents a native setter/getter.</summary>
 [AttributeUsage(AttributeTargets.Property)]
 public class NativePropertyAttribute : Attribute
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="NativePropertyAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="NativePropertyAttribute" /> class.</summary>
     public NativePropertyAttribute()
     {
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="NativePropertyAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="NativePropertyAttribute" /> class.</summary>
     /// <param name="ignoreIdentifiers">if set to <c>true</c> identifiers are ignored.</param>
     public NativePropertyAttribute(bool ignoreIdentifiers)
     {
         IgnoreIdentifiers = ignoreIdentifiers;
     }
 
-    /// <summary>
-    ///     Gets or sets the set function.
-    /// </summary>
+    /// <summary>Gets or sets the set function.</summary>
     public string SetFunction { get; set; }
 
-    /// <summary>
-    ///     Gets or sets the set lengths.
-    /// </summary>
+    /// <summary>Gets or sets the set lengths.</summary>
     public uint[] SetLengths { get; set; }
 
-    /// <summary>
-    ///     Gets or sets the get function.
-    /// </summary>
+    /// <summary>Gets or sets the get function.</summary>
     public string GetFunction { get; set; }
 
-    /// <summary>
-    ///     Gets or sets the get lengths.
-    /// </summary>
+    /// <summary>Gets or sets the get lengths.</summary>
     public uint[] GetLengths { get; set; }
 
-    /// <summary>
-    ///     Gets a value indicating whether to ignore identifiers.
-    /// </summary>
+    /// <summary>Gets a value indicating whether to ignore identifiers.</summary>
     public bool IgnoreIdentifiers { get; }
 }

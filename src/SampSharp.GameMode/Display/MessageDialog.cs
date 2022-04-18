@@ -18,34 +18,22 @@ using SampSharp.GameMode.Definitions;
 
 namespace SampSharp.GameMode.Display;
 
-/// <summary>
-///     Represents a message dialog.
-/// </summary>
+/// <summary>Represents a message dialog.</summary>
 public class MessageDialog : Dialog
 {
-    /// <summary>
-    ///     Initializes a new instance of the MessageDialog class.
-    /// </summary>
-    /// <param name="caption">
-    ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
-    ///     characters before it starts to cut off.
-    /// </param>
+    /// <summary>Initializes a new instance of the MessageDialog class.</summary>
+    /// <param name="caption">The title at the top of the dialog. The length of the caption can not exceed more than 64 characters before it starts to cut off.</param>
     /// <param name="message">The text to display in the main dialog. Use \n to start a new line and \t to tabulate.</param>
     /// <param name="button1">The text on the left button.</param>
     /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-    public MessageDialog(string caption, string message, string button1, string button2 = null) : base(
-        DialogStyle.MessageBox, caption, button1, button2)
+    public MessageDialog(string caption, string message, string button1, string button2 = null) : base(DialogStyle.MessageBox, caption, button1, button2)
     {
         Message = message ?? throw new ArgumentNullException(nameof(message));
     }
 
-    /// <summary>
-    ///     Gets the Info displayed.
-    /// </summary>
+    /// <summary>Gets the Info displayed.</summary>
     protected override string Info => Message;
 
-    /// <summary>
-    ///     Gets or sets the message in the dialog.
-    /// </summary>
+    /// <summary>Gets or sets the message in the dialog.</summary>
     public string Message { get; set; }
 }

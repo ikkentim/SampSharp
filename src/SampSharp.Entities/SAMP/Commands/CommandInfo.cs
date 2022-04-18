@@ -15,14 +15,10 @@
 
 namespace SampSharp.Entities.SAMP.Commands;
 
-/// <summary>
-/// Provides information about a command.
-/// </summary>
+/// <summary>Provides information about a command.</summary>
 public class CommandInfo
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CommandInfo" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="CommandInfo" /> class.</summary>
     /// <param name="name">The name of the command.</param>
     /// <param name="parameters">The parameters of the command.</param>
     public CommandInfo(string name, CommandParameterInfo[] parameters)
@@ -31,13 +27,9 @@ public class CommandInfo
         Parameters = parameters;
     }
 
-    /// <summary>
-    /// Gets the name of this command.
-    /// </summary>
+    /// <summary>Gets the name of this command.</summary>
     public string Name { get; }
 
-    /// <summary>
-    /// Gets the parameters of this command.
-    /// </summary>
+    /// <summary>Gets the parameters of this command.</summary>
     public CommandParameterInfo[] Parameters { get; }
 }

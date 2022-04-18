@@ -18,22 +18,16 @@ using System.Reflection;
 
 namespace SampSharp.Core.Natives;
 
-/// <summary>
-/// Provides information about a native parameter which can be consumed by a proxy factory IL generator.
-/// </summary>
+/// <summary>Provides information about a native parameter which can be consumed by a proxy factory IL generator.</summary>
 internal class NativeIlGenParam
 {
     private ParameterInfo _parameter;
     private PropertyInfo _property;
 
-    /// <summary>
-    /// Gets or sets the index of this native parameter.
-    /// </summary>
+    /// <summary>Gets or sets the index of this native parameter.</summary>
     public int Index { get; set; }
 
-    /// <summary>
-    /// Gets or sets the method parameter of this native parameter.
-    /// </summary>
+    /// <summary>Gets or sets the method parameter of this native parameter.</summary>
     public ParameterInfo Parameter
     {
         get => _parameter;
@@ -52,13 +46,12 @@ internal class NativeIlGenParam
                     Type = GetParameterType(value.ParameterType);
                 }
             }
+
             _parameter = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets the index property of this native parameter.
-    /// </summary>
+    /// <summary>Gets or sets the index property of this native parameter.</summary>
     public PropertyInfo Property
     {
         get => _property;
@@ -69,56 +62,49 @@ internal class NativeIlGenParam
                 _parameter = null;
                 Type = GetParameterType(value.PropertyType);
             }
+
             _property = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets the length parameter of this native parameter.
-    /// </summary>
+    /// <summary>Gets or sets the length parameter of this native parameter.</summary>
     public NativeIlGenParam LengthParam { get; set; }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether this native parameter is a length parameter.
-    /// </summary>
+    /// <summary>Gets or sets a value indicating whether this native parameter is a length parameter.</summary>
     public bool IsLengthParam { get; set; }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether this native parameter is an input value by reference.
-    /// </summary>
+    /// <summary>Gets or sets a value indicating whether this native parameter is an input value by reference.</summary>
     public bool IsReferenceInput { get; set; }
 
-    /// <summary>
-    /// Gets the name of this native parameter.
-    /// </summary>
+    /// <summary>Gets the name of this native parameter.</summary>
     public string Name => Parameter?.Name ?? Property?.Name;
-    /// <summary>
-    /// Gets the type of the method parameter or index property of this native parameter.
-    /// </summary>
+
+    /// <summary>Gets the type of the method parameter or index property of this native parameter.</summary>
     public Type InputType => Parameter?.ParameterType ?? Property.PropertyType;
 
-    /// <summary>
-    /// Gets the type of this native parameter.
-    /// </summary>
+    /// <summary>Gets the type of this native parameter.</summary>
     public NativeParameterType Type { get; private set; }
 
-    /// <summary>
-    /// Gets a value indicating whether this native parameter requires a length.
-    /// </summary>
-    public bool RequiresLength => Type.HasFlag(NativeParameterType.Array) || Type == NativeParameterType.StringReference;
+    /// <summary>Gets a value indicating whether this native parameter requires a length.</summary>
+    public bool RequiresLength =>
+        Type.HasFlag(NativeParameterType.Array) || Type == NativeParameterType.StringReference;
 
     /// <inheritdoc />
     public override string ToString()
     {
         return $"{Name}[{Index}:{Type}{(LengthParam == null ? string.Empty : $", len={LengthParam.Name}")}]";
     }
-        
+
     private static NativeParameterType GetParameterType(Type type)
     {
         var isByRef = type.IsByRef;
-        var elementType = isByRef ? type.GetElementType()! : type;
+        var elementType = isByRef
+            ? type.GetElementType()!
+            : type;
         var isArray = elementType.IsArray;
-        elementType = isArray ? elementType.GetElementType() : elementType;
+        elementType = isArray
+            ? elementType.GetElementType()
+            : elementType;
 
         NativeParameterType parameterType;
         if (elementType == typeof(int)) parameterType = NativeParameterType.Int32;

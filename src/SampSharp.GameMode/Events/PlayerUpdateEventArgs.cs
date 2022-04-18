@@ -18,13 +18,9 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerUpdate" /> or <see cref="BasePlayer.Update" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.PlayerUpdate" /> or <see cref="BasePlayer.Update" /> event.</summary>
 public class PlayerUpdateEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Gets or sets whether to stop syncing the update to other players.
-    /// </summary>
+    /// <summary>Gets or sets whether to stop syncing the update to other players.</summary>
     public bool PreventPropagation { get; set; }
 }

@@ -22,21 +22,17 @@ using SampSharp.Entities.Utilities;
 
 namespace SampSharp.Entities;
 
-/// <summary>
-/// Represents a system which invokes timers on every tick.
-/// </summary>
+/// <summary>Represents a system which invokes timers on every tick.</summary>
 public class TimerSystem : ITickingSystem, ITimerService
 {
     private static readonly TimeSpan LowInterval = TimeSpan.FromSeconds(1.0 / 50); // 10 server ticks
     private readonly IServiceProvider _serviceProvider;
-        
+
     private readonly List<TimerInfo> _timers = new();
     private long _lastTick;
     private bool _didInitialize;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TimerSystem" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="TimerSystem" /> class.</summary>
     public TimerSystem(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
@@ -49,19 +45,19 @@ public class TimerSystem : ITickingSystem, ITimerService
         timer.Info.IsActive = false;
         _timers.Remove(timer.Info);
     }
-        
+
     /// <inheritdoc />
     public TimerReference Start(Action<IServiceProvider> action, TimeSpan interval)
     {
         return Start((sp, _) => action(sp), interval);
     }
-        
+
     /// <inheritdoc />
     public TimerReference Start(Action<IServiceProvider, TimerReference> action, TimeSpan interval)
     {
         if (action == null) throw new ArgumentNullException(nameof(action));
 
-        if(!IsValidInterval(interval))
+        if (!IsValidInterval(interval))
             throw new ArgumentOutOfRangeException(nameof(interval), interval, "The interval should be a nonzero positive value.");
 
         var invoker = new TimerInfo
@@ -97,7 +93,7 @@ public class TimerSystem : ITickingSystem, ITimerService
             return;
 
         var timestamp = Stopwatch.GetTimestamp();
-            
+
         // Don't user foreach for performance reasons
         // ReSharper disable once ForCanBeConvertedToForeach
         for (var i = 0; i < _timers.Count; i++)
@@ -121,7 +117,7 @@ public class TimerSystem : ITickingSystem, ITimerService
 
         _lastTick = timestamp;
     }
-        
+
     internal static bool IsValidInterval(TimeSpan interval)
     {
         return interval >= TimeSpan.FromTicks(1);
@@ -130,8 +126,7 @@ public class TimerSystem : ITickingSystem, ITimerService
     private void CreateTimersFromAssemblies(long tick)
     {
         // Find methods with TimerAttribute in any ISystem in any assembly.
-        var events = new AssemblyScanner()
-            .IncludeAllAssemblies()
+        var events = new AssemblyScanner().IncludeAllAssemblies()
             .IncludeNonPublicMembers()
             .Implements<ISystem>()
             .ScanMethods<TimerAttribute>();
@@ -156,7 +151,7 @@ public class TimerSystem : ITickingSystem, ITimerService
             }
 
             var parameterInfos = method.GetParameters()
-                .Select(info => new MethodParameterSource(info){IsService = true})
+                .Select(info => new MethodParameterSource(info) { IsService = true })
                 .ToArray();
 
             var compiled = MethodInvokerFactory.Compile(method, parameterInfos);

@@ -22,8 +22,7 @@ internal static class Program
 {
     private static void Main()
     {
-        new GameModeBuilder()
-            .UseEcs<TestStartup>()
+        new GameModeBuilder().UseEcs<TestStartup>()
             .Run();
     }
 }

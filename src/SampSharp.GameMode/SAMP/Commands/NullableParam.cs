@@ -17,9 +17,7 @@ using System;
 
 namespace SampSharp.GameMode.SAMP.Commands;
 
-/// <summary>
-///     Makes a parameter to return null instead of usage message.
-/// </summary>
+/// <summary>Makes a parameter to return null instead of usage message.</summary>
 [AttributeUsage(AttributeTargets.Parameter)]
 public class NullableParamAttribute : Attribute
 {

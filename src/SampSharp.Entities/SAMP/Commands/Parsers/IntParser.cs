@@ -17,9 +17,7 @@ using System;
 
 namespace SampSharp.Entities.SAMP.Commands.Parsers;
 
-/// <summary>
-/// A parser for an <see cref="int" /> parameter.
-/// </summary>
+/// <summary>A parser for an <see cref="int" /> parameter.</summary>
 public class IntParser : ICommandParameterParser
 {
     private readonly WordParser _wordParser = new();
@@ -27,9 +25,7 @@ public class IntParser : ICommandParameterParser
     /// <inheritdoc />
     public bool TryParse(IServiceProvider services, ref string inputText, out object result)
     {
-        if (!_wordParser.TryParse(services, ref inputText, out var subResult) ||
-            !(subResult is string word) ||
-            !int.TryParse(word, out var num))
+        if (!_wordParser.TryParse(services, ref inputText, out var subResult) || !(subResult is string word) || !int.TryParse(word, out var num))
         {
             result = null;
             return false;

@@ -20,21 +20,17 @@ using System.Reflection;
 
 namespace SampSharp.GameMode;
 
-/// <summary>
-///     Specifies the extension to load from this assembly.
-/// </summary>
+/// <summary>Specifies the extension to load from this assembly.</summary>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 public class SampSharpExtensionAttribute : Attribute
 {
     private readonly Type[] _loadBeforeAssembliesOfType;
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="SampSharpExtensionAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="SampSharpExtensionAttribute" /> class.</summary>
     /// <param name="type">The type.</param>
     /// <param name="loadBeforeAssembliesOfType">
-    ///     Types of assemblies to load before this extension (extensions this extension
-    ///     has references to and requires to load before).
+    /// Types of assemblies to load before this extension (extensions this extension has references to and requires to load
+    /// before).
     /// </param>
     public SampSharpExtensionAttribute(Type type, params Type[] loadBeforeAssembliesOfType)
     {
@@ -42,14 +38,11 @@ public class SampSharpExtensionAttribute : Attribute
         Type = type;
     }
 
-    /// <summary>
-    ///     Gets the type of the extension.
-    /// </summary>
+    /// <summary>Gets the type of the extension.</summary>
     public Type Type { get; }
 
-    /// <summary>
-    ///     Gets the assemblies to load before this extension.
-    /// </summary>
-    public IEnumerable<Assembly> LoadBeforeAssemblies
-        => _loadBeforeAssembliesOfType?.Where(t => t != null).Select(t => t.GetTypeInfo().Assembly);
+    /// <summary>Gets the assemblies to load before this extension.</summary>
+    public IEnumerable<Assembly> LoadBeforeAssemblies => _loadBeforeAssembliesOfType?.Where(t => t != null)
+        .Select(t => t.GetTypeInfo()
+            .Assembly);
 }

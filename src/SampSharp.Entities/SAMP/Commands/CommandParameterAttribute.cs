@@ -17,19 +17,13 @@ using System;
 
 namespace SampSharp.Entities.SAMP.Commands;
 
-/// <summary>
-/// An attribute which provides additional information a command parameter.
-/// </summary>
+/// <summary>An attribute which provides additional information a command parameter.</summary>
 [AttributeUsage(AttributeTargets.Parameter)]
 public class CommandParameterAttribute : Attribute
 {
-    /// <summary>
-    /// Gets or sets an override value for the name of the parameter.
-    /// </summary>
+    /// <summary>Gets or sets an override value for the name of the parameter.</summary>
     public string Name { get; set; }
 
-    /// <summary>
-    /// Gets or sets an override value for the parser of the parameter.
-    /// </summary>
+    /// <summary>Gets or sets an override value for the parser of the parameter.</summary>
     public Type Parser { get; set; }
 }

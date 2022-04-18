@@ -15,22 +15,15 @@
 
 namespace SampSharp.Entities.SAMP.Commands;
 
-/// <summary>
-/// Contains the types of responses of an invoked command.
-/// </summary>
+/// <summary>Contains the types of responses of an invoked command.</summary>
 public enum InvokeResponse
 {
-    /// <summary>
-    /// The command executed successfully.
-    /// </summary>
+    /// <summary>The command executed successfully.</summary>
     Success,
-    /// <summary>
-    /// The command could not be found.
-    /// </summary>
+
+    /// <summary>The command could not be found.</summary>
     CommandNotFound,
 
-    /// <summary>
-    /// The command was invoked with invalid arguments.
-    /// </summary>
+    /// <summary>The command was invoked with invalid arguments.</summary>
     InvalidArguments
 }

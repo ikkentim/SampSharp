@@ -15,17 +15,14 @@
 
 namespace SampSharp.Core;
 
-/// <summary>
-///     Storage for some values used internally in <see cref="InternalStorage" />.
-/// </summary>
+/// <summary>Storage for some values used internally in <see cref="InternalStorage" />.</summary>
 internal static class InternalStorage
 {
-    /// <summary>
-    ///     The currently running client.
-    /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S2223:Non-constant static fields should not be visible", Justification = "By design")]
+    /// <summary>The currently running client.</summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S2223:Non-constant static fields should not be visible",
+        Justification = "By design")]
     public static IGameModeClient RunningClient;
-        
+
     public static void SetRunningClient(IGameModeClient client)
     {
         RunningClient = client;

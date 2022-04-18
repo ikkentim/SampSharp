@@ -21,9 +21,7 @@ using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Represents a collection of SA:MP variables.
-/// </summary>
+/// <summary>Represents a collection of SA:MP variables.</summary>
 public class VariableCollection : IDictionary<string, object>
 {
     private const int MaxKeyLength = 40;
@@ -116,7 +114,7 @@ public class VariableCollection : IDictionary<string, object>
     /// <inheritdoc />
     bool ICollection<KeyValuePair<string, object>>.Remove(KeyValuePair<string, object> item)
     {
-        var self = (ICollection<KeyValuePair<string, object>>) this;
+        var self = (ICollection<KeyValuePair<string, object>>)this;
         if (item.Key != null && item.Value != null && self.Contains(item))
             return _native.DeleteVar(item.Key);
 
@@ -135,12 +133,10 @@ public class VariableCollection : IDictionary<string, object>
         if (key == null) throw new ArgumentNullException(nameof(key));
         if (value == null) throw new ArgumentNullException(nameof(value));
         if (key.Length > MaxKeyLength)
-            throw new ArgumentOutOfRangeException(nameof(key), key,
-                $"The variable name is longer than the limit of {MaxKeyLength}.");
+            throw new ArgumentOutOfRangeException(nameof(key), key, $"The variable name is longer than the limit of {MaxKeyLength}.");
 
         if (_native.GetVarType(key) != (int)ServerVarType.None)
-            throw new ArgumentException("An element with the same key already exists in this collection.",
-                nameof(key));
+            throw new ArgumentException("An element with the same key already exists in this collection.", nameof(key));
 
         Set(key, value);
     }
@@ -183,8 +179,7 @@ public class VariableCollection : IDictionary<string, object>
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
             if (key.Length > MaxKeyLength)
-                throw new ArgumentOutOfRangeException(nameof(key), key,
-                    $"The variable name is longer than the limit of {MaxKeyLength}.");
+                throw new ArgumentOutOfRangeException(nameof(key), key, $"The variable name is longer than the limit of {MaxKeyLength}.");
 
             return Get(key) ?? throw new KeyNotFoundException();
         }
@@ -192,8 +187,7 @@ public class VariableCollection : IDictionary<string, object>
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
             if (key.Length > 40)
-                throw new ArgumentOutOfRangeException(nameof(key), key,
-                    $"The variable name is longer than the limit of {MaxKeyLength}.");
+                throw new ArgumentOutOfRangeException(nameof(key), key, $"The variable name is longer than the limit of {MaxKeyLength}.");
             if (value == null) throw new ArgumentNullException(nameof(value));
 
             Set(key, value);
@@ -206,9 +200,7 @@ public class VariableCollection : IDictionary<string, object>
     /// <inheritdoc />
     public ICollection<object> Values { get; }
 
-    /// <summary>
-    /// Gets an integer value of the variable with the specified <paramref name="varName" />.
-    /// </summary>
+    /// <summary>Gets an integer value of the variable with the specified <paramref name="varName" />.</summary>
     /// <param name="varName">The name of the variable to get.</param>
     /// <returns>The value of the variable or 0 if the variable does not exist.</returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="varName" /> is null.</exception>
@@ -218,9 +210,7 @@ public class VariableCollection : IDictionary<string, object>
         return _native.GetVarInt(varName);
     }
 
-    /// <summary>
-    /// Gets a string value of the variable with the specified <paramref name="varName" />.
-    /// </summary>
+    /// <summary>Gets a string value of the variable with the specified <paramref name="varName" />.</summary>
     /// <param name="varName">The name of the variable to get.</param>
     /// <param name="length">The maximum length of the string value.</param>
     /// <returns>The value of the variable or 0 if the variable does not exist.</returns>
@@ -232,9 +222,7 @@ public class VariableCollection : IDictionary<string, object>
         return value;
     }
 
-    /// <summary>
-    /// Gets a floating-point value of the variable with the specified <paramref name="varName" />.
-    /// </summary>
+    /// <summary>Gets a floating-point value of the variable with the specified <paramref name="varName" />.</summary>
     /// <param name="varName">The name of the variable to get.</param>
     /// <returns>The value of the variable or 0 if the variable does not exist.</returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="varName" /> is null.</exception>
@@ -244,10 +232,7 @@ public class VariableCollection : IDictionary<string, object>
         return _native.GetVarFloat(varName);
     }
 
-    /// <summary>
-    /// Sets and replaces the value of the variable with the specified <paramref name="varName" /> with the specified
-    /// <paramref name="value" />.
-    /// </summary>
+    /// <summary>Sets and replaces the value of the variable with the specified <paramref name="varName" /> with the specified <paramref name="value" />.</summary>
     /// <param name="varName">The variable name.</param>
     /// <param name="value">The value to store in the variable.</param>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="varName" /> is null.</exception>
@@ -256,15 +241,11 @@ public class VariableCollection : IDictionary<string, object>
     {
         if (varName == null) throw new ArgumentNullException(nameof(varName));
         if (varName.Length > MaxKeyLength)
-            throw new ArgumentOutOfRangeException(nameof(varName), varName,
-                $"The variable name is longer than the limit of {MaxKeyLength}.");
+            throw new ArgumentOutOfRangeException(nameof(varName), varName, $"The variable name is longer than the limit of {MaxKeyLength}.");
         _native.SetVarInt(varName, value);
     }
 
-    /// <summary>
-    /// Sets and replaces the value of the variable with the specified <paramref name="varName" /> with the specified
-    /// <paramref name="value" />.
-    /// </summary>
+    /// <summary>Sets and replaces the value of the variable with the specified <paramref name="varName" /> with the specified <paramref name="value" />.</summary>
     /// <param name="varName">The variable name.</param>
     /// <param name="value">The value to store in the variable.</param>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="varName" /> is null.</exception>
@@ -273,8 +254,7 @@ public class VariableCollection : IDictionary<string, object>
     {
         if (varName == null) throw new ArgumentNullException(nameof(varName));
         if (varName.Length > MaxKeyLength)
-            throw new ArgumentOutOfRangeException(nameof(varName), varName,
-                $"The variable name is longer than the limit of {MaxKeyLength}.");
+            throw new ArgumentOutOfRangeException(nameof(varName), varName, $"The variable name is longer than the limit of {MaxKeyLength}.");
 
         if (value == null)
             _native.DeleteVar(varName);
@@ -282,10 +262,7 @@ public class VariableCollection : IDictionary<string, object>
             _native.SetVarString(varName, value);
     }
 
-    /// <summary>
-    /// Sets and replaces the value of the variable with the specified <paramref name="varName" /> with the specified
-    /// <paramref name="value" />.
-    /// </summary>
+    /// <summary>Sets and replaces the value of the variable with the specified <paramref name="varName" /> with the specified <paramref name="value" />.</summary>
     /// <param name="varName">The variable name.</param>
     /// <param name="value">The value to store in the variable.</param>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="varName" /> is null.</exception>
@@ -294,15 +271,11 @@ public class VariableCollection : IDictionary<string, object>
     {
         if (varName == null) throw new ArgumentNullException(nameof(varName));
         if (varName.Length > MaxKeyLength)
-            throw new ArgumentOutOfRangeException(nameof(varName), varName,
-                $"The variable name is longer than the limit of {MaxKeyLength}.");
+            throw new ArgumentOutOfRangeException(nameof(varName), varName, $"The variable name is longer than the limit of {MaxKeyLength}.");
         _native.SetVarFloat(varName, value);
     }
-        
-    /// <summary>
-    /// Sets and replaces the value of the variable with the specified <paramref name="varName" /> with the specified
-    /// <paramref name="value" />.
-    /// </summary>
+
+    /// <summary>Sets and replaces the value of the variable with the specified <paramref name="varName" /> with the specified <paramref name="value" />.</summary>
     /// <param name="varName">The variable name.</param>
     /// <param name="value">The value to store in the variable.</param>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="varName" /> is null.</exception>
@@ -311,8 +284,7 @@ public class VariableCollection : IDictionary<string, object>
     {
         if (varName == null) throw new ArgumentNullException(nameof(varName));
         if (varName.Length > MaxKeyLength)
-            throw new ArgumentOutOfRangeException(nameof(varName), varName,
-                $"The variable name is longer than the limit of {MaxKeyLength}.");
+            throw new ArgumentOutOfRangeException(nameof(varName), varName, $"The variable name is longer than the limit of {MaxKeyLength}.");
 
         if (value == null)
         {
@@ -332,8 +304,7 @@ public class VariableCollection : IDictionary<string, object>
                 Set(varName, v);
                 return;
             default:
-                throw new ArgumentOutOfRangeException(nameof(value), value,
-                    "Value must be of type int, float or string.");
+                throw new ArgumentOutOfRangeException(nameof(value), value, "Value must be of type int, float or string.");
         }
     }
 
@@ -342,7 +313,7 @@ public class VariableCollection : IDictionary<string, object>
         if (varName == null) throw new ArgumentNullException(nameof(varName));
         if (varName.Length > MaxKeyLength)
             return null;
-        switch ((ServerVarType) _native.GetVarType(varName))
+        switch ((ServerVarType)_native.GetVarType(varName))
         {
             case ServerVarType.Int:
                 return GetInt(varName);
@@ -380,7 +351,8 @@ public class VariableCollection : IDictionary<string, object>
 
         public IEnumerator<object> GetEnumerator()
         {
-            return _collection.Select(v => v.Value).GetEnumerator();
+            return _collection.Select(v => v.Value)
+                .GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -400,8 +372,7 @@ public class VariableCollection : IDictionary<string, object>
 
         public bool Contains(object item)
         {
-            return item != null && (item is int || item is string || item is float) &&
-                   _collection.Any(v => v.Value == item);
+            return item != null && (item is int || item is string || item is float) && _collection.Any(v => v.Value == item);
         }
 
         public void CopyTo(object[] array, int arrayIndex)

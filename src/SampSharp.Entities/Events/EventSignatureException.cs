@@ -18,47 +18,31 @@ using System.Runtime.Serialization;
 
 namespace SampSharp.Entities;
 
-/// <summary>
-/// The exception that is thrown when an event method signature does not match a requirement.
-/// </summary>
+/// <summary>The exception that is thrown when an event method signature does not match a requirement.</summary>
 [Serializable]
 public class EventSignatureException : Exception
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EventSignatureException" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EventSignatureException" /> class.</summary>
     public EventSignatureException()
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EventSignatureException" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EventSignatureException" /> class.</summary>
     /// <param name="message">The message that describes the error.</param>
     public EventSignatureException(string message) : base(message)
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EventSignatureException" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EventSignatureException" /> class.</summary>
     /// <param name="message">The message.</param>
     /// <param name="innerException">The inner exception.</param>
     public EventSignatureException(string message, Exception innerException) : base(message, innerException)
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EventSignatureException" /> class.
-    /// </summary>
-    /// <param name="info">
-    /// The <see cref="SerializationInfo" /> that holds the serialized
-    /// object data about the exception being thrown.
-    /// </param>
-    /// <param name="context">
-    /// The <see cref="StreamingContext" /> that contains contextual
-    /// information about the source or destination.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="EventSignatureException" /> class.</summary>
+    /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
+    /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
     protected EventSignatureException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }

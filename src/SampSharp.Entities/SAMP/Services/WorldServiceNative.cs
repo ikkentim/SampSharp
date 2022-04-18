@@ -28,22 +28,21 @@ public class WorldServiceNative
     }
 
     [NativeMethod]
-    public virtual int CreateVehicle(int vehicleType, float x, float y, float z, float rotation, int color1,
-        int color2, int respawnDelay, bool addSiren = false)
+    public virtual int CreateVehicle(int vehicleType, float x, float y, float z, float rotation, int color1, int color2, int respawnDelay,
+        bool addSiren = false)
     {
         throw new NativeNotImplementedException();
     }
 
     [NativeMethod]
-    public virtual int AddStaticVehicleEx(int vehicleType, float x, float y, float z, float rotation, int color1,
-        int color2, int respawnDelay, bool addSiren = false)
+    public virtual int AddStaticVehicleEx(int vehicleType, float x, float y, float z, float rotation, int color1, int color2, int respawnDelay,
+        bool addSiren = false)
     {
         throw new NativeNotImplementedException();
     }
 
     [NativeMethod]
-    public virtual int AddStaticVehicle(int vehicleType, float x, float y, float z, float rotation, int color1,
-        int color2)
+    public virtual int AddStaticVehicle(int vehicleType, float x, float y, float z, float rotation, int color1, int color2)
     {
         throw new NativeNotImplementedException();
     }
@@ -67,33 +66,30 @@ public class WorldServiceNative
     }
 
     [NativeMethod]
-    public virtual int CreateObject(int modelId, float x, float y, float z, float rX, float rY, float rZ,
-        float drawDistance)
+    public virtual int CreateObject(int modelId, float x, float y, float z, float rX, float rY, float rZ, float drawDistance)
     {
         throw new NativeNotImplementedException();
     }
 
     [NativeMethod]
-    public virtual int CreatePlayerObject(int playerId, int modelId, float x, float y, float z, float rX, float rY,
-        float rZ, float drawDistance)
+    public virtual int CreatePlayerObject(int playerId, int modelId, float x, float y, float z, float rX, float rY, float rZ, float drawDistance)
     {
         throw new NativeNotImplementedException();
     }
 
     [NativeMethod]
-    public virtual int Create3DTextLabel(string text, int color, float x, float y, float z, float drawDistance,
-        int virtualWorld, bool testLos)
+    public virtual int Create3DTextLabel(string text, int color, float x, float y, float z, float drawDistance, int virtualWorld, bool testLos)
     {
         throw new NativeNotImplementedException();
     }
 
     [NativeMethod]
-    public virtual int CreatePlayer3DTextLabel(int playerId, string text, int color, float x, float y, float z,
-        float drawDistance, int attachedPlayer, int attachedVehicle, bool testLos)
+    public virtual int CreatePlayer3DTextLabel(int playerId, string text, int color, float x, float y, float z, float drawDistance, int attachedPlayer,
+        int attachedVehicle, bool testLos)
     {
         throw new NativeNotImplementedException();
     }
-        
+
     [NativeMethod]
     public virtual int TextDrawCreate(float x, float y, string text)
     {
@@ -105,7 +101,7 @@ public class WorldServiceNative
     {
         throw new NativeNotImplementedException();
     }
-        
+
     [NativeMethod]
     public virtual int CreateMenu(string title, int columns, float x, float y, float col1Width, float col2Width = 0.0f)
     {

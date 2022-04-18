@@ -28,8 +28,7 @@ public class TestStartup : IStartup
     public void Configure(IServiceCollection services)
     {
         // Load services (e.g. repositories), systems, etc.
-        services
-            .AddTransient<IVehicleRepository, VehicleRepository>()
+        services.AddTransient<IVehicleRepository, VehicleRepository>()
             .AddTransient<IFunnyService, FunnyService>()
             .AddScoped<IScopedFunnyService, FunnyService>()
             .AddSystemsInAssembly();

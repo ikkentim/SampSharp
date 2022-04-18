@@ -19,15 +19,11 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     A controller processing all player-object actions.
-/// </summary>
+/// <summary>A controller processing all player-object actions.</summary>
 [Controller]
 public class PlayerObjectController : Disposable, IEventListener, ITypeProvider
 {
-    /// <summary>
-    ///     Registers the events this PlayerObjectController wants to listen to.
-    /// </summary>
+    /// <summary>Registers the events this PlayerObjectController wants to listen to.</summary>
     /// <param name="gameMode">The running GameMode.</param>
     public virtual void RegisterEvents(BaseMode gameMode)
     {
@@ -39,22 +35,19 @@ public class PlayerObjectController : Disposable, IEventListener, ITypeProvider
             if (!(sender is BasePlayer player))
                 return;
 
-            foreach (var obj in PlayerObject.Of(player).ToArray())
+            foreach (var obj in PlayerObject.Of(player)
+                         .ToArray())
                 obj.Dispose();
         };
     }
 
-    /// <summary>
-    ///     Registers types this PlayerObjectController requires the system to use.
-    /// </summary>
+    /// <summary>Registers types this PlayerObjectController requires the system to use.</summary>
     public virtual void RegisterTypes()
     {
         PlayerObject.Register<PlayerObject>();
     }
 
-    /// <summary>
-    ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <summary>Performs tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     /// <param name="disposing">Whether managed resources should be disposed.</param>
     protected override void Dispose(bool disposing)
     {

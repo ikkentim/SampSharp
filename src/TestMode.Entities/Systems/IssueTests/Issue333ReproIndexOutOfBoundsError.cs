@@ -27,22 +27,20 @@ public class Issue333ReproIndexOutOfBoundsError : ISystem
         // test for issue #333 
         var dialog = new MessageDialog("Welcome", "Welcome on my server!", "Continue");
 
-        dialogService.Show(player.Entity, dialog,
-            async _ =>
+        dialogService.Show(player.Entity, dialog, async _ =>
+        {
+            var dialog2 = new InputDialog
             {
-                var dialog2 = new InputDialog
-                {
-                    IsPassword = false,
-                    Caption = "Mail",
-                    Content = "Please enter your email :",
-                    Button1 = "Valid",
-                    Button2 = "Exit"
-                };
+                IsPassword = false,
+                Caption = "Mail",
+                Content = "Please enter your email :",
+                Button1 = "Valid",
+                Button2 = "Exit"
+            };
 
-                var result = await dialogService.Show(player.Entity, dialog2);
+            var result = await dialogService.Show(player.Entity, dialog2);
 
-                player.SendClientMessage($"You entered {result.InputText}");
-            }
-        );
+            player.SendClientMessage($"You entered {result.InputText}");
+        });
     }
 }

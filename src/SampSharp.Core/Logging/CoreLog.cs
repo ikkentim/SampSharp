@@ -19,37 +19,28 @@ using System.IO;
 
 namespace SampSharp.Core.Logging;
 
-/// <summary>
-///     Contains simple utility methods used by SampSharp for logging.
-/// </summary>
+/// <summary>Contains simple utility methods used by SampSharp for logging.</summary>
 public static class CoreLog
 {
-    /// <summary>
-    ///     Initializes the <see cref="CoreLog" /> class.
-    /// </summary>
+    /// <summary>Initializes the <see cref="CoreLog" /> class.</summary>
     static CoreLog()
     {
         LogLevel = CoreLogLevel.Info;
     }
 
-    /// <summary>
-    ///     Gets or sets the minimum log level.
-    /// </summary>
+    /// <summary>Gets or sets the minimum log level.</summary>
     internal static CoreLogLevel LogLevel { get; set; }
 
-    /// <summary>
-    ///     Gets or sets the output stream writer.
-    /// </summary>
+    /// <summary>Gets or sets the output stream writer.</summary>
     internal static TextWriter TextWriter { get; set; }
 
     private static string GetLevelName(CoreLogLevel level)
     {
-        return level.ToString().ToUpper();
+        return level.ToString()
+            .ToUpper();
     }
 
-    /// <summary>
-    ///     Gets a value indicating whether the specified log level is logged
-    /// </summary>
+    /// <summary>Gets a value indicating whether the specified log level is logged</summary>
     /// <param name="level">The level.</param>
     /// <returns>Whether the specified log level is logged.</returns>
     [DebuggerHidden]
@@ -58,9 +49,7 @@ public static class CoreLog
         return LogLevel >= level || level == CoreLogLevel.Initialisation;
     }
 
-    /// <summary>
-    ///     Logs the specified message at the specified log level.
-    /// </summary>
+    /// <summary>Logs the specified message at the specified log level.</summary>
     /// <param name="level">The level.</param>
     /// <param name="message">The message.</param>
     [DebuggerHidden]
@@ -69,13 +58,13 @@ public static class CoreLog
         var tw = TextWriter ?? Console.Out;
         if (tw != null && (LogLevel >= level || level == CoreLogLevel.Initialisation))
         {
-            tw.WriteLine(level == CoreLogLevel.Initialisation ? message : $"[SampSharp:{GetLevelName(level)}] {message}");
+            tw.WriteLine(level == CoreLogLevel.Initialisation
+                ? message
+                : $"[SampSharp:{GetLevelName(level)}] {message}");
         }
     }
 
-    /// <summary>
-    ///     Logs the specified message at the debug log level. The log message is removed in non-debug builds.
-    /// </summary>
+    /// <summary>Logs the specified message at the debug log level. The log message is removed in non-debug builds.</summary>
     /// <param name="format">The format of the message.</param>
     /// <param name="args">The arguments of the message.</param>
     [DebuggerHidden]
@@ -88,9 +77,8 @@ public static class CoreLog
             tw.WriteLine($"[SampSharp:{GetLevelName(CoreLogLevel.Debug)}] {string.Format(format, args)}");
         }
     }
-    /// <summary>
-    ///     Logs the specified message at the verbose log level. The log message is removed in non-debug builds.
-    /// </summary>
+
+    /// <summary>Logs the specified message at the verbose log level. The log message is removed in non-debug builds.</summary>
     /// <param name="format">The format of the message.</param>
     /// <param name="args">The arguments of the message.</param>
     [DebuggerHidden]

@@ -15,14 +15,10 @@
 
 namespace SampSharp.GameMode.Display;
 
-/// <summary>
-///     Represents a row in a <see cref="Menu" />.
-/// </summary>
+/// <summary>Represents a row in a <see cref="Menu" />.</summary>
 public struct MenuRow
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="MenuRow" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="MenuRow" /> class.</summary>
     /// <param name="column1Text">The text in the first column.</param>
     /// <param name="disabled">Whether this row is disabled.</param>
     public MenuRow(string column1Text, bool disabled = false) : this()
@@ -32,32 +28,23 @@ public struct MenuRow
         Disabled = disabled;
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="MenuRow" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="MenuRow" /> class.</summary>
     /// <param name="column1Text">The text in the text displayed in the first column.</param>
     /// <param name="column2Text">The text in the text displayed in the second column.</param>
     /// <param name="disabled">Whether this row is disabled.</param>
-    public MenuRow(string column1Text, string column2Text, bool disabled = false)
-        : this()
+    public MenuRow(string column1Text, string column2Text, bool disabled = false) : this()
     {
         Column1Text = column1Text;
         Column2Text = column2Text;
         Disabled = disabled;
     }
 
-    /// <summary>
-    ///     Gets the text displayed in the first column.
-    /// </summary>
+    /// <summary>Gets the text displayed in the first column.</summary>
     public string Column1Text { get; }
 
-    /// <summary>
-    ///     Gets the text displayed in the second column.
-    /// </summary>
+    /// <summary>Gets the text displayed in the second column.</summary>
     public string Column2Text { get; }
 
-    /// <summary>
-    ///     Gets whether this row is disabled.
-    /// </summary>
+    /// <summary>Gets whether this row is disabled.</summary>
     public bool Disabled { get; }
 }

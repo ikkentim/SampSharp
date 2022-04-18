@@ -15,36 +15,22 @@
 
 namespace SampSharp.GameMode.Definitions;
 
-/// <summary>
-///     Contains all types of things bullets can hit.
-/// </summary>
-/// <remarks>
-///     See <see href="https://www.open.mp/docs/scripting/resources/bullethittypes">https://www.open.mp/docs/scripting/resources/bullethittypes</see>.
-/// </remarks>
+/// <summary>Contains all types of things bullets can hit.</summary>
+/// <remarks>See <see href="https://www.open.mp/docs/scripting/resources/bullethittypes">https://www.open.mp/docs/scripting/resources/bullethittypes</see>.</remarks>
 public enum BulletHitType
 {
-    /// <summary>
-    ///     Hit nothing.
-    /// </summary>
+    /// <summary>Hit nothing.</summary>
     None = 0,
 
-    /// <summary>
-    ///     Hit a player.
-    /// </summary>
+    /// <summary>Hit a player.</summary>
     Player = 1,
 
-    /// <summary>
-    ///     Hit a vehicle.
-    /// </summary>
+    /// <summary>Hit a vehicle.</summary>
     Vehicle = 2,
 
-    /// <summary>
-    ///     Hit an GlobalObject.
-    /// </summary>
+    /// <summary>Hit an GlobalObject.</summary>
     Object = 3,
 
-    /// <summary>
-    ///     Hit a PlayerObject.
-    /// </summary>
+    /// <summary>Hit a PlayerObject.</summary>
     PlayerObject = 4
 }

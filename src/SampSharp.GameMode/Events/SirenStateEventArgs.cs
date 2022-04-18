@@ -17,14 +17,10 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provided data for the x or y event.
-/// </summary>
+/// <summary>Provided data for the x or y event.</summary>
 public class SirenStateEventArgs : PlayerEventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="SirenStateEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="SirenStateEventArgs" /> class.</summary>
     /// <param name="player">The player.</param>
     /// <param name="newState">if set to <c>true</c> the siren is turned on in the new state.</param>
     public SirenStateEventArgs(BasePlayer player, bool newState) : base(player)
@@ -32,8 +28,6 @@ public class SirenStateEventArgs : PlayerEventArgs
         NewState = newState;
     }
 
-    /// <summary>
-    ///     Gets a value indicating whether the siren is turned on in the new state.
-    /// </summary>
+    /// <summary>Gets a value indicating whether the siren is turned on in the new state.</summary>
     public bool NewState { get; }
 }

@@ -20,15 +20,10 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.DialogResponse" />, <see cref="BasePlayer.DialogResponse" /> or
-///     <see cref="Dialog.Response" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.DialogResponse" />, <see cref="BasePlayer.DialogResponse" /> or <see cref="Dialog.Response" /> event.</summary>
 public class DialogResponseEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the DialogResponseEventArgs class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the DialogResponseEventArgs class.</summary>
     /// <param name="player">The player.</param>
     /// <param name="dialogid">Id of the dialog.</param>
     /// <param name="response">Response of the dialog response.</param>
@@ -38,33 +33,23 @@ public class DialogResponseEventArgs : EventArgs
     {
         Player = player;
         DialogId = dialogid;
-        DialogButton = (DialogButton) response;
+        DialogButton = (DialogButton)response;
         ListItem = listitem;
         InputText = inputtext;
     }
 
-    /// <summary>
-    ///     Gets the player sending this response.
-    /// </summary>
+    /// <summary>Gets the player sending this response.</summary>
     public BasePlayer Player { get; }
 
-    /// <summary>
-    ///     Gets the id of dialog of this response.
-    /// </summary>
+    /// <summary>Gets the id of dialog of this response.</summary>
     public int DialogId { get; }
 
-    /// <summary>
-    ///     Gets the button clicked for this response.
-    /// </summary>
+    /// <summary>Gets the button clicked for this response.</summary>
     public DialogButton DialogButton { get; }
 
-    /// <summary>
-    ///     Gets the index of the list item clicked for this response.
-    /// </summary>
+    /// <summary>Gets the index of the list item clicked for this response.</summary>
     public int ListItem { get; }
 
-    /// <summary>
-    ///     Gets the input text of this response.
-    /// </summary>
+    /// <summary>Gets the input text of this response.</summary>
     public string InputText { get; }
 }

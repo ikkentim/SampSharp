@@ -27,7 +27,7 @@ internal class PlayerConnectMiddleware
     public object Invoke(EventContext context, IEntityManager entityManager)
     {
         // TODO: Parenting to connection
-        var entity = SampEntities.GetPlayerId((int) context.Arguments[0]);
+        var entity = SampEntities.GetPlayerId((int)context.Arguments[0]);
 
         entityManager.Create(entity);
         entityManager.AddComponent<NativePlayer>(entity);

@@ -19,14 +19,12 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events;
 
 /// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerEnterVehicle" />, <see cref="BasePlayer.EnterVehicle" /> or
-///     <see cref="BaseVehicle.PlayerEnter" /> event.
+/// Provides data for the <see cref="BaseMode.PlayerEnterVehicle" />, <see cref="BasePlayer.EnterVehicle" /> or <see cref="BaseVehicle.PlayerEnter" />
+/// event.
 /// </summary>
 public class EnterVehicleEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="EnterVehicleEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EnterVehicleEventArgs" /> class.</summary>
     /// <param name="player">The player.</param>
     /// <param name="vehicle">The vehicle.</param>
     /// <param name="isPassenger">if set to <c>true</c> the player is a passenger.</param>
@@ -42,18 +40,12 @@ public class EnterVehicleEventArgs : EventArgs
      * we add both to the event args so we can access what's not the sender.
      */
 
-    /// <summary>
-    ///     Gets the player.
-    /// </summary>
+    /// <summary>Gets the player.</summary>
     public BasePlayer Player { get; }
 
-    /// <summary>
-    ///     Gets the vehicle.
-    /// </summary>
+    /// <summary>Gets the vehicle.</summary>
     public BaseVehicle Vehicle { get; }
 
-    /// <summary>
-    ///     Gets a value indicating whether the <see cref="Player" /> is passenger.
-    /// </summary>
+    /// <summary>Gets a value indicating whether the <see cref="Player" /> is passenger.</summary>
     public bool IsPassenger { get; }
 }

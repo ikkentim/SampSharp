@@ -17,32 +17,21 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.VehicleMod" /> or <see cref="BaseVehicle.Mod" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.VehicleMod" /> or <see cref="BaseVehicle.Mod" /> event.</summary>
 public class VehicleModEventArgs : PlayerEventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="VehicleModEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="VehicleModEventArgs" /> class.</summary>
     /// <param name="player">The player.</param>
     /// <param name="componentId">The component identifier.</param>
-    public VehicleModEventArgs(BasePlayer player, int componentId)
-        : base(player)
+    public VehicleModEventArgs(BasePlayer player, int componentId) : base(player)
     {
         ComponentId = componentId;
     }
 
-    /// <summary>
-    ///     Gets or sets the component identifier.
-    /// </summary>
-    /// <value>
-    ///     The component identifier.
-    /// </value>
+    /// <summary>Gets or sets the component identifier.</summary>
+    /// <value>The component identifier.</value>
     public int ComponentId { get; set; }
 
-    /// <summary>
-    ///     Gets or sets whether to desync the mod (or an invalid mod) from propagating and / or crashing players.
-    /// </summary>
+    /// <summary>Gets or sets whether to desync the mod (or an invalid mod) from propagating and / or crashing players.</summary>
     public bool PreventPropagation { get; set; }
 }

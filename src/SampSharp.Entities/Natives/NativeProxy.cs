@@ -18,15 +18,11 @@ using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Entities;
 
-/// <summary>
-/// Provides a proxy object around a native object of type <typeparamref name="T" />.
-/// </summary>
+/// <summary>Provides a proxy object around a native object of type <typeparamref name="T" />.</summary>
 /// <typeparam name="T">The type of the native object for which a proxy object should be provided.</typeparam>
 public class NativeProxy<T> : INativeProxy<T> where T : class
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="NativeProxy{T}" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="NativeProxy{T}" /> class.</summary>
     public NativeProxy()
     {
         Instance = NativeObjectProxyFactory.CreateInstance<T>();

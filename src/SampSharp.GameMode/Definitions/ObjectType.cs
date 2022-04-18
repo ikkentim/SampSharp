@@ -15,18 +15,12 @@
 
 namespace SampSharp.GameMode.Definitions;
 
-/// <summary>
-///     Contains all object types
-/// </summary>
+/// <summary>Contains all object types</summary>
 public enum ObjectType
 {
-    /// <summary>
-    ///     Global object.
-    /// </summary>
+    /// <summary>Global object.</summary>
     GlobalObject = 1,
 
-    /// <summary>
-    ///     Player object.
-    /// </summary>
+    /// <summary>Player object.</summary>
     PlayerObject = 2
 }

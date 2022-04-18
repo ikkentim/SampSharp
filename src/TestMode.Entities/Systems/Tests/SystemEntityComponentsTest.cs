@@ -44,7 +44,8 @@ public class SystemEntityComponentsTest : ISystem
     public void GetComponentsCommand(Player player)
     {
         foreach (var comp in player.GetComponents<Component>())
-            player.SendClientMessage(comp.GetType().FullName);
+            player.SendClientMessage(comp.GetType()
+                .FullName);
     }
 
     [PlayerCommand]

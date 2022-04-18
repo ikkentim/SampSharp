@@ -113,8 +113,8 @@ public partial class Actor
         }
 
         [NativeMethod]
-        public virtual bool ApplyActorAnimation(int actorid, string animlib, string animname, float fDelta,
-            bool loop, bool lockx, bool locky, bool freeze, int time)
+        public virtual bool ApplyActorAnimation(int actorid, string animlib, string animname, float fDelta, bool loop, bool lockx, bool locky, bool freeze,
+            int time)
         {
             throw new NativeNotImplementedException();
         }

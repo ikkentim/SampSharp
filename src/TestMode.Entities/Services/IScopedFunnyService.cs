@@ -17,5 +17,4 @@ namespace TestMode.Entities.Services;
 
 public interface IScopedFunnyService : IFunnyService
 {
-
 }

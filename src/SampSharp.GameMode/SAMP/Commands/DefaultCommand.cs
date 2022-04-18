@@ -23,25 +23,20 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP.Commands;
 
-/// <summary>
-///     Represents the default command based on a method with command attributes.
-/// </summary>
+/// <summary>Represents the default command based on a method with command attributes.</summary>
 public class DefaultCommand : ICommand
 {
     private readonly string _displayName;
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="DefaultCommand" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="DefaultCommand" /> class.</summary>
     /// <param name="names">The names.</param>
     /// <param name="displayName">The display name.</param>
     /// <param name="ignoreCase">if set to <c>true</c> ignore the case of the command.</param>
     /// <param name="permissionCheckers">The permission checkers.</param>
     /// <param name="method">The method.</param>
     /// <param name="usageMessage">The usage message.</param>
-    public DefaultCommand(CommandPath[] names, string displayName, bool ignoreCase,
-        IPermissionChecker[] permissionCheckers,
-        MethodInfo method, string usageMessage)
+    public DefaultCommand(CommandPath[] names, string displayName, bool ignoreCase, IPermissionChecker[] permissionCheckers, MethodInfo method,
+        string usageMessage)
     {
         if (names == null) throw new ArgumentNullException(nameof(names));
         if (method == null) throw new ArgumentNullException(nameof(method));
@@ -50,27 +45,32 @@ public class DefaultCommand : ICommand
         if (!IsValidCommandMethod(method))
             throw new ArgumentException("Method unsuitable as command", nameof(method));
 
-        IsMethodMemberOfPlayer = typeof (BasePlayer).GetTypeInfo().IsAssignableFrom(method.DeclaringType);
+        IsMethodMemberOfPlayer = typeof(BasePlayer).GetTypeInfo()
+            .IsAssignableFrom(method.DeclaringType);
 
-        var skipCount = IsMethodMemberOfPlayer ? 0 : 1;
+        var skipCount = IsMethodMemberOfPlayer
+            ? 0
+            : 1;
         var index = 0;
-        var count = method.GetParameters().Length - skipCount;
+        var count = method.GetParameters()
+            .Length - skipCount;
 
         Names = names;
         _displayName = displayName;
         IsCaseIgnored = ignoreCase;
         Method = method;
-        UsageMessage = string.IsNullOrWhiteSpace(usageMessage) ? null : usageMessage;
+        UsageMessage = string.IsNullOrWhiteSpace(usageMessage)
+            ? null
+            : usageMessage;
         Parameters = Method.GetParameters()
             .Skip(skipCount)
-            .Select(
-                p =>
-                {
-                    var type = GetParameterType(p, index++, count);
-                    return type == null
-                        ? null
-                        : new CommandParameterInfo(p.Name, type, p.HasDefaultValue, p.DefaultValue, p.GetCustomAttribute<NullableParamAttribute>() != null);
-                })
+            .Select(p =>
+            {
+                var type = GetParameterType(p, index++, count);
+                return type == null
+                    ? null
+                    : new CommandParameterInfo(p.Name, type, p.HasDefaultValue, p.DefaultValue, p.GetCustomAttribute<NullableParamAttribute>() != null);
+            })
             .ToArray();
 
         if (Parameters.Any(v => v == null))
@@ -78,62 +78,53 @@ public class DefaultCommand : ICommand
             throw new ArgumentException("Method has parameter of unknown type", nameof(method));
         }
 
-        PermissionCheckers = permissionCheckers?.Where(p => p != null).ToArray() ?? Array.Empty<IPermissionChecker>();
+        PermissionCheckers = permissionCheckers?.Where(p => p != null)
+            .ToArray() ?? Array.Empty<IPermissionChecker>();
     }
 
-    /// <summary>
-    ///     Gets the names.
-    /// </summary>
+    /// <summary>Gets the names.</summary>
     public virtual CommandPath[] Names { get; }
 
-    /// <summary>
-    ///     Gets the display name.
-    /// </summary>
+    /// <summary>Gets the display name.</summary>
     public virtual string DisplayName
     {
-        get { return _displayName ?? Names.OrderByDescending(n => n.Length).First().FullName; }
+        get
+        {
+            return _displayName ?? Names.OrderByDescending(n => n.Length)
+                .First()
+                .FullName;
+        }
     }
 
-    /// <summary>
-    ///     Gets a value indicating whether this instance ignores the case of the command.
-    /// </summary>
+    /// <summary>Gets a value indicating whether this instance ignores the case of the command.</summary>
     public virtual bool IsCaseIgnored { get; }
 
-    /// <summary>
-    ///     Gets the method.
-    /// </summary>
+    /// <summary>Gets the method.</summary>
     public MethodInfo Method { get; }
 
-    /// <summary>
-    ///     Gets a value indicating whether this instance is method member of player.
-    /// </summary>
+    /// <summary>Gets a value indicating whether this instance is method member of player.</summary>
     public bool IsMethodMemberOfPlayer { get; }
 
-    /// <summary>
-    ///     Gets the usage message.
-    /// </summary>
+    /// <summary>Gets the usage message.</summary>
     public virtual string UsageMessage { get; }
 
-    /// <summary>
-    ///     Gets the parameters.
-    /// </summary>
+    /// <summary>Gets the parameters.</summary>
     public CommandParameterInfo[] Parameters { get; }
 
-    /// <summary>
-    ///     Gets the permission checkers.
-    /// </summary>
+    /// <summary>Gets the permission checkers.</summary>
     public IPermissionChecker[] PermissionCheckers { get; }
 
-    /// <summary>
-    ///     Determines whether the specified method is a valid command method.
-    /// </summary>
+    /// <summary>Determines whether the specified method is a valid command method.</summary>
     /// <param name="method">The method.</param>
     /// <returns>true if valid; false otherwise.</returns>
     public static bool IsValidCommandMethod(MethodInfo method)
     {
-        return method.IsStatic && method.GetParameters().Length >= 1 &&
-               typeof (BasePlayer).GetTypeInfo().IsAssignableFrom(method.GetParameters().First().ParameterType) ||
-               !method.IsStatic && typeof (BasePlayer).GetTypeInfo().IsAssignableFrom(method.DeclaringType);
+        return method.IsStatic && method.GetParameters()
+            .Length >= 1 && typeof(BasePlayer).GetTypeInfo()
+            .IsAssignableFrom(method.GetParameters()
+                .First()
+                .ParameterType) || !method.IsStatic && typeof(BasePlayer).GetTypeInfo()
+            .IsAssignableFrom(method.DeclaringType);
     }
 
     private bool GetArguments(string commandText, out object[] arguments, out int argumentsTextLength)
@@ -144,7 +135,6 @@ public class DefaultCommand : ICommand
         var textLength = commandText.Length;
         foreach (var parameter in Parameters)
         {
-                
             if (!parameter.CommandParameterType.Parse(ref commandText, out var arg, parameter.IsNullable))
             {
                 if (!parameter.IsOptional)
@@ -167,9 +157,7 @@ public class DefaultCommand : ICommand
         return true;
     }
 
-    /// <summary>
-    ///     Gets the type of the specified parameter.
-    /// </summary>
+    /// <summary>Gets the type of the specified parameter.</summary>
     /// <param name="parameter">The parameter.</param>
     /// <param name="index">The index.</param>
     /// <param name="count">The count.</param>
@@ -178,47 +166,46 @@ public class DefaultCommand : ICommand
     {
         var attribute = parameter.GetCustomAttribute<ParameterAttribute>();
 
-        if (attribute != null && typeof (ICommandParameterType).GetTypeInfo().IsAssignableFrom(attribute.Type))
+        if (attribute != null && typeof(ICommandParameterType).GetTypeInfo()
+                .IsAssignableFrom(attribute.Type))
             return Activator.CreateInstance(attribute.Type) as ICommandParameterType;
 
-        if (parameter.ParameterType == typeof (string))
+        if (parameter.ParameterType == typeof(string))
             return index == count - 1
                 ? new TextType()
                 : new WordType();
 
-        if (parameter.ParameterType == typeof (int))
+        if (parameter.ParameterType == typeof(int))
             return new IntegerType();
 
-        if (parameter.ParameterType == typeof (float))
+        if (parameter.ParameterType == typeof(float))
             return new FloatType();
 
-        if (typeof (BasePlayer).GetTypeInfo().IsAssignableFrom(parameter.ParameterType))
+        if (typeof(BasePlayer).GetTypeInfo()
+            .IsAssignableFrom(parameter.ParameterType))
             return new PlayerType();
-                
-        if (typeof (BaseVehicle).GetTypeInfo().IsAssignableFrom(parameter.ParameterType))
+
+        if (typeof(BaseVehicle).GetTypeInfo()
+            .IsAssignableFrom(parameter.ParameterType))
             return new VehicleType();
 
-        if (parameter.ParameterType.IsConstructedGenericType &&
-            parameter.ParameterType.GetGenericTypeDefinition() == typeof(Nullable<>))
+        if (parameter.ParameterType.IsConstructedGenericType && parameter.ParameterType.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
             var genericParams = parameter.ParameterType.GetGenericArguments();
 
-            if(genericParams.Length == 1 && genericParams[0].IsEnum)
-                return
-                    Activator.CreateInstance(typeof (NullableEnumType<>).MakeGenericType(genericParams[0]))
-                        as ICommandParameterType;
+            if (genericParams.Length == 1 && genericParams[0]
+                    .IsEnum)
+                return Activator.CreateInstance(typeof(NullableEnumType<>).MakeGenericType(genericParams[0])) as ICommandParameterType;
         }
-        if (parameter.ParameterType.GetTypeInfo().IsEnum)
-            return
-                Activator.CreateInstance(typeof (EnumType<>).MakeGenericType(parameter.ParameterType))
-                    as ICommandParameterType;
+
+        if (parameter.ParameterType.GetTypeInfo()
+            .IsEnum)
+            return Activator.CreateInstance(typeof(EnumType<>).MakeGenericType(parameter.ParameterType)) as ICommandParameterType;
 
         return null;
     }
 
-    /// <summary>
-    /// Sends the usage message to the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Sends the usage message to the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     /// <returns>True on success, false otherwise.</returns>
     protected virtual bool SendUsageMessage(BasePlayer player)
@@ -233,9 +220,7 @@ public class DefaultCommand : ICommand
         return true;
     }
 
-    /// <summary>
-    ///     Sends the permission denied message for the specified permission checker.
-    /// </summary>
+    /// <summary>Sends the permission denied message for the specified permission checker.</summary>
     /// <param name="permissionChecker">The permission checker.</param>
     /// <param name="player">The player.</param>
     /// <returns>true on success; false otherwise.</returns>
@@ -251,32 +236,28 @@ public class DefaultCommand : ICommand
         return true;
     }
 
-    /// <summary>
-    ///     Returns a string that represents the current object.
-    /// </summary>
-    /// <returns>
-    ///     A string that represents the current object.
-    /// </returns>
+    /// <summary>Returns a string that represents the current object.</summary>
+    /// <returns>A string that represents the current object.</returns>
     public override string ToString()
     {
         var name = "/" + DisplayName;
 
         if (Parameters.Any())
-            return name + " " +
-                   string.Join(" ", Parameters.Select(p => p.IsOptional ? $"<{p.Name}>" : $"[{p.Name}]"));
+            return name + " " + string.Join(" ", Parameters.Select(p => p.IsOptional
+                ? $"<{p.Name}>"
+                : $"[{p.Name}]"));
         return name;
     }
 
-    /// <summary>
-    ///     Determines whether this instance can be invoked by the specified player.
-    /// </summary>
+    /// <summary>Determines whether this instance can be invoked by the specified player.</summary>
     /// <param name="player">The player.</param>
     /// <param name="commandText">The command text.</param>
     /// <param name="matchedNameLength">This value is set to the length of the name of this command which the command text was matched with.</param>
     /// <returns>A value indicating whether this instance can be invoked.</returns>
     public virtual CommandCallableResponse CanInvoke(BasePlayer player, string commandText, out int matchedNameLength)
     {
-        if (PermissionCheckers.Where(p => p.Message == null).Any(p => !p.Check(player)))
+        if (PermissionCheckers.Where(p => p.Message == null)
+            .Any(p => !p.Check(player)))
         {
             matchedNameLength = 0;
             return CommandCallableResponse.False;
@@ -301,9 +282,7 @@ public class DefaultCommand : ICommand
         return CommandCallableResponse.False;
     }
 
-    /// <summary>
-    ///     Invokes this command.
-    /// </summary>
+    /// <summary>Invokes this command.</summary>
     /// <param name="player">The player.</param>
     /// <param name="commandText">The command text.</param>
     /// <returns>true on success; false otherwise.</returns>
@@ -317,18 +296,24 @@ public class DefaultCommand : ICommand
 
         commandText = commandText.TrimStart('/');
 
-        var name = Names.Cast<CommandPath?>().FirstOrDefault(n => n != null && n.Value.Matches(commandText));
+        var name = Names.Cast<CommandPath?>()
+            .FirstOrDefault(n => n != null && n.Value.Matches(commandText));
 
         if (name == null)
             return false;
 
-        commandText = commandText.Substring(name.Value.Length).Trim();
+        commandText = commandText.Substring(name.Value.Length)
+            .Trim();
 
         if (!GetArguments(commandText, out var arguments, out _))
             return SendUsageMessage(player);
 
-        var result = Method.Invoke(IsMethodMemberOfPlayer ? player : null,
-            IsMethodMemberOfPlayer ? arguments : new object[] {player}.Concat(arguments).ToArray());
+        var result = Method.Invoke(IsMethodMemberOfPlayer
+            ? player
+            : null, IsMethodMemberOfPlayer
+            ? arguments
+            : new object[] { player }.Concat(arguments)
+                .ToArray());
 
         return result as bool? ?? true;
     }

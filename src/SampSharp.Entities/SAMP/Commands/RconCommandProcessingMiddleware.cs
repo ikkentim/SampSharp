@@ -17,25 +17,19 @@ using SampSharp.Core.Logging;
 
 namespace SampSharp.Entities.SAMP.Commands;
 
-/// <summary>
-/// Represents a middleware which lets unhandled OnRconCommand events be processed by the <see cref="IRconCommandService" />.
-/// </summary>
+/// <summary>Represents a middleware which lets unhandled OnRconCommand events be processed by the <see cref="IRconCommandService" />.</summary>
 public class RconCommandProcessingMiddleware
 {
     private readonly EventDelegate _next;
-        
-    /// <summary>
-    /// Initializes a new instance of the <see cref="RconCommandProcessingMiddleware" /> class.
-    /// </summary>
+
+    /// <summary>Initializes a new instance of the <see cref="RconCommandProcessingMiddleware" /> class.</summary>
     /// <param name="next">The next middleware handler.</param>
     public RconCommandProcessingMiddleware(EventDelegate next)
     {
         _next = next;
     }
-        
-    /// <summary>
-    /// Invokes the middleware.
-    /// </summary>
+
+    /// <summary>Invokes the middleware.</summary>
     public object Invoke(EventContext context, IRconCommandService commandService)
     {
         var result = _next(context);
@@ -48,6 +42,5 @@ public class RconCommandProcessingMiddleware
 
         CoreLog.Log(CoreLogLevel.Error, "Invalid command middleware input argument types!");
         return null;
-
     }
 }

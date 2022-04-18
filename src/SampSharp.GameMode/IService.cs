@@ -15,13 +15,9 @@
 
 namespace SampSharp.GameMode;
 
-/// <summary>
-///     Contains the definition of a service
-/// </summary>
+/// <summary>Contains the definition of a service</summary>
 public interface IService
 {
-    /// <summary>
-    ///     Gets the game mode.
-    /// </summary>
+    /// <summary>Gets the game mode.</summary>
     BaseMode GameMode { get; }
 }

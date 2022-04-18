@@ -15,9 +15,7 @@
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Represents a component which provides the data and functionality of a per-player textdraw.
-/// </summary>
+/// <summary>Represents a component which provides the data and functionality of a per-player textdraw.</summary>
 public sealed class PlayerTextDraw : Component
 {
     private TextDrawAlignment _alignment = TextDrawAlignment.Left;
@@ -41,233 +39,216 @@ public sealed class PlayerTextDraw : Component
         _text = text;
     }
 
-    /// <summary>
-    /// Gets or sets the size of the letters of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the size of the letters of this textdraw.</summary>
     public Vector2 LetterSize
     {
         get => _letterSize;
         set
         {
-            GetComponent<NativePlayerTextDraw>().PlayerTextDrawLetterSize(value.X, value.Y);
+            GetComponent<NativePlayerTextDraw>()
+                .PlayerTextDrawLetterSize(value.X, value.Y);
             _letterSize = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets the size of this textdraw box and click-able area.
-    /// </summary>
+    /// <summary>Gets or sets the size of this textdraw box and click-able area.</summary>
     public Vector2 TextSize
     {
         get => _textSize;
         set
         {
-            GetComponent<NativePlayerTextDraw>().PlayerTextDrawTextSize(value.X, value.Y);
+            GetComponent<NativePlayerTextDraw>()
+                .PlayerTextDrawTextSize(value.X, value.Y);
             _textSize = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets the alignment of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the alignment of this textdraw.</summary>
     public TextDrawAlignment Alignment
     {
         get => _alignment;
         set
         {
-            GetComponent<NativePlayerTextDraw>().PlayerTextDrawAlignment((int) value);
+            GetComponent<NativePlayerTextDraw>()
+                .PlayerTextDrawAlignment((int)value);
             _alignment = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets the color of the text of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the color of the text of this textdraw.</summary>
     public Color ForeColor
     {
         get => _foreColor;
         set
         {
-            GetComponent<NativePlayerTextDraw>().PlayerTextDrawColor(value);
+            GetComponent<NativePlayerTextDraw>()
+                .PlayerTextDrawColor(value);
             _foreColor = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether a box is used for this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets a value indicating whether a box is used for this textdraw.</summary>
     public bool UseBox
     {
         get => _useBox;
         set
         {
-            GetComponent<NativePlayerTextDraw>().PlayerTextDrawUseBox(value);
+            GetComponent<NativePlayerTextDraw>()
+                .PlayerTextDrawUseBox(value);
             _useBox = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets the color of the box of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the color of the box of this textdraw.</summary>
     public Color BoxColor
     {
         get => _boxColor;
         set
         {
-            GetComponent<NativePlayerTextDraw>().PlayerTextDrawBoxColor(value);
+            GetComponent<NativePlayerTextDraw>()
+                .PlayerTextDrawBoxColor(value);
             _boxColor = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets the shadow size of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the shadow size of this textdraw.</summary>
     public int Shadow
     {
         get => _shadow;
         set
         {
-            GetComponent<NativePlayerTextDraw>().PlayerTextDrawSetShadow(value);
+            GetComponent<NativePlayerTextDraw>()
+                .PlayerTextDrawSetShadow(value);
             _shadow = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets the outline size of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the outline size of this textdraw.</summary>
     public int Outline
     {
         get => _outline;
         set
         {
-            GetComponent<NativePlayerTextDraw>().PlayerTextDrawSetOutline(value);
+            GetComponent<NativePlayerTextDraw>()
+                .PlayerTextDrawSetOutline(value);
             _outline = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets the background color of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the background color of this textdraw.</summary>
     public Color BackColor
     {
         get => _backColor;
         set
         {
-            GetComponent<NativePlayerTextDraw>().PlayerTextDrawBackgroundColor(value);
+            GetComponent<NativePlayerTextDraw>()
+                .PlayerTextDrawBackgroundColor(value);
             _backColor = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets the font of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the font of this textdraw.</summary>
     public TextDrawFont Font
     {
         get => _font;
         set
         {
-            GetComponent<NativePlayerTextDraw>().PlayerTextDrawFont((int) value);
+            GetComponent<NativePlayerTextDraw>()
+                .PlayerTextDrawFont((int)value);
             _font = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether the font of this textdraw is rendered as a monospaced font.
-    /// </summary>
+    /// <summary>Gets or sets a value indicating whether the font of this textdraw is rendered as a monospaced font.</summary>
     public bool Proportional
     {
         get => _proportional;
         set
         {
-            GetComponent<NativePlayerTextDraw>().PlayerTextDrawSetProportional(value);
+            GetComponent<NativePlayerTextDraw>()
+                .PlayerTextDrawSetProportional(value);
             _proportional = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether this textdraw is selectable by the player.
-    /// </summary>
+    /// <summary>Gets or sets a value indicating whether this textdraw is selectable by the player.</summary>
     public bool Selectable
     {
         get => _selectable;
         set
         {
-            GetComponent<NativePlayerTextDraw>().PlayerTextDrawSetSelectable(value);
+            GetComponent<NativePlayerTextDraw>()
+                .PlayerTextDrawSetSelectable(value);
             _selectable = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets the text of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the text of this textdraw.</summary>
     public string Text
     {
         get => _text;
         set
         {
-            GetComponent<NativePlayerTextDraw>().PlayerTextDrawSetString(string.IsNullOrEmpty(value) ? "_" : value);
+            GetComponent<NativePlayerTextDraw>()
+                .PlayerTextDrawSetString(string.IsNullOrEmpty(value)
+                    ? "_"
+                    : value);
             _text = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets the preview model of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the preview model of this textdraw.</summary>
     public int PreviewModel
     {
         get => _previewModel;
         set
         {
-            GetComponent<NativePlayerTextDraw>().PlayerTextDrawSetPreviewModel(value);
+            GetComponent<NativePlayerTextDraw>()
+                .PlayerTextDrawSetPreviewModel(value);
             _previewModel = value;
         }
     }
 
-    /// <summary>
-    /// Gets the position of this textdraw.
-    /// </summary>
+    /// <summary>Gets the position of this textdraw.</summary>
     public Vector2 Position { get; }
 
 
-    /// <summary>
-    /// Sets the preview object rotation and zoom of this textdraw.
-    /// </summary>
+    /// <summary>Sets the preview object rotation and zoom of this textdraw.</summary>
     /// <param name="rotation">The rotation of the preview object.</param>
     /// <param name="zoom">The zoom of the preview object.</param>
     public void SetPreviewRotation(Vector3 rotation, float zoom = 1.0f)
     {
-        GetComponent<NativePlayerTextDraw>().PlayerTextDrawSetPreviewRot(rotation.X, rotation.Y, rotation.Z, zoom);
+        GetComponent<NativePlayerTextDraw>()
+            .PlayerTextDrawSetPreviewRot(rotation.X, rotation.Y, rotation.Z, zoom);
     }
 
-    /// <summary>
-    /// Sets the color of the preview vehicle of this textdraw.
-    /// </summary>
+    /// <summary>Sets the color of the preview vehicle of this textdraw.</summary>
     /// <param name="color1">The primary color of the vehicle.</param>
     /// <param name="color2">The secondary color of the vehicle.</param>
     public void SetPreviewVehicleColor(int color1, int color2)
     {
-        GetComponent<NativePlayerTextDraw>().PlayerTextDrawSetPreviewVehCol(color1, color2);
+        GetComponent<NativePlayerTextDraw>()
+            .PlayerTextDrawSetPreviewVehCol(color1, color2);
     }
 
-    /// <summary>
-    /// Shows this textdraw for the player.
-    /// </summary>
+    /// <summary>Shows this textdraw for the player.</summary>
     public void Show()
     {
-        GetComponent<NativePlayerTextDraw>().PlayerTextDrawShow();
+        GetComponent<NativePlayerTextDraw>()
+            .PlayerTextDrawShow();
     }
 
-    /// <summary>
-    /// Hides this textdraw for the player.
-    /// </summary>
+    /// <summary>Hides this textdraw for the player.</summary>
     public void Hide()
     {
-        GetComponent<NativePlayerTextDraw>().PlayerTextDrawHide();
+        GetComponent<NativePlayerTextDraw>()
+            .PlayerTextDrawHide();
     }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        GetComponent<NativePlayerTextDraw>().PlayerTextDrawDestroy();
+        GetComponent<NativePlayerTextDraw>()
+            .PlayerTextDrawDestroy();
     }
 }

@@ -19,14 +19,10 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerDied" /> or <see cref="BasePlayer.Died" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.PlayerDied" /> or <see cref="BasePlayer.Died" /> event.</summary>
 public class DeathEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the DeathEventArgs class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the DeathEventArgs class.</summary>
     /// <param name="killer">The killer.</param>
     /// <param name="reason">Reason of the death.</param>
     public DeathEventArgs(BasePlayer killer, Weapon reason)
@@ -35,13 +31,9 @@ public class DeathEventArgs : EventArgs
         DeathReason = reason;
     }
 
-    /// <summary>
-    ///     Gets the killer.
-    /// </summary>
+    /// <summary>Gets the killer.</summary>
     public BasePlayer Killer { get; }
 
-    /// <summary>
-    ///     Gets the reason of the death.
-    /// </summary>
+    /// <summary>Gets the reason of the death.</summary>
     public Weapon DeathReason { get; }
 }

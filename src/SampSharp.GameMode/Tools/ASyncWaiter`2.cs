@@ -19,18 +19,14 @@ using System.Threading.Tasks;
 
 namespace SampSharp.GameMode.Tools;
 
-/// <summary>
-///     Contains methods for awaiting calls.
-/// </summary>
+/// <summary>Contains methods for awaiting calls.</summary>
 /// <typeparam name="TKey"></typeparam>
 /// <typeparam name="TArguments"></typeparam>
 public class ASyncWaiter<TKey, TArguments>
 {
     private readonly Dictionary<TKey, TaskCompletionSource<TArguments>> _completionSources = new();
 
-    /// <summary>
-    ///     Waits for the <see cref="Fire" /> to be called with the specified <paramref name="key" />.
-    /// </summary>
+    /// <summary>Waits for the <see cref="Fire" /> to be called with the specified <paramref name="key" />.</summary>
     /// <param name="key">The key.</param>
     /// <returns>The arguments passed to the <see cref="Fire" /> method.</returns>
     public virtual Task<TArguments> Result(TKey key)
@@ -54,9 +50,7 @@ public class ASyncWaiter<TKey, TArguments>
         }
     }
 
-    /// <summary>
-    ///     Fires the task with the given <paramref name="key" />.
-    /// </summary>
+    /// <summary>Fires the task with the given <paramref name="key" />.</summary>
     /// <param name="key">The key.</param>
     /// <param name="arguments">The arguments.</param>
     public virtual void Fire(TKey key, TArguments arguments)
@@ -69,9 +63,7 @@ public class ASyncWaiter<TKey, TArguments>
         task.SetResult(arguments);
     }
 
-    /// <summary>
-    ///     Cancels the task for the specified <paramref name="key" />.
-    /// </summary>
+    /// <summary>Cancels the task for the specified <paramref name="key" />.</summary>
     /// <param name="key">The key of the task to cancel.</param>
     public virtual void Cancel(TKey key)
     {

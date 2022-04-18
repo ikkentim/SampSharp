@@ -15,48 +15,30 @@
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Contains limits of SA:MP.
-/// </summary>
+/// <summary>Contains limits of SA:MP.</summary>
 public static class SampLimits
 {
-    /// <summary>
-    /// Maximum number of players which can exist.
-    /// </summary>
+    /// <summary>Maximum number of players which can exist.</summary>
     public const int MaxPlayers = 1000;
 
-    /// <summary>
-    /// Maximum number of actors which can exist.
-    /// </summary>
+    /// <summary>Maximum number of actors which can exist.</summary>
     public const int MaxActors = 1000;
 
-    /// <summary>
-    /// Maximum number of vehicles which can exist.
-    /// </summary>
+    /// <summary>Maximum number of vehicles which can exist.</summary>
     public const int MaxVehicles = 2000;
 
-    /// <summary>
-    /// Maximum number of global objects which can exist.
-    /// </summary>
+    /// <summary>Maximum number of global objects which can exist.</summary>
     public const int MaxGlobalObjects = 1000;
 
-    /// <summary>
-    /// Maximum number of per-player objects which can exist per player.
-    /// </summary>
+    /// <summary>Maximum number of per-player objects which can exist per player.</summary>
     public const int MaxPlayerObjects = 1000;
 
-    /// <summary>
-    /// Maximum number of attached objects attached to a player.
-    /// </summary>
+    /// <summary>Maximum number of attached objects attached to a player.</summary>
     public const int MaxPlayerAttachedObjects = 10;
 
-    /// <summary>
-    /// Maximum length of a player's name.
-    /// </summary>
+    /// <summary>Maximum length of a player's name.</summary>
     public const int MaxPlayerNameLength = 24;
 
-    /// <summary>
-    /// Maximum length of the text in a player chat bubble.
-    /// </summary>
+    /// <summary>Maximum length of the text in a player chat bubble.</summary>
     public const int MaxPlayerChatBubbleLength = 144;
 }

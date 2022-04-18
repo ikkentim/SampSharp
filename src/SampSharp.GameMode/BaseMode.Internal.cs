@@ -47,15 +47,15 @@ public abstract partial class BaseMode
         }
 
         [NativeMethod]
-        public virtual int AddPlayerClass(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle,
-            int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
+        public virtual int AddPlayerClass(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int weapon1, int weapon1Ammo, int weapon2,
+            int weapon2Ammo, int weapon3, int weapon3Ammo)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int AddPlayerClassEx(int teamid, int modelid, float spawnX, float spawnY, float spawnZ,
-            float zAngle, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
+        public virtual int AddPlayerClassEx(int teamid, int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int weapon1, int weapon1Ammo,
+            int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
         {
             throw new NativeNotImplementedException();
         }

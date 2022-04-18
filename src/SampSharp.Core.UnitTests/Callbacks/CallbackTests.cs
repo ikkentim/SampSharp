@@ -28,21 +28,28 @@ public class CallbackTests
     {
         // arrange
         var handler = (bool _, bool[] _, int _, int[] _, int _, float _, float[] _, int _, string _) => { };
-            
+
         // act
         var sut = Callback.For(handler.Target, handler.Method);
 
         // assert
         sut.Parameters.Length.ShouldBe(9);
-        sut.Parameters[0].ShouldBeOfType<CallbackParameterBoolean>();
-        sut.Parameters[1].ShouldBeOfType<CallbackParameterBooleanArray>();
-        sut.Parameters[2].ShouldBeOfType<CallbackParameterInt>();
-        sut.Parameters[3].ShouldBeOfType<CallbackParameterIntArray>();
-        sut.Parameters[5].ShouldBeOfType<CallbackParameterSingle>();
-        sut.Parameters[6].ShouldBeOfType<CallbackParameterSingleArray>();
-        sut.Parameters[8].ShouldBeOfType<CallbackParameterString>();
+        sut.Parameters[0]
+            .ShouldBeOfType<CallbackParameterBoolean>();
+        sut.Parameters[1]
+            .ShouldBeOfType<CallbackParameterBooleanArray>();
+        sut.Parameters[2]
+            .ShouldBeOfType<CallbackParameterInt>();
+        sut.Parameters[3]
+            .ShouldBeOfType<CallbackParameterIntArray>();
+        sut.Parameters[5]
+            .ShouldBeOfType<CallbackParameterSingle>();
+        sut.Parameters[6]
+            .ShouldBeOfType<CallbackParameterSingleArray>();
+        sut.Parameters[8]
+            .ShouldBeOfType<CallbackParameterString>();
     }
-        
+
     [Theory]
     [MemberData(nameof(For_TestScenarios))]
     public void For_should_assign_array_length_offset(Delegate handler, int parameterIndex, int expectedLengthOffset)
@@ -51,7 +58,8 @@ public class CallbackTests
         var sut = Callback.For(handler.Target, handler.Method);
 
         // assert
-        var param = sut.Parameters[parameterIndex].ShouldBeAssignableTo<ICallbackArrayParameter>()!;
+        var param = sut.Parameters[parameterIndex]
+            .ShouldBeAssignableTo<ICallbackArrayParameter>()!;
         param.LengthOffset.ShouldBe(expectedLengthOffset);
     }
 
@@ -73,7 +81,7 @@ public class CallbackTests
         yield return new object[] { (int _, [ParameterLength(0)] int[] _, int _, int _) => { }, 1, -1 };
         yield return new object[] { (int _, [ParameterLength(0)] float[] _, int _, int _) => { }, 1, -1 };
     }
-        
+
     [Fact]
     public void For_should_throw_when_parameter_length_out_of_bounds()
     {
@@ -109,7 +117,7 @@ public class CallbackTests
 
         // act
         var ex = Should.Throw<InvalidOperationException>(() => Callback.For(handler.Target, handler.Method));
-            
+
         // assert
         ex.Message.ShouldContain("integer");
     }
@@ -119,19 +127,15 @@ public class CallbackTests
     {
         // arrange
         var handler = (object[] _) => { };
-        var types = new[]
-        {
-            typeof(bool[]), typeof(bool), typeof(int[]), typeof(int), typeof(float[]), typeof(float),
-            typeof(string)
-        };
+        var types = new[] { typeof(bool[]), typeof(bool), typeof(int[]), typeof(int), typeof(float[]), typeof(float), typeof(string) };
 
         // act
         var ex = Should.Throw<InvalidOperationException>(() => Callback.For(handler.Target, handler.Method, types));
-            
+
         // assert
         ex.Message.ShouldContain("integer");
     }
-        
+
     [Fact]
     public void For_should_throw_with_unknown_parameter_types()
     {
@@ -140,7 +144,7 @@ public class CallbackTests
 
         // act
         var ex = Should.Throw<InvalidOperationException>(() => Callback.For(handler.Target, handler.Method));
-            
+
         // assert
         ex.Message.ShouldContain("unsupported");
     }
@@ -152,9 +156,8 @@ public class CallbackTests
         var handler = (object[] _) => { };
 
         // act
-        var ex = Should.Throw<InvalidOperationException>(() =>
-            Callback.For(handler.Target, handler.Method, new[] { typeof(int), typeof(double) }));
-            
+        var ex = Should.Throw<InvalidOperationException>(() => Callback.For(handler.Target, handler.Method, new[] { typeof(int), typeof(double) }));
+
         // assert
         ex.Message.ShouldContain("unsupported");
     }
@@ -169,12 +172,13 @@ public class CallbackTests
 
         // act
         var sut = Callback.For(handler.Target, handler.Method, types, lengths);
-            
+
         // assert
-        var param = sut.Parameters[1].ShouldBeAssignableTo<ICallbackArrayParameter>()!;
+        var param = sut.Parameters[1]
+            .ShouldBeAssignableTo<ICallbackArrayParameter>()!;
         param.LengthOffset.ShouldBe(2);
     }
-        
+
     [Fact]
     public unsafe void Invoke_should_call_handler()
     {

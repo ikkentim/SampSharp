@@ -23,9 +23,7 @@ namespace SampSharp.Entities.SAMP;
 [SuppressMessage("ReSharper", "IdentifierTypo")]
 public class NativeActor : BaseNativeComponent
 {
-    /// <summary>
-    /// Identifier indicating the handle is invalid.
-    /// </summary>
+    /// <summary>Identifier indicating the handle is invalid.</summary>
     public const int InvalidId = 0xFFFF;
 
     [NativeMethod]
@@ -113,8 +111,7 @@ public class NativeActor : BaseNativeComponent
     }
 
     [NativeMethod]
-    public virtual bool ApplyActorAnimation(string animlib, string animname, float fDelta,
-        bool loop, bool lockx, bool locky, bool freeze, int time)
+    public virtual bool ApplyActorAnimation(string animlib, string animname, float fDelta, bool loop, bool lockx, bool locky, bool freeze, int time)
     {
         throw new NativeNotImplementedException();
     }

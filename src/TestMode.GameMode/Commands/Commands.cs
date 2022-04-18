@@ -33,7 +33,7 @@ namespace TestMode.GameMode.Commands;
 internal static class Commands
 {
     [CommandGroup("test", "t")]
-    internal static class GroupHelpTest 
+    internal static class GroupHelpTest
     {
         // Issue 361 test
         [Command(IsGroupHelp = true)]
@@ -161,7 +161,7 @@ internal static class Commands
 
         await Task.Delay(5);
         player.SelectTextDraw(Color.Red);
-            
+
         player.ClickTextDraw += (_, args) =>
         {
             player.SendClientMessage($"Selected TD: {_td1 == args.TextDraw}");
@@ -182,7 +182,7 @@ internal static class Commands
         _td1?.Dispose();
         _td2?.Dispose();
     }
-        
+
     [Command("quattest")]
     public static void QuatTestCommand(BasePlayer player)
     {
@@ -211,27 +211,24 @@ internal static class Commands
             var offset = new Vector3(0, -size.Y / 2, bumper.Z);
 
             var rotation = vehicle.GetRotationQuat();
-                
+
             var mRotation = rotation.LengthSquared > 10000 // Unoccupied vehicle updates corrupt the internal vehicle world matrix
                 ? Matrix.CreateRotationZ(MathHelper.ToRadians(vehicle.Angle))
                 : Matrix.CreateFromQuaternion(rotation);
 
-            var matrix = Matrix.CreateTranslation(offset) *
-                         mRotation *
-                         Matrix.CreateTranslation(vehicle.Position);
+            var matrix = Matrix.CreateTranslation(offset) * mRotation * Matrix.CreateTranslation(vehicle.Position);
 
             var point = matrix.Translation;
 
             labels.Add(new TextLabel("[x]", Color.Blue, point, 100, 0, false));
         }
-            
+
         await Task.Delay(10000);
 
-        foreach(var l in labels)
+        foreach (var l in labels)
             l.Dispose();
-            
     }
-        
+
     [Command("rear2")]
     public static async void Rear2Command(BasePlayer player)
     {
@@ -246,17 +243,16 @@ internal static class Commands
             var offset = new Vector3(0, -size.Y / 2, bumper.Z);
 
             var rotation = vehicle.GetRotationQuat();
-                
+
             var point = vehicle.Position + Vector3.Transform(offset, rotation);
 
             labels.Add(new TextLabel("[x]", Color.Red, point, 100, 0, false));
         }
-            
+
         await Task.Delay(10000);
 
-        foreach(var l in labels)
+        foreach (var l in labels)
             l.Dispose();
-            
     }
 
     [Command("spawnat")]
@@ -277,7 +273,7 @@ internal static class Commands
         var vehicle = BaseVehicle.Create(type.Value, player.Position + Vector3.Up, player.Angle, -1, -1);
         player.PutInVehicle(vehicle);
     }
-        
+
     [Command("spawn2")]
     public static void SpawnCommand(BasePlayer player, VehicleModelType type)
     {
@@ -373,7 +369,6 @@ internal static class Commands
         Console.WriteLine("Showing dialog");
         try
         {
-
             await dialog.ShowAsync(player);
             Console.WriteLine("Dialog ended");
         }
@@ -383,6 +378,7 @@ internal static class Commands
             Console.WriteLine(e);
         }
     }
+
     [Command("weapon")]
     public static void WeaponCommand(BasePlayer player, Weapon weapon, int ammo = 30)
     {
@@ -405,8 +401,8 @@ internal static class Commands
     private static void Reverse(BasePlayer player, string message)
     {
         player.SendClientMessage($"{message} reversed: ");
-        message = new string(message.Reverse().ToArray());
+        message = new string(message.Reverse()
+            .ToArray());
         player.SendClientMessage(message);
     }
-
 }

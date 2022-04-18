@@ -17,14 +17,12 @@ using System;
 
 namespace SampSharp.Entities.SAMP.Commands.Parsers;
 
-/// <summary>
-/// Provides functionality for a parser of a command parameter.
-/// </summary>
+/// <summary>Provides functionality for a parser of a command parameter.</summary>
 public interface ICommandParameterParser
 {
     /// <summary>
-    /// Tries to parse the specified <paramref name="inputText" /> into the argument for this parser. The consumed text is
-    /// removed from the <paramref name="inputText" />.
+    /// Tries to parse the specified <paramref name="inputText" /> into the argument for this parser. The consumed text is removed from the
+    /// <paramref name="inputText" />.
     /// </summary>
     /// <param name="services">A service provider.</param>
     /// <param name="inputText">The input text to parse.</param>

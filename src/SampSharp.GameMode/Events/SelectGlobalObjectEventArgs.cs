@@ -18,21 +18,17 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events;
 
 /// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerSelectGlobalObject" />,
-///     <see cref="BasePlayer.SelectGlobalObject" />
-///     or <see cref="GlobalObject.Selected" /> event.
+/// Provides data for the <see cref="BaseMode.PlayerSelectGlobalObject" />, <see cref="BasePlayer.SelectGlobalObject" /> or
+/// <see cref="GlobalObject.Selected" /> event.
 /// </summary>
 public class SelectGlobalObjectEventArgs : PositionEventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="SelectGlobalObjectEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="SelectGlobalObjectEventArgs" /> class.</summary>
     /// <param name="player">The player.</param>
     /// <param name="object">The global object.</param>
     /// <param name="modelid">The model identifier.</param>
     /// <param name="position">The position.</param>
-    public SelectGlobalObjectEventArgs(BasePlayer player, GlobalObject @object, int modelid, Vector3 position)
-        : base(position)
+    public SelectGlobalObjectEventArgs(BasePlayer player, GlobalObject @object, int modelid, Vector3 position) : base(position)
     {
         Player = player;
         Object = @object;
@@ -44,56 +40,40 @@ public class SelectGlobalObjectEventArgs : PositionEventArgs
      * we add both to the event args so we can access what's not the sender.
      */
 
-    /// <summary>
-    ///     Gets the player.
-    /// </summary>
+    /// <summary>Gets the player.</summary>
     public BasePlayer Player { get; }
 
-    /// <summary>
-    ///     Gets the global object.
-    /// </summary>
+    /// <summary>Gets the global object.</summary>
     public GlobalObject Object { get; }
 
-    /// <summary>
-    ///     Gets the model identifier.
-    /// </summary>
+    /// <summary>Gets the model identifier.</summary>
     public int ModelId { get; }
 }
 
 /// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerSelectPlayerObject" />,
-///     <see cref="BasePlayer.SelectPlayerObject" />
-///     or <see cref="PlayerObject.Selected" /> event.
+/// Provides data for the <see cref="BaseMode.PlayerSelectPlayerObject" />, <see cref="BasePlayer.SelectPlayerObject" /> or
+/// <see cref="PlayerObject.Selected" /> event.
 /// </summary>
 public class SelectPlayerObjectEventArgs : PositionEventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="SelectPlayerObjectEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="SelectPlayerObjectEventArgs" /> class.</summary>
     /// <param name="player">The player.</param>
     /// <param name="object">The player object.</param>
     /// <param name="modelid">The model identifier.</param>
     /// <param name="position">The position.</param>
-    public SelectPlayerObjectEventArgs(BasePlayer player, PlayerObject @object, int modelid, Vector3 position)
-        : base(position)
+    public SelectPlayerObjectEventArgs(BasePlayer player, PlayerObject @object, int modelid, Vector3 position) : base(position)
     {
         Player = player;
         Object = @object;
         ModelId = modelid;
     }
 
-    /// <summary>
-    ///     Gets the player.
-    /// </summary>
+    /// <summary>Gets the player.</summary>
     public BasePlayer Player { get; }
 
-    /// <summary>
-    ///     Gets the player object.
-    /// </summary>
+    /// <summary>Gets the player object.</summary>
     public PlayerObject Object { get; }
 
-    /// <summary>
-    ///     Gets the model identifier.
-    /// </summary>
+    /// <summary>Gets the model identifier.</summary>
     public int ModelId { get; }
 }

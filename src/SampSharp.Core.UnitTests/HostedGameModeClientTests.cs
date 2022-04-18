@@ -31,13 +31,13 @@ public class HostedGameModeClientTests
 
         var args = new[] { 0 };
         var result = 0;
-            
+
         var sut = new HostedGameModeClient(Mock.Of<IGameModeProvider>(), Encoding.ASCII);
         sut.InitializeForTesting();
-        
+
         // act
         sut.RegisterCallback("OnTesting", handler.Target, handler.Method);
-            
+
         fixed (int* argsPtr = args)
         {
             sut.PublicCall(IntPtr.Zero, "OnTesting", (IntPtr)argsPtr, (IntPtr)(&result));
@@ -52,11 +52,10 @@ public class HostedGameModeClientTests
     {
         // arrange
         var handler = () => { };
-        
+
         var sut = new HostedGameModeClient(Mock.Of<IGameModeProvider>(), Encoding.ASCII);
 
         // act
-        Should.Throw<GameModeNotRunningException>(() =>
-            sut.RegisterCallback("OnTesting", handler.Target, handler.Method));
+        Should.Throw<GameModeNotRunningException>(() => sut.RegisterCallback("OnTesting", handler.Target, handler.Method));
     }
 }

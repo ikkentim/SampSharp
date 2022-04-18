@@ -19,45 +19,29 @@ using System.Runtime.Serialization;
 
 namespace SampSharp.Entities;
 
-/// <summary>
-/// The exception that is thrown when one of the arguments is of an invalid entity identifier type.
-/// </summary>
+/// <summary>The exception that is thrown when one of the arguments is of an invalid entity identifier type.</summary>
 [Serializable]
 public class InvalidEntityArgumentException : ArgumentException
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.</summary>
     /// <param name="paramName">Name of the parameter.</param>
     /// <param name="expectedType">The expected entity identifier type.</param>
     public InvalidEntityArgumentException(string paramName, Guid expectedType) : base(
-        $"Invalid entity identifier type, expected type to be {EntityTypeRegistry.GetTypeName(expectedType)}.",
-        paramName)
+        $"Invalid entity identifier type, expected type to be {EntityTypeRegistry.GetTypeName(expectedType)}.", paramName)
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.</summary>
     /// <param name="paramName">Name of the parameter.</param>
     /// <param name="expectedTypes">The expected entity identifier types.</param>
     public InvalidEntityArgumentException(string paramName, params Guid[] expectedTypes) : base(
-        $"Invalid entity identifier type, expected type to be any of {expectedTypes.Select(EntityTypeRegistry.GetTypeName)}.",
-        paramName)
+        $"Invalid entity identifier type, expected type to be any of {expectedTypes.Select(EntityTypeRegistry.GetTypeName)}.", paramName)
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.
-    /// </summary>
-    /// <param name="info">
-    /// The <see cref="SerializationInfo" /> that holds the serialized
-    /// object data about the exception being thrown.
-    /// </param>
-    /// <param name="context">
-    /// The <see cref="StreamingContext" /> that contains contextual
-    /// information about the source or destination.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="InvalidEntityArgumentException" /> class.</summary>
+    /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
+    /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
     protected InvalidEntityArgumentException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }

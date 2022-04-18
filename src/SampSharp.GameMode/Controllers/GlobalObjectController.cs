@@ -18,15 +18,11 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     A controller processing all global-object actions.
-/// </summary>
+/// <summary>A controller processing all global-object actions.</summary>
 [Controller]
 public class GlobalObjectController : Disposable, IEventListener, ITypeProvider
 {
-    /// <summary>
-    ///     Registers the events this GlobalObjectController wants to listen to.
-    /// </summary>
+    /// <summary>Registers the events this GlobalObjectController wants to listen to.</summary>
     /// <param name="gameMode">The running GameMode.</param>
     public virtual void RegisterEvents(BaseMode gameMode)
     {
@@ -35,17 +31,13 @@ public class GlobalObjectController : Disposable, IEventListener, ITypeProvider
         gameMode.PlayerSelectGlobalObject += (_, args) => args.Object?.OnSelected(args);
     }
 
-    /// <summary>
-    ///     Registers types this GlobalObjectController requires the system to use.
-    /// </summary>
+    /// <summary>Registers types this GlobalObjectController requires the system to use.</summary>
     public virtual void RegisterTypes()
     {
         GlobalObject.Register<GlobalObject>();
     }
 
-    /// <summary>
-    ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <summary>Performs tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     /// <param name="disposing">Whether managed resources should be disposed.</param>
     protected override void Dispose(bool disposing)
     {

@@ -17,49 +17,38 @@ using System;
 
 namespace SampSharp.Entities;
 
-/// <summary>
-/// Provides extended functionality for the <see cref="EntityId" /> struct.
-/// </summary>
+/// <summary>Provides extended functionality for the <see cref="EntityId" /> struct.</summary>
 public static class EntityExtensions
 {
-    /// <summary>
-    /// Returns a value indicating whether the entity identifier of the specified <paramref name="entity" /> is of the
-    /// specified <paramref name="type" />.
-    /// </summary>
+    /// <summary>Returns a value indicating whether the entity identifier of the specified <paramref name="entity" /> is of the specified <paramref name="type" />.</summary>
     /// <param name="entity">The entity to check.</param>
     /// <param name="type">The entity identifier type to check for.</param>
-    /// <returns>
-    /// A value indicating whether the entity identifier of the specified <paramref name="entity" /> is of the
-    /// specified <paramref name="type" />.
-    /// </returns>
+    /// <returns>A value indicating whether the entity identifier of the specified <paramref name="entity" /> is of the specified <paramref name="type" />.</returns>
     public static bool IsOfType(this EntityId entity, Guid type)
     {
         return entity.Type == type;
     }
 
     /// <summary>
-    /// Returns a value indicating whether the entity identifier of the specified <paramref name="entity" /> is of any of the
-    /// specified <paramref name="types" />.
+    /// Returns a value indicating whether the entity identifier of the specified <paramref name="entity" /> is of any of the specified
+    /// <paramref name="types" />.
     /// </summary>
     /// <param name="entity">The entity to check.</param>
     /// <param name="types">The entity identifier types to check for.</param>
-    /// <returns>
-    /// A value indicating whether the entity identifier of the specified <paramref name="entity" /> is of any of the
-    /// specified <paramref name="types" />.
-    /// </returns>
+    /// <returns>A value indicating whether the entity identifier of the specified <paramref name="entity" /> is of any of the specified <paramref name="types" />.</returns>
     public static bool IsOfAnyType(this EntityId entity, params Guid[] types)
     {
         return types != null && Array.IndexOf(types, entity.Type) >= 0;
     }
 
-    /// <summary>
-    /// Returns the handle of the entity or the specified <paramref name="default" /> value if the entity is empty.
-    /// </summary>
+    /// <summary>Returns the handle of the entity or the specified <paramref name="default" /> value if the entity is empty.</summary>
     /// <param name="entity">The entity to get the handle of.</param>
     /// <param name="default">The default value to return if the specified entity is empty.</param>
     /// <returns>The handle of entity or the specified <paramref name="default" /> value if the entity is empty.</returns>
     public static int HandleOrDefault(this EntityId entity, int @default)
     {
-        return !entity ? @default : entity.Handle;
+        return !entity
+            ? @default
+            : entity.Handle;
     }
 }

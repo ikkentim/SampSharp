@@ -33,53 +33,52 @@ internal class SampSharpSynchronizationContext : SynchronizationContext
         if (item.ExecutedWithException)
             throw item.Exception;
     }
-        
+
     public override void Post(SendOrPostCallback d, object state)
     {
         // Queue the item and don't wait for its execution. 
         var item = new SendOrPostCallbackItem(d, state, ExecutionType.Post);
         _queue.Enqueue(item);
     }
-        
+
     public override SynchronizationContext CreateCopy()
     {
         // Do not copy
         return this;
     }
-        
+
     public SendOrPostCallbackItem GetMessage()
     {
         _queue.TryDequeue(out var result);
         return result;
     }
-        
+
     internal enum ExecutionType
     {
         Post,
         Send
     }
-        
+
     internal class SendOrPostCallbackItem
     {
         private readonly ManualResetEvent _asyncWaitHandle = new(false);
         private readonly ExecutionType _executionType;
         private readonly SendOrPostCallback _method;
         private readonly object _state;
-            
-        internal SendOrPostCallbackItem(SendOrPostCallback callback,
-            object state, ExecutionType type)
+
+        internal SendOrPostCallbackItem(SendOrPostCallback callback, object state, ExecutionType type)
         {
             _method = callback;
             _state = state;
             _executionType = type;
         }
-            
+
         public Exception Exception { get; private set; }
-            
+
         public bool ExecutedWithException => Exception != null;
-            
+
         public WaitHandle ExecutionCompleteWaitHandle => _asyncWaitHandle;
-            
+
         public void Execute()
         {
             if (_executionType == ExecutionType.Send)

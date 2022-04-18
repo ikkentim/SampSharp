@@ -17,23 +17,17 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP.Commands;
 
-/// <summary>
-///     Represents a player command.
-/// </summary>
+/// <summary>Represents a player command.</summary>
 public interface ICommand
 {
-    /// <summary>
-    ///     Determines whether this instance can be invoked by the specified player.
-    /// </summary>
+    /// <summary>Determines whether this instance can be invoked by the specified player.</summary>
     /// <param name="player">The player.</param>
     /// <param name="commandText">The command text.</param>
     /// <param name="matchedNameLength">This value is set to the length of the name of this command which the command text was matched with.</param>
     /// <returns>A value indicating whether this instance can be invoked.</returns>
     CommandCallableResponse CanInvoke(BasePlayer player, string commandText, out int matchedNameLength);
 
-    /// <summary>
-    ///     Invokes this command.
-    /// </summary>
+    /// <summary>Invokes this command.</summary>
     /// <param name="player">The player.</param>
     /// <param name="commandText">The command text.</param>
     /// <returns>true on success; false otherwise.</returns>

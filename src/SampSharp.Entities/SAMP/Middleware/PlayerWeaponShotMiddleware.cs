@@ -28,16 +28,16 @@ internal class PlayerWeaponShotMiddleware
     public object Invoke(EventContext context, IEntityManager entityManager)
     {
         var inArgs = context.Arguments;
-        var playerEntity = SampEntities.GetPlayerId((int) inArgs[0]);
-            
+        var playerEntity = SampEntities.GetPlayerId((int)inArgs[0]);
+
         if (!entityManager.Exists(playerEntity))
             return null;
 
-        var hitType = (int) context.Arguments[2];
-        var hitId = (int) context.Arguments[3];
+        var hitType = (int)context.Arguments[2];
+        var hitId = (int)context.Arguments[3];
 
         EntityId hit;
-        switch ((BulletHitType) hitType)
+        switch ((BulletHitType)hitType)
         {
             case BulletHitType.Vehicle:
                 hit = SampEntities.GetVehicleId(hitId);

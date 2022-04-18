@@ -18,32 +18,24 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     A controller processing all pickup actions.
-/// </summary>
+/// <summary>A controller processing all pickup actions.</summary>
 [Controller]
 public class PickupController : Disposable, IEventListener, ITypeProvider
 {
-    /// <summary>
-    ///     Registers the events this TextDrawController wants to listen to.
-    /// </summary>
+    /// <summary>Registers the events this TextDrawController wants to listen to.</summary>
     /// <param name="gameMode">The running GameMode.</param>
     public virtual void RegisterEvents(BaseMode gameMode)
     {
         gameMode.PlayerPickUpPickup += (_, args) => args.Pickup?.OnPickUp(args);
     }
 
-    /// <summary>
-    ///     Registers types this PickupController requires the system to use.
-    /// </summary>
+    /// <summary>Registers types this PickupController requires the system to use.</summary>
     public virtual void RegisterTypes()
     {
         Pickup.Register<Pickup>();
     }
 
-    /// <summary>
-    ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <summary>Performs tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     /// <param name="disposing">Whether managed resources should be disposed.</param>
     protected override void Dispose(bool disposing)
     {

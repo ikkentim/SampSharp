@@ -18,32 +18,26 @@ using SampSharp.GameMode.Controllers;
 
 namespace SampSharp.GameMode;
 
-/// <summary>
-///     Contains methods for registering SampSharp extensions and represents a simple base class for extensions.
-/// </summary>
+/// <summary>Contains methods for registering SampSharp extensions and represents a simple base class for extensions.</summary>
 public abstract class Extension : IExtension
 {
-    /// <summary>
-    ///     Loads services provided by this extensions.
-    /// </summary>
+    /// <summary>Loads services provided by this extensions.</summary>
     /// <param name="gameMode">The game mode.</param>
     public virtual void LoadServices(BaseMode gameMode)
     {
     }
 
-    /// <summary>
-    ///     Loads controllers provided by this extensions.
-    /// </summary>
+    /// <summary>Loads controllers provided by this extensions.</summary>
     /// <param name="gameMode">The game mode.</param>
     /// <param name="controllerCollection">The controller collection.</param>
     public virtual void LoadControllers(BaseMode gameMode, ControllerCollection controllerCollection)
     {
-        gameMode.AutoloadControllersForAssembly(GetType().GetTypeInfo().Assembly);
+        gameMode.AutoloadControllersForAssembly(GetType()
+            .GetTypeInfo()
+            .Assembly);
     }
 
-    /// <summary>
-    ///     Performs post-load actions.
-    /// </summary>
+    /// <summary>Performs post-load actions.</summary>
     /// <param name="gameMode">The game mode.</param>
     public virtual void PostLoad(BaseMode gameMode)
     {

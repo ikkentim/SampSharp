@@ -31,7 +31,8 @@ public class FunnyService : IScopedFunnyService
 
     public string MakePlayerNameFunny(EntityId player)
     {
-        var name = _entityManager.GetComponent<Player>(player).Name;
+        var name = _entityManager.GetComponent<Player>(player)
+            .Name;
 
         return string.Create(name.Length, name, (span, orig) =>
         {

@@ -67,5 +67,4 @@ public class BasicCommandsSystem : ISystem
     {
         player.SendClientMessage(-1, $"You are at {player.Position}");
     }
-
 }

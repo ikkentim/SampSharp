@@ -15,24 +15,15 @@
 
 namespace SampSharp.GameMode.SAMP.Commands;
 
-/// <summary>
-/// Contains the responses available for callable commands
-/// </summary>
+/// <summary>Contains the responses available for callable commands</summary>
 public enum CommandCallableResponse
 {
-    /// <summary>
-    ///     The specified parameters don't allow this command to be called.
-    /// </summary>
+    /// <summary>The specified parameters don't allow this command to be called.</summary>
     False,
 
-    /// <summary>
-    ///     The specified parameters require this command to be called.
-    /// </summary>
+    /// <summary>The specified parameters require this command to be called.</summary>
     True,
 
-    /// <summary>
-    ///     The specified parameters allow this command to be called unless a different command accepts the parameters with a
-    ///     'True' response.
-    /// </summary>
+    /// <summary>The specified parameters allow this command to be called unless a different command accepts the parameters with a 'True' response.</summary>
     Optional
 }

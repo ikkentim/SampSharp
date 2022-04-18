@@ -18,29 +18,23 @@ using System.Text;
 
 namespace SampSharp.Core;
 
-/// <summary>
-///     Represents a configuration build for running a SampSharp game mode.
-/// </summary>
+/// <summary>Represents a configuration build for running a SampSharp game mode.</summary>
 public sealed class GameModeBuilder
 {
     private IGameModeProvider _gameModeProvider;
     private Encoding _encoding;
-        
+
     private GameModeRunnerFactory _create;
     private GameModeRunnerRun _run;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GameModeBuilder" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="GameModeBuilder" /> class.</summary>
     public GameModeBuilder()
     {
         _create = Build;
         _run = InnerRun;
     }
-        
-    /// <summary>
-    ///     Use the specified <paramref name="encoding" /> when en/decoding text messages sent to/from the server.
-    /// </summary>
+
+    /// <summary>Use the specified <paramref name="encoding" /> when en/decoding text messages sent to/from the server.</summary>
     /// <param name="encoding">The encoding to use when en/decoding text messages send to/from the server.</param>
     /// <returns>The updated game mode configuration builder.</returns>
     public GameModeBuilder UseEncoding(Encoding encoding)
@@ -48,10 +42,8 @@ public sealed class GameModeBuilder
         _encoding = encoding ?? throw new ArgumentNullException(nameof(encoding));
         return this;
     }
-        
-    /// <summary>
-    ///     Use the specified game mode.
-    /// </summary>
+
+    /// <summary>Use the specified game mode.</summary>
     /// <param name="gameMode">The game mode to use.</param>
     /// <returns>The updated game mode configuration builder.</returns>
     public GameModeBuilder Use(IGameModeProvider gameMode)
@@ -60,19 +52,15 @@ public sealed class GameModeBuilder
         return this;
     }
 
-    /// <summary>
-    ///     Use the game mode of the specified <typeparamref name="TGameMode" /> type.
-    /// </summary>
+    /// <summary>Use the game mode of the specified <typeparamref name="TGameMode" /> type.</summary>
     /// <typeparam name="TGameMode">The type of the game mode to use.</typeparam>
     /// <returns>The updated game mode configuration builder.</returns>
     public GameModeBuilder Use<TGameMode>() where TGameMode : IGameModeProvider
     {
         return Use(Activator.CreateInstance<TGameMode>());
     }
-        
-    /// <summary>
-    /// Adds a build action to the game mode builder.
-    /// </summary>
+
+    /// <summary>Adds a build action to the game mode builder.</summary>
     /// <param name="action">The action to add.</param>
     /// <returns>The updated game mode configuration builder.</returns>
     public GameModeBuilder AddBuildAction(Func<GameModeRunnerFactory, IGameModeRunner> action)
@@ -82,10 +70,8 @@ public sealed class GameModeBuilder
 
         return this;
     }
-      
-    /// <summary>
-    /// Adds a run action to the game mode builder.
-    /// </summary>
+
+    /// <summary>Adds a run action to the game mode builder.</summary>
     /// <param name="action">The action to add.</param>
     /// <returns>The updated game mode configuration builder.</returns>
     public GameModeBuilder AddRunAction(Action<IGameModeRunner, GameModeRunnerRun> action)
@@ -96,17 +82,14 @@ public sealed class GameModeBuilder
         return this;
     }
 
-    /// <summary>
-    ///     Run the game mode using the build configuration stored in this instance.
-    /// </summary>
+    /// <summary>Run the game mode using the build configuration stored in this instance.</summary>
     public void Run()
     {
-        var runner = _create() ??
-                     throw new GameModeBuilderException("No game mode runner was created by the builder.");
+        var runner = _create() ?? throw new GameModeBuilderException("No game mode runner was created by the builder.");
 
         _run(runner);
     }
-        
+
     private void InnerRun(IGameModeRunner runner)
     {
         runner.Run();

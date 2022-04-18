@@ -15,31 +15,19 @@
 
 namespace SampSharp.GameMode.Definitions;
 
-/// <summary>
-///     Contains all map icon styles.
-/// </summary>
-/// <remarks>
-///     See <see href="https://www.open.mp/docs/scripting/resources/mapiconstyles">https://www.open.mp/docs/scripting/resources/mapiconstyles</see>.
-/// </remarks>
+/// <summary>Contains all map icon styles.</summary>
+/// <remarks>See <see href="https://www.open.mp/docs/scripting/resources/mapiconstyles">https://www.open.mp/docs/scripting/resources/mapiconstyles</see>.</remarks>
 public enum MapIconType
 {
-    /// <summary>
-    ///     Displays in the player's local are.
-    /// </summary>
+    /// <summary>Displays in the player's local are.</summary>
     Local = 0,
 
-    /// <summary>
-    ///     Displays always.
-    /// </summary>
+    /// <summary>Displays always.</summary>
     Global = 1,
 
-    /// <summary>
-    ///     Displays in the player's local area and has a checkpoint marker.
-    /// </summary>
+    /// <summary>Displays in the player's local area and has a checkpoint marker.</summary>
     LocalCheckPoint = 2,
 
-    /// <summary>
-    ///     Displays always and has a checkpoint marker.
-    /// </summary>
+    /// <summary>Displays always and has a checkpoint marker.</summary>
     GlobalCheckPoint = 3
 }

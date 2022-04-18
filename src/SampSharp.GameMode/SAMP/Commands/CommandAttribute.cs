@@ -17,23 +17,17 @@ using System;
 
 namespace SampSharp.GameMode.SAMP.Commands;
 
-/// <summary>
-/// Indicates a method is a player command.
-/// </summary>
+/// <summary>Indicates a method is a player command.</summary>
 [AttributeUsage(AttributeTargets.Method)]
 public class CommandAttribute : Attribute
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CommandAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="CommandAttribute" /> class.</summary>
     /// <param name="name">The name of the command.</param>
-    public CommandAttribute(string name) : this(new[] {name})
+    public CommandAttribute(string name) : this(new[] { name })
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CommandAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="CommandAttribute" /> class.</summary>
     /// <param name="names">The names of the command.</param>
     public CommandAttribute(params string[] names)
     {
@@ -41,39 +35,27 @@ public class CommandAttribute : Attribute
         IgnoreCase = true;
     }
 
-    /// <summary>
-    /// Gets the names.
-    /// </summary>
+    /// <summary>Gets the names.</summary>
     public string[] Names { get; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether this command is a command group help command. The names of this command will be
-    /// ignored, this command will be executed if the command group of this command is run without a specific command.
+    /// Gets or sets a value indicating whether this command is a command group help command. The names of this command will be ignored, this command will be
+    /// executed if the command group of this command is run without a specific command.
     /// </summary>
     public bool IsGroupHelp { get; set; }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether to ignore the case of the command.
-    /// </summary>
+    /// <summary>Gets or sets a value indicating whether to ignore the case of the command.</summary>
     public bool IgnoreCase { get; set; }
 
-    /// <summary>
-    /// Gets or sets the shortcut.
-    /// </summary>
+    /// <summary>Gets or sets the shortcut.</summary>
     public string Shortcut { get; set; }
 
-    /// <summary>
-    /// Gets or sets the display name.
-    /// </summary>
+    /// <summary>Gets or sets the display name.</summary>
     public string DisplayName { get; set; }
 
-    /// <summary>
-    /// Gets or sets the usage message.
-    /// </summary>
+    /// <summary>Gets or sets the usage message.</summary>
     public string UsageMessage { get; set; }
 
-    /// <summary>
-    /// Gets or sets the permission checker type.
-    /// </summary>
+    /// <summary>Gets or sets the permission checker type.</summary>
     public Type PermissionChecker { get; set; }
 }

@@ -15,22 +15,16 @@
 
 namespace SampSharp.GameMode;
 
-/// <summary>
-///     Defines the base implementation for the <see cref="IService" />.
-/// </summary>
+/// <summary>Defines the base implementation for the <see cref="IService" />.</summary>
 public abstract class Service : IService
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="Service" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="Service" /> class.</summary>
     /// <param name="gameMode">The game mode.</param>
     protected Service(BaseMode gameMode)
     {
         GameMode = gameMode;
     }
 
-    /// <summary>
-    ///     Gets the game mode.
-    /// </summary>
+    /// <summary>Gets the game mode.</summary>
     public virtual BaseMode GameMode { get; }
 }

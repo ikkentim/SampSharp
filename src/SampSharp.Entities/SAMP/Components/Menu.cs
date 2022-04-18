@@ -17,9 +17,7 @@ using System;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Represents a component which provides the data and functionality of a menu.
-/// </summary>
+/// <summary>Represents a component which provides the data and functionality of a menu.</summary>
 public sealed class Menu : Component
 {
     private string _col0Header;
@@ -34,126 +32,111 @@ public sealed class Menu : Component
         Col1Width = col1Width;
     }
 
-    /// <summary>
-    /// Gets the title of this menu.
-    /// </summary>
+    /// <summary>Gets the title of this menu.</summary>
     public string Title { get; }
 
-    /// <summary>
-    /// Gets the number of columns in this menu.
-    /// </summary>
+    /// <summary>Gets the number of columns in this menu.</summary>
     public int Columns { get; }
 
-    /// <summary>
-    /// Gets the position of this menu.
-    /// </summary>
+    /// <summary>Gets the position of this menu.</summary>
     public Vector2 Position { get; }
 
-    /// <summary>
-    /// Gets the width of the left column in this menu.
-    /// </summary>
+    /// <summary>Gets the width of the left column in this menu.</summary>
     public float Col0Width { get; }
 
-    /// <summary>
-    /// Gets the width of the right column in this menu.
-    /// </summary>
+    /// <summary>Gets the width of the right column in this menu.</summary>
     public float Col1Width { get; }
 
-    /// <summary>
-    /// Gets or sets the caption of the left column in this menu.
-    /// </summary>
+    /// <summary>Gets or sets the caption of the left column in this menu.</summary>
     public string Col0Header
     {
         get => _col0Header;
         set
         {
-            GetComponent<NativeMenu>().SetMenuColumnHeader(0, value);
+            GetComponent<NativeMenu>()
+                .SetMenuColumnHeader(0, value);
             _col0Header = value;
         }
     }
 
-    /// <summary>
-    /// Gets or sets the caption of the right column in this menu.
-    /// </summary>
+    /// <summary>Gets or sets the caption of the right column in this menu.</summary>
     public string Col1Header
     {
         get => _col1Header;
         set
         {
-            GetComponent<NativeMenu>().SetMenuColumnHeader(1, value);
+            GetComponent<NativeMenu>()
+                .SetMenuColumnHeader(1, value);
             _col1Header = value;
         }
     }
 
-    /// <summary>
-    /// Adds an item to this menu.
-    /// </summary>
+    /// <summary>Adds an item to this menu.</summary>
     /// <param name="col0Text">The text for the left column.</param>
     /// <param name="col1Text">The text for the right column. If this menu only has one column, this value is ignored.</param>
     /// <returns>The index of the row this item was added to.</returns>
     /// <remarks>
-    /// You can only have 12 items per menu (13th goes to the right side of the header of column name (colored), 14th
-    /// and higher not display at all). Maximum length of menu item is 31 symbols.
+    /// You can only have 12 items per menu (13th goes to the right side of the header of column name (colored), 14th and higher not display at all). Maximum
+    /// length of menu item is 31 symbols.
     /// </remarks>
     public int AddItem(string col0Text, string col1Text = null)
     {
         if (col0Text == null) throw new ArgumentNullException(nameof(col0Text));
 
-        if(col1Text == null && Columns == 2)
+        if (col1Text == null && Columns == 2)
             throw new ArgumentNullException(nameof(col1Text), "The text for the right column may not be null because this menu has 2 columns.");
 
-        var result = GetComponent<NativeMenu>().AddMenuItem(0, col0Text);
+        var result = GetComponent<NativeMenu>()
+            .AddMenuItem(0, col0Text);
 
         if (Columns == 2)
-            GetComponent<NativeMenu>().AddMenuItem(1, col1Text);
+            GetComponent<NativeMenu>()
+                .AddMenuItem(1, col1Text);
 
         return result;
     }
 
-    /// <summary>
-    /// Shows this menu for the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Shows this menu for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     public void Show(EntityId player)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-        GetComponent<NativeMenu>().ShowMenuForPlayer(player);
+        GetComponent<NativeMenu>()
+            .ShowMenuForPlayer(player);
     }
 
-    /// <summary>
-    /// Hides this menu for the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Hides this menu for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     public void Hide(EntityId player)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-        GetComponent<NativeMenu>().HideMenuForPlayer(player);
+        GetComponent<NativeMenu>()
+            .HideMenuForPlayer(player);
     }
 
-    /// <summary>
-    /// Disable input for this menu. Any item will lose the ability to be selected.
-    /// </summary>
+    /// <summary>Disable input for this menu. Any item will lose the ability to be selected.</summary>
     public void Disable()
     {
-        GetComponent<NativeMenu>().DisableMenu();
+        GetComponent<NativeMenu>()
+            .DisableMenu();
     }
 
-    /// <summary>
-    /// Disable a specific row in this menu for all players. It will be grayed-out and can't be selected by players.
-    /// </summary>
+    /// <summary>Disable a specific row in this menu for all players. It will be grayed-out and can't be selected by players.</summary>
     /// <param name="row">The index of the row to disable.</param>
     public void DisableRow(int row)
     {
-        GetComponent<NativeMenu>().DisableMenuRow(row);
+        GetComponent<NativeMenu>()
+            .DisableMenuRow(row);
     }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        GetComponent<NativeMenu>().DestroyMenu();
+        GetComponent<NativeMenu>()
+            .DestroyMenu();
     }
 }

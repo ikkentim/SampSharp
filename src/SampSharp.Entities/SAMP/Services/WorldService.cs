@@ -17,17 +17,13 @@ using System;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Represents a service for adding entities to and control the SA:MP world.
-/// </summary>
+/// <summary>Represents a service for adding entities to and control the SA:MP world.</summary>
 public class WorldService : IWorldService
 {
     private readonly IEntityManager _entityManager;
     private readonly WorldServiceNative _native;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="WorldService" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="WorldService" /> class.</summary>
     public WorldService(IEntityManager entityManager, INativeProxy<WorldServiceNative> nativeProxy)
     {
         _entityManager = entityManager;
@@ -41,8 +37,7 @@ public class WorldService : IWorldService
         set
         {
             if (value < -50 || value > 50)
-                throw new ArgumentOutOfRangeException(nameof(value), value,
-                    "Value must be between -50.0 and 50.0.");
+                throw new ArgumentOutOfRangeException(nameof(value), value, "Value must be between -50.0 and 50.0.");
 
             _native.SetGravity(value);
         }
@@ -51,8 +46,7 @@ public class WorldService : IWorldService
     /// <inheritdoc />
     public Actor CreateActor(int modelId, Vector3 position, float rotation, EntityId parent = default)
     {
-        var id = _native
-            .CreateActor(modelId, position.X, position.Y, position.Z, rotation);
+        var id = _native.CreateActor(modelId, position.X, position.Y, position.Z, rotation);
 
         if (id == NativeActor.InvalidId)
             throw new EntityCreationException();
@@ -65,12 +59,11 @@ public class WorldService : IWorldService
     }
 
     /// <inheritdoc />
-    public Vehicle CreateVehicle(VehicleModelType type, Vector3 position, float rotation, int color1, int color2,
-        int respawnDelay = -1, bool addSiren = false, EntityId parent = default)
+    public Vehicle CreateVehicle(VehicleModelType type, Vector3 position, float rotation, int color1, int color2, int respawnDelay = -1, bool addSiren = false,
+        EntityId parent = default)
     {
-        var id = _native.CreateVehicle((int) type, position.X, position.Y, position.Z,
-            rotation, color1, color2, respawnDelay, addSiren);
-            
+        var id = _native.CreateVehicle((int)type, position.X, position.Y, position.Z, rotation, color1, color2, respawnDelay, addSiren);
+
         if (id == NativeVehicle.InvalidId)
             throw new EntityCreationException();
 
@@ -82,15 +75,13 @@ public class WorldService : IWorldService
     }
 
     /// <inheritdoc />
-    public Vehicle CreateStaticVehicle(VehicleModelType type, Vector3 position, float rotation, int color1,
-        int color2, int respawnDelay = -1, bool addSiren = false, EntityId parent = default)
+    public Vehicle CreateStaticVehicle(VehicleModelType type, Vector3 position, float rotation, int color1, int color2, int respawnDelay = -1,
+        bool addSiren = false, EntityId parent = default)
     {
         var id = respawnDelay == -1 && !addSiren
-            ? _native.AddStaticVehicle((int) type, position.X, position.Y, position.Z,
-                rotation, color1, color2)
-            : _native.AddStaticVehicleEx((int) type, position.X, position.Y, position.Z,
-                rotation, color1, color2, respawnDelay, addSiren);
-            
+            ? _native.AddStaticVehicle((int)type, position.X, position.Y, position.Z, rotation, color1, color2)
+            : _native.AddStaticVehicleEx((int)type, position.X, position.Y, position.Z, rotation, color1, color2, respawnDelay, addSiren);
+
         if (id == NativeVehicle.InvalidId)
             throw new EntityCreationException();
 
@@ -111,7 +102,7 @@ public class WorldService : IWorldService
 
         var entity = SampEntities.GetGangZoneId(id);
         _entityManager.Create(entity, parent);
-            
+
         _entityManager.AddComponent<NativeGangZone>(entity);
         return _entityManager.AddComponent<GangZone>(entity, minX, minY, maxX, maxY);
     }
@@ -119,8 +110,8 @@ public class WorldService : IWorldService
     /// <inheritdoc />
     public Pickup CreatePickup(int model, PickupType type, Vector3 position, int virtualWorld = -1, EntityId parent = default)
     {
-        var id = _native.CreatePickup(model, (int) type, position.X, position.Y, position.Z, virtualWorld);
-            
+        var id = _native.CreatePickup(model, (int)type, position.X, position.Y, position.Z, virtualWorld);
+
         if (id == NativePickup.InvalidId)
             throw new EntityCreationException();
 
@@ -134,15 +125,14 @@ public class WorldService : IWorldService
     /// <inheritdoc />
     public bool AddStaticPickup(int model, PickupType type, Vector3 position, int virtualWorld = -1)
     {
-        return _native.AddStaticPickup(model, (int) type, position.X, position.Y, position.Z, virtualWorld);
+        return _native.AddStaticPickup(model, (int)type, position.X, position.Y, position.Z, virtualWorld);
     }
 
     /// <inheritdoc />
     public GlobalObject CreateObject(int modelId, Vector3 position, Vector3 rotation, float drawDistance, EntityId parent = default)
     {
-        var id = _native.CreateObject(modelId, position.X, position.Y, position.Z,
-            rotation.X, rotation.Y, rotation.Z, drawDistance);
-            
+        var id = _native.CreateObject(modelId, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z, drawDistance);
+
         if (id == NativeObject.InvalidId)
             throw new EntityCreationException();
 
@@ -154,15 +144,13 @@ public class WorldService : IWorldService
     }
 
     /// <inheritdoc />
-    public PlayerObject CreatePlayerObject(EntityId player, int modelId, Vector3 position, Vector3 rotation,
-        float drawDistance)
+    public PlayerObject CreatePlayerObject(EntityId player, int modelId, Vector3 position, Vector3 rotation, float drawDistance)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-        var id = _native.CreatePlayerObject(player, modelId, position.X, position.Y,
-            position.Z, rotation.X, rotation.Y, rotation.Z, drawDistance);
-            
+        var id = _native.CreatePlayerObject(player, modelId, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z, drawDistance);
+
         if (id == NativePlayerObject.InvalidId)
             throw new EntityCreationException();
 
@@ -174,12 +162,11 @@ public class WorldService : IWorldService
     }
 
     /// <inheritdoc />
-    public TextLabel CreateTextLabel(string text, Color color, Vector3 position, float drawDistance,
-        int virtualWorld = 0, bool testLos = true, EntityId parent = default)
+    public TextLabel CreateTextLabel(string text, Color color, Vector3 position, float drawDistance, int virtualWorld = 0, bool testLos = true,
+        EntityId parent = default)
     {
-        var id = _native.Create3DTextLabel(text, color, position.X, position.Y,
-            position.Z, drawDistance, virtualWorld, testLos);
-            
+        var id = _native.Create3DTextLabel(text, color, position.X, position.Y, position.Z, drawDistance, virtualWorld, testLos);
+
         if (id == NativeTextLabel.InvalidId)
             throw new EntityCreationException();
 
@@ -191,8 +178,8 @@ public class WorldService : IWorldService
     }
 
     /// <inheritdoc />
-    public PlayerTextLabel CreatePlayerTextLabel(EntityId player, string text, Color color, Vector3 position,
-        float drawDistance, bool testLos = true, EntityId attachedTo = default)
+    public PlayerTextLabel CreatePlayerTextLabel(EntityId player, string text, Color color, Vector3 position, float drawDistance, bool testLos = true,
+        EntityId attachedTo = default)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
@@ -203,8 +190,7 @@ public class WorldService : IWorldService
         if (attachedTo)
         {
             if (!player.IsOfAnyType(SampEntities.PlayerType, SampEntities.VehicleType))
-                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType,
-                    SampEntities.VehicleType);
+                throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType, SampEntities.VehicleType);
 
             if (attachedTo.IsOfType(SampEntities.PlayerType))
                 attachPlayer = attachedTo;
@@ -212,9 +198,8 @@ public class WorldService : IWorldService
                 attachVehicle = attachedTo;
         }
 
-        var id = _native.CreatePlayer3DTextLabel(player, text, color, position.X,
-            position.Y, position.Z, drawDistance, attachPlayer, attachVehicle, testLos);
-            
+        var id = _native.CreatePlayer3DTextLabel(player, text, color, position.X, position.Y, position.Z, drawDistance, attachPlayer, attachVehicle, testLos);
+
         if (id == NativePlayerTextLabel.InvalidId)
             throw new EntityCreationException();
 
@@ -228,8 +213,10 @@ public class WorldService : IWorldService
     /// <inheritdoc />
     public TextDraw CreateTextDraw(Vector2 position, string text, EntityId parent = default)
     {
-        var id = _native.TextDrawCreate(position.X, position.Y, string.IsNullOrEmpty(text) ? "_" : text);
-            
+        var id = _native.TextDrawCreate(position.X, position.Y, string.IsNullOrEmpty(text)
+            ? "_"
+            : text);
+
         if (id == NativeTextDraw.InvalidId)
             throw new EntityCreationException();
 
@@ -239,15 +226,17 @@ public class WorldService : IWorldService
         _entityManager.AddComponent<NativeTextDraw>(entity);
         return _entityManager.AddComponent<TextDraw>(entity, position, text);
     }
-        
+
     /// <inheritdoc />
     public PlayerTextDraw CreatePlayerTextDraw(EntityId player, Vector2 position, string text)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-        var id = _native.CreatePlayerTextDraw(player, position.X, position.Y, string.IsNullOrEmpty(text) ? "_" : text);
-            
+        var id = _native.CreatePlayerTextDraw(player, position.X, position.Y, string.IsNullOrEmpty(text)
+            ? "_"
+            : text);
+
         if (id == NativePlayerTextDraw.InvalidId)
             throw new EntityCreationException();
 
@@ -257,14 +246,16 @@ public class WorldService : IWorldService
         _entityManager.AddComponent<NativePlayerTextDraw>(entity);
         return _entityManager.AddComponent<PlayerTextDraw>(entity, position, text);
     }
-        
+
     /// <inheritdoc />
     public Menu CreateMenu(string title, Vector2 position, float col0Width, float? col1Width = null, EntityId parent = default)
     {
-        var columns = col1Width != null ? 2 : 1;
+        var columns = col1Width != null
+            ? 2
+            : 1;
 
         var id = _native.CreateMenu(title, columns, position.X, position.Y, col0Width, col1Width ?? 0.0f);
-            
+
         if (id == -1) // NOT NativeMenu.InvalidId
             throw new EntityCreationException();
 
@@ -323,7 +314,7 @@ public class WorldService : IWorldService
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-        _native.SendDeathMessage(killer.HandleOrDefault(NativePlayer.InvalidId), player, (int) weapon);
+        _native.SendDeathMessage(killer.HandleOrDefault(NativePlayer.InvalidId), player, (int)weapon);
     }
 
     /// <inheritdoc />
@@ -335,7 +326,7 @@ public class WorldService : IWorldService
     /// <inheritdoc />
     public void CreateExplosion(Vector3 position, ExplosionType type, float radius)
     {
-        _native.CreateExplosion(position.X, position.Y, position.Z, (int) type, radius);
+        _native.CreateExplosion(position.X, position.Y, position.Z, (int)type, radius);
     }
 
     /// <inheritdoc />

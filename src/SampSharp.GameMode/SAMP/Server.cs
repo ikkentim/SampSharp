@@ -19,22 +19,16 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP;
 
-/// <summary>
-///     Contains methods affecting the SA-MP server.
-/// </summary>
+/// <summary>Contains methods affecting the SA-MP server.</summary>
 public static partial class Server
 {
     private static ServerConfig _serverConfig;
     private static SVarCollection _varCollection;
 
-    /// <summary>
-    ///     Gets the maximum number of players that can join the server, as set by the server var 'maxplayers' in server.cfg.
-    /// </summary>
+    /// <summary>Gets the maximum number of players that can join the server, as set by the server var 'maxplayers' in server.cfg.</summary>
     public static int MaxPlayers => ServerInternal.Instance.GetMaxPlayers();
 
-    /// <summary>
-    /// Gets the network stats as a string.
-    /// </summary>
+    /// <summary>Gets the network stats as a string.</summary>
     public static string NetworkStats
     {
         get
@@ -44,114 +38,91 @@ public static partial class Server
         }
     }
 
-    /// <summary>
-    ///     Deprecated. Use new ServerConfig(Path.Combine(gameMode.Client.ServerPath, "server.cfg")) instead.
-    /// </summary>
-    /// <seealso cref="ServerConfig" />.
+    /// <summary>Deprecated. Use new ServerConfig(Path.Combine(gameMode.Client.ServerPath, "server.cfg")) instead.</summary>
+    /// <seealso cref="ServerConfig" />
+    /// .
     [Obsolete("Deprecated. Use new ServerConfig(Path.Combine(gameMode.Client.ServerPath, \"server.cfg\")) instead.")]
     public static ServerConfig Config => _serverConfig ??= new ServerConfig("server.cfg");
 
-    /// <summary>
-    ///     Gets the server variables.
-    /// </summary>
+    /// <summary>Gets the server variables.</summary>
     public static SVarCollection Variables => _varCollection ??= new SVarCollection();
 
     /// <summary>
-    ///     Blocks an IP address from further communication with the server
-    ///     for a set amount of time (with wildcards allowed).
-    ///     Players trying to connect to the server with a blocked IP address
-    ///     will receive the generic "You are banned from this server." message.
-    ///     Players that are online on the specified IP before the block
-    ///     will timeout after a few seconds and, upon reconnect,
-    ///     will receive the same message.
+    /// Blocks an IP address from further communication with the server for a set amount of time (with wildcards allowed). Players trying to connect to the
+    /// server with a blocked IP address will receive the generic "You are banned from this server." message. Players that are online on the specified IP before the
+    /// block will timeout after a few seconds and, upon reconnect, will receive the same message.
     /// </summary>
     /// <param name="ip">
-    ///     The IP to block.
-    ///     <remarks>
-    ///         Wildcards can be used with this function,
-    ///         for example blocking the IP '6.9.*.*' will block all IPs where the first two octets are 6 and 9 respectively.
-    ///         Any number can be in place of an asterisk.
-    ///     </remarks>
+    /// The IP to block.
+    /// <remarks>
+    /// Wildcards can be used with this function, for example blocking the IP '6.9.*.*' will block all IPs where the first two octets are 6 and 9
+    /// respectively. Any number can be in place of an asterisk.
+    /// </remarks>
     /// </param>
     /// <param name="time">The time that the connection will be blocked for. 0 can be used for an indefinite block.</param>
     public static void BlockIPAddress(string ip, TimeSpan time)
     {
-        ServerInternal.Instance.BlockIpAddress(ip, (int) time.TotalMilliseconds);
+        ServerInternal.Instance.BlockIpAddress(ip, (int)time.TotalMilliseconds);
     }
 
-    /// <summary>
-    ///     Unblock an IP address that was previously blocked using <see cref="BlockIPAddress" />.
-    /// </summary>
+    /// <summary>Unblock an IP address that was previously blocked using <see cref="BlockIPAddress" />.</summary>
     /// <param name="ip">The IP address to unblock</param>
     public static void UnBlockIPAddress(string ip)
     {
         ServerInternal.Instance.UnBlockIpAddress(ip);
     }
 
-    /// <summary>
-    ///     Retrieve a console variable.
-    /// </summary>
-    /// <typeparam name="T">
-    ///     The type to which the variable should be cast. Supported types: <see cref="int" />,
-    ///     <see cref="bool" />, <see cref="string" />.
-    /// </typeparam>
+    /// <summary>Retrieve a console variable.</summary>
+    /// <typeparam name="T">The type to which the variable should be cast. Supported types: <see cref="int" />, <see cref="bool" />, <see cref="string" />.</typeparam>
     /// <param name="varName">The server variable to read.</param>
     /// <returns>The value of the server variable.</returns>
     /// <exception cref="NotSupportedException"><typeparamref name="T" /> is not supported by SA-MP.</exception>
     public static T GetConsoleVariable<T>(string varName)
     {
-        if (typeof (T) == typeof (string))
+        if (typeof(T) == typeof(string))
         {
             ServerInternal.Instance.GetConsoleVarAsString(varName, out var value, 64);
-            return (T) Convert.ChangeType(value, typeof(T));
+            return (T)Convert.ChangeType(value, typeof(T));
         }
 
-        if (typeof (T) == typeof (bool))
+        if (typeof(T) == typeof(bool))
         {
-            return (T) Convert.ChangeType(ServerInternal.Instance.GetConsoleVarAsBool(varName), typeof(T));
+            return (T)Convert.ChangeType(ServerInternal.Instance.GetConsoleVarAsBool(varName), typeof(T));
         }
 
-        if (typeof (T) == typeof (int))
+        if (typeof(T) == typeof(int))
         {
-            return (T) Convert.ChangeType(ServerInternal.Instance.GetConsoleVarAsInt(varName), typeof(T));
+            return (T)Convert.ChangeType(ServerInternal.Instance.GetConsoleVarAsInt(varName), typeof(T));
         }
 
-        throw new NotSupportedException("Type " + typeof (T) + " is not supported by SA:MP");
+        throw new NotSupportedException("Type " + typeof(T) + " is not supported by SA:MP");
     }
-        
-    /// <summary>
-    ///     Returns the up-time of the actual server in milliseconds.
-    /// </summary>
+
+    /// <summary>Returns the up-time of the actual server in milliseconds.</summary>
     /// <returns>Up-time of the SA:MP server(NOT the physical machine).</returns>
     public static int GetTickCount()
     {
         return ServerInternal.Instance.GetTickCount();
     }
 
-    /// <summary>
-    /// Gets the tick rate of the server.
-    /// </summary>
+    /// <summary>Gets the tick rate of the server.</summary>
     /// <remarks>The tick rate is 0 if the server just started.</remarks>
-    public static int GetServerTickRate ()
+    public static int GetServerTickRate()
     {
         return ServerInternal.Instance.GetTickCount();
     }
 
-    /// <summary>
-    ///     Prints the specified message to the console.
-    /// </summary>
+    /// <summary>Prints the specified message to the console.</summary>
     /// <param name="message">The message.</param>
     public static void Print(string message)
     {
-        if(BaseMode.Instance == null || BaseMode.Instance.Client == null)
+        if (BaseMode.Instance == null || BaseMode.Instance.Client == null)
             throw new InvalidOperationException("The game mode has not yet been initialized.");
-            
+
         BaseMode.Instance.Client.Print(message);
     }
 
-    /// <summary>
-    ///     Sends an RCON command.
-    /// </summary>
+    /// <summary>Sends an RCON command.</summary>
     /// <param name="command">The RCON command to be executed.</param>
     /// <returns>This function doesn't return a specific value.</returns>
     public static void SendRconCommand(string command)
@@ -159,15 +130,10 @@ public static partial class Server
         ServerInternal.Instance.SendRconCommand(command);
     }
 
-    /// <summary>
-    ///     Connect an NPC to the server.
-    /// </summary>
+    /// <summary>Connect an NPC to the server.</summary>
     /// <param name="name">The name the NPC should connect as. Must follow the same rules as normal player names.</param>
     /// <param name="script">The NPC script name that is located in the npcmodes folder (without the .amx extension).</param>
-    /// <returns>
-    ///     An instance of <see cref="BasePlayer" /> based on the first available player slot. If no slots are available,
-    ///     null.
-    /// </returns>
+    /// <returns>An instance of <see cref="BasePlayer" /> based on the first available player slot. If no slots are available, null.</returns>
     public static BasePlayer ConnectNPC(string name, string script)
     {
         var id = -1;
@@ -186,27 +152,21 @@ public static partial class Server
         return result;
     }
 
-    /// <summary>
-    ///     Set the world weather for all players.
-    /// </summary>
+    /// <summary>Set the world weather for all players.</summary>
     /// <param name="weatherid">The weather to set.</param>
     public static void SetWeather(int weatherid)
     {
         ServerInternal.Instance.SetWeather(weatherid);
     }
 
-    /// <summary>
-    ///     Sets the world time to a specific hour.
-    /// </summary>
+    /// <summary>Sets the world time to a specific hour.</summary>
     /// <param name="hour">Which time to set.</param>
     public static void SetWorldTime(int hour)
     {
         ServerInternal.Instance.SetWorldTime(hour);
     }
 
-    /// <summary>
-    /// Gets the name of the specified weapon.
-    /// </summary>
+    /// <summary>Gets the name of the specified weapon.</summary>
     /// <param name="weapon">The weapon to get the name of.</param>
     /// <returns>The name of the weapon.</returns>
     public static string GetWeaponName(Weapon weapon)
@@ -226,8 +186,10 @@ public static partial class Server
             case Weapon.ThermalGoggles:
                 return "Thermal Goggles";
             default:
-                ServerInternal.Instance.GetWeaponName((int) weapon, out var retstr, 32);
-                return string.IsNullOrEmpty(retstr) ? weapon.ToString() : retstr;
+                ServerInternal.Instance.GetWeaponName((int)weapon, out var retstr, 32);
+                return string.IsNullOrEmpty(retstr)
+                    ? weapon.ToString()
+                    : retstr;
         }
     }
 }

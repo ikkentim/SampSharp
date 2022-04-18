@@ -17,32 +17,23 @@ using System;
 
 namespace SampSharp.Core.Callbacks;
 
-/// <summary>
-///     Indicates a method should be loaded by <see cref="GameModeClientExtensions.RegisterCallbacksInObject" /> and
-///     indicates the name of the callback.
-/// </summary>
+/// <summary>Indicates a method should be loaded by <see cref="GameModeClientExtensions.RegisterCallbacksInObject" /> and indicates the name of the callback.</summary>
 /// <seealso cref="System.Attribute" />
 [AttributeUsage(AttributeTargets.Method)]
 public class CallbackAttribute : Attribute
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="CallbackAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="CallbackAttribute" /> class.</summary>
     public CallbackAttribute()
     {
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="CallbackAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="CallbackAttribute" /> class.</summary>
     /// <param name="name">The name of the callback.</param>
     public CallbackAttribute(string name)
     {
         Name = name;
     }
 
-    /// <summary>
-    ///     Gets or sets the name of the callback.
-    /// </summary>
+    /// <summary>Gets or sets the name of the callback.</summary>
     public string Name { get; set; }
 }

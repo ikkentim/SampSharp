@@ -19,14 +19,10 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerStateChanged" /> or <see cref="BasePlayer.StateChanged" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.PlayerStateChanged" /> or <see cref="BasePlayer.StateChanged" /> event.</summary>
 public class StateEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="StateEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="StateEventArgs" /> class.</summary>
     /// <param name="newstate">The new state.</param>
     /// <param name="oldstate">The old state.</param>
     public StateEventArgs(PlayerState newstate, PlayerState oldstate)
@@ -35,13 +31,9 @@ public class StateEventArgs : EventArgs
         OldState = oldstate;
     }
 
-    /// <summary>
-    ///     Gets the new state.
-    /// </summary>
+    /// <summary>Gets the new state.</summary>
     public PlayerState NewState { get; }
 
-    /// <summary>
-    ///     Gets the old state.
-    /// </summary>
+    /// <summary>Gets the old state.</summary>
     public PlayerState OldState { get; }
 }

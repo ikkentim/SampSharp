@@ -26,9 +26,9 @@ internal class PlayerTextDrawMiddleware
 
     public object Invoke(EventContext context, IEntityManager entityManager)
     {
-        var playerEntity = SampEntities.GetPlayerId((int) context.Arguments[0]);
-        var textDrawEntity = SampEntities.GetPlayerTextDrawId(playerEntity, (int) context.Arguments[1]);
-            
+        var playerEntity = SampEntities.GetPlayerId((int)context.Arguments[0]);
+        var textDrawEntity = SampEntities.GetPlayerTextDrawId(playerEntity, (int)context.Arguments[1]);
+
         if (!entityManager.Exists(playerEntity))
             return null;
 

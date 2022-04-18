@@ -33,7 +33,7 @@ public class RedirectConsoleOutputGameModeBuilderExtensionsTests
         // act
         sut.RedirectConsoleOutput();
         sut.Run();
-        
+
         // assert
         Console.Out.ShouldNotBe(defaultOut);
     }

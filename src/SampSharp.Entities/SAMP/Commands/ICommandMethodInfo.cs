@@ -15,13 +15,9 @@
 
 namespace SampSharp.Entities.SAMP.Commands;
 
-/// <summary>
-/// Provides information about a command method.
-/// </summary>
+/// <summary>Provides information about a command method.</summary>
 public interface ICommandMethodInfo
 {
-    /// <summary>
-    /// Gets the overriden name of the command.
-    /// </summary>
+    /// <summary>Gets the overriden name of the command.</summary>
     string Name { get; }
 }

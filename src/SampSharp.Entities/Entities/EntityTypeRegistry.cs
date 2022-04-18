@@ -26,8 +26,7 @@ internal static class EntityTypeRegistry
 
     static EntityTypeRegistry()
     {
-        var fields = new AssemblyScanner()
-            .IncludeAllAssemblies()
+        var fields = new AssemblyScanner().IncludeAllAssemblies()
             .IncludeStatic(true)
             .IncludeAbstract()
             .IncludeNonPublicMembers()
@@ -38,7 +37,7 @@ internal static class EntityTypeRegistry
         foreach (var (field, attribute) in fields)
         {
             var name = attribute.Name;
-            if(string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 name = field.Name;
                 if (name.Length > 4 && name.EndsWith("Type"))
@@ -52,7 +51,7 @@ internal static class EntityTypeRegistry
             }
         }
     }
-        
+
     public static string GetTypeName(Guid type)
     {
         return Names.TryGetValue(type, out var name)

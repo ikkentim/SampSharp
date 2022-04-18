@@ -19,21 +19,14 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 
-/// <summary>
-///     Represents a player command parameter.
-/// </summary>
+/// <summary>Represents a player command parameter.</summary>
 public class PlayerType : ICommandParameterType
 {
-    /// <summary>
-    ///     Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be
-    ///     removed from the commandText.
-    /// </summary>
+    /// <summary>Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be removed from the commandText.</summary>
     /// <param name="commandText">The command text.</param>
     /// <param name="output">The output.</param>
     /// <param name="isNullable">A value indicating whether the result is allowed to be null when an entity referenced by the argument could not be found.</param>
-    /// <returns>
-    ///     true if parsed successfully; false otherwise.
-    /// </returns>
+    /// <returns>true if parsed successfully; false otherwise.</returns>
     public bool Parse(ref string commandText, out object output, bool isNullable = false)
     {
         var text = commandText.TrimStart();
@@ -42,7 +35,8 @@ public class PlayerType : ICommandParameterType
         if (string.IsNullOrEmpty(text))
             return false;
 
-        var word = text.Split(' ').First();
+        var word = text.Split(' ')
+            .First();
 
         // find a player with a matching id.
         if (int.TryParse(word, NumberStyles.Integer, CultureInfo.InvariantCulture, out var id))
@@ -51,7 +45,8 @@ public class PlayerType : ICommandParameterType
             if (player != null)
             {
                 output = player;
-                commandText = commandText.Substring(word.Length).TrimStart(' ');
+                commandText = commandText.Substring(word.Length)
+                    .TrimStart(' ');
                 return true;
             }
         }
@@ -59,29 +54,34 @@ public class PlayerType : ICommandParameterType
         var lowerWord = word.ToLower();
 
         // find all candidates containing the input word, case insensitive.
-        var candidates = BasePlayer.All.Where(p => p.Name.ToLower().Contains(lowerWord))
+        var candidates = BasePlayer.All.Where(p => p.Name.ToLower()
+                .Contains(lowerWord))
             .ToList();
 
         // in case of ambiguities find all candidates containing the input word, case sensitive.
         if (candidates.Count > 1)
-            candidates = candidates.Where(p => p.Name.Contains(word)).ToList();
+            candidates = candidates.Where(p => p.Name.Contains(word))
+                .ToList();
 
         // in case of ambiguities find all candidates matching exactly the input word, case insensitive.
         if (candidates.Count > 1)
-            candidates = candidates.Where(p => p.Name.ToLower() == lowerWord).ToList();
+            candidates = candidates.Where(p => p.Name.ToLower() == lowerWord)
+                .ToList();
 
         // in case of ambiguities find all candidates matching exactly the input word, case sensitive.
         if (candidates.Count > 1)
-            candidates = candidates.Where(p => p.Name == word).ToList();
+            candidates = candidates.Where(p => p.Name == word)
+                .ToList();
 
         if (candidates.Count == 1 || isNullable)
         {
             commandText = word.Length == commandText.Length
                 ? string.Empty
-                : commandText.Substring(word.Length).TrimStart(' ');
+                : commandText.Substring(word.Length)
+                    .TrimStart(' ');
         }
 
-        if (candidates.Count != 1) 
+        if (candidates.Count != 1)
             return isNullable;
 
         output = candidates.First();

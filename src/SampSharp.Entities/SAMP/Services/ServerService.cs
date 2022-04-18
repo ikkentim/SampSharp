@@ -17,16 +17,12 @@ using System;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Represents a service for controlling the SA:MP server.
-/// </summary>
+/// <summary>Represents a service for controlling the SA:MP server.</summary>
 public class ServerService : IServerService
 {
     private readonly ServerServiceNative _native;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ServerService"/> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="ServerService" /> class.</summary>
     public ServerService(INativeProxy<ServerServiceNative> nativeProxy,
         INativeProxy<VariableCollection.ServerVariableCollectionNatives> serverVariablesNativeProxy)
     {
@@ -86,7 +82,7 @@ public class ServerService : IServerService
     /// <inheritdoc />
     public void ShowPlayerMarkers(PlayerMarkersMode mode)
     {
-        _native.ShowPlayerMarkers((int) mode);
+        _native.ShowPlayerMarkers((int)mode);
     }
 
     /// <inheritdoc />
@@ -102,21 +98,19 @@ public class ServerService : IServerService
     }
 
     /// <inheritdoc />
-    public int AddPlayerClass(int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.Unarmed,
-        int weapon1Ammo = 0, Weapon weapon2 = Weapon.Unarmed, int weapon2Ammo = 0, Weapon weapon3 = Weapon.Unarmed,
-        int weapon3Ammo = 0)
+    public int AddPlayerClass(int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.Unarmed, int weapon1Ammo = 0,
+        Weapon weapon2 = Weapon.Unarmed, int weapon2Ammo = 0, Weapon weapon3 = Weapon.Unarmed, int weapon3Ammo = 0)
     {
-        return _native.AddPlayerClass(modelId, spawnPosition.X, spawnPosition.Y, spawnPosition.Z, angle,
-            (int) weapon1, weapon1Ammo, (int) weapon2, weapon2Ammo, (int) weapon3, weapon3Ammo);
+        return _native.AddPlayerClass(modelId, spawnPosition.X, spawnPosition.Y, spawnPosition.Z, angle, (int)weapon1, weapon1Ammo, (int)weapon2, weapon2Ammo,
+            (int)weapon3, weapon3Ammo);
     }
 
     /// <inheritdoc />
-    public int AddPlayerClass(int teamId, int modelId, Vector3 spawnPosition, float angle,
-        Weapon weapon1 = Weapon.Unarmed, int weapon1Ammo = 0, Weapon weapon2 = Weapon.Unarmed, int weapon2Ammo = 0,
-        Weapon weapon3 = Weapon.Unarmed, int weapon3Ammo = 0)
+    public int AddPlayerClass(int teamId, int modelId, Vector3 spawnPosition, float angle, Weapon weapon1 = Weapon.Unarmed, int weapon1Ammo = 0,
+        Weapon weapon2 = Weapon.Unarmed, int weapon2Ammo = 0, Weapon weapon3 = Weapon.Unarmed, int weapon3Ammo = 0)
     {
-        return _native.AddPlayerClassEx(teamId, modelId, spawnPosition.X, spawnPosition.Y, spawnPosition.Z, angle,
-            (int) weapon1, weapon1Ammo, (int) weapon2, weapon2Ammo, (int) weapon3, weapon3Ammo);
+        return _native.AddPlayerClassEx(teamId, modelId, spawnPosition.X, spawnPosition.Y, spawnPosition.Z, angle, (int)weapon1, weapon1Ammo, (int)weapon2,
+            weapon2Ammo, (int)weapon3, weapon3Ammo);
     }
 
     /// <inheritdoc />
@@ -170,7 +164,7 @@ public class ServerService : IServerService
     /// <inheritdoc />
     public void BlockIpAddress(string ipAddress, TimeSpan time = default)
     {
-        _native.BlockIpAddress(ipAddress, (int) time.TotalMilliseconds);
+        _native.BlockIpAddress(ipAddress, (int)time.TotalMilliseconds);
     }
 
     /// <inheritdoc />

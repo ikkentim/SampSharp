@@ -19,9 +19,7 @@ using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Provides SA:MP natives for the <see cref="VehicleInfoService" />.
-/// </summary>
+/// <summary>Provides SA:MP natives for the <see cref="VehicleInfoService" />.</summary>
 public class VehicleInfoServiceNative
 {
     [NativeMethod]

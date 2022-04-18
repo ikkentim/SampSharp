@@ -17,27 +17,19 @@ using SampSharp.GameMode.Controllers;
 
 namespace SampSharp.GameMode;
 
-/// <summary>
-/// Contains methods defining a SampSharp extension.
-/// </summary>
+/// <summary>Contains methods defining a SampSharp extension.</summary>
 public interface IExtension
 {
-    /// <summary>
-    ///     Loads services provided by this extensions.
-    /// </summary>
+    /// <summary>Loads services provided by this extensions.</summary>
     /// <param name="gameMode">The game mode.</param>
     void LoadServices(BaseMode gameMode);
 
-    /// <summary>
-    ///     Loads controllers provided by this extensions.
-    /// </summary>
+    /// <summary>Loads controllers provided by this extensions.</summary>
     /// <param name="gameMode">The game mode.</param>
     /// <param name="controllerCollection">The controller collection.</param>
     void LoadControllers(BaseMode gameMode, ControllerCollection controllerCollection);
 
-    /// <summary>
-    ///     Performs post-load actions.
-    /// </summary>
+    /// <summary>Performs post-load actions.</summary>
     /// <param name="gameMode">The game mode.</param>
     void PostLoad(BaseMode gameMode);
 }

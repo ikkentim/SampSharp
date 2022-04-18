@@ -46,12 +46,13 @@ public class EncodingGameModeBuilderExtensionsTests
         // act
         sut.UseEncodingCodePage("cp865");
         sut.Run();
-        
+
         // assert
         var client = activeRunner.ShouldBeAssignableTo<IGameModeClient>()!;
         var encoding = client.Encoding.ShouldBeOfType<CodePageEncoding>();
 
         encoding.CodePage.ShouldBe(865);
-        encoding.ConversionTable['Θ'].ShouldBe((ushort)0xe9);
+        encoding.ConversionTable['Θ']
+            .ShouldBe((ushort)0xe9);
     }
 }

@@ -19,15 +19,11 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     A controller processing all vehicle actions.
-/// </summary>
+/// <summary>A controller processing all vehicle actions.</summary>
 [Controller]
 public class BaseVehicleController : Disposable, IEventListener, ITypeProvider, IGameServiceProvider
 {
-    /// <summary>
-    ///     Registers the events this VehicleController wants to listen to.
-    /// </summary>
+    /// <summary>Registers the events this VehicleController wants to listen to.</summary>
     /// <param name="gameMode">The running GameMode.</param>
     public virtual void RegisterEvents(BaseMode gameMode)
     {
@@ -39,8 +35,7 @@ public class BaseVehicleController : Disposable, IEventListener, ITypeProvider, 
         gameMode.VehicleMod += (sender, args) => (sender as BaseVehicle)?.OnMod(args);
         gameMode.VehiclePaintjobApplied += (sender, args) => (sender as BaseVehicle)?.OnPaintjobApplied(args);
         gameMode.VehicleResprayed += (sender, args) => (sender as BaseVehicle)?.OnResprayed(args);
-        gameMode.VehicleDamageStatusUpdated +=
-            (sender, args) => (sender as BaseVehicle)?.OnDamageStatusUpdated(args);
+        gameMode.VehicleDamageStatusUpdated += (sender, args) => (sender as BaseVehicle)?.OnDamageStatusUpdated(args);
         gameMode.UnoccupiedVehicleUpdated += (sender, args) => (sender as BaseVehicle)?.OnUnoccupiedUpdate(args);
         gameMode.VehicleStreamIn += (sender, args) => (sender as BaseVehicle)?.OnStreamIn(args);
         gameMode.VehicleStreamOut += (sender, args) => (sender as BaseVehicle)?.OnStreamOut(args);
@@ -48,9 +43,7 @@ public class BaseVehicleController : Disposable, IEventListener, ITypeProvider, 
         gameMode.VehicleSirenStateChange += (sender, args) => (sender as BaseVehicle)?.OnSirenStateChanged(args);
     }
 
-    /// <summary>
-    ///     Registers the services this controller provides.
-    /// </summary>
+    /// <summary>Registers the services this controller provides.</summary>
     /// <param name="gameMode">The game mode.</param>
     /// <param name="serviceContainer">The service container.</param>
     public virtual void RegisterServices(BaseMode gameMode, GameModeServiceContainer serviceContainer)
@@ -58,17 +51,13 @@ public class BaseVehicleController : Disposable, IEventListener, ITypeProvider, 
         serviceContainer.AddService<IVehicleFactory>(new BaseVehicleFactory(gameMode));
     }
 
-    /// <summary>
-    ///     Registers types this VehicleController requires the system to use.
-    /// </summary>
+    /// <summary>Registers types this VehicleController requires the system to use.</summary>
     public virtual void RegisterTypes()
     {
         BaseVehicle.Register<BaseVehicle>();
     }
 
-    /// <summary>
-    ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <summary>Performs tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     /// <param name="disposing">Whether managed resources should be disposed.</param>
     protected override void Dispose(bool disposing)
     {

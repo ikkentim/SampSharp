@@ -19,19 +19,17 @@ using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     A controller processing all timer actions.
-/// </summary>
+/// <summary>A controller processing all timer actions.</summary>
 [Controller]
 public class TimerController : IEventListener
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S2223:Non-constant static fields should not be visible", Justification = "By design")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S2223:Non-constant static fields should not be visible",
+        Justification = "By design")]
     internal static TimerController _instance;
+
     private readonly List<Timer> _activeTimers = new();
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="TimerController" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="TimerController" /> class.</summary>
     public TimerController()
     {
         SetActiveInstance(this);
@@ -49,9 +47,7 @@ public class TimerController : IEventListener
         _activeTimers.Remove(timer);
     }
 
-    /// <summary>
-    ///     Registers the events this TimerController wants to listen to.
-    /// </summary>
+    /// <summary>Registers the events this TimerController wants to listen to.</summary>
     /// <param name="gameMode">The running GameMode.</param>
     public virtual void RegisterEvents(BaseMode gameMode)
     {
@@ -64,7 +60,7 @@ public class TimerController : IEventListener
             return;
 
         var now = DateTime.UtcNow;
-        for(var i = _activeTimers.Count - 1; i >= 0;i--)
+        for (var i = _activeTimers.Count - 1; i >= 0; i--)
         {
             if (i >= _activeTimers.Count) continue;
 

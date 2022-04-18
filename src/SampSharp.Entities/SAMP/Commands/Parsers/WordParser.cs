@@ -17,10 +17,7 @@ using System;
 
 namespace SampSharp.Entities.SAMP.Commands.Parsers;
 
-/// <summary>
-/// A parser for an <see cref="string" /> parameter which only consumes the text up to the next space character of the end
-/// off the input.
-/// </summary>
+/// <summary>A parser for an <see cref="string" /> parameter which only consumes the text up to the next space character of the end off the input.</summary>
 public class WordParser : ICommandParameterParser
 {
     /// <inheritdoc />
@@ -37,7 +34,9 @@ public class WordParser : ICommandParameterParser
         if (index == 0)
             return false;
 
-        var str = index < 0 ? inputText : inputText.Substring(0, index);
+        var str = index < 0
+            ? inputText
+            : inputText.Substring(0, index);
         inputText = inputText.Substring(str.Length);
 
         result = str;

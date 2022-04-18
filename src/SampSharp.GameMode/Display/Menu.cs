@@ -22,16 +22,12 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Display;
 
-/// <summary>
-///     Represents a SA:MP menu.
-/// </summary>
+/// <summary>Represents a SA:MP menu.</summary>
 public partial class Menu : Pool<Menu>
 {
     private readonly List<BasePlayer> _viewers = new();
 
-    /// <summary>
-    ///     Initializes a new instance of the Menu class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the Menu class.</summary>
     /// <param name="title">The title of the menu.</param>
     /// <param name="position">The position of the menu on the screen.</param>
     /// <param name="columns">The columns to display in the menu.</param>
@@ -46,14 +42,10 @@ public partial class Menu : Pool<Menu>
         Viewers = _viewers.AsReadOnly();
     }
 
-    /// <summary>
-    ///     Gets the Identity of this <see cref="IIdentifiable" />.
-    /// </summary>
+    /// <summary>Gets the Identity of this <see cref="IIdentifiable" />.</summary>
     public int Id { get; private set; }
 
-    /// <summary>
-    ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <summary>Performs tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     /// <param name="disposing">Whether managed resources should be disposed.</param>
     protected override void Dispose(bool disposing)
     {
@@ -62,55 +54,34 @@ public partial class Menu : Pool<Menu>
         base.Dispose(disposing);
     }
 
-    /// <summary>
-    ///     Identifier indicating the handle is invalid.
-    /// </summary>
+    /// <summary>Identifier indicating the handle is invalid.</summary>
     public const int InvalidId = 0xFF;
 
-    /// <summary>
-    ///     Maximum number of menus which can exist.
-    /// </summary>
+    /// <summary>Maximum number of menus which can exist.</summary>
     public const int Max = 128;
 
-    /// <summary>
-    ///     Gets the title.
-    /// </summary>
+    /// <summary>Gets the title.</summary>
     public string Title { get; }
 
-    /// <summary>
-    ///     Gets the position.
-    /// </summary>
+    /// <summary>Gets the position.</summary>
     public Vector2 Position { get; }
 
-    /// <summary>
-    ///     Gets an <see cref="IReadOnlyCollection{T}" /> of <see cref="BasePlayer" /> instances which are viewing this
-    ///     instance.
-    /// </summary>
+    /// <summary>Gets an <see cref="IReadOnlyCollection{T}" /> of <see cref="BasePlayer" /> instances which are viewing this instance.</summary>
     public IReadOnlyCollection<BasePlayer> Viewers { get; }
 
-    /// <summary>
-    ///     Gets a collection of columns.
-    /// </summary>
+    /// <summary>Gets a collection of columns.</summary>
     public IList<MenuColumn> Columns { get; }
 
-    /// <summary>
-    ///     Gets a collection of rows.
-    /// </summary>
+    /// <summary>Gets a collection of rows.</summary>
     public IList<MenuRow> Rows { get; }
 
-    /// <summary>
-    ///     Occurs when this <see cref="Menu" /> was exited.
-    /// </summary>
+    /// <summary>Occurs when this <see cref="Menu" /> was exited.</summary>
     public event EventHandler<EventArgs> Exit;
 
-    /// <summary>
-    ///     Occurs when there has been responded to this <see cref="Menu" />.
-    /// </summary>
+    /// <summary>Occurs when there has been responded to this <see cref="Menu" />.</summary>
     public event EventHandler<MenuRowEventArgs> Response;
 
-    /// <summary>
-    ///     Show this <see cref="Menu" /> to the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Show this <see cref="Menu" /> to the specified <paramref name="player" />.</summary>
     /// <param name="player">The player to show this menu to.</param>
     /// <returns>True when successful; False otherwise.</returns>
     public bool Show(BasePlayer player)
@@ -136,9 +107,7 @@ public partial class Menu : Pool<Menu>
         return true;
     }
 
-    /// <summary>
-    ///     Hides this <see cref="Menu" /> for the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Hides this <see cref="Menu" /> for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player to hide this menu for.</param>
     public void Hide(BasePlayer player)
     {
@@ -162,9 +131,7 @@ public partial class Menu : Pool<Menu>
         }
     }
 
-    /// <summary>
-    ///     Hides this <see cref="Menu" /> for all viewers.
-    /// </summary>
+    /// <summary>Hides this <see cref="Menu" /> for all viewers.</summary>
     public void HideForAll()
     {
         AssertNotDisposed();
@@ -174,9 +141,7 @@ public partial class Menu : Pool<Menu>
             Hide(p);
     }
 
-    /// <summary>
-    ///     Raises the <see cref="Menu.Exit" /> event.
-    /// </summary>
+    /// <summary>Raises the <see cref="Menu.Exit" /> event.</summary>
     /// <param name="player">The player.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
     public void OnExit(BasePlayer player, EventArgs e)
@@ -184,9 +149,7 @@ public partial class Menu : Pool<Menu>
         Exit?.Invoke(player, e);
     }
 
-    /// <summary>
-    ///     Raises the <see cref="Menu.Response" /> event.
-    /// </summary>
+    /// <summary>Raises the <see cref="Menu.Response" /> event.</summary>
     /// <param name="player">The player.</param>
     /// <param name="e">The <see cref="MenuRowEventArgs" /> instance containing the event data.</param>
     public void OnResponse(BasePlayer player, MenuRowEventArgs e)
@@ -208,8 +171,11 @@ public partial class Menu : Pool<Menu>
             throw new InvalidOperationException("This menu contains no rows");
         }
 
-        Id = MenuInternal.Instance.CreateMenu(Title, Columns.Count, Position.X, Position.Y,
-            Columns[0].Width, Columns.Count == 2 ? Columns[1].Width : 0);
+        Id = MenuInternal.Instance.CreateMenu(Title, Columns.Count, Position.X, Position.Y, Columns[0]
+            .Width, Columns.Count == 2
+            ? Columns[1]
+                .Width
+            : 0);
 
         if (Id == InvalidId)
         {
@@ -218,19 +184,25 @@ public partial class Menu : Pool<Menu>
 
         for (var i = 0; i < Math.Min(Columns.Count, 2); i++)
         {
-            if (Columns[i].Caption != null)
+            if (Columns[i]
+                    .Caption != null)
             {
-                MenuInternal.Instance.SetMenuColumnHeader(Id, i, Columns[i].Caption);
+                MenuInternal.Instance.SetMenuColumnHeader(Id, i, Columns[i]
+                    .Caption);
             }
         }
 
         for (var i = 0; i < Rows.Count; i++)
         {
-            MenuInternal.Instance.AddMenuItem(Id, 0, Rows[i].Column1Text ?? string.Empty);
-            if (!string.IsNullOrEmpty(Rows[i].Column2Text))
-                MenuInternal.Instance.AddMenuItem(Id, 1, Rows[i].Column2Text);
+            MenuInternal.Instance.AddMenuItem(Id, 0, Rows[i]
+                .Column1Text ?? string.Empty);
+            if (!string.IsNullOrEmpty(Rows[i]
+                    .Column2Text))
+                MenuInternal.Instance.AddMenuItem(Id, 1, Rows[i]
+                    .Column2Text);
 
-            if (Rows[i].Disabled)
+            if (Rows[i]
+                .Disabled)
             {
                 MenuInternal.Instance.DisableMenuRow(Id, i);
             }

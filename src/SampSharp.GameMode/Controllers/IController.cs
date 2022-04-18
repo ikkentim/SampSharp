@@ -15,9 +15,7 @@
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     Provides the functionality for a controller.
-/// </summary>
+/// <summary>Provides the functionality for a controller.</summary>
 public interface IController
 {
 }

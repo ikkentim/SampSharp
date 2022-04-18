@@ -25,7 +25,7 @@ internal class ArgumentsOverrideEventContext : EventContext
     }
 
     public EventContext BaseContext { get; set; }
-            
+
     public override string Name => BaseContext.Name;
     public override object[] Arguments { get; }
 

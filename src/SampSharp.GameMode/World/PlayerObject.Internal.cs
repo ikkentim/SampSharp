@@ -35,22 +35,21 @@ public partial class PlayerObject
         }
 
         [NativeMethod]
-        public virtual int CreatePlayerObject(int playerid, int modelid, float x, float y, float z, float rX,
-            float rY, float rZ, float drawDistance)
+        public virtual int CreatePlayerObject(int playerid, int modelid, float x, float y, float z, float rX, float rY, float rZ, float drawDistance)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool AttachPlayerObjectToPlayer(int objectplayer, int objectid, int attachplayerid,
-            float offsetX, float offsetY, float offsetZ, float rX, float rY, float rZ)
+        public virtual bool AttachPlayerObjectToPlayer(int objectplayer, int objectid, int attachplayerid, float offsetX, float offsetY, float offsetZ,
+            float rX, float rY, float rZ)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool AttachPlayerObjectToVehicle(int playerid, int objectid, int vehicleid, float offsetX,
-            float offsetY, float offsetZ, float rotX, float rotY, float rotZ)
+        public virtual bool AttachPlayerObjectToVehicle(int playerid, int objectid, int vehicleid, float offsetX, float offsetY, float offsetZ, float rotX,
+            float rotY, float rotZ)
         {
             throw new NativeNotImplementedException();
         }
@@ -74,8 +73,7 @@ public partial class PlayerObject
         }
 
         [NativeMethod]
-        public virtual bool GetPlayerObjectRot(int playerid, int objectid, out float rotX, out float rotY,
-            out float rotZ)
+        public virtual bool GetPlayerObjectRot(int playerid, int objectid, out float rotX, out float rotY, out float rotZ)
         {
             throw new NativeNotImplementedException();
         }
@@ -105,8 +103,7 @@ public partial class PlayerObject
         }
 
         [NativeMethod]
-        public virtual int MovePlayerObject(int playerid, int objectid, float x, float y, float z, float speed,
-            float rotX, float rotY, float rotZ)
+        public virtual int MovePlayerObject(int playerid, int objectid, float x, float y, float z, float speed, float rotX, float rotY, float rotZ)
         {
             throw new NativeNotImplementedException();
         }
@@ -124,16 +121,15 @@ public partial class PlayerObject
         }
 
         [NativeMethod]
-        public virtual bool SetPlayerObjectMaterial(int playerid, int objectid, int materialindex, int modelid,
-            string txdname, string texturename, int materialcolor)
+        public virtual bool SetPlayerObjectMaterial(int playerid, int objectid, int materialindex, int modelid, string txdname, string texturename,
+            int materialcolor)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool SetPlayerObjectMaterialText(int playerid, int objectid, string text, int materialindex,
-            int materialsize, string fontface, int fontsize, bool bold, int fontcolor, int backcolor,
-            int textalignment)
+        public virtual bool SetPlayerObjectMaterialText(int playerid, int objectid, string text, int materialindex, int materialsize, string fontface,
+            int fontsize, bool bold, int fontcolor, int backcolor, int textalignment)
         {
             throw new NativeNotImplementedException();
         }

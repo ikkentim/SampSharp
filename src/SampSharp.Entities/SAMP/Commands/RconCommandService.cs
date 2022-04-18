@@ -23,9 +23,7 @@ using SampSharp.Entities.Utilities;
 
 namespace SampSharp.Entities.SAMP.Commands;
 
-/// <summary>
-/// Provides rcon commands functionality.
-/// </summary>
+/// <summary>Provides rcon commands functionality.</summary>
 public class RconCommandService : CommandServiceBase, IRconCommandService
 {
     /// <inheritdoc />
@@ -38,16 +36,16 @@ public class RconCommandService : CommandServiceBase, IRconCommandService
     {
         var result = Invoke(services, null, inputText);
 
-        if (result.Response != InvokeResponse.InvalidArguments) 
+        if (result.Response != InvokeResponse.InvalidArguments)
             return result.Response == InvokeResponse.Success;
 
-        services.GetRequiredService<IGameModeClient>().Print(result.UsageMessage);
+        services.GetRequiredService<IGameModeClient>()
+            .Print(result.UsageMessage);
         return true;
     }
 
     /// <inheritdoc />
-    protected override IEnumerable<(MethodInfo method, ICommandMethodInfo commandInfo)> ScanMethods(
-        AssemblyScanner scanner)
+    protected override IEnumerable<(MethodInfo method, ICommandMethodInfo commandInfo)> ScanMethods(AssemblyScanner scanner)
     {
         return scanner.ScanMethods<RconCommandAttribute>()
             .Select(r => (r.method, r.attribute as ICommandMethodInfo));

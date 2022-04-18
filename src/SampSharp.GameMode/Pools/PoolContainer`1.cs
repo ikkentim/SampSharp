@@ -20,50 +20,35 @@ using System.Linq;
 
 namespace SampSharp.GameMode.Pools;
 
-/// <summary>
-///     Represents the contents of a pool.
-/// </summary>
+/// <summary>Represents the contents of a pool.</summary>
 /// <typeparam name="TInstance">The type of the instance.</typeparam>
 public sealed class PoolContainer<TInstance> : IEnumerable<TInstance> where TInstance : class
 {
-    /// <summary>
-    ///     The identifier of an unidentified instance.
-    /// </summary>
+    /// <summary>The identifier of an unidentified instance.</summary>
     public const int UnidentifiedId = -1;
 
     private readonly Dictionary<int, TInstance> _identifiedItems = new();
     private readonly List<TInstance> _unidentifiedItems = new();
 
-    /// <summary>
-    ///     Gets the unidentified items.
-    /// </summary>
+    /// <summary>Gets the unidentified items.</summary>
     public IEnumerable<TInstance> UnidentifiedItems => _unidentifiedItems.AsReadOnly();
 
-    /// <summary>
-    ///     Returns an enumerator that iterates through the collection.
-    /// </summary>
-    /// <returns>
-    ///     A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
-    /// </returns>
+    /// <summary>Returns an enumerator that iterates through the collection.</summary>
+    /// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.</returns>
     public IEnumerator<TInstance> GetEnumerator()
     {
-        return _identifiedItems.Values.Concat(_unidentifiedItems).GetEnumerator();
+        return _identifiedItems.Values.Concat(_unidentifiedItems)
+            .GetEnumerator();
     }
 
-    /// <summary>
-    ///     Returns an enumerator that iterates through a collection.
-    /// </summary>
-    /// <returns>
-    ///     An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
-    /// </returns>
+    /// <summary>Returns an enumerator that iterates through a collection.</summary>
+    /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
     }
 
-    /// <summary>
-    ///     Adds the specified item with the specified key.
-    /// </summary>
+    /// <summary>Adds the specified item with the specified key.</summary>
     /// <param name="key">The key.</param>
     /// <param name="item">The item.</param>
     /// <exception cref="System.ArgumentException">duplicate key;key</exception>
@@ -79,9 +64,7 @@ public sealed class PoolContainer<TInstance> : IEnumerable<TInstance> where TIns
         }
     }
 
-    /// <summary>
-    ///     Gets the item associated with the specified key.
-    /// </summary>
+    /// <summary>Gets the item associated with the specified key.</summary>
     /// <param name="key">The key.</param>
     /// <returns>The item associated with the specified key</returns>
     public TInstance Get(int key)
@@ -92,9 +75,7 @@ public sealed class PoolContainer<TInstance> : IEnumerable<TInstance> where TIns
         return result;
     }
 
-    /// <summary>
-    ///     Removes the item associated with the specified key.
-    /// </summary>
+    /// <summary>Removes the item associated with the specified key.</summary>
     /// <param name="key">The key.</param>
     /// <returns>True on success; False otherwise.</returns>
     public bool Remove(int key)
@@ -102,9 +83,7 @@ public sealed class PoolContainer<TInstance> : IEnumerable<TInstance> where TIns
         return _identifiedItems.Remove(key);
     }
 
-    /// <summary>
-    ///     Removes the specified unidentified item.
-    /// </summary>
+    /// <summary>Removes the specified unidentified item.</summary>
     /// <param name="item">The item.</param>
     /// <returns>True on success; False otherwise.</returns>
     public bool RemoveUnidentified(TInstance item)
@@ -112,9 +91,7 @@ public sealed class PoolContainer<TInstance> : IEnumerable<TInstance> where TIns
         return item != null && _unidentifiedItems.Remove(item);
     }
 
-    /// <summary>
-    ///     Moves the item associated with the specified old key to the specified new key.
-    /// </summary>
+    /// <summary>Moves the item associated with the specified old key to the specified new key.</summary>
     /// <param name="oldKey">The old key.</param>
     /// <param name="newKey">The new key.</param>
     /// <exception cref="System.ArgumentException">unidentified id cannot be moved;oldKey or key not found;oldKey</exception>
@@ -131,9 +108,7 @@ public sealed class PoolContainer<TInstance> : IEnumerable<TInstance> where TIns
         Add(newKey, item);
     }
 
-    /// <summary>
-    ///     Moves the specified unidentified item to the specified new key.
-    /// </summary>
+    /// <summary>Moves the specified unidentified item to the specified new key.</summary>
     /// <param name="item">The item.</param>
     /// <param name="newKey">The new key.</param>
     /// <exception cref="System.ArgumentNullException">item</exception>
@@ -148,9 +123,7 @@ public sealed class PoolContainer<TInstance> : IEnumerable<TInstance> where TIns
         Add(newKey, item);
     }
 
-    /// <summary>
-    ///     Determines whether the specified key exists.
-    /// </summary>
+    /// <summary>Determines whether the specified key exists.</summary>
     /// <param name="key">The key.</param>
     /// <returns>True if the specified key exists; False otherwise.</returns>
     public bool Contains(int key)
@@ -158,9 +131,7 @@ public sealed class PoolContainer<TInstance> : IEnumerable<TInstance> where TIns
         return _identifiedItems.ContainsKey(key);
     }
 
-    /// <summary>
-    ///     Determines whether the specified unidentified item exists within this pool.
-    /// </summary>
+    /// <summary>Determines whether the specified unidentified item exists within this pool.</summary>
     /// <param name="item">The item.</param>
     /// <returns>True if the specified unidentified item exists; False otherwise.</returns>
     public bool ContainsUnidentified(TInstance item)

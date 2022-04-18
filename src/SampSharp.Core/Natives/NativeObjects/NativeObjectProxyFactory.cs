@@ -17,19 +17,13 @@ using System;
 
 namespace SampSharp.Core.Natives.NativeObjects;
 
-/// <summary>
-///     Contains logic for creating native object proxies.
-/// </summary>
+/// <summary>Contains logic for creating native object proxies.</summary>
 public static class NativeObjectProxyFactory
 {
-    /// <summary>
-    /// Assembly name of generated assembly for native object proxy types.
-    /// </summary>
+    /// <summary>Assembly name of generated assembly for native object proxy types.</summary>
     public const string AssemblyName = "SampSharpProxyAssembly";
 
-    /// <summary>
-    ///     Creates a proxy instance of the specified type <typeparamref name="T" />.
-    /// </summary>
+    /// <summary>Creates a proxy instance of the specified type <typeparamref name="T" />.</summary>
     /// <typeparam name="T">The type to create a proxy of.</typeparam>
     /// <param name="arguments">The arguments.</param>
     /// <returns>The proxy instance.</returns>
@@ -38,9 +32,7 @@ public static class NativeObjectProxyFactory
         return CreateInstance(typeof(T), arguments) as T;
     }
 
-    /// <summary>
-    ///     Creates a proxy instance of the specified <paramref name="type" />.
-    /// </summary>
+    /// <summary>Creates a proxy instance of the specified <paramref name="type" />.</summary>
     /// <param name="type">The type to create a proxy of.</param>
     /// <param name="arguments">The arguments.</param>
     /// <returns>The proxy instance.</returns>

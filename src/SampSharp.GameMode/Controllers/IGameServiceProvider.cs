@@ -15,14 +15,10 @@
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     Contains the definition of a service provider.
-/// </summary>
+/// <summary>Contains the definition of a service provider.</summary>
 public interface IGameServiceProvider : IController
 {
-    /// <summary>
-    ///     Registers the services this controller provides.
-    /// </summary>
+    /// <summary>Registers the services this controller provides.</summary>
     /// <param name="gameMode">The game mode.</param>
     /// <param name="serviceContainer">The service container.</param>
     void RegisterServices(BaseMode gameMode, GameModeServiceContainer serviceContainer);

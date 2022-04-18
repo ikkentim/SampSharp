@@ -35,7 +35,7 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
     private int _mainThread;
     private int _rconThread = int.MinValue;
     private bool _running;
-        
+
     public HostedGameModeClient(IGameModeProvider gameModeProvider, Encoding encoding)
     {
         Encoding = encoding;
@@ -44,7 +44,7 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
 
         ServerPath = Directory.GetCurrentDirectory();
     }
-        
+
     public bool IsOnMainThread
     {
         get
@@ -55,20 +55,20 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
     }
 
     public Encoding Encoding { get; }
-        
+
     public INativeObjectProxyFactory NativeObjectProxyFactory { get; }
-        
+
     public ISynchronizationProvider SynchronizationProvider => this;
-        
+
     public string ServerPath { get; }
-        
+
     public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
 
     public void RegisterCallback(string name, object target, MethodInfo methodInfo)
     {
         RegisterCallback(name, target, methodInfo, null);
     }
-        
+
     public void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[] parameterTypes, uint?[] lengthIndices = null)
     {
         if (name == null) throw new ArgumentNullException(nameof(name));
@@ -91,7 +91,7 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
             throw new CallbackRegistrationException($"Failed to register callback '{name}'. {e.Message}", e);
         }
     }
-        
+
     public void Print(string text)
     {
         if (!_running)
@@ -102,7 +102,7 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
         else
             _synchronizationContext.Send(_ => Interop.Print(text), null);
     }
-        
+
     public bool Run()
     {
         if (_running)
@@ -116,7 +116,7 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
         {
             Interop.Initialize();
         }
-        catch(InvalidOperationException e)
+        catch (InvalidOperationException e)
         {
             // May be thrown when the plugin is to old for this version of SampSharp.Core.
             Console.WriteLine(e.Message);
@@ -126,25 +126,27 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
         // Prepare the synchronization context
         _synchronizationContext = new SampSharpSynchronizationContext();
         SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
-            
+
         _mainThread = Environment.CurrentManagedThreadId;
         _running = true;
 
-        var version = Assembly.GetExecutingAssembly().GetName().Version!;
+        var version = Assembly.GetExecutingAssembly()
+            .GetName()
+            .Version!;
         CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Client");
         CoreLog.Log(CoreLogLevel.Initialisation, "-------------------------");
         CoreLog.Log(CoreLogLevel.Initialisation, $"v{version.ToString(3)} (C)2014-2022 Tim Potze");
         CoreLog.Log(CoreLogLevel.Initialisation, "");
-            
+
         _gameModeProvider.Initialize(this);
-            
+
         return true;
     }
-        
+
     IGameModeClient IGameModeRunner.Client => this;
-        
+
     bool ISynchronizationProvider.InvokeRequired => !IsOnMainThread;
-        
+
     void ISynchronizationProvider.Invoke(Action action)
     {
         _synchronizationContext.Send(_ => action(), null);
@@ -161,7 +163,7 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
         {
             return;
         }
-            
+
         while (true)
         {
             var message = _synchronizationContext.GetMessage();
@@ -190,7 +192,7 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
             OnUnhandledException(new UnhandledExceptionEventArgs("Tick", e));
         }
     }
-        
+
     internal void PublicCall(IntPtr amx, string name, IntPtr parameters, IntPtr retval)
     {
         if (!_running)
@@ -216,7 +218,7 @@ internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, I
             OnUnhandledException(new UnhandledExceptionEventArgs(name, e));
         }
     }
-        
+
     internal void InitializeForTesting()
     {
         _running = true;

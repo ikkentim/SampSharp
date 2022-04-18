@@ -15,13 +15,9 @@
 
 namespace SampSharp.GameMode.World;
 
-/// <summary>
-///     Contains an Identity property.
-/// </summary>
+/// <summary>Contains an Identity property.</summary>
 public interface IIdentifiable
 {
-    /// <summary>
-    ///     Gets the identifier of this instance.
-    /// </summary>
+    /// <summary>Gets the identifier of this instance.</summary>
     int Id { get; }
 }

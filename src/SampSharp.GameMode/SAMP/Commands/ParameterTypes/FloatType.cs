@@ -18,21 +18,14 @@ using System.Linq;
 
 namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 
-/// <summary>
-///     Represents a float command parameter.
-/// </summary>
+/// <summary>Represents a float command parameter.</summary>
 public class FloatType : ICommandParameterType
 {
-    /// <summary>
-    ///     Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be
-    ///     removed from the commandText.
-    /// </summary>
+    /// <summary>Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be removed from the commandText.</summary>
     /// <param name="commandText">The command text.</param>
     /// <param name="output">The output.</param>
     /// <param name="isNullable">A value indicating whether the result is allowed to be null when an entity referenced by the argument could not be found.</param>
-    /// <returns>
-    ///     true if parsed successfully; false otherwise.
-    /// </returns>
+    /// <returns>true if parsed successfully; false otherwise.</returns>
     public bool Parse(ref string commandText, out object output, bool isNullable = false)
     {
         var text = commandText.TrimStart();
@@ -41,7 +34,8 @@ public class FloatType : ICommandParameterType
         if (string.IsNullOrEmpty(text))
             return false;
 
-        var word = text.Split(' ').First();
+        var word = text.Split(' ')
+            .First();
 
         // Unify input culture.
         var preProcessedWord = word;
@@ -67,14 +61,16 @@ public class FloatType : ICommandParameterType
 
             preProcessedWord = firstComma < firstDot
                 ? preProcessedWord.Replace(",", "") // comma is thousands separator, dot is decimal separator.
-                : preProcessedWord.Replace(".", "").Replace(',', '.');
+                : preProcessedWord.Replace(".", "")
+                    .Replace(',', '.');
             // dot is thousands separator, comma is decimal separator.
         }
 
         // Parse the number
         if (float.TryParse(preProcessedWord, NumberStyles.Float, CultureInfo.InvariantCulture, out var number))
         {
-            commandText = commandText.Substring(word.Length).TrimStart(' ');
+            commandText = commandText.Substring(word.Length)
+                .TrimStart(' ');
             output = number;
             return true;
         }
