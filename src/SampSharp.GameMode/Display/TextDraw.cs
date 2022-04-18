@@ -24,30 +24,22 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Display;
 
-/// <summary>
-///     Represents a textdraw.
-/// </summary>
+/// <summary>Represents a textdraw.</summary>
 public partial class TextDraw : IdentifiedPool<TextDraw>
 {
-    /// <summary>
-    ///     Identifier indicating the handle is invalid.
-    /// </summary>
+    /// <summary>Identifier indicating the handle is invalid.</summary>
     public const int InvalidId = 0xFFFF;
 
-    /// <summary>
-    ///     Maximum number of text draws which can exist.
-    /// </summary>
+    /// <summary>Maximum number of text draws which can exist.</summary>
     public const int Max = 2048;
 
     /// <summary>
-    ///     Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw(BasePlayer,ClickTextDrawEventArgs)" /> is being called.
-    ///     This callback is called when a player clicks on a textdraw or cancels the select mode(ESC).
+    /// Occurs when the <see cref="BaseMode.OnPlayerClickTextDraw(BasePlayer,ClickTextDrawEventArgs)" /> is being called. This callback is called when a
+    /// player clicks on a textdraw or cancels the select mode(ESC).
     /// </summary>
     public event EventHandler<ClickTextDrawEventArgs> Click;
 
-    /// <summary>
-    ///     Raises the <see cref="Click" /> event.
-    /// </summary>
+    /// <summary>Raises the <see cref="Click" /> event.</summary>
     /// <param name="e">An <see cref="ClickTextDrawEventArgs" /> that contains the event data. </param>
     public virtual void OnClick(ClickTextDrawEventArgs e)
     {
@@ -77,18 +69,14 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
     private bool? _useBox;
     private float? _width;
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="TextDraw" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="TextDraw" /> class.</summary>
     public TextDraw()
     {
         IsApplyFixes = true;
         _text = "_";
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="TextDraw" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="TextDraw" /> class.</summary>
     /// <param name="position">The position of the textdraw on the screen.</param>
     /// <param name="text">The text of the textdraw.</param>
     public TextDraw(Vector2 position, string text) : this()
@@ -97,9 +85,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         _text = text;
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="TextDraw" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="TextDraw" /> class.</summary>
     /// <param name="position">The position of the textdraw on the screen.</param>
     /// <param name="text">The text of the textdraw.</param>
     /// <param name="font">The <see cref="TextDrawFont" /> of the textdraw.</param>
@@ -108,9 +94,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         _font = font;
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="TextDraw" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="TextDraw" /> class.</summary>
     /// <param name="position">The position of the textdraw on the screen.</param>
     /// <param name="text">The text of the textdraw.</param>
     /// <param name="font">The <see cref="TextDrawFont" /> of the textdraw.</param>
@@ -120,14 +104,10 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         _foreColor = foreColor;
     }
 
-    /// <summary>
-    ///     Gets or sets whether SA-MP fixes should be applied.
-    /// </summary>
+    /// <summary>Gets or sets whether SA-MP fixes should be applied.</summary>
     public bool IsApplyFixes { get; set; }
 
-    /// <summary>
-    ///     Gets or sets the <see cref="TextDrawAlignment" /> of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the <see cref="TextDrawAlignment" /> of this textdraw.</summary>
     public virtual TextDrawAlignment Alignment
     {
         get => _alignment ?? TextDrawAlignment.Left;
@@ -135,14 +115,12 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         {
             _alignment = value;
             if (Id == -1) return;
-            TextDrawInternal.Instance.TextDrawAlignment(Id, (int) value);
+            TextDrawInternal.Instance.TextDrawAlignment(Id, (int)value);
             UpdateClients();
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the background <see cref="Color" /> of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the background <see cref="Color" /> of this textdraw.</summary>
     public virtual Color BackColor
     {
         get => _backColor ?? Color.Black;
@@ -155,9 +133,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the foreground <see cref="Color" /> of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the foreground <see cref="Color" /> of this textdraw.</summary>
     public virtual Color ForeColor
     {
         get => _foreColor ?? Color.White;
@@ -170,9 +146,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the box <see cref="Color" /> of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the box <see cref="Color" /> of this textdraw.</summary>
     public virtual Color BoxColor
     {
         get => _boxColor ?? Color.Transparent;
@@ -185,9 +159,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the <see cref="TextDrawFont" /> to use in this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the <see cref="TextDrawFont" /> to use in this textdraw.</summary>
     public virtual TextDrawFont Font
     {
         get => _font ?? TextDrawFont.Normal;
@@ -195,15 +167,13 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         {
             _font = value;
             if (Id == -1) return;
-            TextDrawInternal.Instance.TextDrawFont(Id, (int) value);
+            TextDrawInternal.Instance.TextDrawFont(Id, (int)value);
             UpdateClients();
         }
     }
 
 
-    /// <summary>
-    ///     Gets or sets the size of the letters of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the size of the letters of this textdraw.</summary>
     public virtual Vector2 LetterSize
     {
         get => _letterSize ?? Vector2.One;
@@ -216,9 +186,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the outline size of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the outline size of this textdraw.</summary>
     public virtual int Outline
     {
         get => _outline ?? 0;
@@ -231,9 +199,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets whether to proportionally space the characters of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets whether to proportionally space the characters of this textdraw.</summary>
     public virtual bool Proportional
     {
         get => _proportional ?? false;
@@ -246,9 +212,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the shadow-size of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the shadow-size of this textdraw.</summary>
     public virtual int Shadow
     {
         get => _shadow ?? 0;
@@ -261,9 +225,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the text of this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the text of this textdraw.</summary>
     public virtual string Text
     {
         get => _text;
@@ -276,9 +238,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the position of this textdraw on the screen.
-    /// </summary>
+    /// <summary>Gets or sets the position of this textdraw on the screen.</summary>
     public virtual Vector2 Position
     {
         get => _position;
@@ -290,9 +250,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the width of this textdraws box.
-    /// </summary>
+    /// <summary>Gets or sets the width of this textdraws box.</summary>
     public virtual float Width
     {
         get => _width ?? 0;
@@ -305,9 +263,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the height of this textdraws box.
-    /// </summary>
+    /// <summary>Gets or sets the height of this textdraws box.</summary>
     public virtual float Height
     {
         get => _height ?? 0;
@@ -320,9 +276,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets whether to draw a box behind the textdraw.
-    /// </summary>
+    /// <summary>Gets or sets whether to draw a box behind the textdraw.</summary>
     public virtual bool UseBox
     {
         get => _useBox ?? false;
@@ -335,9 +289,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets whether this textdraw is selectable.
-    /// </summary>
+    /// <summary>Gets or sets whether this textdraw is selectable.</summary>
     public virtual bool Selectable
     {
         get => _selectable ?? false;
@@ -350,9 +302,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the preview model to draw on this textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the preview model to draw on this textdraw.</summary>
     public virtual int PreviewModel
     {
         get => _previewModel ?? 0;
@@ -365,9 +315,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the rotation of this textdraws preview model.
-    /// </summary>
+    /// <summary>Gets or sets the rotation of this textdraws preview model.</summary>
     public virtual Vector3 PreviewRotation
     {
         get => _previewRotation ?? Vector3.Zero;
@@ -380,9 +328,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the zoom level of this textdraws preview model.
-    /// </summary>
+    /// <summary>Gets or sets the zoom level of this textdraws preview model.</summary>
     public virtual float PreviewZoom
     {
         get => _previewZoom ?? 0;
@@ -395,9 +341,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the primary vehicle color of this textdraws preview model.
-    /// </summary>
+    /// <summary>Gets or sets the primary vehicle color of this textdraws preview model.</summary>
     public virtual int PreviewPrimaryColor
     {
         get => _previewPrimaryColor ?? -1;
@@ -410,9 +354,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the secondary vehicle color of this textdraws preview model.
-    /// </summary>
+    /// <summary>Gets or sets the secondary vehicle color of this textdraws preview model.</summary>
     public virtual int PreviewSecondaryColor
     {
         get => _previewSecondaryColor ?? -1;
@@ -425,9 +367,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         }
     }
 
-    /// <summary>
-    ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <summary>Performs tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     /// <param name="disposing">Whether managed resources should be disposed.</param>
     protected override void Dispose(bool disposing)
     {
@@ -438,9 +378,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         TextDrawInternal.Instance.TextDrawDestroy(Id);
     }
 
-    /// <summary>
-    ///     Displays this textdraw to all players.
-    /// </summary>
+    /// <summary>Displays this textdraw to all players.</summary>
     public virtual void Show()
     {
         AssertNotDisposed();
@@ -452,9 +390,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         TextDrawInternal.Instance.TextDrawShowForAll(Id);
     }
 
-    /// <summary>
-    ///     Display this textdraw to the given <paramref name="player" />.
-    /// </summary>
+    /// <summary>Display this textdraw to the given <paramref name="player" />.</summary>
     /// <param name="player">The player to display this textdraw to.</param>
     public virtual void Show(BasePlayer player)
     {
@@ -471,9 +407,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         TextDrawInternal.Instance.TextDrawShowForPlayer(player.Id, Id);
     }
 
-    /// <summary>
-    ///     Hides this textdraw.
-    /// </summary>
+    /// <summary>Hides this textdraw.</summary>
     public virtual void Hide()
     {
         AssertNotDisposed();
@@ -483,9 +417,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         TextDrawInternal.Instance.TextDrawHideForAll(Id);
     }
 
-    /// <summary>
-    ///     Hides this textdraw for the given <paramref name="player" />.
-    /// </summary>
+    /// <summary>Hides this textdraw for the given <paramref name="player" />.</summary>
     /// <param name="player">The player to hide this textdraw from.</param>
     public virtual void Hide(BasePlayer player)
     {
@@ -500,9 +432,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         TextDrawInternal.Instance.TextDrawHideForPlayer(player.Id, Id);
     }
 
-    /// <summary>
-    ///     Recreates this textdraw with all set properties. Called when changing the location on the screen.
-    /// </summary>
+    /// <summary>Recreates this textdraw with all set properties. Called when changing the location on the screen.</summary>
     protected virtual void Refresh()
     {
         if (Id != -1) TextDrawInternal.Instance.TextDrawDestroy(Id);
@@ -531,9 +461,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         UpdateClients();
     }
 
-    /// <summary>
-    ///     Fixes a string so no SA-MP bugs will occur during application.
-    /// </summary>
+    /// <summary>Fixes a string so no SA-MP bugs will occur during application.</summary>
     /// <param name="input">The input string.</param>
     /// <returns>The fixed string</returns>
     protected virtual string FixString(string input)
@@ -551,9 +479,7 @@ public partial class TextDraw : IdentifiedPool<TextDraw>
         return input.Replace("\n", "~n~");
     }
 
-    /// <summary>
-    ///     Updates this textdraw on all client's screens.
-    /// </summary>
+    /// <summary>Updates this textdraw on all client's screens.</summary>
     protected virtual void UpdateClients()
     {
         foreach (var p in _playersShownTo.AsReadOnly())

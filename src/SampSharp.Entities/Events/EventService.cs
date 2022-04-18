@@ -24,9 +24,7 @@ using SampSharp.Entities.Utilities;
 
 namespace SampSharp.Entities;
 
-/// <summary>
-/// Represents the event service.
-/// </summary>
+/// <summary>Represents the event service.</summary>
 /// <seealso cref="IEventService" />
 public class EventService : IEventService
 {
@@ -44,9 +42,7 @@ public class EventService : IEventService
     private readonly IServiceProvider _serviceProvider;
     private readonly IEntityManager _entityManager;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EventService" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EventService" /> class.</summary>
     public EventService(IGameModeClient gameModeClient, IServiceProvider serviceProvider, IEntityManager entityManager)
     {
         _gameModeClient = gameModeClient;
@@ -114,8 +110,7 @@ public class EventService : IEventService
     private void CreateEventsFromAssemblies()
     {
         // Find methods with EventAttribute in any ISystem in any assembly.
-        var events = new AssemblyScanner()
-            .IncludeAllAssemblies()
+        var events = new AssemblyScanner().IncludeAllAssemblies()
             .IncludeNonPublicMembers()
             .Implements<ISystem>()
             .ScanMethods<EventAttribute>();
@@ -163,8 +158,7 @@ public class EventService : IEventService
         }
     }
 
-    private InvokerInfo CreateInvoker(MethodInfo method, MethodParameterSource[] parameterInfos,
-        int callbackParamCount)
+    private InvokerInfo CreateInvoker(MethodInfo method, MethodParameterSource[] parameterInfos, int callbackParamCount)
     {
         var compiled = MethodInvokerFactory.Compile(method, parameterInfos);
 
@@ -177,8 +171,7 @@ public class EventService : IEventService
                 if (callbackParamCount == args.Length)
                     return compiled(instance, args, eventContext.EventServices, _entityManager);
 
-                CoreLog.Log(CoreLogLevel.Error,
-                    $"Callback parameter count mismatch {callbackParamCount} != {args.Length}");
+                CoreLog.Log(CoreLogLevel.Error, $"Callback parameter count mismatch {callbackParamCount} != {args.Length}");
                 return null;
             }
         };
@@ -202,9 +195,13 @@ public class EventService : IEventService
             switch (result)
             {
                 case Task<bool> task:
-                    return !task.IsCompleted ? null : task.Result;
+                    return !task.IsCompleted
+                        ? null
+                        : task.Result;
                 case Task<int> task:
-                    return !task.IsCompleted ? null : task.Result;
+                    return !task.IsCompleted
+                        ? null
+                        : task.Result;
                 case Task:
                     return null;
                 default:

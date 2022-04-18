@@ -19,16 +19,12 @@ using System.Runtime.InteropServices;
 
 namespace SampSharp.Core.Natives;
 
-/// <summary>
-/// Provides a state for variable arguments handling of native calls.
-/// </summary>
+/// <summary>Provides a state for variable arguments handling of native calls.</summary>
 public class VarArgsState : IDisposable
 {
     private List<GCHandle> _pinnedHandles;
 
-    /// <summary>
-    /// Pins a buffer which will be freed once this state is disposed of.
-    /// </summary>
+    /// <summary>Pins a buffer which will be freed once this state is disposed of.</summary>
     /// <param name="buffer">The buffer to pin.</param>
     /// <returns>The address at which the buffer has been pinned.</returns>
     public int PinBuffer(object buffer)
@@ -37,7 +33,7 @@ public class VarArgsState : IDisposable
 
         var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
         _pinnedHandles.Add(handle);
-                
+
         var ptr = handle.AddrOfPinnedObject();
 
         return ptr.ToInt32();

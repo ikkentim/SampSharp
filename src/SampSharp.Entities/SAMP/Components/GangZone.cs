@@ -15,9 +15,7 @@
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Represents a component which provides the data and functionality of a gang zone.
-/// </summary>
+/// <summary>Represents a component which provides the data and functionality of a gang zone.</summary>
 public sealed class GangZone : Component
 {
     private GangZone(float minX, float minY, float maxX, float maxY)
@@ -28,83 +26,66 @@ public sealed class GangZone : Component
         MaxY = maxY;
     }
 
-    /// <summary>
-    /// Gets the minimum x value for this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Gets the minimum x value for this <see cref="GangZone" />.</summary>
     public float MinX { get; }
 
-    /// <summary>
-    /// Gets the minimum y value for this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Gets the minimum y value for this <see cref="GangZone" />.</summary>
     public float MinY { get; }
 
-    /// <summary>
-    /// Gets the maximum x value for this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Gets the maximum x value for this <see cref="GangZone" />.</summary>
     public float MaxX { get; }
 
-    /// <summary>
-    /// Gets the maximum y value for this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Gets the maximum y value for this <see cref="GangZone" />.</summary>
     public float MaxY { get; }
 
-    /// <summary>
-    /// Gets or sets the color of this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Gets or sets the color of this <see cref="GangZone" />.</summary>
     public Color Color { get; set; }
 
-    /// <summary>
-    /// Shows this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Shows this <see cref="GangZone" />.</summary>
     public void Show()
     {
-        GetComponent<NativeGangZone>().GangZoneShowForAll(Color);
+        GetComponent<NativeGangZone>()
+            .GangZoneShowForAll(Color);
     }
 
-    /// <summary>
-    /// Shows this <see cref="GangZone" /> to the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Shows this <see cref="GangZone" /> to the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     public void Show(EntityId player)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-        GetComponent<NativeGangZone>().GangZoneShowForPlayer(player, Color);
+        GetComponent<NativeGangZone>()
+            .GangZoneShowForPlayer(player, Color);
     }
 
-    /// <summary>
-    /// Hides this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Hides this <see cref="GangZone" />.</summary>
     public void Hide()
     {
-        GetComponent<NativeGangZone>().GangZoneHideForAll();
+        GetComponent<NativeGangZone>()
+            .GangZoneHideForAll();
     }
 
-    /// <summary>
-    /// Hides this <see cref="GangZone" /> for the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Hides this <see cref="GangZone" /> for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     public void Hide(EntityId player)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-        GetComponent<NativeGangZone>().GangZoneHideForPlayer(player);
+        GetComponent<NativeGangZone>()
+            .GangZoneHideForPlayer(player);
     }
 
-    /// <summary>
-    /// Flashes this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Flashes this <see cref="GangZone" />.</summary>
     /// <param name="color">The color.</param>
     public void Flash(Color color)
     {
-        GetComponent<NativeGangZone>().GangZoneFlashForAll(color);
+        GetComponent<NativeGangZone>()
+            .GangZoneFlashForAll(color);
     }
 
-    /// <summary>
-    /// Flashes this <see cref="GangZone" /> for the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Flashes this <see cref="GangZone" /> for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     public void Flash(EntityId player)
     {
@@ -114,9 +95,7 @@ public sealed class GangZone : Component
         Flash(player, new Color());
     }
 
-    /// <summary>
-    /// Flashes this <see cref="GangZone" /> for the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Flashes this <see cref="GangZone" /> for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     /// <param name="color">The color.</param>
     public void Flash(EntityId player, Color color)
@@ -124,32 +103,32 @@ public sealed class GangZone : Component
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-        GetComponent<NativeGangZone>().GangZoneFlashForPlayer(player, color);
+        GetComponent<NativeGangZone>()
+            .GangZoneFlashForPlayer(player, color);
     }
 
-    /// <summary>
-    /// Stops this <see cref="GangZone" /> from flash.
-    /// </summary>
+    /// <summary>Stops this <see cref="GangZone" /> from flash.</summary>
     public void StopFlash()
     {
-        GetComponent<NativeGangZone>().GangZoneStopFlashForAll();
+        GetComponent<NativeGangZone>()
+            .GangZoneStopFlashForAll();
     }
 
-    /// <summary>
-    /// Stops this <see cref="GangZone" /> from flash for the specified player.
-    /// </summary>
+    /// <summary>Stops this <see cref="GangZone" /> from flash for the specified player.</summary>
     /// <param name="player">The player.</param>
     public void StopFlash(EntityId player)
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
 
-        GetComponent<NativeGangZone>().GangZoneStopFlashForPlayer(player);
+        GetComponent<NativeGangZone>()
+            .GangZoneStopFlashForPlayer(player);
     }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        GetComponent<NativeGangZone>().GangZoneDestroy();
+        GetComponent<NativeGangZone>()
+            .GangZoneDestroy();
     }
 }

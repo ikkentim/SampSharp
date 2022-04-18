@@ -18,33 +18,23 @@ using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.SAMP;
 
-/// <summary>
-///     Contains a set of KeyHandlers for different key states.
-/// </summary>
+/// <summary>Contains a set of KeyHandlers for different key states.</summary>
 public class KeyChangeHandlerSet
 {
-    /// <summary>
-    ///     Initializes a new instance of the KeyChangeHandlerSet class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the KeyChangeHandlerSet class.</summary>
     public KeyChangeHandlerSet()
     {
         Pressed = new KeyHandlerSet(KeyUtils.HasPressed);
         Released = new KeyHandlerSet(KeyUtils.HasReleased);
     }
 
-    /// <summary>
-    ///     Gets a set of KeyHandlers which are triggered once a key has been pressed.
-    /// </summary>
+    /// <summary>Gets a set of KeyHandlers which are triggered once a key has been pressed.</summary>
     public KeyHandlerSet Pressed { get; }
 
-    /// <summary>
-    ///     Gets a set of KeyHandlers which are triggered once a key has been released.
-    /// </summary>
+    /// <summary>Gets a set of KeyHandlers which are triggered once a key has been released.</summary>
     public KeyHandlerSet Released { get; }
 
-    /// <summary>
-    ///     Handles a change in PlayerKeyState.
-    /// </summary>
+    /// <summary>Handles a change in PlayerKeyState.</summary>
     /// <param name="sender">Sender of the event.</param>
     /// <param name="e">Object containing information about the event.</param>
     public void Handle(object sender, KeyStateChangedEventArgs e)

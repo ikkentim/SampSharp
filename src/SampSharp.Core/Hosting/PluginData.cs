@@ -18,16 +18,11 @@ using System.Runtime.InteropServices;
 
 namespace SampSharp.Core.Hosting;
 
-/// <summary>
-/// Provides data exposed to the SampSharp plugin by SA-MP.
-/// </summary>
+/// <summary>Provides data exposed to the SampSharp plugin by SA-MP.</summary>
 [StructLayout(LayoutKind.Sequential)]
 public readonly unsafe struct PluginData
 {
-    /// <summary>
-    /// void (*logprintf)(char* format, ...)
-    /// C# doesn't support interop with varargs. Use this function with arguments ("%s", "your text here")
-    /// </summary>
+    /// <summary>void (*logprintf)(char* format, ...) C# doesn't support interop with varargs. Use this function with arguments ("%s", "your text here")</summary>
     public readonly delegate* unmanaged <byte*, byte*, void> Logprintf;
 
 #pragma warning disable S1144 // Unused private types or members should be removed
@@ -48,18 +43,12 @@ public readonly unsafe struct PluginData
     private readonly IntPtr _placeholderF;
 #pragma warning restore S1144 // Unused private types or members should be removed
 
-    /// <summary>
-    /// void* AmxFunctionTable[]
-    /// </summary>
+    /// <summary>void* AmxFunctionTable[]</summary>
     public readonly AmxExport* AmxExports;
 
-    /// <summary>
-    /// int (*AmxCallPublicFilterScript)(char *szFunctionName)
-    /// </summary>
+    /// <summary>int (*AmxCallPublicFilterScript)(char *szFunctionName)</summary>
     public readonly delegate* unmanaged <byte*, int> CallPublicFs;
 
-    /// <summary>
-    /// int (*AmxCallPublicGameMode)(char *szFunctionName)
-    /// </summary>
+    /// <summary>int (*AmxCallPublicGameMode)(char *szFunctionName)</summary>
     public readonly delegate* unmanaged <byte*, int> CallPublicGm;
 }

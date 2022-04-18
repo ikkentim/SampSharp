@@ -18,14 +18,11 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events;
 
 /// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerExitVehicle" />, <see cref="BasePlayer.ExitVehicle" /> or
-///     <see cref="BaseVehicle.PlayerExit" />
+/// Provides data for the <see cref="BaseMode.PlayerExitVehicle" />, <see cref="BasePlayer.ExitVehicle" /> or <see cref="BaseVehicle.PlayerExit" />
 /// </summary>
 public class PlayerVehicleEventArgs : PlayerEventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="PlayerVehicleEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="PlayerVehicleEventArgs" /> class.</summary>
     /// <param name="player">The player.</param>
     /// <param name="vehicle">The vehicle.</param>
     public PlayerVehicleEventArgs(BasePlayer player, BaseVehicle vehicle) : base(player)
@@ -33,8 +30,6 @@ public class PlayerVehicleEventArgs : PlayerEventArgs
         Vehicle = vehicle;
     }
 
-    /// <summary>
-    ///     Gets the vehicle.
-    /// </summary>
+    /// <summary>Gets the vehicle.</summary>
     public BaseVehicle Vehicle { get; }
 }

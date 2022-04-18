@@ -18,14 +18,10 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerText" /> or <see cref="BasePlayer.Text" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.PlayerText" /> or <see cref="BasePlayer.Text" /> event.</summary>
 public class TextEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the TextEventArgs class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the TextEventArgs class.</summary>
     /// <param name="text">The text sent by the player.</param>
     public TextEventArgs(string text)
     {
@@ -33,13 +29,9 @@ public class TextEventArgs : EventArgs
         SendToPlayers = true;
     }
 
-    /// <summary>
-    ///     Gets the text sent by the player.
-    /// </summary>
+    /// <summary>Gets the text sent by the player.</summary>
     public string Text { get; }
 
-    /// <summary>
-    ///     Gets or sets whether this message should be sent to all players.
-    /// </summary>
+    /// <summary>Gets or sets whether this message should be sent to all players.</summary>
     public bool SendToPlayers { get; set; }
 }

@@ -33,7 +33,7 @@ public static class BenchmarkCommands
         var time = new List<TimeSpan>();
 
         player.SendClientMessage("Benchmark starting...");
-            
+
         var inf = VehicleModelInfo.ForVehicle(VehicleModelType.AT400);
 
         for (var i = 0; i < runs; i++)

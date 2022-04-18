@@ -83,15 +83,14 @@ public partial class BaseVehicle
         }
 
         [NativeMethod]
-        public virtual bool SetVehicleParamsEx(int vehicleid, int engine, int lights, int alarm, int doors,
-            int bonnet, int boot, int objective)
+        public virtual bool SetVehicleParamsEx(int vehicleid, int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool GetVehicleParamsEx(int vehicleid, out int engine, out int lights, out int alarm,
-            out int doors, out int bonnet, out int boot, out int objective)
+        public virtual bool GetVehicleParamsEx(int vehicleid, out int engine, out int lights, out int alarm, out int doors, out int bonnet, out int boot,
+            out int objective)
         {
             throw new NativeNotImplementedException();
         }
@@ -103,29 +102,25 @@ public partial class BaseVehicle
         }
 
         [NativeMethod]
-        public virtual bool SetVehicleParamsCarDoors(int vehicleid, int driver, int passenger, int backleft,
-            int backright)
+        public virtual bool SetVehicleParamsCarDoors(int vehicleid, int driver, int passenger, int backleft, int backright)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool GetVehicleParamsCarDoors(int vehicleid, out int driver, out int passenger,
-            out int backleft, out int backright)
+        public virtual bool GetVehicleParamsCarDoors(int vehicleid, out int driver, out int passenger, out int backleft, out int backright)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool SetVehicleParamsCarWindows(int vehicleid, int driver, int passenger, int backleft,
-            int backright)
+        public virtual bool SetVehicleParamsCarWindows(int vehicleid, int driver, int passenger, int backleft, int backright)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual bool GetVehicleParamsCarWindows(int vehicleid, out int driver, out int passenger,
-            out int backleft, out int backright)
+        public virtual bool GetVehicleParamsCarWindows(int vehicleid, out int driver, out int passenger, out int backleft, out int backright)
         {
             throw new NativeNotImplementedException();
         }
@@ -251,8 +246,7 @@ public partial class BaseVehicle
         }
 
         [NativeMethod]
-        public virtual bool GetVehicleDamageStatus(int vehicleid, out int panels, out int doors, out int lights,
-            out int tires)
+        public virtual bool GetVehicleDamageStatus(int vehicleid, out int panels, out int doors, out int lights, out int tires)
         {
             throw new NativeNotImplementedException();
         }

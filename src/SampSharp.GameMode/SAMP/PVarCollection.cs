@@ -21,16 +21,12 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP;
 
-/// <summary>
-///     Represents a collection of player variables.
-/// </summary>
+/// <summary>Represents a collection of player variables.</summary>
 public partial class PVarCollection : IEnumerable<object>
 {
     private readonly BasePlayer _player;
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="PVarCollection" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="PVarCollection" /> class.</summary>
     /// <param name="player">The player.</param>
     /// <exception cref="System.ArgumentNullException">player</exception>
     public PVarCollection(BasePlayer player)
@@ -38,25 +34,21 @@ public partial class PVarCollection : IEnumerable<object>
         _player = player ?? throw new ArgumentNullException(nameof(player));
     }
 
-    /// <summary>
-    ///     Gets or sets the <see cref="object" /> at the specified index.
-    /// </summary>
+    /// <summary>Gets or sets the <see cref="object" /> at the specified index.</summary>
     public object this[int index]
     {
         get => this[NameAtIndex(index)];
         set => this[NameAtIndex(index)] = value;
     }
 
-    /// <summary>
-    ///     Gets or sets the <see cref="object" /> with the specified <paramref name="varname"/>.
-    /// </summary>
+    /// <summary>Gets or sets the <see cref="object" /> with the specified <paramref name="varname" />.</summary>
     public object this[string varname]
     {
         get
         {
             if (varname == null || _player == null) return null;
 
-            switch ((ServerVarType) PVarCollectionInternal.Instance.GetPVarType(_player.Id, varname))
+            switch ((ServerVarType)PVarCollectionInternal.Instance.GetPVarType(_player.Id, varname))
             {
                 case ServerVarType.Int:
                     return Get<int>(varname);
@@ -84,7 +76,9 @@ public partial class PVarCollection : IEnumerable<object>
                     PVarCollectionInternal.Instance.SetPVarFloat(_player.Id, varname, f);
                     break;
                 case bool b:
-                    PVarCollectionInternal.Instance.SetPVarInt(_player.Id, varname, b ? 1 : 0);
+                    PVarCollectionInternal.Instance.SetPVarInt(_player.Id, varname, b
+                        ? 1
+                        : 0);
                     break;
                 case string s:
                     PVarCollectionInternal.Instance.SetPVarString(_player.Id, varname, s);
@@ -93,17 +87,13 @@ public partial class PVarCollection : IEnumerable<object>
         }
     }
 
-    /// <summary>
-    ///     Gets the upper index of the variables list.
-    /// </summary>
-    public int UpperIndex => _player == null ? 0 : PVarCollectionInternal.Instance.GetPVarsUpperIndex(_player.Id);
+    /// <summary>Gets the upper index of the variables list.</summary>
+    public int UpperIndex => _player == null
+        ? 0
+        : PVarCollectionInternal.Instance.GetPVarsUpperIndex(_player.Id);
 
-    /// <summary>
-    ///     Returns an enumerator that iterates through the collection.
-    /// </summary>
-    /// <returns>
-    ///     A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
-    /// </returns>
+    /// <summary>Returns an enumerator that iterates through the collection.</summary>
+    /// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.</returns>
     public IEnumerator<object> GetEnumerator()
     {
         var vars = new List<object>();
@@ -121,9 +111,7 @@ public partial class PVarCollection : IEnumerable<object>
         return GetEnumerator();
     }
 
-    /// <summary>
-    ///     Gets the variable with the specified <paramref name="varname"/>.
-    /// </summary>
+    /// <summary>Gets the variable with the specified <paramref name="varname" />.</summary>
     /// <typeparam name="T">The type of the variable.</typeparam>
     /// <param name="varname">The name of the variable.</param>
     /// <returns>The variable with the specified name.</returns>
@@ -132,55 +120,50 @@ public partial class PVarCollection : IEnumerable<object>
         if (_player == null) return default;
 
         object value = default(T);
-        if (typeof (T) == typeof (int))
+        if (typeof(T) == typeof(int))
             value = PVarCollectionInternal.Instance.GetPVarInt(_player.Id, varname);
-        else if (typeof (T) == typeof (float))
+        else if (typeof(T) == typeof(float))
             value = PVarCollectionInternal.Instance.GetPVarFloat(_player.Id, varname);
-        else if (typeof (T) == typeof (string))
+        else if (typeof(T) == typeof(string))
         {
             PVarCollectionInternal.Instance.GetPVarString(_player.Id, varname, out var output, 64);
             value = output;
         }
-        else if (typeof (T) == typeof (bool))
+        else if (typeof(T) == typeof(bool))
             value = PVarCollectionInternal.Instance.GetPVarInt(_player.Id, varname) > 0;
-        return (T) Convert.ChangeType(value, typeof (T));
+
+        return (T)Convert.ChangeType(value, typeof(T));
     }
 
-    /// <summary>
-    ///     Checks whether a variable with the specified name exists.
-    /// </summary>
+    /// <summary>Checks whether a variable with the specified name exists.</summary>
     /// <param name="varname">The name of the variable.</param>
     /// <returns>True if the variable exists; False otherwise.</returns>
     public bool Exists(string varname)
     {
-        return _player != null && PVarCollectionInternal.Instance.GetPVarType(_player.Id, varname) != (int) ServerVarType.None;
+        return _player != null && PVarCollectionInternal.Instance.GetPVarType(_player.Id, varname) != (int)ServerVarType.None;
     }
 
-    /// <summary>
-    ///     Gets the type of the variable with the given <paramref name="varname" />.
-    /// </summary>
+    /// <summary>Gets the type of the variable with the given <paramref name="varname" />.</summary>
     /// <param name="varname">The name of the variable.</param>
     /// <returns>The type of the variable.</returns>
     public Type GetType(string varname)
     {
         if (_player == null) return null;
 
-        switch ((ServerVarType) PVarCollectionInternal.Instance.GetPVarType(_player.Id, varname))
+        switch ((ServerVarType)PVarCollectionInternal.Instance.GetPVarType(_player.Id, varname))
         {
             case ServerVarType.Float:
-                return typeof (float);
+                return typeof(float);
             case ServerVarType.Int:
-                return typeof (int);
+                return typeof(int);
             case ServerVarType.String:
-                return typeof (string);
+                return typeof(string);
             default:
                 return null;
         }
     }
 
-    /// <summary>
-    ///     Gets the name at the given <paramref name="index" />.
-    /// </summary>
+    /// <summary>Gets the name at the given <paramref name="index" />.</summary>
     /// <param name="index">The index.</param>
     /// <returns>The name at the given index.</returns>
     public string NameAtIndex(int index)
@@ -191,9 +174,7 @@ public partial class PVarCollection : IEnumerable<object>
         return name;
     }
 
-    /// <summary>
-    ///     Deletes the specified variable.
-    /// </summary>
+    /// <summary>Deletes the specified variable.</summary>
     /// <param name="varname">The name of the variable.</param>
     /// <returns>True on success; False otherwise.</returns>
     public bool Delete(string varname)

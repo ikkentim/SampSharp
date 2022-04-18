@@ -20,61 +20,46 @@ using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Core;
 
-/// <summary>
-///     Contains the methods of a SampSharp game mode client.
-/// </summary>
+/// <summary>Contains the methods of a SampSharp game mode client.</summary>
 public interface IGameModeClient
 {
-    /// <summary>
-    ///     Gets the default encoding to use when translating server messages.
-    /// </summary>
+    /// <summary>Gets the default encoding to use when translating server messages.</summary>
     Encoding Encoding { get; }
-        
-    /// <summary>
-    /// Gets the factory for native method wrapper objects.
-    /// </summary>
+
+    /// <summary>Gets the factory for native method wrapper objects.</summary>
     INativeObjectProxyFactory NativeObjectProxyFactory { get; }
 
-    /// <summary>
-    /// Gets the provider which can be used for synchronizing a call to the main thread.
-    /// </summary>
+    /// <summary>Gets the provider which can be used for synchronizing a call to the main thread.</summary>
     ISynchronizationProvider SynchronizationProvider { get; }
 
-    /// <summary>
-    ///     Gets the path to the server directory.
-    /// </summary>
+    /// <summary>Gets the path to the server directory.</summary>
     string ServerPath { get; }
 
-    /// <summary>
-    ///     Occurs when an exception is unhandled during the execution of a callback or tick.
-    /// </summary>
+    /// <summary>Occurs when an exception is unhandled during the execution of a callback or tick.</summary>
     event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
-        
+
     /// <summary>
-    ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
-    ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />. If the method contains only
-    ///     one object[] parameter, all parameters are provided to the method in this array.
+    /// Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified <paramref name="methodInfo" /> will be
+    /// invoked on the specified <paramref name="target" />. If the method contains only one object[] parameter, all parameters are provided to the method in this
+    /// array.
     /// </summary>
     /// <param name="name">The name af the callback to register.</param>
     /// <param name="target">The target on which to invoke the method.</param>
     /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
     /// <param name="parameterTypes">The types of the parameters the callback handler expects.</param>
     /// <param name="lengthIndices">The indices at which the lengths are provides for parameters which require lengths.</param>
-    void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[] parameterTypes,
-        uint?[] lengthIndices = null);
-        
+    void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[] parameterTypes, uint?[] lengthIndices = null);
+
     /// <summary>
-    ///     Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified
-    ///     <paramref name="methodInfo" /> will be invoked on the specified <paramref name="target" />.
+    /// Registers a callback with the specified <paramref name="name" />. When the callback is called, the specified <paramref name="methodInfo" /> will be
+    /// invoked on the specified <paramref name="target" />.
     /// </summary>
     /// <param name="name">The name af the callback to register.</param>
     /// <param name="target">The target on which to invoke the method.</param>
     /// <param name="methodInfo">The method information of the method to invoke when the callback is called.</param>
     void RegisterCallback(string name, object target, MethodInfo methodInfo);
 
-    /// <summary>
-    ///     Prints the specified text to the server console.
-    /// </summary>
+    /// <summary>Prints the specified text to the server console.</summary>
     /// <param name="text">The text to print to the server console.</param>
     void Print(string text);
 }

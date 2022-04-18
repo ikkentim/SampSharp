@@ -18,15 +18,11 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     A controller processing all player actions.
-/// </summary>
+/// <summary>A controller processing all player actions.</summary>
 [Controller]
 public class BasePlayerController : Disposable, IEventListener, ITypeProvider
 {
-    /// <summary>
-    ///     Registers the events this PlayerController wants to listen to.
-    /// </summary>
+    /// <summary>Registers the events this PlayerController wants to listen to.</summary>
     /// <param name="gameMode">The running GameMode.</param>
     public virtual void RegisterEvents(BaseMode gameMode)
     {
@@ -44,10 +40,8 @@ public class BasePlayerController : Disposable, IEventListener, ITypeProvider
         gameMode.PlayerStateChanged += (sender, args) => (sender as BasePlayer)?.OnStateChanged(args);
         gameMode.PlayerEnterCheckpoint += (sender, args) => (sender as BasePlayer)?.OnEnterCheckpoint(args);
         gameMode.PlayerLeaveCheckpoint += (sender, args) => (sender as BasePlayer)?.OnLeaveCheckpoint(args);
-        gameMode.PlayerEnterRaceCheckpoint +=
-            (sender, args) => (sender as BasePlayer)?.OnEnterRaceCheckpoint(args);
-        gameMode.PlayerLeaveRaceCheckpoint +=
-            (sender, args) => (sender as BasePlayer)?.OnLeaveRaceCheckpoint(args);
+        gameMode.PlayerEnterRaceCheckpoint += (sender, args) => (sender as BasePlayer)?.OnEnterRaceCheckpoint(args);
+        gameMode.PlayerLeaveRaceCheckpoint += (sender, args) => (sender as BasePlayer)?.OnLeaveRaceCheckpoint(args);
         gameMode.PlayerRequestSpawn += (sender, args) => (sender as BasePlayer)?.OnRequestSpawn(args);
         gameMode.PlayerEnterExitModShop += (sender, args) => (sender as BasePlayer)?.OnEnterExitModShop(args);
         gameMode.PlayerSelectedMenuRow += (sender, args) => (sender as BasePlayer)?.OnSelectedMenuRow(args);
@@ -61,36 +55,26 @@ public class BasePlayerController : Disposable, IEventListener, ITypeProvider
         gameMode.PlayerTakeDamage += (sender, args) => (sender as BasePlayer)?.OnTakeDamage(args);
         gameMode.PlayerGiveDamage += (sender, args) => (sender as BasePlayer)?.OnGiveDamage(args);
         gameMode.PlayerClickMap += (sender, args) => (sender as BasePlayer)?.OnClickMap(args);
-        gameMode.PlayerClickTextDraw +=
-            (sender, args) => (sender as BasePlayer)?.OnClickTextDraw(args);
-        gameMode.PlayerClickPlayerTextDraw +=
-            (sender, args) => (sender as BasePlayer)?.OnClickPlayerTextDraw(args);
-        gameMode.PlayerCancelClickTextDraw +=
-            (sender, args) => (sender as BasePlayer)?.OnCancelClickTextDraw(args);
+        gameMode.PlayerClickTextDraw += (sender, args) => (sender as BasePlayer)?.OnClickTextDraw(args);
+        gameMode.PlayerClickPlayerTextDraw += (sender, args) => (sender as BasePlayer)?.OnClickPlayerTextDraw(args);
+        gameMode.PlayerCancelClickTextDraw += (sender, args) => (sender as BasePlayer)?.OnCancelClickTextDraw(args);
         gameMode.PlayerClickPlayer += (sender, args) => (sender as BasePlayer)?.OnClickPlayer(args);
         gameMode.PlayerEditGlobalObject += (sender, args) => (sender as BasePlayer)?.OnEditGlobalObject(args);
         gameMode.PlayerEditPlayerObject += (sender, args) => (sender as BasePlayer)?.OnEditPlayerObject(args);
-        gameMode.PlayerEditAttachedObject +=
-            (sender, args) => (sender as BasePlayer)?.OnEditAttachedObject(args);
-        gameMode.PlayerSelectGlobalObject +=
-            (sender, args) => (sender as BasePlayer)?.OnSelectGlobalObject(args);
-        gameMode.PlayerSelectPlayerObject +=
-            (sender, args) => (sender as BasePlayer)?.OnSelectPlayerObject(args);
+        gameMode.PlayerEditAttachedObject += (sender, args) => (sender as BasePlayer)?.OnEditAttachedObject(args);
+        gameMode.PlayerSelectGlobalObject += (sender, args) => (sender as BasePlayer)?.OnSelectGlobalObject(args);
+        gameMode.PlayerSelectPlayerObject += (sender, args) => (sender as BasePlayer)?.OnSelectPlayerObject(args);
         gameMode.PlayerWeaponShot += (sender, args) => (sender as BasePlayer)?.OnWeaponShot(args);
         gameMode.PlayerPickUpPickup += (sender, args) => (sender as BasePlayer)?.OnPickUpPickup(args);
     }
 
-    /// <summary>
-    ///     Registers types this PlayerController requires the system to use.
-    /// </summary>
+    /// <summary>Registers types this PlayerController requires the system to use.</summary>
     public virtual void RegisterTypes()
     {
         BasePlayer.Register<BasePlayer>();
     }
 
-    /// <summary>
-    ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <summary>Performs tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     /// <param name="disposing">Whether managed resources should be disposed.</param>
     protected override void Dispose(bool disposing)
     {

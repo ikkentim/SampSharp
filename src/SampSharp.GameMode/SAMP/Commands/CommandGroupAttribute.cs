@@ -17,28 +17,20 @@ using System;
 
 namespace SampSharp.GameMode.SAMP.Commands;
 
-/// <summary>
-///     Indicates commands within this class or method are part of a command group.
-/// </summary>
+/// <summary>Indicates commands within this class or method are part of a command group.</summary>
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
 public class CommandGroupAttribute : Attribute
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="CommandGroupAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="CommandGroupAttribute" /> class.</summary>
     /// <param name="paths">The relative paths of the command group.</param>
     public CommandGroupAttribute(params string[] paths)
     {
         Paths = paths;
     }
 
-    /// <summary>
-    /// Gets the relative paths of the command group.
-    /// </summary>
+    /// <summary>Gets the relative paths of the command group.</summary>
     public string[] Paths { get; }
 
-    /// <summary>
-    ///     Gets or sets the permission checker type.
-    /// </summary>
+    /// <summary>Gets or sets the permission checker type.</summary>
     public Type PermissionChecker { get; set; }
 }

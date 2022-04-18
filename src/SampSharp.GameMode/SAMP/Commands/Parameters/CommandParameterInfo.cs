@@ -18,22 +18,17 @@ using SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 
 namespace SampSharp.GameMode.SAMP.Commands.Parameters;
 
-/// <summary>
-///     Represents a command parameter.
-/// </summary>
+/// <summary>Represents a command parameter.</summary>
 public class CommandParameterInfo
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="CommandParameterInfo" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="CommandParameterInfo" /> class.</summary>
     /// <param name="name">The name.</param>
     /// <param name="commandParameterType">Type of the command parameter.</param>
     /// <param name="isOptional">if set to <c>true</c> the parameter is optional.</param>
     /// <param name="defaultValue">The default value.</param>
     /// <param name="isNullable">A value indicating whether the parameter is allowed to be null.</param>
     /// <exception cref="ArgumentNullException">Thrown if name or commandParameterType is null</exception>
-    public CommandParameterInfo(string name, ICommandParameterType commandParameterType, bool isOptional,
-        object defaultValue, bool isNullable)
+    public CommandParameterInfo(string name, ICommandParameterType commandParameterType, bool isOptional, object defaultValue, bool isNullable)
     {
         CommandParameterType = commandParameterType ?? throw new ArgumentNullException(nameof(commandParameterType));
         IsOptional = isOptional;
@@ -42,28 +37,18 @@ public class CommandParameterInfo
         IsNullable = isNullable;
     }
 
-    /// <summary>
-    ///     Gets the type of the command parameter.
-    /// </summary>
+    /// <summary>Gets the type of the command parameter.</summary>
     public ICommandParameterType CommandParameterType { get; }
 
-    /// <summary>
-    ///     Gets a value indicating whether this instance is optional.
-    /// </summary>
+    /// <summary>Gets a value indicating whether this instance is optional.</summary>
     public bool IsOptional { get; }
 
-    /// <summary>
-    ///     Gets the name.
-    /// </summary>
+    /// <summary>Gets the name.</summary>
     public string Name { get; }
 
-    /// <summary>
-    ///     Gets the default value.
-    /// </summary>
+    /// <summary>Gets the default value.</summary>
     public object DefaultValue { get; }
-        
-    /// <summary>
-    ///    Gets a value indicating whether the parameter is allowed to be null.
-    /// </summary>
+
+    /// <summary>Gets a value indicating whether the parameter is allowed to be null.</summary>
     public bool IsNullable { get; }
 }

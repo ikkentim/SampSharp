@@ -20,22 +20,18 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events;
 
 /// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerDisconnected" />, <see cref="BaseMode.PlayerCleanup" />,
-///     <see cref="BasePlayer.Disconnected" /> or <see cref="BasePlayer.Cleanup" /> event.
+/// Provides data for the <see cref="BaseMode.PlayerDisconnected" />, <see cref="BaseMode.PlayerCleanup" />, <see cref="BasePlayer.Disconnected" /> or
+/// <see cref="BasePlayer.Cleanup" /> event.
 /// </summary>
 public class DisconnectEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="DisconnectEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="DisconnectEventArgs" /> class.</summary>
     /// <param name="reason">The reason.</param>
     public DisconnectEventArgs(DisconnectReason reason)
     {
         Reason = reason;
     }
 
-    /// <summary>
-    ///     Gets the reason of the disconnection.
-    /// </summary>
+    /// <summary>Gets the reason of the disconnection.</summary>
     public DisconnectReason Reason { get; }
 }

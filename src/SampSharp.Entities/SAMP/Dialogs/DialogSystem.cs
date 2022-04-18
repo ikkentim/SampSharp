@@ -15,9 +15,7 @@
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Represents a system for handling dialog functionality
-/// </summary>
+/// <summary>Represents a system for handling dialog functionality</summary>
 public class DialogSystem : ISystem
 {
     [Event]
@@ -35,7 +33,8 @@ public class DialogSystem : ISystem
             return; // Prevent dialog hacks
 
         player.ResponseReceived = true;
-        player.Handler(new DialogResult(
-            response == 1 ? DialogResponse.LeftButton : DialogResponse.RightButtonOrCancel, listItem, inputText));
+        player.Handler(new DialogResult(response == 1
+            ? DialogResponse.LeftButton
+            : DialogResponse.RightButtonOrCancel, listItem, inputText));
     }
 }

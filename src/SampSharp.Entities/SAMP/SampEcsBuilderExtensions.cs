@@ -18,15 +18,10 @@ using static SampSharp.Entities.SAMP.SampEntities;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Provides methods for enabling SA:MP systems in an <see cref="IEcsBuilder" /> instance.
-/// </summary>
+/// <summary>Provides methods for enabling SA:MP systems in an <see cref="IEcsBuilder" /> instance.</summary>
 public static class SampEcsBuilderExtensions
 {
-        
-    /// <summary>
-    /// Enables player commands.
-    /// </summary>
+    /// <summary>Enables player commands.</summary>
     /// <param name="builder">The builder.</param>
     /// <returns>The builder.</returns>
     public static IEcsBuilder EnablePlayerCommands(this IEcsBuilder builder)
@@ -34,9 +29,7 @@ public static class SampEcsBuilderExtensions
         return builder.UseMiddleware<PlayerCommandProcessingMiddleware>("OnPlayerCommandText");
     }
 
-    /// <summary>
-    /// Enables RCON commands.
-    /// </summary>
+    /// <summary>Enables RCON commands.</summary>
     /// <param name="builder">The builder.</param>
     /// <returns>The builder.</returns>
     public static IEcsBuilder EnableRconCommands(this IEcsBuilder builder)
@@ -44,24 +37,19 @@ public static class SampEcsBuilderExtensions
         return builder.UseMiddleware<RconCommandProcessingMiddleware>("OnRconCommand");
     }
 
-    /// <summary>
-    /// Enables all actor, player related SA:MP events.
-    /// </summary>
+    /// <summary>Enables all actor, player related SA:MP events.</summary>
     /// <param name="builder">The builder.</param>
     /// <returns>The builder.</returns>
     public static IEcsBuilder EnableSampEvents(this IEcsBuilder builder)
     {
-        return builder
-            .EnableActorEvents()
+        return builder.EnableActorEvents()
             .EnablePlayerEvents()
             .EnableObjectEvents()
             .EnableRconEvents()
             .EnableVehicleEvents();
     }
 
-    /// <summary>
-    /// Enables all actor related SA:MP events.
-    /// </summary>
+    /// <summary>Enables all actor related SA:MP events.</summary>
     /// <param name="builder">The builder.</param>
     /// <returns>The builder.</returns>
     public static IEcsBuilder EnableActorEvents(this IEcsBuilder builder)
@@ -77,9 +65,7 @@ public static class SampEcsBuilderExtensions
         return builder;
     }
 
-    /// <summary>
-    /// Enables all player related SA:MP events.
-    /// </summary>
+    /// <summary>Enables all player related SA:MP events.</summary>
     /// <param name="builder">The builder.</param>
     /// <returns>The builder.</returns>
     public static IEcsBuilder EnablePlayerEvents(this IEcsBuilder builder)
@@ -115,8 +101,7 @@ public static class SampEcsBuilderExtensions
         builder.EnableEvent<int, int>("OnPlayerClickPlayerTextDraw");
         builder.EnableEvent<int, int, int>("OnPlayerClickPlayer");
         builder.EnableEvent<int, bool, int, int, float, float, float, float, float, float>("OnPlayerEditObject");
-        builder.EnableEvent<int, int, int, int, int, float, float, float, float, float, float, float, float, float>(
-            "OnPlayerEditAttachedObject");
+        builder.EnableEvent<int, int, int, int, int, float, float, float, float, float, float, float, float, float>("OnPlayerEditAttachedObject");
         builder.EnableEvent<int, int, int, int, float, float, float>("OnPlayerSelectObject");
         builder.EnableEvent<int, int, int, int, float, float, float>("OnPlayerWeaponShot");
         builder.EnableEvent<int, bool, int>("OnEnterExitModShop");
@@ -178,9 +163,7 @@ public static class SampEcsBuilderExtensions
         return builder;
     }
 
-    /// <summary>
-    /// Enables all object related SA:MP events.
-    /// </summary>
+    /// <summary>Enables all object related SA:MP events.</summary>
     /// <param name="builder">The builder.</param>
     /// <returns>The builder.</returns>
     public static IEcsBuilder EnableObjectEvents(this IEcsBuilder builder)
@@ -193,9 +176,7 @@ public static class SampEcsBuilderExtensions
         return builder;
     }
 
-    /// <summary>
-    /// Enables all RCON related SA:MP events.
-    /// </summary>
+    /// <summary>Enables all RCON related SA:MP events.</summary>
     /// <param name="builder">The builder.</param>
     /// <returns>The builder.</returns>
     public static IEcsBuilder EnableRconEvents(this IEcsBuilder builder)
@@ -206,9 +187,7 @@ public static class SampEcsBuilderExtensions
         return builder;
     }
 
-    /// <summary>
-    /// Enables all vehicle related SA:MP events.
-    /// </summary>
+    /// <summary>Enables all vehicle related SA:MP events.</summary>
     /// <param name="builder">The builder.</param>
     /// <returns>The builder.</returns>
     public static IEcsBuilder EnableVehicleEvents(this IEcsBuilder builder)

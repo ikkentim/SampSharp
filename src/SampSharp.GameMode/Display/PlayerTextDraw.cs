@@ -23,31 +23,22 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Display;
 
-/// <summary>
-///     Represents a player-textdraw.
-/// </summary>
+/// <summary>Represents a player-textdraw.</summary>
 public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePlayer>
 {
-    /// <summary>
-    ///     Identifier indicating the handle is invalid.
-    /// </summary>
+    /// <summary>Identifier indicating the handle is invalid.</summary>
     public const int InvalidId = 0xFFFF;
 
-    /// <summary>
-    ///     Maximum number of player text draws which can exist.
-    /// </summary>
+    /// <summary>Maximum number of player text draws which can exist.</summary>
     public const int Max = 256;
 
     /// <summary>
-    ///     Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw(BasePlayer,ClickPlayerTextDrawEventArgs)" /> is
-    ///     being called.
-    ///     This callback is called when a player clicks on a player-textdraw.
+    /// Occurs when the <see cref="BaseMode.OnPlayerClickPlayerTextDraw(BasePlayer,ClickPlayerTextDrawEventArgs)" /> is being called. This callback is called
+    /// when a player clicks on a player-textdraw.
     /// </summary>
     public event EventHandler<ClickPlayerTextDrawEventArgs> Click;
 
-    /// <summary>
-    ///     Raises the <see cref="Click" /> event.
-    /// </summary>
+    /// <summary>Raises the <see cref="Click" /> event.</summary>
     /// <param name="e">An <see cref="ClickPlayerTextDrawEventArgs" /> that contains the event data. </param>
     public virtual void OnClick(ClickPlayerTextDrawEventArgs e)
     {
@@ -76,9 +67,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
     private bool _visible;
     private float? _width;
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="PlayerTextDraw" /> class.</summary>
     /// <param name="owner">The owner of the player-textdraw.</param>
     public PlayerTextDraw(BasePlayer owner)
     {
@@ -89,9 +78,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         _text = "_";
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="PlayerTextDraw" /> class.</summary>
     /// <param name="owner">The owner of the player-textdraw.</param>
     /// <param name="position">The position of the player-textdraw on the screen.</param>
     /// <param name="text">The text of the player-textdraw.</param>
@@ -101,47 +88,35 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         _text = text;
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="PlayerTextDraw" /> class.</summary>
     /// <param name="owner">The owner of the player-textdraw.</param>
     /// <param name="position">The position of the player-textdraw on the screen.</param>
     /// <param name="text">The text of the player-textdraw.</param>
     /// <param name="font">The <see cref="TextDrawFont" /> of this textdraw.</param>
-    public PlayerTextDraw(BasePlayer owner, Vector2 position, string text, TextDrawFont font)
-        : this(owner, position, text)
+    public PlayerTextDraw(BasePlayer owner, Vector2 position, string text, TextDrawFont font) : this(owner, position, text)
     {
         _font = font;
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="PlayerTextDraw" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="PlayerTextDraw" /> class.</summary>
     /// <param name="owner">The owner of the player-textdraw.</param>
     /// <param name="position">The position of the player-textdraw on the screen.</param>
     /// <param name="text">The text of the player-textdraw.</param>
     /// <param name="font">The <see cref="TextDrawFont" /> of the player-textdraw.</param>
     /// <param name="foreColor">The foreground <see cref="Color" /> of the player-textdraw.</param>
-    public PlayerTextDraw(BasePlayer owner, Vector2 position, string text, TextDrawFont font, Color foreColor)
-        : this(owner, position, text, font)
+    public PlayerTextDraw(BasePlayer owner, Vector2 position, string text, TextDrawFont font, Color foreColor) : this(owner, position, text, font)
     {
         _foreColor = foreColor;
     }
 
-    /// <summary>
-    ///     Gets or sets whether SA-MP fixes should be applied.
-    /// </summary>
+    /// <summary>Gets or sets whether SA-MP fixes should be applied.</summary>
     public bool IsApplyFixes { get; set; }
 
-    /// <summary>
-    ///     Gets or sets whether the textdraw should automatically be destroyed when hidden.
-    /// </summary>
+    /// <summary>Gets or sets whether the textdraw should automatically be destroyed when hidden.</summary>
     /// <remarks>The textdraw will automatically be recreated once .Show is called.</remarks>
     public bool AutoDestroy { get; set; }
 
-    /// <summary>
-    ///     Gets or sets the <see cref="TextDrawAlignment" /> of this player-textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the <see cref="TextDrawAlignment" /> of this player-textdraw.</summary>
     public virtual TextDrawAlignment Alignment
     {
         get => _alignment ?? TextDrawAlignment.Left;
@@ -149,14 +124,12 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         {
             _alignment = value;
             if (Id == -1) return;
-            PlayerTextDrawInternal.Instance.PlayerTextDrawAlignment(Owner.Id, Id, (int) value);
+            PlayerTextDrawInternal.Instance.PlayerTextDrawAlignment(Owner.Id, Id, (int)value);
             Update();
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the background <see cref="Color" /> of this player-textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the background <see cref="Color" /> of this player-textdraw.</summary>
     public virtual Color BackColor
     {
         get => _backColor ?? Color.Black;
@@ -169,9 +142,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the foreground <see cref="Color" /> of this player-textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the foreground <see cref="Color" /> of this player-textdraw.</summary>
     public virtual Color ForeColor
     {
         get => _foreColor ?? Color.White;
@@ -184,9 +155,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the box <see cref="Color" /> of this player-textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the box <see cref="Color" /> of this player-textdraw.</summary>
     public virtual Color BoxColor
     {
         get => _boxColor ?? Color.Transparent;
@@ -199,9 +168,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the <see cref="TextDrawFont" /> to use in this player-textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the <see cref="TextDrawFont" /> to use in this player-textdraw.</summary>
     public virtual TextDrawFont Font
     {
         get => _font ?? TextDrawFont.Normal;
@@ -209,14 +176,12 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         {
             _font = value;
             if (Id == -1) return;
-            PlayerTextDrawInternal.Instance.PlayerTextDrawFont(Owner.Id, Id, (int) value);
+            PlayerTextDrawInternal.Instance.PlayerTextDrawFont(Owner.Id, Id, (int)value);
             Update();
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the size of the letters of this player-textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the size of the letters of this player-textdraw.</summary>
     public virtual Vector2 LetterSize
     {
         get => _letterSize ?? Vector2.Zero;
@@ -229,9 +194,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the outline size of this player-textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the outline size of this player-textdraw.</summary>
     public virtual int Outline
     {
         get => _outline ?? 0;
@@ -244,9 +207,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets whether to proportionally space the characters of this player-textdraw.
-    /// </summary>
+    /// <summary>Gets or sets whether to proportionally space the characters of this player-textdraw.</summary>
     public virtual bool Proportional
     {
         get => _proportional ?? false;
@@ -259,9 +220,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the shadow-size of this player-textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the shadow-size of this player-textdraw.</summary>
     public virtual int Shadow
     {
         get => _shadow ?? 0;
@@ -274,9 +233,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the text of this player-textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the text of this player-textdraw.</summary>
     public virtual string Text
     {
         get => _text;
@@ -289,9 +246,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the position of this player-textdraw on the screen.
-    /// </summary>
+    /// <summary>Gets or sets the position of this player-textdraw on the screen.</summary>
     public virtual Vector2 Position
     {
         get => _position;
@@ -303,9 +258,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the width of this player-textdraws box.
-    /// </summary>
+    /// <summary>Gets or sets the width of this player-textdraws box.</summary>
     public virtual float Width
     {
         get => _width ?? 0;
@@ -318,9 +271,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the height of this player-textdraws box.
-    /// </summary>
+    /// <summary>Gets or sets the height of this player-textdraws box.</summary>
     public virtual float Height
     {
         get => _height ?? 0;
@@ -333,9 +284,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets whether to draw a box behind the player-textdraw.
-    /// </summary>
+    /// <summary>Gets or sets whether to draw a box behind the player-textdraw.</summary>
     public virtual bool UseBox
     {
         get => _useBox ?? false;
@@ -348,9 +297,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets whether this player-textdraw is selectable.
-    /// </summary>
+    /// <summary>Gets or sets whether this player-textdraw is selectable.</summary>
     public virtual bool Selectable
     {
         get => _selectable ?? false;
@@ -363,9 +310,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the preview model to draw on this player-textdraw.
-    /// </summary>
+    /// <summary>Gets or sets the preview model to draw on this player-textdraw.</summary>
     public virtual int PreviewModel
     {
         get => _previewModel ?? 0;
@@ -378,9 +323,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the rotation of this player-textdraws preview model.
-    /// </summary>
+    /// <summary>Gets or sets the rotation of this player-textdraws preview model.</summary>
     public virtual Vector3 PreviewRotation
     {
         get => _previewRotation ?? Vector3.Zero;
@@ -393,9 +336,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the zoom level of this player-textdraws preview model.
-    /// </summary>
+    /// <summary>Gets or sets the zoom level of this player-textdraws preview model.</summary>
     public virtual float PreviewZoom
     {
         get => _previewZoom ?? 0;
@@ -403,15 +344,12 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         {
             _previewZoom = value;
             if (Id == -1) return;
-            PlayerTextDrawInternal.Instance.PlayerTextDrawSetPreviewRot(Owner.Id, Id, PreviewRotation.X, PreviewRotation.Y,
-                PreviewRotation.Z, value);
+            PlayerTextDrawInternal.Instance.PlayerTextDrawSetPreviewRot(Owner.Id, Id, PreviewRotation.X, PreviewRotation.Y, PreviewRotation.Z, value);
             Update();
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the primary vehicle color of this player-textdraws preview model.
-    /// </summary>
+    /// <summary>Gets or sets the primary vehicle color of this player-textdraws preview model.</summary>
     public virtual int PreviewPrimaryColor
     {
         get => _previewPrimaryColor ?? -1;
@@ -424,9 +362,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the secondary vehicle color of this player-textdraws preview model.
-    /// </summary>
+    /// <summary>Gets or sets the secondary vehicle color of this player-textdraws preview model.</summary>
     public virtual int PreviewSecondaryColor
     {
         get => _previewSecondaryColor ?? -1;
@@ -439,9 +375,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         }
     }
 
-    /// <summary>
-    ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <summary>Performs tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     /// <param name="disposing">Whether managed resources should be disposed.</param>
     protected override void Dispose(bool disposing)
     {
@@ -452,9 +386,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         PlayerTextDrawInternal.Instance.PlayerTextDrawDestroy(Owner.Id, Id);
     }
 
-    /// <summary>
-    ///     Displays this player-textdraw to the <see cref="IdentifiedOwnedPool{TInstance,TOwner}.Owner" /> of this textdraw.
-    /// </summary>
+    /// <summary>Displays this player-textdraw to the <see cref="IdentifiedOwnedPool{TInstance,TOwner}.Owner" /> of this textdraw.</summary>
     public virtual void Show()
     {
         AssertNotDisposed();
@@ -465,9 +397,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         PlayerTextDrawInternal.Instance.PlayerTextDrawShow(Owner.Id, Id);
     }
 
-    /// <summary>
-    ///     Hides this player-textdraw.
-    /// </summary>
+    /// <summary>Hides this player-textdraw.</summary>
     public virtual void Hide()
     {
         AssertNotDisposed();
@@ -483,10 +413,8 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
             Id = -1;
         }
     }
-        
-    /// <summary>
-    ///     Recreates this player-textdraw with all set properties. Called when changing the location on the screen.
-    /// </summary>
+
+    /// <summary>Recreates this player-textdraw with all set properties. Called when changing the location on the screen.</summary>
     protected virtual void Refresh()
     {
         if (Id != -1) PlayerTextDrawInternal.Instance.PlayerTextDrawDestroy(Owner.Id, Id);
@@ -515,9 +443,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         Update();
     }
 
-    /// <summary>
-    ///     Fixes a string so no SA-MP bugs will occur during application.
-    /// </summary>
+    /// <summary>Fixes a string so no SA-MP bugs will occur during application.</summary>
     /// <param name="input">The input string.</param>
     /// <returns>The fixed string</returns>
     protected virtual string FixString(string input)
@@ -535,9 +461,7 @@ public partial class PlayerTextDraw : IdentifiedOwnedPool<PlayerTextDraw, BasePl
         return input.Replace("\n", "~n~");
     }
 
-    /// <summary>
-    ///     Updates this textdraw on the client's screen.
-    /// </summary>
+    /// <summary>Updates this textdraw on the client's screen.</summary>
     protected virtual void Update()
     {
         if (_visible) Show();

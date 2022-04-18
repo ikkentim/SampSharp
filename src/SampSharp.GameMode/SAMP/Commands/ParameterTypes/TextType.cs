@@ -15,21 +15,14 @@
 
 namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 
-/// <summary>
-///     Represents a text command parameter.
-/// </summary>
+/// <summary>Represents a text command parameter.</summary>
 public class TextType : ICommandParameterType
 {
-    /// <summary>
-    ///     Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be
-    ///     removed from the commandText.
-    /// </summary>
+    /// <summary>Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be removed from the commandText.</summary>
     /// <param name="commandText">The command text.</param>
     /// <param name="output">The output.</param>
     /// <param name="isNullable">A value indicating whether the result is allowed to be null when an entity referenced by the argument could not be found.</param>
-    /// <returns>
-    ///     true if parsed successfully; false otherwise.
-    /// </returns>
+    /// <returns>true if parsed successfully; false otherwise.</returns>
     public bool Parse(ref string commandText, out object output, bool isNullable = false)
     {
         var text = commandText.Trim();

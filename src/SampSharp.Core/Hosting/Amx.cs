@@ -15,9 +15,7 @@
 
 namespace SampSharp.Core.Hosting;
 
-/// <summary>
-/// Dummy struct for typed use of AMX in interop.
-/// </summary>
+/// <summary>Dummy struct for typed use of AMX in interop.</summary>
 public readonly struct Amx
 {
 #pragma warning disable CS0169

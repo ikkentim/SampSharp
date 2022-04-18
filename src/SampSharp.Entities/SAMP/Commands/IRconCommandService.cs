@@ -17,14 +17,10 @@ using System;
 
 namespace SampSharp.Entities.SAMP.Commands;
 
-/// <summary>
-/// Provides the functionality for invoking RCON commands.
-/// </summary>
+/// <summary>Provides the functionality for invoking RCON commands.</summary>
 public interface IRconCommandService
 {
-    /// <summary>
-    /// Invokes an RCON command using the specified <paramref name="inputText" />.
-    /// </summary>
+    /// <summary>Invokes an RCON command using the specified <paramref name="inputText" />.</summary>
     /// <param name="services">A service provider.</param>
     /// <param name="inputText">The input text to be parsed.</param>
     /// <returns><c>true</c> if the command was handled; otherwise <c>false</c>.</returns>

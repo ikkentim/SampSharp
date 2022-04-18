@@ -20,14 +20,12 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events;
 
 /// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerClickTextDraw" />, <see cref="Display.TextDraw.Click" /> or
-///     <see cref="BasePlayer.ClickTextDraw" /> event.
+/// Provides data for the <see cref="BaseMode.PlayerClickTextDraw" />, <see cref="Display.TextDraw.Click" /> or <see cref="BasePlayer.ClickTextDraw" />
+/// event.
 /// </summary>
 public class ClickTextDrawEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the ClickTextDrawEventArgs class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the ClickTextDrawEventArgs class.</summary>
     /// <param name="player">The player.</param>
     /// <param name="textDraw">The text draw.</param>
     public ClickTextDrawEventArgs(BasePlayer player, TextDraw textDraw)
@@ -36,13 +34,9 @@ public class ClickTextDrawEventArgs : EventArgs
         TextDraw = textDraw;
     }
 
-    /// <summary>
-    ///     Gets the player.
-    /// </summary>
+    /// <summary>Gets the player.</summary>
     public BasePlayer Player { get; }
 
-    /// <summary>
-    ///     Gets the text draw.
-    /// </summary>
+    /// <summary>Gets the text draw.</summary>
     public TextDraw TextDraw { get; }
 }

@@ -19,5 +19,4 @@ namespace TestMode.Entities.Components;
 
 public class UnusedComponent : Component
 {
-
 }

@@ -18,27 +18,19 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerRequestClass" /> or <see cref="BasePlayer.RequestClass" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.PlayerRequestClass" /> or <see cref="BasePlayer.RequestClass" /> event.</summary>
 public class RequestClassEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the RequestClassEventArgs class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the RequestClassEventArgs class.</summary>
     /// <param name="classid">The id of the class.</param>
     public RequestClassEventArgs(int classid)
     {
         ClassId = classid;
     }
 
-    /// <summary>
-    ///     Gets the id of the class.
-    /// </summary>
+    /// <summary>Gets the id of the class.</summary>
     public int ClassId { get; }
 
-    /// <summary>
-    ///     Gets or sets whether the player is prevented from spawning.
-    /// </summary>
+    /// <summary>Gets or sets whether the player is prevented from spawning.</summary>
     public bool PreventSpawning { get; set; }
 }

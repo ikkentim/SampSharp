@@ -40,25 +40,27 @@ public class SystemDiTest : ISystem
 
 
     [Event]
-    public void OnPlayerConnect(Player player, IScopedFunnyService scoped, IFunnyService transient,
-        IServiceProvider serviceProvider)
+    public void OnPlayerConnect(Player player, IScopedFunnyService scoped, IFunnyService transient, IServiceProvider serviceProvider)
     {
         Console.WriteLine("T: " + transient.FunnyGuid);
         Console.WriteLine("S: " + scoped.FunnyGuid);
-        var s2 = serviceProvider.GetRequiredService<IScopedFunnyService>().FunnyGuid;
-        var t2 = serviceProvider.GetRequiredService<IFunnyService>().FunnyGuid;
+        var s2 = serviceProvider.GetRequiredService<IScopedFunnyService>()
+            .FunnyGuid;
+        var t2 = serviceProvider.GetRequiredService<IFunnyService>()
+            .FunnyGuid;
         Console.WriteLine("T2: " + t2);
         Console.WriteLine("S2: " + s2);
     }
 
     [Event]
-    public void OnPlayerText(TestComponent test, string text, IScopedFunnyService scoped, IFunnyService transient,
-        IServiceProvider serviceProvider)
+    public void OnPlayerText(TestComponent test, string text, IScopedFunnyService scoped, IFunnyService transient, IServiceProvider serviceProvider)
     {
         Console.WriteLine("T: " + transient.FunnyGuid);
         Console.WriteLine("S: " + scoped.FunnyGuid);
-        var s2 = serviceProvider.GetRequiredService<IScopedFunnyService>().FunnyGuid;
-        var t2 = serviceProvider.GetRequiredService<IFunnyService>().FunnyGuid;
+        var s2 = serviceProvider.GetRequiredService<IScopedFunnyService>()
+            .FunnyGuid;
+        var t2 = serviceProvider.GetRequiredService<IFunnyService>()
+            .FunnyGuid;
         Console.WriteLine("T2: " + t2);
         Console.WriteLine("S2: " + s2);
         Console.WriteLine(test.WelcomingMessage);

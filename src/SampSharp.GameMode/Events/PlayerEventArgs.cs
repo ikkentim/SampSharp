@@ -19,25 +19,20 @@ using SampSharp.GameMode.World;
 namespace SampSharp.GameMode.Events;
 
 /// <summary>
-///     Provides data for the <see cref="BaseMode.VehicleDied" />, <see cref="BaseMode.PlayerPickUpPickup" />,
-///     <see cref="BaseMode.VehicleDamageStatusUpdated" />, <see cref="BaseMode.PlayerStreamIn" />,
-///     <see cref="BaseMode.PlayerStreamOut" />, <see cref="BaseMode.VehicleStreamIn" />,
-///     <see cref="BaseMode.VehicleStreamOut" />, <see cref="BasePlayer.StreamIn" />, <see cref="BasePlayer.StreamOut" />,
-///     <see cref="BaseVehicle.StreamIn" /> or <see cref="BaseVehicle.StreamOut" /> event.
+/// Provides data for the <see cref="BaseMode.VehicleDied" />, <see cref="BaseMode.PlayerPickUpPickup" />,
+/// <see cref="BaseMode.VehicleDamageStatusUpdated" />, <see cref="BaseMode.PlayerStreamIn" />, <see cref="BaseMode.PlayerStreamOut" />,
+/// <see cref="BaseMode.VehicleStreamIn" />, <see cref="BaseMode.VehicleStreamOut" />, <see cref="BasePlayer.StreamIn" />, <see cref="BasePlayer.StreamOut" />,
+/// <see cref="BaseVehicle.StreamIn" /> or <see cref="BaseVehicle.StreamOut" /> event.
 /// </summary>
 public class PlayerEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="PlayerEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="PlayerEventArgs" /> class.</summary>
     /// <param name="player">The player.</param>
     public PlayerEventArgs(BasePlayer player)
     {
         Player = player;
     }
 
-    /// <summary>
-    ///     Gets the player involved.
-    /// </summary>
+    /// <summary>Gets the player involved.</summary>
     public BasePlayer Player { get; }
 }

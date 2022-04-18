@@ -23,8 +23,7 @@ public partial class TextLabel
     public class TextLabelInternal : NativeObjectSingleton<TextLabelInternal>
     {
         [NativeMethod]
-        public virtual int Create3DTextLabel(string text, int color, float x, float y, float z, float drawDistance,
-            int virtualWorld, bool testLOS)
+        public virtual int Create3DTextLabel(string text, int color, float x, float y, float z, float drawDistance, int virtualWorld, bool testLOS)
         {
             throw new NativeNotImplementedException();
         }
@@ -42,15 +41,13 @@ public partial class TextLabel
         }
 
         [NativeMethod]
-        public virtual int Attach3DTextLabelToPlayer(int id, int playerid, float offsetX, float offsetY,
-            float offsetZ)
+        public virtual int Attach3DTextLabelToPlayer(int id, int playerid, float offsetX, float offsetY, float offsetZ)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int Attach3DTextLabelToVehicle(int id, int vehicleid, float offsetX, float offsetY,
-            float offsetZ)
+        public virtual int Attach3DTextLabelToVehicle(int id, int vehicleid, float offsetX, float offsetY, float offsetZ)
         {
             throw new NativeNotImplementedException();
         }

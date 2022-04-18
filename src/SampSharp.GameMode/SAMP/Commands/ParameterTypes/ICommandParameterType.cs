@@ -15,15 +15,10 @@
 
 namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 
-/// <summary>
-///     Contains methods for a command parameter type.
-/// </summary>
+/// <summary>Contains methods for a command parameter type.</summary>
 public interface ICommandParameterType
 {
-    /// <summary>
-    ///     Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be
-    ///     removed from the commandText.
-    /// </summary>
+    /// <summary>Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be removed from the commandText.</summary>
     /// <param name="commandText">The command text.</param>
     /// <param name="output">The output.</param>
     /// <param name="isNullable">A value indicating whether the result is allowed to be null when an entity referenced by the argument could not be found.</param>

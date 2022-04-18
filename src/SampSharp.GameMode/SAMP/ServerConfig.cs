@@ -21,53 +21,43 @@ using System.Linq;
 
 namespace SampSharp.GameMode.SAMP;
 
-/// <summary>
-///     Represents the server configuration file
-/// </summary>
+/// <summary>Represents the server configuration file</summary>
 public class ServerConfig : IEnumerable<KeyValuePair<string, string>>
 {
     private readonly Dictionary<string, string> _values = new();
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="ServerConfig" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="ServerConfig" /> class.</summary>
     /// <param name="configPath">The path to the configuration file.</param>
     public ServerConfig(string configPath)
     {
         if (!File.Exists(configPath))
             return;
 
-        foreach (
-            var parts in
-            File.ReadAllLines(configPath)
-                .Where(line => !string.IsNullOrWhiteSpace(line))
-                .Select(line => line.Split(new[] {' '}, 2)))
+        foreach (var parts in File.ReadAllLines(configPath)
+                     .Where(line => !string.IsNullOrWhiteSpace(line))
+                     .Select(line => line.Split(new[] { ' ' }, 2)))
         {
             switch (parts.Length)
             {
                 case 1:
-                    _values[parts[0].Trim()] = string.Empty;
+                    _values[parts[0]
+                        .Trim()] = string.Empty;
                     break;
                 case 2:
-                    _values[parts[0].Trim()] = parts[1];
+                    _values[parts[0]
+                        .Trim()] = parts[1];
                     break;
             }
         }
     }
 
-    /// <summary>
-    ///     Gets the <see cref="System.String" /> with the specified key.
-    /// </summary>
+    /// <summary>Gets the <see cref="System.String" /> with the specified key.</summary>
     public string this[string key] => Get(key);
 
-    /// <summary>
-    ///     Gets the configuration value with the specified key.
-    /// </summary>
+    /// <summary>Gets the configuration value with the specified key.</summary>
     /// <param name="key">The key.</param>
     /// <param name="trimSpaces">If set to <c>true</c> trim white-space characters.</param>
-    /// <returns>
-    ///     The value.
-    /// </returns>
+    /// <returns>The value.</returns>
     public string Get(string key, bool trimSpaces = true)
     {
         if (!_values.ContainsKey(key))
@@ -75,26 +65,25 @@ public class ServerConfig : IEnumerable<KeyValuePair<string, string>>
             return null;
         }
 
-        return trimSpaces ? _values[key].Trim() : _values[key];
+        return trimSpaces
+            ? _values[key]
+                .Trim()
+            : _values[key];
     }
 
-    /// <summary>
-    ///     Gets the configuration value with the specified key.
-    /// </summary>
+    /// <summary>Gets the configuration value with the specified key.</summary>
     /// <param name="key">The key.</param>
     /// <param name="defaultValue">The default value.</param>
     /// <param name="trimSpaces">If set to <c>true</c> trim white-space characters.</param>
-    /// <returns>
-    ///     The value.
-    /// </returns>
+    /// <returns>The value.</returns>
     public string Get(string key, string defaultValue, bool trimSpaces = true)
     {
-        return Get(key, trimSpaces) ?? (trimSpaces ? defaultValue.Trim() : defaultValue);
+        return Get(key, trimSpaces) ?? (trimSpaces
+            ? defaultValue.Trim()
+            : defaultValue);
     }
 
-    /// <summary>
-    ///     Sets the configuration value with the specified key to the specified value for the current session.
-    /// </summary>
+    /// <summary>Sets the configuration value with the specified key to the specified value for the current session.</summary>
     /// <param name="key">The key.</param>
     /// <param name="value">The value.</param>
     /// <exception cref="ArgumentNullException">key</exception>

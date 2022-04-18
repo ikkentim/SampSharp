@@ -15,14 +15,10 @@
 
 namespace SampSharp.Entities;
 
-/// <summary>
-/// Provides a proxy object around a native object of type <typeparamref name="T" />.
-/// </summary>
+/// <summary>Provides a proxy object around a native object of type <typeparamref name="T" />.</summary>
 /// <typeparam name="T">The type of the native object for which a proxy object should be provided.</typeparam>
 public interface INativeProxy<out T> where T : class
 {
-    /// <summary>
-    /// Gets the native object proxy instance.
-    /// </summary>
+    /// <summary>Gets the native object proxy instance.</summary>
     T Instance { get; }
 }

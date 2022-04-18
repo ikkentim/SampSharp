@@ -18,35 +18,26 @@ using System.Threading.Tasks;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Provides dialog functionality.
-/// </summary>
+/// <summary>Provides dialog functionality.</summary>
 /// <seealso cref="IDialogService" />
 public class DialogService : IDialogService
 {
     private readonly IEntityManager _entityManager;
 
-    /// <summary>
-    /// The dialog ID used by the dialog service.
-    /// </summary>
+    /// <summary>The dialog ID used by the dialog service.</summary>
     public const int DialogId = 10000;
 
-    /// <summary>
-    /// The dialog ID used by the dialog service to hide the visible dialog.
-    /// </summary>
+    /// <summary>The dialog ID used by the dialog service to hide the visible dialog.</summary>
     public const int DialogHideId = -1;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DialogService" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="DialogService" /> class.</summary>
     public DialogService(IEntityManager entityManager)
     {
         _entityManager = entityManager;
     }
 
     /// <inheritdoc />
-    public void Show<TResponse>(EntityId player, IDialog<TResponse> dialog, Action<TResponse> responseHandler)
-        where TResponse : struct
+    public void Show<TResponse>(EntityId player, IDialog<TResponse> dialog, Action<TResponse> responseHandler) where TResponse : struct
     {
         if (!player.IsOfType(SampEntities.PlayerType))
             throw new InvalidEntityArgumentException(nameof(player), SampEntities.PlayerType);
@@ -58,9 +49,9 @@ public class DialogService : IDialogService
 
         var native = _entityManager.GetComponent<NativePlayer>(player);
 
-        native.ShowPlayerDialog(DialogId, (int) dialog.Style, dialog.Caption ?? string.Empty,
-            dialog.Content ?? string.Empty, dialog.Button1 ?? string.Empty, dialog.Button2 ?? string.Empty);
-            
+        native.ShowPlayerDialog(DialogId, (int)dialog.Style, dialog.Caption ?? string.Empty, dialog.Content ?? string.Empty, dialog.Button1 ?? string.Empty,
+            dialog.Button2 ?? string.Empty);
+
 
         void Handler(DialogResult result)
         {
@@ -70,8 +61,8 @@ public class DialogService : IDialogService
             var translated = dialog.Translate(result);
             responseHandler?.Invoke(translated);
         }
-            
-        _entityManager.AddComponent<VisibleDialog>(player, dialog, (Action<DialogResult>) Handler);
+
+        _entityManager.AddComponent<VisibleDialog>(player, dialog, (Action<DialogResult>)Handler);
     }
 
 

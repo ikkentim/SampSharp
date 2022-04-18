@@ -17,15 +17,11 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     A controller processing all text label actions.
-/// </summary>
+/// <summary>A controller processing all text label actions.</summary>
 [Controller]
 public class TextLabelController : ITypeProvider
 {
-    /// <summary>
-    ///     Registers the types.
-    /// </summary>
+    /// <summary>Registers the types.</summary>
     public void RegisterTypes()
     {
         TextLabel.Register<TextLabel>();

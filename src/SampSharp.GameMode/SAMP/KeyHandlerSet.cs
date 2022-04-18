@@ -19,16 +19,12 @@ using SampSharp.GameMode.Events;
 
 namespace SampSharp.GameMode.SAMP;
 
-/// <summary>
-///     Contains a set of KeyHandlers.
-/// </summary>
+/// <summary>Contains a set of KeyHandlers.</summary>
 public sealed class KeyHandlerSet
 {
     private readonly Func<KeyStateChangedEventArgs, Keys, bool> _check;
 
-    /// <summary>
-    ///     Initializes a new instance of the KeyHandlerSet class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the KeyHandlerSet class.</summary>
     /// <param name="check">The check to run in Handle before calling an EventHandler.</param>
     public KeyHandlerSet(Func<KeyStateChangedEventArgs, Keys, bool> check)
     {
@@ -55,109 +51,67 @@ public sealed class KeyHandlerSet
         CtrlBack = new PriorityKeyHandler();
     }
 
-    /// <summary>
-    ///     Occurs when the Keys.Action key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Action key has been pressed.</summary>
     public PriorityKeyHandler Action { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Crouch key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Crouch key has been pressed.</summary>
     public PriorityKeyHandler Crouch { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Fire key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Fire key has been pressed.</summary>
     public PriorityKeyHandler Fire { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Sprint key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Sprint key has been pressed.</summary>
     public PriorityKeyHandler Sprint { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Attack key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Attack key has been pressed.</summary>
     public PriorityKeyHandler SecondaryAttack { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Jump key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Jump key has been pressed.</summary>
     public PriorityKeyHandler Jump { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Right key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Right key has been pressed.</summary>
     public PriorityKeyHandler LookRight { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Handbrake key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Handbrake key has been pressed.</summary>
     public PriorityKeyHandler Handbrake { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Aim key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Aim key has been pressed.</summary>
     public PriorityKeyHandler Aim { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Left key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Left key has been pressed.</summary>
     public PriorityKeyHandler LookLeft { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Submission or Keys.LookBehind key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Submission or Keys.LookBehind key has been pressed.</summary>
     public PriorityKeyHandler Submission { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.LookBehind or Keys.Submission key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.LookBehind or Keys.Submission key has been pressed.</summary>
     public PriorityKeyHandler LookBehind => Submission;
 
-    /// <summary>
-    ///     Occurs when the Keys.Walk key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Walk key has been pressed.</summary>
     public PriorityKeyHandler Walk { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Up key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Up key has been pressed.</summary>
     public PriorityKeyHandler AnalogUp { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Down key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Down key has been pressed.</summary>
     public PriorityKeyHandler AnalogDown { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Left key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Left key has been pressed.</summary>
     public PriorityKeyHandler AnalogLeft { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Right key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Right key has been pressed.</summary>
     public PriorityKeyHandler AnalogRight { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.Yes key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.Yes key has been pressed.</summary>
     public PriorityKeyHandler Yes { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.No key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.No key has been pressed.</summary>
     public PriorityKeyHandler No { get; }
 
-    /// <summary>
-    ///     Occurs when the Keys.CtrlBack key has been pressed.
-    /// </summary>
+    /// <summary>Occurs when the Keys.CtrlBack key has been pressed.</summary>
     public PriorityKeyHandler CtrlBack { get; }
 
-    /// <summary>
-    ///     Handles a change in PlayerKeyState.
-    /// </summary>
+    /// <summary>Handles a change in PlayerKeyState.</summary>
     /// <param name="sender">Sender of the event.</param>
     /// <param name="e">Object containing information about the event.</param>
     public void Handle(object sender, KeyStateChangedEventArgs e)

@@ -18,24 +18,17 @@ using System.Linq;
 
 namespace SampSharp.GameMode.SAMP.Commands.ParameterTypes;
 
-/// <summary>
-///     Represents an integer command parameter.
-/// </summary>
+/// <summary>Represents an integer command parameter.</summary>
 public class IntegerType : ICommandParameterType
 {
     private static readonly char[] Base10Characters = "1234567890,.-".ToCharArray();
     private static readonly char[] Base16Characters = "1234567890abcdef".ToCharArray();
 
-    /// <summary>
-    ///     Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be
-    ///     removed from the commandText.
-    /// </summary>
+    /// <summary>Gets the value for the occurrence of this parameter type at the start of the commandText. The processed text will be removed from the commandText.</summary>
     /// <param name="commandText">The command text.</param>
     /// <param name="output">The output.</param>
     /// <param name="isNullable">A value indicating whether the result is allowed to be null when an entity referenced by the argument could not be found.</param>
-    /// <returns>
-    ///     true if parsed successfully; false otherwise.
-    /// </returns>
+    /// <returns>true if parsed successfully; false otherwise.</returns>
     public bool Parse(ref string commandText, out object output, bool isNullable = false)
     {
         var text = commandText.TrimStart();
@@ -45,13 +38,15 @@ public class IntegerType : ICommandParameterType
             return false;
 
 
-        var word = text.Split(' ').First();
+        var word = text.Split(' ')
+            .First();
 
 
         // Regular base 10 numbers (eg. 14143)
         if (word.All(Base10Characters.Contains) && int.TryParse(word, out var number))
         {
-            commandText = commandText.Substring(word.Length).TrimStart(' ');
+            commandText = commandText.Substring(word.Length)
+                .TrimStart(' ');
             output = number;
             return true;
         }
@@ -62,13 +57,15 @@ public class IntegerType : ICommandParameterType
             base16Word = word.Substring(2);
         else if (word.Length > 1 && word.StartsWith("#"))
             base16Word = word.Substring(1);
-        else if (word.Length > 1 && word.ToLower().EndsWith("h"))
+        else if (word.Length > 1 && word.ToLower()
+                     .EndsWith("h"))
             base16Word = word.Substring(0, word.Length - 1);
 
-        if (base16Word != null && base16Word.ToLower().All(Base16Characters.Contains) &&
-            int.TryParse(base16Word, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out number))
+        if (base16Word != null && base16Word.ToLower()
+                .All(Base16Characters.Contains) && int.TryParse(base16Word, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out number))
         {
-            commandText = commandText.Substring(word.Length).TrimStart(' ');
+            commandText = commandText.Substring(word.Length)
+                .TrimStart(' ');
             output = number;
             return true;
         }

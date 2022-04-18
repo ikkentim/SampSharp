@@ -17,27 +17,19 @@ using System;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.RconCommand" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.RconCommand" /> event.</summary>
 public class RconEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="RconEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="RconEventArgs" /> class.</summary>
     /// <param name="command">The command.</param>
     public RconEventArgs(string command)
     {
         Command = command;
     }
 
-    /// <summary>
-    ///     Gets the command passed trough the rcon interface.
-    /// </summary>
+    /// <summary>Gets the command passed trough the rcon interface.</summary>
     public string Command { get; }
 
-    /// <summary>
-    ///     Gets or sets whether this command has been handled successfully.
-    /// </summary>
+    /// <summary>Gets or sets whether this command has been handled successfully.</summary>
     public bool Success { get; set; }
 }

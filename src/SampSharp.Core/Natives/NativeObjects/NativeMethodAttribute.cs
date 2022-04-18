@@ -17,30 +17,22 @@ using System;
 
 namespace SampSharp.Core.Natives.NativeObjects;
 
-/// <summary>
-///     Indicates a method represents a native function.
-/// </summary>
+/// <summary>Indicates a method represents a native function.</summary>
 [AttributeUsage(AttributeTargets.Method)]
 public class NativeMethodAttribute : Attribute
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.</summary>
     public NativeMethodAttribute()
     {
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.</summary>
     /// <param name="lengths">The lengths of special arguments.</param>
     public NativeMethodAttribute(params uint[] lengths) : this(false, lengths)
     {
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="NativeMethodAttribute" /> class.</summary>
     /// <param name="ignoreIdentifiers">if set to <c>true</c> identifiers are ignored.</param>
     /// <param name="lengths">The lengths.</param>
     public NativeMethodAttribute(bool ignoreIdentifiers, params uint[] lengths)
@@ -49,28 +41,18 @@ public class NativeMethodAttribute : Attribute
         Lengths = lengths;
     }
 
-    /// <summary>
-    ///     Gets or sets the function name.
-    /// </summary>
+    /// <summary>Gets or sets the function name.</summary>
     public string Function { get; set; }
 
-    /// <summary>
-    ///     Gets a value indicating whether to ignore identifiers.
-    /// </summary>
+    /// <summary>Gets a value indicating whether to ignore identifiers.</summary>
     public bool IgnoreIdentifiers { get; }
 
-    /// <summary>
-    /// Gets the parameter index of the identifiers.
-    /// </summary>
+    /// <summary>Gets the parameter index of the identifiers.</summary>
     public int IdentifiersIndex { get; set; }
 
-    /// <summary>
-    ///     Gets the lengths of special arguments.
-    /// </summary>
+    /// <summary>Gets the lengths of special arguments.</summary>
     public uint[] Lengths { get; }
 
-    /// <summary>
-    /// Gets or sets indices of parameters which should be passed by reference instead of input values.
-    /// </summary>
+    /// <summary>Gets or sets indices of parameters which should be passed by reference instead of input values.</summary>
     public int[] ReferenceIndices { get; set; }
 }

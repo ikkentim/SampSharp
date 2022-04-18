@@ -18,14 +18,10 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="World.Pickup.PickUp" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="World.Pickup.PickUp" /> event.</summary>
 public class PickUpPickupEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="PickUpPickupEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="PickUpPickupEventArgs" /> class.</summary>
     /// <param name="player">The player.</param>
     /// <param name="pickup">The pickup.</param>
     public PickUpPickupEventArgs(BasePlayer player, Pickup pickup)
@@ -34,13 +30,9 @@ public class PickUpPickupEventArgs : EventArgs
         Pickup = pickup;
     }
 
-    /// <summary>
-    ///     Gets the player.
-    /// </summary>
+    /// <summary>Gets the player.</summary>
     public BasePlayer Player { get; }
 
-    /// <summary>
-    ///     Gets the pickup.
-    /// </summary>
+    /// <summary>Gets the pickup.</summary>
     public Pickup Pickup { get; }
 }

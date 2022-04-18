@@ -23,68 +23,54 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Pools;
 
-/// <summary>
-///     Keeps track of a pool of identifiable instances.
-/// </summary>
+/// <summary>Keeps track of a pool of identifiable instances.</summary>
 /// <typeparam name="TInstance">Base type of instances to keep track of.</typeparam>
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "By design")]
-public abstract class IdentifiedPool<TInstance> : Disposable, IIdentifiable
-    where TInstance : IdentifiedPool<TInstance>
+public abstract class IdentifiedPool<TInstance> : Disposable, IIdentifiable where TInstance : IdentifiedPool<TInstance>
 {
     private static readonly PoolContainer<TInstance> _container = new();
     private int _id;
 
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="IdentifiedPool{TInstance}" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="IdentifiedPool{TInstance}" /> class.</summary>
     protected IdentifiedPool()
     {
         _id = PoolContainer<TInstance>.UnidentifiedId;
-        _container.Add(_id, (TInstance) this);
+        _container.Add(_id, (TInstance)this);
     }
 
-    /// <summary>
-    ///     The type to initialize when adding an instance to this pool by id.
-    /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2743:Static fields should not be used in generic types", Justification = "By design")]
+    /// <summary>The type to initialize when adding an instance to this pool by id.</summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2743:Static fields should not be used in generic types",
+        Justification = "By design")]
     public static Type InstanceType { get; private set; }
 
-    /// <summary>
-    ///     Gets a collection containing all instances.
-    /// </summary>
+    /// <summary>Gets a collection containing all instances.</summary>
     public static IEnumerable<TInstance> All => _container.ToArray();
 
-    /// <summary>
-    ///     Gets the identifier of this instance.
-    /// </summary>
+    /// <summary>Gets the identifier of this instance.</summary>
     public int Id
     {
         get => _id;
         protected set
         {
             if (_id == PoolContainer<TInstance>.UnidentifiedId)
-                _container.MoveUnidentified((TInstance) this, value);
+                _container.MoveUnidentified((TInstance)this, value);
             else
                 _container.Move(_id, value);
             _id = value;
         }
     }
 
-    /// <summary>
-    ///     Removes this instance from the pool.
-    /// </summary>
+    /// <summary>Removes this instance from the pool.</summary>
     protected override void Dispose(bool disposing)
     {
         if (_id == PoolContainer<TInstance>.UnidentifiedId)
-            _container.RemoveUnidentified((TInstance) this);
+            _container.RemoveUnidentified((TInstance)this);
         else
             _container.Remove(_id);
     }
 
-    /// <summary>
-    ///     Gets whether the given instance is present in the pool.
-    /// </summary>
+    /// <summary>Gets whether the given instance is present in the pool.</summary>
     /// <param name="item">The instance to check the presence of.</param>
     /// <returns>Whether the given instance is present in the pool.</returns>
     public static bool Contains(TInstance item)
@@ -95,10 +81,7 @@ public abstract class IdentifiedPool<TInstance> : Disposable, IIdentifiable
             : _container.Contains(item.Id);
     }
 
-    /// <summary>
-    ///     Gets a <see cref="IReadOnlyCollection{T}" /> containing all instances of the given type within this
-    ///     <see cref="IdentifiedPool{T}" />.
-    /// </summary>
+    /// <summary>Gets a <see cref="IReadOnlyCollection{T}" /> containing all instances of the given type within this <see cref="IdentifiedPool{T}" />.</summary>
     /// <typeparam name="T2">The <see cref="Type" /> of instances to get.</typeparam>
     /// <returns>All instances of the given type within this <see cref="IdentifiedPool{T}" />.</returns>
     public static IEnumerable<T2> GetAll<T2>()
@@ -106,34 +89,29 @@ public abstract class IdentifiedPool<TInstance> : Disposable, IIdentifiable
         return All.OfType<T2>();
     }
 
-    /// <summary>
-    ///     Registers the type to use when initializing new instances.
-    /// </summary>
+    /// <summary>Registers the type to use when initializing new instances.</summary>
     /// <typeparam name="TRegister">The <see cref="Type" /> to use when initializing new instances.</typeparam>
     public static void Register<TRegister>() where TRegister : TInstance
     {
-        Register(typeof (TRegister));
+        Register(typeof(TRegister));
     }
 
-    /// <summary>
-    ///     Registers the type to use when initializing new instances.
-    /// </summary>
+    /// <summary>Registers the type to use when initializing new instances.</summary>
     /// <param name="type">The type.</param>
     /// <exception cref="System.ArgumentNullException">Thrown if type is null</exception>
     /// <exception cref="System.ArgumentException">type must be of type TInstance;type</exception>
     public static void Register(Type type)
     {
         if (type == null) throw new ArgumentNullException(nameof(type));
-        if (!typeof (TInstance).GetTypeInfo().IsAssignableFrom(type))
-            throw new ArgumentException("type must be of type " + typeof (TInstance), nameof(type));
+        if (!typeof(TInstance).GetTypeInfo()
+                .IsAssignableFrom(type))
+            throw new ArgumentException("type must be of type " + typeof(TInstance), nameof(type));
 
         CoreLog.Log(CoreLogLevel.Debug, $"Type {type} registered to pool.");
         InstanceType = type;
     }
 
-    /// <summary>
-    ///     Finds an instance with the given <paramref name="id" />.
-    /// </summary>
+    /// <summary>Finds an instance with the given <paramref name="id" />.</summary>
     /// <param name="id">The identity of the instance to find.</param>
     /// <returns>The found instance.</returns>
     public static TInstance Find(int id)
@@ -141,9 +119,7 @@ public abstract class IdentifiedPool<TInstance> : Disposable, IIdentifiable
         return _container.Get(id);
     }
 
-    /// <summary>
-    ///     Initializes a new instance with the given id.
-    /// </summary>
+    /// <summary>Initializes a new instance with the given id.</summary>
     /// <param name="id">The identity of the instance to create.</param>
     /// <returns>The initialized instance.</returns>
     public static TInstance Create(int id)
@@ -157,17 +133,12 @@ public abstract class IdentifiedPool<TInstance> : Disposable, IIdentifiable
         return instance;
     }
 
-    /// <summary>
-    ///     An overload-able point for initialization logic which requires the <see cref="Id" /> to be set.
-    /// </summary>
+    /// <summary>An overload-able point for initialization logic which requires the <see cref="Id" /> to be set.</summary>
     protected virtual void Initialize()
     {
-
     }
 
-    /// <summary>
-    ///     Finds an instance with the given <paramref name="id" /> or initializes a new one.
-    /// </summary>
+    /// <summary>Finds an instance with the given <paramref name="id" /> or initializes a new one.</summary>
     /// <param name="id">The identity of the instance to find or create.</param>
     /// <returns>The found instance.</returns>
     public static TInstance FindOrCreate(int id)

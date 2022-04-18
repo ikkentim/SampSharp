@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using SampSharp.Core.Natives;
 using SampSharp.Core.Natives.NativeObjects;
@@ -22,9 +23,7 @@ using SampSharp.Entities.Utilities;
 
 namespace SampSharp.Entities;
 
-/// <summary>
-/// Represents the entity manager.
-/// </summary>
+/// <summary>Represents the entity manager.</summary>
 /// <seealso cref="IEntityManager" />
 public class EntityManager : IEntityManager
 {
@@ -37,9 +36,7 @@ public class EntityManager : IEntityManager
     private EntityEntry _firstRoot;
     private int _rootCount;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EntityManager" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EntityManager" /> class.</summary>
     public EntityManager()
     {
         _components.ComponentPool = _componentPool;
@@ -69,7 +66,7 @@ public class EntityManager : IEntityManager
         {
             if (parentEntry.Child?.Previous != null)
                 throw new InvalidOperationException("Invalid entity store state");
-                
+
             // Attach to siblings if present
             entry.Next = parentEntry.Child;
             if (parentEntry.Child != null)
@@ -103,14 +100,14 @@ public class EntityManager : IEntityManager
 
         Destroy(entry);
     }
-        
+
     /// <inheritdoc />
     public void Destroy<T>(EntityId entity) where T : Component
     {
         foreach (var c in GetComponents<T>(entity))
             Destroy(c);
     }
-        
+
     /// <inheritdoc />
     public void Destroy(Component component)
     {
@@ -126,7 +123,8 @@ public class EntityManager : IEntityManager
 
 
     /// <inheritdoc />
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "User supplied type must be instantiated")]
+    [SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields",
+        Justification = "User supplied type must be instantiated")]
     public T AddComponent<T>(EntityId entity, params object[] args) where T : Component
     {
         if (!_entities.TryGetValue(entity, out var entityEntry))
@@ -134,22 +132,22 @@ public class EntityManager : IEntityManager
 
         var component = typeof(NativeComponent).IsAssignableFrom(typeof(T))
             ? NativeObjectProxyFactory.CreateInstance<T>(args)
-            : (T)Activator.CreateInstance(typeof(T),
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, args, null)!;
+            : (T)Activator.CreateInstance(typeof(T), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, args, null)!;
 
         component.Entity = entity;
         component.Manager = this;
-            
+
         entityEntry.Components.Add(component);
         _components.Add(component);
-            
+
         component.InitializeComponent();
 
         return component;
     }
-        
+
     /// <inheritdoc />
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "User supplied type must be instantiated")]
+    [SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields",
+        Justification = "User supplied type must be instantiated")]
     public T AddComponent<T>(EntityId entity) where T : Component
     {
         if (!_entities.TryGetValue(entity, out var entityEntry))
@@ -157,15 +155,14 @@ public class EntityManager : IEntityManager
 
         var component = typeof(NativeComponent).IsAssignableFrom(typeof(T))
             ? NativeObjectProxyFactory.CreateInstance<T>()
-            : (T)Activator.CreateInstance(typeof(T),
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, null, null)!;
-            
+            : (T)Activator.CreateInstance(typeof(T), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, null, null)!;
+
         component.Entity = entity;
         component.Manager = this;
-            
+
         entityEntry.Components.Add(component);
         _components.Add(component);
-            
+
         component.InitializeComponent();
 
         return component;
@@ -179,7 +176,7 @@ public class EntityManager : IEntityManager
 
         return entityEntry.Parent.Id;
     }
-        
+
     /// <inheritdoc />
     public bool Exists(EntityId entity)
     {
@@ -210,7 +207,7 @@ public class EntityManager : IEntityManager
     {
         return _components.Get<T>();
     }
-        
+
     /// <inheritdoc />
     public T GetComponent<T>(EntityId entity) where T : Component
     {
@@ -219,7 +216,7 @@ public class EntityManager : IEntityManager
 
         return entityEntry.Components.Get<T>();
     }
-        
+
     /// <inheritdoc />
     public T[] GetComponents<T>() where T : Component
     {
@@ -266,7 +263,7 @@ public class EntityManager : IEntityManager
 
         return result;
     }
-        
+
     /// <inheritdoc />
     public T GetComponentInParent<T>(EntityId entity) where T : Component
     {
@@ -287,7 +284,7 @@ public class EntityManager : IEntityManager
 
         return null;
     }
-        
+
     /// <inheritdoc />
     public T GetComponentInChildren<T>(EntityId entity) where T : Component
     {
@@ -296,7 +293,7 @@ public class EntityManager : IEntityManager
 
         return GetComponentInChildren<T>(entityEntry.Child);
     }
-        
+
     /// <inheritdoc />
     public T[] GetComponentsInChildren<T>(EntityId entity) where T : Component
     {
@@ -313,7 +310,7 @@ public class EntityManager : IEntityManager
 
         return result;
     }
-        
+
     /// <inheritdoc />
     public EntityId[] GetChildren(EntityId entity)
     {
@@ -374,7 +371,7 @@ public class EntityManager : IEntityManager
 
         return index - startIndex;
     }
-        
+
     private void Destroy(EntityEntry entry)
     {
         var child = entry.Child;
@@ -418,7 +415,10 @@ public class EntityManager : IEntityManager
         private readonly Dictionary<Type, Data> _components = new();
 
         public RecyclePool<ComponentEntry> ComponentPool;
-        public ComponentEntry First => _components.TryGetValue(typeof(Component), out var data) ? data.Entry : null;
+
+        public ComponentEntry First => _components.TryGetValue(typeof(Component), out var data)
+            ? data.Entry
+            : null;
 
         public void Reset()
         {
@@ -473,8 +473,7 @@ public class EntityManager : IEntityManager
             var current = data.Entry;
 
             if (array.Length < index + data.Count)
-                throw new ArgumentException(
-                    "The length of the array is less than the number of elements to be copied.", nameof(array));
+                throw new ArgumentException("The length of the array is less than the number of elements to be copied.", nameof(array));
             while (current != null)
             {
                 array[index++] = (T)current.Component;
@@ -546,7 +545,7 @@ public class EntityManager : IEntityManager
         public void Add<T>(T component) where T : Component
         {
             var current = component.GetType();
-                
+
             Add(current, component);
             do
             {
@@ -556,11 +555,11 @@ public class EntityManager : IEntityManager
                 Add(current, component);
             } while (current != typeof(Component));
         }
-            
+
         public void Remove(Component component)
         {
             var current = component.GetType();
-                
+
             // Remove the component in every type list
             Remove(current, component);
             do

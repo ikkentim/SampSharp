@@ -19,29 +19,23 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP.Commands;
 
-/// <summary>
-/// Represents the default help command for a command group.
-/// </summary>
+/// <summary>Represents the default help command for a command group.</summary>
 public class DefaultHelpCommand : DefaultCommand
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DefaultHelpCommand" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="DefaultHelpCommand" /> class.</summary>
     /// <param name="names">The names.</param>
     /// <param name="displayName">The display name.</param>
     /// <param name="ignoreCase">if set to <c>true</c> ignore the case of the command.</param>
     /// <param name="permissionCheckers">The permission checkers.</param>
     /// <param name="method">The method.</param>
     /// <param name="usageMessage">The usage message.</param>
-    public DefaultHelpCommand(CommandPath[] names, string displayName, bool ignoreCase,
-        IPermissionChecker[] permissionCheckers, MethodInfo method, string usageMessage) : base(names, displayName,
-        ignoreCase, permissionCheckers, method, usageMessage)
+    public DefaultHelpCommand(CommandPath[] names, string displayName, bool ignoreCase, IPermissionChecker[] permissionCheckers, MethodInfo method,
+        string usageMessage) : base(names, displayName, ignoreCase, permissionCheckers, method, usageMessage)
     {
     }
 
     /// <inheritdoc />
-    public override CommandCallableResponse CanInvoke(BasePlayer player, string commandText,
-        out int matchedNameLength)
+    public override CommandCallableResponse CanInvoke(BasePlayer player, string commandText, out int matchedNameLength)
     {
         var result = base.CanInvoke(player, commandText, out matchedNameLength);
 

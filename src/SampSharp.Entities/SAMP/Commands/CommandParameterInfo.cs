@@ -17,14 +17,10 @@ using SampSharp.Entities.SAMP.Commands.Parsers;
 
 namespace SampSharp.Entities.SAMP.Commands;
 
-/// <summary>
-/// Provides information about a parameter of a command.
-/// </summary>
+/// <summary>Provides information about a parameter of a command.</summary>
 public class CommandParameterInfo
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CommandParameterInfo" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="CommandParameterInfo" /> class.</summary>
     /// <param name="name">The name.</param>
     /// <param name="parser">The parser.</param>
     /// <param name="isRequired">If set to <c>true</c> the parameter is required.</param>
@@ -39,28 +35,18 @@ public class CommandParameterInfo
         Index = parameterIndex;
     }
 
-    /// <summary>
-    /// Gets the name of this parameter.
-    /// </summary>
+    /// <summary>Gets the name of this parameter.</summary>
     public string Name { get; }
 
-    /// <summary>
-    /// Gets the parser of this parameter.
-    /// </summary>
+    /// <summary>Gets the parser of this parameter.</summary>
     public ICommandParameterParser Parser { get; }
 
-    /// <summary>
-    /// Gets a value indicating whether this parameter is required.
-    /// </summary>
+    /// <summary>Gets a value indicating whether this parameter is required.</summary>
     public bool IsRequired { get; }
 
-    /// <summary>
-    /// Gets the default value of this parameter.
-    /// </summary>
+    /// <summary>Gets the default value of this parameter.</summary>
     public object DefaultValue { get; }
 
-    /// <summary>
-    /// Gets the index of this parameter.
-    /// </summary>
+    /// <summary>Gets the index of this parameter.</summary>
     public int Index { get; }
 }

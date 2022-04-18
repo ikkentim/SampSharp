@@ -15,41 +15,25 @@
 
 namespace SampSharp.GameMode.Definitions;
 
-/// <summary>
-///     Contains all fighting styles.
-/// </summary>
-/// <remarks>
-///     See <see href="https://www.open.mp/docs/scripting/resources/fightingstyles">https://www.open.mp/docs/scripting/resources/fightingstyles</see>.
-/// </remarks>
+/// <summary>Contains all fighting styles.</summary>
+/// <remarks>See <see href="https://www.open.mp/docs/scripting/resources/fightingstyles">https://www.open.mp/docs/scripting/resources/fightingstyles</see>.</remarks>
 public enum FightStyle
 {
-    /// <summary>
-    ///     Normal fighting style.
-    /// </summary>
+    /// <summary>Normal fighting style.</summary>
     Normal = 4,
 
-    /// <summary>
-    ///     Boxing fighting style.
-    /// </summary>
+    /// <summary>Boxing fighting style.</summary>
     Boxing = 5,
 
-    /// <summary>
-    ///     Kung-Fu fighting style.
-    /// </summary>
+    /// <summary>Kung-Fu fighting style.</summary>
     Kungfu = 6,
 
-    /// <summary>
-    ///     Knee-head fighting style.
-    /// </summary>
+    /// <summary>Knee-head fighting style.</summary>
     Kneehead = 7,
 
-    /// <summary>
-    ///     Grab-kick fighting style.
-    /// </summary>
+    /// <summary>Grab-kick fighting style.</summary>
     Grabkick = 15,
 
-    /// <summary>
-    ///     Elbow fighting style.
-    /// </summary>
+    /// <summary>Elbow fighting style.</summary>
     Elbow = 16
 }

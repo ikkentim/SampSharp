@@ -24,24 +24,24 @@ namespace SampSharp.Core;
 internal class ServerLogWriter : TextWriter
 {
     private readonly IGameModeClient _gameModeClient;
-        
+
     public ServerLogWriter(IGameModeClient gameModeClient)
     {
         _gameModeClient = gameModeClient ?? throw new ArgumentNullException(nameof(gameModeClient));
     }
-        
+
     public override Encoding Encoding => Encoding.ASCII;
-        
+
     public override void WriteLine(char value)
     {
         Write(value);
     }
-        
+
     public override void WriteLine(string value)
     {
         Write(value);
     }
-        
+
     public override void WriteLine()
     {
         Write(string.Empty);
@@ -122,7 +122,7 @@ internal class ServerLogWriter : TextWriter
     {
         Write(value);
     }
-        
+
     public override void Write(char value)
     {
         // TODO: Buffer until a line break is sent
@@ -152,6 +152,7 @@ internal class ServerLogWriter : TextWriter
                 line = line.Substring(512);
                 _gameModeClient.Print(block);
             }
+
             _gameModeClient.Print(line);
         }
     }
@@ -192,7 +193,8 @@ internal class ServerLogWriter : TextWriter
 
     public override void Write(char[] buffer, int index, int count)
     {
-        Write(string.Join(string.Empty, buffer).Substring(index, count));
+        Write(string.Join(string.Empty, buffer)
+            .Substring(index, count));
     }
 
     public override void Write(decimal value)
@@ -234,7 +236,7 @@ internal class ServerLogWriter : TextWriter
     {
         Write(value.ToString());
     }
-        
+
     // TODO: Improve Async variants
     public override Task WriteAsync(char value)
     {

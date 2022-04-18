@@ -17,14 +17,10 @@ using System;
 
 namespace SampSharp.GameMode.Helpers;
 
-/// <summary>
-///     Contains helper methods for nullable types.
-/// </summary>
+/// <summary>Contains helper methods for nullable types.</summary>
 internal static class NullableHelper
 {
-    /// <summary>
-    ///     Invokes Does the specified action when the value is set.
-    /// </summary>
+    /// <summary>Invokes Does the specified action when the value is set.</summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="value">The value.</param>
     /// <param name="action">The action.</param>

@@ -15,23 +15,15 @@
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Contains all PlayerMarker modes.
-/// </summary>
+/// <summary>Contains all PlayerMarker modes.</summary>
 public enum PlayerMarkersMode
 {
-    /// <summary>
-    /// No makers.
-    /// </summary>
+    /// <summary>No makers.</summary>
     Off = 0,
 
-    /// <summary>
-    /// All markers.
-    /// </summary>
+    /// <summary>All markers.</summary>
     Global = 1,
 
-    /// <summary>
-    /// All markers within the streamed area.
-    /// </summary>
+    /// <summary>All markers within the streamed area.</summary>
     Streamed = 2
 }

@@ -15,138 +15,84 @@
 
 namespace SampSharp.Core.Hosting;
 
-/// <summary>
-/// Contains error codes used by Pawn AMX.
-/// </summary>
+/// <summary>Contains error codes used by Pawn AMX.</summary>
 public enum AmxError
 {
-    /// <summary>
-    /// No error.
-    /// </summary>
+    /// <summary>No error.</summary>
     None,
 
-    /// <summary>
-    /// Exit code: forced exit.
-    /// </summary>
+    /// <summary>Exit code: forced exit.</summary>
     Exit,
 
-    /// <summary>
-    /// Exit code: assertion failed.
-    /// </summary>
+    /// <summary>Exit code: assertion failed.</summary>
     Assert,
 
-    /// <summary>
-    /// Exit code: stack/heap collision.
-    /// </summary>
+    /// <summary>Exit code: stack/heap collision.</summary>
     Stackerr,
 
-    /// <summary>
-    /// Exit code: index out of bounds.
-    /// </summary>
+    /// <summary>Exit code: index out of bounds.</summary>
     Bounds,
 
-    /// <summary>
-    /// Exit code: invalid memory access.
-    /// </summary>
+    /// <summary>Exit code: invalid memory access.</summary>
     Memaccess,
 
-    /// <summary>
-    /// Exit code: invalid instruction.
-    /// </summary>
+    /// <summary>Exit code: invalid instruction.</summary>
     Invinstr,
 
-    /// <summary>
-    /// Exit code: stack underflow.
-    /// </summary>
+    /// <summary>Exit code: stack underflow.</summary>
     Stacklow,
 
-    /// <summary>
-    /// Exit code: heap underflow.
-    /// </summary>
+    /// <summary>Exit code: heap underflow.</summary>
     Heaplow,
 
-    /// <summary>
-    /// Exit code: no callback, or invalid callback.
-    /// </summary>
+    /// <summary>Exit code: no callback, or invalid callback.</summary>
     Callback,
 
-    /// <summary>
-    /// Exit code: native function failed
-    /// </summary>
+    /// <summary>Exit code: native function failed</summary>
     Native,
 
-    /// <summary>
-    /// Exit code: divide by zero
-    /// </summary>
+    /// <summary>Exit code: divide by zero</summary>
     Divide,
 
-    /// <summary>
-    /// Exit code: go into sleep mode - code can be restarted
-    /// </summary>
+    /// <summary>Exit code: go into sleep mode - code can be restarted</summary>
     Sleep,
 
-    /// <summary>
-    /// Exit code: invalid state for this access
-    /// </summary>
+    /// <summary>Exit code: invalid state for this access</summary>
     Invstate,
 
-    /// <summary>
-    /// Out of memory.
-    /// </summary>
+    /// <summary>Out of memory.</summary>
     Memory = 16,
 
-    /// <summary>
-    /// Invalid file format.
-    /// </summary>
+    /// <summary>Invalid file format.</summary>
     Format,
 
-    /// <summary>
-    /// File is for a newer version of the AMX.
-    /// </summary>
+    /// <summary>File is for a newer version of the AMX.</summary>
     Version,
 
-    /// <summary>
-    /// Function not found.
-    /// </summary>
+    /// <summary>Function not found.</summary>
     Notfound,
 
-    /// <summary>
-    /// Invalid index parameter (bad entry point).
-    /// </summary>
+    /// <summary>Invalid index parameter (bad entry point).</summary>
     Index,
 
-    /// <summary>
-    /// Debugger cannot run.
-    /// </summary>
+    /// <summary>Debugger cannot run.</summary>
     Debug,
 
-    /// <summary>
-    /// AMX not initialized (or doubly initialized).
-    /// </summary>
+    /// <summary>AMX not initialized (or doubly initialized).</summary>
     Init,
 
-    /// <summary>
-    /// Unable to set user data field (table full)
-    /// </summary>
+    /// <summary>Unable to set user data field (table full)</summary>
     Userdata,
 
-    /// <summary>
-    /// Cannot initialize the JIT.
-    /// </summary>
+    /// <summary>Cannot initialize the JIT.</summary>
     InitJit,
 
-    /// <summary>
-    /// Parameter error.
-    /// </summary>
+    /// <summary>Parameter error.</summary>
     Params,
 
-    /// <summary>
-    /// Domain error, expression result does not fit in range.
-    /// </summary>
+    /// <summary>Domain error, expression result does not fit in range.</summary>
     Domain,
 
-    /// <summary>
-    /// General error (unknown or unspecific error).
-    /// </summary>
+    /// <summary>General error (unknown or unspecific error).</summary>
     General,
 }

@@ -18,56 +18,37 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Factories;
 
-/// <summary>
-///     Contains the definition of a vehicle factory.
-/// </summary>
+/// <summary>Contains the definition of a vehicle factory.</summary>
 public interface IVehicleFactory : IService
 {
-    /// <summary>
-    ///     Creates a <see cref="BaseVehicle" /> in the world.
-    /// </summary>
+    /// <summary>Creates a <see cref="BaseVehicle" /> in the world.</summary>
     /// <param name="vehicletype">The model for the vehicle.</param>
     /// <param name="position">The coordinates for the vehicle.</param>
     /// <param name="rotation">The facing angle for the vehicle.</param>
     /// <param name="color1">The primary color ID.</param>
     /// <param name="color2">The secondary color ID.</param>
-    /// <param name="respawnDelay">
-    ///     The delay until the car is respawned without a driver in seconds. Using -1 will prevent the
-    ///     vehicle from respawning.
-    /// </param>
+    /// <param name="respawnDelay">The delay until the car is respawned without a driver in seconds. Using -1 will prevent the vehicle from respawning.</param>
     /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
     /// <returns> The <see cref="BaseVehicle" /> created.</returns>
-    BaseVehicle Create(VehicleModelType vehicletype, Vector3 position, float rotation, int color1,
-        int color2,
-        int respawnDelay = -1, bool addAlarm = false);
+    BaseVehicle Create(VehicleModelType vehicletype, Vector3 position, float rotation, int color1, int color2, int respawnDelay = -1, bool addAlarm = false);
 
-    /// <summary>
-    ///     Creates a static <see cref="BaseVehicle" /> in the world.
-    /// </summary>
+    /// <summary>Creates a static <see cref="BaseVehicle" /> in the world.</summary>
     /// <param name="vehicletype">The model for the vehicle.</param>
     /// <param name="position">The coordinates for the vehicle.</param>
     /// <param name="rotation">The facing angle for the vehicle.</param>
     /// <param name="color1">The primary color ID.</param>
     /// <param name="color2">The secondary color ID.</param>
-    /// <param name="respawnDelay">
-    ///     The delay until the car is respawned without a driver in seconds. Using -1 will prevent the
-    ///     vehicle from respawning.
-    /// </param>
+    /// <param name="respawnDelay">The delay until the car is respawned without a driver in seconds. Using -1 will prevent the vehicle from respawning.</param>
     /// <param name="addAlarm">If true, enables the vehicle to have a siren, providing the vehicle has a horn.</param>
     /// <returns> The <see cref="BaseVehicle" /> created.</returns>
-    BaseVehicle CreateStatic(VehicleModelType vehicletype, Vector3 position, float rotation, int color1,
-        int color2,
-        int respawnDelay, bool addAlarm = false);
+    BaseVehicle CreateStatic(VehicleModelType vehicletype, Vector3 position, float rotation, int color1, int color2, int respawnDelay, bool addAlarm = false);
 
-    /// <summary>
-    ///     Creates a static <see cref="BaseVehicle" /> in the world.
-    /// </summary>
+    /// <summary>Creates a static <see cref="BaseVehicle" /> in the world.</summary>
     /// <param name="vehicletype">The model for the vehicle.</param>
     /// <param name="position">The coordinates for the vehicle.</param>
     /// <param name="rotation">The facing angle for the vehicle.</param>
     /// <param name="color1">The primary color ID.</param>
     /// <param name="color2">The secondary color ID.</param>
     /// <returns> The <see cref="BaseVehicle" /> created.</returns>
-    BaseVehicle CreateStatic(VehicleModelType vehicletype, Vector3 position, float rotation, int color1,
-        int color2);
+    BaseVehicle CreateStatic(VehicleModelType vehicletype, Vector3 position, float rotation, int color1, int color2);
 }

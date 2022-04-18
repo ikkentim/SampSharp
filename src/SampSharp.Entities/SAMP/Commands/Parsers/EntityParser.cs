@@ -18,17 +18,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SampSharp.Entities.SAMP.Commands.Parsers;
 
-/// <summary>
-/// A parser for a player parameter.
-/// </summary>
+/// <summary>A parser for a player parameter.</summary>
 public class EntityParser : ICommandParameterParser
 {
     private readonly Guid _entityType;
     private readonly WordParser _wordParser = new();
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EntityParser"/> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EntityParser" /> class.</summary>
     public EntityParser(Guid entityType)
     {
         _entityType = entityType;
@@ -37,8 +33,7 @@ public class EntityParser : ICommandParameterParser
     /// <inheritdoc />
     public bool TryParse(IServiceProvider services, ref string inputText, out object result)
     {
-        if (!_wordParser.TryParse(services, ref inputText, out var subResult) ||
-            !(subResult is string word))
+        if (!_wordParser.TryParse(services, ref inputText, out var subResult) || !(subResult is string word))
         {
             result = null;
             return false;

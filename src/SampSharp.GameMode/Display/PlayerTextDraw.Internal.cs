@@ -131,8 +131,7 @@ public partial class PlayerTextDraw
         }
 
         [NativeMethod]
-        public virtual bool PlayerTextDrawSetPreviewRot(int playerid, int text, float rotX, float rotY, float rotZ,
-            float zoom)
+        public virtual bool PlayerTextDrawSetPreviewRot(int playerid, int text, float rotX, float rotY, float rotZ, float zoom)
         {
             throw new NativeNotImplementedException();
         }

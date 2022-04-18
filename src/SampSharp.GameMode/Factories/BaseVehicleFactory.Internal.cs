@@ -23,22 +23,21 @@ public partial class BaseVehicleFactory
     public class BaseVehicleFactoryInternal : NativeObjectSingleton<BaseVehicleFactoryInternal>
     {
         [NativeMethod]
-        public virtual int CreateVehicle(int vehicletype, float x, float y, float z, float rotation, int color1,
-            int color2, int respawnDelay, bool addsiren = false)
+        public virtual int CreateVehicle(int vehicletype, float x, float y, float z, float rotation, int color1, int color2, int respawnDelay,
+            bool addsiren = false)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int AddStaticVehicle(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle,
-            int color1, int color2)
+        public virtual int AddStaticVehicle(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int color1, int color2)
         {
             throw new NativeNotImplementedException();
         }
 
         [NativeMethod]
-        public virtual int AddStaticVehicleEx(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle,
-            int color1, int color2, int respawnDelay, bool addsiren = false)
+        public virtual int AddStaticVehicleEx(int modelid, float spawnX, float spawnY, float spawnZ, float zAngle, int color1, int color2, int respawnDelay,
+            bool addsiren = false)
         {
             throw new NativeNotImplementedException();
         }

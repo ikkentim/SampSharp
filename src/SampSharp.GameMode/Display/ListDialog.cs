@@ -19,44 +19,30 @@ using SampSharp.GameMode.Definitions;
 
 namespace SampSharp.GameMode.Display;
 
-/// <summary>
-///     Represents a list dialog.
-/// </summary>
+/// <summary>Represents a list dialog.</summary>
 public class ListDialog : Dialog
 {
     private readonly List<string> _items = new();
 
-    /// <summary>
-    ///     Initializes a new instance of the Dialog class.
-    /// </summary>
-    /// <param name="caption">
-    ///     The title at the top of the dialog. The length of the caption can not exceed more than 64
-    ///     characters before it starts to cut off.
-    /// </param>
+    /// <summary>Initializes a new instance of the Dialog class.</summary>
+    /// <param name="caption">The title at the top of the dialog. The length of the caption can not exceed more than 64 characters before it starts to cut off.</param>
     /// <param name="button1">The text on the left button.</param>
     /// <param name="button2">The text on the right button. Leave it blank to hide it.</param>
-    public ListDialog(string caption, string button1, string button2 = null) : base(DialogStyle.List, caption,
-        button1, button2)
+    public ListDialog(string caption, string button1, string button2 = null) : base(DialogStyle.List, caption, button1, button2)
     {
     }
 
-    /// <summary>
-    ///     Gets the list items.
-    /// </summary>
+    /// <summary>Gets the list items.</summary>
     public IList<string> Items => _items;
 
-    /// <summary>
-    /// Adds the specified item to the list items.
-    /// </summary>
+    /// <summary>Adds the specified item to the list items.</summary>
     /// <param name="item">The item.</param>
     public void AddItem(string item)
     {
         _items.Add(item);
     }
 
-    /// <summary>
-    /// Adds a collection of items to the list items.
-    /// </summary>
+    /// <summary>Adds a collection of items to the list items.</summary>
     /// <param name="items">The items.</param>
     /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="items" /> is null.</exception>
     public void AddItems(IEnumerable<string> items)
@@ -65,9 +51,7 @@ public class ListDialog : Dialog
 
         _items.AddRange(items);
     }
-        
-    /// <summary>
-    ///     Gets the info displayed in the box.
-    /// </summary>
+
+    /// <summary>Gets the info displayed in the box.</summary>
     protected override string Info => string.Join("\n", Items);
 }

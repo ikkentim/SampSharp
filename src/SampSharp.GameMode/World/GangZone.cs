@@ -19,24 +19,16 @@ using SampSharp.GameMode.SAMP;
 
 namespace SampSharp.GameMode.World;
 
-/// <summary>
-///     Represents a gang zone.
-/// </summary>
+/// <summary>Represents a gang zone.</summary>
 public partial class GangZone : IdentifiedPool<GangZone>
 {
-    /// <summary>
-    ///     Identifier indicating the handle is invalid.
-    /// </summary>
+    /// <summary>Identifier indicating the handle is invalid.</summary>
     public const int InvalidId = -1;
 
-    /// <summary>
-    ///     Maximum number of gang zones which can exist.
-    /// </summary>
+    /// <summary>Maximum number of gang zones which can exist.</summary>
     public const int Max = 1024;
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="GangZone" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="GangZone" /> class.</summary>
     /// <param name="minX">The minimum x.</param>
     /// <param name="minY">The minimum y.</param>
     /// <param name="maxX">The maximum x.</param>
@@ -51,34 +43,22 @@ public partial class GangZone : IdentifiedPool<GangZone>
         MaxY = maxY;
     }
 
-    /// <summary>
-    ///     Gets the minimum x value for this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Gets the minimum x value for this <see cref="GangZone" />.</summary>
     public virtual float MinX { get; }
 
-    /// <summary>
-    ///     Gets the minimum y value for this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Gets the minimum y value for this <see cref="GangZone" />.</summary>
     public virtual float MinY { get; }
 
-    /// <summary>
-    ///     Gets the maximum x value for this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Gets the maximum x value for this <see cref="GangZone" />.</summary>
     public virtual float MaxX { get; }
 
-    /// <summary>
-    ///     Gets the maximum y value for this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Gets the maximum y value for this <see cref="GangZone" />.</summary>
     public virtual float MaxY { get; }
 
-    /// <summary>
-    ///     Gets or sets the color of this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Gets or sets the color of this <see cref="GangZone" />.</summary>
     public virtual Color Color { get; set; }
 
-    /// <summary>
-    ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <summary>Performs tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     /// <param name="disposing">Whether managed resources should be disposed.</param>
     protected override void Dispose(bool disposing)
     {
@@ -87,9 +67,7 @@ public partial class GangZone : IdentifiedPool<GangZone>
         GangZoneInternal.Instance.GangZoneDestroy(Id);
     }
 
-    /// <summary>
-    ///     Shows this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Shows this <see cref="GangZone" />.</summary>
     public virtual void Show()
     {
         AssertNotDisposed();
@@ -97,9 +75,7 @@ public partial class GangZone : IdentifiedPool<GangZone>
         GangZoneInternal.Instance.GangZoneShowForAll(Id, Color);
     }
 
-    /// <summary>
-    ///     Shows this <see cref="GangZone" /> to the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Shows this <see cref="GangZone" /> to the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     /// <exception cref="System.ArgumentNullException">player</exception>
     public virtual void Show(BasePlayer player)
@@ -110,9 +86,7 @@ public partial class GangZone : IdentifiedPool<GangZone>
         GangZoneInternal.Instance.GangZoneShowForPlayer(player.Id, Id, Color);
     }
 
-    /// <summary>
-    ///     Hides this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Hides this <see cref="GangZone" />.</summary>
     public virtual void Hide()
     {
         AssertNotDisposed();
@@ -120,9 +94,7 @@ public partial class GangZone : IdentifiedPool<GangZone>
         GangZoneInternal.Instance.GangZoneHideForAll(Id);
     }
 
-    /// <summary>
-    ///     Hides this <see cref="GangZone" /> for the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Hides this <see cref="GangZone" /> for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     /// <exception cref="System.ArgumentNullException">player</exception>
     public virtual void Hide(BasePlayer player)
@@ -133,9 +105,7 @@ public partial class GangZone : IdentifiedPool<GangZone>
         GangZoneInternal.Instance.GangZoneHideForPlayer(player.Id, Id);
     }
 
-    /// <summary>
-    ///     Flashes this <see cref="GangZone" />.
-    /// </summary>
+    /// <summary>Flashes this <see cref="GangZone" />.</summary>
     /// <param name="color">The color.</param>
     public virtual void Flash(Color color)
     {
@@ -144,9 +114,7 @@ public partial class GangZone : IdentifiedPool<GangZone>
         GangZoneInternal.Instance.GangZoneFlashForAll(Id, color);
     }
 
-    /// <summary>
-    ///     Flashes this <see cref="GangZone" /> for the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Flashes this <see cref="GangZone" /> for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     /// <exception cref="System.ArgumentNullException">player</exception>
     public virtual void Flash(BasePlayer player)
@@ -155,9 +123,7 @@ public partial class GangZone : IdentifiedPool<GangZone>
         Flash(player, new Color());
     }
 
-    /// <summary>
-    ///     Flashes this <see cref="GangZone" /> for the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Flashes this <see cref="GangZone" /> for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     /// <param name="color">The color.</param>
     /// <exception cref="System.ArgumentNullException">player</exception>
@@ -169,9 +135,7 @@ public partial class GangZone : IdentifiedPool<GangZone>
         GangZoneInternal.Instance.GangZoneFlashForPlayer(player.Id, Id, color);
     }
 
-    /// <summary>
-    ///     Stops this <see cref="GangZone" /> from flash.
-    /// </summary>
+    /// <summary>Stops this <see cref="GangZone" /> from flash.</summary>
     public virtual void StopFlash()
     {
         AssertNotDisposed();
@@ -179,9 +143,7 @@ public partial class GangZone : IdentifiedPool<GangZone>
         GangZoneInternal.Instance.GangZoneStopFlashForAll(Id);
     }
 
-    /// <summary>
-    ///     Stops this <see cref="GangZone" /> from flash for the specified player.
-    /// </summary>
+    /// <summary>Stops this <see cref="GangZone" /> from flash for the specified player.</summary>
     /// <param name="player">The player.</param>
     /// <exception cref="System.ArgumentNullException">player</exception>
     public virtual void StopFlash(BasePlayer player)

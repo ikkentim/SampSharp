@@ -38,15 +38,13 @@ public class NativeTextLabel : BaseNativeComponent
     }
 
     [NativeMethod]
-    public virtual int Attach3DTextLabelToPlayer(int playerid, float offsetX, float offsetY,
-        float offsetZ)
+    public virtual int Attach3DTextLabelToPlayer(int playerid, float offsetX, float offsetY, float offsetZ)
     {
         throw new NativeNotImplementedException();
     }
 
     [NativeMethod]
-    public virtual int Attach3DTextLabelToVehicle(int vehicleid, float offsetX, float offsetY,
-        float offsetZ)
+    public virtual int Attach3DTextLabelToVehicle(int vehicleid, float offsetX, float offsetY, float offsetZ)
     {
         throw new NativeNotImplementedException();
     }

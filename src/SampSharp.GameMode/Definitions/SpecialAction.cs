@@ -15,103 +15,63 @@
 
 namespace SampSharp.GameMode.Definitions;
 
-/// <summary>
-///     Contains all special actions.
-/// </summary>
+/// <summary>Contains all special actions.</summary>
 public enum SpecialAction
 {
-    /// <summary>
-    ///     Nothing.
-    /// </summary>
+    /// <summary>Nothing.</summary>
     None = 0,
 
-    /// <summary>
-    ///     Player is ducking.
-    /// </summary>
+    /// <summary>Player is ducking.</summary>
     Duck = 1,
 
-    /// <summary>
-    ///     Player is using a jetpack.
-    /// </summary>
+    /// <summary>Player is using a jetpack.</summary>
     Usejetpack = 2,
 
-    /// <summary>
-    ///     Player is entering a vehicle.
-    /// </summary>
+    /// <summary>Player is entering a vehicle.</summary>
     EnterVehicle = 3,
 
-    /// <summary>
-    ///     Player is leaving a vehicle.
-    /// </summary>
+    /// <summary>Player is leaving a vehicle.</summary>
     ExitVehicle = 4,
 
-    /// <summary>
-    ///     Player is dancing. (Style 1)
-    /// </summary>
+    /// <summary>Player is dancing. (Style 1)</summary>
     Dance1 = 5,
 
-    /// <summary>
-    ///     Player is dancing. (Style 2)
-    /// </summary>
+    /// <summary>Player is dancing. (Style 2)</summary>
     Dance2 = 6,
 
-    /// <summary>
-    ///     Player is dancing. (Style 3)
-    /// </summary>
+    /// <summary>Player is dancing. (Style 3)</summary>
     Dance3 = 7,
 
-    /// <summary>
-    ///     Player is dancing. (Style 4)
-    /// </summary>
+    /// <summary>Player is dancing. (Style 4)</summary>
     Dance4 = 8,
 
-    /// <summary>
-    ///     Player is holding his hands up.
-    /// </summary>
+    /// <summary>Player is holding his hands up.</summary>
     HandsUp = 10,
 
-    /// <summary>
-    ///     Player is using a cellphone.
-    /// </summary>
+    /// <summary>Player is using a cellphone.</summary>
     UseCellphone = 11,
 
-    /// <summary>
-    ///     Player is sitting.
-    /// </summary>
+    /// <summary>Player is sitting.</summary>
     Sitting = 12,
 
-    /// <summary>
-    ///     Player stops using a cellphone.
-    /// </summary>
+    /// <summary>Player stops using a cellphone.</summary>
     StopUseCellphone = 13,
 
-    /// <summary>
-    ///     Player is drinking a beer.
-    /// </summary>
+    /// <summary>Player is drinking a beer.</summary>
     DrinkBeer = 20,
 
-    /// <summary>
-    ///     Player is smoking a cigarette.
-    /// </summary>
+    /// <summary>Player is smoking a cigarette.</summary>
     SmokeCiggy = 21,
 
-    /// <summary>
-    ///     Player is drinking whine.
-    /// </summary>
+    /// <summary>Player is drinking whine.</summary>
     DrinkWine = 22,
 
-    /// <summary>
-    ///     Player is drinking sprunk.
-    /// </summary>
+    /// <summary>Player is drinking sprunk.</summary>
     DrinkSprunk = 23,
 
-    /// <summary>
-    ///     Player is cuffed.
-    /// </summary>
+    /// <summary>Player is cuffed.</summary>
     Cuffed = 24,
 
-    /// <summary>
-    ///     PLayer is carrying.
-    /// </summary>
+    /// <summary>PLayer is carrying.</summary>
     Carry = 25
 }

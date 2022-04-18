@@ -19,23 +19,16 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerSelectedMenuRow" />, <see cref="BasePlayer.SelectedMenuRow" /> or
-///     <see cref="Menu.Response" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.PlayerSelectedMenuRow" />, <see cref="BasePlayer.SelectedMenuRow" /> or <see cref="Menu.Response" /> event.</summary>
 public class MenuRowEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="MenuRowEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="MenuRowEventArgs" /> class.</summary>
     /// <param name="row">The row.</param>
     public MenuRowEventArgs(int row)
     {
         Row = row;
     }
 
-    /// <summary>
-    ///     Gets the row.
-    /// </summary>
+    /// <summary>Gets the row.</summary>
     public int Row { get; }
 }

@@ -17,19 +17,13 @@ using System;
 
 namespace SampSharp.Core;
 
-/// <summary>
-///     Contains the methods of a provider of game mode routines.
-/// </summary>
+/// <summary>Contains the methods of a provider of game mode routines.</summary>
 public interface IGameModeProvider : IDisposable
 {
-    /// <summary>
-    ///     Initializes the game mode with the specified game mode client.
-    /// </summary>
+    /// <summary>Initializes the game mode with the specified game mode client.</summary>
     /// <param name="client">The game mode client which is loading this game mode.</param>
     void Initialize(IGameModeClient client);
 
-    /// <summary>
-    ///     A method called once every server tick.
-    /// </summary>
+    /// <summary>A method called once every server tick.</summary>
     void Tick();
 }

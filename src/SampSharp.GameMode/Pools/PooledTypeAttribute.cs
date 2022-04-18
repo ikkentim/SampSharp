@@ -17,9 +17,7 @@ using System;
 
 namespace SampSharp.GameMode.Pools;
 
-/// <summary>
-/// Indicates the type is pooled.
-/// </summary>
+/// <summary>Indicates the type is pooled.</summary>
 /// <seealso cref="System.Attribute" />
 [AttributeUsage(AttributeTargets.Class)]
 public class PooledTypeAttribute : Attribute

@@ -18,27 +18,19 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.TrailerUpdate" /> <see cref="BaseVehicle.TrailerUpdate" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.TrailerUpdate" /> <see cref="BaseVehicle.TrailerUpdate" /> event.</summary>
 public class TrailerEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="TrailerEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="TrailerEventArgs" /> class.</summary>
     /// <param name="player">The player sending the update.</param>
     public TrailerEventArgs(BasePlayer player)
     {
         Player = player;
     }
 
-    /// <summary>
-    ///     Gets the player sending the update.
-    /// </summary>
+    /// <summary>Gets the player sending the update.</summary>
     public BasePlayer Player { get; }
 
-    /// <summary>
-    ///     Gets or sets whether to stop the vehicle syncing its position to other players.
-    /// </summary>
+    /// <summary>Gets or sets whether to stop the vehicle syncing its position to other players.</summary>
     public bool PreventPropagation { get; set; }
 }

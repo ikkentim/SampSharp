@@ -15,9 +15,7 @@
 
 namespace SampSharp.Entities;
 
-/// <summary>
-/// Contains methods which define a system.
-/// </summary>
+/// <summary>Contains methods which define a system.</summary>
 public interface ISystem
 {
 }

@@ -18,9 +18,7 @@ using System.Runtime.InteropServices;
 
 namespace SampSharp.Core.UnitTests.TestHelpers;
 
-/// <summary>
-/// Read-/writable structs compatible with SampSharp.Core.Hosting.
-/// </summary>
+/// <summary>Read-/writable structs compatible with SampSharp.Core.Hosting.</summary>
 public static class InteropStructs
 {
     [StructLayout(LayoutKind.Sequential)]

@@ -17,15 +17,11 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     A controller processing all actor actions.
-/// </summary>
+/// <summary>A controller processing all actor actions.</summary>
 [Controller]
 public class ActorController : ITypeProvider, IEventListener
 {
-    /// <summary>
-    ///     Registers the events this <see cref="IEventListener" /> wants to listen to.
-    /// </summary>
+    /// <summary>Registers the events this <see cref="IEventListener" /> wants to listen to.</summary>
     /// <param name="gameMode">An instance of the <see cref="BaseMode" /> currently running.</param>
     public virtual void RegisterEvents(BaseMode gameMode)
     {
@@ -33,10 +29,8 @@ public class ActorController : ITypeProvider, IEventListener
         gameMode.ActorStreamIn += (sender, args) => (sender as Actor)?.OnStreamIn(args);
         gameMode.ActorStreamOut += (sender, args) => (sender as Actor)?.OnStreamOut(args);
     }
-        
-    /// <summary>
-    ///     Registers types this <see cref="ITypeProvider" /> requires the system to use.
-    /// </summary>
+
+    /// <summary>Registers types this <see cref="ITypeProvider" /> requires the system to use.</summary>
     public virtual void RegisterTypes()
     {
         Actor.Register<Actor>();

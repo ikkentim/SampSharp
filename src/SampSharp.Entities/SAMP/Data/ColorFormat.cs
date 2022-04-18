@@ -14,25 +14,18 @@
 // limitations under the License.
 
 // ReSharper disable CommentTypo
+
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Contains different formats of String representations of Color instances.
-/// </summary>
+/// <summary>Contains different formats of String representations of Color instances.</summary>
 public enum ColorFormat
 {
-    /// <summary>
-    /// {RRGGBBAA}
-    /// </summary>
+    /// <summary>{RRGGBBAA}</summary>
     RGBA,
 
-    /// <summary>
-    /// {AARRGGBB}
-    /// </summary>
+    /// <summary>{AARRGGBB}</summary>
     ARGB,
 
-    /// <summary>
-    /// {RRGGBB}
-    /// </summary>
+    /// <summary>{RRGGBB}</summary>
     RGB
 }

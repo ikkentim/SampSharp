@@ -21,7 +21,7 @@ namespace SampSharp.Core.UnitTests.TestHelpers;
 public unsafe class ApiScope : IDisposable
 {
     private readonly SampSharpApi* _api;
-        
+
     public ApiScope(SampSharpApi* api)
     {
         _api = api;
@@ -35,7 +35,7 @@ public unsafe class ApiScope : IDisposable
 
         Interop.Initialize(InitializeMock);
     }
-        
+
     SampSharpApi* InitializeMock(void* pub, void* tick)
     {
         return _api;

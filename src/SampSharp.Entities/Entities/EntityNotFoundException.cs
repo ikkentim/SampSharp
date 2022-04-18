@@ -18,23 +18,17 @@ using System.Runtime.Serialization;
 
 namespace SampSharp.Entities;
 
-/// <summary>
-/// The exception that is thrown when an entity could not be found.
-/// </summary>
+/// <summary>The exception that is thrown when an entity could not be found.</summary>
 [Serializable]
 public class EntityNotFoundException : ArgumentException
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EntityNotFoundException" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EntityNotFoundException" /> class.</summary>
     /// <param name="paramName">Name of the parameter.</param>
     public EntityNotFoundException(string paramName) : base("The specified entity could not be found.", paramName)
     {
     }
-        
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EntityNotFoundException" /> class.
-    /// </summary>
+
+    /// <summary>Initializes a new instance of the <see cref="EntityNotFoundException" /> class.</summary>
     /// <param name="info">The object that holds the serialized object data.</param>
     /// <param name="context">The contextual information about the source or destination.</param>
     protected EntityNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)

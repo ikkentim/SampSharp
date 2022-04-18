@@ -19,29 +19,20 @@ using SampSharp.GameMode.Pools;
 
 namespace SampSharp.GameMode.World;
 
-/// <summary>
-///     Represents a SA-MP actor.
-/// </summary>
+/// <summary>Represents a SA-MP actor.</summary>
 public partial class Actor : IdentifiedPool<Actor>, IWorldObject
 {
-    /// <summary>
-    ///     Identifier indicating the handle is invalid.
-    /// </summary>
+    /// <summary>Identifier indicating the handle is invalid.</summary>
     public const int InvalidId = 0xFFFF;
 
-    /// <summary>
-    ///     Maximum number of actors which can exist.
-    /// </summary>
+    /// <summary>Maximum number of actors which can exist.</summary>
     public const int Max = 1000;
 
-    /// <summary>
-    ///     Gets the facing angle of this <see cref="Actor" />.
-    /// </summary>
+    /// <summary>Gets the facing angle of this <see cref="Actor" />.</summary>
     public float FacingAngle
     {
         get
         {
-
             AssertNotDisposed();
 
             ActorInternal.Instance.GetActorFacingAngle(Id, out var angle);
@@ -54,14 +45,11 @@ public partial class Actor : IdentifiedPool<Actor>, IWorldObject
         }
     }
 
-    /// <summary>
-    ///     Gets the health of this <see cref="Actor" />.
-    /// </summary>
+    /// <summary>Gets the health of this <see cref="Actor" />.</summary>
     public float Health
     {
         get
         {
-
             AssertNotDisposed();
 
             ActorInternal.Instance.GetActorHealth(Id, out var health);
@@ -74,9 +62,7 @@ public partial class Actor : IdentifiedPool<Actor>, IWorldObject
         }
     }
 
-    /// <summary>
-    ///     Gets or sets a value indicating whether this <see cref="Actor" /> is invulnerable.
-    /// </summary>
+    /// <summary>Gets or sets a value indicating whether this <see cref="Actor" /> is invulnerable.</summary>
     public bool IsInvulnerable
     {
         get
@@ -91,9 +77,7 @@ public partial class Actor : IdentifiedPool<Actor>, IWorldObject
         }
     }
 
-    /// <summary>
-    ///     Gets a value indicating whether this <see cref="Actor" /> is valid.
-    /// </summary>
+    /// <summary>Gets a value indicating whether this <see cref="Actor" /> is valid.</summary>
     public bool IsValid
     {
         get
@@ -103,9 +87,7 @@ public partial class Actor : IdentifiedPool<Actor>, IWorldObject
         }
     }
 
-    /// <summary>
-    ///     Gets or sets the virtual world of this <see cref="Actor" />.
-    /// </summary>
+    /// <summary>Gets or sets the virtual world of this <see cref="Actor" />.</summary>
     public int VirtualWorld
     {
         get
@@ -120,14 +102,10 @@ public partial class Actor : IdentifiedPool<Actor>, IWorldObject
         }
     }
 
-    /// <summary>
-    ///     Gets the size of the actors pool.
-    /// </summary>
+    /// <summary>Gets the size of the actors pool.</summary>
     public static int PoolSize => ActorInternal.Instance.GetActorPoolSize();
 
-    /// <summary>
-    ///     Gets the position of this <see cref="Actor" />.
-    /// </summary>
+    /// <summary>Gets the position of this <see cref="Actor" />.</summary>
     public Vector3 Position
     {
         get
@@ -144,24 +122,16 @@ public partial class Actor : IdentifiedPool<Actor>, IWorldObject
         }
     }
 
-    /// <summary>
-    ///     Occurs when this <see cref="Actor" /> is being streamed in for a player.
-    /// </summary>
+    /// <summary>Occurs when this <see cref="Actor" /> is being streamed in for a player.</summary>
     public event EventHandler<PlayerEventArgs> StreamIn;
 
-    /// <summary>
-    ///     Occurs when this <see cref="Actor" /> is being streamed out for a player.
-    /// </summary>
+    /// <summary>Occurs when this <see cref="Actor" /> is being streamed out for a player.</summary>
     public event EventHandler<PlayerEventArgs> StreamOut;
 
-    /// <summary>
-    ///     Occurs when a player harms this <see cref="Actor" />.
-    /// </summary>
+    /// <summary>Occurs when a player harms this <see cref="Actor" />.</summary>
     public event EventHandler<DamageEventArgs> PlayerGiveDamage;
 
-    /// <summary>
-    ///     Creates a new <see cref="Actor" />.
-    /// </summary>
+    /// <summary>Creates a new <see cref="Actor" />.</summary>
     /// <param name="modelid">The model identifier.</param>
     /// <param name="position">The position.</param>
     /// <param name="rotation">The rotation.</param>
@@ -170,12 +140,12 @@ public partial class Actor : IdentifiedPool<Actor>, IWorldObject
     {
         var id = ActorInternal.Instance.CreateActor(modelid, position.X, position.Y, position.Z, rotation);
 
-        return id == InvalidId ? null : FindOrCreate(id);
+        return id == InvalidId
+            ? null
+            : FindOrCreate(id);
     }
 
-    /// <summary>
-    ///     Determines whether this <see cref="Actor" /> is streamed in for the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Determines whether this <see cref="Actor" /> is streamed in for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     /// <returns>True if streamed in; False otherwise.</returns>
     /// <exception cref="System.ArgumentNullException">player</exception>
@@ -188,9 +158,7 @@ public partial class Actor : IdentifiedPool<Actor>, IWorldObject
         return ActorInternal.Instance.IsActorStreamedIn(Id, player.Id);
     }
 
-    /// <summary>
-    ///     Applies the specified animation to this <see cref="Actor" />.
-    /// </summary>
+    /// <summary>Applies the specified animation to this <see cref="Actor" />.</summary>
     /// <param name="library">The animation library from which to apply an animation.</param>
     /// <param name="name">The name of the animation to apply, within the specified library.</param>
     /// <param name="fDelta">The speed to play the animation.</param>
@@ -199,9 +167,8 @@ public partial class Actor : IdentifiedPool<Actor>, IWorldObject
     /// <param name="locky">if set to <c>true</c> allow this Actor to move it's y-coordinate.</param>
     /// <param name="freeze">if set to <c>true</c> freeze this Actor at the end of the animation.</param>
     /// <param name="time">The amount of time (in milliseconds) to play the animation.</param>
-    /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="library"/> or <paramref name="name"/> is null.</exception>
-    public void ApplyAnimation(string library, string name, float fDelta, bool loop, bool lockx, bool locky,
-        bool freeze, int time)
+    /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="library" /> or <paramref name="name" /> is null.</exception>
+    public void ApplyAnimation(string library, string name, float fDelta, bool loop, bool lockx, bool locky, bool freeze, int time)
     {
         if (library == null) throw new ArgumentNullException(nameof(library));
         if (name == null) throw new ArgumentNullException(nameof(name));
@@ -211,9 +178,7 @@ public partial class Actor : IdentifiedPool<Actor>, IWorldObject
         ActorInternal.Instance.ApplyActorAnimation(Id, library, name, fDelta, loop, lockx, locky, freeze, time);
     }
 
-    /// <summary>
-    ///     Clear any animations applied to this Actor.
-    /// </summary>
+    /// <summary>Clear any animations applied to this Actor.</summary>
     public void ClearAnimations()
     {
         AssertNotDisposed();
@@ -221,36 +186,28 @@ public partial class Actor : IdentifiedPool<Actor>, IWorldObject
         ActorInternal.Instance.ClearActorAnimations(Id);
     }
 
-    /// <summary>
-    ///     Raises the <see cref="E:StreamIn" /> event.
-    /// </summary>
+    /// <summary>Raises the <see cref="E:StreamIn" /> event.</summary>
     /// <param name="args">The <see cref="PlayerEventArgs" /> instance containing the event data.</param>
     public void OnStreamIn(PlayerEventArgs args)
     {
         StreamIn?.Invoke(this, args);
     }
 
-    /// <summary>
-    ///     Raises the <see cref="E:StreamOut" /> event.
-    /// </summary>
+    /// <summary>Raises the <see cref="E:StreamOut" /> event.</summary>
     /// <param name="args">The <see cref="PlayerEventArgs" /> instance containing the event data.</param>
     public void OnStreamOut(PlayerEventArgs args)
     {
         StreamOut?.Invoke(this, args);
     }
 
-    /// <summary>
-    ///     Raises the <see cref="E:PlayerGiveDamage" /> event.
-    /// </summary>
+    /// <summary>Raises the <see cref="E:PlayerGiveDamage" /> event.</summary>
     /// <param name="args">The <see cref="DamageEventArgs" /> instance containing the event data.</param>
     public void OnPlayerGiveDamage(DamageEventArgs args)
     {
         PlayerGiveDamage?.Invoke(this, args);
     }
 
-    /// <summary>
-    ///     Removes this instance from the pool.
-    /// </summary>
+    /// <summary>Removes this instance from the pool.</summary>
     protected override void Dispose(bool disposing)
     {
         ActorInternal.Instance.DestroyActor(Id);

@@ -17,9 +17,7 @@ using System;
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-/// Indicates the controller this attribute was attached to should automatically be loaded.
-/// </summary>
+/// <summary>Indicates the controller this attribute was attached to should automatically be loaded.</summary>
 [AttributeUsage(AttributeTargets.Class)]
 public class ControllerAttribute : Attribute
 {

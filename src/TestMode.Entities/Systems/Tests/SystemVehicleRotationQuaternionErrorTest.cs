@@ -24,8 +24,7 @@ namespace TestMode.Entities.Systems.Tests;
 public class SystemVehicleRotationQuaternionErrorTest : ISystem
 {
     [PlayerCommand]
-    public async void RearCommand(Player player, IEntityManager entityManager, IWorldService worldService,
-        IVehicleInfoService vehicleInfoService)
+    public async void RearCommand(Player player, IEntityManager entityManager, IWorldService worldService, IVehicleInfoService vehicleInfoService)
     {
         var labels = new List<EntityId>();
 
@@ -39,15 +38,11 @@ public class SystemVehicleRotationQuaternionErrorTest : ISystem
 
             var rotation = vehicle.RotationQuaternion;
 
-            var mRotation =
-                rotation.LengthSquared >
-                10000 // Unoccupied vehicle updates corrupt the internal vehicle world matrix
-                    ? Matrix.CreateRotationZ(MathHelper.ToRadians(vehicle.Angle))
-                    : Matrix.CreateFromQuaternion(rotation);
+            var mRotation = rotation.LengthSquared > 10000 // Unoccupied vehicle updates corrupt the internal vehicle world matrix
+                ? Matrix.CreateRotationZ(MathHelper.ToRadians(vehicle.Angle))
+                : Matrix.CreateFromQuaternion(rotation);
 
-            var matrix = Matrix.CreateTranslation(offset) *
-                         mRotation *
-                         Matrix.CreateTranslation(vehicle.Position);
+            var matrix = Matrix.CreateTranslation(offset) * mRotation * Matrix.CreateTranslation(vehicle.Position);
 
             var point = matrix.Translation;
 

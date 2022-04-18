@@ -17,85 +17,80 @@ using System;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Represents a component which provides the data and functionality of an actor.
-/// </summary>
+/// <summary>Represents a component which provides the data and functionality of an actor.</summary>
 public sealed class Actor : Component
 {
     private Actor()
     {
     }
 
-    /// <summary>
-    /// Gets the facing angle of this actor.
-    /// </summary>
+    /// <summary>Gets the facing angle of this actor.</summary>
     public float FacingAngle
     {
         get
         {
-            GetComponent<NativeActor>().GetActorFacingAngle(out var angle);
+            GetComponent<NativeActor>()
+                .GetActorFacingAngle(out var angle);
             return angle;
         }
-        set => GetComponent<NativeActor>().SetActorFacingAngle(value);
+        set => GetComponent<NativeActor>()
+            .SetActorFacingAngle(value);
     }
 
-    /// <summary>
-    /// Gets the health of this actor.
-    /// </summary>
+    /// <summary>Gets the health of this actor.</summary>
     public float Health
     {
         get
         {
-            GetComponent<NativeActor>().GetActorHealth(out var health);
+            GetComponent<NativeActor>()
+                .GetActorHealth(out var health);
             return health;
         }
-        set => GetComponent<NativeActor>().SetActorHealth(value);
+        set => GetComponent<NativeActor>()
+            .SetActorHealth(value);
     }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether this actor is invulnerable.
-    /// </summary>
+    /// <summary>Gets or sets a value indicating whether this actor is invulnerable.</summary>
     public bool IsInvulnerable
     {
-        get => GetComponent<NativeActor>().IsActorInvulnerable();
-        set => GetComponent<NativeActor>().SetActorInvulnerable(value);
+        get => GetComponent<NativeActor>()
+            .IsActorInvulnerable();
+        set => GetComponent<NativeActor>()
+            .SetActorInvulnerable(value);
     }
 
-    /// <summary>
-    /// Gets or sets the virtual world of this actor.
-    /// </summary>
+    /// <summary>Gets or sets the virtual world of this actor.</summary>
     public int VirtualWorld
     {
-        get => GetComponent<NativeActor>().GetActorVirtualWorld();
-        set => GetComponent<NativeActor>().SetActorVirtualWorld(value);
+        get => GetComponent<NativeActor>()
+            .GetActorVirtualWorld();
+        set => GetComponent<NativeActor>()
+            .SetActorVirtualWorld(value);
     }
 
-    /// <summary>
-    /// Gets the position of this actor.
-    /// </summary>
+    /// <summary>Gets the position of this actor.</summary>
     public Vector3 Position
     {
         get
         {
-            GetComponent<NativeActor>().GetActorPos(out var x, out var y, out var z);
+            GetComponent<NativeActor>()
+                .GetActorPos(out var x, out var y, out var z);
             return new Vector3(x, y, z);
         }
-        set => GetComponent<NativeActor>().SetActorPos(value.X, value.Y, value.Z);
+        set => GetComponent<NativeActor>()
+            .SetActorPos(value.X, value.Y, value.Z);
     }
 
-    /// <summary>
-    /// Determines whether this actor is streamed in for the specified <paramref name="player" />.
-    /// </summary>
+    /// <summary>Determines whether this actor is streamed in for the specified <paramref name="player" />.</summary>
     /// <param name="player">The player.</param>
     /// <returns>True if streamed in; False otherwise.</returns>
     public bool IsStreamedIn(EntityId player)
     {
-        return player.IsOfType(SampEntities.PlayerType) && GetComponent<NativeActor>().IsActorStreamedIn(player);
+        return player.IsOfType(SampEntities.PlayerType) && GetComponent<NativeActor>()
+            .IsActorStreamedIn(player);
     }
 
-    /// <summary>
-    /// Applies the specified animation to this actor.
-    /// </summary>
+    /// <summary>Applies the specified animation to this actor.</summary>
     /// <param name="library">The animation library from which to apply an animation.</param>
     /// <param name="name">The name of the animation to apply, within the specified library.</param>
     /// <param name="fDelta">The speed to play the animation.</param>
@@ -104,29 +99,26 @@ public sealed class Actor : Component
     /// <param name="lockY">if set to <c>true</c> allow this Actor to move it's y-coordinate.</param>
     /// <param name="freeze">if set to <c>true</c> freeze this Actor at the end of the animation.</param>
     /// <param name="time">The amount of time (in milliseconds) to play the animation.</param>
-    /// <exception cref="System.ArgumentNullException">
-    /// Thrown if <paramref name="library" /> or <paramref name="name" /> is
-    /// null.
-    /// </exception>
-    public void ApplyAnimation(string library, string name, float fDelta, bool loop, bool lockX, bool lockY,
-        bool freeze, int time)
+    /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="library" /> or <paramref name="name" /> is null.</exception>
+    public void ApplyAnimation(string library, string name, float fDelta, bool loop, bool lockX, bool lockY, bool freeze, int time)
     {
         if (library == null) throw new ArgumentNullException(nameof(library));
         if (name == null) throw new ArgumentNullException(nameof(name));
-        GetComponent<NativeActor>().ApplyActorAnimation(library, name, fDelta, loop, lockX, lockY, freeze, time);
+        GetComponent<NativeActor>()
+            .ApplyActorAnimation(library, name, fDelta, loop, lockX, lockY, freeze, time);
     }
 
-    /// <summary>
-    /// Clear any animations applied to this actor.
-    /// </summary>
+    /// <summary>Clear any animations applied to this actor.</summary>
     public void ClearAnimations()
     {
-        GetComponent<NativeActor>().ClearActorAnimations();
+        GetComponent<NativeActor>()
+            .ClearActorAnimations();
     }
 
     /// <inheritdoc />
     protected override void OnDestroyComponent()
     {
-        GetComponent<NativeActor>().DestroyActor();
+        GetComponent<NativeActor>()
+            .DestroyActor();
     }
 }

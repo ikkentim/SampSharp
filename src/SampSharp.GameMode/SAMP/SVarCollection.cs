@@ -20,30 +20,24 @@ using SampSharp.GameMode.Definitions;
 
 namespace SampSharp.GameMode.SAMP;
 
-/// <summary>
-///     Represents a collection of server variables.
-/// </summary>
+/// <summary>Represents a collection of server variables.</summary>
 public partial class SVarCollection : IEnumerable<object>
 {
-    /// <summary>
-    ///     Gets or sets the <see cref="System.Object" /> at the specified index.
-    /// </summary>
+    /// <summary>Gets or sets the <see cref="System.Object" /> at the specified index.</summary>
     public object this[int index]
     {
         get => this[NameAtIndex(index)];
         set => this[NameAtIndex(index)] = value;
     }
 
-    /// <summary>
-    ///     Gets or sets the <see cref="object" /> with the specified <paramref name="varname"/>.
-    /// </summary>
+    /// <summary>Gets or sets the <see cref="object" /> with the specified <paramref name="varname" />.</summary>
     public object this[string varname]
     {
         get
         {
             if (varname == null) return null;
 
-            switch ((ServerVarType) SVarCollectionInternal.Instance.GetSVarType(varname))
+            switch ((ServerVarType)SVarCollectionInternal.Instance.GetSVarType(varname))
             {
                 case ServerVarType.Int:
                     return Get<int>(varname);
@@ -71,7 +65,9 @@ public partial class SVarCollection : IEnumerable<object>
                     SVarCollectionInternal.Instance.SetSVarFloat(varname, f);
                     break;
                 case bool b:
-                    SVarCollectionInternal.Instance.SetSVarInt(varname, b ? 1 : 0);
+                    SVarCollectionInternal.Instance.SetSVarInt(varname, b
+                        ? 1
+                        : 0);
                     break;
                 case string s:
                     SVarCollectionInternal.Instance.SetSVarString(varname, s);
@@ -80,17 +76,11 @@ public partial class SVarCollection : IEnumerable<object>
         }
     }
 
-    /// <summary>
-    ///     Gets the upper index of the variables list.
-    /// </summary>
+    /// <summary>Gets the upper index of the variables list.</summary>
     public int UpperIndex => SVarCollectionInternal.Instance.GetSVarsUpperIndex();
 
-    /// <summary>
-    ///     Returns an enumerator that iterates through the collection.
-    /// </summary>
-    /// <returns>
-    ///     A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
-    /// </returns>
+    /// <summary>Returns an enumerator that iterates through the collection.</summary>
+    /// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.</returns>
     public IEnumerator<object> GetEnumerator()
     {
         var vars = new List<object>();
@@ -108,62 +98,55 @@ public partial class SVarCollection : IEnumerable<object>
         return GetEnumerator();
     }
 
-    /// <summary>
-    ///     Gets the variable with the specified <paramref name="varname"/>.
-    /// </summary>
+    /// <summary>Gets the variable with the specified <paramref name="varname" />.</summary>
     /// <typeparam name="T">The type of the variable.</typeparam>
     /// <param name="varname">The name of the variable.</param>
     /// <returns>The variable with the specified name.</returns>
     public T Get<T>(string varname)
     {
         object value = default(T);
-        if (typeof (T) == typeof (int))
+        if (typeof(T) == typeof(int))
             value = SVarCollectionInternal.Instance.GetSVarInt(varname);
-        else if (typeof (T) == typeof (float))
+        else if (typeof(T) == typeof(float))
             value = SVarCollectionInternal.Instance.GetSVarFloat(varname);
-        else if (typeof (T) == typeof (string))
+        else if (typeof(T) == typeof(string))
         {
             SVarCollectionInternal.Instance.GetSVarString(varname, out var output, 64);
             value = output;
         }
-        else if (typeof (T) == typeof (bool))
+        else if (typeof(T) == typeof(bool))
             value = SVarCollectionInternal.Instance.GetSVarInt(varname) > 0;
-        return (T) Convert.ChangeType(value, typeof (T));
+
+        return (T)Convert.ChangeType(value, typeof(T));
     }
 
-    /// <summary>
-    ///     Checks whether a variable with the specified name exists.
-    /// </summary>
+    /// <summary>Checks whether a variable with the specified name exists.</summary>
     /// <param name="varname">The variable name.</param>
     /// <returns>True if the variable exists; False otherwise.</returns>
     public bool Exists(string varname)
     {
-        return SVarCollectionInternal.Instance.GetSVarType(varname) != (int) ServerVarType.None;
+        return SVarCollectionInternal.Instance.GetSVarType(varname) != (int)ServerVarType.None;
     }
 
-    /// <summary>
-    ///     Gets the type of the variable with the given <paramref name="varname" />.
-    /// </summary>
+    /// <summary>Gets the type of the variable with the given <paramref name="varname" />.</summary>
     /// <param name="varname">The name of the variable.</param>
     /// <returns>The type of the variable.</returns>
     public Type GetType(string varname)
     {
-        switch ((ServerVarType) SVarCollectionInternal.Instance.GetSVarType(varname))
+        switch ((ServerVarType)SVarCollectionInternal.Instance.GetSVarType(varname))
         {
             case ServerVarType.Float:
-                return typeof (float);
+                return typeof(float);
             case ServerVarType.Int:
-                return typeof (int);
+                return typeof(int);
             case ServerVarType.String:
-                return typeof (string);
+                return typeof(string);
             default:
                 return null;
         }
     }
 
-    /// <summary>
-    ///     Gets the name at the given <paramref name="index" />.
-    /// </summary>
+    /// <summary>Gets the name at the given <paramref name="index" />.</summary>
     /// <param name="index">The index.</param>
     /// <returns>The name at the given index.</returns>
     public string NameAtIndex(int index)
@@ -172,9 +155,7 @@ public partial class SVarCollection : IEnumerable<object>
         return name;
     }
 
-    /// <summary>
-    ///     Deletes the specified variable.
-    /// </summary>
+    /// <summary>Deletes the specified variable.</summary>
     /// <param name="varname">The name of the variable.</param>
     /// <returns>True on success; False otherwise.</returns>
     public bool Delete(string varname)

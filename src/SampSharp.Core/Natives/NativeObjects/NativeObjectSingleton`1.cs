@@ -15,19 +15,15 @@
 
 namespace SampSharp.Core.Natives.NativeObjects;
 
-/// <summary>
-///     Provides a singleton <see cref="Instance" /> property containing a single instance of the specified native object
-///     type.
-/// </summary>
+/// <summary>Provides a singleton <see cref="Instance" /> property containing a single instance of the specified native object type.</summary>
 /// <typeparam name="T">The native object type.</typeparam>
 public abstract class NativeObjectSingleton<T> where T : NativeObjectSingleton<T>
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2743:Static fields should not be used in generic types", Justification = "By design")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2743:Static fields should not be used in generic types",
+        Justification = "By design")]
     private static T _instance;
-        
-    /// <summary>
-    ///     Gets the singleton instance of native object <typeparamref name="T" />.
-    /// </summary>
+
+    /// <summary>Gets the singleton instance of native object <typeparamref name="T" />.</summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "By design")]
     public static T Instance => _instance ??= NativeObjectProxyFactory.CreateInstance<T>();
 }

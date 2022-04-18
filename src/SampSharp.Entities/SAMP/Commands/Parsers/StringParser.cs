@@ -17,9 +17,7 @@ using System;
 
 namespace SampSharp.Entities.SAMP.Commands.Parsers;
 
-/// <summary>
-/// A parser for a <see cref="string" /> parameter which consumes all remaining input text.
-/// </summary>
+/// <summary>A parser for a <see cref="string" /> parameter which consumes all remaining input text.</summary>
 public class StringParser : ICommandParameterParser
 {
     /// <inheritdoc />

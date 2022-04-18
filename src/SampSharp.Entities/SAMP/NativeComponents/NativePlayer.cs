@@ -25,14 +25,12 @@ namespace SampSharp.Entities.SAMP;
 [SuppressMessage("ReSharper", "StringLiteralTypo")]
 public class NativePlayer : BaseNativeComponent
 {
-    /// <summary>
-    /// Identifier indicating the handle is invalid.
-    /// </summary>
+    /// <summary>Identifier indicating the handle is invalid.</summary>
     public const int InvalidId = 0xFFFF;
 
     [NativeMethod]
-    public virtual bool SetSpawnInfo(int team, int skin, float x, float y, float z, float rotation,
-        int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo, int weapon3, int weapon3Ammo)
+    public virtual bool SetSpawnInfo(int team, int skin, float x, float y, float z, float rotation, int weapon1, int weapon1Ammo, int weapon2, int weapon2Ammo,
+        int weapon3, int weapon3Ammo)
     {
         throw new NativeNotImplementedException();
     }
@@ -374,8 +372,7 @@ public class NativePlayer : BaseNativeComponent
     }
 
     [NativeMethod]
-    public virtual bool PlayAudioStreamForPlayer(string url, float posX, float posY, float posZ,
-        float distance, bool usepos)
+    public virtual bool PlayAudioStreamForPlayer(string url, float posX, float posY, float posZ, float distance, bool usepos)
     {
         throw new NativeNotImplementedException();
     }
@@ -411,9 +408,8 @@ public class NativePlayer : BaseNativeComponent
     }
 
     [NativeMethod]
-    public virtual bool SetPlayerAttachedObject(int index, int modelid, int bone, float offsetX,
-        float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY,
-        float scaleZ, int materialcolor1, int materialcolor2)
+    public virtual bool SetPlayerAttachedObject(int index, int modelid, int bone, float offsetX, float offsetY, float offsetZ, float rotX, float rotY,
+        float rotZ, float scaleX, float scaleY, float scaleZ, int materialcolor1, int materialcolor2)
     {
         throw new NativeNotImplementedException();
     }
@@ -437,8 +433,7 @@ public class NativePlayer : BaseNativeComponent
     }
 
     [NativeMethod]
-    public virtual bool SetPlayerChatBubble(string text, int color, float drawdistance,
-        int expiretime)
+    public virtual bool SetPlayerChatBubble(string text, int color, float drawdistance, int expiretime)
     {
         throw new NativeNotImplementedException();
     }
@@ -480,8 +475,7 @@ public class NativePlayer : BaseNativeComponent
     }
 
     [NativeMethod]
-    public virtual bool ApplyAnimation(string animlib, string animname, float fDelta, bool loop,
-        bool lockx, bool locky, bool freeze, int time, bool forcesync)
+    public virtual bool ApplyAnimation(string animlib, string animname, float fDelta, bool loop, bool lockx, bool locky, bool freeze, int time, bool forcesync)
     {
         throw new NativeNotImplementedException();
     }
@@ -529,8 +523,7 @@ public class NativePlayer : BaseNativeComponent
     }
 
     [NativeMethod]
-    public virtual bool SetPlayerRaceCheckpoint(int type, float x, float y, float z, float nextx,
-        float nexty, float nextz, float size)
+    public virtual bool SetPlayerRaceCheckpoint(int type, float x, float y, float z, float nextx, float nexty, float nextz, float size)
     {
         throw new NativeNotImplementedException();
     }
@@ -626,15 +619,13 @@ public class NativePlayer : BaseNativeComponent
     }
 
     [NativeMethod]
-    public virtual bool InterpolateCameraPos(float fromX, float fromY, float fromZ, float toX,
-        float toY, float toZ, int time, int cut)
+    public virtual bool InterpolateCameraPos(float fromX, float fromY, float fromZ, float toX, float toY, float toZ, int time, int cut)
     {
         throw new NativeNotImplementedException();
     }
 
     [NativeMethod]
-    public virtual bool InterpolateCameraLookAt(float fromX, float fromY, float fromZ, float toX,
-        float toY, float toZ, int time, int cut)
+    public virtual bool InterpolateCameraLookAt(float fromX, float fromY, float fromZ, float toX, float toY, float toZ, int time, int cut)
     {
         throw new NativeNotImplementedException();
     }
@@ -809,8 +800,8 @@ public class NativePlayer : BaseNativeComponent
     }
 
     [NativeMethod]
-    public virtual bool GetPlayerLastShotVectors(out float fOriginX, out float fOriginY,
-        out float fOriginZ, out float fHitPosX, out float fHitPosY, out float fHitPosZ)
+    public virtual bool GetPlayerLastShotVectors(out float fOriginX, out float fOriginY, out float fOriginZ, out float fHitPosX, out float fHitPosY,
+        out float fHitPosZ)
     {
         throw new NativeNotImplementedException();
     }
@@ -890,8 +881,7 @@ public class NativePlayer : BaseNativeComponent
     }
 
     [NativeMethod]
-    public virtual bool RemoveBuildingForPlayer(int modelid, float x, float y, float z,
-        float radius)
+    public virtual bool RemoveBuildingForPlayer(int modelid, float x, float y, float z, float radius)
     {
         throw new NativeNotImplementedException();
     }
@@ -915,22 +905,19 @@ public class NativePlayer : BaseNativeComponent
     }
 
     [NativeMethod(true)]
-    public virtual bool GetAnimationName(int index, out string animlib, int animlibSize, out string animname,
-        int animnameSize)
+    public virtual bool GetAnimationName(int index, out string animlib, int animlibSize, out string animname, int animnameSize)
     {
         throw new NativeNotImplementedException();
     }
 
     [NativeMethod]
-    public virtual void ShowPlayerDialog(int dialogid, int style, string caption, string info,
-        string button1, string button2)
+    public virtual void ShowPlayerDialog(int dialogid, int style, string caption, string info, string button1, string button2)
     {
         throw new NativeNotImplementedException();
     }
 
     [NativeMethod]
-    public virtual bool SetPlayerMapIcon(int iconid, float x, float y, float z, int markertype,
-        int color, int style)
+    public virtual bool SetPlayerMapIcon(int iconid, float x, float y, float z, int markertype, int color, int style)
     {
         throw new NativeNotImplementedException();
     }

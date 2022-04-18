@@ -18,22 +18,16 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerClickMap" /> or <see cref="BasePlayer.ClickMap" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.PlayerClickMap" /> or <see cref="BasePlayer.ClickMap" /> event.</summary>
 public class PositionEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="PositionEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="PositionEventArgs" /> class.</summary>
     /// <param name="position">The position.</param>
     public PositionEventArgs(Vector3 position)
     {
         Position = position;
     }
 
-    /// <summary>
-    ///     Gets the position.
-    /// </summary>
+    /// <summary>Gets the position.</summary>
     public Vector3 Position { get; }
 }

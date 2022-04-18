@@ -22,9 +22,7 @@ using SampSharp.Entities.Utilities;
 
 namespace SampSharp.Entities.SAMP.Commands;
 
-/// <summary>
-/// Represents a base for service which provides functionality for calling commands in system classes.
-/// </summary>
+/// <summary>Represents a base for service which provides functionality for calling commands in system classes.</summary>
 public abstract class CommandServiceBase
 {
     private readonly IEntityManager _entityManager;
@@ -32,9 +30,7 @@ public abstract class CommandServiceBase
 
     private readonly Dictionary<string, List<CommandData>> _commands = new();
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CommandServiceBase"/> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="CommandServiceBase" /> class.</summary>
     protected CommandServiceBase(IEntityManager entityManager, int prefixParameters)
     {
         if (prefixParameters < 0) throw new ArgumentOutOfRangeException(nameof(prefixParameters));
@@ -45,9 +41,7 @@ public abstract class CommandServiceBase
         CreateCommandsFromAssemblies(prefixParameters);
     }
 
-    /// <summary>
-    /// Validates and corrects the specified <paramref name="inputText" />.
-    /// </summary>
+    /// <summary>Validates and corrects the specified <paramref name="inputText" />.</summary>
     /// <param name="inputText">The text to validate. The text can be corrected to remove symbols which should not be processed.</param>
     /// <returns><c>true</c> if the inputText text is valid.</returns>
     protected virtual bool ValidateInputText(ref string inputText)
@@ -55,9 +49,7 @@ public abstract class CommandServiceBase
         return !string.IsNullOrEmpty(inputText);
     }
 
-    /// <summary>
-    /// Invokes a command based on the specified <paramref name="inputText" />.
-    /// </summary>
+    /// <summary>Invokes a command based on the specified <paramref name="inputText" />.</summary>
     /// <param name="services">A service provider.</param>
     /// <param name="prefix">The prefix.</param>
     /// <param name="inputText">The inputText.</param>
@@ -77,7 +69,9 @@ public abstract class CommandServiceBase
 
         // Find name of the command by the first word
         var index = inputText.IndexOf(" ", StringComparison.InvariantCulture);
-        var name = index < 0 ? inputText : inputText.Substring(0, index);
+        var name = index < 0
+            ? inputText
+            : inputText.Substring(0, index);
         var result = false;
         var invalidParameters = false;
 
@@ -147,28 +141,25 @@ public abstract class CommandServiceBase
         if (!invalidParameters)
             return InvokeResult.CommandNotFound;
 
-        var usageMessage = GetUsageMessage(commands.Select(c => c.Info).ToArray());
+        var usageMessage = GetUsageMessage(commands.Select(c => c.Info)
+            .ToArray());
         return new InvokeResult(InvokeResponse.InvalidArguments, usageMessage);
     }
 
-    /// <summary>
-    /// Scans for methods in <see cref="ISystem" /> which should be considered to be compiled as a command.
-    /// </summary>
+    /// <summary>Scans for methods in <see cref="ISystem" /> which should be considered to be compiled as a command.</summary>
     /// <param name="scanner">A scanner which is already limited to members of types which implement <see cref="ISystem" />.</param>
     /// <returns>The methods which provide commands.</returns>
-    protected abstract IEnumerable<(MethodInfo method, ICommandMethodInfo commandInfo)> ScanMethods(
-        AssemblyScanner scanner);
+    protected abstract IEnumerable<(MethodInfo method, ICommandMethodInfo commandInfo)> ScanMethods(AssemblyScanner scanner);
 
     private IEnumerable<(MethodInfo method, ICommandMethodInfo commandInfo)> ScanMethods()
     {
-        var scanner = new AssemblyScanner()
-            .IncludeAllAssemblies()
+        var scanner = new AssemblyScanner().IncludeAllAssemblies()
             .IncludeNonPublicMembers()
             .Implements<ISystem>();
 
         return ScanMethods(scanner);
     }
-        
+
     private static string CommandText(CommandInfo command)
     {
         if (command.Parameters.Length == 0)
@@ -176,14 +167,16 @@ public abstract class CommandServiceBase
             return $"Usage: {command.Name}";
         }
 
-        return $"Usage: {command.Name} " + string.Join(" ",
-            command.Parameters.Select(arg => arg.IsRequired ? $"[{arg.Name}]" : $"<{arg.Name}>"));
+        return $"Usage: {command.Name} " + string.Join(" ", command.Parameters.Select(arg => arg.IsRequired
+            ? $"[{arg.Name}]"
+            : $"<{arg.Name}>"));
     }
 
-    /// <summary>
-    /// Gets the usage message for one or multiple specified <paramref name="commands" />. 
-    /// </summary>
-    /// <param name="commands">The commands to get the usage message for. If multiple commands are supplied they can be assumed to be multiple overloads of the same command.</param>
+    /// <summary>Gets the usage message for one or multiple specified <paramref name="commands" />.</summary>
+    /// <param name="commands">
+    /// The commands to get the usage message for. If multiple commands are supplied they can be assumed to be multiple overloads of the same
+    /// command.
+    /// </param>
     /// <returns>The usage message for the commands.</returns>
     protected virtual string GetUsageMessage(CommandInfo[] commands)
     {
@@ -191,10 +184,8 @@ public abstract class CommandServiceBase
             ? CommandText(commands[0])
             : $"Usage: {string.Join(" -or- ", commands.Select(CommandText))}";
     }
-        
-    /// <summary>
-    /// Creates the parameter parser for the parameter at the specified <paramref name="index" /> in the <paramref name="parameters" /> array..
-    /// </summary>
+
+    /// <summary>Creates the parameter parser for the parameter at the specified <paramref name="index" /> in the <paramref name="parameters" /> array..</summary>
     /// <param name="parameters">An array which contains all parameters.</param>
     /// <param name="index">The index of the parameter to get the parser for.</param>
     /// <returns>A newly created parameter parser or null if no parser could be made for the specified parameter.</returns>
@@ -202,34 +193,32 @@ public abstract class CommandServiceBase
     {
         var parameter = parameters[index];
 
-        if(parameter.ParameterType == typeof(int))
+        if (parameter.ParameterType == typeof(int))
             return new IntParser();
 
         if (parameter.ParameterType == typeof(string))
             return index == parameters.Length - 1
                 ? new StringParser()
                 : new WordParser();
-            
-        if(parameter.ParameterType == typeof(float))
+
+        if (parameter.ParameterType == typeof(float))
             return new FloatParser();
-            
-        if(parameter.ParameterType == typeof(double))
+
+        if (parameter.ParameterType == typeof(double))
             return new DoubleParser();
-            
-        if(parameter.ParameterType == typeof(Player))
+
+        if (parameter.ParameterType == typeof(Player))
             return new PlayerParser();
 
-        if(parameter.ParameterType == typeof(Vehicle))
+        if (parameter.ParameterType == typeof(Vehicle))
             return new EntityParser(SampEntities.VehicleType);
 
-        return parameter.ParameterType.IsEnum 
-            ? new EnumParser(parameter.ParameterType) 
+        return parameter.ParameterType.IsEnum
+            ? new EnumParser(parameter.ParameterType)
             : null;
     }
 
-    /// <summary>
-    /// Tries to collect parameter information.
-    /// </summary>
+    /// <summary>Tries to collect parameter information.</summary>
     /// <param name="parameters">The parameters.</param>
     /// <param name="prefixParameters">The number of prefix parameters.</param>
     /// <param name="result">The collected parameter information.</param>
@@ -290,9 +279,7 @@ public abstract class CommandServiceBase
         return true;
     }
 
-    /// <summary>
-    /// Extracts a command name from a method.
-    /// </summary>
+    /// <summary>Extracts a command name from a method.</summary>
     /// <param name="method">The method to extract the command name from.</param>
     /// <returns>The extracted command name.</returns>
     protected virtual string GetCommandName(MethodInfo method)
@@ -317,21 +304,18 @@ public abstract class CommandServiceBase
                 continue;
 
             // Validate acceptable return type.
-            if (method.ReturnType != typeof(bool) &&
-                method.ReturnType != typeof(int) &&
-                method.ReturnType != typeof(void))
+            if (method.ReturnType != typeof(bool) && method.ReturnType != typeof(int) && method.ReturnType != typeof(void))
                 continue;
 
             var methodParameters = method.GetParameters();
             // Determine command parameter types.
-            if (!TryCollectParameters(methodParameters, prefixParameters, out var parameters)) 
+            if (!TryCollectParameters(methodParameters, prefixParameters, out var parameters))
                 continue;
 
             var info = new CommandInfo(name, parameters);
 
             var argsPtr = 0; // The current pointer in the event arguments array.
-            var parameterSources = methodParameters
-                .Select(inf => new MethodParameterSource(inf))
+            var parameterSources = methodParameters.Select(inf => new MethodParameterSource(inf))
                 .ToArray();
 
             // Determine the source of each parameter.

@@ -26,12 +26,12 @@ internal class PlayerObjectMiddleware
 
     public object Invoke(EventContext context, IEntityManager entityManager)
     {
-        var playerEntity = SampEntities.GetPlayerId((int) context.Arguments[0]);
-        var objectEntity = SampEntities.GetPlayerObjectId(playerEntity, (int) context.Arguments[1]);
-            
+        var playerEntity = SampEntities.GetPlayerId((int)context.Arguments[0]);
+        var objectEntity = SampEntities.GetPlayerObjectId(playerEntity, (int)context.Arguments[1]);
+
         if (!entityManager.Exists(playerEntity))
             return null;
-            
+
         // Allow unknown objects to be passed through to the event.
 
         context.Arguments[0] = playerEntity;

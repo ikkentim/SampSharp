@@ -15,18 +15,12 @@
 
 namespace SampSharp.GameMode.Definitions;
 
-/// <summary>
-///     Contains all dialog buttons.
-/// </summary>
+/// <summary>Contains all dialog buttons.</summary>
 public enum DialogButton
 {
-    /// <summary>
-    ///     Right button of the dialog.
-    /// </summary>
+    /// <summary>Right button of the dialog.</summary>
     Right = 0,
 
-    /// <summary>
-    ///     Left button of the dialog.
-    /// </summary>
+    /// <summary>Left button of the dialog.</summary>
     Left = 1
 }

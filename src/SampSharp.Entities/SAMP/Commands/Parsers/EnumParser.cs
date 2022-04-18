@@ -18,18 +18,14 @@ using System.Linq;
 
 namespace SampSharp.Entities.SAMP.Commands.Parsers;
 
-/// <summary>
-/// A parser for an <see cref="Enum" /> parameter.
-/// </summary>
+/// <summary>A parser for an <see cref="Enum" /> parameter.</summary>
 public class EnumParser : ICommandParameterParser
 {
     private readonly Type _enumType;
 
     private readonly WordParser _wordParser = new();
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EnumParser" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EnumParser" /> class.</summary>
     /// <param name="enumType">Type of the enum.</param>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="enumType" /> is null.</exception>
     /// <exception cref="ArgumentException">Thrown if <paramref name="enumType" /> is not an enum type.</exception>
@@ -44,25 +40,28 @@ public class EnumParser : ICommandParameterParser
     /// <inheritdoc />
     public bool TryParse(IServiceProvider services, ref string inputText, out object result)
     {
-        if (!_wordParser.TryParse(services, ref inputText, out var subResult) ||
-            !(subResult is string word))
+        if (!_wordParser.TryParse(services, ref inputText, out var subResult) || !(subResult is string word))
         {
             result = null;
             return false;
         }
 
-        if (int.TryParse(word, out var intWord) &&
-            Enum.IsDefined(_enumType, intWord))
+        if (int.TryParse(word, out var intWord) && Enum.IsDefined(_enumType, intWord))
         {
             result = Enum.ToObject(_enumType, intWord);
             return true;
         }
-            
+
         var lowerWord = word.ToLowerInvariant();
-        var names = Enum.GetNames(_enumType).Where(n => n.ToLowerInvariant().Contains(lowerWord)).ToArray();
-            
-        if (names.Length > 1) 
-            names = Enum.GetNames(_enumType).Where(n => n.Contains(word)).ToArray();
+        var names = Enum.GetNames(_enumType)
+            .Where(n => n.ToLowerInvariant()
+                .Contains(lowerWord))
+            .ToArray();
+
+        if (names.Length > 1)
+            names = Enum.GetNames(_enumType)
+                .Where(n => n.Contains(word))
+                .ToArray();
 
         if (names.Length == 1)
         {

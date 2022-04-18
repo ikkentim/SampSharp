@@ -28,15 +28,15 @@ internal class PlayerEditObjectMiddleware
     public object Invoke(EventContext context)
     {
         var inArgs = context.Arguments;
-        var playerEntity = SampEntities.GetPlayerId((int) inArgs[0]);
-            
-        var isPlayerObject = (bool) inArgs[1];
-        var objectId = (int) inArgs[2];
+        var playerEntity = SampEntities.GetPlayerId((int)inArgs[0]);
+
+        var isPlayerObject = (bool)inArgs[1];
+        var objectId = (int)inArgs[2];
 
         var objectEntity = isPlayerObject
             ? SampEntities.GetPlayerObjectId(playerEntity, objectId)
             : SampEntities.GetObjectId(objectId);
-            
+
         // Allow unknown objects to be passed through to the event.
 
         _context.BaseContext = context;

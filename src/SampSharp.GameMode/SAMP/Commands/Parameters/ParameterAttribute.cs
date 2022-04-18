@@ -17,23 +17,17 @@ using System;
 
 namespace SampSharp.GameMode.SAMP.Commands.Parameters;
 
-/// <summary>
-///     Indicates the type of the parameter.
-/// </summary>
+/// <summary>Indicates the type of the parameter.</summary>
 [AttributeUsage(AttributeTargets.Parameter)]
 public class ParameterAttribute : Attribute
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="ParameterAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="ParameterAttribute" /> class.</summary>
     /// <param name="type">The type.</param>
     public ParameterAttribute(Type type)
     {
         Type = type;
     }
 
-    /// <summary>
-    ///     Gets the type.
-    /// </summary>
+    /// <summary>Gets the type.</summary>
     public Type Type { get; }
 }

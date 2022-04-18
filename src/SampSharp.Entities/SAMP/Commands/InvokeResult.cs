@@ -15,39 +15,30 @@
 
 namespace SampSharp.Entities.SAMP.Commands;
 
-/// <summary>
-/// Represents a response to an invoked command.
-/// </summary>
+/// <summary>Represents a response to an invoked command.</summary>
 public struct InvokeResult
 {
-    /// <summary>
-    /// A command not found result value.
-    /// </summary>
+    /// <summary>A command not found result value.</summary>
     public static readonly InvokeResult CommandNotFound = new(InvokeResponse.CommandNotFound);
 
-    /// <summary>
-    /// The success result value.
-    /// </summary>
+    /// <summary>The success result value.</summary>
     public static readonly InvokeResult Success = new(InvokeResponse.Success);
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="InvokeResult" /> struct.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="InvokeResult" /> struct.</summary>
     /// <param name="response">The response.</param>
-    /// <param name="usageMessage">The usage message. This value should only be provided when <paramref name="response" /> is equal to <see cref="InvokeResponse.InvalidArguments" />.</param>
+    /// <param name="usageMessage">
+    /// The usage message. This value should only be provided when <paramref name="response" /> is equal to
+    /// <see cref="InvokeResponse.InvalidArguments" />.
+    /// </param>
     public InvokeResult(InvokeResponse response, string usageMessage = null)
     {
         Response = response;
         UsageMessage = usageMessage;
     }
 
-    /// <summary>
-    /// Gets the response.
-    /// </summary>
+    /// <summary>Gets the response.</summary>
     public InvokeResponse Response { get; }
 
-    /// <summary>
-    /// Gets the usage message. This value is only available when <see cref="Response" /> is equal to <see cref="InvokeResponse.InvalidArguments" />.
-    /// </summary>
+    /// <summary>Gets the usage message. This value is only available when <see cref="Response" /> is equal to <see cref="InvokeResponse.InvalidArguments" />.</summary>
     public string UsageMessage { get; }
 }

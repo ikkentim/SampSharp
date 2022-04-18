@@ -21,27 +21,20 @@ using SampSharp.GameMode.Tools;
 
 namespace SampSharp.GameMode.Pools;
 
-/// <summary>
-///     Keeps track of a pool of instances.
-/// </summary>
+/// <summary>Keeps track of a pool of instances.</summary>
 /// <typeparam name="TInstance">Base type of instances to keep track of.</typeparam>
 public abstract class Pool<TInstance> : Disposable where TInstance : Pool<TInstance>
 {
-    /// <summary>
-    ///     The instances alive in this pool.
-    /// </summary>
+    /// <summary>The instances alive in this pool.</summary>
     protected static readonly List<Pool<TInstance>> Instances = new();
 
 
-    /// <summary>
-    ///     The internal lock of this pool.
-    /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2743:Static fields should not be used in generic types", Justification = "By design")]
+    /// <summary>The internal lock of this pool.</summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2743:Static fields should not be used in generic types",
+        Justification = "By design")]
     protected static readonly object Lock = new();
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="Pool{T}" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="Pool{T}" /> class.</summary>
     protected Pool()
     {
         lock (Lock)
@@ -50,9 +43,7 @@ public abstract class Pool<TInstance> : Disposable where TInstance : Pool<TInsta
         }
     }
 
-    /// <summary>
-    ///     Gets a <see cref="IEnumerable{T}" /> containing all instances of type.
-    /// </summary>
+    /// <summary>Gets a <see cref="IEnumerable{T}" /> containing all instances of type.</summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "By design")]
     public static IEnumerable<TInstance> All
     {
@@ -60,14 +51,13 @@ public abstract class Pool<TInstance> : Disposable where TInstance : Pool<TInsta
         {
             lock (Lock)
             {
-                return Instances.OfType<TInstance>().ToArray();
+                return Instances.OfType<TInstance>()
+                    .ToArray();
             }
         }
     }
 
-    /// <summary>
-    ///     Removes this instance from the pool.
-    /// </summary>
+    /// <summary>Removes this instance from the pool.</summary>
     protected override void Dispose(bool disposing)
     {
         lock (Lock)
@@ -76,9 +66,7 @@ public abstract class Pool<TInstance> : Disposable where TInstance : Pool<TInsta
         }
     }
 
-    /// <summary>
-    ///     Gets whether the given instance is present in the pool.
-    /// </summary>
+    /// <summary>Gets whether the given instance is present in the pool.</summary>
     /// <param name="item">The instance to check the presence of.</param>
     /// <returns>Whether the given instance is present in the pool.</returns>
     public static bool Contains(TInstance item)
@@ -89,17 +77,16 @@ public abstract class Pool<TInstance> : Disposable where TInstance : Pool<TInsta
         }
     }
 
-    /// <summary>
-    ///     Gets a <see cref="ReadOnlyCollection{T}" /> containing all instances of the given type within this
-    ///     <see cref="Pool{T}" />.
-    /// </summary>
+    /// <summary>Gets a <see cref="ReadOnlyCollection{T}" /> containing all instances of the given type within this <see cref="Pool{T}" />.</summary>
     /// <typeparam name="T2">The <see cref="Type" /> of instances to get.</typeparam>
     /// <returns>All instances of the given type within this <see cref="Pool{T}" />.</returns>
     public static ReadOnlyCollection<T2> GetAll<T2>()
     {
         lock (Lock)
         {
-            return Instances.OfType<T2>().ToList().AsReadOnly();
+            return Instances.OfType<T2>()
+                .ToList()
+                .AsReadOnly();
         }
     }
 }

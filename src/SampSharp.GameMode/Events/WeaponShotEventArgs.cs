@@ -18,43 +18,30 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerWeaponShot" /> or <see cref="BasePlayer.WeaponShot" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.PlayerWeaponShot" /> or <see cref="BasePlayer.WeaponShot" /> event.</summary>
 public class WeaponShotEventArgs : PositionEventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="WeaponShotEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="WeaponShotEventArgs" /> class.</summary>
     /// <param name="weapon">The weapon.</param>
     /// <param name="hittype">The hit type.</param>
     /// <param name="hitid">The hit ID.</param>
     /// <param name="position">The position.</param>
-    public WeaponShotEventArgs(Weapon weapon, BulletHitType hittype, int hitid, Vector3 position)
-        : base(position)
+    public WeaponShotEventArgs(Weapon weapon, BulletHitType hittype, int hitid, Vector3 position) : base(position)
     {
         Weapon = weapon;
         BulletHitType = hittype;
         HitId = hitid;
     }
 
-    /// <summary>
-    ///     Gets the weapon.
-    /// </summary>
+    /// <summary>Gets the weapon.</summary>
     public Weapon Weapon { get; }
 
-    /// <summary>
-    ///     Gets the type of the bullet hit.
-    /// </summary>
+    /// <summary>Gets the type of the bullet hit.</summary>
     public BulletHitType BulletHitType { get; }
 
-    /// <summary>
-    ///     Gets the hit identifier.
-    /// </summary>
+    /// <summary>Gets the hit identifier.</summary>
     public int HitId { get; }
 
-    /// <summary>
-    ///     Gets or sets whether the bullets should be prevented from causing damage.
-    /// </summary>
+    /// <summary>Gets or sets whether the bullets should be prevented from causing damage.</summary>
     public bool PreventDamage { get; set; }
 }

@@ -28,8 +28,8 @@ internal class PlayerEditAttachedObjectMiddleware
     public object Invoke(EventContext context, IEntityManager entityManager)
     {
         var inArgs = context.Arguments;
-        var playerEntity = SampEntities.GetPlayerId((int) inArgs[0]);
-            
+        var playerEntity = SampEntities.GetPlayerId((int)inArgs[0]);
+
         if (!entityManager.Exists(playerEntity))
             return null;
 

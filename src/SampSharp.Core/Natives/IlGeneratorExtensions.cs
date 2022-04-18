@@ -20,14 +20,13 @@ using System.Reflection.Emit;
 
 namespace SampSharp.Core.Natives;
 
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "Documentation for generated IL code.")]
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out",
+    Justification = "Documentation for generated IL code.")]
 internal static class IlGeneratorExtensions
 {
     private const int MaxStackAllocSize = 256;
 
-    /// <summary>
-    /// Emits the call to the specified <paramref name="methodInfo"/>.
-    /// </summary>
+    /// <summary>Emits the call to the specified <paramref name="methodInfo" />.</summary>
     /// <param name="ilGenerator">The il generator.</param>
     /// <param name="opCode">The op code to use for calling the method.</param>
     /// <param name="methodInfo">The method to call.</param>
@@ -35,21 +34,18 @@ internal static class IlGeneratorExtensions
     {
         ilGenerator.EmitCall(opCode, methodInfo, null);
     }
-        
-    /// <summary>
-    /// Emits the call to the specified <paramref name="methodInfo"/>.
-    /// </summary>
+
+    /// <summary>Emits the call to the specified <paramref name="methodInfo" />.</summary>
     /// <param name="ilGenerator">The il generator.</param>
     /// <param name="methodInfo">The method to call.</param>
     public static void EmitCall(this ILGenerator ilGenerator, MethodInfo methodInfo)
     {
-        ilGenerator.EmitCall(methodInfo.IsFinal || !methodInfo.IsVirtual ? OpCodes.Call : OpCodes.Callvirt,
-            methodInfo);
+        ilGenerator.EmitCall(methodInfo.IsFinal || !methodInfo.IsVirtual
+            ? OpCodes.Call
+            : OpCodes.Callvirt, methodInfo);
     }
 
-    /// <summary>
-    /// Emits the call to the specified <paramref name="methodName"/> in the specified <paramref name="type"/>.
-    /// </summary>
+    /// <summary>Emits the call to the specified <paramref name="methodName" /> in the specified <paramref name="type" />.</summary>
     /// <param name="ilGenerator">The il generator.</param>
     /// <param name="opCode">The op code to use for calling the method.</param>
     /// <param name="type">The type which contains the type.</param>
@@ -58,10 +54,8 @@ internal static class IlGeneratorExtensions
     {
         ilGenerator.EmitCall(opCode, type.GetMethod(methodName));
     }
-        
-    /// <summary>
-    /// Emits the call to the specified <paramref name="methodName"/> in the specified <paramref name="type"/>.
-    /// </summary>
+
+    /// <summary>Emits the call to the specified <paramref name="methodName" /> in the specified <paramref name="type" />.</summary>
     /// <param name="ilGenerator">The il generator.</param>
     /// <param name="type">The type which contains the type.</param>
     /// <param name="methodName">The name of the method to call</param>
@@ -70,10 +64,8 @@ internal static class IlGeneratorExtensions
     {
         ilGenerator.EmitCall(type.GetMethod(methodName, types));
     }
-        
-    /// <summary>
-    /// Emits the call to the specified <paramref name="methodName"/> in the specified <paramref name="type"/>.
-    /// </summary>
+
+    /// <summary>Emits the call to the specified <paramref name="methodName" /> in the specified <paramref name="type" />.</summary>
     /// <param name="ilGenerator">The il generator.</param>
     /// <param name="type">The type which contains the type.</param>
     /// <param name="methodName">The name of the method to call</param>
@@ -82,23 +74,17 @@ internal static class IlGeneratorExtensions
         ilGenerator.EmitCall(type.GetMethod(methodName));
     }
 
-    /// <summary>
-    /// Emits the call to the getter of the specified <paramref name="property"/>.
-    /// </summary>
+    /// <summary>Emits the call to the getter of the specified <paramref name="property" />.</summary>
     /// <typeparam name="T">The type which contains the property.</typeparam>
     /// <param name="ilGenerator">The il generator.</param>
     /// <param name="opCode">The op code to use for calling the getter method.</param>
     /// <param name="property">An expression of property. e.g. <code>(string x) => x.Length</code>.</param>
-    public static void EmitPropertyGetterCall<T>(this ILGenerator ilGenerator, OpCode opCode,
-        Expression<Func<T, object>> property)
+    public static void EmitPropertyGetterCall<T>(this ILGenerator ilGenerator, OpCode opCode, Expression<Func<T, object>> property)
     {
-        ilGenerator.EmitCall(opCode,
-            ((PropertyInfo) ((MemberExpression) ((UnaryExpression) property.Body).Operand).Member).GetMethod);
+        ilGenerator.EmitCall(opCode, ((PropertyInfo)((MemberExpression)((UnaryExpression)property.Body).Operand).Member).GetMethod);
     }
 
-    /// <summary>
-    /// Emits the a bitwise conversion from <typeparamref name="TFrom"/> to <typeparamref name="TTo"/>. Only int, float, bool are supported.
-    /// </summary>
+    /// <summary>Emits the a bitwise conversion from <typeparamref name="TFrom" /> to <typeparamref name="TTo" />. Only int, float, bool are supported.</summary>
     /// <typeparam name="TFrom">The type to convert from.</typeparam>
     /// <typeparam name="TTo">The type to convert to.</typeparam>
     /// <param name="ilGenerator">The il generator.</param>
@@ -124,19 +110,20 @@ internal static class IlGeneratorExtensions
         ilGenerator.EmitCall(typeof(ValueConverter), methodName, typeof(TFrom));
     }
 
-    /// <summary>
-    /// Emits the specified <paramref name="opCode"/> with the argument number of the specified <paramref name="paramInfo"/>.
-    /// </summary>
+    /// <summary>Emits the specified <paramref name="opCode" /> with the argument number of the specified <paramref name="paramInfo" />.</summary>
     /// <param name="ilGenerator">The il generator.</param>
     /// <param name="opCode">The op code.</param>
     /// <param name="paramInfo">The parameter information.</param>
     public static void Emit(this ILGenerator ilGenerator, OpCode opCode, ParameterInfo paramInfo)
     {
-        ilGenerator.Emit(opCode, (IsStatic(paramInfo.Member) ? 0 : 1) + paramInfo.Position);
+        ilGenerator.Emit(opCode, (IsStatic(paramInfo.Member)
+            ? 0
+            : 1) + paramInfo.Position);
     }
-        
+
     /// <summary>
-    /// Emits a conversion from the specified <paramref name="span"/> to a byte pointer. The byte pointer is on the stack after the emitted code. The contents of the span is stored in a pinned local.
+    /// Emits a conversion from the specified <paramref name="span" /> to a byte pointer. The byte pointer is on the stack after the emitted code. The
+    /// contents of the span is stored in a pinned local.
     /// </summary>
     /// <param name="ilGenerator">The il generator.</param>
     /// <param name="span">The span.</param>
@@ -155,9 +142,10 @@ internal static class IlGeneratorExtensions
         ilGenerator.Emit(OpCodes.Stloc, bufferPointer);
         ilGenerator.Emit(OpCodes.Ldloc, bufferPointer);
     }
-        
+
     /// <summary>
-    /// Emits a conversion from the specified <paramref name="span"/> to an int pointer. The int pointer is on the stack after the emitted code. The contents of the span is stored in a pinned local.
+    /// Emits a conversion from the specified <paramref name="span" /> to an int pointer. The int pointer is on the stack after the emitted code. The contents
+    /// of the span is stored in a pinned local.
     /// </summary>
     /// <param name="ilGenerator">The il generator.</param>
     /// <param name="span">The span.</param>
@@ -177,9 +165,7 @@ internal static class IlGeneratorExtensions
         ilGenerator.Emit(OpCodes.Ldloc, strBufPtr);
     }
 
-    /// <summary>
-    /// Emits a <see cref="ArgumentOutOfRangeException"/> when the specified <paramref name="param"/> is 0 or less.
-    /// </summary>
+    /// <summary>Emits a <see cref="ArgumentOutOfRangeException" /> when the specified <paramref name="param" /> is 0 or less.</summary>
     /// <param name="ilGenerator">The il generator.</param>
     /// <param name="param">The parameter.</param>
     public static void EmitThrowOnOutOfRangeLength(this ILGenerator ilGenerator, NativeIlGenParam param)
@@ -195,15 +181,12 @@ internal static class IlGeneratorExtensions
 
         // throw new ArgumentOutOfRangeException($paramName);
         ilGenerator.Emit(OpCodes.Ldstr, param.Name);
-        ilGenerator.Emit(OpCodes.Newobj,
-            typeof(ArgumentOutOfRangeException).GetConstructor(new[] {typeof(string)})!);
+        ilGenerator.Emit(OpCodes.Newobj, typeof(ArgumentOutOfRangeException).GetConstructor(new[] { typeof(string) })!);
         ilGenerator.Emit(OpCodes.Throw);
         ilGenerator.MarkLabel(falseLabel);
     }
 
-    /// <summary>
-    /// Emits the allocation of a byte span with a size specified by the <paramref name="lengthArg"/> multiplied by the <paramref name="multiplier"/>.
-    /// </summary>
+    /// <summary>Emits the allocation of a byte span with a size specified by the <paramref name="lengthArg" /> multiplied by the <paramref name="multiplier" />.</summary>
     /// <param name="ilGenerator">The il generator.</param>
     /// <param name="lengthArg">The length argument.</param>
     /// <param name="multiplier">The multiplier.</param>
@@ -218,9 +201,7 @@ internal static class IlGeneratorExtensions
         });
     }
 
-    /// <summary>
-    /// Emits the allocation of a byte span with the specified <paramref name="length"/>.
-    /// </summary>
+    /// <summary>Emits the allocation of a byte span with the specified <paramref name="length" />.</summary>
     /// <param name="ilGenerator">The il generator.</param>
     /// <param name="length">The length.</param>
     /// <returns>The local which contains the allocated byte span.</returns>
@@ -228,10 +209,8 @@ internal static class IlGeneratorExtensions
     {
         return EmitSpanAlloc(ilGenerator, () => ilGenerator.Emit(OpCodes.Ldloc, length));
     }
-        
-    /// <summary>
-    /// Emits the allocation of a byte span with the length which is loaded onto the stack by the code emitted in the <paramref name="loadLength"/> action.
-    /// </summary>
+
+    /// <summary>Emits the allocation of a byte span with the length which is loaded onto the stack by the code emitted in the <paramref name="loadLength" /> action.</summary>
     /// <param name="ilGenerator">The il generator.</param>
     /// <param name="loadLength">Loads the length onto the stack.</param>
     /// <returns>The local which contains the allocated byte span.</returns>
@@ -251,7 +230,7 @@ internal static class IlGeneratorExtensions
         ilGenerator.Emit(OpCodes.Conv_U);
         ilGenerator.Emit(OpCodes.Localloc);
         loadLength();
-        ilGenerator.Emit(OpCodes.Newobj, typeof(Span<byte>).GetConstructor(new[] {typeof(void*), typeof(int)})!);
+        ilGenerator.Emit(OpCodes.Newobj, typeof(Span<byte>).GetConstructor(new[] { typeof(void*), typeof(int) })!);
         ilGenerator.Emit(OpCodes.Stloc, span);
         var labelDone = ilGenerator.DefineLabel();
         ilGenerator.Emit(OpCodes.Br, labelDone);
@@ -261,13 +240,13 @@ internal static class IlGeneratorExtensions
         ilGenerator.Emit(OpCodes.Ldloca, span);
         loadLength();
         ilGenerator.Emit(OpCodes.Newarr, typeof(byte));
-        ilGenerator.Emit(OpCodes.Call, typeof(Span<byte>).GetConstructor(new[]{typeof(byte[])})!);
+        ilGenerator.Emit(OpCodes.Call, typeof(Span<byte>).GetConstructor(new[] { typeof(byte[]) })!);
         ilGenerator.Emit(OpCodes.Br, labelDone);
 
         ilGenerator.MarkLabel(labelDone);
         return span;
     }
-        
+
     private static bool IsStatic(MemberInfo member)
     {
         return member switch

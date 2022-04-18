@@ -17,19 +17,13 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.SAMP.Commands.PermissionCheckers;
 
-/// <summary>
-///     Contains methods for a permission checker.
-/// </summary>
+/// <summary>Contains methods for a permission checker.</summary>
 public interface IPermissionChecker
 {
-    /// <summary>
-    ///     Gets the message displayed when the player is denied permission.
-    /// </summary>
+    /// <summary>Gets the message displayed when the player is denied permission.</summary>
     string Message { get; }
 
-    /// <summary>
-    ///     Checks the permission for the specified player.
-    /// </summary>
+    /// <summary>Checks the permission for the specified player.</summary>
     /// <param name="player">The player.</param>
     /// <returns>true if allowed; false if denied.</returns>
     bool Check(BasePlayer player);

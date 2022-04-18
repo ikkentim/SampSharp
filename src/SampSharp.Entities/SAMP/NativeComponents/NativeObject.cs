@@ -23,28 +23,23 @@ namespace SampSharp.Entities.SAMP;
 [SuppressMessage("ReSharper", "IdentifierTypo")]
 public class NativeObject : BaseNativeComponent
 {
-    /// <summary>
-    /// Identifier indicating the handle is invalid.
-    /// </summary>
+    /// <summary>Identifier indicating the handle is invalid.</summary>
     public const int InvalidId = 0xFFFF;
 
     [NativeMethod]
-    public virtual bool AttachObjectToVehicle(int vehicleid, float offsetX, float offsetY,
-        float offsetZ, float rotX, float rotY, float rotZ)
+    public virtual bool AttachObjectToVehicle(int vehicleid, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ)
     {
         throw new NativeNotImplementedException();
     }
 
     [NativeMethod]
-    public virtual bool AttachObjectToObject(int attachtoid, float offsetX, float offsetY,
-        float offsetZ, float rotX, float rotY, float rotZ, bool syncRotation)
+    public virtual bool AttachObjectToObject(int attachtoid, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, bool syncRotation)
     {
         throw new NativeNotImplementedException();
     }
 
     [NativeMethod]
-    public virtual bool AttachObjectToPlayer(int playerid, float offsetX, float offsetY,
-        float offsetZ, float rotX, float rotY, float rotZ)
+    public virtual bool AttachObjectToPlayer(int playerid, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ)
     {
         throw new NativeNotImplementedException();
     }
@@ -98,8 +93,7 @@ public class NativeObject : BaseNativeComponent
     }
 
     [NativeMethod]
-    public virtual int MoveObject(float x, float y, float z, float speed, float rotX, float rotY,
-        float rotZ)
+    public virtual int MoveObject(float x, float y, float z, float speed, float rotX, float rotY, float rotZ)
     {
         throw new NativeNotImplementedException();
     }
@@ -117,15 +111,14 @@ public class NativeObject : BaseNativeComponent
     }
 
     [NativeMethod]
-    public virtual bool SetObjectMaterial(int materialindex, int modelid, string txdname,
-        string texturename, int materialcolor)
+    public virtual bool SetObjectMaterial(int materialindex, int modelid, string txdname, string texturename, int materialcolor)
     {
         throw new NativeNotImplementedException();
     }
 
     [NativeMethod]
-    public virtual bool SetObjectMaterialText(string text, int materialindex, int materialsize,
-        string fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment)
+    public virtual bool SetObjectMaterialText(string text, int materialindex, int materialsize, string fontface, int fontsize, bool bold, int fontcolor,
+        int backcolor, int textalignment)
     {
         throw new NativeNotImplementedException();
     }

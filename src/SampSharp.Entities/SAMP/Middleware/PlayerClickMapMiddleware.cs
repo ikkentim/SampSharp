@@ -27,8 +27,8 @@ internal class PlayerClickMapMiddleware
 
     public object Invoke(EventContext context, IEntityManager entityManager)
     {
-        var playerEntity = SampEntities.GetPlayerId((int) context.Arguments[0]);
-            
+        var playerEntity = SampEntities.GetPlayerId((int)context.Arguments[0]);
+
         if (!entityManager.Exists(playerEntity))
             return null;
 

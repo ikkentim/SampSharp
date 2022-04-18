@@ -17,14 +17,10 @@ using System;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.IncomingConnection" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.IncomingConnection" /> event.</summary>
 public class ConnectionEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the ConnectionEventArgs class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the ConnectionEventArgs class.</summary>
     /// <param name="playerid">Id of the player trying to connect.</param>
     /// <param name="ipAddress">Ip of the connection.</param>
     /// <param name="port">Port of the connection.</param>
@@ -38,18 +34,12 @@ public class ConnectionEventArgs : EventArgs
     // Not using Player here as we don't delete the object when
     // the player fails to connect to the server.
 
-    /// <summary>
-    ///     Gets the id of the player trying to connect.
-    /// </summary>
+    /// <summary>Gets the id of the player trying to connect.</summary>
     public int PlayerId { get; }
 
-    /// <summary>
-    ///     Gets the ip of this connection.
-    /// </summary>
+    /// <summary>Gets the ip of this connection.</summary>
     public string IpAddress { get; }
 
-    /// <summary>
-    ///     Gets the port of this connection.
-    /// </summary>
+    /// <summary>Gets the port of this connection.</summary>
     public int Port { get; }
 }

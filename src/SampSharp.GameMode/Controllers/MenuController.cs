@@ -19,15 +19,11 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     A controller processing all menu actions.
-/// </summary>
+/// <summary>A controller processing all menu actions.</summary>
 [Controller]
 public class MenuController : IEventListener
 {
-    /// <summary>
-    ///     Registers the events this PlayerController wants to listen to.
-    /// </summary>
+    /// <summary>Registers the events this PlayerController wants to listen to.</summary>
     /// <param name="gameMode">The running GameMode.</param>
     public virtual void RegisterEvents(BaseMode gameMode)
     {
@@ -36,7 +32,8 @@ public class MenuController : IEventListener
             if (!(sender is BasePlayer player))
                 return;
 
-            Menu.All.FirstOrDefault(m => m.Viewers.Contains(player))?.OnExit(player, args);
+            Menu.All.FirstOrDefault(m => m.Viewers.Contains(player))
+                ?.OnExit(player, args);
         };
 
         gameMode.PlayerSelectedMenuRow += (sender, args) =>
@@ -44,7 +41,8 @@ public class MenuController : IEventListener
             if (!(sender is BasePlayer player))
                 return;
 
-            Menu.All.FirstOrDefault(m => m.Viewers.Contains(player))?.OnResponse(player, args);
+            Menu.All.FirstOrDefault(m => m.Viewers.Contains(player))
+                ?.OnResponse(player, args);
         };
     }
 }

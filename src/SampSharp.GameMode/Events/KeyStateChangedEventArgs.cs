@@ -19,15 +19,10 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerKeyStateChanged" /> or <see cref="BasePlayer.KeyStateChanged" />
-///     event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.PlayerKeyStateChanged" /> or <see cref="BasePlayer.KeyStateChanged" /> event.</summary>
 public class KeyStateChangedEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="KeyStateChangedEventArgs" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="KeyStateChangedEventArgs" /> class.</summary>
     /// <param name="newKeys">The new keys.</param>
     /// <param name="oldKeys">The old keys.</param>
     public KeyStateChangedEventArgs(Keys newKeys, Keys oldKeys)
@@ -36,19 +31,11 @@ public class KeyStateChangedEventArgs : EventArgs
         OldKeys = oldKeys;
     }
 
-    /// <summary>
-    ///     Gets the new keys.
-    /// </summary>
-    /// <value>
-    ///     The new keys.
-    /// </value>
+    /// <summary>Gets the new keys.</summary>
+    /// <value>The new keys.</value>
     public Keys NewKeys { get; }
 
-    /// <summary>
-    ///     Gets the old keys.
-    /// </summary>
-    /// <value>
-    ///     The old keys.
-    /// </value>
+    /// <summary>Gets the old keys.</summary>
+    /// <value>The old keys.</value>
     public Keys OldKeys { get; }
 }

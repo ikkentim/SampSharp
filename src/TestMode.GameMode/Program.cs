@@ -21,8 +21,7 @@ internal static class Program
 {
     private static void Main()
     {
-        new GameModeBuilder()
-            .ApplyRconFix()
+        new GameModeBuilder().ApplyRconFix()
             .Use<GameMode>()
             .Run();
     }

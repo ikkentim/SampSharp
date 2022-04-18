@@ -18,22 +18,18 @@ using System;
 namespace SampSharp.Entities;
 
 /// <summary>
-/// When added to a static readonly <see cref="Guid" /> field, the attribute specifies the type name of entities with the
-/// entity type Guid specified in this field. If no name is specified in the the attribute, the field name of is used as the type name.
+/// When added to a static readonly <see cref="Guid" /> field, the attribute specifies the type name of entities with the entity type Guid specified in
+/// this field. If no name is specified in the the attribute, the field name of is used as the type name.
 /// </summary>
 [AttributeUsage(AttributeTargets.Field)]
 public class EntityTypeAttribute : Attribute
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EntityTypeAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EntityTypeAttribute" /> class.</summary>
     public EntityTypeAttribute()
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EntityTypeAttribute" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EntityTypeAttribute" /> class.</summary>
     /// <param name="name">The name of the entity type.</param>
     /// <param name="invalidHandle">The default handle is used to indicate an invalid instance of this entity.</param>
     public EntityTypeAttribute(string name, int invalidHandle = -1)
@@ -42,13 +38,9 @@ public class EntityTypeAttribute : Attribute
         InvalidHandle = invalidHandle;
     }
 
-    /// <summary>
-    /// Gets or sets the name of the entity type.
-    /// </summary>
+    /// <summary>Gets or sets the name of the entity type.</summary>
     public string Name { get; set; }
 
-    /// <summary>
-    /// Gets or sets the default handle is used to indicate an invalid instance of this entity.
-    /// </summary>
+    /// <summary>Gets or sets the default handle is used to indicate an invalid instance of this entity.</summary>
     public int InvalidHandle { get; set; } = -1;
 }

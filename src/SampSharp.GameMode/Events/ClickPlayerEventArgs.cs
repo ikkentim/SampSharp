@@ -19,14 +19,10 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerClickPlayer" /> or <see cref="BasePlayer.ClickPlayer" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.PlayerClickPlayer" /> or <see cref="BasePlayer.ClickPlayer" /> event.</summary>
 public class ClickPlayerEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Initializes a new instance of the ClickPlayerEventArgs class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the ClickPlayerEventArgs class.</summary>
     /// <param name="clickedPlayer">Id of the clicked player.</param>
     /// <param name="source">PlayerClickSource of the event.</param>
     public ClickPlayerEventArgs(BasePlayer clickedPlayer, PlayerClickSource source)
@@ -35,13 +31,9 @@ public class ClickPlayerEventArgs : EventArgs
         PlayerClickSource = source;
     }
 
-    /// <summary>
-    ///     Gets the clicked player.
-    /// </summary>
+    /// <summary>Gets the clicked player.</summary>
     public BasePlayer ClickedPlayer { get; }
 
-    /// <summary>
-    ///     Gets the PlayerClickSource of this event.
-    /// </summary>
+    /// <summary>Gets the PlayerClickSource of this event.</summary>
     public PlayerClickSource PlayerClickSource { get; }
 }

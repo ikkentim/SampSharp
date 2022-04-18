@@ -28,9 +28,9 @@ internal class UnoccupiedVehicleUpdateMiddleware
     public object Invoke(EventContext context, IEntityManager entityManager)
     {
         var inArgs = context.Arguments;
-        var vehicleEntity = SampEntities.GetVehicleId((int) inArgs[0]);
-        var playerEntity = SampEntities.GetPlayerId((int) inArgs[1]);
-            
+        var vehicleEntity = SampEntities.GetVehicleId((int)inArgs[0]);
+        var playerEntity = SampEntities.GetPlayerId((int)inArgs[1]);
+
         if (!entityManager.Exists(playerEntity) || !entityManager.Exists(vehicleEntity))
             return null;
 

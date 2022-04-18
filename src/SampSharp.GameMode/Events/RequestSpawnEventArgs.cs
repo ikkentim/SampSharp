@@ -18,13 +18,9 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerRequestSpawn" /> or <see cref="BasePlayer.RequestSpawn" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.PlayerRequestSpawn" /> or <see cref="BasePlayer.RequestSpawn" /> event.</summary>
 public class RequestSpawnEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Gets or sets whether the player is prevented from spawning.
-    /// </summary>
+    /// <summary>Gets or sets whether the player is prevented from spawning.</summary>
     public bool PreventSpawning { get; set; }
 }

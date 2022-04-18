@@ -15,19 +15,13 @@
 
 namespace SampSharp.Core;
 
-/// <summary>
-///     Contains the methods of a runnable game mode.
-/// </summary>
+/// <summary>Contains the methods of a runnable game mode.</summary>
 public interface IGameModeRunner
 {
-    /// <summary>
-    ///     Runs the game mode of this runner.
-    /// </summary>
+    /// <summary>Runs the game mode of this runner.</summary>
     /// <returns><c>true</c> on success; <c>false</c> otherwise.</returns>
     bool Run();
 
-    /// <summary>
-    ///     Gets the client of this game mode runner.
-    /// </summary>
+    /// <summary>Gets the client of this game mode runner.</summary>
     IGameModeClient Client { get; }
 }

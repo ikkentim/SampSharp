@@ -20,15 +20,11 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     A controller processing all player-textdraw actions.
-/// </summary>
+/// <summary>A controller processing all player-textdraw actions.</summary>
 [Controller]
 public class PlayerTextDrawController : Disposable, IEventListener, ITypeProvider
 {
-    /// <summary>
-    ///     Registers the events this PlayerTextDrawController wants to listen to.
-    /// </summary>
+    /// <summary>Registers the events this PlayerTextDrawController wants to listen to.</summary>
     /// <param name="gameMode">The running GameMode.</param>
     public virtual void RegisterEvents(BaseMode gameMode)
     {
@@ -36,22 +32,19 @@ public class PlayerTextDrawController : Disposable, IEventListener, ITypeProvide
         gameMode.PlayerCleanup += (sender, _) =>
         {
             var player = sender as BasePlayer;
-            foreach (var textdraw in PlayerTextDraw.Of(player).ToArray())
+            foreach (var textdraw in PlayerTextDraw.Of(player)
+                         .ToArray())
                 textdraw.Dispose();
         };
     }
 
-    /// <summary>
-    ///     Registers types this PlayerTextDrawController requires the system to use.
-    /// </summary>
+    /// <summary>Registers types this PlayerTextDrawController requires the system to use.</summary>
     public virtual void RegisterTypes()
     {
         PlayerTextDraw.Register<PlayerTextDraw>();
     }
 
-    /// <summary>
-    ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <summary>Performs tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     /// <param name="disposing">Whether managed resources should be disposed.</param>
     protected override void Dispose(bool disposing)
     {

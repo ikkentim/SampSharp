@@ -26,7 +26,7 @@ public class Issue363ReproServerCrash : ISystem
     {
         Console.WriteLine($"TEST CB: {a} {b}");
     }
-        
+
     [Event]
     public void OnGameModeInit(INativeProxy<TestNatives> m)
     {
@@ -37,7 +37,7 @@ public class Issue363ReproServerCrash : ISystem
 
     public class TestNatives
     {
-        [NativeMethod(ReferenceIndices = new[] {2, 3})]
+        [NativeMethod(ReferenceIndices = new[] { 2, 3 })]
         public virtual void CallRemoteFunction(string name, string format, int a, int b)
         {
             throw new NativeNotImplementedException();

@@ -18,13 +18,9 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Events;
 
-/// <summary>
-///     Provides data for the <see cref="BaseMode.PlayerSpawned" /> or <see cref="BasePlayer.Spawned" /> event.
-/// </summary>
+/// <summary>Provides data for the <see cref="BaseMode.PlayerSpawned" /> or <see cref="BasePlayer.Spawned" /> event.</summary>
 public class SpawnEventArgs : EventArgs
 {
-    /// <summary>
-    ///     Gets or sets whether the player will be forced back to the class selection when they next spawn.
-    /// </summary>
+    /// <summary>Gets or sets whether the player will be forced back to the class selection when they next spawn.</summary>
     public bool ReturnToClassSelection { get; set; }
 }

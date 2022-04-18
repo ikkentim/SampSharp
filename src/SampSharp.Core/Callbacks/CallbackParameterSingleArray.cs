@@ -33,12 +33,12 @@ internal class CallbackParameterSingleArray : ICallbackArrayParameter
     {
         AmxCell* physAddr;
         Interop.Api->PluginData->AmxExports->GetAddr((Amx*)amx, *(int*)parameter, &physAddr);
-            
+
         if ((IntPtr)physAddr == IntPtr.Zero)
         {
             return null;
         }
-            
+
         var len = *(int*)IntPtr.Add(parameter, _lengthOffset * AmxCell.Size);
 
         var result = new float[len];

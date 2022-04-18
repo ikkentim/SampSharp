@@ -18,10 +18,7 @@ using System.Collections.Generic;
 
 namespace SampSharp.Entities.SAMP;
 
-/// <summary>
-/// Represents a provider of information about vehicles using the natives provided by SA:MP in combination with a local
-/// info cache.
-/// </summary>
+/// <summary>Represents a provider of information about vehicles using the natives provided by SA:MP in combination with a local info cache.</summary>
 /// <seealso cref="IVehicleInfoService" />
 public class VehicleInfoService : IVehicleInfoService
 {
@@ -31,9 +28,7 @@ public class VehicleInfoService : IVehicleInfoService
 
     private readonly VehicleInfoServiceNative _native;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="VehicleInfoService"/> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="VehicleInfoService" /> class.</summary>
     public VehicleInfoService(INativeProxy<VehicleInfoServiceNative> nativeProxy)
     {
         _native = nativeProxy.Instance;
@@ -46,19 +41,18 @@ public class VehicleInfoService : IVehicleInfoService
             _componentType[componentId] = result = _native.GetVehicleComponentType(componentId);
 
         if (result < 0)
-            throw new ArgumentOutOfRangeException(nameof(componentId), componentId,
-                "component is not a valid component identifier.");
+            throw new ArgumentOutOfRangeException(nameof(componentId), componentId, "component is not a valid component identifier.");
 
-        return (CarModType) result;
+        return (CarModType)result;
     }
 
     /// <inheritdoc />
     public Vector3 GetModelInfo(VehicleModelType vehicleModel, VehicleModelInfoType infoType)
     {
-        if (_modelInfo.TryGetValue((vehicleModel, infoType), out var result)) 
+        if (_modelInfo.TryGetValue((vehicleModel, infoType), out var result))
             return result;
 
-        _native.GetVehicleModelInfo((int) vehicleModel, (int) infoType, out var x, out var y, out var z);
+        _native.GetVehicleModelInfo((int)vehicleModel, (int)infoType, out var x, out var y, out var z);
         _modelInfo[(vehicleModel, infoType)] = result = new Vector3(x, y, z);
 
         return result;

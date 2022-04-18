@@ -22,7 +22,8 @@ namespace SampSharp.GameMode.SAMP;
 public static partial class Server
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    [SuppressMessage("Critical Code Smell", "S3218:Inner class members should not shadow outer class \"static\" or type members", Justification = "Native function declarations")]
+    [SuppressMessage("Critical Code Smell", "S3218:Inner class members should not shadow outer class \"static\" or type members",
+        Justification = "Native function declarations")]
     public class ServerInternal : NativeObjectSingleton<ServerInternal>
     {
         [NativeMethod]
@@ -48,7 +49,7 @@ public static partial class Server
         {
             throw new NativeNotImplementedException();
         }
-            
+
         [NativeMethod]
         public virtual int GetTickCount()
         {
@@ -60,7 +61,7 @@ public static partial class Server
         {
             throw new NativeNotImplementedException();
         }
-            
+
         // ReSharper disable once InconsistentNaming
         [NativeMethod]
         public virtual bool ConnectNPC(string name, string script)
@@ -109,7 +110,7 @@ public static partial class Server
         {
             throw new NativeNotImplementedException();
         }
-            
+
         [NativeMethod]
         public virtual bool GetWeaponName(int weaponid, out string retstr, int size)
         {

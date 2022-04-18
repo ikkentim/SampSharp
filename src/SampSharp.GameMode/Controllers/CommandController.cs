@@ -19,29 +19,21 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     A controller processing all commands.
-/// </summary>
+/// <summary>A controller processing all commands.</summary>
 [Controller]
 public class CommandController : IEventListener, IGameServiceProvider
 {
-    /// <summary>
-    ///     Gets or sets the commands manager.
-    /// </summary>
+    /// <summary>Gets or sets the commands manager.</summary>
     protected virtual ICommandsManager CommandsManager { get; set; }
 
-    /// <summary>
-    ///     Registers the events this <see cref="GlobalObjectController" /> wants to listen to.
-    /// </summary>
+    /// <summary>Registers the events this <see cref="GlobalObjectController" /> wants to listen to.</summary>
     /// <param name="gameMode">The running GameMode.</param>
     public virtual void RegisterEvents(BaseMode gameMode)
     {
         gameMode.PlayerCommandText += gameMode_PlayerCommandText;
     }
 
-    /// <summary>
-    ///     Registers the services this controller provides.
-    /// </summary>
+    /// <summary>Registers the services this controller provides.</summary>
     /// <param name="gameMode">The game mode.</param>
     /// <param name="serviceContainer">The service container.</param>
     public virtual void RegisterServices(BaseMode gameMode, GameModeServiceContainer serviceContainer)

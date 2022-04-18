@@ -23,9 +23,7 @@ using SampSharp.Entities.SAMP.Commands;
 
 namespace SampSharp.Entities;
 
-/// <summary>
-/// Represents the manager of the EntityComponentSystem which provides the game mode routines for SampSharp.
-/// </summary>
+/// <summary>Represents the manager of the EntityComponentSystem which provides the game mode routines for SampSharp.</summary>
 public class EcsManager : IGameModeProvider
 {
     private readonly IStartup _startup;
@@ -33,9 +31,7 @@ public class EcsManager : IGameModeProvider
     private ISystemRegistry _systemRegistry;
     private ITickingSystem[] _tickingSystems;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EcsManager" /> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="EcsManager" /> class.</summary>
     /// <param name="startup">The startup configuration for the game mode.</param>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="startup" /> is null.</exception>
     public EcsManager(IStartup startup)
@@ -65,7 +61,7 @@ public class EcsManager : IGameModeProvider
 
         _serviceProvider = services.BuildServiceProvider();
         _systemRegistry = _serviceProvider.GetRequiredService<ISystemRegistry>();
-            
+
         Configure();
 
         AddWrappedSystemTypes();
@@ -78,14 +74,14 @@ public class EcsManager : IGameModeProvider
         // ReSharper disable once ForCanBeConvertedToForeach
         for (var i = 0; i < _tickingSystems.Length; i++)
         {
-            _tickingSystems[i].Tick();
+            _tickingSystems[i]
+                .Tick();
         }
     }
-        
+
     private void AddWrappedSystemTypes()
     {
-        var types = _serviceProvider
-            .GetServices<SystemTypeWrapper>()
+        var types = _serviceProvider.GetServices<SystemTypeWrapper>()
             .Select(w => w.Type)
             .ToArray();
 
@@ -95,29 +91,24 @@ public class EcsManager : IGameModeProvider
 
     private void Configure(IServiceCollection services)
     {
-        _startup.Configure(
-            services.AddSingleton<IEventService, EventService>()
-                .AddSingleton<ISystemRegistry, SystemRegistry>()
-                .AddSingleton<IEntityManager, EntityManager>()
-                .AddSingleton<IServerService, ServerService>()
-                .AddSingleton<IWorldService, WorldService>()
-                .AddSingleton<IVehicleInfoService, VehicleInfoService>()
-                .AddSingleton<IPlayerCommandService, PlayerCommandService>()
-                .AddSingleton<IRconCommandService, RconCommandService>()
-                .AddSingleton<ITimerService>(s => s.GetRequiredService<TimerSystem>())
-                .AddTransient<IDialogService, DialogService>()
-                .AddTransient(typeof(INativeProxy<>), typeof(NativeProxy<>))
-                .AddSystem<DialogSystem>()
-                .AddSystem<TimerSystem>()
-        );
+        _startup.Configure(services.AddSingleton<IEventService, EventService>()
+            .AddSingleton<ISystemRegistry, SystemRegistry>()
+            .AddSingleton<IEntityManager, EntityManager>()
+            .AddSingleton<IServerService, ServerService>()
+            .AddSingleton<IWorldService, WorldService>()
+            .AddSingleton<IVehicleInfoService, VehicleInfoService>()
+            .AddSingleton<IPlayerCommandService, PlayerCommandService>()
+            .AddSingleton<IRconCommandService, RconCommandService>()
+            .AddSingleton<ITimerService>(s => s.GetRequiredService<TimerSystem>())
+            .AddTransient<IDialogService, DialogService>()
+            .AddTransient(typeof(INativeProxy<>), typeof(NativeProxy<>))
+            .AddSystem<DialogSystem>()
+            .AddSystem<TimerSystem>());
     }
 
     private void Configure()
     {
-        _startup.Configure(
-            new EcsBuilder(_serviceProvider)
-                .EnableEvent("OnGameModeInit")
-                .EnableEvent("OnGameModeExit")
-        );
+        _startup.Configure(new EcsBuilder(_serviceProvider).EnableEvent("OnGameModeInit")
+            .EnableEvent("OnGameModeExit"));
     }
 }

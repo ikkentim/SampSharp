@@ -15,13 +15,9 @@
 
 namespace SampSharp.GameMode.World;
 
-/// <summary>
-///     Defines an object that is placed in the world.
-/// </summary>
+/// <summary>Defines an object that is placed in the world.</summary>
 public interface IWorldObject
 {
-    /// <summary>
-    ///     Gets the position of this IWorldObject.
-    /// </summary>
+    /// <summary>Gets the position of this IWorldObject.</summary>
     Vector3 Position { get; }
 }

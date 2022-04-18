@@ -26,12 +26,12 @@ internal class TextDrawClickMiddleware
 
     public object Invoke(EventContext context, IEventService eventService, IEntityManager entityManager)
     {
-        var playerEntity = SampEntities.GetPlayerId((int) context.Arguments[0]);
-        var textDrawEntity = SampEntities.GetTextDrawId((int) context.Arguments[1]);
-            
+        var playerEntity = SampEntities.GetPlayerId((int)context.Arguments[0]);
+        var textDrawEntity = SampEntities.GetTextDrawId((int)context.Arguments[1]);
+
         if (!entityManager.Exists(playerEntity))
             return null;
-            
+
         // Allow unknown text draws to be passed through to the event.
 
         // Forward to OnPlayerCancelTextDraw and cancel continuation OnPlayerClickTextDraw event.

@@ -15,8 +15,6 @@
 
 namespace SampSharp.Core;
 
-/// <summary>
-/// A function which runs a game mode runner.
-/// </summary>
+/// <summary>A function which runs a game mode runner.</summary>
 /// <returns>The created game mode runner.</returns>
 public delegate void GameModeRunnerRun(IGameModeRunner runner);

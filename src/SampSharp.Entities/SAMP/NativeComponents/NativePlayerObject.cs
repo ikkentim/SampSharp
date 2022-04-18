@@ -24,9 +24,7 @@ namespace SampSharp.Entities.SAMP;
 [NativeObjectIdentifiers("PlayerId", "Id")]
 public class NativePlayerObject : NativeComponent
 {
-    /// <summary>
-    /// Identifier indicating the handle is invalid.
-    /// </summary>
+    /// <summary>Identifier indicating the handle is invalid.</summary>
     public const int InvalidId = 0xFFFF;
 
     public int Id { get; private set; }
@@ -40,15 +38,13 @@ public class NativePlayerObject : NativeComponent
     }
 
     [NativeMethod]
-    public virtual bool AttachPlayerObjectToPlayer(int attachplayerid,
-        float offsetX, float offsetY, float offsetZ, float rX, float rY, float rZ)
+    public virtual bool AttachPlayerObjectToPlayer(int attachplayerid, float offsetX, float offsetY, float offsetZ, float rX, float rY, float rZ)
     {
         throw new NativeNotImplementedException();
     }
 
     [NativeMethod]
-    public virtual bool AttachPlayerObjectToVehicle(int vehicleid, float offsetX,
-        float offsetY, float offsetZ, float rotX, float rotY, float rotZ)
+    public virtual bool AttachPlayerObjectToVehicle(int vehicleid, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ)
     {
         throw new NativeNotImplementedException();
     }
@@ -72,8 +68,7 @@ public class NativePlayerObject : NativeComponent
     }
 
     [NativeMethod]
-    public virtual bool GetPlayerObjectRot(out float rotX, out float rotY,
-        out float rotZ)
+    public virtual bool GetPlayerObjectRot(out float rotX, out float rotY, out float rotZ)
     {
         throw new NativeNotImplementedException();
     }
@@ -103,8 +98,7 @@ public class NativePlayerObject : NativeComponent
     }
 
     [NativeMethod]
-    public virtual int MovePlayerObject(float x, float y, float z, float speed,
-        float rotX, float rotY, float rotZ)
+    public virtual int MovePlayerObject(float x, float y, float z, float speed, float rotX, float rotY, float rotZ)
     {
         throw new NativeNotImplementedException();
     }
@@ -122,16 +116,14 @@ public class NativePlayerObject : NativeComponent
     }
 
     [NativeMethod]
-    public virtual bool SetPlayerObjectMaterial(int materialindex, int modelid,
-        string txdname, string texturename, int materialcolor)
+    public virtual bool SetPlayerObjectMaterial(int materialindex, int modelid, string txdname, string texturename, int materialcolor)
     {
         throw new NativeNotImplementedException();
     }
 
     [NativeMethod]
-    public virtual bool SetPlayerObjectMaterialText(string text, int materialindex,
-        int materialsize, string fontface, int fontsize, bool bold, int fontcolor, int backcolor,
-        int textalignment)
+    public virtual bool SetPlayerObjectMaterialText(string text, int materialindex, int materialsize, string fontface, int fontsize, bool bold, int fontcolor,
+        int backcolor, int textalignment)
     {
         throw new NativeNotImplementedException();
     }

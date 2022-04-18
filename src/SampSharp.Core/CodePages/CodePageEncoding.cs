@@ -21,9 +21,7 @@ using System.Text;
 
 namespace SampSharp.Core.CodePages;
 
-/// <summary>
-///     Represents the encoding of a code page.
-/// </summary>
+/// <summary>Represents the encoding of a code page.</summary>
 public sealed class CodePageEncoding : Encoding
 {
     private int _codePage = -1;
@@ -35,17 +33,13 @@ public sealed class CodePageEncoding : Encoding
     {
     }
 
-    /// <summary>
-    /// Gets a read-only conversion table.
-    /// </summary>
+    /// <summary>Gets a read-only conversion table.</summary>
     public IReadOnlyDictionary<char, ushort> ConversionTable => new ReadOnlyDictionary<char, ushort>(_uniToCp);
 
     /// <inheritdoc />
     public override int CodePage => _codePage;
 
-    /// <summary>
-    /// Serializes the specified code page to the specified stream.
-    /// </summary>
+    /// <summary>Serializes the specified code page to the specified stream.</summary>
     /// <param name="codePage">The code page to serialize.</param>
     /// <param name="stream">The stream to serialize the code page to.</param>
     public static void Serialize(CodePageEncoding codePage, Stream stream)
@@ -55,8 +49,10 @@ public sealed class CodePageEncoding : Encoding
 
         var buffer = new byte[1024];
 
-        buffer[0] = codePage._hasDoubleByteChars ? (byte)1 : (byte)0;
-            
+        buffer[0] = codePage._hasDoubleByteChars
+            ? (byte)1
+            : (byte)0;
+
         var length = codePage._cpToUni.Count;
         var lengthBytes = BitConverter.GetBytes(length);
         Array.Copy(lengthBytes, 0, buffer, 1, 4);
@@ -77,14 +73,14 @@ public sealed class CodePageEncoding : Encoding
             if (head + 4 > buffer.Length)
                 Flush();
 
-            var val = (ushort) kv.Value;
+            var val = (ushort)kv.Value;
 
-            var keyL = (byte) (kv.Key & 0xff);
-            var keyH = (byte) (kv.Key >> 8);
+            var keyL = (byte)(kv.Key & 0xff);
+            var keyH = (byte)(kv.Key >> 8);
 
-            var valL = (byte) (val & 0xff);
-            var valH = (byte) (val >> 8);
-                
+            var valL = (byte)(val & 0xff);
+            var valH = (byte)(val >> 8);
+
             buffer[head++] = keyL;
             buffer[head++] = keyH;
             buffer[head++] = valL;
@@ -94,9 +90,7 @@ public sealed class CodePageEncoding : Encoding
         Flush();
     }
 
-    /// <summary>
-    /// Deserializes a code page.
-    /// </summary>
+    /// <summary>Deserializes a code page.</summary>
     /// <param name="stream">The stream.</param>
     /// <param name="codePage">The code page identifier of the contents of the stream or -1 if the encoding in the stream does not represent a numbered code page.</param>
     /// <returns>The deserialized code page.</returns>
@@ -104,7 +98,11 @@ public sealed class CodePageEncoding : Encoding
     {
         if (stream == null) throw new ArgumentNullException(nameof(stream));
 
-        var result = new CodePageEncoding { _codePage = codePage, _hasDoubleByteChars = stream.ReadByte() != 0 };
+        var result = new CodePageEncoding
+        {
+            _codePage = codePage,
+            _hasDoubleByteChars = stream.ReadByte() != 0
+        };
 
         var buffer = new byte[4 * 256];
         stream.Read(buffer, 0, 4);
@@ -113,6 +111,7 @@ public sealed class CodePageEncoding : Encoding
 
         var i = 0;
         int head;
+
         void Read()
         {
             var max = (length - i) * 4;
@@ -145,9 +144,7 @@ public sealed class CodePageEncoding : Encoding
         return result;
     }
 
-    /// <summary>
-    ///     Creates a new <see cref="CodePageEncoding" /> instance based on the data provided by the specified stream.
-    /// </summary>
+    /// <summary>Creates a new <see cref="CodePageEncoding" /> instance based on the data provided by the specified stream.</summary>
     /// <param name="stream">The steam to load the code page encoding from.</param>
     /// <param name="codePage">The code page identifier of the contents of the stream or -1 if the encoding in the stream does not represent a numbered code page.</param>
     /// <returns>The newly created encoding instance.</returns>
@@ -201,8 +198,8 @@ public sealed class CodePageEncoding : Encoding
 
                 if (fromNum > 0xff)
                     result._hasDoubleByteChars = true;
-                result._cpToUni[fromNum] = (char) toNum;
-                result._uniToCp[(char) toNum] = fromNum;
+                result._cpToUni[fromNum] = (char)toNum;
+                result._uniToCp[(char)toNum] = fromNum;
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -213,9 +210,7 @@ public sealed class CodePageEncoding : Encoding
         return result;
     }
 
-    /// <summary>
-    ///     Creates a new <see cref="CodePageEncoding" /> instance based on the data provided by the specified stream.
-    /// </summary>
+    /// <summary>Creates a new <see cref="CodePageEncoding" /> instance based on the data provided by the specified stream.</summary>
     /// <param name="path">The path to the code page file to load the code page encoding from.</param>
     /// <param name="codePage">The code page identifier of the contents of the stream or -1 if the encoding in the stream does not represent a numbered code page.</param>
     /// <returns>The newly created encoding instance.</returns>
@@ -223,7 +218,7 @@ public sealed class CodePageEncoding : Encoding
     {
         return Load(File.OpenRead(path), codePage);
     }
-        
+
     /// <inheritdoc />
     public override int GetByteCount(char[] chars, int index, int count)
     {
@@ -237,11 +232,13 @@ public sealed class CodePageEncoding : Encoding
         var result = 0;
         for (var i = index; i < index + count; i++)
             if (_uniToCp.TryGetValue(chars[i], out var ch))
-                result += ch > 0xff ? 2 : 1;
+                result += ch > 0xff
+                    ? 2
+                    : 1;
 
         return result;
     }
-        
+
     /// <inheritdoc />
     public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
     {
@@ -261,33 +258,31 @@ public sealed class CodePageEncoding : Encoding
         {
             if (!_uniToCp.TryGetValue(chars[i], out var ch))
                 continue;
-                
+
             if (ch > 0xff)
             {
                 if (byteIndex + 1 >= bytes.Length)
                     throw new ArgumentException(
-                        "bytes does not have enough capacity from byteIndex to the end of the array to accommodate the resulting bytes.",
-                        nameof(bytes));
+                        "bytes does not have enough capacity from byteIndex to the end of the array to accommodate the resulting bytes.", nameof(bytes));
 
-                bytes[byteIndex++] = (byte) (ch >> 8);
-                bytes[byteIndex++] = (byte) (ch & 0xff);
+                bytes[byteIndex++] = (byte)(ch >> 8);
+                bytes[byteIndex++] = (byte)(ch & 0xff);
                 result += 2;
             }
             else
             {
                 if (byteIndex >= bytes.Length)
                     throw new ArgumentException(
-                        "bytes does not have enough capacity from byteIndex to the end of the array to accommodate the resulting bytes.",
-                        nameof(bytes));
+                        "bytes does not have enough capacity from byteIndex to the end of the array to accommodate the resulting bytes.", nameof(bytes));
 
-                bytes[byteIndex++] = (byte) ch;
+                bytes[byteIndex++] = (byte)ch;
                 result++;
             }
         }
 
         return result;
     }
-        
+
     /// <inheritdoc />
     public override int GetCharCount(byte[] bytes, int index, int count)
     {
@@ -298,14 +293,14 @@ public sealed class CodePageEncoding : Encoding
         var result = 0;
         ushort prefix = 0;
         for (var i = index; i < index + count; i++)
-            if (_cpToUni.ContainsKey((ushort) (prefix | bytes[i])))
+            if (_cpToUni.ContainsKey((ushort)(prefix | bytes[i])))
             {
                 result++;
                 prefix = 0;
             }
             else
             {
-                prefix = (ushort) (bytes[i] << 8);
+                prefix = (ushort)(bytes[i] << 8);
             }
 
         return result;
@@ -324,24 +319,23 @@ public sealed class CodePageEncoding : Encoding
         if (byteCount < 0 || byteIndex + byteCount > bytes.Length)
             throw new ArgumentOutOfRangeException(nameof(byteCount));
         if (charIndex < 0 || charIndex >= chars.Length) throw new ArgumentOutOfRangeException(nameof(charIndex));
-            
+
         var result = 0;
         ushort prefix = 0;
         for (var i = byteIndex; i < byteIndex + byteCount; i++)
-            if (_cpToUni.TryGetValue((ushort) (prefix | bytes[i]), out var ch))
+            if (_cpToUni.TryGetValue((ushort)(prefix | bytes[i]), out var ch))
             {
                 if (charIndex >= chars.Length)
                     throw new ArgumentException(
-                        "chars does not have enough capacity from charIndex to the end of the array to accommodate the resulting chars.",
-                        nameof(chars));
-                    
+                        "chars does not have enough capacity from charIndex to the end of the array to accommodate the resulting chars.", nameof(chars));
+
                 result++;
                 chars[charIndex++] = ch;
                 prefix = 0;
             }
             else
             {
-                prefix = (ushort) (bytes[i] << 8);
+                prefix = (ushort)(bytes[i] << 8);
             }
 
         return result;
@@ -350,12 +344,16 @@ public sealed class CodePageEncoding : Encoding
     /// <inheritdoc />
     public override int GetMaxByteCount(int charCount)
     {
-        return _hasDoubleByteChars ? charCount * 2 : charCount;
+        return _hasDoubleByteChars
+            ? charCount * 2
+            : charCount;
     }
 
     /// <inheritdoc />
     public override int GetMaxCharCount(int byteCount)
     {
-        return _hasDoubleByteChars ? byteCount / 2 : byteCount;
+        return _hasDoubleByteChars
+            ? byteCount / 2
+            : byteCount;
     }
 }

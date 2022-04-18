@@ -23,8 +23,8 @@ public partial class PlayerTextLabel
     public class PlayerTextLabelInternal : NativeObjectSingleton<PlayerTextLabelInternal>
     {
         [NativeMethod]
-        public virtual int CreatePlayer3DTextLabel(int playerid, string text, int color, float x, float y, float z,
-            float drawDistance, int attachedplayer, int attachedvehicle, bool testLOS)
+        public virtual int CreatePlayer3DTextLabel(int playerid, string text, int color, float x, float y, float z, float drawDistance, int attachedplayer,
+            int attachedvehicle, bool testLOS)
         {
             throw new NativeNotImplementedException();
         }

@@ -51,7 +51,7 @@ public abstract partial class BaseMode
     [Callback]
     internal bool OnPlayerDisconnect(int playerid, int reason)
     {
-        var args = new DisconnectEventArgs((DisconnectReason) reason);
+        var args = new DisconnectEventArgs((DisconnectReason)reason);
 
         OnPlayerDisconnected(BasePlayer.FindOrCreate(playerid), args);
         OnPlayerCleanup(BasePlayer.FindOrCreate(playerid), args);
@@ -72,9 +72,9 @@ public abstract partial class BaseMode
     [Callback]
     internal bool OnPlayerDeath(int playerid, int killerid, int reason)
     {
-        OnPlayerDied(BasePlayer.FindOrCreate(playerid),
-            new DeathEventArgs(killerid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(killerid),
-                (Weapon) reason));
+        OnPlayerDied(BasePlayer.FindOrCreate(playerid), new DeathEventArgs(killerid == BasePlayer.InvalidId
+            ? null
+            : BasePlayer.FindOrCreate(killerid), (Weapon)reason));
 
         return true;
     }
@@ -100,7 +100,9 @@ public abstract partial class BaseMode
         if (vehicle == null)
             return true;
 
-        OnVehicleDied(vehicle, new PlayerEventArgs(killerid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(killerid)));
+        OnVehicleDied(vehicle, new PlayerEventArgs(killerid == BasePlayer.InvalidId
+            ? null
+            : BasePlayer.FindOrCreate(killerid)));
 
         return true;
     }
@@ -166,8 +168,7 @@ public abstract partial class BaseMode
     [Callback]
     internal bool OnPlayerStateChange(int playerid, int newstate, int oldstate)
     {
-        OnPlayerStateChanged(BasePlayer.FindOrCreate(playerid),
-            new StateEventArgs((PlayerState) newstate, (PlayerState) oldstate));
+        OnPlayerStateChanged(BasePlayer.FindOrCreate(playerid), new StateEventArgs((PlayerState)newstate, (PlayerState)oldstate));
 
         return true;
     }
@@ -282,8 +283,7 @@ public abstract partial class BaseMode
     [Callback]
     internal bool OnEnterExitModShop(int playerid, int enterexit, int interiorid)
     {
-        OnPlayerEnterExitModShop(BasePlayer.FindOrCreate(playerid),
-            new EnterModShopEventArgs((EnterExit) enterexit, interiorid));
+        OnPlayerEnterExitModShop(BasePlayer.FindOrCreate(playerid), new EnterModShopEventArgs((EnterExit)enterexit, interiorid));
 
         return true;
     }
@@ -296,8 +296,7 @@ public abstract partial class BaseMode
         if (vehicle == null)
             return true;
 
-        OnVehiclePaintjobApplied(vehicle,
-            new VehiclePaintjobEventArgs(BasePlayer.FindOrCreate(playerid), paintjobid));
+        OnVehiclePaintjobApplied(vehicle, new VehiclePaintjobEventArgs(BasePlayer.FindOrCreate(playerid), paintjobid));
 
 
         return true;
@@ -330,16 +329,16 @@ public abstract partial class BaseMode
     }
 
     [Callback]
-    internal bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX,
-        float newY, float newZ, float velX, float velY, float velZ)
+    internal bool OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX, float newY, float newZ, float velX, float velY,
+        float velZ)
     {
         var vehicle = BaseVehicle.Find(vehicleid);
 
         if (vehicle == null)
             return true;
 
-        var args = new UnoccupiedVehicleEventArgs(BasePlayer.FindOrCreate(playerid), passengerSeat,
-            new Vector3(newX, newY, newZ), new Vector3(velX, velY, velZ));
+        var args = new UnoccupiedVehicleEventArgs(BasePlayer.FindOrCreate(playerid), passengerSeat, new Vector3(newX, newY, newZ),
+            new Vector3(velX, velY, velZ));
         OnUnoccupiedVehicleUpdated(vehicle, args);
 
         return !args.PreventPropagation;
@@ -364,8 +363,7 @@ public abstract partial class BaseMode
     [Callback]
     internal bool OnPlayerInteriorChange(int playerid, int newinteriorid, int oldinteriorid)
     {
-        OnPlayerInteriorChanged(BasePlayer.FindOrCreate(playerid),
-            new InteriorChangedEventArgs(newinteriorid, oldinteriorid));
+        OnPlayerInteriorChanged(BasePlayer.FindOrCreate(playerid), new InteriorChangedEventArgs(newinteriorid, oldinteriorid));
 
         return true;
     }
@@ -373,8 +371,7 @@ public abstract partial class BaseMode
     [Callback]
     internal bool OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys)
     {
-        OnPlayerKeyStateChanged(BasePlayer.FindOrCreate(playerid),
-            new KeyStateChangedEventArgs((Keys) newkeys, (Keys) oldkeys));
+        OnPlayerKeyStateChanged(BasePlayer.FindOrCreate(playerid), new KeyStateChangedEventArgs((Keys)newkeys, (Keys)oldkeys));
 
         return true;
     }
@@ -417,9 +414,9 @@ public abstract partial class BaseMode
 
         if (player == null)
             return true;
-  
+
         OnPlayerStreamOut(player, new PlayerEventArgs(BasePlayer.FindOrCreate(forplayerid)));
-            
+
         return true;
     }
 
@@ -475,9 +472,9 @@ public abstract partial class BaseMode
     [Callback]
     internal bool OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid, int bodypart)
     {
-        OnPlayerTakeDamage(BasePlayer.FindOrCreate(playerid),
-            new DamageEventArgs(issuerid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(issuerid),
-                amount, (Weapon) weaponid, (BodyPart) bodypart));
+        OnPlayerTakeDamage(BasePlayer.FindOrCreate(playerid), new DamageEventArgs(issuerid == BasePlayer.InvalidId
+            ? null
+            : BasePlayer.FindOrCreate(issuerid), amount, (Weapon)weaponid, (BodyPart)bodypart));
 
         return true;
     }
@@ -485,9 +482,9 @@ public abstract partial class BaseMode
     [Callback]
     internal bool OnPlayerGiveDamage(int playerid, int damagedid, float amount, int weaponid, int bodypart)
     {
-        OnPlayerGiveDamage(BasePlayer.FindOrCreate(playerid),
-            new DamageEventArgs(damagedid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(damagedid),
-                amount, (Weapon) weaponid, (BodyPart) bodypart));
+        OnPlayerGiveDamage(BasePlayer.FindOrCreate(playerid), new DamageEventArgs(damagedid == BasePlayer.InvalidId
+            ? null
+            : BasePlayer.FindOrCreate(damagedid), amount, (Weapon)weaponid, (BodyPart)bodypart));
 
         return true;
     }
@@ -518,6 +515,7 @@ public abstract partial class BaseMode
             var player = BasePlayer.FindOrCreate(playerid);
             OnPlayerClickTextDraw(player, new ClickTextDrawEventArgs(player, clicked));
         }
+
         return true;
     }
 
@@ -526,7 +524,9 @@ public abstract partial class BaseMode
     {
         var player = BasePlayer.FindOrCreate(playerid);
 
-        var clicked = playertextid == PlayerTextDraw.InvalidId ? null : PlayerTextDraw.Find(player, playertextid);
+        var clicked = playertextid == PlayerTextDraw.InvalidId
+            ? null
+            : PlayerTextDraw.Find(player, playertextid);
 
         if (playertextid != TextDraw.InvalidId && clicked == null)
             return true;
@@ -539,17 +539,16 @@ public abstract partial class BaseMode
     [Callback]
     internal bool OnPlayerClickPlayer(int playerid, int clickedplayerid, int source)
     {
-        OnPlayerClickPlayer(BasePlayer.FindOrCreate(playerid),
-            new ClickPlayerEventArgs(
-                clickedplayerid == BasePlayer.InvalidId ? null : BasePlayer.FindOrCreate(clickedplayerid),
-                (PlayerClickSource) source));
+        OnPlayerClickPlayer(BasePlayer.FindOrCreate(playerid), new ClickPlayerEventArgs(clickedplayerid == BasePlayer.InvalidId
+            ? null
+            : BasePlayer.FindOrCreate(clickedplayerid), (PlayerClickSource)source));
 
         return true;
     }
 
     [Callback]
-    internal bool OnPlayerEditObject(int playerid, bool playerobject, int objectid, int response, float fX, float fY,
-        float fZ, float fRotX, float fRotY, float fRotZ)
+    internal bool OnPlayerEditObject(int playerid, bool playerobject, int objectid, int response, float fX, float fY, float fZ, float fRotX, float fRotY,
+        float fRotZ)
     {
         var player = BasePlayer.FindOrCreate(playerid);
         if (playerobject)
@@ -560,8 +559,7 @@ public abstract partial class BaseMode
                 return true;
 
             OnPlayerEditPlayerObject(player,
-                new EditPlayerObjectEventArgs(player, @object, (EditObjectResponse) response,
-                    new Vector3(fX, fY, fZ), new Vector3(fRotX, fRotY, fRotZ)));
+                new EditPlayerObjectEventArgs(player, @object, (EditObjectResponse)response, new Vector3(fX, fY, fZ), new Vector3(fRotX, fRotY, fRotZ)));
         }
         else
         {
@@ -571,29 +569,25 @@ public abstract partial class BaseMode
                 return true;
 
             OnPlayerEditGlobalObject(player,
-                new EditGlobalObjectEventArgs(player, @object, (EditObjectResponse) response,
-                    new Vector3(fX, fY, fZ), new Vector3(fRotX, fRotY, fRotZ)));
+                new EditGlobalObjectEventArgs(player, @object, (EditObjectResponse)response, new Vector3(fX, fY, fZ), new Vector3(fRotX, fRotY, fRotZ)));
         }
 
         return true;
     }
 
     [Callback]
-    internal bool OnPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid,
-        float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX,
-        float fScaleY, float fScaleZ)
+    internal bool OnPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid, float fOffsetX, float fOffsetY, float fOffsetZ,
+        float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ)
     {
         OnPlayerEditAttachedObject(BasePlayer.FindOrCreate(playerid),
-            new EditAttachedObjectEventArgs((EditObjectResponse) response, index, modelid, (Bone) boneid,
-                new Vector3(fOffsetX, fOffsetY, fOffsetZ), new Vector3(fRotX, fRotY, fRotZ),
-                new Vector3(fScaleX, fScaleY, fScaleZ)));
+            new EditAttachedObjectEventArgs((EditObjectResponse)response, index, modelid, (Bone)boneid, new Vector3(fOffsetX, fOffsetY, fOffsetZ),
+                new Vector3(fRotX, fRotY, fRotZ), new Vector3(fScaleX, fScaleY, fScaleZ)));
 
         return true;
     }
 
     [Callback]
-    internal bool OnPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY,
-        float fZ)
+    internal bool OnPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ)
     {
         switch ((ObjectType)type)
         {
@@ -606,8 +600,7 @@ public abstract partial class BaseMode
 
                     var player = BasePlayer.FindOrCreate(playerid);
 
-                    OnPlayerSelectGlobalObject(player,
-                        new SelectGlobalObjectEventArgs(player, @object, modelid, new Vector3(fX, fY, fZ)));
+                    OnPlayerSelectGlobalObject(player, new SelectGlobalObjectEventArgs(player, @object, modelid, new Vector3(fX, fY, fZ)));
                     break;
                 }
             case ObjectType.PlayerObject:
@@ -619,8 +612,7 @@ public abstract partial class BaseMode
                     if (@object == null)
                         return true;
 
-                    OnPlayerSelectPlayerObject(player,
-                        new SelectPlayerObjectEventArgs(player, @object, modelid, new Vector3(fX, fY, fZ)));
+                    OnPlayerSelectPlayerObject(player, new SelectPlayerObjectEventArgs(player, @object, modelid, new Vector3(fX, fY, fZ)));
                     break;
                 }
         }
@@ -629,11 +621,9 @@ public abstract partial class BaseMode
     }
 
     [Callback]
-    internal bool OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY,
-        float fZ)
+    internal bool OnPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY, float fZ)
     {
-        var args = new WeaponShotEventArgs((Weapon) weaponid, (BulletHitType) hittype, hitid,
-            new Vector3(fX, fY, fZ));
+        var args = new WeaponShotEventArgs((Weapon)weaponid, (BulletHitType)hittype, hitid, new Vector3(fX, fY, fZ));
 
         OnPlayerWeaponShot(BasePlayer.FindOrCreate(playerid), args);
 
@@ -695,7 +685,7 @@ public abstract partial class BaseMode
         if (actor == null)
             return true;
 
-        OnPlayerGiveDamageActor(actor, new DamageEventArgs(BasePlayer.FindOrCreate(playerid), amount, (Weapon) weaponid, (BodyPart) bodypart));
+        OnPlayerGiveDamageActor(actor, new DamageEventArgs(BasePlayer.FindOrCreate(playerid), amount, (Weapon)weaponid, (BodyPart)bodypart));
 
         return true;
     }

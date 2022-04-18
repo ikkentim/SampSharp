@@ -17,15 +17,11 @@ using SampSharp.GameMode.World;
 
 namespace SampSharp.GameMode.Controllers;
 
-/// <summary>
-///     A controller processing all gang zone actions.
-/// </summary>
+/// <summary>A controller processing all gang zone actions.</summary>
 [Controller]
 public class GangZoneController : ITypeProvider
 {
-    /// <summary>
-    ///     Registers the types.
-    /// </summary>
+    /// <summary>Registers the types.</summary>
     public void RegisterTypes()
     {
         GangZone.Register<GangZone>();
