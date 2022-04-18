@@ -14,5 +14,7 @@
 // limitations under the License.
 
 using System.Runtime.CompilerServices;
+using SampSharp.Core.Natives.NativeObjects;
 
 [assembly: InternalsVisibleTo("SampSharp.Core.UnitTests")]
+[assembly: InternalsVisibleTo(NativeObjectProxyFactory.AssemblyName)]

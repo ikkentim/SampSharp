@@ -17,10 +17,10 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace SampSharp.Core;
+namespace SampSharp.Core.Natives;
 
 /// <summary>Contains methods for converting byte arrays to values, values to byte arrays and values to other values.</summary>
-public static class ValueConverter
+internal static class ValueConverter
 {
     /// <summary>Gets the bytes representing the specified value.</summary>
     /// <param name="value">The value.</param>

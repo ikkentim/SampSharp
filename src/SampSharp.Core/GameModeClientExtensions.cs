@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using SampSharp.Core.Callbacks;
 
@@ -25,8 +26,7 @@ public static class GameModeClientExtensions
     /// <summary>Registers all callbacks in the specified target object. Instance methods with a <see cref="CallbackAttribute" /> attached will be loaded.</summary>
     /// <param name="gameModeClient">The game mode client.</param>
     /// <param name="target">The target.</param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell",
-        "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields",
+    [SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields",
         Justification = "Loading entry points of any visibility")]
     public static void RegisterCallbacksInObject(this IGameModeClient gameModeClient, object target)
     {

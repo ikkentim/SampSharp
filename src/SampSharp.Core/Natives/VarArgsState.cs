@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 namespace SampSharp.Core.Natives;
 
 /// <summary>Provides a state for variable arguments handling of native calls.</summary>
-public class VarArgsState : IDisposable
+internal class VarArgsState : IDisposable
 {
     private List<GCHandle> _pinnedHandles;
 
@@ -38,8 +38,7 @@ public class VarArgsState : IDisposable
 
         return ptr.ToInt32();
     }
-
-    /// <inheritdoc />
+    
     public void Dispose()
     {
         if (_pinnedHandles == null)

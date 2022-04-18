@@ -280,7 +280,7 @@ internal class Callback
         }
     }
 
-    private static int ObjectToInt(object obj)
+    private static unsafe int ObjectToInt(object obj)
     {
         return obj switch
         {
@@ -288,7 +288,7 @@ internal class Callback
                 ? 1
                 : 0,
             int value => value,
-            float value => ValueConverter.ToInt32(value),
+            float value => *(int*)&value,
             _ => 1
         };
     }
