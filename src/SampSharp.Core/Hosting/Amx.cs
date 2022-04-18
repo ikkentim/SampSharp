@@ -21,7 +21,7 @@ namespace SampSharp.Core.Hosting;
 public readonly struct Amx
 {
 #pragma warning disable CS0169
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1144:Unused private types or members should be removed", Justification = "Dummy struct")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Dummy struct")]
     private readonly int _value;
 #pragma warning restore CS0169
 }

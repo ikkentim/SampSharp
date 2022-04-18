@@ -9,5 +9,8 @@ public struct SyncToMainThreadTask
     /// Gets the awaiter for this task.
     /// </summary>
     /// <returns>The await for this task.</returns>
-    public MainThreadTaskAwaiter GetAwaiter() => new();
+    public MainThreadTaskAwaiter GetAwaiter()
+    {
+        return new MainThreadTaskAwaiter();
+    }
 }

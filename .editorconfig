@@ -61,7 +61,7 @@ dotnet_style_object_initializer = true:suggestion
 dotnet_style_prefer_auto_properties = true:warning
 dotnet_style_prefer_compound_assignment = true:suggestion
 dotnet_style_prefer_conditional_expression_over_assignment = true:suggestion
-dotnet_style_prefer_conditional_expression_over_return = true:suggestion
+dotnet_style_prefer_conditional_expression_over_return = true:silent
 dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion
 dotnet_style_prefer_inferred_tuple_names = true:suggestion
 dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion
@@ -102,7 +102,7 @@ csharp_prefer_static_local_function = true:suggestion
 csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async
 
 # Code-block preferences
-csharp_prefer_braces = when_multiline:warning
+csharp_prefer_braces = when_multiline:silent
 csharp_prefer_simple_using_statement = true:suggestion
 
 # Expression-level preferences
@@ -260,6 +260,13 @@ dotnet_diagnostic.S3453.severity = none
 # CA1720: Identifier contains type name
 # Justfication: Interop and type handing makes this diagnostic annoying
 dotnet_diagnostic.CA1720.severity = none
+
+# S1172: Unused method parameters should be removed
+# Justification: Diagnostic is faulty
+dotnet_diagnostic.S1172.severity = none
+
+# IDE0046: Convert to conditional expression
+dotnet_diagnostic.IDE0046.severity = silent
 
 [**TestMode**/**.cs]
 

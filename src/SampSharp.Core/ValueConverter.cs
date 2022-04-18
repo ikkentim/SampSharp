@@ -127,20 +127,6 @@ namespace SampSharp.Core
         }
 
         /// <summary>
-        ///     Reads an <see cref="uint" /> from the specified <paramref name="buffer" /> starting at the specified
-        ///     <paramref name="startIndex" />.
-        /// </summary>
-        /// <param name="buffer">The buffer.</param>
-        /// <param name="startIndex">The start index.</param>
-        /// <returns>The <see cref="uint" /> read from the specified buffer.</returns>
-        public static uint ToUInt32(byte[] buffer, int startIndex)
-        {
-            if (buffer == null) throw new ArgumentNullException(nameof(buffer));
-
-            return BitConverter.ToUInt32(buffer, startIndex);
-        }
-        
-        /// <summary>
         ///     Reads an <see cref="ushort" /> from the specified <paramref name="buffer" /> starting at the specified
         ///     <paramref name="startIndex" />.
         /// </summary>
@@ -160,9 +146,23 @@ namespace SampSharp.Core
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The converted <see cref="uint" />.</returns>
-        public static uint ToUint32(int value)
+        public static uint ToUInt32(int value)
         {
             return new ValueUnion { int32 = value }.uint32;
+        }
+        
+        /// <summary>
+        ///     Reads an <see cref="uint" /> from the specified <paramref name="buffer" /> starting at the specified
+        ///     <paramref name="startIndex" />.
+        /// </summary>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="startIndex">The start index.</param>
+        /// <returns>The <see cref="uint" /> read from the specified buffer.</returns>
+        public static uint ToUInt32(byte[] buffer, int startIndex)
+        {
+            if (buffer == null) throw new ArgumentNullException(nameof(buffer));
+
+            return BitConverter.ToUInt32(buffer, startIndex);
         }
 
         /// <summary>
@@ -174,9 +174,9 @@ namespace SampSharp.Core
         /// <returns>The <see cref="bool" /> read from the specified buffer.</returns>
         public static bool ToBoolean(byte[] buffer, int startIndex)
         {
-            if (buffer == null) throw new ArgumentNullException(nameof(buffer));
-
-            return ToBoolean(ToInt32(buffer, startIndex));
+            return buffer == null
+                ? throw new ArgumentNullException(nameof(buffer))
+                : ToBoolean(ToInt32(buffer, startIndex));
         }
 
         /// <summary>

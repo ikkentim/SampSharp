@@ -3,7 +3,7 @@
   <PropertyGroup>
     <IsTestProject>$(MSBuildProjectName.Contains('.UnitTests'))</IsTestProject>
     <IsTestMode>$(MSBuildProjectName.Contains('TestMode.'))</IsTestMode>
-    <IsLibrary Condition="'$(IsTestMode)' != 'True' and '$(IsTestProject)' != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">True</IsLibrary>
+    <IsLibrary Condition="'$(IsTestMode)' != 'True' and '$(IsTestProject)' != 'True' and $(MSBuildProjectName.Contains('Benchmark')) != 'True' and '$(MSBuildProjectExtension)' == '.csproj'">True</IsLibrary>
   </PropertyGroup>
 
   <!-- Build configuration -->
