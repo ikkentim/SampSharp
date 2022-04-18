@@ -16,8 +16,6 @@ namespace SampSharp.Core.Natives
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "IL code generation")]
     internal class NativeObjectProxyFactoryImpl : INativeObjectProxyFactory
     {
-        private const string AssemblyName = "SampSharpProxyAssembly";
-        
         private readonly IGameModeClient _gameModeClient;
         private int _typeNumber;
         private readonly Dictionary<Type, KnownType> _knownTypes = new();
@@ -28,7 +26,7 @@ namespace SampSharp.Core.Natives
         {
             _gameModeClient = gameModeClient;
             
-            var asmName = new AssemblyName(AssemblyName);
+            var asmName = new AssemblyName(NativeObjectProxyFactory.AssemblyName);
             var asmBuilder = AssemblyBuilder.DefineDynamicAssembly(asmName, AssemblyBuilderAccess.Run);
             _moduleBuilder = asmBuilder.DefineDynamicModule(asmName.Name + ".dll");
         }
@@ -65,10 +63,10 @@ namespace SampSharp.Core.Natives
         {
             // The generated assembly can only access public types or types which are visible to the generated assembly.
             if (!(type.IsNested ? type.IsNestedPublic : type.IsPublic) && type.Assembly
-                    .GetCustomAttributes<InternalsVisibleToAttribute>().All(x => x.AssemblyName != AssemblyName))
+                    .GetCustomAttributes<InternalsVisibleToAttribute>().All(x => x.AssemblyName != NativeObjectProxyFactory.AssemblyName))
             {
                 throw new ArgumentException(
-                    $"Type '{type}' is not public. Native proxies can only be created for public types and types in assemblies which expose their internals to the '{AssemblyName}' assembly using the InternalsVisibleToAttribute.",
+                    $"Type '{type}' is not public. Native proxies can only be created for public types and types in assemblies which expose their internals to the '{NativeObjectProxyFactory.AssemblyName}' assembly using the InternalsVisibleToAttribute.",
                     nameof(type));
             }
 
@@ -785,7 +783,6 @@ namespace SampSharp.Core.Natives
                 HasVarArgs = parameters.Any(x=> x.Type == NativeParameterType.VarArgs)
             };
         }
-
         
         private sealed record KnownType(Type Type, bool IsGenerated);
     }

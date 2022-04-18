@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using SampSharp.Core.Hosting;
 
@@ -130,7 +131,7 @@ namespace SampSharp.Core.Natives
         {
             array ??= new T[span.Length];
 
-            if (!(array is T[] result))
+            if (array is not T[] result)
             {
                 throw new InvalidOperationException("Array is not of specified type");
             }
@@ -245,7 +246,7 @@ namespace SampSharp.Core.Natives
             {
                 if (value is Array array)
                 {
-                    sb.AppendFormat("a[{0}]", array.Length);
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "a[{0}]", array.Length);
                 }
                 else if (value is string)
                 {

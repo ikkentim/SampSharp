@@ -12,24 +12,15 @@ using SampSharp.Core.Natives.NativeObjects;
 
 namespace SampSharp.Core
 {
-    /// <summary>
-    ///     Represents a SampSharp game mode client for hosted game modes.
-    /// </summary>
-    public sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, ISynchronizationProvider
+    internal sealed class HostedGameModeClient : IGameModeClient, IGameModeRunner, ISynchronizationProvider
     {
         private readonly Dictionary<string, Callback> _newCallbacks = new();
-        private NoWaitMessageQueue _messageQueue;
         private SampSharpSynchronizationContext _synchronizationContext;
         private readonly IGameModeProvider _gameModeProvider;
         private int _mainThread;
         private int _rconThread = int.MinValue;
         private bool _running;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="HostedGameModeClient" /> class.
-        /// </summary>
-        /// <param name="gameModeProvider">The game mode provider.</param>
-        /// <param name="encoding">The encoding to use when en/decoding text messages sent to/from the server.</param>
+        
         public HostedGameModeClient(IGameModeProvider gameModeProvider, Encoding encoding)
         {
             Encoding = encoding;
@@ -38,10 +29,7 @@ namespace SampSharp.Core
 
             ServerPath = Directory.GetCurrentDirectory();
         }
-
-        /// <summary>
-        ///     Gets a value indicating whether this property is invoked on the main thread.
-        /// </summary>
+        
         public bool IsOnMainThread
         {
             get
@@ -51,10 +39,100 @@ namespace SampSharp.Core
             }
         }
 
-        private void AssertRunning()
+        public Encoding Encoding { get; }
+        
+        public INativeObjectProxyFactory NativeObjectProxyFactory { get; }
+        
+        public ISynchronizationProvider SynchronizationProvider => this;
+        
+        public string ServerPath { get; }
+        
+        public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
+
+        public void RegisterCallback(string name, object target, MethodInfo methodInfo)
+        {
+            RegisterCallback(name, target, methodInfo, null);
+        }
+        
+        public void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[] parameterTypes, uint?[] lengthIndices = null)
+        {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
+
+            if (!_running)
+                throw new GameModeNotRunningException();
+
+            if (_newCallbacks.ContainsKey(name))
+            {
+                throw new CallbackRegistrationException($"Duplicate callback registration for '{name}'");
+            }
+
+            try
+            {
+                _newCallbacks[name] = Callback.For(target, methodInfo, parameterTypes, lengthIndices);
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new CallbackRegistrationException($"Failed to register callback '{name}'. {e.Message}", e);
+            }
+        }
+        
+        public void Print(string text)
         {
             if (!_running)
                 throw new GameModeNotRunningException();
+
+            if (IsOnMainThread)
+                Interop.Print(text);
+            else
+                _synchronizationContext.Send(_ => Interop.Print(text), null);
+        }
+        
+        public bool Run()
+        {
+            if (_running)
+            {
+                return false;
+            }
+
+            InternalStorage.SetRunningClient(this);
+
+            try
+            {
+                Interop.Initialize();
+            }
+            catch(InvalidOperationException e)
+            {
+                // May be thrown when the plugin is to old for this version of SampSharp.Core.
+                Console.WriteLine(e.Message);
+                throw;
+            }
+
+            // Prepare the synchronization context
+            _synchronizationContext = new SampSharpSynchronizationContext();
+            SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
+            
+            _mainThread = Environment.CurrentManagedThreadId;
+            _running = true;
+
+            var version = Assembly.GetExecutingAssembly().GetName().Version!;
+            CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Client");
+            CoreLog.Log(CoreLogLevel.Initialisation, "-------------------------");
+            CoreLog.Log(CoreLogLevel.Initialisation, $"v{version.ToString(3)} (C)2014-2022 Tim Potze");
+            CoreLog.Log(CoreLogLevel.Initialisation, "");
+            
+            _gameModeProvider.Initialize(this);
+            
+            return true;
+        }
+        
+        IGameModeClient IGameModeRunner.Client => this;
+        
+        bool ISynchronizationProvider.InvokeRequired => !IsOnMainThread;
+        
+        void ISynchronizationProvider.Invoke(Action action)
+        {
+            _synchronizationContext.Send(_ => action(), null);
         }
 
         private void OnUnhandledException(UnhandledExceptionEventArgs e)
@@ -64,11 +142,20 @@ namespace SampSharp.Core
 
         internal void Tick()
         {
-            // Pump new tasks
-            var message = _messageQueue.GetMessage();
-
-            if (message != null)
+            if (!_running)
             {
+                return;
+            }
+            
+            while (true)
+            {
+                var message = _synchronizationContext.GetMessage();
+
+                if (message == null)
+                {
+                    break;
+                }
+
                 try
                 {
                     message.Execute();
@@ -91,6 +178,11 @@ namespace SampSharp.Core
         
         internal void PublicCall(IntPtr amx, string name, IntPtr parameters, IntPtr retval)
         {
+            if (!_running)
+            {
+                return;
+            }
+
             try
             {
                 if (name == "OnRconCommand")
@@ -113,112 +205,6 @@ namespace SampSharp.Core
         internal void InitializeForTesting()
         {
             _running = true;
-        }
-        
-        /// <inheritdoc />
-        public Encoding Encoding { get; }
-        
-        /// <inheritdoc />
-        public INativeObjectProxyFactory NativeObjectProxyFactory { get; }
-
-        /// <inheritdoc />
-        public ISynchronizationProvider SynchronizationProvider => this;
-        
-        /// <inheritdoc />
-        public string ServerPath { get; }
-        
-        /// <inheritdoc />
-        public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
-
-        /// <inheritdoc />
-        public void RegisterCallback(string name, object target, MethodInfo methodInfo)
-        {
-            RegisterCallback(name, target, methodInfo, null);
-        }
-
-        /// <inheritdoc />
-        public void RegisterCallback(string name, object target, MethodInfo methodInfo, Type[] parameterTypes, uint?[] lengthIndices = null)
-        {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
-
-            AssertRunning();
-
-            if (_newCallbacks.ContainsKey(name))
-            {
-                throw new CallbackRegistrationException($"Duplicate callback registration for '{name}'");
-            }
-
-            try
-            {
-                _newCallbacks[name] = Callback.For(target, methodInfo, parameterTypes, lengthIndices);
-            }
-            catch (InvalidOperationException e)
-            {
-                throw new CallbackRegistrationException($"Failed to register callback '{name}'. {e.Message}", e);
-            }
-        }
-        
-        /// <inheritdoc />
-        public void Print(string text)
-        {
-            if (IsOnMainThread)
-                Interop.Print(text);
-            else
-                _synchronizationContext.Send(_ => Interop.Print(text), null);
-        }
-        
-        /// <inheritdoc />
-        public bool Run()
-        {
-            if (_running)
-            {
-                return true;
-            }
-
-            InternalStorage.SetRunningClient(this);
-
-            try
-            {
-                Interop.Initialize();
-            }
-            catch(InvalidOperationException e)
-            {
-                Console.WriteLine(e.Message);
-                throw;
-            }
-
-            // Prepare the synchronization context
-            _messageQueue = new NoWaitMessageQueue();
-            _synchronizationContext = new SampSharpSynchronizationContext(_messageQueue);
-
-            SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
-            
-            _mainThread = Environment.CurrentManagedThreadId;
-            _running = true;
-
-            var version = Assembly.GetExecutingAssembly().GetName().Version!;
-            CoreLog.Log(CoreLogLevel.Initialisation, "SampSharp GameMode Client");
-            CoreLog.Log(CoreLogLevel.Initialisation, "-------------------------");
-            CoreLog.Log(CoreLogLevel.Initialisation, $"v{version.ToString(3)} (C)2014-2022 Tim Potze");
-            CoreLog.Log(CoreLogLevel.Initialisation, "Hosted run mode is active.");
-            CoreLog.Log(CoreLogLevel.Initialisation, "");
-            
-            _gameModeProvider.Initialize(this);
-            
-            return true;
-        }
-
-        /// <inheritdoc />
-        public IGameModeClient Client => this;
-        
-        /// <inheritdoc />
-        bool ISynchronizationProvider.InvokeRequired => !IsOnMainThread;
-        
-        /// <inheritdoc />
-        void ISynchronizationProvider.Invoke(Action action)
-        {
-            _synchronizationContext.Send(_ => action(), null);
         }
     }
 }

@@ -23,6 +23,11 @@ namespace SampSharp.Core.Natives.NativeObjects
     public static class NativeObjectProxyFactory
     {
         /// <summary>
+        /// Assembly name of generated assembly for native object proxy types.
+        /// </summary>
+        public const string AssemblyName = "SampSharpProxyAssembly";
+
+        /// <summary>
         ///     Creates a proxy instance of the specified type <typeparamref name="T" />.
         /// </summary>
         /// <typeparam name="T">The type to create a proxy of.</typeparam>
